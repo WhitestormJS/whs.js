@@ -8,7 +8,8 @@
 		"NOTE",
 		"FIX ?ME",
 		"CHANGES",
-		"FUTURE"
+		"FUTURE",
+        "LIBRARY"
 	],
 	"case": false,
 	"search": {
