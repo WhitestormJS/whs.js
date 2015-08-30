@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>WhitestormJS development</title>
+<script src="lib/three.js"></script>
+<script src="lib/cannon.js"></script>
+<script src="lib/jquery-1.11.1.min.js"></script>
+<script src="lib/CannonDebugRenderer.js"></script>
+<script src="lib/AnaglyphWebGLRenderer.js"></script>
+<script src="lib/helvetiker.typeface.js"></script>
+<script src="lib/firstPersonControls.js"></script>
+<script src="whitestorm.js"></script>
+</head>
+
+<body>
+    <p>hello</p>
+
+</body>
+<!-- FIXME: fix loading -->
+
+<!--<script>
+var genmap = [
+	'11129999999',
+	'11236555588',
+	'11222322222',
+	'11258852111',
+	'11223322111',
+	'11112211651',
+	'11135421111',
+	'11135321111',
+	'15513211956',
+	'11111113889',
+	'11434121111'
+	];
+
+
+
+
+var GAME = WHS.init(THREE, CANNON, {
+    anaglyph: false,
+    helper: true,
+    gravity: {
+        x: 0,
+        y: -200,
+        z: 0
+    }
+});
+GAME.ground = new WHS.addGround("rough", {
+    width: 10000,
+    height: 10000,
+    delta: 100,
+    detalityX: 500,
+    detalityY: 500
+}, {
+    color: 0xffffff,
+    type: "basic",
+	side: THREE.DoubleSide,
+	overdraw: true,
+	combine: THREE.MultiplyOperation ,
+    map: WHS.API.texture('textures/ground.jpg', {
+        offset: {
+            x: 0,
+            y: 0
+        },
+        repeat: {
+            x: 100,
+            y: 100
+        }
+    })
+}, {
+    x: 0,
+    y: -300,
+    z: -400
+}, genmap);
+
+
+GAME.cube = new WHS.create("cube", {
+    geometryOptions: {
+        width: 100,
+        height: 100,
+        depth: 100
+    },
+    mass: 5,
+    onlyvis: false,
+    materialOptions: {
+        color: 0xffffff,
+        type: "basic",
+        map: WHS.API.texture('textures/box.jpg')
+    },
+    pos: {
+        x: 0,
+        y: 0,
+        z: 0
+    }
+});
+
+GAME.person = new WHS.create("sphere", {
+    geometryOptions: {
+        radius:10
+    },
+    mass: 5,
+    onlyvis: false,
+    materialOptions: {
+        color: 0xffffff,
+        type: "basic"
+    },
+    pos: {
+        x: 200,
+        y: 500,
+        z: 0
+    }
+});
+
+WHS.MakeFirstPerson(GAME.person);
+
+</script>-->
+</html>
