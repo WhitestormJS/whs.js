@@ -9,7 +9,9 @@
         "FIX ?ME",
         "CHANGES",
         "FUTURE",
-        "LIBRARY:#ec33d0"
+        "LIBRARY:#ec33d0",
+        "WARN:#f00",
+        "BUG:#f00"
     ],
     "case": false,
     "search": {
