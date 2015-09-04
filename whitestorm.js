@@ -1126,7 +1126,7 @@ WHS.addGround = function (type, size, material, pos, genmap) {
  * @param {Object} target Target of light dot.
  */
 WHS.addLight = function (type, pos, target) {
-
+   console.log("hello");
 }
 
 
