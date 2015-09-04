@@ -1,29 +1,24 @@
 {
-	"regex": {
-		"prefix": "(?:<!--|\\/\\*|\\/\\/|#) *@?(",
-		"suffix": "):? *(.*?) ?(?=-->|\\*/|\\n|$)"
-	},
-	"tags": [
-		"TODO",
-		"NOTE",
-		"FIX ?ME",
-		"CHANGES",
-		"FUTURE",
-        "LIBRARY"
-	],
-	"case": false,
-	"search": {
-		"scope": "current",
-		"excludeFolders": [],
-		"excludeFiles": []
-	},
-	"sort": {
-		"done": true
-	}
-},
-{
     "regex": {
-        "prefix": "(?:<!--) *(",
-        "suffix": "):? *(.*?) ?(?=-->)"
+        "prefix": "(?:\\/\\*|\\/\\/|#) *@?(",
+        "suffix": "):? *(.*?) ?(?=\\*/|\\n|$)"
+    },
+    "tags": [
+        "TODO",
+        "NOTE",
+        "FIX ?ME",
+        "CHANGES",
+        "FUTURE",
+        "LIBRARY:#ec33d0"
+    ],
+    "case": false,
+    "search": {
+        "scope": "current",
+        "excludeFolders": [],
+        "excludeFiles": []
+    },
+    "github": {
+        "user": "sasha240100",
+        "repository": "WhitestormJS"
     }
 }
