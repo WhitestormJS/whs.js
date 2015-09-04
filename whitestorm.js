@@ -1320,7 +1320,42 @@ WHS.addGround = function (type, size, material, pos, genmap) {
  * @param {Object} target Target of light dot.
  */
 WHS.addLight = function (type, pos, target) {
-    // TODO: Add lights function.
+    // TODO: add lights.
+    this.whsobject = true;
+
+    switch (type) {
+        case "ambient":
+            this.light = new THREE.AmbientLight( 0x404040 );
+        break;
+
+        case "area":
+            this.light = new THREE.AreaLight( 0xffffff, 1 );
+        break;
+
+        case "directional":
+            this.light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+        break;
+
+        case "hemisphere":
+            this.light = new THREE.HemisphereLight(skyColorHex, groundColorHex, intensity);
+        break;
+
+        case "light":
+            this.light = new THREE.Light( 0x404040 );
+        break;
+
+        case "point":
+            this.light = new THREE.PointLight( 0xff0000, 1, 100 );
+        break;
+
+        case "spot":
+            this.light = new THREE.SpotLight( 0xffffff );
+        break;
+    }
+
+    WHS.API.merge(WHS.API.scene, this.light);
+
+    return this.light;
 }
 
 
