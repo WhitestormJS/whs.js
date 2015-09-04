@@ -996,7 +996,7 @@ WHS.addGround = function (type, size, material, pos, genmap) {
         api.merge(vars.world, this.body);
         api.merge(vars.scene, this.visible);
         break;
-    case "rough":
+    case "terrain":
         var detalityX = size.detalityX || 10;
         var detalityY = size.detalityY || 10;
         this.detalityX = detalityX;
