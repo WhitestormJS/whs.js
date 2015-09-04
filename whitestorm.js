@@ -3,6 +3,7 @@
  */
 
 /* ================ LOADING LIBS ================================================== */
+
 // LIBRARY: Terrain Loader
 //$.getScript('lib/TerrainLoader.js');
 
@@ -26,6 +27,16 @@ WHS.grounds = [];
 var vars = WHS.vars,
     api = WHS.API;
 
+
+
+
+// NOTE: WHS API merge *FUNCTION*
+/**
+ * MERGE.
+ *
+ * @param {Object} box Object to be merged. (REQUIRED)
+ * @param {Object} rabbits Object to be added. (REQUIRED)
+ */
 WHS.API.merge = function (box, rabbits) {
     if (arguments.length < 2) {
         console.error("No rabbits for the box. (arguments)");
@@ -43,6 +54,13 @@ WHS.API.merge = function (box, rabbits) {
     }
 }
 
+// NOTE: WHS API def *FUNCTION*.
+/**
+ * Defines variable. Makes convexPolyhedron object *CANNON.JS* from *THREE.JS* firure.
+ *
+ * @param {Object} thrObj Figure object *THREE.JS*. (REQUIRED)
+ * @param {Object} thrObj Figure object *THREE.JS*. (REQUIRED)
+ */
 WHS.API.def = function (option, value) {
     if (arguments.length < 2) {
         console.error("Something wrong! option? value?");
@@ -52,7 +70,13 @@ WHS.API.def = function (option, value) {
     }
 }
 
-WHS.API.ThreeToCannon = function (thrObj) {
+// NOTE: WHS API ConvexFigure *FUNCTION*.
+/**
+ * Trimesh figure. Makes convexPolyhedron object *CANNON.JS* from *THREE.JS* firure.
+ *
+ * @param {Object} thrObj Figure object *THREE.JS*. (REQUIRED)
+ */
+WHS.API.ConvexFigure = function (thrObj) {
     if (arguments.length < 1) {
         console.error("No THREE.js geometry");
     } else if (arguments.length = 1) {
@@ -70,6 +94,12 @@ WHS.API.ThreeToCannon = function (thrObj) {
     }
 }
 
+// NOTE: WHS API TrimeshFigure *FUNCTION*.
+/**
+ * Trimesh figure. Makes trimesh object *CANNON.JS* from *THREE.JS* firure.
+ *
+ * @param {Object} thrObj Figure object *THREE.JS*. (REQUIRED)
+ */
 WHS.API.TrimeshFigure = function (thrObj) {
     if (arguments.length < 1) {
         console.error("No THREE.js geometry");
@@ -93,14 +123,28 @@ WHS.API.TrimeshFigure = function (thrObj) {
     }
 }
 
+// NOTE: WHS API rotateBody *FUNCTION*.
+/**
+ * Rotate body. Rotates body object *CANNON.JS*.
+ *
+ * @param {Object} body Body object in *CANNON.JS*. (REQUIRED)
+ * @param {Object} rotateSet Object of x, y, z coords. (REQUIRED)
+ */
 WHS.API.rotateBody = function (body, rotateSet) {
     body.quaternion.x = Math.sin((Math.PI / 180) * rotateSet.x * 0.5);
     body.quaternion.y = Math.sin((Math.PI / 180) * rotateSet.y * 0.5);
     body.quaternion.z = Math.sin((Math.PI / 180) * rotateSet.z * 0.5);
     body.quaternion.w = Math.cos(90 * 0.5);
-    console.log(body.quaternion);
+    return body;
 }
 
+// NOTE: WHS API texture *FUNCTION*.
+/**
+ * Texture. Loads texture object.
+ *
+ * @param {String} url Url adress of texture *JSON*. (REQUIRED)
+ * @param {Object} options Parameters of texture. (REQUIRED)
+ */
 WHS.API.texture = function (url, options) {
     var texture = WHS.headers.threejs.ImageUtils.loadTexture(url);
     if (options) {
@@ -125,11 +169,20 @@ WHS.API.texture = function (url, options) {
     return texture;
 }
 
+// NOTE: WHS API shape *FUNCTION*.
+/**
+ * Shape. Makes *THREE.JS* shape.
+ */
 WHS.ADD.shape = function () {
     return new WHS.headers.threejs.Shape();
 }
 
-
+// NOTE: WHS API init *FUNCTION*.
+/**
+ * Init.
+ *
+ * @param {Object} params Parameters of initalize. (REQUIRED)
+ */
 WHS.init = function (params) {
     params = params || {};
     vars.anaglyph = params.anaglyph;
@@ -151,8 +204,8 @@ WHS.init = function (params) {
     vars.world.quatNormalizeSkip = 0;
     vars.world.quatNormalizeFast = false;
     vars.solver = new CANNON.GSSolver();
-    vars.world.defaultContactMaterial.contactEquationStiffness = 1e9;
-    vars.world.defaultContactMaterial.contactEquationRegularizationTime = 4;
+    vars.world.APIContactMaterial.contactEquationStiffness = 1e9;
+    vars.world.APIContactMaterial.contactEquationRegularizationTime = 4;
     vars.solver.iterations = 7;
     vars.solver.tolerance = 0.1;
     var split = true;
@@ -209,6 +262,13 @@ WHS.init = function (params) {
 
 
 
+// NOTE: WHS figure *FUNCTION*
+/**
+ * Figure.
+ *
+ * @param {String} figure name *THREE.JS*. (REQUIRED)
+ * @param {Object} options Figure options. (REQUIRED)
+ */
 WHS.create = function (figureType, options) {
     var THREEx = WHS.headers.threejs;
     var CANNONx = WHS.headers.cannonjs;
@@ -298,7 +358,7 @@ WHS.create = function (figureType, options) {
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -333,7 +393,7 @@ WHS.create = function (figureType, options) {
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -369,7 +429,7 @@ WHS.create = function (figureType, options) {
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -399,11 +459,11 @@ WHS.create = function (figureType, options) {
         this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
         api.merge(vars.scene, this.visible);
         if (!options.onlyvis) {
-            this.physic = new WHS.API.ThreeToCannon(this.visible.geometry);
+            this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -433,11 +493,11 @@ WHS.create = function (figureType, options) {
         this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
         api.merge(vars.scene, this.visible);
         if (!options.onlyvis) {
-            this.physic = new WHS.API.ThreeToCannon(this.visible.geometry);
+            this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -467,11 +527,11 @@ WHS.create = function (figureType, options) {
         this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
         api.merge(vars.scene, this.visible);
         if (!options.onlyvis) {
-            this.physic = new WHS.API.ThreeToCannon(this.visible.geometry);
+            this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -498,11 +558,11 @@ WHS.create = function (figureType, options) {
         this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
         api.merge(vars.scene, this.visible);
         if (!options.onlyvis) {
-            this.physic = new WHS.API.ThreeToCannon(this.visible.geometry);
+            this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -532,11 +592,11 @@ WHS.create = function (figureType, options) {
         this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
         api.merge(vars.scene, this.visible);
         if (!options.onlyvis) {
-            this.physic = new WHS.API.ThreeToCannon(this.visible.geometry);
+            this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -565,11 +625,11 @@ WHS.create = function (figureType, options) {
         this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
         api.merge(vars.scene, this.visible);
         if (!options.onlyvis) {
-            this.physic = new WHS.API.ThreeToCannon(this.visible.geometry);
+            this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -599,11 +659,11 @@ WHS.create = function (figureType, options) {
         this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
         api.merge(vars.scene, this.visible);
         if (!options.onlyvis) {
-            this.physic = new WHS.API.ThreeToCannon(this.visible.geometry);
+            this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -633,11 +693,11 @@ WHS.create = function (figureType, options) {
         this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
         api.merge(vars.scene, this.visible);
         if (!options.onlyvis) {
-            this.physic = new WHS.API.ThreeToCannon(this.visible.geometry);
+            this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -677,7 +737,7 @@ WHS.create = function (figureType, options) {
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             console.log(opt.rot.x);
@@ -726,11 +786,11 @@ WHS.create = function (figureType, options) {
         this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
         api.merge(vars.scene, this.visible);
         if (!options.onlyvis) {
-            this.physic = new WHS.API.ThreeToCannon(this.visible.geometry);
+            this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -771,7 +831,7 @@ WHS.create = function (figureType, options) {
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.body.quaternion.copy(this.visible.quaternion);
@@ -807,7 +867,7 @@ WHS.create = function (figureType, options) {
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             console.log(opt.rot.x);
@@ -844,7 +904,7 @@ WHS.create = function (figureType, options) {
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             console.log(opt.rot.x);
@@ -895,7 +955,7 @@ WHS.create = function (figureType, options) {
             this.body = new CANNONx.Body({
                 mass: opt.mass
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             console.log(opt.rot.x);
@@ -911,6 +971,16 @@ WHS.create = function (figureType, options) {
     }
 }
 
+// NOTE: WHS ground *FUNCTION*
+/**
+ * Ground.
+ *
+ * @param {String} type Ground/Terrain type. (REQUIRED)
+ * @param {Object} size Size of ground. (REQUIRED)
+ * @param {Object} material Material type and options. (REQUIRED)
+ * @param {Object} pos Position of ground in 3D space. (REQUIRED)
+ * @param {Object} genmap Map object with heights of ground. (OPTIONAL)
+ */
 WHS.addGround = function (type, size, material, pos, genmap) {
     var THREEx = WHS.headers.threejs;
     var CANNONx = WHS.headers.cannonjs;
@@ -972,7 +1042,7 @@ WHS.addGround = function (type, size, material, pos, genmap) {
         this.body = new CANNONx.Body({
             mass: 0
         });
-        this.body.linearDamping = 0.9; //default
+        this.body.linearDamping = 0.9; //API
         this.body.addShape(this.physic);
         this.body.position.set(pos.x, pos.y, pos.z);
         this.body.quaternion.setFromAxisAngle(new CANNONx.Vec3(1, 0, 0), -Math.PI / 2);
@@ -988,7 +1058,7 @@ WHS.addGround = function (type, size, material, pos, genmap) {
         this.body = new CANNONx.Body({
             mass: 0
         });
-        this.body.linearDamping = 0.9; //default
+        this.body.linearDamping = 0.9; //API
         this.body.addShape(this.physic);
         this.body.position.set(pos.x, pos.y, pos.z);
         this.body.quaternion.setFromAxisAngle(new CANNONx.Vec3(1, 0, 0), -Math.PI / 2);
@@ -996,6 +1066,7 @@ WHS.addGround = function (type, size, material, pos, genmap) {
         api.merge(vars.world, this.body);
         api.merge(vars.scene, this.visible);
         break;
+    // FUTURE: terrain add.
     case "terrain":
         var detalityX = size.detalityX || 10;
         var detalityY = size.detalityY || 10;
@@ -1031,7 +1102,7 @@ WHS.addGround = function (type, size, material, pos, genmap) {
             this.body = new CANNONx.Body({
                 mass: 0
             });
-            this.body.linearDamping = 0.9; //default
+            this.body.linearDamping = 0.9; //API
             this.body.addShape(this.physic);
             this.body.position.set(pos.x, pos.y, pos.z);
             this.physic.scale.x = 1;
@@ -1046,6 +1117,23 @@ WHS.addGround = function (type, size, material, pos, genmap) {
     WHS.grounds.push(this);
 }
 
+// NOTE: WHS light *FUNCTION*
+/**
+ * Light.
+ *
+ * @param {String} type Light type.
+ * @param {Object} pos Position of light dot.
+ * @param {Object} target Target of light dot.
+ */
+WHS.addLight = function (type, pos, target) {
+
+}
+
+
+// NOTE: WHS animate *FUNCTION*
+/**
+ * ANIMATE.
+ */
 WHS.animate = function () { //*animation
     requestAnimationFrame(WHS.animate);
     if (vars.params.helper) {
