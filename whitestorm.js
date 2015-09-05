@@ -132,7 +132,10 @@ WHS.API.TrimeshFigure = function (thrObj) {
             faces.push(element.c);
         });
 
-        return new WHS.headers.cannonjs.Trimesh(points, faces);
+        var canObj = new WHS.headers.cannonjs.Trimesh(points, faces);
+        canObj.updateNormals();
+
+        return canObj;
 
     }
 }
@@ -1281,8 +1284,8 @@ WHS.addGround = function (type, size, material, pos, genmap) {
                 generator: PN_GENERATOR,
                 width: 250,
                 height: 250,
-                widthSegments: 125,
-                heightSegments: 125,
+                widthSegments: 250,
+                heightSegments: 250,
                 depth: 100,
                 param: 3,
                 filterparam: 1,
