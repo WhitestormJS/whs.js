@@ -221,7 +221,7 @@ WHS.init = function (THREE, CANNON, params) {
 
     api.def(params.gravity, {
         x: 0,
-        y: -9.82,
+        y: -9.82 * 100,
         z: 0
     });
 
@@ -242,10 +242,10 @@ WHS.init = function (THREE, CANNON, params) {
     vars.world.quatNormalizeFast = false;
 
     vars.solver = new CANNON.GSSolver();
-    vars.world.defaultContactMaterial.contactEquationStiffness = 1e9;
-    vars.world.defaultContactMaterial.contactEquationRegularizationTime = 4;
-    vars.solver.iterations = 7;
-    vars.solver.tolerance = 0.1;
+    vars.world.defaultContactMaterial.contactEquationStiffness = 1e8;
+    vars.world.defaultContactMaterial.contactEquationRegularizationTime = 3;
+    vars.solver.iterations = 20;
+    vars.solver.tolerance = 0;
     var split = true;
 
     if (split)
@@ -268,11 +268,12 @@ WHS.init = function (THREE, CANNON, params) {
         vars.cannonDebugRenderer = new THREE.CannonDebugRenderer(vars.scene, vars.world);
     }
 
-    vars.camera = new THREEx.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 10, 10000);
+    vars.camera = new THREEx.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
 
     api.merge(vars.scene, vars.camera);
 
     vars.renderer = new THREEx.WebGLRenderer();
+    vars.renderer.setClearColor(0x70DBFF);
 
     vars.renderer.shadowMapEnabled = true;
 	vars.renderer.shadowMapSoft = true;

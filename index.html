@@ -57,7 +57,7 @@
 var GAME = WHS.init( THREE, CANNON,
 {
     anaglyph: false,
-    helper: true,
+    //helper: true,
     gravity: {
         x: 0,
         y: -200,
@@ -120,9 +120,9 @@ GAME.light = new WHS.addLight("directional", { color: 0xffffff, //0x00ff00,
 GAME.person = new WHS.create("sphere",
 {
     geometryOptions: {
-        radius:10
+        radius:3
     },
-    mass: 5,
+    mass: 10,
     onlyvis: false,
     materialOptions: {
         color: 0xffffff,
