@@ -54,8 +54,10 @@ WHS.API.merge = function (box, rabbits) {
                 box.add(rabbits[i]);
             }
         }
-        else if (!Array.isArray(rabbits))
+        else if (!Array.isArray(rabbits) && box)
             box.add(rabbits);
+        else
+            console.error("box is undefined. Line 45. Func merge.");
     }
 }
 
@@ -161,7 +163,7 @@ WHS.API.rotateBody = function (body, rotateSet) {
  * @param {Object} options Parameters of texture. (REQUIRED)
  */
 WHS.API.texture = function (url, options) {
-    'use strict';
+    //'use strict';
 
     var texture = WHS.headers.threejs.ImageUtils.loadTexture(url);
 
@@ -268,6 +270,9 @@ WHS.init = function (THREE, CANNON, params) {
     api.merge(vars.scene, vars.camera);
 
     vars.renderer = new THREEx.WebGLRenderer();
+
+    vars.renderer.shadowMapEnabled = true;
+	vars.renderer.shadowMapSoft = true;
 
     if (vars.anaglyph) {
         vars.effect = new THREEx.AnaglyphEffect(vars.renderer);
@@ -1278,16 +1283,26 @@ WHS.addGround = function (type, size, material, pos, genmap) {
                 height: 250,
                 widthSegments: 125,
                 heightSegments: 125,
-                depth: 50,
+                depth: 100,
                 param: 3,
                 filterparam: 1,
                 filter: [ BLUR_FILTER ],
                 postgen: [ MOUNTAINS_COLORS ],
-                effect: [ DEPTHNOISE_EFFECT ]
+                effect: [ DEPTHNOISE_EFFECT ] //[ DESTRUCTURE_EFFECT ]
             });
+            //console.log(terrainGeometry);
+            /*terrainGeometry.faceVertexUvs[ 0 ].push( [
+                new THREE.UV( 0, 0 ),
+                new THREE.UV( 0, 1 ),
+                new THREE.UV( 1, 1 ),
+                new THREE.UV( 1, 0 ),
+            ] );*/
 
-            this.visible = new THREEx.Mesh(terrainGeometry, this.materialType);
+
             console.log(new THREE.Geometry().fromBufferGeometry( terrainGeometry ));
+
+            this.visible = new THREEx.Mesh(terrainGeometry , this.materialType);
+            //console.log(new THREE.Geometry().fromBufferGeometry( terrainGeometry ));
             this.visible.scale.x = 1;
             this.visible.scale.y = 1;
             this.visible.position.set(pos.x, pos.y, pos.z);
@@ -1308,6 +1323,10 @@ WHS.addGround = function (type, size, material, pos, genmap) {
 
             break;
     }
+    console.log(this.visible);
+    this.visible.castShadow = true;
+	this.visible.receiveShadow = true;
+
     WHS.grounds.push(this);
 }
 
@@ -1315,45 +1334,65 @@ WHS.addGround = function (type, size, material, pos, genmap) {
 /**
  * Light.
  *
- * @param {String} type Light type.
- * @param {Object} pos Position of light dot.
- * @param {Object} target Target of light dot.
+ * @param {String} type Light type. (REQUIRED)
+ * @param {Object} opts Parameters of light dot. (OPTIONAL)
+ * @param {Object} pos Position of light dot. (OPTIONAL)
+ * @param {Object} target Target of light dot. (OPTIONAL)
  */
-WHS.addLight = function (type, pos, target) {
+WHS.addLight = function (type, opts, pos, target) {
     // TODO: add lights.
     this.whsobject = true;
 
+    var THREEx = WHS.headers.threejs;
+    var CANNONx = WHS.headers.cannonjs;
+
+    this.target = api.def(target, {x:0, y:0, z:0});
+    this.pos = api.def(pos, {x:0, y:0, z:0});
+
+    var options = api.def(opts, {});
+
+    options.color = api.def(opts.color, 0xffffff); // Default: white.
+    options.intensity = api.def(opts.intensity, 1); // Default: 1.
+    console.log(options);
+
     switch (type) {
         case "ambient":
-            this.light = new THREE.AmbientLight( 0x404040 );
+            this.light = new THREEx.AmbientLight( options.color );
         break;
 
         case "area":
-            this.light = new THREE.AreaLight( 0xffffff, 1 );
+            this.light = new THREEx.AreaLight( options.color, options.intensity );
+            console.warn([this.light], "This light only works in the deferredrenderer");
         break;
 
         case "directional":
-            this.light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+            this.light = new THREEx.DirectionalLight( options.color, options.intensity );
+            this.light.castShadow = true;
+		    this.light.shadowDarkness = 0.5;
+            console.log(this.light);
         break;
 
         case "hemisphere":
-            this.light = new THREE.HemisphereLight(skyColorHex, groundColorHex, intensity);
+            this.light = new THREEx.HemisphereLight(skyColorHex, groundColorHex, intensity);
         break;
 
         case "light":
-            this.light = new THREE.Light( 0x404040 );
+            this.light = new THREEx.Light( 0x404040 );
         break;
 
         case "point":
-            this.light = new THREE.PointLight( 0xff0000, 1, 100 );
+            this.light = new THREEx.PointLight( 0xff0000, 1, 100 );
         break;
 
         case "spot":
-            this.light = new THREE.SpotLight( 0xffffff );
+            this.light = new THREEx.SpotLight( 0xffffff );
         break;
     }
 
-    WHS.API.merge(WHS.API.scene, this.light);
+    this.light.position.clone(this.pos);
+    this.light.target.position.clone(this.target);
+
+    WHS.API.merge(vars.scene, this.light);
 
     return this.light;
 }

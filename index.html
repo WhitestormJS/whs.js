@@ -11,6 +11,21 @@
 <script src="lib/helvetiker.typeface.js"></script>
 <script src="lib/firstPersonControls.js"></script>
 <script src="lib/require.js"></script>
+
+<script id="vertexShader" type="x-shader/x-vertex">
+
+			varying vec2 vUv;
+			uniform vec2 scale;
+			uniform vec2 offset;
+
+			void main( void ) {
+
+				vUv = uv * scale + offset;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+			}
+
+</script>
 <!-- Generator files -->
         <script src="lib/FastBlur.js"></script>
 		<script src="lib/randoms/default.js"></script>
@@ -37,11 +52,11 @@
 </body>
 
 <script defer>
-
+// NOTE: Make person bigger 10 times
 var GAME = WHS.init( THREE, CANNON,
 {
     anaglyph: false,
-    helper: true,
+    //helper: true,
     gravity: {
         x: 0,
         y: -200,
@@ -55,8 +70,9 @@ GAME.ground = new WHS.addGround("terrain",
     height: 100
 },
 {
+        //color: 0x000000,
         vertexColors: THREE.VertexColors,
-        shading: THREE.SmoothShading,
+        shading: THREE.FlatShading,
         type: "phong"
 },
 {
@@ -65,8 +81,21 @@ GAME.ground = new WHS.addGround("terrain",
     z: 0
 });
 
+GAME.light = new WHS.addLight("directional", { color: 0xffffff, //0x00ff00,
+                                              intensity: 2},
+{
+    x: 100,
+    y: 30,
+    z: 100
+},
+{
+    x: 0,
+    y: 0,
+    z: 0
+});
 
-GAME.cube = new WHS.create("cube",
+
+/*GAME.cube = new WHS.create("cube",
 {
     geometryOptions: {
         width: 100,
@@ -82,10 +111,10 @@ GAME.cube = new WHS.create("cube",
     },
     pos: {
         x: 0,
-        y: 100,
+        y: 10,
         z: 0
     }
-});
+});*/
 
 GAME.person = new WHS.create("sphere",
 {
