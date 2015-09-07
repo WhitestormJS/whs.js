@@ -74,8 +74,9 @@ GAME.ground = new WHS.addGround("terrain",
 {
         //color: 0x000000,
         vertexColors: THREE.VertexColors,
-        shading: THREE.FlatShading,
-        type: "phong"
+        shading: THREE.SmoothShading,
+        map: api.texture('textures/grass.jpg'),
+        type: "lambert"
 },
 {
     x: 0,

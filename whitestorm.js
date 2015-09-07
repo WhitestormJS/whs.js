@@ -140,6 +140,54 @@ WHS.API.TrimeshFigure = function (thrObj) {
     }
 }
 
+// NOTE: WHS API Triangulate *FUNCTION*
+/**
+ * TRIANGULATE.
+ *
+ * @param {Object} thrObj *THREE.JS* geometry. (REQUIRED)
+ * @param {Object} material *THREE.JS* material. (REQUIRED)
+ */
+WHS.API.Triangulate = function (thrObj, material) {
+    'use strict';
+
+    if (arguments.length < 1)
+        console.error("No THREE.js geometry");
+    else if (arguments.length = 1) {
+        var triangles = new WHS.headers.threejs.Geometry();
+        var materials = [];
+
+        thrObj.faces.forEach(function (element, index) {
+            var triangle = new WHS.headers.threejs.Geometry();
+
+            [].push.apply(triangle.vertices, [
+                    thrObj.vertices[element.a],
+                    thrObj.vertices[element.b],
+                    thrObj.vertices[element.c]
+            ]);
+
+            triangle.faceVertexUvs[0].push([
+                new WHS.headers.threejs.Vector2( 0, 0 ),
+                new WHS.headers.threejs.Vector2( 0, 1 ),
+                new WHS.headers.threejs.Vector2( 1, 1 ),
+                new WHS.headers.threejs.Vector2( 1, 0 ),
+            ]);
+
+            triangle.faces.push(new WHS.headers.threejs.Face3( 0, 1, 2 ));
+            triangle.computeFaceNormals();
+
+            var triangleMesh = new WHS.headers.threejs.Mesh(triangle, material);
+            triangleMesh.updateMatrix();
+
+            triangles.merge(triangleMesh.geometry, triangleMesh.matrix);
+            materials.push(material);
+        });
+
+        var trianglesMesh = new WHS.headers.threejs.Mesh(triangles, new WHS.headers.threejs.MeshFaceMaterial(materials) );
+        return trianglesMesh;
+    }
+}
+
+
 // NOTE: WHS API rotateBody *FUNCTION*.
 /**
  * Rotate body. Rotates body object *CANNON.JS*.
@@ -1040,7 +1088,6 @@ WHS.create = function (figureType, options) {
                 this.body.linearDamping = 0.9; // Default value.
                 this.body.addShape(this.physic);
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                console.log(opt.rot.x);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
                 api.merge(vars.world, this.body);
@@ -1072,7 +1119,6 @@ WHS.create = function (figureType, options) {
 
             this.visible.name = this.name;
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            console.log(opt.rot.x + opt.rot.y + opt.rot.z)
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
             api.merge(vars.scene, this.visible);
@@ -1085,7 +1131,6 @@ WHS.create = function (figureType, options) {
                 this.body.linearDamping = 0.9; // Default value.
                 this.body.addShape(this.physic);
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                console.log(opt.rot.x);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
                 api.merge(vars.world, this.body);
@@ -1145,7 +1190,6 @@ WHS.create = function (figureType, options) {
                 this.body.linearDamping = 0.9; // Default value.
                 this.body.addShape(this.physic);
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                console.log(opt.rot.x);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
                 api.merge(vars.world, this.body);
@@ -1294,28 +1338,17 @@ WHS.addGround = function (type, size, material, pos, genmap) {
                 postgen: [ MOUNTAINS_COLORS ],
                 effect: [ DEPTHNOISE_EFFECT ] //[ DESTRUCTURE_EFFECT ]
             });
-            //console.log(terrainGeometry);
-            /*terrainGeometry.faceVertexUvs[ 0 ].push( [
-                new THREE.UV( 0, 0 ),
-                new THREE.UV( 0, 1 ),
-                new THREE.UV( 1, 1 ),
-                new THREE.UV( 1, 0 ),
-            ] );*/
 
+            this.visible = api.Triangulate(new THREE.Geometry().fromBufferGeometry( terrainGeometry), this.materialType);
 
-            console.log(new THREE.Geometry().fromBufferGeometry( terrainGeometry ));
-
-            this.visible = new THREEx.Mesh(terrainGeometry , this.materialType);
-            //console.log(new THREE.Geometry().fromBufferGeometry( terrainGeometry ));
             this.visible.scale.x = 1;
             this.visible.scale.y = 1;
             this.visible.position.set(pos.x, pos.y, pos.z);
             this.physic = new WHS.API.TrimeshFigure(new THREE.Geometry().fromBufferGeometry( terrainGeometry ));
-            console.log(this.physic);
-            console.log(this.visible);
             this.body = new CANNONx.Body({
                 mass: 0
             });
+
             this.body.linearDamping = 0.9; // Default value.
             this.body.addShape(this.physic);
             this.body.position.set(pos.x, pos.y, pos.z);
@@ -1327,7 +1360,7 @@ WHS.addGround = function (type, size, material, pos, genmap) {
 
             break;
     }
-    console.log(this.visible);
+
     this.visible.castShadow = true;
 	this.visible.receiveShadow = true;
 
@@ -1357,7 +1390,6 @@ WHS.addLight = function (type, opts, pos, target) {
 
     options.color = api.def(opts.color, 0xffffff); // Default: white.
     options.intensity = api.def(opts.intensity, 1); // Default: 1.
-    console.log(options);
 
     switch (type) {
         case "ambient":
@@ -1373,7 +1405,6 @@ WHS.addLight = function (type, opts, pos, target) {
             this.light = new THREEx.DirectionalLight( options.color, options.intensity );
             this.light.castShadow = true;
 		    this.light.shadowDarkness = 0.5;
-            console.log(this.light);
         break;
 
         case "hemisphere":
