@@ -46,12 +46,12 @@
 		<script src="lib/verticeseffects/depthnoise.js"></script>
 
 		<script src="lib/terraingen.js"></script>
-<script src="whitestorm.js"></script>
+<script src="terrain/default_terrain.js"></script>
 </head>
 
 <body>
 </body>
-
+<script src="whitestorm.js"></script>
 <script defer>
 
 // NOTE: Make person bigger 10 times
@@ -68,14 +68,16 @@ var GAME = WHS.init( THREE, CANNON,
 
 GAME.ground = new WHS.addGround("terrain",
 {
-    width: 100,
-    height: 100
+    terrain: defaultTerrainMap,
+    depth: 100,
+    width: 250,
+    height: 250
 },
 {
         //color: 0x000000,
         vertexColors: THREE.VertexColors,
         shading: THREE.SmoothShading,
-        map: api.texture('textures/grass.jpg'),
+        map: api.texture('textures/grasslight-big.jpg'),
         type: "lambert"
 },
 {

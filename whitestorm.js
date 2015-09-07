@@ -1322,47 +1322,65 @@ WHS.addGround = function (type, size, material, pos, genmap) {
             this.detalityX = detalityX;
             this.detalityY = detalityY;
 
-            // FIXME: fix heights loading
+            // [x]FIXME: fix heights loading
+            var canvas = document.createElement('canvas');
+            canvas.setAttribute("width", size.width);
+            canvas.setAttribute("height", size.height);
 
-            var terrainGeometry = TERRAINGEN.Get({
-                alea: RAND_MT,
-                generator: PN_GENERATOR,
-                width: 250,
-                height: 250,
-                widthSegments: 250,
-                heightSegments: 250,
-                depth: 100,
-                param: 3,
-                filterparam: 1,
-                filter: [ BLUR_FILTER ],
-                postgen: [ MOUNTAINS_COLORS ],
-                effect: [ DEPTHNOISE_EFFECT ] //[ DESTRUCTURE_EFFECT ]
-            });
+            // Make sure we don't execute when canvas isn't supported
+            if (canvas.getContext){
 
-            this.visible = api.Triangulate(new THREE.Geometry().fromBufferGeometry( terrainGeometry), this.materialType);
+               // use getContext to use the canvas for drawing
+               var ctx = canvas.getContext('2d');
 
-            this.visible.scale.x = 1;
-            this.visible.scale.y = 1;
-            this.visible.position.set(pos.x, pos.y, pos.z);
-            this.physic = new WHS.API.TrimeshFigure(new THREE.Geometry().fromBufferGeometry( terrainGeometry ));
-            this.body = new CANNONx.Body({
-                mass: 0
-            });
+               // Draw shapes
+                ctx.drawImage(size.terrain ,0,0);
+            }
 
-            this.body.linearDamping = 0.9; // Default value.
-            this.body.addShape(this.physic);
-            this.body.position.set(pos.x, pos.y, pos.z);
-            this.physic.scale.x = 1;
-            this.physic.scale.y = 1;
-            this.body.name = this.name;
-            api.merge(vars.world, this.body);
-            api.merge(vars.scene, this.visible);
+                    var terrainGeometry = TERRAINGEN.GetFromCanvas({
+                        alea: RAND_MT,
+                        generator: PN_GENERATOR,
+                        width: size.width,
+                        height: size.height,
+                        widthSegments: size.width,
+                        heightSegments: size.height,
+                        depth: size.depth,
+                        param: 3,
+                        filterparam: 1,
+                        filter: [ BLUR_FILTER ],
+                        postgen: [ MOUNTAINS_COLORS ],
+                        effect: [ DEPTHNOISE_EFFECT ] //[ DESTRUCTURE_EFFECT ]
+                    }, canvas, 0, 0, size.width, size.height);
+                    console.log(terrainGeometry);
+                    var trGeometry = new THREE.Geometry().fromBufferGeometry( terrainGeometry);
+                    trGeometry.computeFaceNormals();
+                    console.log(trGeometry);
+
+                    this.visible = api.Triangulate(new THREE.Geometry().fromBufferGeometry( terrainGeometry), this.materialType);
+
+                    this.visible.scale.x = 1;
+                    this.visible.scale.y = 1;
+                    this.visible.position.set(pos.x, pos.y, pos.z);
+                    this.physic = new WHS.API.TrimeshFigure(new THREE.Geometry().fromBufferGeometry( terrainGeometry ));
+                    this.body = new CANNONx.Body({
+                        mass: 0
+                    });
+
+                    this.body.linearDamping = 0.9; // Default value.
+                    this.body.addShape(this.physic);
+                    this.body.position.set(pos.x, pos.y, pos.z);
+                    this.physic.scale.x = 1;
+                    this.physic.scale.y = 1;
+                    this.body.name = this.name;
+                    api.merge(vars.world, this.body);
+                    api.merge(vars.scene, this.visible);
+                    this.visible.castShadow = true;
+	                this.visible.receiveShadow = true;
+
 
             break;
     }
 
-    this.visible.castShadow = true;
-	this.visible.receiveShadow = true;
 
     WHS.grounds.push(this);
 }
