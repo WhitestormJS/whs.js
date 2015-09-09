@@ -86,7 +86,22 @@ GAME.ground = GAME.addGround("terrain",
     z: 0
 });
 
-GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
+// NOTE: Default light.
+/*GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
+                                              intensity: 2},
+{
+    x: 100,
+    y: 30,
+    z: 100
+},
+{
+    x: 0,
+    y: 0,
+    z: 0
+});*/
+
+// NOTE: Test light.
+GAME.light = GAME.addLight("hemisphere", { skyColor: 0xffffff, groundColor: 0x00ff00,
                                               intensity: 2},
 {
     x: 100,

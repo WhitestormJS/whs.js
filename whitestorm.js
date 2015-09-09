@@ -1420,29 +1420,31 @@ WHS.init.prototype.addLight = function (type, opts, pos, target) {
 
         case "directional":
             this.light = new THREEx.DirectionalLight( options.color, options.intensity );
-            this.light.castShadow = true;
-		    this.light.shadowDarkness = 0.5;
         break;
 
         case "hemisphere":
-            this.light = new THREEx.HemisphereLight(skyColorHex, groundColorHex, intensity);
+            this.light = new THREEx.HemisphereLight( options.skyColor, options.groundColor, options.intensity );
         break;
 
         case "light":
-            this.light = new THREEx.Light( 0x404040 );
+            this.light = new THREEx.Light( options.color );
         break;
 
         case "point":
-            this.light = new THREEx.PointLight( 0xff0000, 1, 100 );
+            this.light = new THREEx.PointLight( options.color, options.intensity, options.distance );
         break;
 
         case "spot":
-            this.light = new THREEx.SpotLight( 0xffffff );
+            this.light = new THREEx.SpotLight( options.color );
         break;
     }
 
     this.light.position.clone(this.pos);
-    this.light.target.position.clone(this.target);
+    this.light.castShadow = true;
+	this.light.shadowDarkness = 0.5;
+
+    if (this.light.target)
+        this.light.target.position.clone(this.target);
 
     WHS.API.merge(this.scene, this.light);
 
