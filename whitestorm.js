@@ -5,6 +5,7 @@
  */
 
 // [x]TODO: RESTRUCTURIZE.
+// TODO: RESTRUCTURIZE threejs and cannonjs library calling.
 
 /* ================ LOADING LIBS ================================================== */
 
@@ -63,19 +64,24 @@ WHS.API.merge = function (box, rabbits) {
 }
 
 // NOTE: WHS API def *FUNCTION*.
+// [x]FIXME: Modify def for third parameter.
 /**
  * Defines variable. Makes convexPolyhedron object *CANNON.JS* from *THREE.JS* firure.
  *
  * @param {Object} thrObj Figure object *THREE.JS*. (REQUIRED)
  * @param {Object} thrObj Figure object *THREE.JS*. (REQUIRED)
  */
-WHS.API.def = function (option, value) {
+WHS.API.def = function (option, value, variablePoint) {
     'use strict';
     if (arguments.length < 2)
         console.error("Something wrong! option? value?");
-    else if (arguments.length = 2) {
+    else if (arguments.length == 2) {
         option = option || value;
         return option;
+    }
+    else if (arguments.length == 3 && variablePoint) {
+        variablePoint = option || value;
+        return variablePoint;
     }
 }
 
@@ -1400,13 +1406,17 @@ WHS.init.prototype.addLight = function (type, opts, pos, target) {
     var THREEx = WHS.headers.threejs;
     var CANNONx = WHS.headers.cannonjs;
 
-    this.target = api.def(target, {x:0, y:0, z:0});
-    this.pos = api.def(pos, {x:0, y:0, z:0});
+    api.def(target, {x:0, y:0, z:0}, this.target);
+    api.def(pos, {x:0, y:0, z:0}, this.pos);
 
     var options = api.def(opts, {});
 
-    options.color = api.def(opts.color, 0xffffff); // Default: white.
-    options.intensity = api.def(opts.intensity, 1); // Default: 1.
+    api.def(opts.color, 0xffffff, options.color); // Default: white.
+    api.def(opts.skyColor, 0xffffff, options.skyColor); // Default: white.
+    api.def(opts.groundColor, 0xffffff, options.groundColor); // Default: white.
+    api.def(opts.intensity, 1, options.intensity); // Default: 1.
+    api.def(opts.distance, 100, options.distance); // Default: 100.
+    api.def(opts.angle, Math.PI/3, options.angle); // Default: 100.
 
     switch (type) {
         case "ambient":
@@ -1420,6 +1430,8 @@ WHS.init.prototype.addLight = function (type, opts, pos, target) {
 
         case "directional":
             this.light = new THREEx.DirectionalLight( options.color, options.intensity );
+            this.light.castShadow = true;
+	        this.light.shadowDarkness = 0.5;
         break;
 
         case "hemisphere":
@@ -1435,13 +1447,19 @@ WHS.init.prototype.addLight = function (type, opts, pos, target) {
         break;
 
         case "spot":
-            this.light = new THREEx.SpotLight( options.color );
+            this.light = new THREEx.SpotLight( options.color, options.intensity, options.distance, options.angle );
+            this.light.castShadow = true;
+
+            this.light.shadowMapWidth = 1024;
+            this.light.shadowMapHeight = 1024;
+
+            this.light.shadowCameraNear = 500;
+            this.light.shadowCameraFar = 4000;
+            this.light.shadowCameraFov = 30;
         break;
     }
 
     this.light.position.clone(this.pos);
-    this.light.castShadow = true;
-	this.light.shadowDarkness = 0.5;
 
     if (this.light.target)
         this.light.target.position.clone(this.target);
