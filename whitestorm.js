@@ -367,7 +367,7 @@ WHS.init = function (THREE, CANNON, params) {
  * @param {String} figure name *THREE.JS*. (REQUIRED)
  * @param {Object} options Figure options. (REQUIRED)
  */
-WHS.init.prototype.create = function (figureType, options) {
+WHS.init.prototype.addObject = function (figureType, options) {
     'use strict';
 
     var THREEx = WHS.headers.threejs;
@@ -1319,24 +1319,20 @@ WHS.init.prototype.addGround = function (type, size, material, pos, genmap) {
             api.merge(this.scene, this.visible);
             break;
         // FUTURE: terrain add.
+        // TODO: Fix perfomance by saving terrain like threeJs object with options.
         case "terrain":
             var detalityX = size.detalityX || 10;
             var detalityY = size.detalityY || 10;
             this.detalityX = detalityX;
             this.detalityY = detalityY;
 
-            // [x]FIXME: fix heights loading
             var canvas = document.createElement('canvas');
             canvas.setAttribute("width", size.width);
             canvas.setAttribute("height", size.height);
 
-            // Make sure we don't execute when canvas isn't supported
             if (canvas.getContext){
-
-               // use getContext to use the canvas for drawing
                var ctx = canvas.getContext('2d');
 
-               // Draw shapes
                 ctx.drawImage(size.terrain ,0,0);
             }
 
