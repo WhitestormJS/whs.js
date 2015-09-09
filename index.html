@@ -87,7 +87,7 @@ GAME.ground = GAME.addGround("terrain",
 });
 
 // NOTE: Default light.
-/*GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
+GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
                                               intensity: 2},
 {
     x: 100,
@@ -98,10 +98,10 @@ GAME.ground = GAME.addGround("terrain",
     x: 0,
     y: 0,
     z: 0
-});*/
+});
 
 // NOTE: Test light.
-GAME.light = GAME.addLight("spot", { color: 0xffffff,
+GAME.light = GAME.addLight("point", { color: 0xffffff,
                                               intensity: 4, distance: 450},
 {
     x: 100,
@@ -114,6 +114,12 @@ GAME.light = GAME.addLight("spot", { color: 0xffffff,
     z: 0
 });
 
+GAME.fog = GAME.addFog("fogexp2", {
+    hex: 0x777777,
+    near: 0.015,
+    far: 250,
+    density: 0.015
+});
 
 /*GAME.cube = new WHS.create("cube",
 {

@@ -1356,10 +1356,9 @@ WHS.init.prototype.addGround = function (type, size, material, pos, genmap) {
                         postgen: [ MOUNTAINS_COLORS ],
                         effect: [ DEPTHNOISE_EFFECT ] //[ DESTRUCTURE_EFFECT ]
                     }, canvas, 0, 0, size.width, size.height);
-                    console.log(terrainGeometry);
+
                     var trGeometry = new THREE.Geometry().fromBufferGeometry( terrainGeometry);
                     trGeometry.computeFaceNormals();
-                    console.log(trGeometry);
 
                     this.visible = api.Triangulate(new THREE.Geometry().fromBufferGeometry( terrainGeometry), this.materialType);
 
@@ -1470,6 +1469,32 @@ WHS.init.prototype.addLight = function (type, opts, pos, target) {
     return this.light;
 }
 
+// NOTE: WHS init prototype addFog *FUNCTION*
+/**
+ * ADDFOG.
+ *
+ * @param {String} type Fog type (name). (REQUIRED)
+ * @param {Object} params Options of fog object. (REQUIRED)
+ * @returns {Object} This element scope/statement.
+ */
+WHS.init.prototype.addFog = function (type, params) {
+    api.def(params.hex, 0x000000); //, this.hex);
+    api.def(params.near, 0.015); //, this.near);
+    api.def(params.far, 1000); //, this.far);
+    api.def(params.density, 0.00025); //, this.density);
+
+    switch (type) {
+        case "fog":
+            this.scene.fog = new THREE.Fog(params.hex, params.near, params.far);
+        break;
+
+        case "fogexp2":
+            this.scene.fog = new THREE.FogExp2(params.hex, params.density);
+        break;
+    }
+
+    return this;
+}
 
 // NOTE: WHS animate *FUNCTION*
 // [x]TODO: Fix animate update callback.
