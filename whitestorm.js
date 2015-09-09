@@ -1450,10 +1450,11 @@ WHS.init.prototype.addLight = function (type, opts, pos, target) {
             this.light = new THREEx.SpotLight( options.color, options.intensity, options.distance, options.angle );
             this.light.castShadow = true;
 
+            // FIXME: Shadow default parameters.
             this.light.shadowMapWidth = 1024;
             this.light.shadowMapHeight = 1024;
 
-            this.light.shadowCameraNear = 500;
+            this.light.shadowCameraNear = 50;
             this.light.shadowCameraFar = 4000;
             this.light.shadowCameraFov = 30;
         break;
