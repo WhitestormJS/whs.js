@@ -4,7 +4,7 @@
  * Javascript document by Alexander Buzin (2014-2015)
  */
 
-// TODO: RESTRUCTURIZE.
+// [x]TODO: RESTRUCTURIZE.
 
 /* ================ LOADING LIBS ================================================== */
 
@@ -24,15 +24,13 @@ if (typeof Array.isArray === 'undefined') {
 /* ================ WHITESTORM|JS ================================================= */
 var WHS = {};
 
-WHS.vars = {}; // GLOBAL variables
 WHS.headers = {}; //GLOBAL headers, ex: url, script, library, specific api...
 WHS.API = {};
 WHS.ADD = {}; // some figures or shape funcs;
 WHS.objects = [];
 WHS.grounds = [];
 
-var vars = WHS.vars,
-    api = WHS.API;
+var api = WHS.API;
 
 
 
@@ -47,7 +45,7 @@ var vars = WHS.vars,
 WHS.API.merge = function (box, rabbits) {
     'use strict';
     if (arguments.length < 2)
-        console.error("No rabbits for the box. (arguments)");
+        console.error("No rabbits for the box. (arguments)", [box, rabbits]);
     else if (arguments.length = 2) {
         if (Array.isArray(rabbits) && rabbits.length <= 1)
             box.add(rabbits[0]);
@@ -59,7 +57,8 @@ WHS.API.merge = function (box, rabbits) {
         else if (!Array.isArray(rabbits) && box)
             box.add(rabbits);
         else
-            console.error("box is undefined. Line 45. Func merge.");
+            // FIXME: Fix caller function line number.
+            console.error("box is undefined. Line " + (new Error).lineNumber + ". Func merge.", [box, rabbits]);
     }
 }
 
@@ -315,7 +314,7 @@ WHS.init = function (THREE, CANNON, params) {
 
     // Debug Renderer
     if (params.helper) {
-        vars.cannonDebugRenderer = new THREE.CannonDebugRenderer(vars.scene, vars.world);
+        this.cannonDebugRenderer = new THREE.CannonDebugRenderer(this.scene, this.world);
     }
 
     this.camera = new THREEx.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
@@ -329,7 +328,7 @@ WHS.init = function (THREE, CANNON, params) {
 	this.renderer.shadowMapSoft = true;
 
     if (this.anaglyph) {
-        this.effect = new THREEx.AnaglyphEffect(vars.renderer);
+        this.effect = new THREEx.AnaglyphEffect(this.renderer);
         this.effect.setSize(window.innerWidth, window.innerHeight);
 
         this.effect.render(this.scene, this.camera);
@@ -368,7 +367,7 @@ WHS.init = function (THREE, CANNON, params) {
  * @param {String} figure name *THREE.JS*. (REQUIRED)
  * @param {Object} options Figure options. (REQUIRED)
  */
-WHS.create = function (figureType, options) {
+WHS.init.prototype.create = function (figureType, options) {
     'use strict';
 
     var THREEx = WHS.headers.threejs;
@@ -464,7 +463,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new CANNONx.Sphere(opt.geometry.radius);
@@ -479,7 +478,7 @@ WHS.create = function (figureType, options) {
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
 
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -508,7 +507,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new CANNONx.Box(new CANNONx.Vec3(opt.geometry.width * 0.5, opt.geometry.height * 0.5, opt.geometry.depth * 0.5));
@@ -521,7 +520,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -551,7 +550,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new CANNONx.Cylinder(opt.geometry.radiusTop, opt.geometry.radiusBottom, opt.geometry.height, opt.geometry.radiusSegments);
@@ -563,7 +562,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -591,7 +590,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -603,7 +602,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -631,7 +630,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -643,7 +642,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -671,7 +670,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -683,7 +682,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -710,7 +709,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -722,7 +721,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -750,7 +749,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -762,7 +761,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -791,7 +790,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -803,7 +802,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -833,7 +832,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -845,7 +844,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -875,7 +874,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -887,7 +886,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -920,7 +919,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = CANNONx.Trimesh.createTorus(opt.geometry.outerRadius, (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2, opt.geometry.thetaSegments, opt.geometry.phiSegments);
@@ -935,7 +934,7 @@ WHS.create = function (figureType, options) {
                 this.body.name = this.name;
 
 
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -960,7 +959,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             this.onlyvis = true;
 
@@ -988,7 +987,7 @@ WHS.create = function (figureType, options) {
             this.visible.name = this.name;
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -1000,7 +999,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -1037,7 +1036,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new WHS.API.TrimeshFigure(this.visible.geometry);
@@ -1049,7 +1048,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -1080,7 +1079,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = CANNONx.Trimesh.createTorus(opt.geometry.radius, opt.geometry.tube, opt.geometry.radialSegments, opt.geometry.tubularSegments);
@@ -1092,7 +1091,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -1123,7 +1122,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new WHS.API.TrimeshFigure(this.visible.geometry);
@@ -1135,7 +1134,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -1147,7 +1146,7 @@ WHS.create = function (figureType, options) {
             var key = 0;
 
             // FIXME: fix to WHS.API (not here)
-            vars.CustomSinCurve = THREEx.Curve.create(
+            this.CustomSinCurve = THREEx.Curve.create(
                 function (scale) { //custom curve constructor
                     this.scale = scale || 1;
                 },
@@ -1160,7 +1159,7 @@ WHS.create = function (figureType, options) {
             );
 
             if (!opt.geometry.path) {
-                opt.geometry.path = new vars.CustomSinCurve(100);
+                opt.geometry.path = new this.CustomSinCurve(100);
             }
 
             api.def(opt.geometry.segments, 20);
@@ -1182,7 +1181,7 @@ WHS.create = function (figureType, options) {
             this.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             this.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(vars.scene, this.visible);
+            api.merge(this.scene, this.visible);
 
             if (!options.onlyvis) {
                 this.physic = new WHS.API.TrimeshFigure(this.visible.geometry);
@@ -1194,7 +1193,7 @@ WHS.create = function (figureType, options) {
                 this.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 this.body.quaternion.copy(this.visible.quaternion);
                 this.body.name = this.name;
-                api.merge(vars.world, this.body);
+                api.merge(this.world, this.body);
             } else {
                 this.onlyvis = true;
             }
@@ -1203,6 +1202,8 @@ WHS.create = function (figureType, options) {
 
             break;
     }
+
+    return this;
 }
 
 // NOTE: WHS ground *FUNCTION*
@@ -1215,7 +1216,7 @@ WHS.create = function (figureType, options) {
  * @param {Object} pos Position of ground in 3D space. (REQUIRED)
  * @param {Object} genmap Map object with heights of ground. (OPTIONAL)
  */
-WHS.addGround = function (type, size, material, pos, genmap) {
+WHS.init.prototype.addGround = function (type, size, material, pos, genmap) {
     'use strict';
 
     var THREEx = WHS.headers.threejs;
@@ -1298,8 +1299,8 @@ WHS.addGround = function (type, size, material, pos, genmap) {
             this.body.position.set(pos.x, pos.y, pos.z);
             this.body.quaternion.setFromAxisAngle(new CANNONx.Vec3(1, 0, 0), -Math.PI / 2);
             this.body.name = this.name;
-            api.merge(vars.world, this.body);
-            api.merge(vars.scene, this.visible);
+            api.merge(this.world, this.body);
+            api.merge(this.scene, this.visible);
             break;
         case "infinitySmooth":
             this.visible = new THREEx.Mesh(new THREEx.PlaneBufferGeometry(size.width, size.height, 1, 1), this.materialType);
@@ -1314,8 +1315,8 @@ WHS.addGround = function (type, size, material, pos, genmap) {
             this.body.position.set(pos.x, pos.y, pos.z);
             this.body.quaternion.setFromAxisAngle(new CANNONx.Vec3(1, 0, 0), -Math.PI / 2);
             this.body.name = this.name;
-            api.merge(vars.world, this.body);
-            api.merge(vars.scene, this.visible);
+            api.merge(this.world, this.body);
+            api.merge(this.scene, this.visible);
             break;
         // FUTURE: terrain add.
         case "terrain":
@@ -1374,8 +1375,8 @@ WHS.addGround = function (type, size, material, pos, genmap) {
                     this.physic.scale.x = 1;
                     this.physic.scale.y = 1;
                     this.body.name = this.name;
-                    api.merge(vars.world, this.body);
-                    api.merge(vars.scene, this.visible);
+                    api.merge(this.world, this.body);
+                    api.merge(this.scene, this.visible);
                     this.visible.castShadow = true;
 	                this.visible.receiveShadow = true;
 
@@ -1396,7 +1397,7 @@ WHS.addGround = function (type, size, material, pos, genmap) {
  * @param {Object} pos Position of light dot. (OPTIONAL)
  * @param {Object} target Target of light dot. (OPTIONAL)
  */
-WHS.addLight = function (type, opts, pos, target) {
+WHS.init.prototype.addLight = function (type, opts, pos, target) {
     // TODO: add lights.
     this.whsobject = true;
 
@@ -1447,7 +1448,7 @@ WHS.addLight = function (type, opts, pos, target) {
     this.light.position.clone(this.pos);
     this.light.target.position.clone(this.target);
 
-    WHS.API.merge(vars.scene, this.light);
+    WHS.API.merge(this.scene, this.light);
 
     return this.light;
 }
@@ -1494,13 +1495,15 @@ WHS.init.prototype.animate = function (time, scope) {
 }
 
 
-WHS.MakeFirstPerson = function (object) {
+WHS.init.prototype.MakeFirstPerson = function (object) {
     'use strict';
 
     // TODO: Clean up.
-    vars.controls = new PointerLockControls(vars.camera, object.body, 10);
+    this.controls = new PointerLockControls(this.camera, object.body, 10);
 
-    WHS.API.merge(vars.scene, vars.controls.getObject());
+    var controls = this.controls;
+
+    WHS.API.merge(this.scene, this.controls.getObject());
 
     $('body').append('<div id="blocker"><center><h1>PointerLock</h1></center><br><p>(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)</p></div>');
 
@@ -1522,12 +1525,12 @@ WHS.MakeFirstPerson = function (object) {
             if (document.pointerLockElement === element ||
                 document.mozPointerLockElement === element ||
                 document.webkitPointerLockElement === element) {
-                    vars.controls.enabled = true;
+                    controls.enabled = true;
                     $('#blocker').css({
                         'display': 'none'
                     });
             } else {
-                    vars.controls.enabled = false;
+                    controls.enabled = false;
 
                     $('#blocker').css({
                         'display': 'block'

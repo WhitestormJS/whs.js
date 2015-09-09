@@ -66,7 +66,7 @@ var GAME = new WHS.init( THREE, CANNON,
     }
 });
 
-GAME.ground = new WHS.addGround("terrain",
+GAME.ground = GAME.addGround("terrain",
 {
     terrain: defaultTerrainMap,
     depth: 100,
@@ -86,7 +86,7 @@ GAME.ground = new WHS.addGround("terrain",
     z: 0
 });
 
-GAME.light = new WHS.addLight("directional", { color: 0xffffff, //0x00ff00,
+GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
                                               intensity: 2},
 {
     x: 100,
@@ -121,7 +121,7 @@ GAME.light = new WHS.addLight("directional", { color: 0xffffff, //0x00ff00,
     }
 });*/
 
-GAME.person = new WHS.create("sphere",
+GAME.person = GAME.create("sphere",
 {
     geometryOptions: {
         radius:3
@@ -139,7 +139,7 @@ GAME.person = new WHS.create("sphere",
     }
 });
 
-WHS.MakeFirstPerson(GAME.person);
+GAME.MakeFirstPerson(GAME.person);
 
 </script>
 </html>
