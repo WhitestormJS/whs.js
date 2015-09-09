@@ -4,6 +4,8 @@
  * Javascript document by Alexander Buzin (2014-2015)
  */
 
+// TODO: RESTRUCTURIZE.
+
 /* ================ LOADING LIBS ================================================== */
 
 // LIBRARY: Terrain Loader
@@ -265,7 +267,7 @@ WHS.init = function (THREE, CANNON, params) {
 
     params = params || {};
 
-    vars.anaglyph = params.anaglyph;
+    this.anaglyph = params.anaglyph;
 
     api.def(params.gravity, {
         x: 0,
@@ -279,71 +281,71 @@ WHS.init = function (THREE, CANNON, params) {
     WHS.headers.threejs = THREEx;
     WHS.headers.cannonjs = CANNONx;
 
-    vars.params = params;
+    this.params = params;
 
-    vars.scene = new THREEx.Scene();
-    vars.world = new CANNONx.World();
+    this.scene = new THREEx.Scene();
+    this.world = new CANNONx.World();
 
-    vars.world.gravity.set(params.gravity.x, params.gravity.y, params.gravity.z);
-    vars.world.broadphase = new CANNONx.NaiveBroadphase();
-    vars.world.quatNormalizeSkip = 0;
-    vars.world.quatNormalizeFast = false;
+    this.world.gravity.set(params.gravity.x, params.gravity.y, params.gravity.z);
+    this.world.broadphase = new CANNONx.NaiveBroadphase();
+    this.world.quatNormalizeSkip = 0;
+    this.world.quatNormalizeFast = false;
 
-    vars.solver = new CANNON.GSSolver();
-    vars.world.defaultContactMaterial.contactEquationStiffness = 1e8;
-    vars.world.defaultContactMaterial.contactEquationRegularizationTime = 3;
-    vars.solver.iterations = 20;
-    vars.solver.tolerance = 0;
+    this.solver = new CANNON.GSSolver();
+    this.world.defaultContactMaterial.contactEquationStiffness = 1e8;
+    this.world.defaultContactMaterial.contactEquationRegularizationTime = 3;
+    this.solver.iterations = 20;
+    this.solver.tolerance = 0;
     var split = true;
 
     if (split)
-        vars.world.solver = new CANNONx.SplitSolver(vars.solver);
+        this.world.solver = new CANNONx.SplitSolver(this.solver);
     else
-        vars.world.solver = vars.solver;
+        this.world.solver = this.solver;
 
-    vars.physicsMaterial = new CANNONx.Material("slipperyMaterial");
-    vars.physicsContactMaterial = new CANNONx.ContactMaterial(vars.physicsMaterial,
-        vars.physicsMaterial,
+    this.physicsMaterial = new CANNONx.Material("slipperyMaterial");
+    this.physicsContactMaterial = new CANNONx.ContactMaterial(this.physicsMaterial,
+        this.physicsMaterial,
         0.0, // friction coefficient
         0.3 // restitution
     );
 
     // We must add the contact materials to the world
-    vars.world.addContactMaterial(vars.physicsContactMaterial);
+    this.world.addContactMaterial(this.physicsContactMaterial);
 
     // Debug Renderer
     if (params.helper) {
         vars.cannonDebugRenderer = new THREE.CannonDebugRenderer(vars.scene, vars.world);
     }
 
-    vars.camera = new THREEx.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+    this.camera = new THREEx.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
 
-    api.merge(vars.scene, vars.camera);
+    api.merge(this.scene, this.camera);
 
-    vars.renderer = new THREEx.WebGLRenderer();
-    vars.renderer.setClearColor(0x70DBFF);
+    this.renderer = new THREEx.WebGLRenderer();
+    this.renderer.setClearColor(0x70DBFF);
 
-    vars.renderer.shadowMapEnabled = true;
-	vars.renderer.shadowMapSoft = true;
+    this.renderer.shadowMapEnabled = true;
+	this.renderer.shadowMapSoft = true;
 
-    if (vars.anaglyph) {
-        vars.effect = new THREEx.AnaglyphEffect(vars.renderer);
-        vars.effect.setSize(window.innerWidth, window.innerHeight);
+    if (this.anaglyph) {
+        this.effect = new THREEx.AnaglyphEffect(vars.renderer);
+        this.effect.setSize(window.innerWidth, window.innerHeight);
 
-        vars.effect.render(vars.scene, vars.camera);
+        this.effect.render(this.scene, this.camera);
     } else {
-        vars.renderer.setSize(window.innerWidth, window.innerHeight);
-        vars.renderer.render(vars.scene, vars.camera);
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.render(this.scene, this.camera);
     }
 
-    $(vars.renderer.domElement).css({
+    $(this.renderer.domElement).css({
         'width': '100%',
         'height': '100%'
     });
 
-    $(vars.renderer.domElement).attr('');
+    $(this.renderer.domElement).attr('');
 
-    $('body').append(vars.renderer.domElement);
+    $('body').append(this.renderer.domElement);
 
     $('body').css({
         'margin': 0,
@@ -352,7 +354,7 @@ WHS.init = function (THREE, CANNON, params) {
         'overflow': 'hidden'
     });
 
-    WHS.animate();
+    WHS.init.prototype.animate(null, this);
 
     return this;
 }
@@ -1452,36 +1454,43 @@ WHS.addLight = function (type, opts, pos, target) {
 
 
 // NOTE: WHS animate *FUNCTION*
+// [x]TODO: Fix animate update callback.
 /**
  * ANIMATE.
  */
-WHS.animate = function () {
+WHS.init.prototype.animate = function (time, scope) {
     'use strict';
 
-    requestAnimationFrame(WHS.animate);
+    function reDraw() {
+        requestAnimationFrame(reDraw);
 
-    if (vars.params.helper) {
-        vars.cannonDebugRenderer.update();
-    }
+        if (scope.params.helper) {
+            scope.cannonDebugRenderer.update();
+        }
 
-    for (var i = 0; i < Object.keys(WHS.objects).length; i++) {
-        if (!WHS.objects[i].onlyvis) {
-            WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
-            WHS.objects[i].visible.quaternion.copy(WHS.objects[i].body.quaternion);
+        for (var i = 0; i < Object.keys(WHS.objects).length; i++) {
+            if (!WHS.objects[i].onlyvis) {
+                WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
+                WHS.objects[i].visible.quaternion.copy(WHS.objects[i].body.quaternion);
+            }
+        }
+
+        scope.world.step(1 / 60);
+
+        if (scope.anaglyph)
+            scope.effect.render(scope.scene, scope.camera);
+        else
+            scope.renderer.render(scope.scene, scope.camera);
+
+        if (scope.controls) {
+            scope.controls.update(Date.now() - scope.time);
+            scope.time = Date.now();
         }
     }
 
-    vars.world.step(1 / 60);
+    this.update = reDraw;
 
-    if (vars.anaglyph)
-        vars.effect.render(vars.scene, vars.camera);
-    else
-        vars.renderer.render(vars.scene, vars.camera);
-
-    if (vars.controls) {
-        vars.controls.update(Date.now() - vars.time);
-        vars.time = Date.now();
-    }
+    this.update();
 }
 
 
