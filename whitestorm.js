@@ -23,7 +23,7 @@ if (typeof Array.isArray === 'undefined') {
 }
 
 /* ================ WHITESTORM|JS ================================================= */
-var WHS = {};
+var WHS = { REVISION: 1 };
 
 WHS.headers = {}; //GLOBAL headers, ex: url, script, library, specific api...
 WHS.API = {};
@@ -68,8 +68,9 @@ WHS.API.merge = function (box, rabbits) {
 /**
  * Defines variable. Makes convexPolyhedron object *CANNON.JS* from *THREE.JS* firure.
  *
- * @param {Object} thrObj Figure object *THREE.JS*. (REQUIRED)
- * @param {Object} thrObj Figure object *THREE.JS*. (REQUIRED)
+ * @param {Var} option Variable with value. (REQUIRED)
+ * @param {Type} value Value for apply (default). (REQUIRED)
+ * @param {Var} variablePoint Variable with value for apply. (OPTIONAL)
  */
 WHS.API.def = function (option, value, variablePoint) {
     'use strict';
@@ -270,6 +271,8 @@ WHS.ADD.shape = function () {
 WHS.init = function (THREE, CANNON, params) {
     'use strict';
 
+    console.log( 'WHS.init', WHS.REVISION );
+
     params = params || {};
 
     this.anaglyph = params.anaglyph;
@@ -360,6 +363,12 @@ WHS.init = function (THREE, CANNON, params) {
     });
 
     WHS.init.prototype.animate(null, this);
+
+    // NOTE: =================================== Composers. ============================================
+
+    this.composers = [];
+
+    console.log(this);
 
     return this;
 }
@@ -1504,6 +1513,7 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
     //api.def(params.density, 0.00025); //, this.density);
 
     this.composer = new wagnerjs.Composer( this.renderer );
+    this.composer.setSize( window.innerWidth, window.innerHeight );
     this.renderer.autoClearColor = true;
     this.composer.reset();
     this.composer.render( this.scene, this.camera );
@@ -1511,6 +1521,8 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
     switch (type) {
         case "zoomBlurPass":
             this.effect = new wagnerjs.ZoomBlurPass();
+            this.effect.params.strength = .05;
+            this.effect.params.center.set( .5 * this.composer.width, .5 * this.composer.height );
             this.composer.pass( this.effect );
         break;
 
@@ -1520,7 +1532,13 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
         break;
     }
 
+    this.composer.eff = this.effect;
     this.composer.toScreen();
+
+    this.apply = function() {
+        this.composers.push(this.composer);
+        return this;
+    }
 
     return this;
 }
@@ -1551,12 +1569,22 @@ WHS.init.prototype.animate = function (time, scope) {
 
         if (scope.anaglyph)
             scope.effect.render(scope.scene, scope.camera);
-        else
-            scope.renderer.render(scope.scene, scope.camera);
+        else {}
+            //scope.renderer.render(scope.scene, scope.camera);
 
         if (scope.controls) {
             scope.controls.update(Date.now() - scope.time);
             scope.time = Date.now();
+        }
+
+        if (scope.composers) {
+            scope.composers.forEach(function(composer, index) {
+                composer.reset();
+                composer.render(scope.scene, scope.camera);
+                composer.pass(composer.eff);
+                composer.toScreen();
+                console.log(composer);
+            });
         }
     }
 

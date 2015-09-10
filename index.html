@@ -148,7 +148,7 @@ GAME.person = GAME.addObject("sphere",
     }
 });
 
-GAME.zoomEffect = GAME.addWagner(WAGNER, "zoomBlurPass", {});
+GAME.zoomEffect = GAME.addWagner(WAGNER, "zoomBlurPass", {}).apply();
 
 GAME.MakeFirstPerson(GAME.person);
 
