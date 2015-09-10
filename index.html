@@ -9,23 +9,8 @@
 <script src="lib/CannonDebugRenderer.js"></script>
 <script src="lib/AnaglyphWebGLRenderer.js"></script>
 <script src="lib/helvetiker.typeface.js"></script>
-<script src="lib/firstPersonControls.js"></script>
-<script src="lib/require.js"></script>
+<script src="lib/FirstPersonControls.js"></script>
 
-<script id="vertexShader" type="x-shader/x-vertex">
-
-			varying vec2 vUv;
-			uniform vec2 scale;
-			uniform vec2 offset;
-
-			void main( void ) {
-
-				vUv = uv * scale + offset;
-				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-
-			}
-
-</script>
 <!-- Generator files -->
         <script src="lib/FastBlur.js"></script>
 		<script src="lib/randoms/default.js"></script>
@@ -46,6 +31,7 @@
 		<script src="lib/verticeseffects/depthnoise.js"></script>
 
 		<script src="lib/terraingen.js"></script>
+
 <script src="terrain/default_terrain.js"></script>
 </head>
 
