@@ -5,6 +5,8 @@
 <title>WhitestormJS development</title>
 <script src="lib/three.js"></script>
 <script src="lib/cannon.js"></script>
+<script src="lib/Wagner.js"></script>
+<script src="lib/Wagner.base.js"></script>
 <script src="lib/jquery-1.11.1.min.js"></script>
 <script src="lib/CannonDebugRenderer.js"></script>
 <script src="lib/AnaglyphWebGLRenderer.js"></script>
@@ -145,6 +147,8 @@ GAME.person = GAME.addObject("sphere",
         z: 0
     }
 });
+
+GAME.zoomEffect = GAME.addWagner(WAGNER, "zoomBlurPass", {});
 
 GAME.MakeFirstPerson(GAME.person);
 

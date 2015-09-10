@@ -1496,6 +1496,35 @@ WHS.init.prototype.addFog = function (type, params) {
     return this;
 }
 
+// TODO: add *FUNC* Wagner for *WAGNER.JS*.
+WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
+    //api.def(params.hex, 0x000000); //, this.hex);
+    //api.def(params.near, 0.015); //, this.near);
+    //api.def(params.far, 1000); //, this.far);
+    //api.def(params.density, 0.00025); //, this.density);
+
+    this.composer = new wagnerjs.Composer( this.renderer );
+    this.renderer.autoClearColor = true;
+    this.composer.reset();
+    this.composer.render( this.scene, this.camera );
+
+    switch (type) {
+        case "zoomBlurPass":
+            this.effect = new wagnerjs.ZoomBlurPass();
+            this.composer.pass( this.effect );
+        break;
+
+        case "multiPassBloomPass":
+            this.effect = new wagnerjs.MultiPassBloomPass();
+            this.composer.pass( this.effect );
+        break;
+    }
+
+    this.composer.toScreen();
+
+    return this;
+}
+
 // NOTE: WHS animate *FUNCTION*
 // [x]TODO: Fix animate update callback.
 /**
