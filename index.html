@@ -10,6 +10,7 @@
 <script src="lib/stats.min.js"></script>
 
 <script src="lib/jquery-1.11.1.min.js"></script>
+<script src="lib/jquery.mousestop.event.js"></script>
 <script src="lib/CannonDebugRenderer.js"></script>
 <script src="lib/AnaglyphWebGLRenderer.js"></script>
 <script src="lib/helvetiker.typeface.js"></script>
@@ -154,6 +155,7 @@ GAME.person = GAME.addObject("sphere",
 
 GAME.zoomEffect = GAME.addWagner(WAGNER, "zoomBlurPass", {}).apply();
 GAME.multipassEffect = GAME.addWagner(WAGNER, "vignettePass", {}).apply();
+GAME.directionalblurEffect = GAME.addWagner(WAGNER, "motionBlurPass", {}).apply();
 
 GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
 

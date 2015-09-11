@@ -1559,6 +1559,20 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
             this.effect.params.falloff = 0.2;
             this.composer.pass( this.effect );
         break;
+
+        case "directionalBlurPass":
+            this.effect = new wagnerjs.DirectionalBlurPass();
+            this.effect.params.delta = 0.1;
+            this.composer.pass( this.effect );
+        break;
+
+        case "motionBlurPass":
+            this.motionBlurEffect = new wagnerjs.DirectionalBlurPass();
+            this.motionBlurEnable = true;
+            this.motionBlurEffect.params.delta = 0;
+            this.effect = this.motionBlurEffect;
+            this.composer.pass( this.effect );
+        break;
     }
 
     //this.composer.eff.push(this.effect);
@@ -1609,6 +1623,11 @@ WHS.init.prototype.animate = function (time, scope) {
             scope.time = Date.now();
         }
 
+        if (scope.motionBlurEffect && scope.motionBlurEnable) {
+            scope.motionBlurEffect.params.delta = 0;
+            scope.motionBlurEnable = true;
+        }
+
         if (scope.composer) {
 
             scope.composer.reset();
@@ -1640,8 +1659,9 @@ WHS.init.prototype.animate = function (time, scope) {
 WHS.init.prototype.MakeFirstPerson = function (object, plc, jqselector) {
     'use strict';
 
+    console.log(this);
     // TODO: Clean up.
-    this.controls = new plc(this.camera, object.body, 10);
+    this.controls = new plc(this.camera, object.body, 10, this);
 
     var controls = this.controls;
 
