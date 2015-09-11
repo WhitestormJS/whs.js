@@ -6,7 +6,7 @@
 
 // [x]TODO: RESTRUCTURIZE.
 // TODO: RESTRUCTURIZE threejs and cannonjs library calling.
-// TODO: Add stats.
+// [x]TODO: Add stats.
 
 /* ================ LOADING LIBS ================================================== */
 
@@ -325,6 +325,27 @@ WHS.init = function (THREE, CANNON, params) {
     // Debug Renderer
     if (params.helper) {
         this.cannonDebugRenderer = new THREE.CannonDebugRenderer(this.scene, this.world);
+    }
+
+    if (params.stats) {
+        this.stats = new Stats();
+        if (params.stats == "fps")
+            this.stats.setMode( 0 );
+        else if (params.stats == "ms")
+            this.stats.setMode( 1 );
+        else if (params.stats == "mb")
+            this.stats.setMode( 1 );
+        else {
+            this.stats.setMode( 0 );
+            // WARN: console | stats mode.
+            console.warn([this.stats], "Please, apply right stats mode [fps, ms, mb] .");
+        }
+
+        this.stats.domElement.style.position = 'absolute';
+        this.stats.domElement.style.left = '0px';
+        this.stats.domElement.style.bottom = '0px';
+
+        document.body.appendChild( this.stats.domElement );
     }
 
     this.camera = new THREEx.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
@@ -1560,6 +1581,9 @@ WHS.init.prototype.animate = function (time, scope) {
     'use strict';
 
     function reDraw() {
+        if (scope.stats)
+            scope.stats.begin();
+
         requestAnimationFrame(reDraw);
 
         if (scope.params.helper) {
@@ -1614,6 +1638,9 @@ WHS.init.prototype.animate = function (time, scope) {
                 //console.log(composer);
             });
         }
+
+        if (scope.stats)
+            scope.stats.end();
     }
 
     this.update = reDraw;
