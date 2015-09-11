@@ -388,11 +388,17 @@ WHS.init = function (THREE, CANNON, params) {
 
     WHS.init.prototype.animate(null, this);
 
-    // NOTE: =================================== Composers. ============================================
+    // NOTE: =================================== Composer. ============================================
 
-    this.composers = [];
+    if (params.wagner) {
+        this.composer = new params.wagner.Composer( this.renderer );
+        this.composer.setSize( window.innerWidth, window.innerHeight );
+        this.renderer.autoClearColor = true;
+        this.composer.reset();
+        this.composer.render( this.scene, this.camera );
+    }
 
-    console.log(this);
+    this.composer.eff = [];
 
     return this;
 }
@@ -1527,12 +1533,6 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
     //api.def(params.far, 1000); //, this.far);
     //api.def(params.density, 0.00025); //, this.density);
 
-    this.composer = new wagnerjs.Composer( this.renderer );
-    this.composer.setSize( window.innerWidth, window.innerHeight );
-    this.renderer.autoClearColor = true;
-    this.composer.reset();
-    this.composer.render( this.scene, this.camera );
-
     switch (type) {
         case "zoomBlurPass":
             this.effect = new wagnerjs.ZoomBlurPass();
@@ -1552,13 +1552,20 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
             this.effect.params.center.set( .5 * this.composer.width, .5 * this.composer.height );
             this.composer.pass( this.effect );
         break;
+
+        case "vignettePass":
+            this.effect = new wagnerjs.VignettePass();
+            this.effect.params.amount = 0.7;
+            this.effect.params.falloff = 0.2;
+            this.composer.pass( this.effect );
+        break;
     }
 
-    this.composer.eff = this.effect;
+    //this.composer.eff.push(this.effect);
     this.composer.toScreen();
 
     this.apply = function() {
-        this.composers.push(this.composer);
+        this.composer.eff.push(this.effect);
         return this;
     }
 
@@ -1602,34 +1609,17 @@ WHS.init.prototype.animate = function (time, scope) {
             scope.time = Date.now();
         }
 
-        if (scope.composers) {
-            scope.composers.forEach(function(composer, index) {
-                composer.reset();
+        if (scope.composer) {
 
-                    if (composer.eff.glowTexture) {
-                        /*var glowMaterial = new scope.threejs.MeshBasicMaterial( {
-                            emissive: 0xffffff,
-                            map: scope.threejs.ImageUtils.loadTexture( '../assets/textures/1324-glow.jpg' ),
-                        } );
+            scope.composer.reset();
 
-                    glowMaterial.map.repeat = new scope.threejs.Vector2( 1, 1 );
-                    glowMaterial.map.wrapS = glowMaterial.map.wrapT = scope.threejs.RepeatWrapping;*/
+            scope.composer.render(scope.scene, scope.camera);
 
+            scope.composer.eff.forEach( function( effect, index) {
+                scope.composer.pass( effect );
+            })
 
-                    scope.scene.overrideMaterial = glowMaterial;
-                    composer.render(scope.scene, scope.camera, null, composer.eff.glowTexture);
-
-                    scope.scene.overrideMaterial = null;
-                    composer.render(scope.scene, scope.camera);
-
-                    composer.eff.params.glowTexture = glowTexture;
-                } else
-                    composer.render(scope.scene, scope.camera);
-
-                composer.pass(composer.eff);
-                composer.toScreen();
-                //console.log(composer);
-            });
+            scope.composer.toScreen();
         }
 
         if (scope.stats)
@@ -1647,19 +1637,25 @@ WHS.init.prototype.animate = function (time, scope) {
  *
  * @param {Object} object *WHS* figure/object. (REQUIRED)
  */
-WHS.init.prototype.MakeFirstPerson = function (object) {
+WHS.init.prototype.MakeFirstPerson = function (object, plc, jqselector) {
     'use strict';
 
     // TODO: Clean up.
-    this.controls = new PointerLockControls(this.camera, object.body, 10);
+    this.controls = new plc(this.camera, object.body, 10);
 
     var controls = this.controls;
 
     WHS.API.merge(this.scene, this.controls.getObject());
 
-    $('body').append('<div id="blocker"><center><h1>PointerLock</h1></center><br><p>(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)</p></div>');
+    $('body').append('<div id="blocker">'+
+                     '   <center>'+
+                     '      <h1>PointerLock</h1>'+
+                     '   </center>'+
+                     '   <br>'+
+                     '   <p>(W,A,S,D = Move, SPACE = Jump, MOUSE = Look)</p>'+
+                     '</div>');
 
-    $('#blocker').css({
+    $(jqselector).css({
         'color': 'white',
         'background': 'rgba(0,0,0,0.5)',
         'text-align': 'center',
@@ -1670,46 +1666,47 @@ WHS.init.prototype.MakeFirstPerson = function (object) {
         'top': 0
     });
 
-    if ('pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document) {
-        var element = document.body;
+    if ('pointerLockElement' in document ||
+        'mozPointerLockElement' in document ||
+        'webkitPointerLockElement' in document) {
+            var element = document.body;
 
-        var pointerlockchange = function (event) {
-            if (document.pointerLockElement === element ||
-                document.mozPointerLockElement === element ||
-                document.webkitPointerLockElement === element) {
-                    controls.enabled = true;
-                    $('#blocker').css({
-                        'display': 'none'
-                    });
-            } else {
-                    controls.enabled = false;
+            this.pointerlockchange = function (event) {
+                if (document.pointerLockElement === element ||
+                    document.mozPointerLockElement === element ||
+                    document.webkitPointerLockElement === element) {
+                        controls.enabled = true;
+                        $(jqselector).css({
+                            'display': 'none'
+                        });
+                } else {
+                        controls.enabled = false;
 
-                    $('#blocker').css({
-                        'display': 'block'
-                    });
+                        $(jqselector).css({
+                            'display': 'block'
+                        });
+                }
             }
-        }
     }
 
-    document.addEventListener('pointerlockchange', pointerlockchange, false);
-    document.addEventListener('mozpointerlockchange', pointerlockchange, false);
-    document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
+    document.addEventListener('pointerlockchange', this.pointerlockchange, false);
+    document.addEventListener('mozpointerlockchange', this.pointerlockchange, false);
+    document.addEventListener('webkitpointerlockchange', this.pointerlockchange, false);
 
-    document.addEventListener('pointerlockerror', pointerlockerror, false);
-    document.addEventListener('mozpointerlockerror', pointerlockerror, false);
-    document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
-
-    var pointerlockerror = function (event) {
-        // FIXME: delete.
+    this.pointerlockerror = function (event) {
+        console.warn("Pointer lock error.");
     }
 
-    $('#blocker').on('click', function (event) {
+    document.addEventListener('pointerlockerror', this.pointerlockerror, false);
+    document.addEventListener('mozpointerlockerror', this.pointerlockerror, false);
+    document.addEventListener('webkitpointerlockerror', this.pointerlockerror, false);
+
+    $(jqselector).on('click', function (event) {
         element.requestPointerLock = element.requestPointerLock ||
             element.mozRequestPointerLock ||
             element.webkitRequestPointerLock;
 
         if (/Firefox/i.test(navigator.userAgent)) {
-
             var fullscreenchange = function (event) {
                 if (document.fullscreenElement === element ||
                     document.mozFullscreenElement === element ||

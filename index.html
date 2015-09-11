@@ -50,6 +50,7 @@ var GAME = new WHS.init( THREE, CANNON,
     anaglyph: false,
     //helper: true,
     stats: "fps", // fps, ms, mb
+    wagner: WAGNER,
     gravity: {
         x: 0,
         y: -200,
@@ -152,9 +153,9 @@ GAME.person = GAME.addObject("sphere",
 });
 
 GAME.zoomEffect = GAME.addWagner(WAGNER, "zoomBlurPass", {}).apply();
-GAME.multipassEffect = GAME.addWagner(WAGNER, "zoomBlurPass", {}).apply();
+GAME.multipassEffect = GAME.addWagner(WAGNER, "vignettePass", {}).apply();
 
-GAME.MakeFirstPerson(GAME.person);
+GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
 
 </script>
 </html>
