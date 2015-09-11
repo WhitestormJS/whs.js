@@ -6,6 +6,7 @@
 
 // [x]TODO: RESTRUCTURIZE.
 // TODO: RESTRUCTURIZE threejs and cannonjs library calling.
+// TODO: Add stats.
 
 /* ================ LOADING LIBS ================================================== */
 
@@ -1528,6 +1529,13 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
 
         case "multiPassBloomPass":
             this.effect = new wagnerjs.MultiPassBloomPass();
+            this.effect.params.blurAmount = 1.32;
+            this.effect.params.strength = .5;
+            this.effect.params.applyZoomBlur = true;
+            this.effect.params.zoomBlurStrength = 0.84;
+            this.effect.params.useTexture = true;
+            this.effect.glowTexture = wagnerjs.Pass.prototype.getOfflineTexture( this.composer.width, this.composer.height, false );
+            this.effect.params.center.set( .5 * this.composer.width, .5 * this.composer.height );
             this.composer.pass( this.effect );
         break;
     }
@@ -1580,10 +1588,30 @@ WHS.init.prototype.animate = function (time, scope) {
         if (scope.composers) {
             scope.composers.forEach(function(composer, index) {
                 composer.reset();
-                composer.render(scope.scene, scope.camera);
+
+                    if (composer.eff.glowTexture) {
+                        /*var glowMaterial = new THREE.MeshBasicMaterial( {
+                            emissive: 0xffffff,
+                            map: THREE.ImageUtils.loadTexture( '../assets/textures/1324-glow.jpg' ),
+                        } );
+
+                    glowMaterial.map.repeat = new THREE.Vector2( 1, 1 );
+                    glowMaterial.map.wrapS = glowMaterial.map.wrapT = THREE.RepeatWrapping;*/
+
+
+                    scope.scene.overrideMaterial = glowMaterial;
+                    composer.render(scope.scene, scope.camera, null, composer.eff.glowTexture);
+
+                    scope.scene.overrideMaterial = null;
+                    composer.render(scope.scene, scope.camera);
+
+                    composer.eff.params.glowTexture = glowTexture;
+                } else
+                    composer.render(scope.scene, scope.camera);
+
                 composer.pass(composer.eff);
                 composer.toScreen();
-                console.log(composer);
+                //console.log(composer);
             });
         }
     }
