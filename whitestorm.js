@@ -115,12 +115,14 @@ WHS.API.ConvexFigure = function (thrObj) {
 }
 
 // NOTE: WHS API TrimeshFigure *FUNCTION*.
+// TODO: Heights array.
 /**
  * Trimesh figure. Makes trimesh object *CANNON.JS* from *THREE.JS* firure.
  *
  * @param {Object} thrObj Figure object *THREE.JS*. (REQUIRED)
+ * @param {Boolean} heightsNeed true if heights need. (OPTIONAL)
  */
-WHS.API.TrimeshFigure = function (thrObj) {
+WHS.API.TrimeshFigure = function (thrObj, heightsNeed) {
     'use strict';
 
     if (arguments.length < 1)
@@ -128,11 +130,20 @@ WHS.API.TrimeshFigure = function (thrObj) {
     else if (arguments.length = 1) {
         var points = [];
         var faces = [];
+        var heights = [];
 
         thrObj.vertices.forEach(function (element) {
             points.push(element.x);
             points.push(element.y);
             points.push(element.z);
+
+            if (heightsNeed) {
+                heights.push({
+                    x: element.x,
+                    y: element.y,
+                    z: element.z
+                });
+            }
         });
 
         thrObj.faces.forEach(function (element) {
@@ -143,6 +154,7 @@ WHS.API.TrimeshFigure = function (thrObj) {
 
         var canObj = new WHS.headers.cannonjs.Trimesh(points, faces);
         canObj.updateNormals();
+        canObj.heightsValues = heights;
 
         return canObj;
 
@@ -261,6 +273,24 @@ WHS.API.texture = function (url, options) {
  */
 WHS.ADD.shape = function () {
     return new WHS.headers.threejs.Shape();
+}
+
+// TODO: Get height function.
+WHS.API.getheight = function (pos, diff, terrain) {
+    'use strict';
+
+    console.log(terrain);
+    var diff = diff || 1000;
+
+    this.raycaster = new WHS.headers.threejs.Raycaster(
+        new WHS.headers.threejs.Vector3(pos.x, -diff, pos.y).normalize(),
+        new WHS.headers.threejs.Vector3(pos.x, diff, pos.y).normalize()
+    );
+
+    this.intersect = this.raycaster.intersectObject(terrain);
+    //console.log(new WHS.headers.threejs.Vector3(pos.x, -diff, pos.y));
+    console.log(this);
+    return this.intersect;
 }
 
 // NOTE: WHS API init *FUNCTION*.
@@ -1390,10 +1420,14 @@ WHS.init.prototype.addGround = function (type, size, material, pos, genmap) {
                         effect: [ DEPTHNOISE_EFFECT ] //[ DESTRUCTURE_EFFECT ]
                     }, canvas, 0, 0, size.width, size.height);
 
-                    var trGeometry = new this.threejs.Geometry().fromBufferGeometry( terrainGeometry);
-                    trGeometry.computeFaceNormals();
+                    this.custumGeom = new this.threejs.Geometry().fromBufferGeometry( terrainGeometry);
+                    this.custumGeom.verticesNeedUpdate = true;
+                    this.custumGeom.elementsNeedUpdate = true;
+                    this.custumGeom.normalsNeedUpdate = true;
+                    this.custumGeom.computeFaceNormals();
+                    this.custumGeom.computeVertexNormals();
 
-                    this.visible = api.Triangulate(new this.threejs.Geometry().fromBufferGeometry( terrainGeometry), this.materialType);
+                    this.visible = api.Triangulate(this.custumGeom, this.materialType);
 
                     this.visible.scale.x = 1;
                     this.visible.scale.y = 1;
