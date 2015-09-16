@@ -1,0 +1,29 @@
+{
+  "name": "whitestormjs",
+  "version": "0.0.1",
+  "description": "Three.js + Cannon.js render library.",
+  "main": "whitestorm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sasha240100/WhitestormJS.git"
+  },
+  "keywords": [
+    "three.js",
+    "cannon.js",
+    "webgl",
+    "wagner",
+    "api",
+    "3d",
+    "web",
+    "javascript"
+  ],
+  "author": "Alexander Buzin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sasha240100/WhitestormJS/issues"
+  },
+  "homepage": "https://github.com/sasha240100/WhitestormJS#readme"
+}
