@@ -1416,7 +1416,7 @@ WHS.init.prototype.addGround = function (type, size, material, pos, genmap) {
                         param: 3,
                         filterparam: 1,
                         filter: [ BLUR_FILTER ],
-                        postgen: [ MOUNTAINS_COLORS ],
+                        postgen: [ ], // MOUNTAINS_COLORS
                         effect: [ DEPTHNOISE_EFFECT ] //[ DESTRUCTURE_EFFECT ]
                     }, canvas, 0, 0, size.width, size.height);
 
