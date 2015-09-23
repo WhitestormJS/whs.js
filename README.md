@@ -1,7 +1,7 @@
 # About.
 **WhitestormJS** is a library to combine [**Three.Js**](https://github.com/mrdoob/three.js/) with [**Cannon.js**](https://github.com/schteppe/cannon.js/). It ***makes WebGL*** development **easy**.
 
-![WhitestormJS](../Whitestorm-JS-logo-colored.png)
+![WhitestormJS](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/WhitestormJS-logo-colored.png)
 
 ## Installation
 Include *three.js* and *cannon.js* libraries.
@@ -32,3 +32,5 @@ var GAME = new WHS.init( THREE, CANNON,
 
 ## Examples:
  * [FPS](http://sitepro.ga/proj/whitestorm/)  (First person example with wagner effects and terrain.)
+ 
+### Author: @sasha240100
