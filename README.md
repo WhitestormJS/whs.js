@@ -1,6 +1,8 @@
 # About.
 **WhitestormJS** is a library to combine [**Three.Js**](https://github.com/mrdoob/three.js/) with [**Cannon.js**](https://github.com/schteppe/cannon.js/). It ***makes WebGL*** development **easy**.
 
+![WhitestormJS](../Whitestorm-JS-logo-colored.png)
+
 ## Installation
 Include *three.js* and *cannon.js* libraries.
 Include script tag pointing to **Whitestorm.js** library to your *head* or *after body*:
