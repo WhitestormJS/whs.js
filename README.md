@@ -33,4 +33,5 @@ var GAME = new WHS.init( THREE, CANNON,
 ## Examples:
  * [FPS](http://sitepro.ga/proj/whitestorm/)  (First person example with wagner effects and terrain.)
  
-### Author: @sasha240100
+### Author: 
+@sasha240100
