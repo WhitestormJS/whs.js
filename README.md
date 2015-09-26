@@ -1,4 +1,6 @@
 # About.
+
+[![Join the chat at https://gitter.im/sasha240100/WhitestormJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sasha240100/WhitestormJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 **WhitestormJS** is a library to combine [**Three.Js**](https://github.com/mrdoob/three.js/) with [**Cannon.js**](https://github.com/schteppe/cannon.js/). It ***makes WebGL*** development **easy**.
 
 ![WhitestormJS](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/WhitestormJS-logo-colored.png)
