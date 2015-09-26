@@ -1,0 +1,19 @@
+{
+  "name": "WhitestormJS",
+  "version": "0.0.1",
+  "homepage": "https://github.com/sasha240100/WhitestormJS",
+  "authors": [
+    "sasha240100 <siteprogcom@gmail.com>"
+  ],
+  "description": "WhitestormJS is a library to combine Three.Js with Cannon.js. It makes WebGL development easy.",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
