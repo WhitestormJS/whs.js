@@ -1,7 +1,7 @@
 # WhiteStormJS
-[![npm](https://img.shields.io/npm/v/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs) [![npm](https://img.shields.io/bower/v/whitestormjs.svg)](https://github.com/sasha240100/WhitestormJS) [![Gitter](https://img.shields.io/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/sasha240100/WhitestormJS)
+[![npm](https://img.shields.io/npm/v/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs) [![bower](https://img.shields.io/bower/v/whitestormjs.svg)](https://github.com/sasha240100/WhitestormJS) [![Gitter](https://img.shields.io/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/sasha240100/WhitestormJS)
 
-[![Download](https://img.shields.io/github/downloads/sasha240100/whitestormjs/latest/total.svg)](https://gitter.im/sasha240100/WhitestormJS)
+[![Issues](https://img.shields.io/github/issues/sasha240100/WhitestormJS.svg)](https://gitter.im/sasha240100/WhitestormJS)
 [![License](https://img.shields.io/github/license/sasha240100/whitestormjs.svg)](https://github.com/sasha240100/WhitestormJS/blob/master/LICENSE)
 
 
