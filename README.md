@@ -12,6 +12,9 @@
 ![WhitestormJS](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/WhitestormJS-logo-colored.png)
 
 ## Installation
+[![forthebadge](http://forthebadge.com/images/badges/uses-js.svg)](https://github.com/search?l=JavaScript&q=%23javasript&ref=searchresults&type=Repositories&utf8=%E2%9C%93)
+
+
 Include *three.js* and *cannon.js* libraries.
 Include script tag pointing to **Whitestorm.js** library to your *head* or *after body*:
 
