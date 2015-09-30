@@ -46,4 +46,4 @@ var GAME = new WHS.init( THREE, CANNON,
 ### Author: 
 @sasha240100
 
-[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com)
+[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://alexbuzin.me/)
