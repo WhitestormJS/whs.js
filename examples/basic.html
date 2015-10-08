@@ -57,6 +57,11 @@ var GAME = new WHS.init( THREE, CANNON,
         x: 0,
         y: -200,
         z: 0
+    },
+    camera: {
+        far: 10000,
+        y: 10,
+        z: 30
     }
 });
 
@@ -95,9 +100,6 @@ GAME.ground = GAME.addGround("smooth",
     y: 0,
     z: 0
 });
-
-GAME.MakeFirstPerson(GAME.sphere, PointerLockControls, '#blocker');
-
 
 </script>
 </html>

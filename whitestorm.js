@@ -318,7 +318,7 @@ WHS.init = function (THREE, CANNON, params) {
     this.threejs = THREE;
     this.cannonjs = CANNON;
 
-    // Global variables (for WHS.API).
+    // Global variables (for WfHS.API).
     WHS.headers.threejs = this.threejs;
     WHS.headers.cannonjs = this.cannonjs;
 
@@ -380,7 +380,27 @@ WHS.init = function (THREE, CANNON, params) {
         document.body.appendChild( this.stats.domElement );
     }
 
-    this.camera = new this.threejs.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+    if(!this.params.camera) {
+        this.params.camera = {};
+    }
+
+    this.params.camera.aspect = api.def(this.params.camera.aspect, 75);
+    this.params.camera.near = api.def(this.params.camera.near, 1);
+    this.params.camera.far = api.def(this.params.camera.far, 1000);
+
+    console.log(this.params);
+
+    this.camera = new this.threejs.PerspectiveCamera(
+        this.params.camera.aspect,
+        window.innerWidth / window.innerHeight,
+        this.params.camera.near,
+        this.params.camera.far
+    );
+
+    this.params.camera.x = api.def(this.params.camera.x, 0);
+    this.params.camera.y = api.def(this.params.camera.y, 0);
+    this.params.camera.z = api.def(this.params.camera.z, 0);
+    this.camera.position.set(this.params.camera.x, this.params.camera.y, this.params.camera.z);
 
     api.merge(this.scene, this.camera);
 
