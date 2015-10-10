@@ -1,7 +1,7 @@
 # WhiteStormJS
 [![npm](https://img.shields.io/npm/v/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs) [![bower](https://img.shields.io/bower/v/whitestormjs.svg)](https://github.com/sasha240100/WhitestormJS) [![Gitter](https://img.shields.io/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/sasha240100/WhitestormJS)
 
-[![Issues](https://img.shields.io/github/issues/sasha240100/WhitestormJS.svg)](https://github.com/sasha240100/WhitestormJS/issues)
+[![Issues](https://img.shields.io/npm/dt/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs)
 [![License](https://img.shields.io/github/license/sasha240100/whitestormjs.svg)](https://github.com/sasha240100/WhitestormJS/blob/master/LICENSE)
 
 
@@ -47,6 +47,6 @@ var GAME = new WHS.init( THREE, CANNON,
  * [FPS](http://192.241.128.187/current/)  (First person example with wagner effects and terrain.)
  
 ### Author: 
-@sasha240100
+@sasha240100 [![forthebadge](https://img.shields.io/twitter/url/http/alexbuzin.me.svg?style=social)](https://twitter.com/intent/tweet?text=Check+this+developer:&url=http%3A%2F%2Falexbuzin.me)
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://alexbuzin.me/)
