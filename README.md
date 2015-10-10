@@ -7,6 +7,14 @@
 
 [![Author](https://img.shields.io/badge/Author-Alexander%20Buzin-red.svg)](https://github.com/sasha240100)
 
+
+----------------------------------------------------------------------------------------------------------------
+
+
+#####Code style check:   [![Codacy Badge](https://api.codacy.com/project/badge/8f5d1eab0569415b983bf0c1b7323d68)](https://www.codacy.com/app/siteprogcom/WhitestormJS)
+
+----------------------------------------------------------------------------------------------------------------
+
 **WhitestormJS** is a library to combine [**Three.Js**](https://github.com/mrdoob/three.js/) with [**Cannon.js**](https://github.com/schteppe/cannon.js/). It ***makes WebGL*** development **easy**.
 
 ![WhitestormJS](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/logos/whitestormjs.png)
