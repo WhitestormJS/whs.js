@@ -53,6 +53,7 @@ var GAME = new WHS.init( THREE, CANNON,
 
 ## Examples:
  * [FPS](http://192.241.128.187/current/)  (First person example with wagner effects and terrain.)
+ * [Basic](http://192.241.128.187/current/examples/basic/)  (Basic "Hello world!" example.)
  
 ### Author: 
 @sasha240100 [![forthebadge](https://img.shields.io/twitter/url/http/alexbuzin.me.svg?style=social)](https://twitter.com/intent/tweet?text=Check+this+developer:&url=http%3A%2F%2Falexbuzin.me)
