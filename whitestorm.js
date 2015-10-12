@@ -1834,3 +1834,13 @@ WHS.init.prototype.MakeFirstPerson = function (object, plc, jqselector) {
             element.requestPointerLock();
     });
 }
+
+// NOTE: WHS init prototype OrbitControls *FUNCTION*
+/**
+ * ORBITCONTROLS.
+ *
+ * @param {Object} object Description. (REQUIRED/OPTIONAL)
+ */
+WHS.init.prototype.OrbitControls = function (object) {
+    this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+}
