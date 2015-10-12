@@ -53,6 +53,7 @@ var GAME = new WHS.init( THREE, CANNON,
     //helper: true,
     stats: "fps", // fps, ms, mb
     wagner: WAGNER,
+    autoresize: true,
     gravity: {
         x: 0,
         y: -200,
@@ -67,8 +68,8 @@ GAME.ground = GAME.addGround("terrain",
 {
     terrain: defaultTerrainMap,
     depth: 100,
-    width: 250,
-    height: 250
+    width: 200,
+    height: 200
 },
 {
         //color: 0x000000,
@@ -84,12 +85,12 @@ GAME.ground = GAME.addGround("terrain",
 });
 
 // NOTE: Default light.
-GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
+GAME.light1 = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
                                               intensity: 2},
 {
-    x: 100,
-    y: 30,
-    z: 100
+    x: 0, // 100,
+    y: 1, // 30,
+    z: 0, // 100
 },
 {
     x: 0,
@@ -98,12 +99,12 @@ GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
 });
 
 // NOTE: Test light.
-GAME.light = GAME.addLight("point", { color: 0xffffff,
+GAME.light2 = GAME.addLight("point", { color: 0xffffff,
                                               intensity: 4, distance: 450},
 {
-    x: 100,
-    y: 30,
-    z: 100
+    x: 0, //  100,
+    y: 0, //  30,
+    z: 0, //  100
 },
 {
     x: 0,

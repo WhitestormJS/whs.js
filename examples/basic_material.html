@@ -15,6 +15,7 @@
 <script src="../lib/AnaglyphWebGLRenderer.js"></script>
 <script src="../lib/helvetiker.typeface.js"></script>
 <script src="../lib/firstPersonControls.js"></script>
+<script src="../lib/OrbitControls.js"></script>
 
 <!-- Generator files -->
         <script src="../lib/FastBlur.js"></script>
@@ -66,16 +67,19 @@ var GAME = new WHS.init( THREE, CANNON,
     }
 });
 
-GAME.sphere = GAME.addObject("sphere",
+GAME.cube = GAME.addObject("torusknot",
 {
     geometryOptions: {
-        radius:3
+        radius:5,
+        tube: 2
     },
     mass: 10,
     onlyvis: false,
     materialOptions: {
-        color: 0xffffff,
-        type: "basic"
+        vertexColors: THREE.VertexColors,
+        shading: THREE.SmoothShading,
+        map: api.texture('../textures/backgrounddetailed6.jpg'),
+        type: "phong"
     },
     pos: {
         x: 0,
@@ -101,6 +105,22 @@ GAME.ground = GAME.addGround("smooth",
     y: 0,
     z: 0
 });
+
+GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
+                                              intensity: 2},
+{
+    x: 0,
+    y: 10,
+    z: 30
+},
+{
+    x: 0,
+    y: 0,
+    z: 0
+});
+
+
+GAME.OrbitControls();
 
 </script>
 </html>

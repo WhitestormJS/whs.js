@@ -451,7 +451,21 @@ WHS.init = function (THREE, CANNON, params) {
 
     this.composer.eff = [];
 
-    return this;
+    // NOTE: =================================== Autoresize. ==========================================
+    var scope = this;
+
+    if (params.autoresize)
+        $(window).on('load resize', function () {
+              scope.camera.aspect = window.innerWidth / window.innerHeight;
+              scope.camera.updateProjectionMatrix();
+
+              scope.renderer.setSize(window.innerWidth, window.innerHeight);
+
+              if (params.wagner)
+                  scope.composer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+    return scope;
 }
 
 
@@ -616,6 +630,9 @@ WHS.init.prototype.addObject = function (figureType, options) {
                 scope.body.addShape(scope.physic);
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
+                scope.body.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), (Math.PI / 180) * opt.rot.x);
+                scope.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), (Math.PI / 180) * opt.rot.y);
+                scope.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0,0,1), (Math.PI / 180) * opt.rot.z);
                 scope.body.name = scope.name;
                 api.merge(this.world, scope.body);
             } else {
@@ -728,6 +745,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
             api.merge(this.scene, scope.visible);
+            console.log(scope.visible.geometry);
 
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
@@ -1509,8 +1527,10 @@ WHS.init.prototype.addLight = function (type, opts, pos, target) {
 
     scope.whsobject = true;
 
-    api.def(target, {x:0, y:0, z:0}, scope.target);
-    api.def(pos, {x:0, y:0, z:0}, scope.pos);
+    scope.target = target;
+    scope.pos = pos;
+
+    console.log(scope.pos);
 
     var options = api.def(opts, {});
 
@@ -1563,10 +1583,10 @@ WHS.init.prototype.addLight = function (type, opts, pos, target) {
         break;
     }
 
-    scope.light.position.clone(scope.pos);
+    scope.light.position.set(scope.pos.x, scope.pos.y, scope.pos.z);
 
     if (scope.light.target)
-        scope.light.target.position.clone(scope.target);
+        scope.light.target.position.set(scope.target.x, scope.target.y, scope.target.z);
 
     WHS.API.merge(this.scene, scope.light);
 

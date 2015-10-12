@@ -66,12 +66,10 @@ var GAME = new WHS.init( THREE, CANNON,
     }
 });
 
-GAME.sphere = GAME.addObject("cube",
+GAME.cube = GAME.addObject("dodecahedron",
 {
     geometryOptions: {
-        width: 3,
-        height: 3,
-        depth: 3
+        radius:5
     },
     mass: 10,
     onlyvis: false,
