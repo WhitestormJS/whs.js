@@ -1733,7 +1733,6 @@ WHS.init.prototype.animate = function (time, scope) {
         }
 
         if (scope.composer) {
-
             scope.composer.reset();
 
             scope.composer.render(scope.scene, scope.camera);
