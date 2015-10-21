@@ -55,7 +55,7 @@ var GAME = new WHS.init( THREE, CANNON,
  * [FPS](http://192.241.128.187/current/)  (First person example with wagner effects and terrain.)
  * [Basic](http://192.241.128.187/current/examples/basic.html)  (Basic "Hello world!" example.)
  * [Material](http://192.241.128.187/current/examples/basic_material.html)  (Basic example with material.)
- * [Basic](http://192.241.128.187/current/examples/basic.html)  (Basic "Hello world!" example.)
+ * [Object/Icosahedron](http://192.241.128.187/current/examples/basic_object.html)  (Icosahedron from **THREE.JS** example.)
 
 ### Author: 
 @sasha240100 [![forthebadge](https://img.shields.io/twitter/url/http/alexbuzin.me.svg?style=social)](https://twitter.com/intent/tweet?text=Check+this+developer:&url=http%3A%2F%2Falexbuzin.me)

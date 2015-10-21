@@ -260,6 +260,9 @@ WHS.API.texture = function (url, options) {
         texture.wrapS = texture.wrapT = WHS.headers.threejs.RepeatWrapping;
         //texture.offset.set(opt.offset.x, opt.offset.y);
         texture.repeat.set(opt.repeat.x, opt.repeat.y);
+
+        texture.magFilter = THREE.NearestFilter;
+        texture.minFilter = THREE.LinearMipMapLinearFilter;
     }
 
     return texture;
@@ -1480,6 +1483,7 @@ WHS.init.prototype.addGround = function (type, size, material, pos, genmap) {
         scope.custumGeom.normalsNeedUpdate = true;
         scope.custumGeom.computeFaceNormals();
         scope.custumGeom.computeVertexNormals();
+        //scope.custumGeom.mergeVertices();
 
         scope.visible = api.Triangulate(scope.custumGeom, scope.materialType);
 
