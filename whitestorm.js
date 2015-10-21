@@ -128,7 +128,7 @@ WHS.API.TrimeshFigure = function (thrObj, heightsNeed) {
 
     if (arguments.length < 1)
         console.error("No THREE.js geometry");
-    else if (arguments.length = 1) {
+    else if (arguments.length == 1) {
         var points = [];
         var faces = [];
         var heights = [];
