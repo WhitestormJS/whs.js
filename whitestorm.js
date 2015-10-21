@@ -26,7 +26,7 @@ if (typeof Array.isArray === 'undefined') {
 
 /* ================ WHITESTORM|JS ================================================= */
 var WHS = {
-    REVISION: 1
+    REVISION: 2
 };
 
 WHS.headers = {}; //GLOBAL headers, ex: url, script, library, specific api...
