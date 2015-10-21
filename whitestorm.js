@@ -51,7 +51,7 @@ WHS.API.merge = function (box, rabbits) {
     'use strict';
     if (arguments.length < 2)
         console.error("No rabbits for the box. (arguments)", [box, rabbits]);
-    else if (arguments.length = 2) {
+    else if (arguments.length == 2) {
         if (Array.isArray(rabbits) && rabbits.length <= 1)
             box.add(rabbits[0]);
         else if (Array.isArray(rabbits) && rabbits.length >= 2) {
@@ -99,7 +99,7 @@ WHS.API.ConvexFigure = function (thrObj) {
     'use strict';
     if (arguments.length < 1)
         console.error("No THREE.js geometry");
-    else if (arguments.length = 1) {
+    else if (arguments.length == 1) {
         var points = new Array();
         var faces = new Array();
 
@@ -178,13 +178,13 @@ WHS.API.Triangulate = function (thrObj, material) {
         var triangles = new WHS.headers.threejs.Geometry();
         var materials = [];
 
-        thrObj.faces.forEach(function (element, index) {
+        thrObj.faces.forEach(function (element) {
             var triangle = new WHS.headers.threejs.Geometry();
 
             [].push.apply(triangle.vertices, [
-                    thrObj.vertices[element.a],
-                    thrObj.vertices[element.b],
-                    thrObj.vertices[element.c]
+                thrObj.vertices[element.a],
+                thrObj.vertices[element.b],
+                thrObj.vertices[element.c]
             ]);
 
             triangle.faceVertexUvs[0].push([
@@ -283,7 +283,7 @@ WHS.API.getheight = function (pos, diff, terrain) {
     'use strict';
 
     console.log(terrain);
-    var diff = diff || 1000;
+    diff = diff || 1000;
 
     this.raycaster = new WHS.headers.threejs.Raycaster(
         new WHS.headers.threejs.Vector3(pos.x, -diff, pos.y).normalize(),
@@ -430,9 +430,11 @@ WHS.init = function (THREE, CANNON, params) {
 
     $(this.renderer.domElement).attr('');
 
-    $('body').append(this.renderer.domElement);
+    this.rootElement = $('body');
 
-    $('body').css({
+    this.rootElement.append(this.renderer.domElement);
+
+    this.rootElement.css({
         'margin': 0,
         'padding': 0,
         'position': 'relative',
@@ -555,14 +557,16 @@ WHS.init.prototype.addObject = function (figureType, options) {
         break;
     }
 
+    var key = 0;
 
     switch (figureType) {
     case "sphere":
-        var key = 0;
+
         api.def(opt.geometry.segmentA, 32);
         api.def(opt.geometry.segmentB, 32);
 
-        WHS.objects.forEach(function (el, index) {
+        // FIXME: more complex use of key sholud be added.
+        WHS.objects.forEach(function (el) {
             if (el.type == "sphere") {
                 key++;
             }
@@ -600,13 +604,13 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "cube":
-        var key = 0;
+
 
         api.def(opt.geometry.width, 1);
         api.def(opt.geometry.height, 1);
         api.def(opt.geometry.depth, 1);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "cube") {
                 key++;
             }
@@ -645,14 +649,14 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "cylinder":
-        var key = 0;
+
 
         api.def(opt.geometry.radiusTop, 1);
         api.def(opt.geometry.radiusBottom, 1);
         api.def(opt.geometry.height, 1);
         api.def(opt.geometry.radiusSegments, 32);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "cylinder") {
                 key++;
             }
@@ -687,12 +691,12 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "dodecahedron":
-        var key = 0;
+
 
         api.def(opt.geometry.radius, 1);
         api.def(opt.geometry.detail, 0);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "dodecahedron") {
                 key++;
             }
@@ -727,12 +731,12 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "extrude":
-        var key = 0;
+
 
         api.def(opt.geometry.shapes, []);
         api.def(opt.geometry.options, {});
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "extrude") {
                 key++;
             }
@@ -768,12 +772,12 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "icosahedron":
-        var key = 0;
+
 
         api.def(opt.geometry.radius, 1);
         api.def(opt.geometry.detail, 0);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "icosahedron") {
                 key++;
             }
@@ -808,11 +812,11 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "lathe":
-        var key = 0;
+
 
         api.def(opt.geometry.points, []);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "lathe") {
                 key++;
             }
@@ -847,12 +851,12 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "octahedron":
-        var key = 0;
+
 
         api.def(opt.geometry.radius, 1);
         api.def(opt.geometry.detail, 0);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "octahedron") {
                 key++;
             }
@@ -887,13 +891,13 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "parametric":
-        var key = 0;
+
 
         api.def(opt.geometry.func, function () {});
         api.def(opt.geometry.slices, 10);
         api.def(opt.geometry.stacks, 10);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type === "parametric") {
                 key++;
             }
@@ -928,14 +932,14 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "plane":
-        var key = 0;
+
 
         api.def(opt.geometry.func, function () {});
         api.def(opt.geometry.width, 10);
         api.def(opt.geometry.height, 10);
         api.def(opt.geometry.segments, 32);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "plane") {
                 key++;
             }
@@ -970,14 +974,14 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "polyhedron":
-        var key = 0;
+
 
         api.def(opt.geometry.verticesOfCube, []);
         api.def(opt.geometry.indicesOfFaces, []);
         api.def(opt.geometry.radius, 1);
         api.def(opt.geometry.detail, 1);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "polyhedron") {
                 key++;
             }
@@ -1012,7 +1016,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "ring":
-        var key = 0;
+
 
         api.def(opt.geometry.innerRadius, 0);
         api.def(opt.geometry.outerRadius, 50);
@@ -1021,7 +1025,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
         api.def(opt.geometry.thetaStart, 0);
         api.def(opt.geometry.thetaLength, Math.PI * 2);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "ring") {
                 key++;
             }
@@ -1060,9 +1064,9 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "shape":
-        var key = 0;
 
-        WHS.objects.forEach(function (el, index) {
+
+        WHS.objects.forEach(function (el) {
             if (el.type == "shape") {
                 key++;
             }
@@ -1087,12 +1091,12 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "tetrahedron":
-        var key = 0;
+
 
         api.def(opt.geometry.radius, 1);
         api.def(opt.geometry.detail, 0);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "tetrahedron") {
                 key++;
             }
@@ -1125,7 +1129,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "text":
-        var key = 0;
+
 
         opt.geometry.parameters = opt.geometry.parameters || {};
 
@@ -1140,7 +1144,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
         api.def(opt.geometry.parameters.bevelThickness, 10);
         api.def(opt.geometry.parameters.bevelSize, 8);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "text") {
                 key++;
             }
@@ -1174,7 +1178,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "torus":
-        var key = 0;
+
 
         api.def(opt.geometry.radius, 100);
         api.def(opt.geometry.tube, 40);
@@ -1182,7 +1186,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
         api.def(opt.geometry.tubularSegments, 6);
         api.def(opt.geometry.arc, Math.PI * 2);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "torus") {
                 key++;
             }
@@ -1217,7 +1221,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "torusknot":
-        var key = 0;
+
 
         api.def(opt.geometry.radius, 100);
         api.def(opt.geometry.tube, 40);
@@ -1225,7 +1229,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
         api.def(opt.geometry.tubularSegments, 6);
         api.def(opt.geometry.arc, Math.PI * 2);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "torusknot") {
                 key++;
             }
@@ -1260,7 +1264,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
 
         break;
     case "tube":
-        var key = 0;
+
 
         // FIXME: fix to WHS.API (not here)
         scope.CustomSinCurve = this.threejs.Curve.create(
@@ -1284,7 +1288,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
         api.def(opt.geometry.radiusSegments, 8);
         api.def(opt.geometry.closed, false);
 
-        WHS.objects.forEach(function (el, index) {
+        WHS.objects.forEach(function (el) {
             if (el.type == "tube") {
                 key++;
             }
@@ -1333,13 +1337,13 @@ WHS.init.prototype.addObject = function (figureType, options) {
  * @param {Object} pos Position of ground in 3D space. (REQUIRED)
  * @param {Object} genmap Map object with heights of ground. (OPTIONAL)
  */
-WHS.init.prototype.addGround = function (type, size, material, pos, genmap) {
+WHS.init.prototype.addGround = function (type, size, material, pos) {
     'use strict';
 
     var scope = {};
 
     var key = 0;
-    WHS.grounds.forEach(function (el, index) {
+    WHS.grounds.forEach(function (el) {
         if (el.type == type) {
             key++;
         }
@@ -1399,15 +1403,15 @@ WHS.init.prototype.addGround = function (type, size, material, pos, genmap) {
         break;
 
     case "shader":
-        scopescopematerialType = new this.threejs.ShaderMaterial(material);
+        scope.materialType = new this.threejs.ShaderMaterial(material);
         break;
 
     case "spritecanvas":
-        scopescopematerialType = new this.threejs.SpriteCanvasMaterial(material);
+        scope.materialType = new this.threejs.SpriteCanvasMaterial(material);
         break;
 
     case "sprite":
-        scopescopematerialType = new this.threejs.SpriteMaterial(material);
+        scope.materialType = new this.threejs.SpriteMaterial(material);
         break;
     }
 
@@ -1490,9 +1494,9 @@ WHS.init.prototype.addGround = function (type, size, material, pos, genmap) {
         scope.visible.scale.x = 1;
         scope.visible.scale.y = 1;
         //scope.visible.position.set(pos.x, pos.y, pos.z);
-        scope.visible.rotation.set(0, Math.PI/180*-180, 0);
+        scope.visible.rotation.set(0, Math.PI / 180 * -180, 0);
         //scope.visible.quaternion.set(0.5, 0.5, 0.5, -0.5);
-            console.log(terrainGeometry.heightsArray);
+        console.log(terrainGeometry.heightsArray);
         scope.physic = new this.cannonjs.Heightfield(terrainGeometry.heightsArray.reverse(), {
             elementSize: 1 // Distance between the data points in X and Y directions
         });
@@ -1505,9 +1509,9 @@ WHS.init.prototype.addGround = function (type, size, material, pos, genmap) {
         scope.body.addShape(scope.physic);
 
 
-        scope.body.quaternion.setFromEuler(Math.PI/180*-90, 0, 0, "XYZ");
+        scope.body.quaternion.setFromEuler(Math.PI / 180 * -90, 0, 0, "XYZ");
 
-        scope.body.position.set(pos.x - size.width/2 + 1, pos.y, pos.z + size.height/2 - 1);
+        scope.body.position.set(pos.x - size.width / 2 + 1, pos.y, pos.z + size.height / 2 - 1);
         //scope.physic.scale.x = 1;
         //scope.physic.scale.y = 1;
         scope.body.name = scope.name;
@@ -1750,7 +1754,7 @@ WHS.init.prototype.animate = function (time, scope) {
 
             scope.composer.render(scope.scene, scope.camera);
 
-            scope.composer.eff.forEach(function (effect, index) {
+            scope.composer.eff.forEach(function (effect) {
                 scope.composer.pass(effect);
             })
 
@@ -1775,15 +1779,17 @@ WHS.init.prototype.animate = function (time, scope) {
 WHS.init.prototype.MakeFirstPerson = function (object, plc, jqselector) {
     'use strict';
 
-    console.log(this);
+
     // TODO: Clean up.
     this.controls = new plc(this.camera, object.body, 10, this);
 
     var controls = this.controls;
 
+     console.log(this);
+
     WHS.API.merge(this.scene, this.controls.getObject());
 
-    $('body').append('<div id="blocker">' +
+    this.rootElement.append('<div id="blocker">' +
         '   <center>' +
         '      <h1>PointerLock</h1>' +
         '   </center>' +
@@ -1791,7 +1797,9 @@ WHS.init.prototype.MakeFirstPerson = function (object, plc, jqselector) {
         '   <p>(W,A,S,D = Move, SPACE = Jump, MOUSE = Look)</p>' +
         '</div>');
 
-    $(jqselector).css({
+    var jqs = $(jqselector);
+
+    jqs.css({
         'color': 'white',
         'background': 'rgba(0,0,0,0.5)',
         'text-align': 'center',
@@ -1807,18 +1815,18 @@ WHS.init.prototype.MakeFirstPerson = function (object, plc, jqselector) {
         'webkitPointerLockElement' in document) {
         var element = document.body;
 
-        this.pointerlockchange = function (event) {
+        this.pointerlockchange = function () {
             if (document.pointerLockElement === element ||
                 document.mozPointerLockElement === element ||
                 document.webkitPointerLockElement === element) {
                 controls.enabled = true;
-                $(jqselector).css({
+                jqs.css({
                     'display': 'none'
                 });
             } else {
                 controls.enabled = false;
 
-                $(jqselector).css({
+                jqs.css({
                     'display': 'block'
                 });
             }
@@ -1829,7 +1837,7 @@ WHS.init.prototype.MakeFirstPerson = function (object, plc, jqselector) {
     document.addEventListener('mozpointerlockchange', this.pointerlockchange, false);
     document.addEventListener('webkitpointerlockchange', this.pointerlockchange, false);
 
-    this.pointerlockerror = function (event) {
+    this.pointerlockerror = function () {
         console.warn("Pointer lock error.");
     }
 
@@ -1837,13 +1845,13 @@ WHS.init.prototype.MakeFirstPerson = function (object, plc, jqselector) {
     document.addEventListener('mozpointerlockerror', this.pointerlockerror, false);
     document.addEventListener('webkitpointerlockerror', this.pointerlockerror, false);
 
-    $(jqselector).on('click', function (event) {
+    jqs.on('click', function () {
         element.requestPointerLock = element.requestPointerLock ||
             element.mozRequestPointerLock ||
             element.webkitRequestPointerLock;
 
         if (/Firefox/i.test(navigator.userAgent)) {
-            var fullscreenchange = function (event) {
+            var fullscreenchange = function () {
                 if (document.fullscreenElement === element ||
                     document.mozFullscreenElement === element ||
                     document.mozFullScreenElement === element) {
@@ -1871,8 +1879,9 @@ WHS.init.prototype.MakeFirstPerson = function (object, plc, jqselector) {
 /**
  * ORBITCONTROLS.
  *
- * @param {Object} object Description. (REQUIRED/OPTIONAL)
+ * @param {Object} object Description. (OPTIONAL)
  */
 WHS.init.prototype.OrbitControls = function (object) {
+    // TODO: add use for object.
     this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 }
