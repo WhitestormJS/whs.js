@@ -1485,17 +1485,27 @@ WHS.init.prototype.addGround = function (type, size, material, pos, genmap) {
 
         scope.visible.scale.x = 1;
         scope.visible.scale.y = 1;
-        scope.visible.position.set(pos.x, pos.y, pos.z);
-        scope.physic = new WHS.API.TrimeshFigure(new this.threejs.Geometry().fromBufferGeometry(terrainGeometry));
+        //scope.visible.position.set(pos.x, pos.y, pos.z);
+        scope.visible.rotation.set(0, Math.PI/180*-180, 0);
+        //scope.visible.quaternion.set(0.5, 0.5, 0.5, -0.5);
+            console.log(terrainGeometry.heightsArray);
+        scope.physic = new this.cannonjs.Heightfield(terrainGeometry.heightsArray.reverse(), {
+            elementSize: 1 // Distance between the data points in X and Y directions
+        });
+
         scope.body = new this.cannonjs.Body({
             mass: 0
         });
 
         scope.body.linearDamping = 0.9; // Default value.
         scope.body.addShape(scope.physic);
-        scope.body.position.set(pos.x, pos.y, pos.z);
-        scope.physic.scale.x = 1;
-        scope.physic.scale.y = 1;
+
+
+        scope.body.quaternion.setFromEuler(Math.PI/180*-90, 0, 0, "XYZ");
+
+        scope.body.position.set(pos.x - size.width/2 + 1, pos.y, pos.z + size.height/2 - 1);
+        //scope.physic.scale.x = 1;
+        //scope.physic.scale.y = 1;
         scope.body.name = scope.name;
         api.merge(this.world, scope.body);
         api.merge(this.scene, scope.visible);

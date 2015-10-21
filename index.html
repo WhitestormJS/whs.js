@@ -56,26 +56,27 @@ var GAME = new WHS.init( THREE, CANNON,
     autoresize: true,
     gravity: {
         x: 0,
-        y: -200,
+        y: -100,
         z: 0
     },
     camera: {
         far: 10000
     }
 });
-
+//console.log(defaultTerrainMap[0]);
 GAME.ground = GAME.addGround("terrain",
 {
     terrain: defaultTerrainMap,
     depth: 100,
-    width: 200,
-    height: 200
+    width: 250,
+    height: 250
 },
 {
         //color: 0x000000,
         vertexColors: THREE.VertexColors,
         shading: THREE.SmoothShading,
         map: api.texture('textures/grasslight-big.jpg'),
+        side: THREE.DoubleSide,
         type: "lambert"
 },
 {
@@ -153,7 +154,7 @@ GAME.person = GAME.addObject("sphere",
     },
     pos: {
         x: 0,
-        y: 500,
+        y: 100,
         z: 0
     }
 });
