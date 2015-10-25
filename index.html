@@ -8,6 +8,7 @@
 <script src="lib/Wagner.js"></script>
 <script src="lib/Wagner.base.js"></script>
 <script src="lib/stats.min.js"></script>
+<script src="lib/SubdivisionModifier.js"></script>
 
 <script src="lib/jquery-1.11.1.min.js"></script>
 <script src="lib/jquery.mousestop.event.js"></script>
@@ -165,5 +166,7 @@ GAME.directionalblurEffect = GAME.addWagner(WAGNER, "motionBlurPass", {}).apply(
 
 GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
 
+
+console.log(WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible));
 </script>
 </html>

@@ -209,6 +209,33 @@ WHS.API.Triangulate = function (thrObj, material) {
     }
 }
 
+WHS.API.isSame = function (a1, a2) {
+  return !(a1.sort() > a2.sort() || a1.sort() < a2.sort());
+}
+
+// TODO: write quick docs for func
+WHS.API.removeDuplicateFaces = function (geometry) {
+    for (var i = 0; i < geometry.faces.length; i++) {
+        var tri = geometry.faces[i];
+        var inds = [tri.a, tri.b, tri.c, tri.d].sort();
+        for (var j = 0; j < i; j++) {
+            var tri_2 = geometry.faces[j];
+            if (tri_2 !== undefined) { // May have already been deleted
+                var inds_2 = [tri_2.a, tri_2.b, tri_2.c, tri_2.d].sort();
+                if (WHS.API.isSame(inds, inds_2)) {
+                    delete geometry.faces[i]; // Sets these faces to undefined
+                    // If duplicate, it is also interior, so remove both
+                    delete geometry.faces[j];
+                }
+            }
+        }
+    }
+    geometry.faces = geometry.faces.filter(function (a) {
+        return a === undefined
+    });
+    return geometry;
+}
+
 // NOTE: WHS API rotateBody *FUNCTION*.
 /**
  * Rotate body. Rotates body object *CANNON.JS*.
@@ -1451,10 +1478,8 @@ WHS.init.prototype.addGround = function (type, size, material, pos) {
         // FUTURE: terrain add.
         // TODO: Fix perfomance by saving terrain like threeJs object with options.
     case "terrain":
-        var detalityX = size.detalityX || 10;
-        var detalityY = size.detalityY || 10;
-        scope.detalityX = detalityX;
-        scope.detalityY = detalityY;
+
+        //api.def(size.detality, 0);
 
         var canvas = document.createElement('canvas');
         canvas.setAttribute("width", size.width);
@@ -1487,7 +1512,14 @@ WHS.init.prototype.addGround = function (type, size, material, pos) {
         scope.custumGeom.normalsNeedUpdate = true;
         scope.custumGeom.computeFaceNormals();
         scope.custumGeom.computeVertexNormals();
-        //scope.custumGeom.mergeVertices();
+        scope.custumGeom.mergeVertices();
+        //scope.custumGeom = api.removeDuplicateFaces(scope.custumGeom);
+
+        if (!isNaN(size.detality)) {
+            scope.modifier = new this.threejs.SubdivisionModifier();
+
+            scope.modifier.modify( scope.custumGeom );
+        }
 
         scope.visible = api.Triangulate(scope.custumGeom, scope.materialType);
 
