@@ -70,7 +70,8 @@ GAME.ground = GAME.addGround("terrain",
     terrain: defaultTerrainMap,
     depth: 100,
     width: 250,
-    height: 250
+    height: 250,
+    detality:1
 },
 {
         //color: 0x000000,
@@ -168,5 +169,7 @@ GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* obj
 
 
 console.log(WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible));
+
+GAME.person.addCompoundFace();
 </script>
 </html>

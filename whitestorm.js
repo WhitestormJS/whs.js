@@ -1351,6 +1351,32 @@ WHS.init.prototype.addObject = function (figureType, options) {
         break;
     }
 
+    scope.addCompoundFace = function() {
+        this.compoundFace = new this.root.threejs.Geometry();
+
+        this.compoundFace.faces.push(new this.root.threejs.Face3(0,1,2));
+
+        var boundingBox = new this.root.threejs.Box3().setFromObject(this.visible);
+
+        var boxAround = new this.root.threejs.BoxGeometry(
+            boundingBox.max.x - boundingBox.min.x,
+            boundingBox.max.y - boundingBox.min.y,
+            boundingBox.max.z - boundingBox.min.z
+        );
+
+        //console.log(boxAround.faces[7]); // Bottom Face.
+
+        var vec1 = boxAround.vertices[boxAround.faces[7].a].add(this.visible.position);
+        var vec2 = boxAround.vertices[boxAround.faces[7].b].add(this.visible.position);
+        var vec3 = boxAround.vertices[boxAround.faces[7].c].add(this.visible.position);
+
+        this.compoundFace.vertices.push(vec1);
+        this.compoundFace.vertices.push(vec2);
+        this.compoundFace.vertices.push(vec3);
+        //this.compoundFace.vertices.push(new this.root.threejs.Vector3(0,1,2));
+        console.log(this.compoundFace); // Bottom Face.
+    }
+
     return scope;
 }
 
@@ -1513,7 +1539,6 @@ WHS.init.prototype.addGround = function (type, size, material, pos) {
         scope.custumGeom.computeFaceNormals();
         scope.custumGeom.computeVertexNormals();
         scope.custumGeom.mergeVertices();
-        //scope.custumGeom = api.removeDuplicateFaces(scope.custumGeom);
 
         if (!isNaN(size.detality)) {
             scope.modifier = new this.threejs.SubdivisionModifier();
