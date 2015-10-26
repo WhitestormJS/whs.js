@@ -71,7 +71,7 @@ GAME.ground = GAME.addGround("terrain",
     depth: 100,
     width: 250,
     height: 250,
-    detality:1
+    //detality:1
 },
 {
         //color: 0x000000,
@@ -168,6 +168,7 @@ GAME.directionalblurEffect = GAME.addWagner(WAGNER, "motionBlurPass", {}).apply(
 GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
 
 
+console.log(500 - (WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible))[0].distance);
 console.log(WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible));
 
 GAME.person.addCompoundFace();

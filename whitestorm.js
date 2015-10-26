@@ -1374,7 +1374,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
         this.compoundFace.vertices.push(vec2);
         this.compoundFace.vertices.push(vec3);
         //this.compoundFace.vertices.push(new this.root.threejs.Vector3(0,1,2));
-        console.log(this.compoundFace); // Bottom Face.
+        //console.log(this.compoundFace); // Bottom Face.
     }
 
     return scope;
@@ -1787,6 +1787,7 @@ WHS.init.prototype.animate = function (time, scope) {
                 WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
                 WHS.objects[i].visible.quaternion.copy(WHS.objects[i].body.quaternion);
             }
+            //WHS.objects[i].addCompoundFace();
         }
 
         scope.world.step(1 / 60);
