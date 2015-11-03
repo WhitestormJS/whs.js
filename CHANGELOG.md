@@ -1,4 +1,7 @@
 ## Changelog
+**current**
+- Ground fixed.
+- Grass added(+-)
 
 **v0.0.2**
 - Terrain fixed. (from 20 fps to 40 fps //collisions//)

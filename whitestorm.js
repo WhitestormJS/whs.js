@@ -115,6 +115,43 @@ WHS.API.ConvexFigure = function (thrObj) {
     }
 }
 
+// NOTE: WHS API PackUvs *FUNCTION*.
+/**
+ * Packing uvs. Generates uvs automatically.
+ *
+ * @param {Object} geometry Figure object geometry *THREE.JS*. (REQUIRED)
+ */
+WHS.API.PackUvs = function( geometry ){
+
+    geometry.computeBoundingBox();
+
+    var max     = geometry.boundingBox.max;
+    var min     = geometry.boundingBox.min;
+
+    var offset  = new THREE.Vector2(0 - min.x, 0 - min.y);
+    var range   = new THREE.Vector2(max.x - min.x, max.y - min.y);
+
+    geometry.faceVertexUvs[0] = [];
+    var faces = geometry.faces;
+
+    for (i = 0; i < geometry.faces.length ; i++) {
+
+      var v1 = geometry.vertices[faces[i].a];
+      var v2 = geometry.vertices[faces[i].b];
+      var v3 = geometry.vertices[faces[i].c];
+
+      geometry.faceVertexUvs[0].push([
+        new THREE.Vector2( ( v1.x + offset.x ) / range.x , ( v1.y + offset.y ) / range.y ),
+        new THREE.Vector2( ( v2.x + offset.x ) / range.x , ( v2.y + offset.y ) / range.y ),
+        new THREE.Vector2( ( v3.x + offset.x ) / range.x , ( v3.y + offset.y ) / range.y )
+      ]);
+
+    }
+
+    geometry.uvsNeedUpdate = true;
+
+}
+
 // NOTE: WHS API TrimeshFigure *FUNCTION*.
 // TODO: Heights array.
 /**
@@ -309,18 +346,27 @@ WHS.ADD.shape = function () {
 WHS.API.getheight = function (pos, diff, terrain) {
     'use strict';
 
-    console.log(terrain);
     diff = diff || 1000;
 
     this.raycaster = new WHS.headers.threejs.Raycaster(
-        new WHS.headers.threejs.Vector3(pos.x, -diff, pos.y).normalize(),
-        new WHS.headers.threejs.Vector3(pos.x, diff, pos.y).normalize()
+        new WHS.headers.threejs.Vector3(pos.x, diff, pos.y),
+        new WHS.headers.threejs.Vector3(0, -1, 0).normalize()
     );
 
-    this.intersect = this.raycaster.intersectObject(terrain);
-    //console.log(new WHS.headers.threejs.Vector3(pos.x, -diff, pos.y));
-    console.log(this);
+    this.intersect = this.raycaster.intersectObject(terrain.visible);
+
     return this.intersect;
+}
+
+WHS.API.rotateGeometry = function(geometry, rotateSet) {
+    var rotationMatrix = new WHS.headers.threejs.Matrix4();
+    rotationMatrix.makeRotationFromEuler(new WHS.headers.threejs.Euler(rotateSet.x, rotateSet.y, rotateSet.z, 'XYZ'));
+
+    for(var v in geometry.vertices) {
+        geometry.vertices[v].applyMatrix4(rotationMatrix);
+    }
+
+    return geometry;
 }
 
 // NOTE: WHS API init *FUNCTION*.
@@ -353,6 +399,9 @@ WHS.init = function (THREE, CANNON, params) {
     WHS.headers.cannonjs = this.cannonjs;
 
     this.params = params;
+
+    this.rWidth = window.innerWidth/1.5;
+    this.rHeight = window.innerHeight/1.5
 
     this.scene = new this.threejs.Scene();
     this.world = new this.cannonjs.World();
@@ -442,11 +491,11 @@ WHS.init = function (THREE, CANNON, params) {
 
     if (this.anaglyph) {
         this.effect = new this.threejs.AnaglyphEffect(this.renderer);
-        this.effect.setSize(window.innerWidth, window.innerHeight);
+        this.effect.setSize(this.rWidth, window.innerHeight);
 
         this.effect.render(this.scene, this.camera);
     } else {
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setSize(this.rWidth, this.rHeight);
         this.renderer.render(this.scene, this.camera);
     }
 
@@ -458,6 +507,11 @@ WHS.init = function (THREE, CANNON, params) {
     $(this.renderer.domElement).attr('');
 
     this.rootElement = $('body');
+
+    $(this.renderer.domElement).css({
+        'width':'100%',
+        'height':'100%'
+    });
 
     this.rootElement.append(this.renderer.domElement);
 
@@ -474,7 +528,11 @@ WHS.init = function (THREE, CANNON, params) {
 
     if (params.wagner) {
         this.composer = new params.wagner.Composer(this.renderer);
-        this.composer.setSize(window.innerWidth, window.innerHeight);
+        this.composer.setSize(this.rWidth, this.rHeight);
+        $(this.composer.domElement).css({
+            'width':'100%',
+            'height':'100%'
+        });
         this.renderer.autoClearColor = true;
         this.composer.reset();
         this.composer.render(this.scene, this.camera);
@@ -490,10 +548,19 @@ WHS.init = function (THREE, CANNON, params) {
             scope.camera.aspect = window.innerWidth / window.innerHeight;
             scope.camera.updateProjectionMatrix();
 
-            scope.renderer.setSize(window.innerWidth, window.innerHeight);
+            scope.renderer.setSize(scope.rWidth, scope.rHeight);
+            $(scope.renderer.domElement).css({
+                'width':'100%',
+                'height':'100%'
+            });
 
-            if (params.wagner)
-                scope.composer.setSize(window.innerWidth, window.innerHeight);
+            if (params.wagner) {
+                scope.composer.setSize(scope.rWidth, scope.rHeight);
+                $(scope.composer.domElement).css({
+                    'width':'100%',
+                    'height':'100%'
+                });
+            }
         });
 
     return scope;
@@ -1394,6 +1461,7 @@ WHS.init.prototype.addGround = function (type, size, material, pos) {
     'use strict';
 
     var scope = {};
+    scope.root = this;
 
     var key = 0;
     WHS.grounds.forEach(function (el) {
@@ -1550,8 +1618,11 @@ WHS.init.prototype.addGround = function (type, size, material, pos) {
 
         scope.visible.scale.x = 1;
         scope.visible.scale.y = 1;
-        //scope.visible.position.set(pos.x, pos.y, pos.z);
-        scope.visible.rotation.set(0, Math.PI / 180 * -180, 0);
+        scope.visible.position.set(pos.x, pos.y, pos.z);
+        api.rotateGeometry(scope.visible.geometry, {x:0, y:Math.PI / 180 * -180, z:0});
+        //scope.visible.rotation.set(0, Math.PI / 180 * -180, 0);
+
+        scope.visible.updateMatrix();
         //scope.visible.quaternion.set(0.5, 0.5, 0.5, -0.5);
         console.log(terrainGeometry.heightsArray);
         scope.physic = new this.cannonjs.Heightfield(terrainGeometry.heightsArray.reverse(), {
@@ -1764,6 +1835,134 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
     return scope;
 }
 
+WHS.init.prototype.addGrass = function (ground) {
+    'use strict';
+
+    var scope = {};
+    scope.root = this;
+
+
+    //for (var i = 0; i < planeGeometry.vertices.length; i++) {
+    //    planeGeometry.vertices[i].z = Math.sin(planeGeometry.vertices[i].x)*20;
+    //};
+
+    //planeGeometry.applyMatrix( new THREE.Matrix4().setPosition( new THREE.Vector3( 0, 15, 0 ) ) );
+
+    var geometry = new THREE.Geometry();
+
+    //var x = 0;
+    //var z = 0;
+    var y = 0;
+    var rot = (Math.PI*2)/3;
+
+    var grassnum = 0;
+
+    var mesh = new THREE.Mesh(new THREE.Geometry());
+
+    for (var x = 0; x < 15; x++) {
+      for (var z = 0; z < 10; z++) {
+
+        var intr = (WHS.API.getheight({x:x, y:z}, 500, ground))[0];
+
+        y = intr.point.y;
+        var faceInGeometry = new THREE.Geometry();
+        faceInGeometry.faces.push(new THREE.Face3(0,1,2));
+        faceInGeometry.vertices.push(intr.object.geometry.vertices[intr.face.a]);
+        faceInGeometry.vertices.push(intr.object.geometry.vertices[intr.face.c]);
+        faceInGeometry.vertices.push(intr.object.geometry.vertices[intr.face.b]);
+        faceInGeometry.computeFaceNormals();
+
+        /*var faceIn = new THREE.Mesh(
+          faceInGeometry, // Face geomtery.
+          new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.DoubleSide})
+        );
+
+        var vecN = intr.point.clone().add(faceInGeometry.faces[0].normal);
+        var rotN = faceInGeometry.faces[0].normal; //.normalize();
+
+        var nlGeometry = new THREE.Geometry();
+        nlGeometry.vertices = [
+          intr.point,
+          vecN.clone()
+        ];
+
+        var normalLine = new THREE.Line(
+          nlGeometry,
+          new THREE.MeshBasicMaterial({color: 0x000000})
+        );*/
+
+        mesh.position.set(0,0,0);
+        mesh.geometry.vertices.push(intr.object.geometry.vertices[intr.face.a].clone());
+        mesh.geometry.vertices.push(intr.object.geometry.vertices[intr.face.c].clone());
+        mesh.geometry.vertices.push(intr.object.geometry.vertices[intr.face.a].clone().add(faceInGeometry.faces[0].normal));
+        mesh.geometry.vertices.push(intr.object.geometry.vertices[intr.face.c].clone().add(faceInGeometry.faces[0].normal));
+
+        mesh.geometry.faces.push(new THREE.Face3(grassnum, grassnum + 1, grassnum + 2));
+        mesh.geometry.faces.push(new THREE.Face3(grassnum + 1, grassnum + 2, grassnum + 3));
+
+        mesh.geometry.faceVertexUvs[ 0 ].push( [
+            new THREE.Vector2( 0, 0 ),
+            new THREE.Vector2( 1, 0 ),
+            new THREE.Vector2( 0, 1 )
+        ] );
+
+        mesh.geometry.faceVertexUvs[ 0 ].push( [
+            new THREE.Vector2( 0, 0 ),
+            new THREE.Vector2( 1, 1 ),
+            new THREE.Vector2( 0, 1 )
+        ] );
+
+        //scope.root.scene.add(faceIn);
+        //scope.root.scene.add(normalLine);
+
+        grassnum += 4;
+      }
+    };
+
+    mesh.geometry.uvsNeedUpdate = true;
+
+    geometry.merge(mesh.geometry, mesh.matrix);
+
+    var planes = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+       map: THREE.ImageUtils.loadTexture( "textures/thingrass.png" ),
+       side: THREE.DoubleSide,
+       transparent: true
+     }));
+    planes.matrixAutoUpdate = false;
+    scope.root.scene.add(planes);
+
+
+    scope.update = function() {
+        requestAnimationFrame(scope.update);
+
+        var delta = 0;
+        var oldTime = 0;
+
+        var time = new Date().getTime();
+        delta = time - oldTime;
+        oldTime = time;
+
+        if (isNaN(delta) || delta > 1000 || delta == 0 ) {
+            delta = 1000/60;
+        }
+
+        //if (uniforms) {
+        //    uniforms.globalTime.value += delta * 0.0012;
+            //uniforms.effector.value = WHS.objects[0].visible.position;
+
+            /*if (uniforms2) {
+                uniforms2.globalTime.value = uniforms.globalTime.value;
+                uniforms2.effector.value = uniforms.effector.value;
+            }*/
+
+        //}
+    }
+
+    scope.update();
+
+    return scope;
+}
+
 // NOTE: WHS animate *FUNCTION*
 // [x]TODO: Fix animate update callback.
 /**
@@ -1771,6 +1970,17 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
  */
 WHS.init.prototype.animate = function (time, scope) {
     'use strict';
+
+    this.delta = 0,
+    this.oldTimer = 0;
+
+    this.timer = new Date().getTime();
+    this.delta = this.timer - this.oldTime;
+    this.oldTimer = this.timer;
+
+    if (isNaN(this.delta) || this.delta > 1000 || this.delta == 0 ) {
+    this.delta = 1000/60;
+  }
 
     function reDraw() {
         if (scope.stats)

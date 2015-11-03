@@ -16,6 +16,7 @@
 <script src="lib/AnaglyphWebGLRenderer.js"></script>
 <script src="lib/helvetiker.typeface.js"></script>
 <script src="lib/firstPersonControls.js"></script>
+<script src="lib/OrbitControls.js"></script>
 
 <!-- Generator files -->
         <script src="lib/FastBlur.js"></script>
@@ -167,10 +168,10 @@ GAME.directionalblurEffect = GAME.addWagner(WAGNER, "motionBlurPass", {}).apply(
 
 GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
 
+//console.log(500 - (WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible))[0].distance);
+//console.log(WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible));
+GAME.addGrass(GAME.ground);
 
-console.log(500 - (WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible))[0].distance);
-console.log(WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible));
-
-GAME.person.addCompoundFace();
+//GAME.person.addCompoundFace();
 </script>
 </html>
