@@ -170,7 +170,16 @@ GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* obj
 
 //console.log(500 - (WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible))[0].distance);
 //console.log(WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible));
-GAME.addGrass(GAME.ground);
+var grasscoords = [];
+
+for (var x = 0; x < 15; x++) {
+  for (var y = 0; y < 10; y++) {
+    grasscoords.push({x:x, y:y});
+  }
+}
+
+
+GAME.addGrass(GAME.ground, {coords: grasscoords});
 
 //GAME.person.addCompoundFace();
 </script>
