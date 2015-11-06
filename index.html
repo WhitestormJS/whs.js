@@ -1,186 +1,188 @@
 <!doctype html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>WhitestormJS development</title>
-<script src="lib/three.js"></script>
-<script src="lib/cannon.js"></script>
-<script src="lib/Wagner.js"></script>
-<script src="lib/Wagner.base.js"></script>
-<script src="lib/stats.min.js"></script>
-<script src="lib/SubdivisionModifier.js"></script>
+  <meta charset="utf-8">
+  <title>WhitestormJS development</title>
+  <script src="lib/three.js"></script>
+  <script src="lib/cannon.js"></script>
+  <script src="lib/Wagner.js"></script>
+  <script src="lib/Wagner.base.js"></script>
+  <script src="lib/stats.min.js"></script>
+  <script src="lib/SubdivisionModifier.js"></script>
 
-<script src="lib/jquery-1.11.1.min.js"></script>
-<script src="lib/jquery.mousestop.event.js"></script>
-<script src="lib/CannonDebugRenderer.js"></script>
-<script src="lib/AnaglyphWebGLRenderer.js"></script>
-<script src="lib/helvetiker.typeface.js"></script>
-<script src="lib/firstPersonControls.js"></script>
-<script src="lib/OrbitControls.js"></script>
+  <script src="lib/jquery-1.11.1.min.js"></script>
+  <script src="lib/jquery.mousestop.event.js"></script>
+  <script src="lib/CannonDebugRenderer.js"></script>
+  <script src="lib/AnaglyphWebGLRenderer.js"></script>
+  <script src="lib/helvetiker.typeface.js"></script>
+  <script src="lib/firstPersonControls.js"></script>
+  <script src="lib/OrbitControls.js"></script>
 
-<!-- Generator files -->
-        <script src="lib/FastBlur.js"></script>
-		<script src="lib/randoms/default.js"></script>
-		<script src="lib/randoms/mersenne-twister.js"></script>
+  <!-- Generator files -->
+  <script src="lib/FastBlur.js"></script>
+  <script src="lib/randoms/default.js"></script>
+  <script src="lib/randoms/mersenne-twister.js"></script>
 
-		<script src="lib/generators/perlinnoise.js"></script>
+  <script src="lib/generators/perlinnoise.js"></script>
 
-		<script src="lib/colors/mountains.js"></script>
-		<script src="lib/colors/mountains2.js"></script>
-		<script src="lib/colors/blackwhite.js"></script>
+  <script src="lib/colors/mountains.js"></script>
+  <script src="lib/colors/mountains2.js"></script>
+  <script src="lib/colors/blackwhite.js"></script>
 
 
-		<script src="lib/filters/blur.js"></script>
-		<script src="lib/filters/gameterrain.js"></script>
-		<script src="lib/filters/circle.js"></script>
+  <script src="lib/filters/blur.js"></script>
+  <script src="lib/filters/gameterrain.js"></script>
+  <script src="lib/filters/circle.js"></script>
 
-		<script src="lib/verticeseffects/destructure.js"></script>
-		<script src="lib/verticeseffects/depthnoise.js"></script>
+  <script src="lib/verticeseffects/destructure.js"></script>
+  <script src="lib/verticeseffects/depthnoise.js"></script>
 
-		<script src="lib/terraingen.js"></script>
+  <script src="lib/terraingen.js"></script>
 
-<script src="terrain/default_terrain.js"></script>
+  <script src="terrain/default_terrain.js"></script>
 </head>
 
 <body>
 </body>
 <script src="whitestorm.js"></script>
 <script defer>
+  // NOTE: Make person bigger 10 times
 
-// NOTE: Make person bigger 10 times
-
-var GAME = new WHS.init( THREE, CANNON,
-{
+  var GAME = new WHS.init(THREE, CANNON, {
     anaglyph: false,
     //helper: true,
     stats: "fps", // fps, ms, mb
     wagner: WAGNER,
     autoresize: true,
     gravity: {
-        x: 0,
-        y: -100,
-        z: 0
+      x: 0,
+      y: -100,
+      z: 0
     },
     camera: {
-        far: 10000
+      far: 10000
     }
-});
-//console.log(defaultTerrainMap[0]);
-GAME.ground = GAME.addGround("terrain",
-{
+  });
+  //console.log(defaultTerrainMap[0]);
+  GAME.ground = GAME.addGround("terrain", {
     terrain: defaultTerrainMap,
     depth: 100,
     width: 250,
     height: 250,
     //detality:1
-},
-{
-        //color: 0x000000,
-        vertexColors: THREE.VertexColors,
-        shading: THREE.SmoothShading,
-        map: api.texture('textures/grasslight-big.jpg'),
-        side: THREE.DoubleSide,
-        type: "lambert"
-},
-{
+  }, {
+    //color: 0x000000,
+    vertexColors: THREE.VertexColors,
+    shading: THREE.SmoothShading,
+    map: api.texture('textures/grasslight-big.jpg'),
+    side: THREE.DoubleSide,
+    type: "lambert"
+  }, {
     x: 0,
     y: 0,
     z: 0
-});
+  });
 
-// NOTE: Default light.
-GAME.light1 = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
-                                              intensity: 2},
-{
+  // NOTE: Default light.
+  GAME.light1 = GAME.addLight("directional", {
+    color: 0xffffff, //0x00ff00,
+    intensity: 2
+  }, {
     x: 0, // 100,
     y: 1, // 30,
     z: 0, // 100
-},
-{
+  }, {
     x: 0,
     y: 0,
     z: 0
-});
+  });
 
-// NOTE: Test light.
-GAME.light2 = GAME.addLight("point", { color: 0xffffff,
-                                              intensity: 4, distance: 450},
-{
+  // NOTE: Test light.
+  GAME.light2 = GAME.addLight("point", {
+    color: 0xffffff,
+    intensity: 4,
+    distance: 450
+  }, {
     x: 0, //  100,
     y: 0, //  30,
     z: 0, //  100
-},
-{
+  }, {
     x: 0,
     y: 0,
     z: 0
-});
+  });
 
-GAME.fog = GAME.addFog("fogexp2", {
+  GAME.fog = GAME.addFog("fogexp2", {
     hex: 0x777777,
     near: 0.015,
     far: 250,
     density: 0.015
-});
+  });
 
-/*GAME.cube = new WHS.create("cube",
-{
-    geometryOptions: {
-        width: 100,
-        height: 100,
-        depth: 100
-    },
-    mass: 5,
-    onlyvis: false,
-    materialOptions: {
-        color: 0xffffff,
-        type: "basic",
-        map: WHS.API.texture('textures/box.jpg')
-    },
-    pos: {
-        x: 0,
-        y: 10,
-        z: 0
-    }
-});*/
+  /*GAME.cube = new WHS.create("cube",
+  {
+      geometryOptions: {
+          width: 100,
+          height: 100,
+          depth: 100
+      },
+      mass: 5,
+      onlyvis: false,
+      materialOptions: {
+          color: 0xffffff,
+          type: "basic",
+          map: WHS.API.texture('textures/box.jpg')
+      },
+      pos: {
+          x: 0,
+          y: 10,
+          z: 0
+      }
+  });*/
 
-GAME.person = GAME.addObject("sphere",
-{
+  GAME.person = GAME.addObject("sphere", {
     geometryOptions: {
-        radius:3
+      radius: 3
     },
     mass: 10,
     onlyvis: false,
     materialOptions: {
-        color: 0xffffff,
-        type: "basic"
+      color: 0xffffff,
+      type: "basic"
     },
     pos: {
-        x: 0,
-        y: 100,
-        z: 0
+      x: 0,
+      y: 100,
+      z: 0
     }
-});
+  });
 
-GAME.zoomEffect = GAME.addWagner(WAGNER, "zoomBlurPass", {}).apply();
-GAME.multipassEffect = GAME.addWagner(WAGNER, "vignettePass", {}).apply();
-GAME.directionalblurEffect = GAME.addWagner(WAGNER, "motionBlurPass", {}).apply();
+  GAME.zoomEffect = GAME.addWagner(WAGNER, "zoomBlurPass", {}).apply();
+  GAME.multipassEffect = GAME.addWagner(WAGNER, "vignettePass", {}).apply();
+  GAME.directionalblurEffect = GAME.addWagner(WAGNER, "motionBlurPass", {}).apply();
 
-GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
+  GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
 
-//console.log(500 - (WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible))[0].distance);
-//console.log(WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible));
-var grasscoords = [];
+  //console.log(500 - (WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible))[0].distance);
+  //console.log(WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible));
+  var grasscoords = [];
 
-for (var x = 0; x < 15; x++) {
-  for (var y = 0; y < 10; y++) {
-    grasscoords.push({x:x, y:y});
+  for (var x = 0; x < 15; x++) {
+    for (var y = 0; y < 10; y++) {
+      grasscoords.push({
+        x: x,
+        y: y
+      });
+    }
   }
-}
 
 
-GAME.addGrass(GAME.ground, {coords: grasscoords});
+  GAME.addGrass(GAME.ground, {
+    coords: grasscoords
+  });
 
-//GAME.person.addCompoundFace();
+  //GAME.person.addCompoundFace();
 </script>
+
 </html>
