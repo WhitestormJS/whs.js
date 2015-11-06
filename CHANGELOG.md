@@ -1,5 +1,5 @@
 ## Changelog
-**current**
+**v0.0.3**
 - Ground fixed.
 - Grass added(+-)
 - PackUvs *func* for add UVs for custom geometry.
