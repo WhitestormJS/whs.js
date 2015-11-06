@@ -10,6 +10,7 @@
 
 #####Code style check:   [![Codacy Badge](https://api.codacy.com/project/badge/8f5d1eab0569415b983bf0c1b7323d68)](https://www.codacy.com/app/siteprogcom/WhitestormJS)
 
+
 ----------------------------------------------------------------------------------------------------------------
 
 **WhitestormJS** is a library to combine [**Three.Js**](https://github.com/mrdoob/three.js/) with [**Cannon.js**](https://github.com/schteppe/cannon.js/). It ***makes WebGL*** development **easy**.
@@ -54,7 +55,7 @@ var GAME = new WHS.init( THREE, CANNON,
  * [Material](http://192.241.128.187/current/examples/basic_material.html)  (Basic example with material.)
  * [Object/Icosahedron](http://192.241.128.187/current/examples/basic_object.html)  (Icosahedron from **THREE.JS** example.)
 
-### Author: 
+### Author:
 @sasha240100 [![forthebadge](https://img.shields.io/twitter/url/http/alexbuzin.me.svg?style=social)](https://twitter.com/intent/tweet?text=Check+this+developer:&url=http%3A%2F%2Falexbuzin.me)
 
 #### Changelog: [Look here](https://github.com/sasha240100/WhitestormJS/blob/master/CHANGELOG.md)
