@@ -1,8 +1,8 @@
-/*jslint white: true*/
-
 /**
- * Javascript document by Alexander Buzin (2014-2015)
- */
+ * © Alexander Buzin, 2014-2015
+ * Site: http://alexbuzin.me/
+ * Email: alexbuzin88@gmail.com
+*/
 
 // [x]TODO: RESTRUCTURIZE.
 // [x]TODO: RESTRUCTURIZE threejs and cannonjs library calling.
