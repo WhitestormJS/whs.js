@@ -582,7 +582,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
   scope.root = this;
 
-  var opt = options;
+  var opt = {};
 
   scope.whsobject = true;
 
@@ -605,6 +605,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
   opt.material = options.materialOptions || {};
   opt.geometry = options.geometryOptions || {};
+  console.log(opt);
 
   switch (opt.material.type) {
     case "basic":
@@ -626,7 +627,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       scope.materialType = new this.threejs.MeshFaceMaterial(opt.material.materials);
       break;
     case "lambert":
-      this.materialType = new this.threejs.MeshLambertMaterial(opt.material);
+      scope.materialType = new this.threejs.MeshLambertMaterial(opt.material);
       break;
     case "normal":
       scope.materialType = new this.threejs.MeshNormalMaterial(opt.material);
@@ -1612,9 +1613,217 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         scope.modifier = new this.threejs.SubdivisionModifier();
 
         scope.modifier.modify(scope.custumGeom);
+        scope.custumGeom.verticesNeedUpdate = true;
+        scope.custumGeom.elementsNeedUpdate = true;
+        scope.custumGeom.normalsNeedUpdate = true;
+        scope.custumGeom.computeFaceNormals();
+        scope.custumGeom.computeVertexNormals();
+        scope.custumGeom.mergeVertices();
       }
 
-      scope.visible = api.Triangulate(scope.custumGeom, scope.materialType);
+      // TESTINV. ===
+
+      //var bumpTexture = new THREE.ImageUtils.loadTexture( 'images/heightmap.png' );
+    	//bumpTexture.wrapS = bumpTexture.wrapT = THREE.RepeatWrapping;
+    	// magnitude of normal displacement
+    	var bumpScale   = 2.0;
+
+    	var oceanTexture = new THREE.ImageUtils.loadTexture( 'textures/terrain/dirt-512.jpg' );
+    	oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
+
+    	var sandyTexture = new THREE.ImageUtils.loadTexture( 'textures/terrain/sand-512.jpg' );
+    	sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
+
+    	var grassTexture = new THREE.ImageUtils.loadTexture( 'textures/terrain/grass-512.jpg' );
+    	grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
+
+    	var rockyTexture = new THREE.ImageUtils.loadTexture( 'textures/terrain/rock-512.jpg' );
+    	rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
+
+    	var snowyTexture = new THREE.ImageUtils.loadTexture( 'textures/terrain/snow-512.jpg' );
+    	snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
+
+
+    	// use "this." to create global object
+    	var customUniforms = {
+    		//bumpTexture:	{ type: "t", value: bumpTexture },
+    		bumpScale:	    { type: "f", value: bumpScale },
+    		oceanTexture:	{ type: "t", value: oceanTexture },
+    		sandyTexture:	{ type: "t", value: sandyTexture },
+    		grassTexture:	{ type: "t", value: grassTexture },
+    		rockyTexture:	{ type: "t", value: rockyTexture },
+    		snowyTexture:	{ type: "t", value: snowyTexture },
+    	};
+
+
+      var customUN = Object.assign(
+      {
+        ambient  : { type: "c", value: new THREE.Color( 0xdddddd ) },
+        emissive : { type: "c", value: new THREE.Color( 0xeeeeee ) },
+        wrapRGB  : { type: "v3", value: new THREE.Vector3( 1, 1, 1 ) },
+        oceanTexture:	{ type: "t", value: oceanTexture },
+        sandyTexture:	{ type: "t", value: sandyTexture },
+        grassTexture:	{ type: "t", value: grassTexture },
+        rockyTexture:	{ type: "t", value: rockyTexture },
+        snowyTexture:	{ type: "t", value: snowyTexture },
+        //light: true,
+        //fog: true
+      }, THREE.ShaderLib['basic'].uniforms);
+
+      var shopts = {
+          uniforms: customUN,
+          vertexShader: [
+
+      			"#define TERRAIN;",
+            //"#define USE_SHADOWMAP;",
+            //"#define USE_FOG;",
+            //"#define MAX_SHADOWS 2;",
+
+      			"varying vec3 vLightFront;",
+
+      			"#ifdef DOUBLE_SIDED",
+
+      			"	varying vec3 vLightBack;",
+
+      			"#endif",
+            '',
+            'varying float vAmount;',
+            'varying vec2 vUv;',
+            '',
+
+      			THREE.ShaderChunk[ "map_pars_vertex" ],
+      			THREE.ShaderChunk[ "lightmap_pars_vertex" ],
+      			THREE.ShaderChunk[ "envmap_pars_vertex" ],
+      			THREE.ShaderChunk[ "lights_lambert_pars_vertex" ],
+      			THREE.ShaderChunk[ "color_pars_vertex" ],
+      			THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
+      			THREE.ShaderChunk[ "skinning_pars_vertex" ],
+      			THREE.ShaderChunk[ "shadowmap_pars_vertex" ],
+      			THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+
+      			"void main() {",
+      				THREE.ShaderChunk[ "map_vertex" ],
+      				THREE.ShaderChunk[ "lightmap_vertex" ],
+      				THREE.ShaderChunk[ "color_vertex" ],
+
+      				THREE.ShaderChunk[ "morphnormal_vertex" ],
+      				THREE.ShaderChunk[ "skinbase_vertex" ],
+      				THREE.ShaderChunk[ "skinnormal_vertex" ],
+      				THREE.ShaderChunk[ "defaultnormal_vertex" ],
+
+      				THREE.ShaderChunk[ "morphtarget_vertex" ],
+      				THREE.ShaderChunk[ "skinning_vertex" ],
+      				THREE.ShaderChunk[ "default_vertex" ],
+      				THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+
+    				  //THREE.ShaderChunk[ "worldpos_vertex" ],
+      				THREE.ShaderChunk[ "envmap_vertex" ],
+      				THREE.ShaderChunk[ "lights_lambert_vertex" ],
+              THREE.ShaderChunk[ "worldpos_vertex" ],
+      				THREE.ShaderChunk[ "shadowmap_vertex" ],
+              '	vUv = uv;',
+              '	vAmount = position.y * 0.005 + 0.1;',
+
+              'vec3 newPosition = position;',
+              '	gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );',
+
+      			"}"
+
+      		].join("\n"),
+
+      		fragmentShader: [
+
+      			"uniform float opacity;",
+
+      			"varying vec3 vLightFront;",
+
+      			"#ifdef DOUBLE_SIDED",
+
+      			"	varying vec3 vLightBack;",
+
+      			"#endif",
+            'uniform sampler2D oceanTexture;',
+            'uniform sampler2D sandyTexture;',
+            'uniform sampler2D grassTexture;',
+            'uniform sampler2D rockyTexture;',
+            'uniform sampler2D snowyTexture;',
+
+      			THREE.ShaderChunk[ "color_pars_fragment" ],
+      			THREE.ShaderChunk[ "map_pars_fragment" ],
+      			THREE.ShaderChunk[ "alphamap_pars_fragment" ],
+      			THREE.ShaderChunk[ "lightmap_pars_fragment" ],
+      			THREE.ShaderChunk[ "envmap_pars_fragment" ],
+      			THREE.ShaderChunk[ "fog_pars_fragment" ],
+      			THREE.ShaderChunk[ "shadowmap_pars_fragment" ],
+      			THREE.ShaderChunk[ "specularmap_pars_fragment" ],
+      			THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
+            '',
+            'varying vec2 vUv;',
+            '',
+            'varying float vAmount;',
+            '',
+      			"void main() {",
+
+
+
+            '	vec4 water = (smoothstep(0.01, 0.25, vAmount) - smoothstep(0.24, 0.26, vAmount)) * texture2D( oceanTexture, vUv * 0.1 );',
+            '	vec4 sandy = (smoothstep(0.24, 0.27, vAmount) - smoothstep(0.28, 0.31, vAmount)) * texture2D( sandyTexture, vUv * 0.1 );',
+            '	vec4 grass = (smoothstep(0.28, 0.32, vAmount) - smoothstep(0.35, 0.40, vAmount)) * texture2D( grassTexture, vUv * 0.2 );',
+            '	vec4 rocky = (smoothstep(0.30, 0.40, vAmount) - smoothstep(0.40, 0.70, vAmount)) * texture2D( rockyTexture, vUv * 0.2 );',
+            '	vec4 snowy = (smoothstep(0.42, 0.45, vAmount))                                   * texture2D( snowyTexture, vUv * 0.1 );',
+            '	gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0) + water + sandy + grass + rocky + snowy; ',
+
+            //'	gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0)',
+
+      				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
+      				THREE.ShaderChunk[ "map_fragment" ],
+      				THREE.ShaderChunk[ "alphamap_fragment" ],
+      				THREE.ShaderChunk[ "alphatest_fragment" ],
+      				THREE.ShaderChunk[ "specularmap_fragment" ],
+
+      			"	#ifdef DOUBLE_SIDED",
+
+      					//"float isFront = float( gl_FrontFacing );",
+      					//"gl_FragColor.xyz *= isFront * vLightFront + ( 1.0 - isFront ) * vLightBack;",
+
+      			"		if ( gl_FrontFacing )",
+      			"			gl_FragColor.xyz *= vLightFront;",
+      			"		else",
+      			"			gl_FragColor.xyz *= vLightBack;",
+
+      			"	#else",
+
+      			"		gl_FragColor.xyz *= vLightFront;",
+
+      			"	#endif",
+
+      				THREE.ShaderChunk[ "lightmap_fragment" ],
+      				THREE.ShaderChunk[ "color_fragment" ],
+      				//THREE.ShaderChunk[ "envmap_fragment" ],
+      				THREE.ShaderChunk[ "shadowmap_fragment" ],
+
+      				THREE.ShaderChunk[ "linear_to_gamma_fragment" ],
+
+      				THREE.ShaderChunk[ "fog_fragment" ],
+
+      			"}"
+
+      		].join("\n"),
+
+        side: THREE.DoubleSide,
+        shading: THREE.SmoothShading,
+      };
+
+      var customMaterial = new THREE.ShaderMaterial(shopts);
+      //console.log(shopts.vertexShader);
+      //console.log(shopts.fragmentShader);
+
+      console.log(customUN);
+
+      // TESTINV. ===
+
+
+      scope.visible = api.Triangulate(scope.custumGeom, customMaterial); //scope.materialType);
 
       scope.visible.scale.x = 1;
       scope.visible.scale.y = 1;
@@ -1628,7 +1837,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
       scope.visible.updateMatrix();
       //scope.visible.quaternion.set(0.5, 0.5, 0.5, -0.5);
-      console.log(terrainGeometry.heightsArray);
+      //console.log(terrainGeometry.heightsArray);
       scope.physic = new this.cannonjs.Heightfield(terrainGeometry.heightsArray.reverse(), {
         elementSize: 1 // Distance between the data points in X and Y directions
       });
@@ -1692,7 +1901,7 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
 
   switch (type) {
     case "ambient":
-      scope.light = new this.threejs.AmbientLight(options.color);
+      scope.light = new this.threejs.AmbientLight(0xffffff);
       break;
 
     case "area":
@@ -1762,11 +1971,11 @@ WHS.init.prototype.addFog = function(type, params) {
 
   switch (type) {
     case "fog":
-      this.scene.fog = new this.threejs.Fog(params.hex, params.near, params.far);
+      scope = new this.threejs.Fog(params.hex, params.near, params.far);
       break;
 
     case "fogexp2":
-      this.scene.fog = new this.threejs.FogExp2(params.hex, params.density);
+      scope = new this.threejs.FogExp2(params.hex, params.density);
       break;
   }
 

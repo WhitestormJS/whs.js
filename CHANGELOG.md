@@ -1,4 +1,10 @@
 ## Changelog
+**current**
+- Fog fixed.
+- Shader terrain material added.
+- Shadows fixed.
+- Lambert material issue fixed.
+
 **v0.0.3**
 - Ground fixed.
 - Grass added(+-)
