@@ -106,15 +106,15 @@ void main()
       far: 10000
     }
   });
-  //console.log(defaultTerrainMap[0]);
+
   GAME.ground = GAME.addGround("terrain", {
     terrain: defaultTerrainMap,
     depth: 100,
     width: 250,
     height: 250,
+    useDeafultMaterial: true
     //detality:1
   }, {
-    //color: 0x000000,
     vertexColors: THREE.VertexColors,
     shading: THREE.SmoothShading,
     map: api.texture('textures/grasslight-big.jpg'),
@@ -154,20 +154,6 @@ void main()
     y: 0,
     z: 0
   });
-  /*GAME.light3 = GAME.addLight("ambient", {
-    color: 0xffffff,
-    intensity: 4,
-    distance: 450
-  }, {
-    x: 0, //  100,
-    y: 0, //  30,
-    z: 0, //  100
-  }, {
-    x: 0,
-    y: 0,
-    z: 0
-  });*/
-
 
   GAME.fog = GAME.addFog("fogexp2", {
     hex: 0x777777,
@@ -176,12 +162,12 @@ void main()
     density: 0.015
   });
 
-  /*GAME.cube = new WHS.create("cube",
+  GAME.cube = GAME.addObject("cube",
   {
       geometryOptions: {
-          width: 100,
-          height: 100,
-          depth: 100
+          width: 2,
+          height: 2,
+          depth: 2
       },
       mass: 5,
       onlyvis: false,
@@ -191,11 +177,11 @@ void main()
           map: WHS.API.texture('textures/box.jpg')
       },
       pos: {
-          x: 0,
-          y: 10,
+          x: 10,
+          y: 70,
           z: 0
       }
-  });*/
+  });
 
   GAME.person = GAME.addObject("sphere", {
     geometryOptions: {
@@ -220,12 +206,10 @@ void main()
 
   GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
 
-  //console.log(500 - (WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible))[0].distance);
-  //console.log(WHS.API.getheight({x:0, y:0}, 500, GAME.ground.visible));
   var grasscoords = [];
 
-  for (var x = 0; x < 15; x++) {
-    for (var y = 0; y < 10; y++) {
+  for (var x = 0; x < 20; x++) {
+    for (var y = 0; y < 15; y++) {
       grasscoords.push({
         x: x,
         y: y
