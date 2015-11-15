@@ -1,49 +1,19 @@
 <!doctype html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>WhitestormJS development</title>
-<script src="../lib/three.js"></script>
-<script src="../lib/cannon.js"></script>
-<script src="../lib/Wagner.js"></script>
-<script src="../lib/Wagner.base.js"></script>
-<script src="../lib/stats.min.js"></script>
+  <meta charset="utf-8">
+  <title>WhitestormJS development</title>
+  <script src="../libs/three.js"></script>
+  <script src="../libs/cannon.js"></script>
+  <script src="../libs/Wagner.js"></script>
 
-<script src="../lib/jquery-1.11.1.min.js"></script>
-<script src="../lib/jquery.mousestop.event.js"></script>
-<script src="../lib/CannonDebugRenderer.js"></script>
-<script src="../lib/AnaglyphWebGLRenderer.js"></script>
-<script src="../lib/helvetiker.typeface.js"></script>
-<script src="../lib/firstPersonControls.js"></script>
-<script src="../lib/OrbitControls.js"></script>
-
-<!-- Generator files -->
-        <script src="../lib/FastBlur.js"></script>
-		<script src="../lib/randoms/default.js"></script>
-		<script src="../lib/randoms/mersenne-twister.js"></script>
-
-		<script src="../lib/generators/perlinnoise.js"></script>
-
-		<script src="../lib/colors/mountains.js"></script>
-		<script src="../lib/colors/mountains2.js"></script>
-		<script src="../lib/colors/blackwhite.js"></script>
-
-
-		<script src="../lib/filters/blur.js"></script>
-		<script src="../lib/filters/gameterrain.js"></script>
-		<script src="../lib/filters/circle.js"></script>
-
-		<script src="../lib/verticeseffects/destructure.js"></script>
-		<script src="../lib/verticeseffects/depthnoise.js"></script>
-
-		<script src="../lib/terraingen.js"></script>
-
-<script src="../terrain/default_terrain.js"></script>
+  <script src="../assets/terrain/default_terrain.js"></script>
 </head>
 
 <body>
 </body>
-<script src="../whitestorm.js"></script>
+<script src="../build/whitestorm.js"></script>
 <script defer>
 
 // NOTE: Basic scene with sphere and ground.
@@ -54,6 +24,7 @@ var GAME = new WHS.init( THREE, CANNON,
     helper: true,
     stats: "fps", // fps, ms, mb
     wagner: WAGNER,
+    autoresize: true,
     gravity: {
         x: 0,
         y: -200,

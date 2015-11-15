@@ -50,7 +50,7 @@ var GAME = new WHS.init( THREE, CANNON,
 [![Join the chat at https://gitter.im/sasha240100/WhitestormJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sasha240100/WhitestormJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Examples:
- * [FPS](http://192.241.128.187/current/)  (First person example with wagner effects and terrain.)
+ * [FPS](http://192.241.128.187/current/examples/fps.html)  (First person example with wagner effects and terrain.)
  * [Basic](http://192.241.128.187/current/examples/basic.html)  (Basic "Hello world!" example.)
  * [Material](http://192.241.128.187/current/examples/basic_material.html)  (Basic example with material.)
  * [Object/Icosahedron](http://192.241.128.187/current/examples/basic_object.html)  (Icosahedron from **THREE.JS** example.)

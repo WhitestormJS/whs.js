@@ -1,9 +1,14 @@
 ## Changelog
-**current**
-- Fog fixed.
+**v0.0.4**
 - Shader terrain material added.
 - Shadows fixed.
 - Lambert material issue fixed.
+- *index.html -> examples/fps.html*.
+- autoresize for *basic_object* example fixed.
+- Source tree restructured. (All code now in *src* folder)
+- *build* folder consist of *whitestorm.js*(original) and *whitestorm.min.js*(minified).
+- *textures -> assets/textures, terrain -> assets/terrain*
+- Three.js and cannon.js moved to *libs*.
 
 **v0.0.3**
 - Ground fixed.
