@@ -4,58 +4,16 @@
 <head>
   <meta charset="utf-8">
   <title>WhitestormJS development</title>
-  <script src="libs/three.js"></script>
-  <script src="libs/cannon.js"></script>
-  <script src="libs/Wagner.js"></script>
+  <script src="../libs/three.js"></script>
+  <script src="../libs/cannon.js"></script>
+  <script src="../libs/Wagner.js"></script>
 
-  <script src="assets/terrain/default_terrain.js"></script>
+  <script src="../assets/terrain/default_terrain.js"></script>
 </head>
 
 <body>
 </body>
-<script id="vertexShader" type="x-shader/x-vertex">
-uniform sampler2D bumpTexture;
-uniform float bumpScale;
-
-varying float vAmount;
-varying vec2 vUV;
-
-void main()
-{
-	vUV = uv;
-	//vec4 bumpData = texture2D( bumpTexture, uv );
-
-	vAmount = position.y * 0.005 + 0.1; // bumpData.r; assuming map is grayscale it doesn't matter if you use r, g, or b.
-
-	// move the position along the normal
-    vec3 newPosition = position; //+ normal * bumpScale * vAmount;
-
-	gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-}
-</script>
-<script id="fragmentShader" type="x-shader/x-vertex">
-uniform sampler2D oceanTexture;
-uniform sampler2D sandyTexture;
-uniform sampler2D grassTexture;
-uniform sampler2D rockyTexture;
-uniform sampler2D snowyTexture;
-
-varying vec2 vUV;
-
-varying float vAmount;
-
-void main()
-{
-	vec4 water = (smoothstep(0.01, 0.25, vAmount) - smoothstep(0.24, 0.26, vAmount)) * texture2D( oceanTexture, vUV * 0.1 );
-	vec4 sandy = (smoothstep(0.24, 0.27, vAmount) - smoothstep(0.28, 0.31, vAmount)) * texture2D( sandyTexture, vUV * 0.1 );
-	vec4 grass = (smoothstep(0.28, 0.32, vAmount) - smoothstep(0.35, 0.40, vAmount)) * texture2D( grassTexture, vUV * 0.2 );
-	vec4 rocky = (smoothstep(0.30, 0.50, vAmount) - smoothstep(0.40, 0.70, vAmount)) * texture2D( rockyTexture, vUV * 0.2 );
-	vec4 snowy = (smoothstep(0.50, 0.65, vAmount))                                   * texture2D( snowyTexture, vUV * 0.1 );
-	gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0) + water + sandy + grass + rocky + snowy; //, 1.0);
-  //gl_FragColor = vec4(vAmount, 0.0, 0.0, 1.0);
-}
-</script>
-<script src="build/whitestorm.js"></script>
+<script src="../build/whitestorm.js"></script>
 <script defer>
   // NOTE: Make person bigger 10 times
 
