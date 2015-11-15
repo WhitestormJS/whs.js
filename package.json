@@ -25,5 +25,9 @@
   "bugs": {
     "url": "https://github.com/sasha240100/WhitestormJS/issues"
   },
-  "homepage": "https://github.com/sasha240100/WhitestormJS#readme"
+  "homepage": "https://github.com/sasha240100/WhitestormJS#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-replace-task": "^0.11.0"
+  }
 }
