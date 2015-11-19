@@ -23,6 +23,12 @@ WHS.init.prototype.addGrass = function(ground, options) {
 
   scope.grassMeshes = [];
 
+  var globalGrass = new THREE.Mesh(
+    new THREE.Geometry(),
+    new THREE.MeshFaceMaterial()
+  );
+
+
   scope.opts.coords.forEach(function(coord) {
     var mesh = new THREE.Mesh(
       new THREE.Geometry(),
@@ -129,11 +135,17 @@ WHS.init.prototype.addGrass = function(ground, options) {
 
     //scope.root.scene.add(faceIn);
     //scope.root.scene.add(normalLine);
-    scope.root.scene.add(mesh);
+    //scope.root.scene.add(mesh);
+
+    globalGrass.geometry.merge(mesh.geometry, mesh.matrix);
+    globalGrass.material.materials.push(mesh.material);
     scope.grassMeshes.push(mesh);
   });
 
+  scope.root.scene.add(globalGrass);
+
   // Section under construction. (animation of Grass).
+  // #TODO:0 Add grass animation.
   scope.update = function() {
     /*requestAnimationFrame(scope.update);
 

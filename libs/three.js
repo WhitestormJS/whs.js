@@ -4848,7 +4848,7 @@ THREE.Matrix4.prototype = {
 		var n31 = te[ 2 ], n32 = te[ 6 ], n33 = te[ 10 ], n34 = te[ 14 ];
 		var n41 = te[ 3 ], n42 = te[ 7 ], n43 = te[ 11 ], n44 = te[ 15 ];
 
-		//TODO: make this more efficient
+		//#TODO:230 make this more efficient
 		//( based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm )
 
 		return (
@@ -15205,7 +15205,7 @@ THREE.SkinnedMesh = function ( geometry, material, useVertexTexture ) {
 
 	// init bones
 
-	// TODO: remove bone creation as there is no reason (other than
+	// #TODO:240 remove bone creation as there is no reason (other than
 	// convenience) for THREE.SkinnedMesh to do this.
 
 	var bones = [];
@@ -22390,7 +22390,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 		uniforms.psColor.value = material.color;
 		uniforms.opacity.value = material.opacity;
 		uniforms.size.value = material.size;
-		uniforms.scale.value = _canvas.height / 2.0; // TODO: Cache this.
+		uniforms.scale.value = _canvas.height / 2.0; // #TODO:30 Cache this.
 
 		uniforms.map.value = material.map;
 
@@ -23327,14 +23327,14 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 			} else if ( blending === THREE.SubtractiveBlending ) {
 
-				// TODO: Find blendFuncSeparate() combination
+				// #TODO:60 Find blendFuncSeparate() combination
 				_gl.enable( _gl.BLEND );
 				_gl.blendEquation( _gl.FUNC_ADD );
 				_gl.blendFunc( _gl.ZERO, _gl.ONE_MINUS_SRC_COLOR );
 
 			} else if ( blending === THREE.MultiplyBlending ) {
 
-				// TODO: Find blendFuncSeparate() combination
+				// #TODO:70 Find blendFuncSeparate() combination
 				_gl.enable( _gl.BLEND );
 				_gl.blendEquation( _gl.FUNC_ADD );
 				_gl.blendFunc( _gl.ZERO, _gl.SRC_COLOR );
@@ -27314,7 +27314,7 @@ THREE.Curve.Utils = {
 };
 
 
-// TODO: Transformation for Curves?
+// #TODO:160 Transformation for Curves?
 
 /**************************************************************
  *	3D Curves
@@ -27366,7 +27366,7 @@ THREE.CurvePath.prototype.checkConnection = function() {
 };
 
 THREE.CurvePath.prototype.closePath = function() {
-	// TODO Test
+	// #TODO:150 Test
 	// and verify for vector3 (needs to implement equals)
 	// Add a line curve if start and end of lines are not connected
 	var startPoint = this.curves[0].getPoint(0);
@@ -27761,7 +27761,7 @@ THREE.PathActions = {
 	ELLIPSE: 'ellipse'
 };
 
-// TODO Clean up PATH API
+// #TODO:40 Clean up PATH API
 
 // Create path using straight lines to connect all points
 // - vectors: array of Vector2
@@ -30798,7 +30798,7 @@ THREE.ExtrudeGeometry.prototype.addShape = function ( shape, options ) {
 		// SETUP TNB variables
 
 		// Reuse TNB from TubeGeomtry for now.
-		// TODO1 - have a .isClosed in spline?
+		// #TODO:250 - have a .isClosed in spline?
 
 		splineTube = options.frames !== undefined ? options.frames : new THREE.TubeGeometry.FrenetFrames(extrudePath, steps, false);
 
@@ -32142,7 +32142,7 @@ THREE.TorusKnotGeometry = function ( radius, tube, radialSegments, tubularSegmen
 		for ( var j = 0; j < tubularSegments; ++ j ) {
 
 			var v = j / tubularSegments * 2 * Math.PI;
-			var cx = - tube * Math.cos( v ); // TODO: Hack: Negating it so it faces outside.
+			var cx = - tube * Math.cos( v ); // #TODO:100 Hack: Negating it so it faces outside.
 			var cy = tube * Math.sin( v );
 
 			var pos = new THREE.Vector3();
@@ -32293,7 +32293,7 @@ THREE.TubeGeometry = function ( path, segments, radius, radialSegments, closed )
 
 			v = j / radialSegments * 2 * Math.PI;
 
-			cx = - radius * Math.cos( v ); // TODO: Hack: Negating it so it faces outside.
+			cx = - radius * Math.cos( v ); // #TODO:110 Hack: Negating it so it faces outside.
 			cy = radius * Math.sin( v );
 
 			pos2.copy( pos );

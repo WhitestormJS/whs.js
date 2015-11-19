@@ -24,7 +24,7 @@ WHS.API.merge = function(box, rabbits) {
     } else if (!Array.isArray(rabbits) && box)
       box.add(rabbits);
     else
-    // FIXME: Fix caller function line number.
+    // #FIXME:0 Fix caller function line number.
       console.error("box is undefined. Line " + (new Error).lineNumber + ". Func merge.", [box, rabbits]);
   }
 }

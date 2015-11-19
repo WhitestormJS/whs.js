@@ -21,7 +21,6 @@
 var GAME = new WHS.init( THREE, CANNON,
 {
     anaglyph: false,
-    helper: true,
     stats: "fps", // fps, ms, mb
     wagner: WAGNER,
     autoresize: true,
@@ -32,17 +31,13 @@ var GAME = new WHS.init( THREE, CANNON,
     },
     camera: {
         far: 10000,
-        y: 10,
-        z: 30
+        y: 50,
+        z: 300
     }
 });
 
-GAME.cube = GAME.addObject("torusknot",
+GAME.cube = GAME.addModel("../assets/models/teapot.js",
 {
-    geometryOptions: {
-        radius:5,
-        tube: 2
-    },
     mass: 10,
     onlyvis: false,
     materialOptions: {
@@ -58,6 +53,24 @@ GAME.cube = GAME.addObject("torusknot",
     }
 });
 
+GAME.sphere = GAME.addObject("sphere", {
+  geometryOptions: {
+    radius: 5
+  },
+  onlyvis: false,
+  materialOptions: {
+    type: "basic",
+    color: 0xff0000
+  },
+  mass: 5,
+  pos: {
+    x: 0,
+    y: 300,
+    z: 0
+  }
+})
+
+
 GAME.ground = GAME.addGround("smooth",
 {
     width: 250,
@@ -67,7 +80,7 @@ GAME.ground = GAME.addGround("smooth",
         //color: 0x000000,
         vertexColors: THREE.VertexColors,
         shading: THREE.SmoothShading,
-        map: api.texture('../textures/grasslight-big.jpg'),
+        map: api.texture('../assets/textures/grasslight-big.jpg'),
         type: "basic"
 },
 {

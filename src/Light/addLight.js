@@ -14,7 +14,7 @@
  * @return {Object} Scope.
  */
 WHS.init.prototype.addLight = function(type, opts, pos, target) {
-  // TODO: add lights.
+  // #TODO:170 add lights.
 
   var scope = {};
 
@@ -66,7 +66,7 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       scope.light = new this.threejs.SpotLight(options.color, options.intensity, options.distance, options.angle);
       scope.light.castShadow = true;
 
-      // FIXME: Shadow default parameters.
+      // #FIXME:20 Shadow default parameters.
       scope.light.shadowMapWidth = 1024;
       scope.light.shadowMapHeight = 1024;
 

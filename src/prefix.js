@@ -4,10 +4,11 @@
  * Email: alexbuzin88@gmail.com
 */
 
-// [x]TODO: RESTRUCTURIZE.
-// [x]TODO: RESTRUCTURIZE threejs and cannonjs library calling.
-// [x]TODO: Add stats.
-// TODO: Add http://underscorejs.org/.
+// [x]#TODO:140 RESTRUCTURIZE.
+// [x]#TODO:130 RESTRUCTURIZE threejs and cannonjs library calling.
+// [x]#TODO:20 Add stats.
+// #TODO:10 Add http://underscorejs.org/.
+// DOING:0 clean all console.logs.
 
 /* ================ MODERNIZING BROWSER API IF NOT EXIST ========================== */
 

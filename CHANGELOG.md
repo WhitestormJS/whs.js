@@ -1,4 +1,10 @@
 ## Changelog
+**current**
+- Basic_material example fixed.
+- addModel() *func* for adding an object from JSON file.
+- basic_material *example*
+- *THREE.JSONLoader -> API*
+
 **v0.0.4**
 - Shader terrain material added.
 - Shadows fixed.

@@ -96,7 +96,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.segmentA, 32);
       api.def(opt.geometry.segmentB, 32);
 
-      // FIXME: more complex use of key sholud be added.
+      // #FIXME:40 more complex use of key sholud be added.
       WHS.objects.forEach(function(el) {
         if (el.type == "sphere") {
           key++;
@@ -797,7 +797,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
     case "tube":
 
 
-      // FIXME: fix to WHS.API (not here)
+      // #FIXME:30 fix to WHS.API (not here)
       scope.CustomSinCurve = this.threejs.Curve.create(
         function(scale) { //custom curve constructor
           this.scale = scale || 1;

@@ -126,7 +126,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       api.merge(this.scene, scope.visible);
       break;
       // FUTURE: terrain add.
-      // TODO: Fix perfomance by saving terrain like threeJs object with options.
+      // #TODO:90 Fix perfomance by saving terrain like threeJs object with options.
     case "terrain":
 
       //api.def(size.detality, 0);

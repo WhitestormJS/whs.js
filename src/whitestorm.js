@@ -203,7 +203,7 @@ WHS.init = function(THREE, CANNON, params) {
   return scope;
 }
 
-// [x]TODO: Fix animate update callback.
+// [x]#TODO:80 Fix animate update callback.
 /**
  * ANIMATE.
  */
@@ -233,8 +233,13 @@ WHS.init.prototype.animate = function(time, scope) {
 
     for (var i = 0; i < Object.keys(WHS.objects).length; i++) {
       if (!WHS.objects[i].onlyvis) {
-        WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
-        WHS.objects[i].visible.quaternion.copy(WHS.objects[i].body.quaternion);
+
+        if (WHS.objects[i].visible)
+          WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
+
+        if (WHS.objects[i].visible.quaternion)
+          WHS.objects[i].visible.quaternion.copy(WHS.objects[i].body.quaternion);
+
       }
       //WHS.objects[i].addCompoundFace();
     }
@@ -243,8 +248,6 @@ WHS.init.prototype.animate = function(time, scope) {
 
     if (scope.anaglyph)
       scope.effect.render(scope.scene, scope.camera);
-    else {}
-    //scope.renderer.render(scope.scene, scope.camera);
 
     if (scope.controls) {
       scope.controls.update(Date.now() - scope.time);

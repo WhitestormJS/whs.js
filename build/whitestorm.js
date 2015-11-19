@@ -8378,10 +8378,11 @@ var DESTRUCTURE_EFFECT = {
 
 
 
-// [x]TODO: RESTRUCTURIZE.
-// [x]TODO: RESTRUCTURIZE threejs and cannonjs library calling.
-// [x]TODO: Add stats.
-// TODO: Add http://underscorejs.org/.
+// [x]#TODO:140 RESTRUCTURIZE.
+// [x]#TODO:130 RESTRUCTURIZE threejs and cannonjs library calling.
+// [x]#TODO:20 Add stats.
+// #TODO:10 Add http://underscorejs.org/.
+// DOING:0 clean all console.logs.
 
 /* ================ MODERNIZING BROWSER API IF NOT EXIST ========================== */
 
@@ -8445,7 +8446,7 @@ WHS.API.ConvexFigure = function(thrObj) {
 
 
 
-// [x]FIXME: Modify def for third parameter.
+// [x]#FIXME:10 Modify def for third parameter.
 /**
  * Defines variable. Makes convexPolyhedron object *CANNON.JS* from *THREE.JS* firure.
  *
@@ -8506,6 +8507,13 @@ WHS.API.isSame = function(a1, a2) {
 
 
 
+// #DONE:0 JSONLoader don't work.
+WHS.API.JSONLoader = function() {
+    return new THREE.JSONLoader();
+}
+
+
+
 /**
  * MERGE.
  *
@@ -8526,7 +8534,7 @@ WHS.API.merge = function(box, rabbits) {
         } else if (!Array.isArray(rabbits) && box)
             box.add(rabbits);
         else
-        // FIXME: Fix caller function line number.
+        // #FIXME:0 Fix caller function line number.
             console.error("box is undefined. Line " + (new Error).lineNumber + ". Func merge.", [box, rabbits]);
     }
 }
@@ -8743,7 +8751,7 @@ WHS.API.Triangulate = function(thrObj, material) {
 
 
 
-// TODO: Heights array.
+// #TODO:120 Heights array.
 /**
  * Trimesh figure. Makes trimesh object *CANNON.JS* from *THREE.JS* firure.
  *
@@ -8990,7 +8998,7 @@ WHS.init = function(THREE, CANNON, params) {
     return scope;
 }
 
-// [x]TODO: Fix animate update callback.
+// [x]#TODO:80 Fix animate update callback.
 /**
  * ANIMATE.
  */
@@ -9020,8 +9028,13 @@ WHS.init.prototype.animate = function(time, scope) {
 
         for (var i = 0; i < Object.keys(WHS.objects).length; i++) {
             if (!WHS.objects[i].onlyvis) {
-                WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
-                WHS.objects[i].visible.quaternion.copy(WHS.objects[i].body.quaternion);
+
+                if (WHS.objects[i].visible)
+                    WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
+
+                if (WHS.objects[i].visible.quaternion)
+                    WHS.objects[i].visible.quaternion.copy(WHS.objects[i].body.quaternion);
+
             }
             //WHS.objects[i].addCompoundFace();
         }
@@ -9030,8 +9043,6 @@ WHS.init.prototype.animate = function(time, scope) {
 
         if (scope.anaglyph)
             scope.effect.render(scope.scene, scope.camera);
-        else {}
-        //scope.renderer.render(scope.scene, scope.camera);
 
         if (scope.controls) {
             scope.controls.update(Date.now() - scope.time);
@@ -9062,6 +9073,137 @@ WHS.init.prototype.animate = function(time, scope) {
     this.update = reDraw;
 
     this.update();
+}
+
+
+
+// #DONE:10 addModel *func*.
+/**
+ * Figure.
+ *
+ * @param {String} pathToModel path to JSON model. (REQUIRED)
+ * @param {Object} options Figure options. (REQUIRED)
+ * @return {Object} Scope.
+ */
+WHS.init.prototype.addModel = function(pathToModel, options) {
+    'use strict';
+
+    var scope = {}; // INIT LOCAL SCOPE.
+
+    scope.root = this;
+
+    var opt = {};
+
+    scope.whsobject = true;
+    scope.releaseTime = new Date().getTime();
+
+    opt.color = options.color || 0xffffff;
+    opt.mass = options.mass || 0;
+
+    opt.pos = typeof options.pos == "object" ? options.pos : {
+        x: 0,
+        y: 0,
+        z: 0
+    };
+
+    opt.rot = typeof options.pos == "object" ? options.pos : {
+        x: 0,
+        y: 0,
+        z: 0
+    };
+
+    opt.material = options.materialOptions || {};
+    opt.geometry = options.geometryOptions || {};
+    console.log(opt);
+
+    switch (opt.material.type) {
+        case "basic":
+            scope.materialType = new this.threejs.MeshBasicMaterial(opt.material);
+            break;
+        case "linebasic":
+            scope.materialType = new this.threejs.LineBasicMaterial(opt.material);
+            break;
+        case "linedashed":
+            scope.materialType = new this.threejs.LineDashedMaterial(opt.material);
+            break;
+        case "material":
+            scope.materialType = new this.threejs.Material(opt.material);
+            break;
+        case "depth":
+            scope.materialType = new this.threejs.MeshDepthMaterial(opt.material);
+            break;
+        case "face":
+            scope.materialType = new this.threejs.MeshFaceMaterial(opt.material.materials);
+            break;
+        case "lambert":
+            scope.materialType = new this.threejs.MeshLambertMaterial(opt.material);
+            break;
+        case "normal":
+            scope.materialType = new this.threejs.MeshNormalMaterial(opt.material);
+            break;
+        case "phong":
+            scope.materialType = new this.threejs.MeshPhongMaterial(opt.material);
+            break;
+        case "pointcloud":
+            scope.materialType = new this.threejs.PointCloudMaterial(opt.material);
+            break;
+        case "rawshader":
+            scope.materialType = new this.threejs.RawShaderMaterial(opt.material);
+            break;
+        case "shader":
+            scope.materialType = new this.threejs.ShaderMaterial(opt.material);
+            break;
+        case "spritecanvas":
+            scope.materialType = new this.threejs.SpriteCanvasMaterial(opt.material);
+            break;
+        case "sprite":
+            scope.materialType = new this.threejs.SpriteMaterial(opt.material);
+            break;
+    }
+
+    var key = 0;
+
+    WHS.objects.forEach(function(el) {
+        if (el.type == "model") {
+            key++;
+        }
+    });
+
+    scope.type = "model";
+    scope.name = opt.name || "model" + key;
+
+    //(new THREE.JSONLoader())
+    api.JSONLoader().load(pathToModel, function(data) {
+        data.computeFaceNormals();
+        data.computeVertexNormals();
+
+        // Visualization.
+        scope.visible = new scope.root.threejs.Mesh(data, scope.materialType);
+        scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
+        scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+        api.merge(scope.root.scene, scope.visible);
+
+        // Physics.
+        if (!options.onlyvis) {
+            scope.physic = new WHS.API.TrimeshFigure(data);
+
+            scope.body = new scope.root.cannonjs.Body({
+                mass: opt.mass
+            });
+
+            scope.body.linearDamping = 0.9; //default
+            scope.body.addShape(scope.physic);
+            scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
+            scope.body.quaternion.copy(scope.visible.quaternion);
+            scope.body.name = scope.name;
+
+            api.merge(scope.root.world, scope.body);
+            WHS.objects.push(scope);
+        }
+
+    });
+
+    return scope;
 }
 
 
@@ -9158,7 +9300,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
             api.def(opt.geometry.segmentA, 32);
             api.def(opt.geometry.segmentB, 32);
 
-            // FIXME: more complex use of key sholud be added.
+            // #FIXME:40 more complex use of key sholud be added.
             WHS.objects.forEach(function(el) {
                 if (el.type == "sphere") {
                     key++;
@@ -9859,7 +10001,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
         case "tube":
 
 
-            // FIXME: fix to WHS.API (not here)
+            // #FIXME:30 fix to WHS.API (not here)
             scope.CustomSinCurve = this.threejs.Curve.create(
                 function(scale) { //custom curve constructor
                     this.scale = scale || 1;
@@ -9967,6 +10109,12 @@ WHS.init.prototype.addGrass = function(ground, options) {
 
     scope.grassMeshes = [];
 
+    var globalGrass = new THREE.Mesh(
+        new THREE.Geometry(),
+        new THREE.MeshFaceMaterial()
+    );
+
+
     scope.opts.coords.forEach(function(coord) {
         var mesh = new THREE.Mesh(
             new THREE.Geometry(),
@@ -10073,11 +10221,17 @@ WHS.init.prototype.addGrass = function(ground, options) {
 
         //scope.root.scene.add(faceIn);
         //scope.root.scene.add(normalLine);
-        scope.root.scene.add(mesh);
+        //scope.root.scene.add(mesh);
+
+        globalGrass.geometry.merge(mesh.geometry, mesh.matrix);
+        globalGrass.material.materials.push(mesh.material);
         scope.grassMeshes.push(mesh);
     });
 
+    scope.root.scene.add(globalGrass);
+
     // Section under construction. (animation of Grass).
+    // #TODO:0 Add grass animation.
     scope.update = function() {
         /*requestAnimationFrame(scope.update);
 
@@ -10222,7 +10376,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
             api.merge(this.scene, scope.visible);
             break;
             // FUTURE: terrain add.
-            // TODO: Fix perfomance by saving terrain like threeJs object with options.
+            // #TODO:90 Fix perfomance by saving terrain like threeJs object with options.
         case "terrain":
 
             //api.def(size.detality, 0);
@@ -10549,7 +10703,7 @@ WHS.init.prototype.addFog = function(type, params) {
  * @return {Object} Scope.
  */
 WHS.init.prototype.addLight = function(type, opts, pos, target) {
-    // TODO: add lights.
+    // #TODO:170 add lights.
 
     var scope = {};
 
@@ -10601,7 +10755,7 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
             scope.light = new this.threejs.SpotLight(options.color, options.intensity, options.distance, options.angle);
             scope.light.castShadow = true;
 
-            // FIXME: Shadow default parameters.
+            // #FIXME:20 Shadow default parameters.
             scope.light.shadowMapWidth = 1024;
             scope.light.shadowMapHeight = 1024;
 
@@ -10707,7 +10861,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, plc, jqselector) {
     'use strict';
 
 
-    // TODO: Clean up.
+    // #TODO:50 Clean up.
     this.controls = new plc(this.camera, object.body, 10, this);
 
     var controls = this.controls;
@@ -10810,6 +10964,6 @@ WHS.init.prototype.MakeFirstPerson = function(object, plc, jqselector) {
  * @param {Object} object Description. (OPTIONAL)
  */
 WHS.init.prototype.OrbitControls = function(object) {
-    // TODO: add use for object.
+    // #TODO:180 add use for object.
     this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 }
