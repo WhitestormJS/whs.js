@@ -22,18 +22,18 @@
   "lists": [
     {
       "name": "NOTE",
-      "hidden": true
-    },
-    {
-      "name": "XXX",
-      "hidden": true
+      "hidden": false
     },
     {
       "name": "TODO",
       "hidden": false
     },
     {
-      "name": "DOING",
+      "name": "XXX",
+      "hidden": false
+    },
+    {
+      "name": "FIXME",
       "hidden": false
     },
     {
@@ -41,7 +41,7 @@
       "hidden": false
     },
     {
-      "name": "FIXME",
+      "name": "DOING",
       "hidden": false
     }
   ],
