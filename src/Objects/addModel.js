@@ -4,7 +4,7 @@
  * Email: alexbuzin88@gmail.com
 */
 
-// #DONE:10 addModel *func*.
+// #DONE:20 addModel *func*.
 /**
  * Figure.
  *
@@ -108,7 +108,6 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
     scope.visible = new scope.root.threejs.Mesh(data, scope.materialType);
     scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
     scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
-    api.merge(scope.root.scene, scope.visible);
 
     // Physics.
     if (!options.onlyvis) {
@@ -123,10 +122,9 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
       scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
       scope.body.quaternion.copy(scope.visible.quaternion);
       scope.body.name = scope.name;
-
-      api.merge(scope.root.world, scope.body);
-      WHS.objects.push(scope);
     }
+
+    scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
   });
 

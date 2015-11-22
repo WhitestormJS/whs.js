@@ -4,6 +4,8 @@
 - addModel() *func* for adding an object from JSON file.
 - basic_material *example*
 - *THREE.JSONLoader -> API*
+- Added Wrap function.
+
 
 **v0.0.4**
 - Shader terrain material added.

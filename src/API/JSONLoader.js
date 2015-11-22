@@ -4,7 +4,7 @@
  * Email: alexbuzin88@gmail.com
 */
 
-// #DONE:0 JSONLoader don't work.
+// #DONE:10 JSONLoader don't work.
 WHS.API.JSONLoader = function() {
   return new THREE.JSONLoader();
 }

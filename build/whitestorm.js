@@ -8507,7 +8507,7 @@ WHS.API.isSame = function(a1, a2) {
 
 
 
-// #DONE:0 JSONLoader don't work.
+// #DONE:10 JSONLoader don't work.
 WHS.API.JSONLoader = function() {
     return new THREE.JSONLoader();
 }
@@ -8798,6 +8798,42 @@ WHS.API.TrimeshFigure = function(thrObj, heightsNeed) {
 }
 
 
+// DONE:0 Make Wrap function.
+WHS.API.Wrap = function(SCOPE, mesh, body) {
+    'use strict';
+
+    this._figure = mesh;
+    this._object = body;
+    this._scope = SCOPE;
+    this._key = WHS.objects.length;
+
+    api.merge(this._scope.root.scene, this._figure);
+    if (this._object) api.merge(this._scope.root.world, this._object);
+
+    WHS.objects.push(this._scope);
+
+    return this;
+}
+
+WHS.API.Wrap.prototype.remove = function() {
+    this._scope.root.scene.remove(this._figure);
+    this._scope.root.world.remove(this._object);
+
+    WHS.objects.splice(this._key, 1);
+
+    return this;
+}
+
+WHS.API.Wrap.prototype.retrieve = function() {
+    this._scope.root.scene.add(this._figure);
+    this._scope.root.world.add(this._object);
+
+    WHS.objects.push(this._scope);
+
+    return this;
+}
+
+
 
 /**
  * Init.
@@ -9077,7 +9113,7 @@ WHS.init.prototype.animate = function(time, scope) {
 
 
 
-// #DONE:10 addModel *func*.
+// #DONE:20 addModel *func*.
 /**
  * Figure.
  *
@@ -9181,7 +9217,6 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
         scope.visible = new scope.root.threejs.Mesh(data, scope.materialType);
         scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
         scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
-        api.merge(scope.root.scene, scope.visible);
 
         // Physics.
         if (!options.onlyvis) {
@@ -9196,10 +9231,9 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
             scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.body.quaternion.copy(scope.visible.quaternion);
             scope.body.name = scope.name;
-
-            api.merge(scope.root.world, scope.body);
-            WHS.objects.push(scope);
         }
+
+        scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
     });
 
@@ -9315,8 +9349,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new this.cannonjs.Sphere(opt.geometry.radius);
 
@@ -9330,12 +9362,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
 
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "cube":
@@ -9359,8 +9390,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new this.cannonjs.Box(new this.cannonjs.Vec3(opt.geometry.width * 0.5, opt.geometry.height * 0.5, opt.geometry.depth * 0.5));
                 scope.body = new this.cannonjs.Body({
@@ -9375,12 +9404,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), (Math.PI / 180) * opt.rot.y);
                 scope.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), (Math.PI / 180) * opt.rot.z);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "cylinder":
@@ -9405,8 +9433,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new this.cannonjs.Cylinder(opt.geometry.radiusTop, opt.geometry.radiusBottom, opt.geometry.height, opt.geometry.radiusSegments);
                 scope.body = new this.cannonjs.Body({
@@ -9417,12 +9443,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "dodecahedron":
@@ -9445,8 +9470,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
                 scope.body = new this.cannonjs.Body({
@@ -9457,12 +9480,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "extrude":
@@ -9484,8 +9506,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.name = this.name;
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
-
-            api.merge(this.scene, scope.visible);
             console.log(scope.visible.geometry);
 
             if (!options.onlyvis) {
@@ -9498,12 +9518,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "icosahedron":
@@ -9526,8 +9545,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
                 scope.body = new this.cannonjs.Body({
@@ -9538,12 +9555,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "lathe":
@@ -9565,8 +9581,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
                 this.body = new this.cannonjs.Body({
@@ -9577,12 +9591,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "octahedron":
@@ -9605,8 +9618,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
                 scope.body = new this.cannonjs.Body({
@@ -9617,12 +9628,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "parametric":
@@ -9646,8 +9656,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
                 scope.body = new this.cannonjs.Body({
@@ -9658,12 +9666,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = this.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "plane":
@@ -9688,8 +9695,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
                 scope.body = new this.cannonjs.Body({
@@ -9700,12 +9705,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "polyhedron":
@@ -9730,8 +9734,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
                 scope.body = new this.cannonjs.Body({
@@ -9742,12 +9744,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "ring":
@@ -9775,8 +9776,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = this.cannonjs.Trimesh.createTorus(opt.geometry.outerRadius, (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2, opt.geometry.thetaSegments, opt.geometry.phiSegments);
                 scope.physic.scale.z = 1 / (opt.geometry.outerRadius - opt.geometry.innerRadius) * 2;
@@ -9788,14 +9787,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-
-
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "shape":
@@ -9815,19 +9811,15 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             scope.onlyvis = true;
 
             // WARN: console | 2d to 3d.
             console.warn('This is not physic object. 2D!', [scope]);
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "tetrahedron":
-
-
             api.def(opt.geometry.radius, 1);
             api.def(opt.geometry.detail, 0);
 
@@ -9843,7 +9835,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.name = scope.name;
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
-            api.merge(this.scene, scope.visible);
 
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -9855,17 +9846,14 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "text":
-
-
             opt.geometry.parameters = opt.geometry.parameters || {};
 
             api.def(opt.geometry.text, "Hello World!");
@@ -9892,8 +9880,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
                 scope.body = new this.cannonjs.Body({
@@ -9904,12 +9890,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "torus":
@@ -9935,8 +9920,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = this.cannonjs.Trimesh.createTorus(opt.geometry.radius, opt.geometry.tube, opt.geometry.radialSegments, opt.geometry.tubularSegments);
                 scope.body = new this.cannonjs.Body({
@@ -9947,12 +9930,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "torusknot":
@@ -9978,8 +9960,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, scope.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
                 scope.body = new this.cannonjs.Body({
@@ -9990,12 +9970,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "tube":
@@ -10037,8 +10016,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
 
-            api.merge(this.scene, this.visible);
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
                 scope.body = new this.cannonjs.Body({
@@ -10049,16 +10026,16 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
                 scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-                api.merge(this.world, scope.body);
             } else {
                 scope.onlyvis = true;
             }
 
-            WHS.objects.push(scope);
+            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
     }
 
+    // TODO: Fix code style here.
     scope.addCompoundFace = function() {
         this.compoundFace = new this.root.threejs.Geometry();
 
@@ -10083,6 +10060,14 @@ WHS.init.prototype.addObject = function(figureType, options) {
         this.compoundFace.vertices.push(vec3);
         //this.compoundFace.vertices.push(new this.root.threejs.Vector3(0,1,2));
         //console.log(this.compoundFace); // Bottom Face.
+    }
+
+    scope.remove = function() {
+        return scope.wrap.remove();
+    }
+
+    scope.retrieve = function() {
+        return scope.wrap.retrieve();
     }
 
     return scope;

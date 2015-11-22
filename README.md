@@ -1,4 +1,4 @@
-# WhiteStormJS
+# WhitestormJS
 [![npm](https://img.shields.io/npm/v/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs) [![bower](https://img.shields.io/bower/v/whitestormjs.svg)](https://github.com/sasha240100/WhitestormJS) [![Gitter](https://img.shields.io/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/sasha240100/WhitestormJS)
 
 [![Issues](https://img.shields.io/npm/dt/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs)
@@ -54,6 +54,7 @@ var GAME = new WHS.init( THREE, CANNON,
  * [Basic](http://192.241.128.187/current/examples/basic.html)  (Basic "Hello world!" example.)
  * [Material](http://192.241.128.187/current/examples/basic_material.html)  (Basic example with material.)
  * [Object/Icosahedron](http://192.241.128.187/current/examples/basic_object.html)  (Icosahedron from **THREE.JS** example.)
+ * [Object/Model](http://192.241.128.187/current/examples/basic_model.html)  (Teapot model with **THREE.JS** JSONLoader.)
 
 ### Author:
 @sasha240100 [![forthebadge](https://img.shields.io/twitter/url/http/alexbuzin.me.svg?style=social)](https://twitter.com/intent/tweet?text=Check+this+developer:&url=http%3A%2F%2Falexbuzin.me)
