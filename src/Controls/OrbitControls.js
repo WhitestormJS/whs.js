@@ -10,6 +10,6 @@
  * @param {Object} object Description. (OPTIONAL)
  */
 WHS.init.prototype.OrbitControls = function(object) {
-  // #TODO:180 add use for object.
+  // #TODO:170 add use for object.
   this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
 }

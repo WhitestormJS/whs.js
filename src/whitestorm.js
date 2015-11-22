@@ -201,7 +201,7 @@ WHS.init = function(THREE, CANNON, params) {
   return scope;
 }
 
-// [x]#TODO:80 Fix animate update callback.
+// [x]#TODO:70 Fix animate update callback.
 /**
  * ANIMATE.
  */

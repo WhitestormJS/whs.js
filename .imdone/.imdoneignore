@@ -1,2 +1,2 @@
-libs
-build
+/libs/
+/build/

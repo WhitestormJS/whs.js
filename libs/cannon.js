@@ -9055,7 +9055,7 @@ Heightfield.prototype.getHeightAt = function(x, y, edgeClamp){
     var idx = [];
     this.getIndexOfPosition(x, y, idx, edgeClamp);
 
-    // #TODO:210 get upper or lower triangle, then use barycentric interpolation to get the height in the triangle.
+    // #TODO:200 get upper or lower triangle, then use barycentric interpolation to get the height in the triangle.
     var minmax = [];
     this.getRectMinMax(idx[0], idx[1] + 1, idx[0], idx[1] + 1, minmax);
 
@@ -9298,7 +9298,7 @@ Heightfield.prototype.volume = function(){
 };
 
 Heightfield.prototype.calculateWorldAABB = function(pos, quat, min, max){
-    // #TODO:200 do it properly
+    // #TODO:190 do it properly
     min.set(-Number.MAX_VALUE, -Number.MAX_VALUE, -Number.MAX_VALUE);
     max.set(Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE);
 };
@@ -13240,7 +13240,7 @@ World.prototype.step = function(dt, timeSinceLastCalled, maxSubSteps){
                 interpvelo.scale(h_div_dt, interpvelo);
                 b.position.vadd(interpvelo, b.interpolatedPosition);
 
-                // #TODO:220 interpolate quaternion
+                // #TODO:210 interpolate quaternion
                 // b.interpolatedAngle = b.angle + (b.angle - b.previousAngle) * h_div_dt;
 
             } else {

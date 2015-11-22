@@ -42,7 +42,7 @@
     },
     {
       "name": "FIXME",
-      "hidden": true
+      "hidden": false
     }
   ],
   "marked": {

@@ -14,7 +14,7 @@
  * @return {Object} Scope.
  */
 WHS.init.prototype.addLight = function(type, opts, pos, target) {
-  // #TODO:170 add lights.
+  // #TODO:160 add lights.
 
   var scope = {};
 

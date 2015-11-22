@@ -795,7 +795,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       break;
   }
 
-  // TODO: Fix code style here.
+  // DOING:10 Fix code style here.
   scope.addCompoundFace = function() {
     this.compoundFace = new this.root.threejs.Geometry();
 

@@ -4,7 +4,7 @@
  * Email: alexbuzin88@gmail.com
 */
 
-// #TODO:120 Heights array.
+// #TODO:110 Heights array.
 /**
  * Trimesh figure. Makes trimesh object *CANNON.JS* from *THREE.JS* firure.
  *

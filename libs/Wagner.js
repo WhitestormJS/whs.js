@@ -485,7 +485,7 @@ WAGNER.Stack.prototype.movePassToIndex = function ( index, destIndex ) {
 
     this.passItems.splice( destIndex, 0, this.passItems.splice( index, 1 )[ 0 ] );
     this.updatePasses();
-    return destIndex; //#TODO:190 check if destIndex is final index
+    return destIndex; //#TODO:180 check if destIndex is final index
 
 };
 

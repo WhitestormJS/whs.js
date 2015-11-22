@@ -4,7 +4,7 @@
  * Email: alexbuzin88@gmail.com
 */
 
-// #DONE:30 addModel *func*.
+// #DONE:40 addModel *func*.
 /**
  * Figure.
  *

@@ -5,7 +5,8 @@
 - basic_material *example*
 - *THREE.JSONLoader -> API*
 - Added Wrap function.
-
+- Removed all console.log's.
+- *src/libs/Wagner.base.js -> libs/Wagner.base.js*
 
 **v0.0.4**
 - Shader terrain material added.

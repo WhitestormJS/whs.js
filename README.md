@@ -55,6 +55,7 @@ var GAME = new WHS.init( THREE, CANNON,
  * [Material](http://192.241.128.187/current/examples/basic_material.html)  (Basic example with material.)
  * [Object/Icosahedron](http://192.241.128.187/current/examples/basic_object.html)  (Icosahedron from **THREE.JS** example.)
  * [Object/Model](http://192.241.128.187/current/examples/basic_model.html)  (Teapot model with **THREE.JS** JSONLoader.)
+ * [Object/Wall](http://192.241.128.187/current/examples/stone_wall.html)  (Stone wall (basic).)
 
 ### Author:
 @sasha240100 [![forthebadge](https://img.shields.io/twitter/url/http/alexbuzin.me.svg?style=social)](https://twitter.com/intent/tweet?text=Check+this+developer:&url=http%3A%2F%2Falexbuzin.me)

@@ -13,7 +13,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, plc, jqselector) {
   'use strict';
 
 
-  // #TODO:50 Clean up.
+  // #TODO:40 Clean up.
   this.controls = new plc(this.camera, object.body, 10, this);
 
   var controls = this.controls;
