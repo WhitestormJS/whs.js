@@ -12,7 +12,7 @@
 // DOING:0 Wagner.base.js is not a part of library.
 // FIXME: Fix fog.
 
-/* ================ MODERNIZING BROWSER API IF NOT EXIST ========================== */
+/* ================ MODERNIZING BROWSER API IF NOT EXIST ==================== */
 
 if (typeof Array.isArray === 'undefined') {
   Array.isArray = function(obj) {
@@ -21,7 +21,7 @@ if (typeof Array.isArray === 'undefined') {
   };
 }
 
-/* ================ WHITESTORM|JS ================================================= */
+/* ================ WHITESTORM|JS ==================== */
 var WHS = {
   REVISION: "0.0.4"
 };

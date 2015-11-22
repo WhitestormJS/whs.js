@@ -77,13 +77,20 @@ WHS.init.prototype.addGrass = function(ground, options) {
     mesh.position.set(0, 0, 0);
     mesh.geometry.vertices.push(faceVertices[intr.face.a].clone());
     mesh.geometry.vertices.push(faceVertices[intr.face.c].clone());
-    mesh.geometry.vertices.push(faceVertices[intr.face.a].clone().add(faceInGeometry.faces[0].normal));
-    mesh.geometry.vertices.push(faceVertices[intr.face.c].clone().add(faceInGeometry.faces[0].normal));
+
+    mesh.geometry.vertices.push(faceVertices[intr.face.a].clone()
+      .add(faceInGeometry.faces[0].normal));
+
+    mesh.geometry.vertices.push(faceVertices[intr.face.c].clone()
+      .add(faceInGeometry.faces[0].normal));
 
     var dVec = new THREE.Vector3(
-      faceVertices[intr.face.a].clone().x / 2 + faceVertices[intr.face.c].clone().x / 2,
-      faceVertices[intr.face.a].clone().y / 2 + faceVertices[intr.face.c].clone().y / 2,
-      faceVertices[intr.face.a].clone().z / 2 + faceVertices[intr.face.c].clone().z / 2
+      faceVertices[intr.face.a].clone().x /
+        2 + faceVertices[intr.face.c].clone().x / 2,
+      faceVertices[intr.face.a].clone().y /
+        2 + faceVertices[intr.face.c].clone().y / 2,
+      faceVertices[intr.face.a].clone().z /
+        2 + faceVertices[intr.face.c].clone().z / 2
     );
 
     mesh.geometry.vertices.push(

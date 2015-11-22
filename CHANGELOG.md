@@ -7,6 +7,7 @@
 - Added Wrap function.
 - Removed all console.log's.
 - *src/libs/Wagner.base.js -> libs/Wagner.base.js*
+- CSF. Line-wrap, blocks.
 
 **v0.0.4**
 - Shader terrain material added.

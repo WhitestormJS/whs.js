@@ -43,13 +43,22 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       break;
 
     case "directional":
-      scope.light = new this.threejs.DirectionalLight(options.color, options.intensity);
+      scope.light = new this.threejs.DirectionalLight(
+        options.color,
+        options.intensity
+      );
+
       scope.light.castShadow = true;
       scope.light.shadowDarkness = 0.5;
       break;
 
     case "hemisphere":
-      scope.light = new this.threejs.HemisphereLight(options.skyColor, options.groundColor, options.intensity);
+      scope.light = new this.threejs.HemisphereLight(
+        options.skyColor,
+        options.groundColor,
+        options.intensity
+      );
+
       break;
 
     case "light":
@@ -57,11 +66,22 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       break;
 
     case "point":
-      scope.light = new this.threejs.PointLight(options.color, options.intensity, options.distance);
+      scope.light = new this.threejs.PointLight(
+        options.color,
+        options.intensity,
+        options.distance
+      );
+
       break;
 
     case "spot":
-      scope.light = new this.threejs.SpotLight(options.color, options.intensity, options.distance, options.angle);
+      scope.light = new this.threejs.SpotLight(
+        options.color,
+        options.intensity,
+        options.distance,
+        options.angle
+      );
+
       scope.light.castShadow = true;
 
       // #FIXME:20 Shadow default parameters.
@@ -77,7 +97,11 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
   scope.light.position.set(scope.pos.x, scope.pos.y, scope.pos.z);
 
   if (scope.light.target)
-    scope.light.target.position.set(scope.target.x, scope.target.y, scope.target.z);
+    scope.light.target.position.set(
+      scope.target.x,
+      scope.target.y,
+      scope.target.z
+    );
 
   WHS.API.merge(this.scene, scope.light);
 

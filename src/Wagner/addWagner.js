@@ -26,7 +26,12 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
     case "zoomBlurPass":
       scope.effect = new wagnerjs.ZoomBlurPass();
       scope.effect.params.strength = .05;
-      scope.effect.params.center.set(.5 * this.composer.width, .5 * this.composer.height);
+
+      scope.effect.params.center.set(
+        .5 * this.composer.width,
+        .5 * this.composer.height
+      );
+
       this.composer.pass(scope.effect);
       break;
 
@@ -37,8 +42,18 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
       scope.effect.params.applyZoomBlur = true;
       scope.effect.params.zoomBlurStrength = 0.84;
       scope.effect.params.useTexture = true;
-      scope.effect.glowTexture = wagnerjs.Pass.prototype.getOfflineTexture(this.composer.width, this.composer.height, false);
-      scope.effect.params.center.set(.5 * this.composer.width, .5 * this.composer.height);
+
+      scope.effect.glowTexture = wagnerjs.Pass.prototype.getOfflineTexture(
+        this.composer.width,
+        this.composer.height,
+        false
+      );
+
+      scope.effect.params.center.set(
+        .5 * this.composer.width,
+        .5 * this.composer.height
+      );
+
       this.composer.pass(scope.effect);
       break;
 

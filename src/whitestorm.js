@@ -72,7 +72,10 @@ WHS.init = function(THREE, CANNON, params) {
 
   // Debug Renderer
   if (params.helper) {
-    this.cannonDebugRenderer = new this.threejs.CannonDebugRenderer(this.scene, this.world);
+    this.cannonDebugRenderer = new this.threejs.CannonDebugRenderer(
+      this.scene,
+      this.world
+    );
   }
 
   if (params.stats) {
@@ -86,7 +89,7 @@ WHS.init = function(THREE, CANNON, params) {
     else {
       this.stats.setMode(0);
       // WARN: console | stats mode.
-      console.warn([this.stats], "Please, apply right stats mode [fps, ms, mb] .");
+      console.warn([this.stats], "Please, apply stats mode [fps, ms, mb] .");
     }
 
     this.stats.domElement.style.position = 'absolute';
@@ -114,7 +117,12 @@ WHS.init = function(THREE, CANNON, params) {
   this.params.camera.x = api.def(this.params.camera.x, 0);
   this.params.camera.y = api.def(this.params.camera.y, 0);
   this.params.camera.z = api.def(this.params.camera.z, 0);
-  this.camera.position.set(this.params.camera.x, this.params.camera.y, this.params.camera.z);
+
+  this.camera.position.set(
+    this.params.camera.x,
+    this.params.camera.y,
+    this.params.camera.z
+  );
 
   api.merge(this.scene, this.camera);
 
@@ -159,7 +167,7 @@ WHS.init = function(THREE, CANNON, params) {
 
   WHS.init.prototype.animate(null, this);
 
-  // NOTE: =================================== Composer. ============================================
+  // NOTE: ==================== Composer. =======================
 
   if (params.wagner) {
     this.composer = new params.wagner.Composer(this.renderer);
@@ -175,7 +183,7 @@ WHS.init = function(THREE, CANNON, params) {
 
   this.composer.eff = [];
 
-  // NOTE: =================================== Autoresize. ==========================================
+  // NOTE: ==================== Autoresize. ======================
   var scope = this;
 
   if (params.autoresize)

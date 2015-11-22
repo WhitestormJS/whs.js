@@ -94,23 +94,37 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
   switch (type) {
     case "smooth":
-      scope.visible = new this.threejs.Mesh(new this.threejs.PlaneBufferGeometry(size.width, size.height, 1, 1), scope.materialType);
+
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.PlaneBufferGeometry(size.width, size.height, 1, 1),
+      scope.materialType);
+
       scope.visible.rotation.set(-90 / 180 * Math.PI, 0, 0);
       scope.visible.position.set(pos.x, pos.y, pos.z);
       scope.physic = new this.cannonjs.Plane(size.width, size.height);
+
       scope.body = new this.cannonjs.Body({
         mass: 0
       });
+
       scope.body.linearDamping = 0.9; // Default value.
       scope.body.addShape(scope.physic);
       scope.body.position.set(pos.x, pos.y, pos.z);
-      scope.body.quaternion.setFromAxisAngle(new this.cannonjs.Vec3(1, 0, 0), -Math.PI / 2);
+
+      scope.body.quaternion.setFromAxisAngle(
+        new this.cannonjs.Vec3(1, 0, 0),
+        -Math.PI / 2
+      );
+
       scope.body.name = scope.name;
-      api.merge(this.world, scope.body);
-      api.merge(this.scene, scope.visible);
       break;
+
     case "infinitySmooth":
-      scope.visible = new this.threejs.Mesh(new this.threejs.PlaneBufferGeometry(size.width, size.height, 1, 1), scope.materialType);
+
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.PlaneBufferGeometry(size.width, size.height, 1, 1),
+      scope.materialType);
+
       scope.visible.rotation.set(-90 / 180 * Math.PI, 0, 0);
       scope.visible.position.set(pos.x, pos.y, pos.z);
       scope.physic = new this.cannonjs.Plane(size.width, size.height);
@@ -120,15 +134,18 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       scope.body.linearDamping = 0.9; // Default value.
       scope.body.addShape(scope.physic);
       scope.body.position.set(posscopex, pos.y, pos.z);
-      scope.body.quaternion.setFromAxisAngle(new this.cannonjs.Vec3(1, 0, 0), -Math.PI / 2);
+
+      scope.body.quaternion.setFromAxisAngle(
+        new this.cannonjs.Vec3(1, 0, 0),
+        -Math.PI / 2
+      );
+
       scope.body.name = scope.name;
-      api.merge(this.world, scope.body);
-      api.merge(this.scene, scope.visible);
+
       break;
-      // FUTURE: terrain add.
+
       // #TODO:80 Fix perfomance by saving terrain like threeJs object with options.
     case "terrain":
-
       //api.def(size.detality, 0);
 
       var canvas = document.createElement('canvas');
@@ -156,7 +173,9 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         effect: [DEPTHNOISE_EFFECT] //[ DESTRUCTURE_EFFECT ]
       }, canvas, 0, 0, size.width, size.height);
 
-      scope.custumGeom = new this.threejs.Geometry().fromBufferGeometry(terrainGeometry);
+      scope.custumGeom = new this.threejs.Geometry()
+        .fromBufferGeometry(terrainGeometry);
+
       scope.custumGeom.verticesNeedUpdate = true;
       scope.custumGeom.elementsNeedUpdate = true;
       scope.custumGeom.normalsNeedUpdate = true;
@@ -178,19 +197,34 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
       if (size.useDeafultMaterial) {
 
-      	var oceanTexture = new THREE.ImageUtils.loadTexture( 'assets/textures/terrain/dirt-512.jpg' );
+      	var oceanTexture = new THREE.ImageUtils.loadTexture(
+          'assets/textures/terrain/dirt-512.jpg'
+        );
+
       	oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
 
-      	var sandyTexture = new THREE.ImageUtils.loadTexture( 'assets/textures/terrain/sand-512.jpg' );
+      	var sandyTexture = new THREE.ImageUtils.loadTexture(
+          'assets/textures/terrain/sand-512.jpg'
+        );
+
       	sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
 
-      	var grassTexture = new THREE.ImageUtils.loadTexture( 'assets/textures/terrain/grass-512.jpg' );
+      	var grassTexture = new THREE.ImageUtils.loadTexture(
+          'assets/textures/terrain/grass-512.jpg'
+        );
+
       	grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
 
-      	var rockyTexture = new THREE.ImageUtils.loadTexture( 'assets/textures/terrain/rock-512.jpg' );
+      	var rockyTexture = new THREE.ImageUtils.loadTexture(
+          'assets/textures/terrain/rock-512.jpg'
+        );
+
       	rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
 
-      	var snowyTexture = new THREE.ImageUtils.loadTexture( 'assets/textures/terrain/snow-512.jpg' );
+      	var snowyTexture = new THREE.ImageUtils.loadTexture(
+          'assets/textures/terrain/snow-512.jpg'
+        );
+
       	snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
 
         var customUN = Object.assign(
@@ -255,7 +289,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
                 '	vAmount = position.y * 0.005 + 0.1;',
 
                 'vec3 newPosition = position;',
-                '	gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );',
+'	gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );',
 
         			"}"
 
@@ -295,12 +329,26 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
 
 
-              '	vec4 water = (smoothstep(0.01, 0.25, vAmount) - smoothstep(0.24, 0.26, vAmount)) * texture2D( oceanTexture, vUv * 0.1 );',
-              '	vec4 sandy = (smoothstep(0.24, 0.27, vAmount) - smoothstep(0.28, 0.31, vAmount)) * texture2D( sandyTexture, vUv * 0.1 );',
-              '	vec4 grass = (smoothstep(0.28, 0.32, vAmount) - smoothstep(0.35, 0.40, vAmount)) * texture2D( grassTexture, vUv * 0.2 );',
-              '	vec4 rocky = (smoothstep(0.30, 0.40, vAmount) - smoothstep(0.40, 0.70, vAmount)) * texture2D( rockyTexture, vUv * 0.2 );',
-              '	vec4 snowy = (smoothstep(0.42, 0.45, vAmount))                                   * texture2D( snowyTexture, vUv * 0.1 );',
-              '	gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0) + water + sandy + grass + rocky + snowy; ',
+              '	vec4 water = (smoothstep(0.01, 0.25, vAmount)',
+              ' - smoothstep(0.24, 0.26, vAmount))',
+              ' * texture2D( oceanTexture, vUv * 0.1 );',
+
+              '	vec4 sandy = (smoothstep(0.24, 0.27, vAmount)',
+              ' - smoothstep(0.28, 0.31, vAmount))',
+              ' * texture2D( sandyTexture, vUv * 0.1 );',
+
+              '	vec4 grass = (smoothstep(0.28, 0.32, vAmount)',
+              ' - smoothstep(0.35, 0.40, vAmount))',
+              ' * texture2D( grassTexture, vUv * 0.2 );',
+
+              '	vec4 rocky = (smoothstep(0.30, 0.40, vAmount)',
+              ' - smoothstep(0.40, 0.70, vAmount))',
+              ' * texture2D( rockyTexture, vUv * 0.2 );',
+
+              '	vec4 snowy = (smoothstep(0.42, 0.45, vAmount))',
+              '* texture2D( snowyTexture, vUv * 0.1 );',
+              '	gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0)',
+              ' + water + sandy + grass + rocky + snowy; ',
 
         				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
         				THREE.ShaderChunk[ "map_fragment" ],
@@ -338,7 +386,8 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         var customMaterial = new THREE.ShaderMaterial(shopts);
       }
 
-      scope.materialType = size.useDeafultMaterial ? customMaterial : scope.materialType;
+      scope.materialType = size.useDeafultMaterial ?
+        customMaterial : scope.materialType;
 
       scope.visible = api.Triangulate(scope.custumGeom, scope.materialType);
 
@@ -352,9 +401,12 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       });
 
       scope.visible.updateMatrix();
-      scope.physic = new this.cannonjs.Heightfield(terrainGeometry.heightsArray.reverse(), {
-        elementSize: 1 // Distance between the data points in X and Y directions
-      });
+      scope.physic = new this.cannonjs.Heightfield(
+        terrainGeometry.heightsArray.reverse(),
+        {
+          elementSize: 1 // Distance between the data points in X and Y directions
+        }
+      );
 
       scope.body = new this.cannonjs.Body({
         mass: 0
@@ -366,19 +418,23 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
       scope.body.quaternion.setFromEuler(Math.PI / 180 * -90, 0, 0, "XYZ");
 
-      scope.body.position.set(pos.x - size.width / 2 + 1, pos.y, pos.z + size.height / 2 - 1);
+      scope.body.position.set(
+        pos.x - size.width / 2 + 1,
+        pos.y,
+        pos.z + size.height / 2 - 1
+      );
+
       //scope.physic.scale.x = 1;
       //scope.physic.scale.y = 1;
       scope.body.name = scope.name;
-      api.merge(this.world, scope.body);
-      api.merge(this.scene, scope.visible);
+
       scope.visible.castShadow = true;
       scope.visible.receiveShadow = true;
 
       break;
   }
 
-  WHS.grounds.push(scope);
+  api.wrap(scope, scope.visible, scope.physics);
 
   return scope;
 }

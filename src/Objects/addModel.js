@@ -1,3 +1,4 @@
+
 /**
  * © Alexander Buzin, 2014-2015
  * Site: http://alexbuzin.me/
@@ -106,7 +107,11 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
     // Visualization.
     scope.visible = new scope.root.threejs.Mesh(data, scope.materialType);
     scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-    scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+    scope.visible.rotation.set(
+      (Math.PI / 180) * opt.rot.x,
+      (Math.PI / 180) * opt.rot.y,
+      (Math.PI / 180) * opt.rot.z
+    );
 
     // Physics.
     if (!options.onlyvis) {

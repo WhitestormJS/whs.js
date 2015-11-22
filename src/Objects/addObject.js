@@ -59,7 +59,10 @@ WHS.init.prototype.addObject = function(figureType, options) {
       scope.materialType = new this.threejs.MeshDepthMaterial(opt.material);
       break;
     case "face":
-      scope.materialType = new this.threejs.MeshFaceMaterial(opt.material.materials);
+      scope.materialType = new this.threejs.MeshFaceMaterial(
+        opt.material.materials
+      );
+      
       break;
     case "lambert":
       scope.materialType = new this.threejs.MeshLambertMaterial(opt.material);
@@ -104,11 +107,19 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "sphere";
       scope.name = opt.name || "sphere" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.SphereGeometry(opt.geometry.radius, opt.geometry.segmentA, opt.geometry.segmentB), scope.materialType);
+      scope.visible = new this.threejs.Mesh(new this.threejs.SphereGeometry(
+        opt.geometry.radius,
+        opt.geometry.segmentA,
+        opt.geometry.segmentB
+      ), scope.materialType);
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new this.cannonjs.Sphere(opt.geometry.radius);
@@ -145,14 +156,29 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "cube";
       scope.name = opt.name || "cube" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.BoxGeometry(opt.geometry.width, opt.geometry.height, opt.geometry.depth), scope.materialType);
+      scope.visible = new this.threejs.Mesh(new this.threejs.BoxGeometry(
+        opt.geometry.width,
+        opt.geometry.height,
+        opt.geometry.depth
+      ), scope.materialType);
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
-        scope.physic = new this.cannonjs.Box(new this.cannonjs.Vec3(opt.geometry.width * 0.5, opt.geometry.height * 0.5, opt.geometry.depth * 0.5));
+        scope.physic = new this.cannonjs.Box(
+          new this.cannonjs.Vec3(
+            opt.geometry.width * 0.5,
+            opt.geometry.height * 0.5,
+            opt.geometry.depth * 0.5
+          )
+        );
+
         scope.body = new this.cannonjs.Body({
           mass: opt.mass
         });
@@ -161,9 +187,22 @@ WHS.init.prototype.addObject = function(figureType, options) {
         scope.body.addShape(scope.physic);
         scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
         scope.body.quaternion.copy(scope.visible.quaternion);
-        scope.body.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), (Math.PI / 180) * opt.rot.x);
-        scope.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), (Math.PI / 180) * opt.rot.y);
-        scope.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), (Math.PI / 180) * opt.rot.z);
+
+        scope.body.quaternion.setFromAxisAngle(
+          new CANNON.Vec3(1, 0, 0),
+          (Math.PI / 180) * opt.rot.x
+        );
+
+        scope.body.quaternion.setFromAxisAngle(
+          new CANNON.Vec3(0, 1, 0),
+          (Math.PI / 180) * opt.rot.y
+        );
+
+        scope.body.quaternion.setFromAxisAngle(
+          new CANNON.Vec3(0, 0, 1),
+          (Math.PI / 180) * opt.rot.z
+        );
+
         scope.body.name = scope.name;
       } else {
         scope.onlyvis = true;
@@ -188,21 +227,40 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "cylinder";
       scope.name = opt.name || "cylinder" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.CylinderGeometry(opt.geometry.radiusTop, opt.geometry.radiusBottom, opt.geometry.height, opt.geometry.radiusSegments), scope.materialType);
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.CylinderGeometry(
+          opt.geometry.radiusTop,
+          opt.geometry.radiusBottom,
+          opt.geometry.height,
+          opt.geometry.radiusSegments
+        ),
+      scope.materialType);
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
-        scope.physic = new this.cannonjs.Cylinder(opt.geometry.radiusTop, opt.geometry.radiusBottom, opt.geometry.height, opt.geometry.radiusSegments);
+        scope.physic = new this.cannonjs.Cylinder(
+          opt.geometry.radiusTop,
+          opt.geometry.radiusBottom,
+          opt.geometry.height,
+          opt.geometry.radiusSegments
+        );
+
         scope.body = new this.cannonjs.Body({
           mass: opt.mass
         });
+
         scope.body.linearDamping = 0.9; // Default value.
         scope.body.addShape(scope.physic);
         scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
         scope.body.quaternion.copy(scope.visible.quaternion);
+
         scope.body.name = scope.name;
       } else {
         scope.onlyvis = true;
@@ -225,11 +283,20 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "dodecahedron";
       scope.name = opt.name || "dodecahedron" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.DodecahedronGeometry(opt.geometry.radius, opt.geometry.detail), scope.materialType);
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.DodecahedronGeometry(
+          opt.geometry.radius,
+          opt.geometry.detail
+        ),
+      scope.materialType);
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
@@ -262,11 +329,20 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "extrude";
       scope.name = opt.name || "extrude" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.ExtrudeGeometry(opt.geometry.shapes, opt.geometry.options), scope.materialType);
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.ExtrudeGeometry(
+          opt.geometry.shapes,
+          opt.geometry.options
+        ),
+      scope.materialType);
 
       scope.visible.name = this.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
@@ -299,11 +375,20 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "icosahedron";
       scope.name = opt.name || "icosahedron" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.IcosahedronGeometry(opt.geometry.radius, opt.geometry.detail), scope.materialType);
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.IcosahedronGeometry(
+          opt.geometry.radius,
+          opt.geometry.detail
+        ),
+      scope.materialType);
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -335,11 +420,17 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "lathe";
       scope.name = opt.name || "lathe" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.LatheGeometry(opt.geometry.points), scope.materialType);
+      scope.visible = new this.threejs.Mesh(new this.threejs.LatheGeometry(
+        opt.geometry.points
+      ), scope.materialType);
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -372,11 +463,20 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "octahedron";
       scope.name = opt.name || "octahedron" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.OctahedronGeometry(opt.geometry.radius, opt.geometry.detail), scope.materialType);
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.OctahedronGeometry(
+          opt.geometry.radius,
+          opt.geometry.detail
+        ),
+      scope.materialType);
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -410,11 +510,21 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "parametric";
       scope.name = opt.name || "parametric" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.ParametricGeometry(opt.geometry.func, opt.geometry.slices, opt.geometry.stacks), scope.materialType);
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.ParametricGeometry(
+          opt.geometry.func,
+          opt.geometry.slices,
+          opt.geometry.stacks
+        ),
+      scope.materialType);
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
@@ -449,11 +559,21 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "plane";
       scope.name = opt.name || "plane" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.PlaneBufferGeometry(opt.geometry.width, opt.geometry.height, opt.geometry.segments), scope.materialType);
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.PlaneBufferGeometry(
+          opt.geometry.width,
+          opt.geometry.height,
+          opt.geometry.segments
+        ),
+      scope.materialType);
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
@@ -488,11 +608,20 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "polyhedron";
       scope.name = opt.name || "polyhedron" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.PolyhedronGeometry(opt.geometry.verticesOfCube, opt.geometry.indicesOfFaces), scope.materialType);
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.PolyhedronGeometry(
+          opt.geometry.verticesOfCube,
+          opt.geometry.indicesOfFaces
+        ),
+      scope.materialType);
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
@@ -529,19 +658,39 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "ring";
       scope.name = opt.name || "ring" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.TorusGeometry(opt.geometry.outerRadius, (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2, opt.geometry.thetaSegments, opt.geometry.phiSegments), scope.materialType);
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.TorusGeometry(
+          opt.geometry.outerRadius,
+          (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2,
+          opt.geometry.thetaSegments, opt.geometry.phiSegments
+        ),
+      scope.materialType);
 
-      scope.visible.scale.z = 1 / (opt.geometry.outerRadius - opt.geometry.innerRadius) * 2;
+      scope.visible.scale.z =
+        1 / (opt.geometry.outerRadius - opt.geometry.innerRadius) * 2;
+
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
-        scope.physic = this.cannonjs.Trimesh.createTorus(opt.geometry.outerRadius, (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2, opt.geometry.thetaSegments, opt.geometry.phiSegments);
-        scope.physic.scale.z = 1 / (opt.geometry.outerRadius - opt.geometry.innerRadius) * 2;
+        scope.physic = this.cannonjs.Trimesh.createTorus(
+          opt.geometry.outerRadius,
+          (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2,
+          opt.geometry.thetaSegments, opt.geometry.phiSegments
+        );
+
+        scope.physic.scale.z =
+          1 / (opt.geometry.outerRadius - opt.geometry.innerRadius) * 2;
+
         scope.body = new this.cannonjs.Body({
           mass: opt.mass
         });
+
         scope.body.linearDamping = 0.9; // Default value.
         scope.body.addShape(scope.physic);
         scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
@@ -565,11 +714,18 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "shape";
       scope.name = opt.name || "shape" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.ShapeGeometry(opt.geometry.shapes), scope.materialType);
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.ShapeGeometry(opt.geometry.shapes),
+        scope.materialType
+      );
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       scope.onlyvis = true;
 
@@ -591,16 +747,28 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "tetrahedron";
       scope.name = opt.name || "tetrahedron" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.TetrahedronGeometry(opt.geometry.radius, opt.geometry.detail), scope.materialType);
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.TetrahedronGeometry(
+          opt.geometry.radius,
+          opt.geometry.detail
+        ),
+      scope.materialType);
+
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
+
         scope.body = new this.cannonjs.Body({
           mass: opt.mass
         });
+
         scope.body.linearDamping = 0.9; // Default value.
         scope.body.addShape(scope.physic);
         scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
@@ -635,16 +803,29 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "text";
       scope.name = opt.name || "text" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.TextGeometry(opt.geometry.text, opt.geometry.parameters), scope.materialType);
+
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.TextGeometry(
+          opt.geometry.text,
+          opt.geometry.parameters
+        ),
+      scope.materialType);
+
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
+
         scope.body = new this.cannonjs.Body({
           mass: opt.mass
         });
+
         scope.body.linearDamping = 0.9; // Default value.
         scope.body.addShape(scope.physic);
         scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
@@ -674,17 +855,37 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "torus";
       scope.name = opt.name || "torus" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.TorusGeometry(opt.geometry.radius, opt.geometry.tube, opt.geometry.radialSegments, opt.geometry.tubularSegments, opt.geometry.arc), scope.materialType);
+
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.TorusGeometry(
+          opt.geometry.radius,
+          opt.geometry.tube,
+          opt.geometry.radialSegments,
+          opt.geometry.tubularSegments,
+          opt.geometry.arc
+        ),
+      scope.materialType);
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
-        scope.physic = this.cannonjs.Trimesh.createTorus(opt.geometry.radius, opt.geometry.tube, opt.geometry.radialSegments, opt.geometry.tubularSegments);
+        scope.physic = this.cannonjs.Trimesh.createTorus(
+          opt.geometry.radius,
+          opt.geometry.tube,
+          opt.geometry.radialSegments,
+          opt.geometry.tubularSegments
+        );
+
         scope.body = new this.cannonjs.Body({
           mass: opt.mass
         });
+
         scope.body.linearDamping = 0.9; // Default value.
         scope.body.addShape(scope.physic);
         scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
@@ -714,11 +915,25 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "torusknot";
       scope.name = opt.name || "torusknot" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.TorusKnotGeometry(opt.geometry.radius, opt.geometry.tube, opt.geometry.radialSegments, opt.geometry.tubularSegments, opt.geometry.p, opt.geometry.q, opt.geometry.heightScale), scope.materialType);
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.TorusKnotGeometry(
+          opt.geometry.radius,
+          opt.geometry.tube,
+          opt.geometry.radialSegments,
+          opt.geometry.tubularSegments,
+          opt.geometry.p,
+          opt.geometry.q,
+          opt.geometry.heightScale
+        ),
+      scope.materialType);
 
       scope.visible.name = scope.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
@@ -770,17 +985,32 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "tube";
       scope.name = opt.name || "tube" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.TubeGeometry(opt.geometry.path, opt.geometry.segments, opt.geometry.radius, opt.geometry.radiusSegments, opt.geometry.closed), scope.materialType);
+
+      scope.visible = new this.threejs.Mesh(
+        new this.threejs.TubeGeometry(
+          opt.geometry.path,
+          opt.geometry.segments,
+          opt.geometry.radius,
+          opt.geometry.radiusSegments,
+          opt.geometry.closed
+        ),
+      scope.materialType);
 
       scope.visible.name = this.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-      scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
+      scope.visible.rotation.set(
+        (Math.PI / 180) * opt.rot.x,
+        (Math.PI / 180) * opt.rot.y,
+        (Math.PI / 180) * opt.rot.z
+      );
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
+
         scope.body = new this.cannonjs.Body({
           mass: opt.mass
         });
+
         scope.body.linearDamping = 0.9; // Default value.
         scope.body.addShape(scope.physic);
         scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
@@ -809,9 +1039,14 @@ WHS.init.prototype.addObject = function(figureType, options) {
       boundingBox.max.z - boundingBox.min.z
     );
 
-    var vec1 = boxAround.vertices[boxAround.faces[7].a].add(this.visible.position);
-    var vec2 = boxAround.vertices[boxAround.faces[7].b].add(this.visible.position);
-    var vec3 = boxAround.vertices[boxAround.faces[7].c].add(this.visible.position);
+    var vec1 = boxAround.vertices[boxAround.faces[7].a]
+      .add(this.visible.position);
+
+    var vec2 = boxAround.vertices[boxAround.faces[7].b]
+      .add(this.visible.position);
+
+    var vec3 = boxAround.vertices[boxAround.faces[7].c]
+      .add(this.visible.position);
 
     this.compoundFace.vertices.push(vec1);
     this.compoundFace.vertices.push(vec2);
