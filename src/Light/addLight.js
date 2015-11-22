@@ -23,8 +23,6 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
   scope.target = target;
   scope.pos = pos;
 
-  console.log(scope.pos);
-
   var options = api.def(opts, {});
 
   api.def(opts.color, 0xffffff, options.color); // Default: white.

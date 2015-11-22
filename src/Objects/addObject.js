@@ -41,7 +41,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
   opt.material = options.materialOptions || {};
   opt.geometry = options.geometryOptions || {};
-  console.log(opt);
 
   switch (opt.material.type) {
     case "basic":
@@ -268,7 +267,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
       scope.visible.name = this.name;
       scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
       scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
-      console.log(scope.visible.geometry);
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
@@ -811,8 +809,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
       boundingBox.max.z - boundingBox.min.z
     );
 
-    //console.log(boxAround.faces[7]); // Bottom Face.
-
     var vec1 = boxAround.vertices[boxAround.faces[7].a].add(this.visible.position);
     var vec2 = boxAround.vertices[boxAround.faces[7].b].add(this.visible.position);
     var vec3 = boxAround.vertices[boxAround.faces[7].c].add(this.visible.position);
@@ -821,7 +817,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
     this.compoundFace.vertices.push(vec2);
     this.compoundFace.vertices.push(vec3);
     //this.compoundFace.vertices.push(new this.root.threejs.Vector3(0,1,2));
-    //console.log(this.compoundFace); // Bottom Face.
   }
 
   scope.remove = function () {

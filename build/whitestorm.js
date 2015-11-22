@@ -8382,7 +8382,7 @@ var DESTRUCTURE_EFFECT = {
 // [x]#TODO:130 RESTRUCTURIZE threejs and cannonjs library calling.
 // [x]#TODO:20 Add stats.
 // #TODO:10 Add http://underscorejs.org/.
-// DOING:0 clean all console.logs.
+// DONE:20 clean all console.logs.
 
 /* ================ MODERNIZING BROWSER API IF NOT EXIST ========================== */
 
@@ -8935,8 +8935,6 @@ WHS.init = function(THREE, CANNON, params) {
     this.params.camera.near = api.def(this.params.camera.near, 1);
     this.params.camera.far = api.def(this.params.camera.far, 1000);
 
-    console.log(this.params);
-
     this.camera = new this.threejs.PerspectiveCamera(
         this.params.camera.aspect,
         window.innerWidth / window.innerHeight,
@@ -9113,7 +9111,7 @@ WHS.init.prototype.animate = function(time, scope) {
 
 
 
-// #DONE:20 addModel *func*.
+// #DONE:30 addModel *func*.
 /**
  * Figure.
  *
@@ -9150,7 +9148,6 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
 
     opt.material = options.materialOptions || {};
     opt.geometry = options.geometryOptions || {};
-    console.log(opt);
 
     switch (opt.material.type) {
         case "basic":
@@ -9279,7 +9276,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
     opt.material = options.materialOptions || {};
     opt.geometry = options.geometryOptions || {};
-    console.log(opt);
 
     switch (opt.material.type) {
         case "basic":
@@ -9506,7 +9502,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             scope.visible.name = this.name;
             scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
             scope.visible.rotation.set((Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z);
-            console.log(scope.visible.geometry);
 
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
@@ -10049,8 +10044,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             boundingBox.max.z - boundingBox.min.z
         );
 
-        //console.log(boxAround.faces[7]); // Bottom Face.
-
         var vec1 = boxAround.vertices[boxAround.faces[7].a].add(this.visible.position);
         var vec2 = boxAround.vertices[boxAround.faces[7].b].add(this.visible.position);
         var vec3 = boxAround.vertices[boxAround.faces[7].c].add(this.visible.position);
@@ -10059,7 +10052,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
         this.compoundFace.vertices.push(vec2);
         this.compoundFace.vertices.push(vec3);
         //this.compoundFace.vertices.push(new this.root.threejs.Vector3(0,1,2));
-        //console.log(this.compoundFace); // Bottom Face.
     }
 
     scope.remove = function() {
@@ -10608,11 +10600,8 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
                 y: Math.PI / 180 * -180,
                 z: 0
             });
-            //scope.visible.rotation.set(0, Math.PI / 180 * -180, 0);
 
             scope.visible.updateMatrix();
-            //scope.visible.quaternion.set(0.5, 0.5, 0.5, -0.5);
-            //console.log(terrainGeometry.heightsArray);
             scope.physic = new this.cannonjs.Heightfield(terrainGeometry.heightsArray.reverse(), {
                 elementSize: 1 // Distance between the data points in X and Y directions
             });
@@ -10696,8 +10685,6 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
 
     scope.target = target;
     scope.pos = pos;
-
-    console.log(scope.pos);
 
     var options = api.def(opts, {});
 
@@ -10850,8 +10837,6 @@ WHS.init.prototype.MakeFirstPerson = function(object, plc, jqselector) {
     this.controls = new plc(this.camera, object.body, 10, this);
 
     var controls = this.controls;
-
-    console.log(this);
 
     WHS.API.merge(this.scene, this.controls.getObject());
 

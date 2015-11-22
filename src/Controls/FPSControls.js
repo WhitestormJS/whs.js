@@ -18,8 +18,6 @@ WHS.init.prototype.MakeFirstPerson = function(object, plc, jqselector) {
 
   var controls = this.controls;
 
-  console.log(this);
-
   WHS.API.merge(this.scene, this.controls.getObject());
 
   this.rootElement.append('<div id="blocker">' +

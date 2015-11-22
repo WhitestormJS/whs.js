@@ -350,11 +350,8 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         y: Math.PI / 180 * -180,
         z: 0
       });
-      //scope.visible.rotation.set(0, Math.PI / 180 * -180, 0);
 
       scope.visible.updateMatrix();
-      //scope.visible.quaternion.set(0.5, 0.5, 0.5, -0.5);
-      //console.log(terrainGeometry.heightsArray);
       scope.physic = new this.cannonjs.Heightfield(terrainGeometry.heightsArray.reverse(), {
         elementSize: 1 // Distance between the data points in X and Y directions
       });

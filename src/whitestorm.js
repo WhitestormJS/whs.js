@@ -104,8 +104,6 @@ WHS.init = function(THREE, CANNON, params) {
   this.params.camera.near = api.def(this.params.camera.near, 1);
   this.params.camera.far = api.def(this.params.camera.far, 1000);
 
-  console.log(this.params);
-
   this.camera = new this.threejs.PerspectiveCamera(
     this.params.camera.aspect,
     window.innerWidth / window.innerHeight,

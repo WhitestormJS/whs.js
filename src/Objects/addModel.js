@@ -4,7 +4,7 @@
  * Email: alexbuzin88@gmail.com
 */
 
-// #DONE:20 addModel *func*.
+// #DONE:30 addModel *func*.
 /**
  * Figure.
  *
@@ -41,7 +41,6 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
 
   opt.material = options.materialOptions || {};
   opt.geometry = options.geometryOptions || {};
-  console.log(opt);
 
   switch (opt.material.type) {
     case "basic":

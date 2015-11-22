@@ -8,7 +8,7 @@
 // [x]#TODO:130 RESTRUCTURIZE threejs and cannonjs library calling.
 // [x]#TODO:20 Add stats.
 // #TODO:10 Add http://underscorejs.org/.
-// DOING:0 clean all console.logs.
+// DONE:20 clean all console.logs.
 
 /* ================ MODERNIZING BROWSER API IF NOT EXIST ========================== */
 
