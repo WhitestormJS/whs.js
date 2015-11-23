@@ -1,4 +1,7 @@
 ## Changelog
+**current**
+- added Coggle.
+
 **v0.0.5**
 - Basic_material example fixed.
 - addModel() *func* for adding an object from JSON file.

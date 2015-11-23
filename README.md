@@ -49,6 +49,9 @@ var GAME = new WHS.init( THREE, CANNON,
 
 [![Join the chat at https://gitter.im/sasha240100/WhitestormJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sasha240100/WhitestormJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Structure
+![Whitestorm.js structure](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/development/coggle/WhitestormJS.png)
+
 ## Examples:
  * [FPS](http://192.241.128.187/current/examples/fps.html)  (First person example with wagner effects and terrain.)
  * [Basic](http://192.241.128.187/current/examples/basic.html)  (Basic "Hello world!" example.)
