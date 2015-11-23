@@ -1,5 +1,5 @@
 ## Changelog
-**current**
+**v0.0.5**
 - Basic_material example fixed.
 - addModel() *func* for adding an object from JSON file.
 - basic_material *example*

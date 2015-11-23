@@ -23,7 +23,7 @@ if (typeof Array.isArray === 'undefined') {
 
 /* ================ WHITESTORM|JS ==================== */
 var WHS = {
-  REVISION: "0.0.4"
+  REVISION: "0.0.5"
 };
 
 WHS.headers = {}; //GLOBAL headers, ex: url, script, library, specific api...

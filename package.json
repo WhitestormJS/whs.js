@@ -1,6 +1,6 @@
 {
   "name": "whitestormjs",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Three.js + Cannon.js render library.",
   "main": "build/whitestorm.js",
   "scripts": {
@@ -29,5 +29,25 @@
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-replace-task": "^0.11.0"
+  },
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-beautify": "^2.0.0",
+    "gulp-benchmark": "^1.1.1",
+    "gulp-insert": "^0.5.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-jscs": "^3.0.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-jshint": "^1.12.0",
+    "gulp-replace-task": "^0.11.0",
+    "gulp-size": "^2.0.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-strip-code": "^0.1.2",
+    "gulp-uglify": "^1.5.1",
+    "gulp-watch": "^4.3.5",
+    "jshint-stylish": "^2.1.0"
   }
 }
