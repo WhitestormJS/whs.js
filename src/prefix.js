@@ -11,6 +11,7 @@
 // DONE:20 clean all console.logs.
 // DOING:0 Wagner.base.js is not a part of library.
 // FIXME: Fix fog.
+// DOING:10 improve libraries support.
 
 /* ================ MODERNIZING BROWSER API IF NOT EXIST ==================== */
 

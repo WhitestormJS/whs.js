@@ -4,6 +4,7 @@
  * Email: alexbuzin88@gmail.com
 */
 
+// TODO: Improve Grass object.
 /**
  * ADDGRASS.
  *
@@ -17,6 +18,8 @@ WHS.init.prototype.addGrass = function(ground, options) {
   var scope = {};
   scope.root = this;
   scope.opts = options;
+
+  scope.onlyvis = true;
 
   if (!scope.opts.coords)
     console.warn('Please add grass objects coordinates! @addGrass');
@@ -149,7 +152,7 @@ WHS.init.prototype.addGrass = function(ground, options) {
     scope.grassMeshes.push(mesh);
   });
 
-  scope.root.scene.add(globalGrass);
+  scope.wrap = api.Wrap(scope, globalGrass);
 
   // Section under construction. (animation of Grass).
   // #TODO:0 Add grass animation.

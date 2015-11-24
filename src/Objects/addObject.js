@@ -44,49 +44,49 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
   switch (opt.material.type) {
     case "basic":
-      scope.materialType = new this.threejs.MeshBasicMaterial(opt.material);
+      scope.materialType = new THREE.MeshBasicMaterial(opt.material);
       break;
     case "linebasic":
-      scope.materialType = new this.threejs.LineBasicMaterial(opt.material);
+      scope.materialType = new THREE.LineBasicMaterial(opt.material);
       break;
     case "linedashed":
-      scope.materialType = new this.threejs.LineDashedMaterial(opt.material);
+      scope.materialType = new THREE.LineDashedMaterial(opt.material);
       break;
     case "material":
-      scope.materialType = new this.threejs.Material(opt.material);
+      scope.materialType = new THREE.Material(opt.material);
       break;
     case "depth":
-      scope.materialType = new this.threejs.MeshDepthMaterial(opt.material);
+      scope.materialType = new THREE.MeshDepthMaterial(opt.material);
       break;
     case "face":
-      scope.materialType = new this.threejs.MeshFaceMaterial(
+      scope.materialType = new THREE.MeshFaceMaterial(
         opt.material.materials
       );
-      
+
       break;
     case "lambert":
-      scope.materialType = new this.threejs.MeshLambertMaterial(opt.material);
+      scope.materialType = new THREE.MeshLambertMaterial(opt.material);
       break;
     case "normal":
-      scope.materialType = new this.threejs.MeshNormalMaterial(opt.material);
+      scope.materialType = new THREE.MeshNormalMaterial(opt.material);
       break;
     case "phong":
-      scope.materialType = new this.threejs.MeshPhongMaterial(opt.material);
+      scope.materialType = new THREE.MeshPhongMaterial(opt.material);
       break;
     case "pointcloud":
-      scope.materialType = new this.threejs.PointCloudMaterial(opt.material);
+      scope.materialType = new THREE.PointCloudMaterial(opt.material);
       break;
     case "rawshader":
-      scope.materialType = new this.threejs.RawShaderMaterial(opt.material);
+      scope.materialType = new THREE.RawShaderMaterial(opt.material);
       break;
     case "shader":
-      scope.materialType = new this.threejs.ShaderMaterial(opt.material);
+      scope.materialType = new THREE.ShaderMaterial(opt.material);
       break;
     case "spritecanvas":
-      scope.materialType = new this.threejs.SpriteCanvasMaterial(opt.material);
+      scope.materialType = new THREE.SpriteCanvasMaterial(opt.material);
       break;
     case "sprite":
-      scope.materialType = new this.threejs.SpriteMaterial(opt.material);
+      scope.materialType = new THREE.SpriteMaterial(opt.material);
       break;
   }
 
@@ -107,7 +107,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "sphere";
       scope.name = opt.name || "sphere" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.SphereGeometry(
+      scope.visible = new THREE.Mesh(new THREE.SphereGeometry(
         opt.geometry.radius,
         opt.geometry.segmentA,
         opt.geometry.segmentB
@@ -122,9 +122,9 @@ WHS.init.prototype.addObject = function(figureType, options) {
       );
 
       if (!options.onlyvis) {
-        scope.physic = new this.cannonjs.Sphere(opt.geometry.radius);
+        scope.physic = new CANNON.Sphere(opt.geometry.radius);
 
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
 
@@ -156,7 +156,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "cube";
       scope.name = opt.name || "cube" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.BoxGeometry(
+      scope.visible = new THREE.Mesh(new THREE.BoxGeometry(
         opt.geometry.width,
         opt.geometry.height,
         opt.geometry.depth
@@ -171,15 +171,15 @@ WHS.init.prototype.addObject = function(figureType, options) {
       );
 
       if (!options.onlyvis) {
-        scope.physic = new this.cannonjs.Box(
-          new this.cannonjs.Vec3(
+        scope.physic = new CANNON.Box(
+          new CANNON.Vec3(
             opt.geometry.width * 0.5,
             opt.geometry.height * 0.5,
             opt.geometry.depth * 0.5
           )
         );
 
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
 
@@ -227,8 +227,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "cylinder";
       scope.name = opt.name || "cylinder" + key;
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.CylinderGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.CylinderGeometry(
           opt.geometry.radiusTop,
           opt.geometry.radiusBottom,
           opt.geometry.height,
@@ -245,14 +245,14 @@ WHS.init.prototype.addObject = function(figureType, options) {
       );
 
       if (!options.onlyvis) {
-        scope.physic = new this.cannonjs.Cylinder(
+        scope.physic = new CANNON.Cylinder(
           opt.geometry.radiusTop,
           opt.geometry.radiusBottom,
           opt.geometry.height,
           opt.geometry.radiusSegments
         );
 
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
 
@@ -283,8 +283,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "dodecahedron";
       scope.name = opt.name || "dodecahedron" + key;
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.DodecahedronGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.DodecahedronGeometry(
           opt.geometry.radius,
           opt.geometry.detail
         ),
@@ -300,7 +300,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
         scope.body.linearDamping = 0.9; // Default value.
@@ -329,8 +329,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "extrude";
       scope.name = opt.name || "extrude" + key;
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.ExtrudeGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.ExtrudeGeometry(
           opt.geometry.shapes,
           opt.geometry.options
         ),
@@ -346,7 +346,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
         scope.body.linearDamping = 0.9; // Default value.
@@ -375,8 +375,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "icosahedron";
       scope.name = opt.name || "icosahedron" + key;
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.IcosahedronGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(
           opt.geometry.radius,
           opt.geometry.detail
         ),
@@ -392,7 +392,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
         scope.body.linearDamping = 0.9; // Default value.
@@ -420,7 +420,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "lathe";
       scope.name = opt.name || "lathe" + key;
-      scope.visible = new this.threejs.Mesh(new this.threejs.LatheGeometry(
+      scope.visible = new THREE.Mesh(new THREE.LatheGeometry(
         opt.geometry.points
       ), scope.materialType);
 
@@ -434,7 +434,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
-        this.body = new this.cannonjs.Body({
+        this.body = new CANNON.Body({
           mass: opt.mass
         });
         scope.body.linearDamping = 0.9; // Default value.
@@ -463,8 +463,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "octahedron";
       scope.name = opt.name || "octahedron" + key;
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.OctahedronGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.OctahedronGeometry(
           opt.geometry.radius,
           opt.geometry.detail
         ),
@@ -480,7 +480,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
         scope.body.linearDamping = 0.9; // Default value.
@@ -510,8 +510,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "parametric";
       scope.name = opt.name || "parametric" + key;
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.ParametricGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.ParametricGeometry(
           opt.geometry.func,
           opt.geometry.slices,
           opt.geometry.stacks
@@ -528,7 +528,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
         scope.body.linearDamping = 0.9; // Default value.
@@ -559,8 +559,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "plane";
       scope.name = opt.name || "plane" + key;
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.PlaneBufferGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.PlaneBufferGeometry(
           opt.geometry.width,
           opt.geometry.height,
           opt.geometry.segments
@@ -577,7 +577,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
         scope.body.linearDamping = 0.9; // Default value.
@@ -608,8 +608,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "polyhedron";
       scope.name = opt.name || "polyhedron" + key;
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.PolyhedronGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.PolyhedronGeometry(
           opt.geometry.verticesOfCube,
           opt.geometry.indicesOfFaces
         ),
@@ -625,7 +625,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
         scope.body.linearDamping = 0.9; // Default value.
@@ -658,8 +658,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "ring";
       scope.name = opt.name || "ring" + key;
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.TorusGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.TorusGeometry(
           opt.geometry.outerRadius,
           (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2,
           opt.geometry.thetaSegments, opt.geometry.phiSegments
@@ -678,7 +678,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       );
 
       if (!options.onlyvis) {
-        scope.physic = this.cannonjs.Trimesh.createTorus(
+        scope.physic = CANNON.Trimesh.createTorus(
           opt.geometry.outerRadius,
           (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2,
           opt.geometry.thetaSegments, opt.geometry.phiSegments
@@ -687,7 +687,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
         scope.physic.scale.z =
           1 / (opt.geometry.outerRadius - opt.geometry.innerRadius) * 2;
 
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
 
@@ -714,8 +714,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "shape";
       scope.name = opt.name || "shape" + key;
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.ShapeGeometry(opt.geometry.shapes),
+      scope.visible = new THREE.Mesh(
+        new THREE.ShapeGeometry(opt.geometry.shapes),
         scope.materialType
       );
 
@@ -747,8 +747,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "tetrahedron";
       scope.name = opt.name || "tetrahedron" + key;
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.TetrahedronGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.TetrahedronGeometry(
           opt.geometry.radius,
           opt.geometry.detail
         ),
@@ -765,7 +765,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       if (!options.onlyvis) {
         scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
 
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
 
@@ -804,8 +804,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
       scope.type = "text";
       scope.name = opt.name || "text" + key;
 
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.TextGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.TextGeometry(
           opt.geometry.text,
           opt.geometry.parameters
         ),
@@ -822,7 +822,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       if (!options.onlyvis) {
         scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
 
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
 
@@ -856,8 +856,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
       scope.type = "torus";
       scope.name = opt.name || "torus" + key;
 
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.TorusGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.TorusGeometry(
           opt.geometry.radius,
           opt.geometry.tube,
           opt.geometry.radialSegments,
@@ -875,14 +875,14 @@ WHS.init.prototype.addObject = function(figureType, options) {
       );
 
       if (!options.onlyvis) {
-        scope.physic = this.cannonjs.Trimesh.createTorus(
+        scope.physic = CANNON.Trimesh.createTorus(
           opt.geometry.radius,
           opt.geometry.tube,
           opt.geometry.radialSegments,
           opt.geometry.tubularSegments
         );
 
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
 
@@ -915,8 +915,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       scope.type = "torusknot";
       scope.name = opt.name || "torusknot" + key;
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.TorusKnotGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.TorusKnotGeometry(
           opt.geometry.radius,
           opt.geometry.tube,
           opt.geometry.radialSegments,
@@ -937,7 +937,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
       if (!options.onlyvis) {
         scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
         scope.body.linearDamping = 0.9; // Default value.
@@ -956,7 +956,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
 
       // #FIXME:30 fix to WHS.API (not here)
-      scope.CustomSinCurve = this.threejs.Curve.create(
+      scope.CustomSinCurve = THREE.Curve.create(
         function(scale) { //custom curve constructor
           this.scale = scale || 1;
         },
@@ -964,7 +964,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
           var tx = t * 3 - 1.5,
             ty = Math.sin(2 * Math.PI * t),
             tz = 0;
-          return new this.threejs.Vector3(tx, ty, tz).multiplyScalar(this.scale);
+          return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
         }
       );
 
@@ -986,8 +986,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
       scope.type = "tube";
       scope.name = opt.name || "tube" + key;
 
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.TubeGeometry(
+      scope.visible = new THREE.Mesh(
+        new THREE.TubeGeometry(
           opt.geometry.path,
           opt.geometry.segments,
           opt.geometry.radius,
@@ -1007,7 +1007,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       if (!options.onlyvis) {
         scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
 
-        scope.body = new this.cannonjs.Body({
+        scope.body = new CANNON.Body({
           mass: opt.mass
         });
 
@@ -1025,15 +1025,15 @@ WHS.init.prototype.addObject = function(figureType, options) {
       break;
   }
 
-  // DOING:10 Fix code style here.
+  // DOING:20 Fix code style here.
   scope.addCompoundFace = function() {
-    this.compoundFace = new this.root.threejs.Geometry();
+    this.compoundFace = new THREE.Geometry();
 
-    this.compoundFace.faces.push(new this.root.threejs.Face3(0, 1, 2));
+    this.compoundFace.faces.push(new THREE.Face3(0, 1, 2));
 
-    var boundingBox = new this.root.threejs.Box3().setFromObject(this.visible);
+    var boundingBox = new THREE.Box3().setFromObject(this.visible);
 
-    var boxAround = new this.root.threejs.BoxGeometry(
+    var boxAround = new THREE.BoxGeometry(
       boundingBox.max.x - boundingBox.min.x,
       boundingBox.max.y - boundingBox.min.y,
       boundingBox.max.z - boundingBox.min.z
@@ -1051,7 +1051,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
     this.compoundFace.vertices.push(vec1);
     this.compoundFace.vertices.push(vec2);
     this.compoundFace.vertices.push(vec3);
-    //this.compoundFace.vertices.push(new this.root.threejs.Vector3(0,1,2));
+    //this.compoundFace.vertices.push(new THREE.Vector3(0,1,2));
   }
 
   scope.remove = function () {

@@ -10,15 +10,15 @@
   <script src="../libs/Wagner.base.js"></script>
 
   <script src="../assets/terrain/default_terrain.js"></script>
+  <script src="../build/whitestorm.js"></script>
 </head>
 
 <body>
 </body>
-<script src="../build/whitestorm.js"></script>
-<script defer>
+<script>
   // NOTE: Make person bigger 10 times
 
-  var GAME = new WHS.init(THREE, CANNON, {
+  var GAME = new WHS.init({
     anaglyph: false,
     //helper: true,
     stats: "fps", // fps, ms, mb

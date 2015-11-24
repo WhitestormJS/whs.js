@@ -11,14 +11,14 @@
     var goDelta = 2 * runDelta;
     var sScope = this;
 
-    var pitchObject = new scope.threejs.Object3D();
+    var pitchObject = new THREE.Object3D();
     pitchObject.add( camera );
 
-    var yawObject = new scope.threejs.Object3D();
+    var yawObject = new THREE.Object3D();
     yawObject.position.y = 2;
     yawObject.add( pitchObject );
 
-    var quat = new scope.threejs.Quaternion();
+    var quat = new THREE.Quaternion();
 
     var moveForward = false;
     var moveBackward = false;
@@ -27,9 +27,9 @@
 
     var canJump = false;
 
-    var contactNormal = new scope.cannonjs.Vec3(); // Normal in the contact, pointing *out* of whatever the player touched
-    var upAxis = new scope.cannonjs.Vec3(0,1,0);
-    cannonBody.addEventListener("collide",function(e){
+    var contactNormal = new CANNON.Vec3(); // Normal in the contact, pointing *out* of whatever the player touched
+    var upAxis = new CANNON.Vec3(0,1,0);
+    cannonBody.addEventListener("collide", function(e){
         var contact = e.contact;
 
         // contact.bi and contact.bj are the colliding bodies, and contact.ni is the collision normal.
@@ -154,8 +154,8 @@
     }
 
     // Moves the camera to the Cannon.js object position and adds velocity to the object if the run key is down
-    var inputVelocity = new scope.threejs.Vector3();
-    var euler = new scope.threejs.Euler();
+    var inputVelocity = new THREE.Vector3();
+    var euler = new THREE.Euler();
     this.update = function ( delta ) {
 
         if ( sScope.enabled === false ) return;

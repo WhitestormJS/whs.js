@@ -45,46 +45,46 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
 
   switch (opt.material.type) {
     case "basic":
-      scope.materialType = new this.threejs.MeshBasicMaterial(opt.material);
+      scope.materialType = new THREE.MeshBasicMaterial(opt.material);
       break;
     case "linebasic":
-      scope.materialType = new this.threejs.LineBasicMaterial(opt.material);
+      scope.materialType = new THREE.LineBasicMaterial(opt.material);
       break;
     case "linedashed":
-      scope.materialType = new this.threejs.LineDashedMaterial(opt.material);
+      scope.materialType = new THREE.LineDashedMaterial(opt.material);
       break;
     case "material":
-      scope.materialType = new this.threejs.Material(opt.material);
+      scope.materialType = new THREE.Material(opt.material);
       break;
     case "depth":
-      scope.materialType = new this.threejs.MeshDepthMaterial(opt.material);
+      scope.materialType = new THREE.MeshDepthMaterial(opt.material);
       break;
     case "face":
-      scope.materialType = new this.threejs.MeshFaceMaterial(opt.material.materials);
+      scope.materialType = new THREE.MeshFaceMaterial(opt.material.materials);
       break;
     case "lambert":
-      scope.materialType = new this.threejs.MeshLambertMaterial(opt.material);
+      scope.materialType = new THREE.MeshLambertMaterial(opt.material);
       break;
     case "normal":
-      scope.materialType = new this.threejs.MeshNormalMaterial(opt.material);
+      scope.materialType = new THREE.MeshNormalMaterial(opt.material);
       break;
     case "phong":
-      scope.materialType = new this.threejs.MeshPhongMaterial(opt.material);
+      scope.materialType = new THREE.MeshPhongMaterial(opt.material);
       break;
     case "pointcloud":
-      scope.materialType = new this.threejs.PointCloudMaterial(opt.material);
+      scope.materialType = new THREE.PointCloudMaterial(opt.material);
       break;
     case "rawshader":
-      scope.materialType = new this.threejs.RawShaderMaterial(opt.material);
+      scope.materialType = new THREE.RawShaderMaterial(opt.material);
       break;
     case "shader":
-      scope.materialType = new this.threejs.ShaderMaterial(opt.material);
+      scope.materialType = new THREE.ShaderMaterial(opt.material);
       break;
     case "spritecanvas":
-      scope.materialType = new this.threejs.SpriteCanvasMaterial(opt.material);
+      scope.materialType = new THREE.SpriteCanvasMaterial(opt.material);
       break;
     case "sprite":
-      scope.materialType = new this.threejs.SpriteMaterial(opt.material);
+      scope.materialType = new THREE.SpriteMaterial(opt.material);
       break;
   }
 
@@ -105,7 +105,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
     data.computeVertexNormals();
 
     // Visualization.
-    scope.visible = new scope.root.threejs.Mesh(data, scope.materialType);
+    scope.visible = new THREE.Mesh(data, scope.materialType);
     scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
     scope.visible.rotation.set(
       (Math.PI / 180) * opt.rot.x,
@@ -117,7 +117,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
     if (!options.onlyvis) {
       scope.physic = new WHS.API.TrimeshFigure(data);
 
-      scope.body = new scope.root.cannonjs.Body({
+      scope.body = new CANNON.Body({
         mass: opt.mass
       });
 

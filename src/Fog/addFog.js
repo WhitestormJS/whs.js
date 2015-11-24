@@ -23,11 +23,11 @@ WHS.init.prototype.addFog = function(type, params) {
 
   switch (type) {
     case "fog":
-      scope = new this.threejs.Fog(params.hex, params.near, params.far);
+      scope = new THREE.Fog(params.hex, params.near, params.far);
       break;
 
     case "fogexp2":
-      scope = new this.threejs.FogExp2(params.hex, params.density);
+      scope = new THREE.FogExp2(params.hex, params.density);
       break;
   }
 

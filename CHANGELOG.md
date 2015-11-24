@@ -1,6 +1,11 @@
 ## Changelog
 **current**
 - added Coggle.
+- *WHS.init(THREE, CANNON, params) -> WHS.init(params)*
+- Fixed *api.Wrap* error in *addGround*.
+- Added *api.Wrap* to *addGrass*.
+- Name fixed in examples.
+- Fixed *stone_wall.html* example.
 
 **v0.0.5**
 - Basic_material example fixed.

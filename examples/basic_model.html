@@ -15,11 +15,11 @@
 <body>
 </body>
 <script src="../build/whitestorm.js"></script>
-<script defer>
+<script>
 
 // NOTE: Basic scene with sphere and ground.
 
-var GAME = new WHS.init( THREE, CANNON,
+var GAME = new WHS.init(
 {
     anaglyph: false,
     stats: "fps", // fps, ms, mb
@@ -37,7 +37,7 @@ var GAME = new WHS.init( THREE, CANNON,
     }
 });
 
-GAME.cube = GAME.addModel("../assets/models/teapot.js",
+GAME.teapot = GAME.addModel("../assets/models/teapot.js",
 {
     mass: 10,
     onlyvis: false,

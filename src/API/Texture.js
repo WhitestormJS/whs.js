@@ -14,7 +14,7 @@
 WHS.API.texture = function(url, options) {
   'use strict';
 
-  var texture = WHS.headers.threejs.ImageUtils.loadTexture(url);
+  var texture = THREE.ImageUtils.loadTexture(url);
 
   if (options) {
     var opt = options;
@@ -34,7 +34,7 @@ WHS.API.texture = function(url, options) {
     opt.repeat.x = opt.repeat.x || 1;
     opt.repeat.y = opt.repeat.y || 1;
 
-    texture.wrapS = texture.wrapT = WHS.headers.threejs.RepeatWrapping;
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     //texture.offset.set(opt.offset.x, opt.offset.y);
     texture.repeat.set(opt.repeat.x, opt.repeat.y);
 

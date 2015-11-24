@@ -27,6 +27,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
   });
 
   scope.type = type;
+  scope.skip = true;
   scope.name = "ground" + key;
 
   api.def(size, {
@@ -36,74 +37,74 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
   switch (material.type) {
     case "basic":
-      scope.materialType = new this.threejs.MeshBasicMaterial(material);
+      scope.materialType = new THREE.MeshBasicMaterial(material);
       break;
 
     case "linebasic":
-      scope.materialType = new this.threejs.LineBasicMaterial(material);
+      scope.materialType = new THREE.LineBasicMaterial(material);
       break;
 
     case "linedashed":
-      scope.materialType = new this.threejs.LineDashedMaterial(material);
+      scope.materialType = new THREE.LineDashedMaterial(material);
       break;
 
     case "material":
-      scope.materialType = new this.threejs.Material(material);
+      scope.materialType = new THREE.Material(material);
       break;
 
     case "depth":
-      scope.materialType = new this.threejs.MeshDepthMaterial(material);
+      scope.materialType = new THREE.MeshDepthMaterial(material);
       break;
 
     case "face":
-      scope.materialType = new this.threejs.MeshFaceMaterial(material);
+      scope.materialType = new THREE.MeshFaceMaterial(material);
       break;
 
     case "lambert":
-      scope.materialType = new this.threejs.MeshLambertMaterial(material);
+      scope.materialType = new THREE.MeshLambertMaterial(material);
       break;
 
     case "normal":
-      scope.materialType = new this.threejs.MeshNormalMaterial(material);
+      scope.materialType = new THREE.MeshNormalMaterial(material);
       break;
 
     case "phong":
-      scope.materialType = new this.threejs.MeshPhongMaterial(material);
+      scope.materialType = new THREE.MeshPhongMaterial(material);
       break;
 
     case "pointcloud":
-      scope.materialType = new this.threejs.PointCloudMaterial(material);
+      scope.materialType = new THREE.PointCloudMaterial(material);
       break;
 
     case "rawshader":
-      scope.materialType = new this.threejs.RawShaderMaterial(material);
+      scope.materialType = new THREE.RawShaderMaterial(material);
       break;
 
     case "shader":
-      scope.materialType = new this.threejs.ShaderMaterial(material);
+      scope.materialType = new THREE.ShaderMaterial(material);
       break;
 
     case "spritecanvas":
-      scope.materialType = new this.threejs.SpriteCanvasMaterial(material);
+      scope.materialType = new THREE.SpriteCanvasMaterial(material);
       break;
 
     case "sprite":
-      scope.materialType = new this.threejs.SpriteMaterial(material);
+      scope.materialType = new THREE.SpriteMaterial(material);
       break;
   }
 
   switch (type) {
     case "smooth":
 
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.PlaneBufferGeometry(size.width, size.height, 1, 1),
+      scope.visible = new THREE.Mesh(
+        new THREE.PlaneBufferGeometry(size.width, size.height, 1, 1),
       scope.materialType);
 
       scope.visible.rotation.set(-90 / 180 * Math.PI, 0, 0);
       scope.visible.position.set(pos.x, pos.y, pos.z);
-      scope.physic = new this.cannonjs.Plane(size.width, size.height);
+      scope.physic = new CANNON.Plane(size.width, size.height);
 
-      scope.body = new this.cannonjs.Body({
+      scope.body = new CANNON.Body({
         mass: 0
       });
 
@@ -112,7 +113,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       scope.body.position.set(pos.x, pos.y, pos.z);
 
       scope.body.quaternion.setFromAxisAngle(
-        new this.cannonjs.Vec3(1, 0, 0),
+        new CANNON.Vec3(1, 0, 0),
         -Math.PI / 2
       );
 
@@ -121,14 +122,14 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
     case "infinitySmooth":
 
-      scope.visible = new this.threejs.Mesh(
-        new this.threejs.PlaneBufferGeometry(size.width, size.height, 1, 1),
+      scope.visible = new THREE.Mesh(
+        new THREE.PlaneBufferGeometry(size.width, size.height, 1, 1),
       scope.materialType);
 
       scope.visible.rotation.set(-90 / 180 * Math.PI, 0, 0);
       scope.visible.position.set(pos.x, pos.y, pos.z);
-      scope.physic = new this.cannonjs.Plane(size.width, size.height);
-      scope.body = new this.cannonjs.Body({
+      scope.physic = new CANNON.Plane(size.width, size.height);
+      scope.body = new CANNON.Body({
         mass: 0
       });
       scope.body.linearDamping = 0.9; // Default value.
@@ -136,7 +137,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       scope.body.position.set(posscopex, pos.y, pos.z);
 
       scope.body.quaternion.setFromAxisAngle(
-        new this.cannonjs.Vec3(1, 0, 0),
+        new CANNON.Vec3(1, 0, 0),
         -Math.PI / 2
       );
 
@@ -173,7 +174,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         effect: [DEPTHNOISE_EFFECT] //[ DESTRUCTURE_EFFECT ]
       }, canvas, 0, 0, size.width, size.height);
 
-      scope.custumGeom = new this.threejs.Geometry()
+      scope.custumGeom = new THREE.Geometry()
         .fromBufferGeometry(terrainGeometry);
 
       scope.custumGeom.verticesNeedUpdate = true;
@@ -184,7 +185,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       scope.custumGeom.mergeVertices();
 
       if (!isNaN(size.detality)) {
-        scope.modifier = new this.threejs.SubdivisionModifier();
+        scope.modifier = new THREE.SubdivisionModifier();
 
         scope.modifier.modify(scope.custumGeom);
         scope.custumGeom.verticesNeedUpdate = true;
@@ -394,21 +395,21 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       scope.visible.scale.x = 1;
       scope.visible.scale.y = 1;
       scope.visible.position.set(pos.x, pos.y, pos.z);
-      api.rotateGeometry(scope.visible.geometry, {
+      scope.visible.geometry = api.rotateGeometry(scope.visible.geometry, {
         x: 0,
         y: Math.PI / 180 * -180,
         z: 0
       });
 
       scope.visible.updateMatrix();
-      scope.physic = new this.cannonjs.Heightfield(
+      scope.physic = new CANNON.Heightfield(
         terrainGeometry.heightsArray.reverse(),
         {
           elementSize: 1 // Distance between the data points in X and Y directions
         }
       );
 
-      scope.body = new this.cannonjs.Body({
+      scope.body = new CANNON.Body({
         mass: 0
       });
 
@@ -434,7 +435,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       break;
   }
 
-  api.wrap(scope, scope.visible, scope.physics);
+  scope.wrap = api.Wrap(scope, scope.visible, scope.body);
 
   return scope;
 }

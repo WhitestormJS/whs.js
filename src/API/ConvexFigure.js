@@ -19,13 +19,13 @@ WHS.API.ConvexFigure = function(thrObj) {
     var faces = new Array();
 
     thrObj.vertices.forEach(function(element) {
-      points.push(new WHS.headers.cannonjs.Vec3(element.x, element.y, element.z));
+      points.push(new CANNON.Vec3(element.x, element.y, element.z));
     });
 
     thrObj.faces.forEach(function(element) {
       faces.push([element.a, element.b, element.c]);
     });
 
-    return new WHS.headers.cannonjs.ConvexPolyhedron(points, faces);
+    return new CANNON.ConvexPolyhedron(points, faces);
   }
 }

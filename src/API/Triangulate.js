@@ -16,11 +16,11 @@ WHS.API.Triangulate = function(thrObj, material) {
   if (arguments.length < 1)
     console.error("No THREE.js geometry");
   else if (arguments.length = 1) {
-    var triangles = new WHS.headers.threejs.Geometry();
+    var triangles = new THREE.Geometry();
     var materials = [];
 
     thrObj.faces.forEach(function(element) {
-      var triangle = new WHS.headers.threejs.Geometry();
+      var triangle = new THREE.Geometry();
 
       [].push.apply(triangle.vertices, [
         thrObj.vertices[element.a],
@@ -29,23 +29,23 @@ WHS.API.Triangulate = function(thrObj, material) {
       ]);
 
       triangle.faceVertexUvs[0].push([
-        new WHS.headers.threejs.Vector2(0, 0),
-        new WHS.headers.threejs.Vector2(0, 1),
-        new WHS.headers.threejs.Vector2(1, 1),
-        new WHS.headers.threejs.Vector2(1, 0),
+        new THREE.Vector2(0, 0),
+        new THREE.Vector2(0, 1),
+        new THREE.Vector2(1, 1),
+        new THREE.Vector2(1, 0),
       ]);
 
-      triangle.faces.push(new WHS.headers.threejs.Face3(0, 1, 2));
+      triangle.faces.push(new THREE.Face3(0, 1, 2));
       triangle.computeFaceNormals();
 
-      var triangleMesh = new WHS.headers.threejs.Mesh(triangle, material);
+      var triangleMesh = new THREE.Mesh(triangle, material);
       triangleMesh.updateMatrix();
 
       triangles.merge(triangleMesh.geometry, triangleMesh.matrix);
       materials.push(material);
     });
 
-    var trianglesMesh = new WHS.headers.threejs.Mesh(triangles, new WHS.headers.threejs.MeshFaceMaterial(materials));
+    var trianglesMesh = new THREE.Mesh(triangles, new THREE.MeshFaceMaterial(materials));
     return trianglesMesh;
   }
 }

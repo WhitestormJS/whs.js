@@ -12,10 +12,17 @@
  * @param {Object} params Parameters of initalize. (OPTIONAL)
  * @return {Object} Scope.
  */
-WHS.init = function(THREE, CANNON, params) {
+WHS.init = function(params) {
   'use strict';
 
   console.log('WHS.init', WHS.REVISION);
+
+  if (!THREE)
+    console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
+  if (!CANNON)
+    console.warn('whitestormJS requires CANNON.js. {Object} CANNON not found.');
+  if (!CANNON)
+    console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
 
   params = params || {};
 
@@ -27,28 +34,20 @@ WHS.init = function(THREE, CANNON, params) {
     z: 0
   });
 
-  // Local variables.
-  this.threejs = THREE;
-  this.cannonjs = CANNON;
-
-  // Global variables (for WfHS.API).
-  WHS.headers.threejs = this.threejs;
-  WHS.headers.cannonjs = this.cannonjs;
-
   this.params = params;
 
   this.rWidth = window.innerWidth / 1.5;
   this.rHeight = window.innerHeight / 1.5
 
-  this.scene = new this.threejs.Scene();
-  this.world = new this.cannonjs.World();
+  this.scene = new THREE.Scene();
+  this.world = new CANNON.World();
 
   this.world.gravity.set(params.gravity.x, params.gravity.y, params.gravity.z);
-  this.world.broadphase = new this.cannonjs.NaiveBroadphase();
+  this.world.broadphase = new CANNON.NaiveBroadphase();
   this.world.quatNormalizeSkip = 0;
   this.world.quatNormalizeFast = false;
 
-  this.solver = new this.cannonjs.GSSolver();
+  this.solver = new CANNON.GSSolver();
   this.world.defaultContactMaterial.contactEquationStiffness = 1e8;
   this.world.defaultContactMaterial.contactEquationRegularizationTime = 3;
   this.solver.iterations = 20;
@@ -56,12 +55,12 @@ WHS.init = function(THREE, CANNON, params) {
   var split = true;
 
   if (split)
-    this.world.solver = new this.cannonjs.SplitSolver(this.solver);
+    this.world.solver = new CANNON.SplitSolver(this.solver);
   else
     this.world.solver = this.solver;
 
-  this.physicsMaterial = new this.cannonjs.Material("slipperyMaterial");
-  this.physicsContactMaterial = new this.cannonjs.ContactMaterial(this.physicsMaterial,
+  this.physicsMaterial = new CANNON.Material("slipperyMaterial");
+  this.physicsContactMaterial = new CANNON.ContactMaterial(this.physicsMaterial,
     this.physicsMaterial,
     0.0, // friction coefficient
     0.3 // restitution
@@ -72,7 +71,7 @@ WHS.init = function(THREE, CANNON, params) {
 
   // Debug Renderer
   if (params.helper) {
-    this.cannonDebugRenderer = new this.threejs.CannonDebugRenderer(
+    this.cannonDebugRenderer = new THREE.CannonDebugRenderer(
       this.scene,
       this.world
     );
@@ -107,7 +106,7 @@ WHS.init = function(THREE, CANNON, params) {
   this.params.camera.near = api.def(this.params.camera.near, 1);
   this.params.camera.far = api.def(this.params.camera.far, 1000);
 
-  this.camera = new this.threejs.PerspectiveCamera(
+  this.camera = new THREE.PerspectiveCamera(
     this.params.camera.aspect,
     window.innerWidth / window.innerHeight,
     this.params.camera.near,
@@ -126,14 +125,14 @@ WHS.init = function(THREE, CANNON, params) {
 
   api.merge(this.scene, this.camera);
 
-  this.renderer = new this.threejs.WebGLRenderer();
+  this.renderer = new THREE.WebGLRenderer();
   this.renderer.setClearColor(0x70DBFF);
 
   this.renderer.shadowMapEnabled = true;
   this.renderer.shadowMapSoft = true;
 
   if (this.anaglyph) {
-    this.effect = new this.threejs.AnaglyphEffect(this.renderer);
+    this.effect = new THREE.AnaglyphEffect(this.renderer);
     this.effect.setSize(this.rWidth, window.innerHeight);
 
     this.effect.render(this.scene, this.camera);
@@ -238,10 +237,9 @@ WHS.init.prototype.animate = function(time, scope) {
     }
 
     for (var i = 0; i < Object.keys(WHS.objects).length; i++) {
-      if (!WHS.objects[i].onlyvis) {
+      if (!WHS.objects[i].onlyvis && !WHS.objects[i].skip) {
 
-        if (WHS.objects[i].visible)
-          WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
+        WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
 
         if (WHS.objects[i].visible.quaternion)
           WHS.objects[i].visible.quaternion.copy(WHS.objects[i].body.quaternion);

@@ -34,16 +34,16 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
 
   switch (type) {
     case "ambient":
-      scope.light = new this.threejs.AmbientLight(0xffffff);
+      scope.light = new THREE.AmbientLight(0xffffff);
       break;
 
     case "area":
-      scope.light = new this.threejs.AreaLight(options.color, options.intensity);
+      scope.light = new THREE.AreaLight(options.color, options.intensity);
       console.warn([this.light], "This light only works in the deferredrenderer");
       break;
 
     case "directional":
-      scope.light = new this.threejs.DirectionalLight(
+      scope.light = new THREE.DirectionalLight(
         options.color,
         options.intensity
       );
@@ -53,7 +53,7 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       break;
 
     case "hemisphere":
-      scope.light = new this.threejs.HemisphereLight(
+      scope.light = new THREE.HemisphereLight(
         options.skyColor,
         options.groundColor,
         options.intensity
@@ -62,11 +62,11 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       break;
 
     case "light":
-      scope.light = new this.threejs.Light(options.color);
+      scope.light = new THREE.Light(options.color);
       break;
 
     case "point":
-      scope.light = new this.threejs.PointLight(
+      scope.light = new THREE.PointLight(
         options.color,
         options.intensity,
         options.distance
@@ -75,7 +75,7 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       break;
 
     case "spot":
-      scope.light = new this.threejs.SpotLight(
+      scope.light = new THREE.SpotLight(
         options.color,
         options.intensity,
         options.distance,

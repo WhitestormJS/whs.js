@@ -10,5 +10,5 @@
  * @returns {Object} - *THREE.JS* shape object.
  */
 WHS.ADD.shape = function() {
-  return new WHS.headers.threejs.Shape();
+  return new THREE.Shape();
 }

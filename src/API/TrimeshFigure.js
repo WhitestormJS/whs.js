@@ -41,7 +41,7 @@ WHS.API.TrimeshFigure = function(thrObj, heightsNeed) {
       faces.push(element.c);
     });
 
-    var canObj = new WHS.headers.cannonjs.Trimesh(points, faces);
+    var canObj = new CANNON.Trimesh(points, faces);
     canObj.updateNormals();
     canObj.heightsValues = heights;
 
