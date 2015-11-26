@@ -5,6 +5,12 @@
 */
 
 /**
+ * © Alexander Buzin, 2014-2015
+ * Site: http://alexbuzin.me/
+ * Email: alexbuzin88@gmail.com
+*/
+
+/**
  * Ground.
  *
  * @param {String} type Ground/Terrain type. (REQUIRED)
@@ -35,7 +41,10 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
     height: 100
   });
 
-  switch (material.type) {
+  console.log(material);
+
+
+  switch (material.kind) {
     case "basic":
       scope.materialType = new THREE.MeshBasicMaterial(material);
       break;
@@ -159,70 +168,34 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         ctx.drawImage(size.terrain, 0, 0);
       }
 
-      var terrainGeometry = TERRAINGEN.GetFromCanvas({
-        alea: RAND_MT,
-        generator: PN_GENERATOR,
-        width: size.width,
-        height: size.height,
-        widthSegments: size.width,
-        heightSegments: size.height,
-        depth: size.depth,
-        param: 3,
-        filterparam: 1,
-        filter: [BLUR_FILTER],
-        postgen: [], // MOUNTAINS_COLORS
-        effect: [DEPTHNOISE_EFFECT] //[ DESTRUCTURE_EFFECT ]
-      }, canvas, 0, 0, size.width, size.height);
 
-      scope.custumGeom = new THREE.Geometry()
-        .fromBufferGeometry(terrainGeometry);
+      //if (size.useDeafultMaterial) {
 
-      scope.custumGeom.verticesNeedUpdate = true;
-      scope.custumGeom.elementsNeedUpdate = true;
-      scope.custumGeom.normalsNeedUpdate = true;
-      scope.custumGeom.computeFaceNormals();
-      scope.custumGeom.computeVertexNormals();
-      scope.custumGeom.mergeVertices();
-
-      if (!isNaN(size.detality)) {
-        scope.modifier = new THREE.SubdivisionModifier();
-
-        scope.modifier.modify(scope.custumGeom);
-        scope.custumGeom.verticesNeedUpdate = true;
-        scope.custumGeom.elementsNeedUpdate = true;
-        scope.custumGeom.normalsNeedUpdate = true;
-        scope.custumGeom.computeFaceNormals();
-        scope.custumGeom.computeVertexNormals();
-        scope.custumGeom.mergeVertices();
-      }
-
-      if (size.useDeafultMaterial) {
-
-      	var oceanTexture = new THREE.ImageUtils.loadTexture(
+      	var oceanTexture = api.TextureLoader().load(
           'assets/textures/terrain/dirt-512.jpg'
         );
 
       	oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
 
-      	var sandyTexture = new THREE.ImageUtils.loadTexture(
+      	var sandyTexture = api.TextureLoader().load(
           'assets/textures/terrain/sand-512.jpg'
         );
 
       	sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
 
-      	var grassTexture = new THREE.ImageUtils.loadTexture(
+      	var grassTexture = api.TextureLoader().load(
           'assets/textures/terrain/grass-512.jpg'
         );
 
       	grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
 
-      	var rockyTexture = new THREE.ImageUtils.loadTexture(
+      	var rockyTexture = api.TextureLoader().load(
           'assets/textures/terrain/rock-512.jpg'
         );
 
       	rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
 
-      	var snowyTexture = new THREE.ImageUtils.loadTexture(
+      	var snowyTexture = api.TextureLoader().load(
           'assets/textures/terrain/snow-512.jpg'
         );
 
@@ -240,7 +213,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
           snowyTexture:	{ type: "t", value: snowyTexture },
           fog: true,
           lights: true
-        }, THREE.ShaderLib['basic'].uniforms, THREE.UniformsLib[ "fog" ]);
+        }, THREE.ShaderLib['lambert'].uniforms);
 
         var shopts = {
             uniforms: customUN,
@@ -385,25 +358,154 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         };
 
         var customMaterial = new THREE.ShaderMaterial(shopts);
-      }
 
-      scope.materialType = size.useDeafultMaterial ?
-        customMaterial : scope.materialType;
+      //scope.materialType = size.useDeafultMaterial ?
+      //  customMaterial : scope.materialType;
 
-      scope.visible = api.Triangulate(scope.custumGeom, scope.materialType);
+        var uniformsNoise, uniformsNormal,
+        				heightMap, normalMap,
+        				quadTarget;
+
+
+        var normalShader = THREE.NormalMapShader;
+
+				var rx = 256, ry = 256;
+				var pars = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, format: THREE.RGBFormat };
+
+				heightMap = new THREE.WebGLRenderTarget( rx, ry, pars );
+        heightMap.texture = api.TextureLoader().load('../assets/terrain/default_terrain.png');
+				//heightMap.texture.generateMipmaps = false;
+
+        console.log(normalMap);
+
+				normalMap = new THREE.WebGLRenderTarget( rx, ry, pars );
+				normalMap.texture = api.TextureLoader().load('../assets/terrain/default_terrain.png');
+
+				uniformsNoise = {
+
+					time:   { type: "f", value: 1.0 },
+					scale:  { type: "v2", value: new THREE.Vector2( 2, 2 ) },
+					offset: { type: "v2", value: new THREE.Vector2( 0, 0 ) }
+
+				};
+
+				uniformsNormal = THREE.UniformsUtils.clone( normalShader.uniforms );
+
+				uniformsNormal.height.value = 0.05;
+				uniformsNormal.resolution.value.set( rx, ry );
+				uniformsNormal.heightMap.value = heightMap;
+
+				var vertexShader = document.getElementById( 'vertexShader' ).textContent;
+
+				// TEXTURES
+
+				var specularMap = new THREE.WebGLRenderTarget( 256, 256, pars ); //2048
+				specularMap.texture = api.TextureLoader().load('../assets/terrain/default_terrain.png');
+
+        var terrainShader = THREE.ShaderTerrain[ "terrain" ];
+
+  				var uniformsTerrain = THREE.UniformsUtils.clone( terrainShader.uniforms );
+
+          uniformsTerrain = Object.assign(uniformsTerrain, {
+            ambient  : { type: "c", value: new THREE.Color( 0xdddddd ) },
+            emissive : { type: "c", value: new THREE.Color( 0xeeeeee ) },
+            wrapRGB  : { type: "v3", value: new THREE.Vector3( 1, 1, 1 ) },
+            oceanTexture:	{ type: "t", value: oceanTexture },
+            sandyTexture:	{ type: "t", value: sandyTexture },
+            grassTexture:	{ type: "t", value: grassTexture },
+            rockyTexture:	{ type: "t", value: rockyTexture },
+            snowyTexture:	{ type: "t", value: snowyTexture },
+            fog: true,
+            lights: true
+          }, THREE.ShaderLib['lambert'].uniforms);
+
+  				uniformsTerrain[ "tNormal" ].value = normalMap;
+  				uniformsTerrain[ "uNormalScale" ].value = 3.5;
+
+  				uniformsTerrain[ "tDisplacement" ].value = heightMap;
+          //uniformsTerrain[ "tDisplacement" ].value = heightMap;
+
+  				uniformsTerrain[ "tDiffuse1" ].value = grassTexture;
+  				uniformsTerrain[ "tDiffuse2" ].value = rockyTexture;
+  				uniformsTerrain[ "tSpecular" ].value = specularMap;
+  				uniformsTerrain[ "tDetail" ].value =  oceanTexture;
+
+  				uniformsTerrain[ "enableDiffuse1" ].value = true;
+  				uniformsTerrain[ "enableDiffuse2" ].value = true;
+  				uniformsTerrain[ "enableSpecular" ].value = true;
+
+  				uniformsTerrain[ "diffuse" ].value.setHex( 0xffffff );
+  				uniformsTerrain[ "specular" ].value.setHex( 0xffffff );
+
+  				uniformsTerrain[ "shininess" ].value = 30;
+
+  				uniformsTerrain[ "uDisplacementScale" ].value = 100;
+
+  				uniformsTerrain[ "uRepeatOverlay" ].value.set( 6, 6 );
+
+  				var params = [
+  					[ 'heightmap', 	document.getElementById( 'fragmentShaderNoise' ).textContent, 	vertexShader, uniformsNoise, false ],
+  					[ 'normal', 	normalShader.fragmentShader,  normalShader.vertexShader, uniformsNormal, false ],
+  					[ 'terrain', 	terrainShader.fragmentShader, terrainShader.vertexShader, uniformsTerrain, true ]
+  				 ];
+
+
+           var mlib = {};
+
+           for( var i = 0; i < params.length; i ++ ) {
+
+     					material = new THREE.ShaderMaterial( {
+
+     						uniforms: 		params[ i ][ 3 ],
+     						vertexShader: 	params[ i ][ 2 ],
+     						fragmentShader: params[ i ][ 1 ],
+     						lights: 		params[ i ][ 4 ],
+     						fog: 			true,
+                side: THREE.DoubleSide,
+                shading: THREE.SmoothShading
+     						} );
+
+     					mlib[ params[ i ][ 0 ] ] = material;
+
+
+
+     				}
+
+      var geom = new THREE.PlaneBufferGeometry(256, 256, 256, 256);
+
+      scope.visible = new THREE.Mesh(geom, mlib[ "terrain" ]); // api.Triangulate(scope.custumGeom, scope.materialType);
+
 
       scope.visible.scale.x = 1;
       scope.visible.scale.y = 1;
       scope.visible.position.set(pos.x, pos.y, pos.z);
-      scope.visible.geometry = api.rotateGeometry(scope.visible.geometry, {
+      scope.visible.rotation.set(Math.PI / 180 * -90, 0, 0);
+
+      //scope.root.scene.add(scope.visible);
+      /*scope.visible.geometry = api.rotateGeometry(scope.visible.geometry, {
         x: 0,
         y: Math.PI / 180 * -180,
         z: 0
-      });
+      });*/
+
+      var hgtdata = []; // new Array(256);
+
+      for (var x=0; x <= 255; x++) {
+        hgtdata[x] = new Uint8Array(256);
+
+        for (var y=255; y >= 0; y--) {
+          hgtdata[x][255-y] = ctx.getImageData(x, y, 1, 1).data[0]/255 * 100;
+
+          //console.log(y);
+        }
+      }
+
+      //console.log(hgtdata);
+
 
       scope.visible.updateMatrix();
       scope.physic = new CANNON.Heightfield(
-        terrainGeometry.heightsArray.reverse(),
+        hgtdata,
         {
           elementSize: 1 // Distance between the data points in X and Y directions
         }
@@ -420,13 +522,13 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       scope.body.quaternion.setFromEuler(Math.PI / 180 * -90, 0, 0, "XYZ");
 
       scope.body.position.set(
-        pos.x - size.width / 2 + 1,
+        pos.x - size.width / 2 + 0.5,
         pos.y,
-        pos.z + size.height / 2 - 1
+        pos.z + size.height / 2 - 0.5
       );
 
-      //scope.physic.scale.x = 1;
-      //scope.physic.scale.y = 1;
+      //scope.physic.scale.x = 256/250;
+      //scope.physic.scale.z = 256/250;
       scope.body.name = scope.name;
 
       scope.visible.castShadow = true;

@@ -128,7 +128,7 @@ WHS.init = function(params) {
   this.renderer = new THREE.WebGLRenderer();
   this.renderer.setClearColor(0x70DBFF);
 
-  this.renderer.shadowMapEnabled = true;
+  this.renderer.shadowMap.enabled = true;
   this.renderer.shadowMapSoft = true;
 
   if (this.anaglyph) {

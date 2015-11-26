@@ -95,6 +95,12 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
   }
 
   scope.light.position.set(scope.pos.x, scope.pos.y, scope.pos.z);
+  scope.light.shadowCameraVisible = true;
+
+
+  if(type == "directional")
+    var debug = new THREE.DirectionalLightHelper( scope.light, 1 );
+
 
   if (scope.light.target)
     scope.light.target.position.set(
@@ -104,6 +110,9 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
     );
 
   WHS.API.merge(this.scene, scope.light);
+
+  if(type == "directional")
+    WHS.API.merge(this.scene, debug);
 
   return scope;
 }

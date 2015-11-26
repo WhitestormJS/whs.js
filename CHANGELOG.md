@@ -6,6 +6,8 @@
 - Added *api.Wrap* to *addGrass*.
 - Name fixed in examples.
 - Fixed *stone_wall.html* example.
+- MaterialOptions: *.type -> .kind*
+- **THREE.js upgrade. r69 -> r73*.
 
 **v0.0.5**
 - Basic_material example fixed.

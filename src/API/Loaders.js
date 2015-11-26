@@ -8,3 +8,7 @@
 WHS.API.JSONLoader = function() {
   return new THREE.JSONLoader();
 }
+
+WHS.API.TextureLoader = function() {
+  return new THREE.TextureLoader();
+}

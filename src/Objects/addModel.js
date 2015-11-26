@@ -43,7 +43,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
   opt.material = options.materialOptions || {};
   opt.geometry = options.geometryOptions || {};
 
-  switch (opt.material.type) {
+  switch (opt.material.kind) {
     case "basic":
       scope.materialType = new THREE.MeshBasicMaterial(opt.material);
       break;
