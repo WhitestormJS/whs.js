@@ -1,5 +1,5 @@
 ## Changelog
-**current**
+**current** (v0.0.6-alpha)
 - added Coggle.
 - *WHS.init(THREE, CANNON, params) -> WHS.init(params)*
 - Fixed *api.Wrap* error in *addGround*.
@@ -7,7 +7,14 @@
 - Name fixed in examples.
 - Fixed *stone_wall.html* example.
 - MaterialOptions: *.type -> .kind*
-- **THREE.js upgrade. r69 -> r73*.
+- **THREE.js upgrade. r69 -> r73**.
+- Changed terrain generation script.
+-- Improved loading time ( < 1 sec. ).
+-- FPS improved. (59-60 fps.)
+Issues:
+-- Shadows don't work.
+-- addGrass doesn't work.
+-- Cannon.js heightmap is not smooth yet.
 
 **v0.0.5**
 - Basic_material example fixed.
