@@ -9,11 +9,17 @@
 - MaterialOptions: *.type -> .kind*
 - **THREE.js upgrade. r69 -> r73**.
 - Changed terrain generation script.
+
 -- Improved loading time ( < 1 sec. ).
+
 -- FPS improved. (59-60 fps.)
+
 Issues:
+
 -- Shadows don't work.
+
 -- addGrass doesn't work.
+
 -- Cannon.js heightmap is not smooth yet.
 
 **v0.0.5**
