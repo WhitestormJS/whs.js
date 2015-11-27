@@ -97,6 +97,16 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
   scope.light.position.set(scope.pos.x, scope.pos.y, scope.pos.z);
   scope.light.shadowCameraVisible = true;
 
+  scope.light.castShadow = true;
+
+  // #FIXME:20 Shadow default parameters.
+  scope.light.shadowMapWidth = 1024;
+  scope.light.shadowMapHeight = 1024;
+
+  scope.light.shadowCameraNear = 50;
+  scope.light.shadowCameraFar = 4000;
+  scope.light.shadowCameraFov = 30;
+
 
   if(type == "directional")
     var debug = new THREE.DirectionalLightHelper( scope.light, 1 );

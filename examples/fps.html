@@ -198,7 +198,7 @@
     intensity: 1
   }, {
     x: 100, // 100,
-    y: 130, // 30,
+    y: 110, // 30,
     z: 100, // 100
   }, {
     x: 0,
@@ -207,19 +207,19 @@
   });
 
   // NOTE: Test light.
-  GAME.light2 = GAME.addLight("point", {
+  /*GAME.light2 = GAME.addLight("point", {
     color: 0xffffff,
     intensity: 4,
-    distance: 100
+    distance: 1
   }, {
     x: 100, //  100,
-    y: 130, //  30,
+    y: 110, //  30,
     z: 100, //  100
   }, {
     x: 0,
     y: 0,
     z: 0
-  });
+  });*/
 
   // NOTE: Test light.
   /*GAME.light2 = GAME.addLight("ambient", {
@@ -256,9 +256,30 @@
           map: WHS.API.texture('assets/textures/box.jpg')
       },
       pos: {
-          x: 20,
+          x: 60,
           y: 370,
-          z: 0
+          z: 60
+      }
+  });
+
+  GAME.cube = GAME.addObject("cube",
+  {
+      geometryOptions: {
+          width: 2,
+          height: 2,
+          depth: 2
+      },
+      mass: 5,
+      onlyvis: false,
+      materialOptions: {
+          color: 0xffffff,
+          kind: "basic",
+          map: WHS.API.texture('assets/textures/box.jpg')
+      },
+      pos: {
+          x: 60,
+          y: 375,
+          z: 60
       }
   });
 
@@ -284,23 +305,29 @@
   GAME.directionalblurEffect = GAME.addWagner(WAGNER, "motionBlurPass", {}).apply();
 
   GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
-//GAME.OrbitControls();
 
   var grasscoords = [];
 
   for (var x = 0; x < 20; x++) {
     for (var y = 0; y < 15; y++) {
-      grasscoords.push({
+      /*grasscoords.push({
         x: x,
         y: y
-      });
+      });*/
+
     }
   }
 
+/*
+  console.log(WHS.API.getheight({
+        x: 0,
+        y: 0
+      }, -500, GAME.ground, -1));
 
-  /*GAME.addGrass(GAME.ground, {
+  GAME.addGrass(GAME.ground, {
     coords: grasscoords
   });*/
+
 
   //GAME.person.addCompoundFace();
 </script>

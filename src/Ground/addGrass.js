@@ -47,7 +47,7 @@ WHS.init.prototype.addGrass = function(ground, options) {
     var intr = (WHS.API.getheight({
       x: coord.x,
       y: coord.y
-    }, 500, ground))[0];
+    }, 500, ground, -1))[0];
 
     var faceVertices = intr.object.geometry.vertices;
 

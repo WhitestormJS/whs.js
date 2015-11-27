@@ -1019,6 +1019,9 @@ WHS.init.prototype.addObject = function(figureType, options) {
       } else {
         scope.onlyvis = true;
       }
+      
+      scope.visible.castShadow = true;
+      scope.visible.receiveShadow = true;
 
       scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 

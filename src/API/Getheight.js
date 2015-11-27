@@ -10,16 +10,19 @@
  * @param {Object} pos Position x/y/z.
  * @param {Number} diff Intersect line length from top.
  * @param {Object} terrain *WHS* terrain object.
+ * @param {Number} direction Direction of raycast vector.
  * @returns {Object} Intersect array.
  */
-WHS.API.getheight = function(pos, diff, terrain) {
+WHS.API.getheight = function(pos, diff, terrain, direction) {
   'use strict';
 
   diff = diff || 1000;
 
+  direction = direction || 1;
+
   this.raycaster = new THREE.Raycaster(
-    new THREE.Vector3(pos.x, diff, pos.y),
-    new THREE.Vector3(0, -1, 0).normalize()
+    new THREE.Vector3(pos.x, diff, direction * pos.y),
+    new THREE.Vector3(0, -1 * direction, 0).normalize()
   );
 
   this.intersect = this.raycaster.intersectObject(terrain.visible);
