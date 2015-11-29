@@ -41,66 +41,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
     height: 100
   });
 
-  console.log(material);
-
-
-  switch (material.kind) {
-    case "basic":
-      scope.materialType = new THREE.MeshBasicMaterial(material);
-      break;
-
-    case "linebasic":
-      scope.materialType = new THREE.LineBasicMaterial(material);
-      break;
-
-    case "linedashed":
-      scope.materialType = new THREE.LineDashedMaterial(material);
-      break;
-
-    case "material":
-      scope.materialType = new THREE.Material(material);
-      break;
-
-    case "depth":
-      scope.materialType = new THREE.MeshDepthMaterial(material);
-      break;
-
-    case "face":
-      scope.materialType = new THREE.MeshFaceMaterial(material);
-      break;
-
-    case "lambert":
-      scope.materialType = new THREE.MeshLambertMaterial(material);
-      break;
-
-    case "normal":
-      scope.materialType = new THREE.MeshNormalMaterial(material);
-      break;
-
-    case "phong":
-      scope.materialType = new THREE.MeshPhongMaterial(material);
-      break;
-
-    case "pointcloud":
-      scope.materialType = new THREE.PointCloudMaterial(material);
-      break;
-
-    case "rawshader":
-      scope.materialType = new THREE.RawShaderMaterial(material);
-      break;
-
-    case "shader":
-      scope.materialType = new THREE.ShaderMaterial(material);
-      break;
-
-    case "spritecanvas":
-      scope.materialType = new THREE.SpriteCanvasMaterial(material);
-      break;
-
-    case "sprite":
-      scope.materialType = new THREE.SpriteMaterial(material);
-      break;
-  }
+  scope.materialType = api.loadMaterial(material)._material;
 
   switch (type) {
     case "smooth":
@@ -252,6 +193,8 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
 				uniformsTerrain[ "tDisplacement" ].value = heightMap;
 
+        //uniformsTerrain[ "shadowMap" ].value = heightMap;
+
 				uniformsTerrain[ "uDisplacementScale" ].value = 100;
 
 				uniformsTerrain[ "uRepeatOverlay" ].value.set( 6, 6 );
@@ -267,8 +210,12 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
             shading: THREE.SmoothShading
 						} );
 
+      var geom = new THREE.PlaneGeometry(256, 256, 256, 256);
+
+      geom.verticesNeedUpdate = true;
+
       scope.visible = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(256, 256, 256, 256),
+        geom,
         material
       );
 

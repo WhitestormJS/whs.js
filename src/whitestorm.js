@@ -130,6 +130,7 @@ WHS.init = function(params) {
 
   this.renderer.shadowMap.enabled = true;
   this.renderer.shadowMapSoft = true;
+  //this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
   if (this.anaglyph) {
     this.effect = new THREE.AnaglyphEffect(this.renderer);
@@ -226,7 +227,14 @@ WHS.init.prototype.animate = function(time, scope) {
     this.delta = 1000 / 60;
   }
 
+  var clock = new THREE.Clock();
+
+
+
   function reDraw() {
+
+    var delta = clock.getDelta();
+
     if (scope.stats)
       scope.stats.begin();
 
@@ -237,12 +245,19 @@ WHS.init.prototype.animate = function(time, scope) {
     }
 
     for (var i = 0; i < Object.keys(WHS.objects).length; i++) {
+
       if (!WHS.objects[i].onlyvis && !WHS.objects[i].skip) {
 
         WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
 
         if (WHS.objects[i].visible.quaternion)
           WHS.objects[i].visible.quaternion.copy(WHS.objects[i].body.quaternion);
+
+      }
+
+      if (WHS.objects[i].morph) {
+        WHS.objects[i].visible.mixer.update( delta );
+
 
       }
       //WHS.objects[i].addCompoundFace();

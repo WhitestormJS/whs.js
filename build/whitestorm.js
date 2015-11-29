@@ -788,7 +788,7 @@ var PointerLockControls = function(camera, cannonBody, alpha, scope) {
     var alpha = alpha || 0.5;
     var eyeYPos = 10; // eyes are 2 meters above the ground
     var velocityFactor = 0.1;
-    var jumpVelocity = 5 * alpha;
+    var jumpVelocity = 10 * alpha;
     var runDelta = 1;
     var goDelta = 2 * runDelta;
     var sScope = this;
@@ -5107,416 +5107,6 @@ THREE.OrbitControls = function(object, domElement) {
 
 THREE.OrbitControls.prototype = Object.create(THREE.EventDispatcher.prototype);
 
-
-
-/**
- * @author alteredq / http://alteredqualia.com/
- *
- */
-
-THREE.ShaderTerrain = {
-
-    /* -------------------------------------------------------------------------
-    //	Dynamic terrain shader
-    //		- Blinn-Phong
-    //		- height + normal + diffuse1 + diffuse2 + specular + detail maps
-    //		- point, directional and hemisphere lights (use with "lights: true" material option)
-    //		- shadow maps receiving
-     ------------------------------------------------------------------------- */
-
-    'terrain': {
-
-        uniforms: THREE.UniformsUtils.merge([
-
-            THREE.UniformsLib["fog"],
-            THREE.UniformsLib["lights"],
-            THREE.UniformsLib["shadowmap"],
-
-            {
-
-                "enableDiffuse1": {
-                    type: "i",
-                    value: 0
-                },
-                "enableDiffuse2": {
-                    type: "i",
-                    value: 0
-                },
-                "enableSpecular": {
-                    type: "i",
-                    value: 0
-                },
-                "enableReflection": {
-                    type: "i",
-                    value: 0
-                },
-
-                "tDiffuse1": {
-                    type: "t",
-                    value: null
-                },
-                "tDiffuse2": {
-                    type: "t",
-                    value: null
-                },
-                "tDetail": {
-                    type: "t",
-                    value: null
-                },
-                "tNormal": {
-                    type: "t",
-                    value: null
-                },
-                "tSpecular": {
-                    type: "t",
-                    value: null
-                },
-                "tDisplacement": {
-                    type: "t",
-                    value: null
-                },
-
-                "uNormalScale": {
-                    type: "f",
-                    value: 1.0
-                },
-
-                "uDisplacementBias": {
-                    type: "f",
-                    value: 0.0
-                },
-                "uDisplacementScale": {
-                    type: "f",
-                    value: 1.0
-                },
-
-                "diffuse": {
-                    type: "c",
-                    value: new THREE.Color(0xeeeeee)
-                },
-                "specular": {
-                    type: "c",
-                    value: new THREE.Color(0x111111)
-                },
-                "shininess": {
-                    type: "f",
-                    value: 30
-                },
-                "opacity": {
-                    type: "f",
-                    value: 1
-                },
-
-                "uRepeatBase": {
-                    type: "v2",
-                    value: new THREE.Vector2(1, 1)
-                },
-                "uRepeatOverlay": {
-                    type: "v2",
-                    value: new THREE.Vector2(1, 1)
-                },
-
-                "uOffset": {
-                    type: "v2",
-                    value: new THREE.Vector2(0, 0)
-                }
-
-            }
-
-        ]),
-
-        /*fragmentShader: [
-
-        	"uniform float opacity;",
-
-        	"varying vec3 vLightFront;",
-
-        	"#ifdef DOUBLE_SIDED",
-
-        	"varying vec3 vLightBack;",
-
-        	"#endif",
-        	'uniform sampler2D oceanTexture;',
-        	'uniform sampler2D sandyTexture;',
-        	'uniform sampler2D grassTexture;',
-        	'uniform sampler2D rockyTexture;',
-        	'uniform sampler2D snowyTexture;',
-
-        	THREE.ShaderChunk[ "color_pars_fragment" ],
-        	THREE.ShaderChunk[ "map_pars_fragment" ],
-        	THREE.ShaderChunk[ "alphamap_pars_fragment" ],
-        	THREE.ShaderChunk[ "lightmap_pars_fragment" ],
-        	THREE.ShaderChunk[ "envmap_pars_fragment" ],
-        	THREE.ShaderChunk[ "fog_pars_fragment" ],
-        	THREE.ShaderChunk[ "shadowmap_pars_fragment" ],
-        	THREE.ShaderChunk[ "specularmap_pars_fragment" ],
-        	THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
-        	'',
-        	'varying vec2 vUv;',
-        	'varying float vAmount;',
-        	'',
-        	"void main() {",
-
-
-
-        	'	vec4 water = (smoothstep(0.01, 0.25, vAmount)',
-        	' - smoothstep(0.24, 0.26, vAmount))',
-        	' * texture2D( oceanTexture, vUv * 0.1 );',
-
-        	'	vec4 sandy = (smoothstep(0.24, 0.27, vAmount)',
-        	' - smoothstep(0.28, 0.31, vAmount))',
-        	' * texture2D( sandyTexture, vUv * 0.1 );',
-
-        	'	vec4 grass = (smoothstep(0.28, 0.32, vAmount)',
-        	' - smoothstep(0.35, 0.40, vAmount))',
-        	' * texture2D( grassTexture, vUv * 0.2 );',
-
-        	'	vec4 rocky = (smoothstep(0.30, 0.40, vAmount)',
-        	' - smoothstep(0.40, 0.70, vAmount))',
-        	' * texture2D( rockyTexture, vUv * 0.2 );',
-
-        	'	vec4 snowy = (smoothstep(0.42, 0.45, vAmount))',
-        	'* texture2D( snowyTexture, vUv * 0.1 );',
-        	'	gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0)',
-        	' + water + sandy + grass + rocky + snowy; ',
-
-        		THREE.ShaderChunk[ "logdepthbuf_fragment" ],
-        		THREE.ShaderChunk[ "map_fragment" ],
-        		THREE.ShaderChunk[ "alphamap_fragment" ],
-        		THREE.ShaderChunk[ "alphatest_fragment" ],
-        		THREE.ShaderChunk[ "specularmap_fragment" ],
-
-        	"	#ifdef DOUBLE_SIDED",
-
-        	"		if ( gl_FrontFacing )",
-        	"			gl_FragColor.xyz *= vLightFront;",
-        	"		else",
-        	"			gl_FragColor.xyz *= vLightBack;",
-
-        	"	#else",
-
-        	"		gl_FragColor.xyz *= vLightFront;",
-
-        	"	#endif",
-        		THREE.ShaderChunk[ "lightmap_fragment" ],
-        		THREE.ShaderChunk[ "color_fragment" ],
-        		THREE.ShaderChunk[ "shadowmap_fragment" ],
-        		THREE.ShaderChunk[ "linear_to_gamma_fragment" ],
-        		THREE.ShaderChunk[ "fog_fragment" ],
-
-        	"}"
-
-        ].join("\n"),*/
-
-        fragmentShader: [
-
-            "uniform vec3 diffuse;",
-            "uniform vec3 emissive;",
-            "uniform float opacity;",
-
-            "uniform vec3 ambientLightColor;",
-
-            "varying vec3 vLightFront;",
-
-            "#ifdef DOUBLE_SIDED",
-
-            "varying vec3 vLightBack;",
-
-            "#endif",
-            'uniform sampler2D oceanTexture;',
-            'uniform sampler2D sandyTexture;',
-            'uniform sampler2D grassTexture;',
-            'uniform sampler2D rockyTexture;',
-            'uniform sampler2D snowyTexture;',
-
-            THREE.ShaderChunk["common"],
-            THREE.ShaderChunk["color_pars_fragment"],
-            THREE.ShaderChunk["map_pars_fragment"],
-            THREE.ShaderChunk["alphamap_pars_fragment"],
-            THREE.ShaderChunk["lightmap_pars_fragment"],
-            THREE.ShaderChunk["envmap_pars_fragment"],
-            THREE.ShaderChunk["fog_pars_fragment"],
-            THREE.ShaderChunk["shadowmap_pars_fragment"],
-            THREE.ShaderChunk["specularmap_pars_fragment"],
-            THREE.ShaderChunk["logdepthbuf_pars_fragment"],
-            '',
-            'varying vec2 vUv;',
-            'varying float vAmount;',
-            '',
-            "void main() {",
-
-            'vec3 shadowMask = vec3( 1.0 );',
-            'vec3 outgoingLight = vec3( 0.0 );',
-            'vec4 diffuseColor = vec4(0.0);',
-            "	vec3 totalAmbientLight = ambientLightColor;",
-
-            '	vec4 water = (smoothstep(0.01, 0.25, vAmount)',
-            ' - smoothstep(0.24, 0.26, vAmount))',
-            ' * texture2D( oceanTexture, vUv * 10.0 );',
-
-            '	vec4 sandy = (smoothstep(0.24, 0.27, vAmount)',
-            ' - smoothstep(0.28, 0.31, vAmount))',
-            ' * texture2D( sandyTexture, vUv * 10.0 );',
-
-            '	vec4 grass = (smoothstep(0.28, 0.32, vAmount)',
-            ' - smoothstep(0.35, 0.40, vAmount))',
-            ' * texture2D( grassTexture, vUv * 20.0 );',
-
-            '	vec4 rocky = (smoothstep(0.30, 0.40, vAmount)',
-            ' - smoothstep(0.40, 0.70, vAmount))',
-            ' * texture2D( rockyTexture, vUv * 20.0 );',
-
-            '	vec4 snowy = (smoothstep(0.42, 0.45, vAmount))',
-            '* texture2D( snowyTexture, vUv * 10.0 );',
-            '	diffuseColor = vec4(0.0, 0.0, 0.0, 1.0)',
-            ' + water + sandy + grass + rocky + snowy; ',
-
-            THREE.ShaderChunk["logdepthbuf_fragment"],
-            THREE.ShaderChunk["map_fragment"],
-            THREE.ShaderChunk["alphamap_fragment"],
-            THREE.ShaderChunk["alphatest_fragment"],
-            THREE.ShaderChunk["specularmap_fragment"],
-
-            THREE.ShaderChunk["lightmap_fragment"],
-            THREE.ShaderChunk["color_fragment"],
-            THREE.ShaderChunk["shadowmap_fragment"],
-            THREE.ShaderChunk["linear_to_gamma_fragment"],
-            THREE.ShaderChunk["fog_fragment"],
-
-            "	#ifdef DOUBLE_SIDED",
-
-            "		if ( gl_FrontFacing )",
-            "			outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask + totalAmbientLight );",
-            "		else",
-            "			outgoingLight += diffuseColor.rgb * ( vLightBack * shadowMask + totalAmbientLight );",
-
-            "	#else",
-
-            "		outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask + totalAmbientLight );",
-
-            "	#endif",
-
-
-
-            "gl_FragColor = vec4( outgoingLight, diffuseColor.a );",
-
-            "}"
-        ].join("\n"),
-
-        vertexShader: [
-            "#define TERRAIN;",
-            "varying vec3 vLightFront;",
-            "#ifdef DOUBLE_SIDED",
-            "	varying vec3 vLightBack;",
-            "#endif",
-            '',
-            'varying float vAmount;',
-            '',
-
-            "attribute vec4 tangent;",
-
-            "uniform vec2 uRepeatBase;",
-
-            "uniform sampler2D tNormal;",
-
-            "#ifdef VERTEX_TEXTURES",
-
-            "uniform sampler2D tDisplacement;",
-            "uniform float uDisplacementScale;",
-            "uniform float uDisplacementBias;",
-
-            "#endif",
-
-            "varying vec3 vTangent;",
-            "varying vec3 vBinormal;",
-            "varying vec3 vNormal;",
-            "varying vec2 vUv;",
-
-            "varying vec3 vViewPosition;",
-
-            THREE.ShaderChunk["common"],
-            //THREE.ShaderChunk[ "uv_pars_vertex" ],
-            //THREE.ShaderChunk[ "uv2_pars_vertex" ],
-            //THREE.ShaderChunk[ "envmap_pars_vertex" ],
-            THREE.ShaderChunk["lights_lambert_pars_vertex"],
-            //THREE.ShaderChunk[ "color_pars_vertex" ],
-            //THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
-            //THREE.ShaderChunk[ "skinning_pars_vertex" ],
-            THREE.ShaderChunk["shadowmap_pars_vertex"],
-            //THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
-
-            "void main() {",
-            //THREE.ShaderChunk[ "color_vertex" ],
-
-            THREE.ShaderChunk["beginnormal_vertex"],
-            //THREE.ShaderChunk[ "morphnormal_vertex" ],
-            //THREE.ShaderChunk[ "skinbase_vertex" ],
-            //THREE.ShaderChunk[ "skinnormal_vertex" ],
-            THREE.ShaderChunk["defaultnormal_vertex"],
-
-            THREE.ShaderChunk["begin_vertex"],
-            //THREE.ShaderChunk[ "morphtarget_vertex" ],
-            //THREE.ShaderChunk[ "skinning_vertex" ],
-            THREE.ShaderChunk["project_vertex"],
-            //THREE.ShaderChunk[ "logdepthbuf_vertex" ],
-            THREE.ShaderChunk["worldpos_vertex"],
-
-            //THREE.ShaderChunk[ "uv_vertex" ],
-            //THREE.ShaderChunk[ "uv2_vertex" ],
-
-            //"vNormal = normalize( normalMatrix * normal);",
-
-            //tangent and binormal vectors
-
-            //"vTangent = normalize( normalMatrix * tangent.xyz );",
-
-            //"vBinormal = cross( vNormal, vTangent ) * tangent.w;",
-            //"vBinormal = normalize( vBinormal );",
-
-            //texture coordinates
-
-            "vUv = uv;",
-
-            "vec2 uvBase = uv * uRepeatBase;",
-
-            // displacement mapping
-
-            "#ifdef VERTEX_TEXTURES",
-
-            "vec3 dv = texture2D( tDisplacement, uvBase ).xyz;",
-            "float df = uDisplacementScale * dv.x + uDisplacementBias;",
-            "vec3 displacedPosition = normal * df + position;",
-
-            //"worldPosition = modelMatrix * vec4( displacedPosition, 1.0 );",
-            "mvPosition = modelViewMatrix * vec4( displacedPosition, 1.0 );",
-
-            "#else",
-
-            //"worldPosition = modelMatrix * vec4( position, 1.0 );",
-            "mvPosition = modelViewMatrix * vec4( position, 1.0 );",
-
-            "#endif",
-
-            "gl_Position = projectionMatrix * mvPosition;",
-
-            "vViewPosition = -mvPosition.xyz;",
-
-            'vAmount = displacedPosition.z * 0.005 + 0.1;',
-
-            //THREE.ShaderChunk[ "envmap_vertex" ],
-            THREE.ShaderChunk["lights_lambert_vertex"],
-            THREE.ShaderChunk["shadowmap_vertex"],
-
-            "}"
-
-        ].join("\n"),
-        side: THREE.DoubleSide,
-        shading: THREE.SmoothShading
-
-    }
-
-};
-
 // stats.js - http://github.com/mrdoob/stats.js
 var Stats = function() {
     function f(a, e, b) {
@@ -6646,6 +6236,437 @@ if (typeof define === 'function' && define.amd) {
 
 
 /**
+ * @author alteredq / http://alteredqualia.com/
+ *
+ */
+
+THREE.ShaderTerrain = {
+
+    /* -------------------------------------------------------------------------
+    //	Dynamic terrain shader
+    //		- Blinn-Phong
+    //		- height + normal + diffuse1 + diffuse2 + specular + detail maps
+    //		- point, directional and hemisphere lights (use with "lights: true" material option)
+    //		- shadow maps receiving
+     ------------------------------------------------------------------------- */
+
+    'terrain': {
+
+        uniforms: THREE.UniformsUtils.merge([
+
+            THREE.UniformsLib["fog"],
+            THREE.UniformsLib["lights"],
+            THREE.UniformsLib["shadowmap"],
+
+            {
+
+                "enableDiffuse1": {
+                    type: "i",
+                    value: 0
+                },
+                "enableDiffuse2": {
+                    type: "i",
+                    value: 0
+                },
+                "enableSpecular": {
+                    type: "i",
+                    value: 0
+                },
+                "enableReflection": {
+                    type: "i",
+                    value: 0
+                },
+
+                "tDiffuse1": {
+                    type: "t",
+                    value: null
+                },
+                "tDiffuse2": {
+                    type: "t",
+                    value: null
+                },
+                "tDetail": {
+                    type: "t",
+                    value: null
+                },
+                "tNormal": {
+                    type: "t",
+                    value: null
+                },
+                "tSpecular": {
+                    type: "t",
+                    value: null
+                },
+                "tDisplacement": {
+                    type: "t",
+                    value: null
+                },
+
+                "uNormalScale": {
+                    type: "f",
+                    value: 1.0
+                },
+
+                "uDisplacementBias": {
+                    type: "f",
+                    value: 0.0
+                },
+                "uDisplacementScale": {
+                    type: "f",
+                    value: 1.0
+                },
+
+                "diffuse": {
+                    type: "c",
+                    value: new THREE.Color(0xeeeeee)
+                },
+                "specular": {
+                    type: "c",
+                    value: new THREE.Color(0x111111)
+                },
+                "shininess": {
+                    type: "f",
+                    value: 30
+                },
+                "opacity": {
+                    type: "f",
+                    value: 1
+                },
+
+                "uRepeatBase": {
+                    type: "v2",
+                    value: new THREE.Vector2(1, 1)
+                },
+                "uRepeatOverlay": {
+                    type: "v2",
+                    value: new THREE.Vector2(1, 1)
+                },
+
+                "uOffset": {
+                    type: "v2",
+                    value: new THREE.Vector2(0, 0)
+                }
+
+            }
+
+        ]),
+
+        /*fragmentShader: [
+
+        	"uniform float opacity;",
+
+        	"varying vec3 vLightFront;",
+
+        	"#ifdef DOUBLE_SIDED",
+
+        	"varying vec3 vLightBack;",
+
+        	"#endif",
+        	'uniform sampler2D oceanTexture;',
+        	'uniform sampler2D sandyTexture;',
+        	'uniform sampler2D grassTexture;',
+        	'uniform sampler2D rockyTexture;',
+        	'uniform sampler2D snowyTexture;',
+
+        	THREE.ShaderChunk[ "color_pars_fragment" ],
+        	THREE.ShaderChunk[ "map_pars_fragment" ],
+        	THREE.ShaderChunk[ "alphamap_pars_fragment" ],
+        	THREE.ShaderChunk[ "lightmap_pars_fragment" ],
+        	THREE.ShaderChunk[ "envmap_pars_fragment" ],
+        	THREE.ShaderChunk[ "fog_pars_fragment" ],
+        	THREE.ShaderChunk[ "shadowmap_pars_fragment" ],
+        	THREE.ShaderChunk[ "specularmap_pars_fragment" ],
+        	THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
+        	'',
+        	'varying vec2 vUv;',
+        	'varying float vAmount;',
+        	'',
+        	"void main() {",
+
+
+
+        	'	vec4 water = (smoothstep(0.01, 0.25, vAmount)',
+        	' - smoothstep(0.24, 0.26, vAmount))',
+        	' * texture2D( oceanTexture, vUv * 0.1 );',
+
+        	'	vec4 sandy = (smoothstep(0.24, 0.27, vAmount)',
+        	' - smoothstep(0.28, 0.31, vAmount))',
+        	' * texture2D( sandyTexture, vUv * 0.1 );',
+
+        	'	vec4 grass = (smoothstep(0.28, 0.32, vAmount)',
+        	' - smoothstep(0.35, 0.40, vAmount))',
+        	' * texture2D( grassTexture, vUv * 0.2 );',
+
+        	'	vec4 rocky = (smoothstep(0.30, 0.40, vAmount)',
+        	' - smoothstep(0.40, 0.70, vAmount))',
+        	' * texture2D( rockyTexture, vUv * 0.2 );',
+
+        	'	vec4 snowy = (smoothstep(0.42, 0.45, vAmount))',
+        	'* texture2D( snowyTexture, vUv * 0.1 );',
+        	'	gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0)',
+        	' + water + sandy + grass + rocky + snowy; ',
+
+        		THREE.ShaderChunk[ "logdepthbuf_fragment" ],
+        		THREE.ShaderChunk[ "map_fragment" ],
+        		THREE.ShaderChunk[ "alphamap_fragment" ],
+        		THREE.ShaderChunk[ "alphatest_fragment" ],
+        		THREE.ShaderChunk[ "specularmap_fragment" ],
+
+        	"	#ifdef DOUBLE_SIDED",
+
+        	"		if ( gl_FrontFacing )",
+        	"			gl_FragColor.xyz *= vLightFront;",
+        	"		else",
+        	"			gl_FragColor.xyz *= vLightBack;",
+
+        	"	#else",
+
+        	"		gl_FragColor.xyz *= vLightFront;",
+
+        	"	#endif",
+        		THREE.ShaderChunk[ "lightmap_fragment" ],
+        		THREE.ShaderChunk[ "color_fragment" ],
+        		THREE.ShaderChunk[ "shadowmap_fragment" ],
+        		THREE.ShaderChunk[ "linear_to_gamma_fragment" ],
+        		THREE.ShaderChunk[ "fog_fragment" ],
+
+        	"}"
+
+        ].join("\n"),*/
+
+        fragmentShader: [
+
+            "uniform vec3 diffuse;",
+            "uniform vec3 emissive;",
+            "uniform float opacity;",
+
+            "uniform vec3 ambientLightColor;",
+
+            "varying vec3 vLightFront;",
+
+            "#ifdef DOUBLE_SIDED",
+
+            "varying vec3 vLightBack;",
+
+            "#endif",
+            'uniform sampler2D oceanTexture;',
+            'uniform sampler2D sandyTexture;',
+            'uniform sampler2D grassTexture;',
+            'uniform sampler2D rockyTexture;',
+            'uniform sampler2D snowyTexture;',
+
+            THREE.ShaderChunk["common"],
+            THREE.ShaderChunk["color_pars_fragment"],
+            THREE.ShaderChunk["map_pars_fragment"],
+            THREE.ShaderChunk["alphamap_pars_fragment"],
+            THREE.ShaderChunk["lightmap_pars_fragment"],
+            THREE.ShaderChunk["envmap_pars_fragment"],
+            THREE.ShaderChunk["fog_pars_fragment"],
+            THREE.ShaderChunk["shadowmap_pars_fragment"],
+            THREE.ShaderChunk["specularmap_pars_fragment"],
+            THREE.ShaderChunk["logdepthbuf_pars_fragment"],
+            '',
+            'varying vec2 vUv;',
+            'varying float vAmount;',
+            '',
+            "void main() {",
+
+            'vec3 shadowMask = vec3( 1.0 );',
+            'vec3 outgoingLight = vec3( 0.0 );',
+            'vec4 diffuseColor = vec4(0.0);',
+            "	vec3 totalAmbientLight = ambientLightColor;",
+
+            '	vec4 water = (smoothstep(0.01, 0.25, vAmount)',
+            ' - smoothstep(0.24, 0.26, vAmount))',
+            ' * texture2D( oceanTexture, vUv * 10.0 );',
+
+            '	vec4 sandy = (smoothstep(0.24, 0.27, vAmount)',
+            ' - smoothstep(0.28, 0.31, vAmount))',
+            ' * texture2D( sandyTexture, vUv * 10.0 );',
+
+            '	vec4 grass = (smoothstep(0.28, 0.32, vAmount)',
+            ' - smoothstep(0.35, 0.40, vAmount))',
+            ' * texture2D( grassTexture, vUv * 20.0 );',
+
+            '	vec4 rocky = (smoothstep(0.30, 0.40, vAmount)',
+            ' - smoothstep(0.40, 0.70, vAmount))',
+            ' * texture2D( rockyTexture, vUv * 20.0 );',
+
+            '	vec4 snowy = (smoothstep(0.42, 0.45, vAmount))',
+            '* texture2D( snowyTexture, vUv * 10.0 );',
+            '	diffuseColor = vec4(0.0, 0.0, 0.0, 1.0)',
+            ' + water + sandy + grass + rocky + snowy; ',
+
+            THREE.ShaderChunk["logdepthbuf_fragment"],
+            THREE.ShaderChunk["map_fragment"],
+            THREE.ShaderChunk["alphamap_fragment"],
+            THREE.ShaderChunk["alphatest_fragment"],
+            THREE.ShaderChunk["specularmap_fragment"],
+
+            THREE.ShaderChunk["lightmap_fragment"],
+            THREE.ShaderChunk["color_fragment"],
+            THREE.ShaderChunk["shadowmap_fragment"],
+            THREE.ShaderChunk["linear_to_gamma_fragment"],
+            THREE.ShaderChunk["fog_fragment"],
+
+            //"	#ifdef DOUBLE_SIDED",
+
+            //"		if ( gl_FrontFacing )",
+            //"			outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask );",
+            //"		else",
+            "			outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask );",
+
+            //"	#else",
+
+            //"		outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask );",
+
+            //"	#endif",
+
+
+
+            "gl_FragColor = vec4( outgoingLight, diffuseColor.a );",
+
+            "}"
+        ].join("\n"),
+
+        vertexShader: [
+            "#define TERRAIN;",
+            "varying vec3 vLightFront;",
+            "#ifdef DOUBLE_SIDED",
+            "	varying vec3 vLightBack;",
+            "#endif",
+            '',
+            'varying float vAmount;',
+            '',
+
+            "attribute vec4 tangent;",
+
+            "uniform vec2 uRepeatBase;",
+
+            "uniform sampler2D tNormal;",
+
+            "#ifdef VERTEX_TEXTURES",
+
+            "uniform sampler2D tDisplacement;",
+            "uniform float uDisplacementScale;",
+            "uniform float uDisplacementBias;",
+
+            "#endif",
+
+            "varying vec3 vTangent;",
+            "varying vec3 vBinormal;",
+            "varying vec3 vNormal;",
+            "varying vec2 vUv;",
+
+            "varying vec3 vViewPosition;",
+
+            THREE.ShaderChunk["common"],
+            //THREE.ShaderChunk[ "uv_pars_vertex" ],
+            //THREE.ShaderChunk[ "uv2_pars_vertex" ],
+            //THREE.ShaderChunk[ "envmap_pars_vertex" ],
+            THREE.ShaderChunk["lights_lambert_pars_vertex"],
+            //THREE.ShaderChunk[ "color_pars_vertex" ],
+            //THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
+            //THREE.ShaderChunk[ "skinning_pars_vertex" ],
+            THREE.ShaderChunk["shadowmap_pars_vertex"],
+            //THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+
+            "void main() {",
+            //THREE.ShaderChunk[ "color_vertex" ],
+
+            THREE.ShaderChunk["beginnormal_vertex"],
+            //THREE.ShaderChunk[ "morphnormal_vertex" ],
+            //THREE.ShaderChunk[ "skinbase_vertex" ],
+            //THREE.ShaderChunk[ "skinnormal_vertex" ],
+            THREE.ShaderChunk["defaultnormal_vertex"],
+
+            THREE.ShaderChunk["begin_vertex"],
+            //THREE.ShaderChunk[ "morphtarget_vertex" ],
+            //THREE.ShaderChunk[ "skinning_vertex" ],
+            THREE.ShaderChunk["project_vertex"],
+            //THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+            //THREE.ShaderChunk[ "worldpos_vertex" ],
+
+            //THREE.ShaderChunk[ "uv_vertex" ],
+            //THREE.ShaderChunk[ "uv2_vertex" ],
+
+            //"vNormal = normalize( normalMatrix * normal);",
+
+            //tangent and binormal vectors
+
+            //"vTangent = normalize( normalMatrix * tangent.xyz );",
+
+            //"vBinormal = cross( vNormal, vTangent ) * tangent.w;",
+            //"vBinormal = normalize( vBinormal );",
+
+            //texture coordinates
+
+            "vUv = uv;",
+
+            "vec2 uvBase = uv * uRepeatBase;",
+
+            // displacement mapping
+
+            "#ifdef VERTEX_TEXTURES",
+
+            "vec3 dv = texture2D( tDisplacement, uvBase ).xyz;",
+            "float df = uDisplacementScale * dv.x + uDisplacementBias;",
+            "vec3 displacedPosition = normal * df + position;",
+
+            "vec4 worldPosition = modelMatrix * vec4( displacedPosition, 1.0 );",
+            "mvPosition = modelViewMatrix * vec4( displacedPosition, 1.0 );",
+            "transformedNormal = normalize( normalMatrix * normal );",
+
+            "#else",
+
+            "vec4 worldPosition = modelMatrix * vec4( position, 1.0 );",
+            "mvPosition = modelViewMatrix * vec4( position, 1.0 );",
+            "transformedNormal = normalize( normalMatrix * normal );",
+
+            "#endif",
+
+            "gl_Position = projectionMatrix * mvPosition;",
+
+            //"vViewPosition = -mvPosition.xyz;",
+
+            'vAmount = displacedPosition.z * 0.005 + 0.1;',
+
+            //THREE.ShaderChunk[ "envmap_vertex" ],
+            THREE.ShaderChunk["lights_lambert_vertex"],
+            THREE.ShaderChunk["shadowmap_vertex"],
+
+            "}"
+
+        ].join("\n"),
+        side: THREE.DoubleSide,
+        shading: THREE.SmoothShading
+
+    }
+
+};
+
+
+
+WHS.API.construct = function(root, params) {
+    'use strict';
+
+    if (!root)
+        console.error("@constructor: WHS root object is not defined.");
+
+    var scope = {
+        root: root,
+        _whsobject: true,
+        _releaseTime: new Date().getTime(),
+        _pos: params.pos,
+        _rot: params.rot
+    }
+
+    return scope;
+}
+
+
+
+/**
  * Trimesh figure. Makes convexPolyhedron object *CANNON.JS* from *THREE.JS* firure.
  *
  * @param {Object} thrObj Figure object *THREE.JS*. (REQUIRED)
@@ -6744,6 +6765,79 @@ WHS.API.JSONLoader = function() {
 
 WHS.API.TextureLoader = function() {
     return new THREE.TextureLoader();
+}
+
+
+
+WHS.API.loadMaterial = function(material) {
+    'use strict';
+
+    if (typeof material.kind !== "string")
+        console.error("Type of material is undefined or not a string. @loadMaterial");
+
+    var scope = {
+        _type: material.kind
+    };
+
+    switch (material.kind) {
+        case "basic":
+            scope._material = new THREE.MeshBasicMaterial(material);
+            break;
+
+        case "linebasic":
+            scope._material = new THREE.LineBasicMaterial(material);
+            break;
+
+        case "linedashed":
+            scope._material = new THREE.LineDashedMaterial(material);
+            break;
+
+        case "material":
+            scope._material = new THREE.Material(material);
+            break;
+
+        case "depth":
+            scope._material = new THREE.MeshDepthMaterial(material);
+            break;
+
+        case "face":
+            scope._material = new THREE.MeshFaceMaterial(material);
+            break;
+
+        case "lambert":
+            scope._material = new THREE.MeshLambertMaterial(material);
+            break;
+
+        case "normal":
+            scope._material = new THREE.MeshNormalMaterial(material);
+            break;
+
+        case "phong":
+            scope._material = new THREE.MeshPhongMaterial(material);
+            break;
+
+        case "pointcloud":
+            scope._material = new THREE.PointCloudMaterial(material);
+            break;
+
+        case "rawshader":
+            scope._material = new THREE.RawShaderMaterial(material);
+            break;
+
+        case "shader":
+            scope._material = new THREE.ShaderMaterial(material);
+            break;
+
+        case "spritecanvas":
+            scope._material = new THREE.SpriteCanvasMaterial(material);
+            break;
+
+        case "sprite":
+            scope._material = new THREE.SpriteMaterial(material);
+            break;
+    }
+
+    return scope;
 }
 
 
@@ -7044,17 +7138,19 @@ WHS.API.TrimeshFigure = function(thrObj, heightsNeed) {
 WHS.API.Wrap = function(SCOPE, mesh, body) {
     'use strict';
 
-    this._figure = mesh;
-    this._object = body;
-    this._scope = SCOPE;
-    this._key = WHS.objects.length;
+    var scope = {
+        _figure: mesh,
+        _object: body,
+        _scope: SCOPE,
+        _key: WHS.objects.length
+    };
 
-    api.merge(this._scope.root.scene, this._figure);
-    if (this._object) api.merge(this._scope.root.world, this._object);
+    api.merge(scope._scope.root.scene, scope._figure);
+    if (scope._object) api.merge(scope._scope.root.world, scope._object);
 
-    WHS.objects.push(this._scope);
+    WHS.objects.push(scope._scope);
 
-    return this;
+    return scope;
 }
 
 WHS.API.Wrap.prototype.remove = function() {
@@ -7203,6 +7299,7 @@ WHS.init = function(params) {
 
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMapSoft = true;
+    //this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
     if (this.anaglyph) {
         this.effect = new THREE.AnaglyphEffect(this.renderer);
@@ -7299,7 +7396,14 @@ WHS.init.prototype.animate = function(time, scope) {
         this.delta = 1000 / 60;
     }
 
+    var clock = new THREE.Clock();
+
+
+
     function reDraw() {
+
+        var delta = clock.getDelta();
+
         if (scope.stats)
             scope.stats.begin();
 
@@ -7310,12 +7414,19 @@ WHS.init.prototype.animate = function(time, scope) {
         }
 
         for (var i = 0; i < Object.keys(WHS.objects).length; i++) {
+
             if (!WHS.objects[i].onlyvis && !WHS.objects[i].skip) {
 
                 WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
 
                 if (WHS.objects[i].visible.quaternion)
                     WHS.objects[i].visible.quaternion.copy(WHS.objects[i].body.quaternion);
+
+            }
+
+            if (WHS.objects[i].morph) {
+                WHS.objects[i].visible.mixer.update(delta);
+
 
             }
             //WHS.objects[i].addCompoundFace();
@@ -7359,10 +7470,9 @@ WHS.init.prototype.animate = function(time, scope) {
 
 
 
-
 // #DONE:40 addModel *func*.
 /**
- * Figure.
+ * MODEL.
  *
  * @param {String} pathToModel path to JSON model. (REQUIRED)
  * @param {Object} options Figure options. (REQUIRED)
@@ -7398,50 +7508,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
     opt.material = options.materialOptions || {};
     opt.geometry = options.geometryOptions || {};
 
-    switch (opt.material.kind) {
-        case "basic":
-            scope.materialType = new THREE.MeshBasicMaterial(opt.material);
-            break;
-        case "linebasic":
-            scope.materialType = new THREE.LineBasicMaterial(opt.material);
-            break;
-        case "linedashed":
-            scope.materialType = new THREE.LineDashedMaterial(opt.material);
-            break;
-        case "material":
-            scope.materialType = new THREE.Material(opt.material);
-            break;
-        case "depth":
-            scope.materialType = new THREE.MeshDepthMaterial(opt.material);
-            break;
-        case "face":
-            scope.materialType = new THREE.MeshFaceMaterial(opt.material.materials);
-            break;
-        case "lambert":
-            scope.materialType = new THREE.MeshLambertMaterial(opt.material);
-            break;
-        case "normal":
-            scope.materialType = new THREE.MeshNormalMaterial(opt.material);
-            break;
-        case "phong":
-            scope.materialType = new THREE.MeshPhongMaterial(opt.material);
-            break;
-        case "pointcloud":
-            scope.materialType = new THREE.PointCloudMaterial(opt.material);
-            break;
-        case "rawshader":
-            scope.materialType = new THREE.RawShaderMaterial(opt.material);
-            break;
-        case "shader":
-            scope.materialType = new THREE.ShaderMaterial(opt.material);
-            break;
-        case "spritecanvas":
-            scope.materialType = new THREE.SpriteCanvasMaterial(opt.material);
-            break;
-        case "sprite":
-            scope.materialType = new THREE.SpriteMaterial(opt.material);
-            break;
-    }
+    scope.materialType = api.loadMaterial(opt.material)._material;
 
     var key = 0;
 
@@ -7490,6 +7557,47 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
 
 
 
+WHS.init.prototype.addMorph = function(url, options) {
+    'use strict';
+
+    var scope = api.construct(this, options);
+
+    scope.skip = true;
+    scope.morph = true;
+
+
+    api.JSONLoader().load(url, function(geometry) {
+        var material = new THREE.MeshLambertMaterial({
+            color: 0xffaa55,
+            morphTargets: true,
+            vertexColors: THREE.FaceColors
+        });
+
+        scope.visible = new THREE.Mesh(geometry, material);
+        scope.visible.speed = 250;
+
+        scope.visible.scale.set(0.1, 0.1, 0.1);
+
+        scope._mixer = new THREE.AnimationMixer(scope.visible);
+        scope._mixer.addAction(new THREE.AnimationAction(geometry.animations[0]).warpToDuration(0.5));
+
+        scope._mixer.update(600 * Math.random());
+        scope.visible.mixer = scope._mixer;
+
+        scope.visible.position.set(scope._pos.x, scope._pos.y, scope._pos.z);
+        scope.visible.rotation.y = Math.PI / 2;
+
+        scope.visible.castShadow = true;
+        scope.visible.receiveShadow = false;
+
+        scope.wrap = api.Wrap(scope, scope.visible);
+    });
+
+    //scope.wrap = api.Wrap(scope, scope.visible);
+}
+
+
+
 /**
  * Figure.
  *
@@ -7528,53 +7636,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
     opt.material = options.materialOptions || {};
     opt.geometry = options.geometryOptions || {};
 
-    switch (opt.material.kind) {
-        case "basic":
-            scope.materialType = new THREE.MeshBasicMaterial(opt.material);
-            break;
-        case "linebasic":
-            scope.materialType = new THREE.LineBasicMaterial(opt.material);
-            break;
-        case "linedashed":
-            scope.materialType = new THREE.LineDashedMaterial(opt.material);
-            break;
-        case "material":
-            scope.materialType = new THREE.Material(opt.material);
-            break;
-        case "depth":
-            scope.materialType = new THREE.MeshDepthMaterial(opt.material);
-            break;
-        case "face":
-            scope.materialType = new THREE.MeshFaceMaterial(
-                opt.material.materials
-            );
-
-            break;
-        case "lambert":
-            scope.materialType = new THREE.MeshLambertMaterial(opt.material);
-            break;
-        case "normal":
-            scope.materialType = new THREE.MeshNormalMaterial(opt.material);
-            break;
-        case "phong":
-            scope.materialType = new THREE.MeshPhongMaterial(opt.material);
-            break;
-        case "pointcloud":
-            scope.materialType = new THREE.PointCloudMaterial(opt.material);
-            break;
-        case "rawshader":
-            scope.materialType = new THREE.RawShaderMaterial(opt.material);
-            break;
-        case "shader":
-            scope.materialType = new THREE.ShaderMaterial(opt.material);
-            break;
-        case "spritecanvas":
-            scope.materialType = new THREE.SpriteCanvasMaterial(opt.material);
-            break;
-        case "sprite":
-            scope.materialType = new THREE.SpriteMaterial(opt.material);
-            break;
-    }
+    scope.materialType = api.loadMaterial(opt.material)._material;
 
     var key = 0;
 
@@ -8726,66 +8788,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         height: 100
     });
 
-    console.log(material);
-
-
-    switch (material.kind) {
-        case "basic":
-            scope.materialType = new THREE.MeshBasicMaterial(material);
-            break;
-
-        case "linebasic":
-            scope.materialType = new THREE.LineBasicMaterial(material);
-            break;
-
-        case "linedashed":
-            scope.materialType = new THREE.LineDashedMaterial(material);
-            break;
-
-        case "material":
-            scope.materialType = new THREE.Material(material);
-            break;
-
-        case "depth":
-            scope.materialType = new THREE.MeshDepthMaterial(material);
-            break;
-
-        case "face":
-            scope.materialType = new THREE.MeshFaceMaterial(material);
-            break;
-
-        case "lambert":
-            scope.materialType = new THREE.MeshLambertMaterial(material);
-            break;
-
-        case "normal":
-            scope.materialType = new THREE.MeshNormalMaterial(material);
-            break;
-
-        case "phong":
-            scope.materialType = new THREE.MeshPhongMaterial(material);
-            break;
-
-        case "pointcloud":
-            scope.materialType = new THREE.PointCloudMaterial(material);
-            break;
-
-        case "rawshader":
-            scope.materialType = new THREE.RawShaderMaterial(material);
-            break;
-
-        case "shader":
-            scope.materialType = new THREE.ShaderMaterial(material);
-            break;
-
-        case "spritecanvas":
-            scope.materialType = new THREE.SpriteCanvasMaterial(material);
-            break;
-
-        case "sprite":
-            scope.materialType = new THREE.SpriteMaterial(material);
-            break;
-    }
+    scope.materialType = api.loadMaterial(material)._material;
 
     switch (type) {
         case "smooth":
@@ -8957,6 +8960,8 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
             uniformsTerrain["tDisplacement"].value = heightMap;
 
+            //uniformsTerrain[ "shadowMap" ].value = heightMap;
+
             uniformsTerrain["uDisplacementScale"].value = 100;
 
             uniformsTerrain["uRepeatOverlay"].value.set(6, 6);
@@ -8972,8 +8977,12 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
                 shading: THREE.SmoothShading
             });
 
+            var geom = new THREE.PlaneGeometry(256, 256, 256, 256);
+
+            geom.verticesNeedUpdate = true;
+
             scope.visible = new THREE.Mesh(
-                new THREE.PlaneBufferGeometry(256, 256, 256, 256),
+                geom,
                 material
             );
 
@@ -9109,7 +9118,7 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
             );
 
             scope.light.castShadow = true;
-            scope.light.shadowDarkness = 0.5;
+            scope.light.shadowDarkness = 1;
             break;
 
         case "hemisphere":

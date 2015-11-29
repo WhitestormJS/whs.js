@@ -1,4 +1,3 @@
-
 /**
  * © Alexander Buzin, 2014-2015
  * Site: http://alexbuzin.me/
@@ -7,7 +6,7 @@
 
 // #DONE:40 addModel *func*.
 /**
- * Figure.
+ * MODEL.
  *
  * @param {String} pathToModel path to JSON model. (REQUIRED)
  * @param {Object} options Figure options. (REQUIRED)
@@ -43,50 +42,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
   opt.material = options.materialOptions || {};
   opt.geometry = options.geometryOptions || {};
 
-  switch (opt.material.kind) {
-    case "basic":
-      scope.materialType = new THREE.MeshBasicMaterial(opt.material);
-      break;
-    case "linebasic":
-      scope.materialType = new THREE.LineBasicMaterial(opt.material);
-      break;
-    case "linedashed":
-      scope.materialType = new THREE.LineDashedMaterial(opt.material);
-      break;
-    case "material":
-      scope.materialType = new THREE.Material(opt.material);
-      break;
-    case "depth":
-      scope.materialType = new THREE.MeshDepthMaterial(opt.material);
-      break;
-    case "face":
-      scope.materialType = new THREE.MeshFaceMaterial(opt.material.materials);
-      break;
-    case "lambert":
-      scope.materialType = new THREE.MeshLambertMaterial(opt.material);
-      break;
-    case "normal":
-      scope.materialType = new THREE.MeshNormalMaterial(opt.material);
-      break;
-    case "phong":
-      scope.materialType = new THREE.MeshPhongMaterial(opt.material);
-      break;
-    case "pointcloud":
-      scope.materialType = new THREE.PointCloudMaterial(opt.material);
-      break;
-    case "rawshader":
-      scope.materialType = new THREE.RawShaderMaterial(opt.material);
-      break;
-    case "shader":
-      scope.materialType = new THREE.ShaderMaterial(opt.material);
-      break;
-    case "spritecanvas":
-      scope.materialType = new THREE.SpriteCanvasMaterial(opt.material);
-      break;
-    case "sprite":
-      scope.materialType = new THREE.SpriteMaterial(opt.material);
-      break;
-  }
+  scope.materialType = api.loadMaterial(opt.material)._material;
 
   var key = 0;
 

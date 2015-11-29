@@ -15,6 +15,7 @@ var sources = [
   'src/libs/*.js',
   'src/libs/**/*.js',
   'src/prefix.js',
+  'src/Shaders/*.js',
   'src/API/*.js',
   'src/whitestorm.js',
   'src/Objects/*.js',
@@ -28,6 +29,7 @@ var sources = [
 
 var codes = [
   'src/prefix.js',
+  'src/Shaders/*.js',
   'src/API/*.js',
   'src/whitestorm.js',
   'src/Objects/*.js',
@@ -93,14 +95,14 @@ gulp.task('build', function() {
     .pipe(concat('whitestorm.js'))
     .pipe(insert.prepend(author_comment))
     .pipe(beautify())
-    .pipe(size({title: 'original'}))
+    //.pipe(size({title: 'original'}))
     .pipe(gulp.dest('./build/'));
 
   gulp.src(sources)
     .pipe(concat('whitestorm.min.js'))
     .pipe(uglify())
     .pipe(insert.prepend(author_comment))
-    .pipe(size({title: 'mini'}))
+    //.pipe(size({title: 'mini'}))
     .pipe(gulp.dest('./build/'));
 });
 

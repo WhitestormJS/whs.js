@@ -49,7 +49,7 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       );
 
       scope.light.castShadow = true;
-      scope.light.shadowDarkness = 0.5;
+      scope.light.shadowDarkness = 1;
       break;
 
     case "hemisphere":

@@ -6,7 +6,7 @@
 	var alpha = alpha || 0.5;
     var eyeYPos = 10; // eyes are 2 meters above the ground
     var velocityFactor = 0.1;
-    var jumpVelocity = 5 * alpha;
+    var jumpVelocity = 10 * alpha;
     var runDelta = 1;
     var goDelta = 2 * runDelta;
     var sScope = this;

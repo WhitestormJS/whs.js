@@ -1,4 +1,7 @@
 ## Changelog
+**current**
+- Added *api.loadMaterial* function.
+
 **current** (v0.0.6-alpha)
 - added Coggle.
 - *WHS.init(THREE, CANNON, params) -> WHS.init(params)*

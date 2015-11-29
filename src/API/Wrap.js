@@ -7,17 +7,19 @@
 WHS.API.Wrap = function (SCOPE, mesh, body) {
   'use strict';
 
-  this._figure = mesh;
-  this._object = body;
-  this._scope = SCOPE;
-  this._key = WHS.objects.length;
+  var scope = {
+    _figure: mesh,
+    _object: body,
+    _scope: SCOPE,
+    _key: WHS.objects.length
+  };
 
-  api.merge(this._scope.root.scene, this._figure);
-  if (this._object) api.merge(this._scope.root.world, this._object);
+  api.merge(scope._scope.root.scene, scope._figure);
+  if (scope._object) api.merge(scope._scope.root.world, scope._object);
 
-  WHS.objects.push(this._scope);
+  WHS.objects.push(scope._scope);
 
-  return this;
+  return scope;
 }
 
 WHS.API.Wrap.prototype.remove = function () {
