@@ -5826,6 +5826,58 @@ var MOUNTAINS2_COLORS = {
 
 };
 
+var PN_GENERATOR = {
+    RandomNoise: function(inParameters, inCanvas, inX, inY, inWidth, inHeight, inAlpha) {
+        var g = inCanvas.getContext("2d"),
+            imageData = g.getImageData(0, 0, inCanvas.width, inCanvas.height),
+            pixels = imageData.data;
+
+        for (var i = 0; i < pixels.length; i += 4) {
+            pixels[i] = pixels[i + 1] = pixels[i + 2] = (inParameters.alea.Random() * 256) | 0;
+            pixels[i + 3] = 255;
+        }
+
+        g.putImageData(imageData, 0, 0);
+        return inCanvas;
+    },
+
+    PerlinNoise: function(inParameters) {
+        /**
+         * This part is based on the snippest :
+         * https://gist.github.com/donpark/1796361
+         */
+
+        var noise = this.RandomNoise(inParameters, TERRAINGEN.CreateCanvas(inParameters.widthSegments, inParameters.heightSegments));
+        var context = inParameters.canvas.getContext("2d");
+        context.save();
+
+        var ratio = inParameters.widthSegments / inParameters.heightSegments;
+
+        /* Scale random iterations onto the canvas to generate Perlin noise. */
+        for (var size = 4; size <= noise.height; size *= inParameters.param) {
+            var x = (inParameters.alea.Random() * (noise.width - size)) | 0,
+                y = (inParameters.alea.Random() * (noise.height - size)) | 0;
+            context.globalAlpha = 4 / size;
+            context.drawImage(noise, Math.max(x, 0), y, size * ratio, size, 0, 0, inParameters.widthSegments, inParameters.heightSegments);
+        }
+
+        context.restore();
+
+        return inParameters.canvas;
+    },
+
+    Get: function(inParameters) {
+        var geometry = new THREE.Geometry();
+
+        inParameters.param = Math.max(1.1, inParameters.param);
+
+        // Create the Perlin Noise
+        var noise = this.PerlinNoise(inParameters);
+
+        return noise;
+    }
+};
+
 var BLUR_FILTER = {
     Apply: function(inCanvas, inParameters) {
         boxBlurCanvasRGB(inCanvas, 0, 0, inCanvas.width, inCanvas.height, Math.round(inParameters.filterparam), 2);
@@ -5877,58 +5929,6 @@ var GAMETERRAIN_FILTER = {
         context.fill();
 
         BLUR_FILTER.Apply(inCanvas, inParameters);
-    }
-};
-
-var PN_GENERATOR = {
-    RandomNoise: function(inParameters, inCanvas, inX, inY, inWidth, inHeight, inAlpha) {
-        var g = inCanvas.getContext("2d"),
-            imageData = g.getImageData(0, 0, inCanvas.width, inCanvas.height),
-            pixels = imageData.data;
-
-        for (var i = 0; i < pixels.length; i += 4) {
-            pixels[i] = pixels[i + 1] = pixels[i + 2] = (inParameters.alea.Random() * 256) | 0;
-            pixels[i + 3] = 255;
-        }
-
-        g.putImageData(imageData, 0, 0);
-        return inCanvas;
-    },
-
-    PerlinNoise: function(inParameters) {
-        /**
-         * This part is based on the snippest :
-         * https://gist.github.com/donpark/1796361
-         */
-
-        var noise = this.RandomNoise(inParameters, TERRAINGEN.CreateCanvas(inParameters.widthSegments, inParameters.heightSegments));
-        var context = inParameters.canvas.getContext("2d");
-        context.save();
-
-        var ratio = inParameters.widthSegments / inParameters.heightSegments;
-
-        /* Scale random iterations onto the canvas to generate Perlin noise. */
-        for (var size = 4; size <= noise.height; size *= inParameters.param) {
-            var x = (inParameters.alea.Random() * (noise.width - size)) | 0,
-                y = (inParameters.alea.Random() * (noise.height - size)) | 0;
-            context.globalAlpha = 4 / size;
-            context.drawImage(noise, Math.max(x, 0), y, size * ratio, size, 0, 0, inParameters.widthSegments, inParameters.heightSegments);
-        }
-
-        context.restore();
-
-        return inParameters.canvas;
-    },
-
-    Get: function(inParameters) {
-        var geometry = new THREE.Geometry();
-
-        inParameters.param = Math.max(1.1, inParameters.param);
-
-        // Create the Perlin Noise
-        var noise = this.PerlinNoise(inParameters);
-
-        return noise;
     }
 };
 
@@ -6647,21 +6647,91 @@ THREE.ShaderTerrain = {
 
 
 
-WHS.API.construct = function(root, params) {
+WHS.API.construct = function(root, params, type) {
     'use strict';
 
     if (!root)
         console.error("@constructor: WHS root object is not defined.");
 
-    var scope = {
-        root: root,
-        _whsobject: true,
-        _releaseTime: new Date().getTime(),
-        _pos: params.pos,
-        _rot: params.rot
+    var _set = function(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
-    return scope;
+    var target = $.extend({
+        pos: {
+            x: 0,
+            y: 0,
+            z: 0,
+            set: _set
+        },
+        rot: {
+            x: 0,
+            y: 0,
+            z: 0,
+            set: _set
+        },
+        scale: {
+            x: 1,
+            y: 1,
+            z: 1,
+            set: _set
+        },
+        morph: {
+            speed: 1,
+            duration: 1
+        }
+    }, params);
+
+
+    var key = 0;
+
+    WHS.objects.forEach(function(el) {
+        if (el.type == type) key++;
+    });
+
+    var scope = {
+        root: root,
+        _key: key,
+        _whsobject: true,
+        _name: type + key,
+        __releaseTime: new Date().getTime(),
+        _pos: target.pos,
+        _rot: target.rot,
+        _scale: target.scale,
+        _morph: target.morph
+    };
+
+    Object.assign(this, scope);
+
+    return this;
+}
+
+WHS.API.construct.prototype.build = function(figure, object) {
+    'use strict';
+
+    var isPhysics = !!(arguments.length == 2 && object);
+
+    // Position.
+    figure.position.set(this._pos.x, this._pos.y, this._pos.z);
+    if (isPhysics && !this.dtb) object.position.set(
+        this._pos.x,
+        this._pos.y,
+        this._pos.z
+    );
+
+    // Rotation.
+    figure.rotation.set(this._rot.x, this._rot.y, this._rot.z);
+    // TODO: CANNON.JS object rotation.
+    //if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
+
+    // Scaling.
+    figure.scale.set(this._scale.x, this._scale.y, this._scale.z);
+    // TODO: CANNON.JS object scaling.
+    //object.scale.set(this._rot.x, this._rot.y, this._rot.z);
+
+    return this;
 }
 
 
@@ -6779,61 +6849,65 @@ WHS.API.loadMaterial = function(material) {
         _type: material.kind
     };
 
+    var params = $.extend({}, material);
+
+    delete params["kind"];
+
     switch (material.kind) {
         case "basic":
-            scope._material = new THREE.MeshBasicMaterial(material);
+            scope._material = new THREE.MeshBasicMaterial(params);
             break;
 
         case "linebasic":
-            scope._material = new THREE.LineBasicMaterial(material);
+            scope._params = new THREE.LineBasicMaterial(params);
             break;
 
         case "linedashed":
-            scope._material = new THREE.LineDashedMaterial(material);
+            scope._material = new THREE.LineDashedMaterial(params);
             break;
 
         case "material":
-            scope._material = new THREE.Material(material);
+            scope._material = new THREE.Material(params);
             break;
 
         case "depth":
-            scope._material = new THREE.MeshDepthMaterial(material);
+            scope._material = new THREE.MeshDepthMaterial(params);
             break;
 
         case "face":
-            scope._material = new THREE.MeshFaceMaterial(material);
+            scope._material = new THREE.MeshFaceMaterial(params);
             break;
 
         case "lambert":
-            scope._material = new THREE.MeshLambertMaterial(material);
+            scope._material = new THREE.MeshLambertMaterial(params);
             break;
 
         case "normal":
-            scope._material = new THREE.MeshNormalMaterial(material);
+            scope._material = new THREE.MeshNormalMaterial(params);
             break;
 
         case "phong":
-            scope._material = new THREE.MeshPhongMaterial(material);
+            scope._material = new THREE.MeshPhongMaterial(params);
             break;
 
         case "pointcloud":
-            scope._material = new THREE.PointCloudMaterial(material);
+            scope._material = new THREE.PointCloudMaterial(params);
             break;
 
         case "rawshader":
-            scope._material = new THREE.RawShaderMaterial(material);
+            scope._material = new THREE.RawShaderMaterial(params);
             break;
 
         case "shader":
-            scope._material = new THREE.ShaderMaterial(material);
+            scope._material = new THREE.ShaderMaterial(params);
             break;
 
         case "spritecanvas":
-            scope._material = new THREE.SpriteCanvasMaterial(material);
+            scope._material = new THREE.SpriteCanvasMaterial(params);
             break;
 
         case "sprite":
-            scope._material = new THREE.SpriteMaterial(material);
+            scope._material = new THREE.SpriteMaterial(params);
             break;
     }
 
@@ -7138,22 +7212,22 @@ WHS.API.TrimeshFigure = function(thrObj, heightsNeed) {
 WHS.API.Wrap = function(SCOPE, mesh, body) {
     'use strict';
 
-    var scope = {
-        _figure: mesh,
-        _object: body,
-        _scope: SCOPE,
-        _key: WHS.objects.length
-    };
+    this._figure = mesh;
+    this._object = body;
+    this._scope = SCOPE;
+    this._key = WHS.objects.length;
 
-    api.merge(scope._scope.root.scene, scope._figure);
-    if (scope._object) api.merge(scope._scope.root.world, scope._object);
+    api.merge(this._scope.root.scene, this._figure);
+    if (this._object) api.merge(this._scope.root.world, this._object);
 
-    WHS.objects.push(scope._scope);
+    WHS.objects.push(this._scope);
 
-    return scope;
+    return this;
 }
 
 WHS.API.Wrap.prototype.remove = function() {
+    'use strict';
+
     this._scope.root.scene.remove(this._figure);
     this._scope.root.world.remove(this._object);
 
@@ -7163,6 +7237,8 @@ WHS.API.Wrap.prototype.remove = function() {
 }
 
 WHS.API.Wrap.prototype.retrieve = function() {
+    'use strict';
+
     this._scope.root.scene.add(this._figure);
     this._scope.root.world.add(this._object);
 
@@ -7398,8 +7474,6 @@ WHS.init.prototype.animate = function(time, scope) {
 
     var clock = new THREE.Clock();
 
-
-
     function reDraw() {
 
         var delta = clock.getDelta();
@@ -7416,6 +7490,7 @@ WHS.init.prototype.animate = function(time, scope) {
         for (var i = 0; i < Object.keys(WHS.objects).length; i++) {
 
             if (!WHS.objects[i].onlyvis && !WHS.objects[i].skip) {
+                //console.log(WHS.objects[i].body.position.y);
 
                 WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
 
@@ -7426,7 +7501,6 @@ WHS.init.prototype.animate = function(time, scope) {
 
             if (WHS.objects[i].morph) {
                 WHS.objects[i].visible.mixer.update(delta);
-
 
             }
             //WHS.objects[i].addCompoundFace();
@@ -7481,45 +7555,9 @@ WHS.init.prototype.animate = function(time, scope) {
 WHS.init.prototype.addModel = function(pathToModel, options) {
     'use strict';
 
-    var scope = {}; // INIT LOCAL SCOPE.
+    var scope = new api.construct(this, options, "model");
 
-    scope.root = this;
-
-    var opt = {};
-
-    scope.whsobject = true;
-    scope.releaseTime = new Date().getTime();
-
-    opt.color = options.color || 0xffffff;
-    opt.mass = options.mass || 0;
-
-    opt.pos = typeof options.pos == "object" ? options.pos : {
-        x: 0,
-        y: 0,
-        z: 0
-    };
-
-    opt.rot = typeof options.pos == "object" ? options.pos : {
-        x: 0,
-        y: 0,
-        z: 0
-    };
-
-    opt.material = options.materialOptions || {};
-    opt.geometry = options.geometryOptions || {};
-
-    scope.materialType = api.loadMaterial(opt.material)._material;
-
-    var key = 0;
-
-    WHS.objects.forEach(function(el) {
-        if (el.type == "model") {
-            key++;
-        }
-    });
-
-    scope.type = "model";
-    scope.name = opt.name || "model" + key;
+    scope.materialType = api.loadMaterial(opt.materialOptions)._material;
 
     //(new THREE.JSONLoader())
     api.JSONLoader().load(pathToModel, function(data) {
@@ -7528,10 +7566,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
 
         // Visualization.
         scope.visible = new THREE.Mesh(data, scope.materialType);
-        scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-        scope.visible.rotation.set(
-            (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-        );
+
 
         // Physics.
         if (!options.onlyvis) {
@@ -7543,11 +7578,11 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
 
             scope.body.linearDamping = 0.9; //default
             scope.body.addShape(scope.physic);
-            scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.body.quaternion.copy(scope.visible.quaternion);
+
             scope.body.name = scope.name;
         }
 
+        scope.build();
         scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
     });
@@ -7560,7 +7595,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
 WHS.init.prototype.addMorph = function(url, options) {
     'use strict';
 
-    var scope = api.construct(this, options);
+    var scope = new api.construct(this, options, "morph");
 
     scope.skip = true;
     scope.morph = true;
@@ -7574,9 +7609,9 @@ WHS.init.prototype.addMorph = function(url, options) {
         });
 
         scope.visible = new THREE.Mesh(geometry, material);
-        scope.visible.speed = 250;
+        scope.visible.speed = scope._morph.speed;
 
-        scope.visible.scale.set(0.1, 0.1, 0.1);
+        scope._scale.set(0.1, 0.1, 0.1);
 
         scope._mixer = new THREE.AnimationMixer(scope.visible);
         scope._mixer.addAction(new THREE.AnimationAction(geometry.animations[0]).warpToDuration(0.5));
@@ -7584,16 +7619,16 @@ WHS.init.prototype.addMorph = function(url, options) {
         scope._mixer.update(600 * Math.random());
         scope.visible.mixer = scope._mixer;
 
-        scope.visible.position.set(scope._pos.x, scope._pos.y, scope._pos.z);
-        scope.visible.rotation.y = Math.PI / 2;
+        scope._rot.y = Math.PI / 2;
 
         scope.visible.castShadow = true;
         scope.visible.receiveShadow = false;
 
-        scope.wrap = api.Wrap(scope, scope.visible);
+        scope.build(scope.visible);
+        scope.wrap = new api.Wrap(scope, scope.visible);
     });
 
-    //scope.wrap = api.Wrap(scope, scope.visible);
+    return scope;
 }
 
 
@@ -7608,37 +7643,13 @@ WHS.init.prototype.addMorph = function(url, options) {
 WHS.init.prototype.addObject = function(figureType, options) {
     'use strict';
 
-    var scope = {}; // INIT LOCAL SCOPE.
+    var scope = new api.construct(this, options, figureType);
 
-    scope.root = this;
+    var opt = options || {};
 
-    var opt = {};
-
-    scope.whsobject = true;
-
-    scope.releaseTime = new Date().getTime();
-
-    opt.color = options.color || 0xffffff;
-    opt.mass = options.mass || 0;
-
-    opt.pos = typeof options.pos == "object" ? options.pos : {
-        x: 0,
-        y: 0,
-        z: 0
-    };
-
-    opt.rot = typeof options.pos == "object" ? options.pos : {
-        x: 0,
-        y: 0,
-        z: 0
-    };
-
-    opt.material = options.materialOptions || {};
     opt.geometry = options.geometryOptions || {};
 
-    scope.materialType = api.loadMaterial(opt.material)._material;
-
-    var key = 0;
+    scope.materialType = api.loadMaterial(options.materialOptions)._material;
 
     switch (figureType) {
         case "sphere":
@@ -7646,26 +7657,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
             api.def(opt.geometry.segmentA, 32);
             api.def(opt.geometry.segmentB, 32);
 
-            // #FIXME:40 more complex use of key sholud be added.
-            WHS.objects.forEach(function(el) {
-                if (el.type == "sphere") {
-                    key++;
-                }
-            });
-
-            scope.type = "sphere";
-            scope.name = opt.name || "sphere" + key;
             scope.visible = new THREE.Mesh(new THREE.SphereGeometry(
                 opt.geometry.radius,
                 opt.geometry.segmentA,
                 opt.geometry.segmentB
             ), scope.materialType);
-
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
 
             if (!options.onlyvis) {
                 scope.physic = new CANNON.Sphere(opt.geometry.radius);
@@ -7676,43 +7672,21 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
                 scope.body.linearDamping = 0.9; //default
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
                 scope.body.name = scope.name;
-
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "cube":
-
 
             api.def(opt.geometry.width, 1);
             api.def(opt.geometry.height, 1);
             api.def(opt.geometry.depth, 1);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "cube") {
-                    key++;
-                }
-            });
-
-            scope.type = "cube";
-            scope.name = opt.name || "cube" + key;
             scope.visible = new THREE.Mesh(new THREE.BoxGeometry(
                 opt.geometry.width,
                 opt.geometry.height,
                 opt.geometry.depth
             ), scope.materialType);
-
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
 
             if (!options.onlyvis) {
                 scope.physic = new CANNON.Box(
@@ -7729,45 +7703,16 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-
-                scope.body.quaternion.setFromAxisAngle(
-                    new CANNON.Vec3(1, 0, 0), (Math.PI / 180) * opt.rot.x
-                );
-
-                scope.body.quaternion.setFromAxisAngle(
-                    new CANNON.Vec3(0, 1, 0), (Math.PI / 180) * opt.rot.y
-                );
-
-                scope.body.quaternion.setFromAxisAngle(
-                    new CANNON.Vec3(0, 0, 1), (Math.PI / 180) * opt.rot.z
-                );
-
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "cylinder":
-
 
             api.def(opt.geometry.radiusTop, 1);
             api.def(opt.geometry.radiusBottom, 1);
             api.def(opt.geometry.height, 1);
             api.def(opt.geometry.radiusSegments, 32);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "cylinder") {
-                    key++;
-                }
-            });
-
-            scope.type = "cylinder";
-            scope.name = opt.name || "cylinder" + key;
             scope.visible = new THREE.Mesh(
                 new THREE.CylinderGeometry(
                     opt.geometry.radiusTop,
@@ -7776,12 +7721,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
                     opt.geometry.radiusSegments
                 ),
                 scope.materialType);
-
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
 
             if (!options.onlyvis) {
                 scope.physic = new CANNON.Cylinder(
@@ -7797,31 +7736,14 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "dodecahedron":
 
-
             api.def(opt.geometry.radius, 1);
             api.def(opt.geometry.detail, 0);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "dodecahedron") {
-                    key++;
-                }
-            });
-
-            scope.type = "dodecahedron";
-            scope.name = opt.name || "dodecahedron" + key;
             scope.visible = new THREE.Mesh(
                 new THREE.DodecahedronGeometry(
                     opt.geometry.radius,
@@ -7829,43 +7751,22 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 ),
                 scope.materialType);
 
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
                 scope.body = new CANNON.Body({
                     mass: opt.mass
                 });
+
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "extrude":
 
-
             api.def(opt.geometry.shapes, []);
             api.def(opt.geometry.options, {});
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "extrude") {
-                    key++;
-                }
-            });
-
-            scope.type = "extrude";
-            scope.name = opt.name || "extrude" + key;
             scope.visible = new THREE.Mesh(
                 new THREE.ExtrudeGeometry(
                     opt.geometry.shapes,
@@ -7873,43 +7774,22 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 ),
                 scope.materialType);
 
-            scope.visible.name = this.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
                 scope.body = new CANNON.Body({
                     mass: opt.mass
                 });
+
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "icosahedron":
 
-
             api.def(opt.geometry.radius, 1);
             api.def(opt.geometry.detail, 0);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "icosahedron") {
-                    key++;
-                }
-            });
-
-            scope.type = "icosahedron";
-            scope.name = opt.name || "icosahedron" + key;
             scope.visible = new THREE.Mesh(
                 new THREE.IcosahedronGeometry(
                     opt.geometry.radius,
@@ -7917,83 +7797,41 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 ),
                 scope.materialType);
 
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
+            if (!options.onlyvis) {
+                scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
+                scope.body = new CANNON.Body({
+                    mass: opt.mass
+                });
+
+                scope.body.linearDamping = 0.9; // Default value.
+                scope.body.addShape(scope.physic);
+            }
+
+            break;
+        case "lathe":
+
+            api.def(opt.geometry.points, []);
+
+            scope.visible = new THREE.Mesh(new THREE.LatheGeometry(
+                opt.geometry.points
+            ), scope.materialType);
 
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
                 scope.body = new CANNON.Body({
                     mass: opt.mass
                 });
+
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
-
-            break;
-        case "lathe":
-
-
-            api.def(opt.geometry.points, []);
-
-            WHS.objects.forEach(function(el) {
-                if (el.type == "lathe") {
-                    key++;
-                }
-            });
-
-            scope.type = "lathe";
-            scope.name = opt.name || "lathe" + key;
-            scope.visible = new THREE.Mesh(new THREE.LatheGeometry(
-                opt.geometry.points
-            ), scope.materialType);
-
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
-
-            if (!options.onlyvis) {
-                scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
-                this.body = new CANNON.Body({
-                    mass: opt.mass
-                });
-                scope.body.linearDamping = 0.9; // Default value.
-                scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
-            }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "octahedron":
 
-
             api.def(opt.geometry.radius, 1);
             api.def(opt.geometry.detail, 0);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "octahedron") {
-                    key++;
-                }
-            });
-
-            scope.type = "octahedron";
-            scope.name = opt.name || "octahedron" + key;
             scope.visible = new THREE.Mesh(
                 new THREE.OctahedronGeometry(
                     opt.geometry.radius,
@@ -8001,44 +7839,23 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 ),
                 scope.materialType);
 
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
                 scope.body = new CANNON.Body({
                     mass: opt.mass
                 });
+
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "parametric":
-
 
             api.def(opt.geometry.func, function() {});
             api.def(opt.geometry.slices, 10);
             api.def(opt.geometry.stacks, 10);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type === "parametric") {
-                    key++;
-                }
-            });
-
-            scope.type = "parametric";
-            scope.name = opt.name || "parametric" + key;
             scope.visible = new THREE.Mesh(
                 new THREE.ParametricGeometry(
                     opt.geometry.func,
@@ -8047,45 +7864,24 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 ),
                 scope.materialType);
 
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
                 scope.body = new CANNON.Body({
                     mass: opt.mass
                 });
+
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = this.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "plane":
-
 
             api.def(opt.geometry.func, function() {});
             api.def(opt.geometry.width, 10);
             api.def(opt.geometry.height, 10);
             api.def(opt.geometry.segments, 32);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "plane") {
-                    key++;
-                }
-            });
-
-            scope.type = "plane";
-            scope.name = opt.name || "plane" + key;
             scope.visible = new THREE.Mesh(
                 new THREE.PlaneBufferGeometry(
                     opt.geometry.width,
@@ -8094,45 +7890,24 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 ),
                 scope.materialType);
 
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
                 scope.body = new CANNON.Body({
                     mass: opt.mass
                 });
+
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "polyhedron":
-
 
             api.def(opt.geometry.verticesOfCube, []);
             api.def(opt.geometry.indicesOfFaces, []);
             api.def(opt.geometry.radius, 1);
             api.def(opt.geometry.detail, 1);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "polyhedron") {
-                    key++;
-                }
-            });
-
-            scope.type = "polyhedron";
-            scope.name = opt.name || "polyhedron" + key;
             scope.visible = new THREE.Mesh(
                 new THREE.PolyhedronGeometry(
                     opt.geometry.verticesOfCube,
@@ -8140,31 +7915,18 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 ),
                 scope.materialType);
 
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
                 scope.body = new CANNON.Body({
                     mass: opt.mass
                 });
+
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "ring":
-
 
             api.def(opt.geometry.innerRadius, 0);
             api.def(opt.geometry.outerRadius, 50);
@@ -8173,14 +7935,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             api.def(opt.geometry.thetaStart, 0);
             api.def(opt.geometry.thetaLength, Math.PI * 2);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "ring") {
-                    key++;
-                }
-            });
-
-            scope.type = "ring";
-            scope.name = opt.name || "ring" + key;
             scope.visible = new THREE.Mesh(
                 new THREE.TorusGeometry(
                     opt.geometry.outerRadius, (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2,
@@ -8188,14 +7942,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 ),
                 scope.materialType);
 
-            scope.visible.scale.z =
-                1 / (opt.geometry.outerRadius - opt.geometry.innerRadius) * 2;
-
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
+            scope._scale.z =
+                2 / (opt.geometry.outerRadius - opt.geometry.innerRadius);
 
             if (!options.onlyvis) {
                 scope.physic = CANNON.Trimesh.createTorus(
@@ -8203,45 +7951,20 @@ WHS.init.prototype.addObject = function(figureType, options) {
                     opt.geometry.thetaSegments, opt.geometry.phiSegments
                 );
 
-                scope.physic.scale.z =
-                    1 / (opt.geometry.outerRadius - opt.geometry.innerRadius) * 2;
-
                 scope.body = new CANNON.Body({
                     mass: opt.mass
                 });
 
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "shape":
 
-
-            WHS.objects.forEach(function(el) {
-                if (el.type == "shape") {
-                    key++;
-                }
-            });
-
-            scope.type = "shape";
-            scope.name = opt.name || "shape" + key;
             scope.visible = new THREE.Mesh(
                 new THREE.ShapeGeometry(opt.geometry.shapes),
                 scope.materialType
-            );
-
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
             );
 
             scope.onlyvis = true;
@@ -8249,33 +7972,18 @@ WHS.init.prototype.addObject = function(figureType, options) {
             // WARN: console | 2d to 3d.
             console.warn('This is not physic object. 2D!', [scope]);
 
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
-
             break;
         case "tetrahedron":
+
             api.def(opt.geometry.radius, 1);
             api.def(opt.geometry.detail, 0);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "tetrahedron") {
-                    key++;
-                }
-            });
-
-            scope.type = "tetrahedron";
-            scope.name = opt.name || "tetrahedron" + key;
             scope.visible = new THREE.Mesh(
                 new THREE.TetrahedronGeometry(
                     opt.geometry.radius,
                     opt.geometry.detail
                 ),
                 scope.materialType);
-
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
 
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
@@ -8286,17 +7994,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "text":
+
             opt.geometry.parameters = opt.geometry.parameters || {};
 
             api.def(opt.geometry.text, "Hello World!");
@@ -8310,27 +8012,12 @@ WHS.init.prototype.addObject = function(figureType, options) {
             api.def(opt.geometry.parameters.bevelThickness, 10);
             api.def(opt.geometry.parameters.bevelSize, 8);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "text") {
-                    key++;
-                }
-            });
-
-            scope.type = "text";
-            scope.name = opt.name || "text" + key;
-
             scope.visible = new THREE.Mesh(
                 new THREE.TextGeometry(
                     opt.geometry.text,
                     opt.geometry.parameters
                 ),
                 scope.materialType);
-
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
 
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
@@ -8341,33 +8028,16 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "torus":
-
 
             api.def(opt.geometry.radius, 100);
             api.def(opt.geometry.tube, 40);
             api.def(opt.geometry.radialSegments, 8);
             api.def(opt.geometry.tubularSegments, 6);
             api.def(opt.geometry.arc, Math.PI * 2);
-
-            WHS.objects.forEach(function(el) {
-                if (el.type == "torus") {
-                    key++;
-                }
-            });
-
-            scope.type = "torus";
-            scope.name = opt.name || "torus" + key;
 
             scope.visible = new THREE.Mesh(
                 new THREE.TorusGeometry(
@@ -8378,12 +8048,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
                     opt.geometry.arc
                 ),
                 scope.materialType);
-
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
 
             if (!options.onlyvis) {
                 scope.physic = CANNON.Trimesh.createTorus(
@@ -8399,18 +8063,10 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
         case "torusknot":
-
 
             api.def(opt.geometry.radius, 100);
             api.def(opt.geometry.tube, 40);
@@ -8418,14 +8074,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             api.def(opt.geometry.tubularSegments, 6);
             api.def(opt.geometry.arc, Math.PI * 2);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "torusknot") {
-                    key++;
-                }
-            });
-
-            scope.type = "torusknot";
-            scope.name = opt.name || "torusknot" + key;
             scope.visible = new THREE.Mesh(
                 new THREE.TorusKnotGeometry(
                     opt.geometry.radius,
@@ -8438,31 +8086,17 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 ),
                 scope.materialType);
 
-            scope.visible.name = scope.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
                 scope.body = new CANNON.Body({
                     mass: opt.mass
                 });
+
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
-
             break;
         case "tube":
-
 
             // #FIXME:30 fix to WHS.API (not here)
             scope.CustomSinCurve = THREE.Curve.create(
@@ -8486,15 +8120,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
             api.def(opt.geometry.radiusSegments, 8);
             api.def(opt.geometry.closed, false);
 
-            WHS.objects.forEach(function(el) {
-                if (el.type == "tube") {
-                    key++;
-                }
-            });
-
-            scope.type = "tube";
-            scope.name = opt.name || "tube" + key;
-
             scope.visible = new THREE.Mesh(
                 new THREE.TubeGeometry(
                     opt.geometry.path,
@@ -8505,32 +8130,15 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 ),
                 scope.materialType);
 
-            scope.visible.name = this.name;
-            scope.visible.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-            scope.visible.rotation.set(
-                (Math.PI / 180) * opt.rot.x, (Math.PI / 180) * opt.rot.y, (Math.PI / 180) * opt.rot.z
-            );
-
             if (!options.onlyvis) {
                 scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
-
                 scope.body = new CANNON.Body({
                     mass: opt.mass
                 });
 
                 scope.body.linearDamping = 0.9; // Default value.
                 scope.body.addShape(scope.physic);
-                scope.body.position.set(opt.pos.x, opt.pos.y, opt.pos.z);
-                scope.body.quaternion.copy(scope.visible.quaternion);
-                scope.body.name = scope.name;
-            } else {
-                scope.onlyvis = true;
             }
-
-            scope.visible.castShadow = true;
-            scope.visible.receiveShadow = true;
-
-            scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
             break;
     }
@@ -8571,6 +8179,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
     scope.retrieve = function() {
         return scope.wrap.retrieve();
     }
+
+    scope.build(scope.visible, scope.body);
+
+    scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
+    console.log(scope);
 
     return scope;
 }
@@ -8769,19 +8382,13 @@ WHS.init.prototype.addGrass = function(ground, options) {
 WHS.init.prototype.addGround = function(type, size, material, pos) {
     'use strict';
 
-    var scope = {};
-    scope.root = this;
+    var options = {
+        pos: pos
+    };
 
-    var key = 0;
-    WHS.grounds.forEach(function(el) {
-        if (el.type == type) {
-            key++;
-        }
-    });
+    var scope = new api.construct(this, options, type);
 
-    scope.type = type;
     scope.skip = true;
-    scope.name = "ground" + key;
 
     api.def(size, {
         width: 100,
@@ -8797,8 +8404,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
                 new THREE.PlaneBufferGeometry(size.width, size.height, 1, 1),
                 scope.materialType);
 
-            scope.visible.rotation.set(-90 / 180 * Math.PI, 0, 0);
-            scope.visible.position.set(pos.x, pos.y, pos.z);
+            scope._rot.set(-90 / 180 * Math.PI, 0, 0);
             scope.physic = new CANNON.Plane(size.width, size.height);
 
             scope.body = new CANNON.Body({
@@ -8807,13 +8413,10 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
             scope.body.linearDamping = 0.9; // Default value.
             scope.body.addShape(scope.physic);
-            scope.body.position.set(pos.x, pos.y, pos.z);
 
             scope.body.quaternion.setFromAxisAngle(
                 new CANNON.Vec3(1, 0, 0), -Math.PI / 2
             );
-
-            scope.body.name = scope.name;
             break;
 
         case "infinitySmooth":
@@ -8822,8 +8425,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
                 new THREE.PlaneBufferGeometry(size.width, size.height, 1, 1),
                 scope.materialType);
 
-            scope.visible.rotation.set(-90 / 180 * Math.PI, 0, 0);
-            scope.visible.position.set(pos.x, pos.y, pos.z);
+            scope._rot.set(-90 / 180 * Math.PI, 0, 0);
             scope.physic = new CANNON.Plane(size.width, size.height);
             scope.body = new CANNON.Body({
                 mass: 0
@@ -8835,9 +8437,6 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
             scope.body.quaternion.setFromAxisAngle(
                 new CANNON.Vec3(1, 0, 0), -Math.PI / 2
             );
-
-            scope.body.name = scope.name;
-
             break;
 
             // #TODO:80 Fix perfomance by saving terrain like threeJs object with options.
@@ -8986,10 +8585,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
                 material
             );
 
-            scope.visible.scale.x = 1;
-            scope.visible.scale.y = 1;
-            scope.visible.position.set(pos.x, pos.y, pos.z);
-            scope.visible.rotation.set(Math.PI / 180 * -90, 0, 0);
+            scope._rot.set(Math.PI / 180 * -90, 0, 0);
 
             var hgtdata = []; // new Array(256);
 
@@ -9015,7 +8611,6 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
             scope.body.linearDamping = 0.9; // Default value.
             scope.body.addShape(scope.physic);
 
-
             scope.body.quaternion.setFromEuler(Math.PI / 180 * -90, 0, 0, "XYZ");
 
             scope.body.position.set(
@@ -9023,6 +8618,8 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
                 pos.y,
                 pos.z + size.height / 2 - 0.5
             );
+
+            scope.dtb = true;
 
             //scope.physic.scale.x = 256/250;
             //scope.physic.scale.z = 256/250;
@@ -9033,6 +8630,8 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
             break;
     }
+
+    scope.build(scope.visible, scope.body);
 
     scope.wrap = api.Wrap(scope, scope.visible, scope.body);
 

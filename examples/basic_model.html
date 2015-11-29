@@ -45,7 +45,7 @@ GAME.teapot = GAME.addModel("../assets/models/teapot.js",
         vertexColors: THREE.VertexColors,
         shading: THREE.SmoothShading,
         map: api.texture('../assets/textures/backgrounddetailed6.jpg'),
-        type: "phong"
+        kind: "phong"
     },
     pos: {
         x: 0,
@@ -60,7 +60,7 @@ GAME.sphere = GAME.addObject("sphere", {
   },
   onlyvis: false,
   materialOptions: {
-    type: "basic",
+    kind: "basic",
     color: 0xff0000
   },
   mass: 5,
@@ -82,7 +82,7 @@ GAME.ground = GAME.addGround("smooth",
         vertexColors: THREE.VertexColors,
         shading: THREE.SmoothShading,
         map: api.texture('../assets/textures/grasslight-big.jpg'),
-        type: "basic"
+        kind: "basic"
 },
 {
     x: 0,

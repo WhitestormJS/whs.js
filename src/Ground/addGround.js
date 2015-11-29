@@ -22,19 +22,13 @@
 WHS.init.prototype.addGround = function(type, size, material, pos) {
   'use strict';
 
-  var scope = {};
-  scope.root = this;
+  var options = {
+    pos: pos
+  };
 
-  var key = 0;
-  WHS.grounds.forEach(function(el) {
-    if (el.type == type) {
-      key++;
-    }
-  });
+  var scope = new api.construct(this, options, type);
 
-  scope.type = type;
   scope.skip = true;
-  scope.name = "ground" + key;
 
   api.def(size, {
     width: 100,
@@ -50,8 +44,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         new THREE.PlaneBufferGeometry(size.width, size.height, 1, 1),
       scope.materialType);
 
-      scope.visible.rotation.set(-90 / 180 * Math.PI, 0, 0);
-      scope.visible.position.set(pos.x, pos.y, pos.z);
+      scope._rot.set(-90 / 180 * Math.PI, 0, 0);
       scope.physic = new CANNON.Plane(size.width, size.height);
 
       scope.body = new CANNON.Body({
@@ -60,14 +53,11 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
       scope.body.linearDamping = 0.9; // Default value.
       scope.body.addShape(scope.physic);
-      scope.body.position.set(pos.x, pos.y, pos.z);
 
       scope.body.quaternion.setFromAxisAngle(
         new CANNON.Vec3(1, 0, 0),
         -Math.PI / 2
       );
-
-      scope.body.name = scope.name;
       break;
 
     case "infinitySmooth":
@@ -76,8 +66,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         new THREE.PlaneBufferGeometry(size.width, size.height, 1, 1),
       scope.materialType);
 
-      scope.visible.rotation.set(-90 / 180 * Math.PI, 0, 0);
-      scope.visible.position.set(pos.x, pos.y, pos.z);
+      scope._rot.set(-90 / 180 * Math.PI, 0, 0);
       scope.physic = new CANNON.Plane(size.width, size.height);
       scope.body = new CANNON.Body({
         mass: 0
@@ -90,9 +79,6 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         new CANNON.Vec3(1, 0, 0),
         -Math.PI / 2
       );
-
-      scope.body.name = scope.name;
-
       break;
 
       // #TODO:80 Fix perfomance by saving terrain like threeJs object with options.
@@ -219,10 +205,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         material
       );
 
-      scope.visible.scale.x = 1;
-      scope.visible.scale.y = 1;
-      scope.visible.position.set(pos.x, pos.y, pos.z);
-      scope.visible.rotation.set(Math.PI / 180 * -90, 0, 0);
+      scope._rot.set(Math.PI / 180 * -90, 0, 0);
 
       var hgtdata = []; // new Array(256);
 
@@ -249,7 +232,6 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       scope.body.linearDamping = 0.9; // Default value.
       scope.body.addShape(scope.physic);
 
-
       scope.body.quaternion.setFromEuler(Math.PI / 180 * -90, 0, 0, "XYZ");
 
       scope.body.position.set(
@@ -257,6 +239,8 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         pos.y,
         pos.z + size.height / 2 - 0.5
       );
+
+      scope.dtb = true;
 
       //scope.physic.scale.x = 256/250;
       //scope.physic.scale.z = 256/250;
@@ -267,6 +251,8 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
       break;
   }
+
+  scope.build(scope.visible, scope.body);
 
   scope.wrap = api.Wrap(scope, scope.visible, scope.body);
 

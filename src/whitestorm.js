@@ -229,8 +229,6 @@ WHS.init.prototype.animate = function(time, scope) {
 
   var clock = new THREE.Clock();
 
-
-
   function reDraw() {
 
     var delta = clock.getDelta();
@@ -247,6 +245,7 @@ WHS.init.prototype.animate = function(time, scope) {
     for (var i = 0; i < Object.keys(WHS.objects).length; i++) {
 
       if (!WHS.objects[i].onlyvis && !WHS.objects[i].skip) {
+        //console.log(WHS.objects[i].body.position.y);
 
         WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
 
@@ -257,7 +256,6 @@ WHS.init.prototype.animate = function(time, scope) {
 
       if (WHS.objects[i].morph) {
         WHS.objects[i].visible.mixer.update( delta );
-
 
       }
       //WHS.objects[i].addCompoundFace();

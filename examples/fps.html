@@ -79,14 +79,12 @@
     z: 70
   });
 
-  GAME.light1 = GAME.addMorph("assets/models/morph/parrot.js", {
+  GAME.parrot = GAME.addMorph("assets/models/morph/parrot.js", {
   geometryOptions: {
       width: 2,
       height: 2,
       depth: 2
   },
-  mass: 5,
-  onlyvis: false,
   materialOptions: {
       color: 0xffffff,
       kind: "basic",
@@ -96,7 +94,12 @@
       x: 70,
       y: 72,
       z: 70
-  }});
+  },
+  morph: {
+    duration: 0.5,
+    speed: 250
+  }
+});
 
   // NOTE: Test light.
   /*GAME.light2 = GAME.addLight("point", {
