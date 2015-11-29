@@ -3,6 +3,7 @@
 - Added *api.loadMaterial* function.
 - Added *api.construct* function.
 - Fixed *lathe* physics error.
+- Changed coggle.
 
 **current** (v0.0.6-alpha)
 - added Coggle.
