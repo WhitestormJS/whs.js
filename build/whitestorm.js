@@ -6702,12 +6702,16 @@ WHS.API.construct = function(root, params, type) {
         if (el.type == type) key++;
     });
 
+    var deferred = $.Deferred();
+
     var scope = {
         root: root,
         _key: key,
         _whsobject: true,
         _name: type + key,
         __releaseTime: new Date().getTime(),
+        __deferred: deferred,
+        _state: deferred.promise(),
         _pos: target.pos,
         _rot: target.rot,
         _scale: target.scale,
@@ -6726,23 +6730,29 @@ WHS.API.construct.prototype.build = function(figure, object) {
     object = object || this.body;
     var isPhysics = !!(arguments.length == 2 && object);
 
-    // Position.
-    figure.position.set(this._pos.x, this._pos.y, this._pos.z);
-    if (isPhysics && !this.dtb) object.position.set(
-        this._pos.x,
-        this._pos.y,
-        this._pos.z
-    );
+    try {
+        // Position.
+        figure.position.set(this._pos.x, this._pos.y, this._pos.z);
+        if (isPhysics && !this.dtb) object.position.set(
+            this._pos.x,
+            this._pos.y,
+            this._pos.z
+        );
 
-    // Rotation.
-    figure.rotation.set(this._rot.x, this._rot.y, this._rot.z);
-    // TODO: CANNON.JS object rotation.
-    //if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
+        // Rotation.
+        figure.rotation.set(this._rot.x, this._rot.y, this._rot.z);
+        // TODO: CANNON.JS object rotation.
+        //if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
 
-    // Scaling.
-    figure.scale.set(this._scale.x, this._scale.y, this._scale.z);
-    // TODO: CANNON.JS object scaling.
-    //object.scale.set(this._rot.x, this._rot.y, this._rot.z);
+        // Scaling.
+        figure.scale.set(this._scale.x, this._scale.y, this._scale.z);
+        // TODO: CANNON.JS object scaling.
+        //object.scale.set(this._rot.x, this._rot.y, this._rot.z);
+    } catch (err) {
+        console.error(err.message);
+
+        this.__deferred.reject();
+    }
 
     return this;
 }
@@ -7230,10 +7240,18 @@ WHS.API.Wrap = function(SCOPE, mesh, body) {
     this._scope = SCOPE;
     this._key = WHS.objects.length;
 
-    api.merge(this._scope.root.scene, this._figure);
-    if (this._object) api.merge(this._scope.root.world, this._object);
+    try {
+        api.merge(this._scope.root.scene, this._figure);
+        if (this._object) api.merge(this._scope.root.world, this._object);
 
-    WHS.objects.push(this._scope);
+        WHS.objects.push(this._scope);
+    } catch (err) {
+        console.error(err.message);
+
+        this._scope.__deferred.reject();
+    } finally {
+        this._scope.__deferred.resolve();
+    }
 
     return this;
 }

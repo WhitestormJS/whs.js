@@ -8,6 +8,7 @@
 - Changed coggle.
 - Gulpfile update.
 - Fixed `addLight()`.
+- Added `_state` property to scope which is `deferred.promise()`.
 
 **current** (v0.0.6-alpha)
 - added Coggle.

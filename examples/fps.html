@@ -213,6 +213,10 @@
     }
   }
 
+  GAME.ground._state.done(function() {
+   console.log('Terrain loaded!');
+  });
+
 /*
   console.log(WHS.API.getheight({
         x: 0,
