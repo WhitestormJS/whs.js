@@ -1,5 +1,6 @@
 ## Changelog
 **current**
+- Fixed [basic model example](http://192.241.128.187/current/examples/basic_model.html).
 - Added *api.loadMaterial* function.
 - Added *api.construct* function.
 - Fixed *lathe* physics error.
