@@ -42,7 +42,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
       scope.body.name = scope.name;
     }
 
-    scope.build(scope.visible, scope.body);
+    scope.build();
     scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
   });

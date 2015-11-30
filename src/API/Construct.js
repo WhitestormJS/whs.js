@@ -67,7 +67,8 @@ WHS.API.construct = function (root, params, type) {
 
 WHS.API.construct.prototype.build = function (figure, object) {
   'use strict';
-
+  figure = figure || this.visible;
+  object = object || this.body;
   var isPhysics = !!(arguments.length == 2 && object);
 
   // Position.

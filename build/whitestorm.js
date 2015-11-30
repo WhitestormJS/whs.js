@@ -6710,7 +6710,8 @@ WHS.API.construct = function(root, params, type) {
 
 WHS.API.construct.prototype.build = function(figure, object) {
     'use strict';
-
+    figure = figure || this.visible;
+    object = object || this.body;
     var isPhysics = !!(arguments.length == 2 && object);
 
     // Position.
@@ -7582,7 +7583,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
             scope.body.name = scope.name;
         }
 
-        scope.build(scope.visible, scope.body);
+        scope.build();
         scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
     });
