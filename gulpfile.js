@@ -106,15 +106,21 @@ gulp.task('build', function() {
     .pipe(gulp.dest('./build/'));
 });
 
+gulp.task('test', function() {
+
+  gulp.src(sources)
+    .pipe(concat('whitestorm.js'))
+    .pipe(gulp.dest('./build/'));
+});
+
 gulp.task('watch', function() {
-  gulp.watch(sources, ['build']);
+  gulp.watch(sources, ['test']);
 
   watch('src/**/*.js', {
     events: ['add']
   }, function(file) {
     gulp.src(file.path).pipe(insert.prepend(author_comment))
       .pipe(gulp.dest(file.dirname));
-
   });
 });
 

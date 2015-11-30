@@ -6,6 +6,7 @@
 - Added *api.construct* function.
 - Fixed *lathe* physics error.
 - Changed coggle.
+- Gulpfile update.
 
 **current** (v0.0.6-alpha)
 - added Coggle.
