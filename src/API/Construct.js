@@ -16,6 +16,11 @@ WHS.API.construct = function (root, params, type) {
       this.z = z;
   }
 
+  if (params.pos) params.pos.set = _set;
+  if (params.rot) params.rot.set = _set;
+  if (params.scale) params.scale.set = _set;
+  if (params.target) params.target.set = _set;
+
   var target = $.extend({
     pos: {
       x: 0,
@@ -33,6 +38,12 @@ WHS.API.construct = function (root, params, type) {
       x: 1,
       y: 1,
       z: 1,
+      set: _set
+    },
+    target: {
+      x: 0,
+      y: 0,
+      z: 0,
       set: _set
     },
     morph: {
@@ -57,7 +68,8 @@ WHS.API.construct = function (root, params, type) {
     _pos: target.pos,
     _rot: target.rot,
     _scale: target.scale,
-    _morph: target.morph
+    _morph: target.morph,
+    _target: target.target
   };
 
   Object.assign(this, scope);

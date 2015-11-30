@@ -7,6 +7,7 @@
 - Fixed *lathe* physics error.
 - Changed coggle.
 - Gulpfile update.
+- Fixed `addLight()`.
 
 **current** (v0.0.6-alpha)
 - added Coggle.

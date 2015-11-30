@@ -16,12 +16,10 @@
 WHS.init.prototype.addLight = function(type, opts, pos, target) {
   // #TODO:160 add lights.
 
-  var scope = {};
+  // TODO: fix options problem.
+  var scope = new api.construct(this, {pos: pos}, type);
 
-  scope.whsobject = true;
-
-  scope.target = target;
-  scope.pos = pos;
+  scope.skip = true;
 
   var options = api.def(opts, {});
 
@@ -34,26 +32,24 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
 
   switch (type) {
     case "ambient":
-      scope.light = new THREE.AmbientLight(0xffffff);
+      scope.visible = new THREE.AmbientLight(0xffffff);
       break;
 
     case "area":
-      scope.light = new THREE.AreaLight(options.color, options.intensity);
-      console.warn([this.light], "This light only works in the deferredrenderer");
+      scope.visible = new THREE.AreaLight(options.color, options.intensity);
+      console.warn([this.visible], "This light only works in the deferredrenderer");
       break;
 
     case "directional":
-      scope.light = new THREE.DirectionalLight(
+      scope.visible = new THREE.DirectionalLight(
         options.color,
         options.intensity
       );
 
-      scope.light.castShadow = true;
-      scope.light.shadowDarkness = 1;
       break;
 
     case "hemisphere":
-      scope.light = new THREE.HemisphereLight(
+      scope.visible = new THREE.HemisphereLight(
         options.skyColor,
         options.groundColor,
         options.intensity
@@ -62,11 +58,12 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       break;
 
     case "light":
-      scope.light = new THREE.Light(options.color);
+      scope.visible = new THREE.Light(options.color);
+
       break;
 
     case "point":
-      scope.light = new THREE.PointLight(
+      scope.visible = new THREE.PointLight(
         options.color,
         options.intensity,
         options.distance
@@ -75,54 +72,42 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       break;
 
     case "spot":
-      scope.light = new THREE.SpotLight(
+      scope.visible = new THREE.SpotLight(
         options.color,
         options.intensity,
         options.distance,
         options.angle
       );
 
-      scope.light.castShadow = true;
-
-      // #FIXME:20 Shadow default parameters.
-      scope.light.shadowMapWidth = 1024;
-      scope.light.shadowMapHeight = 1024;
-
-      scope.light.shadowCameraNear = 50;
-      scope.light.shadowCameraFar = 4000;
-      scope.light.shadowCameraFov = 30;
       break;
   }
 
-  scope.light.position.set(scope.pos.x, scope.pos.y, scope.pos.z);
-  scope.light.shadowCameraVisible = true;
+  scope.visible.shadowCameraVisible = true;
 
-  scope.light.castShadow = true;
+  scope.visible.castShadow = true;
 
   // #FIXME:20 Shadow default parameters.
-  scope.light.shadowMapWidth = 1024;
-  scope.light.shadowMapHeight = 1024;
+  scope.visible.shadowMapWidth = 1024;
+  scope.visible.shadowMapHeight = 1024;
 
-  scope.light.shadowCameraNear = 50;
-  scope.light.shadowCameraFar = 4000;
-  scope.light.shadowCameraFov = 30;
+  scope.visible.shadowCameraNear = 50;
+  scope.visible.shadowCameraFar = 4000;
+  scope.visible.shadowCameraFov = 30;
 
 
   if(type == "directional")
-    var debug = new THREE.DirectionalLightHelper( scope.light, 1 );
+    var debug = new THREE.DirectionalLightHelper( scope.visible, 1 );
 
 
-  if (scope.light.target)
-    scope.light.target.position.set(
-      scope.target.x,
-      scope.target.y,
-      scope.target.z
+  if (scope.visible.target)
+    scope.visible.target.position.set(
+      scope._target.x,
+      scope._target.y,
+      scope._target.z
     );
 
-  WHS.API.merge(this.scene, scope.light);
-
-  if(type == "directional")
-    WHS.API.merge(this.scene, debug);
+  scope.build();
+  scope.wrap = api.Wrap(scope, scope.visible);
 
   return scope;
 }
