@@ -17,7 +17,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
 
   var scope = new api.construct(this, options, "model");
 
-  scope.materialType = api.loadMaterial(opt.materialOptions)._material;
+  scope.materialType = api.loadMaterial(options.materialOptions)._material;
 
   //(new THREE.JSONLoader())
   api.JSONLoader().load(pathToModel, function(data) {
@@ -33,7 +33,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
       scope.physic = new WHS.API.TrimeshFigure(data);
 
       scope.body = new CANNON.Body({
-        mass: opt.mass
+        mass: options.mass
       });
 
       scope.body.linearDamping = 0.9; //default
@@ -42,7 +42,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
       scope.body.name = scope.name;
     }
 
-    scope.build();
+    scope.build(scope.visible, scope.body);
     scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
 
   });
