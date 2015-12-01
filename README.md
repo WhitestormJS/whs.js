@@ -15,11 +15,12 @@
 
 **WhitestormJS** is a library to combine [**Three.js**](https://github.com/mrdoob/three.js/) with [**Cannon.js**](https://github.com/schteppe/cannon.js/). It ***makes WebGL*** development **easy**.
 
+WhitestormJS is [hosted by jsDelivr](http://www.jsdelivr.com/projects/whitestormjs). You can link to the latest [minified version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js), [full version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.js), or [download both](https://cdn.jsdelivr.net/whitestormjs/latest/whitestormjs.zip).
+
 ![WhitestormJS](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/logos/logo-big.png)
 
 ## Installation
 [![forthebadge](http://forthebadge.com/images/badges/uses-js.svg)](https://github.com/search?l=JavaScript&q=%23javasript&ref=searchresults&type=Repositories&utf8=%E2%9C%93)
-
 
 Include [*Three.js*](http://threejs.org) and [*Cannon.js*](http://cannonjs.org) libraries.
 Include script tag pointing to **Whitestorm.js** library to your *head* or *after body*:
