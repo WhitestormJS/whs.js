@@ -7486,7 +7486,6 @@ WHS.init = function(params) {
         this.composer.eff = [];
     }
 
-
     // NOTE: ==================== Autoresize. ======================
     var scope = this;
 
