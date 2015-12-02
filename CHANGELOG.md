@@ -9,6 +9,7 @@
 - Gulpfile update.
 - Fixed `addLight()`.
 - Added `_state` property to scope which is `deferred.promise()`.
+- Disabled defining `this.composer.eff` in `WHS.init` unless Wagner is enabled.
 
 **current** (v0.0.6-alpha)
 - added Coggle.
