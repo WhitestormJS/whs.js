@@ -7496,15 +7496,15 @@ WHS.init = function(params) {
 
             scope.renderer.setSize(scope.rWidth, scope.rHeight);
             $(scope.renderer.domElement).css({
-                'width': '100%',
-                'height': '100%'
+                'width': window.innerWidth,
+                'height': window.innerHeight
             });
 
             if (params.wagner) {
                 scope.composer.setSize(scope.rWidth, scope.rHeight);
                 $(scope.composer.domElement).css({
-                    'width': '100%',
-                    'height': '100%'
+                    'width': window.innerWidth,
+                    'height': window.innerHeight
                 });
             }
         });
