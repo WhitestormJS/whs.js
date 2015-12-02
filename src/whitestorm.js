@@ -179,9 +179,9 @@ WHS.init = function(params) {
     this.renderer.autoClearColor = true;
     this.composer.reset();
     this.composer.render(this.scene, this.camera);
+    this.composer.eff = [];
   }
 
-  this.composer.eff = [];
 
   // NOTE: ==================== Autoresize. ======================
   var scope = this;
