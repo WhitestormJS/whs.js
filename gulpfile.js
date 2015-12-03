@@ -83,6 +83,10 @@ var author_comment = "/**\n" +
 "*/\n" +
 "\n";
 
+var lib_includes = "var THREE = require('three');\n" +
+"var CANNON = require('cannon');\n" + 
+"var jQuery = require('jquery');";
+
 gulp.task('build', function() {
 
   gulp.src(sources)
@@ -99,7 +103,12 @@ gulp.task('build', function() {
     .pipe(beautify())
     //.pipe(size({title: 'original'}))
     .pipe(gulp.dest('./build/'));
-
+  gulp.src(sources)
+    .pipe(concat("whitestorm.test.js"))
+    .pipe(insert.prepend(lib_includes))
+    .pipe(uglify())
+    .pipe(insert.prepend(author_comment))
+    .pipe(gulp.dest("./build/"));
   gulp.src(sources)
     .pipe(concat('whitestorm.min.js'))
     .pipe(uglify())
