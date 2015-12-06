@@ -30,4 +30,4 @@ WhitestormJS will be built, and written to `build/whitestorm.js`, and `build/whi
 
 ### Testing WhitestormJS
 
-We haven't yet implemented a testing system, so for now, run the [examples listed in the README](https://github.com/sasha240100/WhitestormJS/blob/master/README.md#examples) (these are located in `examples/`) with your newly built version of WhitestormJS, and make sure there are no errors.
+Our tests are run using [Mocha](https://mochajs.org/). We're still adding more tests.
