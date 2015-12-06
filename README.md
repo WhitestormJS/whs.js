@@ -35,8 +35,7 @@ Include script tag pointing to **Whitestorm.js** library to your *head* or *afte
 
 After adding libs you need to configure your game:
 ```javascript
-var GAME = new WHS.init( THREE, CANNON,
-{
+var GAME = new WHS.init({
     anaglyph: false, // Anaglyph effect.
     helper: false, // Cannon.js shape helper
     stats: "fps", // fps, ms, mb or false if not need.
