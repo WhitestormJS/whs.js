@@ -1,4 +1,5 @@
 # WhitestormJS
+[![Build Status](https://travis-ci.org/sasha240100/WhitestormJS.svg)](https://travis-ci.org/sasha240100/WhitestormJS)
 [![npm](https://img.shields.io/npm/v/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs) [![bower](https://img.shields.io/bower/v/whitestormjs.svg)](https://github.com/sasha240100/WhitestormJS) [![Gitter](https://img.shields.io/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/sasha240100/WhitestormJS)
 
 [![Issues](https://img.shields.io/npm/dt/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs)
@@ -34,8 +35,7 @@ Include script tag pointing to **Whitestorm.js** library to your *head* or *afte
 
 After adding libs you need to configure your game:
 ```javascript
-var GAME = new WHS.init( THREE, CANNON,
-{
+var GAME = new WHS.init({
     anaglyph: false, // Anaglyph effect.
     helper: false, // Cannon.js shape helper
     stats: "fps", // fps, ms, mb or false if not need.
