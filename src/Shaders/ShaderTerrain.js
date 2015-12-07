@@ -60,89 +60,6 @@ THREE.ShaderTerrain = {
 
 		] ),
 
-		/*fragmentShader: [
-
-			"uniform float opacity;",
-
-			"varying vec3 vLightFront;",
-
-			"#ifdef DOUBLE_SIDED",
-
-			"varying vec3 vLightBack;",
-
-			"#endif",
-			'uniform sampler2D oceanTexture;',
-			'uniform sampler2D sandyTexture;',
-			'uniform sampler2D grassTexture;',
-			'uniform sampler2D rockyTexture;',
-			'uniform sampler2D snowyTexture;',
-
-			THREE.ShaderChunk[ "color_pars_fragment" ],
-			THREE.ShaderChunk[ "map_pars_fragment" ],
-			THREE.ShaderChunk[ "alphamap_pars_fragment" ],
-			THREE.ShaderChunk[ "lightmap_pars_fragment" ],
-			THREE.ShaderChunk[ "envmap_pars_fragment" ],
-			THREE.ShaderChunk[ "fog_pars_fragment" ],
-			THREE.ShaderChunk[ "shadowmap_pars_fragment" ],
-			THREE.ShaderChunk[ "specularmap_pars_fragment" ],
-			THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
-			'',
-			'varying vec2 vUv;',
-			'varying float vAmount;',
-			'',
-			"void main() {",
-
-
-
-			'	vec4 water = (smoothstep(0.01, 0.25, vAmount)',
-			' - smoothstep(0.24, 0.26, vAmount))',
-			' * texture2D( oceanTexture, vUv * 0.1 );',
-
-			'	vec4 sandy = (smoothstep(0.24, 0.27, vAmount)',
-			' - smoothstep(0.28, 0.31, vAmount))',
-			' * texture2D( sandyTexture, vUv * 0.1 );',
-
-			'	vec4 grass = (smoothstep(0.28, 0.32, vAmount)',
-			' - smoothstep(0.35, 0.40, vAmount))',
-			' * texture2D( grassTexture, vUv * 0.2 );',
-
-			'	vec4 rocky = (smoothstep(0.30, 0.40, vAmount)',
-			' - smoothstep(0.40, 0.70, vAmount))',
-			' * texture2D( rockyTexture, vUv * 0.2 );',
-
-			'	vec4 snowy = (smoothstep(0.42, 0.45, vAmount))',
-			'* texture2D( snowyTexture, vUv * 0.1 );',
-			'	gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0)',
-			' + water + sandy + grass + rocky + snowy; ',
-
-				THREE.ShaderChunk[ "logdepthbuf_fragment" ],
-				THREE.ShaderChunk[ "map_fragment" ],
-				THREE.ShaderChunk[ "alphamap_fragment" ],
-				THREE.ShaderChunk[ "alphatest_fragment" ],
-				THREE.ShaderChunk[ "specularmap_fragment" ],
-
-			"	#ifdef DOUBLE_SIDED",
-
-			"		if ( gl_FrontFacing )",
-			"			gl_FragColor.xyz *= vLightFront;",
-			"		else",
-			"			gl_FragColor.xyz *= vLightBack;",
-
-			"	#else",
-
-			"		gl_FragColor.xyz *= vLightFront;",
-
-			"	#endif",
-				THREE.ShaderChunk[ "lightmap_fragment" ],
-				THREE.ShaderChunk[ "color_fragment" ],
-				THREE.ShaderChunk[ "shadowmap_fragment" ],
-				THREE.ShaderChunk[ "linear_to_gamma_fragment" ],
-				THREE.ShaderChunk[ "fog_fragment" ],
-
-			"}"
-
-		].join("\n"),*/
-
 		fragmentShader: [
 
 										"uniform vec3 diffuse;",
@@ -157,12 +74,27 @@ THREE.ShaderTerrain = {
 
 			        			"varying vec3 vLightBack;",
 
+										//"attribute vec4 tangent;",
+
+										"uniform vec2 uRepeatOverlay;",
+										"uniform vec2 uRepeatBase;",
+										"uniform vec2 uOffset;",
+										"uniform float uNormalScale;",
+
+										"uniform sampler2D tNormal;",
+
 			        			"#endif",
 			              'uniform sampler2D oceanTexture;',
 			              'uniform sampler2D sandyTexture;',
 			              'uniform sampler2D grassTexture;',
 			              'uniform sampler2D rockyTexture;',
 			              'uniform sampler2D snowyTexture;',
+
+										"varying vec3 vTangent;",
+										"varying vec3 vBinormal;",
+										"varying vec3 vNormal;",
+
+										"varying vec3 vViewPosition;",
 
 										THREE.ShaderChunk[ "common" ],
 			        			THREE.ShaderChunk[ "color_pars_fragment" ],
@@ -179,6 +111,20 @@ THREE.ShaderTerrain = {
 			              'varying float vAmount;',
 			              '',
 			        			"void main() {",
+										"vec3 specularTex = vec3( 1.0 );",
+
+										"vec2 uvOverlay = uRepeatOverlay * vUv + uOffset;",
+										"vec2 uvBase = uRepeatBase * vUv;",
+
+										"vec3 normalTex = texture2D( tNormal, uvOverlay ).xyz * 2.0 - 1.0;",
+										"normalTex.xy *= uNormalScale;",
+										"normalTex = normalize( normalTex );",
+
+										"mat3 tsb = mat3( vTangent, vBinormal, vNormal );",
+										"vec3 finalNormal = tsb * normalTex;",
+
+										"vec3 normal = normalize( finalNormal );",
+										"vec3 viewPosition = normalize( vViewPosition );",
 
 										'vec3 shadowMask = vec3( 1.0 );',
 										'vec3 outgoingLight = vec3( 0.0 );',
@@ -218,22 +164,22 @@ THREE.ShaderTerrain = {
 			        				THREE.ShaderChunk[ "linear_to_gamma_fragment" ],
 			        				THREE.ShaderChunk[ "fog_fragment" ],
 
-											//"	#ifdef DOUBLE_SIDED",
+											"	#ifdef DOUBLE_SIDED",
 
-											//"		if ( gl_FrontFacing )",
-											//"			outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask );",
-											//"		else",
-											"			outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask );",
+											"		if ( gl_FrontFacing )",
+											"			outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask + totalAmbientLight ) + emissive;",
+											"		else",
+											"			outgoingLight += diffuseColor.rgb * ( vLightBack * shadowMask + totalAmbientLight ) + emissive;",
 
-											//"	#else",
+											"	#else",
 
-											//"		outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask );",
+											"		outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask + totalAmbientLight ) + emissive;",
 
-											//"	#endif",
+											"	#endif",
 
 
 
-											"gl_FragColor = vec4( outgoingLight, diffuseColor.a );",
+											"gl_FragColor = vec4(outgoingLight, diffuseColor.a );",
 
 			        			"}"
 ].join("\n"),
@@ -272,41 +218,41 @@ THREE.ShaderTerrain = {
 			THREE.ShaderChunk[ "common" ],
 			//THREE.ShaderChunk[ "uv_pars_vertex" ],
 			//THREE.ShaderChunk[ "uv2_pars_vertex" ],
-			//THREE.ShaderChunk[ "envmap_pars_vertex" ],
+			THREE.ShaderChunk[ "envmap_pars_vertex" ],
 			THREE.ShaderChunk[ "lights_lambert_pars_vertex" ],
-			//THREE.ShaderChunk[ "color_pars_vertex" ],
-			//THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
-			//THREE.ShaderChunk[ "skinning_pars_vertex" ],
+			THREE.ShaderChunk[ "color_pars_vertex" ],
+			THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
+			THREE.ShaderChunk[ "skinning_pars_vertex" ],
 			THREE.ShaderChunk[ "shadowmap_pars_vertex" ],
-			//THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+			THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
 
 			"void main() {",
-			//THREE.ShaderChunk[ "color_vertex" ],
+			THREE.ShaderChunk[ "color_vertex" ],
 
 			THREE.ShaderChunk[ "beginnormal_vertex" ],
-			//THREE.ShaderChunk[ "morphnormal_vertex" ],
-			//THREE.ShaderChunk[ "skinbase_vertex" ],
-			//THREE.ShaderChunk[ "skinnormal_vertex" ],
+			THREE.ShaderChunk[ "morphnormal_vertex" ],
+			THREE.ShaderChunk[ "skinbase_vertex" ],
+			THREE.ShaderChunk[ "skinnormal_vertex" ],
 			THREE.ShaderChunk[ "defaultnormal_vertex" ],
 
 			THREE.ShaderChunk[ "begin_vertex" ],
-			//THREE.ShaderChunk[ "morphtarget_vertex" ],
-			//THREE.ShaderChunk[ "skinning_vertex" ],
+			THREE.ShaderChunk[ "morphtarget_vertex" ],
+			THREE.ShaderChunk[ "skinning_vertex" ],
 			THREE.ShaderChunk[ "project_vertex" ],
-			//THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+			THREE.ShaderChunk[ "logdepthbuf_vertex" ],
 			//THREE.ShaderChunk[ "worldpos_vertex" ],
 
 							//THREE.ShaderChunk[ "uv_vertex" ],
 							//THREE.ShaderChunk[ "uv2_vertex" ],
 
-				//"vNormal = normalize( normalMatrix * normal);",
+				"vNormal = normalize( normalMatrix * normal);",
 
 				 //tangent and binormal vectors
 
-				//"vTangent = normalize( normalMatrix * tangent.xyz );",
+				"vTangent = normalize( normalMatrix * tangent.xyz );",
 
-				//"vBinormal = cross( vNormal, vTangent ) * tangent.w;",
-				//"vBinormal = normalize( vBinormal );",
+				"vBinormal = cross( vNormal, vTangent ) * tangent.w;",
+				"vBinormal = normalize( vBinormal );",
 
 				 //texture coordinates
 
@@ -316,31 +262,31 @@ THREE.ShaderTerrain = {
 
 				// displacement mapping
 
-				"#ifdef VERTEX_TEXTURES",
+				/*"#ifdef VERTEX_TEXTURES",
 
 					"vec3 dv = texture2D( tDisplacement, uvBase ).xyz;",
 					"float df = uDisplacementScale * dv.x + uDisplacementBias;",
 					"vec3 displacedPosition = normal * df + position;",
 
-					"vec4 worldPosition = modelMatrix * vec4( displacedPosition, 1.0 );",
+					"worldPosition = modelMatrix * vec4( displacedPosition, 1.0 );",
 					"mvPosition = modelViewMatrix * vec4( displacedPosition, 1.0 );",
 					"transformedNormal = normalize( normalMatrix * normal );",
 
-				"#else",
+				"#else",*/
 
 					"vec4 worldPosition = modelMatrix * vec4( position, 1.0 );",
 					"mvPosition = modelViewMatrix * vec4( position, 1.0 );",
 					"transformedNormal = normalize( normalMatrix * normal );",
 
-				"#endif",
+				//"#endif",
 
 				"gl_Position = projectionMatrix * mvPosition;",
 
-				//"vViewPosition = -mvPosition.xyz;",
+				"vViewPosition = -mvPosition.xyz;",
 
-				'vAmount = displacedPosition.z * 0.005 + 0.1;',
+				'vAmount = position.z * 0.005 + 0.1;',
 
-				//THREE.ShaderChunk[ "envmap_vertex" ],
+				THREE.ShaderChunk[ "envmap_vertex" ],
 				THREE.ShaderChunk[ "lights_lambert_vertex" ],
 				THREE.ShaderChunk[ "shadowmap_vertex" ],
 

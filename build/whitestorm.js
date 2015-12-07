@@ -190,6 +190,195 @@ THREE.AnaglyphEffect = function(renderer, width, height) {
 
 };
 
+
+
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
+THREE.BufferGeometryUtils = {
+
+    computeTangents: function(geometry) {
+
+        var index = geometry.index;
+        var attributes = geometry.attributes;
+
+        // based on http://www.terathon.com/code/tangent.html
+        // (per vertex tangents)
+
+        if (index === null ||
+            attributes.position === undefined ||
+            attributes.normal === undefined ||
+            attributes.uv === undefined) {
+
+            console.warn('THREE.BufferGeometry: Missing required attributes (index, position, normal or uv) in BufferGeometry.computeTangents()');
+            return;
+
+        }
+
+        var indices = index.array;
+        var positions = attributes.position.array;
+        var normals = attributes.normal.array;
+        var uvs = attributes.uv.array;
+
+        var nVertices = positions.length / 3;
+
+        if (attributes.tangent === undefined) {
+
+            geometry.addAttribute('tangent', new THREE.BufferAttribute(new Float32Array(4 * nVertices), 4));
+
+        }
+
+        var tangents = attributes.tangent.array;
+
+        var tan1 = [],
+            tan2 = [];
+
+        for (var k = 0; k < nVertices; k++) {
+
+            tan1[k] = new THREE.Vector3();
+            tan2[k] = new THREE.Vector3();
+
+        }
+
+        var vA = new THREE.Vector3(),
+            vB = new THREE.Vector3(),
+            vC = new THREE.Vector3(),
+
+            uvA = new THREE.Vector2(),
+            uvB = new THREE.Vector2(),
+            uvC = new THREE.Vector2(),
+
+            sdir = new THREE.Vector3(),
+            tdir = new THREE.Vector3();
+
+        function handleTriangle(a, b, c) {
+
+            vA.fromArray(positions, a * 3);
+            vB.fromArray(positions, b * 3);
+            vC.fromArray(positions, c * 3);
+
+            uvA.fromArray(uvs, a * 2);
+            uvB.fromArray(uvs, b * 2);
+            uvC.fromArray(uvs, c * 2);
+
+            var x1 = vB.x - vA.x;
+            var x2 = vC.x - vA.x;
+
+            var y1 = vB.y - vA.y;
+            var y2 = vC.y - vA.y;
+
+            var z1 = vB.z - vA.z;
+            var z2 = vC.z - vA.z;
+
+            var s1 = uvB.x - uvA.x;
+            var s2 = uvC.x - uvA.x;
+
+            var t1 = uvB.y - uvA.y;
+            var t2 = uvC.y - uvA.y;
+
+            var r = 1.0 / (s1 * t2 - s2 * t1);
+
+            sdir.set(
+                (t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r
+            );
+
+            tdir.set(
+                (s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r, (s1 * z2 - s2 * z1) * r
+            );
+
+            tan1[a].add(sdir);
+            tan1[b].add(sdir);
+            tan1[c].add(sdir);
+
+            tan2[a].add(tdir);
+            tan2[b].add(tdir);
+            tan2[c].add(tdir);
+
+        }
+
+        var groups = geometry.groups;
+
+        if (groups.length === 0) {
+
+            groups = [{
+                start: 0,
+                count: indices.length
+            }];
+
+        }
+
+        for (var j = 0, jl = groups.length; j < jl; ++j) {
+
+            var group = groups[j];
+
+            var start = group.start;
+            var count = group.count;
+
+            for (var i = start, il = start + count; i < il; i += 3) {
+
+                handleTriangle(
+                    indices[i + 0],
+                    indices[i + 1],
+                    indices[i + 2]
+                );
+
+            }
+
+        }
+
+        var tmp = new THREE.Vector3(),
+            tmp2 = new THREE.Vector3();
+        var n = new THREE.Vector3(),
+            n2 = new THREE.Vector3();
+        var w, t, test;
+
+        function handleVertex(v) {
+
+            n.fromArray(normals, v * 3);
+            n2.copy(n);
+
+            t = tan1[v];
+
+            // Gram-Schmidt orthogonalize
+
+            tmp.copy(t);
+            tmp.sub(n.multiplyScalar(n.dot(t))).normalize();
+
+            // Calculate handedness
+
+            tmp2.crossVectors(n2, t);
+            test = tmp2.dot(tan2[v]);
+            w = (test < 0.0) ? -1.0 : 1.0;
+
+            tangents[v * 4] = tmp.x;
+            tangents[v * 4 + 1] = tmp.y;
+            tangents[v * 4 + 2] = tmp.z;
+            tangents[v * 4 + 3] = w;
+
+        }
+
+        for (var j = 0, jl = groups.length; j < jl; ++j) {
+
+            var group = groups[j];
+
+            var start = group.start;
+            var count = group.count;
+
+            for (var i = start, il = start + count; i < il; i += 3) {
+
+                handleVertex(indices[i + 0]);
+                handleVertex(indices[i + 1]);
+                handleVertex(indices[i + 2]);
+
+            }
+
+        }
+
+    }
+
+};
+
 /* global CANNON,THREE,Detector */
 
 /**
@@ -5826,58 +6015,6 @@ var MOUNTAINS2_COLORS = {
 
 };
 
-var PN_GENERATOR = {
-    RandomNoise: function(inParameters, inCanvas, inX, inY, inWidth, inHeight, inAlpha) {
-        var g = inCanvas.getContext("2d"),
-            imageData = g.getImageData(0, 0, inCanvas.width, inCanvas.height),
-            pixels = imageData.data;
-
-        for (var i = 0; i < pixels.length; i += 4) {
-            pixels[i] = pixels[i + 1] = pixels[i + 2] = (inParameters.alea.Random() * 256) | 0;
-            pixels[i + 3] = 255;
-        }
-
-        g.putImageData(imageData, 0, 0);
-        return inCanvas;
-    },
-
-    PerlinNoise: function(inParameters) {
-        /**
-         * This part is based on the snippest :
-         * https://gist.github.com/donpark/1796361
-         */
-
-        var noise = this.RandomNoise(inParameters, TERRAINGEN.CreateCanvas(inParameters.widthSegments, inParameters.heightSegments));
-        var context = inParameters.canvas.getContext("2d");
-        context.save();
-
-        var ratio = inParameters.widthSegments / inParameters.heightSegments;
-
-        /* Scale random iterations onto the canvas to generate Perlin noise. */
-        for (var size = 4; size <= noise.height; size *= inParameters.param) {
-            var x = (inParameters.alea.Random() * (noise.width - size)) | 0,
-                y = (inParameters.alea.Random() * (noise.height - size)) | 0;
-            context.globalAlpha = 4 / size;
-            context.drawImage(noise, Math.max(x, 0), y, size * ratio, size, 0, 0, inParameters.widthSegments, inParameters.heightSegments);
-        }
-
-        context.restore();
-
-        return inParameters.canvas;
-    },
-
-    Get: function(inParameters) {
-        var geometry = new THREE.Geometry();
-
-        inParameters.param = Math.max(1.1, inParameters.param);
-
-        // Create the Perlin Noise
-        var noise = this.PerlinNoise(inParameters);
-
-        return noise;
-    }
-};
-
 var BLUR_FILTER = {
     Apply: function(inCanvas, inParameters) {
         boxBlurCanvasRGB(inCanvas, 0, 0, inCanvas.width, inCanvas.height, Math.round(inParameters.filterparam), 2);
@@ -5929,6 +6066,58 @@ var GAMETERRAIN_FILTER = {
         context.fill();
 
         BLUR_FILTER.Apply(inCanvas, inParameters);
+    }
+};
+
+var PN_GENERATOR = {
+    RandomNoise: function(inParameters, inCanvas, inX, inY, inWidth, inHeight, inAlpha) {
+        var g = inCanvas.getContext("2d"),
+            imageData = g.getImageData(0, 0, inCanvas.width, inCanvas.height),
+            pixels = imageData.data;
+
+        for (var i = 0; i < pixels.length; i += 4) {
+            pixels[i] = pixels[i + 1] = pixels[i + 2] = (inParameters.alea.Random() * 256) | 0;
+            pixels[i + 3] = 255;
+        }
+
+        g.putImageData(imageData, 0, 0);
+        return inCanvas;
+    },
+
+    PerlinNoise: function(inParameters) {
+        /**
+         * This part is based on the snippest :
+         * https://gist.github.com/donpark/1796361
+         */
+
+        var noise = this.RandomNoise(inParameters, TERRAINGEN.CreateCanvas(inParameters.widthSegments, inParameters.heightSegments));
+        var context = inParameters.canvas.getContext("2d");
+        context.save();
+
+        var ratio = inParameters.widthSegments / inParameters.heightSegments;
+
+        /* Scale random iterations onto the canvas to generate Perlin noise. */
+        for (var size = 4; size <= noise.height; size *= inParameters.param) {
+            var x = (inParameters.alea.Random() * (noise.width - size)) | 0,
+                y = (inParameters.alea.Random() * (noise.height - size)) | 0;
+            context.globalAlpha = 4 / size;
+            context.drawImage(noise, Math.max(x, 0), y, size * ratio, size, 0, 0, inParameters.widthSegments, inParameters.heightSegments);
+        }
+
+        context.restore();
+
+        return inParameters.canvas;
+    },
+
+    Get: function(inParameters) {
+        var geometry = new THREE.Geometry();
+
+        inParameters.param = Math.max(1.1, inParameters.param);
+
+        // Create the Perlin Noise
+        var noise = this.PerlinNoise(inParameters);
+
+        return noise;
     }
 };
 
@@ -6351,89 +6540,6 @@ THREE.ShaderTerrain = {
 
         ]),
 
-        /*fragmentShader: [
-
-        	"uniform float opacity;",
-
-        	"varying vec3 vLightFront;",
-
-        	"#ifdef DOUBLE_SIDED",
-
-        	"varying vec3 vLightBack;",
-
-        	"#endif",
-        	'uniform sampler2D oceanTexture;',
-        	'uniform sampler2D sandyTexture;',
-        	'uniform sampler2D grassTexture;',
-        	'uniform sampler2D rockyTexture;',
-        	'uniform sampler2D snowyTexture;',
-
-        	THREE.ShaderChunk[ "color_pars_fragment" ],
-        	THREE.ShaderChunk[ "map_pars_fragment" ],
-        	THREE.ShaderChunk[ "alphamap_pars_fragment" ],
-        	THREE.ShaderChunk[ "lightmap_pars_fragment" ],
-        	THREE.ShaderChunk[ "envmap_pars_fragment" ],
-        	THREE.ShaderChunk[ "fog_pars_fragment" ],
-        	THREE.ShaderChunk[ "shadowmap_pars_fragment" ],
-        	THREE.ShaderChunk[ "specularmap_pars_fragment" ],
-        	THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ],
-        	'',
-        	'varying vec2 vUv;',
-        	'varying float vAmount;',
-        	'',
-        	"void main() {",
-
-
-
-        	'	vec4 water = (smoothstep(0.01, 0.25, vAmount)',
-        	' - smoothstep(0.24, 0.26, vAmount))',
-        	' * texture2D( oceanTexture, vUv * 0.1 );',
-
-        	'	vec4 sandy = (smoothstep(0.24, 0.27, vAmount)',
-        	' - smoothstep(0.28, 0.31, vAmount))',
-        	' * texture2D( sandyTexture, vUv * 0.1 );',
-
-        	'	vec4 grass = (smoothstep(0.28, 0.32, vAmount)',
-        	' - smoothstep(0.35, 0.40, vAmount))',
-        	' * texture2D( grassTexture, vUv * 0.2 );',
-
-        	'	vec4 rocky = (smoothstep(0.30, 0.40, vAmount)',
-        	' - smoothstep(0.40, 0.70, vAmount))',
-        	' * texture2D( rockyTexture, vUv * 0.2 );',
-
-        	'	vec4 snowy = (smoothstep(0.42, 0.45, vAmount))',
-        	'* texture2D( snowyTexture, vUv * 0.1 );',
-        	'	gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0)',
-        	' + water + sandy + grass + rocky + snowy; ',
-
-        		THREE.ShaderChunk[ "logdepthbuf_fragment" ],
-        		THREE.ShaderChunk[ "map_fragment" ],
-        		THREE.ShaderChunk[ "alphamap_fragment" ],
-        		THREE.ShaderChunk[ "alphatest_fragment" ],
-        		THREE.ShaderChunk[ "specularmap_fragment" ],
-
-        	"	#ifdef DOUBLE_SIDED",
-
-        	"		if ( gl_FrontFacing )",
-        	"			gl_FragColor.xyz *= vLightFront;",
-        	"		else",
-        	"			gl_FragColor.xyz *= vLightBack;",
-
-        	"	#else",
-
-        	"		gl_FragColor.xyz *= vLightFront;",
-
-        	"	#endif",
-        		THREE.ShaderChunk[ "lightmap_fragment" ],
-        		THREE.ShaderChunk[ "color_fragment" ],
-        		THREE.ShaderChunk[ "shadowmap_fragment" ],
-        		THREE.ShaderChunk[ "linear_to_gamma_fragment" ],
-        		THREE.ShaderChunk[ "fog_fragment" ],
-
-        	"}"
-
-        ].join("\n"),*/
-
         fragmentShader: [
 
             "uniform vec3 diffuse;",
@@ -6448,12 +6554,27 @@ THREE.ShaderTerrain = {
 
             "varying vec3 vLightBack;",
 
+            //"attribute vec4 tangent;",
+
+            "uniform vec2 uRepeatOverlay;",
+            "uniform vec2 uRepeatBase;",
+            "uniform vec2 uOffset;",
+            "uniform float uNormalScale;",
+
+            "uniform sampler2D tNormal;",
+
             "#endif",
             'uniform sampler2D oceanTexture;',
             'uniform sampler2D sandyTexture;',
             'uniform sampler2D grassTexture;',
             'uniform sampler2D rockyTexture;',
             'uniform sampler2D snowyTexture;',
+
+            "varying vec3 vTangent;",
+            "varying vec3 vBinormal;",
+            "varying vec3 vNormal;",
+
+            "varying vec3 vViewPosition;",
 
             THREE.ShaderChunk["common"],
             THREE.ShaderChunk["color_pars_fragment"],
@@ -6470,6 +6591,20 @@ THREE.ShaderTerrain = {
             'varying float vAmount;',
             '',
             "void main() {",
+            "vec3 specularTex = vec3( 1.0 );",
+
+            "vec2 uvOverlay = uRepeatOverlay * vUv + uOffset;",
+            "vec2 uvBase = uRepeatBase * vUv;",
+
+            "vec3 normalTex = texture2D( tNormal, uvOverlay ).xyz * 2.0 - 1.0;",
+            "normalTex.xy *= uNormalScale;",
+            "normalTex = normalize( normalTex );",
+
+            "mat3 tsb = mat3( vTangent, vBinormal, vNormal );",
+            "vec3 finalNormal = tsb * normalTex;",
+
+            "vec3 normal = normalize( finalNormal );",
+            "vec3 viewPosition = normalize( vViewPosition );",
 
             'vec3 shadowMask = vec3( 1.0 );',
             'vec3 outgoingLight = vec3( 0.0 );',
@@ -6509,22 +6644,22 @@ THREE.ShaderTerrain = {
             THREE.ShaderChunk["linear_to_gamma_fragment"],
             THREE.ShaderChunk["fog_fragment"],
 
-            //"	#ifdef DOUBLE_SIDED",
+            "	#ifdef DOUBLE_SIDED",
 
-            //"		if ( gl_FrontFacing )",
-            //"			outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask );",
-            //"		else",
-            "			outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask );",
+            "		if ( gl_FrontFacing )",
+            "			outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask + totalAmbientLight ) + emissive;",
+            "		else",
+            "			outgoingLight += diffuseColor.rgb * ( vLightBack * shadowMask + totalAmbientLight ) + emissive;",
 
-            //"	#else",
+            "	#else",
 
-            //"		outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask );",
+            "		outgoingLight += diffuseColor.rgb * ( vLightFront * shadowMask + totalAmbientLight ) + emissive;",
 
-            //"	#endif",
+            "	#endif",
 
 
 
-            "gl_FragColor = vec4( outgoingLight, diffuseColor.a );",
+            "gl_FragColor = vec4(outgoingLight, diffuseColor.a );",
 
             "}"
         ].join("\n"),
@@ -6563,41 +6698,41 @@ THREE.ShaderTerrain = {
             THREE.ShaderChunk["common"],
             //THREE.ShaderChunk[ "uv_pars_vertex" ],
             //THREE.ShaderChunk[ "uv2_pars_vertex" ],
-            //THREE.ShaderChunk[ "envmap_pars_vertex" ],
+            THREE.ShaderChunk["envmap_pars_vertex"],
             THREE.ShaderChunk["lights_lambert_pars_vertex"],
-            //THREE.ShaderChunk[ "color_pars_vertex" ],
-            //THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
-            //THREE.ShaderChunk[ "skinning_pars_vertex" ],
+            THREE.ShaderChunk["color_pars_vertex"],
+            THREE.ShaderChunk["morphtarget_pars_vertex"],
+            THREE.ShaderChunk["skinning_pars_vertex"],
             THREE.ShaderChunk["shadowmap_pars_vertex"],
-            //THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+            THREE.ShaderChunk["logdepthbuf_pars_vertex"],
 
             "void main() {",
-            //THREE.ShaderChunk[ "color_vertex" ],
+            THREE.ShaderChunk["color_vertex"],
 
             THREE.ShaderChunk["beginnormal_vertex"],
-            //THREE.ShaderChunk[ "morphnormal_vertex" ],
-            //THREE.ShaderChunk[ "skinbase_vertex" ],
-            //THREE.ShaderChunk[ "skinnormal_vertex" ],
+            THREE.ShaderChunk["morphnormal_vertex"],
+            THREE.ShaderChunk["skinbase_vertex"],
+            THREE.ShaderChunk["skinnormal_vertex"],
             THREE.ShaderChunk["defaultnormal_vertex"],
 
             THREE.ShaderChunk["begin_vertex"],
-            //THREE.ShaderChunk[ "morphtarget_vertex" ],
-            //THREE.ShaderChunk[ "skinning_vertex" ],
+            THREE.ShaderChunk["morphtarget_vertex"],
+            THREE.ShaderChunk["skinning_vertex"],
             THREE.ShaderChunk["project_vertex"],
-            //THREE.ShaderChunk[ "logdepthbuf_vertex" ],
+            THREE.ShaderChunk["logdepthbuf_vertex"],
             //THREE.ShaderChunk[ "worldpos_vertex" ],
 
             //THREE.ShaderChunk[ "uv_vertex" ],
             //THREE.ShaderChunk[ "uv2_vertex" ],
 
-            //"vNormal = normalize( normalMatrix * normal);",
+            "vNormal = normalize( normalMatrix * normal);",
 
             //tangent and binormal vectors
 
-            //"vTangent = normalize( normalMatrix * tangent.xyz );",
+            "vTangent = normalize( normalMatrix * tangent.xyz );",
 
-            //"vBinormal = cross( vNormal, vTangent ) * tangent.w;",
-            //"vBinormal = normalize( vBinormal );",
+            "vBinormal = cross( vNormal, vTangent ) * tangent.w;",
+            "vBinormal = normalize( vBinormal );",
 
             //texture coordinates
 
@@ -6607,31 +6742,31 @@ THREE.ShaderTerrain = {
 
             // displacement mapping
 
-            "#ifdef VERTEX_TEXTURES",
+            /*"#ifdef VERTEX_TEXTURES",
 
-            "vec3 dv = texture2D( tDisplacement, uvBase ).xyz;",
-            "float df = uDisplacementScale * dv.x + uDisplacementBias;",
-            "vec3 displacedPosition = normal * df + position;",
+            	"vec3 dv = texture2D( tDisplacement, uvBase ).xyz;",
+            	"float df = uDisplacementScale * dv.x + uDisplacementBias;",
+            	"vec3 displacedPosition = normal * df + position;",
 
-            "vec4 worldPosition = modelMatrix * vec4( displacedPosition, 1.0 );",
-            "mvPosition = modelViewMatrix * vec4( displacedPosition, 1.0 );",
-            "transformedNormal = normalize( normalMatrix * normal );",
+            	"worldPosition = modelMatrix * vec4( displacedPosition, 1.0 );",
+            	"mvPosition = modelViewMatrix * vec4( displacedPosition, 1.0 );",
+            	"transformedNormal = normalize( normalMatrix * normal );",
 
-            "#else",
+            "#else",*/
 
             "vec4 worldPosition = modelMatrix * vec4( position, 1.0 );",
             "mvPosition = modelViewMatrix * vec4( position, 1.0 );",
             "transformedNormal = normalize( normalMatrix * normal );",
 
-            "#endif",
+            //"#endif",
 
             "gl_Position = projectionMatrix * mvPosition;",
 
-            //"vViewPosition = -mvPosition.xyz;",
+            "vViewPosition = -mvPosition.xyz;",
 
-            'vAmount = displacedPosition.z * 0.005 + 0.1;',
+            'vAmount = position.z * 0.005 + 0.1;',
 
-            //THREE.ShaderChunk[ "envmap_vertex" ],
+            THREE.ShaderChunk["envmap_vertex"],
             THREE.ShaderChunk["lights_lambert_vertex"],
             THREE.ShaderChunk["shadowmap_vertex"],
 
@@ -7433,7 +7568,8 @@ WHS.init = function(params) {
     this.renderer.setClearColor(0x70DBFF);
 
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMapSoft = true;
+    //this.renderer.shadowMapSoft = true;
+    this.renderer.shadowMap.type = THREE.BasicShadowMap;
     //this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
     if (this.anaglyph) {
@@ -8565,7 +8701,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
             var normalMap = new THREE.WebGLRenderTarget(rx, ry, pars);
             normalMap.texture = api.TextureLoader()
-                .load('../assets/terrain/default_terrain.png');
+                .load('../assets/terrain/NormalMap.png');
 
             var specularMap = new THREE.WebGLRenderTarget(256, 256, pars); //2048
             specularMap.texture = api.TextureLoader()
@@ -8617,8 +8753,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
                 });
 
             uniformsTerrain["tDisplacement"].value = heightMap;
-
-            //uniformsTerrain[ "shadowMap" ].value = heightMap;
+            uniformsTerrain["shadowMap"].value = [normalMap];
 
             uniformsTerrain["uDisplacementScale"].value = 100;
 
@@ -8635,7 +8770,9 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
                 shading: THREE.SmoothShading
             });
 
-            var geom = new THREE.PlaneGeometry(256, 256, 256, 256);
+            var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
+
+            //THREE.BufferGeometryUtils.computeTangents( geom );
 
             geom.verticesNeedUpdate = true;
 
@@ -8646,15 +8783,34 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
             scope._rot.set(Math.PI / 180 * -90, 0, 0);
 
-            var hgtdata = []; // new Array(256);
-
+            var hgtdata = [],
+                index = 0,
+                i = 0; // new Array(256);
+            var imgdata = ctx.getImageData(0, 0, 256, 256).data;
+            //console.log(geom);
             for (var x = 0; x <= 255; x++) {
                 hgtdata[x] = new Uint8Array(256);
 
                 for (var y = 255; y >= 0; y--) {
                     hgtdata[x][255 - y] = ctx.getImageData(x, y, 1, 1).data[0] / 255 * 100;
+                    geom.vertices[index].z = imgdata[i] / 255 * 100;
+                    i += 4;
+                    index++;
                 }
             }
+
+
+            /*var height_img_data = ctx.getImageData(0, 0, 256, 256).data;
+            var z, index = 0;
+            for( var i = 0, l = height_img_data.length; i<l; i+=4){
+                     z = height_img_data[i];
+                     geom.vertices[index].z = z / 255 * 100;
+                     index = index + 1;
+             }*/
+
+            geom.computeVertexNormals();
+            geom.computeFaceNormals();
+            geom.computeTangents();
 
             scope.visible.updateMatrix();
             scope.physic = new CANNON.Heightfield(
@@ -8798,6 +8954,8 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
                 options.distance
             );
 
+            //scope.visible.visible = false;
+
             break;
 
         case "spot":
@@ -8811,21 +8969,26 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
             break;
     }
 
-    scope.visible.shadowCameraVisible = true;
+    //scope.visible.shadowCameraVisible = true;
 
     scope.visible.castShadow = true;
 
     // #FIXME:20 Shadow default parameters.
-    scope.visible.shadowMapWidth = 1024;
-    scope.visible.shadowMapHeight = 1024;
+    scope.visible.shadowMapWidth = 2048;
+    scope.visible.shadowMapHeight = 2048;
+    //scope.visible.shadowBias = 0.05;
 
     scope.visible.shadowCameraNear = 50;
-    scope.visible.shadowCameraFar = 4000;
+    scope.visible.shadowCameraFar = 200;
     scope.visible.shadowCameraFov = 30;
+    scope.visible.shadowDarkness = 0.5;
 
+    var d = 120;
 
-    if (type == "directional")
-        var debug = new THREE.DirectionalLightHelper(scope.visible, 1);
+    scope.visible.shadowCameraLeft = -d
+    scope.visible.shadowCameraRight = d
+    scope.visible.shadowCameraTop = d
+    scope.visible.shadowCameraBottom = -d
 
 
     if (scope.visible.target)

@@ -69,6 +69,8 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
         options.distance
       );
 
+      //scope.visible.visible = false;
+
       break;
 
     case "spot":
@@ -82,21 +84,26 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       break;
   }
 
-  scope.visible.shadowCameraVisible = true;
+  //scope.visible.shadowCameraVisible = true;
 
   scope.visible.castShadow = true;
 
   // #FIXME:20 Shadow default parameters.
-  scope.visible.shadowMapWidth = 1024;
-  scope.visible.shadowMapHeight = 1024;
+  scope.visible.shadowMapWidth = 2048;
+  scope.visible.shadowMapHeight = 2048;
+  //scope.visible.shadowBias = 0.05;
 
   scope.visible.shadowCameraNear = 50;
-  scope.visible.shadowCameraFar = 4000;
+  scope.visible.shadowCameraFar = 200;
   scope.visible.shadowCameraFov = 30;
+  scope.visible.shadowDarkness = 0.5;
 
+  var d = 120;
 
-  if(type == "directional")
-    var debug = new THREE.DirectionalLightHelper( scope.visible, 1 );
+  scope.visible.shadowCameraLeft = -d
+  scope.visible.shadowCameraRight = d
+  scope.visible.shadowCameraTop = d
+  scope.visible.shadowCameraBottom = -d
 
 
   if (scope.visible.target)

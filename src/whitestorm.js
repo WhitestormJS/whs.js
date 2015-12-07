@@ -129,7 +129,8 @@ WHS.init = function(params) {
   this.renderer.setClearColor(0x70DBFF);
 
   this.renderer.shadowMap.enabled = true;
-  this.renderer.shadowMapSoft = true;
+  //this.renderer.shadowMapSoft = true;
+  this.renderer.shadowMap.type = THREE.BasicShadowMap;
   //this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
   if (this.anaglyph) {

@@ -148,7 +148,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
 			var normalMap = new THREE.WebGLRenderTarget( rx, ry, pars );
 			normalMap.texture = api.TextureLoader()
-        .load('../assets/terrain/default_terrain.png');
+        .load('../assets/terrain/NormalMap.png');
 
 			var specularMap = new THREE.WebGLRenderTarget( 256, 256, pars ); //2048
 			specularMap.texture = api.TextureLoader()
@@ -178,8 +178,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         });
 
 				uniformsTerrain[ "tDisplacement" ].value = heightMap;
-
-        //uniformsTerrain[ "shadowMap" ].value = heightMap;
+        uniformsTerrain[ "shadowMap" ].value = [normalMap];
 
 				uniformsTerrain[ "uDisplacementScale" ].value = 100;
 
@@ -196,7 +195,9 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
             shading: THREE.SmoothShading
 						} );
 
-      var geom = new THREE.PlaneGeometry(256, 256, 256, 256);
+      var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
+
+      //THREE.BufferGeometryUtils.computeTangents( geom );
 
       geom.verticesNeedUpdate = true;
 
@@ -207,15 +208,32 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
       scope._rot.set(Math.PI / 180 * -90, 0, 0);
 
-      var hgtdata = []; // new Array(256);
-
+      var hgtdata = [], index = 0, i = 0; // new Array(256);
+      var imgdata = ctx.getImageData(0, 0, 256, 256).data;
+//console.log(geom);
       for (var x=0; x <= 255; x++) {
         hgtdata[x] = new Uint8Array(256);
 
         for (var y=255; y >= 0; y--) {
           hgtdata[x][255-y] = ctx.getImageData(x, y, 1, 1).data[0]/255 * 100;
+          geom.vertices[index].z = imgdata[i]/255 * 100;
+          i += 4;
+          index++;
         }
       }
+
+
+      /*var height_img_data = ctx.getImageData(0, 0, 256, 256).data;
+      var z, index = 0;
+      for( var i = 0, l = height_img_data.length; i<l; i+=4){
+               z = height_img_data[i];
+               geom.vertices[index].z = z / 255 * 100;
+               index = index + 1;
+       }*/
+
+      geom.computeVertexNormals();
+      geom.computeFaceNormals();
+      geom.computeTangents();
 
       scope.visible.updateMatrix();
       scope.physic = new CANNON.Heightfield(
