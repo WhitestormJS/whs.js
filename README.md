@@ -29,6 +29,7 @@ Include script tag pointing to **Whitestorm.js** library to your *head* or *afte
 ```html
 <script src="three.js"></script>
 <script src="cannon.js"></script>
+<script src="wagner.js"></script>
 <!-- WhitestormJS library -->
 <script src="{path_to_lib}/whitestorm.js"></script>
 ```
