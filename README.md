@@ -23,7 +23,7 @@ WhitestormJS is [hosted by jsDelivr](http://www.jsdelivr.com/projects/whitestorm
 ## Installation
 [![forthebadge](http://forthebadge.com/images/badges/uses-js.svg)](https://github.com/search?l=JavaScript&q=%23javasript&ref=searchresults&type=Repositories&utf8=%E2%9C%93)
 
-Include [*Three.js*](http://threejs.org) and [*Cannon.js*](http://cannonjs.org) libraries.
+Include [*Three.js*](http://threejs.org), [*Wagner*](http://spite.github.io/wagner/), and [*Cannon.js*](http://cannonjs.org) libraries.
 Include script tag pointing to **Whitestorm.js** library to your *head* or *after body*:
 
 ```html
