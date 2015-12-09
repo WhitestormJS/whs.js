@@ -14,7 +14,7 @@
 
 ----------------------------------------------------------------------------------------------------------------
 
-**WhitestormJS** is a library to combine [**Three.js**](https://github.com/mrdoob/three.js/) with [**Cannon.js**](https://github.com/schteppe/cannon.js/). It ***makes WebGL*** development **easy**.
+**WhitestormJS** is a library which combines [**Three.js**](https://github.com/mrdoob/three.js/) and [**Cannon.js**](https://github.com/schteppe/cannon.js/). It makes WebGL development *easy*.
 
 WhitestormJS is [hosted by jsDelivr](http://www.jsdelivr.com/projects/whitestormjs). You can link to the latest [minified version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js), [full version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.js), or [download both](https://cdn.jsdelivr.net/whitestormjs/latest/whitestormjs.zip).
 
@@ -23,8 +23,10 @@ WhitestormJS is [hosted by jsDelivr](http://www.jsdelivr.com/projects/whitestorm
 ## Installation
 [![forthebadge](http://forthebadge.com/images/badges/uses-js.svg)](https://github.com/search?l=JavaScript&q=%23javasript&ref=searchresults&type=Repositories&utf8=%E2%9C%93)
 
-Include [*Three.js*](http://threejs.org), [*Wagner*](http://spite.github.io/wagner/), and [*Cannon.js*](http://cannonjs.org) libraries.
-Include script tag pointing to **Whitestorm.js** library to your *head* or *after body*:
+\* It is advised to download your own copies of the following libraries, as large changes can break backwards compatibility.
+
+Include [Three.js](http://threejs.org/build/three.min.js), [Wagner](http://spite.github.io/wagner/Wagner.js), and [Cannon.js](http://schteppe.github.io/cannon.js/build/cannon.min.js) libraries.
+Include a script tag linking the [WhitestormJS](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js) library in your `head` or after your `body`:
 
 ```html
 <script src="three.js"></script>
@@ -34,7 +36,7 @@ Include script tag pointing to **Whitestorm.js** library to your *head* or *afte
 <script src="{path_to_lib}/whitestorm.js"></script>
 ```
 
-After adding libs you need to configure your game:
+After adding these libraries, you can configure your game:
 ```javascript
 var GAME = new WHS.init({
     anaglyph: false, // Anaglyph effect.
@@ -55,11 +57,11 @@ var GAME = new WHS.init({
 ![Whitestorm.js structure](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/development/coggle/WhitestormJS.png)
 
 ## Examples:
- * [FPS](http://192.241.128.187/current/examples/fps.html)  (First person example with wagner effects and terrain.)
+ * [FPS](http://192.241.128.187/current/examples/fps.html)  (First person example with Wagner effects and terrain.)
  * [Basic](http://192.241.128.187/current/examples/basic.html)  (Basic "Hello world!" example.)
  * [Material](http://192.241.128.187/current/examples/basic_material.html)  (Basic example with material.)
- * [Object/Icosahedron](http://192.241.128.187/current/examples/basic_object.html)  (Icosahedron from **THREE.JS** example.)
- * [Object/Model](http://192.241.128.187/current/examples/basic_model.html)  (Teapot model with **THREE.JS** JSONLoader.)
+ * [Object/Icosahedron](http://192.241.128.187/current/examples/basic_object.html)  (Icosahedron from *Three.js* example.)
+ * [Object/Model](http://192.241.128.187/current/examples/basic_model.html)  (Teapot model with *Three.js* JSONLoader.)
  * [Object/Wall](http://192.241.128.187/current/examples/stone_wall.html)  (Stone wall (basic).)
 
 ### Author:
