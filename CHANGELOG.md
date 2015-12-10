@@ -1,5 +1,5 @@
 ## Changelog
-**current**
+**v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
 - Fixed [basic model example](http://192.241.128.187/current/examples/basic_model.html).
 - Added *api.loadMaterial* function.
@@ -19,8 +19,9 @@
   - `dirtPass`
   - `edgeDetectionPass`
   - `highPassPass`
+- Removed unusable libs.
 
-**current** (v0.0.6-alpha)
+**v0.0.6-alpha**
 - added Coggle.
 - *WHS.init(THREE, CANNON, params) -> WHS.init(params)*
 - Fixed *api.Wrap* error in *addGround*.
