@@ -77,6 +77,33 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
       scope.effect = scope.motionBlurEffect;
       this.composer.pass(scope.effect);
       break;
+    case "ASCIIPass":
+      scope.effect = new wagnerjs.ASCIIPass();
+      this.composer.pass(scope.effect);
+      break;
+    case "dotScreenPass":
+      scope.effect = new wagnerjs.DotScreenPass();
+      this.composer.pass(scope.effect);
+      break;
+    case "fxaaPass":
+      scope.effect = new wagnerjs.FXAAPass();
+      this.composer.pass(scope.effect);
+      break;
+    case "chromaticAberrationPass":
+      scope.effect = new wagnerjs.ChromaticAberrationPass();
+      this.composer.pass(scope.effect);
+      break;
+    case "dirtPass":
+      scope.effect = new wagnerjs.DirtPass();
+      this.composer.pass(scope.effect);
+      break;
+    case "edgeDetectionPass":
+      scope.effect = new wagnerjs.SobelEdgeDetectionPass();
+      this.composer.pass(scope.effect);
+      break;
+    case "highPassPass":
+      scope.effect = new wagnerjs.HighPassPass();
+      this.composer.pass(scope.effect);
   }
 
   //this.composer.eff.push(this.effect);

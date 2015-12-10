@@ -11,6 +11,14 @@
 - Added `_state` property to scope which is `deferred.promise()`.
 - Disabled defining `this.composer.eff` in `WHS.init` unless Wagner is enabled.
 - Fixed autoresize.
+- Added the following effects to `addWagner`:
+  - `ASCIIPass`
+  - `dotScreenPass`
+  - `fxaaPass`
+  - `chromaticAberrationPass`
+  - `dirtPass`
+  - `edgeDetectionPass`
+  - `highPassPass`
 
 **current** (v0.0.6-alpha)
 - added Coggle.
