@@ -100,10 +100,10 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
 
   var d = 120;
 
-  scope.visible.shadowCameraLeft = -d
-  scope.visible.shadowCameraRight = d
-  scope.visible.shadowCameraTop = d
-  scope.visible.shadowCameraBottom = -d
+  scope.visible.shadowCameraLeft = -d;
+  scope.visible.shadowCameraRight = d;
+  scope.visible.shadowCameraTop = d;
+  scope.visible.shadowCameraBottom = -d;
 
 
   if (scope.visible.target)
@@ -117,4 +117,4 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
   scope.wrap = api.Wrap(scope, scope.visible);
 
   return scope;
-}
+};
