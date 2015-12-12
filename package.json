@@ -1,6 +1,6 @@
 {
   "name": "whitestormjs",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Three.js + Cannon.js render library.",
   "main": "build/whitestorm.js",
   "scripts": {
