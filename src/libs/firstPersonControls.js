@@ -51,12 +51,12 @@
     var onMouseMove = function ( event ) {
         scope.motionBlurEnable = false;
 
+
         if ( sScope.enabled === false ) return;
 
         var movementX = event.movementX || event.mozMovementX || 0;
         var movementY = event.movementY || event.mozMovementY || 0;
 
-        //event.movementX / 20;
         if (scope.motionBlurEffect)
             scope.motionBlurEffect.params.delta = Math.abs(0.0005 * event.movementX)/2 + Math.abs(0.0005 * event.movementY)/2;
 
@@ -137,9 +137,11 @@
 
     };
 
-    document.addEventListener( 'mousemove', onMouseMove, false );
-    document.addEventListener( 'keydown', onKeyDown, false );
-    document.addEventListener( 'keyup', onKeyUp, false );
+    document.body.addEventListener( 'mousemove', onMouseMove, false );
+    document.body.addEventListener( 'keydown', onKeyDown, false );
+    document.body.addEventListener( 'keyup', onKeyUp, false );
+
+    //$("body").on( 'mousemove', onMouseMove, false );
     $(document).mousestop(100, onMouseStop);
 
     this.enabled = false;

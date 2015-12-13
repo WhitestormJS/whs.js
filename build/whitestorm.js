@@ -681,12 +681,12 @@ var PointerLockControls = function(camera, cannonBody, alpha, scope) {
     var onMouseMove = function(event) {
         scope.motionBlurEnable = false;
 
+
         if (sScope.enabled === false) return;
 
         var movementX = event.movementX || event.mozMovementX || 0;
         var movementY = event.movementY || event.mozMovementY || 0;
 
-        //event.movementX / 20;
         if (scope.motionBlurEffect)
             scope.motionBlurEffect.params.delta = Math.abs(0.0005 * event.movementX) / 2 + Math.abs(0.0005 * event.movementY) / 2;
 
@@ -768,9 +768,11 @@ var PointerLockControls = function(camera, cannonBody, alpha, scope) {
 
     };
 
-    document.addEventListener('mousemove', onMouseMove, false);
-    document.addEventListener('keydown', onKeyDown, false);
-    document.addEventListener('keyup', onKeyUp, false);
+    document.body.addEventListener('mousemove', onMouseMove, false);
+    document.body.addEventListener('keydown', onKeyDown, false);
+    document.body.addEventListener('keyup', onKeyUp, false);
+
+    //$("body").on( 'mousemove', onMouseMove, false );
     $(document).mousestop(100, onMouseStop);
 
     this.enabled = false;
@@ -6459,67 +6461,113 @@ WHS.init = function(params) {
     if (!CANNON)
         console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
 
-    params = params || {};
+    var target = $.extend(true, {
 
-    this.anaglyph = params.anaglyph;
+        anaglyph: false,
+        helper: false,
+        stats: false,
 
-    api.def(params.gravity, {
-        x: 0,
-        y: -9.82 * 100,
-        z: 0
-    });
+        gravity: {
+            x: 0,
+            y: 0,
+            z: 0
+        },
+
+        camera: {
+            aspect: 75,
+            near: 1,
+            far: 1000,
+
+            x: 0,
+            y: 0,
+            z: 0
+        },
+
+        rWidth: window.innerWidth, // Resolution(width).
+        rHeight: window.innerHeight, // Resolution(height).
+
+        width: window.innerWidth, // Container(width).
+        height: window.innerHeight, // Container(height).
+
+        physics: {
+
+            quatNormalizeSkip: 0,
+            quatNormalizeFast: false,
+
+            solver: {
+                iterations: 20,
+                tolerance: 0,
+            },
+
+            defMaterial: {
+                contactEquationStiffness: 1e8,
+                contactEquationRegularizationTime: 3
+            }
+
+        },
+
+        background: 0x000000,
+
+        container: $('body')
+
+    }, params);
 
     this.params = params;
-
-    this.rWidth = window.innerWidth / 1.5;
-    this.rHeight = window.innerHeight / 1.5
 
     this.scene = new THREE.Scene();
     this.world = new CANNON.World();
 
     this.world.gravity.set(params.gravity.x, params.gravity.y, params.gravity.z);
+
     this.world.broadphase = new CANNON.NaiveBroadphase();
-    this.world.quatNormalizeSkip = 0;
-    this.world.quatNormalizeFast = false;
 
-    this.solver = new CANNON.GSSolver();
-    this.world.defaultContactMaterial.contactEquationStiffness = 1e8;
-    this.world.defaultContactMaterial.contactEquationRegularizationTime = 3;
-    this.solver.iterations = 20;
-    this.solver.tolerance = 0;
-    var split = true;
+    this.world.quatNormalizeSkip = target.physics.quatNormalizeSkip;
+    this.world.quatNormalizeFast = target.physics.quatNormalizeFast;
 
-    if (split)
-        this.world.solver = new CANNON.SplitSolver(this.solver);
-    else
-        this.world.solver = this.solver;
+    var solver = new CANNON.GSSolver();
 
-    this.physicsMaterial = new CANNON.Material("slipperyMaterial");
-    this.physicsContactMaterial = new CANNON.ContactMaterial(this.physicsMaterial,
-        this.physicsMaterial,
+    this.world.defaultContactMaterial.contactEquationStiffness =
+        target.physics.defMaterial.contactEquationStiffness;
+    this.world.defaultContactMaterial.contactEquationRegularizationTime =
+        target.physics.defMaterial.contactEquationRegularizationTime;
+
+    solver.iterations = target.physics.solver.iterations;
+    solver.tolerance = target.physics.solver.tolerance;
+
+    this.world.solver = new CANNON.SplitSolver(solver);
+
+    var physicsMaterial = new CANNON.Material("slipperyMaterial");
+
+    var physicsContactMaterial = new CANNON.ContactMaterial(
+        physicsMaterial,
+        physicsMaterial,
         0.0, // friction coefficient
         0.3 // restitution
     );
 
     // We must add the contact materials to the world
-    this.world.addContactMaterial(this.physicsContactMaterial);
+    this.world.addContactMaterial(physicsContactMaterial);
 
     // Debug Renderer
-    if (params.helper) {
+    if (target.helper) {
         this.cannonDebugRenderer = new THREE.CannonDebugRenderer(
             this.scene,
             this.world
         );
     }
 
-    if (params.stats) {
+    if (target.stats) {
         this.stats = new Stats();
+
         if (params.stats == "fps")
             this.stats.setMode(0);
+
         else if (params.stats == "ms")
             this.stats.setMode(1);
+
         else if (params.stats == "mb")
             this.stats.setMode(1);
+
         else {
             this.stats.setMode(0);
             // WARN: console | stats mode.
@@ -6530,110 +6578,104 @@ WHS.init = function(params) {
         this.stats.domElement.style.left = '0px';
         this.stats.domElement.style.bottom = '0px';
 
-        document.body.appendChild(this.stats.domElement);
+        target.container.append(this.stats.domElement);
     }
 
-    if (!this.params.camera) {
-        this.params.camera = {};
-    }
-
-    this.params.camera.aspect = api.def(this.params.camera.aspect, 75);
-    this.params.camera.near = api.def(this.params.camera.near, 1);
-    this.params.camera.far = api.def(this.params.camera.far, 1000);
-
-    this.camera = new THREE.PerspectiveCamera(
-        this.params.camera.aspect,
-        window.innerWidth / window.innerHeight,
-        this.params.camera.near,
-        this.params.camera.far
+    var camera = new THREE.PerspectiveCamera(
+        target.camera.aspect,
+        target.width / target.height,
+        target.camera.near,
+        target.camera.far
     );
 
-    this.params.camera.x = api.def(this.params.camera.x, 0);
-    this.params.camera.y = api.def(this.params.camera.y, 0);
-    this.params.camera.z = api.def(this.params.camera.z, 0);
-
-    this.camera.position.set(
-        this.params.camera.x,
-        this.params.camera.y,
-        this.params.camera.z
+    camera.position.set(
+        target.camera.x,
+        target.camera.y,
+        target.camera.z
     );
 
-    api.merge(this.scene, this.camera);
+    api.merge(this.scene, camera);
 
     this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setClearColor(0x70DBFF);
+    this.renderer.setClearColor(target.background);
 
     this.renderer.shadowMap.enabled = true;
-    //this.renderer.shadowMapSoft = true;
     this.renderer.shadowMap.type = THREE.BasicShadowMap;
-    //this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
+    this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
-    if (this.anaglyph) {
+    if (target.anaglyph) {
         this.effect = new THREE.AnaglyphEffect(this.renderer);
-        this.effect.setSize(this.rWidth, window.innerHeight);
+        this.effect.setSize(target.rWidth, target.rHeight);
 
-        this.effect.render(this.scene, this.camera);
+        this.effect.render(this.scene, camera);
     } else {
-        this.renderer.setSize(this.rWidth, this.rHeight);
-        this.renderer.render(this.scene, this.camera);
+        this.renderer.setSize(target.rWidth, target.rHeight);
+        this.renderer.render(this.scene, camera);
     }
 
     $(this.renderer.domElement).css({
-        'width': '100%',
-        'height': '100%'
+        'width': target.width,
+        'height': target.height
     });
 
     $(this.renderer.domElement).attr('');
 
     this.rootElement = $('body');
 
-    $(this.renderer.domElement).css({
-        'width': '100%',
-        'height': '100%'
-    });
+    target.container.append(this.renderer.domElement);
 
-    this.rootElement.append(this.renderer.domElement);
-
-    this.rootElement.css({
+    target.container.css({
         'margin': 0,
         'padding': 0,
         'position': 'relative',
         'overflow': 'hidden'
     });
 
-    WHS.init.prototype.animate(null, this);
 
     // NOTE: ==================== Composer. =======================
 
     if (params.wagner) {
         this.composer = new params.wagner.Composer(this.renderer);
-        this.composer.setSize(this.rWidth, this.rHeight);
+        this.composer.setSize(target.rWidth, target.rHeight);
+
         $(this.composer.domElement).css({
             'width': '100%',
             'height': '100%'
         });
-        this.renderer.autoClearColor = true;
+
+        this.composer.autoClearColor = true;
         this.composer.reset();
-        this.composer.render(this.scene, this.camera);
+        this.composer.render(this.scene, camera);
         this.composer.eff = [];
     }
+
+    //console.log(this);
+
+    Object.assign(this, {
+        _camera: camera
+    });
+
 
     // NOTE: ==================== Autoresize. ======================
     var scope = this;
 
+    scope.animate(null, scope);
+
     if (params.autoresize)
         $(window).on('load resize', function() {
-            scope.camera.aspect = window.innerWidth / window.innerHeight;
-            scope.camera.updateProjectionMatrix();
+            scope._camera.aspect = window.innerWidth / window.innerHeight;
+            scope._camera.updateProjectionMatrix();
 
-            scope.renderer.setSize(scope.rWidth, scope.rHeight);
+            scope.renderer.setSize(target.rWidth, target.rHeight);
+
             $(scope.renderer.domElement).css({
                 'width': window.innerWidth,
                 'height': window.innerHeight
             });
 
             if (params.wagner) {
-                scope.composer.setSize(scope.rWidth, scope.rHeight);
+                scope.composer.setSize(target.rWidth, target.rHeight);
+
                 $(scope.composer.domElement).css({
                     'width': window.innerWidth,
                     'height': window.innerHeight
@@ -6641,7 +6683,10 @@ WHS.init = function(params) {
             }
         });
 
+    //console.log(scope);
+
     return scope;
+
 }
 
 // [x]#TODO:70 Fix animate update callback.
@@ -6699,7 +6744,7 @@ WHS.init.prototype.animate = function(time, scope) {
         scope.world.step(1 / 60);
 
         if (scope.anaglyph)
-            scope.effect.render(scope.scene, scope.camera);
+            scope.effect.render(scope.scene, scope._camera);
 
         if (scope.controls) {
             scope.controls.update(Date.now() - scope.time);
@@ -6714,7 +6759,7 @@ WHS.init.prototype.animate = function(time, scope) {
         if (scope.composer) {
             scope.composer.reset();
 
-            scope.composer.render(scope.scene, scope.camera);
+            scope.composer.render(scope.scene, scope._camera);
 
             scope.composer.eff.forEach(function(effect) {
                 scope.composer.pass(effect);
@@ -8126,9 +8171,8 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
 WHS.init.prototype.MakeFirstPerson = function(object, plc, jqselector) {
     'use strict';
 
-
     // #TODO:40 Clean up.
-    this.controls = new plc(this.camera, object.body, 10, this);
+    this.controls = new plc(this._camera, object.body, 10, this);
 
     var controls = this.controls;
 
