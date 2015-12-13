@@ -6645,6 +6645,7 @@ WHS.init = function(params) {
 
     if (params.wagner) {
         this.composer = new WAGNER.Composer(renderer);
+
         this.composer.setSize(target.rWidth, target.rHeight);
 
         $(this.composer.domElement).css({
@@ -8261,5 +8262,5 @@ WHS.init.prototype.MakeFirstPerson = function(object, plc, jqselector) {
  */
 WHS.init.prototype.OrbitControls = function(object) {
     // #TODO:170 add use for object.
-    this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+    this.controls = new THREE.OrbitControls(this._camera, this.renderer.domElement);
 }

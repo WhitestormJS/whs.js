@@ -205,6 +205,7 @@ WHS.init = function(params) {
 
   if (params.wagner) {
     this.composer = new WAGNER.Composer(renderer);
+    
     this.composer.setSize(target.rWidth, target.rHeight);
 
     $(this.composer.domElement).css({
