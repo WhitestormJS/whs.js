@@ -59,13 +59,12 @@ if (!Object.assign) {
 
 /* ================ WHITESTORM|JS ==================== */
 var WHS = {
-  REVISION: "0.0.5"
+  REVISION: "0.0.6"
 };
 
 WHS.headers = {}; //GLOBAL headers, ex: url, script, library, specific api...
 WHS.API = {};
 WHS.ADD = {}; // some figures or shape funcs;
-WHS.objects = [];
 WHS.grounds = [];
 
 var api = WHS.API;

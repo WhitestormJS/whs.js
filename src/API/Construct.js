@@ -55,7 +55,7 @@ WHS.API.construct = function (root, params, type) {
 
   var key = 0;
 
-  WHS.objects.forEach(function(el) {
+  root.modellingQueue.forEach(function(el) {
     if (el.type == type) key++;
   });
 
@@ -88,6 +88,7 @@ WHS.API.construct.prototype.build = function (figure, object) {
   var isPhysics = !!(arguments.length == 2 && object);
 
   try {
+
     // Position.
     figure.position.set(this._pos.x, this._pos.y, this._pos.z);
     if (isPhysics && !this.dtb) object.position.set(
@@ -105,11 +106,14 @@ WHS.API.construct.prototype.build = function (figure, object) {
     figure.scale.set(this._scale.x, this._scale.y, this._scale.z);
     // TODO: CANNON.JS object scaling.
     //object.scale.set(this._rot.x, this._rot.y, this._rot.z);
+
   }
   catch(err) {
+    
     console.error(err.message);
 
     this.__deferred.reject();
+    
   }
 
   return this;

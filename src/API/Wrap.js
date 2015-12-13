@@ -10,13 +10,13 @@ WHS.API.Wrap = function (SCOPE, mesh, body) {
   this._figure = mesh;
   this._object = body;
   this._scope = SCOPE;
-  this._key = WHS.objects.length;
+  this._key = SCOPE.root.modellingQueue.length;
 
   try {
     api.merge(this._scope.root.scene, this._figure);
     if (this._object) api.merge(this._scope.root.world, this._object);
 
-    WHS.objects.push(this._scope);
+    this._scope.root.modellingQueue.push(this._scope);
   }
   catch(err) {
     console.error(err.message);

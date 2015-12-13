@@ -5399,13 +5399,12 @@ if (!Object.assign) {
 
 /* ================ WHITESTORM|JS ==================== */
 var WHS = {
-    REVISION: "0.0.5"
+    REVISION: "0.0.6"
 };
 
 WHS.headers = {}; //GLOBAL headers, ex: url, script, library, specific api...
 WHS.API = {};
 WHS.ADD = {}; // some figures or shape funcs;
-WHS.objects = [];
 WHS.grounds = [];
 
 var api = WHS.API;
@@ -5831,7 +5830,7 @@ WHS.API.construct = function(root, params, type) {
 
     var key = 0;
 
-    WHS.objects.forEach(function(el) {
+    root.modellingQueue.forEach(function(el) {
         if (el.type == type) key++;
     });
 
@@ -5864,6 +5863,7 @@ WHS.API.construct.prototype.build = function(figure, object) {
     var isPhysics = !!(arguments.length == 2 && object);
 
     try {
+
         // Position.
         figure.position.set(this._pos.x, this._pos.y, this._pos.z);
         if (isPhysics && !this.dtb) object.position.set(
@@ -5881,10 +5881,13 @@ WHS.API.construct.prototype.build = function(figure, object) {
         figure.scale.set(this._scale.x, this._scale.y, this._scale.z);
         // TODO: CANNON.JS object scaling.
         //object.scale.set(this._rot.x, this._rot.y, this._rot.z);
+
     } catch (err) {
+
         console.error(err.message);
 
         this.__deferred.reject();
+
     }
 
     return this;
@@ -6371,13 +6374,13 @@ WHS.API.Wrap = function(SCOPE, mesh, body) {
     this._figure = mesh;
     this._object = body;
     this._scope = SCOPE;
-    this._key = WHS.objects.length;
+    this._key = SCOPE.root.modellingQueue.length;
 
     try {
         api.merge(this._scope.root.scene, this._figure);
         if (this._object) api.merge(this._scope.root.world, this._object);
 
-        WHS.objects.push(this._scope);
+        this._scope.root.modellingQueue.push(this._scope);
     } catch (err) {
         console.error(err.message);
 
@@ -6660,7 +6663,8 @@ WHS.init = function(params) {
     Object.assign(this, {
         _camera: camera,
         renderer: renderer,
-        _settings: target
+        _settings: target,
+        modellingQueue: []
     });
 
     // NOTE: ==================== Autoresize. ======================
@@ -6714,19 +6718,19 @@ WHS.init.prototype.animate = function(time, scope) {
         if (scope.params.helper)
             scope.cannonDebugRenderer.update();
 
-        for (var i = 0; i < Object.keys(WHS.objects).length; i++) {
+        for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
 
-            if (!WHS.objects[i].onlyvis && !WHS.objects[i].skip) {
+            if (!scope.modellingQueue[i].onlyvis && !scope.modellingQueue[i].skip) {
 
-                WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
+                scope.modellingQueue[i].visible.position.copy(scope.modellingQueue[i].body.position);
 
-                if (WHS.objects[i].visible.quaternion)
-                    WHS.objects[i].visible.quaternion.copy(WHS.objects[i].body.quaternion);
+                if (scope.modellingQueue[i].visible.quaternion)
+                    scope.modellingQueue[i].visible.quaternion.copy(scope.modellingQueue[i].body.quaternion);
 
             }
 
-            if (WHS.objects[i].morph) {
-                WHS.objects[i].visible.mixer.update(clock.getDelta());
+            if (scope.modellingQueue[i].morph) {
+                scope.modellingQueue[i].visible.mixer.update(clock.getDelta());
             }
         }
 

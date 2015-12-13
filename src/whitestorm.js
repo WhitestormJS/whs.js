@@ -223,7 +223,8 @@ WHS.init = function(params) {
   Object.assign(this, {
     _camera: camera,
     renderer: renderer,
-    _settings: target
+    _settings: target,
+    modellingQueue: []
   });
 
   // NOTE: ==================== Autoresize. ======================
@@ -277,19 +278,19 @@ WHS.init = function(params) {
      if (scope.params.helper) 
        scope.cannonDebugRenderer.update();
 
-     for (var i = 0; i < Object.keys(WHS.objects).length; i++) {
+     for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
 
-       if (!WHS.objects[i].onlyvis && !WHS.objects[i].skip) {
+       if (!scope.modellingQueue[i].onlyvis && !scope.modellingQueue[i].skip) {
 
-         WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
+         scope.modellingQueue[i].visible.position.copy(scope.modellingQueue[i].body.position);
 
-         if (WHS.objects[i].visible.quaternion)
-           WHS.objects[i].visible.quaternion.copy(WHS.objects[i].body.quaternion);
+         if (scope.modellingQueue[i].visible.quaternion)
+           scope.modellingQueue[i].visible.quaternion.copy(scope.modellingQueue[i].body.quaternion);
 
        }
 
-       if (WHS.objects[i].morph) {
-         WHS.objects[i].visible.mixer.update( clock.getDelta() );
+       if (scope.modellingQueue[i].morph) {
+         scope.modellingQueue[i].visible.mixer.update( clock.getDelta() );
        }
      }
 
