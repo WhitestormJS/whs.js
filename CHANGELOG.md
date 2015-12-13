@@ -1,7 +1,7 @@
 ## Changelog
 **current**
 - Fixed #16 "object.assign() chrome bug."
-- Base rewrite(fix). part 3
+- Base rewrite(fix). part 4
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
