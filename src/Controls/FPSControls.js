@@ -19,7 +19,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, plc, jqselector) {
 
   WHS.API.merge(this.scene, this.controls.getObject());
 
-  this.rootElement.append('<div id="blocker">' +
+  this._settings.container.append('<div id="blocker">' +
     '   <center>' +
     '      <h1>PointerLock</h1>' +
     '   </center>' +

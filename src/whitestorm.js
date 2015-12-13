@@ -30,6 +30,8 @@ WHS.init = function(params) {
     helper: false,
     stats: false,
 
+    shadowmap: true,
+
     gravity: {
       x:0,
       y:0,
@@ -144,6 +146,7 @@ WHS.init = function(params) {
     target.container.append(this.stats.domElement);
   }
 
+  // Camera.
   var camera = new THREE.PerspectiveCamera(
     target.camera.aspect,
     target.width / target.height,
@@ -159,33 +162,36 @@ WHS.init = function(params) {
 
   api.merge(this.scene, camera);
 
-  this.renderer = new THREE.WebGLRenderer();
-  this.renderer.setClearColor(target.background);
+  // Renderer.
+  var renderer = new THREE.WebGLRenderer();
+  renderer.setClearColor(target.background);
 
-  this.renderer.shadowMap.enabled = true;
-  this.renderer.shadowMap.type = THREE.BasicShadowMap;
-  this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
+  // Shadowmap.
+  renderer.shadowMap.enabled = target.shadowmap;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   if (target.anaglyph) {
-    this.effect = new THREE.AnaglyphEffect(this.renderer);
+
+    this.effect = new THREE.AnaglyphEffect(renderer);
     this.effect.setSize(target.rWidth, target.rHeight);
 
     this.effect.render(this.scene, camera);
+
   } else {
-    this.renderer.setSize(target.rWidth, target.rHeight);
-    this.renderer.render(this.scene, camera);
+
+    renderer.setSize(target.rWidth, target.rHeight);
+    renderer.render(this.scene, camera);
+
   }
 
-  $(this.renderer.domElement).css({
+  $(renderer.domElement).css({
     'width': target.width,
     'height': target.height
   });
 
-  $(this.renderer.domElement).attr('');
+  $(renderer.domElement).attr('');
 
-  this.rootElement = $('body');
-
-  target.container.append(this.renderer.domElement);
+  target.container.append(renderer.domElement);
 
   target.container.css({
     'margin': 0,
@@ -198,26 +204,27 @@ WHS.init = function(params) {
   // NOTE: ==================== Composer. =======================
 
   if (params.wagner) {
-    this.composer = new params.wagner.Composer(this.renderer);
+    this.composer = new WAGNER.Composer(renderer);
     this.composer.setSize(target.rWidth, target.rHeight);
 
     $(this.composer.domElement).css({
-      'width': '100%',
-      'height': '100%'
+      'width': target.width,
+      'height': target.height
     });
 
     this.composer.autoClearColor = true;
+
     this.composer.reset();
     this.composer.render(this.scene, camera);
+
     this.composer.eff = [];
   }
 
-  //console.log(this);
-
   Object.assign(this, {
-    _camera: camera
+    _camera: camera,
+    renderer: renderer,
+    _settings: target
   });
-
 
   // NOTE: ==================== Autoresize. ======================
   var scope = this;
@@ -227,26 +234,25 @@ WHS.init = function(params) {
   if (params.autoresize)
     $(window).on('load resize', function() {
       scope._camera.aspect = window.innerWidth / window.innerHeight;
+
       scope._camera.updateProjectionMatrix();
 
       scope.renderer.setSize(target.rWidth, target.rHeight);
 
       $(scope.renderer.domElement).css({
-        'width': window.innerWidth,
-        'height': window.innerHeight
+          'width': window.innerWidth,
+          'height': window.innerHeight
       });
 
       if (params.wagner) {
         scope.composer.setSize(target.rWidth, target.rHeight);
 
         $(scope.composer.domElement).css({
-          'width': window.innerWidth,
+           'width': window.innerWidth,
           'height': window.innerHeight
         });
       }
     });
-
-  //console.log(scope);
 
   return scope;
 
@@ -259,36 +265,21 @@ WHS.init = function(params) {
  WHS.init.prototype.animate = function(time, scope) {
    'use strict';
 
-   this.delta = 0,
-     this.oldTimer = 0;
-
-   this.timer = new Date().getTime();
-   this.delta = this.timer - this.oldTime;
-   this.oldTimer = this.timer;
-
-   if (isNaN(this.delta) || this.delta > 1000 || this.delta == 0) {
-     this.delta = 1000 / 60;
-   }
-
    var clock = new THREE.Clock();
 
    function reDraw() {
 
-     var delta = clock.getDelta();
+     requestAnimationFrame(reDraw);
 
      if (scope.stats)
        scope.stats.begin();
 
-     requestAnimationFrame(reDraw);
-
-     if (scope.params.helper) {
+     if (scope.params.helper) 
        scope.cannonDebugRenderer.update();
-     }
 
      for (var i = 0; i < Object.keys(WHS.objects).length; i++) {
 
        if (!WHS.objects[i].onlyvis && !WHS.objects[i].skip) {
-         //console.log(WHS.objects[i].body.position.y);
 
          WHS.objects[i].visible.position.copy(WHS.objects[i].body.position);
 
@@ -298,10 +289,8 @@ WHS.init = function(params) {
        }
 
        if (WHS.objects[i].morph) {
-         WHS.objects[i].visible.mixer.update( delta );
-
+         WHS.objects[i].visible.mixer.update( clock.getDelta() );
        }
-       //WHS.objects[i].addCompoundFace();
      }
 
      scope.world.step(1 / 60);
@@ -312,11 +301,6 @@ WHS.init = function(params) {
      if (scope.controls) {
        scope.controls.update(Date.now() - scope.time);
        scope.time = Date.now();
-     }
-
-     if (scope.motionBlurEffect && scope.motionBlurEnable) {
-       scope.motionBlurEffect.params.delta = 0;
-       scope.motionBlurEnable = true;
      }
 
      if (scope.composer) {
