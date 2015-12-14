@@ -104,6 +104,20 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
     case "highPassPass":
       scope.effect = new wagnerjs.HighPassPass();
       this.composer.pass(scope.effect);
+      break;
+    case "grayscalePass":
+      scope.effect = new wagnerjs.GrayscalePass();
+      this.composer.pass(scope.effect);
+      break;
+    case "halftonePass":
+      scope.effect = new wagnerjs.HalftonePass();
+      this.composer.pass(scope.effect);
+      break;
+    case "invertPass":
+      scope.effect = new wagnerjs.InvertPass();
+      this.composer.pass(scope.effect);
+      break;
+
   }
 
   //this.composer.eff.push(this.effect);
