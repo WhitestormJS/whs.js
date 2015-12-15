@@ -58,13 +58,14 @@
   });
 
   // NOTE: Default light.
-  GAME.light1 = GAME.addLight("directional", {
+  GAME.light1 = GAME.addLight("spot", {
     color: 0xffffff, //0x00ff00,
-    intensity: 1
+    intensity: 2,
+    distance: 1000
   }, {
-    x: 80, // 100,
-    y: 110, // 30,
-    z: 80, // 100
+    x: 160, // 100,
+    y: 220, // 30,
+    z: 160, // 100
   }, {
     x: 0,
     y: 0,

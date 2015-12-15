@@ -169,6 +169,7 @@ WHS.init = function(params) {
   // Shadowmap.
   renderer.shadowMap.enabled = target.shadowmap;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMapCascade = true;
 
   if (target.anaglyph) {
 

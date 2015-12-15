@@ -5863,6 +5863,10 @@ WHS.API.construct.prototype.build = function(figure, object) {
     var isPhysics = !!(arguments.length == 2 && object);
 
     try {
+        // Shadowmap.
+        figure.castShadows = true;
+        figure.recieveShadows = true;
+
 
         // Position.
         figure.position.set(this._pos.x, this._pos.y, this._pos.z);
@@ -6609,6 +6613,7 @@ WHS.init = function(params) {
     // Shadowmap.
     renderer.shadowMap.enabled = target.shadowmap;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMapCascade = true;
 
     if (target.anaglyph) {
 
@@ -6845,8 +6850,8 @@ WHS.init.prototype.addMorph = function(url, options) {
 
         scope._rot.y = Math.PI / 2;
 
-        scope.visible.castShadow = true;
-        scope.visible.receiveShadow = false;
+        scope.visible.castShadows = true;
+        scope.visible.receiveShadows = true;
 
         scope.build(scope.visible);
         scope.wrap = new api.Wrap(scope, scope.visible);
@@ -8003,16 +8008,16 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
     scope.visible.castShadow = true;
 
     // #FIXME:20 Shadow default parameters.
-    scope.visible.shadowMapWidth = 2048;
-    scope.visible.shadowMapHeight = 2048;
-    //scope.visible.shadowBias = 0.05;
+    scope.visible.shadowMapWidth = 1024;
+    scope.visible.shadowMapHeight = 1024;
+    scope.visible.shadowBias = 0.0001;
 
-    scope.visible.shadowCameraNear = 50;
-    scope.visible.shadowCameraFar = 200;
-    scope.visible.shadowCameraFov = 30;
-    scope.visible.shadowDarkness = 0.5;
+    scope.visible.shadowCameraNear = true;
+    scope.visible.shadowCameraFar = 400;
+    scope.visible.shadowCameraFov = 60;
+    scope.visible.shadowDarkness = 0.3;
 
-    var d = 120;
+    var d = 200;
 
     scope.visible.shadowCameraLeft = -d;
     scope.visible.shadowCameraRight = d;

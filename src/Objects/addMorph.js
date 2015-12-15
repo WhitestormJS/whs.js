@@ -29,8 +29,8 @@ WHS.init.prototype.addMorph = function (url, options) {
 
     scope._rot.y = Math.PI/2;
 
-    scope.visible.castShadow = true;
-    scope.visible.receiveShadow = false;
+    scope.visible.castShadows = true;
+    scope.visible.receiveShadows = true;
 
     scope.build(scope.visible);
     scope.wrap = new api.Wrap(scope, scope.visible);

@@ -88,6 +88,10 @@ WHS.API.construct.prototype.build = function (figure, object) {
   var isPhysics = !!(arguments.length == 2 && object);
 
   try {
+    // Shadowmap.
+    figure.castShadows = true;
+    figure.recieveShadows = true;
+    
 
     // Position.
     figure.position.set(this._pos.x, this._pos.y, this._pos.z);
