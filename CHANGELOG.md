@@ -2,6 +2,10 @@
 **current**
 - Fixed #16 "object.assign() chrome bug."
 - Base rewrite(fix). part 4
+- Added the following effects to `addWagner`:
+  - `grayscalePass`
+  - `halftonePass`
+  - `invertPass`
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
