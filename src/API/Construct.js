@@ -89,8 +89,8 @@ WHS.API.construct.prototype.build = function (figure, object) {
 
   try {
     // Shadowmap.
-    figure.castShadows = true;
-    figure.recieveShadows = true;
+    figure.castShadow = true;
+    figure.receiveShadow = true;
     
 
     // Position.
