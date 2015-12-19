@@ -14,7 +14,7 @@
  */
 WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
   'use strict';
-
+  params = params || {};
   var scope = {};
 
   //api.def(params.hex, 0x000000); //, this.hex);
