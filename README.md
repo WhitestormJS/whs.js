@@ -1,9 +1,9 @@
 # WhitestormJS
 [![Build Status](https://travis-ci.org/sasha240100/WhitestormJS.svg)](https://travis-ci.org/sasha240100/WhitestormJS)
-[![npm](https://img.shields.io/npm/v/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs) [![bower](https://img.shields.io/bower/v/whitestormjs.svg)](https://github.com/sasha240100/WhitestormJS) [![Gitter](https://img.shields.io/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/sasha240100/WhitestormJS)
+[![npm](http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs) [![bower](http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg)](https://github.com/sasha240100/WhitestormJS) [![Gitter](http://wsbadge.herokuapp.com/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/sasha240100/WhitestormJS)
 
-[![Issues](https://img.shields.io/npm/dt/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs)
-[![Author](https://img.shields.io/badge/Author-Alexander%20Buzin-red.svg)](https://github.com/sasha240100)
+[![Issues](http://wsbadge.herokuapp.com/npm/dt/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs)
+[![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-red.svg)](https://github.com/sasha240100)
 
 
 ----------------------------------------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ var GAME = new WHS.init({
  * [Object/Wall](http://192.241.128.187/current/examples/stone_wall.html)  (Stone wall (basic).)
 
 ### Author:
-@sasha240100 [![forthebadge](https://img.shields.io/twitter/url/http/alexbuzin.me.svg?style=social)](https://twitter.com/intent/tweet?text=Check+this+developer:&url=http%3A%2F%2Falexbuzin.me)
+@sasha240100 [![forthebadge](http://wsbadge.herokuapp.com/twitter/url/http/alexbuzin.me.svg?style=social)](https://twitter.com/intent/tweet?text=Check+this+developer:&url=http%3A%2F%2Falexbuzin.me)
 
 #### Changelog: [Look here](https://github.com/sasha240100/WhitestormJS/blob/master/CHANGELOG.md)
 
