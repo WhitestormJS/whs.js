@@ -117,7 +117,9 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
       scope.effect = new wagnerjs.InvertPass();
       this.composer.pass(scope.effect);
       break;
-
+    default:
+      console.warn("No Wagner effect \"" + type + "\" exists. If it should exist, open an issue. (@addWagner)");
+      return;
   }
 
   //this.composer.eff.push(this.effect);

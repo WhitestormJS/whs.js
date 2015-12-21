@@ -13,6 +13,7 @@
 - *development/art/logo/* + sorted = */ai, /animation_fla, /animation_gif*
 - *development/coggle/ -> development/art/coggle/*
 - *development/ -> development/screenshots/*
+- Added warning in case of invalid Wagner effect referenced (addWagner.js)
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
