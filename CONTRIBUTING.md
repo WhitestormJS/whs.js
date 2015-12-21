@@ -28,6 +28,44 @@ You can build WhitestormJS with the following command: `gulp build`
 
 WhitestormJS will be built, and written to `build/whitestorm.js`, and `build/whitestorm.min.js`.
 
+### Adding changes to [CHANGELOG.md](https://github.com/sasha240100/WhitestormJS/blob/master/CHANGELOG.md)
+
+If you will contribute to this project, please follow this rules of editting CHANGELOG.md each time you make changes:
+
+
+Comment: `Added ...`
+
+Bug fixed: `Fixed #{issueId}`
+
+Bug fixed (extended): `Fixed #{issueId} "{issueDesc}"`
+
+Fixed file/example/function: `Fixed ...`
+
+Files moved: `*folder/ -> anotherfolder/*`
+
+Changed structure of folder: `*folder/ + sorted = {sortedFiles}*`
+
+Library update: `**{libName} update. {rnum} -> {rnum}**`
+
+Function arguments changed: `{funcName}({arguments}) -> {funcName}({srguments})`
+
+
+#### Defenition:
+
+- **{issueID}** - Github issue id. Example: #7.
+
+- **{issueDesc}** - Short issue description. Example: Shadowmap error.
+
+- **{sortedFiles}** - List of sorted files/folders. Example: ai/, big.png, default.png.
+
+- **{libName}** - Included library name. Example: Three.js.
+
+- **{rnum}** - Revision/version number. Example: r79 or v0.1.
+
+- **{funcName}** - Function name.
+
+- **{arguments}** - Function arguments.
+
 ### Testing WhitestormJS
 
 Our tests are run using [Mocha](https://mochajs.org/). We're still adding more tests.
