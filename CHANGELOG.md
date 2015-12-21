@@ -1,4 +1,7 @@
 ## Changelog
+
+##### Before contibuting here see [rules](https://github.com/sasha240100/WhitestormJS/blob/master/CONTRIBUTING.md#adding-changes-to-changelogmd)
+
 **current**
 - Fixed #16 "object.assign() chrome bug."
 - Base rewrite(fix). part 4
@@ -34,14 +37,14 @@
 - Removed unusable libs.
 
 **v0.0.6-alpha**
-- added Coggle.
+- Added Coggle.
 - *WHS.init(THREE, CANNON, params) -> WHS.init(params)*
 - Fixed *api.Wrap* error in *addGround*.
 - Added *api.Wrap* to *addGrass*.
-- Name fixed in examples.
+- Fixed name in examples.
 - Fixed *stone_wall.html* example.
 - MaterialOptions: *.type -> .kind*
-- **THREE.js upgrade. r69 -> r73**.
+- **THREE.js updade. r69 -> r73**.
 - Changed terrain generation script.
 
 -- Improved loading time ( < 1 sec. ).
@@ -58,7 +61,7 @@ Issues:
 
 **v0.0.5**
 - Basic_material example fixed.
-- addModel() *func* for adding an object from JSON file.
+- `addModel()` for adding an object from JSON file.
 - basic_material *example*
 - *THREE.JSONLoader -> API*
 - Added Wrap function.
@@ -80,11 +83,11 @@ Issues:
 **v0.0.3**
 - Ground fixed.
 - Grass added(+-)
-- PackUvs *func* for add UVs for custom geometry.
+- `PackUvs()` for add UVs for custom geometry.
 - Improved FPS rate. (from 40 fps to 50-60 fps).
 
 **v0.0.2**
-- Terrain fixed. (from 20 fps to 40 fps //collisions//)
+- Terrain performance fixed. (from 20 fps to 40 fps //collisions//)
 - License fixed.
 - Funcs added ( **API** ).
 - Examples added.
