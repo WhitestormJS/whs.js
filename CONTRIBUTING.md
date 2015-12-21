@@ -50,7 +50,7 @@ Library update: `**{libName} update. {rnum} -> {rnum}**`
 Function arguments changed: `{funcName}({arguments}) -> {funcName}({srguments})`
 
 
-#### Defenition:
+#### Definition:
 
 - **{issueID}** - Github issue id. Example: #7.
 
