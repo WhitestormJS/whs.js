@@ -19,7 +19,7 @@
 
 WhitestormJS is [hosted by jsDelivr](http://www.jsdelivr.com/projects/whitestormjs). You can link to the latest [minified version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js), [full version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.js), or [download both](https://cdn.jsdelivr.net/whitestormjs/latest/whitestormjs.zip).
 
-![WhitestormJS](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/logos/logo-big.png)
+![WhitestormJS](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/development/art/logo/big.png)
 
 ## Installation
 [![forthebadge](http://forthebadge.com/images/badges/uses-js.svg)](https://github.com/search?l=JavaScript&q=%23javasript&ref=searchresults&type=Repositories&utf8=%E2%9C%93)
@@ -55,7 +55,7 @@ var GAME = new WHS.init({
 [![Join the chat at https://gitter.im/sasha240100/WhitestormJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sasha240100/WhitestormJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Structure
-![Whitestorm.js structure](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/development/coggle/WhitestormJS.png)
+![Whitestorm.js structure](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/development/art/coggle/WhitestormJS.png)
 
 ## Examples:
  * [FPS](http://192.241.128.187/current/examples/fps.html)  (First person example with Wagner effects and terrain.)
