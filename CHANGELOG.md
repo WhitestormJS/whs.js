@@ -6,6 +6,10 @@
   - `grayscalePass`
   - `halftonePass`
   - `invertPass`
+- *logos/ -> development/art/logo/*
+- *development/art/logo/* + sorted = */ai, /animation_fla, /animation_gif*
+- *development/coggle/ -> development/art/coggle/*
+- *development/ -> development/screenshots/*
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
