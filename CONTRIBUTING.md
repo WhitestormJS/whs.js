@@ -35,9 +35,9 @@ If you will contribute to this project, please follow this rules of editting CHA
 
 **Comment:** `Added ...`
 
-**Bug fixed:** `Fixed #{issueId}`
+**Issue fixed:** `Fixed #{issueId}`
 
-**Bug fixed (extended):** `Fixed #{issueId} "{issueDesc}"`
+**Issue fixed (extended):** `Fixed #{issueId} "{issueDesc}"`
 
 **Fixed file/example/function:** `Fixed ...`
 
@@ -47,7 +47,7 @@ If you will contribute to this project, please follow this rules of editting CHA
 
 **Library update:** `**{libName} update. {rnum} -> {rnum}**`
 
-**Function arguments changed:** `{funcName}({arguments}) -> {funcName}({srguments})`
+**Function arguments changed:** `{funcName}({arguments}) -> {funcName}({arguments})`
 
 
 #### Definition:
