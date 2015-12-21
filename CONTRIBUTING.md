@@ -33,21 +33,21 @@ WhitestormJS will be built, and written to `build/whitestorm.js`, and `build/whi
 If you will contribute to this project, please follow this rules of editting CHANGELOG.md each time you make changes:
 
 
-Comment: `Added ...`
+**Comment:** `Added ...`
 
-Bug fixed: `Fixed #{issueId}`
+**Bug fixed:** `Fixed #{issueId}`
 
-Bug fixed (extended): `Fixed #{issueId} "{issueDesc}"`
+**Bug fixed (extended):** `Fixed #{issueId} "{issueDesc}"`
 
-Fixed file/example/function: `Fixed ...`
+**Fixed file/example/function:** `Fixed ...`
 
-Files moved: `*folder/ -> anotherfolder/*`
+**Files moved:** `*folder/ -> anotherfolder/*`
 
-Changed structure of folder: `*folder/ + sorted = {sortedFiles}*`
+**Changed structure of folder:** `*folder/ + sorted = {sortedFiles}*`
 
-Library update: `**{libName} update. {rnum} -> {rnum}**`
+**Library update:** `**{libName} update. {rnum} -> {rnum}**`
 
-Function arguments changed: `{funcName}({arguments}) -> {funcName}({srguments})`
+**Function arguments changed:** `{funcName}({arguments}) -> {funcName}({srguments})`
 
 
 #### Definition:
