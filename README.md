@@ -4,6 +4,7 @@
 
 [![Issues](http://wsbadge.herokuapp.com/npm/dt/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs)
 [![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-red.svg)](https://github.com/sasha240100)
+[![Slack Status](https://whslack.herokuapp.com/badge.svg)](https://whslack.herokuapp.com)
 
 
 ----------------------------------------------------------------------------------------------------------------
