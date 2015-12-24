@@ -99,31 +99,31 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       //if (size.useDeafultMaterial) {
 
     	var oceanTexture = api.TextureLoader().load(
-        'assets/textures/terrain/dirt-512.jpg'
+        scope.root._settings.assets + '/textures/terrain/dirt-512.jpg'
       );
 
     	oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
 
     	var sandyTexture = api.TextureLoader().load(
-        'assets/textures/terrain/sand-512.jpg'
+        scope.root._settings.assets + '/textures/terrain/sand-512.jpg'
       );
 
     	sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
 
     	var grassTexture = api.TextureLoader().load(
-        'assets/textures/terrain/grass-512.jpg'
+        scope.root._settings.assets + '/textures/terrain/grass-512.jpg'
       );
 
     	grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
 
     	var rockyTexture = api.TextureLoader().load(
-        'assets/textures/terrain/rock-512.jpg'
+        scope.root._settings.assets + '/textures/terrain/rock-512.jpg'
       );
 
     	rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
 
     	var snowyTexture = api.TextureLoader().load(
-        'assets/textures/terrain/snow-512.jpg'
+        scope.root._settings.assets + '/textures/terrain/snow-512.jpg'
       );
 
     	snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
