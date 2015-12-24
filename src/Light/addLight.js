@@ -91,7 +91,7 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
   // #FIXME:20 Shadow default parameters.
   scope.visible.shadowMapWidth = 1024;
   scope.visible.shadowMapHeight = 1024;
-  scope.visible.shadowBias = 0.0001;
+  scope.visible.shadowBias = 0.001;
 
   scope.visible.shadowCameraNear = true;
   scope.visible.shadowCameraFar = 400;

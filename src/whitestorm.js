@@ -29,6 +29,8 @@ WHS.init = function(params) {
     anaglyph: false,
     helper: false,
     stats: false,
+    wagner: true,
+    autoresize: false,
 
     shadowmap: true,
 
@@ -73,11 +75,13 @@ WHS.init = function(params) {
 
     background: 0x000000,
 
+    assets: "./assets",
+
     container: $('body')
 
   }, params);
 
-  this.params = params;
+  this._settings = target;
 
   this.scene = new THREE.Scene();
   this.world = new CANNON.World();
@@ -115,35 +119,35 @@ WHS.init = function(params) {
 
   // Debug Renderer
   if (target.helper) {
-    this.cannonDebugRenderer = new THREE.CannonDebugRenderer(
+    this._cannonDebugRenderer = new THREE.CannonDebugRenderer(
       this.scene,
       this.world
     );
   }
 
   if (target.stats) {
-    this.stats = new Stats();
+    this._stats = new Stats();
 
-    if (params.stats == "fps")
-      this.stats.setMode(0);
+    if (target.stats == "fps")
+      this._stats.setMode(0);
 
-    else if (params.stats == "ms")
-      this.stats.setMode(1);
+    else if (target.stats == "ms")
+      this._stats.setMode(1);
 
-    else if (params.stats == "mb")
-      this.stats.setMode(1);
+    else if (target.stats == "mb")
+      this._stats.setMode(1);
 
     else {
-      this.stats.setMode(0);
+      this._stats.setMode(0);
       // WARN: console | stats mode.
-      console.warn([this.stats], "Please, apply stats mode [fps, ms, mb] .");
+      console.warn([this._stats], "Please, apply stats mode [fps, ms, mb] .");
     }
 
-    this.stats.domElement.style.position = 'absolute';
-    this.stats.domElement.style.left = '0px';
-    this.stats.domElement.style.bottom = '0px';
+    this._stats.domElement.style.position = 'absolute';
+    this._stats.domElement.style.left = '0px';
+    this._stats.domElement.style.bottom = '0px';
 
-    target.container.append(this.stats.domElement);
+    target.container.append(this._stats.domElement);
   }
 
   // Camera.
@@ -169,7 +173,7 @@ WHS.init = function(params) {
   // Shadowmap.
   renderer.shadowMap.enabled = target.shadowmap;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  renderer.shadowMapCascade = true;
+  renderer.shadowMap.cascade = true;
 
   if (target.anaglyph) {
 
@@ -204,22 +208,22 @@ WHS.init = function(params) {
 
   // NOTE: ==================== Composer. =======================
 
-  if (params.wagner) {
-    this.composer = new WAGNER.Composer(renderer);
+  if (target.wagner) {
+    this._composer = new WAGNER.Composer(renderer);
     
-    this.composer.setSize(target.rWidth, target.rHeight);
+    this._composer.setSize(target.rWidth, target.rHeight);
 
-    $(this.composer.domElement).css({
+    $(this._composer.domElement).css({
       'width': target.width,
       'height': target.height
     });
 
-    this.composer.autoClearColor = true;
+    this._composer.autoClearColor = true;
 
-    this.composer.reset();
-    this.composer.render(this.scene, camera);
+    this._composer.reset();
+    this._composer.render(this.scene, camera);
 
-    this.composer.eff = [];
+    this._composer.eff = [];
   }
 
   Object.assign(this, {
@@ -234,7 +238,7 @@ WHS.init = function(params) {
 
   scope.animate(null, scope);
 
-  if (params.autoresize)
+  if (target.autoresize)
     $(window).on('load resize', function() {
       scope._camera.aspect = window.innerWidth / window.innerHeight;
 
@@ -248,9 +252,9 @@ WHS.init = function(params) {
       });
 
       if (params.wagner) {
-        scope.composer.setSize(target.rWidth, target.rHeight);
+        scope._composer.setSize(target.rWidth, target.rHeight);
 
-        $(scope.composer.domElement).css({
+        $(scope._composer.domElement).css({
            'width': window.innerWidth,
           'height': window.innerHeight
         });
@@ -274,12 +278,15 @@ WHS.init = function(params) {
 
      requestAnimationFrame(reDraw);
 
-     if (scope.stats)
-       scope.stats.begin();
+     // Init stats.
+     if (scope._stats)
+       scope._stats.begin();
 
-     if (scope.params.helper) 
-       scope.cannonDebugRenderer.update();
+     // Init helper.
+     if (scope._settings.helper) 
+       scope._cannonDebugRenderer.update();
 
+     // Merging data loop.
      for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
 
        if (!scope.modellingQueue[i].onlyvis && !scope.modellingQueue[i].skip) {
@@ -298,28 +305,31 @@ WHS.init = function(params) {
 
      scope.world.step(1 / 60);
 
-     if (scope.anaglyph)
+     if (scope._settings.anaglyph)
        scope.effect.render(scope.scene, scope._camera);
 
+     // Controls.
      if (scope.controls) {
        scope.controls.update(Date.now() - scope.time);
        scope.time = Date.now();
      }
 
-     if (scope.composer) {
-       scope.composer.reset();
+     // Effects rendering.
+     if (scope._composer) {
+       scope._composer.reset();
 
-       scope.composer.render(scope.scene, scope._camera);
+       scope._composer.render(scope.scene, scope._camera);
 
-       scope.composer.eff.forEach(function(effect) {
-         scope.composer.pass(effect);
+       scope._composer.eff.forEach(function(effect) {
+         scope._composer.pass(effect);
        })
 
-       scope.composer.toScreen();
+       scope._composer.toScreen();
      }
 
-     if (scope.stats)
-       scope.stats.end();
+     // End helper.
+     if (scope._stats)
+       scope._stats.end();
    }
 
    this.update = reDraw;
