@@ -1,11 +1,11 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-var jshint = require('gulp-jshint');
-var stylish = require('jshint-stylish');
+//var jshint = require('gulp-jshint');
+//var stylish = require('jshint-stylish');
 var uglify = require('gulp-uglify');
-var jscs = require('gulp-jscs');
-var benchmark = require('gulp-jscs');
-var size = require('gulp-size');
+//ar jscs = require('gulp-jscs');
+//var benchmark = require('gulp-jscs');
+//var size = require('gulp-size');
 var beautify = require('gulp-beautify');
 var replace = require('gulp-replace-task');
 var insert = require('gulp-insert');
@@ -134,8 +134,3 @@ gulp.task('watch', function() {
       .pipe(gulp.dest(file.dirname));
   });
 });
-
-gulp.task('clean', function() {
-  gulp.src(codes).pipe(jscs({fix: true})).pipe(jscs.reporter())
-        .pipe(jscs.reporter('fail'));
-})
