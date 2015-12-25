@@ -8,7 +8,7 @@ We look forward to your contributions to WhitestormJS.
 
 ### Reporting Bugs
 
-If you've found a *reproduceable* bug, [submit an issue](https://github.com/sasha240100/WhitestormJS/issues)! If you're sure that the issue is caused by WhitestormJS, submitting an issue will help us fix the problem.
+If you've found a *reproduceable* bug, [submit an issue](https://github.com/WhitestormJS/whitestorm.js/issues)! If you're sure that the issue is caused by WhitestormJS, submitting an issue will help us fix the problem.
 
 You're welcome to fix things for us, and submit pull requests; it frees up time for us to implement useful new features.
 
@@ -20,7 +20,7 @@ If you've added a new feature to WhitestormJS and would like for it to be includ
 
 WhitestormJS can be built by installing [Node.js](https://nodejs.org), and the [gulp](https://www.npmjs.com/package/gulp) package through [npm](https://www.npmjs.com/).
 
-After that, clone the repository anywhere you'd like (`git clone https://github.com/sasha240100/WhitestormJS.git`).
+After that, clone the repository anywhere you'd like (`git clone https://github.com/WhitestormJS/whitestorm.js.git`).
 
 Open the new directory (`./WhitestormJS/` by default) using whatever terminal emulator you'd like.
 
@@ -28,7 +28,7 @@ You can build WhitestormJS with the following command: `gulp build`
 
 WhitestormJS will be built, and written to `build/whitestorm.js`, and `build/whitestorm.min.js`.
 
-### Adding changes to [CHANGELOG.md](https://github.com/sasha240100/WhitestormJS/blob/master/CHANGELOG.md)
+### Adding changes to [CHANGELOG.md](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
 
 If you will contribute to this project, please follow this rules of editting CHANGELOG.md each time you make changes:
 
