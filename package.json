@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sasha240100/WhitestormJS.git"
+    "url": "git+https://github.com/WhitestormJS/whitestorm.js.git"
   },
   "keywords": [
     "three.js",
@@ -23,9 +23,9 @@
   "author": "Alexander Buzin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sasha240100/WhitestormJS/issues"
+    "url": "https://github.com/WhitestormJS/whitestorm.js/issues"
   },
-  "homepage": "https://github.com/sasha240100/WhitestormJS#readme",
+  "homepage": "https://github.com/WhitestormJS/whitestorm.js#readme",
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-replace-task": "^0.11.0"
