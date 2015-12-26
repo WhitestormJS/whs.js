@@ -1,6 +1,6 @@
 ## Changelog
 
-##### Before contibuting here see [rules](https://github.com/sasha240100/WhitestormJS/blob/master/CONTRIBUTING.md#adding-changes-to-changelogmd)
+##### Before contibuting here see [rules](https://github.com/WhitestormJS/whitestorm.js/blob/master/CONTRIBUTING.md#adding-changes-to-changelogmd)
 
 **current**
 - Fixed #16 "object.assign() chrome bug."
