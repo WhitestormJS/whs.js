@@ -14,6 +14,7 @@
 - *development/coggle/ -> development/art/coggle/*
 - *development/ -> development/screenshots/*
 - Added warning in case of invalid Wagner effect referenced (addWagner.js)
+- *src/libs/{jquery} - > ./libs/{jquery}*
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
