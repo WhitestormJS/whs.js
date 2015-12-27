@@ -2052,9 +2052,23 @@ var WHS = {
 WHS.headers = {}; //GLOBAL headers, ex: url, script, library, specific api...
 WHS.API = {};
 WHS.ADD = {}; // some figures or shape funcs;
+
+WHS.plugins = {
+    settings: { // Global variables, else...
+        plug_id: 0,
+        loop_id: 0
+    },
+
+    list: {}, // All plugins
+
+    queue: [] // Animation queue
+};
+
 WHS.grounds = [];
 
+
 var api = WHS.API;
+
 
 if (typeof define === 'function' && define.amd) {
 
@@ -2471,7 +2485,8 @@ WHS.API.construct = function(root, params, type) {
         morph: {
             speed: 1,
             duration: 1
-        }
+        },
+        onlyvis: false
     }, params);
 
 
@@ -2495,7 +2510,8 @@ WHS.API.construct = function(root, params, type) {
         _rot: target.rot,
         _scale: target.scale,
         _morph: target.morph,
-        _target: target.target
+        _target: target.target,
+        _onlyvis: target.onlyvis
     };
 
     Object.assign(this, scope);
@@ -3095,6 +3111,43 @@ WHS.Watch.prototype.remove = function(element) {
 
 
 
+WHS.plugins.loop = function(func) {
+    this.loop = {
+        func: func,
+        id: WHS.plugins.settings.loop_id++,
+        enabled: false
+    };
+
+    WHS.plugins.queue.push(this.loop);
+}
+
+WHS.plugins.loop.prototype.start = function() {
+    this.loop.enabled = true;
+};
+
+WHS.plugins.loop.prototype.stop = function() {
+    this.loop.enabled = false;
+};
+
+
+WHS.plugins.register = function(name, plugin) {
+    'use strict';
+
+    var id = WHS.plugins.settings.plug_id;
+
+    WHS.plugins.list[name] = {
+        func: plugin,
+        id: id
+    };
+
+    WHS.API.construct.prototype[name] = plugin;
+
+    WHS.plugins.settings.plug_id++;
+
+    return;
+};
+
+
 /**
  * Init.
  *
@@ -3380,7 +3433,7 @@ WHS.init.prototype.animate = function(time, scope) {
         // Merging data loop.
         for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
 
-            if (!scope.modellingQueue[i].onlyvis && !scope.modellingQueue[i].skip) {
+            if (!scope.modellingQueue[i]._onlyvis && !scope.modellingQueue[i].skip) {
 
                 scope.modellingQueue[i].visible.position.copy(scope.modellingQueue[i].body.position);
 
@@ -3421,6 +3474,11 @@ WHS.init.prototype.animate = function(time, scope) {
         // End helper.
         if (scope._stats)
             scope._stats.end();
+
+        WHS.plugins.queue.forEach(function(loop) {
+            if (loop.enabled)
+                loop.func(time);
+        });
     }
 
     this.update = reDraw;
@@ -3826,7 +3884,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 scope.materialType);
 
             scope._scale.z =
-                2 / (opt.geometry.outerRadius - opt.geometry.innerRadius);
+                4 / (opt.geometry.outerRadius - opt.geometry.innerRadius);
 
             if (!options.onlyvis) {
                 scope.physic = CANNON.Trimesh.createTorus(

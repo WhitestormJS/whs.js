@@ -64,6 +64,7 @@ var GAME = new WHS.init({
  * [Object/Icosahedron](http://192.241.128.187/current/examples/basic_object.html)  (Icosahedron from *Three.js* example.)
  * [Object/Model](http://192.241.128.187/current/examples/basic_model.html)  (Teapot model with *Three.js* JSONLoader.)
  * [Object/Wall](http://192.241.128.187/current/examples/stone_wall.html)  (Stone wall (basic).)
+ * [Plugin/Color](http://192.241.128.187/current/examples/plugin_example.html)  (Basic plugin example.)
 
 ### Author:
 @sasha240100 [![forthebadge](http://wsbadge.herokuapp.com/twitter/url/http/alexbuzin.me.svg?style=social)](https://twitter.com/intent/tweet?text=Check+this+developer:&url=http%3A%2F%2Falexbuzin.me)

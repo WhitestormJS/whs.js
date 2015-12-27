@@ -289,7 +289,7 @@ WHS.init = function(params) {
      // Merging data loop.
      for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
 
-       if (!scope.modellingQueue[i].onlyvis && !scope.modellingQueue[i].skip) {
+       if (!scope.modellingQueue[i]._onlyvis && !scope.modellingQueue[i].skip) {
 
          scope.modellingQueue[i].visible.position.copy(scope.modellingQueue[i].body.position);
 
@@ -330,6 +330,11 @@ WHS.init = function(params) {
      // End helper.
      if (scope._stats)
        scope._stats.end();
+
+     WHS.plugins.queue.forEach( function(loop) {
+      if(loop.enabled)
+        loop.func(time);
+     });
    }
 
    this.update = reDraw;

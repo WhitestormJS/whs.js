@@ -18,6 +18,7 @@ var sources = [
   'src/Shaders/*.js',
   'src/API/*.js',
   'src/Watchers/*.js',
+  'src/Plugins/*.js',
   'src/whitestorm.js',
   'src/Objects/*.js',
   'src/Ground/*.js',

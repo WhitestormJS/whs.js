@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>WhitestormJS development</title>
+  <script src="../libs/jquery-1.11.1.min.js"></script>
+  <script src="../libs/three.js"></script>
+  <script src="../libs/cannon.js"></script>
+  <script src="../libs/Wagner.js"></script>
+  <script src="../libs/Wagner.base.js"></script>
+
+  <script src="../assets/terrain/default_terrain.js"></script>
+</head>
+
+<body>
+</body>
+<script src="../build/whitestorm.js"></script>
+
+<!-- Change Color plugin -->
+<script>
+
+var color = new THREE.Color(0x000000);
+
+WHS.plugins.register("changeColor", function(time) {
+    var object = this;
+
+    console.log(color);
+
+    var animation = new WHS.plugins.loop(function() {
+        object.visible.material.color = color;
+
+        if (color.r <= 1)
+            color.r+=0.01;
+
+        if (color.g >= 0)
+            color.g-=0.01;
+
+        if (color.b >= 0)
+            color.b-=0.01;
+
+        if(color.r >= 1) {
+            animation.stop();
+
+            color.setRGB(1, 0, 0);
+
+            var animation2 = new WHS.plugins.loop(function() {
+                object.visible.material.color = color;
+
+                if (color.r >= 0)
+                    color.r-=0.01;
+
+                if (color.g <= 1)
+                    color.g+=0.01;
+
+                if (color.b >= 0)
+                    color.b-=0.01;
+
+                if(color.r <= 0 && color.g >= 1) {
+                    animation2.stop();
+
+                    color.setRGB(0, 1, 0);
+
+                    var animation3 = new WHS.plugins.loop(function() {
+                        object.visible.material.color = color;
+
+                        if (color.r >= 0)
+                            color.r-=0.01;
+
+                        if (color.g >= 0)
+                            color.g-=0.01;
+
+                        if (color.b <= 1)
+                            color.b+=0.01;
+
+                        if(color.g <= 0 && color.b >= 1) {
+                            animation3.stop();
+
+                            color.setRGB(0, 0, 1);
+
+                            animation.start();
+                        }
+                    });
+
+                    animation3.start();
+                }
+            });
+
+            animation2.start();
+        }
+    });
+
+    animation.start();
+
+    
+}, true);
+</script>
+
+<script>
+var GAME = new WHS.init(
+{
+    anaglyph: false,
+    stats: "fps", // fps, ms, mb
+    wagner: WAGNER,
+    autoresize: true,
+    gravity: {
+        x: 0,
+        y: -50,
+        z: 0
+    },
+    camera: {
+        far: 10000,
+        y: 10,
+        z: 30
+    }
+});
+
+GAME.ring = GAME.addObject("ring",
+{
+    geometryOptions: {
+        innerRadius:2,
+        outerRadius:5,
+        thetaSegments: 20,
+        phiSegments: 20
+    },
+    mass: 0,
+    onlyvis: true,
+    materialOptions: {
+        color: 0xff0000,
+        kind: "basic"
+    },
+    pos: {
+        x: 0,
+        y: 10,
+        z: 0
+    }
+});
+
+GAME.ground = GAME.addGround("smooth",
+{
+    width: 50,
+    height: 50
+},
+{
+        color: 0xffff00,
+        kind: "basic"
+},
+{
+    x: 0,
+    y: 0,
+    z: 0
+});
+
+GAME.ring.changeColor();
+
+GAME.OrbitControls();
+
+</script>
+</html>

@@ -49,7 +49,8 @@ WHS.API.construct = function (root, params, type) {
     morph: {
       speed: 1,
       duration: 1
-    }
+    },
+    onlyvis: false
   }, params);
 
 
@@ -73,7 +74,8 @@ WHS.API.construct = function (root, params, type) {
     _rot: target.rot,
     _scale: target.scale,
     _morph: target.morph,
-    _target: target.target
+    _target: target.target,
+    _onlyvis: target.onlyvis
   };
 
   Object.assign(this, scope);
