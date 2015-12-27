@@ -65,9 +65,23 @@ var WHS = {
 WHS.headers = {}; //GLOBAL headers, ex: url, script, library, specific api...
 WHS.API = {};
 WHS.ADD = {}; // some figures or shape funcs;
+
+WHS.plugins = {
+    settings: { // Global variables, else...
+        plug_id: 0,
+        loop_id: 0
+    },
+
+    list: {}, // All plugins
+
+    queue: [] // Animation queue
+};
+
 WHS.grounds = [];
 
+
 var api = WHS.API;
+
 
 if ( typeof define === 'function' && define.amd ) {
 

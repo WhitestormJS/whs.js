@@ -315,7 +315,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       scope.materialType);
 
       scope._scale.z =
-        2 / (opt.geometry.outerRadius - opt.geometry.innerRadius);
+         4/(opt.geometry.outerRadius - opt.geometry.innerRadius);
 
       if (!options.onlyvis) {
         scope.physic = CANNON.Trimesh.createTorus(

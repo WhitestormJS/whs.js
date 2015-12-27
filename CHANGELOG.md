@@ -15,6 +15,9 @@
 - *development/ -> development/screenshots/*
 - Added warning in case of invalid Wagner effect referenced (addWagner.js)
 - *src/libs/{jquery} - > ./libs/{jquery}*
+- Fixed `onlyvis`.
+- Added Plugin support (`src/Plugins/`).
+- New example (`examples/plugin_example.html`);
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
