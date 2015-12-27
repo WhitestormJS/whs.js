@@ -1,6 +1,6 @@
 # WhitestormJS
-[![Build Status](https://travis-ci.org/sasha240100/WhitestormJS.svg)](https://travis-ci.org/sasha240100/WhitestormJS)
-[![npm](http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs) [![bower](http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg)](https://github.com/WhitestormJS/whitestorm.js) [![Gitter](http://wsbadge.herokuapp.com/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/sasha240100/WhitestormJS)
+[![Build Status](https://travis-ci.org/WhitestormJS/whitestorm.js.svg)](https://travis-ci.org/WhitestormJS/whitestorm.js)
+[![npm](http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs) [![bower](http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg)](https://github.com/WhitestormJS/whitestorm.js) [![Gitter](http://wsbadge.herokuapp.com/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/WhitestormJS/whitestorm.js)
 
 [![Issues](http://wsbadge.herokuapp.com/npm/dt/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs)
 [![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-red.svg)](https://github.com/sasha240100)
@@ -10,7 +10,7 @@
 ----------------------------------------------------------------------------------------------------------------
 
 
-#####Code style check:   [![Codacy Badge](https://api.codacy.com/project/badge/8f5d1eab0569415b983bf0c1b7323d68)](https://www.codacy.com/app/siteprogcom/WhitestormJS) [![bitHound Overall Score](https://www.bithound.io/github/sasha240100/WhitestormJS/badges/score.svg)](https://www.bithound.io/github/sasha240100/WhitestormJS)
+#####Code style check:   [![Codacy Badge](https://api.codacy.com/project/badge/8f5d1eab0569415b983bf0c1b7323d68)](https://www.codacy.com/app/siteprogcom/WhitestormJS) [![bitHound Overall Score](https://www.bithound.io/github/WhitestormJS/whitestorm.js/badges/score.svg)](https://www.bithound.io/github/WhitestormJS/whitestorm.js)
 
 
 ----------------------------------------------------------------------------------------------------------------
@@ -19,7 +19,7 @@
 
 WhitestormJS is [hosted by jsDelivr](http://www.jsdelivr.com/projects/whitestormjs). You can link to the latest [minified version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js), [full version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.js), or [download both](https://cdn.jsdelivr.net/whitestormjs/latest/whitestormjs.zip).
 
-![WhitestormJS](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/development/art/logo/big.png)
+![WhitestormJS](https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/logo/big.png)
 
 ## Installation
 [![forthebadge](http://forthebadge.com/images/badges/uses-js.svg)](https://github.com/search?l=JavaScript&q=%23javasript&ref=searchresults&type=Repositories&utf8=%E2%9C%93)
@@ -52,10 +52,10 @@ var GAME = new WHS.init({
 });
 ```
 
-[![Join the chat at https://gitter.im/sasha240100/WhitestormJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sasha240100/WhitestormJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/WhitestormJS/whitestorm.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Structure
-![Whitestorm.js structure](https://raw.githubusercontent.com/sasha240100/WhitestormJS/master/development/art/coggle/WhitestormJS.png)
+![Whitestorm.js structure](https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/coggle/WhitestormJS.png)
 
 ## Examples:
  * [FPS](http://192.241.128.187/current/examples/fps.html)  (First person example with Wagner effects and terrain.)

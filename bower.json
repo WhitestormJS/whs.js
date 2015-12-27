@@ -1,10 +1,10 @@
 {
   "name": "whitestormjs",
   "version": "0.0.6",
-  "homepage": "https://github.com/sasha240100/WhitestormJS",
+  "homepage": "https://github.com/WhitestormJS/whitestorm.js",
   "repository" : {
       "type": "git",
-      "url": "https://github.com/sasha240100/WhitestormJS"
+      "url": "https://github.com/WhitestormJS/whitestorm.js"
   },
   "authors": [
     "sasha240100 <siteprogcom@gmail.com>"
