@@ -12,6 +12,7 @@
  */
 WHS.init.prototype.addSkybox = function(src, imgSuffix) {
   'use strict';
+  imgSuffix = imgSuffix || ".png";
   var axes = new THREE.AxisHelper(100);
   var scene = this.scene;
   scene.add(axes);
