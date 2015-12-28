@@ -26,7 +26,8 @@ var sources = [
   'src/Light/*.js',
   'src/Wagner/*.js',
   'src/Controls/*.js',
-  'src/GUI/*.js'
+  'src/GUI/*.js',
+  'src/Skybox/*.js'
 ]
 
 var codes = [
@@ -41,7 +42,8 @@ var codes = [
   'src/Light/*.js',
   'src/Wagner/*.js',
   'src/Controls/*.js',
-  'src/GUI/*.js'
+  'src/GUI/*.js',
+  'src/Skybox/*.js'
 ]
 
 var re1='(\\/)';	// Any Single Character 1
@@ -85,7 +87,7 @@ var author_comment = "/**\n" +
 "\n";
 
 var lib_includes = "var THREE = require('three');\n" +
-"var CANNON = require('cannon');\n" + 
+"var CANNON = require('cannon');\n" +
 "var jQuery = require('jquery');";
 
 gulp.task('build', function() {
