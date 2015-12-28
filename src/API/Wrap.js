@@ -17,6 +17,7 @@ WHS.API.Wrap = function (SCOPE, mesh, body) {
     if (this._object) api.merge(this._scope.root.world, this._object);
 
     this._scope.root.modellingQueue.push(this._scope);
+    this._scope.root.children.push(this._scope);
   }
   catch(err) {
     console.error(err.message);

@@ -18,6 +18,7 @@
 - Fixed `onlyvis`.
 - Added Plugin support (`src/Plugins/`).
 - New example (`examples/plugin_example.html`);
+- Added `whs.preload` plugin.
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
