@@ -117,6 +117,15 @@ WHS.init = function(params) {
   // We must add the contact materials to the world
   this.world.addContactMaterial(physicsContactMaterial);
 
+  // DOM INIT
+
+  var whselement = $('<div class="whs"></div>');
+
+  target.container.append($(whselement));
+
+
+
+
   // Debug Renderer
   if (target.helper) {
     this._cannonDebugRenderer = new THREE.CannonDebugRenderer(
@@ -147,7 +156,7 @@ WHS.init = function(params) {
     this._stats.domElement.style.left = '0px';
     this._stats.domElement.style.bottom = '0px';
 
-    target.container.append(this._stats.domElement);
+    $(whselement).append(this._stats.domElement);
   }
 
   // Camera.
@@ -196,7 +205,7 @@ WHS.init = function(params) {
 
   $(renderer.domElement).attr('');
 
-  target.container.append(renderer.domElement);
+  $(whselement).append(renderer.domElement);
 
   target.container.css({
     'margin': 0,
@@ -230,7 +239,9 @@ WHS.init = function(params) {
     _camera: camera,
     renderer: renderer,
     _settings: target,
-    modellingQueue: []
+    modellingQueue: [], // Queue for physics objects
+    children: [], // Children for this app.
+    _dom: whselement
   });
 
   // NOTE: ==================== Autoresize. ======================
