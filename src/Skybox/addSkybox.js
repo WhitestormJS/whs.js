@@ -6,18 +6,20 @@
 
 /**
  * Adds a skybox to the WhitestormJS scene.
- * @param {String} src - Skybox image source.
- * @param {String} imgSuffix - Image suffix (.jpg, .png)
+ * @param {Object} options - Skybox options.
+ * @param {String} options.src - Skybox image source.
+ * @param {String} options.imgSuffix - Skybox image suffix (.png, .jpg, etc.)
  * @returns {Object} scope - Scope.
  */
-WHS.init.prototype.addSkybox = function(src, imgSuffix) {
+WHS.init.prototype.addSkybox = function(options) {
   'use strict';
 
-  imgSuffix = imgSuffix || ".png";
+  options.imgSuffix = options.imgSuffix || ".png";
+  options.onlyvis = true;
+  var scope = new api.construct(this, options, "skybox");
 
   var axes = new THREE.AxisHelper(100);
   var scene = this.scene;
-  var imgPrefix = src;
   var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
   var skyGeometry = new THREE.CubeGeometry(5000, 5000, 5000);
   var matArray = [];
@@ -26,12 +28,15 @@ WHS.init.prototype.addSkybox = function(src, imgSuffix) {
 
   for (var i = 0; i < 6; i++) {
     matArray.push(new THREE.MeshBasicMaterial({
-      map: THREE.ImageUtils.loadTexture(imgPrefix + directions[i] + imgSuffix),
+      map: THREE.ImageUtils.loadTexture(options.src + directions[i] + options.imgSuffix),
       side: THREE.BackSide
     }));
   }
+
   var skyMat = new THREE.MeshFaceMaterial(matArray);
   var skybox = new THREE.Mesh(skyGeometry, skyMat);
-  
+
   scene.add(skybox);
+
+  return scope;
 };
