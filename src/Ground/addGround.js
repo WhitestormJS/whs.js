@@ -5,12 +5,6 @@
 */
 
 /**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * Ground.
  *
  * @param {String} type Ground/Terrain type. (REQUIRED)
@@ -233,7 +227,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
       geom.computeVertexNormals();
       geom.computeFaceNormals();
-      geom.computeTangents();
+      //geom.computeTangents();
 
       scope.visible.updateMatrix();
       scope.physic = new CANNON.Heightfield(
