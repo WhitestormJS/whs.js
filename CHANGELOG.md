@@ -17,8 +17,10 @@
 - *src/libs/{jquery} - > ./libs/{jquery}*
 - Fixed `onlyvis`.
 - Added Plugin support (`src/Plugins/`).
-- New example (`examples/plugin_example.html`);
-- Added `whs.preload` plugin.
+- New example (`examples/plugin_example.html`).
+- Added skybox support (`WHS.init.prototype.addSkybox`).
+- New example (`examples/skybox.html`).
+- Added `whs.preloader` plugin.
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
