@@ -132,7 +132,10 @@ GAME.ground = GAME.addGround("smooth",
 
 GAME.OrbitControls();
 
-GAME.skybox = GAME.addSkybox("assets/textures/skybox/DarkSea-", ".jpg");
+GAME.skybox = GAME.addSkybox({
+  src: "assets/textures/skybox/DarkSea-",
+  imgSuffix: ".jpg"
+});
 
 preloader.end();
 
