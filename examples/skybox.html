@@ -132,11 +132,15 @@ GAME.ground = GAME.addGround("smooth",
 
 GAME.OrbitControls();
 
+// GAME.skybox = GAME.addSkybox({
+//   src: "assets/textures/skybox/DarkSea-",
+//   imgSuffix: ".jpg",
+//   skyType: "box"
+// });
 GAME.skybox = GAME.addSkybox({
-  src: "assets/textures/skybox/DarkSea-",
-  imgSuffix: ".jpg"
+  src: "assets/textures/skydome/SkyDome-Cloud-Few-Dawn.png",
+  skyType: "dome"
 });
-
 preloader.end();
 
 </script>
