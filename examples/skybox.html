@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>WhitestormJS development</title>
+  <script src="../libs/jquery-1.11.1.min.js"></script>
+  <script src="../libs/three.js"></script>
+  <script src="../libs/cannon.js"></script>
+  <script src="../libs/Wagner.js"></script>
+  <script src="../libs/Wagner.base.js"></script>
+
+  <script src="../assets/terrain/default_terrain.js"></script>
+</head>
+
+<body>
+</body>
+<script src="../build/whitestorm.js"></script>
+<script>
+
+// NOTE: Basic scene with sphere and ground.
+
+var GAME = new WHS.init(
+{
+    anaglyph: false,
+    helper: true,
+    stats: "fps", // fps, ms, mb
+    wagner: WAGNER,
+    autoresize: true,
+    gravity: {
+        x: 0,
+        y: -200,
+        z: 0
+    },
+    camera: {
+        far: 10000,
+        y: 10,
+        z: 30
+    }
+});
+
+GAME.cube = GAME.addObject("dodecahedron",
+{
+    geometryOptions: {
+        radius:5
+    },
+    mass: 10,
+    onlyvis: false,
+    materialOptions: {
+        color: 0xffffff,
+        opacity: 0.5,
+        transparent: true,
+        kind: "basic"
+    },
+    pos: {
+        x: 0,
+        y: 100,
+        z: 0
+    }
+});
+
+GAME.ground = GAME.addGround("smooth",
+{
+    width: 5,
+    height: 5
+},
+{
+        //color: 0x000000,
+        vertexColors: THREE.VertexColors,
+        shading: THREE.SmoothShading,
+        map: api.texture('../textures/grasslight-big.jpg'),
+        kind: "basic"
+},
+{
+    x: 0,
+    y: 0,
+    z: 0
+});
+
+
+GAME.OrbitControls();
+
+GAME.skybox = GAME.addSkybox("assets/textures/skybox/DarkSea-", ".jpg");
+
+</script>
+</html>
