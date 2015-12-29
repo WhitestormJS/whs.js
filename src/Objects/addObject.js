@@ -556,7 +556,6 @@ WHS.init.prototype.addObject = function(figureType, options) {
   scope.build(scope.visible, scope.body);
 
   scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
-  console.log(scope);
 
   return scope;
 }
