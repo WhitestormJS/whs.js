@@ -12,14 +12,18 @@
  */
 WHS.init.prototype.addSkybox = function(src, imgSuffix) {
   'use strict';
+
   imgSuffix = imgSuffix || ".png";
+
   var axes = new THREE.AxisHelper(100);
   var scene = this.scene;
-  scene.add(axes);
   var imgPrefix = src;
   var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
   var skyGeometry = new THREE.CubeGeometry(5000, 5000, 5000);
   var matArray = [];
+
+  scene.add(axes);
+
   for (var i = 0; i < 6; i++) {
     matArray.push(new THREE.MeshBasicMaterial({
       map: THREE.ImageUtils.loadTexture(imgPrefix + directions[i] + imgSuffix),
@@ -28,5 +32,6 @@ WHS.init.prototype.addSkybox = function(src, imgSuffix) {
   }
   var skyMat = new THREE.MeshFaceMaterial(matArray);
   var skybox = new THREE.Mesh(skyGeometry, skyMat);
+  
   scene.add(skybox);
 };
