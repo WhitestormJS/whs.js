@@ -5053,7 +5053,7 @@ WHS.init.prototype.OrbitControls = function(object) {
  * @param {Object} options - Skybox options.
  * @param {String} options.src - Skybox image source.
  * @param {String} options.imgSuffix - Skybox image suffix (.png, .jpg, etc.)
- * @param {String} options.skyType - Type of sky. Either box or dome.
+ * @param {String} options.skyType - Type of sky. Either box or sphere.
  * @returns {Object} scope - Scope.
  */
 WHS.init.prototype.addSkybox = function(options) {
@@ -5068,7 +5068,7 @@ WHS.init.prototype.addSkybox = function(options) {
     switch (options.skyType) {
         case "box":
             var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
-            var skyGeometry = new THREE.CubeGeometry(5000, 5000, 5000);
+            var skyGeometry = new THREE.CubeGeometry(this._camera.far, this._camera.far, this._camera.far);
             var matArray = [];
 
             for (var i = 0; i < 6; i++) {
@@ -5084,7 +5084,7 @@ WHS.init.prototype.addSkybox = function(options) {
             api.Wrap(scope, skybox, null);
 
             break;
-        case "dome":
+        case "sphere":
             var vertexShader = [
                 "varying vec2 vUV;",
                 "",
@@ -5103,7 +5103,7 @@ WHS.init.prototype.addSkybox = function(options) {
                 "gl_FragColor = vec4(sample.xyz, sample.w);",
                 "}"
             ].join("\n");
-            var skyGeometry = new THREE.SphereGeometry(3000, 60, 40);
+            var skyGeometry = new THREE.SphereGeometry(this._camera.far, 60, 40);
             var skyMaterial = new THREE.ShaderMaterial({
                 uniforms: {
                     texture: {
