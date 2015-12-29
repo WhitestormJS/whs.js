@@ -3,6 +3,7 @@
  * Site: http://alexbuzin.me/
  * Email: alexbuzin88@gmail.com
  */
+
 /**
  * Adds a skybox to the WhitestormJS scene.
  * @param {Object} options - Skybox options.
@@ -14,16 +15,19 @@
 WHS.init.prototype.addSkybox = function(options) {
   'use strict';
   
-  options.skyType = options.skyType || "box";
+  api.def(options.skyType, "box");
+
   options.imgSuffix = options.skyType == "box" ? options.imgSuffix || ".png" : options.imgSuffix || "";
-  options.onlyvis = true;
 
   var scope = new api.construct(this, options, "skybox");
+  scope.skip = true;
+
+  var skyGeometry, skyMat;
 
   switch (options.skyType) {
     case "box":
       var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
-      var skyGeometry = new THREE.CubeGeometry(this._camera.far, this._camera.far, this._camera.far);
+      skyGeometry = new THREE.CubeGeometry(this._camera.far, this._camera.far, this._camera.far);
       var matArray = [];
 
       for (var i = 0; i < 6; i++) {
@@ -33,10 +37,7 @@ WHS.init.prototype.addSkybox = function(options) {
         }));
       }
 
-      var skyMat = new THREE.MeshFaceMaterial(matArray);
-      var skybox = new THREE.Mesh(skyGeometry, skyMat);
-
-      api.Wrap(scope, skybox, null);
+      skyMat = new THREE.MeshFaceMaterial(matArray);
 
       break;
     case "sphere":
@@ -49,6 +50,7 @@ WHS.init.prototype.addSkybox = function(options) {
         "gl_Position = projectionMatrix * modelViewMatrix * pos;",
         "}"
       ].join("\n");
+
       var fragmentShader = [
         "uniform sampler2D texture;",
         "varying vec2 vUV;",
@@ -58,8 +60,10 @@ WHS.init.prototype.addSkybox = function(options) {
         "gl_FragColor = vec4(sample.xyz, sample.w);",
         "}"
       ].join("\n");
-      var skyGeometry = new THREE.SphereGeometry(this._camera.far, 60, 40);
-      var skyMaterial = new THREE.ShaderMaterial({
+
+      skyGeometry = new THREE.SphereGeometry(this._camera.far, 60, 40);
+
+      skyMaterial = new THREE.ShaderMaterial({
         uniforms: {
           texture: {
             type: "t",
@@ -69,15 +73,16 @@ WHS.init.prototype.addSkybox = function(options) {
         vertexShader: vertexShader,
         fragmentShader: fragmentShader
       });
-      var skybox = new THREE.Mesh(skyGeometry, skyMaterial);
-
-      skybox.scale.set(-1, 1, 1);
-      skybox.rotation.order = "XZY";
-      skybox.renderDepth = 1000.0;
-
-      api.Wrap(scope, skybox, null);
 
       break;
   }
+
+  scope.visible = new THREE.Mesh(skyGeometry, skyMat);
+  scope.visible.renderDepth = 1000.0;
+
+  scope.build();
+
+  scope.wrap = api.Wrap(scope, scope.visible);
+
   return scope;
 };
