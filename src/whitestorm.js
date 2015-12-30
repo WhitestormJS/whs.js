@@ -21,7 +21,7 @@ WHS.init = function(params) {
     console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
   if (!CANNON)
     console.warn('whitestormJS requires CANNON.js. {Object} CANNON not found.');
-  if (!CANNON)
+  if (!WAGNER)
     console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
 
   var target = $.extend(true, {
