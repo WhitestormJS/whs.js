@@ -2491,7 +2491,7 @@ WHS.API.construct = function(root, params, type) {
     if (params.scale) params.scale.set = _set;
     if (params.target) params.target.set = _set;
 
-    var target = $.extend({
+    var target = $.extend(true, {
         pos: {
             x: 0,
             y: 0,
@@ -2889,10 +2889,10 @@ WHS.API.removeDuplicateFaces = function(geometry) {
 WHS.API.rotateBody = function(body, rotateSet) {
     'use strict';
 
-    body.quaternion.x = Math.sin((Math.PI / 180) * rotateSet.x * 0.5);
-    body.quaternion.y = Math.sin((Math.PI / 180) * rotateSet.y * 0.5);
-    body.quaternion.z = Math.sin((Math.PI / 180) * rotateSet.z * 0.5);
-    body.quaternion.w = Math.cos(90 * 0.5);
+    body.quaternion.x = Math.sin((Math.PI / 360) * rotateSet.x); // Replaces 2 divisions with one
+    body.quaternion.y = Math.sin((Math.PI / 360) * rotateSet.y); // Replaces 2 divisions with one
+    body.quaternion.z = Math.sin((Math.PI / 360) * rotateSet.z); // Replaces 2 divisions with one
+    body.quaternion.w = Math.cos(45); //Was 90*0.5 before, hardcoding is better for constants
 
     return body;
 }
@@ -3207,7 +3207,7 @@ WHS.init = function(params) {
         console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
     if (!CANNON)
         console.warn('whitestormJS requires CANNON.js. {Object} CANNON not found.');
-    if (!CANNON)
+    if (!WAGNER)
         console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
 
     var target = $.extend(true, {
@@ -5086,37 +5086,12 @@ WHS.init.prototype.addSkybox = function(options) {
 
             break;
         case "sphere":
-            var vertexShader = [
-                "varying vec2 vUV;",
-                "",
-                "void main() {",
-                "vUV = uv;",
-                "vec4 pos = vec4(position, 1.0);",
-                "gl_Position = projectionMatrix * modelViewMatrix * pos;",
-                "}"
-            ].join("\n");
 
-            var fragmentShader = [
-                "uniform sampler2D texture;",
-                "varying vec2 vUV;",
-                "",
-                "void main() {",
-                "vec4 sample = texture2D(texture, vUV);",
-                "gl_FragColor = vec4(sample.xyz, sample.w);",
-                "}"
-            ].join("\n");
+            skyGeometry = new THREE.SphereGeometry(this._camera.far / 2, 60, 40);
 
-            skyGeometry = new THREE.SphereGeometry(this._camera.far, 60, 40);
-
-            skyMaterial = new THREE.ShaderMaterial({
-                uniforms: {
-                    texture: {
-                        type: "t",
-                        value: THREE.ImageUtils.loadTexture(options.src + options.imgSuffix)
-                    }
-                },
-                vertexShader: vertexShader,
-                fragmentShader: fragmentShader
+            skyMat = new THREE.MeshBasicMaterial({
+                map: THREE.ImageUtils.loadTexture(options.src + options.imgSuffix),
+                side: THREE.BackSide
             });
 
             break;

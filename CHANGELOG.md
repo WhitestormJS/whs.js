@@ -20,10 +20,8 @@
 - New example (`examples/plugin_example.html`).
 - Added skybox support (`WHS.init.prototype.addSkybox`).
 - New example (`examples/skybox.html`).
-<<<<<<< HEAD
 - Added `whs.preloader` plugin.
-=======
->>>>>>> origin/master
+- Skybox added to fps example.
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
