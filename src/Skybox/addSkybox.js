@@ -41,37 +41,12 @@ WHS.init.prototype.addSkybox = function(options) {
 
       break;
     case "sphere":
-      var vertexShader = [
-        "varying vec2 vUV;",
-        "",
-        "void main() {",
-        "vUV = uv;",
-        "vec4 pos = vec4(position, 1.0);",
-        "gl_Position = projectionMatrix * modelViewMatrix * pos;",
-        "}"
-      ].join("\n");
 
-      var fragmentShader = [
-        "uniform sampler2D texture;",
-        "varying vec2 vUV;",
-        "",
-        "void main() {",
-        "vec4 sample = texture2D(texture, vUV);",
-        "gl_FragColor = vec4(sample.xyz, sample.w);",
-        "}"
-      ].join("\n");
+      skyGeometry = new THREE.SphereGeometry(this._camera.far/2, 60, 40);
 
-      skyGeometry = new THREE.SphereGeometry(this._camera.far, 60, 40);
-
-      skyMaterial = new THREE.ShaderMaterial({
-        uniforms: {
-          texture: {
-            type: "t",
-            value: THREE.ImageUtils.loadTexture(options.src + options.imgSuffix)
-          }
-        },
-        vertexShader: vertexShader,
-        fragmentShader: fragmentShader
+      skyMat = new THREE.MeshBasicMaterial({
+        map: THREE.ImageUtils.loadTexture(options.src + options.imgSuffix),
+        side: THREE.BackSide
       });
 
       break;

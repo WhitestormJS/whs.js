@@ -21,7 +21,7 @@ WHS.API.construct = function (root, params, type) {
   if (params.scale) params.scale.set = _set;
   if (params.target) params.target.set = _set;
 
-  var target = $.extend({
+  var target = $.extend(true, {
     pos: {
       x: 0,
       y: 0,

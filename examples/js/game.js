@@ -16,7 +16,7 @@
     },
 
     camera: {
-      far: 1000
+      far: 10000
     },
 
     rWidth: window.innerWidth / 1.5,
@@ -49,15 +49,15 @@
   // NOTE: Default light.
   GAME.light1 = GAME.addLight("spot", {
     color: 0xffffff, //0x00ff00,
-    intensity: 2,
+    intensity: 3,
     distance: 1000
   }, {
     x: 160, // 100,
-    y: 220, // 30,
+    y: 120, // 30,
     z: 160, // 100
   }, {
     x: 0,
-    y: 0,
+    y: 100,
     z: 0
   });
 
@@ -83,15 +83,15 @@
     }
   });
 
-
-  GAME.fog = GAME.addFog("fogexp2", {
-    hex: 0x777777,
-    near: 0.015,
-    far: 250,
-    density: 0.015
+  GAME.skybox = GAME.addSkybox({
+	src: "assets/textures/skybox/skymap",
+	imgSuffix: ".png",
+	skyType: "sphere",
+	rot: {y: Math.PI/180*-90},
+	pos: {y: -200}
   });
 
-  GAME.cube = GAME.addObject("cube",
+  GAME.cube1 = GAME.addObject("cube",
   {
       geometryOptions: {
           width: 2,
@@ -112,7 +112,7 @@
       }
   });
 
-  GAME.cube = GAME.addObject("cube",
+  GAME.cube2 = GAME.addObject("cube",
   {
       geometryOptions: {
           width: 2,
