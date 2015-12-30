@@ -14,10 +14,10 @@
 WHS.API.rotateBody = function(body, rotateSet) {
   'use strict';
 
-  body.quaternion.x = Math.sin((Math.PI / 180) * rotateSet.x * 0.5);
-  body.quaternion.y = Math.sin((Math.PI / 180) * rotateSet.y * 0.5);
-  body.quaternion.z = Math.sin((Math.PI / 180) * rotateSet.z * 0.5);
-  body.quaternion.w = Math.cos(90 * 0.5);
+  body.quaternion.x = Math.sin((Math.PI / 360) * rotateSet.x);// Replaces 2 divisions with one
+  body.quaternion.y = Math.sin((Math.PI / 360) * rotateSet.y);// Replaces 2 divisions with one
+  body.quaternion.z = Math.sin((Math.PI / 360) * rotateSet.z);// Replaces 2 divisions with one
+  body.quaternion.w = Math.cos(45); //Was 90*0.5 before, hardcoding is better for constants
 
   return body;
 }
