@@ -93,7 +93,7 @@ WHS.API.construct.prototype.build = function (figure, object) {
     // Shadowmap.
     figure.castShadow = true;
     figure.receiveShadow = true;
-    
+
 
     // Position.
     figure.position.set(this._pos.x, this._pos.y, this._pos.z);
@@ -115,11 +115,11 @@ WHS.API.construct.prototype.build = function (figure, object) {
 
   }
   catch(err) {
-    
+
     console.error(err.message);
 
     this.__deferred.reject();
-    
+
   }
 
   return this;

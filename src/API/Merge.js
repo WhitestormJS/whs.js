@@ -12,19 +12,22 @@
  */
 WHS.API.merge = function(box, rabbits) {
   'use strict';
-  if (arguments.length < 2)
+  //More presice checking
+  if (!(typeof box === 'Object' && typeof rabbits === 'Object'))
     console.error("No rabbits for the box. (arguments)", [box, rabbits]);
-  else if (arguments.length == 2) {
-    if (Array.isArray(rabbits) && rabbits.length <= 1)
+  //Will only get here if box and rabbits are objects, arrays are object !
+  if(!box)//Box should not be null, null is an object too !
+    // #FIXME:0 Fix caller function line number.
+    console.error("box is undefined. Line " + (new Error).lineNumber + ". Func merge.", [box, rabbits]);
+  else{
+    if (Array.isArray(rabbits) && rabbits.length === 1) 
+      //Should not be 0
       box.add(rabbits[0]);
-    else if (Array.isArray(rabbits) && rabbits.length >= 2) {
+    else if (Array.isArray(rabbits) && rabbits.length > 1 && box) {
       for (var i = 0; i < rabbits.length; i++) {
         box.add(rabbits[i]);
       }
-    } else if (!Array.isArray(rabbits) && box)
+    } else if (!Array.isArray(rabbits))
       box.add(rabbits);
-    else
-    // #FIXME:0 Fix caller function line number.
-      console.error("box is undefined. Line " + (new Error).lineNumber + ". Func merge.", [box, rabbits]);
-  }
+    }
 }

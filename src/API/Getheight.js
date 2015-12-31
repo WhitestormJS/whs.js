@@ -22,7 +22,7 @@ WHS.API.getheight = function(pos, diff, terrain, direction) {
 
   this.raycaster = new THREE.Raycaster(
     new THREE.Vector3(pos.x, diff, direction * pos.y),
-    new THREE.Vector3(0, -1 * direction, 0).normalize()
+    new THREE.Vector3(0, -1 , 0)
   );
 
   this.intersect = this.raycaster.intersectObject(terrain.visible);
