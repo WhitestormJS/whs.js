@@ -124,3 +124,21 @@ WHS.API.construct.prototype.build = function (figure, object) {
 
   return this;
 }
+//Object.assign is not supported in IE, nor in mobile smartphones
+//Instead for of loop, Object.getOwnPropertyNames are both supported !
+if(typeof Object.assign != 'function'){
+  Object.assign = function(target){
+    'use strict';
+    if(target === null || target === undefined)
+      throw new TypeError('Cannot convert undefined or null to object');
+    var output = Object(target) //Convert taget to an object
+    for(var i = 1, l = arguments.length; i < l; i++){
+      var source = arguments[i]; //Loop through each element to assign
+      if(source !== null && source !== undefined){
+        for(var nextKey of Object.getOwnPropertyNames(source))
+          output[nextKey] = source[nextKey];
+      }
+    }
+    return output;
+  }
+}
