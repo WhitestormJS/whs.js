@@ -13,9 +13,10 @@
 WHS.API.Triangulate = function(thrObj, material) {
   'use strict';
 
-  if (arguments.length < 1)
+  if (!(thrObj instanceof THREE.Geometry))
     console.error("No THREE.js geometry");
-  else if (arguments.length = 1) {
+  //If it is instance, then it is defined !
+  else if (material) {
     var triangles = new THREE.Geometry();
     var materials = [];
 

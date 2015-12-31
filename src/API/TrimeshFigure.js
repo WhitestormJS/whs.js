@@ -6,7 +6,7 @@
 
 // #TODO:110 Heights array.
 /**
- * Trimesh figure. Makes trimesh object *CANNON.JS* from *THREE.JS* firure.
+ * Trimesh figure. Makes trimesh object *CANNON.JS* from *THREE.JS* figure.
  *
  * @param {Object} thrObj Figure object *THREE.JS*. (REQUIRED)
  * @param {Boolean} heightsNeed true if heights need. (OPTIONAL)
