@@ -13,8 +13,8 @@
 WHS.API.merge = function(box, rabbits) {
   'use strict';
   //More presice checking
-  if (!(typeof box === 'Object' && typeof rabbits === 'Object'))
-    console.error("No rabbits for the box. (arguments)", [box, rabbits]);
+  if (!(typeof box === 'object' && typeof rabbits === 'object'))
+    console.error("No rabbits for the box. (arguments)", [typeof box, typeof rabbits]);
   //Will only get here if box and rabbits are objects, arrays are object !
   if(!box)//Box should not be null, null is an object too !
     // #FIXME:0 Fix caller function line number.
