@@ -34,7 +34,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
         opt.geometry.radius,
         opt.geometry.segmentA,
         opt.geometry.segmentB
-      ), scope.materialType, opt.mass);
+      ), scope.materialType, 3);
 
       break;
     case "cube":

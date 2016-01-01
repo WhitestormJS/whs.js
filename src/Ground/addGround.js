@@ -34,24 +34,12 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
   switch (type) {
     case "smooth":
 
-      scope.visible = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(size.width, size.height, 1, 1),
-      scope.materialType);
+      scope.visible = new Physijs.PlaneMesh(
+        new THREE.PlaneGeometry(size.width, size.height, 1, 1),
+      scope.materialType, 0);
 
       scope._rot.set(-90 / 180 * Math.PI, 0, 0);
-      scope.physic = new CANNON.Plane(size.width, size.height);
 
-      scope.body = new CANNON.Body({
-        mass: 0
-      });
-
-      scope.body.linearDamping = 0.9; // Default value.
-      scope.body.addShape(scope.physic);
-
-      scope.body.quaternion.setFromAxisAngle(
-        new CANNON.Vec3(1, 0, 0),
-        -Math.PI / 2
-      );
       break;
 
     case "infinitySmooth":

@@ -7,8 +7,6 @@
 /**
  * Init.
  *
- * @param {Object} THREE *THREE.JS* object. (REQUIRED)
- * @param {Object} CANNON *CANNON.JS* object. (REQUIRED)
  * @param {Object} params Parameters of initalize. (OPTIONAL)
  * @return {Object} Scope.
  */
@@ -19,8 +17,8 @@ WHS.init = function(params) {
 
   if (!THREE)
     console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
-  if (!CANNON)
-    console.warn('whitestormJS requires CANNON.js. {Object} CANNON not found.');
+  if (!Physijs)
+    console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
   if (!WAGNER)
     console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
 
