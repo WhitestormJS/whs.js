@@ -256,10 +256,6 @@ WHS.init = function(params) {
      if (scope._stats)
        scope._stats.begin();
 
-     // Init helper.
-     if (scope._settings.helper) 
-       scope._cannonDebugRenderer.update();
-
      // Merging data loop.
      for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
 
@@ -277,7 +273,7 @@ WHS.init = function(params) {
        }
      }
 
-     scope.world.step(1 / 60);
+     scope.scene.simulate();
 
      if (scope._settings.anaglyph)
        scope.effect.render(scope.scene, scope._camera);
