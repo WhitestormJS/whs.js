@@ -20,6 +20,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
   opt.geometry = options.geometryOptions || {};
 
+  opt.mass = options.onlyvis ? opt.mass :
+
   scope.materialType = api.loadMaterial(options.materialOptions)._material;
 
   switch (figureType) {
@@ -28,23 +30,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.segmentA, 32);
       api.def(opt.geometry.segmentB, 32);
 
-      scope.visible = new THREE.Mesh(new THREE.SphereGeometry(
+      scope.visible = new Physijs.SphereMesh(new THREE.SphereGeometry(
         opt.geometry.radius,
         opt.geometry.segmentA,
         opt.geometry.segmentB
-      ), scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new CANNON.Sphere(opt.geometry.radius);
-
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; //default
-        scope.body.addShape(scope.physic);
-        scope.body.name = scope.name;
-      }
+      ), scope.materialType, opt.mass);
 
       break;
     case "cube":
@@ -53,28 +43,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.height, 1);
       api.def(opt.geometry.depth, 1);
 
-      scope.visible = new THREE.Mesh(new THREE.BoxGeometry(
+      scope.visible = new THREE.BoxMesh(new THREE.BoxGeometry(
         opt.geometry.width,
         opt.geometry.height,
         opt.geometry.depth
-      ), scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new CANNON.Box(
-          new CANNON.Vec3(
-            opt.geometry.width * 0.5,
-            opt.geometry.height * 0.5,
-            opt.geometry.depth * 0.5
-          )
-        );
-
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      ), scope.materialType, opt.mass);
 
       break;
     case "cylinder":
@@ -84,30 +57,14 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.height, 1);
       api.def(opt.geometry.radiusSegments, 32);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.CylinderMesh(
         new THREE.CylinderGeometry(
           opt.geometry.radiusTop,
           opt.geometry.radiusBottom,
           opt.geometry.height,
           opt.geometry.radiusSegments
         ),
-      scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new CANNON.Cylinder(
-          opt.geometry.radiusTop,
-          opt.geometry.radiusBottom,
-          opt.geometry.height,
-          opt.geometry.radiusSegments
-        );
-
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.mass);
 
       break;
     case "dodecahedron":
@@ -115,22 +72,12 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.radius, 1);
       api.def(opt.geometry.detail, 0);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConvexMesh(
         new THREE.DodecahedronGeometry(
           opt.geometry.radius,
           opt.geometry.detail
         ),
-      scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.mass);
 
       break;
     case "extrude":
@@ -138,22 +85,12 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.shapes, []);
       api.def(opt.geometry.options, {});
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConvexMesh(
         new THREE.ExtrudeGeometry(
           opt.geometry.shapes,
           opt.geometry.options
         ),
-      scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.mass);
 
       break;
     case "icosahedron":
@@ -161,41 +98,21 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.radius, 1);
       api.def(opt.geometry.detail, 0);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConvexMesh(
         new THREE.IcosahedronGeometry(
           opt.geometry.radius,
           opt.geometry.detail
         ),
-      scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.mass);
 
       break;
     case "lathe":
 
       api.def(opt.geometry.points, []);
 
-      scope.visible = new THREE.Mesh(new THREE.LatheGeometry(
+      scope.visible = new Physijs.ConvexMesh(new THREE.LatheGeometry(
         opt.geometry.points
-      ), scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      ), scope.materialType, opt.mass);
 
       break;
     case "octahedron":
@@ -203,22 +120,12 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.radius, 1);
       api.def(opt.geometry.detail, 0);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConvexMesh(
         new THREE.OctahedronGeometry(
           opt.geometry.radius,
           opt.geometry.detail
         ),
-      scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.mass);
 
       break;
     case "parametric":
@@ -227,23 +134,13 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.slices, 10);
       api.def(opt.geometry.stacks, 10);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConvexMesh(
         new THREE.ParametricGeometry(
           opt.geometry.func,
           opt.geometry.slices,
           opt.geometry.stacks
         ),
-      scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.mass);
 
       break;
     case "plane":
@@ -253,23 +150,13 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.height, 10);
       api.def(opt.geometry.segments, 32);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConvexMesh(
         new THREE.PlaneBufferGeometry(
           opt.geometry.width,
           opt.geometry.height,
           opt.geometry.segments
         ),
-      scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.mass);
 
       break;
     case "polyhedron":
@@ -279,22 +166,12 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.radius, 1);
       api.def(opt.geometry.detail, 1);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConvexMesh(
         new THREE.PolyhedronGeometry(
           opt.geometry.verticesOfCube,
           opt.geometry.indicesOfFaces
         ),
-      scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new WHS.API.ConvexFigure(scope.visible.geometry);
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.mass);
 
       break;
     case "ring":
@@ -306,31 +183,13 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.thetaStart, 0);
       api.def(opt.geometry.thetaLength, Math.PI * 2);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConcaveMesh(
         new THREE.TorusGeometry(
           opt.geometry.outerRadius,
           (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2,
           opt.geometry.thetaSegments, opt.geometry.phiSegments
         ),
-      scope.materialType);
-
-      scope._scale.z =
-         4/(opt.geometry.outerRadius - opt.geometry.innerRadius);
-
-      if (!options.onlyvis) {
-        scope.physic = CANNON.Trimesh.createTorus(
-          opt.geometry.outerRadius,
-          (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2,
-          opt.geometry.thetaSegments, opt.geometry.phiSegments
-        );
-
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.mass);
 
       break;
     case "shape":
@@ -351,23 +210,12 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.radius, 1);
       api.def(opt.geometry.detail, 0);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConvexMesh(
         new THREE.TetrahedronGeometry(
           opt.geometry.radius,
           opt.geometry.detail
         ),
-      scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new WHS.API.ConvexFigure(this.visible.geometry);
-
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.mass);
 
       break;
     case "text":
@@ -385,23 +233,12 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.parameters.bevelThickness, 10);
       api.def(opt.geometry.parameters.bevelSize, 8);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConcaveMesh(
         new THREE.TextGeometry(
           opt.geometry.text,
           opt.geometry.parameters
         ),
-      scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
-
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.masss);
 
       break;
     case "torus":
@@ -412,7 +249,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.tubularSegments, 6);
       api.def(opt.geometry.arc, Math.PI * 2);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConcaveMesh(
         new THREE.TorusGeometry(
           opt.geometry.radius,
           opt.geometry.tube,
@@ -420,23 +257,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
           opt.geometry.tubularSegments,
           opt.geometry.arc
         ),
-      scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = CANNON.Trimesh.createTorus(
-          opt.geometry.radius,
-          opt.geometry.tube,
-          opt.geometry.radialSegments,
-          opt.geometry.tubularSegments
-        );
-
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.mass);
 
       break;
     case "torusknot":
@@ -447,7 +268,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.tubularSegments, 6);
       api.def(opt.geometry.arc, Math.PI * 2);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConcaveMesh(
         new THREE.TorusKnotGeometry(
           opt.geometry.radius,
           opt.geometry.tube,
@@ -457,17 +278,8 @@ WHS.init.prototype.addObject = function(figureType, options) {
           opt.geometry.q,
           opt.geometry.heightScale
         ),
-      scope.materialType);
+      scope.materialType, opt.mass);
 
-      if (!options.onlyvis) {
-        scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
       break;
     case "tube":
 
@@ -493,7 +305,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.radiusSegments, 8);
       api.def(opt.geometry.closed, false);
 
-      scope.visible = new THREE.Mesh(
+      scope.visible = new Physijs.ConcaveMesh(
         new THREE.TubeGeometry(
           opt.geometry.path,
           opt.geometry.segments,
@@ -501,17 +313,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
           opt.geometry.radiusSegments,
           opt.geometry.closed
         ),
-      scope.materialType);
-
-      if (!options.onlyvis) {
-        scope.physic = new WHS.API.TrimeshFigure(scope.visible.geometry);
-        scope.body = new CANNON.Body({
-          mass: opt.mass
-        });
-
-        scope.body.linearDamping = 0.9; // Default value.
-        scope.body.addShape(scope.physic);
-      }
+      scope.materialType, opt.masss);
 
       break;
   }

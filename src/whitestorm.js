@@ -257,7 +257,7 @@ WHS.init = function(params) {
        scope._stats.begin();
 
      // Merging data loop.
-     for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
+     /*for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
 
        if (!scope.modellingQueue[i]._onlyvis && !scope.modellingQueue[i].skip) {
 
@@ -271,7 +271,7 @@ WHS.init = function(params) {
        if (scope.modellingQueue[i].morph) {
          scope.modellingQueue[i].visible.mixer.update( clock.getDelta() );
        }
-     }
+     }*/
 
      scope.scene.simulate();
 
