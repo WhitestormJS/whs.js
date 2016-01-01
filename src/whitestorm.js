@@ -83,56 +83,19 @@ WHS.init = function(params) {
 
   this._settings = target;
 
-  this.scene = new THREE.Scene();
-  this.world = new CANNON.World();
+  Physijs.scripts.worker = '../libs/physijs_worker.js';
+  Physijs.scripts.ammo = '../libs/ammo.js';
 
-  this.world.gravity.set(params.gravity.x, params.gravity.y, params.gravity.z);
+  this.scene = new Physijs.Scene;
 
-  this.world.broadphase = new CANNON.NaiveBroadphase();
-
-  this.world.quatNormalizeSkip = target.physics.quatNormalizeSkip;
-  this.world.quatNormalizeFast = target.physics.quatNormalizeFast;
-
-  var solver = new CANNON.GSSolver();
-
-  this.world.defaultContactMaterial.contactEquationStiffness =
-    target.physics.defMaterial.contactEquationStiffness;
-  this.world.defaultContactMaterial.contactEquationRegularizationTime =
-    target.physics.defMaterial.contactEquationRegularizationTime;
-
-  solver.iterations = target.physics.solver.iterations;
-  solver.tolerance = target.physics.solver.tolerance;
-
-  this.world.solver = new CANNON.SplitSolver(solver);
-
-  var physicsMaterial = new CANNON.Material("slipperyMaterial");
-
-  var physicsContactMaterial = new CANNON.ContactMaterial(
-    physicsMaterial,
-    physicsMaterial,
-    0.0, // friction coefficient
-    0.3 // restitution
-  );
-
-  // We must add the contact materials to the world
-  this.world.addContactMaterial(physicsContactMaterial);
+  this.scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
 
   // DOM INIT
-
   var whselement = $('<div class="whs"></div>');
 
   target.container.append($(whselement));
 
-
-
-
   // Debug Renderer
-  if (target.helper) {
-    this._cannonDebugRenderer = new THREE.CannonDebugRenderer(
-      this.scene,
-      this.world
-    );
-  }
 
   if (target.stats) {
     this._stats = new Stats();
