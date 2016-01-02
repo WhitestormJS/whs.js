@@ -42,28 +42,6 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
       break;
 
-    case "infinitySmooth":
-
-      scope.visible = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(size.width, size.height, 1, 1),
-      scope.materialType);
-
-      scope._rot.set(-90 / 180 * Math.PI, 0, 0);
-      scope.physic = new CANNON.Plane(size.width, size.height);
-      scope.body = new CANNON.Body({
-        mass: 0
-      });
-      scope.body.linearDamping = 0.9; // Default value.
-      scope.body.addShape(scope.physic);
-      scope.body.position.set(posscopex, pos.y, pos.z);
-
-      scope.body.quaternion.setFromAxisAngle(
-        new CANNON.Vec3(1, 0, 0),
-        -Math.PI / 2
-      );
-      break;
-
-      // #TODO:80 Fix perfomance by saving terrain like threeJs object with options.
     case "terrain":
       //api.def(size.detality, 0);
 
@@ -183,11 +161,6 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
       geom.verticesNeedUpdate = true;
 
-      scope.visible = new THREE.Mesh(
-        geom,
-        material
-      );
-
       scope._rot.set(Math.PI / 180 * -90, 0, 0);
 
       var hgtdata = [], index = 0, i = 0; // new Array(256);
@@ -197,12 +170,17 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         hgtdata[x] = new Uint8Array(256);
 
         for (var y=255; y >= 0; y--) {
-          hgtdata[x][255-y] = ctx.getImageData(x, y, 1, 1).data[0]/255 * 100;
+          //hgtdata[x][255-y] = ctx.getImageData(x, y, 1, 1).data[0]/255 * 100;
           geom.vertices[index].z = imgdata[i]/255 * 100;
           i += 4;
           index++;
         }
       }
+
+      scope.visible = new Physijs.HeightfieldMesh(
+        geom,
+        Physijs.createMaterial(material, 0.8, 0.1)
+      );
 
 
       /*var height_img_data = ctx.getImageData(0, 0, 256, 256).data;
@@ -218,33 +196,12 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       //geom.computeTangents();
 
       scope.visible.updateMatrix();
-      scope.physic = new CANNON.Heightfield(
-        hgtdata,
-        {
-          elementSize: 1 // Distance between the data points in X and Y directions
-        }
-      );
-
-      scope.body = new CANNON.Body({
-        mass: 0
-      });
-
-      scope.body.linearDamping = 0.9; // Default value.
-      scope.body.addShape(scope.physic);
-
-      scope.body.quaternion.setFromEuler(Math.PI / 180 * -90, 0, 0, "XYZ");
-
-      scope.body.position.set(
-        pos.x - size.width / 2 + 0.5,
-        pos.y,
-        pos.z + size.height / 2 - 0.5
-      );
 
       scope.dtb = true;
 
       //scope.physic.scale.x = 256/250;
       //scope.physic.scale.z = 256/250;
-      scope.body.name = scope.name;
+      //scope.body.name = scope.name;
 
       scope.visible.castShadow = true;
       scope.visible.receiveShadow = true;

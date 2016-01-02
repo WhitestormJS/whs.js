@@ -378,14 +378,19 @@ THREE.BufferGeometryUtils = {
  * @author mrdoob / http://mrdoob.com/
  * @author schteppe / https://github.com/schteppe
  */
- var PointerLockControls = function ( camera, cannonBody, alpha, scope) {
+ var PointerLockControls = function ( camera, mesh, alpha, scope) {
+
+    console.log(mesh);
+    mesh.__dirtyPosition = true;
+
 	var alpha = alpha || 0.5;
     var eyeYPos = 10; // eyes are 2 meters above the ground
-    var velocityFactor = 0.1;
+    var velocityFactor = 0.05 * 20;
     var jumpVelocity = 10 * alpha;
     var runDelta = 1;
-    var goDelta = 2 * runDelta;
+    var goDelta = 0.25 * runDelta;
     var sScope = this;
+    var velocity = mesh.getLinearVelocity();
 
     var pitchObject = new THREE.Object3D();
     pitchObject.add( camera );
@@ -402,25 +407,18 @@ THREE.BufferGeometryUtils = {
     var moveRight = false;
 
     var canJump = false;
+    var jump = false;
 
-    var contactNormal = new CANNON.Vec3(); // Normal in the contact, pointing *out* of whatever the player touched
-    var upAxis = new CANNON.Vec3(0,1,0);
-    cannonBody.addEventListener("collide", function(e){
-        var contact = e.contact;
+    var contactNormal = new THREE.Vector3(); // Normal in the contact, pointing *out* of whatever the player touched
+    var upAxis = new THREE.Vector3(0,1,0);
 
-        // contact.bi and contact.bj are the colliding bodies, and contact.ni is the collision normal.
-        // We do not yet know which one is which! Let's check.
-        if(contact.bi.id == cannonBody.id)  // bi is the player body, flip the contact normal
-            contact.ni.negate(contactNormal);
-        else
-            contactNormal.copy(contact.ni); // bi is something else. Keep the normal as it is
+    mesh.addEventListener("collision", function(other_object, v, r, contactNormal){
+        //console.log(contactNormal.dot(upAxis) > 0.5);
 
         // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
-        if(contactNormal.dot(upAxis) > 0.5) // Use a "good" threshold value between 0 and 1 here!
+        if(contactNormal.dot(upAxis) < 0.5) // Use a "good" threshold value between 0 and 1 here!
             canJump = true;
     });
-
-    var velocity = cannonBody.velocity;
 
     var PI_2 = Math.PI / 2;
 
@@ -443,7 +441,7 @@ THREE.BufferGeometryUtils = {
     };
 
     var onMouseStop = function ( event ) {
-        scope.motionBlurEnable = true;
+
     }
 
     var onKeyDown = function ( event ) {
@@ -457,7 +455,8 @@ THREE.BufferGeometryUtils = {
 
             case 37: // left
             case 65: // a
-                moveLeft = true; break;
+                moveLeft = true; 
+                break;
 
             case 40: // down
             case 83: // s
@@ -470,15 +469,15 @@ THREE.BufferGeometryUtils = {
                 break;
 
             case 32: // space
-                if ( canJump === true ){
-                    velocity.y = jumpVelocity;
+                if ( canJump == true ){
+                    mesh.applyCentralImpulse(new THREE.Vector3(0, 50, 0));
                 }
                 canJump = false;
                 break;
 
             case 15: // shift
                 if ( canJump === true ){
-                    runDelta = 3;
+                    jump = true;
                 }
                 break;
         }
@@ -534,11 +533,16 @@ THREE.BufferGeometryUtils = {
     // Moves the camera to the Cannon.js object position and adds velocity to the object if the run key is down
     var inputVelocity = new THREE.Vector3();
     var euler = new THREE.Euler();
+
     this.update = function ( delta ) {
+
+        var moveVec = new THREE.Vector3();
 
         if ( sScope.enabled === false ) return;
 
         delta *= 0.03;
+        delta = Math.min(delta, 0.5);
+        console.log(delta);
 
         inputVelocity.set(0,0,0);
 
@@ -564,11 +568,9 @@ THREE.BufferGeometryUtils = {
         inputVelocity.applyQuaternion(quat);
         //quat.multiplyVector3(inputVelocity);
 
-        // Add to the object
-        velocity.x += inputVelocity.x;
-        velocity.z += inputVelocity.z;
+        mesh.applyCentralImpulse(new THREE.Vector3(inputVelocity.x, 0, inputVelocity.z));
 
-        yawObject.position.copy(cannonBody.position);
+        yawObject.position.copy(mesh.position);
     };
 };
 
@@ -3217,7 +3219,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
         opt.geometry.radius,
         opt.geometry.segmentA,
         opt.geometry.segmentB
-      ), scope.materialType, 3);
+      ), Physijs.createMaterial(scope.materialType, 1, 0.1), 1);
 
       break;
     case "cube":
@@ -3226,7 +3228,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.height, 1);
       api.def(opt.geometry.depth, 1);
 
-      scope.visible = new THREE.BoxMesh(new THREE.BoxGeometry(
+      scope.visible = new Physijs.BoxMesh(new THREE.BoxGeometry(
         opt.geometry.width,
         opt.geometry.height,
         opt.geometry.depth
@@ -3767,28 +3769,6 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
       break;
 
-    case "infinitySmooth":
-
-      scope.visible = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(size.width, size.height, 1, 1),
-      scope.materialType);
-
-      scope._rot.set(-90 / 180 * Math.PI, 0, 0);
-      scope.physic = new CANNON.Plane(size.width, size.height);
-      scope.body = new CANNON.Body({
-        mass: 0
-      });
-      scope.body.linearDamping = 0.9; // Default value.
-      scope.body.addShape(scope.physic);
-      scope.body.position.set(posscopex, pos.y, pos.z);
-
-      scope.body.quaternion.setFromAxisAngle(
-        new CANNON.Vec3(1, 0, 0),
-        -Math.PI / 2
-      );
-      break;
-
-      // #TODO:80 Fix perfomance by saving terrain like threeJs object with options.
     case "terrain":
       //api.def(size.detality, 0);
 
@@ -3908,11 +3888,6 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
       geom.verticesNeedUpdate = true;
 
-      scope.visible = new THREE.Mesh(
-        geom,
-        material
-      );
-
       scope._rot.set(Math.PI / 180 * -90, 0, 0);
 
       var hgtdata = [], index = 0, i = 0; // new Array(256);
@@ -3922,12 +3897,17 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         hgtdata[x] = new Uint8Array(256);
 
         for (var y=255; y >= 0; y--) {
-          hgtdata[x][255-y] = ctx.getImageData(x, y, 1, 1).data[0]/255 * 100;
+          //hgtdata[x][255-y] = ctx.getImageData(x, y, 1, 1).data[0]/255 * 100;
           geom.vertices[index].z = imgdata[i]/255 * 100;
           i += 4;
           index++;
         }
       }
+
+      scope.visible = new Physijs.HeightfieldMesh(
+        geom,
+        Physijs.createMaterial(material, 0.8, 0.1)
+      );
 
 
       /*var height_img_data = ctx.getImageData(0, 0, 256, 256).data;
@@ -3943,33 +3923,12 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       //geom.computeTangents();
 
       scope.visible.updateMatrix();
-      scope.physic = new CANNON.Heightfield(
-        hgtdata,
-        {
-          elementSize: 1 // Distance between the data points in X and Y directions
-        }
-      );
-
-      scope.body = new CANNON.Body({
-        mass: 0
-      });
-
-      scope.body.linearDamping = 0.9; // Default value.
-      scope.body.addShape(scope.physic);
-
-      scope.body.quaternion.setFromEuler(Math.PI / 180 * -90, 0, 0, "XYZ");
-
-      scope.body.position.set(
-        pos.x - size.width / 2 + 0.5,
-        pos.y,
-        pos.z + size.height / 2 - 0.5
-      );
 
       scope.dtb = true;
 
       //scope.physic.scale.x = 256/250;
       //scope.physic.scale.z = 256/250;
-      scope.body.name = scope.name;
+      //scope.body.name = scope.name;
 
       scope.visible.castShadow = true;
       scope.visible.receiveShadow = true;
@@ -4293,7 +4252,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, plc, jqselector) {
   'use strict';
 
   // #TODO:40 Clean up.
-  this.controls = new plc(this._camera, object.body, 10, this);
+  this.controls = new plc(this._camera, object.visible, 5, this);
 
   var controls = this.controls;
 

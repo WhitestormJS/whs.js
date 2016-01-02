@@ -34,7 +34,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
         opt.geometry.radius,
         opt.geometry.segmentA,
         opt.geometry.segmentB
-      ), scope.materialType, 3);
+      ), Physijs.createMaterial(scope.materialType, 1, 0.1), 1);
 
       break;
     case "cube":
@@ -43,7 +43,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.height, 1);
       api.def(opt.geometry.depth, 1);
 
-      scope.visible = new THREE.BoxMesh(new THREE.BoxGeometry(
+      scope.visible = new Physijs.BoxMesh(new THREE.BoxGeometry(
         opt.geometry.width,
         opt.geometry.height,
         opt.geometry.depth
