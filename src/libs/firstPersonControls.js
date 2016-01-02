@@ -2,14 +2,19 @@
  * @author mrdoob / http://mrdoob.com/
  * @author schteppe / https://github.com/schteppe
  */
- var PointerLockControls = function ( camera, cannonBody, alpha, scope) {
+ var PointerLockControls = function ( camera, mesh, alpha, scope) {
+
+    console.log(mesh);
+    mesh.__dirtyPosition = true;
+
 	var alpha = alpha || 0.5;
     var eyeYPos = 10; // eyes are 2 meters above the ground
-    var velocityFactor = 0.1;
+    var velocityFactor = 0.05 * 20;
     var jumpVelocity = 10 * alpha;
     var runDelta = 1;
-    var goDelta = 2 * runDelta;
+    var goDelta = 0.25 * runDelta;
     var sScope = this;
+    var velocity = mesh.getLinearVelocity();
 
     var pitchObject = new THREE.Object3D();
     pitchObject.add( camera );
@@ -26,25 +31,18 @@
     var moveRight = false;
 
     var canJump = false;
+    var jump = false;
 
-    var contactNormal = new CANNON.Vec3(); // Normal in the contact, pointing *out* of whatever the player touched
-    var upAxis = new CANNON.Vec3(0,1,0);
-    cannonBody.addEventListener("collide", function(e){
-        var contact = e.contact;
+    var contactNormal = new THREE.Vector3(); // Normal in the contact, pointing *out* of whatever the player touched
+    var upAxis = new THREE.Vector3(0,1,0);
 
-        // contact.bi and contact.bj are the colliding bodies, and contact.ni is the collision normal.
-        // We do not yet know which one is which! Let's check.
-        if(contact.bi.id == cannonBody.id)  // bi is the player body, flip the contact normal
-            contact.ni.negate(contactNormal);
-        else
-            contactNormal.copy(contact.ni); // bi is something else. Keep the normal as it is
+    mesh.addEventListener("collision", function(other_object, v, r, contactNormal){
+        //console.log(contactNormal.dot(upAxis) > 0.5);
 
         // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
-        if(contactNormal.dot(upAxis) > 0.5) // Use a "good" threshold value between 0 and 1 here!
+        if(contactNormal.dot(upAxis) < 0.5) // Use a "good" threshold value between 0 and 1 here!
             canJump = true;
     });
-
-    var velocity = cannonBody.velocity;
 
     var PI_2 = Math.PI / 2;
 
@@ -67,7 +65,7 @@
     };
 
     var onMouseStop = function ( event ) {
-        scope.motionBlurEnable = true;
+
     }
 
     var onKeyDown = function ( event ) {
@@ -81,7 +79,8 @@
 
             case 37: // left
             case 65: // a
-                moveLeft = true; break;
+                moveLeft = true; 
+                break;
 
             case 40: // down
             case 83: // s
@@ -94,15 +93,15 @@
                 break;
 
             case 32: // space
-                if ( canJump === true ){
-                    velocity.y = jumpVelocity;
+                if ( canJump == true ){
+                    mesh.applyCentralImpulse(new THREE.Vector3(0, 50, 0));
                 }
                 canJump = false;
                 break;
 
             case 15: // shift
                 if ( canJump === true ){
-                    runDelta = 3;
+                    jump = true;
                 }
                 break;
         }
@@ -158,11 +157,16 @@
     // Moves the camera to the Cannon.js object position and adds velocity to the object if the run key is down
     var inputVelocity = new THREE.Vector3();
     var euler = new THREE.Euler();
+
     this.update = function ( delta ) {
+
+        var moveVec = new THREE.Vector3();
 
         if ( sScope.enabled === false ) return;
 
         delta *= 0.03;
+        delta = Math.min(delta, 0.5);
+        console.log(delta);
 
         inputVelocity.set(0,0,0);
 
@@ -188,10 +192,8 @@
         inputVelocity.applyQuaternion(quat);
         //quat.multiplyVector3(inputVelocity);
 
-        // Add to the object
-        velocity.x += inputVelocity.x;
-        velocity.z += inputVelocity.z;
+        mesh.applyCentralImpulse(new THREE.Vector3(inputVelocity.x, 0, inputVelocity.z));
 
-        yawObject.position.copy(cannonBody.position);
+        yawObject.position.copy(mesh.position);
     };
 };
