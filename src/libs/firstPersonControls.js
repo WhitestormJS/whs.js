@@ -94,7 +94,7 @@
 
             case 32: // space
                 if ( canJump == true ){
-                    mesh.applyCentralImpulse(new THREE.Vector3(0, 50, 0));
+                    mesh.applyCentralImpulse(new THREE.Vector3(0, 30, 0));
                 }
                 canJump = false;
                 break;
@@ -164,9 +164,9 @@
 
         if ( sScope.enabled === false ) return;
 
-        delta *= 0.03;
+        delta = 0.5;
         delta = Math.min(delta, 0.5);
-        console.log(delta);
+        //console.log(delta);
 
         inputVelocity.set(0,0,0);
 
@@ -193,6 +193,8 @@
         //quat.multiplyVector3(inputVelocity);
 
         mesh.applyCentralImpulse(new THREE.Vector3(inputVelocity.x, 0, inputVelocity.z));
+        mesh.setAngularVelocity(new THREE.Vector3(inputVelocity.z * 10, 0, -inputVelocity.x * 10));
+        mesh.setAngularFactor(new THREE.Vector3(0, 0, 0));
 
         yawObject.position.copy(mesh.position);
     };

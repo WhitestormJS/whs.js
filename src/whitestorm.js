@@ -255,26 +255,16 @@ WHS.init = function(params) {
        scope._stats.begin();
 
      // Merging data loop.
-     /*for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
-
-       if (!scope.modellingQueue[i]._onlyvis && !scope.modellingQueue[i].skip) {
-
-         scope.modellingQueue[i].visible.position.copy(scope.modellingQueue[i].body.position);
-
-         if (scope.modellingQueue[i].visible.quaternion)
-           scope.modellingQueue[i].visible.quaternion.copy(scope.modellingQueue[i].body.quaternion);
-
-       }
-
+     for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
        if (scope.modellingQueue[i].morph) {
          scope.modellingQueue[i].visible.mixer.update( clock.getDelta() );
        }
-     }*/
+     }
 
      scope.scene.simulate();
 
-     if (scope._settings.anaglyph)
-       scope.effect.render(scope.scene, scope._camera);
+     //if (scope._settings.anaglyph)
+       //scope.effect.render(scope.scene, scope._camera);
 
      // Controls.
      if (scope.controls) {
@@ -299,10 +289,10 @@ WHS.init = function(params) {
      if (scope._stats)
        scope._stats.end();
 
-     WHS.plugins.queue.forEach( function(loop) {
+     /*WHS.plugins.queue.forEach( function(loop) {
       if(loop.enabled)
         loop.func(time);
-     });
+     });*/
    }
 
    this.update = reDraw;
