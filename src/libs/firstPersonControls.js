@@ -3,8 +3,6 @@
  * @author schteppe / https://github.com/schteppe
  */
  var PointerLockControls = function ( camera, mesh, alpha, scope) {
-
-    console.log(mesh);
     mesh.__dirtyPosition = true;
 
 	var alpha = alpha || 0.5;
@@ -63,10 +61,6 @@
 
         pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, pitchObject.rotation.x ) );
     };
-
-    var onMouseStop = function ( event ) {
-
-    }
 
     var onKeyDown = function ( event ) {
 
@@ -139,9 +133,6 @@
     document.body.addEventListener( 'mousemove', onMouseMove, false );
     document.body.addEventListener( 'keydown', onKeyDown, false );
     document.body.addEventListener( 'keyup', onKeyUp, false );
-
-    //$("body").on( 'mousemove', onMouseMove, false );
-    $(document).mousestop(100, onMouseStop);
 
     this.enabled = false;
 
