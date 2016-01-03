@@ -470,7 +470,7 @@ THREE.BufferGeometryUtils = {
 
             case 32: // space
                 if ( canJump == true ){
-                    mesh.applyCentralImpulse(new THREE.Vector3(0, 50, 0));
+                    mesh.applyCentralImpulse(new THREE.Vector3(0, 30, 0));
                 }
                 canJump = false;
                 break;
@@ -540,9 +540,9 @@ THREE.BufferGeometryUtils = {
 
         if ( sScope.enabled === false ) return;
 
-        delta *= 0.03;
+        delta = 0.5;
         delta = Math.min(delta, 0.5);
-        console.log(delta);
+        //console.log(delta);
 
         inputVelocity.set(0,0,0);
 
@@ -569,6 +569,8 @@ THREE.BufferGeometryUtils = {
         //quat.multiplyVector3(inputVelocity);
 
         mesh.applyCentralImpulse(new THREE.Vector3(inputVelocity.x, 0, inputVelocity.z));
+        mesh.setAngularVelocity(new THREE.Vector3(inputVelocity.z * 10, 0, -inputVelocity.x * 10));
+        mesh.setAngularFactor(new THREE.Vector3(0, 0, 0));
 
         yawObject.position.copy(mesh.position);
     };
@@ -3038,26 +3040,16 @@ WHS.init = function(params) {
        scope._stats.begin();
 
      // Merging data loop.
-     /*for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
-
-       if (!scope.modellingQueue[i]._onlyvis && !scope.modellingQueue[i].skip) {
-
-         scope.modellingQueue[i].visible.position.copy(scope.modellingQueue[i].body.position);
-
-         if (scope.modellingQueue[i].visible.quaternion)
-           scope.modellingQueue[i].visible.quaternion.copy(scope.modellingQueue[i].body.quaternion);
-
-       }
-
+     for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
        if (scope.modellingQueue[i].morph) {
          scope.modellingQueue[i].visible.mixer.update( clock.getDelta() );
        }
-     }*/
+     }
 
      scope.scene.simulate();
 
-     if (scope._settings.anaglyph)
-       scope.effect.render(scope.scene, scope._camera);
+     //if (scope._settings.anaglyph)
+       //scope.effect.render(scope.scene, scope._camera);
 
      // Controls.
      if (scope.controls) {
@@ -3082,10 +3074,10 @@ WHS.init = function(params) {
      if (scope._stats)
        scope._stats.end();
 
-     WHS.plugins.queue.forEach( function(loop) {
+     /*WHS.plugins.queue.forEach( function(loop) {
       if(loop.enabled)
         loop.func(time);
-     });
+     });*/
    }
 
    this.update = reDraw;
@@ -3205,7 +3197,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
   opt.geometry = options.geometryOptions || {};
 
-  opt.mass = options.onlyvis ? opt.mass :
+  opt.mass = options.onlyvis ? opt.mass : 1;
 
   scope.materialType = api.loadMaterial(options.materialOptions)._material;
 

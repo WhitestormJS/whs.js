@@ -20,7 +20,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
   opt.geometry = options.geometryOptions || {};
 
-  opt.mass = options.onlyvis ? opt.mass :
+  opt.mass = options.onlyvis ? opt.mass : 1;
 
   scope.materialType = api.loadMaterial(options.materialOptions)._material;
 
