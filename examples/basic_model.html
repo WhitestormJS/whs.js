@@ -6,7 +6,7 @@
   <title>WhitestormJS development</title>
   <script src="../libs/jquery-1.11.1.min.js"></script>
   <script src="../libs/three.js"></script>
-  <script src="../libs/cannon.js"></script>
+  <script src="../libs/physi.js"></script>
   <script src="../libs/Wagner.js"></script>
   <script src="../libs/Wagner.base.js"></script>
   <script src="plugins/whs.preload.js"></script>
@@ -119,11 +119,11 @@ GAME.sphere = GAME.addObject("sphere", {
   },
   mass: 5,
   pos: {
-    x: 0,
+    x: 1,
     y: 300,
-    z: 0
+    z: 1
   }
-})
+});
 
 
 GAME.ground = GAME.addGround("smooth",

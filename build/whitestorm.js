@@ -379,8 +379,6 @@ THREE.BufferGeometryUtils = {
  * @author schteppe / https://github.com/schteppe
  */
  var PointerLockControls = function ( camera, mesh, alpha, scope) {
-
-    console.log(mesh);
     mesh.__dirtyPosition = true;
 
 	var alpha = alpha || 0.5;
@@ -439,10 +437,6 @@ THREE.BufferGeometryUtils = {
 
         pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, pitchObject.rotation.x ) );
     };
-
-    var onMouseStop = function ( event ) {
-
-    }
 
     var onKeyDown = function ( event ) {
 
@@ -515,9 +509,6 @@ THREE.BufferGeometryUtils = {
     document.body.addEventListener( 'mousemove', onMouseMove, false );
     document.body.addEventListener( 'keydown', onKeyDown, false );
     document.body.addEventListener( 'keyup', onKeyUp, false );
-
-    //$("body").on( 'mousemove', onMouseMove, false );
-    $(document).mousestop(100, onMouseStop);
 
     this.enabled = false;
 
@@ -3108,26 +3099,12 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
 
   //(new THREE.JSONLoader())
   api.JSONLoader().load(pathToModel, function(data) {
-    data.computeFaceNormals();
-    data.computeVertexNormals();
+    //data.computeFaceNormals();
+    //data.computeVertexNormals();
 
     // Visualization.
-    scope.visible = new THREE.Mesh(data, scope.materialType);
-
-
-    // Physics.
-    if (!options.onlyvis) {
-      scope.physic = new WHS.API.TrimeshFigure(data);
-
-      scope.body = new CANNON.Body({
-        mass: options.mass
-      });
-
-      scope.body.linearDamping = 0.9; //default
-      scope.body.addShape(scope.physic);
-
-      scope.body.name = scope.name;
-    }
+    scope.visible = new Physijs.ConcaveMesh(data, scope.materialType, options.mass);
+    console.log(scope.visible);
 
     scope.build();
     scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
