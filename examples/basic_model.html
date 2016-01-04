@@ -79,12 +79,12 @@ var GAME = new WHS.init(
     autoresize: true,
     gravity: {
         x: 0,
-        y: -200,
+        y: -10,
         z: 0
     },
     camera: {
         far: 10000,
-        y: 50,
+        y: 100,
         z: 300
     }
 });
@@ -93,7 +93,7 @@ preloader.start(GAME);
 
 GAME.teapot = GAME.addModel("../assets/models/teapot.js",
 {
-    mass: 10,
+    mass: 1,
     onlyvis: false,
     materialOptions: {
         vertexColors: THREE.VertexColors,
@@ -117,11 +117,11 @@ GAME.sphere = GAME.addObject("sphere", {
     kind: "basic",
     color: 0xff0000
   },
-  mass: 5,
+  mass: 10,
   pos: {
-    x: 1,
-    y: 300,
-    z: 1
+    x: 35,
+    y: 50,
+    z: 0
   }
 });
 
@@ -157,7 +157,13 @@ GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
     z: 0
 });
 
+GAME.teapot._state.done(function() {
+  console.log("da");
+});
+
 GAME.OrbitControls();
+
+GAME.start();
 
 preloader.end();
 

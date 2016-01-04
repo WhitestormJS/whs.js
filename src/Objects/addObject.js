@@ -34,7 +34,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
         opt.geometry.radius,
         opt.geometry.segmentA,
         opt.geometry.segmentB
-      ), Physijs.createMaterial(scope.materialType, 1, 0.1), 1);
+      ), Physijs.createMaterial(scope.materialType, 1, 0), 10);
 
       break;
     case "cube":
@@ -268,7 +268,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.tubularSegments, 6);
       api.def(opt.geometry.arc, Math.PI * 2);
 
-      scope.visible = new Physijs.ConcaveMesh(
+      scope.visible = new Physijs.ConvexMesh(
         new THREE.TorusKnotGeometry(
           opt.geometry.radius,
           opt.geometry.tube,

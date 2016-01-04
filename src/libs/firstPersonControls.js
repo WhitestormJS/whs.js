@@ -3,7 +3,7 @@
  * @author schteppe / https://github.com/schteppe
  */
  var PointerLockControls = function ( camera, mesh, alpha, scope) {
-    mesh.__dirtyPosition = true;
+    //mesh.__dirtyPosition = true;
 
 	var alpha = alpha || 0.5;
     var eyeYPos = 10; // eyes are 2 meters above the ground
@@ -35,6 +35,8 @@
     var upAxis = new THREE.Vector3(0,1,0);
 
     mesh.addEventListener("collision", function(other_object, v, r, contactNormal){
+        console.log(contactNormal.dot(upAxis) < 0.5);
+
         //console.log(contactNormal.dot(upAxis) > 0.5);
 
         // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
@@ -88,7 +90,7 @@
 
             case 32: // space
                 if ( canJump == true ){
-                    mesh.applyCentralImpulse(new THREE.Vector3(0, 30, 0));
+                    mesh.applyCentralImpulse(new THREE.Vector3(0, 300, 0));
                 }
                 canJump = false;
                 break;
@@ -183,7 +185,7 @@
         inputVelocity.applyQuaternion(quat);
         //quat.multiplyVector3(inputVelocity);
 
-        mesh.applyCentralImpulse(new THREE.Vector3(inputVelocity.x, 0, inputVelocity.z));
+        mesh.applyCentralImpulse(new THREE.Vector3(inputVelocity.x * 10, 0, inputVelocity.z * 10));
         mesh.setAngularVelocity(new THREE.Vector3(inputVelocity.z * 10, 0, -inputVelocity.x * 10));
         mesh.setAngularFactor(new THREE.Vector3(0, 0, 0));
 

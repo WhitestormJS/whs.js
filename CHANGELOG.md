@@ -22,6 +22,8 @@
 - New example (`examples/skybox.html`).
 - Added `whs.preloader` plugin.
 - Skybox added to fps example.
+- ** CannonJS changed to PhysiJS(ammo.js version) **
+- Removed example (`examples/basic_object.html`).
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.

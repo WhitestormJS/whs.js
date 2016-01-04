@@ -80,6 +80,8 @@ WHS.API.construct = function (root, params, type) {
 
   Object.assign(this, scope);
 
+  root.children.push(scope);
+
   return this;
 }
 

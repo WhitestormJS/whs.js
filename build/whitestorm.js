@@ -175,18 +175,6 @@ THREE.AnaglyphEffect = function ( renderer, width, height ) {
 };
 
 /**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * @author mrdoob / http://mrdoob.com/
  */
 
@@ -379,7 +367,7 @@ THREE.BufferGeometryUtils = {
  * @author schteppe / https://github.com/schteppe
  */
  var PointerLockControls = function ( camera, mesh, alpha, scope) {
-    mesh.__dirtyPosition = true;
+    //mesh.__dirtyPosition = true;
 
 	var alpha = alpha || 0.5;
     var eyeYPos = 10; // eyes are 2 meters above the ground
@@ -411,6 +399,8 @@ THREE.BufferGeometryUtils = {
     var upAxis = new THREE.Vector3(0,1,0);
 
     mesh.addEventListener("collision", function(other_object, v, r, contactNormal){
+        console.log(contactNormal.dot(upAxis) < 0.5);
+
         //console.log(contactNormal.dot(upAxis) > 0.5);
 
         // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
@@ -464,7 +454,7 @@ THREE.BufferGeometryUtils = {
 
             case 32: // space
                 if ( canJump == true ){
-                    mesh.applyCentralImpulse(new THREE.Vector3(0, 30, 0));
+                    mesh.applyCentralImpulse(new THREE.Vector3(0, 300, 0));
                 }
                 canJump = false;
                 break;
@@ -559,7 +549,7 @@ THREE.BufferGeometryUtils = {
         inputVelocity.applyQuaternion(quat);
         //quat.multiplyVector3(inputVelocity);
 
-        mesh.applyCentralImpulse(new THREE.Vector3(inputVelocity.x, 0, inputVelocity.z));
+        mesh.applyCentralImpulse(new THREE.Vector3(inputVelocity.x * 10, 0, inputVelocity.z * 10));
         mesh.setAngularVelocity(new THREE.Vector3(inputVelocity.z * 10, 0, -inputVelocity.x * 10));
         mesh.setAngularFactor(new THREE.Vector3(0, 0, 0));
 
@@ -638,6 +628,7 @@ THREE.BufferGeometryUtils = {
         };
     }
 })(jQuery);
+function Events(n){var t={},f=[];n=n||this,n.on=function(n,f,i){(t[n]=t[n]||[]).push([f,i])},n.off=function(n,i){n||(t={});for(var o=t[n]||f,c=o.length=i?o.length:0;c--;)i==o[c][0]&&o.splice(c,1)},n.emit=function(n){for(var i,o=t[n]||f,c=0;i=o[c++];)i[0].apply(i[1],f.slice.call(arguments,1))}}
 /**
  * @author qiao / https://github.com/qiao
  * @author mrdoob / http://mrdoob.com
@@ -2060,6 +2051,8 @@ WHS.API.construct = function (root, params, type) {
 
   Object.assign(this, scope);
 
+  root.children.push(scope);
+
   return this;
 }
 
@@ -2655,7 +2648,6 @@ WHS.API.Wrap = function (SCOPE, mesh, body) {
     if (this._object) api.merge(this._scope.root.world, this._object);
 
     this._scope.root.modellingQueue.push(this._scope);
-    this._scope.root.children.push(this._scope);
   }
   catch(err) {
     console.error(err.message);
@@ -2663,7 +2655,14 @@ WHS.API.Wrap = function (SCOPE, mesh, body) {
     this._scope.__deferred.reject();
   }
   finally {
-    this._scope.__deferred.resolve();
+    if (this._scope._wait) {
+      var sc = this;
+      sc._figure.addEventListener('ready', function() {
+        sc._scope.__deferred.resolve();
+      });
+    } else {
+      this._scope.__deferred.resolve();
+    }
   }
 
   return this;
@@ -2984,8 +2983,6 @@ WHS.init = function(params) {
   // NOTE: ==================== Autoresize. ======================
   var scope = this;
 
-  scope.animate(null, scope);
-
   if (target.autoresize)
     $(window).on('load resize', function() {
       scope._camera.aspect = window.innerWidth / window.innerHeight;
@@ -3017,12 +3014,18 @@ WHS.init = function(params) {
 /**
  * ANIMATE.
  */
- WHS.init.prototype.animate = function(time, scope) {
+ WHS.init.prototype.start = function() {
    'use strict';
 
    var clock = new THREE.Clock();
+   var scope = this;
+   scope._events = new Events();
 
-   function reDraw() {
+   scope._events.on("ready", function() {
+    scope.update();
+   })
+
+   function reDraw(time) {
 
      requestAnimationFrame(reDraw);
 
@@ -3065,15 +3068,32 @@ WHS.init = function(params) {
      if (scope._stats)
        scope._stats.end();
 
-     /*WHS.plugins.queue.forEach( function(loop) {
+     WHS.plugins.queue.forEach( function(loop) {
       if(loop.enabled)
         loop.func(time);
-     });*/
+     });
    }
 
    this.update = reDraw;
 
-   this.update();
+   /* Events */
+
+   scope._queue = [];
+   scope._ready = [];
+
+   scope.children.forEach(function(object) {
+     scope._queue.push(object);
+   });
+
+   scope.children.forEach(function(object) {
+     object._state.done(function() {
+       scope._ready.push(object);
+ 
+       if(scope._queue.length == scope._ready.length) {
+         scope._events.emit("ready");
+       }
+     });
+   });
  }
 
 /**
@@ -3099,15 +3119,26 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
 
   //(new THREE.JSONLoader())
   api.JSONLoader().load(pathToModel, function(data) {
-    //data.computeFaceNormals();
-    //data.computeVertexNormals();
+    data.computeFaceNormals();
+    data.computeVertexNormals();
 
     // Visualization.
     scope.visible = new Physijs.ConcaveMesh(data, scope.materialType, options.mass);
-    console.log(scope.visible);
+    scope._wait = true;
+
+    /*scope.visible.addEventListener('ready', function() {
+      console.log("ready");
+
+      scope.visible.__dirtyPosition = true;
+
+      scope.visible.position.set(0, 100, 0);
+      scope.visible.rotation.set(0, 0, 0);
+      scope.visible.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+
+    } );*/
 
     scope.build();
-    scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
+    scope.wrap = new api.Wrap(scope, scope.visible);
 
   });
 
@@ -3188,7 +3219,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
         opt.geometry.radius,
         opt.geometry.segmentA,
         opt.geometry.segmentB
-      ), Physijs.createMaterial(scope.materialType, 1, 0.1), 1);
+      ), Physijs.createMaterial(scope.materialType, 1, 0), 10);
 
       break;
     case "cube":
@@ -3422,7 +3453,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
       api.def(opt.geometry.tubularSegments, 6);
       api.def(opt.geometry.arc, Math.PI * 2);
 
-      scope.visible = new Physijs.ConcaveMesh(
+      scope.visible = new Physijs.ConvexMesh(
         new THREE.TorusKnotGeometry(
           opt.geometry.radius,
           opt.geometry.tube,
@@ -3730,11 +3761,13 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
   switch (type) {
     case "smooth":
 
-      scope.visible = new Physijs.PlaneMesh(
-        new THREE.PlaneGeometry(size.width, size.height, 1, 1),
-      scope.materialType, 0);
+      //scope.visible = new Physijs.PlaneMesh(
+        //new THREE.PlaneGeometry(size.width, size.height, 1, 1),
+      //scope.materialType, 0);
 
-      scope._rot.set(-90 / 180 * Math.PI, 0, 0);
+      scope.visible = new Physijs.BoxMesh( new THREE.BoxGeometry(size.width, 1, size.height), scope.materialType, 0);
+
+      //scope._rot.set(-90 / 180 * Math.PI, 0, 0);
 
       break;
 

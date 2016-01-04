@@ -208,8 +208,6 @@ WHS.init = function(params) {
   // NOTE: ==================== Autoresize. ======================
   var scope = this;
 
-  scope.animate(null, scope);
-
   if (target.autoresize)
     $(window).on('load resize', function() {
       scope._camera.aspect = window.innerWidth / window.innerHeight;
@@ -241,12 +239,18 @@ WHS.init = function(params) {
 /**
  * ANIMATE.
  */
- WHS.init.prototype.animate = function(time, scope) {
+ WHS.init.prototype.start = function() {
    'use strict';
 
    var clock = new THREE.Clock();
+   var scope = this;
+   scope._events = new Events();
 
-   function reDraw() {
+   scope._events.on("ready", function() {
+    scope.update();
+   })
+
+   function reDraw(time) {
 
      requestAnimationFrame(reDraw);
 
@@ -289,13 +293,30 @@ WHS.init = function(params) {
      if (scope._stats)
        scope._stats.end();
 
-     /*WHS.plugins.queue.forEach( function(loop) {
+     WHS.plugins.queue.forEach( function(loop) {
       if(loop.enabled)
         loop.func(time);
-     });*/
+     });
    }
 
    this.update = reDraw;
 
-   this.update();
+   /* Events */
+
+   scope._queue = [];
+   scope._ready = [];
+
+   scope.children.forEach(function(object) {
+     scope._queue.push(object);
+   });
+
+   scope.children.forEach(function(object) {
+     object._state.done(function() {
+       scope._ready.push(object);
+ 
+       if(scope._queue.length == scope._ready.length) {
+         scope._events.emit("ready");
+       }
+     });
+   });
  }
