@@ -34,11 +34,13 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
   switch (type) {
     case "smooth":
 
-      scope.visible = new Physijs.PlaneMesh(
-        new THREE.PlaneGeometry(size.width, size.height, 1, 1),
-      scope.materialType, 0);
+      //scope.visible = new Physijs.PlaneMesh(
+        //new THREE.PlaneGeometry(size.width, size.height, 1, 1),
+      //scope.materialType, 0);
 
-      scope._rot.set(-90 / 180 * Math.PI, 0, 0);
+      scope.visible = new Physijs.BoxMesh( new THREE.BoxGeometry(size.width, 1, size.height), scope.materialType, 0);
+
+      //scope._rot.set(-90 / 180 * Math.PI, 0, 0);
 
       break;
 

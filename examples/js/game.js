@@ -169,4 +169,6 @@
     }
   }*/
 
+  GAME.start();
+
   preloader.end();

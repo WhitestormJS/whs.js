@@ -6,7 +6,7 @@
   <title>WhitestormJS development</title>
   <script src="../libs/jquery-1.11.1.min.js"></script>
   <script src="../libs/three.js"></script>
-  <script src="../libs/cannon.js"></script>
+  <script src="../libs/physi.js"></script>
   <script src="../libs/Wagner.js"></script>
   <script src="../libs/Wagner.base.js"></script>
 
@@ -81,7 +81,7 @@ var GAME = new WHS.init(
     autoresize: true,
     gravity: {
         x: 0,
-        y: -200,
+        y: -100,
         z: 0
     },
     camera: {
@@ -104,8 +104,8 @@ GAME.torusknot = GAME.addObject("torusknot",
     materialOptions: {
         vertexColors: THREE.VertexColors,
         shading: THREE.SmoothShading,
-        map: api.texture('../assets/textures/backgrounddetailed6.jpg'),
-        type: "phong"
+        map: api.texture('../assets/textures/bricks.jpg'),
+        kind: "phong"
     },
     pos: {
         x: 0,
@@ -120,11 +120,9 @@ GAME.ground = GAME.addGround("smooth",
     height: 250
 },
 {
-        //color: 0x000000,
-        vertexColors: THREE.VertexColors,
+        color: 0x0000ff,
         shading: THREE.SmoothShading,
-        map: api.texture('../textures/grasslight-big.jpg'),
-        type: "basic"
+        kind: "basic"
 },
 {
     x: 0,
@@ -147,6 +145,8 @@ GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
 
 
 GAME.OrbitControls();
+
+GAME.start();
 
 preloader.end();
 

@@ -18,7 +18,6 @@ WHS.API.Wrap = function (SCOPE, mesh, body) {
     if (this._object) api.merge(this._scope.root.world, this._object);
 
     this._scope.root.modellingQueue.push(this._scope);
-    this._scope.root.children.push(this._scope);
   }
   catch(err) {
     console.error(err.message);
@@ -26,7 +25,14 @@ WHS.API.Wrap = function (SCOPE, mesh, body) {
     this._scope.__deferred.reject();
   }
   finally {
-    this._scope.__deferred.resolve();
+    if (this._scope._wait) {
+      var sc = this;
+      sc._figure.addEventListener('ready', function() {
+        sc._scope.__deferred.resolve();
+      });
+    } else {
+      this._scope.__deferred.resolve();
+    }
   }
 
   return this;
