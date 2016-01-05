@@ -6,7 +6,7 @@
   <title>WhitestormJS development</title>
   <script src="../libs/jquery-1.11.1.min.js"></script>
   <script src="../libs/three.js"></script>
-  <script src="../libs/cannon.js"></script>
+  <script src="../libs/physi.js"></script>
   <script src="../libs/Wagner.js"></script>
   <script src="../libs/Wagner.base.js"></script>
   <script src="plugins/whs.preload.js"></script>
@@ -79,12 +79,12 @@ var GAME = new WHS.init(
     autoresize: true,
     gravity: {
         x: 0,
-        y: -200,
+        y: -10,
         z: 0
     },
     camera: {
         far: 10000,
-        y: 50,
+        y: 100,
         z: 300
     }
 });
@@ -93,7 +93,7 @@ preloader.start(GAME);
 
 GAME.teapot = GAME.addModel("../assets/models/teapot.js",
 {
-    mass: 10,
+    mass: 1,
     onlyvis: false,
     materialOptions: {
         vertexColors: THREE.VertexColors,
@@ -110,20 +110,20 @@ GAME.teapot = GAME.addModel("../assets/models/teapot.js",
 
 GAME.sphere = GAME.addObject("sphere", {
   geometryOptions: {
-    radius: 5
+    radius: 1
   },
   onlyvis: false,
   materialOptions: {
     kind: "basic",
     color: 0xff0000
   },
-  mass: 5,
+  mass: 10,
   pos: {
-    x: 0,
-    y: 300,
+    x: 45,
+    y: 250,
     z: 0
   }
-})
+});
 
 
 GAME.ground = GAME.addGround("smooth",
@@ -157,7 +157,13 @@ GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
     z: 0
 });
 
+GAME.teapot._state.done(function() {
+  console.log("da");
+});
+
 GAME.OrbitControls();
+
+GAME.start();
 
 preloader.end();
 

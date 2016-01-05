@@ -57,7 +57,7 @@
     z: 160, // 100
   }, {
     x: 0,
-    y: 100,
+    y: 10,
     z: 0
   });
 
@@ -98,7 +98,7 @@
           height: 2,
           depth: 2
       },
-      mass: 5,
+      mass: 1,
       onlyvis: false,
       materialOptions: {
           color: 0xffffff,
@@ -106,8 +106,8 @@
           map: WHS.API.texture('assets/textures/box.jpg')
       },
       pos: {
-          x: 60,
-          y: 370,
+          x: 50,
+          y: 70,
           z: 60
       }
   });
@@ -119,7 +119,7 @@
           height: 2,
           depth: 2
       },
-      mass: 5,
+      mass: 1,
       onlyvis: false,
       materialOptions: {
           color: 0xffffff,
@@ -128,24 +128,26 @@
       },
       pos: {
           x: 60,
-          y: 400,
+          y: 70,
           z: 0
       }
   });
 
   GAME.person = GAME.addObject("sphere", {
     geometryOptions: {
-      radius: 3
+      radius: 2
     },
-    mass: 10,
+    mass: 100,
     onlyvis: false,
     materialOptions: {
       color: 0xffffff,
-      kind: "lambert"
+      kind: "lambert",
+      rest: 0,
+      fri: 1
     },
     pos: {
       x: 0,
-      y: 400,
+      y: 100,
       z: 0
     }
   });
@@ -155,7 +157,10 @@
   GAME.multipassEffect = GAME.addWagner(WAGNER, "vignettePass", {}).apply();
   GAME.directionalblurEffect = GAME.addWagner(WAGNER, "motionBlurPass", {}).apply();
 
-  GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
+  GAME.MakeFirstPerson(GAME.person, { // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
+   block: $('#blocker'),
+   speed: 5 // 5
+  });
 
   /*var grasscoords = [];
 
@@ -168,5 +173,7 @@
 
     }
   }*/
+
+  GAME.start();
 
   preloader.end();

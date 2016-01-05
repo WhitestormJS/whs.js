@@ -1,21 +1,23 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author schteppe / https://github.com/schteppe
+ * @author alex2401 / https://github.com/sasha240100
  */
- var PointerLockControls = function ( camera, cannonBody, alpha, scope) {
-	var alpha = alpha || 0.5;
-    var eyeYPos = 10; // eyes are 2 meters above the ground
-    var velocityFactor = 0.1;
-    var jumpVelocity = 10 * alpha;
-    var runDelta = 1;
-    var goDelta = 2 * runDelta;
-    var sScope = this;
+ var PointerLockControls = function ( camera, mesh, params) {
+
+    /* Velocity properties */
+    var velocityFactor = 0.05 * 20;
+    var runVelocity = 0.25;
+    mesh.setAngularFactor(new THREE.Vector3(0, 0, 0));
+
+    /* Init */
+    var scope = this;
 
     var pitchObject = new THREE.Object3D();
     pitchObject.add( camera );
 
     var yawObject = new THREE.Object3D();
-    yawObject.position.y = 2;
+    yawObject.position.y = params.ypos; // eyes are 2 meters above the ground
     yawObject.add( pitchObject );
 
     var quat = new THREE.Quaternion();
@@ -27,48 +29,30 @@
 
     var canJump = false;
 
-    var contactNormal = new CANNON.Vec3(); // Normal in the contact, pointing *out* of whatever the player touched
-    var upAxis = new CANNON.Vec3(0,1,0);
-    cannonBody.addEventListener("collide", function(e){
-        var contact = e.contact;
+    var contactNormal = new THREE.Vector3(); // Normal in the contact, pointing *out* of whatever the player touched
+    var upAxis = new THREE.Vector3(0,1,0);
 
-        // contact.bi and contact.bj are the colliding bodies, and contact.ni is the collision normal.
-        // We do not yet know which one is which! Let's check.
-        if(contact.bi.id == cannonBody.id)  // bi is the player body, flip the contact normal
-            contact.ni.negate(contactNormal);
-        else
-            contactNormal.copy(contact.ni); // bi is something else. Keep the normal as it is
+    mesh.addEventListener("collision", function(other_object, v, r, contactNormal){
 
         // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
-        if(contactNormal.dot(upAxis) > 0.5) // Use a "good" threshold value between 0 and 1 here!
+        if(contactNormal.dot(upAxis) < 0.5) // Use a "good" threshold value between 0 and 1 here!
             canJump = true;
     });
-
-    var velocity = cannonBody.velocity;
 
     var PI_2 = Math.PI / 2;
 
     var onMouseMove = function ( event ) {
-        scope.motionBlurEnable = false;
 
-
-        if ( sScope.enabled === false ) return;
+        if ( scope.enabled === false ) return;
 
         var movementX = event.movementX || event.mozMovementX || 0;
         var movementY = event.movementY || event.mozMovementY || 0;
-
-        if (scope.motionBlurEffect)
-            scope.motionBlurEffect.params.delta = Math.abs(0.0005 * event.movementX)/2 + Math.abs(0.0005 * event.movementY)/2;
 
         yawObject.rotation.y -= movementX * 0.002;
         pitchObject.rotation.x -= movementY * 0.002;
 
         pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, pitchObject.rotation.x ) );
     };
-
-    var onMouseStop = function ( event ) {
-        scope.motionBlurEnable = true;
-    }
 
     var onKeyDown = function ( event ) {
 
@@ -81,7 +65,8 @@
 
             case 37: // left
             case 65: // a
-                moveLeft = true; break;
+                moveLeft = true; 
+                break;
 
             case 40: // down
             case 83: // s
@@ -94,16 +79,14 @@
                 break;
 
             case 32: // space
-                if ( canJump === true ){
-                    velocity.y = jumpVelocity;
+                if ( canJump == true ){
+                    mesh.applyCentralImpulse(new THREE.Vector3(0, 300, 0));
                 }
                 canJump = false;
                 break;
 
             case 15: // shift
-                if ( canJump === true ){
-                    runDelta = 3;
-                }
+                runVelocity = 0.5;
                 break;
         }
 
@@ -133,6 +116,9 @@
                 moveRight = false;
                 break;
 
+            case 15: // shift
+                runVelocity = 0.25;
+                break;
         }
 
     };
@@ -140,9 +126,6 @@
     document.body.addEventListener( 'mousemove', onMouseMove, false );
     document.body.addEventListener( 'keydown', onKeyDown, false );
     document.body.addEventListener( 'keyup', onKeyUp, false );
-
-    //$("body").on( 'mousemove', onMouseMove, false );
-    $(document).mousestop(100, onMouseStop);
 
     this.enabled = false;
 
@@ -158,26 +141,31 @@
     // Moves the camera to the Cannon.js object position and adds velocity to the object if the run key is down
     var inputVelocity = new THREE.Vector3();
     var euler = new THREE.Euler();
+
     this.update = function ( delta ) {
 
-        if ( sScope.enabled === false ) return;
+        var moveVec = new THREE.Vector3();
 
-        delta *= 0.03;
+        if ( scope.enabled === false ) return;
+
+        delta = 0.5;
+        delta = Math.min(delta, 0.5);
+        //console.log(delta);
 
         inputVelocity.set(0,0,0);
 
         if ( moveForward ){
-            inputVelocity.z = -velocityFactor * delta * alpha * goDelta;
+            inputVelocity.z = -velocityFactor * delta * params.speed * runVelocity;
         }
         if ( moveBackward ){
-            inputVelocity.z = velocityFactor * delta * alpha * goDelta;
+            inputVelocity.z = velocityFactor * delta * params.speed * runVelocity;
         }
 
         if ( moveLeft ){
-            inputVelocity.x = -velocityFactor * delta * alpha * goDelta;
+            inputVelocity.x = -velocityFactor * delta * params.speed * runVelocity;
         }
         if ( moveRight ){
-            inputVelocity.x = velocityFactor * delta * alpha * goDelta;
+            inputVelocity.x = velocityFactor * delta * params.speed * runVelocity;
         }
 
         // Convert velocity to world coordinates
@@ -188,10 +176,9 @@
         inputVelocity.applyQuaternion(quat);
         //quat.multiplyVector3(inputVelocity);
 
-        // Add to the object
-        velocity.x += inputVelocity.x;
-        velocity.z += inputVelocity.z;
+        mesh.applyCentralImpulse(new THREE.Vector3(inputVelocity.x * 10, 0, inputVelocity.z * 10));
+        mesh.setAngularVelocity(new THREE.Vector3(inputVelocity.z * 10, 0, -inputVelocity.x * 10));
 
-        yawObject.position.copy(cannonBody.position);
+        yawObject.position.copy(mesh.position);
     };
 };

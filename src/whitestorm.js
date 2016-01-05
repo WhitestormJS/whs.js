@@ -7,8 +7,6 @@
 /**
  * Init.
  *
- * @param {Object} THREE *THREE.JS* object. (REQUIRED)
- * @param {Object} CANNON *CANNON.JS* object. (REQUIRED)
  * @param {Object} params Parameters of initalize. (OPTIONAL)
  * @return {Object} Scope.
  */
@@ -19,8 +17,8 @@ WHS.init = function(params) {
 
   if (!THREE)
     console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
-  if (!CANNON)
-    console.warn('whitestormJS requires CANNON.js. {Object} CANNON not found.');
+  if (!Physijs)
+    console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
   if (!WAGNER)
     console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
 
@@ -83,56 +81,19 @@ WHS.init = function(params) {
 
   this._settings = target;
 
-  this.scene = new THREE.Scene();
-  this.world = new CANNON.World();
+  Physijs.scripts.worker = '../libs/physijs_worker.js';
+  Physijs.scripts.ammo = '../libs/ammo.js';
 
-  this.world.gravity.set(params.gravity.x, params.gravity.y, params.gravity.z);
+  this.scene = new Physijs.Scene;
 
-  this.world.broadphase = new CANNON.NaiveBroadphase();
-
-  this.world.quatNormalizeSkip = target.physics.quatNormalizeSkip;
-  this.world.quatNormalizeFast = target.physics.quatNormalizeFast;
-
-  var solver = new CANNON.GSSolver();
-
-  this.world.defaultContactMaterial.contactEquationStiffness =
-    target.physics.defMaterial.contactEquationStiffness;
-  this.world.defaultContactMaterial.contactEquationRegularizationTime =
-    target.physics.defMaterial.contactEquationRegularizationTime;
-
-  solver.iterations = target.physics.solver.iterations;
-  solver.tolerance = target.physics.solver.tolerance;
-
-  this.world.solver = new CANNON.SplitSolver(solver);
-
-  var physicsMaterial = new CANNON.Material("slipperyMaterial");
-
-  var physicsContactMaterial = new CANNON.ContactMaterial(
-    physicsMaterial,
-    physicsMaterial,
-    0.0, // friction coefficient
-    0.3 // restitution
-  );
-
-  // We must add the contact materials to the world
-  this.world.addContactMaterial(physicsContactMaterial);
+  this.scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
 
   // DOM INIT
-
   var whselement = $('<div class="whs"></div>');
 
   target.container.append($(whselement));
 
-
-
-
   // Debug Renderer
-  if (target.helper) {
-    this._cannonDebugRenderer = new THREE.CannonDebugRenderer(
-      this.scene,
-      this.world
-    );
-  }
 
   if (target.stats) {
     this._stats = new Stats();
@@ -247,8 +208,6 @@ WHS.init = function(params) {
   // NOTE: ==================== Autoresize. ======================
   var scope = this;
 
-  scope.animate(null, scope);
-
   if (target.autoresize)
     $(window).on('load resize', function() {
       scope._camera.aspect = window.innerWidth / window.innerHeight;
@@ -280,12 +239,18 @@ WHS.init = function(params) {
 /**
  * ANIMATE.
  */
- WHS.init.prototype.animate = function(time, scope) {
+ WHS.init.prototype.start = function() {
    'use strict';
 
    var clock = new THREE.Clock();
+   var scope = this;
+   scope._events = new Events();
 
-   function reDraw() {
+   scope._events.on("ready", function() {
+    scope.update();
+   })
+
+   function reDraw(time) {
 
      requestAnimationFrame(reDraw);
 
@@ -293,31 +258,17 @@ WHS.init = function(params) {
      if (scope._stats)
        scope._stats.begin();
 
-     // Init helper.
-     if (scope._settings.helper) 
-       scope._cannonDebugRenderer.update();
-
      // Merging data loop.
      for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
-
-       if (!scope.modellingQueue[i]._onlyvis && !scope.modellingQueue[i].skip) {
-
-         scope.modellingQueue[i].visible.position.copy(scope.modellingQueue[i].body.position);
-
-         if (scope.modellingQueue[i].visible.quaternion)
-           scope.modellingQueue[i].visible.quaternion.copy(scope.modellingQueue[i].body.quaternion);
-
-       }
-
        if (scope.modellingQueue[i].morph) {
          scope.modellingQueue[i].visible.mixer.update( clock.getDelta() );
        }
      }
 
-     scope.world.step(1 / 60);
+     scope.scene.simulate();
 
-     if (scope._settings.anaglyph)
-       scope.effect.render(scope.scene, scope._camera);
+     //if (scope._settings.anaglyph)
+       //scope.effect.render(scope.scene, scope._camera);
 
      // Controls.
      if (scope.controls) {
@@ -350,5 +301,22 @@ WHS.init = function(params) {
 
    this.update = reDraw;
 
-   this.update();
+   /* Events */
+
+   scope._queue = [];
+   scope._ready = [];
+
+   scope.children.forEach(function(object) {
+     scope._queue.push(object);
+   });
+
+   scope.children.forEach(function(object) {
+     object._state.done(function() {
+       scope._ready.push(object);
+ 
+       if(scope._queue.length == scope._ready.length) {
+         scope._events.emit("ready");
+       }
+     });
+   });
  }

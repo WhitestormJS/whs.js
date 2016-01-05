@@ -9,27 +9,23 @@
  *
  * @param {Object} object *WHS* figure/object. (REQUIRED)
  */
-WHS.init.prototype.MakeFirstPerson = function(object, plc, jqselector) {
+WHS.init.prototype.MakeFirstPerson = function(object, params) {
   'use strict';
 
+  var target = $.extend({
+    block: $('#blocker'),
+    speed: 1,
+    ypos: 1
+  }, params);
+
   // #TODO:40 Clean up.
-  this.controls = new plc(this._camera, object.body, 10, this);
+  this.controls = new PointerLockControls(this._camera, object.visible, target);
 
   var controls = this.controls;
 
   WHS.API.merge(this.scene, this.controls.getObject());
 
-  this._dom.append('<div id="blocker">' +
-    '   <center>' +
-    '      <h1>PointerLock</h1>' +
-    '   </center>' +
-    '   <br>' +
-    '   <p>(W,A,S,D = Move, SPACE = Jump, MOUSE = Look)</p>' +
-    '</div>');
-
-  var jqs = $(jqselector);
-
-  jqs.css({
+  target.block.css({
     'color': 'white',
     'background': 'rgba(0,0,0,0.5)',
     'text-align': 'center',
@@ -50,13 +46,13 @@ WHS.init.prototype.MakeFirstPerson = function(object, plc, jqselector) {
         document.mozPointerLockElement === element ||
         document.webkitPointerLockElement === element) {
         controls.enabled = true;
-        jqs.css({
+        target.block.css({
           'display': 'none'
         });
       } else {
         controls.enabled = false;
 
-        jqs.css({
+        target.block.css({
           'display': 'block'
         });
       }
@@ -75,7 +71,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, plc, jqselector) {
   document.addEventListener('mozpointerlockerror', this.pointerlockerror, false);
   document.addEventListener('webkitpointerlockerror', this.pointerlockerror, false);
 
-  jqs.on('click', function() {
+  target.block.on('click', function() {
     element.requestPointerLock = element.requestPointerLock ||
       element.mozRequestPointerLock ||
       element.webkitRequestPointerLock;

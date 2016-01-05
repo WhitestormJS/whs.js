@@ -25,25 +25,22 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
     data.computeVertexNormals();
 
     // Visualization.
-    scope.visible = new THREE.Mesh(data, scope.materialType);
+    scope.visible = new Physijs.ConcaveMesh(data, scope.materialType, options.mass);
+    scope._wait = true;
 
+    /*scope.visible.addEventListener('ready', function() {
+      console.log("ready");
 
-    // Physics.
-    if (!options.onlyvis) {
-      scope.physic = new WHS.API.TrimeshFigure(data);
+      scope.visible.__dirtyPosition = true;
 
-      scope.body = new CANNON.Body({
-        mass: options.mass
-      });
+      scope.visible.position.set(0, 100, 0);
+      scope.visible.rotation.set(0, 0, 0);
+      scope.visible.setLinearVelocity(new THREE.Vector3(0, 0, 0));
 
-      scope.body.linearDamping = 0.9; //default
-      scope.body.addShape(scope.physic);
-
-      scope.body.name = scope.name;
-    }
+    } );*/
 
     scope.build();
-    scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
+    scope.wrap = new api.Wrap(scope, scope.visible);
 
   });
 
