@@ -72,17 +72,18 @@ WHS.init = function(params) {
     },
 
     background: 0x000000,
-
     assets: "./assets",
+    container: $('body'),
 
-    container: $('body')
+    path_worker: '../libs/physijs_worker.js',
+    path_ammo: '../libs/ammo.js'
 
   }, params);
 
   this._settings = target;
 
-  Physijs.scripts.worker = '../libs/physijs_worker.js';
-  Physijs.scripts.ammo = '../libs/ammo.js';
+  Physijs.scripts.worker = target.path_worker;
+  Physijs.scripts.ammo = target.path_ammo;
 
   this.scene = new Physijs.Scene;
 

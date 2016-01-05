@@ -378,6 +378,275 @@ THREE.BufferGeometryUtils = {
 };
 
 /**
+ * @author mrdoob / http://mrdoob.com/
+ * @author schteppe / https://github.com/schteppe
+ * @author alex2401 / https://github.com/sasha240100
+ */
+var PointerLockControls = function(camera, mesh, params) {
+
+    /* Velocity properties */
+    var velocityFactor = 0.05 * 20;
+    var runVelocity = 0.25;
+    mesh.setAngularFactor(new THREE.Vector3(0, 0, 0));
+
+    /* Init */
+    var scope = this;
+
+    var pitchObject = new THREE.Object3D();
+    pitchObject.add(camera);
+
+    var yawObject = new THREE.Object3D();
+    yawObject.position.y = params.ypos; // eyes are 2 meters above the ground
+    yawObject.add(pitchObject);
+
+    var quat = new THREE.Quaternion();
+
+    var moveForward = false;
+    var moveBackward = false;
+    var moveLeft = false;
+    var moveRight = false;
+
+    var canJump = false;
+
+    var contactNormal = new THREE.Vector3(); // Normal in the contact, pointing *out* of whatever the player touched
+    var upAxis = new THREE.Vector3(0, 1, 0);
+
+    mesh.addEventListener("collision", function(other_object, v, r, contactNormal) {
+
+        // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
+        if (contactNormal.dot(upAxis) < 0.5) // Use a "good" threshold value between 0 and 1 here!
+            canJump = true;
+    });
+
+    var PI_2 = Math.PI / 2;
+
+    var onMouseMove = function(event) {
+
+        if (scope.enabled === false) return;
+
+        var movementX = event.movementX || event.mozMovementX || 0;
+        var movementY = event.movementY || event.mozMovementY || 0;
+
+        yawObject.rotation.y -= movementX * 0.002;
+        pitchObject.rotation.x -= movementY * 0.002;
+
+        pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
+    };
+
+    var onKeyDown = function(event) {
+
+        switch (event.keyCode) {
+
+            case 38: // up
+            case 87: // w
+                moveForward = true;
+                break;
+
+            case 37: // left
+            case 65: // a
+                moveLeft = true;
+                break;
+
+            case 40: // down
+            case 83: // s
+                moveBackward = true;
+                break;
+
+            case 39: // right
+            case 68: // d
+                moveRight = true;
+                break;
+
+            case 32: // space
+                if (canJump == true) {
+                    mesh.applyCentralImpulse(new THREE.Vector3(0, 300, 0));
+                }
+                canJump = false;
+                break;
+
+            case 15: // shift
+                runVelocity = 0.5;
+                break;
+        }
+
+    };
+
+    var onKeyUp = function(event) {
+
+        switch (event.keyCode) {
+
+            case 38: // up
+            case 87: // w
+                moveForward = false;
+                break;
+
+            case 37: // left
+            case 65: // a
+                moveLeft = false;
+                break;
+
+            case 40: // down
+            case 83: // a
+                moveBackward = false;
+                break;
+
+            case 39: // right
+            case 68: // d
+                moveRight = false;
+                break;
+
+            case 15: // shift
+                runVelocity = 0.25;
+                break;
+        }
+
+    };
+
+    document.body.addEventListener('mousemove', onMouseMove, false);
+    document.body.addEventListener('keydown', onKeyDown, false);
+    document.body.addEventListener('keyup', onKeyUp, false);
+
+    this.enabled = false;
+
+    this.getObject = function() {
+        return yawObject;
+    };
+
+    this.getDirection = function(targetVec) {
+        targetVec.set(0, 0, -1);
+        quat.multiplyVector3(targetVec);
+    }
+
+    // Moves the camera to the Cannon.js object position and adds velocity to the object if the run key is down
+    var inputVelocity = new THREE.Vector3();
+    var euler = new THREE.Euler();
+
+    this.update = function(delta) {
+
+        var moveVec = new THREE.Vector3();
+
+        if (scope.enabled === false) return;
+
+        delta = 0.5;
+        delta = Math.min(delta, 0.5);
+        //console.log(delta);
+
+        inputVelocity.set(0, 0, 0);
+
+        if (moveForward) {
+            inputVelocity.z = -velocityFactor * delta * params.speed * runVelocity;
+        }
+        if (moveBackward) {
+            inputVelocity.z = velocityFactor * delta * params.speed * runVelocity;
+        }
+
+        if (moveLeft) {
+            inputVelocity.x = -velocityFactor * delta * params.speed * runVelocity;
+        }
+        if (moveRight) {
+            inputVelocity.x = velocityFactor * delta * params.speed * runVelocity;
+        }
+
+        // Convert velocity to world coordinates
+        euler.x = pitchObject.rotation.x;
+        euler.y = yawObject.rotation.y;
+        euler.order = "XYZ";
+        quat.setFromEuler(euler);
+        inputVelocity.applyQuaternion(quat);
+        //quat.multiplyVector3(inputVelocity);
+
+        mesh.applyCentralImpulse(new THREE.Vector3(inputVelocity.x * 10, 0, inputVelocity.z * 10));
+        mesh.setAngularVelocity(new THREE.Vector3(inputVelocity.z * 10, 0, -inputVelocity.x * 10));
+
+        yawObject.position.copy(mesh.position);
+    };
+};
+
+(function($) {
+    if ("undefined" !== typeof $.event) {
+        $.event.special.mousestop = {
+            setup: function(data) {
+                $(this).data('mousestop', _data(data))
+                    .bind('mouseenter.mousestop', _mouseenter)
+                    .bind('mouseleave.mousestop', _mouseleave)
+                    .bind('mousemove.mousestop', _mousemove);
+            },
+            teardown: function() {
+                $(this).removeData('mousestop')
+                    .unbind('.mousestop');
+            }
+        };
+
+        function _mouseenter() {
+            var _self = this,
+                data = $(this).data('mousestop');
+
+            this.movement = true;
+
+            if (data.timeToStop) {
+                this.timeToStopTimer = window.setTimeout(function() {
+                    _self.movement = false;
+                    window.clearTimeout(_self.timer);
+                }, data.timeToStop);
+            }
+        }
+
+        function _mouseleave() {
+            window.clearTimeout(this.timer);
+            window.clearTimeout(this.timeToStopTimer);
+        }
+
+        function _mousemove() {
+            var $el = $(this),
+                data = $el.data('mousestop');
+
+            if (this.movement) {
+                window.clearTimeout(this.timer);
+                this.timer = window.setTimeout(function() {
+                    $el.trigger('mousestop');
+                }, data.delay);
+            }
+        }
+
+        function _data(data) {
+            if ($.isNumeric(data)) {
+                data = {
+                    delay: data
+                };
+            } else if (typeof data !== 'object') {
+                data = {};
+            }
+
+            return $.extend({}, $.fn.mousestop.defaults, data);
+        }
+
+        $.fn.mousestop = function(data, fn) {
+            if (typeof data === 'function') {
+                fn = data;
+            }
+            return arguments.length > 0 ? this.bind('mousestop', data, fn) : this.trigger('mousestop');
+        };
+
+        $.fn.mousestop.defaults = {
+            delay: 300,
+            timeToStop: null
+        };
+    }
+})(jQuery);
+
+function Events(n) {
+    var t = {},
+        f = [];
+    n = n || this, n.on = function(n, f, i) {
+        (t[n] = t[n] || []).push([f, i])
+    }, n.off = function(n, i) {
+        n || (t = {});
+        for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) i == o[c][0] && o.splice(c, 1)
+    }, n.emit = function(n) {
+        for (var i, o = t[n] || f, c = 0; i = o[c++];) i[0].apply(i[1], f.slice.call(arguments, 1))
+    }
+}
+/**
  * @author qiao / https://github.com/qiao
  * @author mrdoob / http://mrdoob.com
  * @author alteredq / http://alteredqualia.com/
@@ -1016,6 +1285,137 @@ THREE.OrbitControls = function(object, domElement) {
 
 THREE.OrbitControls.prototype = Object.create(THREE.EventDispatcher.prototype);
 
+"use strict";
+! function() {
+    function n(n) {
+        var t = {};
+        return n && "[object Function]" === t.toString.call(n)
+    }
+    this.SimpleWorker = function(t) {
+        function r() {
+            onmessage = function(n) {
+                "__args" == n.data.type && __func.apply(this, n.data.args)
+            }
+        }
+        var e, i, a, o, c;
+        if (e = t.func, !n(e)) throw new Error("`func` needs to be a function.");
+        i = t.args, a = t.success || function() {}, o = t.error || function() {}, c = t.runOnce || !1;
+        var s;
+        s = "data:text/javascript;charset=US-ASCII,var __func = " + e.toString() + ";", s += "(" + r.toString() + ").call(this);";
+        var u = new Worker(s);
+        u.onmessage = function(n) {
+            a(n.data), c && u.terminate()
+        }, u.onerror = function(n) {
+            o(n)
+        }, this.run = function() {
+            u.postMessage({
+                type: "__args",
+                args: Array.prototype.slice.call(arguments)
+            })
+        }, this.close = function() {
+            u.terminate()
+        }, void 0 !== i && this.run.apply(this, i)
+    }, this.SimpleWorker.run = function(n) {
+        n.runOnce = !0, new SimpleWorker(n)
+    }
+}.call(this);
+// stats.js - http://github.com/mrdoob/stats.js
+var Stats = function() {
+    function f(a, e, b) {
+        a = document.createElement(a);
+        a.id = e;
+        a.style.cssText = b;
+        return a
+    }
+
+    function l(a, e, b) {
+        var c = f("div", a, "padding:0 0 3px 3px;text-align:left;background:" + b),
+            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);
+        d.innerHTML = a.toUpperCase();
+        c.appendChild(d);
+        a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);
+        c.appendChild(a);
+        for (e = 0; 74 > e; e++) a.appendChild(f("span", "", "width:1px;height:30px;float:left;opacity:0.9;background:" +
+            b));
+        return c
+    }
+
+    function m(a) {
+        for (var b = c.children, d = 0; d < b.length; d++) b[d].style.display = d === a ? "block" : "none";
+        n = a
+    }
+
+    function p(a, b) {
+        a.appendChild(a.firstChild).style.height = Math.min(30, 30 - 30 * b) + "px"
+    }
+    var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
+        k = q(),
+        r = k,
+        t = 0,
+        n = 0,
+        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");
+    c.addEventListener("mousedown", function(a) {
+        a.preventDefault();
+        m(++n % c.children.length)
+    }, !1);
+    var d = 0,
+        u = Infinity,
+        v = 0,
+        b = l("fps", "#0ff", "#002"),
+        A = b.children[0],
+        B = b.children[1];
+    c.appendChild(b);
+    var g = 0,
+        w = Infinity,
+        x = 0,
+        b = l("ms", "#0f0", "#020"),
+        C = b.children[0],
+        D = b.children[1];
+    c.appendChild(b);
+    if (self.performance && self.performance.memory) {
+        var h = 0,
+            y = Infinity,
+            z = 0,
+            b = l("mb", "#f08", "#201"),
+            E = b.children[0],
+            F = b.children[1];
+        c.appendChild(b)
+    }
+    m(n);
+    return {
+        REVISION: 14,
+        domElement: c,
+        setMode: m,
+        begin: function() {
+            k = q()
+        },
+        end: function() {
+            var a = q();
+            g = a - k;
+            w = Math.min(w, g);
+            x = Math.max(x, g);
+            C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";
+            p(D, g / 200);
+            t++;
+            if (a > r + 1E3 && (d = Math.round(1E3 *
+                    t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
+                var b = performance.memory.usedJSHeapSize,
+                    c = performance.memory.jsHeapSizeLimit;
+                h = Math.round(9.54E-7 * b);
+                y = Math.min(y, h);
+                z = Math.max(z, h);
+                E.textContent = h + " MB (" + y + "-" + z + ")";
+                p(F, b / c)
+            }
+            return a
+        },
+        update: function() {
+            k = this.end()
+        }
+    }
+};
+"object" === typeof module && (module.exports = Stats);
+
 /*
  *	@author zz85 / http://twitter.com/blurspline / http://www.lab4games.net/zz85/blog
  *
@@ -1370,406 +1770,6 @@ THREE.SubdivisionModifier.prototype.modify = function(geometry) {
 
 
 })();
-
-/**
- * @author mrdoob / http://mrdoob.com/
- * @author schteppe / https://github.com/schteppe
- * @author alex2401 / https://github.com/sasha240100
- */
-var PointerLockControls = function(camera, mesh, params) {
-
-    /* Velocity properties */
-    var velocityFactor = 0.05 * 20;
-    var runVelocity = 0.25;
-    mesh.setAngularFactor(new THREE.Vector3(0, 0, 0));
-
-    /* Init */
-    var scope = this;
-
-    var pitchObject = new THREE.Object3D();
-    pitchObject.add(camera);
-
-    var yawObject = new THREE.Object3D();
-    yawObject.position.y = params.ypos; // eyes are 2 meters above the ground
-    yawObject.add(pitchObject);
-
-    var quat = new THREE.Quaternion();
-
-    var moveForward = false;
-    var moveBackward = false;
-    var moveLeft = false;
-    var moveRight = false;
-
-    var canJump = false;
-
-    var contactNormal = new THREE.Vector3(); // Normal in the contact, pointing *out* of whatever the player touched
-    var upAxis = new THREE.Vector3(0, 1, 0);
-
-    mesh.addEventListener("collision", function(other_object, v, r, contactNormal) {
-
-        // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
-        if (contactNormal.dot(upAxis) < 0.5) // Use a "good" threshold value between 0 and 1 here!
-            canJump = true;
-    });
-
-    var PI_2 = Math.PI / 2;
-
-    var onMouseMove = function(event) {
-
-        if (scope.enabled === false) return;
-
-        var movementX = event.movementX || event.mozMovementX || 0;
-        var movementY = event.movementY || event.mozMovementY || 0;
-
-        yawObject.rotation.y -= movementX * 0.002;
-        pitchObject.rotation.x -= movementY * 0.002;
-
-        pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
-    };
-
-    var onKeyDown = function(event) {
-
-        switch (event.keyCode) {
-
-            case 38: // up
-            case 87: // w
-                moveForward = true;
-                break;
-
-            case 37: // left
-            case 65: // a
-                moveLeft = true;
-                break;
-
-            case 40: // down
-            case 83: // s
-                moveBackward = true;
-                break;
-
-            case 39: // right
-            case 68: // d
-                moveRight = true;
-                break;
-
-            case 32: // space
-                if (canJump == true) {
-                    mesh.applyCentralImpulse(new THREE.Vector3(0, 300, 0));
-                }
-                canJump = false;
-                break;
-
-            case 15: // shift
-                runVelocity = 0.5;
-                break;
-        }
-
-    };
-
-    var onKeyUp = function(event) {
-
-        switch (event.keyCode) {
-
-            case 38: // up
-            case 87: // w
-                moveForward = false;
-                break;
-
-            case 37: // left
-            case 65: // a
-                moveLeft = false;
-                break;
-
-            case 40: // down
-            case 83: // a
-                moveBackward = false;
-                break;
-
-            case 39: // right
-            case 68: // d
-                moveRight = false;
-                break;
-
-            case 15: // shift
-                runVelocity = 0.25;
-                break;
-        }
-
-    };
-
-    document.body.addEventListener('mousemove', onMouseMove, false);
-    document.body.addEventListener('keydown', onKeyDown, false);
-    document.body.addEventListener('keyup', onKeyUp, false);
-
-    this.enabled = false;
-
-    this.getObject = function() {
-        return yawObject;
-    };
-
-    this.getDirection = function(targetVec) {
-        targetVec.set(0, 0, -1);
-        quat.multiplyVector3(targetVec);
-    }
-
-    // Moves the camera to the Cannon.js object position and adds velocity to the object if the run key is down
-    var inputVelocity = new THREE.Vector3();
-    var euler = new THREE.Euler();
-
-    this.update = function(delta) {
-
-        var moveVec = new THREE.Vector3();
-
-        if (scope.enabled === false) return;
-
-        delta = 0.5;
-        delta = Math.min(delta, 0.5);
-        //console.log(delta);
-
-        inputVelocity.set(0, 0, 0);
-
-        if (moveForward) {
-            inputVelocity.z = -velocityFactor * delta * params.speed * runVelocity;
-        }
-        if (moveBackward) {
-            inputVelocity.z = velocityFactor * delta * params.speed * runVelocity;
-        }
-
-        if (moveLeft) {
-            inputVelocity.x = -velocityFactor * delta * params.speed * runVelocity;
-        }
-        if (moveRight) {
-            inputVelocity.x = velocityFactor * delta * params.speed * runVelocity;
-        }
-
-        // Convert velocity to world coordinates
-        euler.x = pitchObject.rotation.x;
-        euler.y = yawObject.rotation.y;
-        euler.order = "XYZ";
-        quat.setFromEuler(euler);
-        inputVelocity.applyQuaternion(quat);
-        //quat.multiplyVector3(inputVelocity);
-
-        mesh.applyCentralImpulse(new THREE.Vector3(inputVelocity.x * 10, 0, inputVelocity.z * 10));
-        mesh.setAngularVelocity(new THREE.Vector3(inputVelocity.z * 10, 0, -inputVelocity.x * 10));
-
-        yawObject.position.copy(mesh.position);
-    };
-};
-
-(function($) {
-    if ("undefined" !== typeof $.event) {
-        $.event.special.mousestop = {
-            setup: function(data) {
-                $(this).data('mousestop', _data(data))
-                    .bind('mouseenter.mousestop', _mouseenter)
-                    .bind('mouseleave.mousestop', _mouseleave)
-                    .bind('mousemove.mousestop', _mousemove);
-            },
-            teardown: function() {
-                $(this).removeData('mousestop')
-                    .unbind('.mousestop');
-            }
-        };
-
-        function _mouseenter() {
-            var _self = this,
-                data = $(this).data('mousestop');
-
-            this.movement = true;
-
-            if (data.timeToStop) {
-                this.timeToStopTimer = window.setTimeout(function() {
-                    _self.movement = false;
-                    window.clearTimeout(_self.timer);
-                }, data.timeToStop);
-            }
-        }
-
-        function _mouseleave() {
-            window.clearTimeout(this.timer);
-            window.clearTimeout(this.timeToStopTimer);
-        }
-
-        function _mousemove() {
-            var $el = $(this),
-                data = $el.data('mousestop');
-
-            if (this.movement) {
-                window.clearTimeout(this.timer);
-                this.timer = window.setTimeout(function() {
-                    $el.trigger('mousestop');
-                }, data.delay);
-            }
-        }
-
-        function _data(data) {
-            if ($.isNumeric(data)) {
-                data = {
-                    delay: data
-                };
-            } else if (typeof data !== 'object') {
-                data = {};
-            }
-
-            return $.extend({}, $.fn.mousestop.defaults, data);
-        }
-
-        $.fn.mousestop = function(data, fn) {
-            if (typeof data === 'function') {
-                fn = data;
-            }
-            return arguments.length > 0 ? this.bind('mousestop', data, fn) : this.trigger('mousestop');
-        };
-
-        $.fn.mousestop.defaults = {
-            delay: 300,
-            timeToStop: null
-        };
-    }
-})(jQuery);
-
-function Events(n) {
-    var t = {},
-        f = [];
-    n = n || this, n.on = function(n, f, i) {
-        (t[n] = t[n] || []).push([f, i])
-    }, n.off = function(n, i) {
-        n || (t = {});
-        for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) i == o[c][0] && o.splice(c, 1)
-    }, n.emit = function(n) {
-        for (var i, o = t[n] || f, c = 0; i = o[c++];) i[0].apply(i[1], f.slice.call(arguments, 1))
-    }
-}
-"use strict";
-! function() {
-    function n(n) {
-        var t = {};
-        return n && "[object Function]" === t.toString.call(n)
-    }
-    this.SimpleWorker = function(t) {
-        function r() {
-            onmessage = function(n) {
-                "__args" == n.data.type && __func.apply(this, n.data.args)
-            }
-        }
-        var e, i, a, o, c;
-        if (e = t.func, !n(e)) throw new Error("`func` needs to be a function.");
-        i = t.args, a = t.success || function() {}, o = t.error || function() {}, c = t.runOnce || !1;
-        var s;
-        s = "data:text/javascript;charset=US-ASCII,var __func = " + e.toString() + ";", s += "(" + r.toString() + ").call(this);";
-        var u = new Worker(s);
-        u.onmessage = function(n) {
-            a(n.data), c && u.terminate()
-        }, u.onerror = function(n) {
-            o(n)
-        }, this.run = function() {
-            u.postMessage({
-                type: "__args",
-                args: Array.prototype.slice.call(arguments)
-            })
-        }, this.close = function() {
-            u.terminate()
-        }, void 0 !== i && this.run.apply(this, i)
-    }, this.SimpleWorker.run = function(n) {
-        n.runOnce = !0, new SimpleWorker(n)
-    }
-}.call(this);
-// stats.js - http://github.com/mrdoob/stats.js
-var Stats = function() {
-    function f(a, e, b) {
-        a = document.createElement(a);
-        a.id = e;
-        a.style.cssText = b;
-        return a
-    }
-
-    function l(a, e, b) {
-        var c = f("div", a, "padding:0 0 3px 3px;text-align:left;background:" + b),
-            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);
-        d.innerHTML = a.toUpperCase();
-        c.appendChild(d);
-        a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);
-        c.appendChild(a);
-        for (e = 0; 74 > e; e++) a.appendChild(f("span", "", "width:1px;height:30px;float:left;opacity:0.9;background:" +
-            b));
-        return c
-    }
-
-    function m(a) {
-        for (var b = c.children, d = 0; d < b.length; d++) b[d].style.display = d === a ? "block" : "none";
-        n = a
-    }
-
-    function p(a, b) {
-        a.appendChild(a.firstChild).style.height = Math.min(30, 30 - 30 * b) + "px"
-    }
-    var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
-        k = q(),
-        r = k,
-        t = 0,
-        n = 0,
-        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");
-    c.addEventListener("mousedown", function(a) {
-        a.preventDefault();
-        m(++n % c.children.length)
-    }, !1);
-    var d = 0,
-        u = Infinity,
-        v = 0,
-        b = l("fps", "#0ff", "#002"),
-        A = b.children[0],
-        B = b.children[1];
-    c.appendChild(b);
-    var g = 0,
-        w = Infinity,
-        x = 0,
-        b = l("ms", "#0f0", "#020"),
-        C = b.children[0],
-        D = b.children[1];
-    c.appendChild(b);
-    if (self.performance && self.performance.memory) {
-        var h = 0,
-            y = Infinity,
-            z = 0,
-            b = l("mb", "#f08", "#201"),
-            E = b.children[0],
-            F = b.children[1];
-        c.appendChild(b)
-    }
-    m(n);
-    return {
-        REVISION: 14,
-        domElement: c,
-        setMode: m,
-        begin: function() {
-            k = q()
-        },
-        end: function() {
-            var a = q();
-            g = a - k;
-            w = Math.min(w, g);
-            x = Math.max(x, g);
-            C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";
-            p(D, g / 200);
-            t++;
-            if (a > r + 1E3 && (d = Math.round(1E3 *
-                    t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
-                var b = performance.memory.usedJSHeapSize,
-                    c = performance.memory.jsHeapSizeLimit;
-                h = Math.round(9.54E-7 * b);
-                y = Math.min(y, h);
-                z = Math.max(z, h);
-                E.textContent = h + " MB (" + y + "-" + z + ")";
-                p(F, b / c)
-            }
-            return a
-        },
-        update: function() {
-            k = this.end()
-        }
-    }
-};
-"object" === typeof module && (module.exports = Stats);
 
 
 
@@ -2410,6 +2410,17 @@ WHS.API.isSame = function(a1, a2) {
 
 
 
+// #DONE:10 JSONLoader don't work.
+WHS.API.JSONLoader = function() {
+    return new THREE.JSONLoader();
+}
+
+WHS.API.TextureLoader = function() {
+    return new THREE.TextureLoader();
+}
+
+
+
 WHS.API.loadMaterial = function(material) {
     'use strict';
 
@@ -2493,17 +2504,6 @@ WHS.API.loadMaterial = function(material) {
     scope._material = Physijs.createMaterial(scope._material, scope._friction, scope._restitution);
 
     return scope;
-}
-
-
-
-// #DONE:10 JSONLoader don't work.
-WHS.API.JSONLoader = function() {
-    return new THREE.JSONLoader();
-}
-
-WHS.API.TextureLoader = function() {
-    return new THREE.TextureLoader();
 }
 
 
@@ -2952,17 +2952,18 @@ WHS.init = function(params) {
         },
 
         background: 0x000000,
-
         assets: "./assets",
+        container: $('body'),
 
-        container: $('body')
+        path_worker: '../libs/physijs_worker.js',
+        path_ammo: '../libs/ammo.js'
 
     }, params);
 
     this._settings = target;
 
-    Physijs.scripts.worker = '../libs/physijs_worker.js';
-    Physijs.scripts.ammo = '../libs/ammo.js';
+    Physijs.scripts.worker = target.path_worker;
+    Physijs.scripts.ammo = target.path_ammo;
 
     this.scene = new Physijs.Scene;
 
