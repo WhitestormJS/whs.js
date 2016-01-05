@@ -11,12 +11,20 @@ WHS.API.loadMaterial = function (material) {
     console.error("Type of material is undefined or not a string. @loadMaterial");
 
   var scope = {
-    _type: material.kind
+    _type: material.kind,
+    _restitution: material.restitution || material.rest || 0.3,
+    _friction: material.friction || material.fri || 0.8
   };
 
   var params = $.extend({}, material);
 
   delete params["kind"];
+
+  delete params["friction"];
+      delete params["fric"];
+
+  delete params["restitution"];
+         delete params["rest"];
 
   switch (material.kind) {
     case "basic":
@@ -75,6 +83,8 @@ WHS.API.loadMaterial = function (material) {
       scope._material = new THREE.SpriteMaterial(params);
       break;
   }
+
+  scope._material = Physijs.createMaterial(scope._material, scope._friction, scope._restitution);
 
   return scope;
 }

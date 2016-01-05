@@ -2098,28 +2098,6 @@ WHS.API.construct.prototype.build = function (figure, object) {
   return this;
 }
 
-WHS.API.ConvexFigure = function(thrObj) {
-  'use strict';
-  if (!(thrObj instanceof THREE.Geometry))
-    console.error("No THREE.js geometry");
-    //Checks if thrObj is not a THREE Geometry
-  else{
-    //If it is then
-    var points = new Array(),
-        faces = new Array();
-
-    thrObj.vertices.forEach(function(element) {
-      points.push(new CANNON.Vec3(element.x, element.y, element.z));
-    });
-
-    thrObj.faces.forEach(function(element) {
-      faces.push([element.a, element.b, element.c]);
-    });
-
-    return new CANNON.ConvexPolyhedron(points, faces);
-  }
-}
-
 /**
  * © Alexander Buzin, 2014-2015
  * Site: http://alexbuzin.me/
@@ -2224,12 +2202,20 @@ WHS.API.loadMaterial = function (material) {
     console.error("Type of material is undefined or not a string. @loadMaterial");
 
   var scope = {
-    _type: material.kind
+    _type: material.kind,
+    _restitution: material.restitution || material.rest || 0.3,
+    _friction: material.friction || material.fri || 0.8
   };
 
   var params = $.extend({}, material);
 
   delete params["kind"];
+
+  delete params["friction"];
+      delete params["fric"];
+
+  delete params["restitution"];
+         delete params["rest"];
 
   switch (material.kind) {
     case "basic":
@@ -2288,6 +2274,8 @@ WHS.API.loadMaterial = function (material) {
       scope._material = new THREE.SpriteMaterial(params);
       break;
   }
+
+  scope._material = Physijs.createMaterial(scope._material, scope._friction, scope._restitution);
 
   return scope;
 }
@@ -2573,58 +2561,6 @@ WHS.API.Triangulate = function(thrObj, material) {
 
     var trianglesMesh = new THREE.Mesh(triangles, new THREE.MeshFaceMaterial(materials));
     return trianglesMesh;
-  }
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-// #TODO:110 Heights array.
-/**
- * Trimesh figure. Makes trimesh object *CANNON.JS* from *THREE.JS* figure.
- *
- * @param {Object} thrObj Figure object *THREE.JS*. (REQUIRED)
- * @param {Boolean} heightsNeed true if heights need. (OPTIONAL)
- */
-WHS.API.TrimeshFigure = function(thrObj, heightsNeed) {
-  'use strict';
-
-  if (arguments.length < 1)
-    console.error("No THREE.js geometry");
-  else if (arguments.length == 1) {
-    var points = [];
-    var faces = [];
-    var heights = [];
-
-    thrObj.vertices.forEach(function(element) {
-      points.push(element.x);
-      points.push(element.y);
-      points.push(element.z);
-
-      if (heightsNeed) {
-        heights.push({
-          x: element.x,
-          y: element.y,
-          z: element.z
-        });
-      }
-    });
-
-    thrObj.faces.forEach(function(element) {
-      faces.push(element.a);
-      faces.push(element.b);
-      faces.push(element.c);
-    });
-
-    var canObj = new CANNON.Trimesh(points, faces);
-    canObj.updateNormals();
-    canObj.heightsValues = heights;
-
-    return canObj;
-
   }
 }
 
@@ -3219,7 +3155,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
         opt.geometry.radius,
         opt.geometry.segmentA,
         opt.geometry.segmentB
-      ), Physijs.createMaterial(scope.materialType, 1, 0), 10);
+      ), scope.materialType, 10);
 
       break;
     case "cube":

@@ -141,7 +141,9 @@
     onlyvis: false,
     materialOptions: {
       color: 0xffffff,
-      kind: "lambert"
+      kind: "lambert",
+      rest: 0,
+      fri: 1
     },
     pos: {
       x: 0,
