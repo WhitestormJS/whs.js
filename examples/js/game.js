@@ -135,7 +135,7 @@
 
   GAME.person = GAME.addObject("sphere", {
     geometryOptions: {
-      radius: 3
+      radius: 2
     },
     mass: 100,
     onlyvis: false,
@@ -157,7 +157,10 @@
   GAME.multipassEffect = GAME.addWagner(WAGNER, "vignettePass", {}).apply();
   GAME.directionalblurEffect = GAME.addWagner(WAGNER, "motionBlurPass", {}).apply();
 
-  GAME.MakeFirstPerson(GAME.person, PointerLockControls, '#blocker'); // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
+  GAME.MakeFirstPerson(GAME.person, { // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
+   block: $('#blocker'),
+   speed: 5 // 5
+  });
 
   /*var grasscoords = [];
 
