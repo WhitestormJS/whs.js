@@ -24,6 +24,7 @@
 - Skybox added to fps example.
 - ** CannonJS changed to PhysiJS(ammo.js version) **
 - Removed example (`examples/basic_object.html`).
+- `GAME.start()` added.
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.

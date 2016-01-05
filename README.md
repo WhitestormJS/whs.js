@@ -15,7 +15,7 @@
 
 ----------------------------------------------------------------------------------------------------------------
 
-**WhitestormJS** is a library which combines [**Three.js**](https://github.com/mrdoob/three.js/) and [**Cannon.js**](https://github.com/schteppe/cannon.js/). It makes WebGL development *easy*.
+**WhitestormJS** is a 3D Javascript engine based on [**Three.js**](http://threejs.org/). It uses physics and effects libraries to define WhitestormJS API™ that contains useful scripts for **terrain generation, skybox, animation, physics simulation and post-effects**. WhitestormJS simplifies _Three.js object crafting algorithm_ to javascript methods with parameters.
 
 WhitestormJS is [hosted by jsDelivr](http://www.jsdelivr.com/projects/whitestormjs). You can link to the latest [minified version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js), [full version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.js), or [download both](https://cdn.jsdelivr.net/whitestormjs/latest/whitestormjs.zip).
 
@@ -26,12 +26,12 @@ WhitestormJS is [hosted by jsDelivr](http://www.jsdelivr.com/projects/whitestorm
 
 \* It is advised to download your own copies of the following libraries, as large changes can break backwards compatibility.
 
-Include [Three.js](http://threejs.org/build/three.min.js), [Wagner](http://spite.github.io/wagner/Wagner.js), and [Cannon.js](http://schteppe.github.io/cannon.js/build/cannon.min.js) libraries.
+Include [Three.js](http://threejs.org/build/three.min.js), [Wagner](http://spite.github.io/wagner/Wagner.js), and [Physi.js](https://github.com/chandlerprall/Physijs/blob/master/physi.js) libraries.
 Include a script tag linking the [WhitestormJS](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js) library in your `head` or after your `body`:
 
 ```html
 <script src="three.js"></script>
-<script src="cannon.js"></script>
+<script src="physi.js"></script>
 <script src="wagner.js"></script>
 <!-- WhitestormJS library -->
 <script src="{path_to_lib}/whitestorm.js"></script>
@@ -41,15 +41,18 @@ After adding these libraries, you can configure your game:
 ```javascript
 var GAME = new WHS.init({
     anaglyph: false, // Anaglyph effect.
-    helper: false, // Cannon.js shape helper
     stats: "fps", // fps, ms, mb or false if not need.
     wagner: WAGNER, // wagner library variable
     gravity: { // Physic gravity.
         x: 0,
-        y: -200,
+        y: -100,
         z: 0
     }
 });
+
+// Define your scene objects here.
+
+GAME.start(); // Start animations and physics simulation.
 ```
 
 [![Join the chat at https://gitter.im/WhitestormJS/whitestorm.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -61,7 +64,6 @@ var GAME = new WHS.init({
  * [FPS](http://192.241.128.187/current/examples/fps.html)  (First person example with Wagner effects and terrain.)
  * [Basic](http://192.241.128.187/current/examples/basic.html)  (Basic "Hello world!" example.)
  * [Material](http://192.241.128.187/current/examples/basic_material.html)  (Basic example with material.)
- * [Object/Icosahedron](http://192.241.128.187/current/examples/basic_object.html)  (Icosahedron from *Three.js* example.)
  * [Object/Model](http://192.241.128.187/current/examples/basic_model.html)  (Teapot model with *Three.js* JSONLoader.)
  * [Object/Wall](http://192.241.128.187/current/examples/stone_wall.html)  (Stone wall (basic).)
  * [Plugin/Color](http://192.241.128.187/current/examples/plugin_example.html)  (Basic plugin example.)
