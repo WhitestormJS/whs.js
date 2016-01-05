@@ -6,7 +6,7 @@
   <title>WhitestormJS development</title>
   <script src="../libs/jquery-1.11.1.min.js"></script>
   <script src="../libs/three.js"></script>
-  <script src="../libs/cannon.js"></script>
+  <script src="../libs/physi.js"></script>
   <script src="../libs/Wagner.js"></script>
   <script src="../libs/Wagner.base.js"></script>
   <script src="plugins/whs.preload.js"></script>
@@ -138,6 +138,8 @@ GAME.skybox = GAME.addSkybox({
   imgSuffix: ".jpg",
   skyType: "box"
 });
+
+GAME.start();
 // GAME.skybox = GAME.addSkybox({
 //   src: "assets/textures/skydome/SkyDome-Cloud-Few-Dawn.png",
 //   skyType: "dome"

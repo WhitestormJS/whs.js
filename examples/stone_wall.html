@@ -6,7 +6,7 @@
   <title>WhitestormJS development</title>
   <script src="../libs/jquery-1.11.1.min.js"></script>
   <script src="../libs/three.js"></script>
-  <script src="../libs/cannon.js"></script>
+  <script src="../libs/physi.js"></script>
   <script src="../libs/Wagner.js"></script>
   <script src="../libs/Wagner.base.js"></script>
   <script src="plugins/whs.preload.js"></script>
@@ -151,6 +151,8 @@ GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
 });
 
 GAME.OrbitControls();
+
+GAME.start();
 
 preloader.end();
 

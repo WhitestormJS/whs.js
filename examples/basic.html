@@ -6,7 +6,7 @@
   <title>WhitestormJS development</title>
   <script src="../libs/jquery-1.11.1.min.js"></script>
   <script src="../libs/three.js"></script>
-  <script src="../libs/cannon.js"></script>
+  <script src="../libs/physi.js"></script>
   <script src="../libs/Wagner.js"></script>
   <script src="../libs/Wagner.base.js"></script>
   <script src="plugins/whs.preload.js"></script>
@@ -80,7 +80,7 @@ var GAME = new WHS.init(
     autoresize: true,
     gravity: {
         x: 0,
-        y: -200,
+        y: -100,
         z: 0
     },
     camera: {
@@ -116,7 +116,7 @@ GAME.ground = GAME.addGround("smooth",
     height: 250
 },
 {
-        color: 0x000000,
+        color: 0xff0000,
         kind: "basic"
 },
 {
@@ -124,6 +124,8 @@ GAME.ground = GAME.addGround("smooth",
     y: 0,
     z: 0
 });
+
+GAME.start();
 
 preloader.end();
 </script>
