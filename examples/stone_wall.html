@@ -95,17 +95,18 @@ preloader.start(GAME);
 GAME.cube = GAME.addObject("cube",
 {
     geometryOptions: {
-        width: 10,
-        height: 6,
-        depth: 1
+        width: 20,
+        height: 12	,
+        depth: 2
     },
     mass: 10,
     onlyvis: false,
     materialOptions: {
-        vertexColors: THREE.VertexColors,
         shading: THREE.SmoothShading,
-        map: api.texture('../assets/textures/backgrounddetailed6.jpg'),
-        type: "phong"
+        map: api.texture('../assets/textures/bricks.jpg'),
+        restitution: 0,
+        friction: 1,
+        kind: "phong"
     },
     pos: {
         x: 0,
@@ -113,8 +114,8 @@ GAME.cube = GAME.addObject("cube",
         z: 0
     },
     rot: {
-        x: 45,
-        y: 0,
+        x: 0,
+        y: 45,
         z: 0
     }
 });
@@ -125,11 +126,8 @@ GAME.ground = GAME.addGround("smooth",
     height: 250
 },
 {
-        //color: 0x000000,
-        vertexColors: THREE.VertexColors,
-        shading: THREE.SmoothShading,
-        map: api.texture('../textures/grasslight-big.jpg'),
-        type: "basic"
+		color: 0xffffff,
+        kind: "basic"
 },
 {
     x: 0,
