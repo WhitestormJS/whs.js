@@ -40,11 +40,11 @@
         lastY = 0; //event.movementX, event.movementY is not supported in IE and probably in Androis, iOS ...
     function onMouseMove ( event ) {
         if ( scope.enabled === false ) return;
-      
-        var movementX = event.movementX || event.mozMovementX || e.clientX - lastX || 0,
-            movementY = event.movementY || event.mozMovementY || e.clientY - lastY || 0;
-        lastX = e.clientX,
-        lastY = e.clientY,
+        
+        var movementX = event.movementX || event.mozMovementX || event.clientX - lastX || 0,
+            movementY = event.movementY || event.mozMovementY || event.clientY - lastY || 0;
+        lastX = event.clientX,
+        lastY = event.clientY,
         yawObject.rotation.y -= movementX * 0.002,
         pitchObject.rotation.x -= movementY * 0.002;
 
