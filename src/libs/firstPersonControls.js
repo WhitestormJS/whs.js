@@ -9,7 +9,7 @@
     /* Velocity properties */
     var velocityFactor = 1, //Same as 20 * 0.05
         runVelocity = 0.25;
-    mesh.setAngularFactor(new THREE.Vector3(0, 0, 0));
+    mesh.setAngularFactor({x: 0, y: 0, z: 0});
 
     /* Init */
     var scope = this,
@@ -173,8 +173,8 @@
         inputVelocity.applyQuaternion(quat);
         //quat.multiplyVector3(inputVelocity);
 
-        mesh.applyCentralImpulse({inputVelocity.x * 10, 0, inputVelocity.z * 10});
-        mesh.setAngularVelocity({inputVelocity.z * 10, 0, -inputVelocity.x * 10});
+        mesh.applyCentralImpulse({x: inputVelocity.x * 10, y: 0, z: inputVelocity.z * 10});
+        mesh.setAngularVelocity({x: inputVelocity.z * 10, y: 0, z: -inputVelocity.x * 10});
 
         yawObject.position.copy(mesh.position);
     };
