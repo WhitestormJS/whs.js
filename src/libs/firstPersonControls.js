@@ -4,22 +4,6 @@
  * @author alex2401 / https://github.com/sasha240100
  */
  const PI_2 = Math.PI / 2;
- var MouseEvent = window.MouseEvent;
- if(!MouseEvent.prototype.hasOwnProperty('movementX') && !MouseEvent.prototype.hasOwnProperty('mozMovementX')){ //Checks for support
-  //Not very stable, it's a solution that just works ! 
-  MouseEvent.prototype.lastX = 0,
-  MouseEvent.prototype.lastY = 0;
-  MouseEvent.prototype.getMovementX = function(){
-   var value =  this.clientX - this.lastX;
-   this.lastX = this.clientX;
-   return value;
-  }
-  MouseEvent.prototype.getMovementY = function(){
-   var value =  this.clientY - this.lastY;
-   this.lastY = this.clientY;
-   return value;
-  }
- }
  var PointerLockControls = function ( camera, mesh, params) {
 
     /* Velocity properties */
