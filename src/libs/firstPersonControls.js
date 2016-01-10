@@ -4,6 +4,21 @@
  * @author alex2401 / https://github.com/sasha240100
  */
  const PI_2 = Math.PI / 2;
+ if(!MouseEvent.prototype.hasOwnProperty('movementX') && !MouseEvent.prototype.hasOwnProperty('mozMovementX')){ //Checks for support
+  //Not very stable, it's a solution that just works ! 
+  MouseEvent.prototype.lastX = 0,
+  MouseEvent.prototype.lastY = 0;
+  MouseEvent.prototype.getMovementX = function(){
+   var value =  this.clientX - this.lastX;
+   this.lastX = this.clientX;
+   return value;
+  }
+  MouseEvent.prototype.getMovementY = function(){
+   var value =  this.clientY - this.lastY;
+   this.lastY = this.clientY;
+   return value;
+  }
+ }
  var PointerLockControls = function ( camera, mesh, params) {
 
     /* Velocity properties */
@@ -36,15 +51,12 @@
         if(contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
             canJump = true;
     });
-    var lastX = 0,
-        lastY = 0; //event.movementX, event.movementY is not supported in IE and probably in Androis, iOS ...
     function onMouseMove ( event ) {
         if ( scope.enabled === false ) return;
         
-        var movementX = event.movementX || event.mozMovementX || event.clientX - lastX || 0,
-            movementY = event.movementY || event.mozMovementY || event.clientY - lastY || 0;
-        lastX = event.clientX,
-        lastY = event.clientY,
+        var movementX = event.movementX || event.mozMovementX || event.getMovementX() || 0,
+            movementY = event.movementY || event.mozMovementY || event.getMovementY() || 0;
+            
         yawObject.rotation.y -= movementX * 0.002,
         pitchObject.rotation.x -= movementY * 0.002;
 
