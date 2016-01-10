@@ -4,6 +4,7 @@
  * @author alex2401 / https://github.com/sasha240100
  */
  const PI_2 = Math.PI / 2;
+ var MouseEvent = window.MouseEvent;
  if(!MouseEvent.prototype.hasOwnProperty('movementX') && !MouseEvent.prototype.hasOwnProperty('mozMovementX')){ //Checks for support
   //Not very stable, it's a solution that just works ! 
   MouseEvent.prototype.lastX = 0,
