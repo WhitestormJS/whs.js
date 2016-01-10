@@ -23,6 +23,24 @@ if (typeof Array.isArray === 'undefined') {
   };
 }
 
+//event.movementX and event.movementY kind of polyfill
+
+if(!MouseEvent.prototype.hasOwnProperty('movementX') && !MouseEvent.prototype.hasOwnProperty('mozMovementX')){ //Checks for support
+  //Not very stable, it's a solution that just works ! 
+  MouseEvent.prototype.lastX = 0,
+  MouseEvent.prototype.lastY = 0;
+  MouseEvent.prototype.getMovementX = function(){
+   var value =  this.clientX - this.lastX;
+   this.lastX = this.clientX;
+   return value;
+  }
+  MouseEvent.prototype.getMovementY = function(){
+   var value =  this.clientY - this.lastY;
+   this.lastY = this.clientY;
+   return value;
+  }
+ }
+
 // Object.assign|es6+;
 if (!Object.assign) {
     Object.defineProperty(Object, 'assign', {
