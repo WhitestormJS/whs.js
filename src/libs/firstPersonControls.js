@@ -167,7 +167,7 @@
         // Convert velocity to world coordinates
         euler.x = pitchObject.rotation.x,
         euler.y = yawObject.rotation.y,
-        euler.order = "XYZ",
+        euler.order = "XYZ";
         quat.setFromEuler(euler);
         //But threeJS does verify, look the src/Math/Quaternion.js
         inputVelocity.applyQuaternion(quat);
