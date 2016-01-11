@@ -4365,17 +4365,6 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
 
     WHS.API.merge(this.scene, this.controls.getObject());
 
-    target.block.css({
-        'color': 'white',
-        'background': 'rgba(0,0,0,0.5)',
-        'text-align': 'center',
-        'position': 'absolute',
-        'width': '100%',
-        'height': '100%',
-        'left': 0,
-        'top': 0
-    });
-
     if ('pointerLockElement' in document ||
         'mozPointerLockElement' in document ||
         'webkitPointerLockElement' in document) {
@@ -4386,15 +4375,18 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
                 document.mozPointerLockElement === element ||
                 document.webkitPointerLockElement === element) {
                 controls.enabled = true;
-                target.block.css({
-                    'display': 'none'
-                });
+
+                /*target.block.css({
+                  'display': 'none'
+                });*/
+                $(target.block).fadeOut();
             } else {
                 controls.enabled = false;
 
-                target.block.css({
-                    'display': 'block'
-                });
+                /*target.block.css({
+                  'display': 'block'
+                });*/
+                $(target.block).fadeIn();
             }
         }
     }
