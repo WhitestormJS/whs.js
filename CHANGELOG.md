@@ -25,6 +25,7 @@
 - ** CannonJS changed to PhysiJS(ammo.js version) **
 - Removed example (`examples/basic_object.html`).
 - `GAME.start()` added.
+- CSF. ShaderTerrain.js
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
