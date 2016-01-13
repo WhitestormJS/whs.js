@@ -1,177 +1,171 @@
 /**
+ * © Alexander Buzin, 2014-2015
+ * Site: http://alexbuzin.me/
+ * Email: alexbuzin88@gmail.com
+*/
+
+"use strict";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+    return typeof obj;
+} : function(obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+};
+
+/**
  * @author mrdoob / http://mrdoob.com/
  * @author marklundin / http://mark-lundin.com/
  * @author alteredq / http://alteredqualia.com/
  */
 
-THREE.AnaglyphEffect = function ( renderer, width, height ) {
+THREE.AnaglyphEffect = function(renderer, width, height) {
 
-	var eyeRight = new THREE.Matrix4();
-	var eyeLeft = new THREE.Matrix4();
-	var focalLength = 125;
-	var _aspect, _near, _far, _fov;
+    var eyeRight = new THREE.Matrix4();
+    var eyeLeft = new THREE.Matrix4();
+    var focalLength = 125;
+    var _aspect, _near, _far, _fov;
 
-	var _cameraL = new THREE.PerspectiveCamera();
-	_cameraL.matrixAutoUpdate = false;
+    var _cameraL = new THREE.PerspectiveCamera();
+    _cameraL.matrixAutoUpdate = false;
 
-	var _cameraR = new THREE.PerspectiveCamera();
-	_cameraR.matrixAutoUpdate = false;
+    var _cameraR = new THREE.PerspectiveCamera();
+    _cameraR.matrixAutoUpdate = false;
 
-	var _camera = new THREE.OrthographicCamera( -1, 1, 1, - 1, 0, 1 );
+    var _camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-	var _scene = new THREE.Scene();
+    var _scene = new THREE.Scene();
 
-	var _params = { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat };
+    var _params = {
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.NearestFilter,
+        format: THREE.RGBAFormat
+    };
 
-	if ( width === undefined ) width = 512;
-	if ( height === undefined ) height = 512;
+    if (width === undefined) width = 512;
+    if (height === undefined) height = 512;
 
-	var _renderTargetL = new THREE.WebGLRenderTarget( width, height, _params );
-	var _renderTargetR = new THREE.WebGLRenderTarget( width, height, _params );
+    var _renderTargetL = new THREE.WebGLRenderTarget(width, height, _params);
+    var _renderTargetR = new THREE.WebGLRenderTarget(width, height, _params);
 
-	var _material = new THREE.ShaderMaterial( {
+    var _material = new THREE.ShaderMaterial({
 
-		uniforms: {
+        uniforms: {
 
-			"mapLeft": { type: "t", value: _renderTargetL },
-			"mapRight": { type: "t", value: _renderTargetR }
+            "mapLeft": {
+                type: "t",
+                value: _renderTargetL
+            },
+            "mapRight": {
+                type: "t",
+                value: _renderTargetR
+            }
 
-		},
+        },
 
-		vertexShader: [
+        vertexShader: ["varying vec2 vUv;", "void main() {", "	vUv = vec2( uv.x, uv.y );", "	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );", "}"].join("\n"),
 
-			"varying vec2 vUv;",
+        fragmentShader: ["uniform sampler2D mapLeft;", "uniform sampler2D mapRight;", "varying vec2 vUv;", "void main() {", "	vec4 colorL, colorR;", "	vec2 uv = vUv;", "	colorL = texture2D( mapLeft, uv );", "	colorR = texture2D( mapRight, uv );",
 
-			"void main() {",
+            // http://3dtv.at/Knowhow/AnaglyphComparison_en.aspx
 
-			"	vUv = vec2( uv.x, uv.y );",
-			"	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
+            "	gl_FragColor = vec4( colorL.g * 0.7 + colorL.b * 0.3, colorR.g, colorR.b, colorL.a + colorR.a ) * 1.1;", "}"
+        ].join("\n")
 
-			"}"
+    });
 
-		].join("\n"),
+    var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), _material);
+    _scene.add(mesh);
 
-		fragmentShader: [
+    this.setSize = function(width, height) {
 
-			"uniform sampler2D mapLeft;",
-			"uniform sampler2D mapRight;",
-			"varying vec2 vUv;",
+        if (_renderTargetL) _renderTargetL.dispose();
+        if (_renderTargetR) _renderTargetR.dispose();
+        _renderTargetL = new THREE.WebGLRenderTarget(width, height, _params);
+        _renderTargetR = new THREE.WebGLRenderTarget(width, height, _params);
 
-			"void main() {",
+        _material.uniforms["mapLeft"].value = _renderTargetL;
+        _material.uniforms["mapRight"].value = _renderTargetR;
 
-			"	vec4 colorL, colorR;",
-			"	vec2 uv = vUv;",
+        renderer.setSize(width, height);
+    };
 
-			"	colorL = texture2D( mapLeft, uv );",
-			"	colorR = texture2D( mapRight, uv );",
+    /*
+     * Renderer now uses an asymmetric perspective projection
+     * (http://paulbourke.net/miscellaneous/stereographics/stereorender/).
+     *
+     * Each camera is offset by the eye seperation and its projection matrix is
+     * also skewed asymetrically back to converge on the same projection plane.
+     * Added a focal length parameter to, this is where the parallax is equal to 0.
+     */
 
-				// http://3dtv.at/Knowhow/AnaglyphComparison_en.aspx
+    this.render = function(scene, camera) {
 
-			"	gl_FragColor = vec4( colorL.g * 0.7 + colorL.b * 0.3, colorR.g, colorR.b, colorL.a + colorR.a ) * 1.1;",
+        scene.updateMatrixWorld();
 
-			"}"
+        if (camera.parent === undefined) camera.updateMatrixWorld();
 
-		].join("\n")
+        var hasCameraChanged = _aspect !== camera.aspect || _near !== camera.near || _far !== camera.far || _fov !== camera.fov;
 
-	} );
+        if (hasCameraChanged) {
 
-	var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ), _material );
-	_scene.add( mesh );
+            _aspect = camera.aspect;
+            _near = camera.near;
+            _far = camera.far;
+            _fov = camera.fov;
 
-	this.setSize = function ( width, height ) {
+            var projectionMatrix = camera.projectionMatrix.clone();
+            var eyeSep = focalLength / 30 * 0.5;
+            var eyeSepOnProjection = eyeSep * _near / focalLength;
+            var ymax = _near * Math.tan(THREE.Math.degToRad(_fov * 0.5));
+            var xmin, xmax;
 
-		if ( _renderTargetL ) _renderTargetL.dispose();
-		if ( _renderTargetR ) _renderTargetR.dispose();
-		_renderTargetL = new THREE.WebGLRenderTarget( width, height, _params );
-		_renderTargetR = new THREE.WebGLRenderTarget( width, height, _params );
+            // translate xOffset
 
-		_material.uniforms[ "mapLeft" ].value = _renderTargetL;
-		_material.uniforms[ "mapRight" ].value = _renderTargetR;
+            eyeRight.elements[12] = eyeSep;
+            eyeLeft.elements[12] = -eyeSep;
 
-		renderer.setSize( width, height );
+            // for left eye
 
-	};
+            xmin = -ymax * _aspect + eyeSepOnProjection;
+            xmax = ymax * _aspect + eyeSepOnProjection;
 
-	/*
-	 * Renderer now uses an asymmetric perspective projection
-	 * (http://paulbourke.net/miscellaneous/stereographics/stereorender/).
-	 *
-	 * Each camera is offset by the eye seperation and its projection matrix is
-	 * also skewed asymetrically back to converge on the same projection plane.
-	 * Added a focal length parameter to, this is where the parallax is equal to 0.
-	 */
+            projectionMatrix.elements[0] = 2 * _near / (xmax - xmin);
+            projectionMatrix.elements[8] = (xmax + xmin) / (xmax - xmin);
 
-	this.render = function ( scene, camera ) {
+            _cameraL.projectionMatrix.copy(projectionMatrix);
 
-		scene.updateMatrixWorld();
+            // for right eye
 
-		if ( camera.parent === undefined ) camera.updateMatrixWorld();
+            xmin = -ymax * _aspect - eyeSepOnProjection;
+            xmax = ymax * _aspect - eyeSepOnProjection;
 
-		var hasCameraChanged = ( _aspect !== camera.aspect ) || ( _near !== camera.near ) || ( _far !== camera.far ) || ( _fov !== camera.fov );
+            projectionMatrix.elements[0] = 2 * _near / (xmax - xmin);
+            projectionMatrix.elements[8] = (xmax + xmin) / (xmax - xmin);
 
-		if ( hasCameraChanged ) {
+            _cameraR.projectionMatrix.copy(projectionMatrix);
+        }
 
-			_aspect = camera.aspect;
-			_near = camera.near;
-			_far = camera.far;
-			_fov = camera.fov;
+        _cameraL.matrixWorld.copy(camera.matrixWorld).multiply(eyeLeft);
+        _cameraL.position.copy(camera.position);
+        _cameraL.near = camera.near;
+        _cameraL.far = camera.far;
 
-			var projectionMatrix = camera.projectionMatrix.clone();
-			var eyeSep = focalLength / 30 * 0.5;
-			var eyeSepOnProjection = eyeSep * _near / focalLength;
-			var ymax = _near * Math.tan( THREE.Math.degToRad( _fov * 0.5 ) );
-			var xmin, xmax;
+        renderer.render(scene, _cameraL, _renderTargetL, true);
 
-			// translate xOffset
+        _cameraR.matrixWorld.copy(camera.matrixWorld).multiply(eyeRight);
+        _cameraR.position.copy(camera.position);
+        _cameraR.near = camera.near;
+        _cameraR.far = camera.far;
 
-			eyeRight.elements[12] = eyeSep;
-			eyeLeft.elements[12] = -eyeSep;
+        renderer.render(scene, _cameraR, _renderTargetR, true);
 
-			// for left eye
+        renderer.render(_scene, _camera);
+    };
 
-			xmin = -ymax * _aspect + eyeSepOnProjection;
-			xmax = ymax * _aspect + eyeSepOnProjection;
-
-			projectionMatrix.elements[0] = 2 * _near / ( xmax - xmin );
-			projectionMatrix.elements[8] = ( xmax + xmin ) / ( xmax - xmin );
-
-			_cameraL.projectionMatrix.copy( projectionMatrix );
-
-			// for right eye
-
-			xmin = -ymax * _aspect - eyeSepOnProjection;
-			xmax = ymax * _aspect - eyeSepOnProjection;
-
-			projectionMatrix.elements[0] = 2 * _near / ( xmax - xmin );
-			projectionMatrix.elements[8] = ( xmax + xmin ) / ( xmax - xmin );
-
-			_cameraR.projectionMatrix.copy( projectionMatrix );
-
-		}
-
-		_cameraL.matrixWorld.copy( camera.matrixWorld ).multiply( eyeLeft );
-		_cameraL.position.copy( camera.position );
-		_cameraL.near = camera.near;
-		_cameraL.far = camera.far;
-
-		renderer.render( scene, _cameraL, _renderTargetL, true );
-
-		_cameraR.matrixWorld.copy( camera.matrixWorld ).multiply( eyeRight );
-		_cameraR.position.copy( camera.position );
-		_cameraR.near = camera.near;
-		_cameraR.far = camera.far;
-
-		renderer.render( scene, _cameraR, _renderTargetR, true );
-
-		renderer.render( _scene, _camera );
-
-	};
-
-	this.dispose = function() {
-		if ( _renderTargetL ) _renderTargetL.dispose();
-		if ( _renderTargetR ) _renderTargetR.dispose();
-	}
-
+    this.dispose = function() {
+        if (_renderTargetL) _renderTargetL.dispose();
+        if (_renderTargetR) _renderTargetR.dispose();
+    };
 };
 
 /**
@@ -180,185 +174,160 @@ THREE.AnaglyphEffect = function ( renderer, width, height ) {
 
 THREE.BufferGeometryUtils = {
 
-	computeTangents: function ( geometry ) {
+    computeTangents: function computeTangents(geometry) {
 
-		var index = geometry.index;
-		var attributes = geometry.attributes;
+        var index = geometry.index;
+        var attributes = geometry.attributes;
 
-		// based on http://www.terathon.com/code/tangent.html
-		// (per vertex tangents)
+        // based on http://www.terathon.com/code/tangent.html
+        // (per vertex tangents)
 
-		if ( index === null ||
-			 attributes.position === undefined ||
-			 attributes.normal === undefined ||
-			 attributes.uv === undefined ) {
+        if (index === null || attributes.position === undefined || attributes.normal === undefined || attributes.uv === undefined) {
 
-			console.warn( 'THREE.BufferGeometry: Missing required attributes (index, position, normal or uv) in BufferGeometry.computeTangents()' );
-			return;
+            console.warn('THREE.BufferGeometry: Missing required attributes (index, position, normal or uv) in BufferGeometry.computeTangents()');
+            return;
+        }
 
-		}
+        var indices = index.array;
+        var positions = attributes.position.array;
+        var normals = attributes.normal.array;
+        var uvs = attributes.uv.array;
 
-		var indices = index.array;
-		var positions = attributes.position.array;
-		var normals = attributes.normal.array;
-		var uvs = attributes.uv.array;
+        var nVertices = positions.length / 3;
 
-		var nVertices = positions.length / 3;
+        if (attributes.tangent === undefined) {
 
-		if ( attributes.tangent === undefined ) {
+            geometry.addAttribute('tangent', new THREE.BufferAttribute(new Float32Array(4 * nVertices), 4));
+        }
 
-			geometry.addAttribute( 'tangent', new THREE.BufferAttribute( new Float32Array( 4 * nVertices ), 4 ) );
+        var tangents = attributes.tangent.array;
 
-		}
+        var tan1 = [],
+            tan2 = [];
 
-		var tangents = attributes.tangent.array;
+        for (var k = 0; k < nVertices; k++) {
 
-		var tan1 = [], tan2 = [];
+            tan1[k] = new THREE.Vector3();
+            tan2[k] = new THREE.Vector3();
+        }
 
-		for ( var k = 0; k < nVertices; k ++ ) {
+        var vA = new THREE.Vector3(),
+            vB = new THREE.Vector3(),
+            vC = new THREE.Vector3(),
+            uvA = new THREE.Vector2(),
+            uvB = new THREE.Vector2(),
+            uvC = new THREE.Vector2(),
+            sdir = new THREE.Vector3(),
+            tdir = new THREE.Vector3();
 
-			tan1[ k ] = new THREE.Vector3();
-			tan2[ k ] = new THREE.Vector3();
+        function handleTriangle(a, b, c) {
 
-		}
+            vA.fromArray(positions, a * 3);
+            vB.fromArray(positions, b * 3);
+            vC.fromArray(positions, c * 3);
 
-		var vA = new THREE.Vector3(),
-			vB = new THREE.Vector3(),
-			vC = new THREE.Vector3(),
+            uvA.fromArray(uvs, a * 2);
+            uvB.fromArray(uvs, b * 2);
+            uvC.fromArray(uvs, c * 2);
 
-			uvA = new THREE.Vector2(),
-			uvB = new THREE.Vector2(),
-			uvC = new THREE.Vector2(),
+            var x1 = vB.x - vA.x;
+            var x2 = vC.x - vA.x;
 
-			sdir = new THREE.Vector3(),
-			tdir = new THREE.Vector3();
+            var y1 = vB.y - vA.y;
+            var y2 = vC.y - vA.y;
 
-		function handleTriangle( a, b, c ) {
+            var z1 = vB.z - vA.z;
+            var z2 = vC.z - vA.z;
 
-			vA.fromArray( positions, a * 3 );
-			vB.fromArray( positions, b * 3 );
-			vC.fromArray( positions, c * 3 );
+            var s1 = uvB.x - uvA.x;
+            var s2 = uvC.x - uvA.x;
 
-			uvA.fromArray( uvs, a * 2 );
-			uvB.fromArray( uvs, b * 2 );
-			uvC.fromArray( uvs, c * 2 );
+            var t1 = uvB.y - uvA.y;
+            var t2 = uvC.y - uvA.y;
 
-			var x1 = vB.x - vA.x;
-			var x2 = vC.x - vA.x;
+            var r = 1.0 / (s1 * t2 - s2 * t1);
 
-			var y1 = vB.y - vA.y;
-			var y2 = vC.y - vA.y;
+            sdir.set((t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r);
 
-			var z1 = vB.z - vA.z;
-			var z2 = vC.z - vA.z;
+            tdir.set((s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r, (s1 * z2 - s2 * z1) * r);
 
-			var s1 = uvB.x - uvA.x;
-			var s2 = uvC.x - uvA.x;
+            tan1[a].add(sdir);
+            tan1[b].add(sdir);
+            tan1[c].add(sdir);
 
-			var t1 = uvB.y - uvA.y;
-			var t2 = uvC.y - uvA.y;
+            tan2[a].add(tdir);
+            tan2[b].add(tdir);
+            tan2[c].add(tdir);
+        }
 
-			var r = 1.0 / ( s1 * t2 - s2 * t1 );
+        var groups = geometry.groups;
 
-			sdir.set(
-				( t2 * x1 - t1 * x2 ) * r,
-				( t2 * y1 - t1 * y2 ) * r,
-				( t2 * z1 - t1 * z2 ) * r
-			);
+        if (groups.length === 0) {
 
-			tdir.set(
-				( s1 * x2 - s2 * x1 ) * r,
-				( s1 * y2 - s2 * y1 ) * r,
-				( s1 * z2 - s2 * z1 ) * r
-			);
+            groups = [{
+                start: 0,
+                count: indices.length
+            }];
+        }
 
-			tan1[ a ].add( sdir );
-			tan1[ b ].add( sdir );
-			tan1[ c ].add( sdir );
+        for (var j = 0, jl = groups.length; j < jl; ++j) {
 
-			tan2[ a ].add( tdir );
-			tan2[ b ].add( tdir );
-			tan2[ c ].add( tdir );
+            var group = groups[j];
 
-		}
+            var start = group.start;
+            var count = group.count;
 
-		var groups = geometry.groups;
+            for (var i = start, il = start + count; i < il; i += 3) {
 
-		if ( groups.length === 0 ) {
+                handleTriangle(indices[i + 0], indices[i + 1], indices[i + 2]);
+            }
+        }
 
-			groups = [ {
-				start: 0,
-				count: indices.length
-			} ];
+        var tmp = new THREE.Vector3(),
+            tmp2 = new THREE.Vector3();
+        var n = new THREE.Vector3(),
+            n2 = new THREE.Vector3();
+        var w, t, test;
 
-		}
+        function handleVertex(v) {
 
-		for ( var j = 0, jl = groups.length; j < jl; ++ j ) {
+            n.fromArray(normals, v * 3);
+            n2.copy(n);
 
-			var group = groups[ j ];
+            t = tan1[v];
 
-			var start = group.start;
-			var count = group.count;
+            // Gram-Schmidt orthogonalize
 
-			for ( var i = start, il = start + count; i < il; i += 3 ) {
+            tmp.copy(t);
+            tmp.sub(n.multiplyScalar(n.dot(t))).normalize();
 
-				handleTriangle(
-					indices[ i + 0 ],
-					indices[ i + 1 ],
-					indices[ i + 2 ]
-				);
+            // Calculate handedness
 
-			}
+            tmp2.crossVectors(n2, t);
+            test = tmp2.dot(tan2[v]);
+            w = test < 0.0 ? -1.0 : 1.0;
 
-		}
+            tangents[v * 4] = tmp.x;
+            tangents[v * 4 + 1] = tmp.y;
+            tangents[v * 4 + 2] = tmp.z;
+            tangents[v * 4 + 3] = w;
+        }
 
-		var tmp = new THREE.Vector3(), tmp2 = new THREE.Vector3();
-		var n = new THREE.Vector3(), n2 = new THREE.Vector3();
-		var w, t, test;
+        for (var j = 0, jl = groups.length; j < jl; ++j) {
 
-		function handleVertex( v ) {
+            var group = groups[j];
 
-			n.fromArray( normals, v * 3 );
-			n2.copy( n );
+            var start = group.start;
+            var count = group.count;
 
-			t = tan1[ v ];
+            for (var i = start, il = start + count; i < il; i += 3) {
 
-			// Gram-Schmidt orthogonalize
-
-			tmp.copy( t );
-			tmp.sub( n.multiplyScalar( n.dot( t ) ) ).normalize();
-
-			// Calculate handedness
-
-			tmp2.crossVectors( n2, t );
-			test = tmp2.dot( tan2[ v ] );
-			w = ( test < 0.0 ) ? - 1.0 : 1.0;
-
-			tangents[ v * 4 ] = tmp.x;
-			tangents[ v * 4 + 1 ] = tmp.y;
-			tangents[ v * 4 + 2 ] = tmp.z;
-			tangents[ v * 4 + 3 ] = w;
-
-		}
-
-		for ( var j = 0, jl = groups.length; j < jl; ++ j ) {
-
-			var group = groups[ j ];
-
-			var start = group.start;
-			var count = group.count;
-
-			for ( var i = start, il = start + count; i < il; i += 3 ) {
-
-				handleVertex( indices[ i + 0 ] );
-				handleVertex( indices[ i + 1 ] );
-				handleVertex( indices[ i + 2 ] );
-
-			}
-
-		}
-
-	}
+                handleVertex(indices[i + 0]);
+                handleVertex(indices[i + 1]);
+                handleVertex(indices[i + 2]);
+            }
+        }
+    }
 
 };
 
@@ -367,7 +336,7 @@ THREE.BufferGeometryUtils = {
  * @author schteppe / https://github.com/schteppe
  * @author alex2401 / https://github.com/sasha240100
  */
- var PointerLockControls = function ( camera, mesh, params) {
+var PointerLockControls = function PointerLockControls(camera, mesh, params) {
 
     /* Velocity properties */
     var velocityFactor = 0.05 * 20;
@@ -378,11 +347,11 @@ THREE.BufferGeometryUtils = {
     var scope = this;
 
     var pitchObject = new THREE.Object3D();
-    pitchObject.add( camera );
+    pitchObject.add(camera);
 
     var yawObject = new THREE.Object3D();
     yawObject.position.y = params.ypos; // eyes are 2 meters above the ground
-    yawObject.add( pitchObject );
+    yawObject.add(pitchObject);
 
     var quat = new THREE.Quaternion();
 
@@ -394,20 +363,20 @@ THREE.BufferGeometryUtils = {
     var canJump = false;
 
     var contactNormal = new THREE.Vector3(); // Normal in the contact, pointing *out* of whatever the player touched
-    var upAxis = new THREE.Vector3(0,1,0);
+    var upAxis = new THREE.Vector3(0, 1, 0);
 
-    mesh.addEventListener("collision", function(other_object, v, r, contactNormal){
+    mesh.addEventListener("collision", function(other_object, v, r, contactNormal) {
 
         // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
-        if(contactNormal.dot(upAxis) < 0.5) // Use a "good" threshold value between 0 and 1 here!
+        if (contactNormal.dot(upAxis) < 0.5) // Use a "good" threshold value between 0 and 1 here!
             canJump = true;
     });
 
     var PI_2 = Math.PI / 2;
 
-    var onMouseMove = function ( event ) {
+    var onMouseMove = function onMouseMove(event) {
 
-        if ( scope.enabled === false ) return;
+        if (scope.enabled === false) return;
 
         var movementX = event.movementX || event.mozMovementX || 0;
         var movementY = event.movementY || event.mozMovementY || 0;
@@ -415,120 +384,129 @@ THREE.BufferGeometryUtils = {
         yawObject.rotation.y -= movementX * 0.002;
         pitchObject.rotation.x -= movementY * 0.002;
 
-        pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, pitchObject.rotation.x ) );
+        pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
     };
 
-    var onKeyDown = function ( event ) {
+    var onKeyDown = function onKeyDown(event) {
 
-        switch ( event.keyCode ) {
+        switch (event.keyCode) {
 
             case 38: // up
-            case 87: // w
+            case 87:
+                // w
                 moveForward = true;
                 break;
 
             case 37: // left
-            case 65: // a
-                moveLeft = true; 
+            case 65:
+                // a
+                moveLeft = true;
                 break;
 
             case 40: // down
-            case 83: // s
+            case 83:
+                // s
                 moveBackward = true;
                 break;
 
             case 39: // right
-            case 68: // d
+            case 68:
+                // d
                 moveRight = true;
                 break;
 
-            case 32: // space
-                if ( canJump == true ){
+            case 32:
+                // space
+                if (canJump == true) {
                     mesh.applyCentralImpulse(new THREE.Vector3(0, 300, 0));
                 }
                 canJump = false;
                 break;
 
-            case 15: // shift
+            case 15:
+                // shift
                 runVelocity = 0.5;
                 break;
         }
-
     };
 
-    var onKeyUp = function ( event ) {
+    var onKeyUp = function onKeyUp(event) {
 
-        switch( event.keyCode ) {
+        switch (event.keyCode) {
 
             case 38: // up
-            case 87: // w
+            case 87:
+                // w
                 moveForward = false;
                 break;
 
             case 37: // left
-            case 65: // a
+            case 65:
+                // a
                 moveLeft = false;
                 break;
 
             case 40: // down
-            case 83: // a
+            case 83:
+                // a
                 moveBackward = false;
                 break;
 
             case 39: // right
-            case 68: // d
+            case 68:
+                // d
                 moveRight = false;
                 break;
 
-            case 15: // shift
+            case 15:
+                // shift
                 runVelocity = 0.25;
                 break;
         }
-
     };
 
-    document.body.addEventListener( 'mousemove', onMouseMove, false );
-    document.body.addEventListener( 'keydown', onKeyDown, false );
-    document.body.addEventListener( 'keyup', onKeyUp, false );
+    document.body.addEventListener('mousemove', onMouseMove, false);
+    document.body.addEventListener('keydown', onKeyDown, false);
+    document.body.addEventListener('keyup', onKeyUp, false);
 
     this.enabled = false;
 
-    this.getObject = function () {
+    this.getObject = function() {
         return yawObject;
     };
 
-    this.getDirection = function(targetVec){
-        targetVec.set(0,0,-1);
+    this.getDirection = function(targetVec) {
+        targetVec.set(0, 0, -1);
         quat.multiplyVector3(targetVec);
-    }
+    };
 
     // Moves the camera to the Cannon.js object position and adds velocity to the object if the run key is down
     var inputVelocity = new THREE.Vector3();
     var euler = new THREE.Euler();
 
-    this.update = function ( delta ) {
+    this.update = function(delta) {
 
         var moveVec = new THREE.Vector3();
 
-        if ( scope.enabled === false ) return;
+        if (scope.enabled === false) return;
 
         delta = 0.5;
         delta = Math.min(delta, 0.5);
         //console.log(delta);
 
-        inputVelocity.set(0,0,0);
+        inputVelocity.set(0, 0, 0);
 
-        if ( moveForward ){
+        if (moveForward) {
             inputVelocity.z = -velocityFactor * delta * params.speed * runVelocity;
         }
-        if ( moveBackward ){
+        if (moveBackward) {
             inputVelocity.z = velocityFactor * delta * params.speed * runVelocity;
         }
 
-        if ( moveLeft ){
+        if (moveLeft) {
             inputVelocity.x = -velocityFactor * delta * params.speed * runVelocity;
         }
-        if ( moveRight ){
+        if (moveRight) {
             inputVelocity.x = velocityFactor * delta * params.speed * runVelocity;
         }
 
@@ -549,76 +527,90 @@ THREE.BufferGeometryUtils = {
 
 (function($) {
     if ("undefined" !== typeof $.event) {
-        $.event.special.mousestop = {
-            setup: function(data) {
-                $(this).data('mousestop', _data(data))
-                    .bind('mouseenter.mousestop', _mouseenter)
-                    .bind('mouseleave.mousestop', _mouseleave)
-                    .bind('mousemove.mousestop', _mousemove);
-            },
-            teardown: function() {
-                $(this).removeData('mousestop')
-                    .unbind('.mousestop');
-            }
-        };
+        (function() {
+            var _mouseenter = function _mouseenter() {
+                var _self = this,
+                    data = $(this).data('mousestop');
 
-        function _mouseenter() {
-            var _self = this,
-                data = $(this).data('mousestop');
+                this.movement = true;
 
-            this.movement = true;
+                if (data.timeToStop) {
+                    this.timeToStopTimer = window.setTimeout(function() {
+                        _self.movement = false;
+                        window.clearTimeout(_self.timer);
+                    }, data.timeToStop);
+                }
+            };
 
-            if (data.timeToStop) {
-                this.timeToStopTimer = window.setTimeout(function() {
-                    _self.movement = false;
-                    window.clearTimeout(_self.timer);
-                }, data.timeToStop);
-            }
-        }
-
-        function _mouseleave() {
-            window.clearTimeout(this.timer);
-            window.clearTimeout(this.timeToStopTimer);
-        }
-
-        function _mousemove() {
-            var $el = $(this),
-                data = $el.data('mousestop');
-
-            if (this.movement) {
+            var _mouseleave = function _mouseleave() {
                 window.clearTimeout(this.timer);
-                this.timer = window.setTimeout(function() {
-                    $el.trigger('mousestop');
-                }, data.delay);
-            }
-        }
+                window.clearTimeout(this.timeToStopTimer);
+            };
 
-        function _data(data) {
-            if ($.isNumeric(data)) {
-                data = {
-                    delay: data
-                };
-            } else if (typeof data !== 'object') {
-                data = {};
-            }
+            var _mousemove = function _mousemove() {
+                var $el = $(this),
+                    data = $el.data('mousestop');
 
-            return $.extend({}, $.fn.mousestop.defaults, data);
-        }
+                if (this.movement) {
+                    window.clearTimeout(this.timer);
+                    this.timer = window.setTimeout(function() {
+                        $el.trigger('mousestop');
+                    }, data.delay);
+                }
+            };
 
-        $.fn.mousestop = function(data, fn) {
-            if (typeof data === 'function') {
-                fn = data;
-            }
-            return arguments.length > 0 ? this.bind('mousestop', data, fn) : this.trigger('mousestop');
-        };
+            var _data = function _data(data) {
+                if ($.isNumeric(data)) {
+                    data = {
+                        delay: data
+                    };
+                } else if ((typeof data === "undefined" ? "undefined" : _typeof(data)) !== 'object') {
+                    data = {};
+                }
 
-        $.fn.mousestop.defaults = {
-            delay: 300,
-            timeToStop: null
-        };
+                return $.extend({}, $.fn.mousestop.defaults, data);
+            };
+
+            $.event.special.mousestop = {
+                setup: function setup(data) {
+                    $(this).data('mousestop', _data(data)).bind('mouseenter.mousestop', _mouseenter).bind('mouseleave.mousestop', _mouseleave).bind('mousemove.mousestop', _mousemove);
+                },
+                teardown: function teardown() {
+                    $(this).removeData('mousestop').unbind('.mousestop');
+                }
+            };
+
+            $.fn.mousestop = function(data, fn) {
+                if (typeof data === 'function') {
+                    fn = data;
+                }
+                return arguments.length > 0 ? this.bind('mousestop', data, fn) : this.trigger('mousestop');
+            };
+
+            $.fn.mousestop.defaults = {
+                delay: 300,
+                timeToStop: null
+            };
+        })();
     }
 })(jQuery);
-function Events(n){var t={},f=[];n=n||this,n.on=function(n,f,i){(t[n]=t[n]||[]).push([f,i])},n.off=function(n,i){n||(t={});for(var o=t[n]||f,c=o.length=i?o.length:0;c--;)i==o[c][0]&&o.splice(c,1)},n.emit=function(n){for(var i,o=t[n]||f,c=0;i=o[c++];)i[0].apply(i[1],f.slice.call(arguments,1))}}
+
+function Events(n) {
+    var t = {},
+        f = [];
+    n = n || this, n.on = function(n, f, i) {
+        (t[n] = t[n] || []).push([f, i]);
+    }, n.off = function(n, i) {
+        n || (t = {});
+        for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) {
+            i == o[c][0] && o.splice(c, 1);
+        }
+    }, n.emit = function(n) {
+        for (var i, o = t[n] || f, c = 0; i = o[c++];) {
+            i[0].apply(i[1], f.slice.call(arguments, 1));
+        }
+    };
+}
 /**
  * @author qiao / https://github.com/qiao
  * @author mrdoob / http://mrdoob.com
@@ -642,573 +634,720 @@ function Events(n){var t={},f=[];n=n||this,n.on=function(n,f,i){(t[n]=t[n]||[]).
 //      controls.target.z = 150;
 // Simple substitute "OrbitControls" and the control should work as-is.
 
-THREE.OrbitControls = function ( object, domElement ) {
+THREE.OrbitControls = function(object, domElement) {
+
+    this.object = object;
+    this.domElement = domElement !== undefined ? domElement : document;
 
-	this.object = object;
-	this.domElement = ( domElement !== undefined ) ? domElement : document;
+    // API
 
-	// API
+    // Set to false to disable this control
+    this.enabled = true;
 
-	// Set to false to disable this control
-	this.enabled = true;
+    // "target" sets the location of focus, where the control orbits around
+    // and where it pans with respect to.
+    this.target = new THREE.Vector3();
+    // center is old, deprecated; use "target" instead
+    this.center = this.target;
 
-	// "target" sets the location of focus, where the control orbits around
-	// and where it pans with respect to.
-	this.target = new THREE.Vector3();
-	// center is old, deprecated; use "target" instead
-	this.center = this.target;
+    // This option actually enables dollying in and out; left as "zoom" for
+    // backwards compatibility
+    this.noZoom = false;
+    this.zoomSpeed = 1.0;
+    // Limits to how far you can dolly in and out
+    this.minDistance = 0;
+    this.maxDistance = Infinity;
 
-	// This option actually enables dollying in and out; left as "zoom" for
-	// backwards compatibility
-	this.noZoom = false;
-	this.zoomSpeed = 1.0;
-	// Limits to how far you can dolly in and out
-	this.minDistance = 0;
-	this.maxDistance = Infinity;
+    // Set to true to disable this control
+    this.noRotate = false;
+    this.rotateSpeed = 1.0;
 
-	// Set to true to disable this control
-	this.noRotate = false;
-	this.rotateSpeed = 1.0;
+    // Set to true to disable this control
+    this.noPan = false;
+    this.keyPanSpeed = 7.0; // pixels moved per arrow key push
 
-	// Set to true to disable this control
-	this.noPan = false;
-	this.keyPanSpeed = 7.0;	// pixels moved per arrow key push
+    // Set to true to automatically rotate around the target
+    this.autoRotate = false;
+    this.autoRotateSpeed = 2.0; // 30 seconds per round when fps is 60
 
-	// Set to true to automatically rotate around the target
-	this.autoRotate = false;
-	this.autoRotateSpeed = 2.0; // 30 seconds per round when fps is 60
+    // How far you can orbit vertically, upper and lower limits.
+    // Range is 0 to Math.PI radians.
+    this.minPolarAngle = 0; // radians
+    this.maxPolarAngle = Math.PI; // radians
 
-	// How far you can orbit vertically, upper and lower limits.
-	// Range is 0 to Math.PI radians.
-	this.minPolarAngle = 0; // radians
-	this.maxPolarAngle = Math.PI; // radians
+    // Set to true to disable use of the keys
+    this.noKeys = false;
+    // The four arrow keys
+    this.keys = {
+        LEFT: 37,
+        UP: 38,
+        RIGHT: 39,
+        BOTTOM: 40
+    };
 
-	// Set to true to disable use of the keys
-	this.noKeys = false;
-	// The four arrow keys
-	this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40 };
+    ////////////
+    // internals
 
-	////////////
-	// internals
+    var scope = this;
 
-	var scope = this;
+    var EPS = 0.000001;
 
-	var EPS = 0.000001;
+    var rotateStart = new THREE.Vector2();
+    var rotateEnd = new THREE.Vector2();
+    var rotateDelta = new THREE.Vector2();
 
-	var rotateStart = new THREE.Vector2();
-	var rotateEnd = new THREE.Vector2();
-	var rotateDelta = new THREE.Vector2();
+    var panStart = new THREE.Vector2();
+    var panEnd = new THREE.Vector2();
+    var panDelta = new THREE.Vector2();
 
-	var panStart = new THREE.Vector2();
-	var panEnd = new THREE.Vector2();
-	var panDelta = new THREE.Vector2();
+    var dollyStart = new THREE.Vector2();
+    var dollyEnd = new THREE.Vector2();
+    var dollyDelta = new THREE.Vector2();
 
-	var dollyStart = new THREE.Vector2();
-	var dollyEnd = new THREE.Vector2();
-	var dollyDelta = new THREE.Vector2();
+    var phiDelta = 0;
+    var thetaDelta = 0;
+    var scale = 1;
+    var pan = new THREE.Vector3();
 
-	var phiDelta = 0;
-	var thetaDelta = 0;
-	var scale = 1;
-	var pan = new THREE.Vector3();
+    var lastPosition = new THREE.Vector3();
 
-	var lastPosition = new THREE.Vector3();
+    var STATE = {
+        NONE: -1,
+        ROTATE: 0,
+        DOLLY: 1,
+        PAN: 2,
+        TOUCH_ROTATE: 3,
+        TOUCH_DOLLY: 4,
+        TOUCH_PAN: 5
+    };
+    var state = STATE.NONE;
 
-	var STATE = { NONE : -1, ROTATE : 0, DOLLY : 1, PAN : 2, TOUCH_ROTATE : 3, TOUCH_DOLLY : 4, TOUCH_PAN : 5 };
-	var state = STATE.NONE;
+    // events
 
-	// events
+    var changeEvent = {
+        type: 'change'
+    };
 
-	var changeEvent = { type: 'change' };
+    this.rotateLeft = function(angle) {
 
+        if (angle === undefined) {
 
-	this.rotateLeft = function ( angle ) {
+            angle = getAutoRotationAngle();
+        }
 
-		if ( angle === undefined ) {
+        thetaDelta -= angle;
+    };
 
-			angle = getAutoRotationAngle();
+    this.rotateUp = function(angle) {
 
-		}
+        if (angle === undefined) {
 
-		thetaDelta -= angle;
+            angle = getAutoRotationAngle();
+        }
 
-	};
+        phiDelta -= angle;
+    };
 
-	this.rotateUp = function ( angle ) {
+    // pass in distance in world space to move left
+    this.panLeft = function(distance) {
 
-		if ( angle === undefined ) {
+        var panOffset = new THREE.Vector3();
+        var te = this.object.matrix.elements;
+        // get X column of matrix
+        panOffset.set(te[0], te[1], te[2]);
+        panOffset.multiplyScalar(-distance);
 
-			angle = getAutoRotationAngle();
+        pan.add(panOffset);
+    };
 
-		}
+    // pass in distance in world space to move up
+    this.panUp = function(distance) {
 
-		phiDelta -= angle;
+        var panOffset = new THREE.Vector3();
+        var te = this.object.matrix.elements;
+        // get Y column of matrix
+        panOffset.set(te[4], te[5], te[6]);
+        panOffset.multiplyScalar(distance);
 
-	};
+        pan.add(panOffset);
+    };
 
-	// pass in distance in world space to move left
-	this.panLeft = function ( distance ) {
+    // main entry point; pass in Vector2 of change desired in pixel space,
+    // right and down are positive
+    this.pan = function(delta) {
 
-		var panOffset = new THREE.Vector3();
-		var te = this.object.matrix.elements;
-		// get X column of matrix
-		panOffset.set( te[0], te[1], te[2] );
-		panOffset.multiplyScalar(-distance);
+        var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
 
-		pan.add( panOffset );
+        if (scope.object.fov !== undefined) {
 
-	};
+            // perspective
+            var position = scope.object.position;
+            var offset = position.clone().sub(scope.target);
+            var targetDistance = offset.length();
 
-	// pass in distance in world space to move up
-	this.panUp = function ( distance ) {
+            // half of the fov is center to top of screen
+            targetDistance *= Math.tan(scope.object.fov / 2 * Math.PI / 180.0);
+            // we actually don't use screenWidth, since perspective camera is fixed to screen height
+            scope.panLeft(2 * delta.x * targetDistance / element.clientHeight);
+            scope.panUp(2 * delta.y * targetDistance / element.clientHeight);
+        } else if (scope.object.top !== undefined) {
 
-		var panOffset = new THREE.Vector3();
-		var te = this.object.matrix.elements;
-		// get Y column of matrix
-		panOffset.set( te[4], te[5], te[6] );
-		panOffset.multiplyScalar(distance);
+            // orthographic
+            scope.panLeft(delta.x * (scope.object.right - scope.object.left) / element.clientWidth);
+            scope.panUp(delta.y * (scope.object.top - scope.object.bottom) / element.clientHeight);
+        } else {
 
-		pan.add( panOffset );
-	};
+            // camera neither orthographic or perspective - warn user
+            console.warn('WARNING: OrbitControls.js encountered an unknown camera type - pan disabled.');
+        }
+    };
 
-	// main entry point; pass in Vector2 of change desired in pixel space,
-	// right and down are positive
-	this.pan = function ( delta ) {
+    this.dollyIn = function(dollyScale) {
 
-		var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
+        if (dollyScale === undefined) {
 
-		if ( scope.object.fov !== undefined ) {
+            dollyScale = getZoomScale();
+        }
 
-			// perspective
-			var position = scope.object.position;
-			var offset = position.clone().sub( scope.target );
-			var targetDistance = offset.length();
+        scale /= dollyScale;
+    };
 
-			// half of the fov is center to top of screen
-			targetDistance *= Math.tan( (scope.object.fov/2) * Math.PI / 180.0 );
-			// we actually don't use screenWidth, since perspective camera is fixed to screen height
-			scope.panLeft( 2 * delta.x * targetDistance / element.clientHeight );
-			scope.panUp( 2 * delta.y * targetDistance / element.clientHeight );
+    this.dollyOut = function(dollyScale) {
 
-		} else if ( scope.object.top !== undefined ) {
+        if (dollyScale === undefined) {
 
-			// orthographic
-			scope.panLeft( delta.x * (scope.object.right - scope.object.left) / element.clientWidth );
-			scope.panUp( delta.y * (scope.object.top - scope.object.bottom) / element.clientHeight );
+            dollyScale = getZoomScale();
+        }
 
-		} else {
+        scale *= dollyScale;
+    };
 
-			// camera neither orthographic or perspective - warn user
-			console.warn( 'WARNING: OrbitControls.js encountered an unknown camera type - pan disabled.' );
+    this.update = function() {
 
-		}
+        var position = this.object.position;
+        var offset = position.clone().sub(this.target);
 
-	};
+        // angle from z-axis around y-axis
 
-	this.dollyIn = function ( dollyScale ) {
+        var theta = Math.atan2(offset.x, offset.z);
 
-		if ( dollyScale === undefined ) {
+        // angle from y-axis
 
-			dollyScale = getZoomScale();
+        var phi = Math.atan2(Math.sqrt(offset.x * offset.x + offset.z * offset.z), offset.y);
 
-		}
+        if (this.autoRotate) {
 
-		scale /= dollyScale;
+            this.rotateLeft(getAutoRotationAngle());
+        }
 
-	};
+        theta += thetaDelta;
+        phi += phiDelta;
 
-	this.dollyOut = function ( dollyScale ) {
+        // restrict phi to be between desired limits
+        phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
 
-		if ( dollyScale === undefined ) {
+        // restrict phi to be betwee EPS and PI-EPS
+        phi = Math.max(EPS, Math.min(Math.PI - EPS, phi));
 
-			dollyScale = getZoomScale();
+        var radius = offset.length() * scale;
 
-		}
+        // restrict radius to be between desired limits
+        radius = Math.max(this.minDistance, Math.min(this.maxDistance, radius));
 
-		scale *= dollyScale;
+        // move target to panned location
+        this.target.add(pan);
 
-	};
+        offset.x = radius * Math.sin(phi) * Math.sin(theta);
+        offset.y = radius * Math.cos(phi);
+        offset.z = radius * Math.sin(phi) * Math.cos(theta);
 
-	this.update = function () {
+        position.copy(this.target).add(offset);
 
-		var position = this.object.position;
-		var offset = position.clone().sub( this.target );
+        this.object.lookAt(this.target);
 
-		// angle from z-axis around y-axis
+        thetaDelta = 0;
+        phiDelta = 0;
+        scale = 1;
+        pan.set(0, 0, 0);
 
-		var theta = Math.atan2( offset.x, offset.z );
+        if (lastPosition.distanceTo(this.object.position) > 0) {
 
-		// angle from y-axis
+            this.dispatchEvent(changeEvent);
 
-		var phi = Math.atan2( Math.sqrt( offset.x * offset.x + offset.z * offset.z ), offset.y );
+            lastPosition.copy(this.object.position);
+        }
+    };
 
-		if ( this.autoRotate ) {
+    function getAutoRotationAngle() {
 
-			this.rotateLeft( getAutoRotationAngle() );
+        return 2 * Math.PI / 60 / 60 * scope.autoRotateSpeed;
+    }
 
-		}
+    function getZoomScale() {
 
-		theta += thetaDelta;
-		phi += phiDelta;
+        return Math.pow(0.95, scope.zoomSpeed);
+    }
 
-		// restrict phi to be between desired limits
-		phi = Math.max( this.minPolarAngle, Math.min( this.maxPolarAngle, phi ) );
+    function onMouseDown(event) {
 
-		// restrict phi to be betwee EPS and PI-EPS
-		phi = Math.max( EPS, Math.min( Math.PI - EPS, phi ) );
+        if (scope.enabled === false) {
+            return;
+        }
+        event.preventDefault();
 
-		var radius = offset.length() * scale;
+        if (event.button === 0) {
+            if (scope.noRotate === true) {
+                return;
+            }
 
-		// restrict radius to be between desired limits
-		radius = Math.max( this.minDistance, Math.min( this.maxDistance, radius ) );
+            state = STATE.ROTATE;
 
-		// move target to panned location
-		this.target.add( pan );
+            rotateStart.set(event.clientX, event.clientY);
+        } else if (event.button === 1) {
+            if (scope.noZoom === true) {
+                return;
+            }
 
-		offset.x = radius * Math.sin( phi ) * Math.sin( theta );
-		offset.y = radius * Math.cos( phi );
-		offset.z = radius * Math.sin( phi ) * Math.cos( theta );
+            state = STATE.DOLLY;
 
-		position.copy( this.target ).add( offset );
+            dollyStart.set(event.clientX, event.clientY);
+        } else if (event.button === 2) {
+            if (scope.noPan === true) {
+                return;
+            }
 
-		this.object.lookAt( this.target );
+            state = STATE.PAN;
 
-		thetaDelta = 0;
-		phiDelta = 0;
-		scale = 1;
-		pan.set(0,0,0);
+            panStart.set(event.clientX, event.clientY);
+        }
 
-		if ( lastPosition.distanceTo( this.object.position ) > 0 ) {
+        // Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
+        scope.domElement.addEventListener('mousemove', onMouseMove, false);
+        scope.domElement.addEventListener('mouseup', onMouseUp, false);
+    }
 
-			this.dispatchEvent( changeEvent );
+    function onMouseMove(event) {
 
-			lastPosition.copy( this.object.position );
+        if (scope.enabled === false) return;
 
-		}
+        event.preventDefault();
 
-	};
+        var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
 
+        if (state === STATE.ROTATE) {
 
-	function getAutoRotationAngle() {
+            if (scope.noRotate === true) return;
 
-		return 2 * Math.PI / 60 / 60 * scope.autoRotateSpeed;
+            rotateEnd.set(event.clientX, event.clientY);
+            rotateDelta.subVectors(rotateEnd, rotateStart);
 
-	}
+            // rotating across whole screen goes 360 degrees around
+            scope.rotateLeft(2 * Math.PI * rotateDelta.x / element.clientWidth * scope.rotateSpeed);
+            // rotating up and down along whole screen attempts to go 360, but limited to 180
+            scope.rotateUp(2 * Math.PI * rotateDelta.y / element.clientHeight * scope.rotateSpeed);
 
-	function getZoomScale() {
+            rotateStart.copy(rotateEnd);
+        } else if (state === STATE.DOLLY) {
 
-		return Math.pow( 0.95, scope.zoomSpeed );
+            if (scope.noZoom === true) return;
 
-	}
+            dollyEnd.set(event.clientX, event.clientY);
+            dollyDelta.subVectors(dollyEnd, dollyStart);
 
-	function onMouseDown( event ) {
+            if (dollyDelta.y > 0) {
 
-		if ( scope.enabled === false ) { return; }
-		event.preventDefault();
+                scope.dollyIn();
+            } else {
 
-		if ( event.button === 0 ) {
-			if ( scope.noRotate === true ) { return; }
+                scope.dollyOut();
+            }
 
-			state = STATE.ROTATE;
+            dollyStart.copy(dollyEnd);
+        } else if (state === STATE.PAN) {
 
-			rotateStart.set( event.clientX, event.clientY );
+            if (scope.noPan === true) return;
 
-		} else if ( event.button === 1 ) {
-			if ( scope.noZoom === true ) { return; }
+            panEnd.set(event.clientX, event.clientY);
+            panDelta.subVectors(panEnd, panStart);
 
-			state = STATE.DOLLY;
+            scope.pan(panDelta);
 
-			dollyStart.set( event.clientX, event.clientY );
+            panStart.copy(panEnd);
+        }
 
-		} else if ( event.button === 2 ) {
-			if ( scope.noPan === true ) { return; }
+        // Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
+        scope.update();
+    }
 
-			state = STATE.PAN;
+    function onMouseUp() /* event */ {
 
-			panStart.set( event.clientX, event.clientY );
+        if (scope.enabled === false) return;
 
-		}
+        // Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
+        scope.domElement.removeEventListener('mousemove', onMouseMove, false);
+        scope.domElement.removeEventListener('mouseup', onMouseUp, false);
 
-		// Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
-		scope.domElement.addEventListener( 'mousemove', onMouseMove, false );
-		scope.domElement.addEventListener( 'mouseup', onMouseUp, false );
+        state = STATE.NONE;
+    }
 
-	}
+    function onMouseWheel(event) {
 
-	function onMouseMove( event ) {
+        if (scope.enabled === false || scope.noZoom === true) return;
 
-		if ( scope.enabled === false ) return;
+        var delta = 0;
 
-		event.preventDefault();
+        if (event.wheelDelta) {
+            // WebKit / Opera / Explorer 9
 
-		var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
+            delta = event.wheelDelta;
+        } else if (event.detail) {
+            // Firefox
 
-		if ( state === STATE.ROTATE ) {
+            delta = -event.detail;
+        }
 
-			if ( scope.noRotate === true ) return;
+        if (delta > 0) {
 
-			rotateEnd.set( event.clientX, event.clientY );
-			rotateDelta.subVectors( rotateEnd, rotateStart );
+            scope.dollyOut();
+        } else {
 
-			// rotating across whole screen goes 360 degrees around
-			scope.rotateLeft( 2 * Math.PI * rotateDelta.x / element.clientWidth * scope.rotateSpeed );
-			// rotating up and down along whole screen attempts to go 360, but limited to 180
-			scope.rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight * scope.rotateSpeed );
+            scope.dollyIn();
+        }
+    }
 
-			rotateStart.copy( rotateEnd );
+    function onKeyDown(event) {
 
-		} else if ( state === STATE.DOLLY ) {
+        if (scope.enabled === false) {
+            return;
+        }
+        if (scope.noKeys === true) {
+            return;
+        }
+        if (scope.noPan === true) {
+            return;
+        }
 
-			if ( scope.noZoom === true ) return;
+        // pan a pixel - I guess for precise positioning?
+        // Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
+        var needUpdate = false;
 
-			dollyEnd.set( event.clientX, event.clientY );
-			dollyDelta.subVectors( dollyEnd, dollyStart );
+        switch (event.keyCode) {
 
-			if ( dollyDelta.y > 0 ) {
+            case scope.keys.UP:
+                scope.pan(new THREE.Vector2(0, scope.keyPanSpeed));
+                needUpdate = true;
+                break;
+            case scope.keys.BOTTOM:
+                scope.pan(new THREE.Vector2(0, -scope.keyPanSpeed));
+                needUpdate = true;
+                break;
+            case scope.keys.LEFT:
+                scope.pan(new THREE.Vector2(scope.keyPanSpeed, 0));
+                needUpdate = true;
+                break;
+            case scope.keys.RIGHT:
+                scope.pan(new THREE.Vector2(-scope.keyPanSpeed, 0));
+                needUpdate = true;
+                break;
+        }
 
-				scope.dollyIn();
+        // Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
+        if (needUpdate) {
 
-			} else {
+            scope.update();
+        }
+    }
 
-				scope.dollyOut();
+    function touchstart(event) {
 
-			}
+        if (scope.enabled === false) {
+            return;
+        }
 
-			dollyStart.copy( dollyEnd );
+        switch (event.touches.length) {
 
-		} else if ( state === STATE.PAN ) {
+            case 1:
+                // one-fingered touch: rotate
+                if (scope.noRotate === true) {
+                    return;
+                }
 
-			if ( scope.noPan === true ) return;
+                state = STATE.TOUCH_ROTATE;
 
-			panEnd.set( event.clientX, event.clientY );
-			panDelta.subVectors( panEnd, panStart );
+                rotateStart.set(event.touches[0].pageX, event.touches[0].pageY);
+                break;
 
-			scope.pan( panDelta );
+            case 2:
+                // two-fingered touch: dolly
+                if (scope.noZoom === true) {
+                    return;
+                }
 
-			panStart.copy( panEnd );
+                state = STATE.TOUCH_DOLLY;
 
-		}
+                var dx = event.touches[0].pageX - event.touches[1].pageX;
+                var dy = event.touches[0].pageY - event.touches[1].pageY;
+                var distance = Math.sqrt(dx * dx + dy * dy);
+                dollyStart.set(0, distance);
+                break;
 
-		// Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
-		scope.update();
+            case 3:
+                // three-fingered touch: pan
+                if (scope.noPan === true) {
+                    return;
+                }
 
-	}
+                state = STATE.TOUCH_PAN;
 
-	function onMouseUp( /* event */ ) {
+                panStart.set(event.touches[0].pageX, event.touches[0].pageY);
+                break;
 
-		if ( scope.enabled === false ) return;
+            default:
+                state = STATE.NONE;
 
-		// Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
-		scope.domElement.removeEventListener( 'mousemove', onMouseMove, false );
-		scope.domElement.removeEventListener( 'mouseup', onMouseUp, false );
+        }
+    }
 
-		state = STATE.NONE;
+    function touchmove(event) {
 
-	}
+        if (scope.enabled === false) {
+            return;
+        }
 
-	function onMouseWheel( event ) {
+        event.preventDefault();
+        event.stopPropagation();
 
-		if ( scope.enabled === false || scope.noZoom === true ) return;
+        var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
 
-		var delta = 0;
+        switch (event.touches.length) {
 
-		if ( event.wheelDelta ) { // WebKit / Opera / Explorer 9
+            case 1:
+                // one-fingered touch: rotate
+                if (scope.noRotate === true) {
+                    return;
+                }
+                if (state !== STATE.TOUCH_ROTATE) {
+                    return;
+                }
 
-			delta = event.wheelDelta;
+                rotateEnd.set(event.touches[0].pageX, event.touches[0].pageY);
+                rotateDelta.subVectors(rotateEnd, rotateStart);
 
-		} else if ( event.detail ) { // Firefox
+                // rotating across whole screen goes 360 degrees around
+                scope.rotateLeft(2 * Math.PI * rotateDelta.x / element.clientWidth * scope.rotateSpeed);
+                // rotating up and down along whole screen attempts to go 360, but limited to 180
+                scope.rotateUp(2 * Math.PI * rotateDelta.y / element.clientHeight * scope.rotateSpeed);
 
-			delta = - event.detail;
+                rotateStart.copy(rotateEnd);
+                break;
 
-		}
+            case 2:
+                // two-fingered touch: dolly
+                if (scope.noZoom === true) {
+                    return;
+                }
+                if (state !== STATE.TOUCH_DOLLY) {
+                    return;
+                }
 
-		if ( delta > 0 ) {
+                var dx = event.touches[0].pageX - event.touches[1].pageX;
+                var dy = event.touches[0].pageY - event.touches[1].pageY;
+                var distance = Math.sqrt(dx * dx + dy * dy);
 
-			scope.dollyOut();
+                dollyEnd.set(0, distance);
+                dollyDelta.subVectors(dollyEnd, dollyStart);
 
-		} else {
+                if (dollyDelta.y > 0) {
 
-			scope.dollyIn();
+                    scope.dollyOut();
+                } else {
 
-		}
+                    scope.dollyIn();
+                }
 
-	}
+                dollyStart.copy(dollyEnd);
+                break;
 
-	function onKeyDown( event ) {
+            case 3:
+                // three-fingered touch: pan
+                if (scope.noPan === true) {
+                    return;
+                }
+                if (state !== STATE.TOUCH_PAN) {
+                    return;
+                }
 
-		if ( scope.enabled === false ) { return; }
-		if ( scope.noKeys === true ) { return; }
-		if ( scope.noPan === true ) { return; }
+                panEnd.set(event.touches[0].pageX, event.touches[0].pageY);
+                panDelta.subVectors(panEnd, panStart);
 
-		// pan a pixel - I guess for precise positioning?
-		// Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
-		var needUpdate = false;
+                scope.pan(panDelta);
 
-		switch ( event.keyCode ) {
+                panStart.copy(panEnd);
+                break;
 
-			case scope.keys.UP:
-				scope.pan( new THREE.Vector2( 0, scope.keyPanSpeed ) );
-				needUpdate = true;
-				break;
-			case scope.keys.BOTTOM:
-				scope.pan( new THREE.Vector2( 0, -scope.keyPanSpeed ) );
-				needUpdate = true;
-				break;
-			case scope.keys.LEFT:
-				scope.pan( new THREE.Vector2( scope.keyPanSpeed, 0 ) );
-				needUpdate = true;
-				break;
-			case scope.keys.RIGHT:
-				scope.pan( new THREE.Vector2( -scope.keyPanSpeed, 0 ) );
-				needUpdate = true;
-				break;
-		}
+            default:
+                state = STATE.NONE;
 
-		// Greggman fix: https://github.com/greggman/three.js/commit/fde9f9917d6d8381f06bf22cdff766029d1761be
-		if ( needUpdate ) {
+        }
+    }
 
-			scope.update();
+    function touchend() /* event */ {
 
-		}
+        if (scope.enabled === false) {
+            return;
+        }
 
-	}
+        state = STATE.NONE;
+    }
 
-	function touchstart( event ) {
+    this.domElement.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+    }, false);
+    this.domElement.addEventListener('mousedown', onMouseDown, false);
+    this.domElement.addEventListener('mousewheel', onMouseWheel, false);
+    this.domElement.addEventListener('DOMMouseScroll', onMouseWheel, false); // firefox
 
-		if ( scope.enabled === false ) { return; }
+    this.domElement.addEventListener('keydown', onKeyDown, false);
 
-		switch ( event.touches.length ) {
-
-			case 1:	// one-fingered touch: rotate
-				if ( scope.noRotate === true ) { return; }
-
-				state = STATE.TOUCH_ROTATE;
-
-				rotateStart.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
-				break;
-
-			case 2:	// two-fingered touch: dolly
-				if ( scope.noZoom === true ) { return; }
-
-				state = STATE.TOUCH_DOLLY;
-
-				var dx = event.touches[ 0 ].pageX - event.touches[ 1 ].pageX;
-				var dy = event.touches[ 0 ].pageY - event.touches[ 1 ].pageY;
-				var distance = Math.sqrt( dx * dx + dy * dy );
-				dollyStart.set( 0, distance );
-				break;
-
-			case 3: // three-fingered touch: pan
-				if ( scope.noPan === true ) { return; }
-
-				state = STATE.TOUCH_PAN;
-
-				panStart.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
-				break;
-
-			default:
-				state = STATE.NONE;
-
-		}
-	}
-
-	function touchmove( event ) {
-
-		if ( scope.enabled === false ) { return; }
-
-		event.preventDefault();
-		event.stopPropagation();
-
-		var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
-
-		switch ( event.touches.length ) {
-
-			case 1: // one-fingered touch: rotate
-				if ( scope.noRotate === true ) { return; }
-				if ( state !== STATE.TOUCH_ROTATE ) { return; }
-
-				rotateEnd.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
-				rotateDelta.subVectors( rotateEnd, rotateStart );
-
-				// rotating across whole screen goes 360 degrees around
-				scope.rotateLeft( 2 * Math.PI * rotateDelta.x / element.clientWidth * scope.rotateSpeed );
-				// rotating up and down along whole screen attempts to go 360, but limited to 180
-				scope.rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight * scope.rotateSpeed );
-
-				rotateStart.copy( rotateEnd );
-				break;
-
-			case 2: // two-fingered touch: dolly
-				if ( scope.noZoom === true ) { return; }
-				if ( state !== STATE.TOUCH_DOLLY ) { return; }
-
-				var dx = event.touches[ 0 ].pageX - event.touches[ 1 ].pageX;
-				var dy = event.touches[ 0 ].pageY - event.touches[ 1 ].pageY;
-				var distance = Math.sqrt( dx * dx + dy * dy );
-
-				dollyEnd.set( 0, distance );
-				dollyDelta.subVectors( dollyEnd, dollyStart );
-
-				if ( dollyDelta.y > 0 ) {
-
-					scope.dollyOut();
-
-				} else {
-
-					scope.dollyIn();
-
-				}
-
-				dollyStart.copy( dollyEnd );
-				break;
-
-			case 3: // three-fingered touch: pan
-				if ( scope.noPan === true ) { return; }
-				if ( state !== STATE.TOUCH_PAN ) { return; }
-
-				panEnd.set( event.touches[ 0 ].pageX, event.touches[ 0 ].pageY );
-				panDelta.subVectors( panEnd, panStart );
-
-				scope.pan( panDelta );
-
-				panStart.copy( panEnd );
-				break;
-
-			default:
-				state = STATE.NONE;
-
-		}
-
-	}
-
-	function touchend( /* event */ ) {
-
-		if ( scope.enabled === false ) { return; }
-
-		state = STATE.NONE;
-	}
-
-	this.domElement.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
-	this.domElement.addEventListener( 'mousedown', onMouseDown, false );
-	this.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
-	this.domElement.addEventListener( 'DOMMouseScroll', onMouseWheel, false ); // firefox
-
-	this.domElement.addEventListener( 'keydown', onKeyDown, false );
-
-	this.domElement.addEventListener( 'touchstart', touchstart, false );
-	this.domElement.addEventListener( 'touchend', touchend, false );
-	this.domElement.addEventListener( 'touchmove', touchmove, false );
-
+    this.domElement.addEventListener('touchstart', touchstart, false);
+    this.domElement.addEventListener('touchend', touchend, false);
+    this.domElement.addEventListener('touchmove', touchmove, false);
 };
 
-THREE.OrbitControls.prototype = Object.create( THREE.EventDispatcher.prototype );
+THREE.OrbitControls.prototype = Object.create(THREE.EventDispatcher.prototype);
 
-"use strict";!function(){function n(n){var t={};return n&&"[object Function]"===t.toString.call(n)}this.SimpleWorker=function(t){function r(){onmessage=function(n){"__args"==n.data.type&&__func.apply(this,n.data.args)}}var e,i,a,o,c;if(e=t.func,!n(e))throw new Error("`func` needs to be a function.");i=t.args,a=t.success||function(){},o=t.error||function(){},c=t.runOnce||!1;var s;s="data:text/javascript;charset=US-ASCII,var __func = "+e.toString()+";",s+="("+r.toString()+").call(this);";var u=new Worker(s);u.onmessage=function(n){a(n.data),c&&u.terminate()},u.onerror=function(n){o(n)},this.run=function(){u.postMessage({type:"__args",args:Array.prototype.slice.call(arguments)})},this.close=function(){u.terminate()},void 0!==i&&this.run.apply(this,i)},this.SimpleWorker.run=function(n){n.runOnce=!0,new SimpleWorker(n)}}.call(this);
+"use strict";
+! function() {
+    function n(n) {
+        var t = {};
+        return n && "[object Function]" === t.toString.call(n);
+    }
+    this.SimpleWorker = function(t) {
+        function r() {
+            onmessage = function onmessage(n) {
+                "__args" == n.data.type && __func.apply(this, n.data.args);
+            };
+        }
+        var e, i, a, o, c;
+        if (e = t.func, !n(e)) throw new Error("`func` needs to be a function.");
+        i = t.args, a = t.success || function() {}, o = t.error || function() {}, c = t.runOnce || !1;
+        var s;
+        s = "data:text/javascript;charset=US-ASCII,var __func = " + e.toString() + ";", s += "(" + r.toString() + ").call(this);";
+        var u = new Worker(s);
+        u.onmessage = function(n) {
+            a(n.data), c && u.terminate();
+        }, u.onerror = function(n) {
+            o(n);
+        }, this.run = function() {
+            u.postMessage({
+                type: "__args",
+                args: Array.prototype.slice.call(arguments)
+            });
+        }, this.close = function() {
+            u.terminate();
+        }, void 0 !== i && this.run.apply(this, i);
+    }, this.SimpleWorker.run = function(n) {
+        n.runOnce = !0, new SimpleWorker(n);
+    };
+}.call(undefined);
 // stats.js - http://github.com/mrdoob/stats.js
-var Stats=function(){function f(a,e,b){a=document.createElement(a);a.id=e;a.style.cssText=b;return a}function l(a,e,b){var c=f("div",a,"padding:0 0 3px 3px;text-align:left;background:"+b),d=f("div",a+"Text","font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:"+e);d.innerHTML=a.toUpperCase();c.appendChild(d);a=f("div",a+"Graph","width:74px;height:30px;background:"+e);c.appendChild(a);for(e=0;74>e;e++)a.appendChild(f("span","","width:1px;height:30px;float:left;opacity:0.9;background:"+
-b));return c}function m(a){for(var b=c.children,d=0;d<b.length;d++)b[d].style.display=d===a?"block":"none";n=a}function p(a,b){a.appendChild(a.firstChild).style.height=Math.min(30,30-30*b)+"px"}var q=self.performance&&self.performance.now?self.performance.now.bind(performance):Date.now,k=q(),r=k,t=0,n=0,c=f("div","stats","width:80px;opacity:0.9;cursor:pointer");c.addEventListener("mousedown",function(a){a.preventDefault();m(++n%c.children.length)},!1);var d=0,u=Infinity,v=0,b=l("fps","#0ff","#002"),
-A=b.children[0],B=b.children[1];c.appendChild(b);var g=0,w=Infinity,x=0,b=l("ms","#0f0","#020"),C=b.children[0],D=b.children[1];c.appendChild(b);if(self.performance&&self.performance.memory){var h=0,y=Infinity,z=0,b=l("mb","#f08","#201"),E=b.children[0],F=b.children[1];c.appendChild(b)}m(n);return{REVISION:14,domElement:c,setMode:m,begin:function(){k=q()},end:function(){var a=q();g=a-k;w=Math.min(w,g);x=Math.max(x,g);C.textContent=(g|0)+" MS ("+(w|0)+"-"+(x|0)+")";p(D,g/200);t++;if(a>r+1E3&&(d=Math.round(1E3*
-t/(a-r)),u=Math.min(u,d),v=Math.max(v,d),A.textContent=d+" FPS ("+u+"-"+v+")",p(B,d/100),r=a,t=0,void 0!==h)){var b=performance.memory.usedJSHeapSize,c=performance.memory.jsHeapSizeLimit;h=Math.round(9.54E-7*b);y=Math.min(y,h);z=Math.max(z,h);E.textContent=h+" MB ("+y+"-"+z+")";p(F,b/c)}return a},update:function(){k=this.end()}}};"object"===typeof module&&(module.exports=Stats);
+var Stats = function Stats() {
+    function f(a, e, b) {
+        a = document.createElement(a);
+        a.id = e;
+        a.style.cssText = b;
+        return a;
+    }
+
+    function l(a, e, b) {
+        var c = f("div", a, "padding:0 0 3px 3px;text-align:left;background:" + b),
+            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);
+        d.innerHTML = a.toUpperCase();
+        c.appendChild(d);
+        a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);
+        c.appendChild(a);
+        for (e = 0; 74 > e; e++) {
+            a.appendChild(f("span", "", "width:1px;height:30px;float:left;opacity:0.9;background:" + b));
+        }
+        return c;
+    }
+
+    function m(a) {
+        for (var b = c.children, d = 0; d < b.length; d++) {
+            b[d].style.display = d === a ? "block" : "none";
+        }
+        n = a;
+    }
+
+    function p(a, b) {
+        a.appendChild(a.firstChild).style.height = Math.min(30, 30 - 30 * b) + "px";
+    }
+    var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
+        k = q(),
+        r = k,
+        t = 0,
+        n = 0,
+        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");
+    c.addEventListener("mousedown", function(a) {
+        a.preventDefault();
+        m(++n % c.children.length);
+    }, !1);
+    var d = 0,
+        u = Infinity,
+        v = 0,
+        b = l("fps", "#0ff", "#002"),
+        A = b.children[0],
+        B = b.children[1];
+    c.appendChild(b);
+    var g = 0,
+        w = Infinity,
+        x = 0,
+        b = l("ms", "#0f0", "#020"),
+        C = b.children[0],
+        D = b.children[1];
+    c.appendChild(b);
+    if (self.performance && self.performance.memory) {
+        var h = 0,
+            y = Infinity,
+            z = 0,
+            b = l("mb", "#f08", "#201"),
+            E = b.children[0],
+            F = b.children[1];
+        c.appendChild(b);
+    }
+    m(n);
+    return {
+        REVISION: 14,
+        domElement: c,
+        setMode: m,
+        begin: function begin() {
+            k = q();
+        },
+        end: function end() {
+            var a = q();
+            g = a - k;
+            w = Math.min(w, g);
+            x = Math.max(x, g);
+            C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";
+            p(D, g / 200);
+            t++;
+            if (a > r + 1E3 && (d = Math.round(1E3 * t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
+                var b = performance.memory.usedJSHeapSize,
+                    c = performance.memory.jsHeapSizeLimit;
+                h = Math.round(9.54E-7 * b);
+                y = Math.min(y, h);
+                z = Math.max(z, h);
+                E.textContent = h + " MB (" + y + "-" + z + ")";
+                p(F, b / c);
+            }
+            return a;
+        },
+        update: function update() {
+            k = this.end();
+        }
+    };
+};
+"object" === (typeof module === "undefined" ? "undefined" : _typeof(module)) && (module.exports = Stats);
 
 /*
  *	@author zz85 / http://twitter.com/blurspline / http://www.lab4games.net/zz85/blog
@@ -1227,346 +1366,311 @@ t/(a-r)),u=Math.min(u,d),v=Math.max(v,d),A.textContent=d+" FPS ("+u+"-"+v+")",p(
  *
  */
 
-THREE.SubdivisionModifier = function ( subdivisions ) {
+THREE.SubdivisionModifier = function(subdivisions) {
     'use strict';
 
-	this.subdivisions = ( subdivisions === undefined ) ? 1 : subdivisions;
-
+    this.subdivisions = subdivisions === undefined ? 1 : subdivisions;
 };
 
 // Applies the "modify" pattern
-THREE.SubdivisionModifier.prototype.modify = function ( geometry ) {
+THREE.SubdivisionModifier.prototype.modify = function(geometry) {
 
-	var repeats = this.subdivisions;
+    var repeats = this.subdivisions;
 
-	while ( repeats -- > 0 ) {
+    while (repeats-- > 0) {
 
-		this.smooth( geometry );
+        this.smooth(geometry);
+    }
 
-	}
+    delete geometry.__tmpVertices;
 
-	delete geometry.__tmpVertices;
-
-	geometry.computeFaceNormals();
-	geometry.computeVertexNormals();
-
+    geometry.computeFaceNormals();
+    geometry.computeVertexNormals();
 };
 
-( function() {
+(function() {
 
-	// Some constants
-	var WARNINGS = ! true; // Set to true for development
-	var ABC = [ 'a', 'b', 'c' ];
+    // Some constants
+    var WARNINGS = !true; // Set to true for development
+    var ABC = ['a', 'b', 'c'];
 
+    function getEdge(a, b, map) {
 
-	function getEdge( a, b, map ) {
+        var vertexIndexA = Math.min(a, b);
+        var vertexIndexB = Math.max(a, b);
 
-		var vertexIndexA = Math.min( a, b );
-		var vertexIndexB = Math.max( a, b );
+        var key = vertexIndexA + "_" + vertexIndexB;
 
-		var key = vertexIndexA + "_" + vertexIndexB;
+        return map[key];
+    }
 
-		return map[ key ];
+    function processEdge(a, b, vertices, map, face, metaVertices) {
 
-	}
+        var vertexIndexA = Math.min(a, b);
+        var vertexIndexB = Math.max(a, b);
 
+        var key = vertexIndexA + "_" + vertexIndexB;
 
-	function processEdge( a, b, vertices, map, face, metaVertices ) {
+        var edge;
 
-		var vertexIndexA = Math.min( a, b );
-		var vertexIndexB = Math.max( a, b );
+        if (key in map) {
 
-		var key = vertexIndexA + "_" + vertexIndexB;
+            edge = map[key];
+        } else {
 
-		var edge;
+            var vertexA = vertices[vertexIndexA];
+            var vertexB = vertices[vertexIndexB];
 
-		if ( key in map ) {
+            edge = {
 
-			edge = map[ key ];
+                a: vertexA, // pointer reference
+                b: vertexB,
+                newEdge: null,
+                // aIndex: a, // numbered reference
+                // bIndex: b,
+                faces: [] // pointers to face
 
-		} else {
+            };
 
-			var vertexA = vertices[ vertexIndexA ];
-			var vertexB = vertices[ vertexIndexB ];
+            map[key] = edge;
+        }
 
-			edge = {
+        edge.faces.push(face);
 
-				a: vertexA, // pointer reference
-				b: vertexB,
-				newEdge: null,
-				// aIndex: a, // numbered reference
-				// bIndex: b,
-				faces: [] // pointers to face
+        metaVertices[a].edges.push(edge);
+        metaVertices[b].edges.push(edge);
+    }
 
-			};
+    function generateLookups(vertices, faces, metaVertices, edges) {
 
-			map[ key ] = edge;
+        var i, il, face, edge;
 
-		}
+        for (i = 0, il = vertices.length; i < il; i++) {
 
-		edge.faces.push( face );
+            metaVertices[i] = {
+                edges: []
+            };
+        }
 
-		metaVertices[ a ].edges.push( edge );
-		metaVertices[ b ].edges.push( edge );
+        for (i = 0, il = faces.length; i < il; i++) {
 
+            face = faces[i];
 
-	}
+            processEdge(face.a, face.b, vertices, edges, face, metaVertices);
+            processEdge(face.b, face.c, vertices, edges, face, metaVertices);
+            processEdge(face.c, face.a, vertices, edges, face, metaVertices);
+        }
+    }
 
-	function generateLookups( vertices, faces, metaVertices, edges ) {
+    function newFace(newFaces, a, b, c) {
 
-		var i, il, face, edge;
+        newFaces.push(new THREE.Face3(a, b, c));
+    }
 
-		for ( i = 0, il = vertices.length; i < il; i ++ ) {
+    /////////////////////////////
 
-			metaVertices[ i ] = { edges: [] };
+    // Performs one iteration of Subdivision
+    THREE.SubdivisionModifier.prototype.smooth = function(geometry) {
 
-		}
+        var tmp = new THREE.Vector3();
 
-		for ( i = 0, il = faces.length; i < il; i ++ ) {
+        var oldVertices, oldFaces;
+        var newVertices, newFaces; // newUVs = [];
 
-			face = faces[ i ];
+        var n, l, i, il, j, k;
+        var metaVertices, sourceEdges;
 
-			processEdge( face.a, face.b, vertices, edges, face, metaVertices );
-			processEdge( face.b, face.c, vertices, edges, face, metaVertices );
-			processEdge( face.c, face.a, vertices, edges, face, metaVertices );
+        // new stuff.
+        var sourceEdges, newEdgeVertices, newSourceVertices;
 
-		}
+        oldVertices = geometry.vertices; // { x, y, z}
+        oldFaces = geometry.faces; // { a: oldVertex1, b: oldVertex2, c: oldVertex3 }
 
-	}
+        /******************************************************
+         *
+         * Step 0: Preprocess Geometry to Generate edges Lookup
+         *
+         *******************************************************/
 
-	function newFace( newFaces, a, b, c ) {
+        metaVertices = new Array(oldVertices.length);
+        sourceEdges = {}; // Edge => { oldVertex1, oldVertex2, faces[]  }
 
-		newFaces.push( new THREE.Face3( a, b, c ) );
+        generateLookups(oldVertices, oldFaces, metaVertices, sourceEdges);
 
-	}
+        /******************************************************
+         *
+         *	Step 1.
+         *	For each edge, create a new Edge Vertex,
+         *	then position it.
+         *
+         *******************************************************/
 
+        newEdgeVertices = [];
+        var other, currentEdge, newEdge, face;
+        var edgeVertexWeight, adjacentVertexWeight, connectedFaces;
 
-	/////////////////////////////
+        for (i in sourceEdges) {
 
-	// Performs one iteration of Subdivision
-	THREE.SubdivisionModifier.prototype.smooth = function ( geometry ) {
+            currentEdge = sourceEdges[i];
+            newEdge = new THREE.Vector3();
 
-		var tmp = new THREE.Vector3();
+            edgeVertexWeight = 3 / 8;
+            adjacentVertexWeight = 1 / 8;
 
-		var oldVertices, oldFaces;
-		var newVertices, newFaces; // newUVs = [];
+            connectedFaces = currentEdge.faces.length;
 
-		var n, l, i, il, j, k;
-		var metaVertices, sourceEdges;
+            // check how many linked faces. 2 should be correct.
+            if (connectedFaces != 2) {
 
-		// new stuff.
-		var sourceEdges, newEdgeVertices, newSourceVertices;
+                // if length is not 2, handle condition
+                edgeVertexWeight = 0.5;
+                adjacentVertexWeight = 0;
 
-		oldVertices = geometry.vertices; // { x, y, z}
-		oldFaces = geometry.faces; // { a: oldVertex1, b: oldVertex2, c: oldVertex3 }
+                if (connectedFaces != 1) {
 
-		/******************************************************
-		 *
-		 * Step 0: Preprocess Geometry to Generate edges Lookup
-		 *
-		 *******************************************************/
+                    if (WARNINGS) console.warn('Subdivision Modifier: Number of connected faces != 2, is: ', connectedFaces, currentEdge);
+                }
+            }
 
-		metaVertices = new Array( oldVertices.length );
-		sourceEdges = {}; // Edge => { oldVertex1, oldVertex2, faces[]  }
+            newEdge.addVectors(currentEdge.a, currentEdge.b).multiplyScalar(edgeVertexWeight);
 
-		generateLookups( oldVertices, oldFaces, metaVertices, sourceEdges );
+            tmp.set(0, 0, 0);
 
+            for (j = 0; j < connectedFaces; j++) {
 
-		/******************************************************
-		 *
-		 *	Step 1.
-		 *	For each edge, create a new Edge Vertex,
-		 *	then position it.
-		 *
-		 *******************************************************/
+                face = currentEdge.faces[j];
 
-		newEdgeVertices = [];
-		var other, currentEdge, newEdge, face;
-		var edgeVertexWeight, adjacentVertexWeight, connectedFaces;
+                for (k = 0; k < 3; k++) {
 
-		for ( i in sourceEdges ) {
+                    other = oldVertices[face[ABC[k]]];
+                    if (other !== currentEdge.a && other !== currentEdge.b) break;
+                }
 
-			currentEdge = sourceEdges[ i ];
-			newEdge = new THREE.Vector3();
+                tmp.add(other);
+            }
 
-			edgeVertexWeight = 3 / 8;
-			adjacentVertexWeight = 1 / 8;
+            tmp.multiplyScalar(adjacentVertexWeight);
+            newEdge.add(tmp);
 
-			connectedFaces = currentEdge.faces.length;
+            currentEdge.newEdge = newEdgeVertices.length;
+            newEdgeVertices.push(newEdge);
 
-			// check how many linked faces. 2 should be correct.
-			if ( connectedFaces != 2 ) {
+            // console.log(currentEdge, newEdge);
+        }
 
-				// if length is not 2, handle condition
-				edgeVertexWeight = 0.5;
-				adjacentVertexWeight = 0;
+        /******************************************************
+         *
+         *	Step 2.
+         *	Reposition each source vertices.
+         *
+         *******************************************************/
 
-				if ( connectedFaces != 1 ) {
+        var beta, sourceVertexWeight, connectingVertexWeight;
+        var connectingEdge, connectingEdges, oldVertex, newSourceVertex;
+        newSourceVertices = [];
 
-					if ( WARNINGS ) console.warn( 'Subdivision Modifier: Number of connected faces != 2, is: ', connectedFaces, currentEdge );
+        for (i = 0, il = oldVertices.length; i < il; i++) {
 
-				}
+            oldVertex = oldVertices[i];
 
-			}
+            // find all connecting edges (using lookupTable)
+            connectingEdges = metaVertices[i].edges;
+            n = connectingEdges.length;
+            beta;
 
-			newEdge.addVectors( currentEdge.a, currentEdge.b ).multiplyScalar( edgeVertexWeight );
+            if (n == 3) {
 
-			tmp.set( 0, 0, 0 );
+                beta = 3 / 16;
+            } else if (n > 3) {
 
-			for ( j = 0; j < connectedFaces; j ++ ) {
+                beta = 3 / (8 * n); // Warren's modified formula
+            }
 
-				face = currentEdge.faces[ j ];
+            // Loop's original beta formula
+            // beta = 1 / n * ( 5/8 - Math.pow( 3/8 + 1/4 * Math.cos( 2 * Math. PI / n ), 2) );
 
-				for ( k = 0; k < 3; k ++ ) {
+            sourceVertexWeight = 1 - n * beta;
+            connectingVertexWeight = beta;
 
-					other = oldVertices[ face[ ABC[ k ] ] ];
-					if ( other !== currentEdge.a && other !== currentEdge.b ) break;
+            if (n <= 2) {
 
-				}
+                // crease and boundary rules
+                // console.warn('crease and boundary rules');
 
-				tmp.add( other );
+                if (n == 2) {
 
-			}
+                    if (WARNINGS) console.warn('2 connecting edges', connectingEdges);
+                    sourceVertexWeight = 3 / 4;
+                    connectingVertexWeight = 1 / 8;
 
-			tmp.multiplyScalar( adjacentVertexWeight );
-			newEdge.add( tmp );
+                    // sourceVertexWeight = 1;
+                    // connectingVertexWeight = 0;
+                } else if (n == 1) {
 
-			currentEdge.newEdge = newEdgeVertices.length;
-			newEdgeVertices.push( newEdge );
+                    if (WARNINGS) console.warn('only 1 connecting edge');
+                } else if (n == 0) {
 
-			// console.log(currentEdge, newEdge);
+                    if (WARNINGS) console.warn('0 connecting edges');
+                }
+            }
 
-		}
+            newSourceVertex = oldVertex.clone().multiplyScalar(sourceVertexWeight);
 
-		/******************************************************
-		 *
-		 *	Step 2.
-		 *	Reposition each source vertices.
-		 *
-		 *******************************************************/
+            tmp.set(0, 0, 0);
 
-		var beta, sourceVertexWeight, connectingVertexWeight;
-		var connectingEdge, connectingEdges, oldVertex, newSourceVertex;
-		newSourceVertices = [];
+            for (j = 0; j < n; j++) {
 
-		for ( i = 0, il = oldVertices.length; i < il; i ++ ) {
+                connectingEdge = connectingEdges[j];
+                other = connectingEdge.a !== oldVertex ? connectingEdge.a : connectingEdge.b;
+                tmp.add(other);
+            }
 
-			oldVertex = oldVertices[ i ];
+            tmp.multiplyScalar(connectingVertexWeight);
+            newSourceVertex.add(tmp);
 
-			// find all connecting edges (using lookupTable)
-			connectingEdges = metaVertices[ i ].edges;
-			n = connectingEdges.length;
-			beta;
+            newSourceVertices.push(newSourceVertex);
+        }
 
-			if ( n == 3 ) {
+        /******************************************************
+         *
+         *	Step 3.
+         *	Generate Faces between source vertecies
+         *	and edge vertices.
+         *
+         *******************************************************/
 
-				beta = 3 / 16;
+        newVertices = newSourceVertices.concat(newEdgeVertices);
+        var sl = newSourceVertices.length,
+            edge1,
+            edge2,
+            edge3;
+        newFaces = [];
 
-			} else if ( n > 3 ) {
+        for (i = 0, il = oldFaces.length; i < il; i++) {
 
-				beta = 3 / ( 8 * n ); // Warren's modified formula
+            face = oldFaces[i];
 
-			}
+            // find the 3 new edges vertex of each old face
 
-			// Loop's original beta formula
-			// beta = 1 / n * ( 5/8 - Math.pow( 3/8 + 1/4 * Math.cos( 2 * Math. PI / n ), 2) );
+            edge1 = getEdge(face.a, face.b, sourceEdges).newEdge + sl;
+            edge2 = getEdge(face.b, face.c, sourceEdges).newEdge + sl;
+            edge3 = getEdge(face.c, face.a, sourceEdges).newEdge + sl;
 
-			sourceVertexWeight = 1 - n * beta;
-			connectingVertexWeight = beta;
+            // create 4 faces.
 
-			if ( n <= 2 ) {
+            newFace(newFaces, edge1, edge2, edge3);
+            newFace(newFaces, face.a, edge1, edge3);
+            newFace(newFaces, face.b, edge2, edge1);
+            newFace(newFaces, face.c, edge3, edge2);
+        }
 
-				// crease and boundary rules
-				// console.warn('crease and boundary rules');
+        // Overwrite old arrays
+        geometry.vertices = newVertices;
+        geometry.faces = newFaces;
 
-				if ( n == 2 ) {
-
-					if ( WARNINGS ) console.warn( '2 connecting edges', connectingEdges );
-					sourceVertexWeight = 3 / 4;
-					connectingVertexWeight = 1 / 8;
-
-					// sourceVertexWeight = 1;
-					// connectingVertexWeight = 0;
-
-				} else if ( n == 1 ) {
-
-					if ( WARNINGS ) console.warn( 'only 1 connecting edge' );
-
-				} else if ( n == 0 ) {
-
-					if ( WARNINGS ) console.warn( '0 connecting edges' );
-
-				}
-
-			}
-
-			newSourceVertex = oldVertex.clone().multiplyScalar( sourceVertexWeight );
-
-			tmp.set( 0, 0, 0 );
-
-			for ( j = 0; j < n; j ++ ) {
-
-				connectingEdge = connectingEdges[ j ];
-				other = connectingEdge.a !== oldVertex ? connectingEdge.a : connectingEdge.b;
-				tmp.add( other );
-
-			}
-
-			tmp.multiplyScalar( connectingVertexWeight );
-			newSourceVertex.add( tmp );
-
-			newSourceVertices.push( newSourceVertex );
-
-		}
-
-
-		/******************************************************
-		 *
-		 *	Step 3.
-		 *	Generate Faces between source vertecies
-		 *	and edge vertices.
-		 *
-		 *******************************************************/
-
-		newVertices = newSourceVertices.concat( newEdgeVertices );
-		var sl = newSourceVertices.length, edge1, edge2, edge3;
-		newFaces = [];
-
-		for ( i = 0, il = oldFaces.length; i < il; i ++ ) {
-
-			face = oldFaces[ i ];
-
-			// find the 3 new edges vertex of each old face
-
-			edge1 = getEdge( face.a, face.b, sourceEdges ).newEdge + sl;
-			edge2 = getEdge( face.b, face.c, sourceEdges ).newEdge + sl;
-			edge3 = getEdge( face.c, face.a, sourceEdges ).newEdge + sl;
-
-			// create 4 faces.
-
-			newFace( newFaces, edge1, edge2, edge3 );
-			newFace( newFaces, face.a, edge1, edge3 );
-			newFace( newFaces, face.b, edge2, edge1 );
-			newFace( newFaces, face.c, edge3, edge2 );
-
-		}
-
-		// Overwrite old arrays
-		geometry.vertices = newVertices;
-		geometry.faces = newFaces;
-
-		// console.log('done');
-
-	};
-
-
-} )();
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+        // console.log('done');
+    };
+})();
 
 // [x]#TODO:130 RESTRUCTURIZE.
 // [x]#TODO:120 RESTRUCTURIZE threejs and cannonjs library calling.
@@ -1581,10 +1685,11 @@ THREE.SubdivisionModifier.prototype.modify = function ( geometry ) {
 
 // Array.isArray;
 if (typeof Array.isArray === 'undefined') {
-  Array.isArray = function(obj) {
-    'use strict';
-    return Object.prototype.toString.call(obj) === '[object Array]';
-  };
+    Array.isArray = function(obj) {
+        'use strict';
+
+        return Object.prototype.toString.call(obj) === '[object Array]';
+    };
 }
 
 // Object.assign|es6+;
@@ -1593,8 +1698,9 @@ if (!Object.assign) {
         enumerable: false,
         configurable: true,
         writable: true,
-        value: function(target) {
+        value: function value(target) {
             'use strict';
+
             if (target === undefined || target === null) {
                 throw new TypeError('Cannot convert first argument to object');
             }
@@ -1623,7 +1729,7 @@ if (!Object.assign) {
 
 /* ================ WHITESTORM|JS ==================== */
 var WHS = {
-  REVISION: "0.0.6"
+    REVISION: "0.0.6"
 };
 
 WHS.headers = {}; //GLOBAL headers, ex: url, script, library, specific api...
@@ -1643,25 +1749,15 @@ WHS.plugins = {
 
 WHS.grounds = [];
 
-
 var api = WHS.API;
 
+if (typeof define === 'function' && define.amd) {
 
-if ( typeof define === 'function' && define.amd ) {
+    define('whitestorm', WHS);
+} else if ('undefined' !== typeof exports && 'undefined' !== typeof module) {
 
-		define( 'whitestorm', WHS );
-
-} else if ( 'undefined' !== typeof exports && 'undefined' !== typeof module ) {
-
-		module.exports = WHS;
-
+    module.exports = WHS;
 }
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
 
 /**
  * @author alteredq / http://alteredqualia.com/
@@ -1671,403 +1767,223 @@ if ( typeof define === 'function' && define.amd ) {
 
 THREE.ShaderTerrain = {
 
-    'terrain' : {
+    'terrain': {
 
-		uniforms: THREE.UniformsUtils.merge( [
+        uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib["fog"], THREE.UniformsLib["lights"], THREE.UniformsLib["shadowmap"], {
 
-		    THREE.UniformsLib[ "fog" ],
-		    THREE.UniformsLib[ "lights" ],
-		    THREE.UniformsLib[ "shadowmap" ],
+            "enableDiffuse1": {
+                type: "i",
+                value: 0
+            },
+            "enableDiffuse2": {
+                type: "i",
+                value: 0
+            },
+            "enableSpecular": {
+                type: "i",
+                value: 0
+            },
+            "enableReflection": {
+                type: "i",
+                value: 0
+            },
 
-		    {
+            "tDiffuse1": {
+                type: "t",
+                value: null
+            },
+            "tDiffuse2": {
+                type: "t",
+                value: null
+            },
+            "tDetail": {
+                type: "t",
+                value: null
+            },
+            "tNormal": {
+                type: "t",
+                value: null
+            },
+            "tSpecular": {
+                type: "t",
+                value: null
+            },
+            "tDisplacement": {
+                type: "t",
+                value: null
+            },
 
-			    "enableDiffuse1"  : { type: "i", value: 0 },
-			    "enableDiffuse2"  : { type: "i", value: 0 },
-			    "enableSpecular"  : { type: "i", value: 0 },
-			    "enableReflection": { type: "i", value: 0 },
+            "uNormalScale": {
+                type: "f",
+                value: 1.0
+            },
 
-			    "tDiffuse1"    : { type: "t", value: null },
-			    "tDiffuse2"    : { type: "t", value: null },
-			    "tDetail"      : { type: "t", value: null },
-			    "tNormal"      : { type: "t", value: null },
-			    "tSpecular"    : { type: "t", value: null },
-			    "tDisplacement": { type: "t", value: null },
+            "uDisplacementBias": {
+                type: "f",
+                value: 0.0
+            },
+            "uDisplacementScale": {
+                type: "f",
+                value: 1.0
+            },
 
-			    "uNormalScale": { type: "f", value: 1.0 },
+            "diffuse": {
+                type: "c",
+                value: new THREE.Color(0xeeeeee)
+            },
+            "specular": {
+                type: "c",
+                value: new THREE.Color(0x111111)
+            },
+            "shininess": {
+                type: "f",
+                value: 30
+            },
+            "opacity": {
+                type: "f",
+                value: 1
+            },
 
-			    "uDisplacementBias": { type: "f", value: 0.0 },
-			    "uDisplacementScale": { type: "f", value: 1.0 },
+            "uRepeatBase": {
+                type: "v2",
+                value: new THREE.Vector2(1, 1)
+            },
+            "uRepeatOverlay": {
+                type: "v2",
+                value: new THREE.Vector2(1, 1)
+            },
 
-			    "diffuse": { type: "c", value: new THREE.Color( 0xeeeeee ) },
-			    "specular": { type: "c", value: new THREE.Color( 0x111111 ) },
-			    "shininess": { type: "f", value: 30 },
-			    "opacity": { type: "f", value: 1 },
+            "uOffset": {
+                type: "v2",
+                value: new THREE.Vector2(0, 0)
+            }
 
-			    "uRepeatBase"    : { type: "v2", value: new THREE.Vector2( 1, 1 ) },
-			    "uRepeatOverlay" : { type: "v2", value: new THREE.Vector2( 1, 1 ) },
+        }]),
 
-			    "uOffset" : { type: "v2", value: new THREE.Vector2( 0, 0 ) }
+        fragmentShader: ["\n\t\t        uniform vec3 diffuse;\n\t\t        uniform vec3 emissive;\n\t\t        uniform float opacity;\n\t\t        uniform vec3 ambientLightColor;\n\t\t        varying vec3 vLightFront;\n\t\t        #ifdef DOUBLE_SIDED\n\t\t\t        varying vec3 vLightBack;\n\t\t\t        uniform vec2 uRepeatOverlay;\n\t\t\t        uniform vec2 uRepeatBase;\n\t\t\t        uniform vec2 uOffset;\n\t\t\t        uniform float uNormalScale;\n\t\t\t        uniform sampler2D tNormal;\n\t\t        #endif\n\t\t        uniform sampler2D oceanTexture;\n\t\t        uniform sampler2D sandyTexture;\n\t\t        uniform sampler2D grassTexture;\n\t\t        uniform sampler2D rockyTexture;\n\t\t        uniform sampler2D snowyTexture;\n\t\t        varying vec3 vTangent;\n\t\t        varying vec3 vBinormal;\n\t\t        varying vec3 vNormal;\n\t\t        varying vec3 vViewPosition;\n\t\t" + [THREE.ShaderChunk["common"], THREE.ShaderChunk["color_pars_fragment"], THREE.ShaderChunk["map_pars_fragment"], THREE.ShaderChunk["alphamap_pars_fragment"], THREE.ShaderChunk["lightmap_pars_fragment"], THREE.ShaderChunk["envmap_pars_fragment"], THREE.ShaderChunk["fog_pars_fragment"], THREE.ShaderChunk["shadowmap_pars_fragment"], THREE.ShaderChunk["specularmap_pars_fragment"], THREE.ShaderChunk["logdepthbuf_pars_fragment"]].join("\n") + "\n\t\t        varying vec2 vUv;\n\t\t        varying float vAmount;\n\t\t        void main() {\n\t\t        \t// UVs.\n\t\t            vec2 uvOverlay = uRepeatOverlay * vUv + uOffset;\n\t\t            vec2 uvBase = uRepeatBase * vUv;\n\t\t\t\t\tvec3 specularTex = vec3( 1.0 );\n\t\t            vec3 normalTex = texture2D( tNormal, uvOverlay ).xyz * 2.0 - 1.0;\n\t\t            normalTex.xy *= uNormalScale;\n\t\t            normalTex = normalize( normalTex );\n\t\t            mat3 tsb = mat3( vTangent, vBinormal, vNormal );\n\t\t            vec3 finalNormal = tsb * normalTex;\n\t\t            vec3 normal = normalize( finalNormal );\n\t\t            vec3 viewPosition = normalize( vViewPosition );\n\t\t            vec3 shadowMask = vec3( 1.0 );\n\t\t            vec3 outgoingLight = vec3( 0.0 );\n\t\t            vec3 totalAmbientLight = ambientLightColor;\n\t\t            vec4 diffuseColor = vec4(0.0);\n\t\t            // Color by texture.\n\t\t            vec4 water = (smoothstep(0.01, 0.25, vAmount)\n\t\t            - smoothstep(0.24, 0.26, vAmount))\n\t\t            * texture2D( oceanTexture, vUv * 10.0 );\n\t\t            vec4 sandy = (smoothstep(0.24, 0.27, vAmount)\n\t\t            - smoothstep(0.28, 0.31, vAmount))\n\t\t            * texture2D( sandyTexture, vUv * 10.0 );\n\t\t            vec4 grass = (smoothstep(0.28, 0.32, vAmount)\n\t\t            - smoothstep(0.35, 0.40, vAmount))\n\t\t            * texture2D( grassTexture, vUv * 20.0 );\n\t\t            vec4 rocky = (smoothstep(0.30, 0.40, vAmount)\n\t\t            - smoothstep(0.40, 0.70, vAmount))\n\t\t            * texture2D( rockyTexture, vUv * 20.0 );\n\t\t            vec4 snowy = (smoothstep(0.42, 0.45, vAmount))\n\t\t            * texture2D( snowyTexture, vUv * 10.0 );\n\t\t            diffuseColor = vec4(0.0, 0.0, 0.0, 1.0)\n\t\t            + water + sandy + grass + rocky + snowy;\n\t\t" + [THREE.ShaderChunk["logdepthbuf_fragment"], THREE.ShaderChunk["map_fragment"], THREE.ShaderChunk["alphamap_fragment"], THREE.ShaderChunk["alphatest_fragment"], THREE.ShaderChunk["specularmap_fragment"], THREE.ShaderChunk["lightmap_fragment"], THREE.ShaderChunk["color_fragment"], THREE.ShaderChunk["shadowmap_fragment"], THREE.ShaderChunk["linear_to_gamma_fragment"], THREE.ShaderChunk["fog_fragment"]].join("\n") + "\n\t\t            #ifdef DOUBLE_SIDED\n\t\t                if ( gl_FrontFacing )\n\t\t                    outgoingLight += diffuseColor.rgb * \n\t\t                \t\t( vLightFront * shadowMask + totalAmbientLight )\n\t\t                \t\t+ emissive;\n\t\t                else\n\t\t                    outgoingLight += diffuseColor.rgb * \n\t\t                \t\t( vLightBack * shadowMask + totalAmbientLight )\n\t\t                \t\t+ emissive;\n\t\t            #else\n\t\t                outgoingLight += diffuseColor.rgb * \n\t\t                \t( vLightFront * shadowMask + totalAmbientLight )\n\t\t                \t+ emissive;\n\t\t            #endif\n\t\t           gl_FragColor = vec4( outgoingLight, diffuseColor.a );\n\t\t      }\n\t\t"],
 
-		    }
+        vertexShader: ["\n\t\t    #define TERRAIN;\n\t\t    varying vec3 vLightFront;\n\t\t    #ifdef DOUBLE_SIDED\n\t\t        varying vec3 vLightBack;\n\t\t    #endif\n\t\t    \n\t\t    varying float vAmount;\n\t\t    attribute vec4 tangent;\n\t\t    uniform vec2 uRepeatBase;\n\t\t    uniform sampler2D tNormal;\n\t\t    #ifdef VERTEX_TEXTURES\n\t\t\t    uniform sampler2D tDisplacement;\n\t\t\t    uniform float uDisplacementScale;\n\t\t\t    uniform float uDisplacementBias;\n\t\t    #endif\n\t\t    varying vec3 vTangent;\n\t\t    varying vec3 vBinormal;\n\t\t    varying vec3 vNormal;\n\t\t    varying vec2 vUv;\n\t\t    varying vec3 vViewPosition;\n\t\t" + [THREE.ShaderChunk["common"], THREE.ShaderChunk["uv_pars_vertex"], THREE.ShaderChunk["uv2_pars_vertex"], THREE.ShaderChunk["envmap_pars_vertex"], THREE.ShaderChunk["lights_lambert_pars_vertex"], THREE.ShaderChunk["color_pars_vertex"], THREE.ShaderChunk["morphtarget_pars_vertex"], THREE.ShaderChunk["skinning_pars_vertex"], THREE.ShaderChunk["shadowmap_pars_vertex"], THREE.ShaderChunk["logdepthbuf_pars_vertex"]].join("\n") + "\n\t\t    void main() {\n\t\t" + [THREE.ShaderChunk["color_vertex"], THREE.ShaderChunk["beginnormal_vertex"], THREE.ShaderChunk["morphnormal_vertex"], THREE.ShaderChunk["skinbase_vertex"], THREE.ShaderChunk["skinnormal_vertex"], THREE.ShaderChunk["defaultnormal_vertex"], THREE.ShaderChunk["begin_vertex"], THREE.ShaderChunk["morphtarget_vertex"], THREE.ShaderChunk["skinning_vertex"], THREE.ShaderChunk["project_vertex"], THREE.ShaderChunk["logdepthbuf_vertex"], THREE.ShaderChunk["uv_vertex"], THREE.ShaderChunk["uv2_vertex"]].join("\n") + "\n\t\t\t    vNormal = normalize( normalMatrix * normal);\n\t\t\t    // Tangent and binormal vectors.\n\t\t\t    vTangent = normalize( normalMatrix * tangent.xyz );\n\t\t\t    vBinormal = cross( vNormal, vTangent ) * tangent.w;\n\t\t\t    vBinormal = normalize( vBinormal );\n\t\t\t    // Texture coordinates.\n\t\t\t    vUv = uv;\n\t\t\t    vec2 uvBase = uv * uRepeatBase;\n\t\t\t    // displacement mapping\n\t\t\t    vec4 worldPosition = modelMatrix * vec4( position, 1.0 );\n\t\t\t    mvPosition = modelViewMatrix * vec4( position, 1.0 );\n\t\t\t    transformedNormal = normalize( normalMatrix * normal );\n\t\t\t    gl_Position = projectionMatrix * mvPosition;\n\t\t\t    vViewPosition = -mvPosition.xyz;\n\t\t\t    vAmount = position.z * 0.005 + 0.1;\n\t\t" + [THREE.ShaderChunk["envmap_vertex"], THREE.ShaderChunk["lights_lambert_vertex"], THREE.ShaderChunk["shadowmap_vertex"]].join("\n") + "\n\t\t   }\n\t\t"],
 
-	    ] ),
+        side: THREE.DoubleSide,
+        shading: THREE.SmoothShading
 
-	    fragmentShader: [
-
-		`
-		        uniform vec3 diffuse;
-		        uniform vec3 emissive;
-		        uniform float opacity;
-		        uniform vec3 ambientLightColor;
-		        varying vec3 vLightFront;
-		        #ifdef DOUBLE_SIDED
-			        varying vec3 vLightBack;
-			        uniform vec2 uRepeatOverlay;
-			        uniform vec2 uRepeatBase;
-			        uniform vec2 uOffset;
-			        uniform float uNormalScale;
-			        uniform sampler2D tNormal;
-		        #endif
-		        uniform sampler2D oceanTexture;
-		        uniform sampler2D sandyTexture;
-		        uniform sampler2D grassTexture;
-		        uniform sampler2D rockyTexture;
-		        uniform sampler2D snowyTexture;
-		        varying vec3 vTangent;
-		        varying vec3 vBinormal;
-		        varying vec3 vNormal;
-		        varying vec3 vViewPosition;
-		` + 
-
-			        [
-
-				        THREE.ShaderChunk[ "common" ],
-				        THREE.ShaderChunk[ "color_pars_fragment" ],
-				        THREE.ShaderChunk[ "map_pars_fragment" ],
-				        THREE.ShaderChunk[ "alphamap_pars_fragment" ],
-				        THREE.ShaderChunk[ "lightmap_pars_fragment" ],
-				        THREE.ShaderChunk[ "envmap_pars_fragment" ],
-				        THREE.ShaderChunk[ "fog_pars_fragment" ],
-				        THREE.ShaderChunk[ "shadowmap_pars_fragment" ],
-				        THREE.ShaderChunk[ "specularmap_pars_fragment" ],
-				        THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ]
-
-			        ].join("\n") +
-		        
-		`
-		        varying vec2 vUv;
-		        varying float vAmount;
-		        void main() {
-		        	// UVs.
-		            vec2 uvOverlay = uRepeatOverlay * vUv + uOffset;
-		            vec2 uvBase = uRepeatBase * vUv;
-					vec3 specularTex = vec3( 1.0 );
-		            vec3 normalTex = texture2D( tNormal, uvOverlay ).xyz * 2.0 - 1.0;
-		            normalTex.xy *= uNormalScale;
-		            normalTex = normalize( normalTex );
-		            mat3 tsb = mat3( vTangent, vBinormal, vNormal );
-		            vec3 finalNormal = tsb * normalTex;
-		            vec3 normal = normalize( finalNormal );
-		            vec3 viewPosition = normalize( vViewPosition );
-		            vec3 shadowMask = vec3( 1.0 );
-		            vec3 outgoingLight = vec3( 0.0 );
-		            vec3 totalAmbientLight = ambientLightColor;
-		            vec4 diffuseColor = vec4(0.0);
-		            // Color by texture.
-		            vec4 water = (smoothstep(0.01, 0.25, vAmount)
-		            - smoothstep(0.24, 0.26, vAmount))
-		            * texture2D( oceanTexture, vUv * 10.0 );
-		            vec4 sandy = (smoothstep(0.24, 0.27, vAmount)
-		            - smoothstep(0.28, 0.31, vAmount))
-		            * texture2D( sandyTexture, vUv * 10.0 );
-		            vec4 grass = (smoothstep(0.28, 0.32, vAmount)
-		            - smoothstep(0.35, 0.40, vAmount))
-		            * texture2D( grassTexture, vUv * 20.0 );
-		            vec4 rocky = (smoothstep(0.30, 0.40, vAmount)
-		            - smoothstep(0.40, 0.70, vAmount))
-		            * texture2D( rockyTexture, vUv * 20.0 );
-		            vec4 snowy = (smoothstep(0.42, 0.45, vAmount))
-		            * texture2D( snowyTexture, vUv * 10.0 );
-		            diffuseColor = vec4(0.0, 0.0, 0.0, 1.0)
-		            + water + sandy + grass + rocky + snowy;
-		` +
-
-				        [
-
-					        THREE.ShaderChunk[ "logdepthbuf_fragment" ],
-					        THREE.ShaderChunk[ "map_fragment" ],
-					        THREE.ShaderChunk[ "alphamap_fragment" ],
-					        THREE.ShaderChunk[ "alphatest_fragment" ],
-					        THREE.ShaderChunk[ "specularmap_fragment" ],
-
-					        THREE.ShaderChunk[ "lightmap_fragment" ],
-					        THREE.ShaderChunk[ "color_fragment" ],
-					        THREE.ShaderChunk[ "shadowmap_fragment" ],
-					        THREE.ShaderChunk[ "linear_to_gamma_fragment" ],
-					        THREE.ShaderChunk[ "fog_fragment" ]
-
-				        ].join("\n") +
-
-		`
-		            #ifdef DOUBLE_SIDED
-		                if ( gl_FrontFacing )
-		                    outgoingLight += diffuseColor.rgb * 
-		                		( vLightFront * shadowMask + totalAmbientLight )
-		                		+ emissive;
-		                else
-		                    outgoingLight += diffuseColor.rgb * 
-		                		( vLightBack * shadowMask + totalAmbientLight )
-		                		+ emissive;
-		            #else
-		                outgoingLight += diffuseColor.rgb * 
-		                	( vLightFront * shadowMask + totalAmbientLight )
-		                	+ emissive;
-		            #endif
-		           gl_FragColor = vec4( outgoingLight, diffuseColor.a );
-		      }
-		`
-
-		],
-
-		vertexShader: [
-
-
-		`
-		    #define TERRAIN;
-		    varying vec3 vLightFront;
-		    #ifdef DOUBLE_SIDED
-		        varying vec3 vLightBack;
-		    #endif
-		    
-		    varying float vAmount;
-		    attribute vec4 tangent;
-		    uniform vec2 uRepeatBase;
-		    uniform sampler2D tNormal;
-		    #ifdef VERTEX_TEXTURES
-			    uniform sampler2D tDisplacement;
-			    uniform float uDisplacementScale;
-			    uniform float uDisplacementBias;
-		    #endif
-		    varying vec3 vTangent;
-		    varying vec3 vBinormal;
-		    varying vec3 vNormal;
-		    varying vec2 vUv;
-		    varying vec3 vViewPosition;
-		` + 
-
-		    [
-
-			    THREE.ShaderChunk[ "common" ],
-
-			    THREE.ShaderChunk[ "uv_pars_vertex" ],
-			    THREE.ShaderChunk[ "uv2_pars_vertex" ],
-			    THREE.ShaderChunk[ "envmap_pars_vertex" ],
-			    THREE.ShaderChunk[ "lights_lambert_pars_vertex" ],
-			    THREE.ShaderChunk[ "color_pars_vertex" ],
-			    THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
-			    THREE.ShaderChunk[ "skinning_pars_vertex" ],
-			    THREE.ShaderChunk[ "shadowmap_pars_vertex" ],
-			    THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ]
-
-		    ].join( "\n" ) +
-
-		`
-		    void main() {
-		` + 
-
-		    [
-
-			    THREE.ShaderChunk[ "color_vertex" ],
-
-			    THREE.ShaderChunk[ "beginnormal_vertex" ],
-			    THREE.ShaderChunk[ "morphnormal_vertex" ],
-			    THREE.ShaderChunk[ "skinbase_vertex" ],
-			    THREE.ShaderChunk[ "skinnormal_vertex" ],
-			    THREE.ShaderChunk[ "defaultnormal_vertex" ],
-
-			    THREE.ShaderChunk[ "begin_vertex" ],
-			    THREE.ShaderChunk[ "morphtarget_vertex" ],
-			    THREE.ShaderChunk[ "skinning_vertex" ],
-			    THREE.ShaderChunk[ "project_vertex" ],
-			    THREE.ShaderChunk[ "logdepthbuf_vertex" ],
-
-			    THREE.ShaderChunk[ "uv_vertex" ],
-			    THREE.ShaderChunk[ "uv2_vertex" ]
-
-		    ].join( "\n" ) +
-
-		`
-			    vNormal = normalize( normalMatrix * normal);
-			    // Tangent and binormal vectors.
-			    vTangent = normalize( normalMatrix * tangent.xyz );
-			    vBinormal = cross( vNormal, vTangent ) * tangent.w;
-			    vBinormal = normalize( vBinormal );
-			    // Texture coordinates.
-			    vUv = uv;
-			    vec2 uvBase = uv * uRepeatBase;
-			    // displacement mapping
-			    vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
-			    mvPosition = modelViewMatrix * vec4( position, 1.0 );
-			    transformedNormal = normalize( normalMatrix * normal );
-			    gl_Position = projectionMatrix * mvPosition;
-			    vViewPosition = -mvPosition.xyz;
-			    vAmount = position.z * 0.005 + 0.1;
-		` +
-
-		    [
-
-			    THREE.ShaderChunk[ "envmap_vertex" ],
-			    THREE.ShaderChunk[ "lights_lambert_vertex" ],
-			    THREE.ShaderChunk[ "shadowmap_vertex" ]
-
-		    ].join( "\n" ) +
-
-		`
-		   }
-		`
-
-		],
-
-		side: THREE.DoubleSide,
-	    shading: THREE.SmoothShading
-
-	}
+    }
 
 };
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
 
-WHS.API.construct = function (root, params, type) {
-  'use strict';
+WHS.API.construct = function(root, params, type) {
+    'use strict';
 
-  if (!root)
-    console.error("@constructor: WHS root object is not defined.");
+    if (!root) console.error("@constructor: WHS root object is not defined.");
 
-  var _set = function(x, y, z) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-  }
+    var _set = function _set(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    };
 
-  if (params.pos) params.pos.set = _set;
-  if (params.rot) params.rot.set = _set;
-  if (params.scale) params.scale.set = _set;
-  if (params.target) params.target.set = _set;
+    if (params.pos) params.pos.set = _set;
+    if (params.rot) params.rot.set = _set;
+    if (params.scale) params.scale.set = _set;
+    if (params.target) params.target.set = _set;
 
-  var target = $.extend(true, {
-    pos: {
-      x: 0,
-      y: 0,
-      z: 0,
-      set: _set
-    },
-    rot: {
-      x: 0,
-      y: 0,
-      z: 0,
-      set: _set
-    },
-    scale: {
-      x: 1,
-      y: 1,
-      z: 1,
-      set: _set
-    },
-    target: {
-      x: 0,
-      y: 0,
-      z: 0,
-      set: _set
-    },
-    morph: {
-      speed: 1,
-      duration: 1
-    },
-    onlyvis: false
-  }, params);
+    var target = $.extend(true, {
+        pos: {
+            x: 0,
+            y: 0,
+            z: 0,
+            set: _set
+        },
+        rot: {
+            x: 0,
+            y: 0,
+            z: 0,
+            set: _set
+        },
+        scale: {
+            x: 1,
+            y: 1,
+            z: 1,
+            set: _set
+        },
+        target: {
+            x: 0,
+            y: 0,
+            z: 0,
+            set: _set
+        },
+        morph: {
+            speed: 1,
+            duration: 1
+        },
+        onlyvis: false
+    }, params);
 
+    var key = 0;
 
-  var key = 0;
+    root.modellingQueue.forEach(function(el) {
+        if (el.type == type) key++;
+    });
 
-  root.modellingQueue.forEach(function(el) {
-    if (el.type == type) key++;
-  });
+    var deferred = $.Deferred();
 
-  var deferred = $.Deferred();
+    var scope = {
+        root: root,
+        _key: key,
+        _whsobject: true,
+        _name: type + key,
+        __releaseTime: new Date().getTime(),
+        __deferred: deferred,
+        _state: deferred.promise(),
+        _pos: target.pos,
+        _rot: target.rot,
+        _scale: target.scale,
+        _morph: target.morph,
+        _target: target.target,
+        _onlyvis: target.onlyvis
+    };
 
-  var scope = {
-    root: root,
-    _key: key,
-    _whsobject: true,
-    _name: type + key,
-    __releaseTime: new Date().getTime(),
-    __deferred: deferred,
-    _state: deferred.promise(),
-    _pos: target.pos,
-    _rot: target.rot,
-    _scale: target.scale,
-    _morph: target.morph,
-    _target: target.target,
-    _onlyvis: target.onlyvis
-  };
+    Object.assign(this, scope);
 
-  Object.assign(this, scope);
+    root.children.push(scope);
 
-  root.children.push(scope);
+    return this;
+};
 
-  return this;
-}
+WHS.API.construct.prototype.build = function(figure, object) {
+    'use strict';
 
-WHS.API.construct.prototype.build = function (figure, object) {
-  'use strict';
-  figure = figure || this.visible;
-  object = object || this.body;
-  var isPhysics = !!(arguments.length == 2 && object);
+    figure = figure || this.visible;
+    object = object || this.body;
+    var isPhysics = !!(arguments.length == 2 && object);
 
-  try {
-    // Shadowmap.
-    figure.castShadow = true;
-    figure.receiveShadow = true;
+    try {
+        // Shadowmap.
+        figure.castShadow = true;
+        figure.receiveShadow = true;
 
+        // Position.
+        figure.position.set(this._pos.x, this._pos.y, this._pos.z);
+        if (isPhysics && !this.dtb) object.position.set(this._pos.x, this._pos.y, this._pos.z);
 
-    // Position.
-    figure.position.set(this._pos.x, this._pos.y, this._pos.z);
-    if (isPhysics && !this.dtb) object.position.set(
-      this._pos.x,
-      this._pos.y,
-      this._pos.z
-    );
+        // Rotation.
+        figure.rotation.set(this._rot.x, this._rot.y, this._rot.z);
+        // TODO: CANNON.JS object rotation.
+        //if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
 
-    // Rotation.
-    figure.rotation.set(this._rot.x, this._rot.y, this._rot.z);
-    // TODO: CANNON.JS object rotation.
-    //if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
+        // Scaling.
+        figure.scale.set(this._scale.x, this._scale.y, this._scale.z);
+        // TODO: CANNON.JS object scaling.
+        //object.scale.set(this._rot.x, this._rot.y, this._rot.z);
+    } catch (err) {
 
-    // Scaling.
-    figure.scale.set(this._scale.x, this._scale.y, this._scale.z);
-    // TODO: CANNON.JS object scaling.
-    //object.scale.set(this._rot.x, this._rot.y, this._rot.z);
+        console.error(err.message);
 
-  }
-  catch(err) {
+        this.__deferred.reject();
+    }
 
-    console.error(err.message);
-
-    this.__deferred.reject();
-
-  }
-
-  return this;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return this;
+};
 
 // [x]#FIXME:10 Modify def for third parameter.
 /**
@@ -2078,23 +1994,17 @@ WHS.API.construct.prototype.build = function (figure, object) {
  * @param {Var} variablePoint Variable with value for apply. (OPTIONAL)
  */
 WHS.API.def = function(option, value, variablePoint) {
-  'use strict';
-  if (arguments.length < 2)
-    console.error("Something wrong! option? value?");
-  else if (arguments.length == 2) {
-    option = option || value;
-    return option;
-  } else if (arguments.length == 3 && variablePoint) {
-    variablePoint = option || value;
-    return variablePoint;
-  }
-}
+    'use strict';
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    if (arguments.length < 2) console.error("Something wrong! option? value?");
+    else if (arguments.length == 2) {
+        option = option || value;
+        return option;
+    } else if (arguments.length == 3 && variablePoint) {
+        variablePoint = option || value;
+        return variablePoint;
+    }
+};
 
 /**
  * Shape. Makes *THREE.JS* shape.
@@ -2106,27 +2016,18 @@ WHS.API.def = function(option, value, variablePoint) {
  * @returns {Object} Intersect array.
  */
 WHS.API.getheight = function(pos, diff, terrain, direction) {
-  'use strict';
+    'use strict';
 
-  diff = diff || 1000;
+    diff = diff || 1000;
 
-  direction = direction || 1;
+    direction = direction || 1;
 
-  this.raycaster = new THREE.Raycaster(
-    new THREE.Vector3(pos.x, diff, direction * pos.y),
-    new THREE.Vector3(0, -1 , 0)
-  );
+    this.raycaster = new THREE.Raycaster(new THREE.Vector3(pos.x, diff, direction * pos.y), new THREE.Vector3(0, -1, 0));
 
-  this.intersect = this.raycaster.intersectObject(terrain.visible);
+    this.intersect = this.raycaster.intersectObject(terrain.visible);
 
-  return this.intersect;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return this.intersect;
+};
 
 /**
  * ISSAME.
@@ -2136,120 +2037,101 @@ WHS.API.getheight = function(pos, diff, terrain, direction) {
  * @return {Boolean} thrObj *THREE.JS* geometry.
  */
 WHS.API.isSame = function(a1, a2) {
-  return !(a1.sort() > a2.sort() || a1.sort() < a2.sort());
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return !(a1.sort() > a2.sort() || a1.sort() < a2.sort());
+};
 
 // #DONE:10 JSONLoader don't work.
 WHS.API.JSONLoader = function() {
-  return new THREE.JSONLoader();
-}
+    return new THREE.JSONLoader();
+};
 
 WHS.API.TextureLoader = function() {
-  return new THREE.TextureLoader();
-}
+    return new THREE.TextureLoader();
+};
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+WHS.API.loadMaterial = function(material) {
+    'use strict';
 
-WHS.API.loadMaterial = function (material) {
-  'use strict';
+    if (typeof material.kind !== "string") console.error("Type of material is undefined or not a string. @loadMaterial");
 
-  if (typeof material.kind !== "string")
-    console.error("Type of material is undefined or not a string. @loadMaterial");
+    var scope = {
+        _type: material.kind,
+        _restitution: material.restitution || material.rest || 0.3,
+        _friction: material.friction || material.fri || 0.8
+    };
 
-  var scope = {
-    _type: material.kind,
-    _restitution: material.restitution || material.rest || 0.3,
-    _friction: material.friction || material.fri || 0.8
-  };
+    var params = $.extend({}, material);
 
-  var params = $.extend({}, material);
+    delete params["kind"];
 
-  delete params["kind"];
+    delete params["friction"];
+    delete params["fric"];
 
-  delete params["friction"];
-      delete params["fric"];
+    delete params["restitution"];
+    delete params["rest"];
 
-  delete params["restitution"];
-         delete params["rest"];
+    switch (material.kind) {
+        case "basic":
+            scope._material = new THREE.MeshBasicMaterial(params);
+            break;
 
-  switch (material.kind) {
-    case "basic":
-      scope._material = new THREE.MeshBasicMaterial(params);
-    break;
+        case "linebasic":
+            scope._params = new THREE.LineBasicMaterial(params);
+            break;
 
-    case "linebasic":
-      scope._params = new THREE.LineBasicMaterial(params);
-      break;
+        case "linedashed":
+            scope._material = new THREE.LineDashedMaterial(params);
+            break;
 
-    case "linedashed":
-      scope._material = new THREE.LineDashedMaterial(params);
-      break;
+        case "material":
+            scope._material = new THREE.Material(params);
+            break;
 
-    case "material":
-      scope._material = new THREE.Material(params);
-      break;
+        case "depth":
+            scope._material = new THREE.MeshDepthMaterial(params);
+            break;
 
-    case "depth":
-      scope._material = new THREE.MeshDepthMaterial(params);
-      break;
+        case "face":
+            scope._material = new THREE.MeshFaceMaterial(params);
+            break;
 
-    case "face":
-      scope._material = new THREE.MeshFaceMaterial(params);
-      break;
+        case "lambert":
+            scope._material = new THREE.MeshLambertMaterial(params);
+            break;
 
-    case "lambert":
-      scope._material = new THREE.MeshLambertMaterial(params);
-      break;
+        case "normal":
+            scope._material = new THREE.MeshNormalMaterial(params);
+            break;
 
-    case "normal":
-      scope._material = new THREE.MeshNormalMaterial(params);
-      break;
+        case "phong":
+            scope._material = new THREE.MeshPhongMaterial(params);
+            break;
 
-    case "phong":
-      scope._material = new THREE.MeshPhongMaterial(params);
-      break;
+        case "pointcloud":
+            scope._material = new THREE.PointCloudMaterial(params);
+            break;
 
-    case "pointcloud":
-      scope._material = new THREE.PointCloudMaterial(params);
-      break;
+        case "rawshader":
+            scope._material = new THREE.RawShaderMaterial(params);
+            break;
 
-    case "rawshader":
-      scope._material = new THREE.RawShaderMaterial(params);
-      break;
+        case "shader":
+            scope._material = new THREE.ShaderMaterial(params);
+            break;
 
-    case "shader":
-      scope._material = new THREE.ShaderMaterial(params);
-      break;
+        case "spritecanvas":
+            scope._material = new THREE.SpriteCanvasMaterial(params);
+            break;
 
-    case "spritecanvas":
-      scope._material = new THREE.SpriteCanvasMaterial(params);
-      break;
+        case "sprite":
+            scope._material = new THREE.SpriteMaterial(params);
+            break;
+    }
 
-    case "sprite":
-      scope._material = new THREE.SpriteMaterial(params);
-      break;
-  }
+    scope._material = Physijs.createMaterial(scope._material, scope._friction, scope._restitution);
 
-  scope._material = Physijs.createMaterial(scope._material, scope._friction, scope._restitution);
-
-  return scope;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return scope;
+};
 
 /**
  * MERGE.
@@ -2258,85 +2140,55 @@ WHS.API.loadMaterial = function (material) {
  * @param {Object} rabbits Object to be added. (REQUIRED)
  */
 WHS.API.merge = function(box, rabbits) {
-  'use strict';
-  //More presice checking
-  if (!(typeof box === 'object' && typeof rabbits === 'object'))
-    console.error("No rabbits for the box. (arguments)", [typeof box, typeof rabbits]);
-  //Will only get here if box and rabbits are objects, arrays are object !
-  if(!box)//Box should not be null, null is an object too !
-    // #FIXME:0 Fix caller function line number.
-    console.error("box is undefined. Line " + (new Error).lineNumber + ". Func merge.", [box, rabbits]);
-  else{
-    if (Array.isArray(rabbits) && rabbits.length === 1) 
-      //Should not be 0
-      box.add(rabbits[0]);
-    else if (Array.isArray(rabbits) && rabbits.length > 1 && box) {
-      for (var i = 0; i < rabbits.length; i++) {
-        box.add(rabbits[i]);
-      }
-    } else if (!Array.isArray(rabbits))
-      box.add(rabbits);
-    }
-}
+    'use strict';
+    //More presice checking
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    if (!((typeof box === "undefined" ? "undefined" : _typeof(box)) === 'object' && (typeof rabbits === "undefined" ? "undefined" : _typeof(rabbits)) === 'object')) console.error("No rabbits for the box. (arguments)", [typeof box === "undefined" ? "undefined" : _typeof(box), typeof rabbits === "undefined" ? "undefined" : _typeof(rabbits)]);
+    //Will only get here if box and rabbits are objects, arrays are object !
+    if (!box) //Box should not be null, null is an object too !
+    // #FIXME:0 Fix caller function line number.
+        console.error("box is undefined. Line " + new Error().lineNumber + ". Func merge.", [box, rabbits]);
+    else {
+        if (Array.isArray(rabbits) && rabbits.length === 1)
+        //Should not be 0
+            box.add(rabbits[0]);
+        else if (Array.isArray(rabbits) && rabbits.length > 1 && box) {
+            for (var i = 0; i < rabbits.length; i++) {
+                box.add(rabbits[i]);
+            }
+        } else if (!Array.isArray(rabbits)) box.add(rabbits);
+    }
+};
 
 /**
  * Packing uvs. Generates uvs automatically.
  *
  * @param {Object} geometry Figure object geometry *THREE.JS*. (REQUIRED)
  */
- WHS.API.PackUvs = function(geometry) {
+WHS.API.PackUvs = function(geometry) {
 
-   geometry.computeBoundingBox();
+    geometry.computeBoundingBox();
 
-   var max = geometry.boundingBox.max;
-   var min = geometry.boundingBox.min;
+    var max = geometry.boundingBox.max;
+    var min = geometry.boundingBox.min;
 
-   var offset = new THREE.Vector2(0 - min.x, 0 - min.y);
-   var range = new THREE.Vector2(max.x - min.x, max.y - min.y);
+    var offset = new THREE.Vector2(0 - min.x, 0 - min.y);
+    var range = new THREE.Vector2(max.x - min.x, max.y - min.y);
 
-   geometry.faceVertexUvs[0] = [];
-   var faces = geometry.faces;
+    geometry.faceVertexUvs[0] = [];
+    var faces = geometry.faces;
 
-   for (var i = 0; i < geometry.faces.length; i++) {
+    for (var i = 0; i < geometry.faces.length; i++) {
 
-     var v1 = geometry.vertices[faces[i].a];
-     var v2 = geometry.vertices[faces[i].b];
-     var v3 = geometry.vertices[faces[i].c];
+        var v1 = geometry.vertices[faces[i].a];
+        var v2 = geometry.vertices[faces[i].b];
+        var v3 = geometry.vertices[faces[i].c];
 
-     geometry.faceVertexUvs[0].push([
-       new THREE.Vector2(
-         (v1.x + offset.x) / range.x,
-         (v1.y + offset.y) / range.y
-       ),
+        geometry.faceVertexUvs[0].push([new THREE.Vector2((v1.x + offset.x) / range.x, (v1.y + offset.y) / range.y), new THREE.Vector2((v2.x + offset.x) / range.x, (v2.y + offset.y) / range.y), new THREE.Vector2((v3.x + offset.x) / range.x, (v3.y + offset.y) / range.y)]);
+    }
 
-       new THREE.Vector2(
-         (v2.x + offset.x) / range.x,
-         (v2.y + offset.y) / range.y
-       ),
-
-       new THREE.Vector2(
-         (v3.x + offset.x) / range.x,
-         (v3.y + offset.y) / range.y
-       )
-     ]);
-
-   }
-
-   geometry.uvsNeedUpdate = true;
-
- }
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    geometry.uvsNeedUpdate = true;
+};
 
 /**
  * REMOVEDUPLICEFACES.
@@ -2345,32 +2197,27 @@ WHS.API.merge = function(box, rabbits) {
  * @return {Object} geometry *THREE.JS* geometry.
  */
 WHS.API.removeDuplicateFaces = function(geometry) {
-  for (var i = 0; i < geometry.faces.length; i++) {
-    var tri = geometry.faces[i];
-    var inds = [tri.a, tri.b, tri.c, tri.d].sort();
-    for (var j = 0; j < i; j++) {
-      var tri_2 = geometry.faces[j];
-      if (tri_2 !== undefined) { // May have already been deleted
-        var inds_2 = [tri_2.a, tri_2.b, tri_2.c, tri_2.d].sort();
-        if (WHS.API.isSame(inds, inds_2)) {
-          delete geometry.faces[i]; // Sets these faces to undefined
-          // If duplicate, it is also interior, so remove both
-          delete geometry.faces[j];
+    for (var i = 0; i < geometry.faces.length; i++) {
+        var tri = geometry.faces[i];
+        var inds = [tri.a, tri.b, tri.c, tri.d].sort();
+        for (var j = 0; j < i; j++) {
+            var tri_2 = geometry.faces[j];
+            if (tri_2 !== undefined) {
+                // May have already been deleted
+                var inds_2 = [tri_2.a, tri_2.b, tri_2.c, tri_2.d].sort();
+                if (WHS.API.isSame(inds, inds_2)) {
+                    delete geometry.faces[i]; // Sets these faces to undefined
+                    // If duplicate, it is also interior, so remove both
+                    delete geometry.faces[j];
+                }
+            }
         }
-      }
     }
-  }
-  geometry.faces = geometry.faces.filter(function(a) {
-    return a === undefined
-  });
-  return geometry;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    geometry.faces = geometry.faces.filter(function(a) {
+        return a === undefined;
+    });
+    return geometry;
+};
 
 /**
  * Rotate body. Rotates body object *CANNON.JS*.
@@ -2380,21 +2227,15 @@ WHS.API.removeDuplicateFaces = function(geometry) {
  * @return {Object} Body object in *CANNON.JS*.
  */
 WHS.API.rotateBody = function(body, rotateSet) {
-  'use strict';
+    'use strict';
 
-  body.quaternion.x = Math.sin((Math.PI / 360) * rotateSet.x);// Replaces 2 divisions with one
-  body.quaternion.y = Math.sin((Math.PI / 360) * rotateSet.y);// Replaces 2 divisions with one
-  body.quaternion.z = Math.sin((Math.PI / 360) * rotateSet.z);// Replaces 2 divisions with one
-  body.quaternion.w = Math.cos(45); //Was 90*0.5 before, hardcoding is better for constants
+    body.quaternion.x = Math.sin(Math.PI / 360 * rotateSet.x); // Replaces 2 divisions with one
+    body.quaternion.y = Math.sin(Math.PI / 360 * rotateSet.y); // Replaces 2 divisions with one
+    body.quaternion.z = Math.sin(Math.PI / 360 * rotateSet.z); // Replaces 2 divisions with one
+    body.quaternion.w = Math.cos(45); //Was 90*0.5 before, hardcoding is better for constants
 
-  return body;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return body;
+};
 
 /**
  * ROTATEGEOMETRY.
@@ -2404,21 +2245,15 @@ WHS.API.rotateBody = function(body, rotateSet) {
  * @return {Object} *THREE.JS* geometry.
  */
 WHS.API.rotateGeometry = function(geometry, rotateSet) {
-  var rotationMatrix = new THREE.Matrix4();
-  rotationMatrix.makeRotationFromEuler(new THREE.Euler(rotateSet.x, rotateSet.y, rotateSet.z, 'XYZ'));
+    var rotationMatrix = new THREE.Matrix4();
+    rotationMatrix.makeRotationFromEuler(new THREE.Euler(rotateSet.x, rotateSet.y, rotateSet.z, 'XYZ'));
 
-  for (var v in geometry.vertices) {
-    geometry.vertices[v].applyMatrix4(rotationMatrix);
-  }
+    for (var v in geometry.vertices) {
+        geometry.vertices[v].applyMatrix4(rotationMatrix);
+    }
 
-  return geometry;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return geometry;
+};
 
 /**
  * Shape. Makes *THREE.JS* shape.
@@ -2426,14 +2261,8 @@ WHS.API.rotateGeometry = function(geometry, rotateSet) {
  * @returns {Object} - *THREE.JS* shape object.
  */
 WHS.ADD.shape = function() {
-  return new THREE.Shape();
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return new THREE.Shape();
+};
 
 /**
  * Texture. Loads texture object.
@@ -2443,44 +2272,38 @@ WHS.ADD.shape = function() {
  * @return {Object} *THREE.JS* texture.
  */
 WHS.API.texture = function(url, options) {
-  'use strict';
+    'use strict';
 
-  var texture = THREE.ImageUtils.loadTexture(url);
+    var texture = THREE.ImageUtils.loadTexture(url);
 
-  if (options) {
-    var opt = options;
-    opt.offset = opt.offset || {
-      x: 1,
-      y: 1
-    };
+    if (options) {
+        var opt = options;
+        opt.offset = opt.offset || {
+            x: 1,
+            y: 1
+        };
 
-    opt.offset.x = opt.offset.x || 1;
-    opt.offset.y = opt.offset.y || 1;
+        opt.offset.x = opt.offset.x || 1;
+        opt.offset.y = opt.offset.y || 1;
 
-    opt.repeat = opt.repeat || {
-      x: 1,
-      y: 1
-    };
+        opt.repeat = opt.repeat || {
+            x: 1,
+            y: 1
+        };
 
-    opt.repeat.x = opt.repeat.x || 1;
-    opt.repeat.y = opt.repeat.y || 1;
+        opt.repeat.x = opt.repeat.x || 1;
+        opt.repeat.y = opt.repeat.y || 1;
 
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    //texture.offset.set(opt.offset.x, opt.offset.y);
-    texture.repeat.set(opt.repeat.x, opt.repeat.y);
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        //texture.offset.set(opt.offset.x, opt.offset.y);
+        texture.repeat.set(opt.repeat.x, opt.repeat.y);
 
-    texture.magFilter = THREE.NearestFilter;
-    texture.minFilter = THREE.LinearMipMapLinearFilter;
-  }
+        texture.magFilter = THREE.NearestFilter;
+        texture.minFilter = THREE.LinearMipMapLinearFilter;
+    }
 
-  return texture;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return texture;
+};
 
 /**
  * TRIANGULATE.
@@ -2489,196 +2312,153 @@ WHS.API.texture = function(url, options) {
  * @param {Object} material *THREE.JS* material. (REQUIRED)
  */
 WHS.API.Triangulate = function(thrObj, material) {
-  'use strict';
+    'use strict';
 
-  if (!(thrObj instanceof THREE.Geometry))
-    console.error("No THREE.js geometry");
-  //If it is instance, then it is defined !
-  else if (material) {
-    var triangles = new THREE.Geometry();
-    var materials = [];
+    if (!(thrObj instanceof THREE.Geometry)) console.error("No THREE.js geometry");
+    //If it is instance, then it is defined !
+    else if (material) {
+        var triangles = new THREE.Geometry();
+        var materials = [];
 
-    thrObj.faces.forEach(function(element) {
-      var triangle = new THREE.Geometry();
+        thrObj.faces.forEach(function(element) {
+            var triangle = new THREE.Geometry();
 
-      [].push.apply(triangle.vertices, [
-        thrObj.vertices[element.a],
-        thrObj.vertices[element.b],
-        thrObj.vertices[element.c]
-      ]);
+            [].push.apply(triangle.vertices, [thrObj.vertices[element.a], thrObj.vertices[element.b], thrObj.vertices[element.c]]);
 
-      triangle.faceVertexUvs[0].push([
-        new THREE.Vector2(0, 0),
-        new THREE.Vector2(0, 1),
-        new THREE.Vector2(1, 1),
-        new THREE.Vector2(1, 0),
-      ]);
+            triangle.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(0, 1), new THREE.Vector2(1, 1), new THREE.Vector2(1, 0)]);
 
-      triangle.faces.push(new THREE.Face3(0, 1, 2));
-      triangle.computeFaceNormals();
+            triangle.faces.push(new THREE.Face3(0, 1, 2));
+            triangle.computeFaceNormals();
 
-      var triangleMesh = new THREE.Mesh(triangle, material);
-      triangleMesh.updateMatrix();
+            var triangleMesh = new THREE.Mesh(triangle, material);
+            triangleMesh.updateMatrix();
 
-      triangles.merge(triangleMesh.geometry, triangleMesh.matrix);
-      materials.push(material);
-    });
+            triangles.merge(triangleMesh.geometry, triangleMesh.matrix);
+            materials.push(material);
+        });
 
-    var trianglesMesh = new THREE.Mesh(triangles, new THREE.MeshFaceMaterial(materials));
-    return trianglesMesh;
-  }
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+        var trianglesMesh = new THREE.Mesh(triangles, new THREE.MeshFaceMaterial(materials));
+        return trianglesMesh;
+    }
+};
 
 // DONE:0 Make Wrap function.
-WHS.API.Wrap = function (SCOPE, mesh, body) {
-  'use strict';
+WHS.API.Wrap = function(SCOPE, mesh, body) {
+    'use strict';
 
-  this._figure = mesh;
-  this._object = body;
-  this._scope = SCOPE;
-  this._key = SCOPE.root.modellingQueue.length;
+    this._figure = mesh;
+    this._object = body;
+    this._scope = SCOPE;
+    this._key = SCOPE.root.modellingQueue.length;
 
-  try {
-    api.merge(this._scope.root.scene, this._figure);
-    if (this._object) api.merge(this._scope.root.world, this._object);
+    try {
+        api.merge(this._scope.root.scene, this._figure);
+        if (this._object) api.merge(this._scope.root.world, this._object);
 
-    this._scope.root.modellingQueue.push(this._scope);
-  }
-  catch(err) {
-    console.error(err.message);
+        this._scope.root.modellingQueue.push(this._scope);
+    } catch (err) {
+        console.error(err.message);
 
-    this._scope.__deferred.reject();
-  }
-  finally {
-    if (this._scope._wait) {
-      var sc = this;
-      sc._figure.addEventListener('ready', function() {
-        sc._scope.__deferred.resolve();
-      });
-    } else {
-      this._scope.__deferred.resolve();
+        this._scope.__deferred.reject();
+    } finally {
+        if (this._scope._wait) {
+            var sc = this;
+            sc._figure.addEventListener('ready', function() {
+                sc._scope.__deferred.resolve();
+            });
+        } else {
+            this._scope.__deferred.resolve();
+        }
     }
-  }
 
-  return this;
-}
+    return this;
+};
 
-WHS.API.Wrap.prototype.remove = function () {
-  'use strict';
+WHS.API.Wrap.prototype.remove = function() {
+    'use strict';
 
-  this._scope.root.scene.remove(this._figure);
-  this._scope.root.world.remove(this._object);
+    this._scope.root.scene.remove(this._figure);
+    this._scope.root.world.remove(this._object);
 
-  WHS.objects.splice(this._key, 1);
+    WHS.objects.splice(this._key, 1);
 
-  return this;
-}
+    return this;
+};
 
-WHS.API.Wrap.prototype.retrieve = function () {
-  'use strict';
+WHS.API.Wrap.prototype.retrieve = function() {
+    'use strict';
 
-  this._scope.root.scene.add(this._figure);
-  this._scope.root.world.add(this._object);
+    this._scope.root.scene.add(this._figure);
+    this._scope.root.world.add(this._object);
 
-  WHS.objects.push(this._scope);
+    WHS.objects.push(this._scope);
 
-  return this;
-}
+    return this;
+};
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+WHS.Watch = function(queue) {
+    'use strict';
 
-WHS.Watch = function (queue) {
-  'use strict';
+    this._queue = $.isArray(queue) ? queue : [];
 
-  this._queue = $.isArray(queue) ? queue : [];
+    return this;
+};
 
-  return this;
-}
+WHS.Watch.prototype.add = function(element) {
+    'use strict';
 
-WHS.Watch.prototype.add = function (element) {
-  'use strict';
+    this._queue.push(element);
 
-  this._queue.push(element);
+    return this;
+};
 
-  return this;
-}
+WHS.Watch.prototype.remove = function(element) {
+    'use strict';
 
-WHS.Watch.prototype.remove = function (element) {
-  'use strict';
+    this._queue = this._queue.filter(function(item) {
+        return item != element;
+    });
 
-  this._queue = this._queue.filter(function (item) {
-    return item != element;
-  })
-
-  return this;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return this;
+};
 
 WHS.plugins.loop = function(func) {
-	this.loop = {
-		func:func,
-		id: WHS.plugins.settings.loop_id++,
-		enabled: false
-	};
+    this.loop = {
+        func: func,
+        id: WHS.plugins.settings.loop_id++,
+        enabled: false
+    };
 
-	WHS.plugins.queue.push(this.loop);
-}
+    WHS.plugins.queue.push(this.loop);
+};
 
 WHS.plugins.loop.prototype.start = function() {
     this.loop.enabled = true;
 };
 
 WHS.plugins.loop.prototype.stop = function() {
-	this.loop.enabled = false;
+    this.loop.enabled = false;
 };
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
 
-WHS.gp={};
+WHS.gp = {};
 
 WHS.plugins.register = function(name, plugin, global) {
-	'use strict';
+    'use strict';
 
-	var id = WHS.plugins.settings.plug_id;
+    var id = WHS.plugins.settings.plug_id;
 
-	WHS.plugins.list[name] = {
-		func: plugin,
-		id: id
-	};
+    WHS.plugins.list[name] = {
+        func: plugin,
+        id: id
+    };
 
+    if (global) WHS.gp[name] = plugin;
+    else WHS.API.construct.prototype[name] = plugin;
 
-	if(global)
-		WHS.gp[name] = plugin;
-	else
-		WHS.API.construct.prototype[name] = plugin;
+    WHS.plugins.settings.plug_id++;
 
-	WHS.plugins.settings.plug_id++;
-
-	return;
+    return;
 };
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
 
 /**
  * Init.
@@ -2687,322 +2467,290 @@ WHS.plugins.register = function(name, plugin, global) {
  * @return {Object} Scope.
  */
 WHS.init = function(params) {
-  'use strict';
+    'use strict';
 
-  console.log('WHS.init', WHS.REVISION);
+    console.log('WHS.init', WHS.REVISION);
 
-  if (!THREE)
-    console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
-  if (!Physijs)
-    console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
-  if (!WAGNER)
-    console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
+    if (!THREE) console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
+    if (!Physijs) console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
+    if (!WAGNER) console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
 
-  var target = $.extend(true, {
+    var target = $.extend(true, {
 
-    anaglyph: false,
-    helper: false,
-    stats: false,
-    wagner: true,
-    autoresize: false,
+        anaglyph: false,
+        helper: false,
+        stats: false,
+        wagner: true,
+        autoresize: false,
 
-    shadowmap: true,
+        shadowmap: true,
 
-    gravity: {
-      x:0,
-      y:0,
-      z:0
-    },
+        gravity: {
+            x: 0,
+            y: 0,
+            z: 0
+        },
 
-    camera: {
-      aspect: 75,
-      near: 1,
-      far: 1000,
+        camera: {
+            aspect: 75,
+            near: 1,
+            far: 1000,
 
-      x:0,
-      y:0,
-      z:0
-    },
+            x: 0,
+            y: 0,
+            z: 0
+        },
 
-    rWidth: window.innerWidth, // Resolution(width).
-    rHeight: window.innerHeight, // Resolution(height).
+        rWidth: window.innerWidth, // Resolution(width).
+        rHeight: window.innerHeight, // Resolution(height).
 
-    width: window.innerWidth, // Container(width).
-    height: window.innerHeight, // Container(height).
+        width: window.innerWidth, // Container(width).
+        height: window.innerHeight, // Container(height).
 
-    physics: {
+        physics: {
 
-      quatNormalizeSkip: 0,
-      quatNormalizeFast: false,
+            quatNormalizeSkip: 0,
+            quatNormalizeFast: false,
 
-      solver: {
-        iterations: 20,
-        tolerance: 0,
-      },
+            solver: {
+                iterations: 20,
+                tolerance: 0
+            },
 
-      defMaterial: {
-        contactEquationStiffness: 1e8,
-        contactEquationRegularizationTime: 3
-      }
+            defMaterial: {
+                contactEquationStiffness: 1e8,
+                contactEquationRegularizationTime: 3
+            }
 
-    },
+        },
 
-    background: 0x000000,
-    assets: "./assets",
-    container: $('body'),
+        background: 0x000000,
+        assets: "./assets",
+        container: $('body'),
 
-    path_worker: '../libs/physijs_worker.js',
-    path_ammo: '../libs/ammo.js'
+        path_worker: '../libs/physijs_worker.js',
+        path_ammo: '../libs/ammo.js'
 
-  }, params);
+    }, params);
 
-  this._settings = target;
+    this._settings = target;
 
-  Physijs.scripts.worker = target.path_worker;
-  Physijs.scripts.ammo = target.path_ammo;
+    Physijs.scripts.worker = target.path_worker;
+    Physijs.scripts.ammo = target.path_ammo;
 
-  this.scene = new Physijs.Scene;
+    this.scene = new Physijs.Scene();
 
-  this.scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
+    this.scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
 
-  // DOM INIT
-  var whselement = $('<div class="whs"></div>');
+    // DOM INIT
+    var whselement = $('<div class="whs"></div>');
 
-  target.container.append($(whselement));
+    target.container.append($(whselement));
 
-  // Debug Renderer
+    // Debug Renderer
 
-  if (target.stats) {
-    this._stats = new Stats();
+    if (target.stats) {
+        this._stats = new Stats();
 
-    if (target.stats == "fps")
-      this._stats.setMode(0);
+        if (target.stats == "fps") this._stats.setMode(0);
+        else if (target.stats == "ms") this._stats.setMode(1);
+        else if (target.stats == "mb") this._stats.setMode(1);
+        else {
+            this._stats.setMode(0);
+            // WARN: console | stats mode.
+            console.warn([this._stats], "Please, apply stats mode [fps, ms, mb] .");
+        }
 
-    else if (target.stats == "ms")
-      this._stats.setMode(1);
+        this._stats.domElement.style.position = 'absolute';
+        this._stats.domElement.style.left = '0px';
+        this._stats.domElement.style.bottom = '0px';
 
-    else if (target.stats == "mb")
-      this._stats.setMode(1);
-
-    else {
-      this._stats.setMode(0);
-      // WARN: console | stats mode.
-      console.warn([this._stats], "Please, apply stats mode [fps, ms, mb] .");
+        $(whselement).append(this._stats.domElement);
     }
 
-    this._stats.domElement.style.position = 'absolute';
-    this._stats.domElement.style.left = '0px';
-    this._stats.domElement.style.bottom = '0px';
+    // Camera.
+    var camera = new THREE.PerspectiveCamera(target.camera.aspect, target.width / target.height, target.camera.near, target.camera.far);
 
-    $(whselement).append(this._stats.domElement);
-  }
+    camera.position.set(target.camera.x, target.camera.y, target.camera.z);
 
-  // Camera.
-  var camera = new THREE.PerspectiveCamera(
-    target.camera.aspect,
-    target.width / target.height,
-    target.camera.near,
-    target.camera.far
-  );
+    api.merge(this.scene, camera);
 
-  camera.position.set(
-    target.camera.x,
-    target.camera.y,
-    target.camera.z
-  );
+    // Renderer.
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setClearColor(target.background);
 
-  api.merge(this.scene, camera);
+    // Shadowmap.
+    renderer.shadowMap.enabled = target.shadowmap;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.cascade = true;
 
-  // Renderer.
-  var renderer = new THREE.WebGLRenderer();
-  renderer.setClearColor(target.background);
+    if (target.anaglyph) {
 
-  // Shadowmap.
-  renderer.shadowMap.enabled = target.shadowmap;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  renderer.shadowMap.cascade = true;
+        this.effect = new THREE.AnaglyphEffect(renderer);
+        this.effect.setSize(target.rWidth, target.rHeight);
 
-  if (target.anaglyph) {
+        this.effect.render(this.scene, camera);
+    } else {
 
-    this.effect = new THREE.AnaglyphEffect(renderer);
-    this.effect.setSize(target.rWidth, target.rHeight);
+        renderer.setSize(target.rWidth, target.rHeight);
+        renderer.render(this.scene, camera);
+    }
 
-    this.effect.render(this.scene, camera);
-
-  } else {
-
-    renderer.setSize(target.rWidth, target.rHeight);
-    renderer.render(this.scene, camera);
-
-  }
-
-  $(renderer.domElement).css({
-    'width': target.width,
-    'height': target.height
-  });
-
-  $(renderer.domElement).attr('');
-
-  $(whselement).append(renderer.domElement);
-
-  target.container.css({
-    'margin': 0,
-    'padding': 0,
-    'position': 'relative',
-    'overflow': 'hidden'
-  });
-
-
-  // NOTE: ==================== Composer. =======================
-
-  if (target.wagner) {
-    this._composer = new WAGNER.Composer(renderer);
-    
-    this._composer.setSize(target.rWidth, target.rHeight);
-
-    $(this._composer.domElement).css({
-      'width': target.width,
-      'height': target.height
+    $(renderer.domElement).css({
+        'width': target.width,
+        'height': target.height
     });
 
-    this._composer.autoClearColor = true;
+    $(renderer.domElement).attr('');
 
-    this._composer.reset();
-    this._composer.render(this.scene, camera);
+    $(whselement).append(renderer.domElement);
 
-    this._composer.eff = [];
-  }
+    target.container.css({
+        'margin': 0,
+        'padding': 0,
+        'position': 'relative',
+        'overflow': 'hidden'
+    });
 
-  Object.assign(this, {
-    _camera: camera,
-    renderer: renderer,
-    _settings: target,
-    modellingQueue: [], // Queue for physics objects
-    children: [], // Children for this app.
-    _dom: whselement
-  });
+    // NOTE: ==================== Composer. =======================
 
-  // NOTE: ==================== Autoresize. ======================
-  var scope = this;
+    if (target.wagner) {
+        this._composer = new WAGNER.Composer(renderer);
 
-  if (target.autoresize)
-    $(window).on('load resize', function() {
-      scope._camera.aspect = window.innerWidth / window.innerHeight;
+        this._composer.setSize(target.rWidth, target.rHeight);
 
-      scope._camera.updateProjectionMatrix();
-
-      scope.renderer.setSize(target.rWidth, target.rHeight);
-
-      $(scope.renderer.domElement).css({
-          'width': window.innerWidth,
-          'height': window.innerHeight
-      });
-
-      if (params.wagner) {
-        scope._composer.setSize(target.rWidth, target.rHeight);
-
-        $(scope._composer.domElement).css({
-           'width': window.innerWidth,
-          'height': window.innerHeight
+        $(this._composer.domElement).css({
+            'width': target.width,
+            'height': target.height
         });
-      }
+
+        this._composer.autoClearColor = true;
+
+        this._composer.reset();
+        this._composer.render(this.scene, camera);
+
+        this._composer.eff = [];
+    }
+
+    Object.assign(this, {
+        _camera: camera,
+        renderer: renderer,
+        _settings: target,
+        modellingQueue: [], // Queue for physics objects
+        children: [], // Children for this app.
+        _dom: whselement
     });
 
-  return scope;
+    // NOTE: ==================== Autoresize. ======================
+    var scope = this;
 
-}
+    if (target.autoresize) $(window).on('load resize', function() {
+        scope._camera.aspect = window.innerWidth / window.innerHeight;
+
+        scope._camera.updateProjectionMatrix();
+
+        scope.renderer.setSize(target.rWidth, target.rHeight);
+
+        $(scope.renderer.domElement).css({
+            'width': window.innerWidth,
+            'height': window.innerHeight
+        });
+
+        if (params.wagner) {
+            scope._composer.setSize(target.rWidth, target.rHeight);
+
+            $(scope._composer.domElement).css({
+                'width': window.innerWidth,
+                'height': window.innerHeight
+            });
+        }
+    });
+
+    return scope;
+};
 
 // [x]#TODO:70 Fix animate update callback.
 /**
  * ANIMATE.
  */
- WHS.init.prototype.start = function() {
-   'use strict';
+WHS.init.prototype.start = function() {
+    'use strict';
 
-   var clock = new THREE.Clock();
-   var scope = this;
-   scope._events = new Events();
+    var clock = new THREE.Clock();
+    var scope = this;
+    scope._events = new Events();
 
-   scope._events.on("ready", function() {
-    scope.update();
-   })
+    scope._events.on("ready", function() {
+        scope.update();
+    });
 
-   function reDraw(time) {
+    function reDraw(time) {
 
-     requestAnimationFrame(reDraw);
+        requestAnimationFrame(reDraw);
 
-     // Init stats.
-     if (scope._stats)
-       scope._stats.begin();
+        // Init stats.
+        if (scope._stats) scope._stats.begin();
 
-     // Merging data loop.
-     for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
-       if (scope.modellingQueue[i].morph) {
-         scope.modellingQueue[i].visible.mixer.update( clock.getDelta() );
-       }
-     }
+        // Merging data loop.
+        for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
+            if (scope.modellingQueue[i].morph) {
+                scope.modellingQueue[i].visible.mixer.update(clock.getDelta());
+            }
+        }
 
-     scope.scene.simulate();
+        scope.scene.simulate();
 
-     //if (scope._settings.anaglyph)
-       //scope.effect.render(scope.scene, scope._camera);
+        //if (scope._settings.anaglyph)
+        //scope.effect.render(scope.scene, scope._camera);
 
-     // Controls.
-     if (scope.controls) {
-       scope.controls.update(Date.now() - scope.time);
-       scope.time = Date.now();
-     }
+        // Controls.
+        if (scope.controls) {
+            scope.controls.update(Date.now() - scope.time);
+            scope.time = Date.now();
+        }
 
-     // Effects rendering.
-     if (scope._composer) {
-       scope._composer.reset();
+        // Effects rendering.
+        if (scope._composer) {
+            scope._composer.reset();
 
-       scope._composer.render(scope.scene, scope._camera);
+            scope._composer.render(scope.scene, scope._camera);
 
-       scope._composer.eff.forEach(function(effect) {
-         scope._composer.pass(effect);
-       })
+            scope._composer.eff.forEach(function(effect) {
+                scope._composer.pass(effect);
+            });
 
-       scope._composer.toScreen();
-     }
+            scope._composer.toScreen();
+        }
 
-     // End helper.
-     if (scope._stats)
-       scope._stats.end();
+        // End helper.
+        if (scope._stats) scope._stats.end();
 
-     WHS.plugins.queue.forEach( function(loop) {
-      if(loop.enabled)
-        loop.func(time);
-     });
-   }
+        WHS.plugins.queue.forEach(function(loop) {
+            if (loop.enabled) loop.func(time);
+        });
+    }
 
-   this.update = reDraw;
+    this.update = reDraw;
 
-   /* Events */
+    /* Events */
 
-   scope._queue = [];
-   scope._ready = [];
+    scope._queue = [];
+    scope._ready = [];
 
-   scope.children.forEach(function(object) {
-     scope._queue.push(object);
-   });
+    scope.children.forEach(function(object) {
+        scope._queue.push(object);
+    });
 
-   scope.children.forEach(function(object) {
-     object._state.done(function() {
-       scope._ready.push(object);
- 
-       if(scope._queue.length == scope._ready.length) {
-         scope._events.emit("ready");
-       }
-     });
-   });
- }
+    scope.children.forEach(function(object) {
+        object._state.done(function() {
+            scope._ready.push(object);
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+            if (scope._queue.length == scope._ready.length) {
+                scope._events.emit("ready");
+            }
+        });
+    });
+};
 
 // #DONE:40 addModel *func*.
 /**
@@ -3013,83 +2761,70 @@ WHS.init = function(params) {
  * @return {Object} Scope.
  */
 WHS.init.prototype.addModel = function(pathToModel, options) {
-  'use strict';
+    'use strict';
 
-  var scope = new api.construct(this, options, "model");
+    var scope = new api.construct(this, options, "model");
 
-  scope.materialType = api.loadMaterial(options.materialOptions)._material;
+    scope.materialType = api.loadMaterial(options.materialOptions)._material;
 
-  //(new THREE.JSONLoader())
-  api.JSONLoader().load(pathToModel, function(data) {
-    data.computeFaceNormals();
-    data.computeVertexNormals();
+    //(new THREE.JSONLoader())
+    api.JSONLoader().load(pathToModel, function(data) {
+        data.computeFaceNormals();
+        data.computeVertexNormals();
 
-    // Visualization.
-    scope.visible = new Physijs.ConcaveMesh(data, scope.materialType, options.mass);
-    scope._wait = true;
+        // Visualization.
+        scope.visible = new Physijs.ConcaveMesh(data, scope.materialType, options.mass);
+        scope._wait = true;
 
-    /*scope.visible.addEventListener('ready', function() {
-      console.log("ready");
+        /*scope.visible.addEventListener('ready', function() {
+          console.log("ready");
+            scope.visible.__dirtyPosition = true;
+            scope.visible.position.set(0, 100, 0);
+          scope.visible.rotation.set(0, 0, 0);
+          scope.visible.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+          } );*/
 
-      scope.visible.__dirtyPosition = true;
+        scope.build();
+        scope.wrap = new api.Wrap(scope, scope.visible);
+    });
 
-      scope.visible.position.set(0, 100, 0);
-      scope.visible.rotation.set(0, 0, 0);
-      scope.visible.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+    return scope;
+};
 
-    } );*/
+WHS.init.prototype.addMorph = function(url, options) {
+    'use strict';
 
-    scope.build();
-    scope.wrap = new api.Wrap(scope, scope.visible);
-
-  });
-
-  return scope;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-WHS.init.prototype.addMorph = function (url, options) {
-  'use strict';
-
-  var scope = new api.construct(this, options, "morph");
+    var scope = new api.construct(this, options, "morph");
 
     scope.skip = true;
     scope.morph = true;
 
+    api.JSONLoader().load(url, function(geometry) {
+        var material = new THREE.MeshLambertMaterial({
+            color: 0xffaa55,
+            morphTargets: true,
+            vertexColors: THREE.FaceColors
+        });
 
-  api.JSONLoader().load(url, function(geometry) {
-    var material = new THREE.MeshLambertMaterial( { color: 0xffaa55, morphTargets: true, vertexColors: THREE.FaceColors } );
+        scope.visible = new THREE.Mesh(geometry, material);
+        scope.visible.speed = scope._morph.speed;
 
-    scope.visible = new THREE.Mesh( geometry, material );
-    scope.visible.speed = scope._morph.speed;
+        scope._scale.set(0.1, 0.1, 0.1);
 
-    scope._scale.set(0.1, 0.1, 0.1);
+        scope._mixer = new THREE.AnimationMixer(scope.visible);
+        scope._mixer.addAction(new THREE.AnimationAction(geometry.animations[0]).warpToDuration(0.5));
 
-    scope._mixer = new THREE.AnimationMixer( scope.visible );
-    scope._mixer.addAction( new THREE.AnimationAction( geometry.animations[0] ).warpToDuration( 0.5 ) );
+        scope._mixer.update(600 * Math.random());
+        scope.visible.mixer = scope._mixer;
 
-    scope._mixer.update( 600 * Math.random() );
-    scope.visible.mixer = scope._mixer;
+        scope._rot.y = Math.PI / 2;
 
-    scope._rot.y = Math.PI/2;
+        scope.build(scope.visible);
+        scope.wrap = new api.Wrap(scope, scope.visible);
+    });
 
-    scope.build(scope.visible);
-    scope.wrap = new api.Wrap(scope, scope.visible);
-  });
-
-  return scope;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return scope;
+};
 
 /**
  * Figure.
@@ -3099,361 +2834,248 @@ WHS.init.prototype.addMorph = function (url, options) {
  * @return {Object} Scope.
  */
 WHS.init.prototype.addObject = function(figureType, options) {
-  'use strict';
+    'use strict';
 
-  var scope = new api.construct(this, options, figureType);
+    var scope = new api.construct(this, options, figureType);
 
-  var opt = options || {};
+    var opt = options || {};
 
-  opt.geometry = options.geometryOptions || {};
+    opt.geometry = options.geometryOptions || {};
 
-  opt.mass = options.onlyvis ? opt.mass : 1;
+    opt.mass = options.onlyvis ? opt.mass : 1;
 
-  scope.materialType = api.loadMaterial(options.materialOptions)._material;
+    scope.materialType = api.loadMaterial(options.materialOptions)._material;
 
-  switch (figureType) {
-    case "sphere":
+    switch (figureType) {
+        case "sphere":
 
-      api.def(opt.geometry.segmentA, 32);
-      api.def(opt.geometry.segmentB, 32);
+            api.def(opt.geometry.segmentA, 32);
+            api.def(opt.geometry.segmentB, 32);
 
-      scope.visible = new Physijs.SphereMesh(new THREE.SphereGeometry(
-        opt.geometry.radius,
-        opt.geometry.segmentA,
-        opt.geometry.segmentB
-      ), scope.materialType, 10);
+            scope.visible = new Physijs.SphereMesh(new THREE.SphereGeometry(opt.geometry.radius, opt.geometry.segmentA, opt.geometry.segmentB), scope.materialType, 10);
 
-      break;
-    case "cube":
+            break;
+        case "cube":
 
-      api.def(opt.geometry.width, 1);
-      api.def(opt.geometry.height, 1);
-      api.def(opt.geometry.depth, 1);
+            api.def(opt.geometry.width, 1);
+            api.def(opt.geometry.height, 1);
+            api.def(opt.geometry.depth, 1);
 
-      scope.visible = new Physijs.BoxMesh(new THREE.BoxGeometry(
-        opt.geometry.width,
-        opt.geometry.height,
-        opt.geometry.depth
-      ), scope.materialType, opt.mass);
+            scope.visible = new Physijs.BoxMesh(new THREE.BoxGeometry(opt.geometry.width, opt.geometry.height, opt.geometry.depth), scope.materialType, opt.mass);
 
-      break;
-    case "cylinder":
+            break;
+        case "cylinder":
 
-      api.def(opt.geometry.radiusTop, 1);
-      api.def(opt.geometry.radiusBottom, 1);
-      api.def(opt.geometry.height, 1);
-      api.def(opt.geometry.radiusSegments, 32);
-
-      scope.visible = new Physijs.CylinderMesh(
-        new THREE.CylinderGeometry(
-          opt.geometry.radiusTop,
-          opt.geometry.radiusBottom,
-          opt.geometry.height,
-          opt.geometry.radiusSegments
-        ),
-      scope.materialType, opt.mass);
-
-      break;
-    case "dodecahedron":
-
-      api.def(opt.geometry.radius, 1);
-      api.def(opt.geometry.detail, 0);
-
-      scope.visible = new Physijs.ConvexMesh(
-        new THREE.DodecahedronGeometry(
-          opt.geometry.radius,
-          opt.geometry.detail
-        ),
-      scope.materialType, opt.mass);
-
-      break;
-    case "extrude":
-
-      api.def(opt.geometry.shapes, []);
-      api.def(opt.geometry.options, {});
-
-      scope.visible = new Physijs.ConvexMesh(
-        new THREE.ExtrudeGeometry(
-          opt.geometry.shapes,
-          opt.geometry.options
-        ),
-      scope.materialType, opt.mass);
-
-      break;
-    case "icosahedron":
-
-      api.def(opt.geometry.radius, 1);
-      api.def(opt.geometry.detail, 0);
-
-      scope.visible = new Physijs.ConvexMesh(
-        new THREE.IcosahedronGeometry(
-          opt.geometry.radius,
-          opt.geometry.detail
-        ),
-      scope.materialType, opt.mass);
-
-      break;
-    case "lathe":
-
-      api.def(opt.geometry.points, []);
-
-      scope.visible = new Physijs.ConvexMesh(new THREE.LatheGeometry(
-        opt.geometry.points
-      ), scope.materialType, opt.mass);
-
-      break;
-    case "octahedron":
-
-      api.def(opt.geometry.radius, 1);
-      api.def(opt.geometry.detail, 0);
-
-      scope.visible = new Physijs.ConvexMesh(
-        new THREE.OctahedronGeometry(
-          opt.geometry.radius,
-          opt.geometry.detail
-        ),
-      scope.materialType, opt.mass);
-
-      break;
-    case "parametric":
-
-      api.def(opt.geometry.func, function() {});
-      api.def(opt.geometry.slices, 10);
-      api.def(opt.geometry.stacks, 10);
-
-      scope.visible = new Physijs.ConvexMesh(
-        new THREE.ParametricGeometry(
-          opt.geometry.func,
-          opt.geometry.slices,
-          opt.geometry.stacks
-        ),
-      scope.materialType, opt.mass);
-
-      break;
-    case "plane":
-
-      api.def(opt.geometry.func, function() {});
-      api.def(opt.geometry.width, 10);
-      api.def(opt.geometry.height, 10);
-      api.def(opt.geometry.segments, 32);
-
-      scope.visible = new Physijs.ConvexMesh(
-        new THREE.PlaneBufferGeometry(
-          opt.geometry.width,
-          opt.geometry.height,
-          opt.geometry.segments
-        ),
-      scope.materialType, opt.mass);
-
-      break;
-    case "polyhedron":
-
-      api.def(opt.geometry.verticesOfCube, []);
-      api.def(opt.geometry.indicesOfFaces, []);
-      api.def(opt.geometry.radius, 1);
-      api.def(opt.geometry.detail, 1);
-
-      scope.visible = new Physijs.ConvexMesh(
-        new THREE.PolyhedronGeometry(
-          opt.geometry.verticesOfCube,
-          opt.geometry.indicesOfFaces
-        ),
-      scope.materialType, opt.mass);
-
-      break;
-    case "ring":
-
-      api.def(opt.geometry.innerRadius, 0);
-      api.def(opt.geometry.outerRadius, 50);
-      api.def(opt.geometry.thetaSegments, 1);
-      api.def(opt.geometry.phiSegments, 8);
-      api.def(opt.geometry.thetaStart, 0);
-      api.def(opt.geometry.thetaLength, Math.PI * 2);
-
-      scope.visible = new Physijs.ConcaveMesh(
-        new THREE.TorusGeometry(
-          opt.geometry.outerRadius,
-          (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2,
-          opt.geometry.thetaSegments, opt.geometry.phiSegments
-        ),
-      scope.materialType, opt.mass);
-
-      break;
-    case "shape":
-
-      scope.visible = new THREE.Mesh(
-        new THREE.ShapeGeometry(opt.geometry.shapes),
-        scope.materialType
-      );
-
-      scope.onlyvis = true;
-
-      // WARN: console | 2d to 3d.
-      console.warn('This is not physic object. 2D!', [scope]);
-
-      break;
-    case "tetrahedron":
-
-      api.def(opt.geometry.radius, 1);
-      api.def(opt.geometry.detail, 0);
-
-      scope.visible = new Physijs.ConvexMesh(
-        new THREE.TetrahedronGeometry(
-          opt.geometry.radius,
-          opt.geometry.detail
-        ),
-      scope.materialType, opt.mass);
-
-      break;
-    case "text":
-
-      opt.geometry.parameters = opt.geometry.parameters || {};
-
-      api.def(opt.geometry.text, "Hello World!");
-      api.def(opt.geometry.parameters.size, 1);
-      api.def(opt.geometry.parameters.height, 50);
-      api.def(opt.geometry.parameters.curveSegments, 1);
-      api.def(opt.geometry.parameters.font, "Adelle"); // string !
-      api.def(opt.geometry.parameters.weight, "normal"); // string !
-      api.def(opt.geometry.parameters.style, "normal");
-      api.def(opt.geometry.parameters.bevelEnabled, false);
-      api.def(opt.geometry.parameters.bevelThickness, 10);
-      api.def(opt.geometry.parameters.bevelSize, 8);
-
-      scope.visible = new Physijs.ConcaveMesh(
-        new THREE.TextGeometry(
-          opt.geometry.text,
-          opt.geometry.parameters
-        ),
-      scope.materialType, opt.masss);
-
-      break;
-    case "torus":
-
-      api.def(opt.geometry.radius, 100);
-      api.def(opt.geometry.tube, 40);
-      api.def(opt.geometry.radialSegments, 8);
-      api.def(opt.geometry.tubularSegments, 6);
-      api.def(opt.geometry.arc, Math.PI * 2);
-
-      scope.visible = new Physijs.ConcaveMesh(
-        new THREE.TorusGeometry(
-          opt.geometry.radius,
-          opt.geometry.tube,
-          opt.geometry.radialSegments,
-          opt.geometry.tubularSegments,
-          opt.geometry.arc
-        ),
-      scope.materialType, opt.mass);
-
-      break;
-    case "torusknot":
-
-      api.def(opt.geometry.radius, 100);
-      api.def(opt.geometry.tube, 40);
-      api.def(opt.geometry.radialSegments, 8);
-      api.def(opt.geometry.tubularSegments, 6);
-      api.def(opt.geometry.arc, Math.PI * 2);
-
-      scope.visible = new Physijs.ConvexMesh(
-        new THREE.TorusKnotGeometry(
-          opt.geometry.radius,
-          opt.geometry.tube,
-          opt.geometry.radialSegments,
-          opt.geometry.tubularSegments,
-          opt.geometry.p,
-          opt.geometry.q,
-          opt.geometry.heightScale
-        ),
-      scope.materialType, opt.mass);
-
-      break;
-    case "tube":
-
-      // #FIXME:30 fix to WHS.API (not here)
-      scope.CustomSinCurve = THREE.Curve.create(
-        function(scale) { //custom curve constructor
-          this.scale = scale || 1;
-        },
-        function(t) { //getPoint: t is between 0-1
-          var tx = t * 3 - 1.5,
-            ty = Math.sin(2 * Math.PI * t),
-            tz = 0;
-          return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
-        }
-      );
-
-      if (!opt.geometry.path) {
-        opt.geometry.path = new this.CustomSinCurve(100);
-      }
-
-      api.def(opt.geometry.segments, 20);
-      api.def(opt.geometry.radius, 2);
-      api.def(opt.geometry.radiusSegments, 8);
-      api.def(opt.geometry.closed, false);
-
-      scope.visible = new Physijs.ConcaveMesh(
-        new THREE.TubeGeometry(
-          opt.geometry.path,
-          opt.geometry.segments,
-          opt.geometry.radius,
-          opt.geometry.radiusSegments,
-          opt.geometry.closed
-        ),
-      scope.materialType, opt.masss);
-
-      break;
-  }
-
-  // DOING:20 Fix code style here.
-  scope.addCompoundFace = function() {
-    this.compoundFace = new THREE.Geometry();
-
-    this.compoundFace.faces.push(new THREE.Face3(0, 1, 2));
-
-    var boundingBox = new THREE.Box3().setFromObject(this.visible);
-
-    var boxAround = new THREE.BoxGeometry(
-      boundingBox.max.x - boundingBox.min.x,
-      boundingBox.max.y - boundingBox.min.y,
-      boundingBox.max.z - boundingBox.min.z
-    );
-
-    var vec1 = boxAround.vertices[boxAround.faces[7].a]
-      .add(this.visible.position);
-
-    var vec2 = boxAround.vertices[boxAround.faces[7].b]
-      .add(this.visible.position);
-
-    var vec3 = boxAround.vertices[boxAround.faces[7].c]
-      .add(this.visible.position);
-
-    this.compoundFace.vertices.push(vec1);
-    this.compoundFace.vertices.push(vec2);
-    this.compoundFace.vertices.push(vec3);
-    //this.compoundFace.vertices.push(new THREE.Vector3(0,1,2));
-  }
-
-  scope.remove = function () {
-    return scope.wrap.remove();
-  }
-
-  scope.retrieve = function () {
-    return scope.wrap.retrieve();
-  }
-
-  scope.build(scope.visible, scope.body);
-
-  scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
-
-  return scope;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+            api.def(opt.geometry.radiusTop, 1);
+            api.def(opt.geometry.radiusBottom, 1);
+            api.def(opt.geometry.height, 1);
+            api.def(opt.geometry.radiusSegments, 32);
+
+            scope.visible = new Physijs.CylinderMesh(new THREE.CylinderGeometry(opt.geometry.radiusTop, opt.geometry.radiusBottom, opt.geometry.height, opt.geometry.radiusSegments), scope.materialType, opt.mass);
+
+            break;
+        case "dodecahedron":
+
+            api.def(opt.geometry.radius, 1);
+            api.def(opt.geometry.detail, 0);
+
+            scope.visible = new Physijs.ConvexMesh(new THREE.DodecahedronGeometry(opt.geometry.radius, opt.geometry.detail), scope.materialType, opt.mass);
+
+            break;
+        case "extrude":
+
+            api.def(opt.geometry.shapes, []);
+            api.def(opt.geometry.options, {});
+
+            scope.visible = new Physijs.ConvexMesh(new THREE.ExtrudeGeometry(opt.geometry.shapes, opt.geometry.options), scope.materialType, opt.mass);
+
+            break;
+        case "icosahedron":
+
+            api.def(opt.geometry.radius, 1);
+            api.def(opt.geometry.detail, 0);
+
+            scope.visible = new Physijs.ConvexMesh(new THREE.IcosahedronGeometry(opt.geometry.radius, opt.geometry.detail), scope.materialType, opt.mass);
+
+            break;
+        case "lathe":
+
+            api.def(opt.geometry.points, []);
+
+            scope.visible = new Physijs.ConvexMesh(new THREE.LatheGeometry(opt.geometry.points), scope.materialType, opt.mass);
+
+            break;
+        case "octahedron":
+
+            api.def(opt.geometry.radius, 1);
+            api.def(opt.geometry.detail, 0);
+
+            scope.visible = new Physijs.ConvexMesh(new THREE.OctahedronGeometry(opt.geometry.radius, opt.geometry.detail), scope.materialType, opt.mass);
+
+            break;
+        case "parametric":
+
+            api.def(opt.geometry.func, function() {});
+            api.def(opt.geometry.slices, 10);
+            api.def(opt.geometry.stacks, 10);
+
+            scope.visible = new Physijs.ConvexMesh(new THREE.ParametricGeometry(opt.geometry.func, opt.geometry.slices, opt.geometry.stacks), scope.materialType, opt.mass);
+
+            break;
+        case "plane":
+
+            api.def(opt.geometry.func, function() {});
+            api.def(opt.geometry.width, 10);
+            api.def(opt.geometry.height, 10);
+            api.def(opt.geometry.segments, 32);
+
+            scope.visible = new Physijs.ConvexMesh(new THREE.PlaneBufferGeometry(opt.geometry.width, opt.geometry.height, opt.geometry.segments), scope.materialType, opt.mass);
+
+            break;
+        case "polyhedron":
+
+            api.def(opt.geometry.verticesOfCube, []);
+            api.def(opt.geometry.indicesOfFaces, []);
+            api.def(opt.geometry.radius, 1);
+            api.def(opt.geometry.detail, 1);
+
+            scope.visible = new Physijs.ConvexMesh(new THREE.PolyhedronGeometry(opt.geometry.verticesOfCube, opt.geometry.indicesOfFaces), scope.materialType, opt.mass);
+
+            break;
+        case "ring":
+
+            api.def(opt.geometry.innerRadius, 0);
+            api.def(opt.geometry.outerRadius, 50);
+            api.def(opt.geometry.thetaSegments, 1);
+            api.def(opt.geometry.phiSegments, 8);
+            api.def(opt.geometry.thetaStart, 0);
+            api.def(opt.geometry.thetaLength, Math.PI * 2);
+
+            scope.visible = new Physijs.ConcaveMesh(new THREE.TorusGeometry(opt.geometry.outerRadius, (opt.geometry.outerRadius - opt.geometry.innerRadius) / 2, opt.geometry.thetaSegments, opt.geometry.phiSegments), scope.materialType, opt.mass);
+
+            break;
+        case "shape":
+
+            scope.visible = new THREE.Mesh(new THREE.ShapeGeometry(opt.geometry.shapes), scope.materialType);
+
+            scope.onlyvis = true;
+
+            // WARN: console | 2d to 3d.
+            console.warn('This is not physic object. 2D!', [scope]);
+
+            break;
+        case "tetrahedron":
+
+            api.def(opt.geometry.radius, 1);
+            api.def(opt.geometry.detail, 0);
+
+            scope.visible = new Physijs.ConvexMesh(new THREE.TetrahedronGeometry(opt.geometry.radius, opt.geometry.detail), scope.materialType, opt.mass);
+
+            break;
+        case "text":
+
+            opt.geometry.parameters = opt.geometry.parameters || {};
+
+            api.def(opt.geometry.text, "Hello World!");
+            api.def(opt.geometry.parameters.size, 1);
+            api.def(opt.geometry.parameters.height, 50);
+            api.def(opt.geometry.parameters.curveSegments, 1);
+            api.def(opt.geometry.parameters.font, "Adelle"); // string !
+            api.def(opt.geometry.parameters.weight, "normal"); // string !
+            api.def(opt.geometry.parameters.style, "normal");
+            api.def(opt.geometry.parameters.bevelEnabled, false);
+            api.def(opt.geometry.parameters.bevelThickness, 10);
+            api.def(opt.geometry.parameters.bevelSize, 8);
+
+            scope.visible = new Physijs.ConcaveMesh(new THREE.TextGeometry(opt.geometry.text, opt.geometry.parameters), scope.materialType, opt.masss);
+
+            break;
+        case "torus":
+
+            api.def(opt.geometry.radius, 100);
+            api.def(opt.geometry.tube, 40);
+            api.def(opt.geometry.radialSegments, 8);
+            api.def(opt.geometry.tubularSegments, 6);
+            api.def(opt.geometry.arc, Math.PI * 2);
+
+            scope.visible = new Physijs.ConcaveMesh(new THREE.TorusGeometry(opt.geometry.radius, opt.geometry.tube, opt.geometry.radialSegments, opt.geometry.tubularSegments, opt.geometry.arc), scope.materialType, opt.mass);
+
+            break;
+        case "torusknot":
+
+            api.def(opt.geometry.radius, 100);
+            api.def(opt.geometry.tube, 40);
+            api.def(opt.geometry.radialSegments, 8);
+            api.def(opt.geometry.tubularSegments, 6);
+            api.def(opt.geometry.arc, Math.PI * 2);
+
+            scope.visible = new Physijs.ConvexMesh(new THREE.TorusKnotGeometry(opt.geometry.radius, opt.geometry.tube, opt.geometry.radialSegments, opt.geometry.tubularSegments, opt.geometry.p, opt.geometry.q, opt.geometry.heightScale), scope.materialType, opt.mass);
+
+            break;
+        case "tube":
+
+            // #FIXME:30 fix to WHS.API (not here)
+            scope.CustomSinCurve = THREE.Curve.create(function(scale) {
+                //custom curve constructor
+                this.scale = scale || 1;
+            }, function(t) {
+                //getPoint: t is between 0-1
+                var tx = t * 3 - 1.5,
+                    ty = Math.sin(2 * Math.PI * t),
+                    tz = 0;
+                return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
+            });
+
+            if (!opt.geometry.path) {
+                opt.geometry.path = new this.CustomSinCurve(100);
+            }
+
+            api.def(opt.geometry.segments, 20);
+            api.def(opt.geometry.radius, 2);
+            api.def(opt.geometry.radiusSegments, 8);
+            api.def(opt.geometry.closed, false);
+
+            scope.visible = new Physijs.ConcaveMesh(new THREE.TubeGeometry(opt.geometry.path, opt.geometry.segments, opt.geometry.radius, opt.geometry.radiusSegments, opt.geometry.closed), scope.materialType, opt.masss);
+
+            break;
+    }
+
+    // DOING:20 Fix code style here.
+    scope.addCompoundFace = function() {
+        this.compoundFace = new THREE.Geometry();
+
+        this.compoundFace.faces.push(new THREE.Face3(0, 1, 2));
+
+        var boundingBox = new THREE.Box3().setFromObject(this.visible);
+
+        var boxAround = new THREE.BoxGeometry(boundingBox.max.x - boundingBox.min.x, boundingBox.max.y - boundingBox.min.y, boundingBox.max.z - boundingBox.min.z);
+
+        var vec1 = boxAround.vertices[boxAround.faces[7].a].add(this.visible.position);
+
+        var vec2 = boxAround.vertices[boxAround.faces[7].b].add(this.visible.position);
+
+        var vec3 = boxAround.vertices[boxAround.faces[7].c].add(this.visible.position);
+
+        this.compoundFace.vertices.push(vec1);
+        this.compoundFace.vertices.push(vec2);
+        this.compoundFace.vertices.push(vec3);
+        //this.compoundFace.vertices.push(new THREE.Vector3(0,1,2));
+    };
+
+    scope.remove = function() {
+        return scope.wrap.remove();
+    };
+
+    scope.retrieve = function() {
+        return scope.wrap.retrieve();
+    };
+
+    scope.build(scope.visible, scope.body);
+
+    scope.wrap = new api.Wrap(scope, scope.visible, scope.body);
+
+    return scope;
+};
 
 // TODO: Improve Grass object.
 /**
@@ -3464,174 +3086,119 @@ WHS.init.prototype.addObject = function(figureType, options) {
  * @returns {Object} This element scope/statement.
  */
 WHS.init.prototype.addGrass = function(ground, options) {
-  'use strict';
+    'use strict';
 
-  var scope = {};
-  scope.root = this;
-  scope.opts = options;
+    var scope = {};
+    scope.root = this;
+    scope.opts = options;
 
-  scope.onlyvis = true;
+    scope.onlyvis = true;
 
-  if (!scope.opts.coords)
-    console.warn('Please add grass objects coordinates! @addGrass');
+    if (!scope.opts.coords) console.warn('Please add grass objects coordinates! @addGrass');
 
-  scope.grassMeshes = [];
+    scope.grassMeshes = [];
 
-  var globalGrass = new THREE.Mesh(
-    new THREE.Geometry(),
-    new THREE.MeshFaceMaterial()
-  );
+    var globalGrass = new THREE.Mesh(new THREE.Geometry(), new THREE.MeshFaceMaterial());
 
+    scope.opts.coords.forEach(function(coord) {
+        var mesh = new THREE.Mesh(new THREE.Geometry(), new THREE.MeshBasicMaterial({
+            map: THREE.ImageUtils.loadTexture("assets/textures/thingrass.png"),
+            side: THREE.DoubleSide,
+            blending: THREE.NormalBlending,
+            transparent: true,
+            alphaTest: 0.5
+        }));
 
-  scope.opts.coords.forEach(function(coord) {
-    var mesh = new THREE.Mesh(
-      new THREE.Geometry(),
-      new THREE.MeshBasicMaterial({
-        map: THREE.ImageUtils.loadTexture("assets/textures/thingrass.png"),
-        side: THREE.DoubleSide,
-        blending: THREE.NormalBlending,
-        transparent: true,
-        alphaTest: 0.5
-      })
-    );
+        var intr = WHS.API.getheight({
+            x: coord.x,
+            y: coord.y
+        }, 500, ground, -1)[0];
 
-    var intr = (WHS.API.getheight({
-      x: coord.x,
-      y: coord.y
-    }, 500, ground, -1))[0];
+        var faceVertices = intr.object.geometry.vertices;
 
-    var faceVertices = intr.object.geometry.vertices;
+        var faceInGeometry = new THREE.Geometry();
+        faceInGeometry.faces.push(new THREE.Face3(0, 1, 2));
+        faceInGeometry.vertices.push(faceVertices[intr.face.a]);
+        faceInGeometry.vertices.push(faceVertices[intr.face.c]);
+        faceInGeometry.vertices.push(faceVertices[intr.face.b]);
+        faceInGeometry.computeFaceNormals();
 
-    var faceInGeometry = new THREE.Geometry();
-    faceInGeometry.faces.push(new THREE.Face3(0, 1, 2));
-    faceInGeometry.vertices.push(faceVertices[intr.face.a]);
-    faceInGeometry.vertices.push(faceVertices[intr.face.c]);
-    faceInGeometry.vertices.push(faceVertices[intr.face.b]);
-    faceInGeometry.computeFaceNormals();
+        /*var faceIn = new THREE.Mesh(
+          faceInGeometry, // Face geomtery.
+          new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.DoubleSide})
+        );
+          var vecN = intr.point.clone().add(faceInGeometry.faces[0].normal);
+        var rotN = faceInGeometry.faces[0].normal; //.normalize();
+          var nlGeometry = new THREE.Geometry();
+        nlGeometry.vertices = [
+          intr.point,
+          vecN.clone()
+        ];
+          var normalLine = new THREE.Line(
+          nlGeometry,
+          new THREE.MeshBasicMaterial({color: 0x000000})
+        );*/
 
-    /*var faceIn = new THREE.Mesh(
-      faceInGeometry, // Face geomtery.
-      new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.DoubleSide})
-    );
+        mesh.position.set(0, 0, 0);
+        mesh.geometry.vertices.push(faceVertices[intr.face.a].clone());
+        mesh.geometry.vertices.push(faceVertices[intr.face.c].clone());
 
-    var vecN = intr.point.clone().add(faceInGeometry.faces[0].normal);
-    var rotN = faceInGeometry.faces[0].normal; //.normalize();
+        mesh.geometry.vertices.push(faceVertices[intr.face.a].clone().add(faceInGeometry.faces[0].normal));
 
-    var nlGeometry = new THREE.Geometry();
-    nlGeometry.vertices = [
-      intr.point,
-      vecN.clone()
-    ];
+        mesh.geometry.vertices.push(faceVertices[intr.face.c].clone().add(faceInGeometry.faces[0].normal));
 
-    var normalLine = new THREE.Line(
-      nlGeometry,
-      new THREE.MeshBasicMaterial({color: 0x000000})
-    );*/
+        var dVec = new THREE.Vector3(faceVertices[intr.face.a].clone().x / 2 + faceVertices[intr.face.c].clone().x / 2, faceVertices[intr.face.a].clone().y / 2 + faceVertices[intr.face.c].clone().y / 2, faceVertices[intr.face.a].clone().z / 2 + faceVertices[intr.face.c].clone().z / 2);
 
-    mesh.position.set(0, 0, 0);
-    mesh.geometry.vertices.push(faceVertices[intr.face.a].clone());
-    mesh.geometry.vertices.push(faceVertices[intr.face.c].clone());
+        mesh.geometry.vertices.push(dVec.clone().add(dVec.clone().sub(faceVertices[intr.face.b].clone())));
 
-    mesh.geometry.vertices.push(faceVertices[intr.face.a].clone()
-      .add(faceInGeometry.faces[0].normal));
+        mesh.geometry.vertices.push(faceVertices[intr.face.b].clone());
+        mesh.geometry.vertices.push(faceVertices[intr.face.b].clone().add(faceInGeometry.faces[0].normal));
+        mesh.geometry.vertices.push(dVec.clone().add(dVec.clone().sub(faceVertices[intr.face.b].clone())).add(faceInGeometry.faces[0].normal));
 
-    mesh.geometry.vertices.push(faceVertices[intr.face.c].clone()
-      .add(faceInGeometry.faces[0].normal));
+        mesh.geometry.faces.push(new THREE.Face3(0, 1, 2));
+        mesh.geometry.faces.push(new THREE.Face3(1, 2, 3));
+        mesh.geometry.faces.push(new THREE.Face3(4, 6, 5));
+        mesh.geometry.faces.push(new THREE.Face3(4, 6, 7));
 
-    var dVec = new THREE.Vector3(
-      faceVertices[intr.face.a].clone().x /
-        2 + faceVertices[intr.face.c].clone().x / 2,
-      faceVertices[intr.face.a].clone().y /
-        2 + faceVertices[intr.face.c].clone().y / 2,
-      faceVertices[intr.face.a].clone().z /
-        2 + faceVertices[intr.face.c].clone().z / 2
-    );
+        mesh.geometry.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(1, 0), new THREE.Vector2(0, 1)]);
 
-    mesh.geometry.vertices.push(
-      dVec.clone().add(
-        dVec.clone().sub(faceVertices[intr.face.b].clone())
-      )
-    );
+        mesh.geometry.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(1, 1), new THREE.Vector2(0, 1)]);
 
-    mesh.geometry.vertices.push(faceVertices[intr.face.b].clone());
-    mesh.geometry.vertices.push(faceVertices[intr.face.b].clone()
-      .add(faceInGeometry.faces[0].normal)
-    );
-    mesh.geometry.vertices.push(
-      dVec.clone().add(
-        dVec.clone().sub(faceVertices[intr.face.b].clone())
-      ).add(faceInGeometry.faces[0].normal)
-    );
+        mesh.geometry.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(1, 1), new THREE.Vector2(1, 0)]);
 
-    mesh.geometry.faces.push(new THREE.Face3(0, 1, 2));
-    mesh.geometry.faces.push(new THREE.Face3(1, 2, 3));
-    mesh.geometry.faces.push(new THREE.Face3(4, 6, 5));
-    mesh.geometry.faces.push(new THREE.Face3(4, 6, 7));
+        mesh.geometry.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(1, 1), new THREE.Vector2(0, 1)]);
 
-    mesh.geometry.faceVertexUvs[0].push([
-      new THREE.Vector2(0, 0),
-      new THREE.Vector2(1, 0),
-      new THREE.Vector2(0, 1)
-    ]);
+        mesh.geometry.uvsNeedUpdate = true;
 
-    mesh.geometry.faceVertexUvs[0].push([
-      new THREE.Vector2(0, 0),
-      new THREE.Vector2(1, 1),
-      new THREE.Vector2(0, 1)
-    ]);
+        //scope.root.scene.add(faceIn);
+        //scope.root.scene.add(normalLine);
+        //scope.root.scene.add(mesh);
 
-    mesh.geometry.faceVertexUvs[0].push([
-      new THREE.Vector2(0, 0),
-      new THREE.Vector2(1, 1),
-      new THREE.Vector2(1, 0)
-    ]);
+        globalGrass.geometry.merge(mesh.geometry, mesh.matrix);
+        globalGrass.material.materials.push(mesh.material);
+        scope.grassMeshes.push(mesh);
+    });
 
-    mesh.geometry.faceVertexUvs[0].push([
-      new THREE.Vector2(0, 0),
-      new THREE.Vector2(1, 1),
-      new THREE.Vector2(0, 1)
-    ]);
+    scope.wrap = api.Wrap(scope, globalGrass);
 
-    mesh.geometry.uvsNeedUpdate = true;
+    // Section under construction. (animation of Grass).
+    // #TODO:0 Add grass animation.
+    scope.update = function() {
+        /*requestAnimationFrame(scope.update);
+          var delta = 0;
+        var oldTime = 0;
+          var time = new Date().getTime();
+        delta = time - oldTime;
+        oldTime = time;
+          if (isNaN(delta) || delta > 1000 || delta == 0 ) {
+            delta = 1000/60;
+        }*/
+    };
 
-    //scope.root.scene.add(faceIn);
-    //scope.root.scene.add(normalLine);
-    //scope.root.scene.add(mesh);
+    scope.update();
 
-    globalGrass.geometry.merge(mesh.geometry, mesh.matrix);
-    globalGrass.material.materials.push(mesh.material);
-    scope.grassMeshes.push(mesh);
-  });
-
-  scope.wrap = api.Wrap(scope, globalGrass);
-
-  // Section under construction. (animation of Grass).
-  // #TODO:0 Add grass animation.
-  scope.update = function() {
-    /*requestAnimationFrame(scope.update);
-
-    var delta = 0;
-    var oldTime = 0;
-
-    var time = new Date().getTime();
-    delta = time - oldTime;
-    oldTime = time;
-
-    if (isNaN(delta) || delta > 1000 || delta == 0 ) {
-        delta = 1000/60;
-    }*/
-  }
-
-  scope.update();
-
-  return scope;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return scope;
+};
 
 /**
  * Ground.
@@ -3643,215 +3210,209 @@ WHS.init.prototype.addGrass = function(ground, options) {
  * @return {Object} Scope.
  */
 WHS.init.prototype.addGround = function(type, size, material, pos) {
-  'use strict';
+    'use strict';
 
-  var options = {
-    pos: pos
-  };
+    var options = {
+        pos: pos
+    };
 
-  var scope = new api.construct(this, options, type);
+    var scope = new api.construct(this, options, type);
 
-  scope.skip = true;
+    scope.skip = true;
 
-  api.def(size, {
-    width: 100,
-    height: 100
-  });
+    api.def(size, {
+        width: 100,
+        height: 100
+    });
 
-  scope.materialType = api.loadMaterial(material)._material;
+    scope.materialType = api.loadMaterial(material)._material;
 
-  switch (type) {
-    case "smooth":
+    switch (type) {
+        case "smooth":
 
-      //scope.visible = new Physijs.PlaneMesh(
-        //new THREE.PlaneGeometry(size.width, size.height, 1, 1),
-      //scope.materialType, 0);
+            //scope.visible = new Physijs.PlaneMesh(
+            //new THREE.PlaneGeometry(size.width, size.height, 1, 1),
+            //scope.materialType, 0);
 
-      scope.visible = new Physijs.BoxMesh( new THREE.BoxGeometry(size.width, 1, size.height), scope.materialType, 0);
+            scope.visible = new Physijs.BoxMesh(new THREE.BoxGeometry(size.width, 1, size.height), scope.materialType, 0);
 
-      //scope._rot.set(-90 / 180 * Math.PI, 0, 0);
+            //scope._rot.set(-90 / 180 * Math.PI, 0, 0);
 
-      break;
+            break;
 
-    case "terrain":
-      //api.def(size.detality, 0);
+        case "terrain":
+            //api.def(size.detality, 0);
 
-      var canvas = document.createElement('canvas');
-      canvas.setAttribute("width", size.width);
-      canvas.setAttribute("height", size.height);
+            var canvas = document.createElement('canvas');
+            canvas.setAttribute("width", size.width);
+            canvas.setAttribute("height", size.height);
 
-      if (canvas.getContext) {
-        var ctx = canvas.getContext('2d');
+            if (canvas.getContext) {
+                var ctx = canvas.getContext('2d');
 
-        ctx.drawImage(size.terrain, 0, 0);
-      }
+                ctx.drawImage(size.terrain, 0, 0);
+            }
 
+            //if (size.useDeafultMaterial) {
 
-      //if (size.useDeafultMaterial) {
+            var oceanTexture = api.TextureLoader().load(scope.root._settings.assets + '/textures/terrain/dirt-512.jpg');
 
-    	var oceanTexture = api.TextureLoader().load(
-        scope.root._settings.assets + '/textures/terrain/dirt-512.jpg'
-      );
+            oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
 
-    	oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
+            var sandyTexture = api.TextureLoader().load(scope.root._settings.assets + '/textures/terrain/sand-512.jpg');
 
-    	var sandyTexture = api.TextureLoader().load(
-        scope.root._settings.assets + '/textures/terrain/sand-512.jpg'
-      );
+            sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
 
-    	sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
+            var grassTexture = api.TextureLoader().load(scope.root._settings.assets + '/textures/terrain/grass-512.jpg');
 
-    	var grassTexture = api.TextureLoader().load(
-        scope.root._settings.assets + '/textures/terrain/grass-512.jpg'
-      );
+            grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
 
-    	grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
+            var rockyTexture = api.TextureLoader().load(scope.root._settings.assets + '/textures/terrain/rock-512.jpg');
 
-    	var rockyTexture = api.TextureLoader().load(
-        scope.root._settings.assets + '/textures/terrain/rock-512.jpg'
-      );
+            rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
 
-    	rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
+            var snowyTexture = api.TextureLoader().load(scope.root._settings.assets + '/textures/terrain/snow-512.jpg');
 
-    	var snowyTexture = api.TextureLoader().load(
-        scope.root._settings.assets + '/textures/terrain/snow-512.jpg'
-      );
+            snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
 
-    	snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
+            //scope.materialType = size.useDeafultMaterial ?
+            //  customMaterial : scope.materialType;
 
-    //scope.materialType = size.useDeafultMaterial ?
-    //  customMaterial : scope.materialType;
+            var normalShader = THREE.NormalMapShader;
 
-      var normalShader = THREE.NormalMapShader;
+            var rx = 256,
+                ry = 256;
 
-			var rx = 256,
-          ry = 256;
+            var pars = {
+                minFilter: THREE.LinearFilter,
+                magFilter: THREE.LinearFilter,
+                format: THREE.RGBFormat
+            };
 
-			var pars = {
-        minFilter: THREE.LinearFilter,
-        magFilter: THREE.LinearFilter,
-        format: THREE.RGBFormat
-      };
+            var heightMap = new THREE.WebGLRenderTarget(rx, ry, pars);
+            heightMap.texture = api.TextureLoader().load('../assets/terrain/default_terrain.png');
 
-			var heightMap = new THREE.WebGLRenderTarget( rx, ry, pars );
-      heightMap.texture = api.TextureLoader()
-        .load('../assets/terrain/default_terrain.png');
+            var normalMap = new THREE.WebGLRenderTarget(rx, ry, pars);
+            normalMap.texture = api.TextureLoader().load('../assets/terrain/NormalMap.png');
 
-			var normalMap = new THREE.WebGLRenderTarget( rx, ry, pars );
-			normalMap.texture = api.TextureLoader()
-        .load('../assets/terrain/NormalMap.png');
+            var specularMap = new THREE.WebGLRenderTarget(256, 256, pars); //2048
+            specularMap.texture = api.TextureLoader().load('../assets/terrain/default_terrain.png');
 
-			var specularMap = new THREE.WebGLRenderTarget( 256, 256, pars ); //2048
-			specularMap.texture = api.TextureLoader()
-        .load('../assets/terrain/default_terrain.png');
+            var terrainShader = THREE.ShaderTerrain["terrain"];
 
-      var terrainShader = THREE.ShaderTerrain[ "terrain" ];
+            var uniformsTerrain = Object.assign(THREE.UniformsUtils.clone(terrainShader.uniforms), {
+                oceanTexture: {
+                    type: "t",
+                    value: oceanTexture
+                },
+                sandyTexture: {
+                    type: "t",
+                    value: sandyTexture
+                },
+                grassTexture: {
+                    type: "t",
+                    value: grassTexture
+                },
+                rockyTexture: {
+                    type: "t",
+                    value: rockyTexture
+                },
+                snowyTexture: {
+                    type: "t",
+                    value: snowyTexture
+                },
+                fog: true,
+                lights: true
+            }, THREE.UniformsLib['common'], THREE.UniformsLib['fog'], THREE.UniformsLib['lights'], THREE.UniformsLib['shadowmap'], {
+                ambient: {
+                    type: "c",
+                    value: new THREE.Color(0xffffff)
+                },
+                emissive: {
+                    type: "c",
+                    value: new THREE.Color(0x000000)
+                },
+                wrapRGB: {
+                    type: "v3",
+                    value: new THREE.Vector3(1, 1, 1)
+                }
+            });
 
-      var uniformsTerrain = Object.assign(
-        THREE.UniformsUtils.clone( terrainShader.uniforms ),
-        {
-          oceanTexture:	{ type: "t", value: oceanTexture },
-          sandyTexture:	{ type: "t", value: sandyTexture },
-          grassTexture:	{ type: "t", value: grassTexture },
-          rockyTexture:	{ type: "t", value: rockyTexture },
-          snowyTexture:	{ type: "t", value: snowyTexture },
-          fog: true,
-          lights: true
-        },
-        THREE.UniformsLib['common'],
-        THREE.UniformsLib['fog'],
-        THREE.UniformsLib['lights'],
-        THREE.UniformsLib['shadowmap'],
-        {
-            ambient  : { type: "c", value: new THREE.Color( 0xffffff ) },
-            emissive : { type: "c", value: new THREE.Color( 0x000000 ) },
-            wrapRGB  : { type: "v3", value: new THREE.Vector3( 1, 1, 1 ) }
-        });
+            uniformsTerrain["tDisplacement"].value = heightMap;
+            uniformsTerrain["shadowMap"].value = [normalMap];
 
-				uniformsTerrain[ "tDisplacement" ].value = heightMap;
-        uniformsTerrain[ "shadowMap" ].value = [normalMap];
+            uniformsTerrain["uDisplacementScale"].value = 100;
 
-				uniformsTerrain[ "uDisplacementScale" ].value = 100;
+            uniformsTerrain["uRepeatOverlay"].value.set(6, 6);
 
-				uniformsTerrain[ "uRepeatOverlay" ].value.set( 6, 6 );
+            var material = new THREE.ShaderMaterial({
+                uniforms: uniformsTerrain,
+                vertexShader: terrainShader.vertexShader,
+                fragmentShader: terrainShader.fragmentShader,
+                lights: true,
+                fog: true,
+                side: THREE.DoubleSide,
+                shading: THREE.SmoothShading
+            });
 
+            var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
 
-   			var material = new THREE.ShaderMaterial( {
- 						uniforms: 		uniformsTerrain,
- 						vertexShader: 	terrainShader.vertexShader,
- 						fragmentShader: terrainShader.fragmentShader,
- 						lights: 		true,
- 						fog: 			true,
-            side: THREE.DoubleSide,
-            shading: THREE.SmoothShading
-						} );
+            //THREE.BufferGeometryUtils.computeTangents( geom );
 
-      var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
+            geom.verticesNeedUpdate = true;
 
-      //THREE.BufferGeometryUtils.computeTangents( geom );
+            scope._rot.set(Math.PI / 180 * -90, 0, 0);
 
-      geom.verticesNeedUpdate = true;
+            var hgtdata = [],
+                index = 0,
+                i = 0; // new Array(256);
+            var imgdata = ctx.getImageData(0, 0, 256, 256).data;
+            //console.log(geom);
+            for (var x = 0; x <= 255; x++) {
+                hgtdata[x] = new Uint8Array(256);
 
-      scope._rot.set(Math.PI / 180 * -90, 0, 0);
+                for (var y = 255; y >= 0; y--) {
+                    //hgtdata[x][255-y] = ctx.getImageData(x, y, 1, 1).data[0]/255 * 100;
+                    geom.vertices[index].z = imgdata[i] / 255 * 100;
+                    i += 4;
+                    index++;
+                }
+            }
 
-      var hgtdata = [], index = 0, i = 0; // new Array(256);
-      var imgdata = ctx.getImageData(0, 0, 256, 256).data;
-//console.log(geom);
-      for (var x=0; x <= 255; x++) {
-        hgtdata[x] = new Uint8Array(256);
+            scope.visible = new Physijs.HeightfieldMesh(geom, Physijs.createMaterial(material, 0.8, 0.1));
 
-        for (var y=255; y >= 0; y--) {
-          //hgtdata[x][255-y] = ctx.getImageData(x, y, 1, 1).data[0]/255 * 100;
-          geom.vertices[index].z = imgdata[i]/255 * 100;
-          i += 4;
-          index++;
-        }
-      }
+            /*var height_img_data = ctx.getImageData(0, 0, 256, 256).data;
+            var z, index = 0;
+            for( var i = 0, l = height_img_data.length; i<l; i+=4){
+                     z = height_img_data[i];
+                     geom.vertices[index].z = z / 255 * 100;
+                     index = index + 1;
+             }*/
 
-      scope.visible = new Physijs.HeightfieldMesh(
-        geom,
-        Physijs.createMaterial(material, 0.8, 0.1)
-      );
+            geom.computeVertexNormals();
+            geom.computeFaceNormals();
+            //geom.computeTangents();
 
+            scope.visible.updateMatrix();
 
-      /*var height_img_data = ctx.getImageData(0, 0, 256, 256).data;
-      var z, index = 0;
-      for( var i = 0, l = height_img_data.length; i<l; i+=4){
-               z = height_img_data[i];
-               geom.vertices[index].z = z / 255 * 100;
-               index = index + 1;
-       }*/
+            scope.dtb = true;
 
-      geom.computeVertexNormals();
-      geom.computeFaceNormals();
-      //geom.computeTangents();
+            //scope.physic.scale.x = 256/250;
+            //scope.physic.scale.z = 256/250;
+            //scope.body.name = scope.name;
 
-      scope.visible.updateMatrix();
+            scope.visible.castShadow = true;
+            scope.visible.receiveShadow = true;
 
-      scope.dtb = true;
+            break;
+    }
 
-      //scope.physic.scale.x = 256/250;
-      //scope.physic.scale.z = 256/250;
-      //scope.body.name = scope.name;
+    scope.build(scope.visible, scope.body);
 
-      scope.visible.castShadow = true;
-      scope.visible.receiveShadow = true;
+    scope.wrap = api.Wrap(scope, scope.visible, scope.body);
 
-      break;
-  }
-
-  scope.build(scope.visible, scope.body);
-
-  scope.wrap = api.Wrap(scope, scope.visible, scope.body);
-
-  return scope;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return scope;
+};
 
 /**
  * ADDFOG.
@@ -3861,33 +3422,27 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
  * @returns {Object} This element scope/statement.
  */
 WHS.init.prototype.addFog = function(type, params) {
-  'use strict';
+    'use strict';
 
-  var scope = {};
+    var scope = {};
 
-  api.def(params.hex, 0x000000); //, this.hex);
-  api.def(params.near, 0.015); //, this.near);
-  api.def(params.far, 1000); //, this.far);
-  api.def(params.density, 0.00025); //, this.density);
+    api.def(params.hex, 0x000000); //, this.hex);
+    api.def(params.near, 0.015); //, this.near);
+    api.def(params.far, 1000); //, this.far);
+    api.def(params.density, 0.00025); //, this.density);
 
-  switch (type) {
-    case "fog":
-      scope = new THREE.Fog(params.hex, params.near, params.far);
-      break;
+    switch (type) {
+        case "fog":
+            scope = new THREE.Fog(params.hex, params.near, params.far);
+            break;
 
-    case "fogexp2":
-      scope = new THREE.FogExp2(params.hex, params.density);
-      break;
-  }
+        case "fogexp2":
+            scope = new THREE.FogExp2(params.hex, params.density);
+            break;
+    }
 
-  return scope;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+    return scope;
+};
 
 /**
  * Light.
@@ -3899,116 +3454,90 @@ WHS.init.prototype.addFog = function(type, params) {
  * @return {Object} Scope.
  */
 WHS.init.prototype.addLight = function(type, opts, pos, target) {
-  // #TODO:160 add lights.
+    // #TODO:160 add lights.
 
-  // TODO: fix options problem.
-  var scope = new api.construct(this, {pos: pos}, type);
+    // TODO: fix options problem.
+    var scope = new api.construct(this, {
+        pos: pos
+    }, type);
 
-  scope.skip = true;
+    scope.skip = true;
 
-  var options = api.def(opts, {});
+    var options = api.def(opts, {});
 
-  api.def(opts.color, 0xffffff, options.color); // Default: white.
-  api.def(opts.skyColor, 0xffffff, options.skyColor); // Default: white.
-  api.def(opts.groundColor, 0xffffff, options.groundColor); // Default: white.
-  api.def(opts.intensity, 1, options.intensity); // Default: 1.
-  api.def(opts.distance, 100, options.distance); // Default: 100.
-  api.def(opts.angle, Math.PI / 3, options.angle); // Default: 100.
+    api.def(opts.color, 0xffffff, options.color); // Default: white.
+    api.def(opts.skyColor, 0xffffff, options.skyColor); // Default: white.
+    api.def(opts.groundColor, 0xffffff, options.groundColor); // Default: white.
+    api.def(opts.intensity, 1, options.intensity); // Default: 1.
+    api.def(opts.distance, 100, options.distance); // Default: 100.
+    api.def(opts.angle, Math.PI / 3, options.angle); // Default: 100.
 
-  switch (type) {
-    case "ambient":
-      scope.visible = new THREE.AmbientLight(0xffffff);
-      break;
+    switch (type) {
+        case "ambient":
+            scope.visible = new THREE.AmbientLight(0xffffff);
+            break;
 
-    case "area":
-      scope.visible = new THREE.AreaLight(options.color, options.intensity);
-      console.warn([this.visible], "This light only works in the deferredrenderer");
-      break;
+        case "area":
+            scope.visible = new THREE.AreaLight(options.color, options.intensity);
+            console.warn([this.visible], "This light only works in the deferredrenderer");
+            break;
 
-    case "directional":
-      scope.visible = new THREE.DirectionalLight(
-        options.color,
-        options.intensity
-      );
+        case "directional":
+            scope.visible = new THREE.DirectionalLight(options.color, options.intensity);
 
-      break;
+            break;
 
-    case "hemisphere":
-      scope.visible = new THREE.HemisphereLight(
-        options.skyColor,
-        options.groundColor,
-        options.intensity
-      );
+        case "hemisphere":
+            scope.visible = new THREE.HemisphereLight(options.skyColor, options.groundColor, options.intensity);
 
-      break;
+            break;
 
-    case "light":
-      scope.visible = new THREE.Light(options.color);
+        case "light":
+            scope.visible = new THREE.Light(options.color);
 
-      break;
+            break;
 
-    case "point":
-      scope.visible = new THREE.PointLight(
-        options.color,
-        options.intensity,
-        options.distance
-      );
+        case "point":
+            scope.visible = new THREE.PointLight(options.color, options.intensity, options.distance);
 
-      //scope.visible.visible = false;
+            //scope.visible.visible = false;
 
-      break;
+            break;
 
-    case "spot":
-      scope.visible = new THREE.SpotLight(
-        options.color,
-        options.intensity,
-        options.distance,
-        options.angle
-      );
+        case "spot":
+            scope.visible = new THREE.SpotLight(options.color, options.intensity, options.distance, options.angle);
 
-      break;
-  }
+            break;
+    }
 
-  //scope.visible.shadowCameraVisible = true;
+    //scope.visible.shadowCameraVisible = true;
 
-  scope.visible.castShadow = true;
+    scope.visible.castShadow = true;
 
-  // #FIXME:20 Shadow default parameters.
-  scope.visible.shadowMapWidth = 1024;
-  scope.visible.shadowMapHeight = 1024;
-  scope.visible.shadowBias = 0.0001;
+    // #FIXME:20 Shadow default parameters.
+    scope.visible.shadowMapWidth = 1024;
+    scope.visible.shadowMapHeight = 1024;
+    scope.visible.shadowBias = 0.0001;
 
-  scope.visible.shadowCameraNear = true;
-  scope.visible.shadowCameraFar = 400;
-  scope.visible.shadowCameraFov = 60;
-  scope.visible.shadowDarkness = 0.3;
+    scope.visible.shadowCameraNear = true;
+    scope.visible.shadowCameraFar = 400;
+    scope.visible.shadowCameraFov = 60;
+    scope.visible.shadowDarkness = 0.3;
 
-  var d = 200;
+    var d = 200;
 
-  scope.visible.shadowCameraLeft = -d;
-  scope.visible.shadowCameraRight = d;
-  scope.visible.shadowCameraTop = d;
-  scope.visible.shadowCameraBottom = -d;
+    scope.visible.shadowCameraLeft = -d;
+    scope.visible.shadowCameraRight = d;
+    scope.visible.shadowCameraTop = d;
+    scope.visible.shadowCameraBottom = -d;
 
+    if (scope.visible.target) scope.visible.target.position.set(scope._target.x, scope._target.y, scope._target.z);
 
-  if (scope.visible.target)
-    scope.visible.target.position.set(
-      scope._target.x,
-      scope._target.y,
-      scope._target.z
-    );
+    scope.build();
+    scope.wrap = api.Wrap(scope, scope.visible);
 
-  scope.build();
-  scope.wrap = api.Wrap(scope, scope.visible);
-
-  return scope;
+    return scope;
 };
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
 
 /**
  * Wagner.
@@ -4019,133 +3548,118 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
  * @return {Object} Scope.
  */
 WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
-  'use strict';
-  params = params || {};
-  var scope = {};
+    'use strict';
 
-  //api.def(params.hex, 0x000000); //, this.hex);
-  //api.def(params.near, 0.015); //, this.near);
-  //api.def(params.far, 1000); //, this.far);
-  //api.def(params.density, 0.00025); //, this.density);
+    params = params || {};
+    var scope = {};
 
-  switch (type) {
-    case "zoomBlurPass":
-      scope.effect = new wagnerjs.ZoomBlurPass();
-      scope.effect.params.strength = .05;
+    //api.def(params.hex, 0x000000); //, this.hex);
+    //api.def(params.near, 0.015); //, this.near);
+    //api.def(params.far, 1000); //, this.far);
+    //api.def(params.density, 0.00025); //, this.density);
 
-      scope.effect.params.center.set(
-        .5 * this._composer.width,
-        .5 * this._composer.height
-      );
+    switch (type) {
+        case "zoomBlurPass":
+            scope.effect = new wagnerjs.ZoomBlurPass();
+            scope.effect.params.strength = .05;
 
-      this._composer.pass(scope.effect);
-      break;
+            scope.effect.params.center.set(.5 * this._composer.width, .5 * this._composer.height);
 
-    case "multiPassBloomPass":
-      scope.effect = new wagnerjs.MultiPassBloomPass();
-      scope.effect.params.blurAmount = 1.32;
-      scope.effect.params.strength = .5;
-      scope.effect.params.applyZoomBlur = true;
-      scope.effect.params.zoomBlurStrength = 0.84;
-      scope.effect.params.useTexture = true;
+            this._composer.pass(scope.effect);
+            break;
 
-      scope.effect.glowTexture = wagnerjs.Pass.prototype.getOfflineTexture(
-        this._composer.width,
-        this._composer.height,
-        false
-      );
+        case "multiPassBloomPass":
+            scope.effect = new wagnerjs.MultiPassBloomPass();
+            scope.effect.params.blurAmount = 1.32;
+            scope.effect.params.strength = .5;
+            scope.effect.params.applyZoomBlur = true;
+            scope.effect.params.zoomBlurStrength = 0.84;
+            scope.effect.params.useTexture = true;
 
-      scope.effect.params.center.set(
-        .5 * this._composer.width,
-        .5 * this._composer.height
-      );
+            scope.effect.glowTexture = wagnerjs.Pass.prototype.getOfflineTexture(this._composer.width, this._composer.height, false);
 
-      this._composer.pass(scope.effect);
-      break;
+            scope.effect.params.center.set(.5 * this._composer.width, .5 * this._composer.height);
 
-    case "vignettePass":
-      scope.effect = new wagnerjs.VignettePass();
-      scope.effect.params.amount = 0.7;
-      scope.effect.params.falloff = 0.2;
-      this._composer.pass(scope.effect);
-      break;
+            this._composer.pass(scope.effect);
+            break;
 
-    case "directionalBlurPass":
-      scope.effect = new wagnerjs.DirectionalBlurPass();
-      scope.effect.params.delta = 0.1;
-      this._composer.pass(scope.effect);
-      break;
+        case "vignettePass":
+            scope.effect = new wagnerjs.VignettePass();
+            scope.effect.params.amount = 0.7;
+            scope.effect.params.falloff = 0.2;
+            this._composer.pass(scope.effect);
+            break;
 
-    case "motionBlurPass":
-      scope.motionBlurEffect = new wagnerjs.DirectionalBlurPass();
-      scope.motionBlurEnable = true;
-      scope.motionBlurEffect.params.delta = 0;
-      scope.effect = scope.motionBlurEffect;
-      this._composer.pass(scope.effect);
-      break;
-    case "ASCIIPass":
-      scope.effect = new wagnerjs.ASCIIPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "dotScreenPass":
-      scope.effect = new wagnerjs.DotScreenPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "fxaaPass":
-      scope.effect = new wagnerjs.FXAAPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "chromaticAberrationPass":
-      scope.effect = new wagnerjs.ChromaticAberrationPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "dirtPass":
-      scope.effect = new wagnerjs.DirtPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "edgeDetectionPass":
-      scope.effect = new wagnerjs.SobelEdgeDetectionPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "highPassPass":
-      scope.effect = new wagnerjs.HighPassPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "grayscalePass":
-      scope.effect = new wagnerjs.GrayscalePass();
-      this._composer.pass(scope.effect);
-      break;
-    case "halftonePass":
-      scope.effect = new wagnerjs.HalftonePass();
-      this._composer.pass(scope.effect);
-      break;
-    case "invertPass":
-      scope.effect = new wagnerjs.InvertPass();
-      this._composer.pass(scope.effect);
-      break;
-    default:
-      console.warn("No Wagner effect \"" + type + "\" exists. If it should exist, open an issue. (@addWagner)");
-      return;
-  }
+        case "directionalBlurPass":
+            scope.effect = new wagnerjs.DirectionalBlurPass();
+            scope.effect.params.delta = 0.1;
+            this._composer.pass(scope.effect);
+            break;
 
-  //this._composer.eff.push(this.effect);
-  this._composer.toScreen();
+        case "motionBlurPass":
+            scope.motionBlurEffect = new wagnerjs.DirectionalBlurPass();
+            scope.motionBlurEnable = true;
+            scope.motionBlurEffect.params.delta = 0;
+            scope.effect = scope.motionBlurEffect;
+            this._composer.pass(scope.effect);
+            break;
+        case "ASCIIPass":
+            scope.effect = new wagnerjs.ASCIIPass();
+            this._composer.pass(scope.effect);
+            break;
+        case "dotScreenPass":
+            scope.effect = new wagnerjs.DotScreenPass();
+            this._composer.pass(scope.effect);
+            break;
+        case "fxaaPass":
+            scope.effect = new wagnerjs.FXAAPass();
+            this._composer.pass(scope.effect);
+            break;
+        case "chromaticAberrationPass":
+            scope.effect = new wagnerjs.ChromaticAberrationPass();
+            this._composer.pass(scope.effect);
+            break;
+        case "dirtPass":
+            scope.effect = new wagnerjs.DirtPass();
+            this._composer.pass(scope.effect);
+            break;
+        case "edgeDetectionPass":
+            scope.effect = new wagnerjs.SobelEdgeDetectionPass();
+            this._composer.pass(scope.effect);
+            break;
+        case "highPassPass":
+            scope.effect = new wagnerjs.HighPassPass();
+            this._composer.pass(scope.effect);
+            break;
+        case "grayscalePass":
+            scope.effect = new wagnerjs.GrayscalePass();
+            this._composer.pass(scope.effect);
+            break;
+        case "halftonePass":
+            scope.effect = new wagnerjs.HalftonePass();
+            this._composer.pass(scope.effect);
+            break;
+        case "invertPass":
+            scope.effect = new wagnerjs.InvertPass();
+            this._composer.pass(scope.effect);
+            break;
+        default:
+            console.warn("No Wagner effect \"" + type + "\" exists. If it should exist, open an issue. (@addWagner)");
+            return;
+    }
 
-  scope._composer = this._composer;
+    //this._composer.eff.push(this.effect);
+    this._composer.toScreen();
 
-  scope.apply = function() {
-    this._composer.eff.push(scope.effect);
+    scope._composer = this._composer;
+
+    scope.apply = function() {
+        this._composer.eff.push(scope.effect);
+        return scope;
+    };
+
     return scope;
-  }
-
-  return scope;
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+};
 
 /**
  * MAKEFIRSTPERSON.
@@ -4153,94 +3667,76 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
  * @param {Object} object *WHS* figure/object. (REQUIRED)
  */
 WHS.init.prototype.MakeFirstPerson = function(object, params) {
-  'use strict';
+    'use strict';
 
-  var target = $.extend({
-    block: $('#blocker'),
-    speed: 1,
-    ypos: 1
-  }, params);
+    var target = $.extend({
+        block: $('#blocker'),
+        speed: 1,
+        ypos: 1
+    }, params);
 
-  // #TODO:40 Clean up.
-  this.controls = new PointerLockControls(this._camera, object.visible, target);
+    // #TODO:40 Clean up.
+    this.controls = new PointerLockControls(this._camera, object.visible, target);
 
-  var controls = this.controls;
+    var controls = this.controls;
 
-  WHS.API.merge(this.scene, this.controls.getObject());
+    WHS.API.merge(this.scene, this.controls.getObject());
 
-  if ('pointerLockElement' in document ||
-    'mozPointerLockElement' in document ||
-    'webkitPointerLockElement' in document) {
-    var element = document.body;
+    if ('pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document) {
+        var element = document.body;
 
-    this.pointerlockchange = function() {
-      if (document.pointerLockElement === element ||
-        document.mozPointerLockElement === element ||
-        document.webkitPointerLockElement === element) {
-        controls.enabled = true;
+        this.pointerlockchange = function() {
+            if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
+                controls.enabled = true;
 
-        /*target.block.css({
-          'display': 'none'
-        });*/
-        $(target.block).fadeOut();
-      } else {
-        controls.enabled = false;
+                /*target.block.css({
+                  'display': 'none'
+                });*/
+                $(target.block).fadeOut();
+            } else {
+                controls.enabled = false;
 
-        /*target.block.css({
-          'display': 'block'
-        });*/
-        $(target.block).fadeIn();
-      }
+                /*target.block.css({
+                  'display': 'block'
+                });*/
+                $(target.block).fadeIn();
+            }
+        };
     }
-  }
 
-  document.addEventListener('pointerlockchange', this.pointerlockchange, false);
-  document.addEventListener('mozpointerlockchange', this.pointerlockchange, false);
-  document.addEventListener('webkitpointerlockchange', this.pointerlockchange, false);
+    document.addEventListener('pointerlockchange', this.pointerlockchange, false);
+    document.addEventListener('mozpointerlockchange', this.pointerlockchange, false);
+    document.addEventListener('webkitpointerlockchange', this.pointerlockchange, false);
 
-  this.pointerlockerror = function() {
-    console.warn("Pointer lock error.");
-  }
+    this.pointerlockerror = function() {
+        console.warn("Pointer lock error.");
+    };
 
-  document.addEventListener('pointerlockerror', this.pointerlockerror, false);
-  document.addEventListener('mozpointerlockerror', this.pointerlockerror, false);
-  document.addEventListener('webkitpointerlockerror', this.pointerlockerror, false);
+    document.addEventListener('pointerlockerror', this.pointerlockerror, false);
+    document.addEventListener('mozpointerlockerror', this.pointerlockerror, false);
+    document.addEventListener('webkitpointerlockerror', this.pointerlockerror, false);
 
-  target.block.on('click', function() {
-    element.requestPointerLock = element.requestPointerLock ||
-      element.mozRequestPointerLock ||
-      element.webkitRequestPointerLock;
+    target.block.on('click', function() {
+        element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
 
-    if (/Firefox/i.test(navigator.userAgent)) {
-      var fullscreenchange = function() {
-        if (document.fullscreenElement === element ||
-          document.mozFullscreenElement === element ||
-          document.mozFullScreenElement === element) {
-          document.removeEventListener('fullscreenchange', fullscreenchange);
-          document.removeEventListener('mozfullscreenchange', fullscreenchange);
-          element.requestPointerLock();
-        }
-      }
+        if (/Firefox/i.test(navigator.userAgent)) {
+            var fullscreenchange = function fullscreenchange() {
+                if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
+                    document.removeEventListener('fullscreenchange', fullscreenchange);
+                    document.removeEventListener('mozfullscreenchange', fullscreenchange);
+                    element.requestPointerLock();
+                }
+            };
 
-      document.addEventListener('fullscreenchange', fullscreenchange, false);
-      document.addEventListener('mozfullscreenchange', fullscreenchange, false);
+            document.addEventListener('fullscreenchange', fullscreenchange, false);
+            document.addEventListener('mozfullscreenchange', fullscreenchange, false);
 
-      element.requestFullscreen = element.requestFullscreen ||
-        element.mozRequestFullscreen ||
-        element.mozRequestFullScreen ||
-        element.webkitRequestFullscreen;
+            element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
 
-      element.requestFullscreen();
-    } else
-      element.requestPointerLock();
-  });
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+            element.requestFullscreen();
+        } else element.requestPointerLock();
+    });
+};
 
 /**
  * ORBITCONTROLS.
@@ -4248,22 +3744,9 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
  * @param {Object} object Description. (OPTIONAL)
  */
 WHS.init.prototype.OrbitControls = function(object) {
-  // #TODO:170 add use for object.
-  this.controls = new THREE.OrbitControls(this._camera, this.renderer.domElement);
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
- */
+    // #TODO:170 add use for object.
+    this.controls = new THREE.OrbitControls(this._camera, this.renderer.domElement);
+};
 
 /**
  * Adds a skybox to the WhitestormJS scene.
@@ -4274,51 +3757,51 @@ WHS.init.prototype.OrbitControls = function(object) {
  * @returns {Object} scope - Scope.
  */
 WHS.init.prototype.addSkybox = function(options) {
-  'use strict';
-  
-  api.def(options.skyType, "box");
+    'use strict';
 
-  options.imgSuffix = options.skyType == "box" ? options.imgSuffix || ".png" : options.imgSuffix || "";
+    api.def(options.skyType, "box");
 
-  var scope = new api.construct(this, options, "skybox");
-  scope.skip = true;
+    options.imgSuffix = options.skyType == "box" ? options.imgSuffix || ".png" : options.imgSuffix || "";
 
-  var skyGeometry, skyMat;
+    var scope = new api.construct(this, options, "skybox");
+    scope.skip = true;
 
-  switch (options.skyType) {
-    case "box":
-      var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
-      skyGeometry = new THREE.CubeGeometry(this._camera.far, this._camera.far, this._camera.far);
-      var matArray = [];
+    var skyGeometry, skyMat;
 
-      for (var i = 0; i < 6; i++) {
-        matArray.push(new THREE.MeshBasicMaterial({
-          map: THREE.ImageUtils.loadTexture(options.src + directions[i] + options.imgSuffix),
-          side: THREE.BackSide
-        }));
-      }
+    switch (options.skyType) {
+        case "box":
+            var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+            skyGeometry = new THREE.CubeGeometry(this._camera.far, this._camera.far, this._camera.far);
+            var matArray = [];
 
-      skyMat = new THREE.MeshFaceMaterial(matArray);
+            for (var i = 0; i < 6; i++) {
+                matArray.push(new THREE.MeshBasicMaterial({
+                    map: THREE.ImageUtils.loadTexture(options.src + directions[i] + options.imgSuffix),
+                    side: THREE.BackSide
+                }));
+            }
 
-      break;
-    case "sphere":
+            skyMat = new THREE.MeshFaceMaterial(matArray);
 
-      skyGeometry = new THREE.SphereGeometry(this._camera.far/2, 60, 40);
+            break;
+        case "sphere":
 
-      skyMat = new THREE.MeshBasicMaterial({
-        map: THREE.ImageUtils.loadTexture(options.src + options.imgSuffix),
-        side: THREE.BackSide
-      });
+            skyGeometry = new THREE.SphereGeometry(this._camera.far / 2, 60, 40);
 
-      break;
-  }
+            skyMat = new THREE.MeshBasicMaterial({
+                map: THREE.ImageUtils.loadTexture(options.src + options.imgSuffix),
+                side: THREE.BackSide
+            });
 
-  scope.visible = new THREE.Mesh(skyGeometry, skyMat);
-  scope.visible.renderDepth = 1000.0;
+            break;
+    }
 
-  scope.build();
+    scope.visible = new THREE.Mesh(skyGeometry, skyMat);
+    scope.visible.renderDepth = 1000.0;
 
-  scope.wrap = api.Wrap(scope, scope.visible);
+    scope.build();
 
-  return scope;
+    scope.wrap = api.Wrap(scope, scope.visible);
+
+    return scope;
 };
