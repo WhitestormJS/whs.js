@@ -55,42 +55,31 @@ THREE.ShaderTerrain = {
 
 	    fragmentShader: [
 
-		`
+  [
+		        "uniform vec3 diffuse;",
+		        "uniform vec3 emissive;",
+		        "uniform float opacity;",
+		        "uniform vec3 ambientLightColor;",
+		        "varying vec3 vLightFront;",
+		        "#ifdef DOUBLE_SIDED",
+			        "varying vec3 vLightBack;",
+			        "uniform vec2 uRepeatOverlay;",
+			        "uniform vec2 uRepeatBase;",
+			        "uniform vec2 uOffset;",
+			        "uniform float uNormalScale;",
+			        "uniform sampler2D tNormal;",
+		        "#endif",
+		        "uniform sampler2D oceanTexture;",
+		        "uniform sampler2D sandyTexture;",
+		        "uniform sampler2D grassTexture;",
+		        "uniform sampler2D rockyTexture;",
+		        "uniform sampler2D snowyTexture;",
+		        "varying vec3 vTangent;",
+		        "varying vec3 vBinormal;",
+		        "varying vec3 vNormal;",
+		        "varying vec3 vViewPosition;",
 
-		        uniform vec3 diffuse;
-		        uniform vec3 emissive;
-		        uniform float opacity;
-
-		        uniform vec3 ambientLightColor;
-
-		        varying vec3 vLightFront;
-
-		        #ifdef DOUBLE_SIDED
-
-			        varying vec3 vLightBack;
-
-			        uniform vec2 uRepeatOverlay;
-			        uniform vec2 uRepeatBase;
-			        uniform vec2 uOffset;
-			        uniform float uNormalScale;
-
-			        uniform sampler2D tNormal;
-
-		        #endif
-
-		        uniform sampler2D oceanTexture;
-		        uniform sampler2D sandyTexture;
-		        uniform sampler2D grassTexture;
-		        uniform sampler2D rockyTexture;
-		        uniform sampler2D snowyTexture;
-
-		        varying vec3 vTangent;
-		        varying vec3 vBinormal;
-		        varying vec3 vNormal;
-
-		        varying vec3 vViewPosition;
-
-		` + 
+	 ].join("\n") +
 
 			        [
 
@@ -106,59 +95,58 @@ THREE.ShaderTerrain = {
 				        THREE.ShaderChunk[ "logdepthbuf_pars_fragment" ]
 
 			        ].join("\n") +
-		        
-		`
 
-		        varying vec2 vUv;
-		        varying float vAmount;
+		[
+		        "varying vec2 vUv;",
+		        "varying float vAmount;",
 
-		        void main() {
+		        "void main() {",
 
-		        	// UVs.
-		            vec2 uvOverlay = uRepeatOverlay * vUv + uOffset;
-		            vec2 uvBase = uRepeatBase * vUv;
+		        	"// UVs.",
+		            "vec2 uvOverlay = uRepeatOverlay * vUv + uOffset;",
+		            "vec2 uvBase = uRepeatBase * vUv;",
 
-					vec3 specularTex = vec3( 1.0 );
-		            vec3 normalTex = texture2D( tNormal, uvOverlay ).xyz * 2.0 - 1.0;
+					"vec3 specularTex = vec3( 1.0 );",
+		            "vec3 normalTex = texture2D( tNormal, uvOverlay ).xyz * 2.0 - 1.0;",
 
-		            normalTex.xy *= uNormalScale;
-		            normalTex = normalize( normalTex );
+		            "normalTex.xy *= uNormalScale;",
+		            "normalTex = normalize( normalTex );",
 
-		            mat3 tsb = mat3( vTangent, vBinormal, vNormal );
+		            "mat3 tsb = mat3( vTangent, vBinormal, vNormal );",
 
-		            vec3 finalNormal = tsb * normalTex;
-		            vec3 normal = normalize( finalNormal );
-		            vec3 viewPosition = normalize( vViewPosition );
+		            "vec3 finalNormal = tsb * normalTex;",
+		            "vec3 normal = normalize( finalNormal );",
+		            "vec3 viewPosition = normalize( vViewPosition );",
 
-		            vec3 shadowMask = vec3( 1.0 );
-		            vec3 outgoingLight = vec3( 0.0 );
-		            vec3 totalAmbientLight = ambientLightColor;
+		            "vec3 shadowMask = vec3( 1.0 );",
+		            "vec3 outgoingLight = vec3( 0.0 );",
+		            "vec3 totalAmbientLight = ambientLightColor;",
 
-		            vec4 diffuseColor = vec4(0.0);
+		            "vec4 diffuseColor = vec4(0.0);",
 
-		            // Color by texture.
-		            vec4 water = (smoothstep(0.01, 0.25, vAmount)
-		            - smoothstep(0.24, 0.26, vAmount))
-		            * texture2D( oceanTexture, vUv * 10.0 );
+		            "// Color by texture.",
+		            "vec4 water = (smoothstep(0.01, 0.25, vAmount)",
+		            "- smoothstep(0.24, 0.26, vAmount))",
+		            "* texture2D( oceanTexture, vUv * 10.0 );",
 
-		            vec4 sandy = (smoothstep(0.24, 0.27, vAmount)
-		            - smoothstep(0.28, 0.31, vAmount))
-		            * texture2D( sandyTexture, vUv * 10.0 );
+		            "vec4 sandy = (smoothstep(0.24, 0.27, vAmount)",
+		            "- smoothstep(0.28, 0.31, vAmount))",
+		            "* texture2D( sandyTexture, vUv * 10.0 );",
 
-		            vec4 grass = (smoothstep(0.28, 0.32, vAmount)
-		            - smoothstep(0.35, 0.40, vAmount))
-		            * texture2D( grassTexture, vUv * 20.0 );
+		            "vec4 grass = (smoothstep(0.28, 0.32, vAmount)",
+		            "- smoothstep(0.35, 0.40, vAmount))",
+		            "* texture2D( grassTexture, vUv * 20.0 );",
 
-		            vec4 rocky = (smoothstep(0.30, 0.40, vAmount)
-		            - smoothstep(0.40, 0.70, vAmount))
-		            * texture2D( rockyTexture, vUv * 20.0 );
+		            "vec4 rocky = (smoothstep(0.30, 0.40, vAmount)",
+		            "- smoothstep(0.40, 0.70, vAmount))",
+		            "* texture2D( rockyTexture, vUv * 20.0 );",
 
-		            vec4 snowy = (smoothstep(0.42, 0.45, vAmount))
-		            * texture2D( snowyTexture, vUv * 10.0 );
-		            diffuseColor = vec4(0.0, 0.0, 0.0, 1.0)
-		            + water + sandy + grass + rocky + snowy;
+		            "vec4 snowy = (smoothstep(0.42, 0.45, vAmount))",
+		            "* texture2D( snowyTexture, vUv * 10.0 );",
+		            "diffuseColor = vec4(0.0, 0.0, 0.0, 1.0)",
+		            "+ water + sandy + grass + rocky + snowy;",
 
-		` +
+		].join("\n") +
 
 				        [
 
@@ -176,74 +164,72 @@ THREE.ShaderTerrain = {
 
 				        ].join("\n") +
 
-		`
+		[
+		            "#ifdef DOUBLE_SIDED",
 
-		            #ifdef DOUBLE_SIDED
+		                "if ( gl_FrontFacing )",
 
-		                if ( gl_FrontFacing )
+		                    "outgoingLight += diffuseColor.rgb *",
+		                		"( vLightFront * shadowMask + totalAmbientLight )",
+		                		"+ emissive;",
 
-		                    outgoingLight += diffuseColor.rgb * 
-		                		( vLightFront * shadowMask + totalAmbientLight )
-		                		+ emissive;
+		                "else",
 
-		                else
+		                    "outgoingLight += diffuseColor.rgb *",
+		                		"( vLightBack * shadowMask + totalAmbientLight )",
+		                		"+ emissive;",
 
-		                    outgoingLight += diffuseColor.rgb * 
-		                		( vLightBack * shadowMask + totalAmbientLight )
-		                		+ emissive;
+		            "#else",
 
-		            #else
+		                "outgoingLight += diffuseColor.rgb *",
+		                	"( vLightFront * shadowMask + totalAmbientLight )",
+		                	"+ emissive;",
 
-		                outgoingLight += diffuseColor.rgb * 
-		                	( vLightFront * shadowMask + totalAmbientLight )
-		                	+ emissive;
+		            "#endif",
 
-		            #endif
+		           "gl_FragColor = vec4( outgoingLight, diffuseColor.a );",
 
-		           gl_FragColor = vec4( outgoingLight, diffuseColor.a );
+		      "}",
 
-		      }
-
-		`
-
+		].join("\n")
 		],
 
 		vertexShader: [
 
 
-		`
+		[
 
-		    #define TERRAIN;
+		    "#define TERRAIN;",
 
-		    varying vec3 vLightFront;
+		    "varying vec3 vLightFront;",
 
-		    #ifdef DOUBLE_SIDED
+		    "#ifdef DOUBLE_SIDED",
 
-		        varying vec3 vLightBack;
+		        "varying vec3 vLightBack;",
 
-		    #endif
-		    
-		    varying float vAmount;
-		    attribute vec4 tangent;
+		    "#endif",
 
-		    uniform vec2 uRepeatBase;
-		    uniform sampler2D tNormal;
+		    "varying float vAmount;",
+		    "attribute vec4 tangent;",
 
-		    #ifdef VERTEX_TEXTURES
+		    "uniform vec2 uRepeatBase;",
+		    "uniform sampler2D tNormal;",
 
-			    uniform sampler2D tDisplacement;
-			    uniform float uDisplacementScale;
-			    uniform float uDisplacementBias;
+		    "#ifdef VERTEX_TEXTURES",
 
-		    #endif
+			    "uniform sampler2D tDisplacement;",
+			    "uniform float uDisplacementScale;",
+			    "uniform float uDisplacementBias;",
 
-		    varying vec3 vTangent;
-		    varying vec3 vBinormal;
-		    varying vec3 vNormal;
-		    varying vec2 vUv;
-		    varying vec3 vViewPosition;
+		    "#endif",
 
-		` + 
+		    "varying vec3 vTangent;",
+		    "varying vec3 vBinormal;",
+		    "varying vec3 vNormal;",
+		    "varying vec2 vUv;",
+		    "varying vec3 vViewPosition;",
+
+		].join("\n") +
 
 		    [
 
@@ -261,11 +247,12 @@ THREE.ShaderTerrain = {
 
 		    ].join( "\n" ) +
 
-		`
-
-		    void main() {
-
-		` + 
+		[
+        "",
+        "",
+		    "void main() {",
+        ""
+		].join("\n") +
 
 		    [
 
@@ -287,32 +274,30 @@ THREE.ShaderTerrain = {
 			    THREE.ShaderChunk[ "uv2_vertex" ]
 
 		    ].join( "\n" ) +
+   [
+			    "vNormal = normalize( normalMatrix * normal);",
 
-		`
+			    "// Tangent and binormal vectors.",
+			    "vTangent = normalize( normalMatrix * tangent.xyz );",
+			    "vBinormal = cross( vNormal, vTangent ) * tangent.w;",
+			    "vBinormal = normalize( vBinormal );",
 
-			    vNormal = normalize( normalMatrix * normal);
+			    "// Texture coordinates.",
+			    "vUv = uv;",
 
-			    // Tangent and binormal vectors.
-			    vTangent = normalize( normalMatrix * tangent.xyz );
-			    vBinormal = cross( vNormal, vTangent ) * tangent.w;
-			    vBinormal = normalize( vBinormal );
+			    "vec2 uvBase = uv * uRepeatBase;",
 
-			    // Texture coordinates.
-			    vUv = uv;
+			    "// displacement mapping",
+			    "vec4 worldPosition = modelMatrix * vec4( position, 1.0 );",
 
-			    vec2 uvBase = uv * uRepeatBase;
+			    "mvPosition = modelViewMatrix * vec4( position, 1.0 );",
+			    "transformedNormal = normalize( normalMatrix * normal );",
 
-			    // displacement mapping
-			    vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+			    "gl_Position = projectionMatrix * mvPosition;",
+			    "vViewPosition = -mvPosition.xyz;",
+			    "vAmount = position.z * 0.005 + 0.1;",
 
-			    mvPosition = modelViewMatrix * vec4( position, 1.0 );
-			    transformedNormal = normalize( normalMatrix * normal );
-
-			    gl_Position = projectionMatrix * mvPosition;
-			    vViewPosition = -mvPosition.xyz;
-			    vAmount = position.z * 0.005 + 0.1;
-
-		` +
+		].join("\n") +
 
 		    [
 
@@ -322,11 +307,12 @@ THREE.ShaderTerrain = {
 
 		    ].join( "\n" ) +
 
-		`
+		[
+      "",
+		  "}",
+      ""
 
-		   }
-
-		`
+		].join("\n")
 
 		],
 

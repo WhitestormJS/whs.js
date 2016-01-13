@@ -27,8 +27,11 @@
   },
   "homepage": "https://github.com/WhitestormJS/whitestorm.js#readme",
   "devDependencies": {
+    "cannon": "^0.6.2",
     "gulp": "^3.9.0",
-    "gulp-replace-task": "^0.11.0"
+    "gulp-replace-task": "^0.11.0",
+    "jquery": "^2.2.0",
+    "three": "^0.73.0"
   },
   "directories": {
     "example": "examples"
