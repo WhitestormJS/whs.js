@@ -4,5 +4,4 @@ node_js:
 before_script:
     - npm install
     - npm install -g mocha
-    - npm install three cannon jquery
 script: gulp build && mocha
