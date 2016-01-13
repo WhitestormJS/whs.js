@@ -1216,40 +1216,6 @@ THREE.OrbitControls = function(object, domElement) {
 
 THREE.OrbitControls.prototype = Object.create(THREE.EventDispatcher.prototype);
 
-"use strict";
-! function() {
-    function n(n) {
-        var t = {};
-        return n && "[object Function]" === t.toString.call(n);
-    }
-    this.SimpleWorker = function(t) {
-        function r() {
-            onmessage = function onmessage(n) {
-                "__args" == n.data.type && __func.apply(this, n.data.args);
-            };
-        }
-        var e, i, a, o, c;
-        if (e = t.func, !n(e)) throw new Error("`func` needs to be a function.");
-        i = t.args, a = t.success || function() {}, o = t.error || function() {}, c = t.runOnce || !1;
-        var s;
-        s = "data:text/javascript;charset=US-ASCII,var __func = " + e.toString() + ";", s += "(" + r.toString() + ").call(this);";
-        var u = new Worker(s);
-        u.onmessage = function(n) {
-            a(n.data), c && u.terminate();
-        }, u.onerror = function(n) {
-            o(n);
-        }, this.run = function() {
-            u.postMessage({
-                type: "__args",
-                args: Array.prototype.slice.call(arguments)
-            });
-        }, this.close = function() {
-            u.terminate();
-        }, void 0 !== i && this.run.apply(this, i);
-    }, this.SimpleWorker.run = function(n) {
-        n.runOnce = !0, new SimpleWorker(n);
-    };
-}.call(undefined);
 // stats.js - http://github.com/mrdoob/stats.js
 var Stats = function Stats() {
     function f(a, e, b) {
