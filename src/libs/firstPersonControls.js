@@ -38,10 +38,10 @@
     });
     function onMouseMove ( event ) {
         if ( scope.enabled === false ) return;
-        
+
         var movementX = event.movementX || event.mozMovementX || event.getMovementX() || 0,
             movementY = event.movementY || event.mozMovementY || event.getMovementY() || 0;
-            
+
         yawObject.rotation.y -= movementX * 0.002,
         pitchObject.rotation.x -= movementY * 0.002;
 
@@ -59,7 +59,7 @@
 
             case 37: // left
             case 65: // a
-                moveLeft = true; 
+                moveLeft = true;
                 break;
 
             case 40: // down
@@ -126,6 +126,7 @@
     this.getObject = function () {
         return yawObject;
     };
+
     this.getDirection = function(targetVec){
         targetVec.set(0,0,-1);
         quat.multiplyVector3(targetVec);
@@ -134,22 +135,22 @@
     // Moves the camera to the Cannon.js object position and adds velocity to the object if the run key is down
     var inputVelocity = new THREE.Vector3(),
         euler = new THREE.Euler();
-    
+
     this.update = function ( delta ) {
 
         var moveVec = new THREE.Vector3();
 
         if ( scope.enabled === false ) return;
-        //Variables are passed by value, setting delta to 0.5 is meaningless
+
         delta = 0.5;
         delta = Math.min(delta, 0.5);
-        //console.log(delta);
 
         inputVelocity.set(0,0,0);
 
         if ( moveForward ){
             inputVelocity.z = -velocityFactor * delta * params.speed * runVelocity;
         }
+
         if ( moveBackward ){
             inputVelocity.z = velocityFactor * delta * params.speed * runVelocity;
         }
@@ -157,6 +158,7 @@
         if ( moveLeft ){
             inputVelocity.x = -velocityFactor * delta * params.speed * runVelocity;
         }
+
         if ( moveRight ){
             inputVelocity.x = velocityFactor * delta * params.speed * runVelocity;
         }
@@ -166,7 +168,7 @@
         euler.y = yawObject.rotation.y,
         euler.order = "XYZ";
         quat.setFromEuler(euler);
-        //But threeJS does verify, look the src/Math/Quaternion.js
+
         inputVelocity.applyQuaternion(quat);
         //quat.multiplyVector3(inputVelocity);
 
