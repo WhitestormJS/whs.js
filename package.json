@@ -29,6 +29,7 @@
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
+    "babel-plugin-transform-es2015-template-literals": "^6.3.13",
     "gulp-replace-task": "^0.11.0",
     "jquery": "^2.2.0",
     "three": "^0.73.0"
