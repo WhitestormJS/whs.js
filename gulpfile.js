@@ -86,9 +86,10 @@ var author_comment = "/**\n" +
 "*/\n" +
 "\n";
 
-var lib_includes = "var THREE = require('three');\n" +
-"var CANNON = require('cannon');\n" +
-"var jQuery = require('jquery');";
+var lib_includes = [
+  "var THREE = require('three');",
+  "var jQuery = require('jquery');"
+].join("\n");
 
 gulp.task('build', function() {
 
