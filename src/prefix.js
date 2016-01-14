@@ -25,21 +25,35 @@ if (typeof Array.isArray === 'undefined') {
 
 //event.movementX and event.movementY kind of polyfill
 
-if(!MouseEvent.prototype.hasOwnProperty('movementX') && !MouseEvent.prototype.hasOwnProperty('mozMovementX')){ //Checks for support
-  //Not very stable, it's a solution that just works ! 
-  MouseEvent.prototype.lastX = 0,
-  MouseEvent.prototype.lastY = 0;
-  MouseEvent.prototype.getMovementX = function(){
-   var value =  this.clientX - this.lastX;
-   this.lastX = this.clientX;
-   return value;
-  }
+if(window && !MouseEvent.prototype.hasOwnProperty('movementX') && !MouseEvent.prototype.hasOwnProperty('mozMovementX')){ //Checks for support
+	//If movementX and ... are not supported, an object Mouse is added to the WHS that contains information about last coords of the mouse
+	WHS.Mouse = {},
+	WHS.Mouse.lastX = 0,
+	WHS.Mouse.lastY = 0;
+	MouseEvent.prototype.getMovementX = function(){
+		'use strict';
+  	var value =  this.clientX - WHS.Mouse.lastX;
+  	WHS.Mouse.lastX = this.clientX;
+  	return value;
+	}
   MouseEvent.prototype.getMovementY = function(){
-   var value =  this.clientY - this.lastY;
-   this.lastY = this.clientY;
-   return value;
-  }
+  	'use strict';
+  	var value =  this.clientY - WHS.Mouse.lastY;
+  	WHS.Mouse.lastY = this.clientY;
+  	return value;
+	}
  }
+
+WHS.extend = function(object, ...extensions){ // $.extend alternative, ... is the spread operator
+	for(var extension of extensions){
+		if(!extension)
+			continue; //Ignore null and undefined objects and paramaters
+		for(var prop of Object.getOwnPropertyNames(extension)){ //Do not traverse the prototype chain
+				object[prop] = (object[prop] === 0)? 0 : object[prop] || extension[prop]; //Add values that do not already exist
+		}
+	}
+	return object;
+}
 
 // Object.assign|es6+;
 if (!Object.assign) {
