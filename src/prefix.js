@@ -44,17 +44,6 @@ if(window && !MouseEvent.prototype.hasOwnProperty('movementX') && !MouseEvent.pr
 	}
  }
 
-WHS.extend = function(object, ...extensions){ // $.extend alternative, ... is the spread operator
-	for(var extension of extensions){
-		if(!extension)
-			continue; //Ignore null and undefined objects and paramaters
-		for(var prop of Object.getOwnPropertyNames(extension)){ //Do not traverse the prototype chain
-				object[prop] = (object[prop] === 0)? 0 : object[prop] || extension[prop]; //Add values that do not already exist
-		}
-	}
-	return object;
-}
-
 // Object.assign|es6+;
 if (!Object.assign) {
     Object.defineProperty(Object, 'assign', {
