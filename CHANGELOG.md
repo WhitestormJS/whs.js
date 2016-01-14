@@ -25,6 +25,8 @@
 - ** CannonJS changed to PhysiJS(ammo.js version) **
 - Removed example (`examples/basic_object.html`).
 - `GAME.start()` added.
+- CSF. ShaderTerrain.js
+- Edit skybox example to prevent dodecahedron from rolling off of the ground
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.

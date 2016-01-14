@@ -1,15 +1,12 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-//var jshint = require('gulp-jshint');
-//var stylish = require('jshint-stylish');
 var uglify = require('gulp-uglify');
-//ar jscs = require('gulp-jscs');
-//var benchmark = require('gulp-jscs');
-//var size = require('gulp-size');
 var beautify = require('gulp-beautify');
 var replace = require('gulp-replace-task');
 var insert = require('gulp-insert');
 var watch = require('gulp-watch');
+var sourcemaps = require("gulp-sourcemaps");
+var babel = require("gulp-babel");
 
 var sources = [
   'src/libs/*.js',
@@ -86,9 +83,10 @@ var author_comment = "/**\n" +
 "*/\n" +
 "\n";
 
-var lib_includes = "var THREE = require('three');\n" +
-"var CANNON = require('cannon');\n" +
-"var jQuery = require('jquery');";
+var lib_includes = [
+  "var THREE = require('three');",
+  "var jQuery = require('jquery');"
+].join("\n");
 
 gulp.task('build', function() {
 
@@ -101,22 +99,34 @@ gulp.task('build', function() {
         }
       ]
     }))
+    .pipe(sourcemaps.init())
     .pipe(concat('whitestorm.js'))
-    .pipe(insert.prepend(author_comment))
+    .pipe(babel({
+            presets: ['es2015']
+        }))
     .pipe(beautify())
-    //.pipe(size({title: 'original'}))
+    .pipe(insert.prepend(author_comment))
+    //.pipe(size({title: 'Original version: '}))
     .pipe(gulp.dest('./build/'));
+
   gulp.src(sources)
     .pipe(concat("whitestorm.test.js"))
+    .pipe(babel({
+            presets: ['es2015']
+        }))
     .pipe(insert.prepend(lib_includes))
     .pipe(uglify())
     .pipe(insert.prepend(author_comment))
     .pipe(gulp.dest("./build/"));
+
   gulp.src(sources)
     .pipe(concat('whitestorm.min.js'))
+    .pipe(babel({
+            presets: ['es2015']
+        }))
     .pipe(uglify())
     .pipe(insert.prepend(author_comment))
-    //.pipe(size({title: 'mini'}))
+    //.pipe(size({title: 'Minified version: '}))
     .pipe(gulp.dest('./build/'));
 });
 
