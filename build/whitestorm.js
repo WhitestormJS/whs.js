@@ -1584,23 +1584,34 @@ if (typeof Array.isArray === 'undefined') {
 
 //event.movementX and event.movementY kind of polyfill
 
-if(window && !MouseEvent.prototype.hasOwnProperty('movementX') && !MouseEvent.prototype.hasOwnProperty('mozMovementX')){ //Checks for support
-	//If movementX and ... are not supported, an object Mouse is added to the WHS that contains information about last coords of the mouse
+if( !MouseEvent.prototype.hasOwnProperty('movementX') && 
+	!MouseEvent.prototype.hasOwnProperty('mozMovementX') ) { //Checks for support
+
+	// If movementX and ... are not supported, an object Mouse is added to the WHS 
+	// that contains information about last coords of the mouse.
 	WHS.Mouse = {},
+
 	WHS.Mouse.lastX = 0,
 	WHS.Mouse.lastY = 0;
-	MouseEvent.prototype.getMovementX = function(){
+
+	MouseEvent.prototype.getMovementX = function() {
 		'use strict';
-  	var value =  this.clientX - WHS.Mouse.lastX;
-  	WHS.Mouse.lastX = this.clientX;
-  	return value;
+
+	  	var value =  this.clientX - WHS.Mouse.lastX;
+	  	WHS.Mouse.lastX = this.clientX;
+
+	  	return value;
 	}
-  MouseEvent.prototype.getMovementY = function(){
-  	'use strict';
-  	var value =  this.clientY - WHS.Mouse.lastY;
-  	WHS.Mouse.lastY = this.clientY;
-  	return value;
+
+    MouseEvent.prototype.getMovementY = function() {
+	  	'use strict';
+
+	  	var value =  this.clientY - WHS.Mouse.lastY;
+	  	WHS.Mouse.lastY = this.clientY;
+
+	  	return value;
 	}
+
  }
 
 // Object.assign|es6+;
@@ -1639,15 +1650,13 @@ if (!Object.assign) {
 
 /* ================ WHITESTORM|JS ==================== */
 var WHS = {
-  REVISION: "0.0.6"
-};
+  REVISION: "0.0.6",
 
-WHS.headers = {}; //GLOBAL headers, ex: url, script, library, specific api...
-WHS.API = {};
-WHS.ADD = {}; // some figures or shape funcs;
+  API: {},
+  
+  plugins: {
 
-WHS.plugins = {
-    settings: { // Global variables, else...
+  	settings: { // Global variables, else...
         plug_id: 0,
         loop_id: 0
     },
@@ -1655,10 +1664,11 @@ WHS.plugins = {
     list: {}, // All plugins
 
     queue: [] // Animation queue
+
+  },
+
+  grounds: []
 };
-
-WHS.grounds = [];
-
 
 var api = WHS.API;
 
