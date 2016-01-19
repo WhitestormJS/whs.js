@@ -2465,21 +2465,6 @@ WHS.API.rotateGeometry = function(geometry, rotateSet) {
 */
 
 /**
- * Shape. Makes *THREE.JS* shape.
- *
- * @returns {Object} - *THREE.JS* shape object.
- */
-WHS.ADD.shape = function() {
-  return new THREE.Shape();
-}
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * Texture. Loads texture object.
  *
  * @param {String} url Url adress of texture *JSON*. (REQUIRED)
