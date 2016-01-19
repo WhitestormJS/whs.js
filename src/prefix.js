@@ -23,9 +23,10 @@ if (typeof Array.isArray === 'undefined') {
   };
 }
 
-//event.movementX and event.movementY kind of polyfill
-var MouseEvent = MouseEvent || {};
+// NodeJS fix.
+var MouseEvent = MouseEvent || { prototype:{} };
 
+// event.movementX and event.movementY kind of polyfill
 if( !MouseEvent.prototype.hasOwnProperty('movementX') && 
 	!MouseEvent.prototype.hasOwnProperty('mozMovementX') ) { //Checks for support
 
