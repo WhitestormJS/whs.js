@@ -3,58 +3,52 @@
  * @author schteppe / https://github.com/schteppe
  * @author alex2401 / https://github.com/sasha240100
  */
+ const PI_2 = Math.PI / 2;
  var PointerLockControls = function ( camera, mesh, params) {
 
     /* Velocity properties */
-    var velocityFactor = 0.05 * 20;
-    var runVelocity = 0.25;
-    mesh.setAngularFactor(new THREE.Vector3(0, 0, 0));
+    var velocityFactor = 1, //Same as 20 * 0.05
+        runVelocity = 0.25;
+    mesh.setAngularFactor({x: 0, y: 0, z: 0});
 
     /* Init */
-    var scope = this;
-
-    var pitchObject = new THREE.Object3D();
+    var scope = this,
+        pitchObject = new THREE.Object3D();
     pitchObject.add( camera );
 
     var yawObject = new THREE.Object3D();
     yawObject.position.y = params.ypos; // eyes are 2 meters above the ground
     yawObject.add( pitchObject );
 
-    var quat = new THREE.Quaternion();
-
-    var moveForward = false;
-    var moveBackward = false;
-    var moveLeft = false;
-    var moveRight = false;
-
-    var canJump = false;
+    var quat = new THREE.Quaternion(),
+        moveForward = false,
+        moveBackward = false,
+        moveLeft = false,
+        moveRight = false,
+        canJump = false;
 
     var contactNormal = new THREE.Vector3(); // Normal in the contact, pointing *out* of whatever the player touched
-    var upAxis = new THREE.Vector3(0,1,0);
 
     mesh.addEventListener("collision", function(other_object, v, r, contactNormal){
 
         // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
-        if(contactNormal.dot(upAxis) < 0.5) // Use a "good" threshold value between 0 and 1 here!
+        //Update, we do not need upAxis, (a, b, c).dot((0, 1, 0)) = b right ?
+        if(contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
             canJump = true;
     });
-
-    var PI_2 = Math.PI / 2;
-
-    var onMouseMove = function ( event ) {
-
+    function onMouseMove ( event ) {
         if ( scope.enabled === false ) return;
 
-        var movementX = event.movementX || event.mozMovementX || 0;
-        var movementY = event.movementY || event.mozMovementY || 0;
+        var movementX = event.movementX || event.mozMovementX || event.getMovementX() || 0,
+            movementY = event.movementY || event.mozMovementY || event.getMovementY() || 0;
 
-        yawObject.rotation.y -= movementX * 0.002;
+        yawObject.rotation.y -= movementX * 0.002,
         pitchObject.rotation.x -= movementY * 0.002;
 
         pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, pitchObject.rotation.x ) );
     };
 
-    var onKeyDown = function ( event ) {
+    function onKeyDown ( event ) {
 
         switch ( event.keyCode ) {
 
@@ -65,7 +59,7 @@
 
             case 37: // left
             case 65: // a
-                moveLeft = true; 
+                moveLeft = true;
                 break;
 
             case 40: // down
@@ -80,7 +74,8 @@
 
             case 32: // space
                 if ( canJump == true ){
-                    mesh.applyCentralImpulse(new THREE.Vector3(0, 300, 0));
+                    mesh.applyCentralImpulse({x: 0, y: 300, z: 0}); //Read the PhysiJS Code, they do not verify if
+                    //the argument is a THREE.Vector3 as long is it has x, y, z
                 }
                 canJump = false;
                 break;
@@ -92,8 +87,7 @@
 
     };
 
-    var onKeyUp = function ( event ) {
-
+    function onKeyUp ( event ) {
         switch( event.keyCode ) {
 
             case 38: // up
@@ -139,8 +133,8 @@
     }
 
     // Moves the camera to the Cannon.js object position and adds velocity to the object if the run key is down
-    var inputVelocity = new THREE.Vector3();
-    var euler = new THREE.Euler();
+    var inputVelocity = new THREE.Vector3(),
+        euler = new THREE.Euler();
 
     this.update = function ( delta ) {
 
@@ -150,13 +144,13 @@
 
         delta = 0.5;
         delta = Math.min(delta, 0.5);
-        //console.log(delta);
 
         inputVelocity.set(0,0,0);
 
         if ( moveForward ){
             inputVelocity.z = -velocityFactor * delta * params.speed * runVelocity;
         }
+
         if ( moveBackward ){
             inputVelocity.z = velocityFactor * delta * params.speed * runVelocity;
         }
@@ -164,20 +158,22 @@
         if ( moveLeft ){
             inputVelocity.x = -velocityFactor * delta * params.speed * runVelocity;
         }
+
         if ( moveRight ){
             inputVelocity.x = velocityFactor * delta * params.speed * runVelocity;
         }
 
         // Convert velocity to world coordinates
-        euler.x = pitchObject.rotation.x;
-        euler.y = yawObject.rotation.y;
+        euler.x = pitchObject.rotation.x,
+        euler.y = yawObject.rotation.y,
         euler.order = "XYZ";
         quat.setFromEuler(euler);
+
         inputVelocity.applyQuaternion(quat);
         //quat.multiplyVector3(inputVelocity);
 
-        mesh.applyCentralImpulse(new THREE.Vector3(inputVelocity.x * 10, 0, inputVelocity.z * 10));
-        mesh.setAngularVelocity(new THREE.Vector3(inputVelocity.z * 10, 0, -inputVelocity.x * 10));
+        mesh.applyCentralImpulse({x: inputVelocity.x * 10, y: 0, z: inputVelocity.z * 10});
+        mesh.setAngularVelocity({x: inputVelocity.z * 10, y: 0, z: -inputVelocity.x * 10});
 
         yawObject.position.copy(mesh.position);
     };

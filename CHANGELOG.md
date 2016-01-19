@@ -29,6 +29,7 @@
 - Edit skybox example to prevent dodecahedron from rolling off of the ground
 - CSF. skybox.html
 - CSF. addSkybox.js
+- CSF. prefix.js
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
