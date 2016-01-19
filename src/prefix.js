@@ -31,7 +31,7 @@ var MouseEvent = MouseEvent || { prototype:{} };
 // event.movementX and event.movementY kind of polyfill
 (function() {
 
-if( !MouseEvent.prototype.hasOwnProperty('movementX') && 
+if( !MouseEvent.prototype.hasOwnProperty('movementX') || 
 	!MouseEvent.prototype.hasOwnProperty('mozMovementX') ) { //Checks for support
 
 	// If movementX and ... are not supported, an object Mouse is added to the WHS 
