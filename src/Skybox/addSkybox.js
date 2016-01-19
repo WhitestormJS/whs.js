@@ -12,52 +12,56 @@
  * @param {String} options.skyType - Type of sky. Either box or sphere.
  * @returns {Object} scope - Scope.
  */
-WHS.init.prototype.addSkybox = function(options) {
-  'use strict';
-  
-  api.def(options.skyType, "box");
+WHS.init.prototype.addSkybox = function( options ) {
 
-  options.imgSuffix = options.skyType == "box" ? options.imgSuffix || ".png" : options.imgSuffix || "";
+ 	'use strict';
 
-  var scope = new api.construct(this, options, "skybox");
-  scope.skip = true;
+ 	api.def( options.skyType, "box" );
 
-  var skyGeometry, skyMat;
+ 	options.imgSuffix = options.skyType == "box" ? options.imgSuffix || ".png" : options.imgSuffix || "";
 
-  switch (options.skyType) {
-    case "box":
-      var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
-      skyGeometry = new THREE.CubeGeometry(this._camera.far, this._camera.far, this._camera.far);
-      var matArray = [];
+ 	var scope = new api.construct( this, options, "skybox" );
+ 	scope.skip = true;
 
-      for (var i = 0; i < 6; i++) {
-        matArray.push(new THREE.MeshBasicMaterial({
-          map: THREE.ImageUtils.loadTexture(options.src + directions[i] + options.imgSuffix),
-          side: THREE.BackSide
-        }));
-      }
+ 	var skyGeometry, skyMat;
 
-      skyMat = new THREE.MeshFaceMaterial(matArray);
+ 	switch ( options.skyType ) {
+ 		case "box":
+ 			var directions = [ "xpos", "xneg", "ypos", "yneg", "zpos", "zneg" ];
+ 			skyGeometry = new THREE.CubeGeometry( this._camera.far, this._camera.far, this._camera.far );
+ 			var matArray = [];
 
-      break;
-    case "sphere":
+ 			for ( var i = 0; i < 6; i ++ ) {
 
-      skyGeometry = new THREE.SphereGeometry(this._camera.far/2, 60, 40);
+ 				matArray.push( new THREE.MeshBasicMaterial( {
+ 					map: THREE.ImageUtils.loadTexture( options.src + directions[ i ] + options.imgSuffix ),
+ 					side: THREE.BackSide
+ 				} ) );
 
-      skyMat = new THREE.MeshBasicMaterial({
-        map: THREE.ImageUtils.loadTexture(options.src + options.imgSuffix),
-        side: THREE.BackSide
-      });
+ 			}
 
-      break;
-  }
+ 			skyMat = new THREE.MeshFaceMaterial( matArray );
 
-  scope.visible = new THREE.Mesh(skyGeometry, skyMat);
-  scope.visible.renderDepth = 1000.0;
+ 			break;
+ 		case "sphere":
 
-  scope.build();
+ 			skyGeometry = new THREE.SphereGeometry( this._camera.far / 2, 60, 40 );
 
-  scope.wrap = api.Wrap(scope, scope.visible);
+ 			skyMat = new THREE.MeshBasicMaterial( {
+ 				map: THREE.ImageUtils.loadTexture( options.src + options.imgSuffix ),
+ 				side: THREE.BackSide
+ 			} );
 
-  return scope;
-};
+ 			break;
+ 	}
+
+ 	scope.visible = new THREE.Mesh( skyGeometry, skyMat );
+ 	scope.visible.renderDepth = 1000.0;
+
+ 	scope.build();
+
+ 	scope.wrap = api.Wrap( scope, scope.visible );
+
+ 	return scope;
+
+ };
