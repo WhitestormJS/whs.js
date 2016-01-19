@@ -15,6 +15,8 @@
 
 /* ================ MODERNIZING BROWSER API IF NOT EXIST ==================== */
 
+'use strict';
+
 // Array.isArray;
 if (typeof Array.isArray === 'undefined') {
   Array.isArray = function(obj) {
@@ -27,12 +29,14 @@ if (typeof Array.isArray === 'undefined') {
 var MouseEvent = MouseEvent || { prototype:{} };
 
 // event.movementX and event.movementY kind of polyfill
+(function() {
+
 if( !MouseEvent.prototype.hasOwnProperty('movementX') && 
 	!MouseEvent.prototype.hasOwnProperty('mozMovementX') ) { //Checks for support
 
 	// If movementX and ... are not supported, an object Mouse is added to the WHS 
 	// that contains information about last coords of the mouse.
-	let mouse = {
+	var mouse = {
         lastX: 0,
         lastY: 0
     }
@@ -55,7 +59,9 @@ if( !MouseEvent.prototype.hasOwnProperty('movementX') &&
 	  	return value;
 	}
 
- }
+}
+
+})();
 
 // Object.assign|es6+;
 if (!Object.assign) {
