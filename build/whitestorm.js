@@ -1591,16 +1591,16 @@ if( !MouseEvent.prototype.hasOwnProperty('movementX') &&
 
 	// If movementX and ... are not supported, an object Mouse is added to the WHS 
 	// that contains information about last coords of the mouse.
-	WHS.Mouse = {},
-
-	WHS.Mouse.lastX = 0,
-	WHS.Mouse.lastY = 0;
+	let mouse = {
+        lastX: 0,
+        lastY: 0
+    }
 
 	MouseEvent.prototype.getMovementX = function() {
 		'use strict';
 
-	  	var value =  this.clientX - WHS.Mouse.lastX;
-	  	WHS.Mouse.lastX = this.clientX;
+	  	var value =  this.clientX - mouse.lastX;
+	  	mouse.lastX = this.clientX;
 
 	  	return value;
 	}
@@ -1608,8 +1608,8 @@ if( !MouseEvent.prototype.hasOwnProperty('movementX') &&
     MouseEvent.prototype.getMovementY = function() {
 	  	'use strict';
 
-	  	var value =  this.clientY - WHS.Mouse.lastY;
-	  	WHS.Mouse.lastY = this.clientY;
+	  	var value =  this.clientY - mouse.lastY;
+	  	mouse.lastY = this.clientY;
 
 	  	return value;
 	}
