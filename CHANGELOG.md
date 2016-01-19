@@ -27,12 +27,9 @@
 - `GAME.start()` added.
 - CSF. ShaderTerrain.js
 - Edit skybox example to prevent dodecahedron from rolling off of the ground
-<<<<<<< HEAD
-- CSF. prefix.js
-=======
 - CSF. skybox.html
 - CSF. addSkybox.js
->>>>>>> refs/remotes/origin/master
+- CSF. prefix.js
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
