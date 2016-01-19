@@ -91,14 +91,14 @@ var GAME = new WHS.init(
 
 preloader.start(GAME);
 
-GAME.teapot = GAME.addModel("../assets/models/teapot.js",
+GAME.teapot = GAME.addModel("assets/models/teapot.js",
 {
     mass: 1,
     onlyvis: false,
     materialOptions: {
         vertexColors: THREE.VertexColors,
         shading: THREE.SmoothShading,
-        map: api.texture('../assets/textures/backgrounddetailed6.jpg'),
+        map: api.texture('assets/textures/backgrounddetailed6.jpg'),
         kind: "phong"
     },
     pos: {
@@ -135,7 +135,7 @@ GAME.ground = GAME.addGround("smooth",
         //color: 0x000000,
         vertexColors: THREE.VertexColors,
         shading: THREE.SmoothShading,
-        map: api.texture('../assets/textures/grasslight-big.jpg'),
+        map: api.texture('assets/textures/grasslight-big.jpg'),
         kind: "basic"
 },
 {
