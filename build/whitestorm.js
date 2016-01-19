@@ -1583,36 +1583,37 @@ if (typeof Array.isArray === 'undefined') {
 }
 
 //event.movementX and event.movementY kind of polyfill
-if ( MouseEvent )
-    if( !MouseEvent.prototype.hasOwnProperty('movementX') && 
-    	!MouseEvent.prototype.hasOwnProperty('mozMovementX') ) { //Checks for support
+var MouseEvent = MouseEvent || {};
 
-    	// If movementX and ... are not supported, an object Mouse is added to the WHS 
-    	// that contains information about last coords of the mouse.
-    	WHS.Mouse = {},
+if( !MouseEvent.prototype.hasOwnProperty('movementX') && 
+	!MouseEvent.prototype.hasOwnProperty('mozMovementX') ) { //Checks for support
 
-    	WHS.Mouse.lastX = 0,
-    	WHS.Mouse.lastY = 0;
+	// If movementX and ... are not supported, an object Mouse is added to the WHS 
+	// that contains information about last coords of the mouse.
+	WHS.Mouse = {},
 
-    	MouseEvent.prototype.getMovementX = function() {
-    		'use strict';
+	WHS.Mouse.lastX = 0,
+	WHS.Mouse.lastY = 0;
 
-    	  	var value =  this.clientX - WHS.Mouse.lastX;
-    	  	WHS.Mouse.lastX = this.clientX;
+	MouseEvent.prototype.getMovementX = function() {
+		'use strict';
 
-    	  	return value;
-    	}
+	  	var value =  this.clientX - WHS.Mouse.lastX;
+	  	WHS.Mouse.lastX = this.clientX;
 
-        MouseEvent.prototype.getMovementY = function() {
-    	  	'use strict';
+	  	return value;
+	}
 
-    	  	var value =  this.clientY - WHS.Mouse.lastY;
-    	  	WHS.Mouse.lastY = this.clientY;
+    MouseEvent.prototype.getMovementY = function() {
+	  	'use strict';
 
-    	  	return value;
-    	}
+	  	var value =  this.clientY - WHS.Mouse.lastY;
+	  	WHS.Mouse.lastY = this.clientY;
 
-    }
+	  	return value;
+	}
+
+ }
 
 // Object.assign|es6+;
 if (!Object.assign) {
