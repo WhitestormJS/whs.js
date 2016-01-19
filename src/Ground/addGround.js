@@ -106,15 +106,15 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
 
 			var heightMap = new THREE.WebGLRenderTarget( rx, ry, pars );
       heightMap.texture = api.TextureLoader()
-        .load('../assets/terrain/default_terrain.png');
+        .load(scope.root._settings.assets + '/terrain/default_terrain.png');
 
 			var normalMap = new THREE.WebGLRenderTarget( rx, ry, pars );
 			normalMap.texture = api.TextureLoader()
-        .load('../assets/terrain/NormalMap.png');
+        .load(scope.root._settings.assets + '/terrain/NormalMap.png');
 
 			var specularMap = new THREE.WebGLRenderTarget( 256, 256, pars ); //2048
 			specularMap.texture = api.TextureLoader()
-        .load('../assets/terrain/default_terrain.png');
+        .load(scope.root._settings.assets + '/terrain/default_terrain.png');
 
       var terrainShader = THREE.ShaderTerrain[ "terrain" ];
 
