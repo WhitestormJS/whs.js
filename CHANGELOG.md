@@ -30,6 +30,7 @@
 - CSF. skybox.html
 - CSF. addSkybox.js
 - CSF. prefix.js
+- CSF. addObject.js
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
