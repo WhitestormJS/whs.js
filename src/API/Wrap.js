@@ -5,57 +5,75 @@
 */
 
 // DONE:0 Make Wrap function.
-WHS.API.Wrap = function (SCOPE, mesh, body) {
-  'use strict';
+WHS.API.Wrap = function( SCOPE, mesh, body ) {
 
-  this._figure = mesh;
-  this._object = body;
-  this._scope = SCOPE;
-  this._key = SCOPE.root.modellingQueue.length;
+	'use strict';
 
-  try {
-    api.merge(this._scope.root.scene, this._figure);
-    if (this._object) api.merge(this._scope.root.world, this._object);
+	this._figure = mesh;
+	this._object = body;
+	this._scope = SCOPE;
+	this._key = SCOPE.root.modellingQueue.length;
 
-    this._scope.root.modellingQueue.push(this._scope);
-  }
-  catch(err) {
-    console.error(err.message);
+	try {
 
-    this._scope.__deferred.reject();
-  }
-  finally {
-    if (this._scope._wait) {
-      var sc = this;
-      sc._figure.addEventListener('ready', function() {
-        sc._scope.__deferred.resolve();
-      });
-    } else {
-      this._scope.__deferred.resolve();
-    }
-  }
+		api.merge( this._scope.root.scene, this._figure );
+		if ( this._object ) api.merge( this._scope.root.world, this._object );
 
-  return this;
+		this._scope.root.modellingQueue.push( this._scope );
+
+	}
+	catch ( err ) {
+
+		console.error( err.message );
+
+		this._scope.__deferred.reject();
+
+	}
+	finally {
+
+		if ( this._scope._wait ) {
+
+			var sc = this;
+			sc._figure.addEventListener( 'ready', function() {
+
+				sc._scope.__deferred.resolve();
+
+			} );
+
+		} else {
+
+			this._scope.__deferred.resolve();
+
+		}
+
+	}
+
+	return this;
+
 }
 
-WHS.API.Wrap.prototype.remove = function () {
-  'use strict';
+WHS.API.Wrap.prototype.remove = function() {
 
-  this._scope.root.scene.remove(this._figure);
-  this._scope.root.world.remove(this._object);
+	'use strict';
 
-  WHS.objects.splice(this._key, 1);
+	this._scope.root.scene.remove( this._figure );
+	this._scope.root.world.remove( this._object );
 
-  return this;
+	WHS.objects.splice( this._key, 1 );
+
+	return this;
+
 }
 
-WHS.API.Wrap.prototype.retrieve = function () {
-  'use strict';
+WHS.API.Wrap.prototype.retrieve = function() {
 
-  this._scope.root.scene.add(this._figure);
-  this._scope.root.world.add(this._object);
+	'use strict';
 
-  WHS.objects.push(this._scope);
+	this._scope.root.scene.add( this._figure );
+	this._scope.root.world.add( this._object );
 
-  return this;
+	WHS.objects.push( this._scope );
+
+	return this;
+
 }

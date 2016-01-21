@@ -6,9 +6,13 @@
 
 // #DONE:10 JSONLoader don't work.
 WHS.API.JSONLoader = function() {
-  return new THREE.JSONLoader();
+
+	return new THREE.JSONLoader();
+
 }
 
 WHS.API.TextureLoader = function() {
-  return new THREE.TextureLoader();
+
+	return new THREE.TextureLoader();
+
 }

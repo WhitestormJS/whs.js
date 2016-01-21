@@ -11,13 +11,17 @@
  * @param {Object} rotateSet Rotation x/y/z. (REQUIRED)
  * @return {Object} *THREE.JS* geometry.
  */
-WHS.API.rotateGeometry = function(geometry, rotateSet) {
-  var rotationMatrix = new THREE.Matrix4();
-  rotationMatrix.makeRotationFromEuler(new THREE.Euler(rotateSet.x, rotateSet.y, rotateSet.z, 'XYZ'));
+WHS.API.rotateGeometry = function( geometry, rotateSet ) {
 
-  for (var v in geometry.vertices) {
-    geometry.vertices[v].applyMatrix4(rotationMatrix);
-  }
+	var rotationMatrix = new THREE.Matrix4();
+	rotationMatrix.makeRotationFromEuler( new THREE.Euler( rotateSet.x, rotateSet.y, rotateSet.z, 'XYZ' ) );
 
-  return geometry;
+	for ( var v in geometry.vertices ) {
+
+		geometry.vertices[ v ].applyMatrix4( rotationMatrix );
+
+	}
+
+	return geometry;
+
 }
