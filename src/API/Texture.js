@@ -11,36 +11,40 @@
  * @param {Object} options Parameters of texture. (REQUIRED)
  * @return {Object} *THREE.JS* texture.
  */
-WHS.API.texture = function(url, options) {
-  'use strict';
+WHS.API.texture = function( url, options ) {
 
-  var texture = THREE.ImageUtils.loadTexture(url);
+	'use strict';
 
-  if (options) {
-    var opt = options;
-    opt.offset = opt.offset || {
-      x: 1,
-      y: 1
-    };
+	var texture = THREE.ImageUtils.loadTexture( url );
 
-    opt.offset.x = opt.offset.x || 1;
-    opt.offset.y = opt.offset.y || 1;
+	if ( options ) {
 
-    opt.repeat = opt.repeat || {
-      x: 1,
-      y: 1
-    };
+		var opt = options;
+		opt.offset = opt.offset || {
+			x: 1,
+			y: 1
+		};
 
-    opt.repeat.x = opt.repeat.x || 1;
-    opt.repeat.y = opt.repeat.y || 1;
+		opt.offset.x = opt.offset.x || 1;
+		opt.offset.y = opt.offset.y || 1;
 
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    //texture.offset.set(opt.offset.x, opt.offset.y);
-    texture.repeat.set(opt.repeat.x, opt.repeat.y);
+		opt.repeat = opt.repeat || {
+			x: 1,
+			y: 1
+		};
 
-    texture.magFilter = THREE.NearestFilter;
-    texture.minFilter = THREE.LinearMipMapLinearFilter;
-  }
+		opt.repeat.x = opt.repeat.x || 1;
+		opt.repeat.y = opt.repeat.y || 1;
 
-  return texture;
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		//texture.offset.set(opt.offset.x, opt.offset.y);
+		texture.repeat.set( opt.repeat.x, opt.repeat.y );
+
+		texture.magFilter = THREE.NearestFilter;
+		texture.minFilter = THREE.LinearMipMapLinearFilter;
+
+	}
+
+	return texture;
+
 }

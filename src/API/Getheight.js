@@ -13,19 +13,21 @@
  * @param {Number} direction Direction of raycast vector.
  * @returns {Object} Intersect array.
  */
-WHS.API.getheight = function(pos, diff, terrain, direction) {
-  'use strict';
+WHS.API.getheight = function( pos, diff, terrain, direction ) {
 
-  diff = diff || 1000;
+	'use strict';
 
-  direction = direction || 1;
+	diff = diff || 1000;
 
-  this.raycaster = new THREE.Raycaster(
-    new THREE.Vector3(pos.x, diff, direction * pos.y),
-    new THREE.Vector3(0, -1 , 0)
-  );
+	direction = direction || 1;
 
-  this.intersect = this.raycaster.intersectObject(terrain.visible);
+	this.raycaster = new THREE.Raycaster(
+	new THREE.Vector3( pos.x, diff, direction * pos.y ),
+	new THREE.Vector3( 0, - 1, 0 )
+	);
 
-  return this.intersect;
+	this.intersect = this.raycaster.intersectObject( terrain.visible );
+
+	return this.intersect;
+
 }

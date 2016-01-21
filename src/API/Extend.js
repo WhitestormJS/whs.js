@@ -9,8 +9,8 @@ WHS.API.extend = function( object, ...extensions ) { // $.extend alternative, ..
 		if( !extension )
 			continue; // Ignore null and undefined objects and paramaters.
 
-		for(var prop of Object.getOwnPropertyNames(extension)){ // Do not traverse the prototype chain.
-				object[prop] = (object[prop] === 0)? 0 : object[prop] || extension[prop]; // Add values that do not already exist.
+		for( var prop of Object.getOwnPropertyNames( extension ) ) { // Do not traverse the prototype chain.
+			object[prop] = ( object[prop] === 0 )? 0 : object[prop] || extension[prop]; // Add values that do not already exist.
 		}
 	}
 

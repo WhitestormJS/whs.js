@@ -12,15 +12,21 @@
  * @param {Type} value Value for apply (default). (REQUIRED)
  * @param {Var} variablePoint Variable with value for apply. (OPTIONAL)
  */
-WHS.API.def = function(option, value, variablePoint) {
-  'use strict';
-  if (arguments.length < 2)
-    console.error("Something wrong! option? value?");
-  else if (arguments.length == 2) {
-    option = option || value;
-    return option;
-  } else if (arguments.length == 3 && variablePoint) {
-    variablePoint = option || value;
-    return variablePoint;
-  }
+WHS.API.def = function( option, value, variablePoint ) {
+
+	'use strict';
+	if ( arguments.length < 2 )
+	console.error( "Something wrong! option? value?" );
+	else if ( arguments.length == 2 ) {
+
+		option = option || value;
+		return option;
+
+	} else if ( arguments.length == 3 && variablePoint ) {
+
+		variablePoint = option || value;
+		return variablePoint;
+
+	}
+
 }

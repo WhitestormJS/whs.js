@@ -10,43 +10,49 @@
  * @param {Object} thrObj *THREE.JS* geometry. (REQUIRED)
  * @param {Object} material *THREE.JS* material. (REQUIRED)
  */
-WHS.API.Triangulate = function(thrObj, material) {
-  'use strict';
+WHS.API.Triangulate = function( thrObj, material ) {
 
-  if (!(thrObj instanceof THREE.Geometry))
-    console.error("No THREE.js geometry");
-  //If it is instance, then it is defined !
-  else if (material) {
-    var triangles = new THREE.Geometry();
-    var materials = [];
+	'use strict';
 
-    thrObj.faces.forEach(function(element) {
-      var triangle = new THREE.Geometry();
+	if ( ! ( thrObj instanceof THREE.Geometry ) )
+	console.error( "No THREE.js geometry" );
+	//If it is instance, then it is defined !
+	else if ( material ) {
 
-      [].push.apply(triangle.vertices, [
-        thrObj.vertices[element.a],
-        thrObj.vertices[element.b],
-        thrObj.vertices[element.c]
-      ]);
+		var triangles = new THREE.Geometry();
+		var materials = [];
 
-      triangle.faceVertexUvs[0].push([
-        new THREE.Vector2(0, 0),
-        new THREE.Vector2(0, 1),
-        new THREE.Vector2(1, 1),
-        new THREE.Vector2(1, 0),
-      ]);
+		thrObj.faces.forEach( function( element ) {
 
-      triangle.faces.push(new THREE.Face3(0, 1, 2));
-      triangle.computeFaceNormals();
+			var triangle = new THREE.Geometry();
 
-      var triangleMesh = new THREE.Mesh(triangle, material);
-      triangleMesh.updateMatrix();
+			[].push.apply( triangle.vertices, [
+			thrObj.vertices[ element.a ],
+			thrObj.vertices[ element.b ],
+			thrObj.vertices[ element.c ]
+			] );
 
-      triangles.merge(triangleMesh.geometry, triangleMesh.matrix);
-      materials.push(material);
-    });
+			triangle.faceVertexUvs[ 0 ].push( [
+			new THREE.Vector2( 0, 0 ),
+			new THREE.Vector2( 0, 1 ),
+			new THREE.Vector2( 1, 1 ),
+			new THREE.Vector2( 1, 0 ),
+			] );
 
-    var trianglesMesh = new THREE.Mesh(triangles, new THREE.MeshFaceMaterial(materials));
-    return trianglesMesh;
-  }
+			triangle.faces.push( new THREE.Face3( 0, 1, 2 ) );
+			triangle.computeFaceNormals();
+
+			var triangleMesh = new THREE.Mesh( triangle, material );
+			triangleMesh.updateMatrix();
+
+			triangles.merge( triangleMesh.geometry, triangleMesh.matrix );
+			materials.push( material );
+
+		} );
+
+		var trianglesMesh = new THREE.Mesh( triangles, new THREE.MeshFaceMaterial( materials ) );
+		return trianglesMesh;
+
+	}
+
 }
