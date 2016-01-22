@@ -5,7 +5,6 @@
 */
 
 WHS.API.loadMaterial = function( material ) {
-
 	'use strict';
 
 	if ( typeof material.kind !== "string" )
@@ -85,7 +84,11 @@ WHS.API.loadMaterial = function( material ) {
 		break;
 	}
 
-	scope._material = Physijs.createMaterial( scope._material, scope._friction, scope._restitution );
+	scope._material = Physijs.createMaterial( 
+		scope._material, 
+		scope._friction, 
+		scope._restitution 
+	);
 
 	return scope;
 

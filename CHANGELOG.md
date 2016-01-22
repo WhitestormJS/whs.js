@@ -27,10 +27,10 @@
 - `GAME.start()` added.
 - CSF. ShaderTerrain.js
 - Edit skybox example to prevent dodecahedron from rolling off of the ground
-- CSF. skybox.html
-- CSF. addSkybox.js
-- CSF. prefix.js
-- CSF. addObject.js
+- CSF. `skybox.html`
+- CSF. `addSkybox.js`
+- CSF. `prefix.js`
+- CSF. `addObject.js`
 - CSF. `API/*.js`
 
 **v0.0.6**

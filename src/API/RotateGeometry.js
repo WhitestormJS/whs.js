@@ -12,8 +12,10 @@
  * @return {Object} *THREE.JS* geometry.
  */
 WHS.API.rotateGeometry = function( geometry, rotateSet ) {
-
+	'use strict';
+	
 	var rotationMatrix = new THREE.Matrix4();
+
 	rotationMatrix.makeRotationFromEuler( new THREE.Euler( rotateSet.x, rotateSet.y, rotateSet.z, 'XYZ' ) );
 
 	for ( var v in geometry.vertices ) {

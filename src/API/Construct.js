@@ -5,7 +5,6 @@
 */
 
 WHS.API.construct = function( root, params, type ) {
-
 	'use strict';
 
 	if ( ! root )
@@ -92,8 +91,8 @@ WHS.API.construct = function( root, params, type ) {
 }
 
 WHS.API.construct.prototype.build = function( figure, object ) {
-
 	'use strict';
+
 	figure = figure || this.visible;
 	object = object || this.body;
 	var isPhysics = !! ( arguments.length == 2 && object );
@@ -103,7 +102,6 @@ WHS.API.construct.prototype.build = function( figure, object ) {
 		// Shadowmap.
 		figure.castShadow = true;
 		figure.receiveShadow = true;
-
 
 		// Position.
 		figure.position.set( this._pos.x, this._pos.y, this._pos.z );
@@ -123,8 +121,7 @@ WHS.API.construct.prototype.build = function( figure, object ) {
 		// TODO: CANNON.JS object scaling.
 		//object.scale.set(this._rot.x, this._rot.y, this._rot.z);
 
-	}
-	catch ( err ) {
+	} catch ( err ) {
 
 		console.error( err.message );
 

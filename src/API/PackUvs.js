@@ -20,6 +20,7 @@
 	var range = new THREE.Vector2( max.x - min.x, max.y - min.y );
 
 	geometry.faceVertexUvs[ 0 ] = [];
+	
 	var faces = geometry.faces;
 
 	for ( var i = 0; i < geometry.faces.length; i ++ ) {
@@ -29,20 +30,20 @@
 		var v3 = geometry.vertices[ faces[ i ].c ];
 
 		geometry.faceVertexUvs[ 0 ].push( [
-		new THREE.Vector2(
-		( v1.x + offset.x ) / range.x,
-		( v1.y + offset.y ) / range.y
-		),
+			new THREE.Vector2(
+				( v1.x + offset.x ) / range.x,
+				( v1.y + offset.y ) / range.y
+			),
 
-		new THREE.Vector2(
-		( v2.x + offset.x ) / range.x,
-		( v2.y + offset.y ) / range.y
-		),
+			new THREE.Vector2(
+				( v2.x + offset.x ) / range.x,
+				( v2.y + offset.y ) / range.y
+			),
 
-		new THREE.Vector2(
-		( v3.x + offset.x ) / range.x,
-		( v3.y + offset.y ) / range.y
-		)
+			new THREE.Vector2(
+				( v3.x + offset.x ) / range.x,
+				( v3.y + offset.y ) / range.y
+			)
 		] );
 
 	}

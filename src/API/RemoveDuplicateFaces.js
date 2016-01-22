@@ -16,13 +16,16 @@ WHS.API.removeDuplicateFaces = function( geometry ) {
 
 		var tri = geometry.faces[ i ];
 		var inds = [ tri.a, tri.b, tri.c, tri.d ].sort();
+
 		for ( var j = 0; j < i; j ++ ) {
 
 			var tri_2 = geometry.faces[ j ];
+
 			if ( tri_2 !== undefined ) {
 
 				// May have already been deleted
 				var inds_2 = [ tri_2.a, tri_2.b, tri_2.c, tri_2.d ].sort();
+
 				if ( WHS.API.isSame( inds, inds_2 ) ) {
 
 					delete geometry.faces[ i ]; // Sets these faces to undefined
@@ -38,7 +41,7 @@ WHS.API.removeDuplicateFaces = function( geometry ) {
 	}
 	geometry.faces = geometry.faces.filter( function( a ) {
 
-		return a === undefined
+		return a === undefined;
 
 	} );
 	return geometry;
