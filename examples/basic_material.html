@@ -143,10 +143,9 @@ GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
     z: 0
 });
 
-
-GAME.OrbitControls();
-
 GAME.start();
+
+GAME.OrbitControls(GAME.torusknot);
 
 preloader.end();
 
