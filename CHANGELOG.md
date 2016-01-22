@@ -34,6 +34,7 @@
 - CSF. `API/*.js`
 - CSF. `FPSControls.js`
 - Fixed OrbitControls parameter.
+- Fixed parrot scale in fps example.
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.

@@ -9,17 +9,14 @@ WHS.init.prototype.addMorph = function (url, options) {
 
   var scope = new api.construct(this, options, "morph");
 
-    scope.skip = true;
-    scope.morph = true;
-
+  scope.skip = true;
+  scope.morph = true;
 
   api.JSONLoader().load(url, function(geometry) {
     var material = new THREE.MeshLambertMaterial( { color: 0xffaa55, morphTargets: true, vertexColors: THREE.FaceColors } );
 
     scope.visible = new THREE.Mesh( geometry, material );
     scope.visible.speed = scope._morph.speed;
-
-    scope._scale.set(0.1, 0.1, 0.1);
 
     scope._mixer = new THREE.AnimationMixer( scope.visible );
     scope._mixer.addAction( new THREE.AnimationAction( geometry.animations[0] ).warpToDuration( 0.5 ) );

@@ -77,6 +77,11 @@
         y: 72,
         z: 70
     },
+    scale: {
+        x: 0.1,
+        y: 0.1,
+        z: 0.1
+    },
     morph: {
       duration: 0.5,
       speed: 250
