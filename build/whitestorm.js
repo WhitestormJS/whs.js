@@ -2709,6 +2709,7 @@ WHS.init.prototype.addMorph = function(url, options) {
     scope.morph = true;
 
     api.JSONLoader().load(url, function(geometry) {
+
         var material = new THREE.MeshLambertMaterial({
             color: 0xffaa55,
             morphTargets: true,
