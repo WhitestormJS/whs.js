@@ -13,7 +13,12 @@ WHS.init.prototype.addMorph = function (url, options) {
   scope.morph = true;
 
   api.JSONLoader().load(url, function(geometry) {
-    var material = new THREE.MeshLambertMaterial( { color: 0xffaa55, morphTargets: true, vertexColors: THREE.FaceColors } );
+
+    var material = new THREE.MeshLambertMaterial( { 
+      color: 0xffaa55, 
+      morphTargets: true, 
+      vertexColors: THREE.FaceColors 
+    } );
 
     scope.visible = new THREE.Mesh( geometry, material );
     scope.visible.speed = scope._morph.speed;
@@ -31,4 +36,5 @@ WHS.init.prototype.addMorph = function (url, options) {
   });
 
   return scope;
+  
 }
