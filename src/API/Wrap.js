@@ -6,7 +6,6 @@
 
 // DONE:0 Make Wrap function.
 WHS.API.Wrap = function( SCOPE, mesh, body ) {
-
 	'use strict';
 
 	this._figure = mesh;
@@ -21,15 +20,13 @@ WHS.API.Wrap = function( SCOPE, mesh, body ) {
 
 		this._scope.root.modellingQueue.push( this._scope );
 
-	}
-	catch ( err ) {
+	} catch ( err ) {
 
 		console.error( err.message );
 
 		this._scope.__deferred.reject();
 
-	}
-	finally {
+	} finally {
 
 		if ( this._scope._wait ) {
 
@@ -53,7 +50,6 @@ WHS.API.Wrap = function( SCOPE, mesh, body ) {
 }
 
 WHS.API.Wrap.prototype.remove = function() {
-
 	'use strict';
 
 	this._scope.root.scene.remove( this._figure );
@@ -66,7 +62,6 @@ WHS.API.Wrap.prototype.remove = function() {
 }
 
 WHS.API.Wrap.prototype.retrieve = function() {
-
 	'use strict';
 
 	this._scope.root.scene.add( this._figure );
