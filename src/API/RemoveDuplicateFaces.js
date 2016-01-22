@@ -39,11 +39,13 @@ WHS.API.removeDuplicateFaces = function( geometry ) {
 		}
 
 	}
+
 	geometry.faces = geometry.faces.filter( function( a ) {
 
 		return a === undefined;
 
 	} );
+	
 	return geometry;
 
 }
