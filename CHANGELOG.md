@@ -32,6 +32,8 @@
 - CSF. `prefix.js`
 - CSF. `addObject.js`
 - CSF. `API/*.js`
+- CSF. `FPSControls.js`
+- Fixed OrbitControls parameter.
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
