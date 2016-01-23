@@ -9,6 +9,7 @@
  *
  * @param {Object} object *WHS* figure/object. (REQUIRED)
  */
+const PI_2 = Math.PI/2;
 WHS.init.prototype.MakeFirstPerson = function(object, params) {
     'use strict';
 
