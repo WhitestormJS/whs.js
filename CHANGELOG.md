@@ -42,6 +42,7 @@
 - CSF. `addGround.js`
 - CSF. `game.js`
 - CSF. `addMorph.js`
+- CSF. `loop.js`
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
