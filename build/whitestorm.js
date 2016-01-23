@@ -331,92 +331,6 @@ THREE.BufferGeometryUtils = {
 
 };
 
-(function($) {
-    if ("undefined" !== typeof $.event) {
-        (function() {
-            var _mouseenter = function _mouseenter() {
-                var _self = this,
-                    data = $(this).data('mousestop');
-
-                this.movement = true;
-
-                if (data.timeToStop) {
-                    this.timeToStopTimer = window.setTimeout(function() {
-                        _self.movement = false;
-                        window.clearTimeout(_self.timer);
-                    }, data.timeToStop);
-                }
-            };
-
-            var _mouseleave = function _mouseleave() {
-                window.clearTimeout(this.timer);
-                window.clearTimeout(this.timeToStopTimer);
-            };
-
-            var _mousemove = function _mousemove() {
-                var $el = $(this),
-                    data = $el.data('mousestop');
-
-                if (this.movement) {
-                    window.clearTimeout(this.timer);
-                    this.timer = window.setTimeout(function() {
-                        $el.trigger('mousestop');
-                    }, data.delay);
-                }
-            };
-
-            var _data = function _data(data) {
-                if ($.isNumeric(data)) {
-                    data = {
-                        delay: data
-                    };
-                } else if ((typeof data === "undefined" ? "undefined" : _typeof(data)) !== 'object') {
-                    data = {};
-                }
-
-                return $.extend({}, $.fn.mousestop.defaults, data);
-            };
-
-            $.event.special.mousestop = {
-                setup: function setup(data) {
-                    $(this).data('mousestop', _data(data)).bind('mouseenter.mousestop', _mouseenter).bind('mouseleave.mousestop', _mouseleave).bind('mousemove.mousestop', _mousemove);
-                },
-                teardown: function teardown() {
-                    $(this).removeData('mousestop').unbind('.mousestop');
-                }
-            };
-
-            $.fn.mousestop = function(data, fn) {
-                if (typeof data === 'function') {
-                    fn = data;
-                }
-                return arguments.length > 0 ? this.bind('mousestop', data, fn) : this.trigger('mousestop');
-            };
-
-            $.fn.mousestop.defaults = {
-                delay: 300,
-                timeToStop: null
-            };
-        })();
-    }
-})(jQuery);
-
-function Events(n) {
-    var t = {},
-        f = [];
-    n = n || this, n.on = function(n, f, i) {
-        (t[n] = t[n] || []).push([f, i]);
-    }, n.off = function(n, i) {
-        n || (t = {});
-        for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) {
-            i == o[c][0] && o.splice(c, 1);
-        }
-    }, n.emit = function(n) {
-        for (var i, o = t[n] || f, c = 0; i = o[c++];) {
-            i[0].apply(i[1], f.slice.call(arguments, 1));
-        }
-    };
-}
 /**
  * @author qiao / https://github.com/qiao
  * @author mrdoob / http://mrdoob.com
@@ -1022,105 +936,6 @@ THREE.OrbitControls = function(object, domElement) {
 
 THREE.OrbitControls.prototype = Object.create(THREE.EventDispatcher.prototype);
 
-// stats.js - http://github.com/mrdoob/stats.js
-var Stats = function Stats() {
-    function f(a, e, b) {
-        a = document.createElement(a);
-        a.id = e;
-        a.style.cssText = b;
-        return a;
-    }
-
-    function l(a, e, b) {
-        var c = f("div", a, "padding:0 0 3px 3px;text-align:left;background:" + b),
-            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);
-        d.innerHTML = a.toUpperCase();
-        c.appendChild(d);
-        a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);
-        c.appendChild(a);
-        for (e = 0; 74 > e; e++) {
-            a.appendChild(f("span", "", "width:1px;height:30px;float:left;opacity:0.9;background:" + b));
-        }
-        return c;
-    }
-
-    function m(a) {
-        for (var b = c.children, d = 0; d < b.length; d++) {
-            b[d].style.display = d === a ? "block" : "none";
-        }
-        n = a;
-    }
-
-    function p(a, b) {
-        a.appendChild(a.firstChild).style.height = Math.min(30, 30 - 30 * b) + "px";
-    }
-    var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
-        k = q(),
-        r = k,
-        t = 0,
-        n = 0,
-        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");
-    c.addEventListener("mousedown", function(a) {
-        a.preventDefault();
-        m(++n % c.children.length);
-    }, !1);
-    var d = 0,
-        u = Infinity,
-        v = 0,
-        b = l("fps", "#0ff", "#002"),
-        A = b.children[0],
-        B = b.children[1];
-    c.appendChild(b);
-    var g = 0,
-        w = Infinity,
-        x = 0,
-        b = l("ms", "#0f0", "#020"),
-        C = b.children[0],
-        D = b.children[1];
-    c.appendChild(b);
-    if (self.performance && self.performance.memory) {
-        var h = 0,
-            y = Infinity,
-            z = 0,
-            b = l("mb", "#f08", "#201"),
-            E = b.children[0],
-            F = b.children[1];
-        c.appendChild(b);
-    }
-    m(n);
-    return {
-        REVISION: 14,
-        domElement: c,
-        setMode: m,
-        begin: function begin() {
-            k = q();
-        },
-        end: function end() {
-            var a = q();
-            g = a - k;
-            w = Math.min(w, g);
-            x = Math.max(x, g);
-            C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";
-            p(D, g / 200);
-            t++;
-            if (a > r + 1E3 && (d = Math.round(1E3 * t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
-                var b = performance.memory.usedJSHeapSize,
-                    c = performance.memory.jsHeapSizeLimit;
-                h = Math.round(9.54E-7 * b);
-                y = Math.min(y, h);
-                z = Math.max(z, h);
-                E.textContent = h + " MB (" + y + "-" + z + ")";
-                p(F, b / c);
-            }
-            return a;
-        },
-        update: function update() {
-            k = this.end();
-        }
-    };
-};
-"object" === (typeof module === "undefined" ? "undefined" : _typeof(module)) && (module.exports = Stats);
-
 /*
  *	@author zz85 / http://twitter.com/blurspline / http://www.lab4games.net/zz85/blog
  *
@@ -1443,6 +1258,191 @@ THREE.SubdivisionModifier.prototype.modify = function(geometry) {
         // console.log('done');
     };
 })();
+
+(function($) {
+    if ("undefined" !== typeof $.event) {
+        (function() {
+            var _mouseenter = function _mouseenter() {
+                var _self = this,
+                    data = $(this).data('mousestop');
+
+                this.movement = true;
+
+                if (data.timeToStop) {
+                    this.timeToStopTimer = window.setTimeout(function() {
+                        _self.movement = false;
+                        window.clearTimeout(_self.timer);
+                    }, data.timeToStop);
+                }
+            };
+
+            var _mouseleave = function _mouseleave() {
+                window.clearTimeout(this.timer);
+                window.clearTimeout(this.timeToStopTimer);
+            };
+
+            var _mousemove = function _mousemove() {
+                var $el = $(this),
+                    data = $el.data('mousestop');
+
+                if (this.movement) {
+                    window.clearTimeout(this.timer);
+                    this.timer = window.setTimeout(function() {
+                        $el.trigger('mousestop');
+                    }, data.delay);
+                }
+            };
+
+            var _data = function _data(data) {
+                if ($.isNumeric(data)) {
+                    data = {
+                        delay: data
+                    };
+                } else if ((typeof data === "undefined" ? "undefined" : _typeof(data)) !== 'object') {
+                    data = {};
+                }
+
+                return $.extend({}, $.fn.mousestop.defaults, data);
+            };
+
+            $.event.special.mousestop = {
+                setup: function setup(data) {
+                    $(this).data('mousestop', _data(data)).bind('mouseenter.mousestop', _mouseenter).bind('mouseleave.mousestop', _mouseleave).bind('mousemove.mousestop', _mousemove);
+                },
+                teardown: function teardown() {
+                    $(this).removeData('mousestop').unbind('.mousestop');
+                }
+            };
+
+            $.fn.mousestop = function(data, fn) {
+                if (typeof data === 'function') {
+                    fn = data;
+                }
+                return arguments.length > 0 ? this.bind('mousestop', data, fn) : this.trigger('mousestop');
+            };
+
+            $.fn.mousestop.defaults = {
+                delay: 300,
+                timeToStop: null
+            };
+        })();
+    }
+})(jQuery);
+
+function Events(n) {
+    var t = {},
+        f = [];
+    n = n || this, n.on = function(n, f, i) {
+        (t[n] = t[n] || []).push([f, i]);
+    }, n.off = function(n, i) {
+        n || (t = {});
+        for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) {
+            i == o[c][0] && o.splice(c, 1);
+        }
+    }, n.emit = function(n) {
+        for (var i, o = t[n] || f, c = 0; i = o[c++];) {
+            i[0].apply(i[1], f.slice.call(arguments, 1));
+        }
+    };
+}
+// stats.js - http://github.com/mrdoob/stats.js
+var Stats = function Stats() {
+    function f(a, e, b) {
+        a = document.createElement(a);
+        a.id = e;
+        a.style.cssText = b;
+        return a;
+    }
+
+    function l(a, e, b) {
+        var c = f("div", a, "padding:0 0 3px 3px;text-align:left;background:" + b),
+            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);
+        d.innerHTML = a.toUpperCase();
+        c.appendChild(d);
+        a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);
+        c.appendChild(a);
+        for (e = 0; 74 > e; e++) {
+            a.appendChild(f("span", "", "width:1px;height:30px;float:left;opacity:0.9;background:" + b));
+        }
+        return c;
+    }
+
+    function m(a) {
+        for (var b = c.children, d = 0; d < b.length; d++) {
+            b[d].style.display = d === a ? "block" : "none";
+        }
+        n = a;
+    }
+
+    function p(a, b) {
+        a.appendChild(a.firstChild).style.height = Math.min(30, 30 - 30 * b) + "px";
+    }
+    var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
+        k = q(),
+        r = k,
+        t = 0,
+        n = 0,
+        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");
+    c.addEventListener("mousedown", function(a) {
+        a.preventDefault();
+        m(++n % c.children.length);
+    }, !1);
+    var d = 0,
+        u = Infinity,
+        v = 0,
+        b = l("fps", "#0ff", "#002"),
+        A = b.children[0],
+        B = b.children[1];
+    c.appendChild(b);
+    var g = 0,
+        w = Infinity,
+        x = 0,
+        b = l("ms", "#0f0", "#020"),
+        C = b.children[0],
+        D = b.children[1];
+    c.appendChild(b);
+    if (self.performance && self.performance.memory) {
+        var h = 0,
+            y = Infinity,
+            z = 0,
+            b = l("mb", "#f08", "#201"),
+            E = b.children[0],
+            F = b.children[1];
+        c.appendChild(b);
+    }
+    m(n);
+    return {
+        REVISION: 14,
+        domElement: c,
+        setMode: m,
+        begin: function begin() {
+            k = q();
+        },
+        end: function end() {
+            var a = q();
+            g = a - k;
+            w = Math.min(w, g);
+            x = Math.max(x, g);
+            C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";
+            p(D, g / 200);
+            t++;
+            if (a > r + 1E3 && (d = Math.round(1E3 * t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
+                var b = performance.memory.usedJSHeapSize,
+                    c = performance.memory.jsHeapSizeLimit;
+                h = Math.round(9.54E-7 * b);
+                y = Math.min(y, h);
+                z = Math.max(z, h);
+                E.textContent = h + " MB (" + y + "-" + z + ")";
+                p(F, b / c);
+            }
+            return a;
+        },
+        update: function update() {
+            k = this.end();
+        }
+    };
+};
+"object" === (typeof module === "undefined" ? "undefined" : _typeof(module)) && (module.exports = Stats);
 
 // [x]#TODO:130 RESTRUCTURIZE.
 // [x]#TODO:120 RESTRUCTURIZE threejs and cannonjs library calling.
@@ -1919,17 +1919,6 @@ WHS.API.isSame = function(a1, a2) {
     return !(a1.sort() > a2.sort() || a1.sort() < a2.sort());
 };
 
-// #DONE:10 JSONLoader don't work.
-WHS.API.JSONLoader = function() {
-
-    return new THREE.JSONLoader();
-};
-
-WHS.API.TextureLoader = function() {
-
-    return new THREE.TextureLoader();
-};
-
 WHS.API.loadMaterial = function(material) {
     'use strict';
 
@@ -2012,6 +2001,17 @@ WHS.API.loadMaterial = function(material) {
     scope._material = Physijs.createMaterial(scope._material, scope._friction, scope._restitution);
 
     return scope;
+};
+
+// #DONE:10 JSONLoader don't work.
+WHS.API.JSONLoader = function() {
+
+    return new THREE.JSONLoader();
+};
+
+WHS.API.TextureLoader = function() {
+
+    return new THREE.TextureLoader();
 };
 
 /**
@@ -2307,6 +2307,7 @@ WHS.Watch.prototype.remove = function(element) {
 };
 
 WHS.plugins.loop = function(func) {
+
     this.loop = {
         func: func,
         id: WHS.plugins.settings.loop_id++,
@@ -2317,10 +2318,12 @@ WHS.plugins.loop = function(func) {
 };
 
 WHS.plugins.loop.prototype.start = function() {
+
     this.loop.enabled = true;
 };
 
 WHS.plugins.loop.prototype.stop = function() {
+
     this.loop.enabled = false;
 };
 
@@ -2667,6 +2670,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
 };
 
 WHS.init.prototype.addMorph = function(url, options) {
+
     'use strict';
 
     var scope = new api.construct(this, options, "morph");
@@ -3067,14 +3071,14 @@ WHS.init.prototype.addGrass = function(ground, options) {
           faceInGeometry, // Face geomtery.
           new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.DoubleSide})
         );
-          var vecN = intr.point.clone().add(faceInGeometry.faces[0].normal);
+         var vecN = intr.point.clone().add(faceInGeometry.faces[0].normal);
         var rotN = faceInGeometry.faces[0].normal; //.normalize();
-          var nlGeometry = new THREE.Geometry();
+         var nlGeometry = new THREE.Geometry();
         nlGeometry.vertices = [
           intr.point,
           vecN.clone()
         ];
-          var normalLine = new THREE.Line(
+         var normalLine = new THREE.Line(
           nlGeometry,
           new THREE.MeshBasicMaterial({color: 0x000000})
         );*/
@@ -3125,12 +3129,12 @@ WHS.init.prototype.addGrass = function(ground, options) {
     // #TODO:0 Add grass animation.
     scope.update = function() {
         /*requestAnimationFrame(scope.update);
-          var delta = 0;
+         var delta = 0;
         var oldTime = 0;
-          var time = new Date().getTime();
+         var time = new Date().getTime();
         delta = time - oldTime;
         oldTime = time;
-          if (isNaN(delta) || delta > 1000 || delta == 0 ) {
+         if (isNaN(delta) || delta > 1000 || delta == 0 ) {
             delta = 1000/60;
         }*/
     };
