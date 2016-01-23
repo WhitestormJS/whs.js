@@ -40,6 +40,7 @@
 - *scope.visible -> scope.mesh*
 - *scope.body -> x*
 - CSF. `addGround.js`
+- CSF. `game.js`
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
