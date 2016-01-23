@@ -5,18 +5,16 @@
 */
 
 // DONE:0 Make Wrap function.
-WHS.API.Wrap = function( SCOPE, mesh, body ) {
+WHS.API.Wrap = function( SCOPE, mesh ) {
 	'use strict';
 
-	this._figure = mesh;
-	this._object = body;
+	this._mesh = mesh;
 	this._scope = SCOPE;
 	this._key = SCOPE.root.modellingQueue.length;
 
 	try {
 
-		api.merge( this._scope.root.scene, this._figure );
-		if ( this._object ) api.merge( this._scope.root.world, this._object );
+		api.merge( this._scope.root.scene, this._mesh );
 
 		this._scope.root.modellingQueue.push( this._scope );
 
@@ -31,7 +29,7 @@ WHS.API.Wrap = function( SCOPE, mesh, body ) {
 		if ( this._scope._wait ) {
 
 			var sc = this;
-			sc._figure.addEventListener( 'ready', function() {
+			sc._mesh.addEventListener( 'ready', function() {
 
 				sc._scope.__deferred.resolve();
 
@@ -52,8 +50,7 @@ WHS.API.Wrap = function( SCOPE, mesh, body ) {
 WHS.API.Wrap.prototype.remove = function() {
 	'use strict';
 
-	this._scope.root.scene.remove( this._figure );
-	this._scope.root.world.remove( this._object );
+	this._scope.root.scene.remove( this._mesh );
 
 	WHS.objects.splice( this._key, 1 );
 
@@ -64,8 +61,7 @@ WHS.API.Wrap.prototype.remove = function() {
 WHS.API.Wrap.prototype.retrieve = function() {
 	'use strict';
 
-	this._scope.root.scene.add( this._figure );
-	this._scope.root.world.add( this._object );
+	this._scope.root.scene.add( this._mesh );
 
 	WHS.objects.push( this._scope );
 

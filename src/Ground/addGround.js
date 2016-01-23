@@ -34,11 +34,11 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
   switch (type) {
     case "smooth":
 
-      //scope.visible = new Physijs.PlaneMesh(
+      //scope.mesh = new Physijs.PlaneMesh(
         //new THREE.PlaneGeometry(size.width, size.height, 1, 1),
       //scope.materialType, 0);
 
-      scope.visible = new Physijs.BoxMesh( new THREE.BoxGeometry(size.width, 1, size.height), scope.materialType, 0);
+      scope.mesh = new Physijs.BoxMesh( new THREE.BoxGeometry(size.width, 1, size.height), scope.materialType, 0);
 
       //scope._rot.set(-90 / 180 * Math.PI, 0, 0);
 
@@ -179,7 +179,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         }
       }
 
-      scope.visible = new Physijs.HeightfieldMesh(
+      scope.mesh = new Physijs.HeightfieldMesh(
         geom,
         Physijs.createMaterial(material, 0.8, 0.1)
       );
@@ -197,7 +197,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       geom.computeFaceNormals();
       //geom.computeTangents();
 
-      scope.visible.updateMatrix();
+      scope.mesh.updateMatrix();
 
       scope.dtb = true;
 
@@ -205,15 +205,15 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
       //scope.physic.scale.z = 256/250;
       //scope.body.name = scope.name;
 
-      scope.visible.castShadow = true;
-      scope.visible.receiveShadow = true;
+      scope.mesh.castShadow = true;
+      scope.mesh.receiveShadow = true;
 
       break;
   }
 
-  scope.build(scope.visible, scope.body);
+  scope.build(scope.mesh);
 
-  scope.wrap = api.Wrap(scope, scope.visible, scope.body);
+  scope.wrap = api.Wrap(scope, scope.mesh);
 
   return scope;
 }

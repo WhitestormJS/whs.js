@@ -90,34 +90,27 @@ WHS.API.construct = function( root, params, type ) {
 
 }
 
-WHS.API.construct.prototype.build = function( figure, object ) {
+WHS.API.construct.prototype.build = function( mesh ) {
 	'use strict';
 
-	figure = figure || this.visible;
-	object = object || this.body;
-	var isPhysics = !! ( arguments.length == 2 && object );
+	mesh = mesh || this.mesh;
 
 	try {
 
 		// Shadowmap.
-		figure.castShadow = true;
-		figure.receiveShadow = true;
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
 
 		// Position.
-		figure.position.set( this._pos.x, this._pos.y, this._pos.z );
-		if ( isPhysics && ! this.dtb ) object.position.set(
-		this._pos.x,
-		this._pos.y,
-		this._pos.z
-		);
+		mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
 
 		// Rotation.
-		figure.rotation.set( this._rot.x, this._rot.y, this._rot.z );
+		mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
 		// TODO: CANNON.JS object rotation.
 		//if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
 
 		// Scaling.
-		figure.scale.set( this._scale.x, this._scale.y, this._scale.z );
+		mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
 		// TODO: CANNON.JS object scaling.
 		//object.scale.set(this._rot.x, this._rot.y, this._rot.z);
 

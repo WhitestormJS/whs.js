@@ -24,11 +24,11 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
         data.computeVertexNormals();
 
         // Visualization.
-        scope.visible = new Physijs.ConcaveMesh(data, scope.materialType, options.mass);
+        scope.mesh = new Physijs.ConcaveMesh(data, scope.materialType, options.mass);
         scope._wait = true;
 
         scope.build();
-        scope.wrap = new api.Wrap(scope, scope.visible);
+        scope.wrap = new api.Wrap(scope, scope.mesh);
     });
 
     return scope;

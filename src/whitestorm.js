@@ -262,7 +262,7 @@ WHS.init = function(params) {
      // Merging data loop.
      for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
        if (scope.modellingQueue[i].morph) {
-         scope.modellingQueue[i].visible.mixer.update( clock.getDelta() );
+         scope.modellingQueue[i].mesh.mixer.update( clock.getDelta() );
        }
      }
 

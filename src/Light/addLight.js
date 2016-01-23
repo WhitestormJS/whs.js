@@ -32,16 +32,16 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
 
   switch (type) {
     case "ambient":
-      scope.visible = new THREE.AmbientLight(0xffffff);
+      scope.mesh = new THREE.AmbientLight(0xffffff);
       break;
 
     case "area":
-      scope.visible = new THREE.AreaLight(options.color, options.intensity);
+      scope.mesh = new THREE.AreaLight(options.color, options.intensity);
       console.warn([this.visible], "This light only works in the deferredrenderer");
       break;
 
     case "directional":
-      scope.visible = new THREE.DirectionalLight(
+      scope.mesh = new THREE.DirectionalLight(
         options.color,
         options.intensity
       );
@@ -49,7 +49,7 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       break;
 
     case "hemisphere":
-      scope.visible = new THREE.HemisphereLight(
+      scope.mesh = new THREE.HemisphereLight(
         options.skyColor,
         options.groundColor,
         options.intensity
@@ -58,23 +58,23 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       break;
 
     case "light":
-      scope.visible = new THREE.Light(options.color);
+      scope.mesh = new THREE.Light(options.color);
 
       break;
 
     case "point":
-      scope.visible = new THREE.PointLight(
+      scope.mesh = new THREE.PointLight(
         options.color,
         options.intensity,
         options.distance
       );
 
-      //scope.visible.visible = false;
+      //scope.mesh.visible = false;
 
       break;
 
     case "spot":
-      scope.visible = new THREE.SpotLight(
+      scope.mesh = new THREE.SpotLight(
         options.color,
         options.intensity,
         options.distance,
@@ -84,37 +84,37 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
       break;
   }
 
-  //scope.visible.shadowCameraVisible = true;
+  //scope.mesh.shadowCameraVisible = true;
 
-  scope.visible.castShadow = true;
+  scope.mesh.castShadow = true;
 
   // #FIXME:20 Shadow default parameters.
-  scope.visible.shadowMapWidth = 1024;
-  scope.visible.shadowMapHeight = 1024;
-  scope.visible.shadowBias = 0.0001;
+  scope.mesh.shadowMapWidth = 1024;
+  scope.mesh.shadowMapHeight = 1024;
+  scope.mesh.shadowBias = 0.0001;
 
-  scope.visible.shadowCameraNear = true;
-  scope.visible.shadowCameraFar = 400;
-  scope.visible.shadowCameraFov = 60;
-  scope.visible.shadowDarkness = 0.3;
+  scope.mesh.shadowCameraNear = true;
+  scope.mesh.shadowCameraFar = 400;
+  scope.mesh.shadowCameraFov = 60;
+  scope.mesh.shadowDarkness = 0.3;
 
   var d = 200;
 
-  scope.visible.shadowCameraLeft = -d;
-  scope.visible.shadowCameraRight = d;
-  scope.visible.shadowCameraTop = d;
-  scope.visible.shadowCameraBottom = -d;
+  scope.mesh.shadowCameraLeft = -d;
+  scope.mesh.shadowCameraRight = d;
+  scope.mesh.shadowCameraTop = d;
+  scope.mesh.shadowCameraBottom = -d;
 
 
-  if (scope.visible.target)
-    scope.visible.target.position.set(
+  if (scope.mesh.target)
+    scope.mesh.target.position.set(
       scope._target.x,
       scope._target.y,
       scope._target.z
     );
 
   scope.build();
-  scope.wrap = api.Wrap(scope, scope.visible);
+  scope.wrap = api.Wrap(scope, scope.mesh);
 
   return scope;
 };
