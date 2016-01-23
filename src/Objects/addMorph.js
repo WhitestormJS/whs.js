@@ -20,19 +20,19 @@ WHS.init.prototype.addMorph = function (url, options) {
       vertexColors: THREE.FaceColors 
     } );
 
-    scope.visible = new THREE.Mesh( geometry, material );
-    scope.visible.speed = scope._morph.speed;
+    scope.mesh = new THREE.Mesh( geometry, material );
+    scope.mesh.speed = scope._morph.speed;
 
-    scope._mixer = new THREE.AnimationMixer( scope.visible );
+    scope._mixer = new THREE.AnimationMixer( scope.mesh );
     scope._mixer.addAction( new THREE.AnimationAction( geometry.animations[0] ).warpToDuration( 0.5 ) );
 
     scope._mixer.update( 600 * Math.random() );
-    scope.visible.mixer = scope._mixer;
+    scope.mesh.mixer = scope._mixer;
 
     scope._rot.y = Math.PI/2;
 
-    scope.build(scope.visible);
-    scope.wrap = new api.Wrap(scope, scope.visible);
+    scope.build(scope.mesh);
+    scope.wrap = new api.Wrap(scope, scope.mesh);
   });
 
   return scope;

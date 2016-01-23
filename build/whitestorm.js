@@ -1764,30 +1764,27 @@ WHS.API.construct = function(root, params, type) {
     return this;
 };
 
-WHS.API.construct.prototype.build = function(figure, object) {
+WHS.API.construct.prototype.build = function(mesh) {
     'use strict';
 
-    figure = figure || this.visible;
-    object = object || this.body;
-    var isPhysics = !!(arguments.length == 2 && object);
+    mesh = mesh || this.mesh;
 
     try {
 
         // Shadowmap.
-        figure.castShadow = true;
-        figure.receiveShadow = true;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
 
         // Position.
-        figure.position.set(this._pos.x, this._pos.y, this._pos.z);
-        if (isPhysics && !this.dtb) object.position.set(this._pos.x, this._pos.y, this._pos.z);
+        mesh.position.set(this._pos.x, this._pos.y, this._pos.z);
 
         // Rotation.
-        figure.rotation.set(this._rot.x, this._rot.y, this._rot.z);
+        mesh.rotation.set(this._rot.x, this._rot.y, this._rot.z);
         // TODO: CANNON.JS object rotation.
         //if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
 
         // Scaling.
-        figure.scale.set(this._scale.x, this._scale.y, this._scale.z);
+        mesh.scale.set(this._scale.x, this._scale.y, this._scale.z);
         // TODO: CANNON.JS object scaling.
         //object.scale.set(this._rot.x, this._rot.y, this._rot.z);
     } catch (err) {
@@ -1848,7 +1845,10 @@ WHS.API.extend = function(object) {
                 for (var _iterator2 = Object.getOwnPropertyNames(extension)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                     var prop = _step2.value;
                     // Do not traverse the prototype chain.
-                    object[prop] = object[prop] === 0 ? 0 : object[prop] || extension[prop]; // Add values that do not already exist.
+                    if (object[prop] != undefined && object[prop].toString() == '[object Object]' && extension[prop].toString() == '[object Object]')
+                    //Goes deep only if object[prop] and extension[prop] are both objects !
+                        WHS.API.extend(object[prop], extension[prop]);
+                    else object[prop] = object[prop] === 0 ? 0 : object[prop] || extension[prop]; // Add values that do not already exist.
                 }
             } catch (err) {
                 _didIteratorError2 = true;
@@ -1902,7 +1902,7 @@ WHS.API.getheight = function(pos, diff, terrain, direction) {
 
     this.raycaster = new THREE.Raycaster(new THREE.Vector3(pos.x, diff, direction * pos.y), new THREE.Vector3(0, -1, 0));
 
-    this.intersect = this.raycaster.intersectObject(terrain.visible);
+    this.intersect = this.raycaster.intersectObject(terrain.mesh);
 
     return this.intersect;
 };
@@ -2118,27 +2118,6 @@ WHS.API.removeDuplicateFaces = function(geometry) {
 };
 
 /**
- * Rotate body. Rotates body object *CANNON.JS*.
- *
- * @param {Object} body Body object in *CANNON.JS*. (REQUIRED)
- * @param {Object} rotateSet Object of x, y, z coords. (REQUIRED)
- * @return {Object} Body object in *CANNON.JS*.
- */
-WHS.API.rotateBody = function(body, rotateSet) {
-    'use strict';
-
-    // Replaces 2 divisions with one.
-
-    body.quaternion.x = Math.sin(Math.PI / 360 * rotateSet.x);
-    body.quaternion.y = Math.sin(Math.PI / 360 * rotateSet.y);
-    body.quaternion.z = Math.sin(Math.PI / 360 * rotateSet.z);
-
-    body.quaternion.w = Math.cos(45); //Was 90*0.5 before, hardcoding is better for constants
-
-    return body;
-};
-
-/**
  * ROTATEGEOMETRY.
  *
  * @param {Object} geometry *THREE.JS* geometry. (REQUIRED)
@@ -2246,18 +2225,16 @@ WHS.API.Triangulate = function(thrObj, material) {
 };
 
 // DONE:0 Make Wrap function.
-WHS.API.Wrap = function(SCOPE, mesh, body) {
+WHS.API.Wrap = function(SCOPE, mesh) {
     'use strict';
 
-    this._figure = mesh;
-    this._object = body;
+    this._mesh = mesh;
     this._scope = SCOPE;
     this._key = SCOPE.root.modellingQueue.length;
 
     try {
 
-        api.merge(this._scope.root.scene, this._figure);
-        if (this._object) api.merge(this._scope.root.world, this._object);
+        api.merge(this._scope.root.scene, this._mesh);
 
         this._scope.root.modellingQueue.push(this._scope);
     } catch (err) {
@@ -2270,7 +2247,7 @@ WHS.API.Wrap = function(SCOPE, mesh, body) {
         if (this._scope._wait) {
 
             var sc = this;
-            sc._figure.addEventListener('ready', function() {
+            sc._mesh.addEventListener('ready', function() {
 
                 sc._scope.__deferred.resolve();
             });
@@ -2286,8 +2263,7 @@ WHS.API.Wrap = function(SCOPE, mesh, body) {
 WHS.API.Wrap.prototype.remove = function() {
     'use strict';
 
-    this._scope.root.scene.remove(this._figure);
-    this._scope.root.world.remove(this._object);
+    this._scope.root.scene.remove(this._mesh);
 
     WHS.objects.splice(this._key, 1);
 
@@ -2297,8 +2273,7 @@ WHS.API.Wrap.prototype.remove = function() {
 WHS.API.Wrap.prototype.retrieve = function() {
     'use strict';
 
-    this._scope.root.scene.add(this._figure);
-    this._scope.root.world.add(this._object);
+    this._scope.root.scene.add(this._mesh);
 
     WHS.objects.push(this._scope);
 
@@ -2603,7 +2578,7 @@ WHS.init.prototype.start = function() {
         // Merging data loop.
         for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
             if (scope.modellingQueue[i].morph) {
-                scope.modellingQueue[i].visible.mixer.update(clock.getDelta());
+                scope.modellingQueue[i].mesh.mixer.update(clock.getDelta());
             }
         }
 
@@ -2681,11 +2656,11 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
         data.computeVertexNormals();
 
         // Visualization.
-        scope.visible = new Physijs.ConcaveMesh(data, scope.materialType, options.mass);
+        scope.mesh = new Physijs.ConcaveMesh(data, scope.materialType, options.mass);
         scope._wait = true;
 
         scope.build();
-        scope.wrap = new api.Wrap(scope, scope.visible);
+        scope.wrap = new api.Wrap(scope, scope.mesh);
     });
 
     return scope;
@@ -2707,19 +2682,19 @@ WHS.init.prototype.addMorph = function(url, options) {
             vertexColors: THREE.FaceColors
         });
 
-        scope.visible = new THREE.Mesh(geometry, material);
-        scope.visible.speed = scope._morph.speed;
+        scope.mesh = new THREE.Mesh(geometry, material);
+        scope.mesh.speed = scope._morph.speed;
 
-        scope._mixer = new THREE.AnimationMixer(scope.visible);
+        scope._mixer = new THREE.AnimationMixer(scope.mesh);
         scope._mixer.addAction(new THREE.AnimationAction(geometry.animations[0]).warpToDuration(0.5));
 
         scope._mixer.update(600 * Math.random());
-        scope.visible.mixer = scope._mixer;
+        scope.mesh.mixer = scope._mixer;
 
         scope._rot.y = Math.PI / 2;
 
-        scope.build(scope.visible);
-        scope.wrap = new api.Wrap(scope, scope.visible);
+        scope.build(scope.mesh);
+        scope.wrap = new api.Wrap(scope, scope.mesh);
     });
 
     return scope;
@@ -3195,11 +3170,11 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
     switch (type) {
         case "smooth":
 
-            //scope.visible = new Physijs.PlaneMesh(
+            //scope.mesh = new Physijs.PlaneMesh(
             //new THREE.PlaneGeometry(size.width, size.height, 1, 1),
             //scope.materialType, 0);
 
-            scope.visible = new Physijs.BoxMesh(new THREE.BoxGeometry(size.width, 1, size.height), scope.materialType, 0);
+            scope.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(size.width, 1, size.height), scope.materialType, 0);
 
             //scope._rot.set(-90 / 180 * Math.PI, 0, 0);
 
@@ -3344,7 +3319,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
                 }
             }
 
-            scope.visible = new Physijs.HeightfieldMesh(geom, Physijs.createMaterial(material, 0.8, 0.1));
+            scope.mesh = new Physijs.HeightfieldMesh(geom, Physijs.createMaterial(material, 0.8, 0.1));
 
             /*var height_img_data = ctx.getImageData(0, 0, 256, 256).data;
             var z, index = 0;
@@ -3358,7 +3333,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
             geom.computeFaceNormals();
             //geom.computeTangents();
 
-            scope.visible.updateMatrix();
+            scope.mesh.updateMatrix();
 
             scope.dtb = true;
 
@@ -3366,15 +3341,15 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
             //scope.physic.scale.z = 256/250;
             //scope.body.name = scope.name;
 
-            scope.visible.castShadow = true;
-            scope.visible.receiveShadow = true;
+            scope.mesh.castShadow = true;
+            scope.mesh.receiveShadow = true;
 
             break;
     }
 
-    scope.build(scope.visible, scope.body);
+    scope.build(scope.mesh);
 
-    scope.wrap = api.Wrap(scope, scope.visible, scope.body);
+    scope.wrap = api.Wrap(scope, scope.mesh);
 
     return scope;
 };
@@ -3439,67 +3414,67 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
 
     switch (type) {
         case "ambient":
-            scope.visible = new THREE.AmbientLight(0xffffff);
+            scope.mesh = new THREE.AmbientLight(0xffffff);
             break;
 
         case "area":
-            scope.visible = new THREE.AreaLight(options.color, options.intensity);
+            scope.mesh = new THREE.AreaLight(options.color, options.intensity);
             console.warn([this.visible], "This light only works in the deferredrenderer");
             break;
 
         case "directional":
-            scope.visible = new THREE.DirectionalLight(options.color, options.intensity);
+            scope.mesh = new THREE.DirectionalLight(options.color, options.intensity);
 
             break;
 
         case "hemisphere":
-            scope.visible = new THREE.HemisphereLight(options.skyColor, options.groundColor, options.intensity);
+            scope.mesh = new THREE.HemisphereLight(options.skyColor, options.groundColor, options.intensity);
 
             break;
 
         case "light":
-            scope.visible = new THREE.Light(options.color);
+            scope.mesh = new THREE.Light(options.color);
 
             break;
 
         case "point":
-            scope.visible = new THREE.PointLight(options.color, options.intensity, options.distance);
+            scope.mesh = new THREE.PointLight(options.color, options.intensity, options.distance);
 
-            //scope.visible.visible = false;
+            //scope.mesh.visible = false;
 
             break;
 
         case "spot":
-            scope.visible = new THREE.SpotLight(options.color, options.intensity, options.distance, options.angle);
+            scope.mesh = new THREE.SpotLight(options.color, options.intensity, options.distance, options.angle);
 
             break;
     }
 
-    //scope.visible.shadowCameraVisible = true;
+    //scope.mesh.shadowCameraVisible = true;
 
-    scope.visible.castShadow = true;
+    scope.mesh.castShadow = true;
 
     // #FIXME:20 Shadow default parameters.
-    scope.visible.shadowMapWidth = 1024;
-    scope.visible.shadowMapHeight = 1024;
-    scope.visible.shadowBias = 0.0001;
+    scope.mesh.shadowMapWidth = 1024;
+    scope.mesh.shadowMapHeight = 1024;
+    scope.mesh.shadowBias = 0.0001;
 
-    scope.visible.shadowCameraNear = true;
-    scope.visible.shadowCameraFar = 400;
-    scope.visible.shadowCameraFov = 60;
-    scope.visible.shadowDarkness = 0.3;
+    scope.mesh.shadowCameraNear = true;
+    scope.mesh.shadowCameraFar = 400;
+    scope.mesh.shadowCameraFov = 60;
+    scope.mesh.shadowDarkness = 0.3;
 
     var d = 200;
 
-    scope.visible.shadowCameraLeft = -d;
-    scope.visible.shadowCameraRight = d;
-    scope.visible.shadowCameraTop = d;
-    scope.visible.shadowCameraBottom = -d;
+    scope.mesh.shadowCameraLeft = -d;
+    scope.mesh.shadowCameraRight = d;
+    scope.mesh.shadowCameraTop = d;
+    scope.mesh.shadowCameraBottom = -d;
 
-    if (scope.visible.target) scope.visible.target.position.set(scope._target.x, scope._target.y, scope._target.z);
+    if (scope.mesh.target) scope.mesh.target.position.set(scope._target.x, scope._target.y, scope._target.z);
 
     scope.build();
-    scope.wrap = api.Wrap(scope, scope.visible);
+    scope.wrap = api.Wrap(scope, scope.mesh);
 
     return scope;
 };
@@ -3631,6 +3606,7 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
  *
  * @param {Object} object *WHS* figure/object. (REQUIRED)
  */
+var PI_2 = Math.PI / 2;
 WHS.init.prototype.MakeFirstPerson = function(object, params) {
     'use strict';
 
@@ -3982,12 +3958,12 @@ WHS.init.prototype.addSkybox = function(options) {
             break;
     }
 
-    scope.visible = new THREE.Mesh(skyGeometry, skyMat);
-    scope.visible.renderDepth = 1000.0;
+    scope.mesh = new THREE.Mesh(skyGeometry, skyMat);
+    scope.mesh.renderDepth = 1000.0;
 
     scope.build();
 
-    scope.wrap = api.Wrap(scope, scope.visible);
+    scope.wrap = api.Wrap(scope, scope.mesh);
 
     return scope;
 };

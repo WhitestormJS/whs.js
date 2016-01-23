@@ -37,6 +37,8 @@
 - Fixed parrot scale in fps example.
 - CSF. `addMorph.js`
 - CSF. `addModel.js`
+- *scope.visible -> scope.mesh*
+- *scope.body -> x*
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
