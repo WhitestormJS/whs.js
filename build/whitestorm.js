@@ -2330,6 +2330,7 @@ WHS.plugins.loop.prototype.stop = function() {
 WHS.gp = {};
 
 WHS.plugins.register = function(name, plugin, global) {
+
     'use strict';
 
     var id = WHS.plugins.settings.plug_id;

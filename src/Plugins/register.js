@@ -4,25 +4,27 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.gp={};
+WHS.gp = {};
 
-WHS.plugins.register = function(name, plugin, global) {
+WHS.plugins.register = function( name, plugin, global ) {
+
 	'use strict';
 
 	var id = WHS.plugins.settings.plug_id;
 
-	WHS.plugins.list[name] = {
+	WHS.plugins.list[ name ] = {
 		func: plugin,
 		id: id
 	};
 
 
-	if(global)
-		WHS.gp[name] = plugin;
+	if ( global )
+		WHS.gp[ name ] = plugin;
 	else
-		WHS.API.construct.prototype[name] = plugin;
+		WHS.API.construct.prototype[ name ] = plugin;
 
-	WHS.plugins.settings.plug_id++;
+	WHS.plugins.settings.plug_id ++;
 
 	return;
+
 };
