@@ -39,6 +39,7 @@
 - CSF. `addModel.js`
 - *scope.visible -> scope.mesh*
 - *scope.body -> x*
+- CSF. `addGround.js`
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
