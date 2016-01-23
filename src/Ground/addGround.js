@@ -14,206 +14,204 @@
  * @return {Object} Scope.
  */
 WHS.init.prototype.addGround = function(type, size, material, pos) {
-  'use strict';
+    'use strict';
 
-  var options = {
-    pos: pos
-  };
+    var options = {
+        pos: pos
+    };
 
-  var scope = new api.construct(this, options, type);
+    var scope = new api.construct(this, options, type);
 
-  scope.skip = true;
+    scope.skip = true;
 
-  api.def(size, {
-    width: 100,
-    height: 100
-  });
+    api.extend({
+        width: 100,
+        height: 100
+    }, size);
 
-  scope.materialType = api.loadMaterial(material)._material;
+    scope.materialType = api.loadMaterial(material)._material;
 
-  switch (type) {
-    case "smooth":
+    switch (type) {
+        case "smooth":
 
-      //scope.mesh = new Physijs.PlaneMesh(
-        //new THREE.PlaneGeometry(size.width, size.height, 1, 1),
-      //scope.materialType, 0);
+            //scope.mesh = new Physijs.PlaneMesh(
+            //  new THREE.PlaneGeometry(size.width, size.height, 1, 1),
+            //scope.materialType, 0);
 
-      scope.mesh = new Physijs.BoxMesh( new THREE.BoxGeometry(size.width, 1, size.height), scope.materialType, 0);
+            scope.mesh = new Physijs.BoxMesh( new THREE.BoxGeometry(size.width, 1, size.height), scope.materialType, 0);
 
-      //scope._rot.set(-90 / 180 * Math.PI, 0, 0);
+            //scope._rot.set(-90 / 180 * Math.PI, 0, 0);
 
-      break;
+            break;
 
-    case "terrain":
-      //api.def(size.detality, 0);
+        case "terrain":
 
-      var canvas = document.createElement('canvas');
-      canvas.setAttribute("width", size.width);
-      canvas.setAttribute("height", size.height);
+            var canvas = document.createElement('canvas');
 
-      if (canvas.getContext) {
-        var ctx = canvas.getContext('2d');
+            canvas.setAttribute("width", size.width);
+            canvas.setAttribute("height", size.height);
 
-        ctx.drawImage(size.terrain, 0, 0);
-      }
+            if (canvas.getContext) {
 
+                var ctx = canvas.getContext('2d');
 
-      //if (size.useDeafultMaterial) {
+                ctx.drawImage(size.terrain, 0, 0);
 
-    	var oceanTexture = api.TextureLoader().load(
-        scope.root._settings.assets + '/textures/terrain/dirt-512.jpg'
-      );
+            }
 
-    	oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
+            // Ocean texture.
+            var oceanTexture = api.TextureLoader().load(
+                scope.root._settings.assets + '/textures/terrain/dirt-512.jpg'
+            );
 
-    	var sandyTexture = api.TextureLoader().load(
-        scope.root._settings.assets + '/textures/terrain/sand-512.jpg'
-      );
+            oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
 
-    	sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
+            // Sandy texture.
+            var sandyTexture = api.TextureLoader().load(
+                scope.root._settings.assets + '/textures/terrain/sand-512.jpg'
+            );
 
-    	var grassTexture = api.TextureLoader().load(
-        scope.root._settings.assets + '/textures/terrain/grass-512.jpg'
-      );
+            sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
 
-    	grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
+            // Grass texture.
+            var grassTexture = api.TextureLoader().load(
+                scope.root._settings.assets + '/textures/terrain/grass-512.jpg'
+            );
 
-    	var rockyTexture = api.TextureLoader().load(
-        scope.root._settings.assets + '/textures/terrain/rock-512.jpg'
-      );
+            grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
 
-    	rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
+            // Rocky texture.
+            var rockyTexture = api.TextureLoader().load(
+                scope.root._settings.assets + '/textures/terrain/rock-512.jpg'
+            );
 
-    	var snowyTexture = api.TextureLoader().load(
-        scope.root._settings.assets + '/textures/terrain/snow-512.jpg'
-      );
+            rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
 
-    	snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
+            // Snowy texture.
+            var snowyTexture = api.TextureLoader().load(
+                scope.root._settings.assets + '/textures/terrain/snow-512.jpg'
+            );
 
-    //scope.materialType = size.useDeafultMaterial ?
-    //  customMaterial : scope.materialType;
+            snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
 
-      var normalShader = THREE.NormalMapShader;
+            // Normal Map.
+            var normalShader = THREE.NormalMapShader;
 
-			var rx = 256,
-          ry = 256;
+            var rx = 256,
+                ry = 256;
 
-			var pars = {
-        minFilter: THREE.LinearFilter,
-        magFilter: THREE.LinearFilter,
-        format: THREE.RGBFormat
-      };
+            var pars = {
+                minFilter: THREE.LinearFilter,
+                magFilter: THREE.LinearFilter,
 
-			var heightMap = new THREE.WebGLRenderTarget( rx, ry, pars );
-      heightMap.texture = api.TextureLoader()
-        .load(scope.root._settings.assets + '/terrain/default_terrain.png');
+                format: THREE.RGBFormat
+            };
 
-			var normalMap = new THREE.WebGLRenderTarget( rx, ry, pars );
-			normalMap.texture = api.TextureLoader()
-        .load(scope.root._settings.assets + '/terrain/NormalMap.png');
+            // Heightmap.
+            var heightMap = new THREE.WebGLRenderTarget( rx, ry, pars );
 
-			var specularMap = new THREE.WebGLRenderTarget( 256, 256, pars ); //2048
-			specularMap.texture = api.TextureLoader()
-        .load(scope.root._settings.assets + '/terrain/default_terrain.png');
+            heightMap.texture = api.TextureLoader()
+                .load(scope.root._settings.assets + '/terrain/default_terrain.png');
 
-      var terrainShader = THREE.ShaderTerrain[ "terrain" ];
+            // Normalmap.
+            var normalMap = new THREE.WebGLRenderTarget( rx, ry, pars );
 
-      var uniformsTerrain = Object.assign(
-        THREE.UniformsUtils.clone( terrainShader.uniforms ),
-        {
-          oceanTexture:	{ type: "t", value: oceanTexture },
-          sandyTexture:	{ type: "t", value: sandyTexture },
-          grassTexture:	{ type: "t", value: grassTexture },
-          rockyTexture:	{ type: "t", value: rockyTexture },
-          snowyTexture:	{ type: "t", value: snowyTexture },
-          fog: true,
-          lights: true
-        },
-        THREE.UniformsLib['common'],
-        THREE.UniformsLib['fog'],
-        THREE.UniformsLib['lights'],
-        THREE.UniformsLib['shadowmap'],
-        {
-            ambient  : { type: "c", value: new THREE.Color( 0xffffff ) },
-            emissive : { type: "c", value: new THREE.Color( 0x000000 ) },
-            wrapRGB  : { type: "v3", value: new THREE.Vector3( 1, 1, 1 ) }
-        });
+            normalMap.texture = api.TextureLoader()
+                .load(scope.root._settings.assets + '/terrain/NormalMap.png');
 
-				uniformsTerrain[ "tDisplacement" ].value = heightMap;
-        uniformsTerrain[ "shadowMap" ].value = [normalMap];
+            // Specularmap.
+            var specularMap = new THREE.WebGLRenderTarget( 256, 256, pars ); //2048
 
-				uniformsTerrain[ "uDisplacementScale" ].value = 100;
+            specularMap.texture = api.TextureLoader()
+                .load(scope.root._settings.assets + '/terrain/default_terrain.png');
 
-				uniformsTerrain[ "uRepeatOverlay" ].value.set( 6, 6 );
+            // Terrain shader (ShaderTerrain.js).
+            var terrainShader = THREE.ShaderTerrain[ "terrain" ];
 
+            var uniformsTerrain = Object.assign(
 
-   			var material = new THREE.ShaderMaterial( {
- 						uniforms: 		uniformsTerrain,
- 						vertexShader: 	terrainShader.vertexShader,
- 						fragmentShader: terrainShader.fragmentShader,
- 						lights: 		true,
- 						fog: 			true,
-            side: THREE.DoubleSide,
-            shading: THREE.SmoothShading
-						} );
+                THREE.UniformsUtils.clone( terrainShader.uniforms ),
 
-      var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
+                {
+                    oceanTexture:   { type: "t", value: oceanTexture },
+                    sandyTexture:   { type: "t", value: sandyTexture },
+                    grassTexture:   { type: "t", value: grassTexture },
+                    rockyTexture:   { type: "t", value: rockyTexture },
+                    snowyTexture:   { type: "t", value: snowyTexture },
+                    fog: true,
+                    lights: true
+                },
 
-      //THREE.BufferGeometryUtils.computeTangents( geom );
+                THREE.UniformsLib['common'],
+                THREE.UniformsLib['fog'],
+                THREE.UniformsLib['lights'],
+                THREE.UniformsLib['shadowmap'],
 
-      geom.verticesNeedUpdate = true;
+                {
+                        ambient  : { type: "c", value: new THREE.Color( 0xffffff ) },
+                        emissive : { type: "c", value: new THREE.Color( 0x000000 ) },
+                        wrapRGB  : { type: "v3", value: new THREE.Vector3( 1, 1, 1 ) }
+                }
 
-      scope._rot.set(Math.PI / 180 * -90, 0, 0);
+            );
 
-      var hgtdata = [], index = 0, i = 0; // new Array(256);
-      var imgdata = ctx.getImageData(0, 0, 256, 256).data;
-//console.log(geom);
-      for (var x=0; x <= 255; x++) {
-        hgtdata[x] = new Uint8Array(256);
+            uniformsTerrain[ "tDisplacement" ].value = heightMap;
+            uniformsTerrain[ "shadowMap" ].value = [normalMap];
 
-        for (var y=255; y >= 0; y--) {
-          //hgtdata[x][255-y] = ctx.getImageData(x, y, 1, 1).data[0]/255 * 100;
-          geom.vertices[index].z = imgdata[i]/255 * 100;
-          i += 4;
-          index++;
-        }
-      }
+            uniformsTerrain[ "uDisplacementScale" ].value = 100;
+            uniformsTerrain[ "uRepeatOverlay" ].value.set( 6, 6 );
 
-      scope.mesh = new Physijs.HeightfieldMesh(
-        geom,
-        Physijs.createMaterial(material, 0.8, 0.1)
-      );
+            var material = new THREE.ShaderMaterial( {
 
+                    uniforms:       uniformsTerrain,
+                    vertexShader:   terrainShader.vertexShader,
+                    fragmentShader: terrainShader.fragmentShader,
+                    lights:         true,
+                    fog:            true,
+                    side: THREE.DoubleSide,
+                    shading: THREE.SmoothShading
 
-      /*var height_img_data = ctx.getImageData(0, 0, 256, 256).data;
-      var z, index = 0;
-      for( var i = 0, l = height_img_data.length; i<l; i+=4){
-               z = height_img_data[i];
-               geom.vertices[index].z = z / 255 * 100;
-               index = index + 1;
-       }*/
+            } );
 
-      geom.computeVertexNormals();
-      geom.computeFaceNormals();
-      //geom.computeTangents();
+            var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
 
-      scope.mesh.updateMatrix();
+            geom.verticesNeedUpdate = true;
 
-      scope.dtb = true;
+            scope._rot.set(Math.PI / 180 * -90, 0, 0);
 
-      //scope.physic.scale.x = 256/250;
-      //scope.physic.scale.z = 256/250;
-      //scope.body.name = scope.name;
+            var index = 0, 
+                i = 0,
+                imgdata = ctx.getImageData(0, 0, 256, 256).data;
 
-      scope.mesh.castShadow = true;
-      scope.mesh.receiveShadow = true;
+            for ( var x = 0; x <= 255; x ++ ) {
+                for ( var y = 255; y >= 0; y -- ) {
+                    geom.vertices[index].z = imgdata[i]/255 * 100;
 
-      break;
-  }
+                    i += 4;
+                    index++;
+                }
+            }
 
-  scope.build(scope.mesh);
+            scope.mesh = new Physijs.HeightfieldMesh(
+                geom,
+                Physijs.createMaterial(material, 0.8, 0.1)
+            );
 
-  scope.wrap = api.Wrap(scope, scope.mesh);
+            geom.computeVertexNormals();
+            geom.computeFaceNormals();
+            geom.computeTangents();
 
-  return scope;
+            scope.mesh.updateMatrix();
+            scope.mesh.castShadow = true;
+            scope.mesh.receiveShadow = true;
+
+            break;
+    }
+
+    scope.build(scope.mesh);
+
+    scope.wrap = api.Wrap(scope, scope.mesh);
+
+    return scope;
+    
 }
