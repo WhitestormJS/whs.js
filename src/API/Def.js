@@ -15,8 +15,9 @@
 WHS.API.def = function( option, value, variablePoint ) {
 
 	'use strict';
+
 	if ( arguments.length < 2 )
-	console.error( "Something wrong! option? value?" );
+		console.error( "Something wrong! option? value?" );
 	else if ( arguments.length == 2 ) {
 
 		option = option || value;

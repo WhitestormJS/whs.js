@@ -14,6 +14,7 @@
  * @return {Object} Scope.
  */
 WHS.init.prototype.addGround = function(type, size, material, pos) {
+    
     'use strict';
 
     var options = {

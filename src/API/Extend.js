@@ -5,6 +5,7 @@
 */
 
 WHS.API.extend = function( object, ...extensions ) { // $.extend alternative, ... is the spread operator.
+
 	for( var extension of extensions ){
 		if( !extension )
 			continue; // Ignore null and undefined objects and paramaters.
@@ -20,4 +21,5 @@ WHS.API.extend = function( object, ...extensions ) { // $.extend alternative, ..
 	}
 
 	return object;
+	
 }

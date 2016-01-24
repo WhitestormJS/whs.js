@@ -11,6 +11,7 @@
  * @param {Object} rabbits Object to be added. (REQUIRED)
  */
 WHS.API.merge = function( box, rabbits ) {
+	
 	'use strict';
 
 	// More presice checking.

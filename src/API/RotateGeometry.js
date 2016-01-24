@@ -12,6 +12,7 @@
  * @return {Object} *THREE.JS* geometry.
  */
 WHS.API.rotateGeometry = function( geometry, rotateSet ) {
+	
 	'use strict';
 	
 	var rotationMatrix = new THREE.Matrix4();

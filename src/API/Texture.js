@@ -12,6 +12,7 @@
  * @return {Object} *THREE.JS* texture.
  */
 WHS.API.texture = function( url, options ) {
+	
 	'use strict';
 
 	var texture = THREE.ImageUtils.loadTexture( url );

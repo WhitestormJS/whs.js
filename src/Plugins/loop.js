@@ -6,24 +6,24 @@
 
 WHS.plugins.loop = function( func ) {
 
-	this.loop = {
-		func: func,
-		id: WHS.plugins.settings.loop_id ++,
-		enabled: false
-	};
+    this.loop = {
+        func: func,
+        id: WHS.plugins.settings.loop_id ++,
+        enabled: false
+    };
 
-	WHS.plugins.queue.push( this.loop );
+    WHS.plugins.queue.push( this.loop );
 
 }
 
 WHS.plugins.loop.prototype.start = function() {
 
-	this.loop.enabled = true;
+    this.loop.enabled = true;
 
 };
 
 WHS.plugins.loop.prototype.stop = function() {
 
-	this.loop.enabled = false;
+    this.loop.enabled = false;
 
 };

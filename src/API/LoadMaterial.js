@@ -5,6 +5,7 @@
 */
 
 WHS.API.loadMaterial = function( material ) {
+	
 	'use strict';
 
 	if ( typeof material.kind !== "string" )

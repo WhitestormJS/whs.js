@@ -13,6 +13,7 @@
  * @return {Object} Scope.
  */
 WHS.init.prototype.addModel = function(pathToModel, options) {
+    
     'use strict';
 
     var scope = new api.construct(this, options, "model");

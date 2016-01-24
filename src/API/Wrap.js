@@ -6,6 +6,7 @@
 
 // DONE:0 Make Wrap function.
 WHS.API.Wrap = function( SCOPE, mesh ) {
+	
 	'use strict';
 
 	this._mesh = mesh;
