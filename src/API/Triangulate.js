@@ -11,6 +11,7 @@
  * @param {Object} material *THREE.JS* material. (REQUIRED)
  */
 WHS.API.Triangulate = function( thrObj, material ) {
+	
 	'use strict';
 
 	if ( ! ( thrObj instanceof THREE.Geometry ) )

@@ -5,6 +5,7 @@
 */
 
 WHS.API.construct = function( root, params, type ) {
+
 	'use strict';
 
 	if ( ! root )
@@ -91,6 +92,7 @@ WHS.API.construct = function( root, params, type ) {
 }
 
 WHS.API.construct.prototype.build = function( mesh ) {
+	
 	'use strict';
 
 	mesh = mesh || this.mesh;

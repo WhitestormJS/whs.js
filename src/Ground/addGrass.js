@@ -13,6 +13,7 @@
  * @returns {Object} This element scope/statement.
  */
 WHS.init.prototype.addGrass = function(ground, options) {
+  
   'use strict';
 
   var scope = {};

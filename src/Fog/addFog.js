@@ -12,6 +12,7 @@
  * @returns {Object} This element scope/statement.
  */
 WHS.init.prototype.addFog = function(type, params) {
+  
   'use strict';
 
   var scope = {};

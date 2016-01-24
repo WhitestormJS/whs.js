@@ -13,7 +13,9 @@
  * @return {Object} Scope.
  */
 WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
+
   'use strict';
+
   params = params || {};
   var scope = {};
 
@@ -133,4 +135,5 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
   }
 
   return scope;
+  
 }
