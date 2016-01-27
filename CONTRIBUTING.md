@@ -78,7 +78,7 @@ Good:
 
 Poor:
  - `Fixed #25`
- - `Fixed code style.` (Use code)
+ - `Fixed code style.` (Use "CSF.")
  - `WIPSHADEERTERRAINJSFIXES####2016!!!!`
  - `WIP shader` (No dot after `WIP`, comment starts with small letter.)
 
