@@ -16,7 +16,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
 
     'use strict';
 
-    var target = $.extend({
+    var target = WHS.API.extend({
         block: $('#blocker'),
         speed: 1,
         ypos: 1
