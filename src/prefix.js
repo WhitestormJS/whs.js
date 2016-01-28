@@ -23,7 +23,7 @@ var MouseEvent = MouseEvent || { prototype:{} },
         getElementById: function() {},
         styleSheets: [{}],
     },
-    Element = Element || {};
+    Element = Element || { prototype:{} };
 
 // Array.isArray;
 if ( typeof Array.isArray === 'undefined' ) {
