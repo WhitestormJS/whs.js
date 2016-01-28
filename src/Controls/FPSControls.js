@@ -17,7 +17,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
     'use strict';
 
     var target = WHS.API.extend({
-        block: $('#blocker'),
+        block: document.getElementById('blocker'),
         speed: 1,
         ypos: 1
     }, params);
@@ -25,7 +25,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
     this.controls = new (function ( camera, mesh, params) {
 
         /* Velocity properties */
-        var velocityFactor = 1, //Same as 20 * 0.05
+        var velocityFactor = 1, 
             runVelocity = 0.25;
 
         mesh.setAngularFactor({x: 0, y: 0, z: 0});
@@ -52,8 +52,6 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
 
         mesh.addEventListener("collision", function(other_object, v, r, contactNormal){
 
-            // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
-            // Update, we do not need upAxis, (a, b, c).dot((0, 1, 0)) = b right ?
             if(contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
                     canJump = true;
         });
@@ -98,8 +96,6 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
                     if ( canJump == true ){
 
                             mesh.applyCentralImpulse({x: 0, y: 300, z: 0}); 
-                            // Read the PhysiJS Code, they do not verify if
-                            // the argument is a THREE.Vector3 as long is it has x, y, z
 
                     }
 
@@ -173,7 +169,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
 
             if ( scope.enabled === false ) return;
 
-            delta = 0.5;
+            delta = delta || 0.5;
             delta = Math.min(delta, 0.5);
 
             inputVelocity.set(0,0,0);
@@ -204,7 +200,6 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
             quat.setFromEuler(euler);
 
             inputVelocity.applyQuaternion(quat);
-            //quat.multiplyVector3(inputVelocity);
 
             mesh.applyCentralImpulse({x: inputVelocity.x * 10, y: 0, z: inputVelocity.z * 10});
             mesh.setAngularVelocity({x: inputVelocity.z * 10, y: 0, z: -inputVelocity.x * 10});
@@ -231,13 +226,13 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
 
                 controls.enabled = true;
 
-                $(target.block).fadeOut();
+                target.block.fadeOut();
 
             } else {
 
                 controls.enabled = false;
 
-                $(target.block).fadeIn();
+                target.block.fadeIn();
 
             }
 
@@ -257,7 +252,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
     document.addEventListener('mozpointerlockerror', this.pointerlockerror, false);
     document.addEventListener('webkitpointerlockerror', this.pointerlockerror, false);
 
-    target.block.on('click', function() {
+    target.block.addEventListener('click', function() {
 
         element.requestPointerLock = element.requestPointerLock ||
                                      element.mozRequestPointerLock ||
