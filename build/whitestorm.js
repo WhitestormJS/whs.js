@@ -1464,7 +1464,8 @@ var MouseEvent = MouseEvent || {
     document = document || {
         getElementById: function getElementById() {},
         styleSheets: [{}]
-    };
+    },
+    Element = Element || {};
 
 // Array.isArray;
 if (typeof Array.isArray === 'undefined') {

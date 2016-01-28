@@ -21,8 +21,9 @@
 var MouseEvent = MouseEvent || { prototype:{} },
     document = document || { 
         getElementById: function() {},
-        styleSheets: [{}]
-    };
+        styleSheets: [{}],
+    },
+    Element = Element || {};
 
 // Array.isArray;
 if ( typeof Array.isArray === 'undefined' ) {
