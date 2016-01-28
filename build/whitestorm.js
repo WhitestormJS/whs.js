@@ -1461,13 +1461,15 @@ THREE.SubdivisionModifier.prototype.modify = function(geometry) {
 var MouseEvent = MouseEvent || {
         prototype: {}
     },
-    document = document || {
-        getElementById: function getElementById() {},
-        styleSheets: [{}]
-    },
     Element = Element || {
-        prototype: {}
+        prototype: {},
+        style: {}
     };
+
+if (!document) document = {
+    getElementById: function getElementById() {},
+    styleSheets: [{}]
+};
 
 // Array.isArray;
 if (typeof Array.isArray === 'undefined') {
