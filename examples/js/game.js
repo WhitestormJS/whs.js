@@ -1,6 +1,5 @@
 var preloader = Preloader();
 
-
 // INITIALIZATION SCENE.
 var GAME = new WHS.init( {
   anaglyph: false,
@@ -163,7 +162,7 @@ GAME.multipassEffect = GAME.addWagner( WAGNER, "vignettePass", {} ).apply();
 GAME.directionalblurEffect = GAME.addWagner( WAGNER, "motionBlurPass", {} ).apply();
 
 GAME.MakeFirstPerson( GAME.person, { // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
-  block: $( '#blocker' ),
+  block: document.getElementById('blocker'),
   speed: 5 // 5
 } );
 

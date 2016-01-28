@@ -2755,8 +2755,9 @@ WHS.init.prototype.addMorph = function(url, options) {
  * @return {Object} Scope.
  */
 WHS.init.prototype.addObject = function(figureType, options) {
-    console.log('No Error !');
+
     'use strict';
+
     var scope = new api.construct(this, options, figureType),
         mass = options.onlyvis ? scope._target.mass : 1,
         fprops;
@@ -3640,11 +3641,11 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
 
     'use strict';
 
-    var target = WHS.API.extend({
+    var target = WHS.API.extend(params, {
         block: document.getElementById('blocker'),
         speed: 1,
         ypos: 1
-    }, params);
+    });
 
     this.controls = new function(camera, mesh, params) {
 
