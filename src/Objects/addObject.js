@@ -12,8 +12,9 @@
  * @return {Object} Scope.
  */
 WHS.init.prototype.addObject = function(figureType, options) {
-    console.log('No Error !')
+
     'use strict';
+    
     var scope = new api.construct(this, options, figureType),
         mass = options.onlyvis ? scope._target.mass : 1,
         fprops;

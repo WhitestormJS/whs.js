@@ -44,6 +44,8 @@
 - CSF. `addMorph.js`
 - CSF. `loop.js`
 - CSF. `register.js`
+- CSF. `watch.js`
+- Jquery is replaced with DOM in engine.
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
