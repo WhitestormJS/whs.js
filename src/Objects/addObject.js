@@ -12,19 +12,19 @@
  * @return {Object} Scope.
  */
 WHS.init.prototype.addObject = function(figureType, options) {
-    
+    console.log('No Error !')
     'use strict';
-
     var scope = new api.construct(this, options, figureType),
         mass = options.onlyvis ? scope._target.mass : 1,
         fprops;
 
     scope.materialType = api.loadMaterial(options.materialOptions)._material;
-
+    options.geometryOptions = options.geometryOptions || {}
+    
     switch (figureType) {
         case "sphere":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 radius: 1,
                 segmentA: 32,
@@ -34,15 +34,15 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
 
             scope.visible = new Physijs.SphereMesh(new THREE.SphereGeometry(
-                fprops.radius,
-                fprops.segmentA,
-                fprops.segmentB
+                options.geometryOptions.radius,
+                options.geometryOptions.segmentA,
+                options.geometryOptions.segmentB
             ), scope.materialType, 10);
 
             break;
         case "cube":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 width: 1,
                 height: 1,
@@ -51,15 +51,15 @@ WHS.init.prototype.addObject = function(figureType, options) {
             });
 
             scope.visible = new Physijs.BoxMesh(new THREE.BoxGeometry(
-                fprops.width,
-                fprops.height,
-                fprops.depth
+                options.geometryOptions.width,
+                options.geometryOptions.height,
+                options.geometryOptions.depth
             ), scope.materialType, mass);
 
             break;
         case "cylinder":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 radiusTop: 1,
                 radiusBottom: 1,
@@ -70,17 +70,17 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             scope.visible = new Physijs.CylinderMesh(
                 new THREE.CylinderGeometry(
-                    fprops.radiusTop,
-                    fprops.radiusBottom,
-                    fprops.height,
-                    fprops.radiusSegments
+                    options.geometryOptions.radiusTop,
+                    options.geometryOptions.radiusBottom,
+                    options.geometryOptions.height,
+                    options.geometryOptions.radiusSegments
                 ),
             scope.materialType, mass);
 
             break;
         case "dodecahedron":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 radius: 1,
                 detail: 0
@@ -89,15 +89,15 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             scope.visible = new Physijs.ConvexMesh(
                 new THREE.DodecahedronGeometry(
-                    fprops.radius,
-                    fprops.detail
+                    options.geometryOptions.radius,
+                    options.geometryOptions.detail
                 ),
             scope.materialType, mass);
 
             break;
         case "extrude":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 shapes: [],
                 options: {}
@@ -106,15 +106,15 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             scope.visible = new Physijs.ConvexMesh(
                 new THREE.ExtrudeGeometry(
-                    fprops.shapes,
-                    fprops.options
+                    options.geometryOptions.shapes,
+                    options.geometryOptions.options
                 ),
             scope.materialType, mass);
 
             break;
         case "icosahedron":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 radius: 1,
                 detail: 0
@@ -123,28 +123,28 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             scope.visible = new Physijs.ConvexMesh(
                 new THREE.IcosahedronGeometry(
-                    fprops.radius,
-                    fprops.detail
+                    options.geometryOptions.radius,
+                    options.geometryOptions.detail
                 ),
             scope.materialType, mass);
 
             break;
         case "lathe":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 points: [],
 
             });
 
             scope.visible = new Physijs.ConvexMesh(new THREE.LatheGeometry(
-                fprops.points
+                options.geometryOptions.points
             ), scope.materialType, mass);
 
             break;
         case "octahedron":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 radius: 1,
                 detail: 0
@@ -153,15 +153,15 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             scope.visible = new Physijs.ConvexMesh(
                 new THREE.OctahedronGeometry(
-                    fprops.radius,
-                    fprops.detail
+                    options.geometryOptions.radius,
+                    options.geometryOptions.detail
                 ),
             scope.materialType, mass);
 
             break;
         case "parametric":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 func: function() {},
                 slices: 10,
@@ -172,16 +172,16 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             scope.visible = new Physijs.ConvexMesh(
                 new THREE.ParametricGeometry(
-                    fprops.func,
-                    fprops.slices,
-                    fprops.stacks
+                    options.geometryOptions.func,
+                    options.geometryOptions.slices,
+                    options.geometryOptions.stacks
                 ),
             scope.materialType, mass);
 
             break;
         case "plane":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 width: 1,
                 height: 0,
@@ -191,16 +191,16 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             scope.visible = new Physijs.ConvexMesh(
                 new THREE.PlaneBufferGeometry(
-                    fprops.width,
-                    fprops.height,
-                    fprops.segments
+                    options.geometryOptions.width,
+                    options.geometryOptions.height,
+                    options.geometryOptions.segments
                 ),
             scope.materialType, mass);
 
             break;
         case "polyhedron":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 verticesOfCube: [],
                 indicesOfFaces: [],
@@ -211,20 +211,20 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             scope.visible = new Physijs.ConvexMesh(
                 new THREE.PolyhedronGeometry(
-                    fprops.verticesOfCube,
-                    fprops.indicesOfFaces
+                    options.geometryOptions.verticesOfCube,
+                    options.geometryOptions.indicesOfFaces
                 ),
             scope.materialType, mass);
 
             break;
         case "ring":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
-                innerRadius: 0,
-                outerRadius: 50,
-                thetaSegments: 1,
-                phiSegments: 8,
+                innerRadius: 2,
+                outerRadius: 5,
+                thetaSegments: 30,
+                phiSegments: 30,
                 thetaStart: 0,
                 thetaLength: Math.PI * 2
 
@@ -232,19 +232,17 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             scope.visible = new Physijs.ConcaveMesh(
                 new THREE.TorusGeometry(
-                    fprops.outerRadius,
-                    (fprops.outerRadius - fprops.innerRadius) / 2,
-                    fprops.thetaSegments, fprops.phiSegments
+                    options.geometryOptions.outerRadius,
+                    (options.geometryOptions.outerRadius - options.geometryOptions.innerRadius) / 2,
+                    options.geometryOptions.thetaSegments, options.geometryOptions.phiSegments
                 ),
             scope.materialType, mass);
 
             break;
         case "shape":
-
-            fprops.shapes = options.geometryOptions.shapes;
-
+            
             scope.visible = new THREE.Mesh(
-                new THREE.ShapeGeometry(fprops.shapes),
+                new THREE.ShapeGeometry(options.geometryOptions.shapes),
                 scope.materialType
             );
 
@@ -256,7 +254,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
             break;
         case "tetrahedron":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 radius: 1,
                 detail: 0
@@ -265,45 +263,38 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             scope.visible = new Physijs.ConvexMesh(
                 new THREE.TetrahedronGeometry(
-                    fprops.radius,
-                    fprops.detail
+                    options.geometryOptions.radius,
+                    options.geometryOptions.detail
                 ),
             scope.materialType, mass);
 
             break;
         case "text":
-
-            fprops =  api.extend(options.geometryOptions, {
-
-                text: "Hello World!"
-
-            });
-
-            fprops.parameters = api.extend(options.geometryOptions.parameters, {
-
-                size: 1,
-                height: 50,
-                curveSegments: 1,
-                font: "Adelle",
-                weight: "normal",
-                style: "normal",
-                bevelEnabled: false,
-                bevelThickness: 10,
-                bevelSize: 8
-
-            });
-
+            if(!(options.geometryOptions.parameters))
+                throw new Error("Missing text parameters");
             scope.visible = new Physijs.ConcaveMesh(
                 new THREE.TextGeometry(
-                    fprops.text,
-                    fprops.parameters
+                    api.extend(options.geometryOptions, {
+                        text: "Hello World!"
+                    }),
+                    api.extend(options.geometryOptions.parameters, {
+                        size: 1,
+                        height: 50,
+                        curveSegments: 1,
+                        font: "Adelle",
+                        weight: "normal",
+                        style: "normal",
+                        bevelEnabled: false,
+                        bevelThickness: 10,
+                        bevelSize: 8
+                    })
                 ),
             scope.materialType, masss);
 
             break;
         case "torus":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 radius: 100,
                 tube: 40,
@@ -315,18 +306,18 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             scope.visible = new Physijs.ConcaveMesh(
                 new THREE.TorusGeometry(
-                    fprops.radius,
-                    fprops.tube,
-                    fprops.radialSegments,
-                    fprops.tubularSegments,
-                    fprops.arc
+                    options.geometryOptions.radius,
+                    options.geometryOptions.tube,
+                    options.geometryOptions.radialSegments,
+                    options.geometryOptions.tubularSegments,
+                    options.geometryOptions.arc
                 ),
             scope.materialType, mass);
 
             break;
         case "torusknot":
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 radius: 100,
                 tube: 40,
@@ -337,16 +328,15 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 heightScale: 1
 
             });
-
             scope.visible = new Physijs.ConvexMesh(
                 new THREE.TorusKnotGeometry(
-                    fprops.radius,
-                    fprops.tube,
-                    fprops.radialSegments,
-                    fprops.tubularSegments,
-                    fprops.p,
-                    fprops.q,
-                    fprops.heightScale
+                    options.geometryOptions.radius,
+                    options.geometryOptions.tube,
+                    options.geometryOptions.radialSegments,
+                    options.geometryOptions.tubularSegments,
+                    options.geometryOptions.p,
+                    options.geometryOptions.q,
+                    options.geometryOptions.heightScale
                 ),
             scope.materialType, mass);
 
@@ -369,7 +359,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             );
 
-            fprops = api.extend(options.geometryOptions, {
+            api.extend(options.geometryOptions, {
 
                 path: options.geometryOptions.path ? new this.CustomSinCurve(100) : false,
                 segments: 20,
@@ -381,11 +371,11 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             scope.visible = new Physijs.ConcaveMesh(
                 new THREE.TubeGeometry(
-                    fprops.path,
-                    fprops.segments,
-                    fprops.radius,
-                    fprops.radiusSegments,
-                    fprops.closed
+                    options.geometryOptions.path,
+                    options.geometryOptions.segments,
+                    options.geometryOptions.radius,
+                    options.geometryOptions.radiusSegments,
+                    options.geometryOptions.closed
                 ),
             scope.materialType, masss);
 
@@ -432,4 +422,4 @@ WHS.init.prototype.addObject = function(figureType, options) {
     scope.wrap = new api.Wrap(scope, scope.visible);
 
     return scope;
-}
+};
