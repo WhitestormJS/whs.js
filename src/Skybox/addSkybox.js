@@ -16,7 +16,7 @@ WHS.init.prototype.addSkybox = function( options ) {
 
  	'use strict';
 
- 	api.def( options.skyType, "box" );
+ 	options.skyType = options.skyType || "box";
 
  	options.imgSuffix = options.skyType == "box" ? options.imgSuffix || ".png" : options.imgSuffix || "";
 
