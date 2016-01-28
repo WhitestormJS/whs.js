@@ -46,6 +46,7 @@
 - CSF. `register.js`
 - CSF. `watch.js`
 - Jquery is replaced with DOM in engine.
+- CSF. `addWagner.js`
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.

@@ -14,126 +14,150 @@
  */
 WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
 
-  'use strict';
+    'use strict';
 
-  params = params || {};
-  var scope = {};
+    params = params || {};
 
-  //api.def(params.hex, 0x000000); //, this.hex);
-  //api.def(params.near, 0.015); //, this.near);
-  //api.def(params.far, 1000); //, this.far);
-  //api.def(params.density, 0.00025); //, this.density);
+    var scope = {
+        _composer: this._composer
+    };
 
-  switch (type) {
-    case "zoomBlurPass":
-      scope.effect = new wagnerjs.ZoomBlurPass();
-      scope.effect.params.strength = .05;
+    var target = api.extend(params, {
+        hex: 0x000000,
+        near: 0.015,
+        far: 1000,
+        density: 0.00025
+    });
 
-      scope.effect.params.center.set(
-        .5 * this._composer.width,
-        .5 * this._composer.height
-      );
+    switch (type) {
+        case "zoomBlurPass":
+            scope.effect = new wagnerjs.ZoomBlurPass();
 
-      this._composer.pass(scope.effect);
-      break;
+            target = api.extend(target, { 
+                strength: .05,
 
-    case "multiPassBloomPass":
-      scope.effect = new wagnerjs.MultiPassBloomPass();
-      scope.effect.params.blurAmount = 1.32;
-      scope.effect.params.strength = .5;
-      scope.effect.params.applyZoomBlur = true;
-      scope.effect.params.zoomBlurStrength = 0.84;
-      scope.effect.params.useTexture = true;
+                center: {
+                    x: .5 * this._composer.width,
+                    y: .5 * this._composer.height
+                }
+            });
 
-      scope.effect.glowTexture = wagnerjs.Pass.prototype.getOfflineTexture(
-        this._composer.width,
-        this._composer.height,
-        false
-      );
+            break;
 
-      scope.effect.params.center.set(
-        .5 * this._composer.width,
-        .5 * this._composer.height
-      );
+        case "multiPassBloomPass":
+            scope.effect = new wagnerjs.MultiPassBloomPass();
 
-      this._composer.pass(scope.effect);
-      break;
+            target = api.extend(target, { 
+                strength: .5,
+                blurAmount: 1.32,
+                applyZoomBlur: true,
+                zoomBlurStrength: 0.84,
+                useTexture: true,
 
-    case "vignettePass":
-      scope.effect = new wagnerjs.VignettePass();
-      scope.effect.params.amount = 0.7;
-      scope.effect.params.falloff = 0.2;
-      this._composer.pass(scope.effect);
-      break;
+                center: {
+                    x: .5 * this._composer.width,
+                    y: .5 * this._composer.height
+                }
+            });
 
-    case "directionalBlurPass":
-      scope.effect = new wagnerjs.DirectionalBlurPass();
-      scope.effect.params.delta = 0.1;
-      this._composer.pass(scope.effect);
-      break;
+            scope.effect.glowTexture = wagnerjs.Pass.prototype.getOfflineTexture(
+                this._composer.width,
+                this._composer.height,
+                false
+            );
 
-    case "motionBlurPass":
-      scope.motionBlurEffect = new wagnerjs.DirectionalBlurPass();
-      scope.motionBlurEnable = true;
-      scope.motionBlurEffect.params.delta = 0;
-      scope.effect = scope.motionBlurEffect;
-      this._composer.pass(scope.effect);
-      break;
-    case "ASCIIPass":
-      scope.effect = new wagnerjs.ASCIIPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "dotScreenPass":
-      scope.effect = new wagnerjs.DotScreenPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "fxaaPass":
-      scope.effect = new wagnerjs.FXAAPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "chromaticAberrationPass":
-      scope.effect = new wagnerjs.ChromaticAberrationPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "dirtPass":
-      scope.effect = new wagnerjs.DirtPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "edgeDetectionPass":
-      scope.effect = new wagnerjs.SobelEdgeDetectionPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "highPassPass":
-      scope.effect = new wagnerjs.HighPassPass();
-      this._composer.pass(scope.effect);
-      break;
-    case "grayscalePass":
-      scope.effect = new wagnerjs.GrayscalePass();
-      this._composer.pass(scope.effect);
-      break;
-    case "halftonePass":
-      scope.effect = new wagnerjs.HalftonePass();
-      this._composer.pass(scope.effect);
-      break;
-    case "invertPass":
-      scope.effect = new wagnerjs.InvertPass();
-      this._composer.pass(scope.effect);
-      break;
-    default:
-      console.warn("No Wagner effect \"" + type + "\" exists. If it should exist, open an issue. (@addWagner)");
-      return;
-  }
+            break;
 
-  //this._composer.eff.push(this.effect);
-  this._composer.toScreen();
+        case "vignettePass":
+            scope.effect = new wagnerjs.VignettePass();
 
-  scope._composer = this._composer;
+            target = api.extend(target, { 
+                amount: 0.7,
+                falloff: 0.2
+            });
 
-  scope.apply = function() {
-    this._composer.eff.push(scope.effect);
+            break;
+
+        case "directionalBlurPass":
+            scope.effect = new wagnerjs.DirectionalBlurPass();
+
+            target = api.extend(target, { delta: 0.1 });
+
+            break;
+
+        case "motionBlurPass":
+            scope.effect = new wagnerjs.DirectionalBlurPass();
+
+            scope.motionBlurEnable = true;
+
+            target = api.extend(target, { delta: 0 });
+
+            break;
+
+        case "ASCIIPass":
+            scope.effect = new wagnerjs.ASCIIPass();
+
+            break;
+
+        case "dotScreenPass":
+            scope.effect = new wagnerjs.DotScreenPass();
+
+            break;
+
+        case "fxaaPass":
+            scope.effect = new wagnerjs.FXAAPass();
+
+            break;
+
+        case "chromaticAberrationPass":
+            scope.effect = new wagnerjs.ChromaticAberrationPass();
+
+            break;
+
+        case "dirtPass":
+            scope.effect = new wagnerjs.DirtPass();
+
+            break;
+
+        case "edgeDetectionPass":
+            scope.effect = new wagnerjs.SobelEdgeDetectionPass();
+
+            break;
+
+        case "highPassPass":
+            scope.effect = new wagnerjs.HighPassPass();
+
+            break;
+        case "grayscalePass":
+            scope.effect = new wagnerjs.GrayscalePass();
+
+            break;
+        case "halftonePass":
+            scope.effect = new wagnerjs.HalftonePass();
+
+            break;
+        case "invertPass":
+            scope.effect = new wagnerjs.InvertPass();
+
+            break;
+
+        default:
+            console.warn("No Wagner effect \"" + type + "\" exists. If it should exist, open an issue. (@addWagner)");
+
+            return;
+    }
+
+    scope.effect.params = target;
+
+    this._composer.pass(scope.effect);
+    this._composer.toScreen();
+
+    scope.apply = function() {
+        this._composer.eff.push(scope.effect);
+
+        return scope;
+    }
+
     return scope;
-  }
-
-  return scope;
-  
+    
 }
