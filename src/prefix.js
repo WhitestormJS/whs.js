@@ -17,6 +17,13 @@
 
 'use strict';
 
+// NodeJS fix.
+var MouseEvent = MouseEvent || { prototype:{} },
+    document = document || { 
+        getElementById: function() {},
+        styleSheets: [{}]
+    };
+
 // Array.isArray;
 if ( typeof Array.isArray === 'undefined' ) {
 
@@ -82,10 +89,6 @@ Element.prototype.fadeIn = function( t, display ){
 	});
 
 }
-
-// NodeJS fix.
-var MouseEvent = MouseEvent || { prototype:{} },
-    document = document || { getElementById: function() {} };
 
 // event.movementX and event.movementY kind of polyfill
 (function() {
