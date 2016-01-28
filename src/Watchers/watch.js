@@ -7,7 +7,7 @@
 WHS.Watch = function (queue) {
   'use strict';
 
-  this._queue = $.isArray(queue) ? queue : [];
+  this._queue = Array.isArray(queue) ? queue : [];
 
   return this;
 }
@@ -25,7 +25,7 @@ WHS.Watch.prototype.remove = function (element) {
 
   this._queue = this._queue.filter(function (item) {
     return item != element;
-  })
+  });
 
   return this;
 }
