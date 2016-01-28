@@ -17,56 +17,48 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
   // #TODO:160 add lights.
 
   // TODO: fix options problem.
-  var scope = new api.construct(this, {pos: pos}, type);
+  var scope = new api.construct(this, {pos}, type);
 
   scope.skip = true;
-
-  var options = api.def(opts, {});
-
-  api.def(opts.color, 0xffffff, options.color); // Default: white.
-  api.def(opts.skyColor, 0xffffff, options.skyColor); // Default: white.
-  api.def(opts.groundColor, 0xffffff, options.groundColor); // Default: white.
-  api.def(opts.intensity, 1, options.intensity); // Default: 1.
-  api.def(opts.distance, 100, options.distance); // Default: 100.
-  api.def(opts.angle, Math.PI / 3, options.angle); // Default: 100.
-
+  //Do not need the option variable, opts is by this statement, gained default values
+  WHS.API.extend(opts, {color: 0xffffff, //Default while
+                        skyColor: 0xffffff, //Default white
+                        groundColor: 0xffffff, //Default white
+                        intensity: 1, //Default 1
+                        distance: 100, //Default 100
+                        angle: Math.PI/3}) //Default PI/3
   switch (type) {
     case "ambient":
       scope.mesh = new THREE.AmbientLight(0xffffff);
       break;
 
-    case "area":
-      scope.mesh = new THREE.AreaLight(options.color, options.intensity);
-      console.warn([this.visible], "This light only works in the deferredrenderer");
-      break;
-
     case "directional":
       scope.mesh = new THREE.DirectionalLight(
-        options.color,
-        options.intensity
+        opts.color,
+        opts.intensity
       );
 
       break;
 
     case "hemisphere":
       scope.mesh = new THREE.HemisphereLight(
-        options.skyColor,
-        options.groundColor,
-        options.intensity
+        opts.skyColor,
+        opts.groundColor,
+        opts.intensity
       );
 
       break;
 
     case "light":
-      scope.mesh = new THREE.Light(options.color);
+      scope.mesh = new THREE.Light(opts.color);
 
       break;
 
     case "point":
       scope.mesh = new THREE.PointLight(
-        options.color,
-        options.intensity,
-        options.distance
+        opts.color,
+        opts.intensity,
+        opts.distance
       );
 
       //scope.mesh.visible = false;
@@ -75,10 +67,10 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
 
     case "spot":
       scope.mesh = new THREE.SpotLight(
-        options.color,
-        options.intensity,
-        options.distance,
-        options.angle
+        opts.color,
+        opts.intensity,
+        opts.distance,
+        opts.angle
       );
 
       break;
