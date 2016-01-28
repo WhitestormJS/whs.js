@@ -19,11 +19,13 @@
 
 // NodeJS fix.
 var MouseEvent = MouseEvent || { prototype:{} },
-    document = document || { 
+    Element = Element || { prototype:{}, style:{} };
+
+if (!document)
+    document = { 
         getElementById: function() {},
         styleSheets: [{}],
-    },
-    Element = Element || { prototype:{} };
+    }
 
 // Array.isArray;
 if ( typeof Array.isArray === 'undefined' ) {
