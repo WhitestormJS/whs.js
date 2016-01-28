@@ -26,12 +26,24 @@
 /* Preloading animation */
 
   #animation {
-  	animation: play 2s steps(100) infinite;
+    -webkit-animation: play 2s steps(100) infinite;
+    -moz-animation:    play 2s steps(100) infinite;
+    -o-animation:      play 2s steps(100) infinite;
+    animation:         play 2s steps(100) infinite;
     margin-left: calc(50% - 50px);
   }
 
+  @-webkit-keyframes play {
+    100% { transform: translateX(-10000px); }
+  }
+  @-moz-keyframes play {
+    100% { transform: translateX(-10000px); }
+  }
+  @-o-keyframes play {
+    100% { transform: translateX(-10000px); }
+  }
   @keyframes play {
-   100% { transform: translateX(-10000px); }
+    100% { transform: translateX(-10000px); }
   }
 
   .sprite-right {
