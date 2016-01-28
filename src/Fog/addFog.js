@@ -16,12 +16,13 @@ WHS.init.prototype.addFog = function(type, params) {
   'use strict';
 
   var scope = {};
-
-  api.def(params.hex, 0x000000); //, this.hex);
-  api.def(params.near, 0.015); //, this.near);
-  api.def(params.far, 1000); //, this.far);
-  api.def(params.density, 0.00025); //, this.density);
-
+  api.extend(params, {
+    hex: 0x000000, //Default hex
+    near: 0.015, //Default near
+    far: 1000, //Default far
+    density: 0.00025
+  });
+  
   switch (type) {
     case "fog":
       scope = new THREE.Fog(params.hex, params.near, params.far);
