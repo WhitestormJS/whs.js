@@ -16,11 +16,11 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
 
     'use strict';
 
-    var target = WHS.API.extend({
+    var target = WHS.API.extend(params, {
         block: document.getElementById('blocker'),
         speed: 1,
         ypos: 1
-    }, params);
+    });
 
     this.controls = new (function ( camera, mesh, params) {
 
