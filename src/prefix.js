@@ -24,6 +24,36 @@ if (typeof Array.isArray === 'undefined') {
     return Object.prototype.toString.call(obj) === '[object Array]';
   };
 }
+//Replacing jQuery fadeIn and fadeOut
+function addCSSRule(sheet, selector, rules, index) {
+	if(sheet.insertRule)
+		sheet.insertRule(selector + '{' + rules + '}', index);
+	else if(sheet.addRule) {
+		sheet.addRule(selector, rules, index);
+	}
+}
+addCSSRule(document.styleSheets[0], '@keyframes fadeOut', 'to {opacity: 0}', 0);
+addCSSRule(document.styleSheets[0], '@keyframes fadeIn', 'from {opacity: 0} to {opacity: 1}', 0);
+//Adds CSS style sheets
+Element.prototype.fadeOut = function(t){
+	this.style.webkitAnimationDuration = (t || 1) + 's';
+	this.style.webkitAnimationName = "fadeOut";
+	this.style.webkitAnimationPlayState  = 'running';
+	this.addEventListener('animationend', function(){
+ 		this.style.display = 'none';
+ 		this.style.webkitAnimationPlayState = 'paused';
+ 	});
+}
+Element.prototype.fadeIn = function(t, display){
+	this.style.display = display || 'block';
+	this.style.webkitAnimationDuration = (t || 1) + 's';
+	this.style.webkitAnimationName = "fadeIn";
+	this.style.webkitAnimationPlayState  = 'running';
+	this.addEventListener('animationend', function(){
+		this.style.display = display || 'block';
+	});
+}
+//Adds function to triggers animation
 
 // NodeJS fix.
 var MouseEvent = MouseEvent || { prototype:{} };
