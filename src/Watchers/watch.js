@@ -5,22 +5,27 @@
 */
 
 WHS.Watch = function (queue) {
+
   'use strict';
 
   this._queue = Array.isArray(queue) ? queue : [];
 
   return this;
+
 }
 
 WHS.Watch.prototype.add = function (element) {
+
   'use strict';
 
   this._queue.push(element);
 
   return this;
+
 }
 
 WHS.Watch.prototype.remove = function (element) {
+
   'use strict';
 
   this._queue = this._queue.filter(function (item) {
@@ -28,4 +33,5 @@ WHS.Watch.prototype.remove = function (element) {
   });
 
   return this;
+
 }
