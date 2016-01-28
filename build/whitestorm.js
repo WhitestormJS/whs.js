@@ -1457,6 +1457,15 @@ THREE.SubdivisionModifier.prototype.modify = function(geometry) {
 
 'use strict';
 
+// NodeJS fix.
+var MouseEvent = MouseEvent || {
+        prototype: {}
+    },
+    document = document || {
+        getElementById: function getElementById() {},
+        styleSheets: [{}]
+    };
+
 // Array.isArray;
 if (typeof Array.isArray === 'undefined') {
 
@@ -1504,15 +1513,7 @@ Element.prototype.fadeIn = function(t, display) {
     this.addEventListener('animationend', function() {
         this.style.display = display || 'block';
     });
-};
-
-// NodeJS fix.
-var MouseEvent = MouseEvent || {
-        prototype: {}
-    },
-    document = document || {
-        getElementById: function getElementById() {}
-    };
+}
 
 // event.movementX and event.movementY kind of polyfill
 (function() {
