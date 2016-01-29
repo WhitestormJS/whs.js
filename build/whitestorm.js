@@ -1444,32 +1444,7 @@ THREE.SubdivisionModifier.prototype.modify = function(geometry) {
     };
 })();
 
-// [x]#TODO:130 RESTRUCTURIZE.
-// [x]#TODO:120 RESTRUCTURIZE threejs and cannonjs library calling.
-// [x]#DONE:30 Add stats.
-// #TODO:10 Add http://underscorejs.org/.
-// DONE:20 clean all console.logs.
-// DOING:0 Wagner.base.js is not a part of library.
-// FIXME: Fix fog.
-// DOING:10 improve libraries support.
-
 /* ================ MODERNIZING BROWSER API IF NOT EXIST ==================== */
-
-'use strict';
-
-// NodeJS fix.
-var MouseEvent = MouseEvent || {
-        prototype: {}
-    },
-    Element = Element || {
-        prototype: {},
-        style: {}
-    };
-
-if (!document) document = {
-    getElementById: function getElementById() {},
-    styleSheets: [{}]
-};
 
 // Array.isArray;
 if (typeof Array.isArray === 'undefined') {
@@ -1587,6 +1562,17 @@ if (!Object.assign) {
         }
     });
 }
+
+// [x]#TODO:130 RESTRUCTURIZE.
+// [x]#TODO:120 RESTRUCTURIZE threejs and cannonjs library calling.
+// [x]#DONE:30 Add stats.
+// #TODO:10 Add http://underscorejs.org/.
+// DONE:20 clean all console.logs.
+// DOING:0 Wagner.base.js is not a part of library.
+// FIXME: Fix fog.
+// DOING:10 improve libraries support.
+
+'use strict';
 
 /* ================ WHITESTORM|JS ==================== */
 var WHS = {
