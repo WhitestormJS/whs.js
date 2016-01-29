@@ -48,6 +48,7 @@
 - Jquery is replaced with DOM in engine.
 - CSF. `addWagner.js`
 - *prefix.js (polyfill part) -> polyfill.js*
+- CSF. `addLight.js`
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.

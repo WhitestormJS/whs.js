@@ -49,15 +49,19 @@ GAME.ground = GAME.addGround( "terrain", {
 GAME.light1 = GAME.addLight( "spot", {
   color: 0xffffff, //0x00ff00,
   intensity: 3,
-  distance: 1000
-}, {
-  x: 160, // 100,
-  y: 120, // 30,
-  z: 160, // 100
-}, {
-  x: 0,
-  y: 10,
-  z: 0
+  distance: 1000,
+
+  pos: {
+    x: 160, // 100,
+    y: 120, // 30,
+    z: 160, // 100
+  },
+
+  target: {
+    x: 0,
+    y: 10,
+    z: 0
+  }
 } );
 
 GAME.parrot = GAME.addMorph( "assets/models/morph/parrot.js", {

@@ -13,100 +13,119 @@
  * @param {Object} target Target of light dot. (OPTIONAL)
  * @return {Object} Scope.
  */
-WHS.init.prototype.addLight = function(type, opts, pos, target) {
-  // #TODO:160 add lights.
+WHS.init.prototype.addLight = function(type, opts) {
 
-  // TODO: fix options problem.
-  var scope = new api.construct(this, {pos}, type);
+    'use strict';
 
-  scope.skip = true;
-  //Do not need the option variable, opts is by this statement, gained default values
-  WHS.API.extend(opts, {color: 0xffffff, //Default while
-                        skyColor: 0xffffff, //Default white
-                        groundColor: 0xffffff, //Default white
-                        intensity: 1, //Default 1
-                        distance: 100, //Default 100
-                        angle: Math.PI/3}) //Default PI/3
-  switch (type) {
-    case "ambient":
-      scope.mesh = new THREE.AmbientLight(0xffffff);
-      break;
+    var scope = new api.construct(this, opts, type);
 
-    case "directional":
-      scope.mesh = new THREE.DirectionalLight(
-        opts.color,
-        opts.intensity
-      );
+    //Do not need the option variable, opts is by this statement, gained default values
+    api.extend(opts, {
+        color: 0xffffff,
+        skyColor: 0xffffff,
+        groundColor: 0xffffff,
 
-      break;
+        intensity: 1,
+        distance: 100,
+        angle: Math.PI/3,
 
-    case "hemisphere":
-      scope.mesh = new THREE.HemisphereLight(
-        opts.skyColor,
-        opts.groundColor,
-        opts.intensity
-      );
+        shadowmap: {
+            cast: true,
 
-      break;
+            bias: 0.0001,
 
-    case "light":
-      scope.mesh = new THREE.Light(opts.color);
+            width: 1024,
+            height: 1024,
 
-      break;
+            near: true,
+            far: 400,
+            fov: 60,
+            darkness: 0.3,
 
-    case "point":
-      scope.mesh = new THREE.PointLight(
-        opts.color,
-        opts.intensity,
-        opts.distance
-      );
+            top: 200,
+            bottom: -200,
+            left: -200,
+            right: 200
+        }
+    });
 
-      //scope.mesh.visible = false;
+    switch (type) {
+        case "ambient":
+            scope.mesh = new THREE.AmbientLight(0xffffff);
+            break;
 
-      break;
+        case "directional":
+            scope.mesh = new THREE.DirectionalLight(
+                opts.color,
+                opts.intensity
+            );
 
-    case "spot":
-      scope.mesh = new THREE.SpotLight(
-        opts.color,
-        opts.intensity,
-        opts.distance,
-        opts.angle
-      );
+            break;
 
-      break;
-  }
+        case "hemisphere":
+            scope.mesh = new THREE.HemisphereLight(
+                opts.skyColor,
+                opts.groundColor,
+                opts.intensity
+            );
 
-  //scope.mesh.shadowCameraVisible = true;
+            break;
 
-  scope.mesh.castShadow = true;
+        case "light":
+            scope.mesh = new THREE.Light(opts.color);
 
-  // #FIXME:20 Shadow default parameters.
-  scope.mesh.shadowMapWidth = 1024;
-  scope.mesh.shadowMapHeight = 1024;
-  scope.mesh.shadowBias = 0.0001;
+            break;
 
-  scope.mesh.shadowCameraNear = true;
-  scope.mesh.shadowCameraFar = 400;
-  scope.mesh.shadowCameraFov = 60;
-  scope.mesh.shadowDarkness = 0.3;
+        case "point":
+            scope.mesh = new THREE.PointLight(
+                opts.color,
+                opts.intensity,
+                opts.distance
+            );
 
-  var d = 200;
+            break;
 
-  scope.mesh.shadowCameraLeft = -d;
-  scope.mesh.shadowCameraRight = d;
-  scope.mesh.shadowCameraTop = d;
-  scope.mesh.shadowCameraBottom = -d;
+        case "spot":
+            scope.mesh = new THREE.SpotLight(
+                opts.color,
+                opts.intensity,
+                opts.distance,
+                opts.angle
+            );
+
+            break;
+    }
+
+    //scope.mesh.shadowCameraVisible = true;
+
+    scope.mesh.castShadow = opts.shadowmap.cast;
+
+    // #FIXME:20 Shadow default parameters.
+    scope.mesh.shadowMapWidth = opts.shadowmap.width;
+    scope.mesh.shadowMapHeight = opts.shadowmap.height;
+    scope.mesh.shadowBias = opts.shadowmap.bias;
+
+    scope.mesh.shadowCameraNear = opts.shadowmap.near;
+    scope.mesh.shadowCameraFar = opts.shadowmap.far;
+    scope.mesh.shadowCameraFov = opts.shadowmap.fov;
+    scope.mesh.shadowDarkness = opts.shadowmap.darkness;
+
+    scope.mesh.shadowCameraLeft = opts.shadowmap.left;
+    scope.mesh.shadowCameraRight = opts.shadowmap.right;
+    scope.mesh.shadowCameraTop = opts.shadowmap.top;
+    scope.mesh.shadowCameraBottom = opts.shadowmap.bottom;
 
 
-  if (scope.mesh.target)
-    scope.mesh.target.position.set(
-      scope._target.x,
-      scope._target.y,
-      scope._target.z
-    );
+    if (scope.mesh.target)
+        scope.mesh.target.position.set(
+            scope._target.x,
+            scope._target.y,
+            scope._target.z
+        );
 
-  scope.build();
-  scope.wrap = api.Wrap(scope, scope.mesh);
+    scope.build();
+    scope.wrap = api.Wrap(scope, scope.mesh);
 
-  return scope;
+    return scope;
+
 };
