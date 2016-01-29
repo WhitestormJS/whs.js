@@ -6,17 +6,6 @@
 
 /* ================ MODERNIZING BROWSER API IF NOT EXIST ==================== */
 
-// Array.isArray;
-if ( typeof Array.isArray === 'undefined' ) {
-
-  Array.isArray = function(obj) {
-
-    'use strict';
-
-    return Object.prototype.toString.call(obj) === '[object Array]';
-  };
-
-}
 
 //Replacing jQuery fadeIn and fadeOut
 function addCSSRule( sheet, selector, rules, index ) {
@@ -69,6 +58,18 @@ Element.prototype.fadeIn = function( t, display ){
     this.addEventListener('animationend', function(){
         this.style.display = display || 'block';
     });
+
+}
+
+// Array.isArray;
+if ( typeof Array.isArray === 'undefined' ) {
+
+  Array.isArray = function(obj) {
+
+    'use strict';
+
+    return Object.prototype.toString.call(obj) === '[object Array]';
+  };
 
 }
 
