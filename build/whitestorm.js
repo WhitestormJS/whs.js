@@ -1446,17 +1446,6 @@ THREE.SubdivisionModifier.prototype.modify = function(geometry) {
 
 /* ================ MODERNIZING BROWSER API IF NOT EXIST ==================== */
 
-// Array.isArray;
-if (typeof Array.isArray === 'undefined') {
-
-    Array.isArray = function(obj) {
-
-        'use strict';
-
-        return Object.prototype.toString.call(obj) === '[object Array]';
-    };
-}
-
 //Replacing jQuery fadeIn and fadeOut
 function addCSSRule(sheet, selector, rules, index) {
 
@@ -1493,6 +1482,17 @@ Element.prototype.fadeIn = function(t, display) {
     this.addEventListener('animationend', function() {
         this.style.display = display || 'block';
     });
+};
+
+// Array.isArray;
+if (typeof Array.isArray === 'undefined') {
+
+    Array.isArray = function(obj) {
+
+        'use strict';
+
+        return Object.prototype.toString.call(obj) === '[object Array]';
+    };
 }
 
 // event.movementX and event.movementY kind of polyfill
@@ -3109,19 +3109,19 @@ WHS.init.prototype.addGrass = function(ground, options) {
         faceInGeometry.computeFaceNormals();
 
         /*var faceIn = new THREE.Mesh(
-          faceInGeometry, // Face geomtery.
-          new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.DoubleSide})
+            faceInGeometry, // Face geomtery.
+            new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.DoubleSide})
         );
           var vecN = intr.point.clone().add(faceInGeometry.faces[0].normal);
         var rotN = faceInGeometry.faces[0].normal; //.normalize();
           var nlGeometry = new THREE.Geometry();
         nlGeometry.vertices = [
-          intr.point,
-          vecN.clone()
+            intr.point,
+            vecN.clone()
         ];
           var normalLine = new THREE.Line(
-          nlGeometry,
-          new THREE.MeshBasicMaterial({color: 0x000000})
+            nlGeometry,
+            new THREE.MeshBasicMaterial({color: 0x000000})
         );*/
 
         mesh.position.set(0, 0, 0);
@@ -3176,7 +3176,7 @@ WHS.init.prototype.addGrass = function(ground, options) {
         delta = time - oldTime;
         oldTime = time;
           if (isNaN(delta) || delta > 1000 || delta == 0 ) {
-            delta = 1000/60;
+                delta = 1000/60;
         }*/
     };
 
@@ -3432,24 +3432,42 @@ WHS.init.prototype.addFog = function(type, params) {
  * @param {Object} target Target of light dot. (OPTIONAL)
  * @return {Object} Scope.
  */
-WHS.init.prototype.addLight = function(type, opts, pos, target) {
-    // #TODO:160 add lights.
+WHS.init.prototype.addLight = function(type, opts) {
 
-    // TODO: fix options problem.
-    var scope = new api.construct(this, {
-        pos: pos
-    }, type);
+    'use strict';
 
-    scope.skip = true;
+    var scope = new api.construct(this, opts, type);
+
     //Do not need the option variable, opts is by this statement, gained default values
-    WHS.API.extend(opts, {
-        color: 0xffffff, //Default while
-        skyColor: 0xffffff, //Default white
-        groundColor: 0xffffff, //Default white
-        intensity: 1, //Default 1
-        distance: 100, //Default 100
-        angle: Math.PI / 3
-    }); //Default PI/3
+    api.extend(opts, {
+        color: 0xffffff,
+        skyColor: 0xffffff,
+        groundColor: 0xffffff,
+
+        intensity: 1,
+        distance: 100,
+        angle: Math.PI / 3,
+
+        shadowmap: {
+            cast: true,
+
+            bias: 0.0001,
+
+            width: 1024,
+            height: 1024,
+
+            near: true,
+            far: 400,
+            fov: 60,
+            darkness: 0.3,
+
+            top: 200,
+            bottom: -200,
+            left: -200,
+            right: 200
+        }
+    });
+
     switch (type) {
         case "ambient":
             scope.mesh = new THREE.AmbientLight(0xffffff);
@@ -3473,8 +3491,6 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
         case "point":
             scope.mesh = new THREE.PointLight(opts.color, opts.intensity, opts.distance);
 
-            //scope.mesh.visible = false;
-
             break;
 
         case "spot":
@@ -3485,24 +3501,22 @@ WHS.init.prototype.addLight = function(type, opts, pos, target) {
 
     //scope.mesh.shadowCameraVisible = true;
 
-    scope.mesh.castShadow = true;
+    scope.mesh.castShadow = opts.shadowmap.cast;
 
     // #FIXME:20 Shadow default parameters.
-    scope.mesh.shadowMapWidth = 1024;
-    scope.mesh.shadowMapHeight = 1024;
-    scope.mesh.shadowBias = 0.0001;
+    scope.mesh.shadowMapWidth = opts.shadowmap.width;
+    scope.mesh.shadowMapHeight = opts.shadowmap.height;
+    scope.mesh.shadowBias = opts.shadowmap.bias;
 
-    scope.mesh.shadowCameraNear = true;
-    scope.mesh.shadowCameraFar = 400;
-    scope.mesh.shadowCameraFov = 60;
-    scope.mesh.shadowDarkness = 0.3;
+    scope.mesh.shadowCameraNear = opts.shadowmap.near;
+    scope.mesh.shadowCameraFar = opts.shadowmap.far;
+    scope.mesh.shadowCameraFov = opts.shadowmap.fov;
+    scope.mesh.shadowDarkness = opts.shadowmap.darkness;
 
-    var d = 200;
-
-    scope.mesh.shadowCameraLeft = -d;
-    scope.mesh.shadowCameraRight = d;
-    scope.mesh.shadowCameraTop = d;
-    scope.mesh.shadowCameraBottom = -d;
+    scope.mesh.shadowCameraLeft = opts.shadowmap.left;
+    scope.mesh.shadowCameraRight = opts.shadowmap.right;
+    scope.mesh.shadowCameraTop = opts.shadowmap.top;
+    scope.mesh.shadowCameraBottom = opts.shadowmap.bottom;
 
     if (scope.mesh.target) scope.mesh.target.position.set(scope._target.x, scope._target.y, scope._target.z);
 
