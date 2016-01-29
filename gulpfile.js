@@ -11,6 +11,26 @@ var babel = require("gulp-babel");
 var sources = [
   'src/libs/*.js',
   'src/libs/**/*.js',
+  'src/polyfill.js',
+  'src/prefix.js',
+  'src/Shaders/*.js',
+  'src/API/*.js',
+  'src/Watchers/*.js',
+  'src/Plugins/*.js',
+  'src/whitestorm.js',
+  'src/Objects/*.js',
+  'src/Ground/*.js',
+  'src/Fog/*.js',
+  'src/Light/*.js',
+  'src/Wagner/*.js',
+  'src/Controls/*.js',
+  'src/GUI/*.js',
+  'src/Skybox/*.js'
+]
+
+var sources_test = [
+  'src/libs/*.js',
+  'src/libs/**/*.js',
   'src/prefix.js',
   'src/Shaders/*.js',
   'src/API/*.js',
@@ -90,7 +110,7 @@ gulp.task('build', function() {
     .pipe(insert.prepend(author_comment))
     .pipe(gulp.dest('./build/'));
 
-  gulp.src(sources)
+  gulp.src(sources_test)
     .pipe(concat("whitestorm.test.js"))
     .pipe(babel({
             presets: ['es2015']
