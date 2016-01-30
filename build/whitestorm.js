@@ -1834,30 +1834,6 @@ WHS.API.construct.prototype.build = function(mesh) {
     return this;
 };
 
-// [x]#FIXME:10 Modify def for third parameter.
-/**
- * Defines variable. Makes convexPolyhedron object *CANNON.JS* from *THREE.JS* firure.
- *
- * @param {Var} option Variable with value. (REQUIRED)
- * @param {Type} value Value for apply (default). (REQUIRED)
- * @param {Var} variablePoint Variable with value for apply. (OPTIONAL)
- */
-WHS.API.def = function(option, value, variablePoint) {
-
-    'use strict';
-
-    if (arguments.length < 2) console.error("Something wrong! option? value?");
-    else if (arguments.length == 2) {
-
-        option = option || value;
-        return option;
-    } else if (arguments.length == 3 && variablePoint) {
-
-        variablePoint = option || value;
-        return variablePoint;
-    }
-};
-
 WHS.API.extend = function(object) {
     for (var _len = arguments.length, extensions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         extensions[_key - 1] = arguments[_key];
