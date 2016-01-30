@@ -22,7 +22,7 @@ WHS.init = function(params) {
   if (!WAGNER)
     console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
 
-  var target = $.extend(true, {
+  var target = api.extend({
 
     anaglyph: false,
     helper: false,
@@ -73,7 +73,7 @@ WHS.init = function(params) {
 
     background: 0x000000,
     assets: "./assets",
-    container: $('body'),
+    container: document.body,
 
     path_worker: '../libs/physijs_worker.js',
     path_ammo: '../libs/ammo.js'
@@ -90,9 +90,10 @@ WHS.init = function(params) {
   this.scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
 
   // DOM INIT
-  var whselement = $('<div class="whs"></div>');
+  var whselement = document.createElement('div'); //.whs
+  whselement.className = "whs";
 
-  target.container.append($(whselement));
+  target.container.appendChild(whselement);
 
   // Debug Renderer
 
@@ -118,7 +119,7 @@ WHS.init = function(params) {
     this._stats.domElement.style.left = '0px';
     this._stats.domElement.style.bottom = '0px';
 
-    $(whselement).append(this._stats.domElement);
+    whselement.appendChild(this._stats.domElement);
   }
 
   // Camera.
@@ -160,21 +161,19 @@ WHS.init = function(params) {
 
   }
 
-  $(renderer.domElement).css({
-    'width': target.width,
-    'height': target.height
-  });
+  renderer.domElement.style.width = target.width;
+  renderer.domElement.style.height = target.height;
 
-  $(renderer.domElement).attr('');
+  //$(renderer.domElement).attr('');
 
-  $(whselement).append(renderer.domElement);
+  whselement.appendChild(renderer.domElement);
 
-  target.container.css({
+  /*target.container.css({
     'margin': 0,
     'padding': 0,
     'position': 'relative',
     'overflow': 'hidden'
-  });
+  });*/
 
 
   // NOTE: ==================== Composer. =======================
@@ -183,12 +182,10 @@ WHS.init = function(params) {
     this._composer = new WAGNER.Composer(renderer);
     
     this._composer.setSize(target.rWidth, target.rHeight);
-
-    $(this._composer.domElement).css({
-      'width': target.width,
-      'height': target.height
-    });
-
+/*
+    this._composer.domElement.style.width = target.width;
+    this._composer.domElement.style.height = target.height;
+*/
     this._composer.autoClearColor = true;
 
     this._composer.reset();
@@ -210,7 +207,7 @@ WHS.init = function(params) {
   var scope = this;
 
   if (target.autoresize)
-    $(window).on('load resize', function() {
+    window.addEventListener('load resize', function() {
       scope._camera.aspect = window.innerWidth / window.innerHeight;
 
       scope._camera.updateProjectionMatrix();
