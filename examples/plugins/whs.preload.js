@@ -11,7 +11,7 @@ var Preloader = function() {
 		ready: [],
 		parent: false,
 
-		element: $('.preloader'),
+		element: document.querySelector('.preloader'),
 
 		done: function() {
 			console.log("Objects loaded!");
