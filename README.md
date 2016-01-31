@@ -1,20 +1,14 @@
 # WhitestormJS
 JQuery for Three.js
 
+----
+
 [![Build Status](https://travis-ci.org/WhitestormJS/whitestorm.js.svg)](https://travis-ci.org/WhitestormJS/whitestorm.js)
 [![npm](http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs) [![bower](http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg)](https://github.com/WhitestormJS/whitestorm.js)
 
 [![Issues](http://wsbadge.herokuapp.com/npm/dt/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs)
 [![Slack Status](https://whslack.herokuapp.com/badge.svg)](https://whslack.herokuapp.com)
-
-
-----------------------------------------------------------------------------------------------------------------
-
-
-#####Code style check:   [![Codacy Badge](https://api.codacy.com/project/badge/8f5d1eab0569415b983bf0c1b7323d68)](https://www.codacy.com/app/siteprogcom/WhitestormJS) [![bitHound Overall Score](https://www.bithound.io/github/WhitestormJS/whitestorm.js/badges/score.svg)](https://www.bithound.io/github/WhitestormJS/whitestorm.js)
-
-
-----------------------------------------------------------------------------------------------------------------
+[![bitHound Overall Score](https://www.bithound.io/github/WhitestormJS/whitestorm.js/badges/score.svg)](https://www.bithound.io/github/WhitestormJS/whitestorm.js)
 
 **WhitestormJS** is a 3D Javascript engine based on [**Three.js**](http://threejs.org/). It uses physics and effects libraries to define WhitestormJS API™ that contains useful scripts for **terrain generation, skybox, animation, physics simulation and post-effects**. WhitestormJS simplifies _Three.js object crafting algorithm_ to javascript methods with parameters.
 
