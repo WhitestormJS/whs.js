@@ -10,6 +10,8 @@ JQuery for Three.js
 [![Slack Status](https://whslack.herokuapp.com/badge.svg)](https://whslack.herokuapp.com)
 [![bitHound Overall Score](https://www.bithound.io/github/WhitestormJS/whitestorm.js/badges/score.svg)](https://www.bithound.io/github/WhitestormJS/whitestorm.js)
 
+----
+
 **WhitestormJS** is a 3D Javascript engine based on [**Three.js**](http://threejs.org/). It uses physics and effects libraries to define WhitestormJS API™ that contains useful scripts for **terrain generation, skybox, animation, physics simulation and post-effects**. WhitestormJS simplifies _Three.js object crafting algorithm_ to javascript methods with parameters.
 
 WhitestormJS is [hosted by jsDelivr](http://www.jsdelivr.com/projects/whitestormjs). You can link to the latest [minified version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js), [full version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.js), or [download both](https://cdn.jsdelivr.net/whitestormjs/latest/whitestormjs.zip).
