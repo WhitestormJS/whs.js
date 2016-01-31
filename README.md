@@ -13,6 +13,7 @@ JQuery for Three.js
 
 ----
 
+
 **WhitestormJS** is a 3D Javascript engine based on [**Three.js**](http://threejs.org/). It uses physics and effects libraries to define WhitestormJS API™ that contains useful scripts for **terrain generation, skybox, animation, physics simulation and post-effects**. WhitestormJS simplifies _Three.js object crafting algorithm_ to javascript methods with parameters.
 
 WhitestormJS is [hosted by jsDelivr](http://www.jsdelivr.com/projects/whitestormjs). You can link to the latest [minified version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js), [full version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.js), or [download both](https://cdn.jsdelivr.net/whitestormjs/latest/whitestormjs.zip).
@@ -86,4 +87,4 @@ GAME.start(); // Start animations and physics simulation.
 
 ## License
 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Лицензия Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Произведение «<span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">WhitestormJS 3D-Library</span>» созданное автором по имени <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/sasha240100" property="cc:attributionName" rel="cc:attributionURL">Alexander Buzin</a>, публикуется на условиях <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">лицензии Creative Commons «Attribution-NonCommercial-NoDerivatives» («Атрибуция — Некоммерческое использование — Без производных произведений») 4.0 Всемирная</a>.<br />Основано на произведении с <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/WhitestormJS/whitestorm.js" rel="dct:source">https://github.com/WhitestormJS/whitestorm.js</a>.<br />Разрешения, выходящие за рамки данной лицензии, могут быть доступны на странице <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/WhitestormJS/whitestorm.js" rel="cc:morePermissions">https://github.com/WhitestormJS/whitestorm.js</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Лицензия Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />
