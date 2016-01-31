@@ -45,7 +45,6 @@ After adding these libraries, you can configure your game:
 var GAME = new WHS.init({
     anaglyph: false, // Anaglyph effect.
     stats: "fps", // fps, ms, mb or false if not need.
-    wagner: WAGNER, // wagner library variable
 
     gravity: { // Physic gravity.
         x: 0,
