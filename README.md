@@ -1,9 +1,10 @@
 # WhitestormJS
+JQuery for Three.js
+
 [![Build Status](https://travis-ci.org/WhitestormJS/whitestorm.js.svg)](https://travis-ci.org/WhitestormJS/whitestorm.js)
-[![npm](http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs) [![bower](http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg)](https://github.com/WhitestormJS/whitestorm.js) [![Gitter](http://wsbadge.herokuapp.com/badge/GITTER-JOIN_CHAT_%E2%86%92-1dce73.svg)](https://gitter.im/WhitestormJS/whitestorm.js)
+[![npm](http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs) [![bower](http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg)](https://github.com/WhitestormJS/whitestorm.js)
 
 [![Issues](http://wsbadge.herokuapp.com/npm/dt/whitestormjs.svg)](https://www.npmjs.com/package/whitestormjs)
-[![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-red.svg)](https://github.com/sasha240100)
 [![Slack Status](https://whslack.herokuapp.com/badge.svg)](https://whslack.herokuapp.com)
 
 
@@ -73,8 +74,14 @@ GAME.start(); // Start animations and physics simulation.
  * [Plugin/Color](http://192.241.128.187/current/examples/plugin_example.html)  (Basic plugin example.)
  * [Skybox](http://192.241.128.187/current/examples/skybox.html) (Skybox example)
 
-### Author:
-@sasha240100 [![forthebadge](http://wsbadge.herokuapp.com/twitter/url/http/alexbuzin.me.svg?style=social)](https://twitter.com/intent/tweet?text=Check+this+developer:&url=http%3A%2F%2Falexbuzin.me)
+### Contributors:
+[![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-red.svg)](https://github.com/sasha240100)
+
+[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-jackdalton-blue.svg)](https://github.com/jackdalton)
+
+[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-Noctisdark-blue.svg)](https://github.com/noctisdark)
+
+[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-bdirl-blue.svg)](https://github.com/bdirl)
 
 #### Changelog: [Look here](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
 
