@@ -49,6 +49,7 @@
 - CSF. `addWagner.js`
 - *prefix.js (polyfill part) -> polyfill.js*
 - CSF. `addLight.js`
+- Add warning in case of PointerLock API incompatibility.
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
