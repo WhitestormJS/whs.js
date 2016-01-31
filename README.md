@@ -77,6 +77,11 @@ GAME.start(); // Start animations and physics simulation.
  * [Plugin/Color](http://192.241.128.187/current/examples/plugin_example.html)  (Basic plugin example.)
  * [Skybox](http://192.241.128.187/current/examples/skybox.html) (Skybox example)
 
+##### Docs: [Look here](http://whitestormjs.xyz/init/)
+##### Changelog: [Look here](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
+
+----
+
 ### Contributors:
 [![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-red.svg)](https://github.com/sasha240100)
 
@@ -85,9 +90,6 @@ GAME.start(); // Start animations and physics simulation.
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-Noctisdark-blue.svg)](https://github.com/noctisdark)
 
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-bdirl-blue.svg)](https://github.com/bdirl)
-
-#### Docs: [Look here](http://whitestormjs.xyz/init/)
-#### Changelog: [Look here](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
 
 <br>
 
