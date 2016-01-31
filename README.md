@@ -63,6 +63,8 @@ GAME.start(); // Start animations and physics simulation.
 
 [![Join the chat at https://gitter.im/WhitestormJS/whitestorm.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+<br>
+
 ## Structure
 ![Whitestorm.js structure](https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/coggle/WhitestormJS.png)
 
@@ -87,8 +89,9 @@ GAME.start(); // Start animations and physics simulation.
 #### Docs: [Look here](http://whitestormjs.xyz/init/)
 #### Changelog: [Look here](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
 
-## License
+<br>
 
+## License
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Лицензия Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />
 
 <br>
