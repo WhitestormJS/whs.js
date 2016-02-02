@@ -9,40 +9,43 @@ WHS.API.Wrap = function( SCOPE, mesh ) {
 	
 	'use strict';
 
-	this._mesh = mesh;
-	this._scope = SCOPE;
+	var _mesh = mesh;
+	var _scope = SCOPE;
 	this._key = SCOPE.root.modellingQueue.length;
 
-	try {
+	_scope._state = new Promise( (resolve, reject) => {
+		try {
 
-		api.merge( this._scope.root.scene, this._mesh );
+			api.merge( _scope.root.scene, _mesh );
 
-		this._scope.root.modellingQueue.push( this._scope );
+			_scope.root.modellingQueue.push( _scope );
 
-	} catch ( err ) {
+		} catch ( err ) {
 
-		console.error( err.message );
+			console.error( err.message );
 
-		this._scope.__deferred.reject();
+			reject();
 
-	} finally {
+		} finally {
 
-		if ( this._scope._wait ) {
+			if ( _scope._wait ) {
 
-			var sc = this;
-			sc._mesh.addEventListener( 'ready', function() {
+				_scope._mesh.addEventListener( 'ready', function() {
 
-				sc._scope.__deferred.resolve();
+					resolve();
 
-			} );
+				} );
 
-		} else {
+			} else {
 
-			this._scope.__deferred.resolve();
+				resolve();
+
+			}
 
 		}
+	});
 
-	}
+	_scope.root.children.push( _scope );
 
 	return this;
 

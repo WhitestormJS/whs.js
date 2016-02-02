@@ -17,7 +17,7 @@ WHS.API.loadMaterial = function( material ) {
 		_friction: material.friction || material.fri || 0.8
 	};
 
-	var params = $.extend( {}, material );
+	var params = api.extend( {}, material );
 
 	delete params[ "kind" ];
 
