@@ -11,7 +11,10 @@ WHS.API.extend = function( object, ...extensions ) { // $.extend alternative, ..
 			continue; // Ignore null and undefined objects and paramaters.
 
 		for( var prop of Object.getOwnPropertyNames( extension ) ) { // Do not traverse the prototype chain.
-			if(object[prop] != undefined && object[prop].toString() == '[object Object]' && extension[prop].toString() == '[object Object]')
+			if( object[prop] != undefined 
+				&& object[prop].toString() == '[object Object]' 
+				&& extension[prop].toString() == '[object Object]' )
+
 				//Goes deep only if object[prop] and extension[prop] are both objects !
 				WHS.API.extend(object[prop], extension[prop]);
 					
