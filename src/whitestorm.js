@@ -22,7 +22,7 @@ WHS.init = function(params) {
   if (!WAGNER)
     console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
 
-  var target = api.extend({
+  var target = api.extend(params, {
 
     anaglyph: false,
     helper: false,
@@ -78,7 +78,7 @@ WHS.init = function(params) {
     path_worker: '../libs/physijs_worker.js',
     path_ammo: '../libs/ammo.js'
 
-  }, params);
+  });
 
   this._settings = target;
 
@@ -309,7 +309,8 @@ WHS.init = function(params) {
    });
 
    scope.children.forEach(function(object) {
-     object._state.done(function() {
+
+     object._state.then(function() {
        scope._ready.push(object);
  
        if(scope._queue.length == scope._ready.length) {
