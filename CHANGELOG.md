@@ -49,9 +49,13 @@
 - CSF. `addWagner.js`
 - *prefix.js (polyfill part) -> polyfill.js*
 - CSF. `addLight.js`
+<<<<<<< HEAD
 - Removed `api.def()`.
 - CSF. `whitestorm.js`
 - Jquery removed from engine.
+=======
+- Add warning in case of PointerLock API incompatibility.
+>>>>>>> origin/dev
 
 **v0.0.6**
 - Made `WHS.API.construct.build` parameters optional.
