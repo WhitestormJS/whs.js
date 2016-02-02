@@ -1803,7 +1803,7 @@ WHS.API.construct = function( root, params, type ) {
 	if ( params.scale ) params.scale.set = _set;
 	if ( params.target ) params.target.set = _set;
 
-	var target = api.extend({
+	var target = api.extend(params, {
 		pos: {
 			x: 0,
 			y: 0,
@@ -1833,7 +1833,7 @@ WHS.API.construct = function( root, params, type ) {
 			duration: 1
 		},
 		onlyvis: false
-	}, params );
+	} );
 
 
 	var key = 0;
@@ -1844,7 +1844,7 @@ WHS.API.construct = function( root, params, type ) {
 
 	} );
 
-	var deferred = $.Deferred();
+	//var deferred = new Deferred();
 
 	var scope = {
 		root: root,
@@ -1852,8 +1852,6 @@ WHS.API.construct = function( root, params, type ) {
 		_whsobject: true,
 		_name: type + key,
 		__releaseTime: new Date().getTime(),
-		__deferred: deferred,
-		_state: deferred.promise(),
 		_pos: target.pos,
 		_rot: target.rot,
 		_scale: target.scale,
@@ -1863,8 +1861,6 @@ WHS.API.construct = function( root, params, type ) {
 	};
 
 	Object.assign( this, scope );
-
-	root.children.push( scope );
 
 	return this;
 
@@ -1876,32 +1872,40 @@ WHS.API.construct.prototype.build = function( mesh ) {
 
 	mesh = mesh || this.mesh;
 
-	try {
+	this.build_state = new Promise( (resolve, reject) => {
+		try {
 
-		// Shadowmap.
-		mesh.castShadow = true;
-		mesh.receiveShadow = true;
+			// Shadowmap.
+			mesh.castShadow = true;
+			mesh.receiveShadow = true;
 
-		// Position.
-		mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
+			// Position.
 
-		// Rotation.
-		mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
-		// TODO: CANNON.JS object rotation.
-		//if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
+			console.log(this);
+			mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
 
-		// Scaling.
-		mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
-		// TODO: CANNON.JS object scaling.
-		//object.scale.set(this._rot.x, this._rot.y, this._rot.z);
+			// Rotation.
+			mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
+			// TODO: CANNON.JS object rotation.
+			//if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
 
-	} catch ( err ) {
+			// Scaling.
+			mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
+			// TODO: CANNON.JS object scaling.
+			//object.scale.set(this._rot.x, this._rot.y, this._rot.z);
 
-		console.error( err.message );
+			resolve();
 
-		this.__deferred.reject();
+		} catch ( err ) {
 
-	}
+			console.error( err.message );
+
+			reject();
+
+			//this._state.reject();
+
+		}
+	});
 
 	return this;
 
@@ -2024,7 +2028,7 @@ WHS.API.loadMaterial = function( material ) {
 		_friction: material.friction || material.fri || 0.8
 	};
 
-	var params = $.extend( {}, material );
+	var params = api.extend( {}, material );
 
 	delete params[ "kind" ];
 
@@ -2415,40 +2419,43 @@ WHS.API.Wrap = function( SCOPE, mesh ) {
 	
 	'use strict';
 
-	this._mesh = mesh;
-	this._scope = SCOPE;
+	var _mesh = mesh;
+	var _scope = SCOPE;
 	this._key = SCOPE.root.modellingQueue.length;
 
-	try {
+	_scope._state = new Promise( (resolve, reject) => {
+		try {
 
-		api.merge( this._scope.root.scene, this._mesh );
+			api.merge( _scope.root.scene, _mesh );
 
-		this._scope.root.modellingQueue.push( this._scope );
+			_scope.root.modellingQueue.push( _scope );
 
-	} catch ( err ) {
+		} catch ( err ) {
 
-		console.error( err.message );
+			console.error( err.message );
 
-		this._scope.__deferred.reject();
+			reject();
 
-	} finally {
+		} finally {
 
-		if ( this._scope._wait ) {
+			if ( _scope._wait ) {
 
-			var sc = this;
-			sc._mesh.addEventListener( 'ready', function() {
+				_scope._mesh.addEventListener( 'ready', function() {
 
-				sc._scope.__deferred.resolve();
+					resolve();
 
-			} );
+				} );
 
-		} else {
+			} else {
 
-			this._scope.__deferred.resolve();
+				resolve();
+
+			}
 
 		}
+	});
 
-	}
+	_scope.root.children.push( _scope );
 
 	return this;
 
@@ -2599,7 +2606,7 @@ WHS.init = function(params) {
   if (!WAGNER)
     console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
 
-  var target = api.extend({
+  var target = api.extend(params, {
 
     anaglyph: false,
     helper: false,
@@ -2655,7 +2662,7 @@ WHS.init = function(params) {
     path_worker: '../libs/physijs_worker.js',
     path_ammo: '../libs/ammo.js'
 
-  }, params);
+  });
 
   this._settings = target;
 
@@ -2886,7 +2893,8 @@ WHS.init = function(params) {
    });
 
    scope.children.forEach(function(object) {
-     object._state.done(function() {
+
+     object._state.then(function() {
        scope._ready.push(object);
  
        if(scope._queue.length == scope._ready.length) {

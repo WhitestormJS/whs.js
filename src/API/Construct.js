@@ -24,7 +24,7 @@ WHS.API.construct = function( root, params, type ) {
 	if ( params.scale ) params.scale.set = _set;
 	if ( params.target ) params.target.set = _set;
 
-	var target = api.extend({
+	var target = api.extend(params, {
 		pos: {
 			x: 0,
 			y: 0,
@@ -54,7 +54,7 @@ WHS.API.construct = function( root, params, type ) {
 			duration: 1
 		},
 		onlyvis: false
-	}, params );
+	} );
 
 
 	var key = 0;
@@ -65,7 +65,7 @@ WHS.API.construct = function( root, params, type ) {
 
 	} );
 
-	var deferred = $.Deferred();
+	//var deferred = new Deferred();
 
 	var scope = {
 		root: root,
@@ -73,8 +73,6 @@ WHS.API.construct = function( root, params, type ) {
 		_whsobject: true,
 		_name: type + key,
 		__releaseTime: new Date().getTime(),
-		__deferred: deferred,
-		_state: deferred.promise(),
 		_pos: target.pos,
 		_rot: target.rot,
 		_scale: target.scale,
@@ -84,8 +82,6 @@ WHS.API.construct = function( root, params, type ) {
 	};
 
 	Object.assign( this, scope );
-
-	root.children.push( scope );
 
 	return this;
 
@@ -97,32 +93,40 @@ WHS.API.construct.prototype.build = function( mesh ) {
 
 	mesh = mesh || this.mesh;
 
-	try {
+	this.build_state = new Promise( (resolve, reject) => {
+		try {
 
-		// Shadowmap.
-		mesh.castShadow = true;
-		mesh.receiveShadow = true;
+			// Shadowmap.
+			mesh.castShadow = true;
+			mesh.receiveShadow = true;
 
-		// Position.
-		mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
+			// Position.
 
-		// Rotation.
-		mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
-		// TODO: CANNON.JS object rotation.
-		//if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
+			console.log(this);
+			mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
 
-		// Scaling.
-		mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
-		// TODO: CANNON.JS object scaling.
-		//object.scale.set(this._rot.x, this._rot.y, this._rot.z);
+			// Rotation.
+			mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
+			// TODO: CANNON.JS object rotation.
+			//if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
 
-	} catch ( err ) {
+			// Scaling.
+			mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
+			// TODO: CANNON.JS object scaling.
+			//object.scale.set(this._rot.x, this._rot.y, this._rot.z);
 
-		console.error( err.message );
+			resolve();
 
-		this.__deferred.reject();
+		} catch ( err ) {
 
-	}
+			console.error( err.message );
+
+			reject();
+
+			//this._state.reject();
+
+		}
+	});
 
 	return this;
 
