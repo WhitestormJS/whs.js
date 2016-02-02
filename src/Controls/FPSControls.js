@@ -25,7 +25,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
     this.controls = new (function ( camera, mesh, params) {
 
         /* Velocity properties */
-        var velocityFactor = 1, 
+        var velocityFactor = 1,
             runVelocity = 0.25;
 
         mesh.setAngularFactor({x: 0, y: 0, z: 0});
@@ -95,7 +95,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
                 case 32: // space
                     if ( canJump == true ){
 
-                            mesh.applyCentralImpulse({x: 0, y: 300, z: 0}); 
+                            mesh.applyCentralImpulse({x: 0, y: 300, z: 0});
 
                     }
 
@@ -158,7 +158,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
             quat.multiplyVector3(targetVec);
         }
 
-        // Moves the camera to the Cannon.js object position 
+        // Moves the camera to the Cannon.js object position
         // and adds velocity to the object if the run key is down.
         var inputVelocity = new THREE.Vector3(),
             euler = new THREE.Euler();
@@ -237,6 +237,10 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
             }
 
         }
+
+    } else {
+
+        console.warn("Your browser does not support the PointerLock API.");
 
     }
 
