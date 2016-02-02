@@ -24,36 +24,44 @@ WHS.API.construct = function( root, params, type ) {
 	if ( params.scale ) params.scale.set = _set;
 	if ( params.target ) params.target.set = _set;
 
+	// Polyfill for 3D.
 	var target = api.extend(params, {
+
 		pos: {
 			x: 0,
 			y: 0,
 			z: 0,
 			set: _set
 		},
+
 		rot: {
 			x: 0,
 			y: 0,
 			z: 0,
 			set: _set
 		},
+
 		scale: {
 			x: 1,
 			y: 1,
 			z: 1,
 			set: _set
 		},
+
 		target: {
 			x: 0,
 			y: 0,
 			z: 0,
 			set: _set
 		},
+
 		morph: {
 			speed: 1,
 			duration: 1
 		},
+
 		onlyvis: false
+
 	} );
 
 
@@ -64,8 +72,6 @@ WHS.API.construct = function( root, params, type ) {
 		if ( el.type == type ) key ++;
 
 	} );
-
-	//var deferred = new Deferred();
 
 	var scope = {
 		root: root,
@@ -94,26 +100,15 @@ WHS.API.construct.prototype.build = function( mesh ) {
 	mesh = mesh || this.mesh;
 
 	this.build_state = new Promise( (resolve, reject) => {
+
 		try {
 
-			// Shadowmap.
 			mesh.castShadow = true;
 			mesh.receiveShadow = true;
 
-			// Position.
-
-			console.log(this);
 			mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
-
-			// Rotation.
 			mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
-			// TODO: CANNON.JS object rotation.
-			//if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
-
-			// Scaling.
 			mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
-			// TODO: CANNON.JS object scaling.
-			//object.scale.set(this._rot.x, this._rot.y, this._rot.z);
 
 			resolve();
 
@@ -126,6 +121,7 @@ WHS.API.construct.prototype.build = function( mesh ) {
 			//this._state.reject();
 
 		}
+
 	});
 
 	return this;
