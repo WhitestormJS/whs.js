@@ -1,5 +1,5 @@
 # WhitestormJS
-**JQuery for Three.js**
+**jQuery for Three.js**
 
 ----
 
