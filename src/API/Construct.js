@@ -24,37 +24,45 @@ WHS.API.construct = function( root, params, type ) {
 	if ( params.scale ) params.scale.set = _set;
 	if ( params.target ) params.target.set = _set;
 
-	var target = $.extend( true, {
+	// Polyfill for 3D.
+	var target = api.extend(params, {
+
 		pos: {
 			x: 0,
 			y: 0,
 			z: 0,
 			set: _set
 		},
+
 		rot: {
 			x: 0,
 			y: 0,
 			z: 0,
 			set: _set
 		},
+
 		scale: {
 			x: 1,
 			y: 1,
 			z: 1,
 			set: _set
 		},
+
 		target: {
 			x: 0,
 			y: 0,
 			z: 0,
 			set: _set
 		},
+
 		morph: {
 			speed: 1,
 			duration: 1
 		},
+
 		onlyvis: false
-	}, params );
+
+	} );
 
 
 	var key = 0;
@@ -65,16 +73,12 @@ WHS.API.construct = function( root, params, type ) {
 
 	} );
 
-	var deferred = $.Deferred();
-
 	var scope = {
 		root: root,
 		_key: key,
 		_whsobject: true,
 		_name: type + key,
 		__releaseTime: new Date().getTime(),
-		__deferred: deferred,
-		_state: deferred.promise(),
 		_pos: target.pos,
 		_rot: target.rot,
 		_scale: target.scale,
@@ -84,8 +88,6 @@ WHS.API.construct = function( root, params, type ) {
 	};
 
 	Object.assign( this, scope );
-
-	root.children.push( scope );
 
 	return this;
 
@@ -97,32 +99,30 @@ WHS.API.construct.prototype.build = function( mesh ) {
 
 	mesh = mesh || this.mesh;
 
-	try {
+	this.build_state = new Promise( (resolve, reject) => {
 
-		// Shadowmap.
-		mesh.castShadow = true;
-		mesh.receiveShadow = true;
+		try {
 
-		// Position.
-		mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
+			mesh.castShadow = true;
+			mesh.receiveShadow = true;
 
-		// Rotation.
-		mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
-		// TODO: CANNON.JS object rotation.
-		//if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
+			mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
+			mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
+			mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
 
-		// Scaling.
-		mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
-		// TODO: CANNON.JS object scaling.
-		//object.scale.set(this._rot.x, this._rot.y, this._rot.z);
+			resolve();
 
-	} catch ( err ) {
+		} catch ( err ) {
 
-		console.error( err.message );
+			console.error( err.message );
 
-		this.__deferred.reject();
+			reject();
 
-	}
+			//this._state.reject();
+
+		}
+
+	});
 
 	return this;
 
