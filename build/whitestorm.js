@@ -2745,8 +2745,8 @@ WHS.init = function(params) {
 
   }
 
-  renderer.domElement.style.width = target.width;
-  renderer.domElement.style.height = target.height;
+  renderer.domElement.style.width = '100%';
+  renderer.domElement.style.height = '100%';
 
   //$(renderer.domElement).attr('');
 
@@ -2759,6 +2759,13 @@ WHS.init = function(params) {
     'overflow': 'hidden'
   });*/
 
+  target.container.style.margin = 0;
+  target.container.style.padding = 0;
+  target.container.style.position = 'relative';
+  target.container.style.overflow = 'hidden';
+
+  
+
 
   // NOTE: ==================== Composer. =======================
 
@@ -2766,10 +2773,10 @@ WHS.init = function(params) {
     this._composer = new WAGNER.Composer(renderer);
     
     this._composer.setSize(target.rWidth, target.rHeight);
-/*
-    this._composer.domElement.style.width = target.width;
-    this._composer.domElement.style.height = target.height;
-*/
+
+    //this._composer.domElement.style.width = target.width;
+    //this._composer.domElement.style.height = target.height;
+
     this._composer.autoClearColor = true;
 
     this._composer.reset();
