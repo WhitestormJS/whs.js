@@ -9,7 +9,7 @@ WHS.API.loadMaterial = function( material ) {
 	'use strict';
 
 	if ( typeof material.kind !== "string" )
-	console.error( "Type of material is undefined or not a string. @loadMaterial" );
+		console.error( "Type of material is undefined or not a string. @loadMaterial" );
 
 	var scope = {
 		_type: material.kind,

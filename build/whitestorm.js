@@ -1803,36 +1803,44 @@ WHS.API.construct = function( root, params, type ) {
 	if ( params.scale ) params.scale.set = _set;
 	if ( params.target ) params.target.set = _set;
 
+	// Polyfill for 3D.
 	var target = api.extend(params, {
+
 		pos: {
 			x: 0,
 			y: 0,
 			z: 0,
 			set: _set
 		},
+
 		rot: {
 			x: 0,
 			y: 0,
 			z: 0,
 			set: _set
 		},
+
 		scale: {
 			x: 1,
 			y: 1,
 			z: 1,
 			set: _set
 		},
+
 		target: {
 			x: 0,
 			y: 0,
 			z: 0,
 			set: _set
 		},
+
 		morph: {
 			speed: 1,
 			duration: 1
 		},
+
 		onlyvis: false
+
 	} );
 
 
@@ -1843,8 +1851,6 @@ WHS.API.construct = function( root, params, type ) {
 		if ( el.type == type ) key ++;
 
 	} );
-
-	//var deferred = new Deferred();
 
 	var scope = {
 		root: root,
@@ -1873,26 +1879,15 @@ WHS.API.construct.prototype.build = function( mesh ) {
 	mesh = mesh || this.mesh;
 
 	this.build_state = new Promise( (resolve, reject) => {
+
 		try {
 
-			// Shadowmap.
 			mesh.castShadow = true;
 			mesh.receiveShadow = true;
 
-			// Position.
-
-			console.log(this);
 			mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
-
-			// Rotation.
 			mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
-			// TODO: CANNON.JS object rotation.
-			//if (isPhysics) object.rotation.set(this._rot.x, this._rot.y, this._rot.z);
-
-			// Scaling.
 			mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
-			// TODO: CANNON.JS object scaling.
-			//object.scale.set(this._rot.x, this._rot.y, this._rot.z);
 
 			resolve();
 
@@ -1905,6 +1900,7 @@ WHS.API.construct.prototype.build = function( mesh ) {
 			//this._state.reject();
 
 		}
+
 	});
 
 	return this;
@@ -1924,7 +1920,10 @@ WHS.API.extend = function( object, ...extensions ) { // $.extend alternative, ..
 			continue; // Ignore null and undefined objects and paramaters.
 
 		for( var prop of Object.getOwnPropertyNames( extension ) ) { // Do not traverse the prototype chain.
-			if(object[prop] != undefined && object[prop].toString() == '[object Object]' && extension[prop].toString() == '[object Object]')
+			if( object[prop] != undefined 
+				&& object[prop].toString() == '[object Object]' 
+				&& extension[prop].toString() == '[object Object]' )
+
 				//Goes deep only if object[prop] and extension[prop] are both objects !
 				WHS.API.extend(object[prop], extension[prop]);
 					
@@ -1998,15 +1997,11 @@ WHS.API.isSame = function( a1, a2 ) {
 
 // #DONE:10 JSONLoader don't work.
 WHS.API.JSONLoader = function() {
-
 	return new THREE.JSONLoader();
-
 }
 
 WHS.API.TextureLoader = function() {
-
 	return new THREE.TextureLoader();
-
 }
 
 /**
@@ -2020,7 +2015,7 @@ WHS.API.loadMaterial = function( material ) {
 	'use strict';
 
 	if ( typeof material.kind !== "string" )
-	console.error( "Type of material is undefined or not a string. @loadMaterial" );
+		console.error( "Type of material is undefined or not a string. @loadMaterial" );
 
 	var scope = {
 		_type: material.kind,
@@ -2124,7 +2119,7 @@ WHS.API.merge = function( box, rabbits ) {
 
 	// More presice checking.
 	if ( ! ( typeof box === 'object' && typeof rabbits === 'object' ) )
-	console.error( "No rabbits for the box. (arguments)", [ typeof box, typeof rabbits ] );
+		console.error( "No rabbits for the box. (arguments)", [ typeof box, typeof rabbits ] );
 
 	// Will only get here if box and rabbits are objects, arrays are object !
 	if ( ! box ) // Box should not be null, null is an object too !
@@ -2414,26 +2409,25 @@ WHS.API.Triangulate = function( thrObj, material ) {
  * Email: alexbuzin88@gmail.com
 */
 
-// DONE:0 Make Wrap function.
 WHS.API.Wrap = function( SCOPE, mesh ) {
 	
 	'use strict';
 
-	var _mesh = mesh;
-	var _scope = SCOPE;
+	var _mesh = mesh,
+		_scope = SCOPE;
+
 	this._key = SCOPE.root.modellingQueue.length;
 
 	_scope._state = new Promise( (resolve, reject) => {
+
 		try {
 
 			api.merge( _scope.root.scene, _mesh );
-
 			_scope.root.modellingQueue.push( _scope );
 
 		} catch ( err ) {
 
 			console.error( err.message );
-
 			reject();
 
 		} finally {
@@ -2441,19 +2435,15 @@ WHS.API.Wrap = function( SCOPE, mesh ) {
 			if ( _scope._wait ) {
 
 				_scope._mesh.addEventListener( 'ready', function() {
-
 					resolve();
-
 				} );
 
-			} else {
-
+			} else
 				resolve();
 
-			}
-
 		}
-	});
+
+	} );
 
 	_scope.root.children.push( _scope );
 
@@ -2461,26 +2451,23 @@ WHS.API.Wrap = function( SCOPE, mesh ) {
 
 }
 
-WHS.API.Wrap.prototype.remove = function() {
-	'use strict';
+WHS.API.Wrap.prototype = {
 
-	this._scope.root.scene.remove( this._mesh );
+	remove: function() {
+		
+		this._scope.root.scene.remove( this._mesh );
 
-	WHS.objects.splice( this._key, 1 );
+		return this;
 
-	return this;
+	},
 
-}
+	retrieve: function() {
 
-WHS.API.Wrap.prototype.retrieve = function() {
-	'use strict';
+		this._scope.root.scene.add( this._mesh );
 
-	this._scope.root.scene.add( this._mesh );
+		return this;
 
-	WHS.objects.push( this._scope );
-
-	return this;
-
+	}
 }
 
 /**
