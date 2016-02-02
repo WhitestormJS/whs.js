@@ -11,11 +11,11 @@ var Preloader = function() {
 		ready: [],
 		parent: false,
 
-		element: $('.preloader'),
+		element: document.querySelector('.preloader'),
 
 		done: function() {
 			console.log("Objects loaded!");
-			setTimeout(function() {$(scope.element).fadeOut("slow")}, 1000);
+			setTimeout(function() {scope.element.fadeOut("slow")}, 1000);
 		},
 
 
@@ -30,7 +30,7 @@ var Preloader = function() {
 			});
 
 			scope.queue.forEach(function(object) {
-				object._state.done(function() {
+				object.build_state.then(function() {
 					scope.ready.push(object);
 
 					if(scope.queue.length == scope.ready.length)
