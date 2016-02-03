@@ -283,26 +283,21 @@ WHS.init.prototype.start = function() {
                 loop.func(time);
             
          });
-     }
+    }
 
     this.update = reDraw;
 
-    /* Events */
-    scope._queue = [];
     scope._ready = [];
 
-    scope.children.forEach(function(object) {
-        scope._queue.push(object);
-    });
+    var loading_queue = WHS.Watch(scope.children);
 
-    scope.children.forEach(function(object) {
-
-        object._state.then(function() {
+    loading_queue._queue.forEach(object => {
+        object._state.then(() => {
             scope._ready.push(object);
- 
-            if(scope._queue.length == scope._ready.length) 
+
+            if(loading_queue._queue.length == scope._ready.length) 
                 scope._events.emit("ready");
         });
-
     });
- }
+
+}
