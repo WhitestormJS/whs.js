@@ -12,6 +12,10 @@
  */
 WHS.API.removeDuplicateFaces = function( geometry ) {
 
+	function isSame() {
+		return ! ( a1.sort() > a2.sort() || a1.sort() < a2.sort() );
+	}
+
 	for ( var i = 0; i < geometry.faces.length; i ++ ) {
 
 		var tri = geometry.faces[ i ];
@@ -26,7 +30,7 @@ WHS.API.removeDuplicateFaces = function( geometry ) {
 				// May have already been deleted
 				var inds_2 = [ tri_2.a, tri_2.b, tri_2.c, tri_2.d ].sort();
 
-				if ( WHS.API.isSame( inds, inds_2 ) ) {
+				if ( isSame( inds, inds_2 ) ) {
 
 					delete geometry.faces[ i ]; // Sets these faces to undefined
 					// If duplicate, it is also interior, so remove both
