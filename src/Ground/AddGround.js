@@ -209,9 +209,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
             break;
     }
 
-    scope.build(scope.mesh);
-
-    scope.wrap = api.Wrap(scope, scope.mesh);
+    scope.build(scope.mesh).wrap();
 
     return scope;
     

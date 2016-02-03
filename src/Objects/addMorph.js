@@ -32,8 +32,7 @@ WHS.init.prototype.addMorph = function( url, options ) {
 
         scope._rot.y = Math.PI / 2;
 
-        scope.build( scope.mesh );
-        scope.wrap = new api.Wrap( scope, scope.mesh );
+        scope.build( scope.mesh ).wrap();
 
     } );
 

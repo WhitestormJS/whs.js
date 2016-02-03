@@ -207,7 +207,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
             yawObject.position.copy(mesh.position);
         };
 
-    })(this._camera, object.visible, target);
+    })(this._camera, object.mesh, target);
 
     var controls = this.controls;
 
