@@ -28,8 +28,7 @@ WHS.init.prototype.addModel = function(pathToModel, options) {
         scope.mesh = new Physijs.ConcaveMesh(data, scope.materialType, options.mass);
         scope._wait = true;
 
-        scope.build();
-        scope.wrap = new api.Wrap(scope, scope.mesh);
+        scope.build().wrap();
     });
 
     return scope;
