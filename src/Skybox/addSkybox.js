@@ -58,9 +58,7 @@ WHS.init.prototype.addSkybox = function( options ) {
  	scope.mesh = new THREE.Mesh( skyGeometry, skyMat );
  	scope.mesh.renderDepth = 1000.0;
 
- 	scope.build();
-
- 	scope.wrap = api.Wrap( scope, scope.mesh );
+ 	scope.build().wrap();
 
  	return scope;
 
