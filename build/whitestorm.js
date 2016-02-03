@@ -3837,7 +3837,7 @@ WHS.init.prototype.OrbitControls = function(object) {
 
         if (object._whsobject) {
 
-            var target = object ? object.visible.position : new THREE.Vector3(0, 0, 0);
+            var target = object ? object.mesh.position : new THREE.Vector3(0, 0, 0);
             this.controls.target = target;
         } else if ((typeof object === "undefined" ? "undefined" : _typeof(object)) == "object") this.controls.target.copy(target);
         else console.error("Object must be a THREE.JS vector! @OrbitControls");
