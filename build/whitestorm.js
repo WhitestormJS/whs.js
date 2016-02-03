@@ -2303,7 +2303,7 @@ WHS.API.texture = function( url, options ) {
 	
 	'use strict';
 
-	var texture = THREE.ImageUtils.loadTexture( url );
+	var texture = api.TextureLoader().load( url );
 
 	if ( options ) {
 
