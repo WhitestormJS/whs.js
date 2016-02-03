@@ -153,7 +153,7 @@ WHS.init.prototype.addGrass = function(ground, options) {
         scope.grassMeshes.push(mesh);
     });
 
-    scope.wrap = api.Wrap(scope, globalGrass);
+    scope.wrap(globalGrass);
 
     // Section under construction. (animation of Grass).
     // #TODO:0 Add grass animation.

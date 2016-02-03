@@ -93,37 +93,97 @@ WHS.API.construct = function( root, params, type ) {
 
 }
 
-WHS.API.construct.prototype.build = function( mesh ) {
-	
-	'use strict';
+WHS.API.construct.prototype = {
 
-	mesh = mesh || this.mesh;
+	build: function( mesh ) {
+		
+		'use strict';
 
-	this.build_state = new Promise( (resolve, reject) => {
+		mesh = mesh || this.mesh;
 
-		try {
+		this.build_state = new Promise( (resolve, reject) => {
 
-			mesh.castShadow = true;
-			mesh.receiveShadow = true;
+			try {
 
-			mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
-			mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
-			mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
+				mesh.castShadow = true;
+				mesh.receiveShadow = true;
 
-			resolve();
+				mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
+				mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
+				mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
 
-		} catch ( err ) {
+				resolve();
 
-			console.error( err.message );
+			} catch ( err ) {
 
-			reject();
+				console.error( err.message );
 
-			//this._state.reject();
+				reject();
 
-		}
+				//this._state.reject();
 
-	});
+			}
 
-	return this;
+		});
+
+		return this;
+	},
+
+	wrap: function(mesh) {
+
+		'use strict';
+
+		var _mesh = mesh || this.mesh,
+			_scope = this;
+
+		this._key = this.root.modellingQueue.length;
+
+		this._state = new Promise( (resolve, reject) => {
+
+			try {
+
+				api.merge( _scope.root.scene, _mesh );
+				_scope.root.modellingQueue.push( _scope );
+
+			} catch ( err ) {
+
+				console.error( err.message );
+				reject();
+
+			} finally {
+
+				if ( _scope._wait ) {
+
+					_scope._mesh.addEventListener( 'ready', function() {
+						resolve();
+					} );
+
+				} else
+					resolve();
+
+			}
+
+		} );
+
+		_scope.root.children.push( _scope );
+
+		return this;
+	},
+
+	remove: function() {
+		
+		this.root.scene.remove( this.mesh );
+
+		return this;
+
+	},
+
+	retrieve: function() {
+
+		this.root.scene.add( this.mesh );
+
+		return this;
+
+	}
 
 }
