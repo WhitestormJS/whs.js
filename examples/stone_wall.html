@@ -164,17 +164,23 @@ GAME.ground = GAME.addGround("smooth",
     z: 0
 });
 
-GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
-                                              intensity: 8},
-{
-    x: 0,
-    y: 1,
-    z: 3
-},
-{
-    x: 0,
-    y: 0,
-    z: 0
+GAME.light = GAME.addLight("directional", { 
+  
+    color: 0xffffff, //0x00ff00,
+    intensity: 8,
+    
+    pos: {
+      x: 0,
+      y: 1,
+      z: 3
+    },
+    
+    target: {
+      x: 0,
+      y: 0,
+      z: 0
+    }
+    
 });
 
 GAME.OrbitControls();
