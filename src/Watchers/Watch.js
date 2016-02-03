@@ -8,7 +8,7 @@ WHS.Watch = function (queue) {
 
   'use strict';
 
-  this._queue = Array.isArray(queue) ? queue : [];
+  this._queue = Array.isArray(queue) ? queue.slice() : [];
 
   return this;
 
