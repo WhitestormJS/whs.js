@@ -159,17 +159,23 @@ GAME.ground = GAME.addGround("smooth",
     z: 0
 });
 
-GAME.light = GAME.addLight("directional", { color: 0xffffff, //0x00ff00,
-                                              intensity: 2},
-{
-    x: 0,
-    y: 10,
-    z: 30
-},
-{
-    x: 0,
-    y: 0,
-    z: 0
+GAME.light = GAME.addLight("directional", { 
+  
+    color: 0xffffff, //0x00ff00,
+    intensity: 2,
+
+    pos: {
+      x: 0,
+      y: 10,
+      z: 30
+    },
+
+    target: {
+      x: 0,
+      y: 0,
+      z: 0
+    }
+
 });
 
 GAME.start();
