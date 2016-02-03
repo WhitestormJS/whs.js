@@ -34,7 +34,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
             });
 
 
-            scope.visible = new Physijs.SphereMesh(new THREE.SphereGeometry(
+            scope.mesh = new Physijs.SphereMesh(new THREE.SphereGeometry(
                 options.geometryOptions.radius,
                 options.geometryOptions.segmentA,
                 options.geometryOptions.segmentB
@@ -51,7 +51,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.BoxMesh(new THREE.BoxGeometry(
+            scope.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(
                 options.geometryOptions.width,
                 options.geometryOptions.height,
                 options.geometryOptions.depth
@@ -69,7 +69,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.CylinderMesh(
+            scope.mesh = new Physijs.CylinderMesh(
                 new THREE.CylinderGeometry(
                     options.geometryOptions.radiusTop,
                     options.geometryOptions.radiusBottom,
@@ -88,7 +88,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.ConvexMesh(
+            scope.mesh = new Physijs.ConvexMesh(
                 new THREE.DodecahedronGeometry(
                     options.geometryOptions.radius,
                     options.geometryOptions.detail
@@ -105,7 +105,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.ConvexMesh(
+            scope.mesh = new Physijs.ConvexMesh(
                 new THREE.ExtrudeGeometry(
                     options.geometryOptions.shapes,
                     options.geometryOptions.options
@@ -122,7 +122,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.ConvexMesh(
+            scope.mesh = new Physijs.ConvexMesh(
                 new THREE.IcosahedronGeometry(
                     options.geometryOptions.radius,
                     options.geometryOptions.detail
@@ -138,7 +138,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.ConvexMesh(new THREE.LatheGeometry(
+            scope.mesh = new Physijs.ConvexMesh(new THREE.LatheGeometry(
                 options.geometryOptions.points
             ), scope.materialType, mass);
 
@@ -152,7 +152,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.ConvexMesh(
+            scope.mesh = new Physijs.ConvexMesh(
                 new THREE.OctahedronGeometry(
                     options.geometryOptions.radius,
                     options.geometryOptions.detail
@@ -171,7 +171,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.ConvexMesh(
+            scope.mesh = new Physijs.ConvexMesh(
                 new THREE.ParametricGeometry(
                     options.geometryOptions.func,
                     options.geometryOptions.slices,
@@ -190,7 +190,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.ConvexMesh(
+            scope.mesh = new Physijs.ConvexMesh(
                 new THREE.PlaneBufferGeometry(
                     options.geometryOptions.width,
                     options.geometryOptions.height,
@@ -210,7 +210,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.ConvexMesh(
+            scope.mesh = new Physijs.ConvexMesh(
                 new THREE.PolyhedronGeometry(
                     options.geometryOptions.verticesOfCube,
                     options.geometryOptions.indicesOfFaces
@@ -231,7 +231,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.ConcaveMesh(
+            scope.mesh = new Physijs.ConcaveMesh(
                 new THREE.TorusGeometry(
                     options.geometryOptions.outerRadius,
                     (options.geometryOptions.outerRadius - options.geometryOptions.innerRadius) / 2,
@@ -242,7 +242,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
             break;
         case "shape":
             
-            scope.visible = new THREE.Mesh(
+            scope.mesh = new THREE.Mesh(
                 new THREE.ShapeGeometry(options.geometryOptions.shapes),
                 scope.materialType
             );
@@ -262,7 +262,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.ConvexMesh(
+            scope.mesh = new Physijs.ConvexMesh(
                 new THREE.TetrahedronGeometry(
                     options.geometryOptions.radius,
                     options.geometryOptions.detail
@@ -273,7 +273,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
         case "text":
             if(!(options.geometryOptions.parameters))
                 throw new Error("Missing text parameters");
-            scope.visible = new Physijs.ConcaveMesh(
+            scope.mesh = new Physijs.ConcaveMesh(
                 new THREE.TextGeometry(
                     api.extend(options.geometryOptions, {
                         text: "Hello World!"
@@ -305,7 +305,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.ConcaveMesh(
+            scope.mesh = new Physijs.ConcaveMesh(
                 new THREE.TorusGeometry(
                     options.geometryOptions.radius,
                     options.geometryOptions.tube,
@@ -329,7 +329,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
                 heightScale: 1
 
             });
-            scope.visible = new Physijs.ConvexMesh(
+            scope.mesh = new Physijs.ConvexMesh(
                 new THREE.TorusKnotGeometry(
                     options.geometryOptions.radius,
                     options.geometryOptions.tube,
@@ -370,7 +370,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
             });
 
-            scope.visible = new Physijs.ConcaveMesh(
+            scope.mesh = new Physijs.ConcaveMesh(
                 new THREE.TubeGeometry(
                     options.geometryOptions.path,
                     options.geometryOptions.segments,
@@ -410,17 +410,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
         //this.compoundFace.vertices.push(new THREE.Vector3(0,1,2));
     }
 
-    scope.remove = function () {
-        return scope.wrap.remove();
-    }
-
-    scope.retrieve = function () {
-        return scope.wrap.retrieve();
-    }
-
-    scope.build(scope.visible);
-
-    scope.wrap = new api.Wrap(scope, scope.visible);
+    scope.build(scope.mesh).wrap();
 
     return scope;
 };

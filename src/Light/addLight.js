@@ -123,8 +123,7 @@ WHS.init.prototype.addLight = function(type, opts) {
             scope._target.z
         );
 
-    scope.build();
-    scope.wrap = api.Wrap(scope, scope.mesh);
+    scope.build().wrap();
 
     return scope;
 
