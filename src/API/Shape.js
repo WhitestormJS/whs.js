@@ -84,8 +84,6 @@ WHS.Shape = class {
 
 		Object.assign( this, scope );
 
-               delete params;
-
 		return this;
 	}
 
