@@ -20,7 +20,7 @@ WHS.init.prototype.addSkybox = function( options ) {
 
  	options.imgSuffix = options.skyType == "box" ? options.imgSuffix || ".png" : options.imgSuffix || "";
 
- 	var scope = new api.construct( this, options, "skybox" );
+ 	var scope = new WHS.Shape( this, options, "skybox" );
  	scope.skip = true;
 
  	var skyGeometry, skyMat;
