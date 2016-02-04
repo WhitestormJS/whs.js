@@ -2,7 +2,7 @@
 
 ##### Before contibuting here see [rules](https://github.com/WhitestormJS/whitestorm.js/blob/master/CONTRIBUTING.md#-adding-changes-to-changelogmd)
 
-**current**
+**v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
 - Base rewrite(fix). part 4
 - Added the following effects to `addWagner`:
