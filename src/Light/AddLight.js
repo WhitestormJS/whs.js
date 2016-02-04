@@ -17,7 +17,7 @@ WHS.init.prototype.addLight = function(type, opts) {
 
     'use strict';
 
-    var scope = new api.construct(this, opts, type);
+    var scope = new WHS.Shape(this, opts, type);
 
     //Do not need the option variable, opts is by this statement, gained default values
     api.extend(opts, {

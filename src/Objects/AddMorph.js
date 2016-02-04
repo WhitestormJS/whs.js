@@ -8,7 +8,7 @@ WHS.init.prototype.addMorph = function( url, options ) {
 
     'use strict';
 
-    var scope = new api.construct( this, options, "morph" );
+    var scope = new WHS.Shape( this, options, "morph" );
 
     scope.skip = true;
     scope.morph = true;
