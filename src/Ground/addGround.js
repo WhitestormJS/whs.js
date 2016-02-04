@@ -21,7 +21,7 @@ WHS.init.prototype.addGround = function(type, size, material, pos) {
         pos: pos
     };
 
-    var scope = new api.construct(this, options, type);
+    var scope = new WHS.Shape(this, options, type);
 
     scope.skip = true;
 
