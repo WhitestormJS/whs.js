@@ -15,7 +15,7 @@ WHS.init.prototype.addObject = function(figureType, options) {
 
     'use strict';
     
-    var scope = new api.construct(this, options, figureType),
+    var scope = new WHS.Shape(this, options, figureType),
         mass = options.onlyvis ? scope._target.mass : 1,
         fprops;
 

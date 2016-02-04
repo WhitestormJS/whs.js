@@ -13,7 +13,6 @@
 // FIXME: Fix fog.
 // DOING:10 improve libraries support.
 
-'use strict';
 
 /* ================ WHITESTORM|JS ==================== */
 var WHS = {
