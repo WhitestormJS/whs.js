@@ -4,15 +4,6 @@
  * Email: alexbuzin88@gmail.com
 */
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-//WHS.API.construct = function( root, params, type ) {
-
-
 WHS.Shape = class {
 
 	constructor( root, params, type ) {
@@ -28,13 +19,8 @@ WHS.Shape = class {
 
 		}
 
-		if ( params.pos ) params.pos.set = _set;
-		if ( params.rot ) params.rot.set = _set;
-		if ( params.scale ) params.scale.set = _set;
-		if ( params.target ) params.target.set = _set;
-
 		// Polyfill for 3D.
-		var target = api.extend(params, {
+		api.extend(params, {
 
 			pos: {
 				x: 0,
@@ -88,15 +74,17 @@ WHS.Shape = class {
 			_whsobject: true,
 			_name: type + key,
 			__releaseTime: new Date().getTime(),
-			_pos: target.pos,
-			_rot: target.rot,
-			_scale: target.scale,
-			_morph: target.morph,
-			_target: target.target,
-			_onlyvis: target.onlyvis
+			_pos: params.pos,
+			_rot: params.rot,
+			_scale: params.scale,
+			_morph: params.morph,
+			_target: params.target,
+			_onlyvis: params.onlyvis
 		};
 
 		Object.assign( this, scope );
+
+               delete params;
 
 		return this;
 	}
@@ -118,6 +106,11 @@ WHS.Shape = class {
 				mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
 				mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
 				mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
+
+                               //References, I consider this a bad way of solving the problem, but it works for now
+                               this._pos = mesh.position;
+                               this._rot = mesh.rotation;
+                               this._scale = mesh.scale;
 
 				resolve();
 
