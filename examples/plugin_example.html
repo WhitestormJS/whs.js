@@ -101,13 +101,13 @@
 
 var color = new THREE.Color(0x000000);
 
-WHS.plugins.register("changeColor", function(time) {
+WHS.Shape.prototype.changeColor = function(time) {
     var object = this;
 
     console.log(color);
 
-    var animation = new WHS.plugins.loop(function() {
-        object.visible.material.color = color;
+    var animation = new WHS.loop(function() {
+        object.mesh.material.color = color;
 
         if (color.r <= 1)
             color.r+=0.01;
@@ -123,8 +123,8 @@ WHS.plugins.register("changeColor", function(time) {
 
             color.setRGB(1, 0, 0);
 
-            var animation2 = new WHS.plugins.loop(function() {
-                object.visible.material.color = color;
+            var animation2 = new WHS.loop(function() {
+                object.mesh.material.color = color;
 
                 if (color.r >= 0)
                     color.r-=0.01;
@@ -140,8 +140,8 @@ WHS.plugins.register("changeColor", function(time) {
 
                     color.setRGB(0, 1, 0);
 
-                    var animation3 = new WHS.plugins.loop(function() {
-                        object.visible.material.color = color;
+                    var animation3 = new WHS.loop(function() {
+                        object.mesh.material.color = color;
 
                         if (color.r >= 0)
                             color.r-=0.01;
@@ -172,66 +172,74 @@ WHS.plugins.register("changeColor", function(time) {
     animation.start();
 
     
-}, false);
+}
 </script>
 
 <script>
 var preloader = Preloader();
 
-var GAME = new WHS.init(
-{
+var GAME = new WHS.init({
+
     anaglyph: false,
     stats: "fps", // fps, ms, mb
     wagner: WAGNER,
     autoresize: true,
+
     gravity: {
         x: 0,
         y: -50,
         z: 0
     },
+
     camera: {
         far: 10000,
         y: 10,
         z: 30
     }
+
 });
 
-preloader.start(GAME);
+GAME.ring = GAME.Ring({
 
-GAME.ring = GAME.addObject("ring",
-{
-    geometryOptions: {
-        innerRadius:2,
-        outerRadius:5,
+    geometry: {
+        innerRadius: 5,
+        outerRadius: 2,
         thetaSegments: 20,
         phiSegments: 20
     },
+
     mass: 0,
-    onlyvis: true,
-    materialOptions: {
+
+    material: {
         color: 0xff0000,
         kind: "basic"
     },
+
     pos: {
         x: 0,
         y: 10,
         z: 0
     }
+
 });
 
-GAME.ground = GAME.addGround("smooth",
-{
-    width: 50,
-    height: 50
-},
-{
+GAME.ground = GAME.Smooth({
+
+	geometry: {
+	    width: 50,
+	    height: 50
+	},
+
+	material: {
         color: 0xffff00,
         kind: "basic"
-},
-{
-    x: 0,
-    y: 0,
-    z: 0
+	},
+
+	pos: {
+	    x: 0,
+	    y: 0,
+	    z: 0
+	}
 });
 
 GAME.ring.changeColor();
@@ -240,7 +248,7 @@ GAME.OrbitControls();
 
 GAME.start();
 
-preloader.end();
+preloader.check();
 
 </script>
 </html>

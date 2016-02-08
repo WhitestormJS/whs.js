@@ -1,10 +1,82 @@
+/**
+ * © Alexander Buzin, 2014-2015
+ * Site: http://alexbuzin.me/
+ * Email: alexbuzin88@gmail.com
+*/
+
 "use strict";
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _get = function get(object, property, receiver) {
+    if (object === null) object = Function.prototype;
+    var desc = Object.getOwnPropertyDescriptor(object, property);
+    if (desc === undefined) {
+        var parent = Object.getPrototypeOf(object);
+        if (parent === null) {
+            return undefined;
+        } else {
+            return get(parent, property, receiver);
+        }
+    } else if ("value" in desc) {
+        return desc.value;
+    } else {
+        var getter = desc.get;
+        if (getter === undefined) {
+            return undefined;
+        }
+        return getter.call(receiver);
+    }
+};
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _createClass = function() {
+    function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || false;
+            descriptor.configurable = true;
+            if ("value" in descriptor) descriptor.writable = true;
+            Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }
+    return function(Constructor, protoProps, staticProps) {
+        if (protoProps) defineProperties(Constructor.prototype, protoProps);
+        if (staticProps) defineProperties(Constructor, staticProps);
+        return Constructor;
+    };
+}();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+    return typeof obj;
+} : function(obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+};
+
+function _possibleConstructorReturn(self, call) {
+    if (!self) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+            value: subClass,
+            enumerable: false,
+            writable: true,
+            configurable: true
+        }
+    });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+    }
+}
 
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -12,7 +84,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @author alteredq / http://alteredqualia.com/
  */
 
-THREE.AnaglyphEffect = function (renderer, width, height) {
+THREE.AnaglyphEffect = function(renderer, width, height) {
 
     var eyeRight = new THREE.Matrix4();
     var eyeLeft = new THREE.Matrix4();
@@ -29,7 +101,11 @@ THREE.AnaglyphEffect = function (renderer, width, height) {
 
     var _scene = new THREE.Scene();
 
-    var _params = { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat };
+    var _params = {
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.NearestFilter,
+        format: THREE.RGBAFormat
+    };
 
     if (width === undefined) width = 512;
     if (height === undefined) height = 512;
@@ -41,8 +117,14 @@ THREE.AnaglyphEffect = function (renderer, width, height) {
 
         uniforms: {
 
-            "mapLeft": { type: "t", value: _renderTargetL },
-            "mapRight": { type: "t", value: _renderTargetR }
+            "mapLeft": {
+                type: "t",
+                value: _renderTargetL
+            },
+            "mapRight": {
+                type: "t",
+                value: _renderTargetR
+            }
 
         },
 
@@ -50,16 +132,17 @@ THREE.AnaglyphEffect = function (renderer, width, height) {
 
         fragmentShader: ["uniform sampler2D mapLeft;", "uniform sampler2D mapRight;", "varying vec2 vUv;", "void main() {", "	vec4 colorL, colorR;", "	vec2 uv = vUv;", "	colorL = texture2D( mapLeft, uv );", "	colorR = texture2D( mapRight, uv );",
 
-        // http://3dtv.at/Knowhow/AnaglyphComparison_en.aspx
+            // http://3dtv.at/Knowhow/AnaglyphComparison_en.aspx
 
-        "	gl_FragColor = vec4( colorL.g * 0.7 + colorL.b * 0.3, colorR.g, colorR.b, colorL.a + colorR.a ) * 1.1;", "}"].join("\n")
+            "	gl_FragColor = vec4( colorL.g * 0.7 + colorL.b * 0.3, colorR.g, colorR.b, colorL.a + colorR.a ) * 1.1;", "}"
+        ].join("\n")
 
     });
 
     var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), _material);
     _scene.add(mesh);
 
-    this.setSize = function (width, height) {
+    this.setSize = function(width, height) {
 
         if (_renderTargetL) _renderTargetL.dispose();
         if (_renderTargetR) _renderTargetR.dispose();
@@ -81,7 +164,7 @@ THREE.AnaglyphEffect = function (renderer, width, height) {
      * Added a focal length parameter to, this is where the parallax is equal to 0.
      */
 
-    this.render = function (scene, camera) {
+    this.render = function(scene, camera) {
 
         scene.updateMatrixWorld();
 
@@ -145,7 +228,7 @@ THREE.AnaglyphEffect = function (renderer, width, height) {
         renderer.render(_scene, _camera);
     };
 
-    this.dispose = function () {
+    this.dispose = function() {
         if (_renderTargetL) _renderTargetL.dispose();
         if (_renderTargetR) _renderTargetR.dispose();
     };
@@ -316,13 +399,15 @@ THREE.BufferGeometryUtils = {
 
 function Events(n) {
     var t = {},
-        f = [];n = n || this, n.on = function (n, f, i) {
+        f = [];
+    n = n || this, n.on = function(n, f, i) {
         (t[n] = t[n] || []).push([f, i]);
-    }, n.off = function (n, i) {
-        n || (t = {});for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) {
+    }, n.off = function(n, i) {
+        n || (t = {});
+        for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) {
             i == o[c][0] && o.splice(c, 1);
         }
-    }, n.emit = function (n) {
+    }, n.emit = function(n) {
         for (var i, o = t[n] || f, c = 0; i = o[c++];) {
             i[0].apply(i[1], f.slice.call(arguments, 1));
         }
@@ -351,7 +436,7 @@ function Events(n) {
 //      controls.target.z = 150;
 // Simple substitute "OrbitControls" and the control should work as-is.
 
-THREE.OrbitControls = function (object, domElement) {
+THREE.OrbitControls = function(object, domElement) {
 
     this.object = object;
     this.domElement = domElement !== undefined ? domElement : document;
@@ -395,7 +480,12 @@ THREE.OrbitControls = function (object, domElement) {
     // Set to true to disable use of the keys
     this.noKeys = false;
     // The four arrow keys
-    this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40 };
+    this.keys = {
+        LEFT: 37,
+        UP: 38,
+        RIGHT: 39,
+        BOTTOM: 40
+    };
 
     ////////////
     // internals
@@ -423,14 +513,24 @@ THREE.OrbitControls = function (object, domElement) {
 
     var lastPosition = new THREE.Vector3();
 
-    var STATE = { NONE: -1, ROTATE: 0, DOLLY: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_DOLLY: 4, TOUCH_PAN: 5 };
+    var STATE = {
+        NONE: -1,
+        ROTATE: 0,
+        DOLLY: 1,
+        PAN: 2,
+        TOUCH_ROTATE: 3,
+        TOUCH_DOLLY: 4,
+        TOUCH_PAN: 5
+    };
     var state = STATE.NONE;
 
     // events
 
-    var changeEvent = { type: 'change' };
+    var changeEvent = {
+        type: 'change'
+    };
 
-    this.rotateLeft = function (angle) {
+    this.rotateLeft = function(angle) {
 
         if (angle === undefined) {
 
@@ -440,7 +540,7 @@ THREE.OrbitControls = function (object, domElement) {
         thetaDelta -= angle;
     };
 
-    this.rotateUp = function (angle) {
+    this.rotateUp = function(angle) {
 
         if (angle === undefined) {
 
@@ -451,7 +551,7 @@ THREE.OrbitControls = function (object, domElement) {
     };
 
     // pass in distance in world space to move left
-    this.panLeft = function (distance) {
+    this.panLeft = function(distance) {
 
         var panOffset = new THREE.Vector3();
         var te = this.object.matrix.elements;
@@ -463,7 +563,7 @@ THREE.OrbitControls = function (object, domElement) {
     };
 
     // pass in distance in world space to move up
-    this.panUp = function (distance) {
+    this.panUp = function(distance) {
 
         var panOffset = new THREE.Vector3();
         var te = this.object.matrix.elements;
@@ -476,7 +576,7 @@ THREE.OrbitControls = function (object, domElement) {
 
     // main entry point; pass in Vector2 of change desired in pixel space,
     // right and down are positive
-    this.pan = function (delta) {
+    this.pan = function(delta) {
 
         var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
 
@@ -504,7 +604,7 @@ THREE.OrbitControls = function (object, domElement) {
         }
     };
 
-    this.dollyIn = function (dollyScale) {
+    this.dollyIn = function(dollyScale) {
 
         if (dollyScale === undefined) {
 
@@ -514,7 +614,7 @@ THREE.OrbitControls = function (object, domElement) {
         scale /= dollyScale;
     };
 
-    this.dollyOut = function (dollyScale) {
+    this.dollyOut = function(dollyScale) {
 
         if (dollyScale === undefined) {
 
@@ -524,7 +624,7 @@ THREE.OrbitControls = function (object, domElement) {
         scale *= dollyScale;
     };
 
-    this.update = function () {
+    this.update = function() {
 
         var position = this.object.position;
         var offset = position.clone().sub(this.target);
@@ -681,7 +781,7 @@ THREE.OrbitControls = function (object, domElement) {
         scope.update();
     }
 
-    function onMouseUp() /* event */{
+    function onMouseUp() /* event */ {
 
         if (scope.enabled === false) return;
 
@@ -893,7 +993,7 @@ THREE.OrbitControls = function (object, domElement) {
         }
     }
 
-    function touchend() /* event */{
+    function touchend() /* event */ {
 
         if (scope.enabled === false) {
             return;
@@ -902,7 +1002,7 @@ THREE.OrbitControls = function (object, domElement) {
         state = STATE.NONE;
     }
 
-    this.domElement.addEventListener('contextmenu', function (event) {
+    this.domElement.addEventListener('contextmenu', function(event) {
         event.preventDefault();
     }, false);
     this.domElement.addEventListener('mousedown', onMouseDown, false);
@@ -921,53 +1021,101 @@ THREE.OrbitControls.prototype = Object.create(THREE.EventDispatcher.prototype);
 // stats.js - http://github.com/mrdoob/stats.js
 var Stats = function Stats() {
     function f(a, e, b) {
-        a = document.createElement(a);a.id = e;a.style.cssText = b;return a;
-    }function l(a, e, b) {
+        a = document.createElement(a);
+        a.id = e;
+        a.style.cssText = b;
+        return a;
+    }
+
+    function l(a, e, b) {
         var c = f("div", a, "padding:0 0 3px 3px;text-align:left;background:" + b),
-            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);d.innerHTML = a.toUpperCase();c.appendChild(d);a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);c.appendChild(a);for (e = 0; 74 > e; e++) {
+            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);
+        d.innerHTML = a.toUpperCase();
+        c.appendChild(d);
+        a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);
+        c.appendChild(a);
+        for (e = 0; 74 > e; e++) {
             a.appendChild(f("span", "", "width:1px;height:30px;float:left;opacity:0.9;background:" + b));
-        }return c;
-    }function m(a) {
+        }
+        return c;
+    }
+
+    function m(a) {
         for (var b = c.children, d = 0; d < b.length; d++) {
             b[d].style.display = d === a ? "block" : "none";
-        }n = a;
-    }function p(a, b) {
+        }
+        n = a;
+    }
+
+    function p(a, b) {
         a.appendChild(a.firstChild).style.height = Math.min(30, 30 - 30 * b) + "px";
-    }var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
+    }
+    var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
         k = q(),
         r = k,
         t = 0,
         n = 0,
-        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");c.addEventListener("mousedown", function (a) {
-        a.preventDefault();m(++n % c.children.length);
-    }, !1);var d = 0,
+        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");
+    c.addEventListener("mousedown", function(a) {
+        a.preventDefault();
+        m(++n % c.children.length);
+    }, !1);
+    var d = 0,
         u = Infinity,
         v = 0,
         b = l("fps", "#0ff", "#002"),
         A = b.children[0],
-        B = b.children[1];c.appendChild(b);var g = 0,
+        B = b.children[1];
+    c.appendChild(b);
+    var g = 0,
         w = Infinity,
         x = 0,
         b = l("ms", "#0f0", "#020"),
         C = b.children[0],
-        D = b.children[1];c.appendChild(b);if (self.performance && self.performance.memory) {
+        D = b.children[1];
+    c.appendChild(b);
+    if (self.performance && self.performance.memory) {
         var h = 0,
             y = Infinity,
             z = 0,
             b = l("mb", "#f08", "#201"),
             E = b.children[0],
-            F = b.children[1];c.appendChild(b);
-    }m(n);return { REVISION: 14, domElement: c, setMode: m, begin: function begin() {
+            F = b.children[1];
+        c.appendChild(b);
+    }
+    m(n);
+    return {
+        REVISION: 14,
+        domElement: c,
+        setMode: m,
+        begin: function begin() {
             k = q();
-        }, end: function end() {
-            var a = q();g = a - k;w = Math.min(w, g);x = Math.max(x, g);C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";p(D, g / 200);t++;if (a > r + 1E3 && (d = Math.round(1E3 * t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
+        },
+        end: function end() {
+            var a = q();
+            g = a - k;
+            w = Math.min(w, g);
+            x = Math.max(x, g);
+            C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";
+            p(D, g / 200);
+            t++;
+            if (a > r + 1E3 && (d = Math.round(1E3 * t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
                 var b = performance.memory.usedJSHeapSize,
-                    c = performance.memory.jsHeapSizeLimit;h = Math.round(9.54E-7 * b);y = Math.min(y, h);z = Math.max(z, h);E.textContent = h + " MB (" + y + "-" + z + ")";p(F, b / c);
-            }return a;
-        }, update: function update() {
+                    c = performance.memory.jsHeapSizeLimit;
+                h = Math.round(9.54E-7 * b);
+                y = Math.min(y, h);
+                z = Math.max(z, h);
+                E.textContent = h + " MB (" + y + "-" + z + ")";
+                p(F, b / c);
+            }
+            return a;
+        },
+        update: function update() {
             k = this.end();
-        } };
-};"object" === (typeof module === "undefined" ? "undefined" : _typeof(module)) && (module.exports = Stats);
+        }
+    };
+};
+"object" === (typeof module === "undefined" ? "undefined" : _typeof(module)) && (module.exports = Stats);
 
 /*
  *	@author zz85 / http://twitter.com/blurspline / http://www.lab4games.net/zz85/blog
@@ -986,14 +1134,14 @@ var Stats = function Stats() {
  *
  */
 
-THREE.SubdivisionModifier = function (subdivisions) {
+THREE.SubdivisionModifier = function(subdivisions) {
     'use strict';
 
     this.subdivisions = subdivisions === undefined ? 1 : subdivisions;
 };
 
 // Applies the "modify" pattern
-THREE.SubdivisionModifier.prototype.modify = function (geometry) {
+THREE.SubdivisionModifier.prototype.modify = function(geometry) {
 
     var repeats = this.subdivisions;
 
@@ -1008,7 +1156,7 @@ THREE.SubdivisionModifier.prototype.modify = function (geometry) {
     geometry.computeVertexNormals();
 };
 
-(function () {
+(function() {
 
     // Some constants
     var WARNINGS = !true; // Set to true for development
@@ -1067,7 +1215,9 @@ THREE.SubdivisionModifier.prototype.modify = function (geometry) {
 
         for (i = 0, il = vertices.length; i < il; i++) {
 
-            metaVertices[i] = { edges: [] };
+            metaVertices[i] = {
+                edges: []
+            };
         }
 
         for (i = 0, il = faces.length; i < il; i++) {
@@ -1088,7 +1238,7 @@ THREE.SubdivisionModifier.prototype.modify = function (geometry) {
     /////////////////////////////
 
     // Performs one iteration of Subdivision
-    THREE.SubdivisionModifier.prototype.smooth = function (geometry) {
+    THREE.SubdivisionModifier.prototype.smooth = function(geometry) {
 
         var tmp = new THREE.Vector3();
 
@@ -1225,11 +1375,11 @@ THREE.SubdivisionModifier.prototype.modify = function (geometry) {
                     // connectingVertexWeight = 0;
                 } else if (n == 1) {
 
-                        if (WARNINGS) console.warn('only 1 connecting edge');
-                    } else if (n == 0) {
+                    if (WARNINGS) console.warn('only 1 connecting edge');
+                } else if (n == 0) {
 
-                        if (WARNINGS) console.warn('0 connecting edges');
-                    }
+                    if (WARNINGS) console.warn('0 connecting edges');
+                }
             }
 
             newSourceVertex = oldVertex.clone().multiplyScalar(sourceVertexWeight);
@@ -1290,18 +1440,13 @@ THREE.SubdivisionModifier.prototype.modify = function (geometry) {
     };
 })();
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
 /* ================ MODERNIZING BROWSER API IF NOT EXIST ==================== */
 
 //Replacing jQuery fadeIn and fadeOut
 function addCSSRule(sheet, selector, rules, index) {
 
-    if (sheet.insertRule) sheet.insertRule(selector + '{' + rules + '}', index);else if (sheet.addRule) sheet.addRule(selector, rules, index);
+    if (sheet.insertRule) sheet.insertRule(selector + '{' + rules + '}', index);
+    else if (sheet.addRule) sheet.addRule(selector, rules, index);
 }
 
 //Adds CSS style sheets
@@ -1310,19 +1455,19 @@ addCSSRule(document.styleSheets[0], '@keyframes fadeOut', 'to {opacity: 0}', 0);
 addCSSRule(document.styleSheets[0], '@keyframes fadeIn', 'from {opacity: 0} to {opacity: 1}', 0);
 
 //Adds function to triggers animation
-Element.prototype.fadeOut = function (t) {
+Element.prototype.fadeOut = function(t) {
 
     this.style.webkitAnimationDuration = (t || 1) + 's';
     this.style.webkitAnimationName = "fadeOut";
     this.style.webkitAnimationPlayState = 'running';
 
-    this.addEventListener('animationend', function () {
+    this.addEventListener('animationend', function() {
         this.style.display = 'none';
         this.style.webkitAnimationPlayState = 'paused';
     });
 };
 
-Element.prototype.fadeIn = function (t, display) {
+Element.prototype.fadeIn = function(t, display) {
 
     this.style.display = display || 'block';
 
@@ -1330,7 +1475,7 @@ Element.prototype.fadeIn = function (t, display) {
     this.style.webkitAnimationName = "fadeIn";
     this.style.webkitAnimationPlayState = 'running';
 
-    this.addEventListener('animationend', function () {
+    this.addEventListener('animationend', function() {
         this.style.display = display || 'block';
     });
 };
@@ -1338,7 +1483,7 @@ Element.prototype.fadeIn = function (t, display) {
 // Array.isArray;
 if (typeof Array.isArray === 'undefined') {
 
-    Array.isArray = function (obj) {
+    Array.isArray = function(obj) {
 
         'use strict';
 
@@ -1347,7 +1492,7 @@ if (typeof Array.isArray === 'undefined') {
 }
 
 // event.movementX and event.movementY kind of polyfill
-(function () {
+(function() {
 
     if (!MouseEvent.prototype.hasOwnProperty('movementX') || !MouseEvent.prototype.hasOwnProperty('mozMovementX')) {
         //Checks for support
@@ -1359,7 +1504,7 @@ if (typeof Array.isArray === 'undefined') {
             lastY: 0
         };
 
-        MouseEvent.prototype.getMovementX = function () {
+        MouseEvent.prototype.getMovementX = function() {
             'use strict';
 
             var value = this.clientX - mouse.lastX;
@@ -1368,7 +1513,7 @@ if (typeof Array.isArray === 'undefined') {
             return value;
         };
 
-        MouseEvent.prototype.getMovementY = function () {
+        MouseEvent.prototype.getMovementY = function() {
             'use strict';
 
             var value = this.clientY - mouse.lastY;
@@ -1413,11 +1558,6 @@ if (!Object.assign) {
         }
     });
 }
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
 
 // [x]#TODO:130 RESTRUCTURIZE.
 // [x]#TODO:120 RESTRUCTURIZE threejs and cannonjs library calling.
@@ -1430,22 +1570,20 @@ if (!Object.assign) {
 
 /* ================ WHITESTORM|JS ==================== */
 var WHS = {
-    REVISION: "0.0.6",
+    REVISION: "7",
 
     API: {},
 
-    plugins: {
+    _settings: {
 
-        settings: { // Global variables, else...
-            plug_id: 0,
-            loop_id: 0
-        },
+        assets: "./assets",
 
-        list: {}, // All plugins
-
-        queue: [] // Animation queue
+        path_worker: '../libs/physijs_worker.js',
+        path_ammo: '../libs/ammo.js'
 
     },
+
+    loops: [],
 
     grounds: []
 };
@@ -1461,12 +1599,6 @@ if (typeof define === 'function' && define.amd) {
 }
 
 /**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * @author alteredq / http://alteredqualia.com/
  * @author alex2401 / http://alexbuzin.me/
  *
@@ -1478,32 +1610,92 @@ THREE.ShaderTerrain = {
 
         uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib["fog"], THREE.UniformsLib["lights"], THREE.UniformsLib["shadowmap"], {
 
-            "enableDiffuse1": { type: "i", value: 0 },
-            "enableDiffuse2": { type: "i", value: 0 },
-            "enableSpecular": { type: "i", value: 0 },
-            "enableReflection": { type: "i", value: 0 },
+            "enableDiffuse1": {
+                type: "i",
+                value: 0
+            },
+            "enableDiffuse2": {
+                type: "i",
+                value: 0
+            },
+            "enableSpecular": {
+                type: "i",
+                value: 0
+            },
+            "enableReflection": {
+                type: "i",
+                value: 0
+            },
 
-            "tDiffuse1": { type: "t", value: null },
-            "tDiffuse2": { type: "t", value: null },
-            "tDetail": { type: "t", value: null },
-            "tNormal": { type: "t", value: null },
-            "tSpecular": { type: "t", value: null },
-            "tDisplacement": { type: "t", value: null },
+            "tDiffuse1": {
+                type: "t",
+                value: null
+            },
+            "tDiffuse2": {
+                type: "t",
+                value: null
+            },
+            "tDetail": {
+                type: "t",
+                value: null
+            },
+            "tNormal": {
+                type: "t",
+                value: null
+            },
+            "tSpecular": {
+                type: "t",
+                value: null
+            },
+            "tDisplacement": {
+                type: "t",
+                value: null
+            },
 
-            "uNormalScale": { type: "f", value: 1.0 },
+            "uNormalScale": {
+                type: "f",
+                value: 1.0
+            },
 
-            "uDisplacementBias": { type: "f", value: 0.0 },
-            "uDisplacementScale": { type: "f", value: 1.0 },
+            "uDisplacementBias": {
+                type: "f",
+                value: 0.0
+            },
+            "uDisplacementScale": {
+                type: "f",
+                value: 1.0
+            },
 
-            "diffuse": { type: "c", value: new THREE.Color(0xeeeeee) },
-            "specular": { type: "c", value: new THREE.Color(0x111111) },
-            "shininess": { type: "f", value: 30 },
-            "opacity": { type: "f", value: 1 },
+            "diffuse": {
+                type: "c",
+                value: new THREE.Color(0xeeeeee)
+            },
+            "specular": {
+                type: "c",
+                value: new THREE.Color(0x111111)
+            },
+            "shininess": {
+                type: "f",
+                value: 30
+            },
+            "opacity": {
+                type: "f",
+                value: 1
+            },
 
-            "uRepeatBase": { type: "v2", value: new THREE.Vector2(1, 1) },
-            "uRepeatOverlay": { type: "v2", value: new THREE.Vector2(1, 1) },
+            "uRepeatBase": {
+                type: "v2",
+                value: new THREE.Vector2(1, 1)
+            },
+            "uRepeatOverlay": {
+                type: "v2",
+                value: new THREE.Vector2(1, 1)
+            },
 
-            "uOffset": { type: "v2", value: new THREE.Vector2(0, 0) }
+            "uOffset": {
+                type: "v2",
+                value: new THREE.Vector2(0, 0)
+            }
 
         }]),
 
@@ -1517,13 +1709,8 @@ THREE.ShaderTerrain = {
     }
 
 };
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
 
-WHS.API.extend = function (object) {
+WHS.API.extend = function(object) {
     for (var _len = arguments.length, extensions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         extensions[_key - 1] = arguments[_key];
     }
@@ -1550,8 +1737,9 @@ WHS.API.extend = function (object) {
                     // Do not traverse the prototype chain.
                     if (object[prop] != undefined && object[prop].toString() == '[object Object]' && extension[prop].toString() == '[object Object]')
 
-                        //Goes deep only if object[prop] and extension[prop] are both objects !
-                        WHS.API.extend(object[prop], extension[prop]);else object[prop] = object[prop] === 0 ? 0 : object[prop] || extension[prop]; // Add values that do not already exist.
+                    //Goes deep only if object[prop] and extension[prop] are both objects !
+                        WHS.API.extend(object[prop], extension[prop]);
+                    else object[prop] = object[prop] === 0 ? 0 : object[prop] || extension[prop]; // Add values that do not already exist.
                 }
             } catch (err) {
                 _didIteratorError2 = true;
@@ -1587,12 +1775,6 @@ WHS.API.extend = function (object) {
 };
 
 /**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * Shape. Makes *THREE.JS* shape.
  *
  * @param {Object} pos Position x/y/z.
@@ -1601,7 +1783,7 @@ WHS.API.extend = function (object) {
  * @param {Number} direction Direction of raycast vector.
  * @returns {Object} Intersect array.
  */
-WHS.API.getheight = function (pos, diff, terrain, direction) {
+WHS.API.getheight = function(pos, diff, terrain, direction) {
 
     'use strict';
 
@@ -1620,24 +1802,247 @@ WHS.API.getheight = function (pos, diff, terrain, direction) {
  * © Alexander Buzin, 2014-2015
  * Site: http://alexbuzin.me/
  * Email: alexbuzin88@gmail.com
-*/
+ */
+
+//WHS.API.construct = function( root, params, type ) {
+
+WHS.Light = function() {
+    function _class(params, type) {
+        _classCallCheck(this, _class);
+
+        //if ( ! root )
+        //console.error( "@constructor: WHS root object is not defined." );
+
+        var _set = function _set(x, y, z) {
+
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        };
+
+        if (params.pos) params.pos.set = _set;
+        if (params.rot) params.rot.set = _set;
+        if (params.target) params.target.set = _set;
+
+        // Polyfill for 3D.
+        var target = api.extend(params, {
+
+            light: {
+                color: 0xffffff,
+                skyColor: 0xffffff,
+                groundColor: 0xffffff,
+
+                intensity: 1,
+                distance: 100,
+                angle: Math.PI / 3
+            },
+
+            shadowmap: {
+                cast: true,
+
+                bias: 0.0001,
+
+                width: 1024,
+                height: 1024,
+
+                near: true,
+                far: 400,
+                fov: 60,
+                darkness: 0.3,
+
+                top: 200,
+                bottom: -200,
+                left: -200,
+                right: 200
+            },
+
+            pos: {
+                x: 0,
+                y: 0,
+                z: 0,
+                set: _set
+            },
+
+            rot: {
+                x: 0,
+                y: 0,
+                z: 0,
+                set: _set
+            },
+
+            target: {
+                x: 0,
+                y: 0,
+                z: 0,
+                set: _set
+            }
+
+        });
+
+        var key = 0;
+
+        /*root.modellingQueue.forEach( function( el ) {
+        			if ( el.type == type ) key ++;
+        		} );*/
+
+        var scope = {
+            _key: key,
+            _type: type,
+            _whsobject: true,
+            _name: type + key,
+            __releaseTime: new Date().getTime(),
+            _pos: target.pos,
+            _rot: target.rot,
+            _target: target.target,
+
+            _light: target.light,
+            _shadowmap: target.shadowmap,
+
+            ready: new Events()
+        };
+
+        Object.assign(this, scope);
+
+        return this;
+    }
+
+    _createClass(_class, [{
+        key: "build",
+        value: function build() {
+
+            'use strict';
+
+            var _this = this;
+
+            for (var _len2 = arguments.length, tags = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+                tags[_key2] = arguments[_key2];
+            }
+
+            var mesh = this.mesh,
+                _scope = this;
+
+            this.build_state = new Promise(function(resolve, reject) {
+
+                try {
+
+                    mesh.castShadow = true;
+                    mesh.receiveShadow = true;
+
+                    mesh.position.set(_this._pos.x, _this._pos.y, _this._pos.z);
+                    mesh.rotation.set(_this._rot.x, _this._rot.y, _this._rot.z);
+
+                    tags.forEach(function(tag) {
+                        _scope[tag] = true;
+                    });
+
+                    resolve();
+                } catch (err) {
+
+                    console.error(err.message);
+
+                    reject();
+
+                    //this._state.reject();
+                }
+            });
+
+            return this;
+        }
+    }, {
+        key: "addTo",
+        value: function addTo(root) {
+
+            'use strict';
+
+            this.root = root;
+
+            var _mesh = this.mesh,
+                _scope = this;
+
+            console.log(this);
+
+            this._key = this.root.modellingQueue.length;
+
+            _scope._state = new Promise(function(resolve, reject) {
+
+                try {
+
+                    api.merge(_scope.root.scene, _mesh);
+                    _scope.root.modellingQueue.push(_scope);
+                } catch (err) {
+
+                    console.error(err.message);
+                    reject();
+                } finally {
+
+                    if (_scope._wait) {
+
+                        _scope._mesh.addEventListener('ready', function() {
+                            resolve();
+
+                            _scope.ready.emit("ready");
+                        });
+                    } else {
+                        resolve();
+
+                        _scope.ready.emit("ready");
+                    }
+                }
+            });
+
+            _scope.root.children.push(_scope);
+
+            return this;
+        }
+    }, {
+        key: "buildShadow",
+        value: function buildShadow() {
+
+            this.mesh.shadowMapWidth = this._shadowmap.width;
+            this.mesh.shadowMapHeight = this._shadowmap.height;
+            this.mesh.shadowBias = this._shadowmap.bias;
+
+            this.mesh.shadowCameraNear = this._shadowmap.near;
+            this.mesh.shadowCameraFar = this._shadowmap.far;
+            this.mesh.shadowCameraFov = this._shadowmap.fov;
+            this.mesh.shadowDarkness = this._shadowmap.darkness;
+
+            this.mesh.shadowCameraLeft = this._shadowmap.left;
+            this.mesh.shadowCameraRight = this._shadowmap.right;
+            this.mesh.shadowCameraTop = this._shadowmap.top;
+            this.mesh.shadowCameraBottom = this._shadowmap.bottom;
+        }
+    }, {
+        key: "remove",
+        value: function remove() {
+
+            this.root.scene.remove(this.mesh);
+
+            return this;
+        }
+    }, {
+        key: "retrieve",
+        value: function retrieve() {
+
+            this.root.scene.add(this.mesh);
+
+            return this;
+        }
+    }]);
+
+    return _class;
+}();
 
 // #DONE:10 JSONLoader don't work.
-WHS.API.JSONLoader = function () {
+WHS.API.JSONLoader = function() {
     return new THREE.JSONLoader();
 };
 
-WHS.API.TextureLoader = function () {
+WHS.API.TextureLoader = function() {
     return new THREE.TextureLoader();
 };
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-WHS.API.loadMaterial = function (material) {
+WHS.API.loadMaterial = function(material) {
 
     'use strict';
 
@@ -1654,7 +2059,7 @@ WHS.API.loadMaterial = function (material) {
     delete params["kind"];
 
     delete params["friction"];
-    delete params["fric"];
+    delete params["fri"];
 
     delete params["restitution"];
     delete params["rest"];
@@ -1719,14 +2124,10 @@ WHS.API.loadMaterial = function (material) {
 
     scope._material = Physijs.createMaterial(scope._material, scope._friction, scope._restitution);
 
+    console.log(scope._friction);
+
     return scope;
 };
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
 
 /**
  * MERGE.
@@ -1734,7 +2135,7 @@ WHS.API.loadMaterial = function (material) {
  * @param {Object} box Object to be merged. (REQUIRED)
  * @param {Object} rabbits Object to be added. (REQUIRED)
  */
-WHS.API.merge = function (box, rabbits) {
+WHS.API.merge = function(box, rabbits) {
 
     'use strict';
 
@@ -1745,33 +2146,28 @@ WHS.API.merge = function (box, rabbits) {
     // Will only get here if box and rabbits are objects, arrays are object !
     if (!box) // Box should not be null, null is an object too !
 
-        // #FIXME:0 Fix caller function line number.
-        console.error("box is undefined. Line " + new Error().lineNumber + ". Func merge.", [box, rabbits]);else {
+    // #FIXME:0 Fix caller function line number.
+        console.error("box is undefined. Line " + new Error().lineNumber + ". Func merge.", [box, rabbits]);
+    else {
 
         if (Array.isArray(rabbits) && rabbits.length === 1) box.add(rabbits[0]); // Should not be 0.
 
         else if (Array.isArray(rabbits) && rabbits.length > 1 && box) {
 
-                for (var i = 0; i < rabbits.length; i++) {
+            for (var i = 0; i < rabbits.length; i++) {
 
-                    box.add(rabbits[i]);
-                }
-            } else if (!Array.isArray(rabbits)) box.add(rabbits);
+                box.add(rabbits[i]);
+            }
+        } else if (!Array.isArray(rabbits)) box.add(rabbits);
     }
 };
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
 
 /**
  * Packing uvs. Generates uvs automatically.
  *
  * @param {Object} geometry Figure object geometry *THREE.JS*. (REQUIRED)
  */
-WHS.API.PackUvs = function (geometry) {
+WHS.API.PackUvs = function(geometry) {
 
     geometry.computeBoundingBox();
 
@@ -1798,18 +2194,12 @@ WHS.API.PackUvs = function (geometry) {
 };
 
 /**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * REMOVEDUPLICEFACES.
  *
  * @param {Object} geometry *THREE.JS* geometry. (REQUIRED)
  * @return {Object} geometry *THREE.JS* geometry.
  */
-WHS.API.removeDuplicateFaces = function (geometry) {
+WHS.API.removeDuplicateFaces = function(geometry) {
 
     function isSame() {
         return !(a1.sort() > a2.sort() || a1.sort() < a2.sort());
@@ -1839,7 +2229,7 @@ WHS.API.removeDuplicateFaces = function (geometry) {
         }
     }
 
-    geometry.faces = geometry.faces.filter(function (a) {
+    geometry.faces = geometry.faces.filter(function(a) {
 
         return a === undefined;
     });
@@ -1848,19 +2238,13 @@ WHS.API.removeDuplicateFaces = function (geometry) {
 };
 
 /**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * ROTATEGEOMETRY.
  *
  * @param {Object} geometry *THREE.JS* geometry. (REQUIRED)
  * @param {Object} rotateSet Rotation x/y/z. (REQUIRED)
  * @return {Object} *THREE.JS* geometry.
  */
-WHS.API.rotateGeometry = function (geometry, rotateSet) {
+WHS.API.rotateGeometry = function(geometry, rotateSet) {
 
     'use strict';
 
@@ -1880,21 +2264,16 @@ WHS.API.rotateGeometry = function (geometry, rotateSet) {
  * © Alexander Buzin, 2014-2015
  * Site: http://alexbuzin.me/
  * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+ */
 
 //WHS.API.construct = function( root, params, type ) {
 
-WHS.Shape = function () {
-    function _class(root, params, type) {
-        _classCallCheck(this, _class);
+WHS.Shape = function() {
+    function _class2(params, type) {
+        _classCallCheck(this, _class2);
 
-        if (!root) console.error("@constructor: WHS root object is not defined.");
+        //if ( ! root )
+        //console.error( "@constructor: WHS root object is not defined." );
 
         var _set = function _set(x, y, z) {
 
@@ -1910,6 +2289,8 @@ WHS.Shape = function () {
 
         // Polyfill for 3D.
         var target = api.extend(params, {
+
+            mass: 10,
 
             pos: {
                 x: 0,
@@ -1950,14 +2331,13 @@ WHS.Shape = function () {
 
         var key = 0;
 
-        root.modellingQueue.forEach(function (el) {
-
-            if (el.type == type) key++;
-        });
+        /*root.modellingQueue.forEach( function( el ) {
+        			if ( el.type == type ) key ++;
+        		} );*/
 
         var scope = {
-            root: root,
             _key: key,
+            _type: type,
             _whsobject: true,
             _name: type + key,
             __releaseTime: new Date().getTime(),
@@ -1966,7 +2346,9 @@ WHS.Shape = function () {
             _scale: target.scale,
             _morph: target.morph,
             _target: target.target,
-            _onlyvis: target.onlyvis
+            _onlyvis: target.onlyvis,
+
+            ready: new Events()
         };
 
         Object.assign(this, scope);
@@ -1974,75 +2356,161 @@ WHS.Shape = function () {
         return this;
     }
 
-    _createClass(_class, [{
+    _createClass(_class2, [{
         key: "build",
-        value: function build(mesh) {
+        value: function build() {
 
             'use strict';
 
-            var _this = this;
+            console.log(this);
 
-            mesh = mesh || this.mesh;
+            var _scope = this;
 
-            this.build_state = new Promise(function (resolve, reject) {
+            for (var _len3 = arguments.length, tags = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+                tags[_key3] = arguments[_key3];
+            }
 
-                try {
+            if (tags.indexOf("wait") >= 0) {
 
-                    mesh.castShadow = true;
-                    mesh.receiveShadow = true;
+                _scope._loading.then(function() {
 
-                    mesh.position.set(_this._pos.x, _this._pos.y, _this._pos.z);
-                    mesh.rotation.set(_this._rot.x, _this._rot.y, _this._rot.z);
-                    mesh.scale.set(_this._scale.x, _this._scale.y, _this._scale.z);
+                    _scope.build_state = new Promise(function(resolve, reject) {
 
-                    resolve();
-                } catch (err) {
+                        try {
 
-                    console.error(err.message);
+                            _scope.mesh.castShadow = true;
+                            _scope.mesh.receiveShadow = true;
 
-                    reject();
+                            _scope.mesh.position.set(_scope._pos.x, _scope._pos.y, _scope._pos.z);
+                            _scope.mesh.rotation.set(_scope._rot.x, _scope._rot.y, _scope._rot.z);
+                            _scope.mesh.scale.set(_scope._scale.x, _scope._scale.y, _scope._scale.z);
 
-                    //this._state.reject();
-                }
-            });
+                            resolve();
+                        } catch (err) {
+
+                            console.error(err.message);
+
+                            reject();
+
+                            //this._state.reject();
+                        }
+                    });
+                });
+            } else {
+                _scope.build_state = new Promise(function(resolve, reject) {
+
+                    try {
+
+                        _scope.mesh.castShadow = true;
+                        _scope.mesh.receiveShadow = true;
+
+                        _scope.mesh.position.set(_scope._pos.x, _scope._pos.y, _scope._pos.z);
+                        _scope.mesh.rotation.set(_scope._rot.x, _scope._rot.y, _scope._rot.z);
+                        _scope.mesh.scale.set(_scope._scale.x, _scope._scale.y, _scope._scale.z);
+
+                        resolve();
+                    } catch (err) {
+
+                        console.error(err.message);
+
+                        reject();
+
+                        //this._state.reject();
+                    }
+                });
+            }
 
             return this;
         }
     }, {
-        key: "wrap",
-        value: function wrap(mesh) {
+        key: "addTo",
+        value: function addTo(root) {
 
             'use strict';
 
-            var _mesh = mesh || this.mesh,
+            this.root = root;
+
+            var _mesh = this.mesh,
                 _scope = this;
 
             this._key = this.root.modellingQueue.length;
 
-            this._state = new Promise(function (resolve, reject) {
+            for (var _len4 = arguments.length, tags = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+                tags[_key4 - 1] = arguments[_key4];
+            }
 
-                try {
+            console.log([tags, tags.indexOf("wait"), _scope]);
 
-                    api.merge(_scope.root.scene, _mesh);
-                    _scope.root.modellingQueue.push(_scope);
-                } catch (err) {
+            if (tags.indexOf("wait") >= 0) {
+                _scope._loading.then(function() {
 
-                    console.error(err.message);
-                    reject();
-                } finally {
+                    _scope._state = new Promise(function(resolve, reject) {
 
-                    if (_scope._wait) {
+                        try {
 
-                        _scope._mesh.addEventListener('ready', function () {
+                            api.merge(_scope.root.scene, _scope.mesh);
+                            _scope.root.modellingQueue.push(_scope);
+                        } catch (err) {
+
+                            console.error(err.message);
+                            reject();
+                        } finally {
+
+                            if (_scope._wait) {
+
+                                _scope._mesh.addEventListener('ready', function() {
+                                    resolve();
+
+                                    _scope.ready.emit("ready");
+                                });
+                            } else {
+                                resolve();
+
+                                _scope.ready.emit("ready");
+                            }
+                        }
+                    });
+                });
+            } else {
+
+                _scope._state = new Promise(function(resolve, reject) {
+
+                    try {
+
+                        api.merge(_scope.root.scene, _mesh);
+                        _scope.root.modellingQueue.push(_scope);
+                    } catch (err) {
+
+                        console.error(err.message);
+                        reject();
+                    } finally {
+
+                        if (_scope._wait) {
+
+                            _scope._mesh.addEventListener('ready', function() {
+                                resolve();
+
+                                _scope.ready.emit("ready");
+                            });
+                        } else {
                             resolve();
-                        });
-                    } else resolve();
-                }
-            });
+
+                            console.log("wqd");
+
+                            _scope.ready.emit("ready");
+                        }
+                    }
+                });
+            }
 
             _scope.root.children.push(_scope);
 
             return this;
+        }
+    }, {
+        key: "_initMaterial",
+        value: function _initMaterial(mat_props) {
+            return api.loadMaterial(mat_props)._material;
         }
     }, {
         key: "remove",
@@ -2062,13 +2530,8 @@ WHS.Shape = function () {
         }
     }]);
 
-    return _class;
+    return _class2;
 }();
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
 
 /**
  * Texture. Loads texture object.
@@ -2077,7 +2540,7 @@ WHS.Shape = function () {
  * @param {Object} options Parameters of texture. (REQUIRED)
  * @return {Object} *THREE.JS* texture.
  */
-WHS.API.texture = function (url, options) {
+WHS.API.texture = function(url, options) {
 
     'use strict';
 
@@ -2112,18 +2575,12 @@ WHS.API.texture = function (url, options) {
 };
 
 /**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * TRIANGULATE.
  *
  * @param {Object} thrObj *THREE.JS* geometry. (REQUIRED)
  * @param {Object} material *THREE.JS* material. (REQUIRED)
  */
-WHS.API.Triangulate = function (thrObj, material) {
+WHS.API.Triangulate = function(thrObj, material) {
 
     'use strict';
 
@@ -2132,40 +2589,34 @@ WHS.API.Triangulate = function (thrObj, material) {
     //If it is instance, then it is defined !
     else if (material) {
 
-            var triangles = new THREE.Geometry();
-            var materials = [];
+        var triangles = new THREE.Geometry();
+        var materials = [];
 
-            thrObj.faces.forEach(function (element) {
+        thrObj.faces.forEach(function(element) {
 
-                var triangle = new THREE.Geometry();
+            var triangle = new THREE.Geometry();
 
-                [].push.apply(triangle.vertices, [thrObj.vertices[element.a], thrObj.vertices[element.b], thrObj.vertices[element.c]]);
+            [].push.apply(triangle.vertices, [thrObj.vertices[element.a], thrObj.vertices[element.b], thrObj.vertices[element.c]]);
 
-                triangle.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(0, 1), new THREE.Vector2(1, 1), new THREE.Vector2(1, 0)]);
+            triangle.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(0, 1), new THREE.Vector2(1, 1), new THREE.Vector2(1, 0)]);
 
-                triangle.faces.push(new THREE.Face3(0, 1, 2));
-                triangle.computeFaceNormals();
+            triangle.faces.push(new THREE.Face3(0, 1, 2));
+            triangle.computeFaceNormals();
 
-                var triangleMesh = new THREE.Mesh(triangle, material);
-                triangleMesh.updateMatrix();
+            var triangleMesh = new THREE.Mesh(triangle, material);
+            triangleMesh.updateMatrix();
 
-                triangles.merge(triangleMesh.geometry, triangleMesh.matrix);
-                materials.push(material);
-            });
+            triangles.merge(triangleMesh.geometry, triangleMesh.matrix);
+            materials.push(material);
+        });
 
-            var trianglesMesh = new THREE.Mesh(triangles, new THREE.MeshFaceMaterial(materials));
+        var trianglesMesh = new THREE.Mesh(triangles, new THREE.MeshFaceMaterial(materials));
 
-            return trianglesMesh;
-        }
+        return trianglesMesh;
+    }
 };
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-WHS.Watch = function (queue) {
+WHS.Watch = function(queue) {
 
     'use strict';
 
@@ -2174,7 +2625,7 @@ WHS.Watch = function (queue) {
     return this;
 };
 
-WHS.Watch.prototype.add = function (element) {
+WHS.Watch.prototype.add = function(element) {
 
     'use strict';
 
@@ -2183,75 +2634,37 @@ WHS.Watch.prototype.add = function (element) {
     return this;
 };
 
-WHS.Watch.prototype.remove = function (element) {
+WHS.Watch.prototype.remove = function(element) {
 
     'use strict';
 
-    this._queue = this._queue.filter(function (item) {
+    this._queue = this._queue.filter(function(item) {
         return item != element;
     });
 
     return this;
 };
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-WHS.plugins.loop = function (func) {
+WHS.loop = function(func) {
 
     this.loop = {
         func: func,
-        id: WHS.plugins.settings.loop_id++,
+        id: WHS.loops.length,
         enabled: false
     };
 
-    WHS.plugins.queue.push(this.loop);
+    WHS.loops.push(this.loop);
 };
 
-WHS.plugins.loop.prototype.start = function () {
+WHS.loop.prototype.start = function() {
 
     this.loop.enabled = true;
 };
 
-WHS.plugins.loop.prototype.stop = function () {
+WHS.loop.prototype.stop = function() {
 
     this.loop.enabled = false;
 };
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-WHS.gp = {};
-
-WHS.plugins.register = function (name, plugin, global) {
-
-    'use strict';
-
-    var id = WHS.plugins.settings.plug_id;
-
-    WHS.plugins.list[name] = {
-        func: plugin,
-        id: id
-    };
-
-    if (global) WHS.gp[name] = plugin;else WHS.API.construct.prototype[name] = plugin;
-
-    WHS.plugins.settings.plug_id++;
-
-    return;
-};
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
 
 /**
  * Init.
@@ -2259,269 +2672,273 @@ WHS.plugins.register = function (name, plugin, global) {
  * @param {Object} params Parameters of initalize. (OPTIONAL)
  * @return {Object} Scope.
  */
-WHS.init = function (params) {
+WHS.init = function() {
+    function _class3(params) {
 
-    'use strict';
+        'use strict';
 
-    console.log('WHS.init', WHS.REVISION);
+        _classCallCheck(this, _class3);
 
-    if (!THREE) console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
-    if (!Physijs) console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
-    if (!WAGNER) console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
+        console.log('WHS.init', WHS.REVISION);
 
-    var target = api.extend(params, {
+        if (!THREE) console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
+        if (!Physijs) console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
+        if (!WAGNER) console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
 
-        anaglyph: false,
-        helper: false,
-        stats: false,
-        wagner: true,
-        autoresize: false,
+        var target = api.extend(params, {
 
-        shadowmap: true,
+            anaglyph: false,
+            helper: false,
+            stats: false,
+            wagner: true,
+            autoresize: false,
 
-        gravity: {
-            x: 0,
-            y: 0,
-            z: 0
-        },
+            shadowmap: true,
 
-        camera: {
-            aspect: 75,
-            near: 1,
-            far: 1000,
-
-            x: 0,
-            y: 0,
-            z: 0
-        },
-
-        rWidth: window.innerWidth, // Resolution(width).
-        rHeight: window.innerHeight, // Resolution(height).
-
-        width: window.innerWidth, // Container(width).
-        height: window.innerHeight, // Container(height).
-
-        physics: {
-
-            quatNormalizeSkip: 0,
-            quatNormalizeFast: false,
-
-            solver: {
-                iterations: 20,
-                tolerance: 0
+            gravity: {
+                x: 0,
+                y: 0,
+                z: 0
             },
 
-            defMaterial: {
-                contactEquationStiffness: 1e8,
-                contactEquationRegularizationTime: 3
+            camera: {
+                aspect: 75,
+                near: 1,
+                far: 1000,
+
+                x: 0,
+                y: 0,
+                z: 0
+            },
+
+            rWidth: window.innerWidth, // Resolution(width).
+            rHeight: window.innerHeight, // Resolution(height).
+
+            width: window.innerWidth, // Container(width).
+            height: window.innerHeight, // Container(height).
+
+            physics: {
+
+                quatNormalizeSkip: 0,
+                quatNormalizeFast: false,
+
+                solver: {
+                    iterations: 20,
+                    tolerance: 0
+                },
+
+                defMaterial: {
+                    contactEquationStiffness: 1e8,
+                    contactEquationRegularizationTime: 3
+                }
+
+            },
+
+            background: 0x000000,
+            assets: "./assets",
+            container: document.body,
+
+            path_worker: '../libs/physijs_worker.js',
+            path_ammo: '../libs/ammo.js'
+
+        });
+
+        this._settings = target;
+
+        Physijs.scripts.worker = target.path_worker;
+        Physijs.scripts.ammo = target.path_ammo;
+
+        this.scene = new Physijs.Scene();
+
+        this.scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
+
+        // DOM INIT
+        var whselement = document.createElement('div'); //.whs
+        whselement.className = "whs";
+
+        target.container.appendChild(whselement);
+
+        // Debug Renderer
+        if (target.stats) {
+            this._stats = new Stats();
+
+            if (target.stats == "fps") this._stats.setMode(0);
+            else if (target.stats == "ms") this._stats.setMode(1);
+            else if (target.stats == "mb") this._stats.setMode(1);
+            else {
+                this._stats.setMode(0);
+                // WARN: console | stats mode.
+                console.warn([this._stats], "Please, apply stats mode [fps, ms, mb] .");
             }
 
-        },
+            this._stats.domElement.style.position = 'absolute';
+            this._stats.domElement.style.left = '0px';
+            this._stats.domElement.style.bottom = '0px';
 
-        background: 0x000000,
-        assets: "./assets",
-        container: document.body,
-
-        path_worker: '../libs/physijs_worker.js',
-        path_ammo: '../libs/ammo.js'
-
-    });
-
-    this._settings = target;
-
-    Physijs.scripts.worker = target.path_worker;
-    Physijs.scripts.ammo = target.path_ammo;
-
-    this.scene = new Physijs.Scene();
-
-    this.scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
-
-    // DOM INIT
-    var whselement = document.createElement('div'); //.whs
-    whselement.className = "whs";
-
-    target.container.appendChild(whselement);
-
-    // Debug Renderer
-    if (target.stats) {
-        this._stats = new Stats();
-
-        if (target.stats == "fps") this._stats.setMode(0);else if (target.stats == "ms") this._stats.setMode(1);else if (target.stats == "mb") this._stats.setMode(1);else {
-            this._stats.setMode(0);
-            // WARN: console | stats mode.
-            console.warn([this._stats], "Please, apply stats mode [fps, ms, mb] .");
+            whselement.appendChild(this._stats.domElement);
         }
 
-        this._stats.domElement.style.position = 'absolute';
-        this._stats.domElement.style.left = '0px';
-        this._stats.domElement.style.bottom = '0px';
+        // Camera.
+        var camera = new THREE.PerspectiveCamera(target.camera.aspect, target.width / target.height, target.camera.near, target.camera.far);
 
-        whselement.appendChild(this._stats.domElement);
-    }
+        camera.position.set(target.camera.x, target.camera.y, target.camera.z);
 
-    // Camera.
-    var camera = new THREE.PerspectiveCamera(target.camera.aspect, target.width / target.height, target.camera.near, target.camera.far);
+        api.merge(this.scene, camera);
 
-    camera.position.set(target.camera.x, target.camera.y, target.camera.z);
+        // Renderer.
+        var renderer = new THREE.WebGLRenderer();
 
-    api.merge(this.scene, camera);
+        renderer.setClearColor(target.background);
 
-    // Renderer.
-    var renderer = new THREE.WebGLRenderer();
+        // Shadowmap.
+        renderer.shadowMap.enabled = target.shadowmap;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.shadowMap.cascade = true;
 
-    renderer.setClearColor(target.background);
+        if (target.anaglyph) {
 
-    // Shadowmap.
-    renderer.shadowMap.enabled = target.shadowmap;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.shadowMap.cascade = true;
+            this.effect = new THREE.AnaglyphEffect(renderer);
+            this.effect.setSize(target.rWidth, target.rHeight);
 
-    if (target.anaglyph) {
+            this.effect.render(this.scene, camera);
+        } else {
 
-        this.effect = new THREE.AnaglyphEffect(renderer);
-        this.effect.setSize(target.rWidth, target.rHeight);
-
-        this.effect.render(this.scene, camera);
-    } else {
-
-        renderer.setSize(target.rWidth, target.rHeight);
-        renderer.render(this.scene, camera);
-    }
-
-    renderer.domElement.style.width = '100%';
-    renderer.domElement.style.height = '100%';
-
-    whselement.appendChild(renderer.domElement);
-
-    target.container.style.margin = 0;
-    target.container.style.padding = 0;
-    target.container.style.position = 'relative';
-    target.container.style.overflow = 'hidden';
-
-    // NOTE: ==================== Composer. =======================
-    if (target.wagner) {
-
-        this._composer = new WAGNER.Composer(renderer);
-
-        this._composer.setSize(target.rWidth, target.rHeight);
-        this._composer.autoClearColor = true;
-
-        this._composer.reset();
-        this._composer.render(this.scene, camera);
-
-        this._composer.eff = [];
-    }
-
-    Object.assign(this, {
-        _camera: camera,
-        renderer: renderer,
-        _settings: target,
-        modellingQueue: [], // Queue for physics objects
-        children: [], // Children for this app.
-        _dom: whselement
-    });
-
-    // NOTE: ==================== Autoresize. ======================
-    var scope = this;
-
-    if (target.autoresize) window.addEventListener('load resize', function () {
-        scope._camera.aspect = window.innerWidth / window.innerHeight;
-
-        scope._camera.updateProjectionMatrix();
-
-        scope.renderer.setSize(target.rWidth, target.rHeight);
-
-        /*if (params.wagner) {
-            scope._composer.setSize(target.rWidth, target.rHeight);
-              renderer.domElement.style.width = '100%';
-            renderer.domElement.style.height = '100%';
-        }*/
-    });
-
-    return scope;
-};
-
-// [x]#TODO:70 Fix animate update callback.
-/**
- * ANIMATE.
- */
-WHS.init.prototype.start = function () {
-
-    'use strict';
-
-    var clock = new THREE.Clock();
-    var scope = this;
-    scope._events = new Events();
-
-    scope._events.on("ready", function () {
-        scope.update();
-    });
-
-    function reDraw(time) {
-
-        requestAnimationFrame(reDraw);
-
-        // Init stats.
-        if (scope._stats) scope._stats.begin();
-
-        // Merging data loop.
-        for (var i = 0; i < Object.keys(scope.modellingQueue).length; i++) {
-            if (scope.modellingQueue[i].morph) scope.modellingQueue[i].mesh.mixer.update(clock.getDelta());
+            renderer.setSize(target.rWidth, target.rHeight);
+            renderer.render(this.scene, camera);
         }
 
-        scope.scene.simulate();
+        renderer.domElement.style.width = '100%';
+        renderer.domElement.style.height = '100%';
 
-        //if (scope._settings.anaglyph)
-        //  scope.effect.render(scope.scene, scope._camera);
+        whselement.appendChild(renderer.domElement);
 
-        // Controls.
-        if (scope.controls) {
-            scope.controls.update(Date.now() - scope.time);
-            scope.time = Date.now();
+        target.container.style.margin = 0;
+        target.container.style.padding = 0;
+        target.container.style.position = 'relative';
+        target.container.style.overflow = 'hidden';
+
+        // NOTE: ==================== Composer. =======================
+        if (target.wagner) {
+
+            this._composer = new WAGNER.Composer(renderer);
+
+            this._composer.setSize(target.rWidth, target.rHeight);
+            this._composer.autoClearColor = true;
+
+            this._composer.reset();
+            this._composer.render(this.scene, camera);
+
+            this._composer.eff = [];
         }
 
-        // Effects rendering.
-        if (scope._composer) {
-            scope._composer.reset();
-
-            scope._composer.render(scope.scene, scope._camera);
-
-            scope._composer.eff.forEach(function (effect) {
-                scope._composer.pass(effect);
-            });
-
-            scope._composer.toScreen();
-        }
-
-        // End helper.
-        if (scope._stats) scope._stats.end();
-
-        WHS.plugins.queue.forEach(function (loop) {
-
-            if (loop.enabled) loop.func(time);
+        Object.assign(this, {
+            _camera: camera,
+            renderer: renderer,
+            _settings: target,
+            modellingQueue: [], // Queue for physics objects
+            children: [], // Children for this app.
+            _dom: whselement
         });
+
+        // NOTE: ==================== Autoresize. ======================
+        var scope = this;
+
+        if (target.autoresize) window.addEventListener('load resize', function() {
+            scope._camera.aspect = window.innerWidth / window.innerHeight;
+
+            scope._camera.updateProjectionMatrix();
+
+            scope.renderer.setSize(target.rWidth, target.rHeight);
+
+            /*if (params.wagner) {
+                scope._composer.setSize(target.rWidth, target.rHeight);
+                  renderer.domElement.style.width = '100%';
+                renderer.domElement.style.height = '100%';
+            }*/
+        });
+
+        return scope;
     }
 
-    this.update = reDraw;
+    _createClass(_class3, [{
+        key: "start",
+        value: function start() {
 
-    scope._ready = [];
+            'use strict';
 
-    var loading_queue = WHS.Watch(scope.children);
+            var clock = new THREE.Clock();
+            var scope = this;
+            scope._events = new Events();
 
-    loading_queue._queue.forEach(function (object) {
-        object._state.then(function () {
-            scope._ready.push(object);
+            /*scope._events.on("ready", function() {
+                scope.update();
+            })*/
 
-            if (loading_queue._queue.length == scope._ready.length) scope._events.emit("ready");
-        });
-    });
-};
+            function reDraw(time) {
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+                requestAnimationFrame(reDraw);
+
+                // Init stats.
+                if (scope._stats) scope._stats.begin();
+
+                // Merging data loop.
+                for (var i = 0; i < scope.modellingQueue.length; i++) {
+                    if (scope.modellingQueue[i]._type == "morph") scope.modellingQueue[i].mesh.mixer.update(clock.getDelta());
+                }
+
+                scope.scene.simulate();
+
+                //if (scope._settings.anaglyph)
+                //  scope.effect.render(scope.scene, scope._camera);
+
+                // Controls.
+                if (scope.controls) {
+                    scope.controls.update(Date.now() - scope.time);
+                    scope.time = Date.now();
+                }
+
+                // Effects rendering.
+                if (scope._composer) {
+                    scope._composer.reset();
+
+                    scope._composer.render(scope.scene, scope._camera);
+
+                    scope._composer.eff.forEach(function(effect) {
+                        scope._composer.pass(effect);
+                    });
+
+                    scope._composer.toScreen();
+                }
+
+                // End helper.
+                if (scope._stats) scope._stats.end();
+
+                WHS.loops.forEach(function(loop) {
+
+                    if (loop.enabled) loop.func(time);
+                });
+            }
+
+            this.update = reDraw;
+
+            scope.update();
+
+            /*scope._ready = [];
+              var loading_queue = WHS.Watch(scope.children);
+              loading_queue._queue.forEach(object => {
+                object.ready.on("ready", function() {
+                   // object._state.then(() => {
+                        scope._ready.push(object);
+                          if(loading_queue._queue.length == scope._ready.length) 
+                            scope._events.emit("ready");
+                    //});
+                });
+              });*/
+        }
+    }]);
+
+    return _class3;
+}();
 
 // #DONE:40 addModel *func*.
 /**
@@ -2531,7 +2948,7 @@ WHS.init.prototype.start = function () {
  * @param {Object} options Figure options. (REQUIRED)
  * @return {Object} Scope.
  */
-WHS.init.prototype.addModel = function (pathToModel, options) {
+WHS.init.prototype.addModel = function(pathToModel, options) {
 
     'use strict';
 
@@ -2539,7 +2956,7 @@ WHS.init.prototype.addModel = function (pathToModel, options) {
 
     scope.materialType = api.loadMaterial(options.materialOptions)._material;
 
-    api.JSONLoader().load(pathToModel, function (data) {
+    api.JSONLoader().load(pathToModel, function(data) {
         data.computeFaceNormals();
         data.computeVertexNormals();
 
@@ -2553,13 +2970,7 @@ WHS.init.prototype.addModel = function (pathToModel, options) {
     return scope;
 };
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-WHS.init.prototype.addMorph = function (url, options) {
+WHS.init.prototype.addMorph = function(url, options) {
 
     'use strict';
 
@@ -2568,7 +2979,7 @@ WHS.init.prototype.addMorph = function (url, options) {
     scope.skip = true;
     scope.morph = true;
 
-    api.JSONLoader().load(url, function (geometry) {
+    api.JSONLoader().load(url, function(geometry) {
 
         var material = new THREE.MeshLambertMaterial({
             color: 0xffaa55,
@@ -2594,19 +3005,13 @@ WHS.init.prototype.addMorph = function (url, options) {
 };
 
 /**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * Figure.
  *
  * @param {String} figure name *THREE.JS*. (REQUIRED)
  * @param {Object} options Figure options. (REQUIRED)
  * @return {Object} Scope.
  */
-WHS.init.prototype.addObject = function (figureType, options) {
+WHS.init.prototype.addObject = function(figureType, options) {
 
     'use strict';
 
@@ -2845,10 +3250,10 @@ WHS.init.prototype.addObject = function (figureType, options) {
             break;
         case "tube":
 
-            scope.CustomSinCurve = THREE.Curve.create(function (scale) {
+            scope.CustomSinCurve = THREE.Curve.create(function(scale) {
                 //custom curve constructor
                 this.scale = scale || 1;
-            }, function (t) {
+            }, function(t) {
                 //getPoint: t is between 0-1
                 var tx = t * 3 - 1.5,
                     ty = Math.sin(2 * Math.PI * t),
@@ -2872,7 +3277,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
             break;
     }
 
-    scope.addCompoundFace = function () {
+    scope.addCompoundFace = function() {
 
         this.compoundFace = new THREE.Geometry();
         this.compoundFace.faces.push(new THREE.Face3(0, 1, 2));
@@ -2897,11 +3302,678 @@ WHS.init.prototype.addObject = function (figureType, options) {
     return scope;
 };
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+WHS.Cube = function(_WHS$Shape) {
+    _inherits(Cube, _WHS$Shape);
+
+    function Cube(params) {
+        _classCallCheck(this, Cube);
+
+        var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(Cube).call(this, params, "cube"));
+
+        api.extend(params.geometry, {
+
+            width: 1,
+            height: 1,
+            depth: 1
+
+        });
+
+        _this2.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(params.geometry.width, params.geometry.height, params.geometry.depth), _get(Object.getPrototypeOf(Cube.prototype), "_initMaterial", _this2).call(_this2, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Cube.prototype), "build", _this2).call(_this2);
+
+        return _this2;
+    }
+
+    return Cube;
+}(WHS.Shape);
+
+WHS.init.prototype.Cube = function(params) {
+    return new WHS.Cube(params).addTo(this);
+};
+
+WHS.Cylinder = function(_WHS$Shape2) {
+    _inherits(Cylinder, _WHS$Shape2);
+
+    function Cylinder(params) {
+        _classCallCheck(this, Cylinder);
+
+        var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(Cylinder).call(this, params, "cylinder"));
+
+        api.extend(params.geometry, {
+
+            radiusTop: 1,
+            radiusBottom: 1,
+            height: 1,
+            radiusSegments: 32
+
+        });
+
+        _this3.mesh = new Physijs.CylinderMesh(new THREE.CylinderGeometry(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments), _get(Object.getPrototypeOf(Cylinder.prototype), "_initMaterial", _this3).call(_this3, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Cylinder.prototype), "build", _this3).call(_this3);
+
+        return _this3;
+    }
+
+    return Cylinder;
+}(WHS.Shape);
+
+WHS.init.prototype.Cylinder = function(params) {
+    return new WHS.Cylinder(params).addTo(this);
+};
+
+WHS.Dodecahedron = function(_WHS$Shape3) {
+    _inherits(Dodecahedron, _WHS$Shape3);
+
+    function Dodecahedron(params) {
+        _classCallCheck(this, Dodecahedron);
+
+        var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(Dodecahedron).call(this, params, "dodecahedron"));
+
+        api.extend(params.geometry, {
+
+            radius: 1,
+            detail: 0
+
+        });
+
+        _this4.mesh = new Physijs.ConvexMesh(new THREE.DodecahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Dodecahedron.prototype), "_initMaterial", _this4).call(_this4, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Dodecahedron.prototype), "build", _this4).call(_this4);
+
+        return _this4;
+    }
+
+    return Dodecahedron;
+}(WHS.Shape);
+
+WHS.init.prototype.Dodecahedron = function(params) {
+    return new WHS.Dodecahedron(params).addTo(this);
+};
+
+WHS.Extrude = function(_WHS$Shape4) {
+    _inherits(Extrude, _WHS$Shape4);
+
+    function Extrude(params) {
+        _classCallCheck(this, Extrude);
+
+        var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(Extrude).call(this, params, "extrude"));
+
+        api.extend(params.geometry, {
+
+            shapes: [],
+            options: {}
+
+        });
+
+        _this5.mesh = new Physijs.ConvexMesh(new THREE.ExtrudeGeometry(params.geometry.shapes, params.geometry.options), _get(Object.getPrototypeOf(Extrude.prototype), "_initMaterial", _this5).call(_this5, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Extrude.prototype), "build", _this5).call(_this5);
+
+        return _this5;
+    }
+
+    return Extrude;
+}(WHS.Shape);
+
+WHS.init.prototype.Extrude = function(params) {
+    return new WHS.Extrude(params).addTo(this);
+};
+
+WHS.Icosahderon = function(_WHS$Shape5) {
+    _inherits(Icosahderon, _WHS$Shape5);
+
+    function Icosahderon(params) {
+        _classCallCheck(this, Icosahderon);
+
+        var _this6 = _possibleConstructorReturn(this, Object.getPrototypeOf(Icosahderon).call(this, params, "icosahderon"));
+
+        api.extend(params.geometry, {
+
+            radius: 1,
+            detail: 0
+
+        });
+
+        _this6.mesh = new Physijs.ConvexMesh(new THREE.IcosahderonGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Icosahderon.prototype), "_initMaterial", _this6).call(_this6, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Icosahderon.prototype), "build", _this6).call(_this6);
+
+        return _this6;
+    }
+
+    return Icosahderon;
+}(WHS.Shape);
+
+WHS.init.prototype.Icosahderon = function(params) {
+    return new WHS.Icosahderon(params).addTo(this);
+};
+
+WHS.Lathe = function(_WHS$Shape6) {
+    _inherits(Lathe, _WHS$Shape6);
+
+    function Lathe(params) {
+        _classCallCheck(this, Lathe);
+
+        var _this7 = _possibleConstructorReturn(this, Object.getPrototypeOf(Lathe).call(this, params, "lathe"));
+
+        api.extend(params.geometry, {
+
+            points: []
+
+        });
+
+        _this7.mesh = new Physijs.ConvexMesh(new THREE.LatheGeometry(params.geometry.points), _get(Object.getPrototypeOf(Lathe.prototype), "_initMaterial", _this7).call(_this7, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Lathe.prototype), "build", _this7).call(_this7);
+
+        return _this7;
+    }
+
+    return Lathe;
+}(WHS.Shape);
+
+WHS.init.prototype.Lathe = function(params) {
+    return new WHS.Lathe(params).addTo(this);
+};
+
+WHS.Model = function(_WHS$Shape7) {
+    _inherits(Model, _WHS$Shape7);
+
+    function Model(params) {
+        _classCallCheck(this, Model);
+
+        var _this8 = _possibleConstructorReturn(this, Object.getPrototypeOf(Model).call(this, params, "model"));
+
+        api.extend(params.geometry, {
+
+            path: ""
+
+        });
+
+        var scope = _this8,
+            material = _get(Object.getPrototypeOf(Model.prototype), "_initMaterial", _this8).call(_this8, params.material);
+
+        _this8._loading = new Promise(function(resolve, reject) {
+
+            api.JSONLoader().load(params.geometry.path, function(data) {
+
+                data.computeFaceNormals();
+                data.computeVertexNormals();
+
+                // Visualization.
+                scope.mesh = new Physijs.ConvexMesh(data, material, params.mass);
+
+                resolve();
+            });
+        });
+
+        _get(Object.getPrototypeOf(Model.prototype), "build", _this8).call(_this8, "wait");
+
+        return _this8;
+    }
+
+    return Model;
+}(WHS.Shape);
+
+WHS.init.prototype.Model = function(params) {
+    return new WHS.Model(params).addTo(this, "wait");
+};
+
+WHS.Morph = function(_WHS$Shape8) {
+    _inherits(Morph, _WHS$Shape8);
+
+    function Morph(params) {
+        _classCallCheck(this, Morph);
+
+        var _this9 = _possibleConstructorReturn(this, Object.getPrototypeOf(Morph).call(this, params, "morph"));
+
+        api.extend(params.geometry, {
+
+            path: ""
+
+        });
+
+        console.log(_this9);
+
+        var scope = _this9;
+
+        _this9._loading = new Promise(function(resolve, reject) {
+
+            api.JSONLoader().load(params.geometry.path, function(data) {
+
+                var material = new THREE.MeshLambertMaterial({
+                    color: 0xffaa55,
+                    morphTargets: true,
+                    vertexColors: THREE.FaceColors
+                });
+
+                data.computeFaceNormals();
+                data.computeVertexNormals();
+
+                // Visualization.
+                scope.mesh = new THREE.Mesh(data, material);
+                scope.mesh.speed = params.morph.speed;
+
+                scope.mesh.mixer = new THREE.AnimationMixer(scope.mesh);
+                scope.mesh.mixer.addAction(new THREE.AnimationAction(data.animations[0]).warpToDuration(0.5));
+
+                scope.mesh.mixer.update(600 * Math.random());
+
+                scope._rot.y = Math.PI / 2;
+
+                resolve();
+            });
+        });
+
+        _get(Object.getPrototypeOf(Morph.prototype), "build", _this9).call(_this9, "wait");
+
+        return _this9;
+    }
+
+    return Morph;
+}(WHS.Shape);
+
+WHS.init.prototype.Morph = function(params) {
+    return new WHS.Morph(params).addTo(this, "wait");
+};
+
+WHS.Octahedron = function(_WHS$Shape9) {
+    _inherits(Octahedron, _WHS$Shape9);
+
+    function Octahedron(params) {
+        _classCallCheck(this, Octahedron);
+
+        var _this10 = _possibleConstructorReturn(this, Object.getPrototypeOf(Octahedron).call(this, params, "octahedron"));
+
+        api.extend(params.geometry, {
+
+            radius: 1,
+            detail: 0
+
+        });
+
+        _this10.mesh = new Physijs.ConvexMesh(new THREE.OctahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Octahedron.prototype), "_initMaterial", _this10).call(_this10, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Octahedron.prototype), "build", _this10).call(_this10);
+
+        return _this10;
+    }
+
+    return Octahedron;
+}(WHS.Shape);
+
+WHS.init.prototype.Octahedron = function(params) {
+    return new WHS.Octahedron(params).addTo(this);
+};
+
+WHS.Parametric = function(_WHS$Shape10) {
+    _inherits(Parametric, _WHS$Shape10);
+
+    function Parametric(params) {
+        _classCallCheck(this, Parametric);
+
+        var _this11 = _possibleConstructorReturn(this, Object.getPrototypeOf(Parametric).call(this, params, "parametric"));
+
+        api.extend(params.geometry, {
+
+            func: function func() {},
+            slices: 10,
+            stacks: 10
+
+        });
+
+        _this11.mesh = new Physijs.ConvexMesh(new THREE.ParametricGeometry(params.geometry.func, params.geometry.slices, params.geometry.stacks), _get(Object.getPrototypeOf(Parametric.prototype), "_initMaterial", _this11).call(_this11, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Parametric.prototype), "build", _this11).call(_this11);
+
+        return _this11;
+    }
+
+    return Parametric;
+}(WHS.Shape);
+
+WHS.init.prototype.Parametric = function(params) {
+    return new WHS.Parametric(params).addTo(this);
+};
+
+WHS.Plane = function(_WHS$Shape11) {
+    _inherits(Plane, _WHS$Shape11);
+
+    function Plane(params) {
+        _classCallCheck(this, Plane);
+
+        var _this12 = _possibleConstructorReturn(this, Object.getPrototypeOf(Plane).call(this, params, "plane"));
+
+        api.extend(params.geometry, {
+
+            width: 10,
+            height: 10,
+            segments: 32
+
+        });
+
+        _this12.mesh = new Physijs.ConvexMesh(new THREE.PlaneBufferGeometry(params.geometry.width, params.geometry.height, params.geometry.segments), _get(Object.getPrototypeOf(Plane.prototype), "_initMaterial", _this12).call(_this12, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Plane.prototype), "build", _this12).call(_this12);
+
+        return _this12;
+    }
+
+    return Plane;
+}(WHS.Shape);
+
+WHS.init.prototype.Plane = function(params) {
+    return new WHS.Plane(params).addTo(this);
+};
+
+WHS.Polyhedron = function(_WHS$Shape12) {
+    _inherits(Polyhedron, _WHS$Shape12);
+
+    function Polyhedron(params) {
+        _classCallCheck(this, Polyhedron);
+
+        var _this13 = _possibleConstructorReturn(this, Object.getPrototypeOf(Polyhedron).call(this, params, "polyhedron"));
+
+        api.extend(params.geometry, {
+
+            verticesOfCube: [],
+            indicesOfFaces: [],
+            radius: 1,
+            detail: 1
+
+        });
+
+        _this13.mesh = new Physijs.ConvexMesh(new THREE.PolyhedronGeometry(params.geometry.verticesOfCube, params.geometry.indicesOfFaces, params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Polyhedron.prototype), "_initMaterial", _this13).call(_this13, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Polyhedron.prototype), "build", _this13).call(_this13);
+
+        return _this13;
+    }
+
+    return Polyhedron;
+}(WHS.Shape);
+
+WHS.init.prototype.Polyhedron = function(params) {
+    return new WHS.Polyhedron(params).addTo(this);
+};
+
+WHS.Ring = function(_WHS$Shape13) {
+    _inherits(Ring, _WHS$Shape13);
+
+    function Ring(params) {
+        _classCallCheck(this, Ring);
+
+        var _this14 = _possibleConstructorReturn(this, Object.getPrototypeOf(Ring).call(this, params, "ring"));
+
+        api.extend(params.geometry, {
+
+            innerRadius: 2,
+            outerRadius: 5,
+            thetaSegments: 30,
+            phiSegments: 30,
+            thetaStart: 0,
+            thetaLength: Math.PI * 2
+
+        });
+
+        _this14.mesh = new Physijs.ConcaveMesh(new THREE.TorusGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), _get(Object.getPrototypeOf(Ring.prototype), "_initMaterial", _this14).call(_this14, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Ring.prototype), "build", _this14).call(_this14);
+
+        return _this14;
+    }
+
+    return Ring;
+}(WHS.Shape);
+
+WHS.init.prototype.Ring = function(params) {
+    return new WHS.Ring(params).addTo(this);
+};
+
+WHS.Shape2D = function(_WHS$Shape14) {
+    _inherits(Shape2D, _WHS$Shape14);
+
+    function Shape2D(params) {
+        _classCallCheck(this, Shape2D);
+
+        var _this15 = _possibleConstructorReturn(this, Object.getPrototypeOf(Shape2D).call(this, params, "shape2D"));
+
+        api.extend(params.geometry, {
+
+            shapes: []
+
+        });
+
+        _this15.mesh = new THREE.Mesh(new THREE.ShapeGeometry(params.geometry.shapes), _get(Object.getPrototypeOf(Shape2D.prototype), "_initMaterial", _this15).call(_this15, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Shape2D.prototype), "build", _this15).call(_this15, "onlyvis");
+
+        return _this15;
+    }
+
+    return Shape2D;
+}(WHS.Shape);
+
+WHS.init.prototype.Shape2D = function(params) {
+    return new WHS.Shape2D(params).addTo(this);
+};
+
+WHS.Sphere = function(_WHS$Shape15) {
+    _inherits(Sphere, _WHS$Shape15);
+
+    function Sphere(params) {
+        _classCallCheck(this, Sphere);
+
+        var _this16 = _possibleConstructorReturn(this, Object.getPrototypeOf(Sphere).call(this, params, "sphere"));
+
+        api.extend(params.geometry, {
+
+            radius: 1,
+            segmentA: 32,
+            segmentB: 32
+
+        });
+
+        _this16.mesh = new Physijs.SphereMesh(new THREE.SphereGeometry(params.geometry.radius, params.geometry.segmentA, params.geometry.segmentB), _get(Object.getPrototypeOf(Sphere.prototype), "_initMaterial", _this16).call(_this16, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Sphere.prototype), "build", _this16).call(_this16);
+
+        return _this16;
+    }
+
+    return Sphere;
+}(WHS.Shape);
+
+WHS.init.prototype.Sphere = function(params) {
+    return new WHS.Sphere(params).addTo(this);
+};
+
+WHS.Tetrahedron = function(_WHS$Shape16) {
+    _inherits(Tetrahedron, _WHS$Shape16);
+
+    function Tetrahedron(params) {
+        _classCallCheck(this, Tetrahedron);
+
+        var _this17 = _possibleConstructorReturn(this, Object.getPrototypeOf(Tetrahedron).call(this, params, "tetrahedron"));
+
+        api.extend(params.geometry, {
+
+            radius: 1,
+            detail: 0
+
+        });
+
+        _this17.mesh = new Physijs.ConvexMesh(new THREE.TetrahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Tetrahedron.prototype), "_initMaterial", _this17).call(_this17, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Tetrahedron.prototype), "build", _this17).call(_this17);
+
+        return _this17;
+    }
+
+    return Tetrahedron;
+}(WHS.Shape);
+
+WHS.init.prototype.Tetrahedron = function(params) {
+    return new WHS.Tetrahedron(params).addTo(this);
+};
+
+WHS.Text = function(_WHS$Shape17) {
+    _inherits(Text, _WHS$Shape17);
+
+    function Text(params) {
+        _classCallCheck(this, Text);
+
+        var _this18 = _possibleConstructorReturn(this, Object.getPrototypeOf(Text).call(this, params, "text"));
+
+        api.extend(params.geometry, {
+
+            text: "Hello World!",
+
+            parameters: {
+                size: 1,
+                height: 50,
+                curveSegments: 1,
+                font: "Adelle",
+                weight: "normal",
+                style: "normal",
+                bevelEnabled: false,
+                bevelThickness: 10,
+                bevelSize: 8
+            }
+
+        });
+
+        _this18.mesh = new Physijs.ConcaveMesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), _get(Object.getPrototypeOf(Text.prototype), "_initMaterial", _this18).call(_this18, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Text.prototype), "build", _this18).call(_this18);
+
+        return _this18;
+    }
+
+    return Text;
+}(WHS.Shape);
+
+WHS.init.prototype.Text = function(params) {
+    return new WHS.Text(params).addTo(this);
+};
+
+WHS.Torus = function(_WHS$Shape18) {
+    _inherits(Torus, _WHS$Shape18);
+
+    function Torus(params) {
+        _classCallCheck(this, Torus);
+
+        var _this19 = _possibleConstructorReturn(this, Object.getPrototypeOf(Torus).call(this, params, "torus"));
+
+        api.extend(params.geometry, {
+
+            radius: 100,
+            tube: 40,
+            radialSegments: 8,
+            tubularSegments: 6,
+            arc: Math.PI * 2
+
+        });
+
+        _this19.mesh = new Physijs.ConvexMesh(new THREE.TorusGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.arc), _get(Object.getPrototypeOf(Torus.prototype), "_initMaterial", _this19).call(_this19, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Torus.prototype), "build", _this19).call(_this19);
+
+        return _this19;
+    }
+
+    return Torus;
+}(WHS.Shape);
+
+WHS.init.prototype.Torus = function(params) {
+    return new WHS.Torus(params).addTo(this);
+};
+
+WHS.Torusknot = function(_WHS$Shape19) {
+    _inherits(Torusknot, _WHS$Shape19);
+
+    function Torusknot(params) {
+        _classCallCheck(this, Torusknot);
+
+        var _this20 = _possibleConstructorReturn(this, Object.getPrototypeOf(Torusknot).call(this, params, "Torusknot"));
+
+        api.extend(params.geometry, {
+
+            radius: 100,
+            tube: 40,
+            radialSegments: 64,
+            tubularSegments: 8,
+            p: 2,
+            q: 3,
+            heightScale: 1
+
+        });
+
+        _this20.mesh = new Physijs.ConvexMesh(new THREE.TorusKnotGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.p, params.geometry.q, params.geometry.heightScale), _get(Object.getPrototypeOf(Torusknot.prototype), "_initMaterial", _this20).call(_this20, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Torusknot.prototype), "build", _this20).call(_this20);
+
+        return _this20;
+    }
+
+    return Torusknot;
+}(WHS.Shape);
+
+WHS.init.prototype.Torusknot = function(params) {
+    return new WHS.Torusknot(params).addTo(this);
+};
+
+WHS.Tube = function(_WHS$Shape20) {
+    _inherits(Tube, _WHS$Shape20);
+
+    function Tube(params) {
+        _classCallCheck(this, Tube);
+
+        var _this21 = _possibleConstructorReturn(this, Object.getPrototypeOf(Tube).call(this, params, "tube"));
+
+        api.extend(params.geometry, {
+
+            path: options.geometryOptions.path ? new _this21.CustomSinCurve(100) : false,
+            segments: 20,
+            radius: 2,
+            radiusSegments: 8,
+            closed: false
+
+        });
+
+        _this21.mesh = new Physijs.ConvexMesh(new THREE.TubeGeometry(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed), _get(Object.getPrototypeOf(Tube.prototype), "_initMaterial", _this21).call(_this21, params.material), params.mass);
+
+        _get(Object.getPrototypeOf(Tube.prototype), "build", _this21).call(_this21);
+
+        return _this21;
+    }
+
+    _createClass(Tube, [{
+        key: "CustomSinCurve",
+        get: function get() {
+
+            return THREE.Curve.create(function(scale) {
+                //custom curve constructor
+                this.scale = scale || 1;
+            }, function(t) {
+                //getPoint: t is between 0-1
+                var tx = t * 3 - 1.5,
+                    ty = Math.sin(2 * Math.PI * t),
+                    tz = 0;
+
+                return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
+            });
+        }
+    }]);
+
+    return Tube;
+}(WHS.Shape);
+
+WHS.init.prototype.Tube = function(params) {
+    return new WHS.Tube(params).addTo(this);
+};
 
 // TODO: Improve Grass object.
 /**
@@ -2911,7 +3983,7 @@ WHS.init.prototype.addObject = function (figureType, options) {
  * @param {Object} options Options of fog object. (REQUIRED)
  * @returns {Object} This element scope/statement.
  */
-WHS.init.prototype.addGrass = function (ground, options) {
+WHS.init.prototype.addGrass = function(ground, options) {
 
     'use strict';
 
@@ -2927,7 +3999,7 @@ WHS.init.prototype.addGrass = function (ground, options) {
 
     var globalGrass = new THREE.Mesh(new THREE.Geometry(), new THREE.MeshFaceMaterial());
 
-    scope.opts.coords.forEach(function (coord) {
+    scope.opts.coords.forEach(function(coord) {
         var mesh = new THREE.Mesh(new THREE.Geometry(), new THREE.MeshBasicMaterial({
             map: THREE.ImageUtils.loadTexture("assets/textures/thingrass.png"),
             side: THREE.DoubleSide,
@@ -3010,7 +4082,7 @@ WHS.init.prototype.addGrass = function (ground, options) {
 
     // Section under construction. (animation of Grass).
     // #TODO:0 Add grass animation.
-    scope.update = function () {
+    scope.update = function() {
         /*requestAnimationFrame(scope.update);
           var delta = 0;
         var oldTime = 0;
@@ -3028,12 +4100,6 @@ WHS.init.prototype.addGrass = function (ground, options) {
 };
 
 /**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * Ground.
  *
  * @param {String} type Ground/Terrain type. (REQUIRED)
@@ -3042,7 +4108,7 @@ WHS.init.prototype.addGrass = function (ground, options) {
  * @param {Object} pos Position of ground in 3D space. (REQUIRED)
  * @return {Object} Scope.
  */
-WHS.init.prototype.addGround = function (type, size, material, pos) {
+WHS.init.prototype.addGround = function(type, size, material, pos) {
 
     'use strict';
 
@@ -3145,17 +4211,41 @@ WHS.init.prototype.addGround = function (type, size, material, pos) {
             var terrainShader = THREE.ShaderTerrain["terrain"];
 
             var uniformsTerrain = Object.assign(THREE.UniformsUtils.clone(terrainShader.uniforms), {
-                oceanTexture: { type: "t", value: oceanTexture },
-                sandyTexture: { type: "t", value: sandyTexture },
-                grassTexture: { type: "t", value: grassTexture },
-                rockyTexture: { type: "t", value: rockyTexture },
-                snowyTexture: { type: "t", value: snowyTexture },
+                oceanTexture: {
+                    type: "t",
+                    value: oceanTexture
+                },
+                sandyTexture: {
+                    type: "t",
+                    value: sandyTexture
+                },
+                grassTexture: {
+                    type: "t",
+                    value: grassTexture
+                },
+                rockyTexture: {
+                    type: "t",
+                    value: rockyTexture
+                },
+                snowyTexture: {
+                    type: "t",
+                    value: snowyTexture
+                },
                 fog: true,
                 lights: true
             }, THREE.UniformsLib['common'], THREE.UniformsLib['fog'], THREE.UniformsLib['lights'], THREE.UniformsLib['shadowmap'], {
-                ambient: { type: "c", value: new THREE.Color(0xffffff) },
-                emissive: { type: "c", value: new THREE.Color(0x000000) },
-                wrapRGB: { type: "v3", value: new THREE.Vector3(1, 1, 1) }
+                ambient: {
+                    type: "c",
+                    value: new THREE.Color(0xffffff)
+                },
+                emissive: {
+                    type: "c",
+                    value: new THREE.Color(0x000000)
+                },
+                wrapRGB: {
+                    type: "v3",
+                    value: new THREE.Vector3(1, 1, 1)
+                }
             });
 
             uniformsTerrain["tDisplacement"].value = heightMap;
@@ -3213,11 +4303,216 @@ WHS.init.prototype.addGround = function (type, size, material, pos) {
     return scope;
 };
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+WHS.Smooth = function(_WHS$Shape21) {
+    _inherits(Smooth, _WHS$Shape21);
+
+    function Smooth(params) {
+        _classCallCheck(this, Smooth);
+
+        var _this22 = _possibleConstructorReturn(this, Object.getPrototypeOf(Smooth).call(this, params, "smooth"));
+
+        api.extend(params.geometry, {
+
+            width: 10,
+            height: 10
+
+        });
+
+        _this22.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(params.geometry.width, 1, params.geometry.height), _get(Object.getPrototypeOf(Smooth.prototype), "_initMaterial", _this22).call(_this22, params.material), 0);
+
+        _get(Object.getPrototypeOf(Smooth.prototype), "build", _this22).call(_this22);
+
+        return _this22;
+    }
+
+    return Smooth;
+}(WHS.Shape);
+
+WHS.init.prototype.Smooth = function(params) {
+    return new WHS.Smooth(params).addTo(this);
+};
+
+WHS.Terrain = function(_WHS$Shape22) {
+    _inherits(Terrain, _WHS$Shape22);
+
+    function Terrain(params) {
+        _classCallCheck(this, Terrain);
+
+        var _this23 = _possibleConstructorReturn(this, Object.getPrototypeOf(Terrain).call(this, params, "terrain"));
+
+        api.extend(params.geometry, {
+
+            width: 1,
+            height: 1,
+            depth: 1,
+            map: false
+
+        });
+
+        var canvas = document.createElement('canvas');
+
+        canvas.setAttribute("width", params.geometry.width);
+        canvas.setAttribute("height", params.geometry.height);
+
+        if (canvas.getContext) {
+
+            var ctx = canvas.getContext('2d');
+
+            ctx.drawImage(params.geometry.map, 0, 0);
+        }
+
+        // Ocean texture.
+        var oceanTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/dirt-512.jpg');
+
+        oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
+
+        // Sandy texture.
+        var sandyTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/sand-512.jpg');
+
+        sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
+
+        // Grass texture.
+        var grassTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/grass-512.jpg');
+
+        grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
+
+        // Rocky texture.
+        var rockyTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/rock-512.jpg');
+
+        rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
+
+        // Snowy texture.
+        var snowyTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/snow-512.jpg');
+
+        snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
+
+        // Normal Map.
+        var normalShader = THREE.NormalMapShader;
+
+        var rx = 256,
+            ry = 256;
+
+        var pars = {
+            minFilter: THREE.LinearFilter,
+            magFilter: THREE.LinearFilter,
+
+            format: THREE.RGBFormat
+        };
+
+        // Heightmap.
+        var heightMap = new THREE.WebGLRenderTarget(rx, ry, pars);
+
+        heightMap.texture = api.TextureLoader().load(WHS._settings.assets + '/terrain/default_terrain.png');
+
+        // Normalmap.
+        var normalMap = new THREE.WebGLRenderTarget(rx, ry, pars);
+
+        normalMap.texture = api.TextureLoader().load(WHS._settings.assets + '/terrain/NormalMap.png');
+
+        // Specularmap.
+        var specularMap = new THREE.WebGLRenderTarget(256, 256, pars); //2048
+
+        specularMap.texture = api.TextureLoader().load(WHS._settings.assets + '/terrain/default_terrain.png');
+
+        // Terrain shader (ShaderTerrain.js).
+        var terrainShader = THREE.ShaderTerrain["terrain"];
+
+        var uniformsTerrain = Object.assign(THREE.UniformsUtils.clone(terrainShader.uniforms), {
+            oceanTexture: {
+                type: "t",
+                value: oceanTexture
+            },
+            sandyTexture: {
+                type: "t",
+                value: sandyTexture
+            },
+            grassTexture: {
+                type: "t",
+                value: grassTexture
+            },
+            rockyTexture: {
+                type: "t",
+                value: rockyTexture
+            },
+            snowyTexture: {
+                type: "t",
+                value: snowyTexture
+            },
+            fog: true,
+            lights: true
+        }, THREE.UniformsLib['common'], THREE.UniformsLib['fog'], THREE.UniformsLib['lights'], THREE.UniformsLib['shadowmap'], {
+            ambient: {
+                type: "c",
+                value: new THREE.Color(0xffffff)
+            },
+            emissive: {
+                type: "c",
+                value: new THREE.Color(0x000000)
+            },
+            wrapRGB: {
+                type: "v3",
+                value: new THREE.Vector3(1, 1, 1)
+            }
+        });
+
+        uniformsTerrain["tDisplacement"].value = heightMap;
+        uniformsTerrain["shadowMap"].value = [normalMap];
+
+        uniformsTerrain["uDisplacementScale"].value = 100;
+        uniformsTerrain["uRepeatOverlay"].value.set(6, 6);
+
+        var material = new THREE.ShaderMaterial({
+
+            uniforms: uniformsTerrain,
+            vertexShader: terrainShader.vertexShader,
+            fragmentShader: terrainShader.fragmentShader,
+            lights: true,
+            fog: true,
+            side: THREE.DoubleSide,
+            shading: THREE.SmoothShading
+
+        });
+
+        var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
+
+        geom.verticesNeedUpdate = true;
+
+        _this23._rot.set(Math.PI / 180 * -90, 0, 0);
+
+        var index = 0,
+            i = 0,
+            imgdata = ctx.getImageData(0, 0, 256, 256).data;
+
+        for (var x = 0; x <= 255; x++) {
+            for (var y = 255; y >= 0; y--) {
+                geom.vertices[index].z = imgdata[i] / 255 * 100;
+
+                i += 4;
+                index++;
+            }
+        }
+
+        _this23.mesh = new Physijs.HeightfieldMesh(geom, Physijs.createMaterial(material, 0.8, 0.1));
+
+        geom.computeVertexNormals();
+        geom.computeFaceNormals();
+        geom.computeTangents();
+
+        _this23.mesh.updateMatrix();
+        _this23.mesh.castShadow = true;
+        _this23.mesh.receiveShadow = true;
+
+        _get(Object.getPrototypeOf(Terrain.prototype), "build", _this23).call(_this23, "skip");
+
+        return _this23;
+    }
+
+    return Terrain;
+}(WHS.Shape);
+
+WHS.init.prototype.Terrain = function(params) {
+    return new WHS.Terrain(params).addTo(this);
+};
 
 /**
  * ADDFOG.
@@ -3226,7 +4521,7 @@ WHS.init.prototype.addGround = function (type, size, material, pos) {
  * @param {Object} params Options of fog object. (REQUIRED)
  * @returns {Object} This element scope/statement.
  */
-WHS.init.prototype.addFog = function (type, params) {
+WHS.init.prototype.addFog = function(type, params) {
 
     'use strict';
 
@@ -3252,12 +4547,6 @@ WHS.init.prototype.addFog = function (type, params) {
 };
 
 /**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * Light.
  *
  * @param {String} type Light type. (REQUIRED)
@@ -3266,7 +4555,7 @@ WHS.init.prototype.addFog = function (type, params) {
  * @param {Object} target Target of light dot. (OPTIONAL)
  * @return {Object} Scope.
  */
-WHS.init.prototype.addLight = function (type, opts) {
+WHS.init.prototype.addLight = function(type, opts) {
 
     'use strict';
 
@@ -3359,11 +4648,143 @@ WHS.init.prototype.addLight = function (type, opts) {
     return scope;
 };
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+WHS.AmbientLight = function(_WHS$Light) {
+    _inherits(AmbientLight, _WHS$Light);
+
+    function AmbientLight(params) {
+        _classCallCheck(this, AmbientLight);
+
+        var _this24 = _possibleConstructorReturn(this, Object.getPrototypeOf(AmbientLight).call(this, params, "ambientlight"));
+
+        _this24.mesh = new THREE.AmbientLight(params.light.color);
+
+        _get(Object.getPrototypeOf(AmbientLight.prototype), "build", _this24).call(_this24);
+        _get(Object.getPrototypeOf(AmbientLight.prototype), "buildShadow", _this24).call(_this24);
+
+        return _this24;
+    }
+
+    return AmbientLight;
+}(WHS.Light);
+
+WHS.init.prototype.AmbientLight = function(params) {
+    return new WHS.AmbientLight(params).addTo(this);
+};
+
+WHS.DirectionalLight = function(_WHS$Light2) {
+    _inherits(DirectionalLight, _WHS$Light2);
+
+    function DirectionalLight(params) {
+        _classCallCheck(this, DirectionalLight);
+
+        var _this25 = _possibleConstructorReturn(this, Object.getPrototypeOf(DirectionalLight).call(this, params, "directionallight"));
+
+        _this25.mesh = new THREE.DirectionalLight(params.light.color, params.light.intensity);
+
+        _get(Object.getPrototypeOf(DirectionalLight.prototype), "build", _this25).call(_this25);
+        _get(Object.getPrototypeOf(DirectionalLight.prototype), "buildShadow", _this25).call(_this25);
+
+        return _this25;
+    }
+
+    return DirectionalLight;
+}(WHS.Light);
+
+WHS.init.prototype.DirectionalLight = function(params) {
+    return new WHS.DirectionalLight(params).addTo(this);
+};
+
+WHS.HemisphereLight = function(_WHS$Light3) {
+    _inherits(HemisphereLight, _WHS$Light3);
+
+    function HemisphereLight(params) {
+        _classCallCheck(this, HemisphereLight);
+
+        var _this26 = _possibleConstructorReturn(this, Object.getPrototypeOf(HemisphereLight).call(this, params, "hemispherelight"));
+
+        _this26.mesh = new THREE.HemisphereLight(params.light.skyColor, params.light.groundColor, params.light.intensity);
+
+        _get(Object.getPrototypeOf(HemisphereLight.prototype), "build", _this26).call(_this26);
+        _get(Object.getPrototypeOf(HemisphereLight.prototype), "buildShadow", _this26).call(_this26);
+
+        return _this26;
+    }
+
+    return HemisphereLight;
+}(WHS.Light);
+
+WHS.init.prototype.HemisphereLight = function(params) {
+    return new WHS.HemisphereLight(params).addTo(this);
+};
+
+WHS.NormalLight = function(_WHS$Light4) {
+    _inherits(NormalLight, _WHS$Light4);
+
+    function NormalLight(params) {
+        _classCallCheck(this, NormalLight);
+
+        var _this27 = _possibleConstructorReturn(this, Object.getPrototypeOf(NormalLight).call(this, params, "normallight"));
+
+        _this27.mesh = new THREE.Light(params.light.color);
+
+        _get(Object.getPrototypeOf(NormalLight.prototype), "build", _this27).call(_this27);
+        _get(Object.getPrototypeOf(NormalLight.prototype), "buildShadow", _this27).call(_this27);
+
+        return _this27;
+    }
+
+    return NormalLight;
+}(WHS.Light);
+
+WHS.init.prototype.NormalLight = function(params) {
+    return new WHS.NormalLight(params).addTo(this);
+};
+
+WHS.PointLight = function(_WHS$Light5) {
+    _inherits(PointLight, _WHS$Light5);
+
+    function PointLight(params) {
+        _classCallCheck(this, PointLight);
+
+        var _this28 = _possibleConstructorReturn(this, Object.getPrototypeOf(PointLight).call(this, params, "pointlight"));
+
+        _this28.mesh = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance);
+
+        _get(Object.getPrototypeOf(PointLight.prototype), "build", _this28).call(_this28);
+        _get(Object.getPrototypeOf(PointLight.prototype), "buildShadow", _this28).call(_this28);
+
+        return _this28;
+    }
+
+    return PointLight;
+}(WHS.Light);
+
+WHS.init.prototype.PointLight = function(params) {
+    return new WHS.PointLight(params).addTo(this);
+};
+
+WHS.SpotLight = function(_WHS$Light6) {
+    _inherits(SpotLight, _WHS$Light6);
+
+    function SpotLight(params) {
+        _classCallCheck(this, SpotLight);
+
+        var _this29 = _possibleConstructorReturn(this, Object.getPrototypeOf(SpotLight).call(this, params, "spotlight"));
+
+        _this29.mesh = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle);
+
+        _get(Object.getPrototypeOf(SpotLight.prototype), "build", _this29).call(_this29);
+        _get(Object.getPrototypeOf(SpotLight.prototype), "buildShadow", _this29).call(_this29);
+
+        return _this29;
+    }
+
+    return SpotLight;
+}(WHS.Light);
+
+WHS.init.prototype.SpotLight = function(params) {
+    return new WHS.SpotLight(params).addTo(this);
+};
 
 /**
  * Wagner.
@@ -3373,7 +4794,7 @@ WHS.init.prototype.addLight = function (type, opts) {
  * @param {Object} params Parameters. (OPTIONAL)
  * @return {Object} Scope.
  */
-WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
+WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
 
     'use strict';
 
@@ -3438,7 +4859,9 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
         case "directionalBlurPass":
             scope.effect = new wagnerjs.DirectionalBlurPass();
 
-            target = api.extend(target, { delta: 0.1 });
+            target = api.extend(target, {
+                delta: 0.1
+            });
 
             break;
 
@@ -3447,7 +4870,9 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
 
             scope.motionBlurEnable = true;
 
-            target = api.extend(target, { delta: 0 });
+            target = api.extend(target, {
+                delta: 0
+            });
 
             break;
 
@@ -3509,7 +4934,7 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
     this._composer.pass(scope.effect);
     this._composer.toScreen();
 
-    scope.apply = function () {
+    scope.apply = function() {
         this._composer.eff.push(scope.effect);
 
         return scope;
@@ -3519,12 +4944,6 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
 };
 
 /**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * MAKEFIRSTPERSON.
  *
  * @param {Object} object *WHS* figure/object. (REQUIRED)
@@ -3532,7 +4951,7 @@ WHS.init.prototype.addWagner = function (wagnerjs, type, params) {
 
 var PI_2 = Math.PI / 2;
 
-WHS.init.prototype.MakeFirstPerson = function (object, params) {
+WHS.init.prototype.MakeFirstPerson = function(object, params) {
 
     'use strict';
 
@@ -3542,16 +4961,21 @@ WHS.init.prototype.MakeFirstPerson = function (object, params) {
         ypos: 1
     });
 
-    this.controls = new function (camera, mesh, params) {
+    this.controls = new function(camera, mesh, params) {
 
         /* Velocity properties */
         var velocityFactor = 1,
             runVelocity = 0.25;
 
-        mesh.setAngularFactor({ x: 0, y: 0, z: 0 });
+        mesh.setAngularFactor({
+            x: 0,
+            y: 0,
+            z: 0
+        });
 
         /* Init */
         var scope = this,
+            player = mesh,
             pitchObject = new THREE.Object3D();
 
         pitchObject.add(camera);
@@ -3568,7 +4992,7 @@ WHS.init.prototype.MakeFirstPerson = function (object, params) {
             moveRight = false,
             canJump = false;
 
-        mesh.addEventListener("collision", function (other_object, v, r, contactNormal) {
+        player.addEventListener("collision", function(other_object, v, r, contactNormal) {
 
             if (contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
                 canJump = true;
@@ -3617,14 +5041,20 @@ WHS.init.prototype.MakeFirstPerson = function (object, params) {
                     // space
                     if (canJump == true) {
 
-                        mesh.applyCentralImpulse({ x: 0, y: 300, z: 0 });
+                        player.applyCentralImpulse({
+                            x: 0,
+                            y: 300,
+                            z: 0
+                        });
+
+                        console.log(player.applyCentralImpulse);
                     }
 
                     canJump = false;
 
                     break;
 
-                case 15:
+                case 16:
                     // shift
 
                     runVelocity = 0.5;
@@ -3660,7 +5090,7 @@ WHS.init.prototype.MakeFirstPerson = function (object, params) {
                     moveRight = false;
                     break;
 
-                case 15:
+                case 16:
                     // shift
                     runVelocity = 0.25;
                     break;
@@ -3674,11 +5104,11 @@ WHS.init.prototype.MakeFirstPerson = function (object, params) {
 
         this.enabled = false;
 
-        this.getObject = function () {
+        this.getObject = function() {
             return yawObject;
         };
 
-        this.getDirection = function (targetVec) {
+        this.getDirection = function(targetVec) {
             targetVec.set(0, 0, -1);
             quat.multiplyVector3(targetVec);
         };
@@ -3688,7 +5118,7 @@ WHS.init.prototype.MakeFirstPerson = function (object, params) {
         var inputVelocity = new THREE.Vector3(),
             euler = new THREE.Euler();
 
-        this.update = function (delta) {
+        this.update = function(delta) {
 
             var moveVec = new THREE.Vector3();
 
@@ -3724,10 +5154,23 @@ WHS.init.prototype.MakeFirstPerson = function (object, params) {
 
             inputVelocity.applyQuaternion(quat);
 
-            mesh.applyCentralImpulse({ x: inputVelocity.x * 10, y: 0, z: inputVelocity.z * 10 });
-            mesh.setAngularVelocity({ x: inputVelocity.z * 10, y: 0, z: -inputVelocity.x * 10 });
+            player.applyCentralImpulse({
+                x: inputVelocity.x * 10,
+                y: 0,
+                z: inputVelocity.z * 10
+            });
+            player.setAngularVelocity({
+                x: inputVelocity.z * 10,
+                y: 0,
+                z: -inputVelocity.x * 10
+            });
+            player.setAngularFactor({
+                x: 0,
+                y: 0,
+                z: 0
+            });
 
-            yawObject.position.copy(mesh.position);
+            yawObject.position.copy(player.position);
         };
     }(this._camera, object.mesh, target);
 
@@ -3739,7 +5182,7 @@ WHS.init.prototype.MakeFirstPerson = function (object, params) {
 
         var element = document.body;
 
-        this.pointerlockchange = function () {
+        this.pointerlockchange = function() {
             if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
 
                 controls.enabled = true;
@@ -3761,7 +5204,7 @@ WHS.init.prototype.MakeFirstPerson = function (object, params) {
     document.addEventListener('mozpointerlockchange', this.pointerlockchange, false);
     document.addEventListener('webkitpointerlockchange', this.pointerlockchange, false);
 
-    this.pointerlockerror = function () {
+    this.pointerlockerror = function() {
         console.warn("Pointer lock error.");
     };
 
@@ -3769,7 +5212,7 @@ WHS.init.prototype.MakeFirstPerson = function (object, params) {
     document.addEventListener('mozpointerlockerror', this.pointerlockerror, false);
     document.addEventListener('webkitpointerlockerror', this.pointerlockerror, false);
 
-    target.block.addEventListener('click', function () {
+    target.block.addEventListener('click', function() {
 
         element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
 
@@ -3796,17 +5239,11 @@ WHS.init.prototype.MakeFirstPerson = function (object, params) {
 };
 
 /**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
  * ORBITCONTROLS.
  *
  * @param {Object} object Description. (OPTIONAL)
  */
-WHS.init.prototype.OrbitControls = function (object) {
+WHS.init.prototype.OrbitControls = function(object) {
 
     this.controls = new THREE.OrbitControls(this._camera, this.renderer.domElement);
 
@@ -3816,21 +5253,10 @@ WHS.init.prototype.OrbitControls = function (object) {
 
             var target = object ? object.mesh.position : new THREE.Vector3(0, 0, 0);
             this.controls.target = target;
-        } else if ((typeof object === "undefined" ? "undefined" : _typeof(object)) == "object") this.controls.target.copy(target);else console.error("Object must be a THREE.JS vector! @OrbitControls");
+        } else if ((typeof object === "undefined" ? "undefined" : _typeof(object)) == "object") this.controls.target.copy(target);
+        else console.error("Object must be a THREE.JS vector! @OrbitControls");
     }
 };
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
- */
 
 /**
  * Adds a skybox to the WhitestormJS scene.
@@ -3840,7 +5266,7 @@ WHS.init.prototype.OrbitControls = function (object) {
  * @param {String} options.skyType - Type of sky. Either box or sphere.
  * @returns {Object} scope - Scope.
  */
-WHS.init.prototype.addSkybox = function (options) {
+WHS.init.prototype.addSkybox = function(options) {
 
     'use strict';
 
@@ -3888,4 +5314,71 @@ WHS.init.prototype.addSkybox = function (options) {
     scope.build().wrap();
 
     return scope;
+};
+
+WHS.Skybox = function(_WHS$Shape23) {
+    _inherits(Skybox, _WHS$Shape23);
+
+    function Skybox(params) {
+        _classCallCheck(this, Skybox);
+
+        var _this30 = _possibleConstructorReturn(this, Object.getPrototypeOf(Skybox).call(this, params, "skybox"));
+
+        api.extend(params, {
+
+            skyType: "box",
+            detail: ".png",
+            radius: 10,
+
+            path: ""
+
+        });
+
+        var skyGeometry, skyMat;
+
+        switch (params.skyType) {
+            case "box":
+
+                var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+
+                skyGeometry = new THREE.CubeGeometry(params.radius, params.radius, params.radius);
+
+                var matArray = [];
+
+                for (var i = 0; i < 6; i++) {
+
+                    matArray.push(new THREE.MeshBasicMaterial({
+                        map: THREE.ImageUtils.loadTexture(params.path + directions[i] + params.imgSuffix),
+                        side: THREE.BackSide
+                    }));
+                }
+
+                skyMat = new THREE.MeshFaceMaterial(matArray);
+
+                break;
+            case "sphere":
+
+                skyGeometry = new THREE.SphereGeometry(params.radius / 2, 60, 40);
+
+                skyMat = new THREE.MeshBasicMaterial({
+                    map: THREE.ImageUtils.loadTexture(params.path + params.imgSuffix),
+                    side: THREE.BackSide
+                });
+
+                break;
+        }
+
+        _this30.mesh = new THREE.Mesh(skyGeometry, skyMat);
+        _this30.mesh.renderDepth = 1000.0;
+
+        _get(Object.getPrototypeOf(Skybox.prototype), "build", _this30).call(_this30);
+
+        return _this30;
+    }
+
+    return Skybox;
+}(WHS.Shape);
+
+WHS.init.prototype.Skybox = function(params) {
+    return new WHS.Skybox(params).addTo(this);
 };
