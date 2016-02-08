@@ -4,15 +4,6 @@
  * Email: alexbuzin88@gmail.com
 */
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-//WHS.API.construct = function( root, params, type ) {
-
-
 WHS.Shape = class {
 
 	constructor( params, type ) {
@@ -28,13 +19,8 @@ WHS.Shape = class {
 
 		}
 
-		if ( params.pos ) params.pos.set = _set;
-		if ( params.rot ) params.rot.set = _set;
-		if ( params.scale ) params.scale.set = _set;
-		if ( params.target ) params.target.set = _set;
-
 		// Polyfill for 3D.
-		var target = api.extend(params, {
+		api.extend(params, {
 
 			mass: 10,
 
@@ -90,12 +76,12 @@ WHS.Shape = class {
 			_whsobject: true,
 			_name: type + key,
 			__releaseTime: new Date().getTime(),
-			_pos: target.pos,
-			_rot: target.rot,
-			_scale: target.scale,
-			_morph: target.morph,
-			_target: target.target,
-			_onlyvis: target.onlyvis,
+			_pos: params.pos,
+			_rot: params.rot,
+			_scale: params.scale,
+			_morph: params.morph,
+			_target: params.target,
+			_onlyvis: params.onlyvis,
 
 			ready: new Events()
 		};
@@ -129,6 +115,11 @@ WHS.Shape = class {
 						_scope.mesh.rotation.set( _scope._rot.x, _scope._rot.y, _scope._rot.z );
 						_scope.mesh.scale.set( _scope._scale.x, _scope._scale.y, _scope._scale.z );
 
+		                //References, I consider this a bad way of solving the problem, but it works for now
+		                _scope._pos = _scope.mesh.position;
+		                _scope._rot = _scope.mesh.rotation;
+		                _scope._scale = _scope.mesh.scale;
+
 						resolve();
 
 					} catch ( err ) {
@@ -156,6 +147,11 @@ WHS.Shape = class {
 					_scope.mesh.position.set( _scope._pos.x, _scope._pos.y, _scope._pos.z );
 					_scope.mesh.rotation.set( _scope._rot.x, _scope._rot.y, _scope._rot.z );
 					_scope.mesh.scale.set( _scope._scale.x, _scope._scale.y, _scope._scale.z );
+
+                    //References, I consider this a bad way of solving the problem, but it works for now
+                    _scope._pos = _scope.mesh.position;
+                    _scope._rot = _scope.mesh.rotation;
+                    _scope._scale = _scope.mesh.scale;
 
 					resolve();
 
