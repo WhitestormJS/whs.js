@@ -2,7 +2,15 @@
 
 ##### Before contibuting here see [rules](https://github.com/WhitestormJS/whitestorm.js/blob/master/CONTRIBUTING.md#-adding-changes-to-changelogmd)
 **current**
-- *api.construct -> WHS.Shape*
+- Engine rebuild commit:
+   - Functions (prototype) replaced with es6 classes
+   - *api.construct -> WHS.Shape*
+   - *api.Wrap -> WHS.Shape.addTo*
+   - *WHS.plugins.loop -> WHS.loop*
+   - Plugin system with `WHS.Shape.prototype.pluginName`
+   - Skybox: *src -> path*
+- Fixed speed bug when press *shift* on fps example.
+
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."

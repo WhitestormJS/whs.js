@@ -15,10 +15,10 @@
 
 WHS.Shape = class {
 
-	constructor( root, params, type ) {
+	constructor( params, type ) {
 
-		if ( ! root )
-		console.error( "@constructor: WHS root object is not defined." );
+		//if ( ! root )
+		//console.error( "@constructor: WHS root object is not defined." );
 
 		var _set = function( x, y, z ) {
 
@@ -35,6 +35,8 @@ WHS.Shape = class {
 
 		// Polyfill for 3D.
 		var target = api.extend(params, {
+
+			mass: 10,
 
 			pos: {
 				x: 0,
@@ -76,15 +78,15 @@ WHS.Shape = class {
 
 		var key = 0;
 
-		root.modellingQueue.forEach( function( el ) {
+		/*root.modellingQueue.forEach( function( el ) {
 
 			if ( el.type == type ) key ++;
 
-		} );
+		} );*/
 
 		var scope = {
-			root: root,
 			_key: key,
+			_type: type,
 			_whsobject: true,
 			_name: type + key,
 			__releaseTime: new Date().getTime(),
@@ -93,7 +95,9 @@ WHS.Shape = class {
 			_scale: target.scale,
 			_morph: target.morph,
 			_target: target.target,
-			_onlyvis: target.onlyvis
+			_onlyvis: target.onlyvis,
+
+			ready: new Events()
 		};
 
 		Object.assign( this, scope );
@@ -102,80 +106,170 @@ WHS.Shape = class {
 	}
 
 
-	build( mesh ) {
+	build( ...tags ) {
 		
 		'use strict';
 
-		mesh = mesh || this.mesh;
+		console.log(this);
 
-		this.build_state = new Promise( (resolve, reject) => {
+		var _scope = this;
 
-			try {
+		if (tags.indexOf("wait") >= 0) {
 
-				mesh.castShadow = true;
-				mesh.receiveShadow = true;
+			_scope._loading.then(function() {
 
-				mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
-				mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
-				mesh.scale.set( this._scale.x, this._scale.y, this._scale.z );
+				_scope.build_state = new Promise( (resolve, reject) => {
 
-				resolve();
+					try {
 
-			} catch ( err ) {
+						_scope.mesh.castShadow = true;
+						_scope.mesh.receiveShadow = true;
 
-				console.error( err.message );
+						_scope.mesh.position.set( _scope._pos.x, _scope._pos.y, _scope._pos.z );
+						_scope.mesh.rotation.set( _scope._rot.x, _scope._rot.y, _scope._rot.z );
+						_scope.mesh.scale.set( _scope._scale.x, _scope._scale.y, _scope._scale.z );
 
-				reject();
+						resolve();
 
-				//this._state.reject();
+					} catch ( err ) {
 
-			}
+						console.error( err.message );
 
-		});
+						reject();
+
+						//this._state.reject();
+
+					}
+
+				});
+
+			});
+
+		} else {
+			_scope.build_state = new Promise( (resolve, reject) => {
+
+				try {
+
+					_scope.mesh.castShadow = true;
+					_scope.mesh.receiveShadow = true;
+
+					_scope.mesh.position.set( _scope._pos.x, _scope._pos.y, _scope._pos.z );
+					_scope.mesh.rotation.set( _scope._rot.x, _scope._rot.y, _scope._rot.z );
+					_scope.mesh.scale.set( _scope._scale.x, _scope._scale.y, _scope._scale.z );
+
+					resolve();
+
+				} catch ( err ) {
+
+					console.error( err.message );
+
+					reject();
+
+					//this._state.reject();
+
+				}
+
+			});
+		}
 
 		return this;
 	}
 
 
-	wrap( mesh ) {
+	addTo( root, ...tags ) {
 
 		'use strict';
 
-		var _mesh = mesh || this.mesh,
+		this.root = root;
+
+		var _mesh = this.mesh,
 			_scope = this;
+
 
 		this._key = this.root.modellingQueue.length;
 
-		this._state = new Promise( (resolve, reject) => {
+		console.log([tags, tags.indexOf("wait"), _scope]);
 
-			try {
+		if (tags.indexOf("wait") >= 0) {
+			_scope._loading.then(function() {
 
-				api.merge( _scope.root.scene, _mesh );
-				_scope.root.modellingQueue.push( _scope );
+				_scope._state = new Promise( (resolve, reject) => {
 
-			} catch ( err ) {
+					try {
 
-				console.error( err.message );
-				reject();
+						api.merge( _scope.root.scene, _scope.mesh );
+						_scope.root.modellingQueue.push( _scope );
 
-			} finally {
+					} catch ( err ) {
 
-				if ( _scope._wait ) {
+						console.error( err.message );
+						reject();
 
-					_scope._mesh.addEventListener( 'ready', function() {
+					} finally {
+
+						if ( _scope._wait ) {
+
+							_scope._mesh.addEventListener( 'ready', function() {
+								resolve();
+
+								_scope.ready.emit("ready");
+							} );
+
+						} else {
+							resolve();
+
+							_scope.ready.emit("ready");
+						}
+
+					}
+
+				} );
+
+			} );
+		} else {
+
+			_scope._state = new Promise( (resolve, reject) => {
+
+				try {
+
+					api.merge( _scope.root.scene, _mesh );
+					_scope.root.modellingQueue.push( _scope );
+
+				} catch ( err ) {
+
+					console.error( err.message );
+					reject();
+
+				} finally {
+
+					if ( _scope._wait ) {
+
+						_scope._mesh.addEventListener( 'ready', function() {
+							resolve();
+
+							_scope.ready.emit("ready");
+						} );
+
+					} else {
 						resolve();
-					} );
 
-				} else
-					resolve();
+						console.log("wqd");
 
-			}
+						_scope.ready.emit("ready");
+					}
 
-		} );
+				}
+
+			} );
+		}
 
 		_scope.root.children.push( _scope );
 
 		return this;
+	}
+
+	_initMaterial(mat_props) {
+		return api.loadMaterial(mat_props)._material;
 	}
 
 	remove() {

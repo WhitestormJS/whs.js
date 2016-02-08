@@ -32,6 +32,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
 
         /* Init */
         var scope = this,
+            player = mesh,
             pitchObject = new THREE.Object3D();
 
         pitchObject.add( camera );
@@ -50,7 +51,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
 
             canJump = false;
 
-        mesh.addEventListener("collision", function(other_object, v, r, contactNormal){
+        player.addEventListener("collision", function(other_object, v, r, contactNormal){
 
             if(contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
                     canJump = true;
@@ -95,7 +96,9 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
                 case 32: // space
                     if ( canJump == true ){
 
-                            mesh.applyCentralImpulse({x: 0, y: 300, z: 0});
+                            player.applyCentralImpulse({x: 0, y: 300, z: 0});
+
+                            console.log(player.applyCentralImpulse);
 
                     }
 
@@ -103,7 +106,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
 
                     break;
 
-                case 15: // shift
+                case 16: // shift
 
                         runVelocity = 0.5;
                         break;
@@ -135,7 +138,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
                     moveRight = false;
                     break;
 
-                case 15: // shift
+                case 16: // shift
                     runVelocity = 0.25;
                     break;
 
@@ -201,10 +204,11 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
 
             inputVelocity.applyQuaternion(quat);
 
-            mesh.applyCentralImpulse({x: inputVelocity.x * 10, y: 0, z: inputVelocity.z * 10});
-            mesh.setAngularVelocity({x: inputVelocity.z * 10, y: 0, z: -inputVelocity.x * 10});
+            player.applyCentralImpulse({x: inputVelocity.x * 10, y: 0, z: inputVelocity.z * 10});
+            player.setAngularVelocity({x: inputVelocity.z * 10, y: 0, z: -inputVelocity.x * 10});
+            player.setAngularFactor({x: 0, y: 0, z: 0});
 
-            yawObject.position.copy(mesh.position);
+            yawObject.position.copy(player.position);
         };
 
     })(this._camera, object.mesh, target);

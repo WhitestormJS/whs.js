@@ -4,25 +4,25 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.plugins.loop = function( func ) {
+WHS.loop = function( func ) {
 
     this.loop = {
         func: func,
-        id: WHS.plugins.settings.loop_id ++,
+        id: WHS.loops.length,
         enabled: false
     };
 
-    WHS.plugins.queue.push( this.loop );
+    WHS.loops.push( this.loop );
 
 }
 
-WHS.plugins.loop.prototype.start = function() {
+WHS.loop.prototype.start = function() {
 
     this.loop.enabled = true;
 
 };
 
-WHS.plugins.loop.prototype.stop = function() {
+WHS.loop.prototype.stop = function() {
 
     this.loop.enabled = false;
 
