@@ -1882,8 +1882,8 @@ WHS.Light = function() {
         var key = 0;
 
         /*root.modellingQueue.forEach( function( el ) {
-        			if ( el.type == type ) key ++;
-        		} );*/
+  			if ( el.type == type ) key ++;
+  		} );*/
 
         var scope = {
             _key: key,
@@ -2260,14 +2260,6 @@ WHS.API.rotateGeometry = function(geometry, rotateSet) {
     return geometry;
 };
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
- */
-
-//WHS.API.construct = function( root, params, type ) {
-
 WHS.Shape = function() {
     function _class2(params, type) {
         _classCallCheck(this, _class2);
@@ -2282,13 +2274,8 @@ WHS.Shape = function() {
             this.z = z;
         };
 
-        if (params.pos) params.pos.set = _set;
-        if (params.rot) params.rot.set = _set;
-        if (params.scale) params.scale.set = _set;
-        if (params.target) params.target.set = _set;
-
         // Polyfill for 3D.
-        var target = api.extend(params, {
+        api.extend(params, {
 
             mass: 10,
 
@@ -2332,8 +2319,8 @@ WHS.Shape = function() {
         var key = 0;
 
         /*root.modellingQueue.forEach( function( el ) {
-        			if ( el.type == type ) key ++;
-        		} );*/
+  			if ( el.type == type ) key ++;
+  		} );*/
 
         var scope = {
             _key: key,
@@ -2341,12 +2328,12 @@ WHS.Shape = function() {
             _whsobject: true,
             _name: type + key,
             __releaseTime: new Date().getTime(),
-            _pos: target.pos,
-            _rot: target.rot,
-            _scale: target.scale,
-            _morph: target.morph,
-            _target: target.target,
-            _onlyvis: target.onlyvis,
+            _pos: params.pos,
+            _rot: params.rot,
+            _scale: params.scale,
+            _morph: params.morph,
+            _target: params.target,
+            _onlyvis: params.onlyvis,
 
             ready: new Events()
         };
@@ -2385,6 +2372,11 @@ WHS.Shape = function() {
                             _scope.mesh.rotation.set(_scope._rot.x, _scope._rot.y, _scope._rot.z);
                             _scope.mesh.scale.set(_scope._scale.x, _scope._scale.y, _scope._scale.z);
 
+                            //References, I consider this a bad way of solving the problem, but it works for now
+                            _scope._pos = _scope.mesh.position;
+                            _scope._rot = _scope.mesh.rotation;
+                            _scope._scale = _scope.mesh.scale;
+
                             resolve();
                         } catch (err) {
 
@@ -2407,6 +2399,11 @@ WHS.Shape = function() {
                         _scope.mesh.position.set(_scope._pos.x, _scope._pos.y, _scope._pos.z);
                         _scope.mesh.rotation.set(_scope._rot.x, _scope._rot.y, _scope._rot.z);
                         _scope.mesh.scale.set(_scope._scale.x, _scope._scale.y, _scope._scale.z);
+
+                        //References, I consider this a bad way of solving the problem, but it works for now
+                        _scope._pos = _scope.mesh.position;
+                        _scope._rot = _scope.mesh.rotation;
+                        _scope._scale = _scope.mesh.scale;
 
                         resolve();
                     } catch (err) {
@@ -2851,10 +2848,10 @@ WHS.init = function() {
             scope.renderer.setSize(target.rWidth, target.rHeight);
 
             /*if (params.wagner) {
-                scope._composer.setSize(target.rWidth, target.rHeight);
-                  renderer.domElement.style.width = '100%';
-                renderer.domElement.style.height = '100%';
-            }*/
+       scope._composer.setSize(target.rWidth, target.rHeight);
+         renderer.domElement.style.width = '100%';
+       renderer.domElement.style.height = '100%';
+   }*/
         });
 
         return scope;
@@ -2871,8 +2868,8 @@ WHS.init = function() {
             scope._events = new Events();
 
             /*scope._events.on("ready", function() {
-                scope.update();
-            })*/
+       scope.update();
+   })*/
 
             function reDraw(time) {
 
@@ -2924,383 +2921,21 @@ WHS.init = function() {
             scope.update();
 
             /*scope._ready = [];
-              var loading_queue = WHS.Watch(scope.children);
-              loading_queue._queue.forEach(object => {
-                object.ready.on("ready", function() {
-                   // object._state.then(() => {
-                        scope._ready.push(object);
-                          if(loading_queue._queue.length == scope._ready.length) 
-                            scope._events.emit("ready");
-                    //});
-                });
-              });*/
+     var loading_queue = WHS.Watch(scope.children);
+     loading_queue._queue.forEach(object => {
+       object.ready.on("ready", function() {
+          // object._state.then(() => {
+               scope._ready.push(object);
+                 if(loading_queue._queue.length == scope._ready.length) 
+                   scope._events.emit("ready");
+           //});
+       });
+     });*/
         }
     }]);
 
     return _class3;
 }();
-
-// #DONE:40 addModel *func*.
-/**
- * MODEL.
- *
- * @param {String} pathToModel path to JSON model. (REQUIRED)
- * @param {Object} options Figure options. (REQUIRED)
- * @return {Object} Scope.
- */
-WHS.init.prototype.addModel = function(pathToModel, options) {
-
-    'use strict';
-
-    var scope = new api.construct(this, options, "model");
-
-    scope.materialType = api.loadMaterial(options.materialOptions)._material;
-
-    api.JSONLoader().load(pathToModel, function(data) {
-        data.computeFaceNormals();
-        data.computeVertexNormals();
-
-        // Visualization.
-        scope.mesh = new Physijs.ConcaveMesh(data, scope.materialType, options.mass);
-        scope._wait = true;
-
-        scope.build().wrap();
-    });
-
-    return scope;
-};
-
-WHS.init.prototype.addMorph = function(url, options) {
-
-    'use strict';
-
-    var scope = new WHS.Shape(this, options, "morph");
-
-    scope.skip = true;
-    scope.morph = true;
-
-    api.JSONLoader().load(url, function(geometry) {
-
-        var material = new THREE.MeshLambertMaterial({
-            color: 0xffaa55,
-            morphTargets: true,
-            vertexColors: THREE.FaceColors
-        });
-
-        scope.mesh = new THREE.Mesh(geometry, material);
-        scope.mesh.speed = scope._morph.speed;
-
-        scope._mixer = new THREE.AnimationMixer(scope.mesh);
-        scope._mixer.addAction(new THREE.AnimationAction(geometry.animations[0]).warpToDuration(0.5));
-
-        scope._mixer.update(600 * Math.random());
-        scope.mesh.mixer = scope._mixer;
-
-        scope._rot.y = Math.PI / 2;
-
-        scope.build(scope.mesh).wrap();
-    });
-
-    return scope;
-};
-
-/**
- * Figure.
- *
- * @param {String} figure name *THREE.JS*. (REQUIRED)
- * @param {Object} options Figure options. (REQUIRED)
- * @return {Object} Scope.
- */
-WHS.init.prototype.addObject = function(figureType, options) {
-
-    'use strict';
-
-    var scope = new WHS.Shape(this, options, figureType),
-        mass = options.onlyvis ? scope._target.mass : 1,
-        fprops;
-
-    scope.materialType = api.loadMaterial(options.materialOptions)._material;
-    options.geometryOptions = options.geometryOptions || {};
-
-    switch (figureType) {
-        case "sphere":
-
-            api.extend(options.geometryOptions, {
-
-                radius: 1,
-                segmentA: 32,
-                segmentB: 32
-
-            });
-
-            scope.mesh = new Physijs.SphereMesh(new THREE.SphereGeometry(options.geometryOptions.radius, options.geometryOptions.segmentA, options.geometryOptions.segmentB), scope.materialType, 10);
-
-            break;
-        case "cube":
-
-            api.extend(options.geometryOptions, {
-
-                width: 1,
-                height: 1,
-                depth: 1
-
-            });
-
-            scope.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(options.geometryOptions.width, options.geometryOptions.height, options.geometryOptions.depth), scope.materialType, mass);
-
-            break;
-        case "cylinder":
-
-            api.extend(options.geometryOptions, {
-
-                radiusTop: 1,
-                radiusBottom: 1,
-                height: 1,
-                radiusSegments: 32
-
-            });
-
-            scope.mesh = new Physijs.CylinderMesh(new THREE.CylinderGeometry(options.geometryOptions.radiusTop, options.geometryOptions.radiusBottom, options.geometryOptions.height, options.geometryOptions.radiusSegments), scope.materialType, mass);
-
-            break;
-        case "dodecahedron":
-
-            api.extend(options.geometryOptions, {
-
-                radius: 1,
-                detail: 0
-
-            });
-
-            scope.mesh = new Physijs.ConvexMesh(new THREE.DodecahedronGeometry(options.geometryOptions.radius, options.geometryOptions.detail), scope.materialType, mass);
-
-            break;
-        case "extrude":
-
-            api.extend(options.geometryOptions, {
-
-                shapes: [],
-                options: {}
-
-            });
-
-            scope.mesh = new Physijs.ConvexMesh(new THREE.ExtrudeGeometry(options.geometryOptions.shapes, options.geometryOptions.options), scope.materialType, mass);
-
-            break;
-        case "icosahedron":
-
-            api.extend(options.geometryOptions, {
-
-                radius: 1,
-                detail: 0
-
-            });
-
-            scope.mesh = new Physijs.ConvexMesh(new THREE.IcosahedronGeometry(options.geometryOptions.radius, options.geometryOptions.detail), scope.materialType, mass);
-
-            break;
-        case "lathe":
-
-            api.extend(options.geometryOptions, {
-
-                points: []
-
-            });
-
-            scope.mesh = new Physijs.ConvexMesh(new THREE.LatheGeometry(options.geometryOptions.points), scope.materialType, mass);
-
-            break;
-        case "octahedron":
-
-            api.extend(options.geometryOptions, {
-
-                radius: 1,
-                detail: 0
-
-            });
-
-            scope.mesh = new Physijs.ConvexMesh(new THREE.OctahedronGeometry(options.geometryOptions.radius, options.geometryOptions.detail), scope.materialType, mass);
-
-            break;
-        case "parametric":
-
-            api.extend(options.geometryOptions, {
-
-                func: function func() {},
-                slices: 10,
-                stacks: 10
-
-            });
-
-            scope.mesh = new Physijs.ConvexMesh(new THREE.ParametricGeometry(options.geometryOptions.func, options.geometryOptions.slices, options.geometryOptions.stacks), scope.materialType, mass);
-
-            break;
-        case "plane":
-
-            api.extend(options.geometryOptions, {
-
-                width: 1,
-                height: 0,
-                segments: 32
-
-            });
-
-            scope.mesh = new Physijs.ConvexMesh(new THREE.PlaneBufferGeometry(options.geometryOptions.width, options.geometryOptions.height, options.geometryOptions.segments), scope.materialType, mass);
-
-            break;
-        case "polyhedron":
-
-            api.extend(options.geometryOptions, {
-
-                verticesOfCube: [],
-                indicesOfFaces: [],
-                radius: 1,
-                detail: 1
-
-            });
-
-            scope.mesh = new Physijs.ConvexMesh(new THREE.PolyhedronGeometry(options.geometryOptions.verticesOfCube, options.geometryOptions.indicesOfFaces), scope.materialType, mass);
-
-            break;
-        case "ring":
-
-            api.extend(options.geometryOptions, {
-
-                innerRadius: 2,
-                outerRadius: 5,
-                thetaSegments: 30,
-                phiSegments: 30,
-                thetaStart: 0,
-                thetaLength: Math.PI * 2
-
-            });
-
-            scope.mesh = new Physijs.ConcaveMesh(new THREE.TorusGeometry(options.geometryOptions.outerRadius, (options.geometryOptions.outerRadius - options.geometryOptions.innerRadius) / 2, options.geometryOptions.thetaSegments, options.geometryOptions.phiSegments), scope.materialType, mass);
-
-            break;
-        case "shape":
-
-            scope.mesh = new THREE.Mesh(new THREE.ShapeGeometry(options.geometryOptions.shapes), scope.materialType);
-
-            scope.onlyvis = true;
-
-            // WARN: console | 2d to 3d.
-            console.warn('This is not physic object. 2D!', [scope]);
-
-            break;
-        case "tetrahedron":
-
-            api.extend(options.geometryOptions, {
-
-                radius: 1,
-                detail: 0
-
-            });
-
-            scope.mesh = new Physijs.ConvexMesh(new THREE.TetrahedronGeometry(options.geometryOptions.radius, options.geometryOptions.detail), scope.materialType, mass);
-
-            break;
-        case "text":
-            if (!options.geometryOptions.parameters) throw new Error("Missing text parameters");
-            scope.mesh = new Physijs.ConcaveMesh(new THREE.TextGeometry(api.extend(options.geometryOptions, {
-                text: "Hello World!"
-            }), api.extend(options.geometryOptions.parameters, {
-                size: 1,
-                height: 50,
-                curveSegments: 1,
-                font: "Adelle",
-                weight: "normal",
-                style: "normal",
-                bevelEnabled: false,
-                bevelThickness: 10,
-                bevelSize: 8
-            })), scope.materialType, masss);
-
-            break;
-        case "torus":
-
-            api.extend(options.geometryOptions, {
-
-                radius: 100,
-                tube: 40,
-                radialSegments: 8,
-                tubularSegments: 6,
-                arc: Math.PI * 2
-
-            });
-
-            scope.mesh = new Physijs.ConcaveMesh(new THREE.TorusGeometry(options.geometryOptions.radius, options.geometryOptions.tube, options.geometryOptions.radialSegments, options.geometryOptions.tubularSegments, options.geometryOptions.arc), scope.materialType, mass);
-
-            break;
-        case "torusknot":
-
-            api.extend(options.geometryOptions, {
-
-                radius: 100,
-                tube: 40,
-                radialSegments: 64,
-                tubularSegments: 8,
-                p: 2,
-                q: 3,
-                heightScale: 1
-
-            });
-            scope.mesh = new Physijs.ConvexMesh(new THREE.TorusKnotGeometry(options.geometryOptions.radius, options.geometryOptions.tube, options.geometryOptions.radialSegments, options.geometryOptions.tubularSegments, options.geometryOptions.p, options.geometryOptions.q, options.geometryOptions.heightScale), scope.materialType, mass);
-
-            break;
-        case "tube":
-
-            scope.CustomSinCurve = THREE.Curve.create(function(scale) {
-                //custom curve constructor
-                this.scale = scale || 1;
-            }, function(t) {
-                //getPoint: t is between 0-1
-                var tx = t * 3 - 1.5,
-                    ty = Math.sin(2 * Math.PI * t),
-                    tz = 0;
-
-                return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
-            });
-
-            api.extend(options.geometryOptions, {
-
-                path: options.geometryOptions.path ? new this.CustomSinCurve(100) : false,
-                segments: 20,
-                radius: 2,
-                radiusSegments: 8,
-                closed: false
-
-            });
-
-            scope.mesh = new Physijs.ConcaveMesh(new THREE.TubeGeometry(options.geometryOptions.path, options.geometryOptions.segments, options.geometryOptions.radius, options.geometryOptions.radiusSegments, options.geometryOptions.closed), scope.materialType, masss);
-
-            break;
-    }
-
-    scope.addCompoundFace = function() {
-
-        this.compoundFace = new THREE.Geometry();
-        this.compoundFace.faces.push(new THREE.Face3(0, 1, 2));
-
-        var boundingBox = new THREE.Box3().setFromObject(this.visible),
-            boxAround = new THREE.BoxGeometry(boundingBox.max.x - boundingBox.min.x, boundingBox.max.y - boundingBox.min.y, boundingBox.max.z - boundingBox.min.z);
-
-        var vec1 = boxAround.vertices[boxAround.faces[7].a].add(this.visible.position);
-
-        var vec2 = boxAround.vertices[boxAround.faces[7].b].add(this.visible.position);
-
-        var vec3 = boxAround.vertices[boxAround.faces[7].c].add(this.visible.position);
-
-        this.compoundFace.vertices.push(vec1);
-        this.compoundFace.vertices.push(vec2);
-        this.compoundFace.vertices.push(vec3);
-        //this.compoundFace.vertices.push(new THREE.Vector3(0,1,2));
-    };
-
-    scope.build(scope.mesh).wrap();
-
-    return scope;
-};
 
 WHS.Cube = function(_WHS$Shape) {
     _inherits(Cube, _WHS$Shape);
@@ -4023,20 +3658,20 @@ WHS.init.prototype.addGrass = function(ground, options) {
         faceInGeometry.computeFaceNormals();
 
         /*var faceIn = new THREE.Mesh(
-            faceInGeometry, // Face geomtery.
-            new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.DoubleSide})
-        );
-          var vecN = intr.point.clone().add(faceInGeometry.faces[0].normal);
-        var rotN = faceInGeometry.faces[0].normal; //.normalize();
-          var nlGeometry = new THREE.Geometry();
-        nlGeometry.vertices = [
-            intr.point,
-            vecN.clone()
-        ];
-          var normalLine = new THREE.Line(
-            nlGeometry,
-            new THREE.MeshBasicMaterial({color: 0x000000})
-        );*/
+      faceInGeometry, // Face geomtery.
+      new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.DoubleSide})
+  );
+    var vecN = intr.point.clone().add(faceInGeometry.faces[0].normal);
+  var rotN = faceInGeometry.faces[0].normal; //.normalize();
+    var nlGeometry = new THREE.Geometry();
+  nlGeometry.vertices = [
+      intr.point,
+      vecN.clone()
+  ];
+    var normalLine = new THREE.Line(
+      nlGeometry,
+      new THREE.MeshBasicMaterial({color: 0x000000})
+  );*/
 
         mesh.position.set(0, 0, 0);
         mesh.geometry.vertices.push(faceVertices[intr.face.a].clone());
@@ -4084,221 +3719,17 @@ WHS.init.prototype.addGrass = function(ground, options) {
     // #TODO:0 Add grass animation.
     scope.update = function() {
         /*requestAnimationFrame(scope.update);
-          var delta = 0;
-        var oldTime = 0;
-          var time = new Date().getTime();
-        delta = time - oldTime;
-        oldTime = time;
-          if (isNaN(delta) || delta > 1000 || delta == 0 ) {
-                delta = 1000/60;
-        }*/
+    var delta = 0;
+  var oldTime = 0;
+    var time = new Date().getTime();
+  delta = time - oldTime;
+  oldTime = time;
+    if (isNaN(delta) || delta > 1000 || delta == 0 ) {
+          delta = 1000/60;
+  }*/
     };
 
     scope.update();
-
-    return scope;
-};
-
-/**
- * Ground.
- *
- * @param {String} type Ground/Terrain type. (REQUIRED)
- * @param {Object} size Size of ground. (REQUIRED)
- * @param {Object} material Material type and options. (REQUIRED)
- * @param {Object} pos Position of ground in 3D space. (REQUIRED)
- * @return {Object} Scope.
- */
-WHS.init.prototype.addGround = function(type, size, material, pos) {
-
-    'use strict';
-
-    var options = {
-        pos: pos
-    };
-
-    var scope = new WHS.Shape(this, options, type);
-
-    scope.skip = true;
-
-    api.extend({
-        width: 100,
-        height: 100
-    }, size);
-
-    scope.materialType = api.loadMaterial(material)._material;
-
-    switch (type) {
-        case "smooth":
-
-            //scope.mesh = new Physijs.PlaneMesh(
-            //  new THREE.PlaneGeometry(size.width, size.height, 1, 1),
-            //scope.materialType, 0);
-
-            scope.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(size.width, 1, size.height), scope.materialType, 0);
-
-            //scope._rot.set(-90 / 180 * Math.PI, 0, 0);
-
-            break;
-
-        case "terrain":
-
-            var canvas = document.createElement('canvas');
-
-            canvas.setAttribute("width", size.width);
-            canvas.setAttribute("height", size.height);
-
-            if (canvas.getContext) {
-
-                var ctx = canvas.getContext('2d');
-
-                ctx.drawImage(size.terrain, 0, 0);
-            }
-
-            // Ocean texture.
-            var oceanTexture = api.TextureLoader().load(scope.root._settings.assets + '/textures/terrain/dirt-512.jpg');
-
-            oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
-
-            // Sandy texture.
-            var sandyTexture = api.TextureLoader().load(scope.root._settings.assets + '/textures/terrain/sand-512.jpg');
-
-            sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
-
-            // Grass texture.
-            var grassTexture = api.TextureLoader().load(scope.root._settings.assets + '/textures/terrain/grass-512.jpg');
-
-            grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
-
-            // Rocky texture.
-            var rockyTexture = api.TextureLoader().load(scope.root._settings.assets + '/textures/terrain/rock-512.jpg');
-
-            rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
-
-            // Snowy texture.
-            var snowyTexture = api.TextureLoader().load(scope.root._settings.assets + '/textures/terrain/snow-512.jpg');
-
-            snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
-
-            // Normal Map.
-            var normalShader = THREE.NormalMapShader;
-
-            var rx = 256,
-                ry = 256;
-
-            var pars = {
-                minFilter: THREE.LinearFilter,
-                magFilter: THREE.LinearFilter,
-
-                format: THREE.RGBFormat
-            };
-
-            // Heightmap.
-            var heightMap = new THREE.WebGLRenderTarget(rx, ry, pars);
-
-            heightMap.texture = api.TextureLoader().load(scope.root._settings.assets + '/terrain/default_terrain.png');
-
-            // Normalmap.
-            var normalMap = new THREE.WebGLRenderTarget(rx, ry, pars);
-
-            normalMap.texture = api.TextureLoader().load(scope.root._settings.assets + '/terrain/NormalMap.png');
-
-            // Specularmap.
-            var specularMap = new THREE.WebGLRenderTarget(256, 256, pars); //2048
-
-            specularMap.texture = api.TextureLoader().load(scope.root._settings.assets + '/terrain/default_terrain.png');
-
-            // Terrain shader (ShaderTerrain.js).
-            var terrainShader = THREE.ShaderTerrain["terrain"];
-
-            var uniformsTerrain = Object.assign(THREE.UniformsUtils.clone(terrainShader.uniforms), {
-                oceanTexture: {
-                    type: "t",
-                    value: oceanTexture
-                },
-                sandyTexture: {
-                    type: "t",
-                    value: sandyTexture
-                },
-                grassTexture: {
-                    type: "t",
-                    value: grassTexture
-                },
-                rockyTexture: {
-                    type: "t",
-                    value: rockyTexture
-                },
-                snowyTexture: {
-                    type: "t",
-                    value: snowyTexture
-                },
-                fog: true,
-                lights: true
-            }, THREE.UniformsLib['common'], THREE.UniformsLib['fog'], THREE.UniformsLib['lights'], THREE.UniformsLib['shadowmap'], {
-                ambient: {
-                    type: "c",
-                    value: new THREE.Color(0xffffff)
-                },
-                emissive: {
-                    type: "c",
-                    value: new THREE.Color(0x000000)
-                },
-                wrapRGB: {
-                    type: "v3",
-                    value: new THREE.Vector3(1, 1, 1)
-                }
-            });
-
-            uniformsTerrain["tDisplacement"].value = heightMap;
-            uniformsTerrain["shadowMap"].value = [normalMap];
-
-            uniformsTerrain["uDisplacementScale"].value = 100;
-            uniformsTerrain["uRepeatOverlay"].value.set(6, 6);
-
-            var material = new THREE.ShaderMaterial({
-
-                uniforms: uniformsTerrain,
-                vertexShader: terrainShader.vertexShader,
-                fragmentShader: terrainShader.fragmentShader,
-                lights: true,
-                fog: true,
-                side: THREE.DoubleSide,
-                shading: THREE.SmoothShading
-
-            });
-
-            var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
-
-            geom.verticesNeedUpdate = true;
-
-            scope._rot.set(Math.PI / 180 * -90, 0, 0);
-
-            var index = 0,
-                i = 0,
-                imgdata = ctx.getImageData(0, 0, 256, 256).data;
-
-            for (var x = 0; x <= 255; x++) {
-                for (var y = 255; y >= 0; y--) {
-                    geom.vertices[index].z = imgdata[i] / 255 * 100;
-
-                    i += 4;
-                    index++;
-                }
-            }
-
-            scope.mesh = new Physijs.HeightfieldMesh(geom, Physijs.createMaterial(material, 0.8, 0.1));
-
-            geom.computeVertexNormals();
-            geom.computeFaceNormals();
-            geom.computeTangents();
-
-            scope.mesh.updateMatrix();
-            scope.mesh.castShadow = true;
-            scope.mesh.receiveShadow = true;
-
-            break;
-    }
-
-    scope.build(scope.mesh).wrap();
 
     return scope;
 };
