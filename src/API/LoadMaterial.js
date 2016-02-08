@@ -22,7 +22,7 @@ WHS.API.loadMaterial = function( material ) {
 	delete params[ "kind" ];
 
 	delete params[ "friction" ];
-	delete params[ "fric" ];
+	delete params[ "fri" ];
 
 	delete params[ "restitution" ];
 	delete params[ "rest" ];
@@ -90,6 +90,8 @@ WHS.API.loadMaterial = function( material ) {
 		scope._friction, 
 		scope._restitution 
 	);
+
+	console.log(scope._friction);
 
 	return scope;
 

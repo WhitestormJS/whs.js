@@ -16,24 +16,22 @@
 
 /* ================ WHITESTORM|JS ==================== */
 var WHS = {
-  REVISION: "0.0.6",
+    REVISION: "7",
 
-  API: {},
-  
-  plugins: {
+    API: {},
 
-  	settings: { // Global variables, else...
-        plug_id: 0,
-        loop_id: 0
+    _settings: {
+        
+        assets: "./assets",
+
+        path_worker: '../libs/physijs_worker.js',
+        path_ammo: '../libs/ammo.js'
+        
     },
+    
+    loops: [],
 
-    list: {}, // All plugins
-
-    queue: [] // Animation queue
-
-  },
-
-  grounds: []
+    grounds: []
 };
 
 var api = WHS.API;
@@ -41,10 +39,10 @@ var api = WHS.API;
 
 if ( typeof define === 'function' && define.amd ) {
 
-		define( 'whitestorm', WHS );
+    define( 'whitestorm', WHS );
 
 } else if ( 'undefined' !== typeof exports && 'undefined' !== typeof module ) {
 
-		module.exports = WHS;
+    module.exports = WHS;
 
 }

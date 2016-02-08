@@ -18,25 +18,28 @@ var Preloader = function() {
 			setTimeout(function() {scope.element.fadeOut("slow")}, 1000);
 		},
 
+		check: function(...objects) {
 
+			if (objects.length > 0) {
 
-		start: function(parent) {
-			scope.parent = parent;
-		},
-
-		end: function() {
-			scope.parent.children.forEach(function(object) {
-				scope.queue.push(object);
-			});
-
-			scope.queue.forEach(function(object) {
-				object.build_state.then(function() {
-					scope.ready.push(object);
-
-					if(scope.queue.length == scope.ready.length)
-						scope.done();
+				objects.forEach(function(object) {
+					scope.queue.push(object);
 				});
-			});
+
+				scope.queue.forEach(function(object) {
+					object.ready.on("ready", function() {
+						scope.ready.push(object);
+
+						if(scope.queue.length == scope.ready.length)
+							scope.done();
+					
+					});
+				});
+
+			} else {
+				scope.done();
+			}
+
 		}
 	};
 
