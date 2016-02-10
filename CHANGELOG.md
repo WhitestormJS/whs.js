@@ -13,6 +13,7 @@
 - Removed unused files.
 - #51: Update `Core.js`
    - _initStats()
+   - _initDOM()
 
 
 **v0.0.7**
