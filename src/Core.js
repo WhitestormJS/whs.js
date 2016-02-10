@@ -100,44 +100,21 @@ WHS.init = class {
         // Camera.
         this._initCamera();
 
-        // Renderer.
-        var renderer = new THREE.WebGLRenderer();
-
-        renderer.setClearColor(target.background);
-
-        // Shadowmap.
-        renderer.shadowMap.enabled = target.shadowmap;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        renderer.shadowMap.cascade = true;
+        this._initRenderer( whselement );
 
         if (target.anaglyph) {
 
-            this.effect = new THREE.AnaglyphEffect(renderer);
+            this.effect = new THREE.AnaglyphEffect(this._renderer);
             this.effect.setSize(target.rWidth, target.rHeight);
 
             this.effect.render(this.scene, this._camera);
 
-        } else {
-
-            renderer.setSize(target.rWidth, target.rHeight);
-            renderer.render(this.scene, this._camera);
-
         }
-
-        renderer.domElement.style.width = '100%';
-        renderer.domElement.style.height = '100%';
-
-        whselement.appendChild(renderer.domElement);
-
-        target.container.style.margin = 0;
-        target.container.style.padding = 0;
-        target.container.style.position = 'relative';
-        target.container.style.overflow = 'hidden';
 
         // NOTE: ==================== Composer. =======================
         if (target.wagner) {
 
-            this._composer = new WAGNER.Composer(renderer);
+            this._composer = new WAGNER.Composer(this._renderer);
             
             this._composer.setSize(target.rWidth, target.rHeight);
             this._composer.autoClearColor = true;
@@ -150,7 +127,6 @@ WHS.init = class {
         }
 
         Object.assign(this, {
-            renderer: renderer,
             _settings: target,
             modellingQueue: [], // Queue for physics objects
             children: [], // Children for this app.
@@ -166,7 +142,7 @@ WHS.init = class {
 
                 scope._camera.updateProjectionMatrix();
 
-                scope.renderer.setSize(target.rWidth, target.rHeight);
+                scope._renderer.setSize(target.rWidth, target.rHeight);
 
                 /*if (params.wagner) {
                     scope._composer.setSize(target.rWidth, target.rHeight);
@@ -181,6 +157,11 @@ WHS.init = class {
     }
 
     _initDOM() {
+
+        this._settings.container.style.margin = 0;
+        this._settings.container.style.padding = 0;
+        this._settings.container.style.position = 'relative';
+        this._settings.container.style.overflow = 'hidden';
 
         var canvasParent = document.createElement('div');
         canvasParent.className = "whs";
@@ -239,6 +220,27 @@ WHS.init = class {
         );
 
         this.scene.add( this._camera );
+
+    }
+
+    _initRenderer( element ) {
+
+        // Renderer.
+        this._renderer = new THREE.WebGLRenderer();
+        this._renderer.setClearColor(this._settings.background);
+
+        // Shadowmap.
+        this._renderer.shadowMap.enabled = this._settings.shadowmap;
+        this._renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        this._renderer.shadowMap.cascade = true;
+
+        this._renderer.setSize(this._settings.rWidth, this._settings.rHeight);
+        this._renderer.render(this.scene, this._camera);
+
+        element.appendChild(this._renderer.domElement);
+
+        this._renderer.domElement.style.width = '100%';
+        this._renderer.domElement.style.height = '100%';
 
     }
 
