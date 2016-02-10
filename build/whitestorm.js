@@ -2755,25 +2755,7 @@ WHS.init = function() {
 
         target.container.appendChild(whselement);
 
-        // Debug Renderer
-        if (target.stats) {
-            this._stats = new Stats();
-
-            if (target.stats == "fps") this._stats.setMode(0);
-            else if (target.stats == "ms") this._stats.setMode(1);
-            else if (target.stats == "mb") this._stats.setMode(1);
-            else {
-                this._stats.setMode(0);
-                // WARN: console | stats mode.
-                console.warn([this._stats], "Please, apply stats mode [fps, ms, mb] .");
-            }
-
-            this._stats.domElement.style.position = 'absolute';
-            this._stats.domElement.style.left = '0px';
-            this._stats.domElement.style.bottom = '0px';
-
-            whselement.appendChild(this._stats.domElement);
-        }
+        this._initStats(whselement);
 
         // Camera.
         var camera = new THREE.PerspectiveCamera(target.camera.aspect, target.width / target.height, target.camera.near, target.camera.far);
@@ -2858,6 +2840,31 @@ WHS.init = function() {
     }
 
     _createClass(_class3, [{
+        key: "_initStats",
+        value: function _initStats(element) {
+
+            // Debug Renderer
+            if (this._settings.stats) {
+
+                this._stats = new Stats();
+
+                if (this._settings.stats == "fps") this._stats.setMode(0);
+                else if (this._settings.stats == "ms") this._stats.setMode(1);
+                else if (this._settings.stats == "mb") this._stats.setMode(1);
+                else {
+                    this._stats.setMode(0);
+
+                    console.warn([this._stats], "Please, apply stats mode [fps, ms, mb] .");
+                }
+
+                this._stats.domElement.style.position = 'absolute';
+                this._stats.domElement.style.left = '0px';
+                this._stats.domElement.style.bottom = '0px';
+
+                element.appendChild(this._stats.domElement);
+            }
+        }
+    }, {
         key: "start",
         value: function start() {
 
@@ -3977,108 +3984,6 @@ WHS.init.prototype.addFog = function(type, params) {
     return scope;
 };
 
-/**
- * Light.
- *
- * @param {String} type Light type. (REQUIRED)
- * @param {Object} opts Parameters of light dot. (OPTIONAL)
- * @param {Object} pos Position of light dot. (OPTIONAL)
- * @param {Object} target Target of light dot. (OPTIONAL)
- * @return {Object} Scope.
- */
-WHS.init.prototype.addLight = function(type, opts) {
-
-    'use strict';
-
-    var scope = new WHS.Shape(this, opts, type);
-
-    //Do not need the option variable, opts is by this statement, gained default values
-    api.extend(opts, {
-        color: 0xffffff,
-        skyColor: 0xffffff,
-        groundColor: 0xffffff,
-
-        intensity: 1,
-        distance: 100,
-        angle: Math.PI / 3,
-
-        shadowmap: {
-            cast: true,
-
-            bias: 0.0001,
-
-            width: 1024,
-            height: 1024,
-
-            near: true,
-            far: 400,
-            fov: 60,
-            darkness: 0.3,
-
-            top: 200,
-            bottom: -200,
-            left: -200,
-            right: 200
-        }
-    });
-
-    switch (type) {
-        case "ambient":
-            scope.mesh = new THREE.AmbientLight(0xffffff);
-            break;
-
-        case "directional":
-            scope.mesh = new THREE.DirectionalLight(opts.color, opts.intensity);
-
-            break;
-
-        case "hemisphere":
-            scope.mesh = new THREE.HemisphereLight(opts.skyColor, opts.groundColor, opts.intensity);
-
-            break;
-
-        case "light":
-            scope.mesh = new THREE.Light(opts.color);
-
-            break;
-
-        case "point":
-            scope.mesh = new THREE.PointLight(opts.color, opts.intensity, opts.distance);
-
-            break;
-
-        case "spot":
-            scope.mesh = new THREE.SpotLight(opts.color, opts.intensity, opts.distance, opts.angle);
-
-            break;
-    }
-
-    //scope.mesh.shadowCameraVisible = true;
-
-    scope.mesh.castShadow = opts.shadowmap.cast;
-
-    // #FIXME:20 Shadow default parameters.
-    scope.mesh.shadowMapWidth = opts.shadowmap.width;
-    scope.mesh.shadowMapHeight = opts.shadowmap.height;
-    scope.mesh.shadowBias = opts.shadowmap.bias;
-
-    scope.mesh.shadowCameraNear = opts.shadowmap.near;
-    scope.mesh.shadowCameraFar = opts.shadowmap.far;
-    scope.mesh.shadowCameraFov = opts.shadowmap.fov;
-    scope.mesh.shadowDarkness = opts.shadowmap.darkness;
-
-    scope.mesh.shadowCameraLeft = opts.shadowmap.left;
-    scope.mesh.shadowCameraRight = opts.shadowmap.right;
-    scope.mesh.shadowCameraTop = opts.shadowmap.top;
-    scope.mesh.shadowCameraBottom = opts.shadowmap.bottom;
-
-    if (scope.mesh.target) scope.mesh.target.position.set(scope._target.x, scope._target.y, scope._target.z);
-
-    scope.build().wrap();
-
-    return scope;
-};
-
 WHS.AmbientLight = function(_WHS$Light) {
     _inherits(AmbientLight, _WHS$Light);
 
@@ -4687,64 +4592,6 @@ WHS.init.prototype.OrbitControls = function(object) {
         } else if ((typeof object === "undefined" ? "undefined" : _typeof(object)) == "object") this.controls.target.copy(target);
         else console.error("Object must be a THREE.JS vector! @OrbitControls");
     }
-};
-
-/**
- * Adds a skybox to the WhitestormJS scene.
- * @param {Object} options - Skybox options.
- * @param {String} options.src - Skybox image source.
- * @param {String} options.imgSuffix - Skybox image suffix (.png, .jpg, etc.)
- * @param {String} options.skyType - Type of sky. Either box or sphere.
- * @returns {Object} scope - Scope.
- */
-WHS.init.prototype.addSkybox = function(options) {
-
-    'use strict';
-
-    options.skyType = options.skyType || "box";
-
-    options.imgSuffix = options.skyType == "box" ? options.imgSuffix || ".png" : options.imgSuffix || "";
-
-    var scope = new WHS.Shape(this, options, "skybox");
-    scope.skip = true;
-
-    var skyGeometry, skyMat;
-
-    switch (options.skyType) {
-        case "box":
-            var directions = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
-            skyGeometry = new THREE.CubeGeometry(this._camera.far, this._camera.far, this._camera.far);
-            var matArray = [];
-
-            for (var i = 0; i < 6; i++) {
-
-                matArray.push(new THREE.MeshBasicMaterial({
-                    map: THREE.ImageUtils.loadTexture(options.src + directions[i] + options.imgSuffix),
-                    side: THREE.BackSide
-                }));
-            }
-
-            skyMat = new THREE.MeshFaceMaterial(matArray);
-
-            break;
-        case "sphere":
-
-            skyGeometry = new THREE.SphereGeometry(this._camera.far / 2, 60, 40);
-
-            skyMat = new THREE.MeshBasicMaterial({
-                map: THREE.ImageUtils.loadTexture(options.src + options.imgSuffix),
-                side: THREE.BackSide
-            });
-
-            break;
-    }
-
-    scope.mesh = new THREE.Mesh(skyGeometry, skyMat);
-    scope.mesh.renderDepth = 1000.0;
-
-    scope.build().wrap();
-
-    return scope;
 };
 
 WHS.Skybox = function(_WHS$Shape23) {
