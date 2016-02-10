@@ -15,6 +15,7 @@
    - _initStats()
    - _initDOM()
    - _initCamera()
+   - _initRenderer()
 
 
 **v0.0.7**
