@@ -98,31 +98,7 @@ WHS.init = class {
 
         target.container.appendChild(whselement);
 
-        // Debug Renderer
-        if (target.stats) {
-            this._stats = new Stats();
-
-            if (target.stats == "fps")
-                this._stats.setMode(0);
-
-            else if (target.stats == "ms")
-                this._stats.setMode(1);
-
-            else if (target.stats == "mb")
-                this._stats.setMode(1);
-
-            else {
-                this._stats.setMode(0);
-                // WARN: console | stats mode.
-                console.warn([this._stats], "Please, apply stats mode [fps, ms, mb] .");
-            }
-
-            this._stats.domElement.style.position = 'absolute';
-            this._stats.domElement.style.left = '0px';
-            this._stats.domElement.style.bottom = '0px';
-
-            whselement.appendChild(this._stats.domElement);
-        }
+        this._initStats( whselement );
 
         // Camera.
         var camera = new THREE.PerspectiveCamera(
@@ -218,6 +194,38 @@ WHS.init = class {
         });
 
         return scope;
+
+    }
+
+    _initStats( element ) {
+
+        // Debug Renderer
+        if (this._settings.stats) {
+
+            this._stats = new Stats();
+
+            if (this._settings.stats == "fps")
+                this._stats.setMode(0);
+
+            else if (this._settings.stats == "ms")
+                this._stats.setMode(1);
+
+            else if (this._settings.stats == "mb")
+                this._stats.setMode(1);
+
+            else {
+                this._stats.setMode(0);
+
+                console.warn([this._stats], "Please, apply stats mode [fps, ms, mb] .");
+            }
+
+            this._stats.domElement.style.position = 'absolute';
+            this._stats.domElement.style.left = '0px';
+            this._stats.domElement.style.bottom = '0px';
+
+            element.appendChild(this._stats.domElement);
+
+        }
 
     }
 
