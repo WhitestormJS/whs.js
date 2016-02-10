@@ -14,6 +14,7 @@
 - #51: Update `Core.js`
    - _initStats()
    - _initDOM()
+   - _initCamera()
 
 
 **v0.0.7**

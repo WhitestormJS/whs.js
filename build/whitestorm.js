@@ -2755,11 +2755,7 @@ WHS.init = function() {
         this._initStats(whselement);
 
         // Camera.
-        var camera = new THREE.PerspectiveCamera(target.camera.aspect, target.width / target.height, target.camera.near, target.camera.far);
-
-        camera.position.set(target.camera.x, target.camera.y, target.camera.z);
-
-        api.merge(this.scene, camera);
+        this._initCamera();
 
         // Renderer.
         var renderer = new THREE.WebGLRenderer();
@@ -2776,11 +2772,11 @@ WHS.init = function() {
             this.effect = new THREE.AnaglyphEffect(renderer);
             this.effect.setSize(target.rWidth, target.rHeight);
 
-            this.effect.render(this.scene, camera);
+            this.effect.render(this.scene, this._camera);
         } else {
 
             renderer.setSize(target.rWidth, target.rHeight);
-            renderer.render(this.scene, camera);
+            renderer.render(this.scene, this._camera);
         }
 
         renderer.domElement.style.width = '100%';
@@ -2802,13 +2798,12 @@ WHS.init = function() {
             this._composer.autoClearColor = true;
 
             this._composer.reset();
-            this._composer.render(this.scene, camera);
+            this._composer.render(this.scene, this._camera);
 
             this._composer.eff = [];
         }
 
         Object.assign(this, {
-            _camera: camera,
             renderer: renderer,
             _settings: target,
             modellingQueue: [], // Queue for physics objects
@@ -2871,6 +2866,16 @@ WHS.init = function() {
 
                 element.appendChild(this._stats.domElement);
             }
+        }
+    }, {
+        key: "_initCamera",
+        value: function _initCamera() {
+
+            this._camera = new THREE.PerspectiveCamera(this._settings.camera.aspect, this._settings.width / this._settings.height, this._settings.camera.near, this._settings.camera.far);
+
+            this._camera.position.set(this._settings.camera.x, this._settings.camera.y, this._settings.camera.z);
+
+            this.scene.add(this._camera);
         }
     }, {
         key: "start",
