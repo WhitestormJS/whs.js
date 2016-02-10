@@ -11,6 +11,8 @@
    - Skybox: *src -> path*
 - Fixed speed bug when press *shift* on fps example.
 - Removed unused files.
+- #51: Update `Core.js`
+   - _initStats()
 
 
 **v0.0.7**
