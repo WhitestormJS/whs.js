@@ -2750,10 +2750,7 @@ WHS.init = function() {
         this.scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
 
         // DOM INIT
-        var whselement = document.createElement('div'); //.whs
-        whselement.className = "whs";
-
-        target.container.appendChild(whselement);
+        var whselement = this._initDOM();
 
         this._initStats(whselement);
 
@@ -2840,6 +2837,17 @@ WHS.init = function() {
     }
 
     _createClass(_class3, [{
+        key: "_initDOM",
+        value: function _initDOM() {
+
+            var canvasParent = document.createElement('div');
+            canvasParent.className = "whs";
+
+            this._settings.container.appendChild(canvasParent);
+
+            return canvasParent;
+        }
+    }, {
         key: "_initStats",
         value: function _initStats(element) {
 
