@@ -10,6 +10,7 @@
    - Plugin system with `WHS.Shape.prototype.pluginName`
    - Skybox: *src -> path*
 - Fixed speed bug when press *shift* on fps example.
+- Removed unused files.
 
 
 **v0.0.7**
