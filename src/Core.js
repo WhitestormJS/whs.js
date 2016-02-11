@@ -96,10 +96,7 @@ WHS.init = class {
         var whselement = this._initDOM();
 
         this._initStats( whselement );
-
-        // Camera.
         this._initCamera();
-
         this._initRenderer( whselement );
 
         if (target.anaglyph) {
