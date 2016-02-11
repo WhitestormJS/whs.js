@@ -2753,10 +2753,7 @@ WHS.init = function() {
         var whselement = this._initDOM();
 
         this._initStats(whselement);
-
-        // Camera.
         this._initCamera();
-
         this._initRenderer(whselement);
 
         if (target.anaglyph) {
@@ -4597,7 +4594,7 @@ WHS.init.prototype.MakeFirstPerson = function(object, params) {
  */
 WHS.init.prototype.OrbitControls = function(object) {
 
-    this.controls = new THREE.OrbitControls(this._camera, this.renderer.domElement);
+    this.controls = new THREE.OrbitControls(this._camera, this._renderer.domElement);
 
     if (object) {
 
