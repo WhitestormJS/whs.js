@@ -11,7 +11,7 @@
  */
 WHS.init.prototype.OrbitControls = function(object) {
 
-	this.controls = new THREE.OrbitControls(this._camera, this.renderer.domElement);
+	this.controls = new THREE.OrbitControls(this._camera, this._renderer.domElement);
 	
 	if ( object ) {
 
