@@ -92,12 +92,11 @@ WHS.init = class {
 
         this.scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
 
-        // DOM INIT
-        var whselement = this._initDOM();
-
-        this._initStats( whselement );
+        // INIT
+        this._initDOM();
+        this._initStats();
         this._initCamera();
-        this._initRenderer( whselement );
+        this._initRenderer();
 
         if (target.anaglyph) {
 
@@ -126,8 +125,7 @@ WHS.init = class {
         Object.assign(this, {
             _settings: target,
             modellingQueue: [], // Queue for physics objects
-            children: [], // Children for this app.
-            _dom: whselement
+            children: [] // Children for this app.
         });
 
         // NOTE: ==================== Autoresize. ======================
@@ -160,16 +158,16 @@ WHS.init = class {
         this._settings.container.style.position = 'relative';
         this._settings.container.style.overflow = 'hidden';
 
-        var canvasParent = document.createElement('div');
-        canvasParent.className = "whs";
+        this._dom = document.createElement('div');
+        this._dom.className = "whs";
 
-        this._settings.container.appendChild(canvasParent);
+        this._settings.container.appendChild(this._dom);
 
-        return canvasParent;
+        return this._dom;
 
     }
 
-    _initStats( element ) {
+    _initStats() {
 
         // Debug Renderer
         if (this._settings.stats) {
@@ -195,7 +193,7 @@ WHS.init = class {
             this._stats.domElement.style.left = '0px';
             this._stats.domElement.style.bottom = '0px';
 
-            element.appendChild(this._stats.domElement);
+            this._dom.appendChild(this._stats.domElement);
 
         }
 
@@ -220,7 +218,7 @@ WHS.init = class {
 
     }
 
-    _initRenderer( element ) {
+    _initRenderer() {
 
         // Renderer.
         this._renderer = new THREE.WebGLRenderer();
@@ -234,7 +232,7 @@ WHS.init = class {
         this._renderer.setSize(this._settings.rWidth, this._settings.rHeight);
         this._renderer.render(this.scene, this._camera);
 
-        element.appendChild(this._renderer.domElement);
+        this._dom.appendChild(this._renderer.domElement);
 
         this._renderer.domElement.style.width = '100%';
         this._renderer.domElement.style.height = '100%';
