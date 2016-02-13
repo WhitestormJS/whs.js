@@ -2742,14 +2742,8 @@ WHS.init = function() {
 
         this._settings = target;
 
-        Physijs.scripts.worker = target.path_worker;
-        Physijs.scripts.ammo = target.path_ammo;
-
-        this.scene = new Physijs.Scene();
-
-        this.scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
-
-        // INIT
+        // INIT.
+        this._initScene();
         this._initDOM();
         this._initStats();
         this._initCamera();
@@ -2775,12 +2769,6 @@ WHS.init = function() {
             this._composer.eff = [];
         }
 
-        Object.assign(this, {
-            _settings: target,
-            modellingQueue: [], // Queue for physics objects
-            children: [] // Children for this app.
-        });
-
         // NOTE: ==================== Autoresize. ======================
         var scope = this;
 
@@ -2792,6 +2780,27 @@ WHS.init = function() {
     }
 
     _createClass(_class3, [{
+        key: "_initScene",
+        value: function _initScene() {
+
+            this._initPhysiJS();
+
+            this.scene = new Physijs.Scene();
+
+            this.scene.setGravity(new THREE.Vector3(this._settings.gravity.x, this._settings.gravity.y, this._settings.gravity.z));
+
+            // Arrays for processing.
+            this.modellingQueue = [];
+            this.children = [];
+        }
+    }, {
+        key: "_initPhysiJS",
+        value: function _initPhysiJS() {
+
+            Physijs.scripts.worker = this._settings.path_worker;
+            Physijs.scripts.ammo = this._settings.path_ammo;
+        }
+    }, {
         key: "_initDOM",
         value: function _initDOM() {
 
