@@ -18,6 +18,9 @@
    - _initRenderer()
    - *whselement var -> this._dom*
    - _loop in start()
+   - _updateControls() in start()
+   - _process in start()
+   - *this.update -> this._update*
 
 
 **v0.0.7**

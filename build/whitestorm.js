@@ -2879,21 +2879,12 @@ WHS.init = function() {
                 // Init stats.
                 if (scope._stats) scope._stats.begin();
 
-                // Merging data loop.
-                for (var i = 0; i < scope.modellingQueue.length; i++) {
-                    if (scope.modellingQueue[i]._type == "morph") scope.modellingQueue[i].mesh.mixer.update(clock.getDelta());
-                }
-
-                scope.scene.simulate();
-
                 //if (scope._settings.anaglyph)
                 //  scope.effect.render(scope.scene, scope._camera);
 
-                // Controls.
-                if (scope.controls) {
-                    scope.controls.update(Date.now() - scope.time);
-                    scope.time = Date.now();
-                }
+                scope._process(clock);
+                scope.scene.simulate();
+                scope._updateControls();
 
                 // Effects rendering.
                 if (scope._composer) {
@@ -2908,15 +2899,15 @@ WHS.init = function() {
                     scope._composer.toScreen();
                 }
 
+                scope._loop(time);
+
                 // End helper.
                 if (scope._stats) scope._stats.end();
-
-                scope._loop(time);
             }
 
-            this.update = reDraw;
+            this._update = reDraw;
 
-            scope.update();
+            scope._update();
 
             /*scope._ready = [];
      var loading_queue = WHS.Watch(scope.children);
@@ -2937,6 +2928,25 @@ WHS.init = function() {
             WHS.loops.forEach(function(loop) {
                 if (loop.enabled) loop.func(time);
             });
+        }
+    }, {
+        key: "_updateControls",
+        value: function _updateControls() {
+
+            if (this.controls) {
+
+                this.controls.update(Date.now() - this.time);
+                this.time = Date.now();
+            }
+        }
+    }, {
+        key: "_process",
+        value: function _process(clock) {
+
+            for (var i = 0; i < this.modellingQueue.length; i++) {
+
+                if (this.modellingQueue[i]._type == "morph") this.modellingQueue[i].mesh.mixer.update(clock.getDelta());
+            }
         }
     }, {
         key: "resize",
