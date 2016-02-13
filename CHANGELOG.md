@@ -16,6 +16,7 @@
    - _initDOM()
    - _initCamera()
    - _initRenderer()
+   - *whselement var -> this._dom*
 
 
 **v0.0.7**

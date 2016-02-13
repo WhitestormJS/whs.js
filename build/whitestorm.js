@@ -2787,17 +2787,7 @@ WHS.init = function() {
         var scope = this;
 
         if (target.autoresize) window.addEventListener('load resize', function() {
-            scope._camera.aspect = window.innerWidth / window.innerHeight;
-
-            scope._camera.updateProjectionMatrix();
-
-            scope._renderer.setSize(target.rWidth, target.rHeight);
-
-            /*if (params.wagner) {
-       scope._composer.setSize(target.rWidth, target.rHeight);
-         renderer.domElement.style.width = '100%';
-       renderer.domElement.style.height = '100%';
-   }*/
+            scope.resize();
         });
 
         return scope;
@@ -2949,6 +2939,14 @@ WHS.init = function() {
            //});
        });
      });*/
+        }
+    }, {
+        key: "resize",
+        value: function resize() {
+
+            this._camera.aspect = window.innerWidth / window.innerHeight;
+            this._camera.updateProjectionMatrix();
+            this._renderer.setSize(this._settings.rWidth, this._settings.rHeight);
         }
     }]);
 

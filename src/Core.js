@@ -98,14 +98,14 @@ WHS.init = class {
         this._initCamera();
         this._initRenderer();
 
-        if (target.anaglyph) {
+        /*if (target.anaglyph) {
 
             this.effect = new THREE.AnaglyphEffect(this._renderer);
             this.effect.setSize(target.rWidth, target.rHeight);
 
             this.effect.render(this.scene, this._camera);
 
-        }
+        }*/
 
         // NOTE: ==================== Composer. =======================
         if (target.wagner) {
@@ -132,20 +132,9 @@ WHS.init = class {
         var scope = this;
 
         if (target.autoresize)
-            window.addEventListener('load resize', function() {
-                scope._camera.aspect = window.innerWidth / window.innerHeight;
-
-                scope._camera.updateProjectionMatrix();
-
-                scope._renderer.setSize(target.rWidth, target.rHeight);
-
-                /*if (params.wagner) {
-                    scope._composer.setSize(target.rWidth, target.rHeight);
-
-                    renderer.domElement.style.width = '100%';
-                    renderer.domElement.style.height = '100%';
-                }*/
-        });
+            window.addEventListener('load resize', () => {
+                scope.resize();
+            });
 
         return scope;
 
@@ -320,6 +309,14 @@ WHS.init = class {
             });
 
         });*/
+    }
+
+    resize() {
+
+        this._camera.aspect = window.innerWidth / window.innerHeight;
+        this._camera.updateProjectionMatrix();
+        this._renderer.setSize(this._settings.rWidth, this._settings.rHeight);
+
     }
 
 }
