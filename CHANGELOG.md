@@ -21,7 +21,7 @@
    - _updateControls() in start()
    - _process in start()
    - *this.update -> this._update*
-
+   - _initScene()
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
