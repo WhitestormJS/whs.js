@@ -243,22 +243,12 @@ WHS.init = class {
             if (scope._stats)
                  scope._stats.begin();
 
-            // Merging data loop.
-            for (var i = 0; i < scope.modellingQueue.length; i++) {
-                if (scope.modellingQueue[i]._type == "morph") 
-                    scope.modellingQueue[i].mesh.mixer.update( clock.getDelta() );
-            }
-
-            scope.scene.simulate();
-
             //if (scope._settings.anaglyph)
             //  scope.effect.render(scope.scene, scope._camera);
-
-            // Controls.
-            if (scope.controls) {
-                scope.controls.update(Date.now() - scope.time);
-                scope.time = Date.now();
-            }
+            
+            scope._process( clock );
+            scope.scene.simulate();
+            scope._updateControls();
 
             // Effects rendering.
             if (scope._composer) {
@@ -273,16 +263,16 @@ WHS.init = class {
                 scope._composer.toScreen();
             }
 
+            scope._loop( time );
+
             // End helper.
             if (scope._stats)
                 scope._stats.end();
-
-            scope._loop( time );
         }
 
-        this.update = reDraw;
+        this._update = reDraw;
 
-        scope.update();
+        scope._update();
 
         /*scope._ready = [];
 
@@ -306,6 +296,28 @@ WHS.init = class {
         WHS.loops.forEach( loop => {
             if ( loop.enabled ) loop.func( time );
         } );
+
+    }
+
+    _updateControls() {
+
+        if (this.controls) {
+
+            this.controls.update(Date.now() - this.time);
+            this.time = Date.now();
+
+        }
+
+    }
+
+    _process( clock ) {
+
+            for ( var i = 0; i < this.modellingQueue.length; i++ ) {
+
+                if ( this.modellingQueue[i]._type == "morph" ) 
+                    this.modellingQueue[i].mesh.mixer.update( clock.getDelta() );
+
+            }
 
     }
 
