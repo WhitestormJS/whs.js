@@ -234,11 +234,6 @@ WHS.init = class {
 
         var clock = new THREE.Clock();
         var scope = this;
-        scope._events = new Events();
-
-        /*scope._events.on("ready", function() {
-            scope.update();
-        })*/
 
         function reDraw(time) {
 
@@ -282,12 +277,7 @@ WHS.init = class {
             if (scope._stats)
                 scope._stats.end();
 
-             WHS.loops.forEach( function(loop) {
-
-                if(loop.enabled)
-                    loop.func(time);
-                
-             });
+            scope._loop( time );
         }
 
         this.update = reDraw;
@@ -309,6 +299,14 @@ WHS.init = class {
             });
 
         });*/
+    }
+
+    _loop( time ) {
+
+        WHS.loops.forEach( loop => {
+            if ( loop.enabled ) loop.func( time );
+        } );
+
     }
 
     resize() {

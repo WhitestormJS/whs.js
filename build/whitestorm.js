@@ -2755,13 +2755,11 @@ WHS.init = function() {
         this._initCamera();
         this._initRenderer();
 
-        if (target.anaglyph) {
-
-            this.effect = new THREE.AnaglyphEffect(this._renderer);
-            this.effect.setSize(target.rWidth, target.rHeight);
-
-            this.effect.render(this.scene, this._camera);
-        }
+        /*if (target.anaglyph) {
+        this.effect = new THREE.AnaglyphEffect(this._renderer);
+      this.effect.setSize(target.rWidth, target.rHeight);
+        this.effect.render(this.scene, this._camera);
+    }*/
 
         // NOTE: ==================== Composer. =======================
         if (target.wagner) {
@@ -2873,11 +2871,6 @@ WHS.init = function() {
 
             var clock = new THREE.Clock();
             var scope = this;
-            scope._events = new Events();
-
-            /*scope._events.on("ready", function() {
-       scope.update();
-   })*/
 
             function reDraw(time) {
 
@@ -2918,10 +2911,7 @@ WHS.init = function() {
                 // End helper.
                 if (scope._stats) scope._stats.end();
 
-                WHS.loops.forEach(function(loop) {
-
-                    if (loop.enabled) loop.func(time);
-                });
+                scope._loop(time);
             }
 
             this.update = reDraw;
@@ -2939,6 +2929,14 @@ WHS.init = function() {
            //});
        });
      });*/
+        }
+    }, {
+        key: "_loop",
+        value: function _loop(time) {
+
+            WHS.loops.forEach(function(loop) {
+                if (loop.enabled) loop.func(time);
+            });
         }
     }, {
         key: "resize",
