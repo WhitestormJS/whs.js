@@ -101,21 +101,6 @@ WHS.init = class {
 
         }*/
 
-        // NOTE: ==================== Composer. =======================
-        if (target.wagner) {
-
-            this._composer = new WAGNER.Composer(this._renderer);
-            
-            this._composer.setSize(target.rWidth, target.rHeight);
-            this._composer.autoClearColor = true;
-
-            this._composer.reset();
-            this._composer.render(this.scene, this._camera);
-
-            this._composer.eff = [];
-
-        }
-
         // NOTE: ==================== Autoresize. ======================
         var scope = this;
 
@@ -267,15 +252,18 @@ WHS.init = class {
 
             // Effects rendering.
             if (scope._composer) {
+
                 scope._composer.reset();
+                scope._composer.render( scope.scene, scope._camera );
 
-                scope._composer.render(scope.scene, scope._camera);
-
-                scope._composer.eff.forEach(function(effect) {
-                    scope._composer.pass(effect);
-                })
+                scope._composer.pass( scope._composer.stack );
 
                 scope._composer.toScreen();
+
+            } else {
+
+                scope._renderer.render( scope.scene, scope._camera );
+
             }
 
             scope._loop( time );

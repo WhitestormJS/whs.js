@@ -2755,20 +2755,6 @@ WHS.init = function() {
         this.effect.render(this.scene, this._camera);
     }*/
 
-        // NOTE: ==================== Composer. =======================
-        if (target.wagner) {
-
-            this._composer = new WAGNER.Composer(this._renderer);
-
-            this._composer.setSize(target.rWidth, target.rHeight);
-            this._composer.autoClearColor = true;
-
-            this._composer.reset();
-            this._composer.render(this.scene, this._camera);
-
-            this._composer.eff = [];
-        }
-
         // NOTE: ==================== Autoresize. ======================
         var scope = this;
 
@@ -2897,15 +2883,16 @@ WHS.init = function() {
 
                 // Effects rendering.
                 if (scope._composer) {
-                    scope._composer.reset();
 
+                    scope._composer.reset();
                     scope._composer.render(scope.scene, scope._camera);
 
-                    scope._composer.eff.forEach(function(effect) {
-                        scope._composer.pass(effect);
-                    });
+                    scope._composer.pass(scope._composer.stack);
 
                     scope._composer.toScreen();
+                } else {
+
+                    scope._renderer.render(scope.scene, scope._camera);
                 }
 
                 scope._loop(time);
@@ -4151,12 +4138,11 @@ WHS.init.prototype.SpotLight = function(params) {
 /**
  * Wagner.
  *
- * @param {Object} wagnerjs *WAGNER.JS*. (REQUIRED)
  * @param {Object} type Type of wagner effect. (REQUIRED)
  * @param {Object} params Parameters. (OPTIONAL)
  * @return {Object} Scope.
  */
-WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
+WHS.init.prototype.addWagner = function(type, params) {
 
     'use strict';
 
@@ -4174,8 +4160,8 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
     });
 
     switch (type) {
-        case "zoomBlurPass":
-            scope.effect = new wagnerjs.ZoomBlurPass();
+        case "ZoomBlurPass":
+            scope.effect = new WAGNER.ZoomBlurPass();
 
             target = api.extend(target, {
                 strength: .05,
@@ -4188,8 +4174,8 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
 
             break;
 
-        case "multiPassBloomPass":
-            scope.effect = new wagnerjs.MultiPassBloomPass();
+        case "MultiPassBloomPass":
+            scope.effect = new WAGNER.MultiPassBloomPass();
 
             target = api.extend(target, {
                 strength: .5,
@@ -4204,12 +4190,12 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
                 }
             });
 
-            scope.effect.glowTexture = wagnerjs.Pass.prototype.getOfflineTexture(this._composer.width, this._composer.height, false);
+            scope.effect.glowTexture = WAGNER.Pass.prototype.getOfflineTexture(this._composer.width, this._composer.height, false);
 
             break;
 
-        case "vignettePass":
-            scope.effect = new wagnerjs.VignettePass();
+        case "VignettePass":
+            scope.effect = new WAGNER.VignettePass();
 
             target = api.extend(target, {
                 amount: 0.7,
@@ -4218,8 +4204,8 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
 
             break;
 
-        case "directionalBlurPass":
-            scope.effect = new wagnerjs.DirectionalBlurPass();
+        case "DirectionalBlurPass":
+            scope.effect = new WAGNER.DirectionalBlurPass();
 
             target = api.extend(target, {
                 delta: 0.1
@@ -4227,8 +4213,8 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
 
             break;
 
-        case "motionBlurPass":
-            scope.effect = new wagnerjs.DirectionalBlurPass();
+        case "MotionBlurPass":
+            scope.effect = new WAGNER.DirectionalBlurPass();
 
             scope.motionBlurEnable = true;
 
@@ -4239,49 +4225,52 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
             break;
 
         case "ASCIIPass":
-            scope.effect = new wagnerjs.ASCIIPass();
+            scope.effect = new WAGNER.ASCIIPass();
 
             break;
 
-        case "dotScreenPass":
-            scope.effect = new wagnerjs.DotScreenPass();
+        case "DotScreenPass":
+            scope.effect = new WAGNER.DotScreenPass();
 
             break;
 
-        case "fxaaPass":
-            scope.effect = new wagnerjs.FXAAPass();
+        case "FxaaPass":
+            scope.effect = new WAGNER.FXAAPass();
 
             break;
 
-        case "chromaticAberrationPass":
-            scope.effect = new wagnerjs.ChromaticAberrationPass();
+        case "ChromaticAberrationPass":
+            scope.effect = new WAGNER.ChromaticAberrationPass();
 
             break;
 
-        case "dirtPass":
-            scope.effect = new wagnerjs.DirtPass();
+        case "DirtPass":
+            scope.effect = new WAGNER.DirtPass();
 
             break;
 
-        case "edgeDetectionPass":
-            scope.effect = new wagnerjs.SobelEdgeDetectionPass();
+        case "EdgeDetectionPass":
+            scope.effect = new WAGNER.SobelEdgeDetectionPass();
 
             break;
 
-        case "highPassPass":
-            scope.effect = new wagnerjs.HighPassPass();
+        case "HighPassPass":
+            scope.effect = new WAGNER.HighPassPass();
 
             break;
-        case "grayscalePass":
-            scope.effect = new wagnerjs.GrayscalePass();
+
+        case "GrayscalePass":
+            scope.effect = new WAGNER.GrayscalePass();
 
             break;
-        case "halftonePass":
-            scope.effect = new wagnerjs.HalftonePass();
+
+        case "HalftonePass":
+            scope.effect = new WAGNER.HalftonePass();
 
             break;
-        case "invertPass":
-            scope.effect = new wagnerjs.InvertPass();
+
+        case "InvertPass":
+            scope.effect = new WAGNER.InvertPass();
 
             break;
 
@@ -4293,16 +4282,22 @@ WHS.init.prototype.addWagner = function(wagnerjs, type, params) {
 
     scope.effect.params = target;
 
-    this._composer.pass(scope.effect);
-    this._composer.toScreen();
-
-    scope.apply = function() {
-        this._composer.eff.push(scope.effect);
-
-        return scope;
-    };
+    this._composer.stack.addPass(type, true, target);
 
     return scope;
+};
+
+WHS.init.prototype.initWagner = function() {
+
+    this._composer = new WAGNER.Composer(this._renderer);
+
+    this._composer.setSize(this._settings.rWidth, this._settings.rHeight);
+    this._composer.autoClearColor = true;
+
+    this._composer.reset();
+    this._composer.render(this.scene, this._camera);
+
+    this._composer.stack = new WAGNER.Stack(new WAGNER.ShadersPool());
 };
 
 /**
