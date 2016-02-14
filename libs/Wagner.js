@@ -432,10 +432,9 @@ WAGNER.Stack.prototype.addPass = function ( shaderName, enabled, params, index )
     var length,
     	passItem = {
 	        shaderName: shaderName,
-	        enabled: enabled || false
+	        enabled: enabled || false,
+	        params: params
 	    };
-
-	//todo: use and store params values
 
     this.passItems.push( passItem );
     length = this.passItems.length;
@@ -548,7 +547,7 @@ WAGNER.ShadersPool.prototype.getPasses = function ( passItems ) {
 
             if ( passItem.enabled ) {
 
-            	pass = this.getShaderFromPool( passItem.shaderName );
+            	pass = this.getShaderFromPool( passItem.shaderName, passItem.params );
 
             	if ( passItem.params ) {
 
@@ -568,7 +567,7 @@ WAGNER.ShadersPool.prototype.getPasses = function ( passItems ) {
 
 };
 
-WAGNER.ShadersPool.prototype.getShaderFromPool = function ( shaderName ) {
+WAGNER.ShadersPool.prototype.getShaderFromPool = function ( shaderName, params ) {
 
     var pass,
         shaderItem;
@@ -591,7 +590,7 @@ WAGNER.ShadersPool.prototype.getShaderFromPool = function ( shaderName ) {
 
         if ( !pass ) {
 
-            pass = new WAGNER[ shaderName ]();
+            pass = new WAGNER[ shaderName ]( params );
 
             shaderItem = {
                 pass: pass,

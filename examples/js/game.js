@@ -110,71 +110,85 @@ GAME.skybox = GAME.Skybox( {
     pos: { y: - 200 }
 } );
 
-GAME.cube1 = GAME.Cube(
-{
+GAME.cube1 = GAME.Cube( {
+
     geometry: {
             width: 2,
             height: 2,
             depth: 2
     },
+
     mass: 1,
     onlyvis: false,
+
     material: {
             color: 0xffffff,
             kind: "basic",
             map: WHS.API.texture( 'assets/textures/box.jpg' )
     },
+
     pos: {
             x: 50,
             y: 70,
             z: 60
     }
+
 } );
 
-GAME.cube2 = GAME.Cube(
-{
+GAME.cube2 = GAME.Cube( {
     geometry: {
             width: 2,
             height: 2,
             depth: 2
     },
+
     mass: 1,
     onlyvis: false,
+
     material: {
             color: 0xffffff,
             kind: "basic",
             map: WHS.API.texture( 'assets/textures/box.jpg' )
     },
+
     pos: {
             x: 60,
             y: 70,
             z: 0
     }
+
 } );
 
 GAME.person = GAME.Sphere( {
+
     geometry: {
             radius: 2
     },
+
     mass: 10,
     onlyvis: false,
+
     material: {
             color: 0xffffff,
             kind: "lambert",
             rest: 0,
             fri: 1
     },
+
     pos: {
             x: 0,
             y: 100,
             z: 0
     }
+
 } );
 
+GAME.initWagner();
+
 // EFFECTS.
-GAME.zoomEffect = GAME.addWagner( WAGNER, "zoomBlurPass", {} ).apply();
-GAME.multipassEffect = GAME.addWagner( WAGNER, "vignettePass", {} ).apply();
-GAME.directionalblurEffect = GAME.addWagner( WAGNER, "motionBlurPass", {} ).apply();
+var zoomEffect = GAME.addWagner( "ZoomBlurPass", {} );
+var vignettePass = GAME.addWagner( "VignettePass", {} );
+//var directionalblurEffect = GAME.addWagner( "motionBlurPass", {} ).apply();
 
 GAME.MakeFirstPerson( GAME.person, { // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
     block: document.getElementById('blocker'),
