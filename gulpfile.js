@@ -23,7 +23,6 @@ var sources = [
     'src/Ground/*.js',
     'src/Fog/*.js',
     'src/Light/*.js',
-    'src/Wagner/*.js',
     'src/Controls/*.js',
     'src/GUI/*.js',
     'src/Skybox/*.js'
@@ -43,7 +42,6 @@ var sources_test = [
     'src/Ground/*.js',
     'src/Fog/*.js',
     'src/Light/*.js',
-    'src/Wagner/*.js',
     'src/Controls/*.js',
     'src/GUI/*.js',
     'src/Skybox/*.js'
@@ -60,7 +58,6 @@ var codes = [
     'src/Ground/*.js',
     'src/Fog/*.js',
     'src/Light/*.js',
-    'src/Wagner/*.js',
     'src/Controls/*.js',
     'src/GUI/*.js',
     'src/Skybox/*.js'
