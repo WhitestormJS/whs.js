@@ -22,6 +22,7 @@
    - _process in start()
    - *this.update -> this._update*
    - _initScene()
+- #53: Wagner moved to plugins.
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
