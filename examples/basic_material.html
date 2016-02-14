@@ -24,8 +24,6 @@
     <meta name="msapplication-square150x150logo" content="../development/art/logo/Icon-72@2.png" />
     <script src="../libs/three.js"></script>
     <script src="../libs/physi.js"></script>
-    <script src="../libs/Wagner.js"></script>
-    <script src="../libs/Wagner.base.js"></script>
 
     <script src="plugins/whs.preload.js"></script>
     <style>
@@ -103,10 +101,7 @@ var preloader = Preloader();
 
 var GAME = new WHS.init({
     
-    anaglyph: false,
-    helper: true,
     stats: "fps", // fps, ms, mb
-    wagner: WAGNER,
     autoresize: true,
 
     gravity: {

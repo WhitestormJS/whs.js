@@ -12,7 +12,7 @@
  */
 WHS.init = class {
 
-    constructor (params) {
+    constructor( params ) {
 
         'use strict';
 
@@ -22,15 +22,12 @@ WHS.init = class {
             console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
         if (!Physijs)
             console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
-        if (!WAGNER)
-            console.warn('whitestormJS requires WAGNER.js. {Object} WAGNER not found.');
 
         var target = api.extend(params, {
 
             anaglyph: false,
             helper: false,
             stats: false,
-            wagner: true,
             autoresize: false,
 
             shadowmap: true,

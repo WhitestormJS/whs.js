@@ -15,7 +15,7 @@ var Preloader = function() {
 
 		done: function() {
 			console.log("Objects loaded!");
-			setTimeout(function() {scope.element.fadeOut("slow")}, 1000);
+			setTimeout(function() { scope.element.fadeOut(1) }, 1000);
 		},
 
 		check: function(...objects) {

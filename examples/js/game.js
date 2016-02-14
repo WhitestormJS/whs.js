@@ -2,10 +2,8 @@ var preloader = Preloader();
 
 // INITIALIZATION SCENE.
 var GAME = new WHS.init( {
-    anaglyph: false,
-    //helper: true,
+    
     stats: "fps", // fps, ms, mb
-    wagner: true,
     autoresize: true,
 
     gravity: {
@@ -183,11 +181,12 @@ GAME.person = GAME.Sphere( {
 
 } );
 
-GAME.initWagner();
-
 // EFFECTS.
-var zoomEffect = GAME.addWagner( "ZoomBlurPass", {} );
-var vignettePass = GAME.addWagner( "VignettePass", {} );
+var effects = GAME.Wagner();
+
+effects.add( "ZoomBlurPass", {} );
+effects.add( "VignettePass", {} );
+
 //var directionalblurEffect = GAME.addWagner( "motionBlurPass", {} ).apply();
 
 GAME.MakeFirstPerson( GAME.person, { // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
