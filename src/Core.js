@@ -48,8 +48,8 @@ WHS.init = class {
                 z: 0
             },
 
-            rWidth: window.innerWidth, // Resolution(width).
-            rHeight: window.innerHeight, // Resolution(height).
+            rWidth: 1, // Resolution(width).
+            rHeight: 1, // Resolution(height).
 
             width: window.innerWidth, // Container(width).
             height: window.innerHeight, // Container(height).
@@ -102,7 +102,7 @@ WHS.init = class {
         var scope = this;
 
         if (target.autoresize)
-            window.addEventListener('load resize', () => {
+            window.addEventListener('resize', () => {
                 scope.resize();
             });
 
@@ -215,7 +215,11 @@ WHS.init = class {
         this._renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this._renderer.shadowMap.cascade = true;
 
-        this._renderer.setSize(this._settings.rWidth, this._settings.rHeight);
+        this._renderer.setSize( 
+            +(window.innerWidth * this._settings.rWidth).toFixed(), 
+            +(window.innerHeight * this._settings.rHeight).toFixed()
+        );
+
         this._renderer.render(this.scene, this._camera);
 
         this._dom.appendChild(this._renderer.domElement);
@@ -321,11 +325,14 @@ WHS.init = class {
 
     }
 
-    resize() {
+    resize( ) {
 
         this._camera.aspect = window.innerWidth / window.innerHeight;
         this._camera.updateProjectionMatrix();
-        this._renderer.setSize(this._settings.rWidth, this._settings.rHeight);
+        this._renderer.setSize( 
+            +(window.innerWidth * this._settings.rWidth).toFixed(), 
+            +(window.innerHeight * this._settings.rHeight).toFixed()
+        );
 
     }
 

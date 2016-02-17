@@ -76,11 +76,23 @@
 	background: rgba(0, 0, 0, 0.8);
 	color:white;
     text-align: center;
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     left: 0;
-    top: ;
+    top: 0;
+    z-index: 2;
+  }
+
+  .whs {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+
+  .whs > canvas {
+    width: inherit !important;
+    height: inherit !important;
   }
   </style>
 </head>
@@ -93,7 +105,8 @@
     top: 0px;
     left: 0px;
     z-index: 999;
-    background: black;">
+    background: black;
+    z-index: 3;">
 
     <div class="sprite-left"></div>
     <div class="sprite-right"></div>
