@@ -43,7 +43,8 @@ WHS.Wagner = function() {
 
         scope._composer = new WAGNER.Composer(scope._renderer);
 
-        scope._composer.setSize(scope._settings.rWidth, scope._settings.rHeight);
+        scope._composer.setSize(+(window.innerWidth * scope._settings.rWidth).toFixed(), +(window.innerHeight * scope._settings.rHeight).toFixed());
+
         scope._composer.autoClearColor = true;
 
         scope._composer.reset();

@@ -16,10 +16,11 @@ var GAME = new WHS.init( {
             far: 10000
     },
 
-    rWidth: window.innerWidth / 1.5,
-    rHeight: window.innerHeight / 1.5,
+    rWidth: 1 / 1.5,
+    rHeight: 1 / 1.5,
 
     background: 0x70DBFF
+    
 } );
 
 GAME.ground = GAME.Terrain( {
