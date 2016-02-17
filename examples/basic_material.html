@@ -29,50 +29,61 @@
     <style>
 /* Preloading animation */
 
-    #animation {
-        -webkit-animation: play 2s steps(100) infinite;
-        -moz-animation:    play 2s steps(100) infinite;
-        -o-animation:      play 2s steps(100) infinite;
-        animation:         play 2s steps(100) infinite;
-        margin-left: calc(50% - 50px);
-    }
+  #animation {
+    -webkit-animation: play 2s steps(100) infinite;
+    -moz-animation:    play 2s steps(100) infinite;
+    -o-animation:      play 2s steps(100) infinite;
+    animation:         play 2s steps(100) infinite;
+    margin-left: calc(50% - 50px);
+  }
 
-    @-webkit-keyframes play {
-        100% { transform: translateX(-10000px); }
-    }
-    @-moz-keyframes play {
-        100% { transform: translateX(-10000px); }
-    }
-    @-o-keyframes play {
-        100% { transform: translateX(-10000px); }
-    }
-    @keyframes play {
-        100% { transform: translateX(-10000px); }
-    }
+  @-webkit-keyframes play {
+    100% { transform: translateX(-10000px); }
+  }
+  @-moz-keyframes play {
+    100% { transform: translateX(-10000px); }
+  }
+  @-o-keyframes play {
+    100% { transform: translateX(-10000px); }
+  }
+  @keyframes play {
+    100% { transform: translateX(-10000px); }
+  }
 
-    .sprite-right {
-        content: "";
-        position: fixed;
-        width: 10000px;
-        height: 100px;
-        display: block;
-        top: calc(50% - 50px);
-        left: calc(50% + 50px);
-        z-index: 3;
-        background: black;
-    }
+  .sprite-right {
+    content: "";
+    position: fixed;
+    width: 10000px;
+    height: 100px;
+    display: block;
+    top: calc(50% - 50px);
+    left: calc(50% + 50px);
+    z-index: 3;
+    background: black;
+  }
 
-    .sprite-left {
-        content: "";
-        position: fixed;
-        width: 10000px;
-        height: 100px;
-        display: block;
-        top: calc(50% - 50px);
-        right: calc(50% + 50px);
-        z-index: 3;
-        background: black;
-    }
+  .sprite-left {
+    content: "";
+    position: fixed;
+    width: 10000px;
+    height: 100px;
+    display: block;
+    top: calc(50% - 50px);
+    right: calc(50% + 50px);
+    z-index: 3;
+    background: black;
+  }
+
+  .whs {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+
+  .whs > canvas {
+    width: inherit !important;
+    height: inherit !important;
+  }
     </style>
 </head>
 
