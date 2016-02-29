@@ -222,9 +222,9 @@ createShape = function( description ) {
 					false
 				);
 
-			_vec3_1.setX(description.xsize/(description.xpts - 1));
-			_vec3_1.setY(description.ysize/(description.ypts - 1));
-			_vec3_1.setZ(1);
+			_vec3_1.setX(description.xsize/(description.xpts - 1) * 2);
+			_vec3_1.setY(description.ysize/(description.ypts - 1) * 2);
+			_vec3_1.setZ(2);
 
 			shape.setLocalScaling(_vec3_1);
 			_noncached_shapes[description.id] = shape;
