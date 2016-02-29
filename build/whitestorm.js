@@ -3211,9 +3211,8 @@ WHS.Morph = function(_WHS$Shape8) {
                 scope.mesh.speed = params.morph.speed;
 
                 scope.mesh.mixer = new THREE.AnimationMixer(scope.mesh);
-                scope.mesh.mixer.clipAction(data.animations[0]);
 
-                scope.mesh.mixer.update(600 * Math.random());
+                scope.mesh.mixer.clipAction(data.animations[0]).setDuration(params.morph.duration).play();
 
                 scope._rot.y = Math.PI / 2;
 
