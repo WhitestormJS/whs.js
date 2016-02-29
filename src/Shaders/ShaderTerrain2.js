@@ -10,7 +10,7 @@
  *
  */
 
-THREE.ShaderTerrain = {
+/*THREE.ShaderTerrain = {
 
     'terrain' : {
 
@@ -69,11 +69,11 @@ THREE.ShaderTerrain = {
 			        uniform float uNormalScale;
 			        uniform sampler2D tNormal;
 		        #endif
-		        uniform sampler2D oceanTexture;
-		        uniform sampler2D sandyTexture;
-		        uniform sampler2D grassTexture;
-		        uniform sampler2D rockyTexture;
-		        uniform sampler2D snowyTexture;
+		        //uniform sampler2D oceanTexture;
+		        //uniform sampler2D sandyTexture;
+		        //uniform sampler2D grassTexture;
+		        //uniform sampler2D rockyTexture;
+		        //uniform sampler2D snowyTexture;
 		        varying vec3 vTangent;
 		        varying vec3 vBinormal;
 		        varying vec3 vNormal;
@@ -115,22 +115,22 @@ THREE.ShaderTerrain = {
 		            vec3 totalAmbientLight = ambientLightColor;
 		            vec4 diffuseColor = vec4(0.0);
 		            // Color by texture.
-		            vec4 water = (smoothstep(0.01, 0.25, vAmount)
-		            - smoothstep(0.24, 0.26, vAmount))
-		            * texture2D( oceanTexture, vUv * 10.0 );
-		            vec4 sandy = (smoothstep(0.24, 0.27, vAmount)
-		            - smoothstep(0.28, 0.31, vAmount))
-		            * texture2D( sandyTexture, vUv * 10.0 );
-		            vec4 grass = (smoothstep(0.28, 0.32, vAmount)
-		            - smoothstep(0.35, 0.40, vAmount))
-		            * texture2D( grassTexture, vUv * 20.0 );
-		            vec4 rocky = (smoothstep(0.30, 0.40, vAmount)
-		            - smoothstep(0.40, 0.70, vAmount))
-		            * texture2D( rockyTexture, vUv * 20.0 );
-		            vec4 snowy = (smoothstep(0.42, 0.45, vAmount))
-		            * texture2D( snowyTexture, vUv * 10.0 );
-		            diffuseColor = vec4(0.0, 0.0, 0.0, 1.0)
-		            + water + sandy + grass + rocky + snowy;
+		            //vec4 water = (smoothstep(0.01, 0.25, vAmount)
+		            //- smoothstep(0.24, 0.26, vAmount))
+		            //* texture2D( oceanTexture, vUv * 10.0 );
+		            //vec4 sandy = (smoothstep(0.24, 0.27, vAmount)
+		            //- smoothstep(0.28, 0.31, vAmount))
+		            //* texture2D( sandyTexture, vUv * 10.0 );
+		            //vec4 grass = (smoothstep(0.28, 0.32, vAmount)
+		            //- smoothstep(0.35, 0.40, vAmount))
+		            //* texture2D( grassTexture, vUv * 20.0 );
+		            //vec4 rocky = (smoothstep(0.30, 0.40, vAmount)
+		            //- smoothstep(0.40, 0.70, vAmount))
+		            //* texture2D( rockyTexture, vUv * 20.0 );
+		            //vec4 snowy = (smoothstep(0.42, 0.45, vAmount))
+		            //* texture2D( snowyTexture, vUv * 10.0 );
+		            //diffuseColor = vec4(0.0, 0.0, 0.0, 1.0)
+		            //+ water + sandy + grass + rocky + snowy;
 		` +
 
 				        [
@@ -271,4 +271,4 @@ THREE.ShaderTerrain = {
 
 	}
 
-};
+};*/
