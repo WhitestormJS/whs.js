@@ -50,9 +50,9 @@ var GAME = new WHS.init({
         x: 0,
         y: -100,
         z: 0
-    }
+    },
 
-    path_worker: 'physijs_worker.js' // Path to Physijs worker here.
+    path_worker: 'physijs_worker.js', // Path to Physijs worker here.
     path_ammo: 'ammo.js' // Path to Ammo.js.
 });
 
