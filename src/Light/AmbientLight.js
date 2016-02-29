@@ -11,11 +11,11 @@ WHS.AmbientLight = class AmbientLight extends WHS.Light {
 		super( params, "ambientlight" );
 
 		this.mesh = new THREE.AmbientLight(
-            params.light.color
+            params.light.color,
+            params.light.intensity
         );
 
         super.build();
-        super.buildShadow();
 
 	}
 
