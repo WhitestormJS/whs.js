@@ -7,17 +7,17 @@ var GAME = new WHS.init( {
     autoresize: true,
 
     gravity: {
-            x: 0,
-            y: - 100,
-            z: 0
+        x: 0,
+        y: - 100,
+        z: 0
     },
 
     camera: {
-            far: 10000
+        far: 10000
     },
 
-    rWidth: 1 / 1.5,
-    rHeight: 1 / 1.5,
+    rWidth: 1,
+    rHeight: 1,
 
     background: 0x70DBFF
     
@@ -50,7 +50,7 @@ GAME.ground = GAME.Terrain( {
 GAME.light1 = GAME.SpotLight( {
     light: {
         color: 0xffffff, //0x00ff00,
-        intensity: 3,
+        intensity: 1,
         distance: 1000
     },
 
@@ -67,38 +67,38 @@ GAME.light1 = GAME.SpotLight( {
     }
 } );
 
-GAME.parrot = GAME.Morph( {
+/*GAME.parrot = GAME.Morph( {
 
     geometry: {
-            width: 2,
-            height: 2,
-            depth: 2,
-            path: "assets/models/morph/parrot.js"
+        width: 2,
+        height: 2,
+        depth: 2,
+        path: "assets/models/morph/parrot.js"
     },
 
     material: {
-            color: 0xffffff,
-            kind: "basic"
+        color: 0xffffff,
+        kind: "basic"
     },
 
     pos: {
-            x: 70,
-            y: 72,
-            z: 70
+        x: 70,
+        y: 72,
+        z: 70
     },
 
     scale: {
-            x: 0.1,
-            y: 0.1,
-            z: 0.1
+        x: 0.1,
+        y: 0.1,
+        z: 0.1
     },
 
     morph: {
-            duration: 0.5,
-            speed: 250
+        duration: 0.5,
+        speed: 250
     }
 
-} );
+} );*/
 
 GAME.skybox = GAME.Skybox( {
     path: "assets/textures/skybox/skymap",
@@ -112,48 +112,48 @@ GAME.skybox = GAME.Skybox( {
 GAME.cube1 = GAME.Cube( {
 
     geometry: {
-            width: 2,
-            height: 2,
-            depth: 2
+        width: 2,
+        height: 2,
+        depth: 2
     },
 
     mass: 1,
     onlyvis: false,
 
     material: {
-            color: 0xffffff,
-            kind: "basic",
-            map: WHS.API.texture( 'assets/textures/box.jpg' )
+        color: 0xffffff,
+        kind: "basic",
+        map: WHS.API.texture( 'assets/textures/box.jpg' )
     },
 
     pos: {
-            x: 50,
-            y: 70,
-            z: 60
+        x: 50,
+        y: 70,
+        z: 60
     }
 
 } );
 
 GAME.cube2 = GAME.Cube( {
     geometry: {
-            width: 2,
-            height: 2,
-            depth: 2
+        width: 2,
+        height: 2,
+        depth: 2
     },
 
     mass: 1,
     onlyvis: false,
 
     material: {
-            color: 0xffffff,
-            kind: "basic",
-            map: WHS.API.texture( 'assets/textures/box.jpg' )
+        color: 0xffffff,
+        kind: "basic",
+        map: WHS.API.texture( 'assets/textures/box.jpg' )
     },
 
     pos: {
-            x: 60,
-            y: 70,
-            z: 0
+        x: 60,
+        y: 70,
+        z: 0
     }
 
 } );
@@ -161,32 +161,32 @@ GAME.cube2 = GAME.Cube( {
 GAME.person = GAME.Sphere( {
 
     geometry: {
-            radius: 2
+        radius: 2
     },
 
     mass: 10,
     onlyvis: false,
 
     material: {
-            color: 0xffffff,
-            kind: "lambert",
-            rest: 0,
-            fri: 1
+        color: 0xffffff,
+        kind: "lambert",
+        rest: 0,
+        fri: 1
     },
 
     pos: {
-            x: 0,
-            y: 100,
-            z: 0
+        x: 0,
+        y: 100,
+        z: 0
     }
 
 } );
 
 // EFFECTS.
-var effects = GAME.Wagner();
+/*var effects = GAME.Wagner();
 
 effects.add( "ZoomBlurPass", {} );
-effects.add( "VignettePass", {} );
+effects.add( "VignettePass", {} );*/
 
 //var directionalblurEffect = GAME.addWagner( "motionBlurPass", {} ).apply();
 
@@ -199,14 +199,14 @@ GAME.MakeFirstPerson( GAME.person, { // *WHS* object, Pointer lock controls obje
 
 for (var x = 0; x < 20; x++) {
     for (var y = 0; y < 15; y++) {
-        grasscoords.push({
-            x: x,
-            y: y
-        });
+    grasscoords.push({
+        x: x,
+        y: y
+    });
 
     }
 }*/
 
 GAME.start();
 
-preloader.check(GAME.parrot);
+preloader.check();

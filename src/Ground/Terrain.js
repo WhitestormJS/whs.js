@@ -118,6 +118,7 @@ WHS.Terrain = class Terrain extends WHS.Shape {
             THREE.UniformsLib['common'],
             THREE.UniformsLib['fog'],
             THREE.UniformsLib['lights'],
+            THREE.UniformsLib['ambient'],
             THREE.UniformsLib['shadowmap'],
 
             {
@@ -128,8 +129,10 @@ WHS.Terrain = class Terrain extends WHS.Shape {
 
         );
 
+        console.log(uniformsTerrain);
+
         uniformsTerrain[ "tDisplacement" ].value = heightMap;
-        uniformsTerrain[ "shadowMap" ].value = [normalMap];
+        uniformsTerrain[ "spotShadowMap" ].value = [normalMap];
 
         uniformsTerrain[ "uDisplacementScale" ].value = 100;
         uniformsTerrain[ "uRepeatOverlay" ].value.set( 6, 6 );
