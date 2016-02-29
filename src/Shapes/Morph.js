@@ -38,7 +38,7 @@ WHS.Morph = class Morph extends WHS.Shape {
                 scope.mesh.speed = params.morph.speed;
 
                 scope.mesh.mixer = new THREE.AnimationMixer( scope.mesh );
-                scope.mesh.mixer.addAction( new THREE.AnimationAction( data.animations[ 0 ] ).warpToDuration( 0.5 ) );
+                scope.mesh.mixer.clipAction( data.animations[ 0 ] );
 
                 scope.mesh.mixer.update( 600 * Math.random() );
 
