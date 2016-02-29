@@ -40,8 +40,14 @@ GAME.ground = GAME.Terrain( {
 
     pos: {
         x: 0,
-        y: 0,
+        y: -100,
         z: 0
+    },
+
+    scale: {
+        x: 2,
+        y: 2,
+        z: 2
     }
 
 } );
@@ -50,7 +56,7 @@ GAME.ground = GAME.Terrain( {
 var ambient = GAME.AmbientLight( {
     light: {
         color: 0xffffff,
-        intensity: 0.5,
+        intensity: 0.3,
     },
 
     pos: {
@@ -71,7 +77,7 @@ var ambient = GAME.AmbientLight( {
 GAME.light1 = GAME.SpotLight( {
     light: {
         color: 0xffffff, //0x00ff00,
-        intensity: 0.5,
+        intensity: 0.3,
         distance: 1000
     },
 
