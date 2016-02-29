@@ -1842,8 +1842,8 @@ WHS.Light = function() {
 
                 bias: 0.0001,
 
-                width: 1024,
-                height: 1024,
+                width: 2048,
+                height: 2048,
 
                 near: true,
                 far: 400,
