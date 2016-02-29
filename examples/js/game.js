@@ -47,10 +47,31 @@ GAME.ground = GAME.Terrain( {
 } );
 
 // NOTE: Default light.
+var ambient = GAME.AmbientLight( {
+    light: {
+        color: 0xffffff,
+        intensity: 0.5,
+    },
+
+    pos: {
+        x: 160, // 100,
+        y: 120, // 30,
+        z: 160, // 100
+    },
+
+    target: {
+        x: 0,
+        y: 10,
+        z: 0
+    }
+} );
+
+
+// NOTE: Default light.
 GAME.light1 = GAME.SpotLight( {
     light: {
         color: 0xffffff, //0x00ff00,
-        intensity: 1,
+        intensity: 0.5,
         distance: 1000
     },
 
