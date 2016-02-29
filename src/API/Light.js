@@ -209,19 +209,19 @@ WHS.Light = class {
 
 	buildShadow() {
 
-	    this.mesh.shadowMapWidth = this._shadowmap.width;
-	    this.mesh.shadowMapHeight = this._shadowmap.height;
-	    this.mesh.shadowBias = this._shadowmap.bias;
+	    this.mesh.shadow.mapSize.width = this._shadowmap.width;
+	    this.mesh.shadow.mapSize.height = this._shadowmap.height;
+	    this.mesh.shadow.bias = this._shadowmap.bias;
 
-	    this.mesh.shadowCameraNear = this._shadowmap.near;
-	    this.mesh.shadowCameraFar = this._shadowmap.far;
-	    this.mesh.shadowCameraFov = this._shadowmap.fov;
-	    this.mesh.shadowDarkness = this._shadowmap.darkness;
+	    this.mesh.shadow.camera.near = this._shadowmap.near;
+	    this.mesh.shadow.camera.far = this._shadowmap.far;
+	    this.mesh.shadow.camera.fov = this._shadowmap.fov;
+	    //this.mesh.shadowDarkness = this._shadowmap.darkness;
 
-	    this.mesh.shadowCameraLeft = this._shadowmap.left;
-	    this.mesh.shadowCameraRight = this._shadowmap.right;
-	    this.mesh.shadowCameraTop = this._shadowmap.top;
-	    this.mesh.shadowCameraBottom = this._shadowmap.bottom;
+	    this.mesh.shadow.camera.Left = this._shadowmap.left;
+	    this.mesh.shadow.camera.right = this._shadowmap.right;
+	    this.mesh.shadow.camera.top = this._shadowmap.top;
+	    this.mesh.shadow.camera.bottom = this._shadowmap.bottom;
 
 	}
 
