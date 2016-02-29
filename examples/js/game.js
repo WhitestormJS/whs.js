@@ -204,10 +204,10 @@ GAME.person = GAME.Sphere( {
 } );
 
 // EFFECTS.
-/*var effects = GAME.Wagner();
+var effects = GAME.Wagner();
 
 effects.add( "ZoomBlurPass", {} );
-effects.add( "VignettePass", {} );*/
+effects.add( "VignettePass", {} );
 
 //var directionalblurEffect = GAME.addWagner( "motionBlurPass", {} ).apply();
 
