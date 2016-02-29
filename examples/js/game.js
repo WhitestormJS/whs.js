@@ -40,14 +40,8 @@ GAME.ground = GAME.Terrain( {
 
     pos: {
         x: 0,
-        y: -100,
+        y: 0,
         z: 0
-    },
-
-    scale: {
-        x: 2,
-        y: 2,
-        z: 2
     }
 
 } );
@@ -94,7 +88,7 @@ GAME.light1 = GAME.SpotLight( {
     }
 } );
 
-/*GAME.parrot = GAME.Morph( {
+GAME.parrot = GAME.Morph( {
 
     geometry: {
         width: 2,
@@ -125,7 +119,7 @@ GAME.light1 = GAME.SpotLight( {
         speed: 250
     }
 
-} );*/
+} );
 
 GAME.skybox = GAME.Skybox( {
     path: "assets/textures/skybox/skymap",
