@@ -53,7 +53,7 @@ THREE.ShaderTerrain = {
 
 	    ] ),
 
-	    fragmentShader: [
+	    fragmentShader: 
 
 		`
 		        uniform vec3 diffuse;
@@ -166,12 +166,9 @@ THREE.ShaderTerrain = {
 		            #endif
 		           gl_FragColor = vec4( outgoingLight, diffuseColor.a );
 		      }
-		`
+		`,
 
-		],
-
-		vertexShader: [
-
+		vertexShader:
 
 		`
 		    #define TERRAIN;
@@ -208,7 +205,9 @@ THREE.ShaderTerrain = {
 			    THREE.ShaderChunk[ "morphtarget_pars_vertex" ],
 			    THREE.ShaderChunk[ "skinning_pars_vertex" ],
 			    THREE.ShaderChunk[ "shadowmap_pars_vertex" ],
-			    THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ]
+			    THREE.ShaderChunk[ "logdepthbuf_pars_vertex" ],
+			    THREE.ShaderChunk[ "bsdfs" ],
+			    THREE.ShaderChunk[ "lights_pars" ]
 
 		    ].join( "\n" ) +
 
@@ -265,9 +264,7 @@ THREE.ShaderTerrain = {
 
 		`
 		   }
-		`
-
-		],
+		`,
 
 		side: THREE.DoubleSide,
 	    shading: THREE.SmoothShading

@@ -139,10 +139,10 @@ WAGNER.BrightnessContrastPass.prototype.run = function( c ) {
 
 WAGNER.Pass.prototype.bindUniform = function( p, s, v, c ) {
 
-	Object.defineProperty( p, v, {
-		get : function(){ return s.uniforms[ id ].value; },
+	Object.defineProperty( p, v, { 
+		get : function(){ return s.uniforms[ id ].value; }, 
 		set : c,
-		configurable : false
+		configurable : false 
 	} );
 
 };
@@ -336,7 +336,7 @@ WAGNER.MultiPassBloomPass.prototype = Object.create( WAGNER.Pass.prototype );
 
 WAGNER.MultiPassBloomPass.prototype.isLoaded = function() {
 
-	if( this.blurPass.isLoaded() &&
+	if( this.blurPass.isLoaded() && 
 		this.blendPass.isLoaded() &&
 		this.zoomBlur.isLoaded() ) {
 		this.loaded = true;
@@ -372,7 +372,7 @@ WAGNER.MultiPassBloomPass.prototype.run = function( c ) {
 
 	this.blurPass.params.amount = this.params.blurAmount;
 	this.composer.pass( this.blurPass );
-
+	
 	if( this.params.applyZoomBlur ) {
 		this.zoomBlur.params.center.set( .5 * this.composer.width, .5 * this.composer.height );
 		this.zoomBlur.params.strength = this.params.zoomBlurStrength;
@@ -388,7 +388,7 @@ WAGNER.MultiPassBloomPass.prototype.run = function( c ) {
 	this.blendPass.params.mode = this.params.blendMode;
 	this.blendPass.params.tInput2 = this.composer.output;
 	c.pass( this.blendPass );
-
+	
 };
 
 WAGNER.CGAPass = function() {
@@ -698,7 +698,7 @@ WAGNER.LEDPass = function() {
 	WAGNER.Pass.call( this );
 	WAGNER.log( 'LEDPass Pass constructor' );
 	this.loadShader( 'led-fs.glsl', function() {
-
+		
 		//this.shader.uniforms.noiseTexture.value = 1;
 	} );
 
@@ -802,7 +802,7 @@ WAGNER.SSAOPass = function() {
 	WAGNER.Pass.call( this );
 	WAGNER.log( 'SSAOPass Pass constructor' );
 	this.loadShader( 'ssao-fs.glsl', function( fs ) {
-
+		
 		/*this.shader.uniforms.pSphere.value = [
 			new THREE.Vector3(-0.010735935, 0.01647018, 0.0062425877),
 			new THREE.Vector3(-0.06533369, 0.3647007, -0.13746321),
@@ -815,7 +815,7 @@ WAGNER.SSAOPass = function() {
 			new THREE.Vector3(0.8765323, 0.011236004, 0.28265962),
 			new THREE.Vector3(0.29264435, -0.40794238, 0.15964167)
 		];*/
-
+		
 	} );
 
 	this.params.texture = null;
@@ -852,7 +852,7 @@ WAGNER.SSAOPass.prototype.run = function( c ) {
 
 	if( this.params.onlyOcclusion ) {
 		c.setSource( this.composer.output );
-	} else {
+	} else {		
 		this.blendPass.params.mode = WAGNER.BlendMode.Multiply;
 		this.blendPass.params.tInput2 = this.composer.output;
 
@@ -895,7 +895,7 @@ WAGNER.DirectionalBlurPass = function() {
 	WAGNER.Pass.call( this );
 	WAGNER.log( 'Directional Blur Pass constructor' );
 	this.loadShader( 'guided-directional-blur-fs.glsl', function( fs ) {
-
+		
 	} );
 
 	this.params.tBias = null;
@@ -919,7 +919,7 @@ WAGNER.BleachPass = function() {
 	WAGNER.Pass.call( this );
 	WAGNER.log( 'Bleach Pass constructor' );
 	this.loadShader( 'bleach-fs.glsl', function( fs ) {
-
+		
 	} );
 
 	this.params.amount = 1;
