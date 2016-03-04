@@ -18,6 +18,11 @@
 var WHS = {
     REVISION: "7",
 
+    loader: {
+        JSON: new THREE.JSONLoader(),
+        Texture: new THREE.TextureLoader()
+    },
+
     API: {},
 
     _settings: {
@@ -29,10 +34,16 @@ var WHS = {
         
     },
     
-    loops: [],
-
-    grounds: []
+    loops: []
 };
+
+WHS.API.loadJSON = function(url, callback, texturePath) { 
+    return WHS.loader.JSON.load(url, callback, texturePath) 
+};
+
+WHS.API.loadTexture = function(url, onLoad, onProgress, onError) {
+    return WHS.loader.Texture.load(url, onLoad, onProgress, onError);
+}
 
 var api = WHS.API;
 
