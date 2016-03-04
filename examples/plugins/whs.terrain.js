@@ -190,39 +190,37 @@ WHS.Terrain = function(_WHS$Shape) {
         });
 
         var canvas = document.createElement('canvas');
-
         canvas.setAttribute("width", params.geometry.width);
         canvas.setAttribute("height", params.geometry.height);
 
         if (canvas.getContext) {
 
             var ctx = canvas.getContext('2d');
-
             ctx.drawImage(params.geometry.map, 0, 0);
         }
 
         // Ocean texture.
-        var oceanTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/dirt-512.jpg');
+        var oceanTexture = api.loadTexture(WHS._settings.assets + '/textures/terrain/dirt-512.jpg');
 
         oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
 
         // Sandy texture.
-        var sandyTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/sand-512.jpg');
+        var sandyTexture = api.loadTexture(WHS._settings.assets + '/textures/terrain/sand-512.jpg');
 
         sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
 
         // Grass texture.
-        var grassTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/grass-512.jpg');
+        var grassTexture = api.loadTexture(WHS._settings.assets + '/textures/terrain/grass-512.jpg');
 
         grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
 
         // Rocky texture.
-        var rockyTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/rock-512.jpg');
+        var rockyTexture = api.loadTexture(WHS._settings.assets + '/textures/terrain/rock-512.jpg');
 
         rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
 
         // Snowy texture.
-        var snowyTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/snow-512.jpg');
+        var snowyTexture = api.loadTexture(WHS._settings.assets + '/textures/terrain/snow-512.jpg');
 
         snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
 
@@ -242,17 +240,17 @@ WHS.Terrain = function(_WHS$Shape) {
         // Heightmap.
         var heightMap = new THREE.WebGLRenderTarget(rx, ry, pars);
 
-        heightMap.texture = api.TextureLoader().load(WHS._settings.assets + '/terrain/default_terrain.png');
+        heightMap.texture = api.loadTexture(WHS._settings.assets + '/terrain/default_terrain.png');
 
         // Normalmap.
         var normalMap = new THREE.WebGLRenderTarget(rx, ry, pars);
 
-        normalMap.texture = api.TextureLoader().load(WHS._settings.assets + '/terrain/NormalMap.png');
+        normalMap.texture = api.loadTexture(WHS._settings.assets + '/terrain/NormalMap.png');
 
         // Specularmap.
         var specularMap = new THREE.WebGLRenderTarget(256, 256, pars); //2048
 
-        specularMap.texture = api.TextureLoader().load(WHS._settings.assets + '/terrain/default_terrain.png');
+        specularMap.texture = api.loadTexture(WHS._settings.assets + '/terrain/default_terrain.png');
 
         // Terrain shader (ShaderTerrain.js).
         var terrainShader = THREE.ShaderTerrain["terrain"];
