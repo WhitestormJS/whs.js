@@ -1715,10 +1715,10 @@ WHS.Light = function() {
             shadowmap: {
                 cast: true,
 
-                bias: 0.0001,
+                bias: 0,
 
-                width: 2048,
-                height: 2048,
+                width: 1024,
+                height: 1024,
 
                 near: true,
                 far: 400,
@@ -2566,12 +2566,14 @@ WHS.init = function() {
         value: function _initRenderer() {
 
             // Renderer.
-            this._renderer = new THREE.WebGLRenderer();
+            this._renderer = new THREE.WebGLRenderer({
+                precision: "lowp"
+            });
             this._renderer.setClearColor(this._settings.background);
 
             // Shadowmap.
             this._renderer.shadowMap.enabled = this._settings.shadowmap;
-            this._renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            this._renderer.shadowMap.type = THREE.PCFShadowMap;
             this._renderer.shadowMap.cascade = true;
 
             this._renderer.setSize(+(window.innerWidth * this._settings.rWidth).toFixed(), +(window.innerHeight * this._settings.rHeight).toFixed());
@@ -2872,12 +2874,18 @@ WHS.Model = function(_WHS$Shape7) {
 
         });
 
-        var scope = _this8,
-            material = _get(Object.getPrototypeOf(Model.prototype), "_initMaterial", _this8).call(_this8, params.material);
+        var scope = _this8;
 
         _this8._loading = new Promise(function(resolve, reject) {
 
-            api.loadJSON(params.geometry.path, function(data) {
+            api.loadJSON(params.geometry.path, function(data, mateial) {
+
+                if (!materials || params.material.useVertexColors) var material = api.loadMaterial(api.extend(params.material, {
+                    morphTargets: true,
+                    vertexColors: THREE.FaceColors
+                }))._material;
+                else if (params.material.useCustomMaterial) var material = api.loadMaterial(params.material)._material;
+                else var material = new THREE.MultiMaterial(materials);
 
                 data.computeFaceNormals();
                 data.computeVertexNormals();
@@ -2914,19 +2922,18 @@ WHS.Morph = function(_WHS$Shape8) {
 
         });
 
-        console.log(_this9);
-
         var scope = _this9;
 
         _this9._loading = new Promise(function(resolve, reject) {
 
-            api.loadJSON(params.geometry.path, function(data) {
+            api.loadJSON(params.geometry.path, function(data, materials) {
 
-                var material = new THREE.MeshLambertMaterial({
-                    color: 0xffaa55,
+                if (!materials || params.material.useVertexColors) var material = api.loadMaterial(api.extend(params.material, {
                     morphTargets: true,
                     vertexColors: THREE.FaceColors
-                });
+                }))._material;
+                else if (params.material.useCustomMaterial) var material = api.loadMaterial(params.material)._material;
+                else var material = new THREE.MultiMaterial(materials);
 
                 data.computeFaceNormals();
                 data.computeVertexNormals();

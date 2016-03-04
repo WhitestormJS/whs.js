@@ -16,19 +16,24 @@ WHS.Morph = class Morph extends WHS.Shape {
 
         });
 
-        console.log(this);
-
         var scope = this;
 
         this._loading = new Promise(function(resolve, reject) {
 
-            api.loadJSON(params.geometry.path, function(data) {
+            api.loadJSON(params.geometry.path, function(data, materials) {
 
-                var material = new THREE.MeshLambertMaterial( {
-                    color: 0xffaa55,
-                    morphTargets: true,
-                    vertexColors: THREE.FaceColors
-                } );
+                if (!materials || params.material.useVertexColors)
+                    var material = api.loadMaterial( 
+                        api.extend(params.material, {
+                            morphTargets: true,
+                            vertexColors: THREE.FaceColors
+                        })
+                    )._material;
+                else if (params.material.useCustomMaterial)
+                    var material = api.loadMaterial( 
+                        params.material
+                    )._material;
+                else var material = new THREE.MultiMaterial(materials);
 
                 data.computeFaceNormals();
                 data.computeVertexNormals();
