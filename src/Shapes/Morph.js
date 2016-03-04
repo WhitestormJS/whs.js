@@ -22,7 +22,7 @@ WHS.Morph = class Morph extends WHS.Shape {
 
         this._loading = new Promise(function(resolve, reject) {
 
-            api.JSONLoader().load(params.geometry.path, function(data) {
+            api.loadJSON(params.geometry.path, function(data) {
 
                 var material = new THREE.MeshLambertMaterial( {
                     color: 0xffaa55,

@@ -21,12 +21,11 @@ WHS.Model = class Model extends WHS.Shape {
 
         this._loading = new Promise(function(resolve, reject) {
 
-            api.JSONLoader().load(params.geometry.path, function(data) {
+            api.loadJSON(params.geometry.path, function(data) {
 
                 data.computeFaceNormals();
                 data.computeVertexNormals();
 
-                // Visualization.
                 scope.mesh = new Physijs.ConvexMesh(data, material, params.mass);
 
                 resolve();
