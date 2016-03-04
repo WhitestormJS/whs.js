@@ -25,6 +25,7 @@
 - #53: Wagner moved to plugins.
 - Fixed resize. *rWidth, rHeight default parameter is now 1.*
 - #52: *libs/three.js r73 -> libs/three.js r74*
+- Terrain moved to plugins.
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
