@@ -78,7 +78,8 @@ GAME.light1 = GAME.SpotLight( {
     shadowmap: {
         width: 2048,
         height: 2048,
-        top: 0
+        top: 0,
+        fov: 90
     },
 
     pos: {
