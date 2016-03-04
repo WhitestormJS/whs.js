@@ -28,6 +28,8 @@
 - Terrain moved to plugins.
 - Cleanup folders.
 - Loaders fix.
+- Fix for Model & Morph: *useVertexColors*, *useCustomMaterial*.
+- Fix for terrain shadows. (Now it can receive).
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
