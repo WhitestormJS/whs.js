@@ -1598,118 +1598,6 @@ if (typeof define === 'function' && define.amd) {
     module.exports = WHS;
 }
 
-/**
- * @author alteredq / http://alteredqualia.com/
- * @author alex2401 / http://alexbuzin.me/
- *
- */
-
-THREE.ShaderTerrain = {
-
-    'terrain': {
-
-        uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib["fog"], THREE.UniformsLib["lights"], THREE.UniformsLib["shadowmap"], {
-
-            "enableDiffuse1": {
-                type: "i",
-                value: 0
-            },
-            "enableDiffuse2": {
-                type: "i",
-                value: 0
-            },
-            "enableSpecular": {
-                type: "i",
-                value: 0
-            },
-            "enableReflection": {
-                type: "i",
-                value: 0
-            },
-
-            "tDiffuse1": {
-                type: "t",
-                value: null
-            },
-            "tDiffuse2": {
-                type: "t",
-                value: null
-            },
-            "tDetail": {
-                type: "t",
-                value: null
-            },
-            "tNormal": {
-                type: "t",
-                value: null
-            },
-            "tSpecular": {
-                type: "t",
-                value: null
-            },
-            "tDisplacement": {
-                type: "t",
-                value: null
-            },
-
-            "uNormalScale": {
-                type: "f",
-                value: 1.0
-            },
-
-            "uDisplacementBias": {
-                type: "f",
-                value: 0.0
-            },
-            "uDisplacementScale": {
-                type: "f",
-                value: 1.0
-            },
-
-            "diffuse": {
-                type: "c",
-                value: new THREE.Color(0xeeeeee)
-            },
-            "specular": {
-                type: "c",
-                value: new THREE.Color(0x111111)
-            },
-            "shininess": {
-                type: "f",
-                value: 30
-            },
-            "opacity": {
-                type: "f",
-                value: 1
-            },
-
-            "uRepeatBase": {
-                type: "v2",
-                value: new THREE.Vector2(1, 1)
-            },
-            "uRepeatOverlay": {
-                type: "v2",
-                value: new THREE.Vector2(1, 1)
-            },
-
-            "uOffset": {
-                type: "v2",
-                value: new THREE.Vector2(0, 0)
-            }
-
-        }]),
-
-        fragmentShader: "\n\t\t        uniform vec3 diffuse;\n\t\t        uniform vec3 emissive;\n\t\t        uniform float opacity;\n\t\t        uniform vec3 ambientLightColor;\n\t\t        varying vec3 vLightFront;\n\t\t        #ifdef DOUBLE_SIDED\n\t\t\t        varying vec3 vLightBack;\n\t\t\t        uniform vec2 uRepeatOverlay;\n\t\t\t        uniform vec2 uRepeatBase;\n\t\t\t        uniform vec2 uOffset;\n\t\t\t        uniform float uNormalScale;\n\t\t\t        uniform sampler2D tNormal;\n\t\t        #endif\n\t\t        uniform sampler2D oceanTexture;\n\t\t        uniform sampler2D sandyTexture;\n\t\t        uniform sampler2D grassTexture;\n\t\t        uniform sampler2D rockyTexture;\n\t\t        uniform sampler2D snowyTexture;\n\t\t        varying vec3 vTangent;\n\t\t        varying vec3 vBinormal;\n\t\t        varying vec3 vNormal;\n\t\t        varying vec3 vViewPosition;\n\t\t" + [THREE.ShaderChunk["common"], THREE.ShaderChunk["color_pars_fragment"], THREE.ShaderChunk["map_pars_fragment"], THREE.ShaderChunk["alphamap_pars_fragment"], THREE.ShaderChunk["lightmap_pars_fragment"], THREE.ShaderChunk["envmap_pars_fragment"], THREE.ShaderChunk["fog_pars_fragment"], THREE.ShaderChunk["shadowmap_pars_fragment"], THREE.ShaderChunk["specularmap_pars_fragment"], THREE.ShaderChunk["logdepthbuf_pars_fragment"]].join("\n") + "\n\t\t        varying vec2 vUv;\n\t\t        varying float vAmount;\n\t\t        void main() {\n\t\t        \t// UVs.\n\t\t            vec2 uvOverlay = uRepeatOverlay * vUv + uOffset;\n\t\t            vec2 uvBase = uRepeatBase * vUv;\n\t\t\t\t\tvec3 specularTex = vec3( 1.0 );\n\t\t            vec3 normalTex = texture2D( tNormal, uvOverlay ).xyz * 2.0 - 1.0;\n\t\t            normalTex.xy *= uNormalScale;\n\t\t            normalTex = normalize( normalTex );\n\t\t            mat3 tsb = mat3( vTangent, vBinormal, vNormal );\n\t\t            vec3 finalNormal = tsb * normalTex;\n\t\t            vec3 normal = normalize( finalNormal );\n\t\t            vec3 viewPosition = normalize( vViewPosition );\n\t\t            vec3 shadowMask = vec3( 1.0 );\n\t\t            vec3 outgoingLight = vec3( 0.0 );\n\t\t            vec3 totalAmbientLight = ambientLightColor;\n\t\t            vec4 diffuseColor = vec4(0.0);\n\t\t            // Color by texture.\n\t\t            vec4 water = (smoothstep(0.01, 0.25, vAmount)\n\t\t            - smoothstep(0.24, 0.26, vAmount))\n\t\t            * texture2D( oceanTexture, vUv * 10.0 );\n\t\t            vec4 sandy = (smoothstep(0.24, 0.27, vAmount)\n\t\t            - smoothstep(0.28, 0.31, vAmount))\n\t\t            * texture2D( sandyTexture, vUv * 10.0 );\n\t\t            vec4 grass = (smoothstep(0.28, 0.32, vAmount)\n\t\t            - smoothstep(0.35, 0.40, vAmount))\n\t\t            * texture2D( grassTexture, vUv * 20.0 );\n\t\t            vec4 rocky = (smoothstep(0.30, 0.40, vAmount)\n\t\t            - smoothstep(0.40, 0.70, vAmount))\n\t\t            * texture2D( rockyTexture, vUv * 20.0 );\n\t\t            vec4 snowy = (smoothstep(0.42, 0.45, vAmount))\n\t\t            * texture2D( snowyTexture, vUv * 10.0 );\n\t\t            diffuseColor = vec4(0.0, 0.0, 0.0, 1.0)\n\t\t            + water + sandy + grass + rocky + snowy;\n\t\t" + [THREE.ShaderChunk["logdepthbuf_fragment"], THREE.ShaderChunk["map_fragment"], THREE.ShaderChunk["alphamap_fragment"], THREE.ShaderChunk["alphatest_fragment"], THREE.ShaderChunk["specularmap_fragment"], THREE.ShaderChunk["lightmap_fragment"], THREE.ShaderChunk["color_fragment"], THREE.ShaderChunk["shadowmap_fragment"], THREE.ShaderChunk["linear_to_gamma_fragment"], THREE.ShaderChunk["fog_fragment"]].join("\n") + "\n\t\t            #ifdef DOUBLE_SIDED\n\t\t                if ( gl_FrontFacing )\n\t\t                    outgoingLight += diffuseColor.rgb * \n\t\t                \t\t( vLightFront * shadowMask + totalAmbientLight )\n\t\t                \t\t+ emissive;\n\t\t                else\n\t\t                    outgoingLight += diffuseColor.rgb * \n\t\t                \t\t( vLightBack * shadowMask + totalAmbientLight )\n\t\t                \t\t+ emissive;\n\t\t            #else\n\t\t                outgoingLight += diffuseColor.rgb * \n\t\t                \t( vLightFront * shadowMask + totalAmbientLight )\n\t\t                \t+ emissive;\n\t\t            #endif\n\t\t           gl_FragColor = vec4( outgoingLight, diffuseColor.a );\n\t\t      }\n\t\t",
-
-        vertexShader: "\n\t\t    #define TERRAIN;\n\t\t    varying vec3 vLightFront;\n\t\t    #ifdef DOUBLE_SIDED\n\t\t        varying vec3 vLightBack;\n\t\t    #endif\n\t\t    \n\t\t    varying float vAmount;\n\t\t    attribute vec4 tangent;\n\t\t    uniform vec2 uRepeatBase;\n\t\t    uniform sampler2D tNormal;\n\t\t    #ifdef VERTEX_TEXTURES\n\t\t\t    uniform sampler2D tDisplacement;\n\t\t\t    uniform float uDisplacementScale;\n\t\t\t    uniform float uDisplacementBias;\n\t\t    #endif\n\t\t    varying vec3 vTangent;\n\t\t    varying vec3 vBinormal;\n\t\t    varying vec3 vNormal;\n\t\t    varying vec2 vUv;\n\t\t    varying vec3 vViewPosition;\n\t\t" + [THREE.ShaderChunk["common"], THREE.ShaderChunk["uv_pars_vertex"], THREE.ShaderChunk["uv2_pars_vertex"], THREE.ShaderChunk["envmap_pars_vertex"], THREE.ShaderChunk["lights_lambert_pars_vertex"], THREE.ShaderChunk["color_pars_vertex"], THREE.ShaderChunk["morphtarget_pars_vertex"], THREE.ShaderChunk["skinning_pars_vertex"], THREE.ShaderChunk["shadowmap_pars_vertex"], THREE.ShaderChunk["logdepthbuf_pars_vertex"], THREE.ShaderChunk["bsdfs"], THREE.ShaderChunk["lights_pars"]].join("\n") + "\n\t\t    void main() {\n\t\t" + [THREE.ShaderChunk["color_vertex"], THREE.ShaderChunk["beginnormal_vertex"], THREE.ShaderChunk["morphnormal_vertex"], THREE.ShaderChunk["skinbase_vertex"], THREE.ShaderChunk["skinnormal_vertex"], THREE.ShaderChunk["defaultnormal_vertex"], THREE.ShaderChunk["begin_vertex"], THREE.ShaderChunk["morphtarget_vertex"], THREE.ShaderChunk["skinning_vertex"], THREE.ShaderChunk["project_vertex"], THREE.ShaderChunk["logdepthbuf_vertex"], THREE.ShaderChunk["uv_vertex"], THREE.ShaderChunk["uv2_vertex"]].join("\n") + "\n\t\t\t    vNormal = normalize( normalMatrix * normal);\n\t\t\t    // Tangent and binormal vectors.\n\t\t\t    vTangent = normalize( normalMatrix * tangent.xyz );\n\t\t\t    vBinormal = cross( vNormal, vTangent ) * tangent.w;\n\t\t\t    vBinormal = normalize( vBinormal );\n\t\t\t    // Texture coordinates.\n\t\t\t    vUv = uv;\n\t\t\t    vec2 uvBase = uv * uRepeatBase;\n\t\t\t    // displacement mapping\n\t\t\t    vec4 worldPosition = modelMatrix * vec4( position, 1.0 );\n\t\t\t    mvPosition = modelViewMatrix * vec4( position, 1.0 );\n\t\t\t    transformedNormal = normalize( normalMatrix * normal );\n\t\t\t    gl_Position = projectionMatrix * mvPosition;\n\t\t\t    vViewPosition = -mvPosition.xyz;\n\t\t\t    vAmount = position.z * 0.005 + 0.1;\n\t\t" + [THREE.ShaderChunk["envmap_vertex"], THREE.ShaderChunk["lights_lambert_vertex"], THREE.ShaderChunk["shadowmap_vertex"]].join("\n") + "\n\t\t   }\n\t\t",
-
-        side: THREE.DoubleSide,
-        shading: THREE.SmoothShading
-
-    }
-
-};
-
 WHS.API.extend = function(object) {
     for (var _len = arguments.length, extensions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         extensions[_key - 1] = arguments[_key];
@@ -3628,130 +3516,6 @@ WHS.init.prototype.Tube = function(params) {
     return new WHS.Tube(params).addTo(this);
 };
 
-// TODO: Improve Grass object.
-/**
- * ADDGRASS.
- *
- * @param {Object} ground WHS ground object @addGround. (REQUIRED)
- * @param {Object} options Options of fog object. (REQUIRED)
- * @returns {Object} This element scope/statement.
- */
-WHS.init.prototype.addGrass = function(ground, options) {
-
-    'use strict';
-
-    var scope = {};
-    scope.root = this;
-    scope.opts = options;
-
-    scope.onlyvis = true;
-
-    if (!scope.opts.coords) console.warn('Please add grass objects coordinates! @addGrass');
-
-    scope.grassMeshes = [];
-
-    var globalGrass = new THREE.Mesh(new THREE.Geometry(), new THREE.MeshFaceMaterial());
-
-    scope.opts.coords.forEach(function(coord) {
-        var mesh = new THREE.Mesh(new THREE.Geometry(), new THREE.MeshBasicMaterial({
-            map: THREE.ImageUtils.loadTexture("assets/textures/thingrass.png"),
-            side: THREE.DoubleSide,
-            blending: THREE.NormalBlending,
-            transparent: true,
-            alphaTest: 0.5
-        }));
-
-        var intr = WHS.API.getheight({
-            x: coord.x,
-            y: coord.y
-        }, 500, ground, -1)[0];
-
-        var faceVertices = intr.object.geometry.vertices;
-
-        var faceInGeometry = new THREE.Geometry();
-        faceInGeometry.faces.push(new THREE.Face3(0, 1, 2));
-        faceInGeometry.vertices.push(faceVertices[intr.face.a]);
-        faceInGeometry.vertices.push(faceVertices[intr.face.c]);
-        faceInGeometry.vertices.push(faceVertices[intr.face.b]);
-        faceInGeometry.computeFaceNormals();
-
-        /*var faceIn = new THREE.Mesh(
-      faceInGeometry, // Face geomtery.
-      new THREE.MeshBasicMaterial({color: 0xff0000, side: THREE.DoubleSide})
-  );
-    var vecN = intr.point.clone().add(faceInGeometry.faces[0].normal);
-  var rotN = faceInGeometry.faces[0].normal; //.normalize();
-    var nlGeometry = new THREE.Geometry();
-  nlGeometry.vertices = [
-      intr.point,
-      vecN.clone()
-  ];
-    var normalLine = new THREE.Line(
-      nlGeometry,
-      new THREE.MeshBasicMaterial({color: 0x000000})
-  );*/
-
-        mesh.position.set(0, 0, 0);
-        mesh.geometry.vertices.push(faceVertices[intr.face.a].clone());
-        mesh.geometry.vertices.push(faceVertices[intr.face.c].clone());
-
-        mesh.geometry.vertices.push(faceVertices[intr.face.a].clone().add(faceInGeometry.faces[0].normal));
-
-        mesh.geometry.vertices.push(faceVertices[intr.face.c].clone().add(faceInGeometry.faces[0].normal));
-
-        var dVec = new THREE.Vector3(faceVertices[intr.face.a].clone().x / 2 + faceVertices[intr.face.c].clone().x / 2, faceVertices[intr.face.a].clone().y / 2 + faceVertices[intr.face.c].clone().y / 2, faceVertices[intr.face.a].clone().z / 2 + faceVertices[intr.face.c].clone().z / 2);
-
-        mesh.geometry.vertices.push(dVec.clone().add(dVec.clone().sub(faceVertices[intr.face.b].clone())));
-
-        mesh.geometry.vertices.push(faceVertices[intr.face.b].clone());
-        mesh.geometry.vertices.push(faceVertices[intr.face.b].clone().add(faceInGeometry.faces[0].normal));
-        mesh.geometry.vertices.push(dVec.clone().add(dVec.clone().sub(faceVertices[intr.face.b].clone())).add(faceInGeometry.faces[0].normal));
-
-        mesh.geometry.faces.push(new THREE.Face3(0, 1, 2));
-        mesh.geometry.faces.push(new THREE.Face3(1, 2, 3));
-        mesh.geometry.faces.push(new THREE.Face3(4, 6, 5));
-        mesh.geometry.faces.push(new THREE.Face3(4, 6, 7));
-
-        mesh.geometry.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(1, 0), new THREE.Vector2(0, 1)]);
-
-        mesh.geometry.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(1, 1), new THREE.Vector2(0, 1)]);
-
-        mesh.geometry.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(1, 1), new THREE.Vector2(1, 0)]);
-
-        mesh.geometry.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(1, 1), new THREE.Vector2(0, 1)]);
-
-        mesh.geometry.uvsNeedUpdate = true;
-
-        //scope.root.scene.add(faceIn);
-        //scope.root.scene.add(normalLine);
-        //scope.root.scene.add(mesh);
-
-        globalGrass.geometry.merge(mesh.geometry, mesh.matrix);
-        globalGrass.material.materials.push(mesh.material);
-        scope.grassMeshes.push(mesh);
-    });
-
-    scope.wrap(globalGrass);
-
-    // Section under construction. (animation of Grass).
-    // #TODO:0 Add grass animation.
-    scope.update = function() {
-        /*requestAnimationFrame(scope.update);
-    var delta = 0;
-  var oldTime = 0;
-    var time = new Date().getTime();
-  delta = time - oldTime;
-  oldTime = time;
-    if (isNaN(delta) || delta > 1000 || delta == 0 ) {
-          delta = 1000/60;
-  }*/
-    };
-
-    scope.update();
-
-    return scope;
-};
-
 WHS.Smooth = function(_WHS$Shape21) {
     _inherits(Smooth, _WHS$Shape21);
 
@@ -3779,190 +3543,6 @@ WHS.Smooth = function(_WHS$Shape21) {
 
 WHS.init.prototype.Smooth = function(params) {
     return new WHS.Smooth(params).addTo(this);
-};
-
-WHS.Terrain = function(_WHS$Shape22) {
-    _inherits(Terrain, _WHS$Shape22);
-
-    function Terrain(params) {
-        _classCallCheck(this, Terrain);
-
-        var _this23 = _possibleConstructorReturn(this, Object.getPrototypeOf(Terrain).call(this, params, "terrain"));
-
-        api.extend(params.geometry, {
-
-            width: 1,
-            height: 1,
-            depth: 1,
-            map: false
-
-        });
-
-        var canvas = document.createElement('canvas');
-
-        canvas.setAttribute("width", params.geometry.width);
-        canvas.setAttribute("height", params.geometry.height);
-
-        if (canvas.getContext) {
-
-            var ctx = canvas.getContext('2d');
-
-            ctx.drawImage(params.geometry.map, 0, 0);
-        }
-
-        // Ocean texture.
-        var oceanTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/dirt-512.jpg');
-
-        oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
-
-        // Sandy texture.
-        var sandyTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/sand-512.jpg');
-
-        sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
-
-        // Grass texture.
-        var grassTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/grass-512.jpg');
-
-        grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
-
-        // Rocky texture.
-        var rockyTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/rock-512.jpg');
-
-        rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
-
-        // Snowy texture.
-        var snowyTexture = api.TextureLoader().load(WHS._settings.assets + '/textures/terrain/snow-512.jpg');
-
-        snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
-
-        // Normal Map.
-        var normalShader = THREE.NormalMapShader;
-
-        var rx = 256,
-            ry = 256;
-
-        var pars = {
-            minFilter: THREE.LinearFilter,
-            magFilter: THREE.LinearFilter,
-
-            format: THREE.RGBFormat
-        };
-
-        // Heightmap.
-        var heightMap = new THREE.WebGLRenderTarget(rx, ry, pars);
-
-        heightMap.texture = api.TextureLoader().load(WHS._settings.assets + '/terrain/default_terrain.png');
-
-        // Normalmap.
-        var normalMap = new THREE.WebGLRenderTarget(rx, ry, pars);
-
-        normalMap.texture = api.TextureLoader().load(WHS._settings.assets + '/terrain/NormalMap.png');
-
-        // Specularmap.
-        var specularMap = new THREE.WebGLRenderTarget(256, 256, pars); //2048
-
-        specularMap.texture = api.TextureLoader().load(WHS._settings.assets + '/terrain/default_terrain.png');
-
-        // Terrain shader (ShaderTerrain.js).
-        var terrainShader = THREE.ShaderTerrain["terrain"];
-
-        var uniformsTerrain = Object.assign(THREE.UniformsUtils.clone(terrainShader.uniforms), {
-            oceanTexture: {
-                type: "t",
-                value: oceanTexture
-            },
-            sandyTexture: {
-                type: "t",
-                value: sandyTexture
-            },
-            grassTexture: {
-                type: "t",
-                value: grassTexture
-            },
-            rockyTexture: {
-                type: "t",
-                value: rockyTexture
-            },
-            snowyTexture: {
-                type: "t",
-                value: snowyTexture
-            },
-            fog: true,
-            lights: true
-        }, THREE.UniformsLib['common'], THREE.UniformsLib['fog'], THREE.UniformsLib['lights'], THREE.UniformsLib['ambient'], THREE.UniformsLib['shadowmap'], {
-            ambient: {
-                type: "c",
-                value: new THREE.Color(0xffffff)
-            },
-            emissive: {
-                type: "c",
-                value: new THREE.Color(0x000000)
-            },
-            wrapRGB: {
-                type: "v3",
-                value: new THREE.Vector3(1, 1, 1)
-            }
-        });
-
-        console.log(uniformsTerrain);
-
-        uniformsTerrain["tDisplacement"].value = heightMap;
-        uniformsTerrain["spotShadowMap"].value = [normalMap];
-
-        uniformsTerrain["uDisplacementScale"].value = 100;
-        uniformsTerrain["uRepeatOverlay"].value.set(6, 6);
-
-        var material = new THREE.ShaderMaterial({
-
-            uniforms: uniformsTerrain,
-            vertexShader: terrainShader.vertexShader,
-            fragmentShader: terrainShader.fragmentShader,
-            lights: true,
-            fog: true,
-            side: THREE.DoubleSide,
-            shading: THREE.SmoothShading
-
-        });
-
-        var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
-
-        geom.verticesNeedUpdate = true;
-
-        _this23._rot.set(Math.PI / 180 * -90, 0, 0);
-
-        var index = 0,
-            i = 0,
-            imgdata = ctx.getImageData(0, 0, 256, 256).data;
-
-        for (var x = 0; x <= 255; x++) {
-            for (var y = 255; y >= 0; y--) {
-                geom.vertices[index].z = imgdata[i] / 255 * 100;
-
-                i += 4;
-                index++;
-            }
-        }
-
-        _this23.mesh = new Physijs.HeightfieldMesh(geom, Physijs.createMaterial(material, 0.8, 0.1));
-
-        geom.computeVertexNormals();
-        geom.computeFaceNormals();
-        geom.computeTangents();
-
-        _this23.mesh.updateMatrix();
-        _this23.mesh.castShadow = true;
-        _this23.mesh.receiveShadow = true;
-
-        _get(Object.getPrototypeOf(Terrain.prototype), "build", _this23).call(_this23, "skip");
-
-        return _this23;
-    }
-
-    return Terrain;
-}(WHS.Shape);
-
-WHS.init.prototype.Terrain = function(params) {
-    return new WHS.Terrain(params).addTo(this);
 };
 
 /**
@@ -4003,13 +3583,13 @@ WHS.AmbientLight = function(_WHS$Light) {
     function AmbientLight(params) {
         _classCallCheck(this, AmbientLight);
 
-        var _this24 = _possibleConstructorReturn(this, Object.getPrototypeOf(AmbientLight).call(this, params, "ambientlight"));
+        var _this23 = _possibleConstructorReturn(this, Object.getPrototypeOf(AmbientLight).call(this, params, "ambientlight"));
 
-        _this24.mesh = new THREE.AmbientLight(params.light.color, params.light.intensity);
+        _this23.mesh = new THREE.AmbientLight(params.light.color, params.light.intensity);
 
-        _get(Object.getPrototypeOf(AmbientLight.prototype), "build", _this24).call(_this24);
+        _get(Object.getPrototypeOf(AmbientLight.prototype), "build", _this23).call(_this23);
 
-        return _this24;
+        return _this23;
     }
 
     return AmbientLight;
@@ -4025,14 +3605,14 @@ WHS.DirectionalLight = function(_WHS$Light2) {
     function DirectionalLight(params) {
         _classCallCheck(this, DirectionalLight);
 
-        var _this25 = _possibleConstructorReturn(this, Object.getPrototypeOf(DirectionalLight).call(this, params, "directionallight"));
+        var _this24 = _possibleConstructorReturn(this, Object.getPrototypeOf(DirectionalLight).call(this, params, "directionallight"));
 
-        _this25.mesh = new THREE.DirectionalLight(params.light.color, params.light.intensity);
+        _this24.mesh = new THREE.DirectionalLight(params.light.color, params.light.intensity);
 
-        _get(Object.getPrototypeOf(DirectionalLight.prototype), "build", _this25).call(_this25);
-        _get(Object.getPrototypeOf(DirectionalLight.prototype), "buildShadow", _this25).call(_this25);
+        _get(Object.getPrototypeOf(DirectionalLight.prototype), "build", _this24).call(_this24);
+        _get(Object.getPrototypeOf(DirectionalLight.prototype), "buildShadow", _this24).call(_this24);
 
-        return _this25;
+        return _this24;
     }
 
     return DirectionalLight;
@@ -4048,14 +3628,14 @@ WHS.HemisphereLight = function(_WHS$Light3) {
     function HemisphereLight(params) {
         _classCallCheck(this, HemisphereLight);
 
-        var _this26 = _possibleConstructorReturn(this, Object.getPrototypeOf(HemisphereLight).call(this, params, "hemispherelight"));
+        var _this25 = _possibleConstructorReturn(this, Object.getPrototypeOf(HemisphereLight).call(this, params, "hemispherelight"));
 
-        _this26.mesh = new THREE.HemisphereLight(params.light.skyColor, params.light.groundColor, params.light.intensity);
+        _this25.mesh = new THREE.HemisphereLight(params.light.skyColor, params.light.groundColor, params.light.intensity);
 
-        _get(Object.getPrototypeOf(HemisphereLight.prototype), "build", _this26).call(_this26);
-        _get(Object.getPrototypeOf(HemisphereLight.prototype), "buildShadow", _this26).call(_this26);
+        _get(Object.getPrototypeOf(HemisphereLight.prototype), "build", _this25).call(_this25);
+        _get(Object.getPrototypeOf(HemisphereLight.prototype), "buildShadow", _this25).call(_this25);
 
-        return _this26;
+        return _this25;
     }
 
     return HemisphereLight;
@@ -4071,14 +3651,14 @@ WHS.NormalLight = function(_WHS$Light4) {
     function NormalLight(params) {
         _classCallCheck(this, NormalLight);
 
-        var _this27 = _possibleConstructorReturn(this, Object.getPrototypeOf(NormalLight).call(this, params, "normallight"));
+        var _this26 = _possibleConstructorReturn(this, Object.getPrototypeOf(NormalLight).call(this, params, "normallight"));
 
-        _this27.mesh = new THREE.Light(params.light.color);
+        _this26.mesh = new THREE.Light(params.light.color);
 
-        _get(Object.getPrototypeOf(NormalLight.prototype), "build", _this27).call(_this27);
-        _get(Object.getPrototypeOf(NormalLight.prototype), "buildShadow", _this27).call(_this27);
+        _get(Object.getPrototypeOf(NormalLight.prototype), "build", _this26).call(_this26);
+        _get(Object.getPrototypeOf(NormalLight.prototype), "buildShadow", _this26).call(_this26);
 
-        return _this27;
+        return _this26;
     }
 
     return NormalLight;
@@ -4094,14 +3674,14 @@ WHS.PointLight = function(_WHS$Light5) {
     function PointLight(params) {
         _classCallCheck(this, PointLight);
 
-        var _this28 = _possibleConstructorReturn(this, Object.getPrototypeOf(PointLight).call(this, params, "pointlight"));
+        var _this27 = _possibleConstructorReturn(this, Object.getPrototypeOf(PointLight).call(this, params, "pointlight"));
 
-        _this28.mesh = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance);
+        _this27.mesh = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance);
 
-        _get(Object.getPrototypeOf(PointLight.prototype), "build", _this28).call(_this28);
-        _get(Object.getPrototypeOf(PointLight.prototype), "buildShadow", _this28).call(_this28);
+        _get(Object.getPrototypeOf(PointLight.prototype), "build", _this27).call(_this27);
+        _get(Object.getPrototypeOf(PointLight.prototype), "buildShadow", _this27).call(_this27);
 
-        return _this28;
+        return _this27;
     }
 
     return PointLight;
@@ -4117,14 +3697,14 @@ WHS.SpotLight = function(_WHS$Light6) {
     function SpotLight(params) {
         _classCallCheck(this, SpotLight);
 
-        var _this29 = _possibleConstructorReturn(this, Object.getPrototypeOf(SpotLight).call(this, params, "spotlight"));
+        var _this28 = _possibleConstructorReturn(this, Object.getPrototypeOf(SpotLight).call(this, params, "spotlight"));
 
-        _this29.mesh = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle);
+        _this28.mesh = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle);
 
-        _get(Object.getPrototypeOf(SpotLight.prototype), "build", _this29).call(_this29);
-        _get(Object.getPrototypeOf(SpotLight.prototype), "buildShadow", _this29).call(_this29);
+        _get(Object.getPrototypeOf(SpotLight.prototype), "build", _this28).call(_this28);
+        _get(Object.getPrototypeOf(SpotLight.prototype), "buildShadow", _this28).call(_this28);
 
-        return _this29;
+        return _this28;
     }
 
     return SpotLight;
@@ -4449,13 +4029,13 @@ WHS.init.prototype.OrbitControls = function(object) {
     }
 };
 
-WHS.Skybox = function(_WHS$Shape23) {
-    _inherits(Skybox, _WHS$Shape23);
+WHS.Skybox = function(_WHS$Shape22) {
+    _inherits(Skybox, _WHS$Shape22);
 
     function Skybox(params) {
         _classCallCheck(this, Skybox);
 
-        var _this30 = _possibleConstructorReturn(this, Object.getPrototypeOf(Skybox).call(this, params, "skybox"));
+        var _this29 = _possibleConstructorReturn(this, Object.getPrototypeOf(Skybox).call(this, params, "skybox"));
 
         api.extend(params, {
 
@@ -4501,12 +4081,12 @@ WHS.Skybox = function(_WHS$Shape23) {
                 break;
         }
 
-        _this30.mesh = new THREE.Mesh(skyGeometry, skyMat);
-        _this30.mesh.renderDepth = 1000.0;
+        _this29.mesh = new THREE.Mesh(skyGeometry, skyMat);
+        _this29.mesh.renderDepth = 1000.0;
 
-        _get(Object.getPrototypeOf(Skybox.prototype), "build", _this30).call(_this30);
+        _get(Object.getPrototypeOf(Skybox.prototype), "build", _this29).call(_this29);
 
-        return _this30;
+        return _this29;
     }
 
     return Skybox;
