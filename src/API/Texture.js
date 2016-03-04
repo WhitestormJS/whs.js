@@ -15,7 +15,7 @@ WHS.API.texture = function( url, options ) {
 	
 	'use strict';
 
-	var texture = api.TextureLoader().load( url );
+	var texture = api.loadTexture( url );
 
 	if ( options ) {
 
