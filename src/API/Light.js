@@ -48,10 +48,10 @@ WHS.Light = class {
 	        shadowmap: {
 	            cast: true,
 
-	            bias: 0.0001,
+	            bias: 0,
 
-	            width: 2048,
-	            height: 2048,
+	            width: 1024,
+	            height: 1024,
 
 	            near: true,
 	            far: 400,

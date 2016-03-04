@@ -16,12 +16,24 @@ WHS.Model = class Model extends WHS.Shape {
 
         });
 
-        var scope = this,
-            material = super._initMaterial(params.material);
+        var scope = this;
 
         this._loading = new Promise(function(resolve, reject) {
 
-            api.loadJSON(params.geometry.path, function(data) {
+            api.loadJSON(params.geometry.path, function(data, mateial) {
+
+                if (!materials || params.material.useVertexColors)
+                    var material = api.loadMaterial( 
+                        api.extend(params.material, {
+                            morphTargets: true,
+                            vertexColors: THREE.FaceColors
+                        })
+                    )._material;
+                else if (params.material.useCustomMaterial)
+                    var material = api.loadMaterial( 
+                        params.material
+                    )._material;
+                else var material = new THREE.MultiMaterial(materials);
 
                 data.computeFaceNormals();
                 data.computeVertexNormals();

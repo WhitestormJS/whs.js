@@ -50,7 +50,7 @@ GAME.ground = GAME.Terrain( {
 var ambient = GAME.AmbientLight( {
     light: {
         color: 0xffffff,
-        intensity: 0.3,
+        intensity: 0.2,
     },
 
     pos: {
@@ -72,7 +72,13 @@ GAME.light1 = GAME.SpotLight( {
     light: {
         color: 0xffffff, //0x00ff00,
         intensity: 0.3,
-        distance: 1000
+        distance: 500,
+    },
+
+    shadowmap: {
+        width: 2048,
+        height: 2048,
+        top: 0
     },
 
     pos: {
@@ -98,7 +104,7 @@ GAME.parrot = GAME.Morph( {
     },
 
     material: {
-        color: 0xffffff,
+        useVertexColors: true,
         kind: "basic"
     },
 
@@ -142,8 +148,7 @@ GAME.cube1 = GAME.Cube( {
     onlyvis: false,
 
     material: {
-        color: 0xffffff,
-        kind: "basic",
+        kind: "lambert",
         map: WHS.API.texture( 'assets/textures/box.jpg' )
     },
 
@@ -166,14 +171,13 @@ GAME.cube2 = GAME.Cube( {
     onlyvis: false,
 
     material: {
-        color: 0xffffff,
-        kind: "basic",
+        kind: "lambert",
         map: WHS.API.texture( 'assets/textures/box.jpg' )
     },
 
     pos: {
-        x: 60,
-        y: 70,
+        x: 30,
+        y: 50,
         z: 0
     }
 

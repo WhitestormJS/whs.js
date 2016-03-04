@@ -207,12 +207,12 @@ WHS.init = class {
     _initRenderer() {
 
         // Renderer.
-        this._renderer = new THREE.WebGLRenderer();
+        this._renderer = new THREE.WebGLRenderer({precision: "lowp"});
         this._renderer.setClearColor(this._settings.background);
 
         // Shadowmap.
         this._renderer.shadowMap.enabled = this._settings.shadowmap;
-        this._renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        this._renderer.shadowMap.type = THREE.PCFShadowMap;
         this._renderer.shadowMap.cascade = true;
 
         this._renderer.setSize( 
