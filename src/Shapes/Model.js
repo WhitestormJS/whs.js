@@ -20,7 +20,7 @@ WHS.Model = class Model extends WHS.Shape {
 
         this._loading = new Promise(function(resolve, reject) {
 
-            api.loadJSON(params.geometry.path, function(data, mateial) {
+            api.loadJSON(params.geometry.path, function(data, materials) {
 
                 if (!materials || params.material.useVertexColors)
                     var material = api.loadMaterial( 

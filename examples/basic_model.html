@@ -116,7 +116,7 @@ var GAME = new WHS.init({
 
     gravity: {
             x: 0,
-            y: -100,
+            y: -1000,
             z: 0
     },
 
@@ -141,7 +141,10 @@ GAME.teapot = GAME.Model({
         vertexColors: THREE.VertexColors,
         shading: THREE.SmoothShading,
         map: api.texture('assets/textures/teapot.jpg', {repeat:{x: 4, y:4}}),
-        kind: "phong"
+        kind: "phong",
+        useCustomMaterial: true,
+        rest: 0,
+        fri: 1
     },
 
     pos: {
