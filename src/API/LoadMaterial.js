@@ -13,8 +13,12 @@ WHS.API.loadMaterial = function( material ) {
 
 	var scope = {
 		_type: material.kind,
-		_restitution: material.restitution || material.rest || 0.3,
-		_friction: material.friction || material.fri || 0.8
+		_restitution: !isNaN(parseFloat(material.restitution)) ? 
+			material.restitution :  !isNaN(parseFloat(material.rest)) ? 
+			material.rest : 0.3,
+		_friction: !isNaN(parseFloat(material.friction)) ? 
+			material.friction :  !isNaN(parseFloat(material.fri)) ? 
+			material.fri : 0.8
 	};
 
 	var params = api.extend( {}, material );
@@ -26,6 +30,9 @@ WHS.API.loadMaterial = function( material ) {
 
 	delete params[ "restitution" ];
 	delete params[ "rest" ];
+
+	delete params[ "useCustomMaterial" ];
+	delete params[ "useVertexColors" ];
 
 	switch ( material.kind ) {
 		case "basic":

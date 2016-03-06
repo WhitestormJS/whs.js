@@ -265,7 +265,9 @@ WHS.Shape = class {
 	}
 
 	_initMaterial(mat_props) {
+		
 		return api.loadMaterial(mat_props)._material;
+		
 	}
 
 	remove() {

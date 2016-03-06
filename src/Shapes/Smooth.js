@@ -18,7 +18,13 @@ WHS.Smooth = class Smooth extends WHS.Shape {
         });
 
         this.mesh = new Physijs.BoxMesh( 
-            new THREE.BoxGeometry(params.geometry.width, 1, params.geometry.height), 
+            new THREE.BoxGeometry(
+
+                params.geometry.width, 
+                1, 
+                params.geometry.height
+                
+            ), 
             super._initMaterial(params.material), 
             0
         );
