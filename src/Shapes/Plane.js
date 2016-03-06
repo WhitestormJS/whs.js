@@ -18,8 +18,8 @@ WHS.Plane = class Plane extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh( 
-            new THREE.PlaneBufferGeometry(
+		this.mesh = new Physijs.PlaneMesh( 
+            new THREE.PlaneGeometry(
 
                 params.geometry.width,
                 params.geometry.height,

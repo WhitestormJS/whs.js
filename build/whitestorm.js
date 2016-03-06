@@ -1916,8 +1916,8 @@ WHS.API.loadMaterial = function(material) {
 
     var scope = {
         _type: material.kind,
-        _restitution: material.restitution || material.rest || 0.3,
-        _friction: material.friction || material.fri || 0.8
+        _restitution: !isNaN(parseFloat(material.restitution)) ? material.restitution : !isNaN(parseFloat(material.rest)) ? material.rest : 0.3,
+        _friction: !isNaN(parseFloat(material.friction)) ? material.friction : !isNaN(parseFloat(material.fri)) ? material.fri : 0.8
     };
 
     var params = api.extend({}, material);
@@ -1929,6 +1929,9 @@ WHS.API.loadMaterial = function(material) {
 
     delete params["restitution"];
     delete params["rest"];
+
+    delete params["useCustomMaterial"];
+    delete params["useVertexColors"];
 
     switch (material.kind) {
         case "basic":
@@ -2275,6 +2278,7 @@ WHS.Shape = function() {
     }, {
         key: "_initMaterial",
         value: function _initMaterial(mat_props) {
+
             return api.loadMaterial(mat_props)._material;
         }
     }, {
@@ -2878,7 +2882,7 @@ WHS.Model = function(_WHS$Shape7) {
 
         _this8._loading = new Promise(function(resolve, reject) {
 
-            api.loadJSON(params.geometry.path, function(data, mateial) {
+            api.loadJSON(params.geometry.path, function(data, materials) {
 
                 if (!materials || params.material.useVertexColors) var material = api.loadMaterial(api.extend(params.material, {
                     morphTargets: true,
@@ -3039,7 +3043,7 @@ WHS.Plane = function(_WHS$Shape11) {
 
         });
 
-        _this12.mesh = new Physijs.ConvexMesh(new THREE.PlaneBufferGeometry(params.geometry.width, params.geometry.height, params.geometry.segments), _get(Object.getPrototypeOf(Plane.prototype), "_initMaterial", _this12).call(_this12, params.material), params.mass);
+        _this12.mesh = new Physijs.PlaneMesh(new THREE.PlaneGeometry(params.geometry.width, params.geometry.height, params.geometry.segments), _get(Object.getPrototypeOf(Plane.prototype), "_initMaterial", _this12).call(_this12, params.material), params.mass);
 
         _get(Object.getPrototypeOf(Plane.prototype), "build", _this12).call(_this12);
 
