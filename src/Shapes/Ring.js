@@ -12,17 +12,17 @@ WHS.Ring = class Ring extends WHS.Shape {
 
 		api.extend(params.geometry, {
 
-            innerRadius: 2,
-            outerRadius: 5,
-            thetaSegments: 30,
-            phiSegments: 30,
+            innerRadius: 0,
+            outerRadius: 50,
+            thetaSegments: 8,
+            phiSegments: 8,
             thetaStart: 0,
             thetaLength: Math.PI * 2
 
         });
 
-		this.mesh = new Physijs.ConcaveMesh( 
-            new THREE.TorusGeometry(
+		this.mesh = new THREE.Mesh( 
+            new THREE.RingGeometry(
 
                 params.geometry.innerRadius,
                 params.geometry.outerRadius,
@@ -33,11 +33,10 @@ WHS.Ring = class Ring extends WHS.Shape {
 
             ), 
 
-            super._initMaterial(params.material), 
-            params.mass 
+            super._initMaterial(params.material)
         );
 
-        super.build();
+        super.build("onlyvis");
 
 	}
 

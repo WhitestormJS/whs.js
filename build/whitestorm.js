@@ -1574,7 +1574,8 @@ var WHS = {
 
     loader: {
         JSON: new THREE.JSONLoader(),
-        Texture: new THREE.TextureLoader()
+        Texture: new THREE.TextureLoader(),
+        Font: new THREE.FontLoader()
     },
 
     API: {},
@@ -1597,6 +1598,10 @@ WHS.API.loadJSON = function(url, callback, texturePath) {
 
 WHS.API.loadTexture = function(url, onLoad, onProgress, onError) {
     return WHS.loader.Texture.load(url, onLoad, onProgress, onError);
+};
+
+WHS.API.loadFont = function(url, onLoad, onProgress, onError) {
+    return WHS.loader.Font.load(url, onLoad, onProgress, onError);
 };
 
 var api = WHS.API;
@@ -1671,6 +1676,22 @@ WHS.API.extend = function(object) {
     }
 
     return object;
+};
+
+/**
+ * Texture. Loads texture object.
+ *
+ * @param {String} url Url adress of texture *JSON*. (REQUIRED)
+ * @param {Object} options Parameters of texture. (REQUIRED)
+ * @return {Object} *THREE.JS* texture.
+ */
+WHS.API.font = function(url) {
+
+    'use strict';
+
+    var texture = api.loadFont(url, function(font) {
+        return font;
+    });
 };
 
 /**
@@ -1757,8 +1778,8 @@ WHS.Light = function() {
         var key = 0;
 
         /*root.modellingQueue.forEach( function( el ) {
-    			if ( el.type == type ) key ++;
-    		} );*/
+  			if ( el.type == type ) key ++;
+  		} );*/
 
         var scope = {
             _key: key,
@@ -2090,8 +2111,8 @@ WHS.Shape = function() {
         var key = 0;
 
         /*root.modellingQueue.forEach( function( el ) {
-    			if ( el.type == type ) key ++;
-    		} );*/
+  			if ( el.type == type ) key ++;
+  		} );*/
 
         var scope = {
             _key: key,
@@ -2418,7 +2439,10 @@ WHS.init = function() {
             stats: false,
             autoresize: false,
 
-            shadowmap: true,
+            shadowmap: {
+                enabled: true,
+                type: THREE.PCFSoftShadowMap
+            },
 
             gravity: {
                 x: 0,
@@ -2478,10 +2502,10 @@ WHS.init = function() {
         this._initRenderer();
 
         /*if (target.anaglyph) {
-          this.effect = new THREE.AnaglyphEffect(this._renderer);
-        this.effect.setSize(target.rWidth, target.rHeight);
-          this.effect.render(this.scene, this._camera);
-      }*/
+        this.effect = new THREE.AnaglyphEffect(this._renderer);
+      this.effect.setSize(target.rWidth, target.rHeight);
+        this.effect.render(this.scene, this._camera);
+    }*/
 
         // NOTE: ==================== Autoresize. ======================
         var scope = this;
@@ -2576,8 +2600,8 @@ WHS.init = function() {
             this._renderer.setClearColor(this._settings.background);
 
             // Shadowmap.
-            this._renderer.shadowMap.enabled = this._settings.shadowmap;
-            this._renderer.shadowMap.type = THREE.PCFShadowMap;
+            this._renderer.shadowMap.enabled = this._settings.shadowmap.enabled;
+            this._renderer.shadowMap.type = this._settings.shadowmap.type;
             this._renderer.shadowMap.cascade = true;
 
             this._renderer.setSize(+(window.innerWidth * this._settings.rWidth).toFixed(), +(window.innerHeight * this._settings.rHeight).toFixed());
@@ -2637,16 +2661,16 @@ WHS.init = function() {
             scope._update();
 
             /*scope._ready = [];
-        var loading_queue = WHS.Watch(scope.children);
-        loading_queue._queue.forEach(object => {
-          object.ready.on("ready", function() {
-             // object._state.then(() => {
-                  scope._ready.push(object);
-                    if(loading_queue._queue.length == scope._ready.length) 
-                      scope._events.emit("ready");
-              //});
-          });
-        });*/
+     var loading_queue = WHS.Watch(scope.children);
+     loading_queue._queue.forEach(object => {
+       object.ready.on("ready", function() {
+          // object._state.then(() => {
+               scope._ready.push(object);
+                 if(loading_queue._queue.length == scope._ready.length) 
+                   scope._events.emit("ready");
+           //});
+       });
+     });*/
         }
     }, {
         key: "_loop",
@@ -2808,12 +2832,12 @@ WHS.init.prototype.Extrude = function(params) {
 };
 
 WHS.Icosahderon = function(_WHS$Shape5) {
-    _inherits(Icosahderon, _WHS$Shape5);
+    _inherits(Icosahedron, _WHS$Shape5);
 
-    function Icosahderon(params) {
-        _classCallCheck(this, Icosahderon);
+    function Icosahedron(params) {
+        _classCallCheck(this, Icosahedron);
 
-        var _this6 = _possibleConstructorReturn(this, Object.getPrototypeOf(Icosahderon).call(this, params, "icosahderon"));
+        var _this6 = _possibleConstructorReturn(this, Object.getPrototypeOf(Icosahedron).call(this, params, "icosahedron"));
 
         api.extend(params.geometry, {
 
@@ -2822,17 +2846,17 @@ WHS.Icosahderon = function(_WHS$Shape5) {
 
         });
 
-        _this6.mesh = new Physijs.ConvexMesh(new THREE.IcosahderonGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Icosahderon.prototype), "_initMaterial", _this6).call(_this6, params.material), params.mass);
+        _this6.mesh = new Physijs.ConvexMesh(new THREE.IcosahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Icosahedron.prototype), "_initMaterial", _this6).call(_this6, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Icosahderon.prototype), "build", _this6).call(_this6);
+        _get(Object.getPrototypeOf(Icosahedron.prototype), "build", _this6).call(_this6);
 
         return _this6;
     }
 
-    return Icosahderon;
+    return Icosahedron;
 }(WHS.Shape);
 
-WHS.init.prototype.Icosahderon = function(params) {
+WHS.init.prototype.Icosahedron = function(params) {
     return new WHS.Icosahderon(params).addTo(this);
 };
 
@@ -3013,7 +3037,7 @@ WHS.Parametric = function(_WHS$Shape10) {
 
         });
 
-        _this11.mesh = new Physijs.ConvexMesh(new THREE.ParametricGeometry(params.geometry.func, params.geometry.slices, params.geometry.stacks), _get(Object.getPrototypeOf(Parametric.prototype), "_initMaterial", _this11).call(_this11, params.material), params.mass);
+        _this11.mesh = new Physijs.ConcaveMesh(new THREE.ParametricGeometry(params.geometry.func, params.geometry.slices, params.geometry.stacks), _get(Object.getPrototypeOf(Parametric.prototype), "_initMaterial", _this11).call(_this11, params.material), params.mass);
 
         _get(Object.getPrototypeOf(Parametric.prototype), "build", _this11).call(_this11);
 
@@ -3067,10 +3091,10 @@ WHS.Polyhedron = function(_WHS$Shape12) {
 
         api.extend(params.geometry, {
 
-            verticesOfCube: [],
-            indicesOfFaces: [],
-            radius: 1,
-            detail: 1
+            verticesOfCube: _this13.verticesOfCube,
+            indicesOfFaces: _this13.indicesOfFaces,
+            radius: 6,
+            detail: 2
 
         });
 
@@ -3080,6 +3104,20 @@ WHS.Polyhedron = function(_WHS$Shape12) {
 
         return _this13;
     }
+
+    _createClass(Polyhedron, [{
+        key: "verticesOfCube",
+        get: function get() {
+
+            return [-1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1];
+        }
+    }, {
+        key: "indicesOfFaces",
+        get: function get() {
+
+            return [2, 1, 0, 0, 3, 2, 0, 4, 7, 7, 3, 0, 0, 1, 5, 5, 4, 0, 1, 2, 6, 6, 5, 1, 2, 3, 7, 7, 6, 2, 4, 5, 6, 6, 7, 4];
+        }
+    }]);
 
     return Polyhedron;
 }(WHS.Shape);
@@ -3098,18 +3136,18 @@ WHS.Ring = function(_WHS$Shape13) {
 
         api.extend(params.geometry, {
 
-            innerRadius: 2,
-            outerRadius: 5,
-            thetaSegments: 30,
-            phiSegments: 30,
+            innerRadius: 0,
+            outerRadius: 50,
+            thetaSegments: 8,
+            phiSegments: 8,
             thetaStart: 0,
             thetaLength: Math.PI * 2
 
         });
 
-        _this14.mesh = new Physijs.ConcaveMesh(new THREE.TorusGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), _get(Object.getPrototypeOf(Ring.prototype), "_initMaterial", _this14).call(_this14, params.material), params.mass);
+        _this14.mesh = new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), _get(Object.getPrototypeOf(Ring.prototype), "_initMaterial", _this14).call(_this14, params.material));
 
-        _get(Object.getPrototypeOf(Ring.prototype), "build", _this14).call(_this14);
+        _get(Object.getPrototypeOf(Ring.prototype), "build", _this14).call(_this14, "onlyvis");
 
         return _this14;
     }
@@ -3135,7 +3173,7 @@ WHS.Shape2D = function(_WHS$Shape14) {
 
         });
 
-        _this15.mesh = new THREE.Mesh(new THREE.ShapeGeometry(params.geometry.shapes), _get(Object.getPrototypeOf(Shape2D.prototype), "_initMaterial", _this15).call(_this15, params.material), params.mass);
+        _this15.mesh = new THREE.Mesh(new THREE.ShapeGeometry(params.geometry.shapes), _get(Object.getPrototypeOf(Shape2D.prototype), "_initMaterial", _this15).call(_this15, params.material));
 
         _get(Object.getPrototypeOf(Shape2D.prototype), "build", _this15).call(_this15, "onlyvis");
 
@@ -3250,12 +3288,10 @@ WHS.Text = function(_WHS$Shape18) {
             text: "Hello World!",
 
             parameters: {
-                size: 1,
+                size: 12,
                 height: 50,
-                curveSegments: 1,
-                font: "Adelle",
-                weight: "normal",
-                style: "normal",
+                curveSegments: 12,
+                font: new THREE.Font(),
                 bevelEnabled: false,
                 bevelThickness: 10,
                 bevelSize: 8
@@ -3263,9 +3299,23 @@ WHS.Text = function(_WHS$Shape18) {
 
         });
 
-        _this19.mesh = new Physijs.ConcaveMesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), _get(Object.getPrototypeOf(Text.prototype), "_initMaterial", _this19).call(_this19, params.material), params.mass);
+        var scope = _this19;
 
-        _get(Object.getPrototypeOf(Text.prototype), "build", _this19).call(_this19);
+        _this19._loading = new Promise(function(resolve, reject) {
+
+            api.loadFont(params.geometry.parameters.font, function(font) {
+
+                params.geometry.parameters.font = font;
+
+                console.log(params.geometry);
+
+                scope.mesh = new Physijs.ConvexMesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), api.loadMaterial(params.material), params.mass);
+
+                resolve();
+            });
+        });
+
+        _get(Object.getPrototypeOf(Text.prototype), "build", _this19).call(_this19, "wait");
 
         return _this19;
     }
@@ -3274,7 +3324,7 @@ WHS.Text = function(_WHS$Shape18) {
 }(WHS.Shape);
 
 WHS.init.prototype.Text = function(params) {
-    return new WHS.Text(params).addTo(this);
+    return new WHS.Text(params).addTo(this, "wait");
 };
 
 WHS.Torus = function(_WHS$Shape19) {

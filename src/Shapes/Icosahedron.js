@@ -4,11 +4,11 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.Icosahderon = class Icosahderon extends WHS.Shape {
+WHS.Icosahderon = class Icosahedron extends WHS.Shape {
 
 	constructor( params ) {
 
-		super( params, "icosahderon" );
+		super( params, "icosahedron" );
 
 		api.extend(params.geometry, {
 
@@ -18,7 +18,7 @@ WHS.Icosahderon = class Icosahderon extends WHS.Shape {
         });
 
 		this.mesh = new Physijs.ConvexMesh( 
-            new THREE.IcosahderonGeometry(
+            new THREE.IcosahedronGeometry(
 
                 params.geometry.radius,
                 params.geometry.detail
@@ -35,6 +35,6 @@ WHS.Icosahderon = class Icosahderon extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Icosahderon = function( params ) {
+WHS.init.prototype.Icosahedron = function( params ) {
 	return ( new WHS.Icosahderon(  params ) ).addTo( this );
 }

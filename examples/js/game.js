@@ -16,6 +16,10 @@ var GAME = new WHS.init( {
         far: 10000
     },
 
+    shadowmap: {
+        type: THREE.PCFShadowMap
+    },
+
     rWidth: 1,
     rHeight: 1,
 
