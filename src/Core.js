@@ -30,7 +30,10 @@ WHS.init = class {
             stats: false,
             autoresize: false,
 
-            shadowmap: true,
+            shadowmap: {
+                enabled: true,
+                type: THREE.PCFSoftShadowMap
+            },
 
             gravity: {
                 x: 0,
@@ -211,8 +214,8 @@ WHS.init = class {
         this._renderer.setClearColor(this._settings.background);
 
         // Shadowmap.
-        this._renderer.shadowMap.enabled = this._settings.shadowmap;
-        this._renderer.shadowMap.type = THREE.PCFShadowMap;
+        this._renderer.shadowMap.enabled = this._settings.shadowmap.enabled;
+        this._renderer.shadowMap.type = this._settings.shadowmap.type;
         this._renderer.shadowMap.cascade = true;
 
         this._renderer.setSize( 

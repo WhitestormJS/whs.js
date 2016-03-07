@@ -15,12 +15,10 @@ WHS.Text = class Text extends WHS.Shape {
             text: "Hello World!",
             
             parameters: {
-                size: 1,
+                size: 12,
                 height: 50,
-                curveSegments: 1,
-                font: "Adelle",
-                weight: "normal",
-                style: "normal",
+                curveSegments: 12,
+                font: new THREE.Font(),
                 bevelEnabled: false,
                 bevelThickness: 10,
                 bevelSize: 8
@@ -28,24 +26,40 @@ WHS.Text = class Text extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConcaveMesh( 
-            new THREE.TextGeometry(
+        var scope = this;
 
-                params.geometry.text,
-                params.geometry.parameters
+        this._loading = new Promise(function(resolve, reject) {
 
-            ), 
+            api.loadFont(params.geometry.parameters.font, function( font ) {
 
-            super._initMaterial(params.material), 
-            params.mass 
-        );
+                params.geometry.parameters.font = font;
 
-        super.build();
+                console.log(params.geometry);
+
+        		scope.mesh = new Physijs.ConvexMesh( 
+                    new THREE.TextGeometry(
+
+                        params.geometry.text,
+                        params.geometry.parameters
+
+                    ), 
+
+                    api.loadMaterial(params.material), 
+                    params.mass 
+                );
+
+                resolve();
+
+            });
+
+        });
+
+        super.build("wait");
 
 	}
 
 }
 
 WHS.init.prototype.Text = function( params ) {
-	return ( new WHS.Text(  params ) ).addTo( this );
+	return ( new WHS.Text(  params ) ).addTo( this, "wait" );
 }

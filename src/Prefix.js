@@ -20,7 +20,8 @@ var WHS = {
 
     loader: {
         JSON: new THREE.JSONLoader(),
-        Texture: new THREE.TextureLoader()
+        Texture: new THREE.TextureLoader(),
+        Font: new THREE.FontLoader()
     },
 
     API: {},
@@ -43,6 +44,10 @@ WHS.API.loadJSON = function(url, callback, texturePath) {
 
 WHS.API.loadTexture = function(url, onLoad, onProgress, onError) {
     return WHS.loader.Texture.load(url, onLoad, onProgress, onError);
+}
+
+WHS.API.loadFont = function(url, onLoad, onProgress, onError) {
+    return WHS.loader.Font.load(url, onLoad, onProgress, onError);
 }
 
 var api = WHS.API;

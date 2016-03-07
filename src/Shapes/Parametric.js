@@ -18,7 +18,7 @@ WHS.Parametric = class Parametric extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh( 
+		this.mesh = new Physijs.ConcaveMesh( 
             new THREE.ParametricGeometry(
 
                 params.geometry.func,
