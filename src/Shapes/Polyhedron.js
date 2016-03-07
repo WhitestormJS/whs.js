@@ -12,10 +12,10 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
 
 		api.extend(params.geometry, {
 
-            verticesOfCube: [],
-            indicesOfFaces: [],
-            radius: 1,
-            detail: 1
+            verticesOfCube: this.verticesOfCube,
+            indicesOfFaces: this.indicesOfFaces,
+            radius: 6,
+            detail: 2
 
         });
 
@@ -36,6 +36,28 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
         super.build();
 
 	}
+
+    get verticesOfCube() {
+
+        return [
+            -1,-1,-1,    1,-1,-1,    1, 1,-1,    -1, 1,-1,
+            -1,-1, 1,    1,-1, 1,    1, 1, 1,    -1, 1, 1,
+        ];
+
+    }
+
+    get indicesOfFaces() {
+
+        return [
+            2,1,0,    0,3,2,
+            0,4,7,    7,3,0,
+            0,1,5,    5,4,0,
+            1,2,6,    6,5,1,
+            2,3,7,    7,6,2,
+            4,5,6,    6,7,4
+        ];
+
+    }
 
 }
 
