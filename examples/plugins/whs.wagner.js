@@ -201,6 +201,6 @@ WHS.Wagner = function() {
     return Wagner;
 }();
 
-WHS.init.prototype.Wagner = function() {
+WHS.World.prototype.Wagner = function() {
     return new WHS.Wagner(this);
 };

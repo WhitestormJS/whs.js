@@ -34,6 +34,7 @@
 - *MakeFirstPerson -> FPSControls* 
 - #61: *libs/three.js r74 -> libs/three.js r75*
 - Fixed Text shape.
+- *WHS.init class -> WHS.World class*
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
