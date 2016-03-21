@@ -3309,7 +3309,7 @@ WHS.Text = function(_WHS$Shape18) {
 
                 console.log(params.geometry);
 
-                scope.mesh = new Physijs.ConvexMesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), api.loadMaterial(params.material), params.mass);
+                scope.mesh = new Physijs.ConcaveMesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), api.loadMaterial(params.material)._material, params.mass);
 
                 resolve();
             });
