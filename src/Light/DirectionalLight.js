@@ -4,8 +4,18 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS directional light.
+ *
+ * @extends WHS.Light
+ */
 WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
-
+	/**
+     * Directional light.
+     *
+     * @param {Object} params.light.color - Light color.
+     * @param {Object} params.light.intensity - Light intensity.
+     */
 	constructor( params ) {
 
 		super( params, "directionallight" );
@@ -22,6 +32,6 @@ WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
 
 }
 
-WHS.init.prototype.DirectionalLight = function( params ) {
+WHS.World.prototype.DirectionalLight = function( params ) {
 	return ( new WHS.DirectionalLight(  params ) ).addTo( this );
 }

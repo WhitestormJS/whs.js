@@ -4,7 +4,23 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS smooth
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Smooth = class Smooth extends WHS.Shape {
+
+    /**
+     * Smooths things
+     *
+     * @param {Object} params - Smooth options
+     * @param {Object} params.geometry - Smooth geometry options
+     * @param {Number} params.geometry.width - Smooth width
+     * @param {Number} params.geometry.height - Smooth height
+     * @param {Material} params.material - Smooth material
+     */
 
 	constructor( params ) {
 
@@ -17,15 +33,15 @@ WHS.Smooth = class Smooth extends WHS.Shape {
 
         });
 
-        this.mesh = new Physijs.BoxMesh( 
+        this.mesh = new Physijs.BoxMesh(
             new THREE.BoxGeometry(
 
-                params.geometry.width, 
-                1, 
+                params.geometry.width,
+                1,
                 params.geometry.height
-                
-            ), 
-            super._initMaterial(params.material), 
+
+            ),
+            super._initMaterial(params.material),
             0
         );
 
@@ -35,6 +51,6 @@ WHS.Smooth = class Smooth extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Smooth = function( params ) {
+WHS.World.prototype.Smooth = function( params ) {
 	return ( new WHS.Smooth(  params ) ).addTo( this );
 }

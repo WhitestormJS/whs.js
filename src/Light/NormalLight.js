@@ -4,8 +4,17 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS default light.
+ *
+ * @extends WHS.Light
+ */
 WHS.NormalLight = class NormalLight extends WHS.Light {
-
+    /**
+     * Normal light.
+     *
+     * @param {Object} params.light.color - Light color.
+     */
 	constructor( params ) {
 
 		super( params, "normallight" );
@@ -21,6 +30,6 @@ WHS.NormalLight = class NormalLight extends WHS.Light {
 
 }
 
-WHS.init.prototype.NormalLight = function( params ) {
+WHS.World.prototype.NormalLight = function( params ) {
 	return ( new WHS.NormalLight(  params ) ).addTo( this );
 }

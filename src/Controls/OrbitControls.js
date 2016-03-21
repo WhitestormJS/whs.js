@@ -5,11 +5,11 @@
 */
 
 /**
- * ORBITCONTROLS.
+ * Orbit controld for scene.
  *
- * @param {Object} object Description. (OPTIONAL)
+ * @param {Object} object - Object followed by camera.
  */
-WHS.init.prototype.OrbitControls = function(object) {
+WHS.World.prototype.OrbitControls = function(object) {
 
 	this.controls = new THREE.OrbitControls(this._camera, this._renderer.domElement);
 	
