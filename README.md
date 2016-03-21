@@ -18,12 +18,10 @@
 
 ------
 
-## Features of framework
+## Features
 
 * Simple shape crafting.
 * **Plugin system** and modular structure.
-  - Terrain generation plugin.
-  - Loader plugin.
 * Performance optimization.
 * Automatization of rendering.
 * **Physics support.**
