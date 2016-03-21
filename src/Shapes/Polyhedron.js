@@ -4,7 +4,26 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS polyhedron shape
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Polyhedron = class Polyhedron extends WHS.Shape {
+
+    /**
+     * Creates a polyhedron
+     *
+     * @param {Object} params - Polyhedron options
+     * @param {Object} params.geometry - Polyhedron geometry options
+     * @param {Number} params.geometry.radius - Polyhedron radius
+     * @param {Number} param.geometry.verticesOfCube - Vertices of cube
+     * @param {Number} param.geometry.indicesOfFaces - Indices of faces
+     * @param {Number} param.geometry.detail - Polyhedron detail
+     * @param {Material} param.material - Polyhedron material
+     * @param {Number} param.mass - Polyhedron mass
+     */
 
 	constructor( params ) {
 
@@ -19,7 +38,7 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh( 
+		this.mesh = new Physijs.ConvexMesh(
             new THREE.PolyhedronGeometry(
 
                 params.geometry.verticesOfCube,
@@ -27,10 +46,10 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
                 params.geometry.radius,
                 params.geometry.detail
 
-            ), 
+            ),
 
-            super._initMaterial(params.material), 
-            params.mass 
+            super._initMaterial(params.material),
+            params.mass
         );
 
         super.build();
