@@ -2,9 +2,15 @@
 
 <p align="center"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/logo/big-inverse.png"></p>
 
-<p align="center"><a href="https://travis-ci.org/WhitestormJS/whitestorm.js" align="center">
-    <img src="https://travis-ci.org/WhitestormJS/whitestorm.js.svg">
-</a></p>
+<p align="center">
+    <a href="https://travis-ci.org/WhitestormJS/whitestorm.js" align="center">
+        <img src="https://travis-ci.org/WhitestormJS/whitestorm.js.svg">
+    </a>
+    
+    <a href="https://www.npmjs.com/package/whitestormjs"><img src="http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg"></a>          
+    <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg"></a>
+
+</p>
 
 <br>
 
