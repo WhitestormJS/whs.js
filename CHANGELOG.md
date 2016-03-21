@@ -31,6 +31,7 @@
 - Fix for Model & Morph: *useVertexColors*, *useCustomMaterial*.
 - Fix for terrain shadows. (Now it can receive).
 - Fix for zero values in friction and restitution.
+- *MakeFirstPerson -> FPSControls* 
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
