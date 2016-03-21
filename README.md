@@ -13,7 +13,7 @@
     
     <br><br>
     
-    <p align="center"><i>JQuery for Three.js and Physi.js</i></p>
+    <p align="center"><i><b>JQuery for Three.js and Physi.js</b></i></p>
 </p>
 
 <br>
