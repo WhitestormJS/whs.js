@@ -220,7 +220,7 @@ effects.add( "VignettePass", {} );
 
 //var directionalblurEffect = GAME.addWagner( "motionBlurPass", {} ).apply();
 
-GAME.MakeFirstPerson( GAME.person, { // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
+GAME.FPSControls( GAME.person, { // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
     block: document.getElementById('blocker'),
     speed: 5 // 5
 } );
