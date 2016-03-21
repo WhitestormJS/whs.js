@@ -11,7 +11,7 @@
  * @param {Object} params Options of fog object. (REQUIRED)
  * @returns {Object} This element scope/statement.
  */
-WHS.World.prototype.addFog = function(type, params) {
+WHS.init.prototype.addFog = function(type, params) {
   
   'use strict';
 
