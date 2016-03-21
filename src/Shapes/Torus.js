@@ -41,6 +41,6 @@ WHS.Torus = class Torus extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Torus = function( params ) {
+WHS.World.prototype.Torus = function( params ) {
 	return ( new WHS.Torus(  params ) ).addTo( this );
 }

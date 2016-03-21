@@ -53,6 +53,6 @@ WHS.Cube = class Cube extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Cube = function( params ) {
+WHS.World.prototype.Cube = function( params ) {
 	return ( new WHS.Cube(  params ) ).addTo( this );
 }

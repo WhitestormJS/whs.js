@@ -12,7 +12,7 @@
 
 const PI_2 = Math.PI/2;
 
-WHS.init.prototype.FPSControls = function(object, params) {
+WHS.World.prototype.FPSControls = function(object, params) {
 
     'use strict';
 

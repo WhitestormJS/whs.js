@@ -17,7 +17,7 @@ WHS.World = class {
 
         'use strict';
 
-        console.log('WHS.init', WHS.REVISION);
+        console.log('WHS.World', WHS.REVISION);
 
         if (!THREE)
             console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');

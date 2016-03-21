@@ -82,6 +82,6 @@ WHS.Morph = class Morph extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Morph = function( params ) {
+WHS.World.prototype.Morph = function( params ) {
 	return ( new WHS.Morph(  params ) ).addTo( this, "wait" );
 }

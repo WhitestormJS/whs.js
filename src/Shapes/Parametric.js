@@ -37,6 +37,6 @@ WHS.Parametric = class Parametric extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Parametric = function( params ) {
+WHS.World.prototype.Parametric = function( params ) {
 	return ( new WHS.Parametric(  params ) ).addTo( this );
 }

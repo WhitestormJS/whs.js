@@ -64,6 +64,6 @@ WHS.Skybox = class Skybox extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Skybox = function( params ) {
+WHS.World.prototype.Skybox = function( params ) {
 	return ( new WHS.Skybox(  params ) ).addTo( this );
 }

@@ -68,6 +68,6 @@ WHS.Model = class Model extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Model = function( params ) {
+WHS.World.prototype.Model = function( params ) {
 	return ( new WHS.Model(  params ) ).addTo( this, "wait" );
 }

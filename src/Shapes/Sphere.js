@@ -37,6 +37,6 @@ WHS.Sphere = class Sphere extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Sphere = function( params ) {
+WHS.World.prototype.Sphere = function( params ) {
 	return ( new WHS.Sphere(  params ) ).addTo( this );
 }

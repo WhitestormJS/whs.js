@@ -49,6 +49,6 @@ WHS.Lathe = class Lathe extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Lathe = function( params ) {
+WHS.World.prototype.Lathe = function( params ) {
 	return ( new WHS.Lathe(  params ) ).addTo( this );
 }

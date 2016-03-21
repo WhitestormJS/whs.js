@@ -32,6 +32,6 @@ WHS.Shape2D = class Shape2D extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Shape2D = function( params ) {
+WHS.World.prototype.Shape2D = function( params ) {
 	return ( new WHS.Shape2D(  params ) ).addTo( this );
 }
