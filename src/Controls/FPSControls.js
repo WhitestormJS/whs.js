@@ -5,9 +5,10 @@
 */
 
 /**
- * MAKEFIRSTPERSON.
+ * First person controls.
  *
- * @param {Object} object *WHS* figure/object. (REQUIRED)
+ * @param {Object} object - *WHS* figure/object.
+ * @param {Object} params - Controls parameter objects.
  */
 
 const PI_2 = Math.PI/2;
