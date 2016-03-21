@@ -4,7 +4,23 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS shape extrude
+ *
+ * @extends WHS.Shape
+ */
 WHS.Extrude = class Extrude extends WHS.Shape {
+
+    /**
+     * Extrude a shape
+     *
+     * @param {Object} params - General options
+     * @param {Object} params.geometry - Geometry options
+     * @param {Array} params.geometry.shapes - Shapes to extrude
+     * @param {Object} params.geometry.options - Options concerning shapes to extrude
+     * @param {Material} params.material - Material
+     * @param {Number} params.mass - Mass
+     */
 
 	constructor( params ) {
 
@@ -17,16 +33,16 @@ WHS.Extrude = class Extrude extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh( 
+		this.mesh = new Physijs.ConvexMesh(
             new THREE.ExtrudeGeometry(
 
                 params.geometry.shapes,
                 params.geometry.options
 
-            ), 
+            ),
 
-            super._initMaterial(params.material), 
-            params.mass 
+            super._initMaterial(params.material),
+            params.mass
         );
 
         super.build();
@@ -35,6 +51,6 @@ WHS.Extrude = class Extrude extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Extrude = function( params ) {
+WHS.World.prototype.Extrude = function( params ) {
 	return ( new WHS.Extrude(  params ) ).addTo( this );
 }

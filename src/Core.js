@@ -4,19 +4,19 @@
  * Email: alexbuzin88@gmail.com
 */
 
-/**
- * Init.
- *
- * @param {Object} params Parameters of initalize. (OPTIONAL)
- * @return {Object} Scope.
- */
-WHS.init = class {
-
+/** Class that initializates 3d world. */
+WHS.World = class {
+    /**
+     * Create a 3D world and define defaults.
+     *
+     * @param {object} params - The scene settings object.
+     * @return {World} A 3D world whs object.
+     */
     constructor( params ) {
 
         'use strict';
 
-        console.log('WHS.init', WHS.REVISION);
+        console.log('WHS.World', WHS.REVISION);
 
         if (!THREE)
             console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
@@ -113,6 +113,10 @@ WHS.init = class {
 
     }
 
+
+    /**
+     * Initialize Three.js scene object.
+     */
     _initScene() {
 
         this._initPhysiJS();
@@ -133,6 +137,9 @@ WHS.init = class {
 
     }
 
+    /**
+     * Set Physi.js scripts pathes.
+     */
     _initPhysiJS() {
 
         Physijs.scripts.worker = this._settings.path_worker;
@@ -140,6 +147,9 @@ WHS.init = class {
 
     }
 
+    /**
+     * Initialize DOM structure for whitestorm.
+     */
     _initDOM() {
 
         this._settings.container.style.margin = 0;
@@ -156,6 +166,9 @@ WHS.init = class {
 
     }
 
+    /**
+     * Inititialize stats plugin.
+     */
     _initStats() {
 
         // Debug Renderer
@@ -188,6 +201,9 @@ WHS.init = class {
 
     }
 
+    /**
+     * Create a camera and add it to scene.
+     */
     _initCamera() {
 
         this._camera = new THREE.PerspectiveCamera(
@@ -207,6 +223,9 @@ WHS.init = class {
 
     }
 
+    /**
+     * Create a renderer and apply it's options.
+     */
     _initRenderer() {
 
         // Renderer.
@@ -232,6 +251,9 @@ WHS.init = class {
 
     }
 
+    /**
+     * Start animation.
+     */
     start() {
 
         'use strict';
@@ -270,7 +292,7 @@ WHS.init = class {
 
             }
 
-            scope._loop( time );
+            scope._execLoops( time );
 
             // End helper.
             if (scope._stats)
@@ -298,7 +320,12 @@ WHS.init = class {
         });*/
     }
 
-    _loop( time ) {
+    /**
+     * Execute all loops with a specific time.
+     *
+     * @params {number} time - The time value that will be passed to loops.
+     */
+    _execLoops( time ) {
 
         WHS.loops.forEach( loop => {
             if ( loop.enabled ) loop.func( time );
@@ -306,6 +333,9 @@ WHS.init = class {
 
     }
 
+    /**
+     * Update controls time values.
+     */
     _updateControls() {
 
         if (this.controls) {
@@ -317,6 +347,11 @@ WHS.init = class {
 
     }
 
+    /**
+     * Update morphs animations.
+     *
+     * @params {THREE.Clock} clock - The clock object, which.
+     */
     _process( clock ) {
 
             for ( var i = 0; i < this.modellingQueue.length; i++ ) {
@@ -328,10 +363,14 @@ WHS.init = class {
 
     }
 
-    resize( ) {
+    /**
+     * This functon will scene properties when it's called.
+     */
+    resize() {
 
         this._camera.aspect = window.innerWidth / window.innerHeight;
         this._camera.updateProjectionMatrix();
+        
         this._renderer.setSize( 
             +(window.innerWidth * this._settings.rWidth).toFixed(), 
             +(window.innerHeight * this._settings.rHeight).toFixed()

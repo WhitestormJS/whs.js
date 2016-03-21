@@ -350,6 +350,6 @@ WHS.Terrain = function(_WHS$Shape) {
     return Terrain;
 }(WHS.Shape);
 
-WHS.init.prototype.Terrain = function(params) {
+WHS.World.prototype.Terrain = function(params) {
     return new WHS.Terrain(params).addTo(this);
 };
