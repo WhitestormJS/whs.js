@@ -3,7 +3,14 @@
  * Site: http://alexbuzin.me/
  * Email: alexbuzin88@gmail.com
 */
-
+    
+/**
+ * Extending object with other objects.
+ *
+ * @param {Object} object - Object that will be overwritten.
+ * @param {...Objects} extensions - other objects that will be merged to first.
+ * @return {Object} Extended object.
+ */
 WHS.API.extend = function( object, ...extensions ) { // $.extend alternative, ... is the spread operator.
 
 	for( var extension of extensions ){

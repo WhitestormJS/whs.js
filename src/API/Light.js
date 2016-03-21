@@ -4,17 +4,15 @@
  * Email: alexbuzin88@gmail.com
 */
 
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-//WHS.API.construct = function( root, params, type ) {
-
-
+/** Light super class */
 WHS.Light = class {
-
+	/**
+	 * Constructing WHS.Light object.
+	 * 
+	 * @param {Object} params - Inputed parameters.
+	 * @param {String} type - Light type.
+	 * @return {WHS.Light}
+	 */
 	constructor( params, type ) {
 
 		//if ( ! root )
@@ -117,7 +115,12 @@ WHS.Light = class {
 		return this;
 	}
 
-
+	/**
+	 * Applying shadow & position & rotation.
+	 *
+	 * @param {...String} tags - Tags that defines what to do with light 
+	 * additionally.
+	 */
 	build( ...tags ) {
 		
 		'use strict';
@@ -156,7 +159,11 @@ WHS.Light = class {
 		return this;
 	}
 
-
+	/**
+	 * Add light to WHS.World object.
+	 *
+	 * @param {WHS.World} root - World, were this light will be. 
+	 */
 	addTo( root ) {
 
 		'use strict';
@@ -207,6 +214,9 @@ WHS.Light = class {
 		return this;
 	}
 
+	/** 
+	 * Set shadow properties for light.
+	 */
 	buildShadow() {
 
 	    this.mesh.shadow.mapSize.width = this._shadowmap.width;
@@ -225,6 +235,9 @@ WHS.Light = class {
 
 	}
 
+	/**
+	 * Remove this light from world.
+	 */
 	remove() {
 		
 		this.root.scene.remove( this.mesh );
@@ -233,6 +246,9 @@ WHS.Light = class {
 
 	}
 
+	/**
+	 * Add this light to last applied world.
+	 */
 	retrieve() {
 
 		this.root.scene.add( this.mesh );
