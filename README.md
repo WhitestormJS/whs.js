@@ -11,7 +11,7 @@
     <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg"></a>
     <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>
     
-    <br><br>
+    <br>
     
     <p align="center"><i><b>JQuery for Three.js and Physi.js</b></i></p>
 </p>
