@@ -18,7 +18,7 @@
 
 <br>
 
-## Installation [![forthebadge](http://forthebadge.com/images/badges/uses-js.svg)](https://github.com/search?l=JavaScript&q=%23javasript&ref=searchresults&type=Repositories&utf8=%E2%9C%93) [![forthebadge](http://forthebadge.com/images/badges/built-by-developers.svg)](https://github.com/WhitestormJS/whitestorm.js/graphs/contributors)
+## Installation 
 
 
 \* It is advised to download your own copies of the following libraries, as large changes can break backwards compatibility.
