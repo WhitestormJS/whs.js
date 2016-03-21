@@ -31,9 +31,10 @@
 - Fix for Model & Morph: *useVertexColors*, *useCustomMaterial*.
 - Fix for terrain shadows. (Now it can receive).
 - Fix for zero values in friction and restitution.
-- *MakeFirstPerson -> FPSControls* 
+- *MakeFirstPerson -> FPSControls*
 - #61: *libs/three.js r74 -> libs/three.js r75*
 - Fixed Text shape.
+- #60: Update lights for Three.js r75
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
