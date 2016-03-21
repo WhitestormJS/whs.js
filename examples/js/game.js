@@ -1,7 +1,7 @@
 var preloader = Preloader();
 
 // INITIALIZATION SCENE.
-var GAME = new WHS.init( {
+var GAME = new WHS.World( {
     
     stats: "fps", // fps, ms, mb
     autoresize: true,
