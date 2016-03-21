@@ -10,9 +10,9 @@
     <a href="https://www.npmjs.com/package/whitestormjs"><img src="http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg"></a>          
     <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg"></a>
 
-    <br>
+    <br><br>
     
-    <p align="center"><b>JQuery for Three.js and Physi.js</b></p>
+    <p align="center">JQuery for Three.js and Physi.js</p>
 </p>
 
 <br>
