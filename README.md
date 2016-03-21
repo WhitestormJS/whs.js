@@ -33,10 +33,9 @@ Include a script tag linking the [WhitestormJS](https://cdn.jsdelivr.net/whitest
 <script src="{path_to_lib}/whitestorm.js"></script>
 ```
 
-After adding these libraries, you can configure your game:
+After adding these libraries, you can configure your app:
 ```javascript
-var GAME = new WHS.init({
-    anaglyph: false, // Anaglyph effect.
+var world = new WHS.World({
     stats: "fps", // fps, ms, mb or false if not need.
 
     gravity: { // Physic gravity.
@@ -46,12 +45,12 @@ var GAME = new WHS.init({
     },
 
     path_worker: 'physijs_worker.js', // Path to Physijs worker here.
-    path_ammo: 'ammo.js' // Path to Ammo.js.
+    path_ammo: 'ammo.js' // Path to Ammo.js from Physijs worker.
 });
 
 // Define your scene objects here.
 
-GAME.start(); // Start animations and physics simulation.
+world.start(); // Start animations and physics simulation.
 ```
 
 [![Join the chat at https://gitter.im/WhitestormJS/whitestorm.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
