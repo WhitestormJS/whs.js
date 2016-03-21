@@ -5,10 +5,11 @@
 */
 
 /**
- * MERGE.
+ * Adds multiple objects to first object with .add method.
  *
  * @param {Object} box Object to be merged. (REQUIRED)
  * @param {Object} rabbits Object to be added. (REQUIRED)
+ * @deprecated since v0.0.6
  */
 WHS.API.merge = function( box, rabbits ) {
 	
