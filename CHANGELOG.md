@@ -33,6 +33,7 @@
 - Fix for zero values in friction and restitution.
 - *MakeFirstPerson -> FPSControls* 
 - #61: *libs/three.js r74 -> libs/three.js r75*
+- Fixed Text shape.
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."

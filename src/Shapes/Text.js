@@ -36,7 +36,7 @@ WHS.Text = class Text extends WHS.Shape {
 
                 console.log(params.geometry);
 
-        		scope.mesh = new Physijs.ConvexMesh( 
+        		scope.mesh = new Physijs.ConcaveMesh( 
                     new THREE.TextGeometry(
 
                         params.geometry.text,
@@ -44,7 +44,7 @@ WHS.Text = class Text extends WHS.Shape {
 
                     ), 
 
-                    api.loadMaterial(params.material), 
+                    api.loadMaterial(params.material)._material, 
                     params.mass 
                 );
 
