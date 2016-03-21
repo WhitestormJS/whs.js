@@ -2416,7 +2416,6 @@ WHS.loop.prototype.stop = function() {
 
 /** Class that initializates 3d world. */
 WHS.World = function() {
-
     /**
      * Create a 3D world and define defaults.
      *
@@ -3675,8 +3674,20 @@ WHS.World.prototype.addFog = function(type, params) {
     return scope;
 };
 
+/**
+ * WhitestormJS ambient light.
+ *
+ * @extends WHS.Light
+ */
 WHS.AmbientLight = function(_WHS$Light) {
     _inherits(AmbientLight, _WHS$Light);
+
+    /**
+     * Ambient light.
+     *
+     * @param {Object} params.light.color - Light color.
+     * @param {Object} params.light.intensity - Light intensity.
+     */
 
     function AmbientLight(params) {
         _classCallCheck(this, AmbientLight);
@@ -3697,8 +3708,20 @@ WHS.World.prototype.AmbientLight = function(params) {
     return new WHS.AmbientLight(params).addTo(this);
 };
 
+/**
+ * WhitestormJS directional light.
+ *
+ * @extends WHS.Light
+ */
 WHS.DirectionalLight = function(_WHS$Light2) {
     _inherits(DirectionalLight, _WHS$Light2);
+
+    /**
+     * Directional light.
+     *
+     * @param {Object} params.light.color - Light color.
+     * @param {Object} params.light.intensity - Light intensity.
+     */
 
     function DirectionalLight(params) {
         _classCallCheck(this, DirectionalLight);
@@ -3720,8 +3743,21 @@ WHS.World.prototype.DirectionalLight = function(params) {
     return new WHS.DirectionalLight(params).addTo(this);
 };
 
+/**
+ * WhitestormJS hemisphere light.
+ *
+ * @extends WHS.Light
+ */
 WHS.HemisphereLight = function(_WHS$Light3) {
     _inherits(HemisphereLight, _WHS$Light3);
+
+    /**
+     * Hemisphere light.
+     *
+     * @param {Object} params.light.skyColor - Light sky color.
+     * @param {Object} params.light.groundColor - Light ground color.
+     * @param {Object} params.light.intensity - Light intensity.
+     */
 
     function HemisphereLight(params) {
         _classCallCheck(this, HemisphereLight);
@@ -3743,8 +3779,19 @@ WHS.World.prototype.HemisphereLight = function(params) {
     return new WHS.HemisphereLight(params).addTo(this);
 };
 
+/**
+ * WhitestormJS default light.
+ *
+ * @extends WHS.Light
+ */
 WHS.NormalLight = function(_WHS$Light4) {
     _inherits(NormalLight, _WHS$Light4);
+
+    /**
+     * Normal light.
+     *
+     * @param {Object} params.light.color - Light color.
+     */
 
     function NormalLight(params) {
         _classCallCheck(this, NormalLight);
@@ -3766,8 +3813,21 @@ WHS.World.prototype.NormalLight = function(params) {
     return new WHS.NormalLight(params).addTo(this);
 };
 
+/**
+ * WhitestormJS point light.
+ *
+ * @extends WHS.Light
+ */
 WHS.PointLight = function(_WHS$Light5) {
     _inherits(PointLight, _WHS$Light5);
+
+    /**
+     * Point light.
+     *
+     * @param {Object} params.light.color - Light color.
+     * @param {Object} params.light.intensity - Light intensity.
+     * @param {Object} params.light.distance - Light distance.
+     */
 
     function PointLight(params) {
         _classCallCheck(this, PointLight);
@@ -3789,8 +3849,22 @@ WHS.World.prototype.PointLight = function(params) {
     return new WHS.PointLight(params).addTo(this);
 };
 
+/**
+ * WhitestormJS spot light.
+ *
+ * @extends WHS.Light
+ */
 WHS.SpotLight = function(_WHS$Light6) {
     _inherits(SpotLight, _WHS$Light6);
+
+    /**
+     * Point light.
+     *
+     * @param {Object} params.light.color - Light color.
+     * @param {Object} params.light.intensity - Light intensity.
+     * @param {Object} params.light.distance - Light distance.
+     * @param {Object} params.light.angle - Light angle.
+     */
 
     function SpotLight(params) {
         _classCallCheck(this, SpotLight);
