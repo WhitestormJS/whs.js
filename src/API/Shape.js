@@ -295,6 +295,11 @@ WHS.Shape = class {
 	remove() {
 		
 		this.root.scene.remove( this.mesh );
+                let index = this.root.modellingQueue.indexOf(this);
+                if( index !== -1 )
+                        this.root.modellingQueue.splice( index, 1 );
+                this.root.children.splice( this.root.children.indexOf( this ), 1);
+                this.root = null;
 
 		return this;
 
