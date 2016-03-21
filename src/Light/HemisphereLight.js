@@ -4,8 +4,19 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS hemisphere light.
+ *
+ * @extends WHS.Light
+ */
 WHS.HemisphereLight = class HemisphereLight extends WHS.Light {
-
+    /**
+     * Hemisphere light.
+     *
+     * @param {Object} params.light.skyColor - Light sky color.
+     * @param {Object} params.light.groundColor - Light ground color.
+     * @param {Object} params.light.intensity - Light intensity.
+     */
 	constructor( params ) {
 
 		super( params, "hemispherelight" );
@@ -23,6 +34,6 @@ WHS.HemisphereLight = class HemisphereLight extends WHS.Light {
 
 }
 
-WHS.init.prototype.HemisphereLight = function( params ) {
+WHS.World.prototype.HemisphereLight = function( params ) {
 	return ( new WHS.HemisphereLight(  params ) ).addTo( this );
 }

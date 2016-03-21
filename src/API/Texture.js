@@ -7,9 +7,9 @@
 /**
  * Texture. Loads texture object.
  *
- * @param {String} url Url adress of texture *JSON*. (REQUIRED)
- * @param {Object} options Parameters of texture. (REQUIRED)
- * @return {Object} *THREE.JS* texture.
+ * @param {String} url - Url adress of texture *JSON*.
+ * @param {Object} options - Parameters of texture.
+ * @return {Object} Three.JS texture.
  */
 WHS.API.texture = function( url, options ) {
 	

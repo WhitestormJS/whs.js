@@ -4,6 +4,11 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS plugin loop
+ *
+ * @param  {Function} func - Function to be executed
+ */
 WHS.loop = function( func ) {
 
     this.loop = {
@@ -16,12 +21,18 @@ WHS.loop = function( func ) {
 
 }
 
+/**
+ * Starts the loop
+ */
 WHS.loop.prototype.start = function() {
 
     this.loop.enabled = true;
 
 };
 
+/**
+ * Stops the loop
+ */
 WHS.loop.prototype.stop = function() {
 
     this.loop.enabled = false;
