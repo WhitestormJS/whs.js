@@ -13,7 +13,8 @@ WHS.PointLight = class PointLight extends WHS.Light {
 		this.mesh = new THREE.PointLight(
             params.light.color,
             params.light.intensity,
-            params.light.distance
+            params.light.distance,
+            params.light.decay
         );
 
         super.build();
