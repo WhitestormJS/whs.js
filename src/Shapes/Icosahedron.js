@@ -52,6 +52,6 @@ WHS.Icosahderon = class Icosahedron extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Icosahedron = function( params ) {
+WHS.World.prototype.Icosahedron = function( params ) {
 	return ( new WHS.Icosahderon(  params ) ).addTo( this );
 }

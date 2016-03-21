@@ -37,6 +37,6 @@ WHS.Plane = class Plane extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Plane = function( params ) {
+WHS.World.prototype.Plane = function( params ) {
 	return ( new WHS.Plane(  params ) ).addTo( this );
 }

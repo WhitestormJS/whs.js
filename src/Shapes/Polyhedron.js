@@ -61,6 +61,6 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Polyhedron = function( params ) {
+WHS.World.prototype.Polyhedron = function( params ) {
 	return ( new WHS.Polyhedron(  params ) ).addTo( this );
 }

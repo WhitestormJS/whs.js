@@ -56,6 +56,6 @@ WHS.Cylinder = class Cylinder extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Cylinder = function( params ) {
+WHS.World.prototype.Cylinder = function( params ) {
 	return ( new WHS.Cylinder(  params ) ).addTo( this );
 }

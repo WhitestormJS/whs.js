@@ -35,6 +35,6 @@ WHS.Smooth = class Smooth extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Smooth = function( params ) {
+WHS.World.prototype.Smooth = function( params ) {
 	return ( new WHS.Smooth(  params ) ).addTo( this );
 }

@@ -42,6 +42,6 @@ WHS.Ring = class Ring extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Ring = function( params ) {
+WHS.World.prototype.Ring = function( params ) {
 	return ( new WHS.Ring(  params ) ).addTo( this );
 }

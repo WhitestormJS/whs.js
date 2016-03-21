@@ -21,6 +21,6 @@ WHS.NormalLight = class NormalLight extends WHS.Light {
 
 }
 
-WHS.init.prototype.NormalLight = function( params ) {
+WHS.World.prototype.NormalLight = function( params ) {
 	return ( new WHS.NormalLight(  params ) ).addTo( this );
 }

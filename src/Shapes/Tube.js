@@ -61,6 +61,6 @@ WHS.Tube = class Tube extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Tube = function( params ) {
+WHS.World.prototype.Tube = function( params ) {
 	return ( new WHS.Tube(  params ) ).addTo( this );
 }
