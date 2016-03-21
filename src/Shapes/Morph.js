@@ -4,7 +4,26 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS morph
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Morph = class Morph extends WHS.Shape {
+
+    /**
+     * Create a morph
+     *
+     * @param {Object} params - Morph options
+     * @param {Object} params.geometry - Morph geometry options
+     * @param {String} params.geometry.path - Path to morph JSON
+     * @param {Material} params.material - Morph material
+     * @param {Number} params.mass - Morph mass
+     * @param {Object} params.morph - Morph options
+     * @param {Number} params.morph.speed - Morph speed
+     * @param {Number} params.morph.duration - Morph duration
+     */
 
 	constructor( params ) {
 
@@ -23,14 +42,14 @@ WHS.Morph = class Morph extends WHS.Shape {
             api.loadJSON(params.geometry.path, function(data, materials) {
 
                 if (!materials || params.material.useVertexColors)
-                    var material = api.loadMaterial( 
+                    var material = api.loadMaterial(
                         api.extend(params.material, {
                             morphTargets: true,
                             vertexColors: THREE.FaceColors
                         })
                     )._material;
                 else if (params.material.useCustomMaterial)
-                    var material = api.loadMaterial( 
+                    var material = api.loadMaterial(
                         params.material
                     )._material;
                 else var material = new THREE.MultiMaterial(materials);
