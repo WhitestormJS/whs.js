@@ -4,8 +4,15 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/** Shape super class */
 WHS.Shape = class {
-
+	/**
+	 * Constructing WHS.Shape object.
+	 * 
+	 * @param {Object} params - Inputed parameters.
+	 * @param {String} type - Shape type.
+	 * @return {WHS.Shape}
+	 */
 	constructor( params, type ) {
 
 		//if ( ! root )
@@ -91,7 +98,12 @@ WHS.Shape = class {
 		return this;
 	}
 
-
+	/**
+	 * Applying shadow & position & rotation.
+	 *
+	 * @param {...String} tags - Tags that defines what to do with shape 
+	 * additionally.
+	 */
 	build( ...tags ) {
 		
 		'use strict';
@@ -171,7 +183,11 @@ WHS.Shape = class {
 		return this;
 	}
 
-
+	/**
+	 * Add shape to WHS.World object.
+	 *
+	 * @param {WHS.World} root - World, were this shape will be. 
+	 */
 	addTo( root, ...tags ) {
 
 		'use strict';
@@ -264,12 +280,18 @@ WHS.Shape = class {
 		return this;
 	}
 
+	/**
+	 * Initialize shape's material object.
+	 */
 	_initMaterial(mat_props) {
 		
 		return api.loadMaterial(mat_props)._material;
 		
 	}
 
+	/**
+	 * Remove this light from world.
+	 */
 	remove() {
 		
 		this.root.scene.remove( this.mesh );
@@ -278,6 +300,9 @@ WHS.Shape = class {
 
 	}
 
+	/**
+	 * Add this light to last applied world.
+	 */
 	retrieve() {
 
 		this.root.scene.add( this.mesh );
