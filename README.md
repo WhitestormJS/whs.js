@@ -19,7 +19,7 @@
 
 WhitestormJS is [hosted by jsDelivr](http://www.jsdelivr.com/projects/whitestormjs). You can link to the latest [minified version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js), [full version](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.js), or [download both](https://cdn.jsdelivr.net/whitestormjs/latest/whitestormjs.zip).
 
-![WhitestormJS](https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/logo/big.png)
+![WhitestormJS](https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/logo/big-inverse.png)
 
 <br>
 
