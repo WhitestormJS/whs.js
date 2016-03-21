@@ -4,7 +4,27 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS torus knot
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Torusknot = class Torusknot extends WHS.Shape {
+
+    /**
+     * Creates a torus knot
+     *
+     * @param {Object} params - Knot options
+     * @param {Object} params.geometry - Knot geometry options
+     * @param {Number} params.geometry.radius - Knot radius
+     * @param {Number} params.geometry.tube - Knot tube size
+     * @param {Number} params.geometry.radialSegments - Amount of radial segments
+     * @param {Number} params.geometry.tubularSegments - Amount of tubular segments
+     * @param {Number} params.geometry.p - P
+     * @param {Number} params.geometry.q - Q
+     * @param {Number} params.geometry.heightScale - Knot height scale
+     */
 
 	constructor( params ) {
 
@@ -22,7 +42,7 @@ WHS.Torusknot = class Torusknot extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh( 
+		this.mesh = new Physijs.ConvexMesh(
             new THREE.TorusKnotGeometry(
 
                 params.geometry.radius,
@@ -33,10 +53,10 @@ WHS.Torusknot = class Torusknot extends WHS.Shape {
                 params.geometry.q,
                 params.geometry.heightScale
 
-            ), 
+            ),
 
-            super._initMaterial(params.material), 
-            params.mass 
+            super._initMaterial(params.material),
+            params.mass
         );
 
         super.build();
