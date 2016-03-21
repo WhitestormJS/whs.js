@@ -7,7 +7,7 @@ describe("WhitestormJS", function() {
     });
     describe("#init()", function() {
         it("should be defined", function() {
-            assert.equal(typeof WHS.init, "function");
+            assert.equal(typeof WHS.World, "function");
         });
     });
 });
