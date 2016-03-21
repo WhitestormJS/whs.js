@@ -5,9 +5,9 @@
 */
 
 /**
- * ORBITCONTROLS.
+ * Orbit controld for scene.
  *
- * @param {Object} object Description. (OPTIONAL)
+ * @param {Object} object - Object followed by camera.
  */
 WHS.World.prototype.OrbitControls = function(object) {
 
