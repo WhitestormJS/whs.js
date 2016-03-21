@@ -6,15 +6,9 @@
     <a href="https://travis-ci.org/WhitestormJS/whitestorm.js" align="center">
         <img src="https://travis-ci.org/WhitestormJS/whitestorm.js.svg">
     </a>
-    
-    
-    <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>
-    
-    <br>
-    
     <a href="https://www.npmjs.com/package/whitestormjs"><img src="http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg"></a>          
     <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg"></a>
-    
+    <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>
     <br>
     
     <p align="center"><i><b>JQuery for Three.js and Physi.js</b></i></p>
