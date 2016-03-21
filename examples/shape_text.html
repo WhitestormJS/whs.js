@@ -126,6 +126,10 @@ var GAME = new WHS.init({
         y: 10,
         z: 30
     },
+    
+    shadowmap: {
+        type: THREE.PCFShadowMap
+    },
 
     background: 0xffffff
 
@@ -137,22 +141,22 @@ var text = GAME.Text({
         text: "hello world",
         parameters: {
             font: "assets/fonts/gentilis_bold.typeface.js",
-            size: 40,
-            height: 40,
-            curveSegments: 12
+            size: 20,
+            height: 5,
+            curveSegments: 6
         }
     },
 
-    mass: 0,
+    mass: 10,
 
     material: {
         color: 0x00ff00,
-        kind: "basic"
+        kind: "lambert"
     },
 
     pos: {
-        x: 0,
-        y: 5,
+        x: -40,
+        y: 20,
         z: 0
     }
 
@@ -187,7 +191,7 @@ var spotlight = GAME.SpotLight( {
     pos: {
         x: 0,
         y: 20,
-        z: -30
+        z: 60
     },
 
     target: {
