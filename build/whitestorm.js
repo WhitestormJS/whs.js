@@ -397,6 +397,22 @@ THREE.BufferGeometryUtils = {
 
 };
 
+function Events(n) {
+    var t = {},
+        f = [];
+    n = n || this, n.on = function(n, f, i) {
+        (t[n] = t[n] || []).push([f, i]);
+    }, n.off = function(n, i) {
+        n || (t = {});
+        for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) {
+            i == o[c][0] && o.splice(c, 1);
+        }
+    }, n.emit = function(n) {
+        for (var i, o = t[n] || f, c = 0; i = o[c++];) {
+            i[0].apply(i[1], f.slice.call(arguments, 1));
+        }
+    };
+}
 /**
  * @author qiao / https://github.com/qiao
  * @author mrdoob / http://mrdoob.com
@@ -1002,6 +1018,105 @@ THREE.OrbitControls = function(object, domElement) {
 
 THREE.OrbitControls.prototype = Object.create(THREE.EventDispatcher.prototype);
 
+// stats.js - http://github.com/mrdoob/stats.js
+var Stats = function Stats() {
+    function f(a, e, b) {
+        a = document.createElement(a);
+        a.id = e;
+        a.style.cssText = b;
+        return a;
+    }
+
+    function l(a, e, b) {
+        var c = f("div", a, "padding:0 0 3px 3px;text-align:left;background:" + b),
+            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);
+        d.innerHTML = a.toUpperCase();
+        c.appendChild(d);
+        a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);
+        c.appendChild(a);
+        for (e = 0; 74 > e; e++) {
+            a.appendChild(f("span", "", "width:1px;height:30px;float:left;opacity:0.9;background:" + b));
+        }
+        return c;
+    }
+
+    function m(a) {
+        for (var b = c.children, d = 0; d < b.length; d++) {
+            b[d].style.display = d === a ? "block" : "none";
+        }
+        n = a;
+    }
+
+    function p(a, b) {
+        a.appendChild(a.firstChild).style.height = Math.min(30, 30 - 30 * b) + "px";
+    }
+    var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
+        k = q(),
+        r = k,
+        t = 0,
+        n = 0,
+        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");
+    c.addEventListener("mousedown", function(a) {
+        a.preventDefault();
+        m(++n % c.children.length);
+    }, !1);
+    var d = 0,
+        u = Infinity,
+        v = 0,
+        b = l("fps", "#0ff", "#002"),
+        A = b.children[0],
+        B = b.children[1];
+    c.appendChild(b);
+    var g = 0,
+        w = Infinity,
+        x = 0,
+        b = l("ms", "#0f0", "#020"),
+        C = b.children[0],
+        D = b.children[1];
+    c.appendChild(b);
+    if (self.performance && self.performance.memory) {
+        var h = 0,
+            y = Infinity,
+            z = 0,
+            b = l("mb", "#f08", "#201"),
+            E = b.children[0],
+            F = b.children[1];
+        c.appendChild(b);
+    }
+    m(n);
+    return {
+        REVISION: 14,
+        domElement: c,
+        setMode: m,
+        begin: function begin() {
+            k = q();
+        },
+        end: function end() {
+            var a = q();
+            g = a - k;
+            w = Math.min(w, g);
+            x = Math.max(x, g);
+            C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";
+            p(D, g / 200);
+            t++;
+            if (a > r + 1E3 && (d = Math.round(1E3 * t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
+                var b = performance.memory.usedJSHeapSize,
+                    c = performance.memory.jsHeapSizeLimit;
+                h = Math.round(9.54E-7 * b);
+                y = Math.min(y, h);
+                z = Math.max(z, h);
+                E.textContent = h + " MB (" + y + "-" + z + ")";
+                p(F, b / c);
+            }
+            return a;
+        },
+        update: function update() {
+            k = this.end();
+        }
+    };
+};
+"object" === (typeof module === "undefined" ? "undefined" : _typeof(module)) && (module.exports = Stats);
+
 /*
  *	@author zz85 / http://twitter.com/blurspline / http://www.lab4games.net/zz85/blog
  *
@@ -1325,121 +1440,6 @@ THREE.SubdivisionModifier.prototype.modify = function(geometry) {
     };
 })();
 
-function Events(n) {
-    var t = {},
-        f = [];
-    n = n || this, n.on = function(n, f, i) {
-        (t[n] = t[n] || []).push([f, i]);
-    }, n.off = function(n, i) {
-        n || (t = {});
-        for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) {
-            i == o[c][0] && o.splice(c, 1);
-        }
-    }, n.emit = function(n) {
-        for (var i, o = t[n] || f, c = 0; i = o[c++];) {
-            i[0].apply(i[1], f.slice.call(arguments, 1));
-        }
-    };
-}
-// stats.js - http://github.com/mrdoob/stats.js
-var Stats = function Stats() {
-    function f(a, e, b) {
-        a = document.createElement(a);
-        a.id = e;
-        a.style.cssText = b;
-        return a;
-    }
-
-    function l(a, e, b) {
-        var c = f("div", a, "padding:0 0 3px 3px;text-align:left;background:" + b),
-            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);
-        d.innerHTML = a.toUpperCase();
-        c.appendChild(d);
-        a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);
-        c.appendChild(a);
-        for (e = 0; 74 > e; e++) {
-            a.appendChild(f("span", "", "width:1px;height:30px;float:left;opacity:0.9;background:" + b));
-        }
-        return c;
-    }
-
-    function m(a) {
-        for (var b = c.children, d = 0; d < b.length; d++) {
-            b[d].style.display = d === a ? "block" : "none";
-        }
-        n = a;
-    }
-
-    function p(a, b) {
-        a.appendChild(a.firstChild).style.height = Math.min(30, 30 - 30 * b) + "px";
-    }
-    var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
-        k = q(),
-        r = k,
-        t = 0,
-        n = 0,
-        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");
-    c.addEventListener("mousedown", function(a) {
-        a.preventDefault();
-        m(++n % c.children.length);
-    }, !1);
-    var d = 0,
-        u = Infinity,
-        v = 0,
-        b = l("fps", "#0ff", "#002"),
-        A = b.children[0],
-        B = b.children[1];
-    c.appendChild(b);
-    var g = 0,
-        w = Infinity,
-        x = 0,
-        b = l("ms", "#0f0", "#020"),
-        C = b.children[0],
-        D = b.children[1];
-    c.appendChild(b);
-    if (self.performance && self.performance.memory) {
-        var h = 0,
-            y = Infinity,
-            z = 0,
-            b = l("mb", "#f08", "#201"),
-            E = b.children[0],
-            F = b.children[1];
-        c.appendChild(b);
-    }
-    m(n);
-    return {
-        REVISION: 14,
-        domElement: c,
-        setMode: m,
-        begin: function begin() {
-            k = q();
-        },
-        end: function end() {
-            var a = q();
-            g = a - k;
-            w = Math.min(w, g);
-            x = Math.max(x, g);
-            C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";
-            p(D, g / 200);
-            t++;
-            if (a > r + 1E3 && (d = Math.round(1E3 * t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
-                var b = performance.memory.usedJSHeapSize,
-                    c = performance.memory.jsHeapSizeLimit;
-                h = Math.round(9.54E-7 * b);
-                y = Math.min(y, h);
-                z = Math.max(z, h);
-                E.textContent = h + " MB (" + y + "-" + z + ")";
-                p(F, b / c);
-            }
-            return a;
-        },
-        update: function update() {
-            k = this.end();
-        }
-    };
-};
-"object" === (typeof module === "undefined" ? "undefined" : _typeof(module)) && (module.exports = Stats);
-
 /* ================ MODERNIZING BROWSER API IF NOT EXIST ==================== */
 
 //Replacing jQuery fadeIn and fadeOut
@@ -1614,6 +1614,13 @@ if (typeof define === 'function' && define.amd) {
     module.exports = WHS;
 }
 
+/**
+ * Extending object with other objects.
+ *
+ * @param {Object} object - Object that will be overwritten.
+ * @param {...Objects} extensions - other objects that will be merged to first.
+ * @return {Object} Extended object.
+ */
 WHS.API.extend = function(object) {
     for (var _len = arguments.length, extensions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         extensions[_key - 1] = arguments[_key];
@@ -1678,31 +1685,16 @@ WHS.API.extend = function(object) {
     return object;
 };
 
-/**
- * Texture. Loads texture object.
- *
- * @param {String} url Url adress of texture *JSON*. (REQUIRED)
- * @param {Object} options Parameters of texture. (REQUIRED)
- * @return {Object} *THREE.JS* texture.
- */
-WHS.API.font = function(url) {
-
-    'use strict';
-
-    var texture = api.loadFont(url, function(font) {
-        return font;
-    });
-};
-
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
- */
-
-//WHS.API.construct = function( root, params, type ) {
-
+/** Light super class */
 WHS.Light = function() {
+    /**
+     * Constructing WHS.Light object.
+     * 
+     * @param {Object} params - Inputed parameters.
+     * @param {String} type - Light type.
+     * @return {WHS.Light}
+     */
+
     function _class(params, type) {
         _classCallCheck(this, _class);
 
@@ -1730,7 +1722,9 @@ WHS.Light = function() {
 
                 intensity: 1,
                 distance: 100,
-                angle: Math.PI / 3
+                angle: Math.PI / 3,
+                exponent: 10,
+                decay: 1
             },
 
             shadowmap: {
@@ -1778,8 +1772,8 @@ WHS.Light = function() {
         var key = 0;
 
         /*root.modellingQueue.forEach( function( el ) {
-        		if ( el.type == type ) key ++;
-        	} );*/
+        			if ( el.type == type ) key ++;
+        		} );*/
 
         var scope = {
             _key: key,
@@ -1801,6 +1795,13 @@ WHS.Light = function() {
 
         return this;
     }
+
+    /**
+     * Applying shadow & position & rotation.
+     *
+     * @param {...String} tags - Tags that defines what to do with light 
+     * additionally.
+     */
 
     _createClass(_class, [{
         key: "build",
@@ -1844,6 +1845,13 @@ WHS.Light = function() {
 
             return this;
         }
+
+        /**
+         * Add light to WHS.World object.
+         *
+         * @param {WHS.World} root - World, were this light will be. 
+         */
+
     }, {
         key: "addTo",
         value: function addTo(root) {
@@ -1890,6 +1898,11 @@ WHS.Light = function() {
 
             return this;
         }
+
+        /** 
+         * Set shadow properties for light.
+         */
+
     }, {
         key: "buildShadow",
         value: function buildShadow() {
@@ -1908,6 +1921,11 @@ WHS.Light = function() {
             this.mesh.shadow.camera.top = this._shadowmap.top;
             this.mesh.shadow.camera.bottom = this._shadowmap.bottom;
         }
+
+        /**
+         * Remove this light from world.
+         */
+
     }, {
         key: "remove",
         value: function remove() {
@@ -1916,6 +1934,11 @@ WHS.Light = function() {
 
             return this;
         }
+
+        /**
+         * Add this light to last applied world.
+         */
+
     }, {
         key: "retrieve",
         value: function retrieve() {
@@ -2020,10 +2043,11 @@ WHS.API.loadMaterial = function(material) {
 };
 
 /**
- * MERGE.
+ * Adds multiple objects to first object with .add method.
  *
  * @param {Object} box Object to be merged. (REQUIRED)
  * @param {Object} rabbits Object to be added. (REQUIRED)
+ * @deprecated since v0.0.6
  */
 WHS.API.merge = function(box, rabbits) {
 
@@ -2052,7 +2076,16 @@ WHS.API.merge = function(box, rabbits) {
     }
 };
 
+/** Shape super class */
 WHS.Shape = function() {
+    /**
+     * Constructing WHS.Shape object.
+     * 
+     * @param {Object} params - Inputed parameters.
+     * @param {String} type - Shape type.
+     * @return {WHS.Shape}
+     */
+
     function _class2(params, type) {
         _classCallCheck(this, _class2);
 
@@ -2111,8 +2144,8 @@ WHS.Shape = function() {
         var key = 0;
 
         /*root.modellingQueue.forEach( function( el ) {
-        		if ( el.type == type ) key ++;
-        	} );*/
+        			if ( el.type == type ) key ++;
+        		} );*/
 
         var scope = {
             _key: key,
@@ -2134,6 +2167,13 @@ WHS.Shape = function() {
 
         return this;
     }
+
+    /**
+     * Applying shadow & position & rotation.
+     *
+     * @param {...String} tags - Tags that defines what to do with shape 
+     * additionally.
+     */
 
     _createClass(_class2, [{
         key: "build",
@@ -2211,6 +2251,13 @@ WHS.Shape = function() {
 
             return this;
         }
+
+        /**
+         * Add shape to WHS.World object.
+         *
+         * @param {WHS.World} root - World, were this shape will be. 
+         */
+
     }, {
         key: "addTo",
         value: function addTo(root) {
@@ -2296,12 +2343,22 @@ WHS.Shape = function() {
 
             return this;
         }
+
+        /**
+         * Initialize shape's material object.
+         */
+
     }, {
         key: "_initMaterial",
         value: function _initMaterial(mat_props) {
 
             return api.loadMaterial(mat_props)._material;
         }
+
+        /**
+         * Remove this light from world.
+         */
+
     }, {
         key: "remove",
         value: function remove() {
@@ -2310,6 +2367,11 @@ WHS.Shape = function() {
 
             return this;
         }
+
+        /**
+         * Add this light to last applied world.
+         */
+
     }, {
         key: "retrieve",
         value: function retrieve() {
@@ -2326,9 +2388,9 @@ WHS.Shape = function() {
 /**
  * Texture. Loads texture object.
  *
- * @param {String} url Url adress of texture *JSON*. (REQUIRED)
- * @param {Object} options Parameters of texture. (REQUIRED)
- * @return {Object} *THREE.JS* texture.
+ * @param {String} url - Url adress of texture *JSON*.
+ * @param {Object} options - Parameters of texture.
+ * @return {Object} Three.JS texture.
  */
 WHS.API.texture = function(url, options) {
 
@@ -2362,35 +2424,6 @@ WHS.API.texture = function(url, options) {
     }
 
     return texture;
-};
-
-WHS.Watch = function(queue) {
-
-    'use strict';
-
-    this._queue = Array.isArray(queue) ? queue.slice() : [];
-
-    return this;
-};
-
-WHS.Watch.prototype.add = function(element) {
-
-    'use strict';
-
-    this._queue.push(element);
-
-    return this;
-};
-
-WHS.Watch.prototype.remove = function(element) {
-
-    'use strict';
-
-    this._queue = this._queue.filter(function(item) {
-        return item != element;
-    });
-
-    return this;
 };
 
 WHS.Watch = function(queue) {
@@ -2544,10 +2577,10 @@ WHS.World = function() {
         this._initRenderer();
 
         /*if (target.anaglyph) {
-             this.effect = new THREE.AnaglyphEffect(this._renderer);
+              this.effect = new THREE.AnaglyphEffect(this._renderer);
             this.effect.setSize(target.rWidth, target.rHeight);
-             this.effect.render(this.scene, this._camera);
-         }*/
+              this.effect.render(this.scene, this._camera);
+          }*/
 
         // NOTE: ==================== Autoresize. ======================
         var scope = this;
@@ -2737,16 +2770,16 @@ WHS.World = function() {
             scope._update();
 
             /*scope._ready = [];
-             var loading_queue = WHS.Watch(scope.children);
-             loading_queue._queue.forEach(object => {
+              var loading_queue = WHS.Watch(scope.children);
+              loading_queue._queue.forEach(object => {
                 object.ready.on("ready", function() {
                    // object._state.then(() => {
                         scope._ready.push(object);
-                         if(loading_queue._queue.length == scope._ready.length) 
+                          if(loading_queue._queue.length == scope._ready.length) 
                             scope._events.emit("ready");
                     //});
                 });
-             });*/
+              });*/
         }
 
         /**
@@ -3957,38 +3990,6 @@ WHS.World.prototype.addFog = function(type, params) {
 };
 
 /**
- * ADDFOG.
- *
- * @param {String} type Fog type (name). (REQUIRED)
- * @param {Object} params Options of fog object. (REQUIRED)
- * @returns {Object} This element scope/statement.
- */
-WHS.World.prototype.addFog = function(type, params) {
-
-    'use strict';
-
-    var scope = {};
-    api.extend(params, {
-        hex: 0x000000, //Default hex
-        near: 0.015, //Default near
-        far: 1000, //Default far
-        density: 0.00025
-    });
-
-    switch (type) {
-        case "fog":
-            scope = new THREE.Fog(params.hex, params.near, params.far);
-            break;
-
-        case "fogexp2":
-            scope = new THREE.FogExp2(params.hex, params.density);
-            break;
-    }
-
-    return scope;
-};
-
-/**
  * WhitestormJS ambient light.
  *
  * @extends WHS.Light
@@ -4148,7 +4149,7 @@ WHS.PointLight = function(_WHS$Light5) {
 
         var _this27 = _possibleConstructorReturn(this, Object.getPrototypeOf(PointLight).call(this, params, "pointlight"));
 
-        _this27.mesh = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance);
+        _this27.mesh = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance, params.light.decay);
 
         _get(Object.getPrototypeOf(PointLight.prototype), "build", _this27).call(_this27);
         _get(Object.getPrototypeOf(PointLight.prototype), "buildShadow", _this27).call(_this27);
@@ -4185,7 +4186,7 @@ WHS.SpotLight = function(_WHS$Light6) {
 
         var _this28 = _possibleConstructorReturn(this, Object.getPrototypeOf(SpotLight).call(this, params, "spotlight"));
 
-        _this28.mesh = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle);
+        _this28.mesh = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle, params.light.exponent, params.light.decay);
 
         _get(Object.getPrototypeOf(SpotLight.prototype), "build", _this28).call(_this28);
         _get(Object.getPrototypeOf(SpotLight.prototype), "buildShadow", _this28).call(_this28);
@@ -4201,9 +4202,10 @@ WHS.World.prototype.SpotLight = function(params) {
 };
 
 /**
- * MAKEFIRSTPERSON.
+ * First person controls.
  *
- * @param {Object} object *WHS* figure/object. (REQUIRED)
+ * @param {Object} object - *WHS* figure/object.
+ * @param {Object} params - Controls parameter objects.
  */
 
 var PI_2 = Math.PI / 2;
@@ -4496,9 +4498,9 @@ WHS.World.prototype.FPSControls = function(object, params) {
 };
 
 /**
- * ORBITCONTROLS.
+ * Orbit controld for scene.
  *
- * @param {Object} object Description. (OPTIONAL)
+ * @param {Object} object - Object followed by camera.
  */
 WHS.World.prototype.OrbitControls = function(object) {
 
