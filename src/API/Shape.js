@@ -292,6 +292,7 @@ WHS.Shape = class {
 	/**
 	 * Remove this light from world.
 	 */
+        let _lastWorld = null;
 	remove() {
 		
 		this.root.scene.remove( this.mesh );
@@ -299,6 +300,7 @@ WHS.Shape = class {
                 if( index !== -1 )
                         this.root.modellingQueue.splice( index, 1 );
                 this.root.children.splice( this.root.children.indexOf( this ), 1);
+                _lastWord = this.root;
                 this.root = null;
 
 		return this;
@@ -310,6 +312,8 @@ WHS.Shape = class {
 	 */
 	retrieve() {
 
+                this.root = _lastWorld;
+                
 		this.root.scene.add( this.mesh );
 
 		return this;
