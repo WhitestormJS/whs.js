@@ -10,6 +10,9 @@
     <a href="https://www.npmjs.com/package/whitestormjs"><img src="http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg"></a>          
     <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg"></a>
 
+    <br>
+    
+    <p align="center"><b>JQuery for Three.js and Physi.js</b></p>
 </p>
 
 <br>
@@ -26,7 +29,6 @@ Include a script tag linking the [WhitestormJS](https://cdn.jsdelivr.net/whitest
 ```html
 <script src="three.js"></script>
 <script src="physi.js"></script>
-<script src="wagner.js"></script>
 <!-- WhitestormJS library -->
 <script src="{path_to_lib}/whitestorm.js"></script>
 ```
