@@ -42,7 +42,9 @@ WHS.Light = class {
 
 	        	intensity: 1,
 	        	distance: 100,
-	        	angle: Math.PI/3
+	        	angle: Math.PI/3,
+                exponent: 10,
+                decay: 1
 	        },
 
 	        shadowmap: {
@@ -119,7 +121,7 @@ WHS.Light = class {
 
 
 	build( ...tags ) {
-		
+
 		'use strict';
 
 		var mesh = this.mesh,
@@ -226,7 +228,7 @@ WHS.Light = class {
 	}
 
 	remove() {
-		
+
 		this.root.scene.remove( this.mesh );
 
 		return this;
