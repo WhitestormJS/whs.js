@@ -6,7 +6,6 @@
 
 /** Class that initializates 3d world. */
 WHS.World = class {
-
     /**
      * Create a 3D world and define defaults.
      *

@@ -4,8 +4,19 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS point light.
+ *
+ * @extends WHS.Light
+ */
 WHS.PointLight = class PointLight extends WHS.Light {
-
+    /**
+     * Point light.
+     *
+     * @param {Object} params.light.color - Light color.
+     * @param {Object} params.light.intensity - Light intensity.
+     * @param {Object} params.light.distance - Light distance.
+     */
 	constructor( params ) {
 
 		super( params, "pointlight" );
