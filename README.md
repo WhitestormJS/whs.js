@@ -18,10 +18,20 @@
 
 ------
 
+## Features of framework
+
+* Simple shape crafting.
+* **Plugin system** and modular structure.
+  - Terrain generation plugin.
+  - Loader plugin.
+* Performance optimization.
+* Automatization of rendering.
+* **Physics support.**
+* WebWorkers for physics.
+
 ## Installation 
 
-
-\* It is advised to download your own copies of the following libraries, as large changes can break backwards compatibility.
+> It is advised to download your own copies of the following libraries, as large changes can break backwards compatibility.
 
 Include [Three.js](http://threejs.org/build/three.min.js) and [Physi.js](https://github.com/chandlerprall/Physijs/blob/master/physi.js) libraries.
 Include a script tag linking the [WhitestormJS](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js) library in your `head` or after your `body`:
