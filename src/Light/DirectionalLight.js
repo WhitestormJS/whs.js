@@ -22,6 +22,6 @@ WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
 
 }
 
-WHS.init.prototype.DirectionalLight = function( params ) {
+WHS.World.prototype.DirectionalLight = function( params ) {
 	return ( new WHS.DirectionalLight(  params ) ).addTo( this );
 }

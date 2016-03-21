@@ -35,6 +35,6 @@ WHS.Tetrahedron = class Tetrahedron extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Tetrahedron = function( params ) {
+WHS.World.prototype.Tetrahedron = function( params ) {
 	return ( new WHS.Tetrahedron(  params ) ).addTo( this );
 }

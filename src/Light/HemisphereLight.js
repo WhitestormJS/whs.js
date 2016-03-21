@@ -23,6 +23,6 @@ WHS.HemisphereLight = class HemisphereLight extends WHS.Light {
 
 }
 
-WHS.init.prototype.HemisphereLight = function( params ) {
+WHS.World.prototype.HemisphereLight = function( params ) {
 	return ( new WHS.HemisphereLight(  params ) ).addTo( this );
 }

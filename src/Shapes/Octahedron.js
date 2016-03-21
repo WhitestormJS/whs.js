@@ -35,6 +35,6 @@ WHS.Octahedron = class Octahedron extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Octahedron = function( params ) {
+WHS.World.prototype.Octahedron = function( params ) {
 	return ( new WHS.Octahedron(  params ) ).addTo( this );
 }

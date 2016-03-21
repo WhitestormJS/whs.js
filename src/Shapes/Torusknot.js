@@ -45,6 +45,6 @@ WHS.Torusknot = class Torusknot extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Torusknot = function( params ) {
+WHS.World.prototype.Torusknot = function( params ) {
 	return ( new WHS.Torusknot(  params ) ).addTo( this );
 }

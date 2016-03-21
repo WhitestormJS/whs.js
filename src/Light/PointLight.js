@@ -23,6 +23,6 @@ WHS.PointLight = class PointLight extends WHS.Light {
 
 }
 
-WHS.init.prototype.PointLight = function( params ) {
+WHS.World.prototype.PointLight = function( params ) {
 	return ( new WHS.PointLight(  params ) ).addTo( this );
 }

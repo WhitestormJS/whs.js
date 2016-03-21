@@ -60,6 +60,6 @@ WHS.Text = class Text extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Text = function( params ) {
+WHS.World.prototype.Text = function( params ) {
 	return ( new WHS.Text(  params ) ).addTo( this, "wait" );
 }

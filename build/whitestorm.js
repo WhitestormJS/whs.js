@@ -2414,20 +2414,23 @@ WHS.loop.prototype.stop = function() {
     this.loop.enabled = false;
 };
 
-/**
- * Init.
- *
- * @param {Object} params Parameters of initalize. (OPTIONAL)
- * @return {Object} Scope.
- */
-WHS.init = function() {
+/** Class that initializates 3d world. */
+WHS.World = function() {
+
+    /**
+     * Create a 3D world and define defaults.
+     *
+     * @param {object} params - The scene settings object.
+     * @return {World} A 3D world whs object.
+     */
+
     function _class3(params) {
 
         'use strict';
 
         _classCallCheck(this, _class3);
 
-        console.log('WHS.init', WHS.REVISION);
+        console.log('WHS.World', WHS.REVISION);
 
         if (!THREE) console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
         if (!Physijs) console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
@@ -2517,6 +2520,10 @@ WHS.init = function() {
         return scope;
     }
 
+    /**
+     * Initialize Three.js scene object.
+     */
+
     _createClass(_class3, [{
         key: "_initScene",
         value: function _initScene() {
@@ -2531,6 +2538,11 @@ WHS.init = function() {
             this.modellingQueue = [];
             this.children = [];
         }
+
+        /**
+         * Set Physi.js scripts pathes.
+         */
+
     }, {
         key: "_initPhysiJS",
         value: function _initPhysiJS() {
@@ -2538,6 +2550,11 @@ WHS.init = function() {
             Physijs.scripts.worker = this._settings.path_worker;
             Physijs.scripts.ammo = this._settings.path_ammo;
         }
+
+        /**
+         * Initialize DOM structure for whitestorm.
+         */
+
     }, {
         key: "_initDOM",
         value: function _initDOM() {
@@ -2554,6 +2571,11 @@ WHS.init = function() {
 
             return this._dom;
         }
+
+        /**
+         * Inititialize stats plugin.
+         */
+
     }, {
         key: "_initStats",
         value: function _initStats() {
@@ -2579,6 +2601,11 @@ WHS.init = function() {
                 this._dom.appendChild(this._stats.domElement);
             }
         }
+
+        /**
+         * Create a camera and add it to scene.
+         */
+
     }, {
         key: "_initCamera",
         value: function _initCamera() {
@@ -2589,6 +2616,11 @@ WHS.init = function() {
 
             this.scene.add(this._camera);
         }
+
+        /**
+         * Create a renderer and apply it's options.
+         */
+
     }, {
         key: "_initRenderer",
         value: function _initRenderer() {
@@ -2613,6 +2645,11 @@ WHS.init = function() {
             this._renderer.domElement.style.width = '100%';
             this._renderer.domElement.style.height = '100%';
         }
+
+        /**
+         * Start animation.
+         */
+
     }, {
         key: "start",
         value: function start() {
@@ -2650,7 +2687,7 @@ WHS.init = function() {
                     scope._renderer.render(scope.scene, scope._camera);
                 }
 
-                scope._loop(time);
+                scope._execLoops(time);
 
                 // End helper.
                 if (scope._stats) scope._stats.end();
@@ -2672,14 +2709,26 @@ WHS.init = function() {
        });
      });*/
         }
+
+        /**
+         * Execute all loops with a specific time.
+         *
+         * @params {number} time - The time value that will be passed to loops.
+         */
+
     }, {
-        key: "_loop",
-        value: function _loop(time) {
+        key: "_execLoops",
+        value: function _execLoops(time) {
 
             WHS.loops.forEach(function(loop) {
                 if (loop.enabled) loop.func(time);
             });
         }
+
+        /**
+         * Update controls time values.
+         */
+
     }, {
         key: "_updateControls",
         value: function _updateControls() {
@@ -2690,6 +2739,13 @@ WHS.init = function() {
                 this.time = Date.now();
             }
         }
+
+        /**
+         * Update morphs animations.
+         *
+         * @params {THREE.Clock} clock - The clock object, which.
+         */
+
     }, {
         key: "_process",
         value: function _process(clock) {
@@ -2699,12 +2755,18 @@ WHS.init = function() {
                 if (this.modellingQueue[i]._type == "morph") this.modellingQueue[i].mesh.mixer.update(clock.getDelta());
             }
         }
+
+        /**
+         * This functon will scene properties when it's called.
+         */
+
     }, {
         key: "resize",
         value: function resize() {
 
             this._camera.aspect = window.innerWidth / window.innerHeight;
             this._camera.updateProjectionMatrix();
+
             this._renderer.setSize(+(window.innerWidth * this._settings.rWidth).toFixed(), +(window.innerHeight * this._settings.rHeight).toFixed());
         }
     }]);
@@ -2712,8 +2774,26 @@ WHS.init = function() {
     return _class3;
 }();
 
+/**
+ * WhitestormJS cube shape.
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Cube = function(_WHS$Shape) {
     _inherits(Cube, _WHS$Shape);
+
+    /**
+     * Create a cube.
+     *
+     * @param {Object} params - Cube options
+     * @param {Object} params.geometry - Cube geometry
+     * @param {Number} params.geometry.width - Cube width
+     * @param {Number} params.geometry.height - Cube height
+     * @param {Number} params.geometry.depth - Cube depth
+     * @param {Material} params.material - Cube material
+     * @param {Number} params.mass - Cube mass
+     */
 
     function Cube(params) {
         _classCallCheck(this, Cube);
@@ -2738,12 +2818,31 @@ WHS.Cube = function(_WHS$Shape) {
     return Cube;
 }(WHS.Shape);
 
-WHS.init.prototype.Cube = function(params) {
+WHS.World.prototype.Cube = function(params) {
     return new WHS.Cube(params).addTo(this);
 };
 
+/**
+ * WhitestormJS cylinder shape.
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Cylinder = function(_WHS$Shape2) {
     _inherits(Cylinder, _WHS$Shape2);
+
+    /**
+     * Create a cylinder.
+     *
+     * @param {Object} params - Cylinder options
+     * @param {Object} params.geometry - Cylinder geometry
+     * @param {Number} params.geometry.radiusTop - The cylinder's top radius
+     * @param {Number} params.geometry.radiusBottom - The cylinder's bottom radius
+     * @param {Number} params.geometry.height - The cylinder's height
+     * @param {Number} params.geometry.radiusSegments - The number of radius segments the cylinder has
+     * @param {Material} params.material - The cylinder's material
+     * @param {Number} params.mass - The cylinder's mass
+     */
 
     function Cylinder(params) {
         _classCallCheck(this, Cylinder);
@@ -2769,12 +2868,29 @@ WHS.Cylinder = function(_WHS$Shape2) {
     return Cylinder;
 }(WHS.Shape);
 
-WHS.init.prototype.Cylinder = function(params) {
+WHS.World.prototype.Cylinder = function(params) {
     return new WHS.Cylinder(params).addTo(this);
 };
 
+/**
+ * WhitestormJS dodecahedron shape
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Dodecahedron = function(_WHS$Shape3) {
     _inherits(Dodecahedron, _WHS$Shape3);
+
+    /**
+     * Create a dodecahedron
+     *
+     * @param {Object} params - The dodecahedron's options
+     * @param {Object} params.geometry - The dodecahedron's geometry
+     * @param {Number} params.geometry.radius - The dodecahedron's radius
+     * @param {Number} params.geometry.detail - The dodecahedron's detail
+     * @param {Material} params.material - The dodecahedron's material
+     * @param {Number} params.mass - The dodecahedron's mass
+     */
 
     function Dodecahedron(params) {
         _classCallCheck(this, Dodecahedron);
@@ -2798,12 +2914,28 @@ WHS.Dodecahedron = function(_WHS$Shape3) {
     return Dodecahedron;
 }(WHS.Shape);
 
-WHS.init.prototype.Dodecahedron = function(params) {
+WHS.World.prototype.Dodecahedron = function(params) {
     return new WHS.Dodecahedron(params).addTo(this);
 };
 
+/**
+ * WhitestormJS shape extrude
+ *
+ * @extends WHS.Shape
+ */
 WHS.Extrude = function(_WHS$Shape4) {
     _inherits(Extrude, _WHS$Shape4);
+
+    /**
+     * Extrude a shape
+     *
+     * @param {Object} params - General options
+     * @param {Object} params.geometry - Geometry options
+     * @param {Array} params.geometry.shapes - Shapes to extrude
+     * @param {Object} params.geometry.options - Options concerning shapes to extrude
+     * @param {Material} params.material - Material
+     * @param {Number} params.mass - Mass
+     */
 
     function Extrude(params) {
         _classCallCheck(this, Extrude);
@@ -2827,12 +2959,29 @@ WHS.Extrude = function(_WHS$Shape4) {
     return Extrude;
 }(WHS.Shape);
 
-WHS.init.prototype.Extrude = function(params) {
+WHS.World.prototype.Extrude = function(params) {
     return new WHS.Extrude(params).addTo(this);
 };
 
+/**
+ * WhitestormJS icosahedron shape.
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Icosahderon = function(_WHS$Shape5) {
     _inherits(Icosahedron, _WHS$Shape5);
+
+    /**
+     * Create an icosahedron
+     *
+     * @param {Object} params - Icosahedron options
+     * @param {Object} params.geometry - Icosahedron geometry options
+     * @param {Number} params.geometry.radius - Icosahedron radius
+     * @param {Number} params.geometry.detail - Icosahedron detail
+     * @param {Material} params.material - Icosahedron material
+     * @param {Number} params.mass - Icosahedron mass
+     */
 
     function Icosahedron(params) {
         _classCallCheck(this, Icosahedron);
@@ -2856,12 +3005,28 @@ WHS.Icosahderon = function(_WHS$Shape5) {
     return Icosahedron;
 }(WHS.Shape);
 
-WHS.init.prototype.Icosahedron = function(params) {
+WHS.World.prototype.Icosahedron = function(params) {
     return new WHS.Icosahderon(params).addTo(this);
 };
 
+/**
+ * WhitestormJS lathe Shape
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Lathe = function(_WHS$Shape6) {
     _inherits(Lathe, _WHS$Shape6);
+
+    /**
+     * Create a lathe
+     *
+     * @param {Object} params - Lathe options
+     * @param {Object} params.geometry - Lathe geometry options
+     * @param {Array} params.geometry.points - Lathe points
+     * @param {Material} params.material - Lathe material
+     * @param {Number} params.mass - Lathe mass
+     */
 
     function Lathe(params) {
         _classCallCheck(this, Lathe);
@@ -2884,12 +3049,28 @@ WHS.Lathe = function(_WHS$Shape6) {
     return Lathe;
 }(WHS.Shape);
 
-WHS.init.prototype.Lathe = function(params) {
+WHS.World.prototype.Lathe = function(params) {
     return new WHS.Lathe(params).addTo(this);
 };
 
+/**
+ * WhitestormJS model
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Model = function(_WHS$Shape7) {
     _inherits(Model, _WHS$Shape7);
+
+    /**
+     * Create a model
+     *
+     * @param {Object} params - Model options
+     * @param {Object} params.geometry - Model geometry options
+     * @param {String} params.geometry.path - Path to model JSON
+     * @param {Material} params.material - Model material
+     * @param {Number} params.mass - Model mass
+     */
 
     function Model(params) {
         _classCallCheck(this, Model);
@@ -2932,12 +3113,31 @@ WHS.Model = function(_WHS$Shape7) {
     return Model;
 }(WHS.Shape);
 
-WHS.init.prototype.Model = function(params) {
+WHS.World.prototype.Model = function(params) {
     return new WHS.Model(params).addTo(this, "wait");
 };
 
+/**
+ * WhitestormJS morph
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Morph = function(_WHS$Shape8) {
     _inherits(Morph, _WHS$Shape8);
+
+    /**
+     * Create a morph
+     *
+     * @param {Object} params - Morph options
+     * @param {Object} params.geometry - Morph geometry options
+     * @param {String} params.geometry.path - Path to morph JSON
+     * @param {Material} params.material - Morph material
+     * @param {Number} params.mass - Morph mass
+     * @param {Object} params.morph - Morph options
+     * @param {Number} params.morph.speed - Morph speed
+     * @param {Number} params.morph.duration - Morph duration
+     */
 
     function Morph(params) {
         _classCallCheck(this, Morph);
@@ -2988,7 +3188,7 @@ WHS.Morph = function(_WHS$Shape8) {
     return Morph;
 }(WHS.Shape);
 
-WHS.init.prototype.Morph = function(params) {
+WHS.World.prototype.Morph = function(params) {
     return new WHS.Morph(params).addTo(this, "wait");
 };
 
@@ -3017,7 +3217,7 @@ WHS.Octahedron = function(_WHS$Shape9) {
     return Octahedron;
 }(WHS.Shape);
 
-WHS.init.prototype.Octahedron = function(params) {
+WHS.World.prototype.Octahedron = function(params) {
     return new WHS.Octahedron(params).addTo(this);
 };
 
@@ -3047,7 +3247,7 @@ WHS.Parametric = function(_WHS$Shape10) {
     return Parametric;
 }(WHS.Shape);
 
-WHS.init.prototype.Parametric = function(params) {
+WHS.World.prototype.Parametric = function(params) {
     return new WHS.Parametric(params).addTo(this);
 };
 
@@ -3077,7 +3277,7 @@ WHS.Plane = function(_WHS$Shape11) {
     return Plane;
 }(WHS.Shape);
 
-WHS.init.prototype.Plane = function(params) {
+WHS.World.prototype.Plane = function(params) {
     return new WHS.Plane(params).addTo(this);
 };
 
@@ -3122,7 +3322,7 @@ WHS.Polyhedron = function(_WHS$Shape12) {
     return Polyhedron;
 }(WHS.Shape);
 
-WHS.init.prototype.Polyhedron = function(params) {
+WHS.World.prototype.Polyhedron = function(params) {
     return new WHS.Polyhedron(params).addTo(this);
 };
 
@@ -3155,7 +3355,7 @@ WHS.Ring = function(_WHS$Shape13) {
     return Ring;
 }(WHS.Shape);
 
-WHS.init.prototype.Ring = function(params) {
+WHS.World.prototype.Ring = function(params) {
     return new WHS.Ring(params).addTo(this);
 };
 
@@ -3183,7 +3383,7 @@ WHS.Shape2D = function(_WHS$Shape14) {
     return Shape2D;
 }(WHS.Shape);
 
-WHS.init.prototype.Shape2D = function(params) {
+WHS.World.prototype.Shape2D = function(params) {
     return new WHS.Shape2D(params).addTo(this);
 };
 
@@ -3212,7 +3412,7 @@ WHS.Smooth = function(_WHS$Shape15) {
     return Smooth;
 }(WHS.Shape);
 
-WHS.init.prototype.Smooth = function(params) {
+WHS.World.prototype.Smooth = function(params) {
     return new WHS.Smooth(params).addTo(this);
 };
 
@@ -3242,7 +3442,7 @@ WHS.Sphere = function(_WHS$Shape16) {
     return Sphere;
 }(WHS.Shape);
 
-WHS.init.prototype.Sphere = function(params) {
+WHS.World.prototype.Sphere = function(params) {
     return new WHS.Sphere(params).addTo(this);
 };
 
@@ -3271,7 +3471,7 @@ WHS.Tetrahedron = function(_WHS$Shape17) {
     return Tetrahedron;
 }(WHS.Shape);
 
-WHS.init.prototype.Tetrahedron = function(params) {
+WHS.World.prototype.Tetrahedron = function(params) {
     return new WHS.Tetrahedron(params).addTo(this);
 };
 
@@ -3323,7 +3523,7 @@ WHS.Text = function(_WHS$Shape18) {
     return Text;
 }(WHS.Shape);
 
-WHS.init.prototype.Text = function(params) {
+WHS.World.prototype.Text = function(params) {
     return new WHS.Text(params).addTo(this, "wait");
 };
 
@@ -3355,7 +3555,7 @@ WHS.Torus = function(_WHS$Shape19) {
     return Torus;
 }(WHS.Shape);
 
-WHS.init.prototype.Torus = function(params) {
+WHS.World.prototype.Torus = function(params) {
     return new WHS.Torus(params).addTo(this);
 };
 
@@ -3389,7 +3589,7 @@ WHS.Torusknot = function(_WHS$Shape20) {
     return Torusknot;
 }(WHS.Shape);
 
-WHS.init.prototype.Torusknot = function(params) {
+WHS.World.prototype.Torusknot = function(params) {
     return new WHS.Torusknot(params).addTo(this);
 };
 
@@ -3439,7 +3639,7 @@ WHS.Tube = function(_WHS$Shape21) {
     return Tube;
 }(WHS.Shape);
 
-WHS.init.prototype.Tube = function(params) {
+WHS.World.prototype.Tube = function(params) {
     return new WHS.Tube(params).addTo(this);
 };
 
@@ -3450,7 +3650,7 @@ WHS.init.prototype.Tube = function(params) {
  * @param {Object} params Options of fog object. (REQUIRED)
  * @returns {Object} This element scope/statement.
  */
-WHS.init.prototype.addFog = function(type, params) {
+WHS.World.prototype.addFog = function(type, params) {
 
     'use strict';
 
@@ -3493,7 +3693,7 @@ WHS.AmbientLight = function(_WHS$Light) {
     return AmbientLight;
 }(WHS.Light);
 
-WHS.init.prototype.AmbientLight = function(params) {
+WHS.World.prototype.AmbientLight = function(params) {
     return new WHS.AmbientLight(params).addTo(this);
 };
 
@@ -3516,7 +3716,7 @@ WHS.DirectionalLight = function(_WHS$Light2) {
     return DirectionalLight;
 }(WHS.Light);
 
-WHS.init.prototype.DirectionalLight = function(params) {
+WHS.World.prototype.DirectionalLight = function(params) {
     return new WHS.DirectionalLight(params).addTo(this);
 };
 
@@ -3539,7 +3739,7 @@ WHS.HemisphereLight = function(_WHS$Light3) {
     return HemisphereLight;
 }(WHS.Light);
 
-WHS.init.prototype.HemisphereLight = function(params) {
+WHS.World.prototype.HemisphereLight = function(params) {
     return new WHS.HemisphereLight(params).addTo(this);
 };
 
@@ -3562,7 +3762,7 @@ WHS.NormalLight = function(_WHS$Light4) {
     return NormalLight;
 }(WHS.Light);
 
-WHS.init.prototype.NormalLight = function(params) {
+WHS.World.prototype.NormalLight = function(params) {
     return new WHS.NormalLight(params).addTo(this);
 };
 
@@ -3585,7 +3785,7 @@ WHS.PointLight = function(_WHS$Light5) {
     return PointLight;
 }(WHS.Light);
 
-WHS.init.prototype.PointLight = function(params) {
+WHS.World.prototype.PointLight = function(params) {
     return new WHS.PointLight(params).addTo(this);
 };
 
@@ -3608,7 +3808,7 @@ WHS.SpotLight = function(_WHS$Light6) {
     return SpotLight;
 }(WHS.Light);
 
-WHS.init.prototype.SpotLight = function(params) {
+WHS.World.prototype.SpotLight = function(params) {
     return new WHS.SpotLight(params).addTo(this);
 };
 
@@ -3620,7 +3820,7 @@ WHS.init.prototype.SpotLight = function(params) {
 
 var PI_2 = Math.PI / 2;
 
-WHS.init.prototype.FPSControls = function(object, params) {
+WHS.World.prototype.FPSControls = function(object, params) {
 
     'use strict';
 
@@ -3912,7 +4112,7 @@ WHS.init.prototype.FPSControls = function(object, params) {
  *
  * @param {Object} object Description. (OPTIONAL)
  */
-WHS.init.prototype.OrbitControls = function(object) {
+WHS.World.prototype.OrbitControls = function(object) {
 
     this.controls = new THREE.OrbitControls(this._camera, this._renderer.domElement);
 
@@ -3990,6 +4190,6 @@ WHS.Skybox = function(_WHS$Shape22) {
     return Skybox;
 }(WHS.Shape);
 
-WHS.init.prototype.Skybox = function(params) {
+WHS.World.prototype.Skybox = function(params) {
     return new WHS.Skybox(params).addTo(this);
 };

@@ -51,6 +51,6 @@ WHS.Extrude = class Extrude extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Extrude = function( params ) {
+WHS.World.prototype.Extrude = function( params ) {
 	return ( new WHS.Extrude(  params ) ).addTo( this );
 }

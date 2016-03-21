@@ -51,6 +51,6 @@ WHS.Dodecahedron = class Dodecahedron extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Dodecahedron = function( params ) {
+WHS.World.prototype.Dodecahedron = function( params ) {
 	return ( new WHS.Dodecahedron(  params ) ).addTo( this );
 }

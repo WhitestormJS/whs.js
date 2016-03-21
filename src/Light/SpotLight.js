@@ -24,6 +24,6 @@ WHS.SpotLight = class SpotLight extends WHS.Light {
 
 }
 
-WHS.init.prototype.SpotLight = function( params ) {
+WHS.World.prototype.SpotLight = function( params ) {
 	return ( new WHS.SpotLight(  params ) ).addTo( this );
 }
