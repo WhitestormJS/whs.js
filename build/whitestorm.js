@@ -3620,7 +3620,7 @@ WHS.init.prototype.SpotLight = function(params) {
 
 var PI_2 = Math.PI / 2;
 
-WHS.init.prototype.MakeFirstPerson = function(object, params) {
+WHS.init.prototype.FPSControls = function(object, params) {
 
     'use strict';
 
