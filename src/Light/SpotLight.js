@@ -14,7 +14,9 @@ WHS.SpotLight = class SpotLight extends WHS.Light {
             params.light.color,
             params.light.intensity,
             params.light.distance,
-            params.light.angle
+            params.light.angle,
+            params.light.exponent,
+            params.light.decay
         );
 
         super.build();

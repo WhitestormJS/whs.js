@@ -397,22 +397,6 @@ THREE.BufferGeometryUtils = {
 
 };
 
-function Events(n) {
-    var t = {},
-        f = [];
-    n = n || this, n.on = function(n, f, i) {
-        (t[n] = t[n] || []).push([f, i]);
-    }, n.off = function(n, i) {
-        n || (t = {});
-        for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) {
-            i == o[c][0] && o.splice(c, 1);
-        }
-    }, n.emit = function(n) {
-        for (var i, o = t[n] || f, c = 0; i = o[c++];) {
-            i[0].apply(i[1], f.slice.call(arguments, 1));
-        }
-    };
-}
 /**
  * @author qiao / https://github.com/qiao
  * @author mrdoob / http://mrdoob.com
@@ -1018,105 +1002,6 @@ THREE.OrbitControls = function(object, domElement) {
 
 THREE.OrbitControls.prototype = Object.create(THREE.EventDispatcher.prototype);
 
-// stats.js - http://github.com/mrdoob/stats.js
-var Stats = function Stats() {
-    function f(a, e, b) {
-        a = document.createElement(a);
-        a.id = e;
-        a.style.cssText = b;
-        return a;
-    }
-
-    function l(a, e, b) {
-        var c = f("div", a, "padding:0 0 3px 3px;text-align:left;background:" + b),
-            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);
-        d.innerHTML = a.toUpperCase();
-        c.appendChild(d);
-        a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);
-        c.appendChild(a);
-        for (e = 0; 74 > e; e++) {
-            a.appendChild(f("span", "", "width:1px;height:30px;float:left;opacity:0.9;background:" + b));
-        }
-        return c;
-    }
-
-    function m(a) {
-        for (var b = c.children, d = 0; d < b.length; d++) {
-            b[d].style.display = d === a ? "block" : "none";
-        }
-        n = a;
-    }
-
-    function p(a, b) {
-        a.appendChild(a.firstChild).style.height = Math.min(30, 30 - 30 * b) + "px";
-    }
-    var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
-        k = q(),
-        r = k,
-        t = 0,
-        n = 0,
-        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");
-    c.addEventListener("mousedown", function(a) {
-        a.preventDefault();
-        m(++n % c.children.length);
-    }, !1);
-    var d = 0,
-        u = Infinity,
-        v = 0,
-        b = l("fps", "#0ff", "#002"),
-        A = b.children[0],
-        B = b.children[1];
-    c.appendChild(b);
-    var g = 0,
-        w = Infinity,
-        x = 0,
-        b = l("ms", "#0f0", "#020"),
-        C = b.children[0],
-        D = b.children[1];
-    c.appendChild(b);
-    if (self.performance && self.performance.memory) {
-        var h = 0,
-            y = Infinity,
-            z = 0,
-            b = l("mb", "#f08", "#201"),
-            E = b.children[0],
-            F = b.children[1];
-        c.appendChild(b);
-    }
-    m(n);
-    return {
-        REVISION: 14,
-        domElement: c,
-        setMode: m,
-        begin: function begin() {
-            k = q();
-        },
-        end: function end() {
-            var a = q();
-            g = a - k;
-            w = Math.min(w, g);
-            x = Math.max(x, g);
-            C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";
-            p(D, g / 200);
-            t++;
-            if (a > r + 1E3 && (d = Math.round(1E3 * t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
-                var b = performance.memory.usedJSHeapSize,
-                    c = performance.memory.jsHeapSizeLimit;
-                h = Math.round(9.54E-7 * b);
-                y = Math.min(y, h);
-                z = Math.max(z, h);
-                E.textContent = h + " MB (" + y + "-" + z + ")";
-                p(F, b / c);
-            }
-            return a;
-        },
-        update: function update() {
-            k = this.end();
-        }
-    };
-};
-"object" === (typeof module === "undefined" ? "undefined" : _typeof(module)) && (module.exports = Stats);
-
 /*
  *	@author zz85 / http://twitter.com/blurspline / http://www.lab4games.net/zz85/blog
  *
@@ -1440,6 +1325,121 @@ THREE.SubdivisionModifier.prototype.modify = function(geometry) {
     };
 })();
 
+function Events(n) {
+    var t = {},
+        f = [];
+    n = n || this, n.on = function(n, f, i) {
+        (t[n] = t[n] || []).push([f, i]);
+    }, n.off = function(n, i) {
+        n || (t = {});
+        for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) {
+            i == o[c][0] && o.splice(c, 1);
+        }
+    }, n.emit = function(n) {
+        for (var i, o = t[n] || f, c = 0; i = o[c++];) {
+            i[0].apply(i[1], f.slice.call(arguments, 1));
+        }
+    };
+}
+// stats.js - http://github.com/mrdoob/stats.js
+var Stats = function Stats() {
+    function f(a, e, b) {
+        a = document.createElement(a);
+        a.id = e;
+        a.style.cssText = b;
+        return a;
+    }
+
+    function l(a, e, b) {
+        var c = f("div", a, "padding:0 0 3px 3px;text-align:left;background:" + b),
+            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);
+        d.innerHTML = a.toUpperCase();
+        c.appendChild(d);
+        a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);
+        c.appendChild(a);
+        for (e = 0; 74 > e; e++) {
+            a.appendChild(f("span", "", "width:1px;height:30px;float:left;opacity:0.9;background:" + b));
+        }
+        return c;
+    }
+
+    function m(a) {
+        for (var b = c.children, d = 0; d < b.length; d++) {
+            b[d].style.display = d === a ? "block" : "none";
+        }
+        n = a;
+    }
+
+    function p(a, b) {
+        a.appendChild(a.firstChild).style.height = Math.min(30, 30 - 30 * b) + "px";
+    }
+    var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
+        k = q(),
+        r = k,
+        t = 0,
+        n = 0,
+        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");
+    c.addEventListener("mousedown", function(a) {
+        a.preventDefault();
+        m(++n % c.children.length);
+    }, !1);
+    var d = 0,
+        u = Infinity,
+        v = 0,
+        b = l("fps", "#0ff", "#002"),
+        A = b.children[0],
+        B = b.children[1];
+    c.appendChild(b);
+    var g = 0,
+        w = Infinity,
+        x = 0,
+        b = l("ms", "#0f0", "#020"),
+        C = b.children[0],
+        D = b.children[1];
+    c.appendChild(b);
+    if (self.performance && self.performance.memory) {
+        var h = 0,
+            y = Infinity,
+            z = 0,
+            b = l("mb", "#f08", "#201"),
+            E = b.children[0],
+            F = b.children[1];
+        c.appendChild(b);
+    }
+    m(n);
+    return {
+        REVISION: 14,
+        domElement: c,
+        setMode: m,
+        begin: function begin() {
+            k = q();
+        },
+        end: function end() {
+            var a = q();
+            g = a - k;
+            w = Math.min(w, g);
+            x = Math.max(x, g);
+            C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";
+            p(D, g / 200);
+            t++;
+            if (a > r + 1E3 && (d = Math.round(1E3 * t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
+                var b = performance.memory.usedJSHeapSize,
+                    c = performance.memory.jsHeapSizeLimit;
+                h = Math.round(9.54E-7 * b);
+                y = Math.min(y, h);
+                z = Math.max(z, h);
+                E.textContent = h + " MB (" + y + "-" + z + ")";
+                p(F, b / c);
+            }
+            return a;
+        },
+        update: function update() {
+            k = this.end();
+        }
+    };
+};
+"object" === (typeof module === "undefined" ? "undefined" : _typeof(module)) && (module.exports = Stats);
+
 /* ================ MODERNIZING BROWSER API IF NOT EXIST ==================== */
 
 //Replacing jQuery fadeIn and fadeOut
@@ -1730,7 +1730,9 @@ WHS.Light = function() {
 
                 intensity: 1,
                 distance: 100,
-                angle: Math.PI / 3
+                angle: Math.PI / 3,
+                exponent: 10,
+                decay: 1
             },
 
             shadowmap: {
@@ -1778,8 +1780,8 @@ WHS.Light = function() {
         var key = 0;
 
         /*root.modellingQueue.forEach( function( el ) {
-  			if ( el.type == type ) key ++;
-  		} );*/
+  		if ( el.type == type ) key ++;
+  	} );*/
 
         var scope = {
             _key: key,
@@ -2111,8 +2113,8 @@ WHS.Shape = function() {
         var key = 0;
 
         /*root.modellingQueue.forEach( function( el ) {
-  			if ( el.type == type ) key ++;
-  		} );*/
+  		if ( el.type == type ) key ++;
+  	} );*/
 
         var scope = {
             _key: key,
@@ -2393,6 +2395,56 @@ WHS.Watch.prototype.remove = function(element) {
     return this;
 };
 
+WHS.Watch = function(queue) {
+
+    'use strict';
+
+    this._queue = Array.isArray(queue) ? queue.slice() : [];
+
+    return this;
+};
+
+WHS.Watch.prototype.add = function(element) {
+
+    'use strict';
+
+    this._queue.push(element);
+
+    return this;
+};
+
+WHS.Watch.prototype.remove = function(element) {
+
+    'use strict';
+
+    this._queue = this._queue.filter(function(item) {
+        return item != element;
+    });
+
+    return this;
+};
+
+WHS.loop = function(func) {
+
+    this.loop = {
+        func: func,
+        id: WHS.loops.length,
+        enabled: false
+    };
+
+    WHS.loops.push(this.loop);
+};
+
+WHS.loop.prototype.start = function() {
+
+    this.loop.enabled = true;
+};
+
+WHS.loop.prototype.stop = function() {
+
+    this.loop.enabled = false;
+};
+
 WHS.loop = function(func) {
 
     this.loop = {
@@ -2502,10 +2554,10 @@ WHS.init = function() {
         this._initRenderer();
 
         /*if (target.anaglyph) {
-        this.effect = new THREE.AnaglyphEffect(this._renderer);
+       this.effect = new THREE.AnaglyphEffect(this._renderer);
       this.effect.setSize(target.rWidth, target.rHeight);
-        this.effect.render(this.scene, this._camera);
-    }*/
+       this.effect.render(this.scene, this._camera);
+   }*/
 
         // NOTE: ==================== Autoresize. ======================
         var scope = this;
@@ -2661,16 +2713,16 @@ WHS.init = function() {
             scope._update();
 
             /*scope._ready = [];
-     var loading_queue = WHS.Watch(scope.children);
-     loading_queue._queue.forEach(object => {
+    var loading_queue = WHS.Watch(scope.children);
+    loading_queue._queue.forEach(object => {
        object.ready.on("ready", function() {
           // object._state.then(() => {
                scope._ready.push(object);
-                 if(loading_queue._queue.length == scope._ready.length) 
+                if(loading_queue._queue.length == scope._ready.length) 
                    scope._events.emit("ready");
            //});
        });
-     });*/
+    });*/
         }
     }, {
         key: "_loop",
@@ -3475,6 +3527,38 @@ WHS.init.prototype.addFog = function(type, params) {
     return scope;
 };
 
+/**
+ * ADDFOG.
+ *
+ * @param {String} type Fog type (name). (REQUIRED)
+ * @param {Object} params Options of fog object. (REQUIRED)
+ * @returns {Object} This element scope/statement.
+ */
+WHS.init.prototype.addFog = function(type, params) {
+
+    'use strict';
+
+    var scope = {};
+    api.extend(params, {
+        hex: 0x000000, //Default hex
+        near: 0.015, //Default near
+        far: 1000, //Default far
+        density: 0.00025
+    });
+
+    switch (type) {
+        case "fog":
+            scope = new THREE.Fog(params.hex, params.near, params.far);
+            break;
+
+        case "fogexp2":
+            scope = new THREE.FogExp2(params.hex, params.density);
+            break;
+    }
+
+    return scope;
+};
+
 WHS.AmbientLight = function(_WHS$Light) {
     _inherits(AmbientLight, _WHS$Light);
 
@@ -3574,7 +3658,7 @@ WHS.PointLight = function(_WHS$Light5) {
 
         var _this27 = _possibleConstructorReturn(this, Object.getPrototypeOf(PointLight).call(this, params, "pointlight"));
 
-        _this27.mesh = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance);
+        _this27.mesh = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance, params.light.decay);
 
         _get(Object.getPrototypeOf(PointLight.prototype), "build", _this27).call(_this27);
         _get(Object.getPrototypeOf(PointLight.prototype), "buildShadow", _this27).call(_this27);
@@ -3597,7 +3681,7 @@ WHS.SpotLight = function(_WHS$Light6) {
 
         var _this28 = _possibleConstructorReturn(this, Object.getPrototypeOf(SpotLight).call(this, params, "spotlight"));
 
-        _this28.mesh = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle);
+        _this28.mesh = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle, params.light.exponent, params.light.decay);
 
         _get(Object.getPrototypeOf(SpotLight.prototype), "build", _this28).call(_this28);
         _get(Object.getPrototypeOf(SpotLight.prototype), "buildShadow", _this28).call(_this28);
