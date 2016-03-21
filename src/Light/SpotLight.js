@@ -17,16 +17,20 @@ WHS.SpotLight = class SpotLight extends WHS.Light {
      * @param {Object} params.light.intensity - Light intensity.
      * @param {Object} params.light.distance - Light distance.
      * @param {Object} params.light.angle - Light angle.
+     * @param {Object} params.light.exponent - Rapidity of falloff of light 
+     * @param {Object} params.light.decay - How much the light dims
      */
 	constructor( params ) {
 
 		super( params, "spotlight" );
 
-		this.mesh = new THREE.SpotLight(
-            params.light.color,
-            params.light.intensity,
-            params.light.distance,
-            params.light.angle
+	this.mesh = new THREE.SpotLight(
+                params.light.color,
+                params.light.intensity,
+                params.light.distance,
+                params.light.angle,
+                params.light.exponent,
+                params.light.decay
         );
 
         super.build();

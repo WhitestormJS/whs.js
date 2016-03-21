@@ -16,15 +16,17 @@ WHS.PointLight = class PointLight extends WHS.Light {
      * @param {Object} params.light.color - Light color.
      * @param {Object} params.light.intensity - Light intensity.
      * @param {Object} params.light.distance - Light distance.
+     * @param {Object} params.light.decay - How much the light dims
      */
 	constructor( params ) {
 
 		super( params, "pointlight" );
 
-		this.mesh = new THREE.PointLight(
-            params.light.color,
-            params.light.intensity,
-            params.light.distance
+	this.mesh = new THREE.PointLight(
+                params.light.color,
+                params.light.intensity,
+                params.light.distance,
+                params.light.decay
         );
 
         super.build();
