@@ -18,6 +18,8 @@ WHS.Shape = class {
 		//if ( ! root )
 		//console.error( "@constructor: WHS root object is not defined." );
 
+               this._lastWorld = null;
+
 		var _set = function( x, y, z ) {
 
 			this.x = x;
@@ -194,6 +196,8 @@ WHS.Shape = class {
 
 		this.root = root;
 
+               this._lastWorld = root;
+
 		var _mesh = this.mesh,
 			_scope = this;
 
@@ -292,7 +296,6 @@ WHS.Shape = class {
 	/**
 	 * Remove this light from world.
 	 */
-        let _lastWorld = this.root;
 	remove() {
 		
 		this.root.scene.remove( this.mesh );
@@ -311,7 +314,7 @@ WHS.Shape = class {
 	 */
 	retrieve() {
 
-                this.root = _lastWorld;
+                this.root = this._lastWorld;
                 
 		this.root.scene.add( this.mesh );
 
