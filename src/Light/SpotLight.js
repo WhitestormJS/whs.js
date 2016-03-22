@@ -17,6 +17,8 @@ WHS.SpotLight = class SpotLight extends WHS.Light {
      * @param {Object} params.light.intensity - Light intensity.
      * @param {Object} params.light.distance - Light distance.
      * @param {Object} params.light.angle - Light angle.
+     * @param {Object} params.light.exponent - Light exponent.
+     * @param {Object} params.light.decay - Light decay.
      */
 	constructor( params ) {
 
