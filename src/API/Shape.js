@@ -18,6 +18,8 @@ WHS.Shape = class {
 		//if ( ! root )
 		//console.error( "@constructor: WHS root object is not defined." );
 
+               this._lastWorld = null;
+
 		var _set = function( x, y, z ) {
 
 			this.x = x;
@@ -194,6 +196,8 @@ WHS.Shape = class {
 
 		this.root = root;
 
+               this._lastWorld = root;
+
 		var _mesh = this.mesh,
 			_scope = this;
 
@@ -295,6 +299,11 @@ WHS.Shape = class {
 	remove() {
 		
 		this.root.scene.remove( this.mesh );
+                let index = this.root.modellingQueue.indexOf(this);
+                if( index !== -1 )
+                        this.root.modellingQueue.splice( index, 1 );
+                this.root.children.splice( this.root.children.indexOf( this ), 1);
+                this.root = null;
 
 		return this;
 
@@ -305,6 +314,8 @@ WHS.Shape = class {
 	 */
 	retrieve() {
 
+                this.root = this._lastWorld;
+                
 		this.root.scene.add( this.mesh );
 
 		return this;
