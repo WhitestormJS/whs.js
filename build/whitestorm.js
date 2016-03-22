@@ -1723,7 +1723,7 @@ WHS.Light = function() {
                 intensity: 1,
                 distance: 100,
                 angle: Math.PI / 3,
-                exponent: 10,
+                exponent: 0,
                 decay: 1
             },
 
@@ -4142,6 +4142,7 @@ WHS.PointLight = function(_WHS$Light5) {
      * @param {Object} params.light.color - Light color.
      * @param {Object} params.light.intensity - Light intensity.
      * @param {Object} params.light.distance - Light distance.
+     * @param {Object} params.light.decay - Light decay.
      */
 
     function PointLight(params) {
@@ -4179,6 +4180,8 @@ WHS.SpotLight = function(_WHS$Light6) {
      * @param {Object} params.light.intensity - Light intensity.
      * @param {Object} params.light.distance - Light distance.
      * @param {Object} params.light.angle - Light angle.
+     * @param {Object} params.light.exponent - Light exponent.
+     * @param {Object} params.light.decay - Light decay.
      */
 
     function SpotLight(params) {
