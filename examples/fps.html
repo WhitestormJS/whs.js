@@ -72,16 +72,16 @@
 
 
   #blocker {
+	  color:white;
   	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
-	background: rgba(0, 0, 0, 0.8);
-	color:white;
-    text-align: center;
+	  background: black;
     position: fixed;
+    top: 0px;
+    left: 0px;
     width: 100%;
     height: 100%;
-    left: 0;
-    top: 0;
     z-index: 2;
+    text-align: center;
   }
 
   .whs {
@@ -94,19 +94,49 @@
     width: inherit !important;
     height: inherit !important;
   }
+
+  .preloader {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: black;
+    top: 0px;
+    left: 0px;
+    z-index: 3;
+  }
+
+  .content {
+    text-align: center;
+    margin-top: 80px;
+  }
+
+  .content h2 {
+    margin-top: 2%;
+    margin-bottom: 1.5%;
+  }
+
+  .controls {
+    margin-top: 5%;
+    margin-bottom: 10%;
+  }
+
+  .links {
+    float: right;
+  }
+
+  .links ul {
+    list-style: none;
+  }
+
+  .links li {
+    display: inline;
+  }
   </style>
 </head>
 
 <body>
 
-<div class="preloader" style="width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    z-index: 999;
-    background: black;
-    z-index: 3;">
+<div class="preloader">
 
     <div class="sprite-left"></div>
     <div class="sprite-right"></div>
@@ -119,10 +149,23 @@
 </div>
 
 <div id="blocker">
-   <center>
-   	<h1>First-Person Game example.</h1>
-   	<b> W, A, S, D - move. Mouse - look.</b>
-   </center>
+  <div class="content">
+    <a href="http://whitestormjs.xyz"><img src="assets/name.png" alt="whitestormjs" /></a>
+    <h2>FPS Demo</h2>
+    <img class="controls" src="assets/keys.gif" height="300px" />
+    <p>
+      Take a tour around this scene,
+      use the WASD keys to move and your mouse to look around.
+    </p>
+    <p>
+      <b>Click anywhere to begin and have fun.</b>
+    </p>
+  </div>
+  <div class="links">
+    <ul>
+      <li><a href="http://whitestormjs.xyz"><img src="assets/logo.png" height="90px"/></a></li>
+    </ul>
+  </div>
 </div>
 
   <script src="../libs/three.js" defer></script>
