@@ -41,7 +41,7 @@ WHS.Light = class {
 	        	intensity: 1,
 	        	distance: 100,
 	        	angle: Math.PI/3,
-                exponent: 10,
+                exponent: 0,
                 decay: 1
 	        },
 
