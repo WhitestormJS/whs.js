@@ -22,6 +22,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="http://whitestormjs.xyz/favicon.ico" />
   <link rel="apple-touch-icon-precomposed" href="http://whitestormjs.xyz/favicon.ico" sizes="57x57" />
   <meta name="msapplication-square150x150logo" content="../development/art/logo/Icon-72@2.png" />
+  <link rel="stylesheet" href="css/icons.css" media="screen" charset="utf-8">
   <style>
 /* Preloading animation */
 
@@ -74,7 +75,7 @@
   #blocker {
 	  color:white;
   	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
-	  background: black;
+	  background: rgba(0, 0, 0, 0.7);
     position: fixed;
     top: 0px;
     left: 0px;
@@ -120,16 +121,41 @@
     margin-bottom: 10%;
   }
 
-  .links {
-    float: right;
+  .right {
+    bottom: 10px;
+    right: 20px;
+    position: absolute;
+  }
+
+  .pages {
+    font-size: 12px;
   }
 
   .links ul {
-    list-style: none;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
   }
 
   .links li {
-    display: inline;
+    float: left;
+  }
+
+  .links li:not(.image) a {
+    color: white;
+    text-align: center;
+    padding: 15px 15px;
+    text-decoration: none;
+  }
+
+  .right li a {
+    display: block;
+    font-size: 20px;
+  }
+
+  small {
+    color: #b3b3b3;
   }
   </style>
 </head>
@@ -158,12 +184,22 @@
       use the WASD keys to move and your mouse to look around.
     </p>
     <p>
-      <b>Click anywhere to begin and have fun.</b>
+      <b>Click anywhere to begin and have fun!</b>
     </p>
+    <small>Copyright (c) 2016 Copyright WhitestormJS All Rights Reserved.</small>
   </div>
-  <div class="links">
+  <div class="links page">
     <ul>
-      <li><a href="http://whitestormjs.xyz"><img src="assets/logo.png" height="90px"/></a></li>
+      <li><a href="#">Our Team</a></li>
+      <li><a href="#">Whitestorm API</a></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+  </div>
+  <div class="links right">
+    <ul>
+      <li><a href="http://github.com/whitestormjs/whitestorm.js" title="collaborate in github"><span class="icon-github"></a></span> </li>
+      <li><a href="https://twitter.com/_alex_buzin" title="our creator"><span class="icon-twitter"></a></span> </li>
+      <li class="image"><a href="http://whitestormjs.xyz"><img src="assets/logo.png" height="64px"/></a></li>
     </ul>
   </div>
 </div>
