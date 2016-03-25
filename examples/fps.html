@@ -25,57 +25,10 @@
   <link rel="stylesheet" href="css/icons.css" media="screen" charset="utf-8">
   <style>
 /* Preloading animation */
-
-  #animation {
-    -webkit-animation: play 2s steps(100) infinite;
-    -moz-animation:    play 2s steps(100) infinite;
-    -o-animation:      play 2s steps(100) infinite;
-    animation:         play 2s steps(100) infinite;
-    margin-left: calc(50% - 50px);
-  }
-
-  @-webkit-keyframes play {
-    100% { transform: translateX(-10000px); }
-  }
-  @-moz-keyframes play {
-    100% { transform: translateX(-10000px); }
-  }
-  @-o-keyframes play {
-    100% { transform: translateX(-10000px); }
-  }
-  @keyframes play {
-    100% { transform: translateX(-10000px); }
-  }
-
-  .sprite-right {
-    content: "";
-    position: fixed;
-    width: 10000px;
-    height: 100px;
-    display: block;
-    top: calc(50% - 50px);
-    left: calc(50% + 50px);
-    z-index: 3;
-    background: black;
-  }
-
-  .sprite-left {
-    content: "";
-    position: fixed;
-    width: 10000px;
-    height: 100px;
-    display: block;
-    top: calc(50% - 50px);
-    right: calc(50% + 50px);
-    z-index: 3;
-    background: black;
-  }
-
-
   #blocker {
 	  color:white;
   	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
-	  background: rgba(0, 0, 0, 0.7);
+	  background: black;
     position: fixed;
     top: 0px;
     left: 0px;
@@ -109,26 +62,21 @@
   .content {
     text-align: center;
     margin-top: 80px;
+    font-weight: lighter;
   }
 
   .content h2 {
-    margin-top: 2%;
+    margin-top: 3.5%;
     margin-bottom: 1.5%;
   }
 
   .controls {
-    margin-top: 5%;
-    margin-bottom: 10%;
+    margin-top: 2em;
+    margin-bottom: 2em;
   }
 
-  .right {
-    bottom: 10px;
-    right: 20px;
-    position: absolute;
-  }
-
-  .pages {
-    font-size: 12px;
+  .pages ul li a {
+    font-size: 9px;
   }
 
   .links ul {
@@ -139,19 +87,33 @@
   }
 
   .links li {
-    float: left;
+    display: inline;
+    margin-right: 1.1em;
+    margin-left: 1.1em;
   }
 
-  .links li:not(.image) a {
+  .links:first-child{
+    margin-right: 0;
+  }
+
+  .links:last-child{
+    margin-left: 0;
+  }
+
+  .links li a {
+    font-size: 20px;
     color: white;
-    text-align: center;
-    padding: 15px 15px;
     text-decoration: none;
   }
 
-  .right li a {
-    display: block;
-    font-size: 20px;
+  .preloader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .preloader img{
+    width: 250px;
+    height: auto;
   }
 
   small {
@@ -163,20 +125,14 @@
 <body>
 
 <div class="preloader">
-
-    <div class="sprite-left"></div>
-    <div class="sprite-right"></div>
-
-	<center style="vertical-align: middle; top: calc(50% - 50px); position:relative;">
-		<div style="width:100px; height: 100px;">
-		<div id="animation" style="background: url('data:image/png;base64,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'); background-size: auto 100%; width:10000px; height:100px;"></div>
-	</div>
-	</center>
+	<center>
+		<img src="assets/preloader.gif" alt="" />
+  </center>
 </div>
 
 <div id="blocker">
   <div class="content">
-    <a href="http://whitestormjs.xyz"><img src="assets/name.png" alt="whitestormjs" /></a>
+    <a href="http://whitestormjs.xyz"><img src="assets/logo.png" alt="whitestormjs" /></a>
     <h2>FPS Demo</h2>
     <img class="controls" src="assets/keys.gif" height="300px" />
     <p>
@@ -184,22 +140,13 @@
       use the WASD keys to move and your mouse to look around.
     </p>
     <p>
-      <b>Click anywhere to begin and have fun!</b>
+      <b>Click anywhere to begin.</b>
     </p>
-    <small>Copyright (c) 2016 Copyright WhitestormJS All Rights Reserved.</small>
   </div>
-  <div class="links page">
-    <ul>
-      <li><a href="#">Our Team</a></li>
-      <li><a href="#">Whitestorm API</a></li>
-      <li><a href="#">Blog</a></li>
-    </ul>
-  </div>
-  <div class="links right">
+  <div class="links">
     <ul>
       <li><a href="http://github.com/whitestormjs/whitestorm.js" title="collaborate in github"><span class="icon-github"></a></span> </li>
       <li><a href="https://twitter.com/_alex_buzin" title="our creator"><span class="icon-twitter"></a></span> </li>
-      <li class="image"><a href="http://whitestormjs.xyz"><img src="assets/logo.png" height="64px"/></a></li>
     </ul>
   </div>
 </div>
