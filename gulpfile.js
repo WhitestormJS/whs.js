@@ -25,7 +25,7 @@ var sources = [
     'src/Light/*.js',
     'src/Controls/*.js',
     'src/GUI/*.js',
-    'src/Skybox/*.js'
+    'src/Components/*.js'
 ]
 
 var sources_test = [
@@ -44,7 +44,7 @@ var sources_test = [
     'src/Light/*.js',
     'src/Controls/*.js',
     'src/GUI/*.js',
-    'src/Skybox/*.js'
+    'src/Components/*.js'
 ]
 
 var codes = [
@@ -60,7 +60,7 @@ var codes = [
     'src/Light/*.js',
     'src/Controls/*.js',
     'src/GUI/*.js',
-    'src/Skybox/*.js'
+    'src/Components/*.js'
 ]
 
 
