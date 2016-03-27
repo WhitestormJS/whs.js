@@ -15,10 +15,13 @@ WHS.Skybox = class Skybox extends WHS.Shape {
             skyType: "box",
             detail: ".png",
             radius: 10,
+            fog: true,
 
             path: ""
 
         });
+
+        console.log(params.fog);
 
         var skyGeometry, skyMat;
 
@@ -35,7 +38,8 @@ WHS.Skybox = class Skybox extends WHS.Shape {
 
                     matArray.push( new THREE.MeshBasicMaterial( {
                         map: THREE.ImageUtils.loadTexture( params.path + directions[ i ] + params.imgSuffix ),
-                        side: THREE.BackSide
+                        side: THREE.BackSide,
+                        fog: params.fog
                     } ) );
 
                 }
@@ -49,7 +53,8 @@ WHS.Skybox = class Skybox extends WHS.Shape {
 
                 skyMat = new THREE.MeshBasicMaterial( {
                     map: THREE.ImageUtils.loadTexture( params.path + params.imgSuffix ),
-                    side: THREE.BackSide
+                    side: THREE.BackSide,
+                    fog: params.fog
                 } );
 
                 break;
