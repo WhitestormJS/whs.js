@@ -4530,13 +4530,20 @@ WHS.World.prototype.OrbitControls = function(object) {
     }
 };
 
+/**
+ * Three.js Fog.
+ */
 WHS.Fog = function() {
+    /**
+     * Fog constructing.
+     *
+     * @param {Object} params - Optional fog parameters.
+     */
+
     function Fog(params) {
         _classCallCheck(this, Fog);
 
         if ((typeof params === "undefined" ? "undefined" : _typeof(params)) != "object") params = {};
-
-        console.log(params);
 
         api.extend(params, {
 
@@ -4548,6 +4555,10 @@ WHS.Fog = function() {
 
         this.fog = new THREE.Fog(params.hex, params.near, params.far);
     }
+
+    /**
+     * Add fog to scene.
+     */
 
     _createClass(Fog, [{
         key: "addTo",
@@ -4564,7 +4575,16 @@ WHS.World.prototype.Fog = function(params) {
     return new WHS.Fog(params).addTo(this);
 };
 
+/**
+ * Three.js FogExp2.
+ */
 WHS.FogExp2 = function() {
+    /**
+     * Fog (exp2) constructing.
+     *
+     * @param {Object} params - Optional fog parameters.
+     */
+
     function FogExp2(params) {
         _classCallCheck(this, FogExp2);
 
@@ -4579,6 +4599,10 @@ WHS.FogExp2 = function() {
 
         this.fog = new THREE.FogExp2(params.hex, params.density);
     }
+
+    /**
+     * Add fog to scene.
+     */
 
     _createClass(FogExp2, [{
         key: "addTo",
