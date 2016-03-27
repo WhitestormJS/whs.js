@@ -4,8 +4,15 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * Three.js FogExp2.
+ */
 WHS.FogExp2 = class FogExp2 {
-
+    /**
+     * Fog (exp2) constructing.
+     *
+     * @param {Object} params - Optional fog parameters.
+     */
 	constructor( params ) {
 
         if (typeof params != "object") params = {};
@@ -21,6 +28,9 @@ WHS.FogExp2 = class FogExp2 {
 
 	}
 
+    /**
+     * Add fog to scene.
+     */
     addTo( root ) {
         
         root.scene.fog = this.fog;
