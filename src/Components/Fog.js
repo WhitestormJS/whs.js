@@ -8,7 +8,7 @@ WHS.Fog = class Fog {
 
 	constructor( params ) {
 
-        if (typeof params !== "object") params = {};
+        if (typeof params != "object") params = {};
 
         api.extend(params, {
 
