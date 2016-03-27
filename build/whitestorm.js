@@ -2092,6 +2092,8 @@ WHS.Shape = function() {
         //if ( ! root )
         //console.error( "@constructor: WHS root object is not defined." );
 
+        this._lastWorld = null;
+
         var _set = function _set(x, y, z) {
 
             this.x = x;
@@ -2266,6 +2268,8 @@ WHS.Shape = function() {
 
             this.root = root;
 
+            this._lastWorld = root;
+
             var _mesh = this.mesh,
                 _scope = this;
 
@@ -2364,6 +2368,10 @@ WHS.Shape = function() {
         value: function remove() {
 
             this.root.scene.remove(this.mesh);
+            var index = this.root.modellingQueue.indexOf(this);
+            if (index !== -1) this.root.modellingQueue.splice(index, 1);
+            this.root.children.splice(this.root.children.indexOf(this), 1);
+            this.root = null;
 
             return this;
         }
@@ -2375,6 +2383,8 @@ WHS.Shape = function() {
     }, {
         key: "retrieve",
         value: function retrieve() {
+
+            this.root = this._lastWorld;
 
             this.root.scene.add(this.mesh);
 
@@ -4518,6 +4528,99 @@ WHS.World.prototype.OrbitControls = function(object) {
         } else if ((typeof object === "undefined" ? "undefined" : _typeof(object)) == "object") this.controls.target.copy(target);
         else console.error("Object must be a THREE.JS vector! @OrbitControls");
     }
+};
+
+/**
+ * Three.js Fog.
+ */
+WHS.Fog = function() {
+    /**
+     * Fog constructing.
+     *
+     * @param {Object} params - Optional fog parameters.
+     */
+
+    function Fog(params) {
+        _classCallCheck(this, Fog);
+
+        if ((typeof params === "undefined" ? "undefined" : _typeof(params)) != "object") params = {};
+
+        api.extend(params, {
+
+            hex: 0x000000,
+            near: 1,
+            far: 1000
+
+        });
+
+        this.fog = new THREE.Fog(params.hex, params.near, params.far);
+
+        this.type = "fog";
+    }
+
+    /**
+     * Add fog to scene.
+     */
+
+    _createClass(Fog, [{
+        key: "addTo",
+        value: function addTo(root) {
+
+            root.scene.fog = this.fog;
+        }
+    }]);
+
+    return Fog;
+}();
+
+WHS.World.prototype.Fog = function(params) {
+    return new WHS.Fog(params).addTo(this);
+};
+
+/**
+ * Three.js FogExp2.
+ */
+WHS.FogExp2 = function() {
+    /**
+     * Fog (exp2) constructing.
+     *
+     * @param {Object} params - Optional fog parameters.
+     */
+
+    function FogExp2(params) {
+        _classCallCheck(this, FogExp2);
+
+        if ((typeof params === "undefined" ? "undefined" : _typeof(params)) != "object") params = {};
+
+        api.extend(params, {
+
+            hex: 0x000000,
+            density: 0.00025
+
+        });
+
+        this.fog = new THREE.FogExp2(params.hex, params.density);
+
+        this.type = "fogexp2";
+    }
+
+    /**
+     * Add fog to scene.
+     */
+
+    _createClass(FogExp2, [{
+        key: "addTo",
+        value: function addTo(root) {
+
+            root.scene.fog = this.fog;
+        }
+    }]);
+
+    return FogExp2;
+}();
+
+WHS.World.prototype.FogExp2 = function(params) {
+    return new WHS.FogExp2(params).addTo(this);
 };
 
 WHS.Skybox = function(_WHS$Shape22) {
