@@ -4534,6 +4534,8 @@ WHS.Fog = function() {
     function Fog(params) {
         _classCallCheck(this, Fog);
 
+        if ((typeof params === "undefined" ? "undefined" : _typeof(params)) === "object") params = {};
+
         api.extend(params, {
 
             hex: 0x000000,
@@ -4563,6 +4565,8 @@ WHS.World.prototype.Fog = function(params) {
 WHS.FogExp2 = function() {
     function FogExp2(params) {
         _classCallCheck(this, FogExp2);
+
+        if ((typeof params === "undefined" ? "undefined" : _typeof(params)) === "object") params = {};
 
         api.extend(params, {
 
