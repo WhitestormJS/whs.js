@@ -37,6 +37,9 @@
 - *WHS.init class -> WHS.World class*
 - #63: Fixed JSDoc.
 - #60: Update lights for Three.js r75
+- *src/Skybox/Skybox.js -> src/Components/Skybox.js*
+- #5: Add fog.
+- Added `fps_fog.html` example.
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
