@@ -1636,6 +1636,9 @@ WHS.API.extend = function(object) {
         for (var _iterator = extensions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             var extension = _step.value;
 
+            //console.log(extension);
+            //console.log(typeof extension);
+
             if (!extension) continue; // Ignore null and undefined objects and paramaters.
 
             var _iteratorNormalCompletion2 = true;
@@ -1650,7 +1653,8 @@ WHS.API.extend = function(object) {
 
                     //Goes deep only if object[prop] and extension[prop] are both objects !
                         WHS.API.extend(object[prop], extension[prop]);
-                    else object[prop] = object[prop] === 0 ? 0 : object[prop] || extension[prop]; // Add values that do not already exist.
+                    else object[prop] = object[prop] === 0 ? 0 : object[prop];
+                    if (!object[prop] && typeof object[prop] != "boolean") object[prop] = extension[prop]; // Add values that do not already exist.
                 }
             } catch (err) {
                 _didIteratorError2 = true;
@@ -4636,10 +4640,13 @@ WHS.Skybox = function(_WHS$Shape22) {
             skyType: "box",
             detail: ".png",
             radius: 10,
+            fog: true,
 
             path: ""
 
         });
+
+        console.log(params.fog);
 
         var skyGeometry, skyMat;
 
@@ -4656,7 +4663,8 @@ WHS.Skybox = function(_WHS$Shape22) {
 
                     matArray.push(new THREE.MeshBasicMaterial({
                         map: THREE.ImageUtils.loadTexture(params.path + directions[i] + params.imgSuffix),
-                        side: THREE.BackSide
+                        side: THREE.BackSide,
+                        fog: params.fog
                     }));
                 }
 
@@ -4669,7 +4677,8 @@ WHS.Skybox = function(_WHS$Shape22) {
 
                 skyMat = new THREE.MeshBasicMaterial({
                     map: THREE.ImageUtils.loadTexture(params.path + params.imgSuffix),
-                    side: THREE.BackSide
+                    side: THREE.BackSide,
+                    fog: params.fog
                 });
 
                 break;
