@@ -8,6 +8,8 @@ WHS.Fog = class Fog {
 
 	constructor( params ) {
 
+        if (typeof params === "object") params = {};
+
         api.extend(params, {
 
             hex: 0x000000,

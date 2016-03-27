@@ -7,6 +7,8 @@
 WHS.FogExp2 = class FogExp2 {
 
 	constructor( params ) {
+        
+        if (typeof params === "object") params = {};
 
         api.extend(params, {
 
