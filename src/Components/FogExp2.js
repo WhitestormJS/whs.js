@@ -26,6 +26,8 @@ WHS.FogExp2 = class FogExp2 {
 
         this.fog = new THREE.FogExp2( params.hex, params.density);
 
+        this.type = "fogexp2";
+
 	}
 
     /**

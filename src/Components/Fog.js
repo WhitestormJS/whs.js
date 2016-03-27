@@ -27,6 +27,8 @@ WHS.Fog = class Fog {
 
         this.fog = new THREE.Fog( params.hex, params.near, params.far);
 
+        this.type = "fog";
+
 	}
 
     /**
