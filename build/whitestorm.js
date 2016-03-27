@@ -4554,6 +4554,8 @@ WHS.Fog = function() {
         });
 
         this.fog = new THREE.Fog(params.hex, params.near, params.far);
+
+        this.type = "fog";
     }
 
     /**
@@ -4598,6 +4600,8 @@ WHS.FogExp2 = function() {
         });
 
         this.fog = new THREE.FogExp2(params.hex, params.density);
+
+        this.type = "fogexp2";
     }
 
     /**
