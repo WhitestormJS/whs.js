@@ -36,6 +36,7 @@
     height: 100%;
     z-index: 2;
     text-align: center;
+    white-space: nowrap;
   }
 
   .whs {
@@ -60,8 +61,8 @@
   }
 
   .content {
-    text-align: center;
     margin-top: 80px;
+    text-align: center;
     font-weight: lighter;
   }
 
@@ -71,8 +72,8 @@
   }
 
   .controls {
-    margin-top: 2em;
-    margin-bottom: 2em;
+    height: 17.5vh;
+    margin-top: 5%;
   }
 
   .pages ul li a {
@@ -111,13 +112,18 @@
     align-items: center;
     justify-content: center;
   }
+
   .preloader img{
     width: 250px;
     height: auto;
   }
 
-  small {
+  .links {
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
   }
+
   </style>
 </head>
 
@@ -131,9 +137,11 @@
 
 <div id="blocker">
   <div class="content">
-    <a href="http://whitestormjs.xyz"><img src="assets/logo.png" alt="whitestormjs" /></a>
+    <a href="http://whitestormjs.xyz"><img src="assets/logo.png" alt="whitestormjs" height="150px"/></a>
     <h2>FPS Demo</h2>
-    <img class="controls" src="assets/keys.gif" height="300px" />
+    <img class="controls" src="assets/keys.gif"/>
+  </div>
+  <div class="links">
     <p>
       Take a tour around this scene,
       use the WASD keys to move and your mouse to look around.
@@ -141,8 +149,6 @@
     <p>
       <b>Click anywhere to begin.</b>
     </p>
-  </div>
-  <div class="links">
     <ul>
       <li><a href="http://github.com/whitestormjs/whitestorm.js" title="collaborate in github"><span class="icon-github"></a></span> </li>
       <li><a href="https://twitter.com/_alex_buzin" title="our creator"><span class="icon-twitter"></a></span> </li>
