@@ -13,9 +13,7 @@ WHS.FogExp2 = class FogExp2 {
      *
      * @param {Object} params - Optional fog parameters.
      */
-	constructor( params ) {
-
-        if (typeof params != "object") params = {};
+	constructor( params = {} ) {
 
         api.extend(params, {
 

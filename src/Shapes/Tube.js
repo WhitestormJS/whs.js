@@ -11,7 +11,6 @@
  */
 
 WHS.Tube = class Tube extends WHS.Shape {
-
     /**
      * Creates a tube
      *
@@ -25,8 +24,7 @@ WHS.Tube = class Tube extends WHS.Shape {
      * @param {Material} params.material - Tube material
      * @param {Number} params.mass - Tube mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "tube" );
 

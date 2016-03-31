@@ -11,7 +11,6 @@
  */
 
 WHS.Tetrahedron = class Tetrahedron extends WHS.Shape {
-
     /**
      * Creates a tetrahedron
      *
@@ -22,8 +21,7 @@ WHS.Tetrahedron = class Tetrahedron extends WHS.Shape {
      * @param {Material} params.material - Tetrahedron material
      * @param {Number} params.mass - Tetrahedron mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "tetrahedron" );
 

@@ -6,7 +6,7 @@
 
 WHS.Skybox = class Skybox extends WHS.Shape {
 
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "skybox" );
 

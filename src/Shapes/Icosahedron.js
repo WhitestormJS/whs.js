@@ -11,7 +11,6 @@
  */
 
 WHS.Icosahderon = class Icosahedron extends WHS.Shape {
-
     /**
      * Create an icosahedron
      *
@@ -22,8 +21,7 @@ WHS.Icosahderon = class Icosahedron extends WHS.Shape {
      * @param {Material} params.material - Icosahedron material
      * @param {Number} params.mass - Icosahedron mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "icosahedron" );
 

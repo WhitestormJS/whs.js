@@ -11,7 +11,6 @@
  */
 
 WHS.Torusknot = class Torusknot extends WHS.Shape {
-
     /**
      * Creates a torus knot
      *
@@ -25,8 +24,7 @@ WHS.Torusknot = class Torusknot extends WHS.Shape {
      * @param {Number} params.geometry.q - Q
      * @param {Number} params.geometry.heightScale - Knot height scale
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "Torusknot" );
 

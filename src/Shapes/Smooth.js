@@ -11,7 +11,6 @@
  */
 
 WHS.Smooth = class Smooth extends WHS.Shape {
-
     /**
      * Smooths things
      *
@@ -21,8 +20,7 @@ WHS.Smooth = class Smooth extends WHS.Shape {
      * @param {Number} params.geometry.height - Smooth height
      * @param {Material} params.material - Smooth material
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "smooth" );
 

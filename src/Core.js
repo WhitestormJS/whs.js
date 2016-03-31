@@ -12,7 +12,7 @@ WHS.World = class {
      * @param {object} params - The scene settings object.
      * @return {World} A 3D world whs object.
      */
-    constructor( params ) {
+    constructor( params = {} ) {
 
         'use strict';
 

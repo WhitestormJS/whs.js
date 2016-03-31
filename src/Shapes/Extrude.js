@@ -10,7 +10,6 @@
  * @extends WHS.Shape
  */
 WHS.Extrude = class Extrude extends WHS.Shape {
-
     /**
      * Extrude a shape
      *
@@ -21,8 +20,7 @@ WHS.Extrude = class Extrude extends WHS.Shape {
      * @param {Material} params.material - Material
      * @param {Number} params.mass - Mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "extrude" );
 

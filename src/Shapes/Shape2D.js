@@ -11,7 +11,6 @@
  */
 
 WHS.Shape2D = class Shape2D extends WHS.Shape {
-
     /**
      * Creates a 2D shape
      *
@@ -20,8 +19,7 @@ WHS.Shape2D = class Shape2D extends WHS.Shape {
      * @param {Array} params.geometry.shapes - Shapes
      * @param {Material} params.material - Shape material
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "shape2D" );
 

@@ -11,7 +11,6 @@
  */
 
 WHS.Sphere = class Sphere extends WHS.Shape {
-
     /**
      * Creates a sphere.
      *
@@ -23,8 +22,7 @@ WHS.Sphere = class Sphere extends WHS.Shape {
      * @param {Material} params.material - Sphere material
      * @param {Number} params.mass - Sphere mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "sphere" );
 

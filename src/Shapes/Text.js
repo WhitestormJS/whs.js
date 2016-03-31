@@ -11,7 +11,6 @@
  */
 
 WHS.Text = class Text extends WHS.Shape {
-
     /**
      * Creates 3D text
      *
@@ -28,8 +27,7 @@ WHS.Text = class Text extends WHS.Shape {
      * @param {Material} params.material - Text material
      * @param {Number} params.mass - Text mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "text" );
 

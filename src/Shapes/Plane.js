@@ -11,7 +11,6 @@
  */
 
 WHS.Plane = class Plane extends WHS.Shape {
-
     /**
      * Creates a plane.
      *
@@ -23,8 +22,7 @@ WHS.Plane = class Plane extends WHS.Shape {
      * @param {Material} params.material - Plane material
      * @param {Number} params.mass - Plane mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "plane" );
 

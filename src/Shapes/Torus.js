@@ -11,7 +11,6 @@
  */
 
 WHS.Torus = class Torus extends WHS.Shape {
-
     /**
      * Creates a torus
      *
@@ -25,8 +24,7 @@ WHS.Torus = class Torus extends WHS.Shape {
      * @param {Material} params.material - Torus material
      * @param {Number} params.mass - Torus mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "torus" );
 
