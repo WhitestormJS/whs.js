@@ -17,7 +17,7 @@ WHS.HemisphereLight = class HemisphereLight extends WHS.Light {
      * @param {Object} params.light.groundColor - Light ground color.
      * @param {Object} params.light.intensity - Light intensity.
      */
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "hemispherelight" );
 

@@ -11,7 +11,6 @@
  */
 
 WHS.Parametric = class Parametric extends WHS.Shape {
-
     /**
      * Creates a parametric
      *
@@ -23,8 +22,7 @@ WHS.Parametric = class Parametric extends WHS.Shape {
      * @param {Material} params.material - Parametric material
      * @param {Number} params.mass - Parametric mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "parametric" );
 

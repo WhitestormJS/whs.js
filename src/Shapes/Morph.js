@@ -11,7 +11,6 @@
  */
 
 WHS.Morph = class Morph extends WHS.Shape {
-
     /**
      * Create a morph
      *
@@ -24,8 +23,7 @@ WHS.Morph = class Morph extends WHS.Shape {
      * @param {Number} params.morph.speed - Morph speed
      * @param {Number} params.morph.duration - Morph duration
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "morph" );
 

@@ -16,7 +16,7 @@ WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
      * @param {Object} params.light.color - Light color.
      * @param {Object} params.light.intensity - Light intensity.
      */
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "directionallight" );
 

@@ -11,7 +11,6 @@
  */
 
 WHS.Lathe = class Lathe extends WHS.Shape {
-
     /**
      * Create a lathe
      *
@@ -21,8 +20,7 @@ WHS.Lathe = class Lathe extends WHS.Shape {
      * @param {Material} params.material - Lathe material
      * @param {Number} params.mass - Lathe mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "lathe" );
 

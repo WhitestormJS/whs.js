@@ -11,7 +11,6 @@
  */
 
 WHS.Polyhedron = class Polyhedron extends WHS.Shape {
-
     /**
      * Creates a polyhedron
      *
@@ -24,8 +23,7 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
      * @param {Material} param.material - Polyhedron material
      * @param {Number} param.mass - Polyhedron mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "polyhedron" );
 

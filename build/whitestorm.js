@@ -2510,9 +2510,11 @@ WHS.World = function() {
      * @return {World} A 3D world whs object.
      */
 
-    function _class3(params) {
+    function _class3() {
 
         'use strict';
+
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
         _classCallCheck(this, _class3);
 
@@ -2881,7 +2883,9 @@ WHS.Cube = function(_WHS$Shape) {
      * @param {Number} params.mass - Cube mass
      */
 
-    function Cube(params) {
+    function Cube() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Cube);
 
         var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(Cube).call(this, params, "cube"));
@@ -2930,7 +2934,9 @@ WHS.Cylinder = function(_WHS$Shape2) {
      * @param {Number} params.mass - The cylinder's mass
      */
 
-    function Cylinder(params) {
+    function Cylinder() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Cylinder);
 
         var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(Cylinder).call(this, params, "cylinder"));
@@ -2978,7 +2984,9 @@ WHS.Dodecahedron = function(_WHS$Shape3) {
      * @param {Number} params.mass - The dodecahedron's mass
      */
 
-    function Dodecahedron(params) {
+    function Dodecahedron() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Dodecahedron);
 
         var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(Dodecahedron).call(this, params, "dodecahedron"));
@@ -3023,7 +3031,9 @@ WHS.Extrude = function(_WHS$Shape4) {
      * @param {Number} params.mass - Mass
      */
 
-    function Extrude(params) {
+    function Extrude() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Extrude);
 
         var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(Extrude).call(this, params, "extrude"));
@@ -3069,7 +3079,9 @@ WHS.Icosahderon = function(_WHS$Shape5) {
      * @param {Number} params.mass - Icosahedron mass
      */
 
-    function Icosahedron(params) {
+    function Icosahedron() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Icosahedron);
 
         var _this6 = _possibleConstructorReturn(this, Object.getPrototypeOf(Icosahedron).call(this, params, "icosahedron"));
@@ -3114,7 +3126,9 @@ WHS.Lathe = function(_WHS$Shape6) {
      * @param {Number} params.mass - Lathe mass
      */
 
-    function Lathe(params) {
+    function Lathe() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Lathe);
 
         var _this7 = _possibleConstructorReturn(this, Object.getPrototypeOf(Lathe).call(this, params, "lathe"));
@@ -3158,7 +3172,9 @@ WHS.Model = function(_WHS$Shape7) {
      * @param {Number} params.mass - Model mass
      */
 
-    function Model(params) {
+    function Model() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Model);
 
         var _this8 = _possibleConstructorReturn(this, Object.getPrototypeOf(Model).call(this, params, "model"));
@@ -3225,7 +3241,9 @@ WHS.Morph = function(_WHS$Shape8) {
      * @param {Number} params.morph.duration - Morph duration
      */
 
-    function Morph(params) {
+    function Morph() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Morph);
 
         var _this9 = _possibleConstructorReturn(this, Object.getPrototypeOf(Morph).call(this, params, "morph"));
@@ -3298,7 +3316,9 @@ WHS.Octahedron = function(_WHS$Shape9) {
      * @param {Number} params.mass - Octahedron mass
      */
 
-    function Octahedron(params) {
+    function Octahedron() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Octahedron);
 
         var _this10 = _possibleConstructorReturn(this, Object.getPrototypeOf(Octahedron).call(this, params, "octahedron"));
@@ -3345,7 +3365,9 @@ WHS.Parametric = function(_WHS$Shape10) {
      * @param {Number} params.mass - Parametric mass
      */
 
-    function Parametric(params) {
+    function Parametric() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Parametric);
 
         var _this11 = _possibleConstructorReturn(this, Object.getPrototypeOf(Parametric).call(this, params, "parametric"));
@@ -3393,7 +3415,9 @@ WHS.Plane = function(_WHS$Shape11) {
      * @param {Number} params.mass - Plane mass
      */
 
-    function Plane(params) {
+    function Plane() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Plane);
 
         var _this12 = _possibleConstructorReturn(this, Object.getPrototypeOf(Plane).call(this, params, "plane"));
@@ -3442,7 +3466,9 @@ WHS.Polyhedron = function(_WHS$Shape12) {
      * @param {Number} param.mass - Polyhedron mass
      */
 
-    function Polyhedron(params) {
+    function Polyhedron() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Polyhedron);
 
         var _this13 = _possibleConstructorReturn(this, Object.getPrototypeOf(Polyhedron).call(this, params, "polyhedron"));
@@ -3508,7 +3534,9 @@ WHS.Ring = function(_WHS$Shape13) {
      * @param {Number} params.mass - Ring mass
      */
 
-    function Ring(params) {
+    function Ring() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Ring);
 
         var _this14 = _possibleConstructorReturn(this, Object.getPrototypeOf(Ring).call(this, params, "ring"));
@@ -3556,7 +3584,9 @@ WHS.Shape2D = function(_WHS$Shape14) {
      * @param {Material} params.material - Shape material
      */
 
-    function Shape2D(params) {
+    function Shape2D() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Shape2D);
 
         var _this15 = _possibleConstructorReturn(this, Object.getPrototypeOf(Shape2D).call(this, params, "shape2D"));
@@ -3600,7 +3630,9 @@ WHS.Smooth = function(_WHS$Shape15) {
      * @param {Material} params.material - Smooth material
      */
 
-    function Smooth(params) {
+    function Smooth() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Smooth);
 
         var _this16 = _possibleConstructorReturn(this, Object.getPrototypeOf(Smooth).call(this, params, "smooth"));
@@ -3647,7 +3679,9 @@ WHS.Sphere = function(_WHS$Shape16) {
      * @param {Number} params.mass - Sphere mass
      */
 
-    function Sphere(params) {
+    function Sphere() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Sphere);
 
         var _this17 = _possibleConstructorReturn(this, Object.getPrototypeOf(Sphere).call(this, params, "sphere"));
@@ -3694,7 +3728,9 @@ WHS.Tetrahedron = function(_WHS$Shape17) {
      * @param {Number} params.mass - Tetrahedron mass
      */
 
-    function Tetrahedron(params) {
+    function Tetrahedron() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Tetrahedron);
 
         var _this18 = _possibleConstructorReturn(this, Object.getPrototypeOf(Tetrahedron).call(this, params, "tetrahedron"));
@@ -3746,7 +3782,9 @@ WHS.Text = function(_WHS$Shape18) {
      * @param {Number} params.mass - Text mass
      */
 
-    function Text(params) {
+    function Text() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Text);
 
         var _this19 = _possibleConstructorReturn(this, Object.getPrototypeOf(Text).call(this, params, "text"));
@@ -3818,7 +3856,9 @@ WHS.Torus = function(_WHS$Shape19) {
      * @param {Number} params.mass - Torus mass
      */
 
-    function Torus(params) {
+    function Torus() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Torus);
 
         var _this20 = _possibleConstructorReturn(this, Object.getPrototypeOf(Torus).call(this, params, "torus"));
@@ -3870,7 +3910,9 @@ WHS.Torusknot = function(_WHS$Shape20) {
      * @param {Number} params.geometry.heightScale - Knot height scale
      */
 
-    function Torusknot(params) {
+    function Torusknot() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Torusknot);
 
         var _this21 = _possibleConstructorReturn(this, Object.getPrototypeOf(Torusknot).call(this, params, "Torusknot"));
@@ -3924,7 +3966,9 @@ WHS.Tube = function(_WHS$Shape21) {
      * @param {Number} params.mass - Tube mass
      */
 
-    function Tube(params) {
+    function Tube() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Tube);
 
         var _this22 = _possibleConstructorReturn(this, Object.getPrototypeOf(Tube).call(this, params, "tube"));
@@ -3972,38 +4016,6 @@ WHS.World.prototype.Tube = function(params) {
 };
 
 /**
- * ADDFOG.
- *
- * @param {String} type Fog type (name). (REQUIRED)
- * @param {Object} params Options of fog object. (REQUIRED)
- * @returns {Object} This element scope/statement.
- */
-WHS.World.prototype.addFog = function(type, params) {
-
-    'use strict';
-
-    var scope = {};
-    api.extend(params, {
-        hex: 0x000000, //Default hex
-        near: 0.015, //Default near
-        far: 1000, //Default far
-        density: 0.00025
-    });
-
-    switch (type) {
-        case "fog":
-            scope = new THREE.Fog(params.hex, params.near, params.far);
-            break;
-
-        case "fogexp2":
-            scope = new THREE.FogExp2(params.hex, params.density);
-            break;
-    }
-
-    return scope;
-};
-
-/**
  * WhitestormJS ambient light.
  *
  * @extends WHS.Light
@@ -4018,7 +4030,9 @@ WHS.AmbientLight = function(_WHS$Light) {
      * @param {Object} params.light.intensity - Light intensity.
      */
 
-    function AmbientLight(params) {
+    function AmbientLight() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, AmbientLight);
 
         var _this23 = _possibleConstructorReturn(this, Object.getPrototypeOf(AmbientLight).call(this, params, "ambientlight"));
@@ -4052,7 +4066,9 @@ WHS.DirectionalLight = function(_WHS$Light2) {
      * @param {Object} params.light.intensity - Light intensity.
      */
 
-    function DirectionalLight(params) {
+    function DirectionalLight() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, DirectionalLight);
 
         var _this24 = _possibleConstructorReturn(this, Object.getPrototypeOf(DirectionalLight).call(this, params, "directionallight"));
@@ -4088,7 +4104,9 @@ WHS.HemisphereLight = function(_WHS$Light3) {
      * @param {Object} params.light.intensity - Light intensity.
      */
 
-    function HemisphereLight(params) {
+    function HemisphereLight() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, HemisphereLight);
 
         var _this25 = _possibleConstructorReturn(this, Object.getPrototypeOf(HemisphereLight).call(this, params, "hemispherelight"));
@@ -4122,7 +4140,9 @@ WHS.NormalLight = function(_WHS$Light4) {
      * @param {Object} params.light.color - Light color.
      */
 
-    function NormalLight(params) {
+    function NormalLight() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, NormalLight);
 
         var _this26 = _possibleConstructorReturn(this, Object.getPrototypeOf(NormalLight).call(this, params, "normallight"));
@@ -4159,7 +4179,9 @@ WHS.PointLight = function(_WHS$Light5) {
      * @param {Object} params.light.decay - Light decay.
      */
 
-    function PointLight(params) {
+    function PointLight() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, PointLight);
 
         var _this27 = _possibleConstructorReturn(this, Object.getPrototypeOf(PointLight).call(this, params, "pointlight"));
@@ -4198,7 +4220,9 @@ WHS.SpotLight = function(_WHS$Light6) {
      * @param {Object} params.light.decay - Light decay.
      */
 
-    function SpotLight(params) {
+    function SpotLight() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, SpotLight);
 
         var _this28 = _possibleConstructorReturn(this, Object.getPrototypeOf(SpotLight).call(this, params, "spotlight"));
@@ -4227,10 +4251,11 @@ WHS.World.prototype.SpotLight = function(params) {
 
 var PI_2 = Math.PI / 2;
 
-WHS.World.prototype.FPSControls = function(object, params) {
+WHS.World.prototype.FPSControls = function(object) {
 
     'use strict';
 
+    var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
     var target = WHS.API.extend(params, {
         block: document.getElementById('blocker'),
         speed: 1,
@@ -4528,6 +4553,7 @@ WHS.World.prototype.OrbitControls = function(object) {
         if (object._whsobject) {
 
             var target = object ? object.mesh.position : new THREE.Vector3(0, 0, 0);
+
             this.controls.target = target;
         } else if ((typeof object === "undefined" ? "undefined" : _typeof(object)) == "object") this.controls.target.copy(target);
         else console.error("Object must be a THREE.JS vector! @OrbitControls");
@@ -4544,10 +4570,10 @@ WHS.Fog = function() {
      * @param {Object} params - Optional fog parameters.
      */
 
-    function Fog(params) {
-        _classCallCheck(this, Fog);
+    function Fog() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-        if ((typeof params === "undefined" ? "undefined" : _typeof(params)) != "object") params = {};
+        _classCallCheck(this, Fog);
 
         api.extend(params, {
 
@@ -4591,10 +4617,10 @@ WHS.FogExp2 = function() {
      * @param {Object} params - Optional fog parameters.
      */
 
-    function FogExp2(params) {
-        _classCallCheck(this, FogExp2);
+    function FogExp2() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-        if ((typeof params === "undefined" ? "undefined" : _typeof(params)) != "object") params = {};
+        _classCallCheck(this, FogExp2);
 
         api.extend(params, {
 
@@ -4630,7 +4656,9 @@ WHS.World.prototype.FogExp2 = function(params) {
 WHS.Skybox = function(_WHS$Shape22) {
     _inherits(Skybox, _WHS$Shape22);
 
-    function Skybox(params) {
+    function Skybox() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
         _classCallCheck(this, Skybox);
 
         var _this29 = _possibleConstructorReturn(this, Object.getPrototypeOf(Skybox).call(this, params, "skybox"));

@@ -16,7 +16,7 @@ WHS.AmbientLight = class AmbientLight extends WHS.Light {
      * @param {Object} params.light.color - Light color.
      * @param {Object} params.light.intensity - Light intensity.
      */
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "ambientlight" );
 
