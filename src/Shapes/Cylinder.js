@@ -23,7 +23,7 @@ WHS.Cylinder = class Cylinder extends WHS.Shape {
      * @param {Material} params.material - The cylinder's material
      * @param {Number} params.mass - The cylinder's mass
      */
-    constructor( params ) {
+    constructor( params = {} ) {
 
 		super( params, "cylinder" );
 

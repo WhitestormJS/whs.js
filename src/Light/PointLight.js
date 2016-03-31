@@ -18,7 +18,7 @@ WHS.PointLight = class PointLight extends WHS.Light {
      * @param {Object} params.light.distance - Light distance.
      * @param {Object} params.light.decay - Light decay.
      */
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "pointlight" );
 

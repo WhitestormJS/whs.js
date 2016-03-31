@@ -11,7 +11,6 @@
  */
 
 WHS.Model = class Model extends WHS.Shape {
-
     /**
      * Create a model
      *
@@ -21,8 +20,7 @@ WHS.Model = class Model extends WHS.Shape {
      * @param {Material} params.material - Model material
      * @param {Number} params.mass - Model mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "model" );
 

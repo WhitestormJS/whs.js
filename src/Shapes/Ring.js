@@ -11,7 +11,6 @@
  */
 
 WHS.Ring = class Ring extends WHS.Shape {
-
     /**
      * Creates a ring.
      *
@@ -26,8 +25,7 @@ WHS.Ring = class Ring extends WHS.Shape {
      * @param {Material} params.material - Ring material
      * @param {Number} params.mass - Ring mass
      */
-
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "ring" );
 

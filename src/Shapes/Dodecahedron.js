@@ -11,7 +11,6 @@
  */
 
 WHS.Dodecahedron = class Dodecahedron extends WHS.Shape {
-
     /**
      * Create a dodecahedron
      *
@@ -22,7 +21,7 @@ WHS.Dodecahedron = class Dodecahedron extends WHS.Shape {
      * @param {Material} params.material - The dodecahedron's material
      * @param {Number} params.mass - The dodecahedron's mass
      */
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "dodecahedron" );
 

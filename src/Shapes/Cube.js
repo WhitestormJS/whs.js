@@ -22,7 +22,7 @@ WHS.Cube = class Cube extends WHS.Shape {
      * @param {Material} params.material - Cube material
      * @param {Number} params.mass - Cube mass
      */
-	constructor( params ) {
+	constructor( params = {} ) {
 
 		super( params, "cube" );
 
