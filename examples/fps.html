@@ -73,7 +73,9 @@
 
   .controls {
     height: 17.5vh;
-    margin-top: 5%;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
   }
 
   .pages ul li a {
@@ -114,7 +116,7 @@
   }
 
   .preloader img{
-    width: 250px;
+    width: 15vh;
     height: auto;
   }
 
@@ -124,7 +126,19 @@
     width: 100%;
   }
 
-  </style>
+sub {
+  line-height: 2;
+
+}
+
+h1 {
+  font-size: 40px;
+}
+
+sub {
+  font-size: 20px;
+}
+</style>
 </head>
 
 <body>
@@ -137,10 +151,10 @@
 
 <div id="blocker">
   <div class="content">
-    <a href="http://whitestormjs.xyz"><img src="assets/logo.png" alt="whitestormjs" height="150px"/></a>
+    <h1>Whitestorm <sub>JS</sub></h1>
     <h2>FPS Demo</h2>
-    <img class="controls" src="assets/keys.gif"/>
   </div>
+  <img class="controls" src="assets/keys.gif"/>
   <div class="links">
     <p>
       Take a tour around this scene,
