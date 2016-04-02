@@ -4,9 +4,28 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.Ring = class Ring extends WHS.Shape {
+/**
+ * WhitestormJS ring shape
+ *
+ * @extends WHS.Shape
+ */
 
-	constructor( params ) {
+WHS.Ring = class Ring extends WHS.Shape {
+    /**
+     * Creates a ring.
+     *
+     * @param {Object} params - Ring options
+     * @param {Object} params.geometry - Ring geometry options
+     * @param {Number} params.geometry.innerRadius - Ring inner radius
+     * @param {Number} params.geometry.outerRadius - Ring outer radius
+     * @param {Number} params.geometry.thetaSegments - Ring theta segments
+     * @param {Number} params.geometry.phiSegments - Ring phi segments
+     * @param {Number} params.geometry.thetaStart - Ring theta start
+     * @param {Number} params.geometry.thetaLength - Ring theta length
+     * @param {Material} params.material - Ring material
+     * @param {Number} params.mass - Ring mass
+     */
+	constructor( params = {} ) {
 
 		super( params, "ring" );
 
@@ -21,7 +40,7 @@ WHS.Ring = class Ring extends WHS.Shape {
 
         });
 
-		this.mesh = new THREE.Mesh( 
+		this.mesh = new THREE.Mesh(
             new THREE.RingGeometry(
 
                 params.geometry.innerRadius,
@@ -31,7 +50,7 @@ WHS.Ring = class Ring extends WHS.Shape {
                 params.geometry.thetaStart,
                 params.geometry.thetaLength
 
-            ), 
+            ),
 
             super._initMaterial(params.material)
         );
@@ -42,6 +61,6 @@ WHS.Ring = class Ring extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Ring = function( params ) {
+WHS.World.prototype.Ring = function( params ) {
 	return ( new WHS.Ring(  params ) ).addTo( this );
 }

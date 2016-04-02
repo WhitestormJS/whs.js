@@ -4,9 +4,27 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.Torus = class Torus extends WHS.Shape {
+/**
+ * WhitestormJS torus shape
+ *
+ * @extends WHS.Shape
+ */
 
-	constructor( params ) {
+WHS.Torus = class Torus extends WHS.Shape {
+    /**
+     * Creates a torus
+     *
+     * @param {Object} params - Torus options
+     * @param {Object} params.geometry - Torus geometry options
+     * @param {Number} params.geometry.radius - Torus radius
+     * @param {Number} params.geometry.tube - Torus tube size
+     * @param {Number} params.geometry.radialSegments - Amount of radial segments
+     * @param {Number} params.geometry.tubularSegments - Amount of tubular segments
+     * @param {Number} params.geometry.arc - Torus arc
+     * @param {Material} params.material - Torus material
+     * @param {Number} params.mass - Torus mass
+     */
+	constructor( params = {} ) {
 
 		super( params, "torus" );
 
@@ -20,7 +38,7 @@ WHS.Torus = class Torus extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh( 
+		this.mesh = new Physijs.ConvexMesh(
             new THREE.TorusGeometry(
 
                 params.geometry.radius,
@@ -29,10 +47,10 @@ WHS.Torus = class Torus extends WHS.Shape {
                 params.geometry.tubularSegments,
                 params.geometry.arc
 
-            ), 
+            ),
 
-            super._initMaterial(params.material), 
-            params.mass 
+            super._initMaterial(params.material),
+            params.mass
         );
 
         super.build();
@@ -41,6 +59,6 @@ WHS.Torus = class Torus extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Torus = function( params ) {
+WHS.World.prototype.Torus = function( params ) {
 	return ( new WHS.Torus(  params ) ).addTo( this );
 }

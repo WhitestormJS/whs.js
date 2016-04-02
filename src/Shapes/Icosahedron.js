@@ -4,9 +4,24 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.Icosahderon = class Icosahedron extends WHS.Shape {
+/**
+ * WhitestormJS icosahedron shape.
+ *
+ * @extends WHS.Shape
+ */
 
-	constructor( params ) {
+WHS.Icosahderon = class Icosahedron extends WHS.Shape {
+    /**
+     * Create an icosahedron
+     *
+     * @param {Object} params - Icosahedron options
+     * @param {Object} params.geometry - Icosahedron geometry options
+     * @param {Number} params.geometry.radius - Icosahedron radius
+     * @param {Number} params.geometry.detail - Icosahedron detail
+     * @param {Material} params.material - Icosahedron material
+     * @param {Number} params.mass - Icosahedron mass
+     */
+	constructor( params = {} ) {
 
 		super( params, "icosahedron" );
 
@@ -17,16 +32,16 @@ WHS.Icosahderon = class Icosahedron extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh( 
+		this.mesh = new Physijs.ConvexMesh(
             new THREE.IcosahedronGeometry(
 
                 params.geometry.radius,
                 params.geometry.detail
 
-            ), 
+            ),
 
-            super._initMaterial(params.material), 
-            params.mass 
+            super._initMaterial(params.material),
+            params.mass
         );
 
         super.build();
@@ -35,6 +50,6 @@ WHS.Icosahderon = class Icosahedron extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Icosahedron = function( params ) {
+WHS.World.prototype.Icosahedron = function( params ) {
 	return ( new WHS.Icosahderon(  params ) ).addTo( this );
 }

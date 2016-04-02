@@ -180,14 +180,14 @@ WHS.Shape.prototype.changeColor = function(time) {
 
     animation.start();
 
-    
+
 }
 </script>
 
 <script>
 var preloader = Preloader();
 
-var GAME = new WHS.init({
+var GAME = new WHS.World({
 
     stats: "fps", // fps, ms, mb
     autoresize: true,
@@ -249,7 +249,7 @@ GAME.ground = GAME.Smooth({
 	}
 });
 
-GAME.ring.changeColor();
+torus.changeColor();
 
 GAME.OrbitControls();
 

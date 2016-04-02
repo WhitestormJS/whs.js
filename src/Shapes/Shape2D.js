@@ -4,9 +4,22 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.Shape2D = class Shape2D extends WHS.Shape {
+/**
+ * WhitestormJS 2D shape
+ *
+ * @extends WHS.Shape
+ */
 
-	constructor( params ) {
+WHS.Shape2D = class Shape2D extends WHS.Shape {
+    /**
+     * Creates a 2D shape
+     *
+     * @param {Object} params - Shape options
+     * @param {Object} params.geometry - Shape geometry options
+     * @param {Array} params.geometry.shapes - Shapes
+     * @param {Material} params.material - Shape material
+     */
+	constructor( params = {} ) {
 
 		super( params, "shape2D" );
 
@@ -16,12 +29,12 @@ WHS.Shape2D = class Shape2D extends WHS.Shape {
 
         });
 
-		this.mesh = new THREE.Mesh( 
+		this.mesh = new THREE.Mesh(
             new THREE.ShapeGeometry(
 
                 params.geometry.shapes
 
-            ), 
+            ),
 
             super._initMaterial(params.material)
         );
@@ -32,6 +45,6 @@ WHS.Shape2D = class Shape2D extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Shape2D = function( params ) {
+WHS.World.prototype.Shape2D = function( params ) {
 	return ( new WHS.Shape2D(  params ) ).addTo( this );
 }

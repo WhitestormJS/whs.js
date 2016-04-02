@@ -4,9 +4,19 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS ambient light.
+ *
+ * @extends WHS.Light
+ */
 WHS.AmbientLight = class AmbientLight extends WHS.Light {
-
-	constructor( params ) {
+	/**
+     * Ambient light.
+     *
+     * @param {Object} params.light.color - Light color.
+     * @param {Object} params.light.intensity - Light intensity.
+     */
+	constructor( params = {} ) {
 
 		super( params, "ambientlight" );
 
@@ -21,6 +31,6 @@ WHS.AmbientLight = class AmbientLight extends WHS.Light {
 
 }
 
-WHS.init.prototype.AmbientLight = function( params ) {
+WHS.World.prototype.AmbientLight = function( params ) {
 	return ( new WHS.AmbientLight(  params ) ).addTo( this );
 }

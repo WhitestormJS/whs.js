@@ -4,9 +4,24 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.Octahedron = class Octahedron extends WHS.Shape {
+/**
+ * WhitestormJS octahedron shape
+ *
+ * @extends WHS.Shape
+ */
 
-	constructor( params ) {
+WHS.Octahedron = class Octahedron extends WHS.Shape {
+    /**
+     * Creates an octahedron
+     *
+     * @param {Object} params - Octahedron options
+     * @param {Object} params.geometry - Octahedron geometry options
+     * @param {Number} params.geometry.radius - Octahedron radius
+     * @param {Number} params.geometry.detail - Octahedron detail
+     * @param {Material} params.material - Octahedron material
+     * @param {Number} params.mass - Octahedron mass
+     */
+	constructor( params = {} ) {
 
 		super( params, "octahedron" );
 
@@ -17,16 +32,16 @@ WHS.Octahedron = class Octahedron extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh( 
+		this.mesh = new Physijs.ConvexMesh(
             new THREE.OctahedronGeometry(
 
                 params.geometry.radius,
                 params.geometry.detail
 
-            ), 
+            ),
 
-            super._initMaterial(params.material), 
-            params.mass 
+            super._initMaterial(params.material),
+            params.mass
         );
 
         super.build();
@@ -35,6 +50,6 @@ WHS.Octahedron = class Octahedron extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Octahedron = function( params ) {
+WHS.World.prototype.Octahedron = function( params ) {
 	return ( new WHS.Octahedron(  params ) ).addTo( this );
 }

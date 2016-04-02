@@ -4,9 +4,25 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.Sphere = class Sphere extends WHS.Shape {
+/**
+ * WhitestormJS sphere shape
+ *
+ * @extends WHS.Shape
+ */
 
-	constructor( params ) {
+WHS.Sphere = class Sphere extends WHS.Shape {
+    /**
+     * Creates a sphere.
+     *
+     * @param {Object} params - Sphere options
+     * @param {Object} params.geometry - Sphere geometry options
+     * @param {Number} params.geometry.radius - Sphere radius
+     * @param {Number} params.geometry.segmentA - Sphere segment A count
+     * @param {Number} params.geometry.segmentB - Sphere segment B count
+     * @param {Material} params.material - Sphere material
+     * @param {Number} params.mass - Sphere mass
+     */
+	constructor( params = {} ) {
 
 		super( params, "sphere" );
 
@@ -25,9 +41,9 @@ WHS.Sphere = class Sphere extends WHS.Shape {
 	            params.geometry.segmentA,
 	            params.geometry.segmentB
 
-	        ), 
+	        ),
 
-			super._initMaterial(params.material), 
+			super._initMaterial(params.material),
 			params.mass
 		);
 
@@ -37,6 +53,6 @@ WHS.Sphere = class Sphere extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Sphere = function( params ) {
+WHS.World.prototype.Sphere = function( params ) {
 	return ( new WHS.Sphere(  params ) ).addTo( this );
 }

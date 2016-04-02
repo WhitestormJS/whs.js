@@ -4,9 +4,23 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS spot light.
+ *
+ * @extends WHS.Light
+ */
 WHS.SpotLight = class SpotLight extends WHS.Light {
-
-	constructor( params ) {
+    /**
+     * Point light.
+     *
+     * @param {Object} params.light.color - Light color.
+     * @param {Object} params.light.intensity - Light intensity.
+     * @param {Object} params.light.distance - Light distance.
+     * @param {Object} params.light.angle - Light angle.
+     * @param {Object} params.light.exponent - Light exponent.
+     * @param {Object} params.light.decay - Light decay.
+     */
+	constructor( params = {} ) {
 
 		super( params, "spotlight" );
 
@@ -14,7 +28,9 @@ WHS.SpotLight = class SpotLight extends WHS.Light {
             params.light.color,
             params.light.intensity,
             params.light.distance,
-            params.light.angle
+            params.light.angle,
+            params.light.exponent,
+            params.light.decay
         );
 
         super.build();
@@ -24,6 +40,6 @@ WHS.SpotLight = class SpotLight extends WHS.Light {
 
 }
 
-WHS.init.prototype.SpotLight = function( params ) {
+WHS.World.prototype.SpotLight = function( params ) {
 	return ( new WHS.SpotLight(  params ) ).addTo( this );
 }

@@ -213,6 +213,8 @@ GAME.person = GAME.Sphere( {
 
 } );
 
+var fog = GAME.Fog({far:100});
+
 // EFFECTS.
 var effects = GAME.Wagner();
 

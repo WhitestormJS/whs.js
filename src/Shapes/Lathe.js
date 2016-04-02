@@ -4,9 +4,23 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.Lathe = class Lathe extends WHS.Shape {
+/**
+ * WhitestormJS lathe Shape
+ *
+ * @extends WHS.Shape
+ */
 
-	constructor( params ) {
+WHS.Lathe = class Lathe extends WHS.Shape {
+    /**
+     * Create a lathe
+     *
+     * @param {Object} params - Lathe options
+     * @param {Object} params.geometry - Lathe geometry options
+     * @param {Array} params.geometry.points - Lathe points
+     * @param {Material} params.material - Lathe material
+     * @param {Number} params.mass - Lathe mass
+     */
+	constructor( params = {} ) {
 
 		super( params, "lathe" );
 
@@ -16,15 +30,15 @@ WHS.Lathe = class Lathe extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh( 
+		this.mesh = new Physijs.ConvexMesh(
             new THREE.LatheGeometry(
 
                 params.geometry.points
 
-            ), 
+            ),
 
-            super._initMaterial(params.material), 
-            params.mass 
+            super._initMaterial(params.material),
+            params.mass
         );
 
         super.build();
@@ -33,6 +47,6 @@ WHS.Lathe = class Lathe extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Lathe = function( params ) {
+WHS.World.prototype.Lathe = function( params ) {
 	return ( new WHS.Lathe(  params ) ).addTo( this );
 }

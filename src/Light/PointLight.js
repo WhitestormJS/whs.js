@@ -4,16 +4,29 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/**
+ * WhitestormJS point light.
+ *
+ * @extends WHS.Light
+ */
 WHS.PointLight = class PointLight extends WHS.Light {
-
-	constructor( params ) {
+    /**
+     * Point light.
+     *
+     * @param {Object} params.light.color - Light color.
+     * @param {Object} params.light.intensity - Light intensity.
+     * @param {Object} params.light.distance - Light distance.
+     * @param {Object} params.light.decay - Light decay.
+     */
+	constructor( params = {} ) {
 
 		super( params, "pointlight" );
 
 		this.mesh = new THREE.PointLight(
             params.light.color,
             params.light.intensity,
-            params.light.distance
+            params.light.distance,
+            params.light.decay
         );
 
         super.build();
@@ -23,6 +36,6 @@ WHS.PointLight = class PointLight extends WHS.Light {
 
 }
 
-WHS.init.prototype.PointLight = function( params ) {
+WHS.World.prototype.PointLight = function( params ) {
 	return ( new WHS.PointLight(  params ) ).addTo( this );
 }

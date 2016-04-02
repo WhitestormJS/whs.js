@@ -4,9 +4,27 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.Tube = class Tube extends WHS.Shape {
+/**
+ * WhitestormJS tube shape
+ *
+ * @extends WHS.Shape
+ */
 
-	constructor( params ) {
+WHS.Tube = class Tube extends WHS.Shape {
+    /**
+     * Creates a tube
+     *
+     * @param {Object} params - Tube options
+     * @param {Object} params.geometry - Tube geometry options
+     * @param {Number} params.geometry.path - Tube path
+     * @param {Number} params.geometry.segments - Tube segments
+     * @param {Number} params.geometry.radius - Tube radius
+     * @param {Number} params.geometry.radiusSegments - Amount of radius segments
+     * @param {Boolean} params.geometry.closed - Whether or not the tube is closed
+     * @param {Material} params.material - Tube material
+     * @param {Number} params.mass - Tube mass
+     */
+	constructor( params = {} ) {
 
 		super( params, "tube" );
 
@@ -20,7 +38,7 @@ WHS.Tube = class Tube extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh( 
+		this.mesh = new Physijs.ConvexMesh(
             new THREE.TubeGeometry(
 
                 params.geometry.path,
@@ -29,10 +47,10 @@ WHS.Tube = class Tube extends WHS.Shape {
                 params.geometry.radiusSegments,
                 params.geometry.closed
 
-            ), 
+            ),
 
-            super._initMaterial(params.material), 
-            params.mass 
+            super._initMaterial(params.material),
+            params.mass
         );
 
         super.build();
@@ -61,6 +79,6 @@ WHS.Tube = class Tube extends WHS.Shape {
 
 }
 
-WHS.init.prototype.Tube = function( params ) {
+WHS.World.prototype.Tube = function( params ) {
 	return ( new WHS.Tube(  params ) ).addTo( this );
 }

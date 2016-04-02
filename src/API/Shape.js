@@ -4,12 +4,21 @@
  * Email: alexbuzin88@gmail.com
 */
 
+/** Shape super class */
 WHS.Shape = class {
-
+	/**
+	 * Constructing WHS.Shape object.
+	 * 
+	 * @param {Object} params - Inputed parameters.
+	 * @param {String} type - Shape type.
+	 * @return {WHS.Shape}
+	 */
 	constructor( params, type ) {
 
 		//if ( ! root )
 		//console.error( "@constructor: WHS root object is not defined." );
+
+               this._lastWorld = null;
 
 		var _set = function( x, y, z ) {
 
@@ -91,7 +100,12 @@ WHS.Shape = class {
 		return this;
 	}
 
-
+	/**
+	 * Applying shadow & position & rotation.
+	 *
+	 * @param {...String} tags - Tags that defines what to do with shape 
+	 * additionally.
+	 */
 	build( ...tags ) {
 		
 		'use strict';
@@ -171,12 +185,18 @@ WHS.Shape = class {
 		return this;
 	}
 
-
+	/**
+	 * Add shape to WHS.World object.
+	 *
+	 * @param {WHS.World} root - World, were this shape will be. 
+	 */
 	addTo( root, ...tags ) {
 
 		'use strict';
 
 		this.root = root;
+
+               this._lastWorld = root;
 
 		var _mesh = this.mesh,
 			_scope = this;
@@ -264,22 +284,38 @@ WHS.Shape = class {
 		return this;
 	}
 
+	/**
+	 * Initialize shape's material object.
+	 */
 	_initMaterial(mat_props) {
 		
 		return api.loadMaterial(mat_props)._material;
 		
 	}
 
+	/**
+	 * Remove this light from world.
+	 */
 	remove() {
 		
 		this.root.scene.remove( this.mesh );
+                let index = this.root.modellingQueue.indexOf(this);
+                if( index !== -1 )
+                        this.root.modellingQueue.splice( index, 1 );
+                this.root.children.splice( this.root.children.indexOf( this ), 1);
+                this.root = null;
 
 		return this;
 
 	}
 
+	/**
+	 * Add this light to last applied world.
+	 */
 	retrieve() {
 
+                this.root = this._lastWorld;
+                
 		this.root.scene.add( this.mesh );
 
 		return this;
