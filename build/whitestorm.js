@@ -3201,7 +3201,7 @@ WHS.Model = function(_WHS$Shape7) {
                 data.computeFaceNormals();
                 data.computeVertexNormals();
 
-                scope.mesh = new Physijs.ConvexMesh(data, material, params.mass);
+                scope.mesh = new Physijs.ConcaveMesh(data, material, params.mass);
 
                 resolve();
             });
@@ -4294,6 +4294,7 @@ WHS.World.prototype.FPSControls = function(object) {
             canJump = false;
 
         player.addEventListener("collision", function(other_object, v, r, contactNormal) {
+            console.log("afdg");
 
             if (contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
                 canJump = true;
@@ -4340,6 +4341,7 @@ WHS.World.prototype.FPSControls = function(object) {
 
                 case 32:
                     // space
+                    console.log(canJump);
                     if (canJump == true) {
 
                         player.applyCentralImpulse({

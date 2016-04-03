@@ -1246,7 +1246,7 @@ window.Physijs = (function() {
 	Physijs.ConcaveMesh = function( geometry, material, mass ) {
 		var i,
 			width, height, depth,
-			vertices, face, triangles = [];
+			vertices, face, triangles = new Array(geometry.faces.length);
 
 		Physijs.Mesh.call( this, geometry, material, mass );
 
@@ -1258,28 +1258,12 @@ window.Physijs = (function() {
 
 		for ( i = 0; i < geometry.faces.length; i++ ) {
 			face = geometry.faces[i];
-			if ( face instanceof THREE.Face3) {
-
-				triangles.push([
-					{ x: vertices[face.a].x, y: vertices[face.a].y, z: vertices[face.a].z },
-					{ x: vertices[face.b].x, y: vertices[face.b].y, z: vertices[face.b].z },
-					{ x: vertices[face.c].x, y: vertices[face.c].y, z: vertices[face.c].z }
-				]);
-
-			} else if ( face instanceof THREE.Face4 ) {
-
-				triangles.push([
-					{ x: vertices[face.a].x, y: vertices[face.a].y, z: vertices[face.a].z },
-					{ x: vertices[face.b].x, y: vertices[face.b].y, z: vertices[face.b].z },
-					{ x: vertices[face.d].x, y: vertices[face.d].y, z: vertices[face.d].z }
-				]);
-				triangles.push([
-					{ x: vertices[face.b].x, y: vertices[face.b].y, z: vertices[face.b].z },
-					{ x: vertices[face.c].x, y: vertices[face.c].y, z: vertices[face.c].z },
-					{ x: vertices[face.d].x, y: vertices[face.d].y, z: vertices[face.d].z }
-				]);
-
-			}
+			
+			triangles[ i ] = [
+				{ x: vertices[face.a].x, y: vertices[face.a].y, z: vertices[face.a].z },
+				{ x: vertices[face.b].x, y: vertices[face.b].y, z: vertices[face.b].z },
+				{ x: vertices[face.c].x, y: vertices[face.c].y, z: vertices[face.c].z }
+			];
 		}
 
 		width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
