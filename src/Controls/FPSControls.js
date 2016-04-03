@@ -53,6 +53,7 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
             canJump = false;
 
         player.addEventListener("collision", function(other_object, v, r, contactNormal){
+            console.log("afdg");
 
             if(contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
                     canJump = true;
@@ -95,6 +96,7 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
                     break;
 
                 case 32: // space
+                console.log(canJump);
                     if ( canJump == true ){
 
                             player.applyCentralImpulse({x: 0, y: 300, z: 0});
