@@ -1,0 +1,56 @@
+@font-face {
+    font-family: 'icomoon';
+    src:    url('../assets/fonts/icons/icomoon.eot?3l5act');
+    src:    url('../assets/fonts/icons/icomoon.eot?3l5act#iefix') format('embedded-opentype'),
+        url('../assets/fonts/icons/icomoon.ttf?3l5act') format('truetype'),
+        url('../assets/fonts/icons/icomoon.woff?3l5act') format('woff'),
+        url('../assets/fonts/icons/icomoon.svg?3l5act#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-quill:before {
+    content: "\e909";
+}
+.icon-share:before {
+    content: "\e907";
+}
+.icon-web:before {
+    content: "\e908";
+}
+.icon-facebook:before {
+    content: "\e906";
+}
+.icon-code:before {
+    content: "\e900";
+}
+.icon-google:before {
+    content: "\e901";
+}
+.icon-github:before {
+    content: "\e902";
+}
+.icon-tumblr:before {
+    content: "\e903";
+}
+.icon-twitter:before {
+    content: "\e904";
+}
+.icon-game:before {
+    content: "\e905";
+}
