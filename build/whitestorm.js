@@ -1615,6 +1615,15 @@ if (typeof define === 'function' && define.amd) {
 }
 
 /**
+ * @author t4r0 / http://t4r0.me
+ *
+ */
+
+THREE.ShaderWater = {
+    'water': {}
+};
+
+/**
  * Extending object with other objects.
  *
  * @param {Object} object - Object that will be overwritten.
@@ -2619,6 +2628,8 @@ WHS.World = function() {
             this._initPhysiJS();
 
             this.scene = new Physijs.Scene();
+
+            console.log(this.scene);
 
             this.scene.setGravity(new THREE.Vector3(this._settings.gravity.x, this._settings.gravity.y, this._settings.gravity.z));
 
