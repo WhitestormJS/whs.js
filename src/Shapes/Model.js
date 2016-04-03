@@ -52,7 +52,7 @@ WHS.Model = class Model extends WHS.Shape {
                 data.computeFaceNormals();
                 data.computeVertexNormals();
 
-                scope.mesh = new Physijs.ConvexMesh(data, material, params.mass);
+                scope.mesh = new Physijs.ConcaveMesh(data, material, params.mass);
 
                 resolve();
 

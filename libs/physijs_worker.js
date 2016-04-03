@@ -204,11 +204,19 @@ createShape = function( description ) {
 
 		case 'heightfield':
 
-			var ptr = Ammo.allocate(4 * description.xpts * description.ypts, "float", Ammo.ALLOC_NORMAL);
+			var ptr = Ammo._malloc(4 * description.xpts * description.ypts);
 
-			for (var f = 0; f < description.points.length; f++) {
-				Ammo.setValue(ptr + f,  description.points[f]  , 'float');
-			}
+			var p = 0,
+				p2 = 0;
+
+			for (var i = 0; i < description.xpts; i++) {
+				for (var j = 0; j < description.ypts; j++) {
+					Ammo.HEAPF32[ptr + p2 >> 2] = description.points[p];
+
+					p ++;
+					p2 += 4;
+				}
+			} 
 
 			shape = new Ammo.btHeightfieldTerrainShape(
 					description.xpts,
@@ -218,9 +226,11 @@ createShape = function( description ) {
 					-description.absMaxHeight,
 					description.absMaxHeight,
 					2,
-					0,
+					"PHY_FLOAT",
 					false
 				);
+
+			//console.log(shape);
 
 			_vec3_1.setX(description.xsize/(description.xpts - 1));
 			_vec3_1.setY(description.ysize/(description.ypts - 1));
@@ -874,12 +884,14 @@ public_functions.addConstraint = function ( details ) {
 					_objects[ details.objecta ],
 					_objects[ details.objectb ],
 					transforma,
-					transformb
+					transformb,
+					true
 				);
 			} else {
 				constraint = new Ammo.btGeneric6DofConstraint(
 					_objects[ details.objecta ],
-					transforma
+					transforma,
+					true
 				);
 			}
 			Ammo.destroy(transforma);
@@ -894,6 +906,12 @@ public_functions.addConstraint = function ( details ) {
 	};
 
 	world.addConstraint( constraint );
+
+	constraint.a = _objects[ details.objecta ];
+	constraint.b = _objects[ details.objectb ];
+
+	constraint.ta = transforma;
+	constraint.tb = transformb;
 
 	constraint.enableFeedback();
 	_constraints[ details.id ] = constraint;
@@ -965,15 +983,15 @@ public_functions.hinge_setLimits = function( params ) {
 public_functions.hinge_enableAngularMotor = function( params ) {
 	var constraint = _constraints[ params.constraint ];
 	constraint.enableAngularMotor( true, params.velocity, params.acceleration );
-	constraint.getRigidBodyA().activate();
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 public_functions.hinge_disableMotor = function( params ) {
 	_constraints[ params.constraint ].enableMotor( false );
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 
@@ -995,16 +1013,16 @@ public_functions.slider_enableLinearMotor = function( params ) {
 	constraint.setTargetLinMotorVelocity( params.velocity );
 	constraint.setMaxLinMotorForce( params.acceleration );
 	constraint.setPoweredLinMotor( true );
-	constraint.getRigidBodyA().activate();
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 public_functions.slider_disableLinearMotor = function( params ) {
 	var constraint = _constraints[ params.constraint ];
 	constraint.setPoweredLinMotor( false );
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 public_functions.slider_enableAngularMotor = function( params ) {
@@ -1012,17 +1030,17 @@ public_functions.slider_enableAngularMotor = function( params ) {
 	constraint.setTargetAngMotorVelocity( params.velocity );
 	constraint.setMaxAngMotorForce( params.acceleration );
 	constraint.setPoweredAngMotor( true );
-	constraint.getRigidBodyA().activate();
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 public_functions.slider_disableAngularMotor = function( params ) {
 	var constraint = _constraints[ params.constraint ];
 	constraint.setPoweredAngMotor( false );
-	constraint.getRigidBodyA().activate();
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 
@@ -1032,14 +1050,14 @@ public_functions.conetwist_setLimit = function( params ) {
 public_functions.conetwist_enableMotor = function( params ) {
 	var constraint = _constraints[ params.constraint ];
 	constraint.enableMotor( true );
-	constraint.getRigidBodyA().activate();
-	constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	constraint.b.activate();
 };
 public_functions.conetwist_setMaxMotorImpulse = function( params ) {
 	var constraint = _constraints[ params.constraint ];
 	constraint.setMaxMotorImpulse( params.max_impulse );
-	constraint.getRigidBodyA().activate();
-	constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	constraint.b.activate();
 };
 public_functions.conetwist_setMotorTarget = function( params ) {
 	var constraint = _constraints[ params.constraint ];
@@ -1051,14 +1069,14 @@ public_functions.conetwist_setMotorTarget = function( params ) {
 
 	constraint.setMotorTarget(_quat);
 
-	constraint.getRigidBodyA().activate();
-	constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	constraint.b.activate();
 };
 public_functions.conetwist_disableMotor = function( params ) {
 	var constraint = _constraints[ params.constraint ];
 	constraint.enableMotor( false );
-	constraint.getRigidBodyA().activate();
-	constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	constraint.b.activate();
 };
 
 public_functions.dof_setLinearLowerLimit = function( params ) {
@@ -1070,9 +1088,9 @@ public_functions.dof_setLinearLowerLimit = function( params ) {
 
 	constraint.setLinearLowerLimit(_vec3_1);
 
-	constraint.getRigidBodyA().activate();
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 public_functions.dof_setLinearUpperLimit = function( params ) {
@@ -1084,9 +1102,9 @@ public_functions.dof_setLinearUpperLimit = function( params ) {
 
 	constraint.setLinearUpperLimit(_vec3_1);
 
-	constraint.getRigidBodyA().activate();
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 public_functions.dof_setAngularLowerLimit = function( params ) {
@@ -1098,9 +1116,9 @@ public_functions.dof_setAngularLowerLimit = function( params ) {
 
 	constraint.setAngularLowerLimit(_vec3_1);
 
-	constraint.getRigidBodyA().activate();
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 public_functions.dof_setAngularUpperLimit = function( params ) {
@@ -1112,9 +1130,9 @@ public_functions.dof_setAngularUpperLimit = function( params ) {
 
 	constraint.setAngularUpperLimit(_vec3_1);
 
-	constraint.getRigidBodyA().activate();
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 public_functions.dof_enableAngularMotor = function( params ) {
@@ -1123,9 +1141,9 @@ public_functions.dof_enableAngularMotor = function( params ) {
 	var motor = constraint.getRotationalLimitMotor( params.which );
 	motor.set_m_enableMotor( true );
 
-	constraint.getRigidBodyA().activate();
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 public_functions.dof_configureAngularMotor = function( params ) {
@@ -1134,13 +1152,15 @@ public_functions.dof_configureAngularMotor = function( params ) {
 	var motor = constraint.getRotationalLimitMotor( params.which );
 
 	motor.set_m_loLimit( params.low_angle );
+
+	console.log(motor.get_m_targetVelocity());
 	motor.set_m_hiLimit( params.high_angle );
 	motor.set_m_targetVelocity( params.velocity );
 	motor.set_m_maxMotorForce( params.max_force );
 
-	constraint.getRigidBodyA().activate();
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 public_functions.dof_disableAngularMotor = function( params ) {
@@ -1149,9 +1169,9 @@ public_functions.dof_disableAngularMotor = function( params ) {
 	var motor = constraint.getRotationalLimitMotor( params.which );
 	motor.set_m_enableMotor( false );
 
-	constraint.getRigidBodyA().activate();
-	if ( constraint.getRigidBodyB() ) {
-		constraint.getRigidBodyB().activate();
+	constraint.a.activate();
+	if ( constraint.b ) {
+		constraint.b.activate();
 	}
 };
 
@@ -1250,10 +1270,11 @@ reportCollisions = function() {
 
 		for ( j = 0; j < num_contacts; j++ ) {
 			pt = manifold.getContactPoint( j );
+
 			//if ( pt.getDistance() < 0 ) {
 				offset = 2 + (collisionreport[1]++) * COLLISIONREPORT_ITEMSIZE;
-				collisionreport[ offset ] = _objects_ammo[ manifold.getBody0() ];
-				collisionreport[ offset + 1 ] = _objects_ammo[ manifold.getBody1() ];
+				collisionreport[ offset ] = _objects_ammo[ manifold.getBody0().ptr ];
+				collisionreport[ offset + 1 ] = _objects_ammo[ manifold.getBody1().ptr ];
 
 				_vector = pt.get_m_normalWorldOnB();
 				collisionreport[ offset + 2 ] = _vector.x();
@@ -1354,8 +1375,8 @@ reportConstraints = function() {
 	for ( index in _constraints ) {
 		if ( _constraints.hasOwnProperty( index ) ) {
 			constraint = _constraints[index];
-			offset_body = constraint.getRigidBodyA();
-			transform = constraint.getFrameOffsetA();
+			offset_body = constraint.a;
+			transform = constraint.ta;
 			origin = transform.getOrigin();
 
 			// add values to report
@@ -1363,10 +1384,10 @@ reportConstraints = function() {
 
 			constraintreport[ offset ] = index;
 			constraintreport[ offset + 1 ] = offset_body.id;
-			constraintreport[ offset + 2 ] = origin.getX();
-			constraintreport[ offset + 3 ] = origin.getY();
-			constraintreport[ offset + 4 ] = origin.getZ();
-			constraintreport[ offset + 5 ] = constraint.getAppliedImpulse();
+			constraintreport[ offset + 2 ] = origin.x;
+			constraintreport[ offset + 3 ] = origin.y;
+			constraintreport[ offset + 4 ] = origin.z;
+			constraintreport[ offset + 5 ] = constraint.getBreakingImpulseThreshold();
 		}
 	}
 
