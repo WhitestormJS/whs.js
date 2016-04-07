@@ -15,7 +15,7 @@ WHS.Fog = class Fog {
      */
 	constructor( params = {} ) {
 
-        api.extend(params, {
+        WHS.API.extend(params, {
 
             hex: 0x000000,
             near: 1,
@@ -41,5 +41,9 @@ WHS.Fog = class Fog {
 }
 
 WHS.World.prototype.Fog = function( params ) {
-	return ( new WHS.Fog(  params ) ).addTo( this );
+    let object = new WHS.Fog( params );
+
+    object.addTo( this );
+
+    return object;
 }

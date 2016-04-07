@@ -31,7 +31,7 @@ WHS.Light = class {
 		if ( params.target ) params.target.set = _set;
 
 		// Polyfill for 3D.
-		var target = api.extend(params, {
+		var target = WHS.API.extend(params, {
 
 	        light: {
 	        	color: 0xffffff,
@@ -87,34 +87,24 @@ WHS.Light = class {
 
 		} );
 
-
-		var key = 0;
-
-		/*root.modellingQueue.forEach( function( el ) {
-
-			if ( el.type == type ) key ++;
-
-		} );*/
-
-		var scope = {
-			_key: key,
+		var scope = Object.assign(this,
+		{
 			_type: type,
 			_whsobject: true,
-			_name: type + key,
 			__releaseTime: new Date().getTime(),
-			_pos: target.pos,
-			_rot: target.rot,
-			_target: target.target,
+
+			parent: null,
+
+			position: target.pos,
+			rotation: target.rot,
+			target: target.target,
 
 			_light: target.light,
 			_shadowmap: target.shadowmap,
+		},
+		new Events());
 
-			ready: new Events()
-		};
-
-		Object.assign( this, scope );
-
-		return this;
+		return scope;
 	}
 
 	/**
@@ -130,21 +120,30 @@ WHS.Light = class {
 		var mesh = this.mesh,
 		_scope = this;
 
-		this.build_state = new Promise( (resolve, reject) => {
+		return new Promise( (resolve, reject) => {
 
 			try {
 
 				mesh.castShadow = true;
 				mesh.receiveShadow = true;
 
-				mesh.position.set( this._pos.x, this._pos.y, this._pos.z );
-				mesh.rotation.set( this._rot.x, this._rot.y, this._rot.z );
+				mesh.position.set( 
+					this.position.x, 
+					this.position.y, 
+					this.position.z 
+				);
+
+				mesh.rotation.set( 
+					this.rotation.x, 
+					this.rotation.y, 
+					this.rotation.z 
+				);
 
 				tags.forEach(tag => {
 					_scope[tag] = true;
 				});
 
-				resolve();
+				resolve( _scope );
 
 			} catch ( err ) {
 
@@ -157,34 +156,29 @@ WHS.Light = class {
 			}
 
 		});
-
-		return this;
 	}
 
 	/**
 	 * Add light to WHS.World object.
 	 *
 	 * @param {WHS.World} root - World, were this light will be. 
+	 * @param {...String} tags - Tags for compiling. 
 	 */
-	addTo( root ) {
+	addTo( parent ) {
 
 		'use strict';
 
-		this.root = root;
+		this.parent = parent;
 
 		var _mesh = this.mesh,
 			_scope = this;
 
-		console.log(this);
-
-		this._key = this.root.modellingQueue.length;
-
-		_scope._state = new Promise( (resolve, reject) => {
+		return new Promise( (resolve, reject) => {
 
 			try {
 
-				api.merge( _scope.root.scene, _mesh );
-				_scope.root.modellingQueue.push( _scope );
+				WHS.API.merge( _scope.parent.scene, _mesh );
+				_scope.parent.children.push( _scope );
 
 			} catch ( err ) {
 
@@ -196,24 +190,20 @@ WHS.Light = class {
 				if ( _scope._wait ) {
 
 					_scope._mesh.addEventListener( 'ready', function() {
-						resolve();
+						resolve( _scope );
 
-						_scope.ready.emit("ready");
+						_scope.emit("ready");
 					} );
 
 				} else {
-					resolve();
+					resolve( _scope );
 
-					_scope.ready.emit("ready");
+					_scope.emit("ready");
 				}
 
 			}
 
 		} );
-
-		_scope.root.children.push( _scope );
-
-		return this;
 	}
 
 	/** 
@@ -221,21 +211,47 @@ WHS.Light = class {
 	 */
 	buildShadow() {
 
-	    this.mesh.shadow.mapSize.width = this._shadowmap.width;
-	    this.mesh.shadow.mapSize.height = this._shadowmap.height;
-	    this.mesh.shadow.bias = this._shadowmap.bias;
+		let _scope = this;
 
-	    this.mesh.shadow.camera.near = this._shadowmap.near;
-	    this.mesh.shadow.camera.far = this._shadowmap.far;
-	    this.mesh.shadow.camera.fov = this._shadowmap.fov;
-	    //this.mesh.shadowDarkness = this._shadowmap.darkness;
+		return new Promise( (resolve, reject) => {
 
-	    this.mesh.shadow.camera.Left = this._shadowmap.left;
-	    this.mesh.shadow.camera.right = this._shadowmap.right;
-	    this.mesh.shadow.camera.top = this._shadowmap.top;
-	    this.mesh.shadow.camera.bottom = this._shadowmap.bottom;
+		    try {
+
+			    this.mesh.shadow.mapSize.width = this._shadowmap.width;
+			    this.mesh.shadow.mapSize.height = this._shadowmap.height;
+			    this.mesh.shadow.bias = this._shadowmap.bias;
+
+			    this.mesh.shadow.camera.near = this._shadowmap.near;
+			    this.mesh.shadow.camera.far = this._shadowmap.far;
+			    this.mesh.shadow.camera.fov = this._shadowmap.fov;
+
+			    this.mesh.shadow.camera.Left = this._shadowmap.left;
+			    this.mesh.shadow.camera.right = this._shadowmap.right;
+			    this.mesh.shadow.camera.top = this._shadowmap.top;
+			    this.mesh.shadow.camera.bottom = this._shadowmap.bottom;
+
+			} catch ( err ) {
+
+				console.error( err.message );
+				reject();
+
+			} finally {
+
+				resolve( _scope );
+
+			}
+
+		});
 
 	}
+
+	/*copy() {
+
+		return WHS.API.extend({
+			mesh: this._mesh.copy(),
+		}, this);
+
+	}*/
 
 	/**
 	 * Remove this light from world.

@@ -24,7 +24,7 @@ WHS.Lathe = class Lathe extends WHS.Shape {
 
 		super( params, "lathe" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             points: []
 
@@ -48,5 +48,9 @@ WHS.Lathe = class Lathe extends WHS.Shape {
 }
 
 WHS.World.prototype.Lathe = function( params ) {
-	return ( new WHS.Lathe(  params ) ).addTo( this );
+    let object = new WHS.Lathe( params );
+
+    object.addTo( this );
+
+    return object;
 }

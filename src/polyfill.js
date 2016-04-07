@@ -4,7 +4,7 @@
  * Email: alexbuzin88@gmail.com
 */
 
-/* ================ MODERNIZING BROWSER API IF NOT EXIST ==================== */
+/* ================ MODERNIZING BROWSER WHS.API IF NOT EXIST ==================== */
 
 
 //Replacing jQuery fadeIn and fadeOut

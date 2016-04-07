@@ -214,7 +214,7 @@ GAME.person = GAME.Sphere( {
 } );
 
 // EFFECTS.
-var effects = GAME.Wagner();
+var effects = new WHS.Wagner(GAME);
 
 //effects.add( "ZoomBlurPass", {} );
 effects.add( "VignettePass", {} );

@@ -33,6 +33,7 @@
     "gulp-babel": "^6.1.1",
     "gulp-replace-task": "^0.11.0",
     "jquery": "^2.2.0",
+    "request": "^2.65.0",
     "three": "^0.75.0"
   },
   "directories": {

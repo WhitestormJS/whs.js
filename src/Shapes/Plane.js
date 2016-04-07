@@ -26,7 +26,7 @@ WHS.Plane = class Plane extends WHS.Shape {
 
 		super( params, "plane" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             width: 10,
             height: 10,
@@ -54,5 +54,9 @@ WHS.Plane = class Plane extends WHS.Shape {
 }
 
 WHS.World.prototype.Plane = function( params ) {
-	return ( new WHS.Plane(  params ) ).addTo( this );
+    let object = new WHS.Plane( params );
+
+    object.addTo( this );
+
+    return object;
 }

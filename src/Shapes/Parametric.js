@@ -26,7 +26,7 @@ WHS.Parametric = class Parametric extends WHS.Shape {
 
 		super( params, "parametric" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             func: function() {},
             slices: 10,
@@ -54,5 +54,9 @@ WHS.Parametric = class Parametric extends WHS.Shape {
 }
 
 WHS.World.prototype.Parametric = function( params ) {
-	return ( new WHS.Parametric(  params ) ).addTo( this );
+    let object = new WHS.Parametric( params );
+
+    object.addTo( this );
+
+    return object;
 }

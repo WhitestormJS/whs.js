@@ -28,7 +28,7 @@ WHS.Tube = class Tube extends WHS.Shape {
 
 		super( params, "tube" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             path: options.geometryOptions.path ? new this.CustomSinCurve(100) : false,
             segments: 20,
@@ -80,5 +80,9 @@ WHS.Tube = class Tube extends WHS.Shape {
 }
 
 WHS.World.prototype.Tube = function( params ) {
-	return ( new WHS.Tube(  params ) ).addTo( this );
+    let object = new WHS.Tube( params );
+
+    object.addTo( this );
+
+    return object;
 }

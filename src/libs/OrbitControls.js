@@ -26,7 +26,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.object = object;
 	this.domElement = ( domElement !== undefined ) ? domElement : document;
 
-	// API
+	// WHS.API
 
 	// Set to false to disable this control
 	this.enabled = true;

@@ -15,7 +15,7 @@ WHS.FogExp2 = class FogExp2 {
      */
 	constructor( params = {} ) {
 
-        api.extend(params, {
+        WHS.API.extend(params, {
 
             hex: 0x000000,
             density: 0.00025
@@ -40,5 +40,9 @@ WHS.FogExp2 = class FogExp2 {
 }
 
 WHS.World.prototype.FogExp2 = function( params ) {
-	return ( new WHS.FogExp2(  params ) ).addTo( this );
+    let object = new WHS.FogExp2( params );
+
+    object.addTo( this );
+
+    return object;
 }

@@ -27,7 +27,7 @@ WHS.Cylinder = class Cylinder extends WHS.Shape {
 
 		super( params, "cylinder" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             radiusTop: 1,
             radiusBottom: 1,
@@ -57,5 +57,9 @@ WHS.Cylinder = class Cylinder extends WHS.Shape {
 }
 
 WHS.World.prototype.Cylinder = function( params ) {
-	return ( new WHS.Cylinder(  params ) ).addTo( this );
+    let object = new WHS.Cylinder( params );
+
+    object.addTo( this );
+
+    return object;
 }

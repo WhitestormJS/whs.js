@@ -28,7 +28,7 @@ WHS.Torusknot = class Torusknot extends WHS.Shape {
 
 		super( params, "Torusknot" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             radius: 100,
             tube: 40,
@@ -64,5 +64,9 @@ WHS.Torusknot = class Torusknot extends WHS.Shape {
 }
 
 WHS.World.prototype.Torusknot = function( params ) {
-	return ( new WHS.Torusknot(  params ) ).addTo( this );
+    let object = new WHS.Torusknot( params );
+
+    object.addTo( this );
+
+    return object;
 }
