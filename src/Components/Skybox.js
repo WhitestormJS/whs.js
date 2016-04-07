@@ -10,7 +10,7 @@ WHS.Skybox = class Skybox extends WHS.Shape {
 
 		super( params, "skybox" );
 
-        api.extend(params, {
+        WHS.API.extend(params, {
 
             skyType: "box",
             detail: ".png",
@@ -70,5 +70,9 @@ WHS.Skybox = class Skybox extends WHS.Shape {
 }
 
 WHS.World.prototype.Skybox = function( params ) {
-	return ( new WHS.Skybox(  params ) ).addTo( this );
+    let object = new WHS.Skybox( params );
+
+    object.addTo( this );
+
+    return object;
 }

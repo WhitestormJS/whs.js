@@ -21,7 +21,7 @@ WHS.API.loadMaterial = function( material ) {
 			material.fri : 0.8
 	};
 
-	var params = api.extend( {}, material );
+	var params = WHS.API.extend( {}, material );
 
 	delete params[ "kind" ];
 

@@ -25,7 +25,7 @@ WHS.Octahedron = class Octahedron extends WHS.Shape {
 
 		super( params, "octahedron" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             radius: 1,
             detail: 0
@@ -51,5 +51,9 @@ WHS.Octahedron = class Octahedron extends WHS.Shape {
 }
 
 WHS.World.prototype.Octahedron = function( params ) {
-	return ( new WHS.Octahedron(  params ) ).addTo( this );
+    let object = new WHS.Octahedron( params );
+
+    object.addTo( this );
+
+    return object;
 }

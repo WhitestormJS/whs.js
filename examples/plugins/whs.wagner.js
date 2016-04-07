@@ -43,7 +43,7 @@ WHS.Wagner = function() {
 
         scope._composer = new WAGNER.Composer(scope._renderer);
 
-        scope._composer.setSize(+(window.innerWidth * scope._settings.rWidth).toFixed(), +(window.innerHeight * scope._settings.rHeight).toFixed());
+        scope._composer.setSize(+(scope._settings.width * scope._settings.rWidth).toFixed(), +(scope._settings.height * scope._settings.rHeight).toFixed());
 
         scope._composer.autoClearColor = true;
 
@@ -63,7 +63,7 @@ WHS.Wagner = function() {
 
             'use strict';
 
-            var target = api.extend(params, {
+            var target = WHS.API.extend(params, {
                 hex: 0x000000,
                 near: 0.015,
                 far: 1000,
@@ -73,7 +73,7 @@ WHS.Wagner = function() {
             switch (type) {
                 case "ZoomBlurPass":
 
-                    target = api.extend(target, {
+                    target = WHS.API.extend(target, {
                         strength: .05,
 
                         center: {
@@ -86,7 +86,7 @@ WHS.Wagner = function() {
 
                 case "MultiPassBloomPass":
 
-                    target = api.extend(target, {
+                    target = WHS.API.extend(target, {
                         strength: .5,
                         blurAmount: 1.32,
                         applyZoomBlur: true,
@@ -103,7 +103,7 @@ WHS.Wagner = function() {
 
                 case "VignettePass":
 
-                    target = api.extend(target, {
+                    target = WHS.API.extend(target, {
                         amount: 0.7,
                         falloff: 0.2
                     });
@@ -112,7 +112,7 @@ WHS.Wagner = function() {
 
                 case "DirectionalBlurPass":
 
-                    target = api.extend(target, {
+                    target = WHS.API.extend(target, {
                         delta: 0.1
                     });
 
@@ -120,7 +120,7 @@ WHS.Wagner = function() {
 
                 case "MotionBlurPass":
 
-                    target = api.extend(target, {
+                    target = WHS.API.extend(target, {
                         delta: 0
                     });
 

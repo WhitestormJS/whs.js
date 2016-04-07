@@ -29,7 +29,7 @@ WHS.Ring = class Ring extends WHS.Shape {
 
 		super( params, "ring" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             innerRadius: 0,
             outerRadius: 50,
@@ -62,5 +62,9 @@ WHS.Ring = class Ring extends WHS.Shape {
 }
 
 WHS.World.prototype.Ring = function( params ) {
-	return ( new WHS.Ring(  params ) ).addTo( this );
+    let object = new WHS.Ring( params );
+
+    object.addTo( this );
+
+    return object;
 }

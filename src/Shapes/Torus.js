@@ -28,7 +28,7 @@ WHS.Torus = class Torus extends WHS.Shape {
 
 		super( params, "torus" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             radius: 100,
             tube: 40,
@@ -60,5 +60,9 @@ WHS.Torus = class Torus extends WHS.Shape {
 }
 
 WHS.World.prototype.Torus = function( params ) {
-	return ( new WHS.Torus(  params ) ).addTo( this );
+    let object = new WHS.Torus( params );
+
+    object.addTo( this );
+
+    return object;
 }

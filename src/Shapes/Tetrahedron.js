@@ -25,7 +25,7 @@ WHS.Tetrahedron = class Tetrahedron extends WHS.Shape {
 
 		super( params, "tetrahedron" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             radius: 1,
             detail: 0
@@ -51,5 +51,9 @@ WHS.Tetrahedron = class Tetrahedron extends WHS.Shape {
 }
 
 WHS.World.prototype.Tetrahedron = function( params ) {
-	return ( new WHS.Tetrahedron(  params ) ).addTo( this );
+    let object = new WHS.Tetrahedron( params );
+
+    object.addTo( this );
+
+    return object;
 }

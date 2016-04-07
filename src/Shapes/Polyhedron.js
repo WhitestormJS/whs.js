@@ -27,7 +27,7 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
 
 		super( params, "polyhedron" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             verticesOfCube: this.verticesOfCube,
             indicesOfFaces: this.indicesOfFaces,
@@ -79,5 +79,9 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
 }
 
 WHS.World.prototype.Polyhedron = function( params ) {
-	return ( new WHS.Polyhedron(  params ) ).addTo( this );
+    let object = new WHS.Polyhedron( params );
+
+    object.addTo( this );
+
+    return object;
 }

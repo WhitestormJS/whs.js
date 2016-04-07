@@ -32,5 +32,9 @@ WHS.AmbientLight = class AmbientLight extends WHS.Light {
 }
 
 WHS.World.prototype.AmbientLight = function( params ) {
-	return ( new WHS.AmbientLight(  params ) ).addTo( this );
+    let object = new WHS.AmbientLight( params );
+
+    object.addTo( this );
+
+    return object;
 }

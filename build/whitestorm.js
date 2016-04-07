@@ -441,7 +441,7 @@ THREE.OrbitControls = function(object, domElement) {
     this.object = object;
     this.domElement = domElement !== undefined ? domElement : document;
 
-    // API
+    // WHS.API
 
     // Set to false to disable this control
     this.enabled = true;
@@ -1440,7 +1440,7 @@ THREE.SubdivisionModifier.prototype.modify = function(geometry) {
     };
 })();
 
-/* ================ MODERNIZING BROWSER API IF NOT EXIST ==================== */
+/* ================ MODERNIZING BROWSER WHS.API IF NOT EXIST ==================== */
 
 //Replacing jQuery fadeIn and fadeOut
 function addCSSRule(sheet, selector, rules, index) {
@@ -1604,24 +1604,14 @@ WHS.API.loadFont = function(url, onLoad, onProgress, onError) {
     return WHS.loader.Font.load(url, onLoad, onProgress, onError);
 };
 
-var api = WHS.API;
-
 if (typeof define === 'function' && define.amd) {
 
     define('whitestorm', WHS);
+    console.log(true);
 } else if ('undefined' !== typeof exports && 'undefined' !== typeof module) {
 
     module.exports = WHS;
 }
-
-/**
- * @author t4r0 / http://t4r0.me
- *
- */
-
-THREE.ShaderWater = {
-    'water': {}
-};
 
 /**
  * Extending object with other objects.
@@ -1726,7 +1716,7 @@ WHS.Light = function() {
         if (params.target) params.target.set = _set;
 
         // Polyfill for 3D.
-        var target = api.extend(params, {
+        var target = WHS.API.extend(params, {
 
             light: {
                 color: 0xffffff,
@@ -1782,31 +1772,22 @@ WHS.Light = function() {
 
         });
 
-        var key = 0;
-
-        /*root.modellingQueue.forEach( function( el ) {
-        			if ( el.type == type ) key ++;
-        		} );*/
-
-        var scope = {
-            _key: key,
+        var scope = Object.assign(this, {
             _type: type,
             _whsobject: true,
-            _name: type + key,
             __releaseTime: new Date().getTime(),
-            _pos: target.pos,
-            _rot: target.rot,
-            _target: target.target,
+
+            parent: null,
+
+            position: target.pos,
+            rotation: target.rot,
+            target: target.target,
 
             _light: target.light,
-            _shadowmap: target.shadowmap,
+            _shadowmap: target.shadowmap
+        }, new Events());
 
-            ready: new Events()
-        };
-
-        Object.assign(this, scope);
-
-        return this;
+        return scope;
     }
 
     /**
@@ -1831,21 +1812,22 @@ WHS.Light = function() {
             var mesh = this.mesh,
                 _scope = this;
 
-            this.build_state = new Promise(function(resolve, reject) {
+            return new Promise(function(resolve, reject) {
 
                 try {
 
                     mesh.castShadow = true;
                     mesh.receiveShadow = true;
 
-                    mesh.position.set(_this._pos.x, _this._pos.y, _this._pos.z);
-                    mesh.rotation.set(_this._rot.x, _this._rot.y, _this._rot.z);
+                    mesh.position.set(_this.position.x, _this.position.y, _this.position.z);
+
+                    mesh.rotation.set(_this.rotation.x, _this.rotation.y, _this.rotation.z);
 
                     tags.forEach(function(tag) {
                         _scope[tag] = true;
                     });
 
-                    resolve();
+                    resolve(_scope);
                 } catch (err) {
 
                     console.error(err.message);
@@ -1855,37 +1837,32 @@ WHS.Light = function() {
                     //this._state.reject();
                 }
             });
-
-            return this;
         }
 
         /**
          * Add light to WHS.World object.
          *
          * @param {WHS.World} root - World, were this light will be. 
+         * @param {...String} tags - Tags for compiling. 
          */
 
     }, {
         key: "addTo",
-        value: function addTo(root) {
+        value: function addTo(parent) {
 
             'use strict';
 
-            this.root = root;
+            this.parent = parent;
 
             var _mesh = this.mesh,
                 _scope = this;
 
-            console.log(this);
-
-            this._key = this.root.modellingQueue.length;
-
-            _scope._state = new Promise(function(resolve, reject) {
+            return new Promise(function(resolve, reject) {
 
                 try {
 
-                    api.merge(_scope.root.scene, _mesh);
-                    _scope.root.modellingQueue.push(_scope);
+                    WHS.API.merge(_scope.parent.scene, _mesh);
+                    _scope.parent.children.push(_scope);
                 } catch (err) {
 
                     console.error(err.message);
@@ -1895,21 +1872,17 @@ WHS.Light = function() {
                     if (_scope._wait) {
 
                         _scope._mesh.addEventListener('ready', function() {
-                            resolve();
+                            resolve(_scope);
 
-                            _scope.ready.emit("ready");
+                            _scope.emit("ready");
                         });
                     } else {
-                        resolve();
+                        resolve(_scope);
 
-                        _scope.ready.emit("ready");
+                        _scope.emit("ready");
                     }
                 }
             });
-
-            _scope.root.children.push(_scope);
-
-            return this;
         }
 
         /** 
@@ -1919,21 +1892,44 @@ WHS.Light = function() {
     }, {
         key: "buildShadow",
         value: function buildShadow() {
+            var _this2 = this;
 
-            this.mesh.shadow.mapSize.width = this._shadowmap.width;
-            this.mesh.shadow.mapSize.height = this._shadowmap.height;
-            this.mesh.shadow.bias = this._shadowmap.bias;
+            var _scope = this;
 
-            this.mesh.shadow.camera.near = this._shadowmap.near;
-            this.mesh.shadow.camera.far = this._shadowmap.far;
-            this.mesh.shadow.camera.fov = this._shadowmap.fov;
-            //this.mesh.shadowDarkness = this._shadowmap.darkness;
+            return new Promise(function(resolve, reject) {
 
-            this.mesh.shadow.camera.Left = this._shadowmap.left;
-            this.mesh.shadow.camera.right = this._shadowmap.right;
-            this.mesh.shadow.camera.top = this._shadowmap.top;
-            this.mesh.shadow.camera.bottom = this._shadowmap.bottom;
+                try {
+
+                    _this2.mesh.shadow.mapSize.width = _this2._shadowmap.width;
+                    _this2.mesh.shadow.mapSize.height = _this2._shadowmap.height;
+                    _this2.mesh.shadow.bias = _this2._shadowmap.bias;
+
+                    _this2.mesh.shadow.camera.near = _this2._shadowmap.near;
+                    _this2.mesh.shadow.camera.far = _this2._shadowmap.far;
+                    _this2.mesh.shadow.camera.fov = _this2._shadowmap.fov;
+
+                    _this2.mesh.shadow.camera.Left = _this2._shadowmap.left;
+                    _this2.mesh.shadow.camera.right = _this2._shadowmap.right;
+                    _this2.mesh.shadow.camera.top = _this2._shadowmap.top;
+                    _this2.mesh.shadow.camera.bottom = _this2._shadowmap.bottom;
+                } catch (err) {
+
+                    console.error(err.message);
+                    reject();
+                } finally {
+
+                    resolve(_scope);
+                }
+            });
         }
+
+        /*copy() {
+        
+        	return WHS.API.extend({
+        		mesh: this._mesh.copy(),
+        	}, this);
+        
+        }*/
 
         /**
          * Remove this light from world.
@@ -1977,7 +1973,7 @@ WHS.API.loadMaterial = function(material) {
         _friction: !isNaN(parseFloat(material.friction)) ? material.friction : !isNaN(parseFloat(material.fri)) ? material.fri : 0.8
     };
 
-    var params = api.extend({}, material);
+    var params = WHS.API.extend({}, material);
 
     delete params["kind"];
 
@@ -2102,10 +2098,7 @@ WHS.Shape = function() {
     function _class2(params, type) {
         _classCallCheck(this, _class2);
 
-        //if ( ! root )
-        //console.error( "@constructor: WHS root object is not defined." );
-
-        this._lastWorld = null;
+        if (!type) console.error("@constructor: Please specify \" type \".");
 
         var _set = function _set(x, y, z) {
 
@@ -2115,7 +2108,7 @@ WHS.Shape = function() {
         };
 
         // Polyfill for 3D.
-        api.extend(params, {
+        WHS.API.extend(params, {
 
             mass: 10,
 
@@ -2150,55 +2143,53 @@ WHS.Shape = function() {
             morph: {
                 speed: 1,
                 duration: 1
-            },
-
-            onlyvis: false
+            }
 
         });
 
-        var key = 0;
-
-        /*root.modellingQueue.forEach( function( el ) {
-        			if ( el.type == type ) key ++;
-        		} );*/
-
-        var scope = {
-            _key: key,
+        var scope = Object.assign(this, {
             _type: type,
             _whsobject: true,
-            _name: type + key,
             __releaseTime: new Date().getTime(),
-            _pos: params.pos,
-            _rot: params.rot,
-            _scale: params.scale,
-            _morph: params.morph,
-            _target: params.target,
-            _onlyvis: params.onlyvis,
+            parent: null,
 
-            ready: new Events()
-        };
+            wait: [],
 
-        Object.assign(this, scope);
+            position: params.pos,
+            rotation: params.rot,
+            scale: params.scale,
+            morph: params.morph,
+            target: params.target
+        }, new Events());
 
-        return this;
+        return scope;
     }
 
-    /**
-     * Applying shadow & position & rotation.
-     *
-     * @param {...String} tags - Tags that defines what to do with shape 
-     * additionally.
-     */
-
     _createClass(_class2, [{
+        key: "wait",
+        value: function wait(promise) {
+
+            this.wait.push(promise);
+
+            return this;
+        }
+
+        /**
+         * Applying shadow & position & rotation.
+         *
+         * @param {...String} tags - Tags that defines what to do with shape 
+         * additionally.
+         */
+
+    }, {
         key: "build",
         value: function build() {
 
             'use strict';
 
-            console.log(this);
-
             var _scope = this;
+
+            console.log(_scope);
 
             for (var _len3 = arguments.length, tags = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
                 tags[_key3] = arguments[_key3];
@@ -2206,60 +2197,59 @@ WHS.Shape = function() {
 
             if (tags.indexOf("wait") >= 0) {
 
-                _scope._loading.then(function() {
+                Promise.all(_scope.wait).then(function() {
 
-                    _scope.build_state = new Promise(function(resolve, reject) {
+                    return new Promise(function(resolve, reject) {
 
                         try {
 
                             _scope.mesh.castShadow = true;
                             _scope.mesh.receiveShadow = true;
 
-                            _scope.mesh.position.set(_scope._pos.x, _scope._pos.y, _scope._pos.z);
-                            _scope.mesh.rotation.set(_scope._rot.x, _scope._rot.y, _scope._rot.z);
-                            _scope.mesh.scale.set(_scope._scale.x, _scope._scale.y, _scope._scale.z);
+                            _scope.mesh.position.set(_scope.position.x, _scope.position.y, _scope.position.z);
+
+                            _scope.mesh.rotation.set(_scope.rotation.x, _scope.rotation.y, _scope.rotation.z);
+
+                            _scope.mesh.scale.set(_scope.scale.x, _scope.scale.y, _scope.scale.z);
 
                             //References, I consider this a bad way of solving the problem, but it works for now
-                            _scope._pos = _scope.mesh.position;
-                            _scope._rot = _scope.mesh.rotation;
-                            _scope._scale = _scope.mesh.scale;
+                            _scope.position = _scope.mesh.position;
+                            _scope.rotation = _scope.mesh.rotation;
+                            _scope.scale = _scope.mesh.scale;
 
                             resolve();
                         } catch (err) {
 
                             console.error(err.message);
-
                             reject();
-
-                            //this._state.reject();
                         }
                     });
                 });
             } else {
-                _scope.build_state = new Promise(function(resolve, reject) {
+
+                return new Promise(function(resolve, reject) {
 
                     try {
 
                         _scope.mesh.castShadow = true;
                         _scope.mesh.receiveShadow = true;
 
-                        _scope.mesh.position.set(_scope._pos.x, _scope._pos.y, _scope._pos.z);
-                        _scope.mesh.rotation.set(_scope._rot.x, _scope._rot.y, _scope._rot.z);
-                        _scope.mesh.scale.set(_scope._scale.x, _scope._scale.y, _scope._scale.z);
+                        _scope.mesh.position.set(_scope.position.x, _scope.position.y, _scope.position.z);
+
+                        _scope.mesh.rotation.set(_scope.rotation.x, _scope.rotation.y, _scope.rotation.z);
+
+                        _scope.mesh.scale.set(_scope.scale.x, _scope.scale.y, _scope.scale.z);
 
                         //References, I consider this a bad way of solving the problem, but it works for now
-                        _scope._pos = _scope.mesh.position;
-                        _scope._rot = _scope.mesh.rotation;
-                        _scope._scale = _scope.mesh.scale;
+                        _scope.position = _scope.mesh.position;
+                        _scope.rotation = _scope.mesh.rotation;
+                        _scope.scale = _scope.mesh.scale;
 
                         resolve();
                     } catch (err) {
 
                         console.error(err.message);
-
                         reject();
-
-                        //this._state.reject();
                     }
                 });
             }
@@ -2270,39 +2260,35 @@ WHS.Shape = function() {
         /**
          * Add shape to WHS.World object.
          *
-         * @param {WHS.World} root - World, were this shape will be. 
+         * @param {WHS.World} parent - World, were this shape will be.
+         * @param {...String} tags - Tags for compiling. 
          */
 
     }, {
         key: "addTo",
-        value: function addTo(root) {
+        value: function addTo(parent) {
 
             'use strict';
 
-            this.root = root;
+            this.parent = parent;
 
-            this._lastWorld = root;
-
-            var _mesh = this.mesh,
-                _scope = this;
-
-            this._key = this.root.modellingQueue.length;
+            var _scope = this;
 
             for (var _len4 = arguments.length, tags = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
                 tags[_key4 - 1] = arguments[_key4];
             }
 
-            console.log([tags, tags.indexOf("wait"), _scope]);
-
             if (tags.indexOf("wait") >= 0) {
-                _scope._loading.then(function() {
 
-                    _scope._state = new Promise(function(resolve, reject) {
+                Promise.all(_scope.wait).then(function() {
+
+                    return new Promise(function(resolve, reject) {
 
                         try {
 
-                            api.merge(_scope.root.scene, _scope.mesh);
-                            _scope.root.modellingQueue.push(_scope);
+                            WHS.API.merge(_scope.parent.scene, _scope.mesh);
+                            _scope.parent.modellingQueue.push(_scope);
+                            _scope.parent.children.push(_scope);
                         } catch (err) {
 
                             console.error(err.message);
@@ -2312,26 +2298,27 @@ WHS.Shape = function() {
                             if (_scope._wait) {
 
                                 _scope._mesh.addEventListener('ready', function() {
-                                    resolve();
+                                    resolve(_scope);
 
-                                    _scope.ready.emit("ready");
+                                    _scope.emit("ready");
                                 });
                             } else {
-                                resolve();
+                                resolve(_scope);
 
-                                _scope.ready.emit("ready");
+                                _scope.emit("ready");
                             }
                         }
                     });
                 });
             } else {
 
-                _scope._state = new Promise(function(resolve, reject) {
+                return new Promise(function(resolve, reject) {
 
                     try {
 
-                        api.merge(_scope.root.scene, _mesh);
-                        _scope.root.modellingQueue.push(_scope);
+                        WHS.API.merge(_scope.parent.scene, _scope.mesh);
+                        _scope.parent.modellingQueue.push(_scope);
+                        _scope.parent.children.push(_scope);
                     } catch (err) {
 
                         console.error(err.message);
@@ -2341,24 +2328,18 @@ WHS.Shape = function() {
                         if (_scope._wait) {
 
                             _scope._mesh.addEventListener('ready', function() {
-                                resolve();
 
-                                _scope.ready.emit("ready");
+                                resolve(_scope);
+                                _scope.emit("ready");
                             });
                         } else {
-                            resolve();
+                            resolve(_scope);
 
-                            console.log("wqd");
-
-                            _scope.ready.emit("ready");
+                            _scope.emit("ready");
                         }
                     }
                 });
             }
-
-            _scope.root.children.push(_scope);
-
-            return this;
         }
 
         /**
@@ -2369,7 +2350,7 @@ WHS.Shape = function() {
         key: "_initMaterial",
         value: function _initMaterial(mat_props) {
 
-            return api.loadMaterial(mat_props)._material;
+            return WHS.API.loadMaterial(mat_props)._material;
         }
 
         /**
@@ -2381,8 +2362,11 @@ WHS.Shape = function() {
         value: function remove() {
 
             this.root.scene.remove(this.mesh);
+
             var index = this.root.modellingQueue.indexOf(this);
+
             if (index !== -1) this.root.modellingQueue.splice(index, 1);
+
             this.root.children.splice(this.root.children.indexOf(this), 1);
             this.root = null;
 
@@ -2419,11 +2403,11 @@ WHS.API.texture = function(url, options) {
 
     'use strict';
 
-    var texture = api.loadTexture(url);
+    var texture = WHS.API.loadTexture(url);
 
     if (options) {
 
-        var opt = api.extend(options, {
+        var opt = WHS.API.extend(options, {
 
             offset: {
                 x: 0,
@@ -2532,7 +2516,7 @@ WHS.World = function() {
         if (!THREE) console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
         if (!Physijs) console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
 
-        var target = api.extend(params, {
+        var target = WHS.API.extend(params, {
 
             anaglyph: false,
             helper: false,
@@ -2629,8 +2613,6 @@ WHS.World = function() {
 
             this.scene = new Physijs.Scene();
 
-            console.log(this.scene);
-
             this.scene.setGravity(new THREE.Vector3(this._settings.gravity.x, this._settings.gravity.y, this._settings.gravity.z));
 
             // Arrays for processing.
@@ -2645,6 +2627,8 @@ WHS.World = function() {
     }, {
         key: "_initPhysiJS",
         value: function _initPhysiJS() {
+
+            this.simulate = true;
 
             Physijs.scripts.worker = this._settings.path_worker;
             Physijs.scripts.ammo = this._settings.path_ammo;
@@ -2724,10 +2708,10 @@ WHS.World = function() {
         key: "_initRenderer",
         value: function _initRenderer() {
 
+            this.render = true;
+
             // Renderer.
-            this._renderer = new THREE.WebGLRenderer({
-                precision: "lowp"
-            });
+            this._renderer = new THREE.WebGLRenderer();
             this._renderer.setClearColor(this._settings.background);
 
             // Shadowmap.
@@ -2735,7 +2719,7 @@ WHS.World = function() {
             this._renderer.shadowMap.type = this._settings.shadowmap.type;
             this._renderer.shadowMap.cascade = true;
 
-            this._renderer.setSize(+(window.innerWidth * this._settings.rWidth).toFixed(), +(window.innerHeight * this._settings.rHeight).toFixed());
+            this._renderer.setSize(+(this._settings.width * this._settings.rWidth).toFixed(), +(this._settings.height * this._settings.rHeight).toFixed());
 
             this._renderer.render(this.scene, this._camera);
 
@@ -2769,21 +2753,24 @@ WHS.World = function() {
                 //  scope.effect.render(scope.scene, scope._camera);
 
                 scope._process(clock);
-                scope.scene.simulate();
+
+                if (scope.simulate) scope.scene.simulate();
+
                 scope._updateControls();
 
                 // Effects rendering.
                 if (scope._composer) {
 
                     scope._composer.reset();
-                    scope._composer.render(scope.scene, scope._camera);
+
+                    if (scope.render) scope._composer.render(scope.scene, scope._camera);
 
                     scope._composer.pass(scope._composer.stack);
 
                     scope._composer.toScreen();
                 } else {
 
-                    scope._renderer.render(scope.scene, scope._camera);
+                    if (scope.render) scope._renderer.render(scope.scene, scope._camera);
                 }
 
                 scope._execLoops(time);
@@ -2899,9 +2886,9 @@ WHS.Cube = function(_WHS$Shape) {
 
         _classCallCheck(this, Cube);
 
-        var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(Cube).call(this, params, "cube"));
+        var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(Cube).call(this, params, "cube"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             width: 1,
             height: 1,
@@ -2909,18 +2896,22 @@ WHS.Cube = function(_WHS$Shape) {
 
         });
 
-        _this2.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(params.geometry.width, params.geometry.height, params.geometry.depth), _get(Object.getPrototypeOf(Cube.prototype), "_initMaterial", _this2).call(_this2, params.material), params.mass);
+        _this3.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(params.geometry.width, params.geometry.height, params.geometry.depth), _get(Object.getPrototypeOf(Cube.prototype), "_initMaterial", _this3).call(_this3, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Cube.prototype), "build", _this2).call(_this2);
+        _get(Object.getPrototypeOf(Cube.prototype), "build", _this3).call(_this3);
 
-        return _this2;
+        return _this3;
     }
 
     return Cube;
 }(WHS.Shape);
 
 WHS.World.prototype.Cube = function(params) {
-    return new WHS.Cube(params).addTo(this);
+    var object = new WHS.Cube(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -2950,9 +2941,9 @@ WHS.Cylinder = function(_WHS$Shape2) {
 
         _classCallCheck(this, Cylinder);
 
-        var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(Cylinder).call(this, params, "cylinder"));
+        var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(Cylinder).call(this, params, "cylinder"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             radiusTop: 1,
             radiusBottom: 1,
@@ -2961,18 +2952,22 @@ WHS.Cylinder = function(_WHS$Shape2) {
 
         });
 
-        _this3.mesh = new Physijs.CylinderMesh(new THREE.CylinderGeometry(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments), _get(Object.getPrototypeOf(Cylinder.prototype), "_initMaterial", _this3).call(_this3, params.material), params.mass);
+        _this4.mesh = new Physijs.CylinderMesh(new THREE.CylinderGeometry(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments), _get(Object.getPrototypeOf(Cylinder.prototype), "_initMaterial", _this4).call(_this4, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Cylinder.prototype), "build", _this3).call(_this3);
+        _get(Object.getPrototypeOf(Cylinder.prototype), "build", _this4).call(_this4);
 
-        return _this3;
+        return _this4;
     }
 
     return Cylinder;
 }(WHS.Shape);
 
 WHS.World.prototype.Cylinder = function(params) {
-    return new WHS.Cylinder(params).addTo(this);
+    var object = new WHS.Cylinder(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3000,27 +2995,31 @@ WHS.Dodecahedron = function(_WHS$Shape3) {
 
         _classCallCheck(this, Dodecahedron);
 
-        var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(Dodecahedron).call(this, params, "dodecahedron"));
+        var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(Dodecahedron).call(this, params, "dodecahedron"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             radius: 1,
             detail: 0
 
         });
 
-        _this4.mesh = new Physijs.ConvexMesh(new THREE.DodecahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Dodecahedron.prototype), "_initMaterial", _this4).call(_this4, params.material), params.mass);
+        _this5.mesh = new Physijs.ConvexMesh(new THREE.DodecahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Dodecahedron.prototype), "_initMaterial", _this5).call(_this5, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Dodecahedron.prototype), "build", _this4).call(_this4);
+        _get(Object.getPrototypeOf(Dodecahedron.prototype), "build", _this5).call(_this5);
 
-        return _this4;
+        return _this5;
     }
 
     return Dodecahedron;
 }(WHS.Shape);
 
 WHS.World.prototype.Dodecahedron = function(params) {
-    return new WHS.Dodecahedron(params).addTo(this);
+    var object = new WHS.Dodecahedron(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3047,27 +3046,31 @@ WHS.Extrude = function(_WHS$Shape4) {
 
         _classCallCheck(this, Extrude);
 
-        var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(Extrude).call(this, params, "extrude"));
+        var _this6 = _possibleConstructorReturn(this, Object.getPrototypeOf(Extrude).call(this, params, "extrude"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             shapes: [],
             options: {}
 
         });
 
-        _this5.mesh = new Physijs.ConvexMesh(new THREE.ExtrudeGeometry(params.geometry.shapes, params.geometry.options), _get(Object.getPrototypeOf(Extrude.prototype), "_initMaterial", _this5).call(_this5, params.material), params.mass);
+        _this6.mesh = new Physijs.ConvexMesh(new THREE.ExtrudeGeometry(params.geometry.shapes, params.geometry.options), _get(Object.getPrototypeOf(Extrude.prototype), "_initMaterial", _this6).call(_this6, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Extrude.prototype), "build", _this5).call(_this5);
+        _get(Object.getPrototypeOf(Extrude.prototype), "build", _this6).call(_this6);
 
-        return _this5;
+        return _this6;
     }
 
     return Extrude;
 }(WHS.Shape);
 
 WHS.World.prototype.Extrude = function(params) {
-    return new WHS.Extrude(params).addTo(this);
+    var object = new WHS.Extrude(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3095,27 +3098,31 @@ WHS.Icosahderon = function(_WHS$Shape5) {
 
         _classCallCheck(this, Icosahedron);
 
-        var _this6 = _possibleConstructorReturn(this, Object.getPrototypeOf(Icosahedron).call(this, params, "icosahedron"));
+        var _this7 = _possibleConstructorReturn(this, Object.getPrototypeOf(Icosahedron).call(this, params, "icosahedron"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             radius: 1,
             detail: 0
 
         });
 
-        _this6.mesh = new Physijs.ConvexMesh(new THREE.IcosahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Icosahedron.prototype), "_initMaterial", _this6).call(_this6, params.material), params.mass);
+        _this7.mesh = new Physijs.ConvexMesh(new THREE.IcosahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Icosahedron.prototype), "_initMaterial", _this7).call(_this7, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Icosahedron.prototype), "build", _this6).call(_this6);
+        _get(Object.getPrototypeOf(Icosahedron.prototype), "build", _this7).call(_this7);
 
-        return _this6;
+        return _this7;
     }
 
     return Icosahedron;
 }(WHS.Shape);
 
 WHS.World.prototype.Icosahedron = function(params) {
-    return new WHS.Icosahderon(params).addTo(this);
+    var object = new WHS.Icosahderon(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3142,26 +3149,30 @@ WHS.Lathe = function(_WHS$Shape6) {
 
         _classCallCheck(this, Lathe);
 
-        var _this7 = _possibleConstructorReturn(this, Object.getPrototypeOf(Lathe).call(this, params, "lathe"));
+        var _this8 = _possibleConstructorReturn(this, Object.getPrototypeOf(Lathe).call(this, params, "lathe"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             points: []
 
         });
 
-        _this7.mesh = new Physijs.ConvexMesh(new THREE.LatheGeometry(params.geometry.points), _get(Object.getPrototypeOf(Lathe.prototype), "_initMaterial", _this7).call(_this7, params.material), params.mass);
+        _this8.mesh = new Physijs.ConvexMesh(new THREE.LatheGeometry(params.geometry.points), _get(Object.getPrototypeOf(Lathe.prototype), "_initMaterial", _this8).call(_this8, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Lathe.prototype), "build", _this7).call(_this7);
+        _get(Object.getPrototypeOf(Lathe.prototype), "build", _this8).call(_this8);
 
-        return _this7;
+        return _this8;
     }
 
     return Lathe;
 }(WHS.Shape);
 
 WHS.World.prototype.Lathe = function(params) {
-    return new WHS.Lathe(params).addTo(this);
+    var object = new WHS.Lathe(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3188,25 +3199,25 @@ WHS.Model = function(_WHS$Shape7) {
 
         _classCallCheck(this, Model);
 
-        var _this8 = _possibleConstructorReturn(this, Object.getPrototypeOf(Model).call(this, params, "model"));
+        var _this9 = _possibleConstructorReturn(this, Object.getPrototypeOf(Model).call(this, params, "model"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             path: ""
 
         });
 
-        var scope = _this8;
+        var scope = _this9;
 
-        _this8._loading = new Promise(function(resolve, reject) {
+        _get(Object.getPrototypeOf(Model.prototype), "wait", _this9).call(_this9, new Promise(function(resolve, reject) {
 
-            api.loadJSON(params.geometry.path, function(data, materials) {
+            WHS.API.loadJSON(params.geometry.path, function(data, materials) {
 
-                if (!materials || params.material.useVertexColors) var material = api.loadMaterial(api.extend(params.material, {
+                if (!materials || params.material.useVertexColors) var material = WHS.API.loadMaterial(WHS.API.extend(params.material, {
                     morphTargets: true,
                     vertexColors: THREE.FaceColors
                 }))._material;
-                else if (params.material.useCustomMaterial) var material = api.loadMaterial(params.material)._material;
+                else if (params.material.useCustomMaterial) var material = WHS.API.loadMaterial(params.material)._material;
                 else var material = new THREE.MultiMaterial(materials);
 
                 data.computeFaceNormals();
@@ -3216,18 +3227,22 @@ WHS.Model = function(_WHS$Shape7) {
 
                 resolve();
             });
-        });
+        }));
 
-        _get(Object.getPrototypeOf(Model.prototype), "build", _this8).call(_this8, "wait");
+        _get(Object.getPrototypeOf(Model.prototype), "build", _this9).call(_this9, "wait");
 
-        return _this8;
+        return _this9;
     }
 
     return Model;
 }(WHS.Shape);
 
 WHS.World.prototype.Model = function(params) {
-    return new WHS.Model(params).addTo(this, "wait");
+    var object = new WHS.Model(params);
+
+    object.addTo(this, "wait");
+
+    return object;
 };
 
 /**
@@ -3257,25 +3272,25 @@ WHS.Morph = function(_WHS$Shape8) {
 
         _classCallCheck(this, Morph);
 
-        var _this9 = _possibleConstructorReturn(this, Object.getPrototypeOf(Morph).call(this, params, "morph"));
+        var _this10 = _possibleConstructorReturn(this, Object.getPrototypeOf(Morph).call(this, params, "morph"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             path: ""
 
         });
 
-        var scope = _this9;
+        var scope = _this10;
 
-        _this9._loading = new Promise(function(resolve, reject) {
+        _get(Object.getPrototypeOf(Morph.prototype), "wait", _this10).call(_this10, new Promise(function(resolve, reject) {
 
-            api.loadJSON(params.geometry.path, function(data, materials) {
+            WHS.API.loadJSON(params.geometry.path, function(data, materials) {
 
-                if (!materials || params.material.useVertexColors) var material = api.loadMaterial(api.extend(params.material, {
+                if (!materials || params.material.useVertexColors) var material = WHS.API.loadMaterial(WHS.API.extend(params.material, {
                     morphTargets: true,
                     vertexColors: THREE.FaceColors
                 }))._material;
-                else if (params.material.useCustomMaterial) var material = api.loadMaterial(params.material)._material;
+                else if (params.material.useCustomMaterial) var material = WHS.API.loadMaterial(params.material)._material;
                 else var material = new THREE.MultiMaterial(materials);
 
                 data.computeFaceNormals();
@@ -3289,22 +3304,24 @@ WHS.Morph = function(_WHS$Shape8) {
 
                 scope.mesh.mixer.clipAction(data.animations[0]).setDuration(params.morph.duration).play();
 
-                scope._rot.y = Math.PI / 2;
-
                 resolve();
             });
-        });
+        }));
 
-        _get(Object.getPrototypeOf(Morph.prototype), "build", _this9).call(_this9, "wait");
+        _get(Object.getPrototypeOf(Morph.prototype), "build", _this10).call(_this10, "wait");
 
-        return _this9;
+        return _this10;
     }
 
     return Morph;
 }(WHS.Shape);
 
 WHS.World.prototype.Morph = function(params) {
-    return new WHS.Morph(params).addTo(this, "wait");
+    var object = new WHS.Morph(params);
+
+    object.addTo(this, "wait");
+
+    return object;
 };
 
 /**
@@ -3332,27 +3349,31 @@ WHS.Octahedron = function(_WHS$Shape9) {
 
         _classCallCheck(this, Octahedron);
 
-        var _this10 = _possibleConstructorReturn(this, Object.getPrototypeOf(Octahedron).call(this, params, "octahedron"));
+        var _this11 = _possibleConstructorReturn(this, Object.getPrototypeOf(Octahedron).call(this, params, "octahedron"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             radius: 1,
             detail: 0
 
         });
 
-        _this10.mesh = new Physijs.ConvexMesh(new THREE.OctahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Octahedron.prototype), "_initMaterial", _this10).call(_this10, params.material), params.mass);
+        _this11.mesh = new Physijs.ConvexMesh(new THREE.OctahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Octahedron.prototype), "_initMaterial", _this11).call(_this11, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Octahedron.prototype), "build", _this10).call(_this10);
+        _get(Object.getPrototypeOf(Octahedron.prototype), "build", _this11).call(_this11);
 
-        return _this10;
+        return _this11;
     }
 
     return Octahedron;
 }(WHS.Shape);
 
 WHS.World.prototype.Octahedron = function(params) {
-    return new WHS.Octahedron(params).addTo(this);
+    var object = new WHS.Octahedron(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3381,9 +3402,9 @@ WHS.Parametric = function(_WHS$Shape10) {
 
         _classCallCheck(this, Parametric);
 
-        var _this11 = _possibleConstructorReturn(this, Object.getPrototypeOf(Parametric).call(this, params, "parametric"));
+        var _this12 = _possibleConstructorReturn(this, Object.getPrototypeOf(Parametric).call(this, params, "parametric"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             func: function func() {},
             slices: 10,
@@ -3391,18 +3412,22 @@ WHS.Parametric = function(_WHS$Shape10) {
 
         });
 
-        _this11.mesh = new Physijs.ConcaveMesh(new THREE.ParametricGeometry(params.geometry.func, params.geometry.slices, params.geometry.stacks), _get(Object.getPrototypeOf(Parametric.prototype), "_initMaterial", _this11).call(_this11, params.material), params.mass);
+        _this12.mesh = new Physijs.ConcaveMesh(new THREE.ParametricGeometry(params.geometry.func, params.geometry.slices, params.geometry.stacks), _get(Object.getPrototypeOf(Parametric.prototype), "_initMaterial", _this12).call(_this12, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Parametric.prototype), "build", _this11).call(_this11);
+        _get(Object.getPrototypeOf(Parametric.prototype), "build", _this12).call(_this12);
 
-        return _this11;
+        return _this12;
     }
 
     return Parametric;
 }(WHS.Shape);
 
 WHS.World.prototype.Parametric = function(params) {
-    return new WHS.Parametric(params).addTo(this);
+    var object = new WHS.Parametric(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3431,9 +3456,9 @@ WHS.Plane = function(_WHS$Shape11) {
 
         _classCallCheck(this, Plane);
 
-        var _this12 = _possibleConstructorReturn(this, Object.getPrototypeOf(Plane).call(this, params, "plane"));
+        var _this13 = _possibleConstructorReturn(this, Object.getPrototypeOf(Plane).call(this, params, "plane"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             width: 10,
             height: 10,
@@ -3441,18 +3466,22 @@ WHS.Plane = function(_WHS$Shape11) {
 
         });
 
-        _this12.mesh = new Physijs.PlaneMesh(new THREE.PlaneGeometry(params.geometry.width, params.geometry.height, params.geometry.segments), _get(Object.getPrototypeOf(Plane.prototype), "_initMaterial", _this12).call(_this12, params.material), params.mass);
+        _this13.mesh = new Physijs.PlaneMesh(new THREE.PlaneGeometry(params.geometry.width, params.geometry.height, params.geometry.segments), _get(Object.getPrototypeOf(Plane.prototype), "_initMaterial", _this13).call(_this13, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Plane.prototype), "build", _this12).call(_this12);
+        _get(Object.getPrototypeOf(Plane.prototype), "build", _this13).call(_this13);
 
-        return _this12;
+        return _this13;
     }
 
     return Plane;
 }(WHS.Shape);
 
 WHS.World.prototype.Plane = function(params) {
-    return new WHS.Plane(params).addTo(this);
+    var object = new WHS.Plane(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3482,22 +3511,22 @@ WHS.Polyhedron = function(_WHS$Shape12) {
 
         _classCallCheck(this, Polyhedron);
 
-        var _this13 = _possibleConstructorReturn(this, Object.getPrototypeOf(Polyhedron).call(this, params, "polyhedron"));
+        var _this14 = _possibleConstructorReturn(this, Object.getPrototypeOf(Polyhedron).call(this, params, "polyhedron"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
-            verticesOfCube: _this13.verticesOfCube,
-            indicesOfFaces: _this13.indicesOfFaces,
+            verticesOfCube: _this14.verticesOfCube,
+            indicesOfFaces: _this14.indicesOfFaces,
             radius: 6,
             detail: 2
 
         });
 
-        _this13.mesh = new Physijs.ConvexMesh(new THREE.PolyhedronGeometry(params.geometry.verticesOfCube, params.geometry.indicesOfFaces, params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Polyhedron.prototype), "_initMaterial", _this13).call(_this13, params.material), params.mass);
+        _this14.mesh = new Physijs.ConvexMesh(new THREE.PolyhedronGeometry(params.geometry.verticesOfCube, params.geometry.indicesOfFaces, params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Polyhedron.prototype), "_initMaterial", _this14).call(_this14, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Polyhedron.prototype), "build", _this13).call(_this13);
+        _get(Object.getPrototypeOf(Polyhedron.prototype), "build", _this14).call(_this14);
 
-        return _this13;
+        return _this14;
     }
 
     _createClass(Polyhedron, [{
@@ -3518,7 +3547,11 @@ WHS.Polyhedron = function(_WHS$Shape12) {
 }(WHS.Shape);
 
 WHS.World.prototype.Polyhedron = function(params) {
-    return new WHS.Polyhedron(params).addTo(this);
+    var object = new WHS.Polyhedron(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3550,9 +3583,9 @@ WHS.Ring = function(_WHS$Shape13) {
 
         _classCallCheck(this, Ring);
 
-        var _this14 = _possibleConstructorReturn(this, Object.getPrototypeOf(Ring).call(this, params, "ring"));
+        var _this15 = _possibleConstructorReturn(this, Object.getPrototypeOf(Ring).call(this, params, "ring"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             innerRadius: 0,
             outerRadius: 50,
@@ -3563,18 +3596,22 @@ WHS.Ring = function(_WHS$Shape13) {
 
         });
 
-        _this14.mesh = new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), _get(Object.getPrototypeOf(Ring.prototype), "_initMaterial", _this14).call(_this14, params.material));
+        _this15.mesh = new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), _get(Object.getPrototypeOf(Ring.prototype), "_initMaterial", _this15).call(_this15, params.material));
 
-        _get(Object.getPrototypeOf(Ring.prototype), "build", _this14).call(_this14, "onlyvis");
+        _get(Object.getPrototypeOf(Ring.prototype), "build", _this15).call(_this15, "onlyvis");
 
-        return _this14;
+        return _this15;
     }
 
     return Ring;
 }(WHS.Shape);
 
 WHS.World.prototype.Ring = function(params) {
-    return new WHS.Ring(params).addTo(this);
+    var object = new WHS.Ring(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3600,26 +3637,30 @@ WHS.Shape2D = function(_WHS$Shape14) {
 
         _classCallCheck(this, Shape2D);
 
-        var _this15 = _possibleConstructorReturn(this, Object.getPrototypeOf(Shape2D).call(this, params, "shape2D"));
+        var _this16 = _possibleConstructorReturn(this, Object.getPrototypeOf(Shape2D).call(this, params, "shape2D"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             shapes: []
 
         });
 
-        _this15.mesh = new THREE.Mesh(new THREE.ShapeGeometry(params.geometry.shapes), _get(Object.getPrototypeOf(Shape2D.prototype), "_initMaterial", _this15).call(_this15, params.material));
+        _this16.mesh = new THREE.Mesh(new THREE.ShapeGeometry(params.geometry.shapes), _get(Object.getPrototypeOf(Shape2D.prototype), "_initMaterial", _this16).call(_this16, params.material));
 
-        _get(Object.getPrototypeOf(Shape2D.prototype), "build", _this15).call(_this15, "onlyvis");
+        _get(Object.getPrototypeOf(Shape2D.prototype), "build", _this16).call(_this16, "onlyvis");
 
-        return _this15;
+        return _this16;
     }
 
     return Shape2D;
 }(WHS.Shape);
 
 WHS.World.prototype.Shape2D = function(params) {
-    return new WHS.Shape2D(params).addTo(this);
+    var object = new WHS.Shape2D(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3646,27 +3687,31 @@ WHS.Smooth = function(_WHS$Shape15) {
 
         _classCallCheck(this, Smooth);
 
-        var _this16 = _possibleConstructorReturn(this, Object.getPrototypeOf(Smooth).call(this, params, "smooth"));
+        var _this17 = _possibleConstructorReturn(this, Object.getPrototypeOf(Smooth).call(this, params, "smooth"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             width: 10,
             height: 10
 
         });
 
-        _this16.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(params.geometry.width, 1, params.geometry.height), _get(Object.getPrototypeOf(Smooth.prototype), "_initMaterial", _this16).call(_this16, params.material), 0);
+        _this17.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(params.geometry.width, 1, params.geometry.height), _get(Object.getPrototypeOf(Smooth.prototype), "_initMaterial", _this17).call(_this17, params.material), 0);
 
-        _get(Object.getPrototypeOf(Smooth.prototype), "build", _this16).call(_this16);
+        _get(Object.getPrototypeOf(Smooth.prototype), "build", _this17).call(_this17);
 
-        return _this16;
+        return _this17;
     }
 
     return Smooth;
 }(WHS.Shape);
 
 WHS.World.prototype.Smooth = function(params) {
-    return new WHS.Smooth(params).addTo(this);
+    var object = new WHS.Smooth(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3695,9 +3740,9 @@ WHS.Sphere = function(_WHS$Shape16) {
 
         _classCallCheck(this, Sphere);
 
-        var _this17 = _possibleConstructorReturn(this, Object.getPrototypeOf(Sphere).call(this, params, "sphere"));
+        var _this18 = _possibleConstructorReturn(this, Object.getPrototypeOf(Sphere).call(this, params, "sphere"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             radius: 1,
             segmentA: 32,
@@ -3705,18 +3750,22 @@ WHS.Sphere = function(_WHS$Shape16) {
 
         });
 
-        _this17.mesh = new Physijs.SphereMesh(new THREE.SphereGeometry(params.geometry.radius, params.geometry.segmentA, params.geometry.segmentB), _get(Object.getPrototypeOf(Sphere.prototype), "_initMaterial", _this17).call(_this17, params.material), params.mass);
+        _this18.mesh = new Physijs.SphereMesh(new THREE.SphereGeometry(params.geometry.radius, params.geometry.segmentA, params.geometry.segmentB), _get(Object.getPrototypeOf(Sphere.prototype), "_initMaterial", _this18).call(_this18, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Sphere.prototype), "build", _this17).call(_this17);
+        _get(Object.getPrototypeOf(Sphere.prototype), "build", _this18).call(_this18);
 
-        return _this17;
+        return _this18;
     }
 
     return Sphere;
 }(WHS.Shape);
 
 WHS.World.prototype.Sphere = function(params) {
-    return new WHS.Sphere(params).addTo(this);
+    var object = new WHS.Sphere(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3744,27 +3793,31 @@ WHS.Tetrahedron = function(_WHS$Shape17) {
 
         _classCallCheck(this, Tetrahedron);
 
-        var _this18 = _possibleConstructorReturn(this, Object.getPrototypeOf(Tetrahedron).call(this, params, "tetrahedron"));
+        var _this19 = _possibleConstructorReturn(this, Object.getPrototypeOf(Tetrahedron).call(this, params, "tetrahedron"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             radius: 1,
             detail: 0
 
         });
 
-        _this18.mesh = new Physijs.ConvexMesh(new THREE.TetrahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Tetrahedron.prototype), "_initMaterial", _this18).call(_this18, params.material), params.mass);
+        _this19.mesh = new Physijs.ConvexMesh(new THREE.TetrahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Tetrahedron.prototype), "_initMaterial", _this19).call(_this19, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Tetrahedron.prototype), "build", _this18).call(_this18);
+        _get(Object.getPrototypeOf(Tetrahedron.prototype), "build", _this19).call(_this19);
 
-        return _this18;
+        return _this19;
     }
 
     return Tetrahedron;
 }(WHS.Shape);
 
 WHS.World.prototype.Tetrahedron = function(params) {
-    return new WHS.Tetrahedron(params).addTo(this);
+    var object = new WHS.Tetrahedron(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3798,9 +3851,9 @@ WHS.Text = function(_WHS$Shape18) {
 
         _classCallCheck(this, Text);
 
-        var _this19 = _possibleConstructorReturn(this, Object.getPrototypeOf(Text).call(this, params, "text"));
+        var _this20 = _possibleConstructorReturn(this, Object.getPrototypeOf(Text).call(this, params, "text"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             text: "Hello World!",
 
@@ -3816,32 +3869,36 @@ WHS.Text = function(_WHS$Shape18) {
 
         });
 
-        var scope = _this19;
+        var scope = _this20;
 
-        _this19._loading = new Promise(function(resolve, reject) {
+        _get(Object.getPrototypeOf(Text.prototype), "wait", _this20).call(_this20, new Promise(function(resolve, reject) {
 
-            api.loadFont(params.geometry.parameters.font, function(font) {
+            WHS.API.loadFont(params.geometry.parameters.font, function(font) {
 
                 params.geometry.parameters.font = font;
 
                 console.log(params.geometry);
 
-                scope.mesh = new Physijs.ConcaveMesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), api.loadMaterial(params.material)._material, params.mass);
+                scope.mesh = new Physijs.ConcaveMesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), WHS.API.loadMaterial(params.material)._material, params.mass);
 
                 resolve();
             });
-        });
+        }));
 
-        _get(Object.getPrototypeOf(Text.prototype), "build", _this19).call(_this19, "wait");
+        _get(Object.getPrototypeOf(Text.prototype), "build", _this20).call(_this20, "wait");
 
-        return _this19;
+        return _this20;
     }
 
     return Text;
 }(WHS.Shape);
 
 WHS.World.prototype.Text = function(params) {
-    return new WHS.Text(params).addTo(this, "wait");
+    var object = new WHS.Text(params);
+
+    object.addTo(this, "wait");
+
+    return object;
 };
 
 /**
@@ -3872,9 +3929,9 @@ WHS.Torus = function(_WHS$Shape19) {
 
         _classCallCheck(this, Torus);
 
-        var _this20 = _possibleConstructorReturn(this, Object.getPrototypeOf(Torus).call(this, params, "torus"));
+        var _this21 = _possibleConstructorReturn(this, Object.getPrototypeOf(Torus).call(this, params, "torus"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             radius: 100,
             tube: 40,
@@ -3884,18 +3941,22 @@ WHS.Torus = function(_WHS$Shape19) {
 
         });
 
-        _this20.mesh = new Physijs.ConvexMesh(new THREE.TorusGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.arc), _get(Object.getPrototypeOf(Torus.prototype), "_initMaterial", _this20).call(_this20, params.material), params.mass);
+        _this21.mesh = new Physijs.ConvexMesh(new THREE.TorusGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.arc), _get(Object.getPrototypeOf(Torus.prototype), "_initMaterial", _this21).call(_this21, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Torus.prototype), "build", _this20).call(_this20);
+        _get(Object.getPrototypeOf(Torus.prototype), "build", _this21).call(_this21);
 
-        return _this20;
+        return _this21;
     }
 
     return Torus;
 }(WHS.Shape);
 
 WHS.World.prototype.Torus = function(params) {
-    return new WHS.Torus(params).addTo(this);
+    var object = new WHS.Torus(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3926,9 +3987,9 @@ WHS.Torusknot = function(_WHS$Shape20) {
 
         _classCallCheck(this, Torusknot);
 
-        var _this21 = _possibleConstructorReturn(this, Object.getPrototypeOf(Torusknot).call(this, params, "Torusknot"));
+        var _this22 = _possibleConstructorReturn(this, Object.getPrototypeOf(Torusknot).call(this, params, "Torusknot"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             radius: 100,
             tube: 40,
@@ -3940,18 +4001,22 @@ WHS.Torusknot = function(_WHS$Shape20) {
 
         });
 
-        _this21.mesh = new Physijs.ConvexMesh(new THREE.TorusKnotGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.p, params.geometry.q, params.geometry.heightScale), _get(Object.getPrototypeOf(Torusknot.prototype), "_initMaterial", _this21).call(_this21, params.material), params.mass);
+        _this22.mesh = new Physijs.ConvexMesh(new THREE.TorusKnotGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.p, params.geometry.q, params.geometry.heightScale), _get(Object.getPrototypeOf(Torusknot.prototype), "_initMaterial", _this22).call(_this22, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Torusknot.prototype), "build", _this21).call(_this21);
+        _get(Object.getPrototypeOf(Torusknot.prototype), "build", _this22).call(_this22);
 
-        return _this21;
+        return _this22;
     }
 
     return Torusknot;
 }(WHS.Shape);
 
 WHS.World.prototype.Torusknot = function(params) {
-    return new WHS.Torusknot(params).addTo(this);
+    var object = new WHS.Torusknot(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -3982,11 +4047,11 @@ WHS.Tube = function(_WHS$Shape21) {
 
         _classCallCheck(this, Tube);
 
-        var _this22 = _possibleConstructorReturn(this, Object.getPrototypeOf(Tube).call(this, params, "tube"));
+        var _this23 = _possibleConstructorReturn(this, Object.getPrototypeOf(Tube).call(this, params, "tube"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
-            path: options.geometryOptions.path ? new _this22.CustomSinCurve(100) : false,
+            path: options.geometryOptions.path ? new _this23.CustomSinCurve(100) : false,
             segments: 20,
             radius: 2,
             radiusSegments: 8,
@@ -3994,11 +4059,11 @@ WHS.Tube = function(_WHS$Shape21) {
 
         });
 
-        _this22.mesh = new Physijs.ConvexMesh(new THREE.TubeGeometry(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed), _get(Object.getPrototypeOf(Tube.prototype), "_initMaterial", _this22).call(_this22, params.material), params.mass);
+        _this23.mesh = new Physijs.ConvexMesh(new THREE.TubeGeometry(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed), _get(Object.getPrototypeOf(Tube.prototype), "_initMaterial", _this23).call(_this23, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Tube.prototype), "build", _this22).call(_this22);
+        _get(Object.getPrototypeOf(Tube.prototype), "build", _this23).call(_this23);
 
-        return _this22;
+        return _this23;
     }
 
     _createClass(Tube, [{
@@ -4023,7 +4088,11 @@ WHS.Tube = function(_WHS$Shape21) {
 }(WHS.Shape);
 
 WHS.World.prototype.Tube = function(params) {
-    return new WHS.Tube(params).addTo(this);
+    var object = new WHS.Tube(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -4046,20 +4115,24 @@ WHS.AmbientLight = function(_WHS$Light) {
 
         _classCallCheck(this, AmbientLight);
 
-        var _this23 = _possibleConstructorReturn(this, Object.getPrototypeOf(AmbientLight).call(this, params, "ambientlight"));
+        var _this24 = _possibleConstructorReturn(this, Object.getPrototypeOf(AmbientLight).call(this, params, "ambientlight"));
 
-        _this23.mesh = new THREE.AmbientLight(params.light.color, params.light.intensity);
+        _this24.mesh = new THREE.AmbientLight(params.light.color, params.light.intensity);
 
-        _get(Object.getPrototypeOf(AmbientLight.prototype), "build", _this23).call(_this23);
+        _get(Object.getPrototypeOf(AmbientLight.prototype), "build", _this24).call(_this24);
 
-        return _this23;
+        return _this24;
     }
 
     return AmbientLight;
 }(WHS.Light);
 
 WHS.World.prototype.AmbientLight = function(params) {
-    return new WHS.AmbientLight(params).addTo(this);
+    var object = new WHS.AmbientLight(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -4082,21 +4155,25 @@ WHS.DirectionalLight = function(_WHS$Light2) {
 
         _classCallCheck(this, DirectionalLight);
 
-        var _this24 = _possibleConstructorReturn(this, Object.getPrototypeOf(DirectionalLight).call(this, params, "directionallight"));
+        var _this25 = _possibleConstructorReturn(this, Object.getPrototypeOf(DirectionalLight).call(this, params, "directionallight"));
 
-        _this24.mesh = new THREE.DirectionalLight(params.light.color, params.light.intensity);
+        _this25.mesh = new THREE.DirectionalLight(params.light.color, params.light.intensity);
 
-        _get(Object.getPrototypeOf(DirectionalLight.prototype), "build", _this24).call(_this24);
-        _get(Object.getPrototypeOf(DirectionalLight.prototype), "buildShadow", _this24).call(_this24);
+        _get(Object.getPrototypeOf(DirectionalLight.prototype), "build", _this25).call(_this25);
+        _get(Object.getPrototypeOf(DirectionalLight.prototype), "buildShadow", _this25).call(_this25);
 
-        return _this24;
+        return _this25;
     }
 
     return DirectionalLight;
 }(WHS.Light);
 
 WHS.World.prototype.DirectionalLight = function(params) {
-    return new WHS.DirectionalLight(params).addTo(this);
+    var object = new WHS.DirectionalLight(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -4120,21 +4197,25 @@ WHS.HemisphereLight = function(_WHS$Light3) {
 
         _classCallCheck(this, HemisphereLight);
 
-        var _this25 = _possibleConstructorReturn(this, Object.getPrototypeOf(HemisphereLight).call(this, params, "hemispherelight"));
+        var _this26 = _possibleConstructorReturn(this, Object.getPrototypeOf(HemisphereLight).call(this, params, "hemispherelight"));
 
-        _this25.mesh = new THREE.HemisphereLight(params.light.skyColor, params.light.groundColor, params.light.intensity);
+        _this26.mesh = new THREE.HemisphereLight(params.light.skyColor, params.light.groundColor, params.light.intensity);
 
-        _get(Object.getPrototypeOf(HemisphereLight.prototype), "build", _this25).call(_this25);
-        _get(Object.getPrototypeOf(HemisphereLight.prototype), "buildShadow", _this25).call(_this25);
+        _get(Object.getPrototypeOf(HemisphereLight.prototype), "build", _this26).call(_this26);
+        _get(Object.getPrototypeOf(HemisphereLight.prototype), "buildShadow", _this26).call(_this26);
 
-        return _this25;
+        return _this26;
     }
 
     return HemisphereLight;
 }(WHS.Light);
 
 WHS.World.prototype.HemisphereLight = function(params) {
-    return new WHS.HemisphereLight(params).addTo(this);
+    var object = new WHS.HemisphereLight(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -4156,21 +4237,25 @@ WHS.NormalLight = function(_WHS$Light4) {
 
         _classCallCheck(this, NormalLight);
 
-        var _this26 = _possibleConstructorReturn(this, Object.getPrototypeOf(NormalLight).call(this, params, "normallight"));
+        var _this27 = _possibleConstructorReturn(this, Object.getPrototypeOf(NormalLight).call(this, params, "normallight"));
 
-        _this26.mesh = new THREE.Light(params.light.color);
+        _this27.mesh = new THREE.Light(params.light.color);
 
-        _get(Object.getPrototypeOf(NormalLight.prototype), "build", _this26).call(_this26);
-        _get(Object.getPrototypeOf(NormalLight.prototype), "buildShadow", _this26).call(_this26);
+        _get(Object.getPrototypeOf(NormalLight.prototype), "build", _this27).call(_this27);
+        _get(Object.getPrototypeOf(NormalLight.prototype), "buildShadow", _this27).call(_this27);
 
-        return _this26;
+        return _this27;
     }
 
     return NormalLight;
 }(WHS.Light);
 
 WHS.World.prototype.NormalLight = function(params) {
-    return new WHS.NormalLight(params).addTo(this);
+    var object = new WHS.NormalLight(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -4195,21 +4280,25 @@ WHS.PointLight = function(_WHS$Light5) {
 
         _classCallCheck(this, PointLight);
 
-        var _this27 = _possibleConstructorReturn(this, Object.getPrototypeOf(PointLight).call(this, params, "pointlight"));
+        var _this28 = _possibleConstructorReturn(this, Object.getPrototypeOf(PointLight).call(this, params, "pointlight"));
 
-        _this27.mesh = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance, params.light.decay);
+        _this28.mesh = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance, params.light.decay);
 
-        _get(Object.getPrototypeOf(PointLight.prototype), "build", _this27).call(_this27);
-        _get(Object.getPrototypeOf(PointLight.prototype), "buildShadow", _this27).call(_this27);
+        _get(Object.getPrototypeOf(PointLight.prototype), "build", _this28).call(_this28);
+        _get(Object.getPrototypeOf(PointLight.prototype), "buildShadow", _this28).call(_this28);
 
-        return _this27;
+        return _this28;
     }
 
     return PointLight;
 }(WHS.Light);
 
 WHS.World.prototype.PointLight = function(params) {
-    return new WHS.PointLight(params).addTo(this);
+    var object = new WHS.PointLight(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -4236,21 +4325,25 @@ WHS.SpotLight = function(_WHS$Light6) {
 
         _classCallCheck(this, SpotLight);
 
-        var _this28 = _possibleConstructorReturn(this, Object.getPrototypeOf(SpotLight).call(this, params, "spotlight"));
+        var _this29 = _possibleConstructorReturn(this, Object.getPrototypeOf(SpotLight).call(this, params, "spotlight"));
 
-        _this28.mesh = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle, params.light.exponent, params.light.decay);
+        _this29.mesh = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle, params.light.exponent, params.light.decay);
 
-        _get(Object.getPrototypeOf(SpotLight.prototype), "build", _this28).call(_this28);
-        _get(Object.getPrototypeOf(SpotLight.prototype), "buildShadow", _this28).call(_this28);
+        _get(Object.getPrototypeOf(SpotLight.prototype), "build", _this29).call(_this29);
+        _get(Object.getPrototypeOf(SpotLight.prototype), "buildShadow", _this29).call(_this29);
 
-        return _this28;
+        return _this29;
     }
 
     return SpotLight;
 }(WHS.Light);
 
 WHS.World.prototype.SpotLight = function(params) {
-    return new WHS.SpotLight(params).addTo(this);
+    var object = new WHS.SpotLight(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -4511,7 +4604,7 @@ WHS.World.prototype.FPSControls = function(object) {
         };
     } else {
 
-        console.warn("Your browser does not support the PointerLock API.");
+        console.warn("Your browser does not support the PointerLock WHS.API.");
     }
 
     document.addEventListener('pointerlockchange', this.pointerlockchange, false);
@@ -4588,7 +4681,7 @@ WHS.Fog = function() {
 
         _classCallCheck(this, Fog);
 
-        api.extend(params, {
+        WHS.API.extend(params, {
 
             hex: 0x000000,
             near: 1,
@@ -4617,7 +4710,11 @@ WHS.Fog = function() {
 }();
 
 WHS.World.prototype.Fog = function(params) {
-    return new WHS.Fog(params).addTo(this);
+    var object = new WHS.Fog(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 /**
@@ -4635,7 +4732,7 @@ WHS.FogExp2 = function() {
 
         _classCallCheck(this, FogExp2);
 
-        api.extend(params, {
+        WHS.API.extend(params, {
 
             hex: 0x000000,
             density: 0.00025
@@ -4663,7 +4760,11 @@ WHS.FogExp2 = function() {
 }();
 
 WHS.World.prototype.FogExp2 = function(params) {
-    return new WHS.FogExp2(params).addTo(this);
+    var object = new WHS.FogExp2(params);
+
+    object.addTo(this);
+
+    return object;
 };
 
 WHS.Skybox = function(_WHS$Shape22) {
@@ -4674,9 +4775,9 @@ WHS.Skybox = function(_WHS$Shape22) {
 
         _classCallCheck(this, Skybox);
 
-        var _this29 = _possibleConstructorReturn(this, Object.getPrototypeOf(Skybox).call(this, params, "skybox"));
+        var _this30 = _possibleConstructorReturn(this, Object.getPrototypeOf(Skybox).call(this, params, "skybox"));
 
-        api.extend(params, {
+        WHS.API.extend(params, {
 
             skyType: "box",
             detail: ".png",
@@ -4725,17 +4826,21 @@ WHS.Skybox = function(_WHS$Shape22) {
                 break;
         }
 
-        _this29.mesh = new THREE.Mesh(skyGeometry, skyMat);
-        _this29.mesh.renderDepth = 1000.0;
+        _this30.mesh = new THREE.Mesh(skyGeometry, skyMat);
+        _this30.mesh.renderDepth = 1000.0;
 
-        _get(Object.getPrototypeOf(Skybox.prototype), "build", _this29).call(_this29);
+        _get(Object.getPrototypeOf(Skybox.prototype), "build", _this30).call(_this30);
 
-        return _this29;
+        return _this30;
     }
 
     return Skybox;
 }(WHS.Shape);
 
 WHS.World.prototype.Skybox = function(params) {
-    return new WHS.Skybox(params).addTo(this);
+    var object = new WHS.Skybox(params);
+
+    object.addTo(this);
+
+    return object;
 };

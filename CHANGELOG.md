@@ -40,6 +40,9 @@
 - *src/Skybox/Skybox.js -> src/Components/Skybox.js*
 - #5: Add fog.
 - Added `fps_fog.html` example.
+- `WHS.Shape` and `WHS.Light` core rebuild.
+- `onlyvis` is removed. (use: `mass: 0`).
+- CORE REBUILD. Remade with es6 promises.
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."

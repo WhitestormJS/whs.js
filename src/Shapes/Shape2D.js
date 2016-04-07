@@ -23,7 +23,7 @@ WHS.Shape2D = class Shape2D extends WHS.Shape {
 
 		super( params, "shape2D" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             shapes: []
 
@@ -46,5 +46,9 @@ WHS.Shape2D = class Shape2D extends WHS.Shape {
 }
 
 WHS.World.prototype.Shape2D = function( params ) {
-	return ( new WHS.Shape2D(  params ) ).addTo( this );
+    let object = new WHS.Shape2D( params );
+
+    object.addTo( this );
+
+    return object;
 }

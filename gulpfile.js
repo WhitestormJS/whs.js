@@ -7,6 +7,7 @@ var insert = require('gulp-insert');
 var watch = require('gulp-watch');
 var sourcemaps = require("gulp-sourcemaps");
 var babel = require("gulp-babel");
+//var browserify = require('gulp-browserify');
 
 var sources = [
     'src/libs/*.js',

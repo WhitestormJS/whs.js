@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="WhitestormJS is a 3D Javascript engine based on Three.js (http://threejs.org/). It uses physics and effects libraries to define WhitestormJS API that contains useful scripts for terrain generation, skybox, animation, physics simulation and post-effects. WhitestormJS simplifies Three.js object crafting algorithm to javascript methods with parameters." />
-    <meta name="keywords" content="three.js,cannon.js,webgl,wagner,api,3d,web,javascript" />
+    <meta name="keywords" content="three.js,cannon.js,webgl,wagner,WHS.API,3d,web,javascript" />
     <meta name="author" content="Alexander Buzin">
     <meta property="og:title" content="WhitestormJS 3D Engine" />
     <meta property="og:site_name" content="WhitestormJS 3D Engine" />
@@ -141,7 +141,7 @@ var torusknot = GAME.Torusknot({
     material: {
         vertexColors: THREE.VertexColors,
         shading: THREE.SmoothShading,
-        map: api.texture('assets/textures/bricks.jpg'),
+        map: WHS.API.texture('assets/textures/bricks.jpg'),
         kind: "phong"
     },
 

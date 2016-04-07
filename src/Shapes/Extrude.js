@@ -24,7 +24,7 @@ WHS.Extrude = class Extrude extends WHS.Shape {
 
 		super( params, "extrude" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             shapes: [],
             options: {}
@@ -50,5 +50,9 @@ WHS.Extrude = class Extrude extends WHS.Shape {
 }
 
 WHS.World.prototype.Extrude = function( params ) {
-	return ( new WHS.Extrude(  params ) ).addTo( this );
+    let object = new WHS.Extrude( params );
+
+    object.addTo( this );
+
+    return object;
 }
