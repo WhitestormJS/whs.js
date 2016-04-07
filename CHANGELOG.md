@@ -45,6 +45,7 @@
 - CORE REBUILD. Remade with es6 promises.
 - Removed `modellingQueue`.
 - Fixed `remove` and `retrieve` functions.
+- *src/Light -> src/Lights*
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
