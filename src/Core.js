@@ -16,8 +16,6 @@ WHS.World = class {
 
         'use strict';
 
-        console.log('WHS.World', WHS.REVISION);
-
         if (!THREE)
             console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
         if (!Physijs)
@@ -25,8 +23,6 @@ WHS.World = class {
 
         var target = WHS.API.extend(params, {
 
-            anaglyph: false,
-            helper: false,
             stats: false,
             autoresize: false,
 

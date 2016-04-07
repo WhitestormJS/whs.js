@@ -1270,8 +1270,12 @@ var WHS = {
 
     },
 
+    debug: false,
+
     loops: []
 };
+
+console.log('WhitestormJS', WHS.REVISION);
 
 WHS.API.loadJSON = function(url, callback, texturePath) {
     return WHS.loader.JSON.load(url, callback, texturePath);
@@ -1288,7 +1292,6 @@ WHS.API.loadFont = function(url, onLoad, onProgress, onError) {
 if (typeof define === 'function' && define.amd) {
 
     define('whitestorm', WHS);
-    console.log(true);
 } else if ('undefined' !== typeof exports && 'undefined' !== typeof module) {
 
     module.exports = WHS;
@@ -1467,6 +1470,8 @@ WHS.Light = function() {
             _shadowmap: target.shadowmap
         }, new Events());
 
+        if (WHS.debug) console.debug("@WHS.Light: Light " + scope._type + " found.", scope);
+
         return scope;
     }
 
@@ -1507,14 +1512,16 @@ WHS.Light = function() {
                         _scope[tag] = true;
                     });
 
+                    if (WHS.debug) console.debug("@WHS.Light: Light " + _scope._type + " is ready.", _scope);
+
+                    _scope.emit("ready");
+
                     resolve(_scope);
                 } catch (err) {
 
                     console.error(err.message);
 
                     reject();
-
-                    //this._state.reject();
                 }
             });
         }
@@ -1549,6 +1556,8 @@ WHS.Light = function() {
                     console.error(err.message);
                     reject();
                 } finally {
+
+                    if (WHS.debug) console.debug("@WHS.Light: Light " + _scope._type + " was added to worl.", [_scope, _scope.parent]);
 
                     if (_scope._wait) {
 
@@ -1729,8 +1738,6 @@ WHS.API.loadMaterial = function(material) {
 
     scope._material = Physijs.createMaterial(scope._material, scope._friction, scope._restitution);
 
-    console.log(scope._friction);
-
     return scope;
 };
 
@@ -1845,6 +1852,8 @@ WHS.Shape = function() {
             target: params.target
         }, new Events());
 
+        if (WHS.debug) console.debug("@WHS.Shape: Shape " + scope._type + " found.", scope);
+
         return scope;
     }
 
@@ -1898,9 +1907,11 @@ WHS.Shape = function() {
                             _scope.rotation = _scope.mesh.rotation;
                             _scope.scale = _scope.mesh.scale;
 
-                            resolve();
+                            if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " is ready.", _scope);
 
                             _scope.emit("ready");
+
+                            resolve();
                         } catch (err) {
 
                             console.error(err.message);
@@ -1928,6 +1939,8 @@ WHS.Shape = function() {
                         _scope.position = _scope.mesh.position;
                         _scope.rotation = _scope.mesh.rotation;
                         _scope.scale = _scope.mesh.scale;
+
+                        if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " is ready.", _scope);
 
                         resolve();
 
@@ -1993,6 +2006,8 @@ WHS.Shape = function() {
                             _scope.mesh.addEventListener('collide', function() {
                                 _scope.emit("collide");
                             });
+
+                            if (WHS.debug) console.debug("@WHS.Shape: Shape " + scope._type + " was added to world.", [_scope, _scope.parent]);
                         }
                     });
                 });
@@ -2023,6 +2038,8 @@ WHS.Shape = function() {
                         _scope.mesh.addEventListener('collide', function() {
                             _scope.emit("ready");
                         });
+
+                        if (WHS.debug) console.debug("@WHS.Shape: Shape " + scope._type + " was added to world", [_scope, _scope.parent]);
                     }
                 });
             }
@@ -2054,6 +2071,8 @@ WHS.Shape = function() {
 
             this.emit("remove");
 
+            if (WHS.debug) console.debug("@WHS.Shape: Shape " + this._type + " was removed from world", [_scope]);
+
             return this;
         }
 
@@ -2071,6 +2090,8 @@ WHS.Shape = function() {
             this.parent.children.push(this);
 
             this.emit("retrieve");
+
+            if (WHS.debug) console.debug("@WHS.Shape: Shape " + this._type + " was retrieved to world", [_scope, _scope.parent]);
 
             return this;
         }
@@ -2198,15 +2219,11 @@ WHS.World = function() {
 
         _classCallCheck(this, _class3);
 
-        console.log('WHS.World', WHS.REVISION);
-
         if (!THREE) console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
         if (!Physijs) console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
 
         var target = WHS.API.extend(params, {
 
-            anaglyph: false,
-            helper: false,
             stats: false,
             autoresize: false,
 
@@ -4066,8 +4083,6 @@ WHS.World.prototype.FPSControls = function(object) {
             canJump = false;
 
         player.addEventListener("collision", function(other_object, v, r, contactNormal) {
-            console.log("afdg");
-
             if (contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
                 canJump = true;
         });
@@ -4113,7 +4128,6 @@ WHS.World.prototype.FPSControls = function(object) {
 
                 case 32:
                     // space
-                    console.log(canJump);
                     if (canJump == true) {
 
                         player.applyCentralImpulse({
@@ -4121,8 +4135,6 @@ WHS.World.prototype.FPSControls = function(object) {
                             y: 300,
                             z: 0
                         });
-
-                        console.log(player.applyCentralImpulse);
                     }
 
                     canJump = false;
@@ -4455,8 +4467,6 @@ WHS.Skybox = function(_WHS$Shape22) {
             path: ""
 
         });
-
-        console.log(params.fog);
 
         var skyGeometry, skyMat;
 

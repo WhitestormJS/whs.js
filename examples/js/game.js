@@ -1,5 +1,7 @@
 var preloader = Preloader();
 
+WHS.debug = true;
+
 // INITIALIZATION SCENE.
 var GAME = new WHS.World( {
     
