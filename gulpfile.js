@@ -14,18 +14,14 @@ var sources = [
     'src/libs/**/*.js',
     'src/Polyfill.js',
     'src/Prefix.js',
-    'src/Shaders/*.js',
     'src/API/*.js',
     'src/Watchers/*.js',
     'src/Plugins/*.js',
     'src/Core.js',
     'src/Objects/*.js',
     'src/Shapes/*.js',
-    'src/Ground/*.js',
-    'src/Fog/*.js',
-    'src/Light/*.js',
+    'src/Lights/*.js',
     'src/Controls/*.js',
-    'src/GUI/*.js',
     'src/Components/*.js'
 ]
 
@@ -33,34 +29,26 @@ var sources_test = [
     'src/libs/*.js',
     'src/libs/**/*.js',
     'src/Prefix.js',
-    'src/Shaders/*.js',
     'src/API/*.js',
     'src/Watchers/*.js',
     'src/Plugins/*.js',
     'src/Core.js',
     'src/Objects/*.js',
     'src/Shapes/*.js',
-    'src/Ground/*.js',
-    'src/Fog/*.js',
-    'src/Light/*.js',
+    'src/Lights/*.js',
     'src/Controls/*.js',
-    'src/GUI/*.js',
     'src/Components/*.js'
 ]
 
 var codes = [
     'src/Prefix.js',
-    'src/Shaders/*.js',
     'src/API/*.js',
     'src/Watchers/*.js',
     'src/Core.js',
     'src/Objects/*.js',
     'src/Shapes/*.js',
-    'src/Ground/*.js',
-    'src/Fog/*.js',
-    'src/Light/*.js',
+    'src/Lights/*.js',
     'src/Controls/*.js',
-    'src/GUI/*.js',
     'src/Components/*.js'
 ]
 
