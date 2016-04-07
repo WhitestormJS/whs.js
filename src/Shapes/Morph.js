@@ -27,7 +27,7 @@ WHS.Morph = class Morph extends WHS.Shape {
 
 		super( params, "morph" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             path: ""
 
@@ -35,44 +35,46 @@ WHS.Morph = class Morph extends WHS.Shape {
 
         var scope = this;
 
-        this._loading = new Promise(function(resolve, reject) {
+        super.wait(
+            new Promise(function(resolve, reject) {
 
-            api.loadJSON(params.geometry.path, function(data, materials) {
+                WHS.API.loadJSON(params.geometry.path, function(data, materials) {
 
-                if (!materials || params.material.useVertexColors)
-                    var material = api.loadMaterial(
-                        api.extend(params.material, {
-                            morphTargets: true,
-                            vertexColors: THREE.FaceColors
-                        })
-                    )._material;
-                else if (params.material.useCustomMaterial)
-                    var material = api.loadMaterial(
-                        params.material
-                    )._material;
-                else var material = new THREE.MultiMaterial(materials);
+                    if (!materials || params.material.useVertexColors)
+                        var material = WHS.API.loadMaterial(
+                            WHS.API.extend(params.material, {
+                                morphTargets: true,
+                                vertexColors: THREE.FaceColors
+                            })
+                        )._material;
 
-                data.computeFaceNormals();
-                data.computeVertexNormals();
+                    else if (params.material.useCustomMaterial)
+                        var material = WHS.API.loadMaterial(
+                            params.material
+                        )._material;
+                    
+                    else var material = new THREE.MultiMaterial(materials);
 
-                // Visualization.
-                scope.mesh = new THREE.Mesh( data, material );
-                scope.mesh.speed = params.morph.speed;
+                    data.computeFaceNormals();
+                    data.computeVertexNormals();
 
-                scope.mesh.mixer = new THREE.AnimationMixer( scope.mesh );
+                    // Visualization.
+                    scope.mesh = new THREE.Mesh( data, material );
+                    scope.mesh.speed = params.morph.speed;
 
-                scope.mesh.mixer
-                    .clipAction( data.animations[ 0 ] )
-                    .setDuration( params.morph.duration )
-                    .play();
+                    scope.mesh.mixer = new THREE.AnimationMixer( scope.mesh );
 
-                scope._rot.y = Math.PI / 2;
+                    scope.mesh.mixer
+                        .clipAction( data.animations[ 0 ] )
+                        .setDuration( params.morph.duration )
+                        .play();
 
-                resolve();
+                    resolve();
 
-            });
+                });
 
-        });
+            })
+        );
 
         super.build("wait");
 
@@ -81,5 +83,9 @@ WHS.Morph = class Morph extends WHS.Shape {
 }
 
 WHS.World.prototype.Morph = function( params ) {
-	return ( new WHS.Morph(  params ) ).addTo( this, "wait" );
+    let object = new WHS.Morph(  params );
+
+    object.addTo( this, "wait" );
+
+    return object;
 }

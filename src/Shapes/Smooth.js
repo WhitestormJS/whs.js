@@ -24,7 +24,7 @@ WHS.Smooth = class Smooth extends WHS.Shape {
 
 		super( params, "smooth" );
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             width: 10,
             height: 10
@@ -50,5 +50,9 @@ WHS.Smooth = class Smooth extends WHS.Shape {
 }
 
 WHS.World.prototype.Smooth = function( params ) {
-	return ( new WHS.Smooth(  params ) ).addTo( this );
+    let object = new WHS.Smooth( params );
+
+    object.addTo( this );
+
+    return object;
 }

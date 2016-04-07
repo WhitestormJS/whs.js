@@ -180,7 +180,7 @@ WHS.Terrain = function(_WHS$Shape) {
 
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Terrain).call(this, params, "terrain"));
 
-        api.extend(params.geometry, {
+        WHS.API.extend(params.geometry, {
 
             width: 1,
             height: 1,
@@ -200,27 +200,27 @@ WHS.Terrain = function(_WHS$Shape) {
         }
 
         // Ocean texture.
-        var oceanTexture = api.loadTexture(WHS._settings.assets + '/textures/terrain/dirt-512.jpg');
+        var oceanTexture = WHS.API.loadTexture(WHS._settings.assets + '/textures/terrain/dirt-512.jpg');
 
         oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
 
         // Sandy texture.
-        var sandyTexture = api.loadTexture(WHS._settings.assets + '/textures/terrain/sand-512.jpg');
+        var sandyTexture = WHS.API.loadTexture(WHS._settings.assets + '/textures/terrain/sand-512.jpg');
 
         sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
 
         // Grass texture.
-        var grassTexture = api.loadTexture(WHS._settings.assets + '/textures/terrain/grass-512.jpg');
+        var grassTexture = WHS.API.loadTexture(WHS._settings.assets + '/textures/terrain/grass-512.jpg');
 
         grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
 
         // Rocky texture.
-        var rockyTexture = api.loadTexture(WHS._settings.assets + '/textures/terrain/rock-512.jpg');
+        var rockyTexture = WHS.API.loadTexture(WHS._settings.assets + '/textures/terrain/rock-512.jpg');
 
         rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
 
         // Snowy texture.
-        var snowyTexture = api.loadTexture(WHS._settings.assets + '/textures/terrain/snow-512.jpg');
+        var snowyTexture = WHS.API.loadTexture(WHS._settings.assets + '/textures/terrain/snow-512.jpg');
 
         snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
 
@@ -240,17 +240,17 @@ WHS.Terrain = function(_WHS$Shape) {
         // Heightmap.
         var heightMap = new THREE.WebGLRenderTarget(rx, ry, pars);
 
-        heightMap.texture = api.loadTexture(WHS._settings.assets + '/terrain/default_terrain.png');
+        heightMap.texture = WHS.API.loadTexture(WHS._settings.assets + '/terrain/default_terrain.png');
 
         // Normalmap.
         var normalMap = new THREE.WebGLRenderTarget(rx, ry, pars);
 
-        normalMap.texture = api.loadTexture(WHS._settings.assets + '/terrain/NormalMap.png');
+        normalMap.texture = WHS.API.loadTexture(WHS._settings.assets + '/terrain/NormalMap.png');
 
         // Specularmap.
         var specularMap = new THREE.WebGLRenderTarget(256, 256, pars); //2048
 
-        specularMap.texture = api.loadTexture(WHS._settings.assets + '/terrain/default_terrain.png');
+        specularMap.texture = WHS.API.loadTexture(WHS._settings.assets + '/terrain/default_terrain.png');
 
         // Terrain shader (ShaderTerrain.js).
         var terrainShader = THREE.ShaderTerrain["terrain"];
@@ -317,7 +317,7 @@ WHS.Terrain = function(_WHS$Shape) {
 
         geom.verticesNeedUpdate = true;
 
-        _this._rot.set(Math.PI / 180 * -90, 0, 0);
+        _this.rotation.set(Math.PI / 180 * -90, 0, 0);
 
         var index = 0,
             i = 0,
@@ -351,5 +351,9 @@ WHS.Terrain = function(_WHS$Shape) {
 }(WHS.Shape);
 
 WHS.World.prototype.Terrain = function(params) {
-    return new WHS.Terrain(params).addTo(this);
+    var object = new WHS.Terrain(params);
+
+    object.addTo(this);
+
+    return object;
 };

@@ -31,7 +31,7 @@ WHS.Text = class Text extends WHS.Shape {
 
 		super( params, "text" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             text: "Hello World!",
 
@@ -49,31 +49,33 @@ WHS.Text = class Text extends WHS.Shape {
 
         var scope = this;
 
-        this._loading = new Promise(function(resolve, reject) {
+        super.wait(
+            new Promise(function(resolve, reject) {
 
-            api.loadFont(params.geometry.parameters.font, function( font ) {
+                WHS.API.loadFont(params.geometry.parameters.font, function( font ) {
 
-                params.geometry.parameters.font = font;
+                    params.geometry.parameters.font = font;
 
-                console.log(params.geometry);
+                    console.log(params.geometry);
 
-        		scope.mesh = new Physijs.ConcaveMesh(
-                    new THREE.TextGeometry(
+            		scope.mesh = new Physijs.ConcaveMesh(
+                        new THREE.TextGeometry(
 
-                        params.geometry.text,
-                        params.geometry.parameters
+                            params.geometry.text,
+                            params.geometry.parameters
 
-                    ),
+                        ),
 
-                    api.loadMaterial(params.material)._material,
-                    params.mass
-                );
+                        WHS.API.loadMaterial(params.material)._material,
+                        params.mass
+                    );
 
-                resolve();
+                    resolve();
 
-            });
+                });
 
-        });
+            })
+        );
 
         super.build("wait");
 
@@ -82,5 +84,9 @@ WHS.Text = class Text extends WHS.Shape {
 }
 
 WHS.World.prototype.Text = function( params ) {
-	return ( new WHS.Text(  params ) ).addTo( this, "wait" );
+    let object = new WHS.Text(  params );
+
+    object.addTo( this, "wait" );
+
+    return object;
 }

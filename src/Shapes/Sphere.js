@@ -26,7 +26,7 @@ WHS.Sphere = class Sphere extends WHS.Shape {
 
 		super( params, "sphere" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             radius: 1,
             segmentA: 32,
@@ -54,5 +54,9 @@ WHS.Sphere = class Sphere extends WHS.Shape {
 }
 
 WHS.World.prototype.Sphere = function( params ) {
-	return ( new WHS.Sphere(  params ) ).addTo( this );
+    let object = new WHS.Sphere( params );
+
+    object.addTo( this );
+
+    return object;
 }

@@ -26,7 +26,7 @@ WHS.Cube = class Cube extends WHS.Shape {
 
 		super( params, "cube" );
 
-		api.extend( params.geometry, {
+		WHS.API.extend( params.geometry, {
 
             width: 1,
             height: 1,
@@ -54,5 +54,9 @@ WHS.Cube = class Cube extends WHS.Shape {
 }
 
 WHS.World.prototype.Cube = function( params ) {
-	return ( new WHS.Cube(  params ) ).addTo( this );
+    let object = new WHS.Cube( params );
+
+    object.addTo( this );
+
+    return object;
 }

@@ -24,7 +24,7 @@ WHS.Model = class Model extends WHS.Shape {
 
 		super( params, "model" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             path: ""
 
@@ -32,33 +32,35 @@ WHS.Model = class Model extends WHS.Shape {
 
         var scope = this;
 
-        this._loading = new Promise(function(resolve, reject) {
+        super.wait(
+            new Promise(function(resolve, reject) {
 
-            api.loadJSON(params.geometry.path, function(data, materials) {
+                WHS.API.loadJSON(params.geometry.path, function(data, materials) {
 
-                if (!materials || params.material.useVertexColors)
-                    var material = api.loadMaterial(
-                        api.extend(params.material, {
-                            morphTargets: true,
-                            vertexColors: THREE.FaceColors
-                        })
-                    )._material;
-                else if (params.material.useCustomMaterial)
-                    var material = api.loadMaterial(
-                        params.material
-                    )._material;
-                else var material = new THREE.MultiMaterial(materials);
+                    if (!materials || params.material.useVertexColors)
+                        var material = WHS.API.loadMaterial(
+                            WHS.API.extend(params.material, {
+                                morphTargets: true,
+                                vertexColors: THREE.FaceColors
+                            })
+                        )._material;
+                    else if (params.material.useCustomMaterial)
+                        var material = WHS.API.loadMaterial(
+                            params.material
+                        )._material;
+                    else var material = new THREE.MultiMaterial(materials);
 
-                data.computeFaceNormals();
-                data.computeVertexNormals();
+                    data.computeFaceNormals();
+                    data.computeVertexNormals();
 
-                scope.mesh = new Physijs.ConcaveMesh(data, material, params.mass);
+                    scope.mesh = new Physijs.ConcaveMesh(data, material, params.mass);
 
-                resolve();
+                    resolve();
 
-            });
+                });
 
-        });
+            })
+        );
 
         super.build("wait");
 
@@ -67,5 +69,9 @@ WHS.Model = class Model extends WHS.Shape {
 }
 
 WHS.World.prototype.Model = function( params ) {
-	return ( new WHS.Model(  params ) ).addTo( this, "wait" );
+    let object = new WHS.Model(  params );
+
+    object.addTo( this, "wait" );
+
+    return object;
 }

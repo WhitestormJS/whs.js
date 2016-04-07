@@ -25,7 +25,7 @@ WHS.Icosahderon = class Icosahedron extends WHS.Shape {
 
 		super( params, "icosahedron" );
 
-		api.extend(params.geometry, {
+		WHS.API.extend(params.geometry, {
 
             radius: 1,
             detail: 0
@@ -51,5 +51,9 @@ WHS.Icosahderon = class Icosahedron extends WHS.Shape {
 }
 
 WHS.World.prototype.Icosahedron = function( params ) {
-	return ( new WHS.Icosahderon(  params ) ).addTo( this );
+    let object = new WHS.Icosahderon( params );
+
+    object.addTo( this );
+
+    return object;
 }

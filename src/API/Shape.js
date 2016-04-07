@@ -15,10 +15,8 @@ WHS.Shape = class {
 	 */
 	constructor( params, type ) {
 
-		//if ( ! root )
-		//console.error( "@constructor: WHS root object is not defined." );
-
-               this._lastWorld = null;
+		if ( !type ) 
+			console.error( "@constructor: Please specify \" type \"." );
 
 		var _set = function( x, y, z ) {
 
@@ -29,7 +27,7 @@ WHS.Shape = class {
 		}
 
 		// Polyfill for 3D.
-		api.extend(params, {
+		WHS.API.extend(params, {
 
 			mass: 10,
 
@@ -66,38 +64,34 @@ WHS.Shape = class {
 				duration: 1
 			},
 
-			onlyvis: false
-
 		} );
 
-
-		var key = 0;
-
-		/*root.modellingQueue.forEach( function( el ) {
-
-			if ( el.type == type ) key ++;
-
-		} );*/
-
-		var scope = {
-			_key: key,
+		var scope = Object.assign( this,
+		{
 			_type: type,
 			_whsobject: true,
-			_name: type + key,
 			__releaseTime: new Date().getTime(),
-			_pos: params.pos,
-			_rot: params.rot,
-			_scale: params.scale,
-			_morph: params.morph,
-			_target: params.target,
-			_onlyvis: params.onlyvis,
+			parent: null,
 
-			ready: new Events()
-		};
+			wait: [],
 
-		Object.assign( this, scope );
+			position: params.pos,
+			rotation: params.rot,
+			scale: params.scale,
+			morph: params.morph,
+			target: params.target
+		},
+		new Events());
 
+		return scope;
+	}
+
+	wait( promise ) {
+
+		this.wait.push( promise );
+		
 		return this;
+
 	}
 
 	/**
@@ -110,39 +104,50 @@ WHS.Shape = class {
 		
 		'use strict';
 
-		console.log(this);
-
 		var _scope = this;
+
+		console.log(_scope);
 
 		if (tags.indexOf("wait") >= 0) {
 
-			_scope._loading.then(function() {
+			Promise.all( _scope.wait ).then(function() {
 
-				_scope.build_state = new Promise( (resolve, reject) => {
+				return new Promise( (resolve, reject) => {
 
 					try {
 
 						_scope.mesh.castShadow = true;
 						_scope.mesh.receiveShadow = true;
 
-						_scope.mesh.position.set( _scope._pos.x, _scope._pos.y, _scope._pos.z );
-						_scope.mesh.rotation.set( _scope._rot.x, _scope._rot.y, _scope._rot.z );
-						_scope.mesh.scale.set( _scope._scale.x, _scope._scale.y, _scope._scale.z );
+						_scope.mesh.position.set( 
+							_scope.position.x, 
+							_scope.position.y, 
+							_scope.position.z 
+						);
+
+						_scope.mesh.rotation.set( 
+							_scope.rotation.x, 
+							_scope.rotation.y, 
+							_scope.rotation.z 
+						);
+
+						_scope.mesh.scale.set( 
+							_scope.scale.x, 
+							_scope.scale.y, 
+							_scope.scale.z 
+						);
 
 		                //References, I consider this a bad way of solving the problem, but it works for now
-		                _scope._pos = _scope.mesh.position;
-		                _scope._rot = _scope.mesh.rotation;
-		                _scope._scale = _scope.mesh.scale;
+		                _scope.position = _scope.mesh.position;
+		                _scope.rotation = _scope.mesh.rotation;
+		                _scope.scale = _scope.mesh.scale;
 
 						resolve();
 
 					} catch ( err ) {
 
 						console.error( err.message );
-
 						reject();
-
-						//this._state.reject();
 
 					}
 
@@ -151,35 +156,48 @@ WHS.Shape = class {
 			});
 
 		} else {
-			_scope.build_state = new Promise( (resolve, reject) => {
+
+			return new Promise( (resolve, reject) => {
 
 				try {
 
 					_scope.mesh.castShadow = true;
 					_scope.mesh.receiveShadow = true;
 
-					_scope.mesh.position.set( _scope._pos.x, _scope._pos.y, _scope._pos.z );
-					_scope.mesh.rotation.set( _scope._rot.x, _scope._rot.y, _scope._rot.z );
-					_scope.mesh.scale.set( _scope._scale.x, _scope._scale.y, _scope._scale.z );
+					_scope.mesh.position.set( 
+						_scope.position.x, 
+						_scope.position.y, 
+						_scope.position.z 
+					);
 
-                    //References, I consider this a bad way of solving the problem, but it works for now
-                    _scope._pos = _scope.mesh.position;
-                    _scope._rot = _scope.mesh.rotation;
-                    _scope._scale = _scope.mesh.scale;
+					_scope.mesh.rotation.set( 
+						_scope.rotation.x, 
+						_scope.rotation.y, 
+						_scope.rotation.z 
+					);
+
+					_scope.mesh.scale.set( 
+						_scope.scale.x, 
+						_scope.scale.y, 
+						_scope.scale.z 
+					);
+
+	                //References, I consider this a bad way of solving the problem, but it works for now
+	                _scope.position = _scope.mesh.position;
+	                _scope.rotation = _scope.mesh.rotation;
+	                _scope.scale = _scope.mesh.scale;
 
 					resolve();
 
 				} catch ( err ) {
 
 					console.error( err.message );
-
 					reject();
-
-					//this._state.reject();
 
 				}
 
 			});
+
 		}
 
 		return this;
@@ -188,33 +206,28 @@ WHS.Shape = class {
 	/**
 	 * Add shape to WHS.World object.
 	 *
-	 * @param {WHS.World} root - World, were this shape will be. 
+	 * @param {WHS.World} parent - World, were this shape will be.
+	 * @param {...String} tags - Tags for compiling. 
 	 */
-	addTo( root, ...tags ) {
+	addTo( parent, ...tags ) {
 
 		'use strict';
 
-		this.root = root;
+		this.parent = parent;
 
-               this._lastWorld = root;
+		var _scope = this;
 
-		var _mesh = this.mesh,
-			_scope = this;
+		if ( tags.indexOf("wait") >= 0 ) {
 
+			Promise.all( _scope.wait ).then(function() {
 
-		this._key = this.root.modellingQueue.length;
-
-		console.log([tags, tags.indexOf("wait"), _scope]);
-
-		if (tags.indexOf("wait") >= 0) {
-			_scope._loading.then(function() {
-
-				_scope._state = new Promise( (resolve, reject) => {
+				return new Promise( (resolve, reject) => {
 
 					try {
 
-						api.merge( _scope.root.scene, _scope.mesh );
-						_scope.root.modellingQueue.push( _scope );
+						WHS.API.merge( _scope.parent.scene, _scope.mesh );
+						_scope.parent.modellingQueue.push( _scope );
+						_scope.parent.children.push( _scope );
 
 					} catch ( err ) {
 
@@ -226,30 +239,32 @@ WHS.Shape = class {
 						if ( _scope._wait ) {
 
 							_scope._mesh.addEventListener( 'ready', function() {
-								resolve();
+								resolve( _scope );
 
-								_scope.ready.emit("ready");
+								_scope.emit("ready");
 							} );
 
 						} else {
-							resolve();
+							resolve( _scope );
 
-							_scope.ready.emit("ready");
+							_scope.emit("ready");
 						}
 
 					}
 
-				} );
+				});
 
-			} );
+			});
+
 		} else {
 
-			_scope._state = new Promise( (resolve, reject) => {
+			return new Promise( (resolve, reject) => {
 
 				try {
 
-					api.merge( _scope.root.scene, _mesh );
-					_scope.root.modellingQueue.push( _scope );
+					WHS.API.merge( _scope.parent.scene, _scope.mesh );
+					_scope.parent.modellingQueue.push( _scope );
+					_scope.parent.children.push( _scope );
 
 				} catch ( err ) {
 
@@ -260,28 +275,23 @@ WHS.Shape = class {
 
 					if ( _scope._wait ) {
 
-						_scope._mesh.addEventListener( 'ready', function() {
-							resolve();
+						_scope._mesh.addEventListener('ready', function() {
 
-							_scope.ready.emit("ready");
-						} );
+							resolve( _scope );
+							_scope.emit("ready");
+
+						});
 
 					} else {
-						resolve();
+						resolve( _scope );
 
-						console.log("wqd");
-
-						_scope.ready.emit("ready");
+						_scope.emit("ready");
 					}
 
 				}
 
-			} );
+			});
 		}
-
-		_scope.root.children.push( _scope );
-
-		return this;
 	}
 
 	/**
@@ -289,7 +299,7 @@ WHS.Shape = class {
 	 */
 	_initMaterial(mat_props) {
 		
-		return api.loadMaterial(mat_props)._material;
+		return WHS.API.loadMaterial(mat_props)._material;
 		
 	}
 
@@ -299,11 +309,14 @@ WHS.Shape = class {
 	remove() {
 		
 		this.root.scene.remove( this.mesh );
-                let index = this.root.modellingQueue.indexOf(this);
-                if( index !== -1 )
-                        this.root.modellingQueue.splice( index, 1 );
-                this.root.children.splice( this.root.children.indexOf( this ), 1);
-                this.root = null;
+
+        let index = this.root.modellingQueue.indexOf(this);
+
+        if( index !== -1 )
+            this.root.modellingQueue.splice( index, 1 );
+
+        this.root.children.splice( this.root.children.indexOf( this ), 1);
+        this.root = null;
 
 		return this;
 
@@ -314,7 +327,7 @@ WHS.Shape = class {
 	 */
 	retrieve() {
 
-                this.root = this._lastWorld;
+        this.root = this._lastWorld;
                 
 		this.root.scene.add( this.mesh );
 

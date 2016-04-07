@@ -23,7 +23,7 @@ WHS.World = class {
         if (!Physijs)
             console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
 
-        var target = api.extend(params, {
+        var target = WHS.API.extend(params, {
 
             anaglyph: false,
             helper: false,
@@ -142,6 +142,8 @@ WHS.World = class {
      */
     _initPhysiJS() {
 
+        this.simulate = true;
+
         Physijs.scripts.worker = this._settings.path_worker;
         Physijs.scripts.ammo = this._settings.path_ammo;
 
@@ -228,8 +230,10 @@ WHS.World = class {
      */
     _initRenderer() {
 
+        this.render = true;
+
         // Renderer.
-        this._renderer = new THREE.WebGLRenderer({precision: "lowp"});
+        this._renderer = new THREE.WebGLRenderer();
         this._renderer.setClearColor(this._settings.background);
 
         // Shadowmap.
@@ -238,8 +242,8 @@ WHS.World = class {
         this._renderer.shadowMap.cascade = true;
 
         this._renderer.setSize( 
-            +(window.innerWidth * this._settings.rWidth).toFixed(), 
-            +(window.innerHeight * this._settings.rHeight).toFixed()
+            +(this._settings.width * this._settings.rWidth).toFixed(), 
+            +(this._settings.height * this._settings.rHeight).toFixed()
         );
 
         this._renderer.render(this.scene, this._camera);
@@ -273,14 +277,20 @@ WHS.World = class {
             //  scope.effect.render(scope.scene, scope._camera);
 
             scope._process( clock );
-            scope.scene.simulate();
+
+            if ( scope.simulate ) scope.scene.simulate();
+
             scope._updateControls();
 
             // Effects rendering.
-            if (scope._composer) {
+            if ( scope._composer ) {
 
                 scope._composer.reset();
-                scope._composer.render( scope.scene, scope._camera );
+
+                if ( scope.render ) scope._composer.render( 
+                    scope.scene, 
+                    scope._camera 
+                );
 
                 scope._composer.pass( scope._composer.stack );
 
@@ -288,7 +298,10 @@ WHS.World = class {
 
             } else {
 
-                scope._renderer.render( scope.scene, scope._camera );
+                if ( scope.render ) scope._renderer.render( 
+                    scope.scene, 
+                    scope._camera 
+                );
 
             }
 

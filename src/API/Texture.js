@@ -15,11 +15,11 @@ WHS.API.texture = function( url, options ) {
 	
 	'use strict';
 
-	var texture = api.loadTexture( url );
+	var texture = WHS.API.loadTexture( url );
 
 	if ( options ) {
 
-		var opt = api.extend(options, {
+		var opt = WHS.API.extend(options, {
 
 			offset: {
 				x: 0,

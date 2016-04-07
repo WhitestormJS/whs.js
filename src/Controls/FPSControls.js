@@ -247,7 +247,7 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
 
     } else {
 
-        console.warn("Your browser does not support the PointerLock API.");
+        console.warn("Your browser does not support the PointerLock WHS.API.");
 
     }
 
