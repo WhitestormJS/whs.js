@@ -98,8 +98,6 @@ WHS.API.loadMaterial = function( material ) {
 		scope._restitution 
 	);
 
-	console.log(scope._friction);
-
 	return scope;
 
 }

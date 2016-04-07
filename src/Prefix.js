@@ -30,12 +30,16 @@ var WHS = {
         assets: "./assets",
 
         path_worker: '../libs/physijs_worker.js',
-        path_ammo: '../libs/ammo.js'
+        path_ammo: '../libs/ammo.js',
         
     },
+
+    debug: false,
     
     loops: []
 };
+
+console.log('WhitestormJS', WHS.REVISION);
 
 WHS.API.loadJSON = function(url, callback, texturePath) { 
     return WHS.loader.JSON.load(url, callback, texturePath) 
@@ -52,7 +56,6 @@ WHS.API.loadFont = function(url, onLoad, onProgress, onError) {
 if ( typeof define === 'function' && define.amd ) {
 
     define( 'whitestorm', WHS );
-    console.log(true);
 
 } else if ( 'undefined' !== typeof exports && 'undefined' !== typeof module ) {
 

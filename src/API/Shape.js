@@ -83,6 +83,9 @@ WHS.Shape = class {
 		},
 		new Events());
 
+		if ( WHS.debug ) console.debug("@WHS.Shape: Shape " + scope._type +
+			" found.", scope);
+
 		return scope;
 	}
 
@@ -140,9 +143,12 @@ WHS.Shape = class {
 		                _scope.rotation = _scope.mesh.rotation;
 		                _scope.scale = _scope.mesh.scale;
 
-						resolve();
+		                if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
+		                	+ _scope._type + " is ready.", _scope);
 
 						_scope.emit("ready");
+
+						resolve();
 
 					} catch ( err ) {
 
@@ -187,6 +193,9 @@ WHS.Shape = class {
 	                _scope.position = _scope.mesh.position;
 	                _scope.rotation = _scope.mesh.rotation;
 	                _scope.scale = _scope.mesh.scale;
+
+	                if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
+		            	+ _scope._type + " is ready.", _scope);
 
 					resolve();
 
@@ -253,6 +262,11 @@ WHS.Shape = class {
 							_scope.emit("collide");
 						});
 
+						if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
+			                + scope._type + " was added to world.", 
+			                [_scope, _scope.parent]);
+
+
 					}
 
 				});
@@ -291,6 +305,10 @@ WHS.Shape = class {
 						_scope.emit("ready");
 					});
 
+					if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
+		                + scope._type + " was added to world", 
+		                [_scope, _scope.parent]);
+
 				}
 
 			});
@@ -318,6 +336,10 @@ WHS.Shape = class {
 
         this.emit("remove");
 
+        if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
+            + this._type + " was removed from world", 
+            [_scope]);
+
 		return this;
 
 	}
@@ -333,6 +355,10 @@ WHS.Shape = class {
 		this.parent.children.push( this );
 
 		this.emit("retrieve");
+
+		if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
+            + this._type + " was retrieved to world", 
+            [_scope, _scope.parent]);
 
 		return this;
 
