@@ -4,7 +4,7 @@
  * Email: alexbuzin88@gmail.com
 */
 
-"use strict";
+'use strict';
 
 var _get = function get(object, property, receiver) {
     if (object === null) object = Function.prototype;
@@ -77,325 +77,6 @@ function _classCallCheck(instance, Constructor) {
         throw new TypeError("Cannot call a class as a function");
     }
 }
-
-/**
- * @author mrdoob / http://mrdoob.com/
- * @author marklundin / http://mark-lundin.com/
- * @author alteredq / http://alteredqualia.com/
- */
-
-THREE.AnaglyphEffect = function(renderer, width, height) {
-
-    var eyeRight = new THREE.Matrix4();
-    var eyeLeft = new THREE.Matrix4();
-    var focalLength = 125;
-    var _aspect, _near, _far, _fov;
-
-    var _cameraL = new THREE.PerspectiveCamera();
-    _cameraL.matrixAutoUpdate = false;
-
-    var _cameraR = new THREE.PerspectiveCamera();
-    _cameraR.matrixAutoUpdate = false;
-
-    var _camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-
-    var _scene = new THREE.Scene();
-
-    var _params = {
-        minFilter: THREE.LinearFilter,
-        magFilter: THREE.NearestFilter,
-        format: THREE.RGBAFormat
-    };
-
-    if (width === undefined) width = 512;
-    if (height === undefined) height = 512;
-
-    var _renderTargetL = new THREE.WebGLRenderTarget(width, height, _params);
-    var _renderTargetR = new THREE.WebGLRenderTarget(width, height, _params);
-
-    var _material = new THREE.ShaderMaterial({
-
-        uniforms: {
-
-            "mapLeft": {
-                type: "t",
-                value: _renderTargetL
-            },
-            "mapRight": {
-                type: "t",
-                value: _renderTargetR
-            }
-
-        },
-
-        vertexShader: ["varying vec2 vUv;", "void main() {", "	vUv = vec2( uv.x, uv.y );", "	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );", "}"].join("\n"),
-
-        fragmentShader: ["uniform sampler2D mapLeft;", "uniform sampler2D mapRight;", "varying vec2 vUv;", "void main() {", "	vec4 colorL, colorR;", "	vec2 uv = vUv;", "	colorL = texture2D( mapLeft, uv );", "	colorR = texture2D( mapRight, uv );",
-
-            // http://3dtv.at/Knowhow/AnaglyphComparison_en.aspx
-
-            "	gl_FragColor = vec4( colorL.g * 0.7 + colorL.b * 0.3, colorR.g, colorR.b, colorL.a + colorR.a ) * 1.1;", "}"
-        ].join("\n")
-
-    });
-
-    var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), _material);
-    _scene.add(mesh);
-
-    this.setSize = function(width, height) {
-
-        if (_renderTargetL) _renderTargetL.dispose();
-        if (_renderTargetR) _renderTargetR.dispose();
-        _renderTargetL = new THREE.WebGLRenderTarget(width, height, _params);
-        _renderTargetR = new THREE.WebGLRenderTarget(width, height, _params);
-
-        _material.uniforms["mapLeft"].value = _renderTargetL;
-        _material.uniforms["mapRight"].value = _renderTargetR;
-
-        renderer.setSize(width, height);
-    };
-
-    /*
-     * Renderer now uses an asymmetric perspective projection
-     * (http://paulbourke.net/miscellaneous/stereographics/stereorender/).
-     *
-     * Each camera is offset by the eye seperation and its projection matrix is
-     * also skewed asymetrically back to converge on the same projection plane.
-     * Added a focal length parameter to, this is where the parallax is equal to 0.
-     */
-
-    this.render = function(scene, camera) {
-
-        scene.updateMatrixWorld();
-
-        if (camera.parent === undefined) camera.updateMatrixWorld();
-
-        var hasCameraChanged = _aspect !== camera.aspect || _near !== camera.near || _far !== camera.far || _fov !== camera.fov;
-
-        if (hasCameraChanged) {
-
-            _aspect = camera.aspect;
-            _near = camera.near;
-            _far = camera.far;
-            _fov = camera.fov;
-
-            var projectionMatrix = camera.projectionMatrix.clone();
-            var eyeSep = focalLength / 30 * 0.5;
-            var eyeSepOnProjection = eyeSep * _near / focalLength;
-            var ymax = _near * Math.tan(THREE.Math.degToRad(_fov * 0.5));
-            var xmin, xmax;
-
-            // translate xOffset
-
-            eyeRight.elements[12] = eyeSep;
-            eyeLeft.elements[12] = -eyeSep;
-
-            // for left eye
-
-            xmin = -ymax * _aspect + eyeSepOnProjection;
-            xmax = ymax * _aspect + eyeSepOnProjection;
-
-            projectionMatrix.elements[0] = 2 * _near / (xmax - xmin);
-            projectionMatrix.elements[8] = (xmax + xmin) / (xmax - xmin);
-
-            _cameraL.projectionMatrix.copy(projectionMatrix);
-
-            // for right eye
-
-            xmin = -ymax * _aspect - eyeSepOnProjection;
-            xmax = ymax * _aspect - eyeSepOnProjection;
-
-            projectionMatrix.elements[0] = 2 * _near / (xmax - xmin);
-            projectionMatrix.elements[8] = (xmax + xmin) / (xmax - xmin);
-
-            _cameraR.projectionMatrix.copy(projectionMatrix);
-        }
-
-        _cameraL.matrixWorld.copy(camera.matrixWorld).multiply(eyeLeft);
-        _cameraL.position.copy(camera.position);
-        _cameraL.near = camera.near;
-        _cameraL.far = camera.far;
-
-        renderer.render(scene, _cameraL, _renderTargetL, true);
-
-        _cameraR.matrixWorld.copy(camera.matrixWorld).multiply(eyeRight);
-        _cameraR.position.copy(camera.position);
-        _cameraR.near = camera.near;
-        _cameraR.far = camera.far;
-
-        renderer.render(scene, _cameraR, _renderTargetR, true);
-
-        renderer.render(_scene, _camera);
-    };
-
-    this.dispose = function() {
-        if (_renderTargetL) _renderTargetL.dispose();
-        if (_renderTargetR) _renderTargetR.dispose();
-    };
-};
-
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
-THREE.BufferGeometryUtils = {
-
-    computeTangents: function computeTangents(geometry) {
-
-        var index = geometry.index;
-        var attributes = geometry.attributes;
-
-        // based on http://www.terathon.com/code/tangent.html
-        // (per vertex tangents)
-
-        if (index === null || attributes.position === undefined || attributes.normal === undefined || attributes.uv === undefined) {
-
-            console.warn('THREE.BufferGeometry: Missing required attributes (index, position, normal or uv) in BufferGeometry.computeTangents()');
-            return;
-        }
-
-        var indices = index.array;
-        var positions = attributes.position.array;
-        var normals = attributes.normal.array;
-        var uvs = attributes.uv.array;
-
-        var nVertices = positions.length / 3;
-
-        if (attributes.tangent === undefined) {
-
-            geometry.addAttribute('tangent', new THREE.BufferAttribute(new Float32Array(4 * nVertices), 4));
-        }
-
-        var tangents = attributes.tangent.array;
-
-        var tan1 = [],
-            tan2 = [];
-
-        for (var k = 0; k < nVertices; k++) {
-
-            tan1[k] = new THREE.Vector3();
-            tan2[k] = new THREE.Vector3();
-        }
-
-        var vA = new THREE.Vector3(),
-            vB = new THREE.Vector3(),
-            vC = new THREE.Vector3(),
-            uvA = new THREE.Vector2(),
-            uvB = new THREE.Vector2(),
-            uvC = new THREE.Vector2(),
-            sdir = new THREE.Vector3(),
-            tdir = new THREE.Vector3();
-
-        function handleTriangle(a, b, c) {
-
-            vA.fromArray(positions, a * 3);
-            vB.fromArray(positions, b * 3);
-            vC.fromArray(positions, c * 3);
-
-            uvA.fromArray(uvs, a * 2);
-            uvB.fromArray(uvs, b * 2);
-            uvC.fromArray(uvs, c * 2);
-
-            var x1 = vB.x - vA.x;
-            var x2 = vC.x - vA.x;
-
-            var y1 = vB.y - vA.y;
-            var y2 = vC.y - vA.y;
-
-            var z1 = vB.z - vA.z;
-            var z2 = vC.z - vA.z;
-
-            var s1 = uvB.x - uvA.x;
-            var s2 = uvC.x - uvA.x;
-
-            var t1 = uvB.y - uvA.y;
-            var t2 = uvC.y - uvA.y;
-
-            var r = 1.0 / (s1 * t2 - s2 * t1);
-
-            sdir.set((t2 * x1 - t1 * x2) * r, (t2 * y1 - t1 * y2) * r, (t2 * z1 - t1 * z2) * r);
-
-            tdir.set((s1 * x2 - s2 * x1) * r, (s1 * y2 - s2 * y1) * r, (s1 * z2 - s2 * z1) * r);
-
-            tan1[a].add(sdir);
-            tan1[b].add(sdir);
-            tan1[c].add(sdir);
-
-            tan2[a].add(tdir);
-            tan2[b].add(tdir);
-            tan2[c].add(tdir);
-        }
-
-        var groups = geometry.groups;
-
-        if (groups.length === 0) {
-
-            groups = [{
-                start: 0,
-                count: indices.length
-            }];
-        }
-
-        for (var j = 0, jl = groups.length; j < jl; ++j) {
-
-            var group = groups[j];
-
-            var start = group.start;
-            var count = group.count;
-
-            for (var i = start, il = start + count; i < il; i += 3) {
-
-                handleTriangle(indices[i + 0], indices[i + 1], indices[i + 2]);
-            }
-        }
-
-        var tmp = new THREE.Vector3(),
-            tmp2 = new THREE.Vector3();
-        var n = new THREE.Vector3(),
-            n2 = new THREE.Vector3();
-        var w, t, test;
-
-        function handleVertex(v) {
-
-            n.fromArray(normals, v * 3);
-            n2.copy(n);
-
-            t = tan1[v];
-
-            // Gram-Schmidt orthogonalize
-
-            tmp.copy(t);
-            tmp.sub(n.multiplyScalar(n.dot(t))).normalize();
-
-            // Calculate handedness
-
-            tmp2.crossVectors(n2, t);
-            test = tmp2.dot(tan2[v]);
-            w = test < 0.0 ? -1.0 : 1.0;
-
-            tangents[v * 4] = tmp.x;
-            tangents[v * 4 + 1] = tmp.y;
-            tangents[v * 4 + 2] = tmp.z;
-            tangents[v * 4 + 3] = w;
-        }
-
-        for (var j = 0, jl = groups.length; j < jl; ++j) {
-
-            var group = groups[j];
-
-            var start = group.start;
-            var count = group.count;
-
-            for (var i = start, il = start + count; i < il; i += 3) {
-
-                handleVertex(indices[i + 0]);
-                handleVertex(indices[i + 1]);
-                handleVertex(indices[i + 2]);
-            }
-        }
-    }
-
-};
 
 function Events(n) {
     var t = {},
@@ -1115,7 +796,7 @@ var Stats = function Stats() {
         }
     };
 };
-"object" === (typeof module === "undefined" ? "undefined" : _typeof(module)) && (module.exports = Stats);
+"object" === (typeof module === 'undefined' ? 'undefined' : _typeof(module)) && (module.exports = Stats);
 
 /*
  *	@author zz85 / http://twitter.com/blurspline / http://www.lab4games.net/zz85/blog
@@ -1797,7 +1478,7 @@ WHS.Light = function() {
      */
 
     _createClass(_class, [{
-        key: "build",
+        key: 'build',
         value: function build() {
 
             'use strict';
@@ -1846,7 +1527,7 @@ WHS.Light = function() {
          */
 
     }, {
-        key: "addTo",
+        key: 'addTo',
         value: function addTo(parent) {
 
             'use strict';
@@ -1890,7 +1571,7 @@ WHS.Light = function() {
          */
 
     }, {
-        key: "buildShadow",
+        key: 'buildShadow',
         value: function buildShadow() {
             var _this2 = this;
 
@@ -1928,7 +1609,7 @@ WHS.Light = function() {
          */
 
     }, {
-        key: "remove",
+        key: 'remove',
         value: function remove() {
 
             this.parent.scene.remove(this.mesh);
@@ -1946,7 +1627,7 @@ WHS.Light = function() {
          */
 
     }, {
-        key: "retrieve",
+        key: 'retrieve',
         value: function retrieve() {
 
             this.parent = this._lastWorld;
@@ -2066,7 +1747,7 @@ WHS.API.merge = function(box, rabbits) {
 
     // More presice checking.
 
-    if (!((typeof box === "undefined" ? "undefined" : _typeof(box)) === 'object' && (typeof rabbits === "undefined" ? "undefined" : _typeof(rabbits)) === 'object')) console.error("No rabbits for the box. (arguments)", [typeof box === "undefined" ? "undefined" : _typeof(box), typeof rabbits === "undefined" ? "undefined" : _typeof(rabbits)]);
+    if (!((typeof box === 'undefined' ? 'undefined' : _typeof(box)) === 'object' && (typeof rabbits === 'undefined' ? 'undefined' : _typeof(rabbits)) === 'object')) console.error("No rabbits for the box. (arguments)", [typeof box === 'undefined' ? 'undefined' : _typeof(box), typeof rabbits === 'undefined' ? 'undefined' : _typeof(rabbits)]);
 
     // Will only get here if box and rabbits are objects, arrays are object !
     if (!box) // Box should not be null, null is an object too !
@@ -2168,7 +1849,7 @@ WHS.Shape = function() {
     }
 
     _createClass(_class2, [{
-        key: "wait",
+        key: 'wait',
         value: function wait(promise) {
 
             this.wait.push(promise);
@@ -2184,7 +1865,7 @@ WHS.Shape = function() {
          */
 
     }, {
-        key: "build",
+        key: 'build',
         value: function build() {
 
             'use strict';
@@ -2270,7 +1951,7 @@ WHS.Shape = function() {
          */
 
     }, {
-        key: "addTo",
+        key: 'addTo',
         value: function addTo(parent) {
 
             'use strict';
@@ -2352,7 +2033,7 @@ WHS.Shape = function() {
          */
 
     }, {
-        key: "_initMaterial",
+        key: '_initMaterial',
         value: function _initMaterial(mat_props) {
 
             return WHS.API.loadMaterial(mat_props)._material;
@@ -2363,7 +2044,7 @@ WHS.Shape = function() {
          */
 
     }, {
-        key: "remove",
+        key: 'remove',
         value: function remove() {
 
             this.parent.scene.remove(this.mesh);
@@ -2381,7 +2062,7 @@ WHS.Shape = function() {
          */
 
     }, {
-        key: "retrieve",
+        key: 'retrieve',
         value: function retrieve() {
 
             this.parent = this._lastWorld;
@@ -2591,12 +2272,6 @@ WHS.World = function() {
         this._initCamera();
         this._initRenderer();
 
-        /*if (target.anaglyph) {
-              this.effect = new THREE.AnaglyphEffect(this._renderer);
-            this.effect.setSize(target.rWidth, target.rHeight);
-              this.effect.render(this.scene, this._camera);
-          }*/
-
         // NOTE: ==================== Autoresize. ======================
         var scope = this;
 
@@ -2612,7 +2287,7 @@ WHS.World = function() {
      */
 
     _createClass(_class3, [{
-        key: "_initScene",
+        key: '_initScene',
         value: function _initScene() {
 
             this._initPhysiJS();
@@ -2630,7 +2305,7 @@ WHS.World = function() {
          */
 
     }, {
-        key: "_initPhysiJS",
+        key: '_initPhysiJS',
         value: function _initPhysiJS() {
 
             this.simulate = true;
@@ -2644,7 +2319,7 @@ WHS.World = function() {
          */
 
     }, {
-        key: "_initDOM",
+        key: '_initDOM',
         value: function _initDOM() {
 
             this._settings.container.style.margin = 0;
@@ -2665,7 +2340,7 @@ WHS.World = function() {
          */
 
     }, {
-        key: "_initStats",
+        key: '_initStats',
         value: function _initStats() {
 
             // Debug Renderer
@@ -2695,7 +2370,7 @@ WHS.World = function() {
          */
 
     }, {
-        key: "_initCamera",
+        key: '_initCamera',
         value: function _initCamera() {
 
             this._camera = new THREE.PerspectiveCamera(this._settings.camera.aspect, this._settings.width / this._settings.height, this._settings.camera.near, this._settings.camera.far);
@@ -2710,7 +2385,7 @@ WHS.World = function() {
          */
 
     }, {
-        key: "_initRenderer",
+        key: '_initRenderer',
         value: function _initRenderer() {
 
             this.render = true;
@@ -2739,7 +2414,7 @@ WHS.World = function() {
          */
 
     }, {
-        key: "start",
+        key: 'start',
         value: function start() {
 
             'use strict';
@@ -2796,7 +2471,7 @@ WHS.World = function() {
          */
 
     }, {
-        key: "_execLoops",
+        key: '_execLoops',
         value: function _execLoops(time) {
 
             WHS.loops.forEach(function(loop) {
@@ -2809,7 +2484,7 @@ WHS.World = function() {
          */
 
     }, {
-        key: "_updateControls",
+        key: '_updateControls',
         value: function _updateControls() {
 
             if (this.controls) {
@@ -2826,7 +2501,7 @@ WHS.World = function() {
          */
 
     }, {
-        key: "_process",
+        key: '_process',
         value: function _process(clock) {
 
             for (var i = 0; i < this.children.length; i++) {
@@ -2840,7 +2515,7 @@ WHS.World = function() {
          */
 
     }, {
-        key: "resize",
+        key: 'resize',
         value: function resize() {
 
             this._camera.aspect = this._settings.width / this._settings.height;
@@ -2889,9 +2564,9 @@ WHS.Cube = function(_WHS$Shape) {
 
         });
 
-        _this3.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(params.geometry.width, params.geometry.height, params.geometry.depth), _get(Object.getPrototypeOf(Cube.prototype), "_initMaterial", _this3).call(_this3, params.material), params.mass);
+        _this3.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(params.geometry.width, params.geometry.height, params.geometry.depth), _get(Object.getPrototypeOf(Cube.prototype), '_initMaterial', _this3).call(_this3, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Cube.prototype), "build", _this3).call(_this3);
+        _get(Object.getPrototypeOf(Cube.prototype), 'build', _this3).call(_this3);
 
         return _this3;
     }
@@ -2945,9 +2620,9 @@ WHS.Cylinder = function(_WHS$Shape2) {
 
         });
 
-        _this4.mesh = new Physijs.CylinderMesh(new THREE.CylinderGeometry(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments), _get(Object.getPrototypeOf(Cylinder.prototype), "_initMaterial", _this4).call(_this4, params.material), params.mass);
+        _this4.mesh = new Physijs.CylinderMesh(new THREE.CylinderGeometry(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments), _get(Object.getPrototypeOf(Cylinder.prototype), '_initMaterial', _this4).call(_this4, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Cylinder.prototype), "build", _this4).call(_this4);
+        _get(Object.getPrototypeOf(Cylinder.prototype), 'build', _this4).call(_this4);
 
         return _this4;
     }
@@ -2997,9 +2672,9 @@ WHS.Dodecahedron = function(_WHS$Shape3) {
 
         });
 
-        _this5.mesh = new Physijs.ConvexMesh(new THREE.DodecahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Dodecahedron.prototype), "_initMaterial", _this5).call(_this5, params.material), params.mass);
+        _this5.mesh = new Physijs.ConvexMesh(new THREE.DodecahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Dodecahedron.prototype), '_initMaterial', _this5).call(_this5, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Dodecahedron.prototype), "build", _this5).call(_this5);
+        _get(Object.getPrototypeOf(Dodecahedron.prototype), 'build', _this5).call(_this5);
 
         return _this5;
     }
@@ -3048,9 +2723,9 @@ WHS.Extrude = function(_WHS$Shape4) {
 
         });
 
-        _this6.mesh = new Physijs.ConvexMesh(new THREE.ExtrudeGeometry(params.geometry.shapes, params.geometry.options), _get(Object.getPrototypeOf(Extrude.prototype), "_initMaterial", _this6).call(_this6, params.material), params.mass);
+        _this6.mesh = new Physijs.ConvexMesh(new THREE.ExtrudeGeometry(params.geometry.shapes, params.geometry.options), _get(Object.getPrototypeOf(Extrude.prototype), '_initMaterial', _this6).call(_this6, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Extrude.prototype), "build", _this6).call(_this6);
+        _get(Object.getPrototypeOf(Extrude.prototype), 'build', _this6).call(_this6);
 
         return _this6;
     }
@@ -3100,9 +2775,9 @@ WHS.Icosahderon = function(_WHS$Shape5) {
 
         });
 
-        _this7.mesh = new Physijs.ConvexMesh(new THREE.IcosahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Icosahedron.prototype), "_initMaterial", _this7).call(_this7, params.material), params.mass);
+        _this7.mesh = new Physijs.ConvexMesh(new THREE.IcosahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Icosahedron.prototype), '_initMaterial', _this7).call(_this7, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Icosahedron.prototype), "build", _this7).call(_this7);
+        _get(Object.getPrototypeOf(Icosahedron.prototype), 'build', _this7).call(_this7);
 
         return _this7;
     }
@@ -3150,9 +2825,9 @@ WHS.Lathe = function(_WHS$Shape6) {
 
         });
 
-        _this8.mesh = new Physijs.ConvexMesh(new THREE.LatheGeometry(params.geometry.points), _get(Object.getPrototypeOf(Lathe.prototype), "_initMaterial", _this8).call(_this8, params.material), params.mass);
+        _this8.mesh = new Physijs.ConvexMesh(new THREE.LatheGeometry(params.geometry.points), _get(Object.getPrototypeOf(Lathe.prototype), '_initMaterial', _this8).call(_this8, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Lathe.prototype), "build", _this8).call(_this8);
+        _get(Object.getPrototypeOf(Lathe.prototype), 'build', _this8).call(_this8);
 
         return _this8;
     }
@@ -3202,7 +2877,7 @@ WHS.Model = function(_WHS$Shape7) {
 
         var scope = _this9;
 
-        _get(Object.getPrototypeOf(Model.prototype), "wait", _this9).call(_this9, new Promise(function(resolve, reject) {
+        _get(Object.getPrototypeOf(Model.prototype), 'wait', _this9).call(_this9, new Promise(function(resolve, reject) {
 
             WHS.API.loadJSON(params.geometry.path, function(data, materials) {
 
@@ -3222,7 +2897,7 @@ WHS.Model = function(_WHS$Shape7) {
             });
         }));
 
-        _get(Object.getPrototypeOf(Model.prototype), "build", _this9).call(_this9, "wait");
+        _get(Object.getPrototypeOf(Model.prototype), 'build', _this9).call(_this9, "wait");
 
         return _this9;
     }
@@ -3275,7 +2950,7 @@ WHS.Morph = function(_WHS$Shape8) {
 
         var scope = _this10;
 
-        _get(Object.getPrototypeOf(Morph.prototype), "wait", _this10).call(_this10, new Promise(function(resolve, reject) {
+        _get(Object.getPrototypeOf(Morph.prototype), 'wait', _this10).call(_this10, new Promise(function(resolve, reject) {
 
             WHS.API.loadJSON(params.geometry.path, function(data, materials) {
 
@@ -3301,7 +2976,7 @@ WHS.Morph = function(_WHS$Shape8) {
             });
         }));
 
-        _get(Object.getPrototypeOf(Morph.prototype), "build", _this10).call(_this10, "wait");
+        _get(Object.getPrototypeOf(Morph.prototype), 'build', _this10).call(_this10, "wait");
 
         return _this10;
     }
@@ -3351,9 +3026,9 @@ WHS.Octahedron = function(_WHS$Shape9) {
 
         });
 
-        _this11.mesh = new Physijs.ConvexMesh(new THREE.OctahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Octahedron.prototype), "_initMaterial", _this11).call(_this11, params.material), params.mass);
+        _this11.mesh = new Physijs.ConvexMesh(new THREE.OctahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Octahedron.prototype), '_initMaterial', _this11).call(_this11, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Octahedron.prototype), "build", _this11).call(_this11);
+        _get(Object.getPrototypeOf(Octahedron.prototype), 'build', _this11).call(_this11);
 
         return _this11;
     }
@@ -3405,9 +3080,9 @@ WHS.Parametric = function(_WHS$Shape10) {
 
         });
 
-        _this12.mesh = new Physijs.ConcaveMesh(new THREE.ParametricGeometry(params.geometry.func, params.geometry.slices, params.geometry.stacks), _get(Object.getPrototypeOf(Parametric.prototype), "_initMaterial", _this12).call(_this12, params.material), params.mass);
+        _this12.mesh = new Physijs.ConcaveMesh(new THREE.ParametricGeometry(params.geometry.func, params.geometry.slices, params.geometry.stacks), _get(Object.getPrototypeOf(Parametric.prototype), '_initMaterial', _this12).call(_this12, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Parametric.prototype), "build", _this12).call(_this12);
+        _get(Object.getPrototypeOf(Parametric.prototype), 'build', _this12).call(_this12);
 
         return _this12;
     }
@@ -3459,9 +3134,9 @@ WHS.Plane = function(_WHS$Shape11) {
 
         });
 
-        _this13.mesh = new Physijs.PlaneMesh(new THREE.PlaneGeometry(params.geometry.width, params.geometry.height, params.geometry.segments), _get(Object.getPrototypeOf(Plane.prototype), "_initMaterial", _this13).call(_this13, params.material), params.mass);
+        _this13.mesh = new Physijs.PlaneMesh(new THREE.PlaneGeometry(params.geometry.width, params.geometry.height, params.geometry.segments), _get(Object.getPrototypeOf(Plane.prototype), '_initMaterial', _this13).call(_this13, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Plane.prototype), "build", _this13).call(_this13);
+        _get(Object.getPrototypeOf(Plane.prototype), 'build', _this13).call(_this13);
 
         return _this13;
     }
@@ -3515,21 +3190,21 @@ WHS.Polyhedron = function(_WHS$Shape12) {
 
         });
 
-        _this14.mesh = new Physijs.ConvexMesh(new THREE.PolyhedronGeometry(params.geometry.verticesOfCube, params.geometry.indicesOfFaces, params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Polyhedron.prototype), "_initMaterial", _this14).call(_this14, params.material), params.mass);
+        _this14.mesh = new Physijs.ConvexMesh(new THREE.PolyhedronGeometry(params.geometry.verticesOfCube, params.geometry.indicesOfFaces, params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Polyhedron.prototype), '_initMaterial', _this14).call(_this14, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Polyhedron.prototype), "build", _this14).call(_this14);
+        _get(Object.getPrototypeOf(Polyhedron.prototype), 'build', _this14).call(_this14);
 
         return _this14;
     }
 
     _createClass(Polyhedron, [{
-        key: "verticesOfCube",
+        key: 'verticesOfCube',
         get: function get() {
 
             return [-1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1];
         }
     }, {
-        key: "indicesOfFaces",
+        key: 'indicesOfFaces',
         get: function get() {
 
             return [2, 1, 0, 0, 3, 2, 0, 4, 7, 7, 3, 0, 0, 1, 5, 5, 4, 0, 1, 2, 6, 6, 5, 1, 2, 3, 7, 7, 6, 2, 4, 5, 6, 6, 7, 4];
@@ -3589,9 +3264,9 @@ WHS.Ring = function(_WHS$Shape13) {
 
         });
 
-        _this15.mesh = new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), _get(Object.getPrototypeOf(Ring.prototype), "_initMaterial", _this15).call(_this15, params.material));
+        _this15.mesh = new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), _get(Object.getPrototypeOf(Ring.prototype), '_initMaterial', _this15).call(_this15, params.material));
 
-        _get(Object.getPrototypeOf(Ring.prototype), "build", _this15).call(_this15, "onlyvis");
+        _get(Object.getPrototypeOf(Ring.prototype), 'build', _this15).call(_this15, "onlyvis");
 
         return _this15;
     }
@@ -3638,9 +3313,9 @@ WHS.Shape2D = function(_WHS$Shape14) {
 
         });
 
-        _this16.mesh = new THREE.Mesh(new THREE.ShapeGeometry(params.geometry.shapes), _get(Object.getPrototypeOf(Shape2D.prototype), "_initMaterial", _this16).call(_this16, params.material));
+        _this16.mesh = new THREE.Mesh(new THREE.ShapeGeometry(params.geometry.shapes), _get(Object.getPrototypeOf(Shape2D.prototype), '_initMaterial', _this16).call(_this16, params.material));
 
-        _get(Object.getPrototypeOf(Shape2D.prototype), "build", _this16).call(_this16, "onlyvis");
+        _get(Object.getPrototypeOf(Shape2D.prototype), 'build', _this16).call(_this16, "onlyvis");
 
         return _this16;
     }
@@ -3689,9 +3364,9 @@ WHS.Smooth = function(_WHS$Shape15) {
 
         });
 
-        _this17.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(params.geometry.width, 1, params.geometry.height), _get(Object.getPrototypeOf(Smooth.prototype), "_initMaterial", _this17).call(_this17, params.material), 0);
+        _this17.mesh = new Physijs.BoxMesh(new THREE.BoxGeometry(params.geometry.width, 1, params.geometry.height), _get(Object.getPrototypeOf(Smooth.prototype), '_initMaterial', _this17).call(_this17, params.material), 0);
 
-        _get(Object.getPrototypeOf(Smooth.prototype), "build", _this17).call(_this17);
+        _get(Object.getPrototypeOf(Smooth.prototype), 'build', _this17).call(_this17);
 
         return _this17;
     }
@@ -3743,9 +3418,9 @@ WHS.Sphere = function(_WHS$Shape16) {
 
         });
 
-        _this18.mesh = new Physijs.SphereMesh(new THREE.SphereGeometry(params.geometry.radius, params.geometry.segmentA, params.geometry.segmentB), _get(Object.getPrototypeOf(Sphere.prototype), "_initMaterial", _this18).call(_this18, params.material), params.mass);
+        _this18.mesh = new Physijs.SphereMesh(new THREE.SphereGeometry(params.geometry.radius, params.geometry.segmentA, params.geometry.segmentB), _get(Object.getPrototypeOf(Sphere.prototype), '_initMaterial', _this18).call(_this18, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Sphere.prototype), "build", _this18).call(_this18);
+        _get(Object.getPrototypeOf(Sphere.prototype), 'build', _this18).call(_this18);
 
         return _this18;
     }
@@ -3795,9 +3470,9 @@ WHS.Tetrahedron = function(_WHS$Shape17) {
 
         });
 
-        _this19.mesh = new Physijs.ConvexMesh(new THREE.TetrahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Tetrahedron.prototype), "_initMaterial", _this19).call(_this19, params.material), params.mass);
+        _this19.mesh = new Physijs.ConvexMesh(new THREE.TetrahedronGeometry(params.geometry.radius, params.geometry.detail), _get(Object.getPrototypeOf(Tetrahedron.prototype), '_initMaterial', _this19).call(_this19, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Tetrahedron.prototype), "build", _this19).call(_this19);
+        _get(Object.getPrototypeOf(Tetrahedron.prototype), 'build', _this19).call(_this19);
 
         return _this19;
     }
@@ -3864,7 +3539,7 @@ WHS.Text = function(_WHS$Shape18) {
 
         var scope = _this20;
 
-        _get(Object.getPrototypeOf(Text.prototype), "wait", _this20).call(_this20, new Promise(function(resolve, reject) {
+        _get(Object.getPrototypeOf(Text.prototype), 'wait', _this20).call(_this20, new Promise(function(resolve, reject) {
 
             WHS.API.loadFont(params.geometry.parameters.font, function(font) {
 
@@ -3878,7 +3553,7 @@ WHS.Text = function(_WHS$Shape18) {
             });
         }));
 
-        _get(Object.getPrototypeOf(Text.prototype), "build", _this20).call(_this20, "wait");
+        _get(Object.getPrototypeOf(Text.prototype), 'build', _this20).call(_this20, "wait");
 
         return _this20;
     }
@@ -3934,9 +3609,9 @@ WHS.Torus = function(_WHS$Shape19) {
 
         });
 
-        _this21.mesh = new Physijs.ConvexMesh(new THREE.TorusGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.arc), _get(Object.getPrototypeOf(Torus.prototype), "_initMaterial", _this21).call(_this21, params.material), params.mass);
+        _this21.mesh = new Physijs.ConvexMesh(new THREE.TorusGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.arc), _get(Object.getPrototypeOf(Torus.prototype), '_initMaterial', _this21).call(_this21, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Torus.prototype), "build", _this21).call(_this21);
+        _get(Object.getPrototypeOf(Torus.prototype), 'build', _this21).call(_this21);
 
         return _this21;
     }
@@ -3994,9 +3669,9 @@ WHS.Torusknot = function(_WHS$Shape20) {
 
         });
 
-        _this22.mesh = new Physijs.ConvexMesh(new THREE.TorusKnotGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.p, params.geometry.q, params.geometry.heightScale), _get(Object.getPrototypeOf(Torusknot.prototype), "_initMaterial", _this22).call(_this22, params.material), params.mass);
+        _this22.mesh = new Physijs.ConvexMesh(new THREE.TorusKnotGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.p, params.geometry.q, params.geometry.heightScale), _get(Object.getPrototypeOf(Torusknot.prototype), '_initMaterial', _this22).call(_this22, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Torusknot.prototype), "build", _this22).call(_this22);
+        _get(Object.getPrototypeOf(Torusknot.prototype), 'build', _this22).call(_this22);
 
         return _this22;
     }
@@ -4052,15 +3727,15 @@ WHS.Tube = function(_WHS$Shape21) {
 
         });
 
-        _this23.mesh = new Physijs.ConvexMesh(new THREE.TubeGeometry(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed), _get(Object.getPrototypeOf(Tube.prototype), "_initMaterial", _this23).call(_this23, params.material), params.mass);
+        _this23.mesh = new Physijs.ConvexMesh(new THREE.TubeGeometry(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed), _get(Object.getPrototypeOf(Tube.prototype), '_initMaterial', _this23).call(_this23, params.material), params.mass);
 
-        _get(Object.getPrototypeOf(Tube.prototype), "build", _this23).call(_this23);
+        _get(Object.getPrototypeOf(Tube.prototype), 'build', _this23).call(_this23);
 
         return _this23;
     }
 
     _createClass(Tube, [{
-        key: "CustomSinCurve",
+        key: 'CustomSinCurve',
         get: function get() {
 
             return THREE.Curve.create(function(scale) {
@@ -4112,7 +3787,7 @@ WHS.AmbientLight = function(_WHS$Light) {
 
         _this24.mesh = new THREE.AmbientLight(params.light.color, params.light.intensity);
 
-        _get(Object.getPrototypeOf(AmbientLight.prototype), "build", _this24).call(_this24);
+        _get(Object.getPrototypeOf(AmbientLight.prototype), 'build', _this24).call(_this24);
 
         return _this24;
     }
@@ -4152,8 +3827,8 @@ WHS.DirectionalLight = function(_WHS$Light2) {
 
         _this25.mesh = new THREE.DirectionalLight(params.light.color, params.light.intensity);
 
-        _get(Object.getPrototypeOf(DirectionalLight.prototype), "build", _this25).call(_this25);
-        _get(Object.getPrototypeOf(DirectionalLight.prototype), "buildShadow", _this25).call(_this25);
+        _get(Object.getPrototypeOf(DirectionalLight.prototype), 'build', _this25).call(_this25);
+        _get(Object.getPrototypeOf(DirectionalLight.prototype), 'buildShadow', _this25).call(_this25);
 
         return _this25;
     }
@@ -4194,8 +3869,8 @@ WHS.HemisphereLight = function(_WHS$Light3) {
 
         _this26.mesh = new THREE.HemisphereLight(params.light.skyColor, params.light.groundColor, params.light.intensity);
 
-        _get(Object.getPrototypeOf(HemisphereLight.prototype), "build", _this26).call(_this26);
-        _get(Object.getPrototypeOf(HemisphereLight.prototype), "buildShadow", _this26).call(_this26);
+        _get(Object.getPrototypeOf(HemisphereLight.prototype), 'build', _this26).call(_this26);
+        _get(Object.getPrototypeOf(HemisphereLight.prototype), 'buildShadow', _this26).call(_this26);
 
         return _this26;
     }
@@ -4234,8 +3909,8 @@ WHS.NormalLight = function(_WHS$Light4) {
 
         _this27.mesh = new THREE.Light(params.light.color);
 
-        _get(Object.getPrototypeOf(NormalLight.prototype), "build", _this27).call(_this27);
-        _get(Object.getPrototypeOf(NormalLight.prototype), "buildShadow", _this27).call(_this27);
+        _get(Object.getPrototypeOf(NormalLight.prototype), 'build', _this27).call(_this27);
+        _get(Object.getPrototypeOf(NormalLight.prototype), 'buildShadow', _this27).call(_this27);
 
         return _this27;
     }
@@ -4277,8 +3952,8 @@ WHS.PointLight = function(_WHS$Light5) {
 
         _this28.mesh = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance, params.light.decay);
 
-        _get(Object.getPrototypeOf(PointLight.prototype), "build", _this28).call(_this28);
-        _get(Object.getPrototypeOf(PointLight.prototype), "buildShadow", _this28).call(_this28);
+        _get(Object.getPrototypeOf(PointLight.prototype), 'build', _this28).call(_this28);
+        _get(Object.getPrototypeOf(PointLight.prototype), 'buildShadow', _this28).call(_this28);
 
         return _this28;
     }
@@ -4322,8 +3997,8 @@ WHS.SpotLight = function(_WHS$Light6) {
 
         _this29.mesh = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle, params.light.exponent, params.light.decay);
 
-        _get(Object.getPrototypeOf(SpotLight.prototype), "build", _this29).call(_this29);
-        _get(Object.getPrototypeOf(SpotLight.prototype), "buildShadow", _this29).call(_this29);
+        _get(Object.getPrototypeOf(SpotLight.prototype), 'build', _this29).call(_this29);
+        _get(Object.getPrototypeOf(SpotLight.prototype), 'buildShadow', _this29).call(_this29);
 
         return _this29;
     }
@@ -4654,7 +4329,7 @@ WHS.World.prototype.OrbitControls = function(object) {
             var target = object ? object.mesh.position : new THREE.Vector3(0, 0, 0);
 
             this.controls.target = target;
-        } else if ((typeof object === "undefined" ? "undefined" : _typeof(object)) == "object") this.controls.target.copy(target);
+        } else if ((typeof object === 'undefined' ? 'undefined' : _typeof(object)) == "object") this.controls.target.copy(target);
         else console.error("Object must be a THREE.JS vector! @OrbitControls");
     }
 };
@@ -4692,7 +4367,7 @@ WHS.Fog = function() {
      */
 
     _createClass(Fog, [{
-        key: "addTo",
+        key: 'addTo',
         value: function addTo(root) {
 
             root.scene.fog = this.fog;
@@ -4742,7 +4417,7 @@ WHS.FogExp2 = function() {
      */
 
     _createClass(FogExp2, [{
-        key: "addTo",
+        key: 'addTo',
         value: function addTo(root) {
 
             root.scene.fog = this.fog;
@@ -4822,7 +4497,7 @@ WHS.Skybox = function(_WHS$Shape22) {
         _this30.mesh = new THREE.Mesh(skyGeometry, skyMat);
         _this30.mesh.renderDepth = 1000.0;
 
-        _get(Object.getPrototypeOf(Skybox.prototype), "build", _this30).call(_this30);
+        _get(Object.getPrototypeOf(Skybox.prototype), 'build', _this30).call(_this30);
 
         return _this30;
     }
