@@ -13,7 +13,6 @@
 // FIXME: Fix fog.
 // DOING:10 improve libraries support.
 
-
 /* ================ WHITESTORM|JS ==================== */
 var WHS = {
     REVISION: "7",
@@ -50,12 +49,10 @@ WHS.API.loadFont = function(url, onLoad, onProgress, onError) {
     return WHS.loader.Font.load(url, onLoad, onProgress, onError);
 }
 
-var api = WHS.API;
-
-
 if ( typeof define === 'function' && define.amd ) {
 
     define( 'whitestorm', WHS );
+    console.log(true);
 
 } else if ( 'undefined' !== typeof exports && 'undefined' !== typeof module ) {
 
