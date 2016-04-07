@@ -104,6 +104,9 @@ WHS.Light = class {
 		},
 		new Events());
 
+		if ( WHS.debug ) console.debug("@WHS.Light: Light " + scope._type +
+			" found.", scope);
+
 		return scope;
 	}
 
@@ -141,7 +144,12 @@ WHS.Light = class {
 
 				tags.forEach(tag => {
 					_scope[tag] = true;
-				});
+				});		                
+
+				if ( WHS.debug ) console.debug("@WHS.Light: Light " 
+		        	+ _scope._type + " is ready.", _scope);
+
+				_scope.emit("ready");
 
 				resolve( _scope );
 
@@ -150,8 +158,6 @@ WHS.Light = class {
 				console.error( err.message );
 
 				reject();
-
-				//this._state.reject();
 
 			}
 
@@ -187,6 +193,11 @@ WHS.Light = class {
 				reject();
 
 			} finally {
+
+				if ( WHS.debug ) console.debug("@WHS.Light: Light " 
+		        	+ _scope._type + " was added to worl.", 
+		        	[_scope, _scope.parent]);
+
 
 				if ( _scope._wait ) {
 

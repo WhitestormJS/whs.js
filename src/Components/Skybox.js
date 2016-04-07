@@ -21,8 +21,6 @@ WHS.Skybox = class Skybox extends WHS.Shape {
 
         });
 
-        console.log(params.fog);
-
         var skyGeometry, skyMat;
 
 		switch ( params.skyType ) {
