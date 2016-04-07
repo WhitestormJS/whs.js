@@ -1701,8 +1701,7 @@ WHS.Light = function() {
     function _class(params, type) {
         _classCallCheck(this, _class);
 
-        //if ( ! root )
-        //console.error( "@constructor: WHS root object is not defined." );
+        if (!type) console.error("@constructor: Please specify \" type \".");
 
         var _set = function _set(x, y, z) {
 
@@ -1853,6 +1852,7 @@ WHS.Light = function() {
             'use strict';
 
             this.parent = parent;
+            this._lastWorld = parent;
 
             var _mesh = this.mesh,
                 _scope = this;
@@ -1923,14 +1923,6 @@ WHS.Light = function() {
             });
         }
 
-        /*copy() {
-        
-        	return WHS.API.extend({
-        		mesh: this._mesh.copy(),
-        	}, this);
-        
-        }*/
-
         /**
          * Remove this light from world.
          */
@@ -1939,7 +1931,12 @@ WHS.Light = function() {
         key: "remove",
         value: function remove() {
 
-            this.root.scene.remove(this.mesh);
+            this.parent.scene.remove(this.mesh);
+
+            this.parent.children.splice(this.parent.children.indexOf(this), 1);
+            this.parent = null;
+
+            this.emit("remove");
 
             return this;
         }
@@ -1952,7 +1949,12 @@ WHS.Light = function() {
         key: "retrieve",
         value: function retrieve() {
 
-            this.root.scene.add(this.mesh);
+            this.parent = this._lastWorld;
+
+            this.parent.scene.add(this.mesh);
+            this.parent.children.push(this);
+
+            this.emit("retrieve");
 
             return this;
         }
@@ -2189,8 +2191,6 @@ WHS.Shape = function() {
 
             var _scope = this;
 
-            console.log(_scope);
-
             for (var _len3 = arguments.length, tags = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
                 tags[_key3] = arguments[_key3];
             }
@@ -2218,6 +2218,8 @@ WHS.Shape = function() {
                             _scope.scale = _scope.mesh.scale;
 
                             resolve();
+
+                            _scope.emit("ready");
                         } catch (err) {
 
                             console.error(err.message);
@@ -2240,12 +2242,15 @@ WHS.Shape = function() {
 
                         _scope.mesh.scale.set(_scope.scale.x, _scope.scale.y, _scope.scale.z);
 
-                        //References, I consider this a bad way of solving the problem, but it works for now
+                        // References, I consider this a bad way of solving
+                        // the problem, but it works for now.
                         _scope.position = _scope.mesh.position;
                         _scope.rotation = _scope.mesh.rotation;
                         _scope.scale = _scope.mesh.scale;
 
                         resolve();
+
+                        _scope.emit("ready");
                     } catch (err) {
 
                         console.error(err.message);
@@ -2271,6 +2276,7 @@ WHS.Shape = function() {
             'use strict';
 
             this.parent = parent;
+            this._lastWorld = parent;
 
             var _scope = this;
 
@@ -2287,7 +2293,6 @@ WHS.Shape = function() {
                         try {
 
                             WHS.API.merge(_scope.parent.scene, _scope.mesh);
-                            _scope.parent.modellingQueue.push(_scope);
                             _scope.parent.children.push(_scope);
                         } catch (err) {
 
@@ -2297,16 +2302,16 @@ WHS.Shape = function() {
 
                             if (_scope._wait) {
 
-                                _scope._mesh.addEventListener('ready', function() {
+                                _scope.mesh.addEventListener('ready', function() {
                                     resolve(_scope);
-
-                                    _scope.emit("ready");
                                 });
                             } else {
                                 resolve(_scope);
-
-                                _scope.emit("ready");
                             }
+
+                            _scope.mesh.addEventListener('collide', function() {
+                                _scope.emit("collide");
+                            });
                         }
                     });
                 });
@@ -2317,7 +2322,6 @@ WHS.Shape = function() {
                     try {
 
                         WHS.API.merge(_scope.parent.scene, _scope.mesh);
-                        _scope.parent.modellingQueue.push(_scope);
                         _scope.parent.children.push(_scope);
                     } catch (err) {
 
@@ -2327,16 +2331,17 @@ WHS.Shape = function() {
 
                         if (_scope._wait) {
 
-                            _scope._mesh.addEventListener('ready', function() {
+                            _scope.mesh.addEventListener('ready', function() {
 
                                 resolve(_scope);
-                                _scope.emit("ready");
                             });
                         } else {
                             resolve(_scope);
-
-                            _scope.emit("ready");
                         }
+
+                        _scope.mesh.addEventListener('collide', function() {
+                            _scope.emit("ready");
+                        });
                     }
                 });
             }
@@ -2361,14 +2366,12 @@ WHS.Shape = function() {
         key: "remove",
         value: function remove() {
 
-            this.root.scene.remove(this.mesh);
+            this.parent.scene.remove(this.mesh);
 
-            var index = this.root.modellingQueue.indexOf(this);
+            this.parent.children.splice(this.parent.children.indexOf(this), 1);
+            this.parent = null;
 
-            if (index !== -1) this.root.modellingQueue.splice(index, 1);
-
-            this.root.children.splice(this.root.children.indexOf(this), 1);
-            this.root = null;
+            this.emit("remove");
 
             return this;
         }
@@ -2381,9 +2384,12 @@ WHS.Shape = function() {
         key: "retrieve",
         value: function retrieve() {
 
-            this.root = this._lastWorld;
+            this.parent = this._lastWorld;
 
-            this.root.scene.add(this.mesh);
+            this.parent.scene.add(this.mesh);
+            this.parent.children.push(this);
+
+            this.emit("retrieve");
 
             return this;
         }
@@ -2616,7 +2622,6 @@ WHS.World = function() {
             this.scene.setGravity(new THREE.Vector3(this._settings.gravity.x, this._settings.gravity.y, this._settings.gravity.z));
 
             // Arrays for processing.
-            this.modellingQueue = [];
             this.children = [];
         }
 
@@ -2782,18 +2787,6 @@ WHS.World = function() {
             this._update = reDraw;
 
             scope._update();
-
-            /*scope._ready = [];
-              var loading_queue = WHS.Watch(scope.children);
-              loading_queue._queue.forEach(object => {
-                object.ready.on("ready", function() {
-                   // object._state.then(() => {
-                        scope._ready.push(object);
-                          if(loading_queue._queue.length == scope._ready.length) 
-                            scope._events.emit("ready");
-                    //});
-                });
-              });*/
         }
 
         /**
@@ -2836,9 +2829,9 @@ WHS.World = function() {
         key: "_process",
         value: function _process(clock) {
 
-            for (var i = 0; i < this.modellingQueue.length; i++) {
+            for (var i = 0; i < this.children.length; i++) {
 
-                if (this.modellingQueue[i]._type == "morph") this.modellingQueue[i].mesh.mixer.update(clock.getDelta());
+                if (this.children[i]._type == "morph") this.children[i].mesh.mixer.update(clock.getDelta());
             }
         }
 
@@ -2850,10 +2843,10 @@ WHS.World = function() {
         key: "resize",
         value: function resize() {
 
-            this._camera.aspect = window.innerWidth / window.innerHeight;
+            this._camera.aspect = this._settings.width / this._settings.height;
             this._camera.updateProjectionMatrix();
 
-            this._renderer.setSize(+(window.innerWidth * this._settings.rWidth).toFixed(), +(window.innerHeight * this._settings.rHeight).toFixed());
+            this._renderer.setSize(+(this._settings.width * this._settings.rWidth).toFixed(), +(this._settings.height * this._settings.rHeight).toFixed());
         }
     }]);
 

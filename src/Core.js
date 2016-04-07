@@ -92,15 +92,6 @@ WHS.World = class {
         this._initCamera();
         this._initRenderer();
 
-        /*if (target.anaglyph) {
-
-            this.effect = new THREE.AnaglyphEffect(this._renderer);
-            this.effect.setSize(target.rWidth, target.rHeight);
-
-            this.effect.render(this.scene, this._camera);
-
-        }*/
-
         // NOTE: ==================== Autoresize. ======================
         var scope = this;
 
@@ -132,7 +123,6 @@ WHS.World = class {
         );
 
         // Arrays for processing.
-        this.modellingQueue = [];
         this.children = [];
 
     }
@@ -315,22 +305,6 @@ WHS.World = class {
         this._update = reDraw;
 
         scope._update();
-
-        /*scope._ready = [];
-
-        var loading_queue = WHS.Watch(scope.children);
-
-        loading_queue._queue.forEach(object => {
-            object.ready.on("ready", function() {
-               // object._state.then(() => {
-                    scope._ready.push(object);
-
-                    if(loading_queue._queue.length == scope._ready.length) 
-                        scope._events.emit("ready");
-                //});
-            });
-
-        });*/
     }
 
     /**
@@ -367,10 +341,10 @@ WHS.World = class {
      */
     _process( clock ) {
 
-            for ( var i = 0; i < this.modellingQueue.length; i++ ) {
+            for ( var i = 0; i < this.children.length; i++ ) {
 
-                if ( this.modellingQueue[i]._type == "morph" ) 
-                    this.modellingQueue[i].mesh.mixer.update( clock.getDelta() );
+                if ( this.children[i]._type == "morph" ) 
+                    this.children[i].mesh.mixer.update( clock.getDelta() );
 
             }
 
@@ -381,12 +355,12 @@ WHS.World = class {
      */
     resize() {
 
-        this._camera.aspect = window.innerWidth / window.innerHeight;
+        this._camera.aspect = this._settings.width / this._settings.height;
         this._camera.updateProjectionMatrix();
         
         this._renderer.setSize( 
-            +(window.innerWidth * this._settings.rWidth).toFixed(), 
-            +(window.innerHeight * this._settings.rHeight).toFixed()
+            +(this._settings.width * this._settings.rWidth).toFixed(), 
+            +(this._settings.height * this._settings.rHeight).toFixed()
         );
 
     }

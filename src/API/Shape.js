@@ -64,7 +64,7 @@ WHS.Shape = class {
 				duration: 1
 			},
 
-		} );
+		});
 
 		var scope = Object.assign( this,
 		{
@@ -106,8 +106,6 @@ WHS.Shape = class {
 
 		var _scope = this;
 
-		console.log(_scope);
-
 		if (tags.indexOf("wait") >= 0) {
 
 			Promise.all( _scope.wait ).then(function() {
@@ -143,6 +141,8 @@ WHS.Shape = class {
 		                _scope.scale = _scope.mesh.scale;
 
 						resolve();
+
+						_scope.emit("ready");
 
 					} catch ( err ) {
 
@@ -182,12 +182,15 @@ WHS.Shape = class {
 						_scope.scale.z 
 					);
 
-	                //References, I consider this a bad way of solving the problem, but it works for now
+	                // References, I consider this a bad way of solving 
+	                // the problem, but it works for now.
 	                _scope.position = _scope.mesh.position;
 	                _scope.rotation = _scope.mesh.rotation;
 	                _scope.scale = _scope.mesh.scale;
 
 					resolve();
+
+					_scope.emit("ready");
 
 				} catch ( err ) {
 
@@ -214,6 +217,7 @@ WHS.Shape = class {
 		'use strict';
 
 		this.parent = parent;
+		this._lastWorld = parent;
 
 		var _scope = this;
 
@@ -226,7 +230,6 @@ WHS.Shape = class {
 					try {
 
 						WHS.API.merge( _scope.parent.scene, _scope.mesh );
-						_scope.parent.modellingQueue.push( _scope );
 						_scope.parent.children.push( _scope );
 
 					} catch ( err ) {
@@ -238,17 +241,17 @@ WHS.Shape = class {
 
 						if ( _scope._wait ) {
 
-							_scope._mesh.addEventListener( 'ready', function() {
+							_scope.mesh.addEventListener('ready', function() {
 								resolve( _scope );
-
-								_scope.emit("ready");
-							} );
+							});
 
 						} else {
 							resolve( _scope );
-
-							_scope.emit("ready");
 						}
+
+						_scope.mesh.addEventListener('collide', function() {
+							_scope.emit("collide");
+						});
 
 					}
 
@@ -263,7 +266,6 @@ WHS.Shape = class {
 				try {
 
 					WHS.API.merge( _scope.parent.scene, _scope.mesh );
-					_scope.parent.modellingQueue.push( _scope );
 					_scope.parent.children.push( _scope );
 
 				} catch ( err ) {
@@ -275,18 +277,19 @@ WHS.Shape = class {
 
 					if ( _scope._wait ) {
 
-						_scope._mesh.addEventListener('ready', function() {
+						_scope.mesh.addEventListener('ready', function() {
 
 							resolve( _scope );
-							_scope.emit("ready");
 
 						});
 
 					} else {
 						resolve( _scope );
-
-						_scope.emit("ready");
 					}
+
+					_scope.mesh.addEventListener('collide', function() {
+						_scope.emit("ready");
+					});
 
 				}
 
@@ -308,15 +311,12 @@ WHS.Shape = class {
 	 */
 	remove() {
 		
-		this.root.scene.remove( this.mesh );
+		this.parent.scene.remove( this.mesh );
 
-        let index = this.root.modellingQueue.indexOf(this);
+        this.parent.children.splice( this.parent.children.indexOf( this ), 1);
+        this.parent = null;
 
-        if( index !== -1 )
-            this.root.modellingQueue.splice( index, 1 );
-
-        this.root.children.splice( this.root.children.indexOf( this ), 1);
-        this.root = null;
+        this.emit("remove");
 
 		return this;
 
@@ -327,9 +327,12 @@ WHS.Shape = class {
 	 */
 	retrieve() {
 
-        this.root = this._lastWorld;
+        this.parent = this._lastWorld;
                 
-		this.root.scene.add( this.mesh );
+		this.parent.scene.add( this.mesh );
+		this.parent.children.push( this );
+
+		this.emit("retrieve");
 
 		return this;
 
