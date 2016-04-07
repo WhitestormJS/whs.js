@@ -15,8 +15,8 @@ WHS.Light = class {
 	 */
 	constructor( params, type ) {
 
-		//if ( ! root )
-		//console.error( "@constructor: WHS root object is not defined." );
+		if ( !type ) 
+			console.error( "@constructor: Please specify \" type \"." );
 
 		var _set = function( x, y, z ) {
 
@@ -85,7 +85,7 @@ WHS.Light = class {
 				set: _set
 			}
 
-		} );
+		});
 
 		var scope = Object.assign(this,
 		{
@@ -169,6 +169,7 @@ WHS.Light = class {
 		'use strict';
 
 		this.parent = parent;
+		this._lastWorld = parent;
 
 		var _mesh = this.mesh,
 			_scope = this;
@@ -245,20 +246,17 @@ WHS.Light = class {
 
 	}
 
-	/*copy() {
-
-		return WHS.API.extend({
-			mesh: this._mesh.copy(),
-		}, this);
-
-	}*/
-
 	/**
 	 * Remove this light from world.
 	 */
 	remove() {
+		
+		this.parent.scene.remove( this.mesh );
 
-		this.root.scene.remove( this.mesh );
+        this.parent.children.splice( this.parent.children.indexOf( this ), 1);
+        this.parent = null;
+
+        this.emit("remove");
 
 		return this;
 
@@ -269,7 +267,12 @@ WHS.Light = class {
 	 */
 	retrieve() {
 
-		this.root.scene.add( this.mesh );
+        this.parent = this._lastWorld;
+                
+		this.parent.scene.add( this.mesh );
+		this.parent.children.push( this );
+
+		this.emit("retrieve");
 
 		return this;
 
