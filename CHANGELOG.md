@@ -43,6 +43,8 @@
 - `WHS.Shape` and `WHS.Light` core rebuild.
 - `onlyvis` is removed. (use: `mass: 0`).
 - CORE REBUILD. Remade with es6 promises.
+- Removed `modellingQueue`.
+- Fixed `remove` and `retrieve` functions.
 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
