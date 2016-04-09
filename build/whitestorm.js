@@ -1638,14 +1638,14 @@ WHS.Light = function() {
                 var clone = obj.constructor() || obj;
 
                 for (var key in obj) {
-                    clone[key] = !isObject(obj[key]) != "object" ? obj[key] : clone_local_obj(obj[key]);
+                    clone[key] = !isObject(obj[key]) ? obj[key] : clone_local_obj(obj[key]);
                 }
 
                 return clone;
             }
 
             for (var key in this) {
-                clone[key] = !isObject(this[key]) != "object" ? this[key] : clone_local_obj(this[key]);
+                clone[key] = !isObject(this[key]) ? this[key] : clone_local_obj(this[key]);
             }
 
             return clone;
@@ -2120,14 +2120,14 @@ WHS.Shape = function() {
                 var clone = obj.constructor() || obj;
 
                 for (var key in obj) {
-                    clone[key] = !isObject(obj[key]) != "object" ? obj[key] : clone_local_obj(obj[key]);
+                    clone[key] = !isObject(obj[key]) ? obj[key] : clone_local_obj(obj[key]);
                 }
 
                 return clone;
             }
 
             for (var key in this) {
-                clone[key] = !isObject(this[key]) != "object" ? this[key] : clone_local_obj(this[key]);
+                clone[key] = !isObject(this[key]) ? this[key] : clone_local_obj(this[key]);
             }
 
             return clone;
