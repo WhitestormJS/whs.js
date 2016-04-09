@@ -258,6 +258,50 @@ WHS.Light = class {
 	}
 
 	/**
+	 * Clone light.
+	 */
+	clone() {
+
+		let clone = this.constructor(
+				WHS.API.extend({
+					pos: this.position,
+					rot: this.rotation,
+					shadowmap: this._shadowmap,
+					light: this._light,
+					target: this.target
+				}, this.__params),
+				this._type
+			);
+
+		function isObject( val ) {
+			return typeof val === "object" || val === null;
+		}
+
+		function clone_local_obj( obj ) {
+
+			let clone = obj.constructor() || obj;
+
+			for (var key in obj) {
+				clone[key] = !isObject( obj[key] ) != "object" 
+					? obj[key] 
+					: clone_local_obj( obj[key] );
+			}
+
+			return clone;
+
+		}
+
+		for (var key in this) {
+			clone[key] = !isObject( this[key] ) != "object" 
+				? this[key] 
+				: clone_local_obj( this[key] );
+		}
+
+		return clone;
+
+	}
+
+	/**
 	 * Remove this light from world.
 	 */
 	remove() {

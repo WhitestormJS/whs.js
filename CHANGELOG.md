@@ -46,7 +46,9 @@
 - Removed `modellingQueue`.
 - Fixed `remove` and `retrieve` functions.
 - *src/Light -> src/Lights*
-
+- Added `physics` parameter to `WHS.Model`.
+- Added `clone()` function to `WHS.Shape` and `WHS.Light`.
+ 
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
 - Base rewrite(fix). part 4
