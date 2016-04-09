@@ -2888,7 +2888,8 @@ WHS.Model = function(_WHS$Shape7) {
 
         WHS.API.extend(params.geometry, {
 
-            path: ""
+            path: "",
+            physics: ""
 
         });
 
@@ -2898,19 +2899,42 @@ WHS.Model = function(_WHS$Shape7) {
 
             WHS.API.loadJSON(params.geometry.path, function(data, materials) {
 
-                if (!materials || params.material.useVertexColors) var material = WHS.API.loadMaterial(WHS.API.extend(params.material, {
-                    morphTargets: true,
-                    vertexColors: THREE.FaceColors
-                }))._material;
-                else if (params.material.useCustomMaterial) var material = WHS.API.loadMaterial(params.material)._material;
-                else var material = new THREE.MultiMaterial(materials);
+                if (params.geometry.physics != "") {
 
-                data.computeFaceNormals();
-                data.computeVertexNormals();
+                    WHS.API.loadJSON(params.geometry.physics, function(data2) {
 
-                scope.mesh = new Physijs.ConcaveMesh(data, material, params.mass);
+                        if (params.material.useVertexColors) var material = WHS.API.loadMaterial(WHS.API.extend(params.material, {
+                            morphTargets: true,
+                            vertexColors: THREE.FaceColors
+                        }))._material;
+                        else if (!materials || params.material.useCustomMaterial) var material = WHS.API.loadMaterial(params.material)._material;
+                        else var material = new THREE.MultiMaterial(materials);
 
-                resolve();
+                        console.log(data);
+
+                        data.computeFaceNormals();
+                        data.computeVertexNormals();
+
+                        scope.mesh = new Physijs.ConcaveMesh(data, material, params.mass, data2, params.scale);
+
+                        resolve();
+                    });
+                } else {
+
+                    if (!materials || params.material.useVertexColors) var material = WHS.API.loadMaterial(WHS.API.extend(params.material, {
+                        morphTargets: true,
+                        vertexColors: THREE.FaceColors
+                    }))._material;
+                    else if (params.material.useCustomMaterial) var material = WHS.API.loadMaterial(params.material)._material;
+                    else var material = new THREE.MultiMaterial(materials);
+
+                    data.computeFaceNormals();
+                    data.computeVertexNormals();
+
+                    scope.mesh = new Physijs.ConcaveMesh(data, material, params.mass);
+
+                    resolve();
+                }
             });
         }));
 
@@ -2971,11 +2995,11 @@ WHS.Morph = function(_WHS$Shape8) {
 
             WHS.API.loadJSON(params.geometry.path, function(data, materials) {
 
-                if (!materials || params.material.useVertexColors) var material = WHS.API.loadMaterial(WHS.API.extend(params.material, {
+                if (params.material.useVertexColors) var material = WHS.API.loadMaterial(WHS.API.extend(params.material, {
                     morphTargets: true,
                     vertexColors: THREE.FaceColors
                 }))._material;
-                else if (params.material.useCustomMaterial) var material = WHS.API.loadMaterial(params.material)._material;
+                else if (!materials || params.material.useCustomMaterial) var material = WHS.API.loadMaterial(params.material)._material;
                 else var material = new THREE.MultiMaterial(materials);
 
                 data.computeFaceNormals();
