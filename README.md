@@ -10,8 +10,8 @@
     <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg"></a>&nbsp;&nbsp;
     <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>
     <br>
-    
-    <p align="center"><i><b>JQuery for Three.js and Physi.js</b></i></p>
+
+    <p align="center"><i><b>jQuery for Three.js and Physi.js</b></i></p>
 </p>
 
 <br>
@@ -24,11 +24,11 @@
 
 * **Physics with WebWorkers** — It uses [Physi.js](https://github.com/chandlerprall/Physijs/blob/master/physi.js) library for calculating physics of 3D shapes with **WebWorkers technology** that allows to make rendering an calculating physics in multiple threads.
 
-* **Plugin system** — Framework supports *plugins & components* made by other users. You need to include them after whitestorm.js and follow provided instructions. 
+* **Plugin system** — Framework supports *plugins & components* made by other users. You need to include them after whitestorm.js and follow provided instructions.
 
-* **Automatization of rendering** — Framework does rendering automatically and doesn't need function to be called for it. Functionality like `resize` function can be called automatically by setting additional parameters such as `autoresize: true`. 
+* **Automatization of rendering** — Framework does rendering automatically and doesn't need function to be called for it. Functionality like `resize` function can be called automatically by setting additional parameters such as `autoresize: true`.
 
-## Installation 
+## Installation
 
 > It is advised to download your own copies of the following libraries, as large changes can break backwards compatibility.
 
