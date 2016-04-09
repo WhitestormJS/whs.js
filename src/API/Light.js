@@ -282,7 +282,7 @@ WHS.Light = class {
 			let clone = obj.constructor() || obj;
 
 			for (var key in obj) {
-				clone[key] = !isObject( obj[key] ) != "object" 
+				clone[key] = !isObject( obj[key] )
 					? obj[key] 
 					: clone_local_obj( obj[key] );
 			}
@@ -292,7 +292,7 @@ WHS.Light = class {
 		}
 
 		for (var key in this) {
-			clone[key] = !isObject( this[key] ) != "object" 
+			clone[key] = !isObject( this[key] )
 				? this[key] 
 				: clone_local_obj( this[key] );
 		}
