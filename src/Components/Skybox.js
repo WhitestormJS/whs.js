@@ -4,8 +4,23 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.Skybox = class Skybox extends WHS.Shape {
+/**
+ * WhitestormJS skybox.
+ *
+ * @extends WHS.Shape
+ */
 
+WHS.Skybox = class Skybox extends WHS.Shape {
+    /**
+     * Create a skybox.
+     *
+     * @param {Object} params - Skybox options
+     * @param {String} params.skyType - Skybox type (box/sphere)
+     * @param {String} params.detail - Skybox image extension (.png, .jpg, etc.)
+     * @param {Number} params.radius - Skybox radius
+     * @param {Boolean} params.fog - Skybox fog
+     * @param {String} params.path - Skybox image path
+     */
 	constructor( params = {} ) {
 
 		super( params, "skybox" );
