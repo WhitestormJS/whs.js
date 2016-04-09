@@ -4418,9 +4418,9 @@ WHS.Fog = function() {
      * Creates fog.
      *
      * @param {Object} params - Optional fog parameters.
-     * @param {Number} params.hex - Fog hex value
-     * @param {Number} params.near - Fog near value
-     * @param {Number} params.far - Fog far value
+     * @param {Color} params.hex - Fog color.
+     * @param {Number} params.near - The minimum distance to start fog.
+     * @param {Number} params.far - The maximum distance to start fog.
      */
 
     function Fog() {
@@ -4473,8 +4473,8 @@ WHS.FogExp2 = function() {
      * Create fog (exp2).
      *
      * @param {Object} params - Optional fog parameters.
-     * @param {Number} params.hex - Fog hex value
-     * @param {Number} params.density - Fog density
+     * @param {Color} params.hex - Fog color.
+     * @param {Number} params.density - Defines how fast the fog will grow dense.
      */
 
     function FogExp2() {
