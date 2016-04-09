@@ -131,17 +131,18 @@ var GAME = new WHS.World({
 GAME.teapot = GAME.Model({
 
     geometry: {
-        path: "assets/models/teapot.js"
+        path: "assets/models/utah-teapot-large.json",
+        physics: "assets/models/utah-teapot-light.json"
     },
 
-    mass: 10,
+    mass: 100,
     onlyvis: false,
 
     material: {
-        vertexColors: THREE.VertexColors,
         shading: THREE.SmoothShading,
-        map: WHS.API.texture('assets/textures/teapot.jpg', {repeat:{x: 4, y:4}}),
+        map: WHS.API.texture('assets/textures/teapot.jpg', {repeat:{x: 2, y:2}}),
         kind: "phong",
+        side: THREE.DoubleSide,
         useCustomMaterial: true,
         rest: 0,
         fri: 1
@@ -152,11 +153,17 @@ GAME.teapot = GAME.Model({
         y: 100,
         z: 0
     },
-/*
+
+    scale: {
+    	x: 4,
+    	y: 4, 
+    	z: 4
+    }/*,
+
     rot: {
-        z: 30
-    }
-*/
+        z: 20
+    }*/
+
 });
 
 GAME.sphere = GAME.Sphere({
@@ -165,8 +172,7 @@ GAME.sphere = GAME.Sphere({
         radius: 3
     },
 
-    onlyvis: false,
-    mass: 10,
+    mass: 12,
 
     material: {
         kind: "basic",
@@ -176,7 +182,7 @@ GAME.sphere = GAME.Sphere({
     pos: {
         x: 10, //45
         y: 250,
-        z: 0
+        z: 0.769
     }
 
 });

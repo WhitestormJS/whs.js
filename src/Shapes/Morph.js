@@ -40,7 +40,7 @@ WHS.Morph = class Morph extends WHS.Shape {
 
                 WHS.API.loadJSON(params.geometry.path, function(data, materials) {
 
-                    if (!materials || params.material.useVertexColors)
+                    if (params.material.useVertexColors)
                         var material = WHS.API.loadMaterial(
                             WHS.API.extend(params.material, {
                                 morphTargets: true,
@@ -48,7 +48,7 @@ WHS.Morph = class Morph extends WHS.Shape {
                             })
                         )._material;
 
-                    else if (params.material.useCustomMaterial)
+                    else if (!materials || params.material.useCustomMaterial)
                         var material = WHS.API.loadMaterial(
                             params.material
                         )._material;

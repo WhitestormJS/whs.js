@@ -175,7 +175,7 @@ createShape = function( description ) {
 					_vec3_1,
 					_vec3_2,
 					_vec3_3,
-					true
+					false
 				);
 			}
 

@@ -1246,16 +1246,23 @@ window.Physijs = (function() {
 
 
 	// Physijs.ConcaveMesh
-	Physijs.ConcaveMesh = function( geometry, material, mass ) {
+	Physijs.ConcaveMesh = function( geom, material, mass, cGeometry, cScale ) {
 		var i,
 			width, height, depth,
-			vertices, face, triangles = new Array(geometry.faces.length);
+			vertices, face,
+			geometry = cGeometry ? cGeometry : geom, 
+			triangles = new Array(geometry.faces.length);
 
-		Physijs.Mesh.call( this, geometry, material, mass );
+		Physijs.Mesh.call( this, geom, material, mass );
 
 		if ( !geometry.boundingBox ) {
 			geometry.computeBoundingBox();
 		}
+
+		cScale = cScale || {x:1, y:1, z:1};
+		cScale.x = cScale.x || 1;
+		cScale.y = cScale.y || 1;
+		cScale.z = cScale.z || 1;
 
 		vertices = geometry.vertices;
 
@@ -1263,9 +1270,9 @@ window.Physijs = (function() {
 			face = geometry.faces[i];
 			
 			triangles[ i ] = [
-				{ x: vertices[face.a].x, y: vertices[face.a].y, z: vertices[face.a].z },
-				{ x: vertices[face.b].x, y: vertices[face.b].y, z: vertices[face.b].z },
-				{ x: vertices[face.c].x, y: vertices[face.c].y, z: vertices[face.c].z }
+				{ x: vertices[face.a].x * cScale.x, y: vertices[face.a].y * cScale.y, z: vertices[face.a].z * cScale.z },
+				{ x: vertices[face.b].x * cScale.x, y: vertices[face.b].y * cScale.y, z: vertices[face.b].z * cScale.z },
+				{ x: vertices[face.c].x * cScale.x, y: vertices[face.c].y * cScale.y, z: vertices[face.c].z * cScale.z }
 			];
 		}
 
