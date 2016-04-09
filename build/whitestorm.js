@@ -78,22 +78,6 @@ function _classCallCheck(instance, Constructor) {
     }
 }
 
-function Events(n) {
-    var t = {},
-        f = [];
-    n = n || this, n.on = function(n, f, i) {
-        (t[n] = t[n] || []).push([f, i]);
-    }, n.off = function(n, i) {
-        n || (t = {});
-        for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) {
-            i == o[c][0] && o.splice(c, 1);
-        }
-    }, n.emit = function(n) {
-        for (var i, o = t[n] || f, c = 0; i = o[c++];) {
-            i[0].apply(i[1], f.slice.call(arguments, 1));
-        }
-    };
-}
 /**
  * @author qiao / https://github.com/qiao
  * @author mrdoob / http://mrdoob.com
@@ -699,105 +683,6 @@ THREE.OrbitControls = function(object, domElement) {
 
 THREE.OrbitControls.prototype = Object.create(THREE.EventDispatcher.prototype);
 
-// stats.js - http://github.com/mrdoob/stats.js
-var Stats = function Stats() {
-    function f(a, e, b) {
-        a = document.createElement(a);
-        a.id = e;
-        a.style.cssText = b;
-        return a;
-    }
-
-    function l(a, e, b) {
-        var c = f("div", a, "padding:0 0 3px 3px;text-align:left;background:" + b),
-            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);
-        d.innerHTML = a.toUpperCase();
-        c.appendChild(d);
-        a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);
-        c.appendChild(a);
-        for (e = 0; 74 > e; e++) {
-            a.appendChild(f("span", "", "width:1px;height:30px;float:left;opacity:0.9;background:" + b));
-        }
-        return c;
-    }
-
-    function m(a) {
-        for (var b = c.children, d = 0; d < b.length; d++) {
-            b[d].style.display = d === a ? "block" : "none";
-        }
-        n = a;
-    }
-
-    function p(a, b) {
-        a.appendChild(a.firstChild).style.height = Math.min(30, 30 - 30 * b) + "px";
-    }
-    var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
-        k = q(),
-        r = k,
-        t = 0,
-        n = 0,
-        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");
-    c.addEventListener("mousedown", function(a) {
-        a.preventDefault();
-        m(++n % c.children.length);
-    }, !1);
-    var d = 0,
-        u = Infinity,
-        v = 0,
-        b = l("fps", "#0ff", "#002"),
-        A = b.children[0],
-        B = b.children[1];
-    c.appendChild(b);
-    var g = 0,
-        w = Infinity,
-        x = 0,
-        b = l("ms", "#0f0", "#020"),
-        C = b.children[0],
-        D = b.children[1];
-    c.appendChild(b);
-    if (self.performance && self.performance.memory) {
-        var h = 0,
-            y = Infinity,
-            z = 0,
-            b = l("mb", "#f08", "#201"),
-            E = b.children[0],
-            F = b.children[1];
-        c.appendChild(b);
-    }
-    m(n);
-    return {
-        REVISION: 14,
-        domElement: c,
-        setMode: m,
-        begin: function begin() {
-            k = q();
-        },
-        end: function end() {
-            var a = q();
-            g = a - k;
-            w = Math.min(w, g);
-            x = Math.max(x, g);
-            C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";
-            p(D, g / 200);
-            t++;
-            if (a > r + 1E3 && (d = Math.round(1E3 * t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
-                var b = performance.memory.usedJSHeapSize,
-                    c = performance.memory.jsHeapSizeLimit;
-                h = Math.round(9.54E-7 * b);
-                y = Math.min(y, h);
-                z = Math.max(z, h);
-                E.textContent = h + " MB (" + y + "-" + z + ")";
-                p(F, b / c);
-            }
-            return a;
-        },
-        update: function update() {
-            k = this.end();
-        }
-    };
-};
-"object" === (typeof module === 'undefined' ? 'undefined' : _typeof(module)) && (module.exports = Stats);
-
 /*
  *	@author zz85 / http://twitter.com/blurspline / http://www.lab4games.net/zz85/blog
  *
@@ -1120,6 +1005,121 @@ THREE.SubdivisionModifier.prototype.modify = function(geometry) {
         // console.log('done');
     };
 })();
+
+function Events(n) {
+    var t = {},
+        f = [];
+    n = n || this, n.on = function(n, f, i) {
+        (t[n] = t[n] || []).push([f, i]);
+    }, n.off = function(n, i) {
+        n || (t = {});
+        for (var o = t[n] || f, c = o.length = i ? o.length : 0; c--;) {
+            i == o[c][0] && o.splice(c, 1);
+        }
+    }, n.emit = function(n) {
+        for (var i, o = t[n] || f, c = 0; i = o[c++];) {
+            i[0].apply(i[1], f.slice.call(arguments, 1));
+        }
+    };
+}
+// stats.js - http://github.com/mrdoob/stats.js
+var Stats = function Stats() {
+    function f(a, e, b) {
+        a = document.createElement(a);
+        a.id = e;
+        a.style.cssText = b;
+        return a;
+    }
+
+    function l(a, e, b) {
+        var c = f("div", a, "padding:0 0 3px 3px;text-align:left;background:" + b),
+            d = f("div", a + "Text", "font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px;color:" + e);
+        d.innerHTML = a.toUpperCase();
+        c.appendChild(d);
+        a = f("div", a + "Graph", "width:74px;height:30px;background:" + e);
+        c.appendChild(a);
+        for (e = 0; 74 > e; e++) {
+            a.appendChild(f("span", "", "width:1px;height:30px;float:left;opacity:0.9;background:" + b));
+        }
+        return c;
+    }
+
+    function m(a) {
+        for (var b = c.children, d = 0; d < b.length; d++) {
+            b[d].style.display = d === a ? "block" : "none";
+        }
+        n = a;
+    }
+
+    function p(a, b) {
+        a.appendChild(a.firstChild).style.height = Math.min(30, 30 - 30 * b) + "px";
+    }
+    var q = self.performance && self.performance.now ? self.performance.now.bind(performance) : Date.now,
+        k = q(),
+        r = k,
+        t = 0,
+        n = 0,
+        c = f("div", "stats", "width:80px;opacity:0.9;cursor:pointer");
+    c.addEventListener("mousedown", function(a) {
+        a.preventDefault();
+        m(++n % c.children.length);
+    }, !1);
+    var d = 0,
+        u = Infinity,
+        v = 0,
+        b = l("fps", "#0ff", "#002"),
+        A = b.children[0],
+        B = b.children[1];
+    c.appendChild(b);
+    var g = 0,
+        w = Infinity,
+        x = 0,
+        b = l("ms", "#0f0", "#020"),
+        C = b.children[0],
+        D = b.children[1];
+    c.appendChild(b);
+    if (self.performance && self.performance.memory) {
+        var h = 0,
+            y = Infinity,
+            z = 0,
+            b = l("mb", "#f08", "#201"),
+            E = b.children[0],
+            F = b.children[1];
+        c.appendChild(b);
+    }
+    m(n);
+    return {
+        REVISION: 14,
+        domElement: c,
+        setMode: m,
+        begin: function begin() {
+            k = q();
+        },
+        end: function end() {
+            var a = q();
+            g = a - k;
+            w = Math.min(w, g);
+            x = Math.max(x, g);
+            C.textContent = (g | 0) + " MS (" + (w | 0) + "-" + (x | 0) + ")";
+            p(D, g / 200);
+            t++;
+            if (a > r + 1E3 && (d = Math.round(1E3 * t / (a - r)), u = Math.min(u, d), v = Math.max(v, d), A.textContent = d + " FPS (" + u + "-" + v + ")", p(B, d / 100), r = a, t = 0, void 0 !== h)) {
+                var b = performance.memory.usedJSHeapSize,
+                    c = performance.memory.jsHeapSizeLimit;
+                h = Math.round(9.54E-7 * b);
+                y = Math.min(y, h);
+                z = Math.max(z, h);
+                E.textContent = h + " MB (" + y + "-" + z + ")";
+                p(F, b / c);
+            }
+            return a;
+        },
+        update: function update() {
+            k = this.end();
+        }
+    };
+};
+"object" === (typeof module === 'undefined' ? 'undefined' : _typeof(module)) && (module.exports = Stats);
 
 /* ================ MODERNIZING BROWSER WHS.API IF NOT EXIST ==================== */
 
@@ -1481,6 +1481,7 @@ WHS.Light = function() {
      * @param {...String} tags - Tags that defines what to do with light 
      * additionally.
      */
+
 
     _createClass(_class, [{
         key: 'build',
@@ -2170,6 +2171,67 @@ WHS.Watch.prototype.remove = function(element) {
     return this;
 };
 
+WHS.Watch = function(queue) {
+
+    'use strict';
+
+    this._queue = Array.isArray(queue) ? queue.slice() : [];
+
+    return this;
+};
+
+WHS.Watch.prototype.add = function(element) {
+
+    'use strict';
+
+    this._queue.push(element);
+
+    return this;
+};
+
+WHS.Watch.prototype.remove = function(element) {
+
+    'use strict';
+
+    this._queue = this._queue.filter(function(item) {
+        return item != element;
+    });
+
+    return this;
+};
+
+/**
+ * WhitestormJS plugin loop
+ *
+ * @param  {Function} func - Function to be executed
+ */
+WHS.loop = function(func) {
+
+    this.loop = {
+        func: func,
+        id: WHS.loops.length,
+        enabled: false
+    };
+
+    WHS.loops.push(this.loop);
+};
+
+/**
+ * Starts the loop
+ */
+WHS.loop.prototype.start = function() {
+
+    this.loop.enabled = true;
+};
+
+/**
+ * Stops the loop
+ */
+WHS.loop.prototype.stop = function() {
+
+    this.loop.enabled = false;
+};
+
 /**
  * WhitestormJS plugin loop
  *
@@ -2302,6 +2364,7 @@ WHS.World = function() {
     /**
      * Initialize Three.js scene object.
      */
+
 
     _createClass(_class3, [{
         key: '_initScene',
@@ -4347,13 +4410,17 @@ WHS.World.prototype.OrbitControls = function(object) {
 };
 
 /**
- * Three.js Fog.
+ * Three.js fog effect.
+ *
  */
 WHS.Fog = function() {
     /**
-     * Fog constructing.
+     * Creates fog.
      *
      * @param {Object} params - Optional fog parameters.
+     * @param {Number} params.hex - Fog hex value
+     * @param {Number} params.near - Fog near value
+     * @param {Number} params.far - Fog far value
      */
 
     function Fog() {
@@ -4378,6 +4445,7 @@ WHS.Fog = function() {
      * Add fog to scene.
      */
 
+
     _createClass(Fog, [{
         key: 'addTo',
         value: function addTo(root) {
@@ -4398,13 +4466,15 @@ WHS.World.prototype.Fog = function(params) {
 };
 
 /**
- * Three.js FogExp2.
+ * Three.js FogExp2 effect.
  */
 WHS.FogExp2 = function() {
     /**
-     * Fog (exp2) constructing.
+     * Create fog (exp2).
      *
      * @param {Object} params - Optional fog parameters.
+     * @param {Number} params.hex - Fog hex value
+     * @param {Number} params.density - Fog density
      */
 
     function FogExp2() {
@@ -4428,6 +4498,7 @@ WHS.FogExp2 = function() {
      * Add fog to scene.
      */
 
+
     _createClass(FogExp2, [{
         key: 'addTo',
         value: function addTo(root) {
@@ -4447,8 +4518,25 @@ WHS.World.prototype.FogExp2 = function(params) {
     return object;
 };
 
+/**
+ * WhitestormJS skybox.
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Skybox = function(_WHS$Shape22) {
     _inherits(Skybox, _WHS$Shape22);
+
+    /**
+     * Create a skybox.
+     *
+     * @param {Object} params - Skybox options
+     * @param {String} params.skyType - Skybox type (box/sphere)
+     * @param {String} params.detail - Skybox image extension (.png, .jpg, etc.)
+     * @param {Number} params.radius - Skybox radius
+     * @param {Boolean} params.fog - Skybox fog
+     * @param {String} params.path - Skybox image path
+     */
 
     function Skybox() {
         var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
