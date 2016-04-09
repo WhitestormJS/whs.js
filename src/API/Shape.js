@@ -71,6 +71,7 @@ WHS.Shape = class {
 			_type: type,
 			_whsobject: true,
 			__releaseTime: new Date().getTime(),
+			__params: params,
 			parent: null,
 
 			wait: [],
@@ -322,6 +323,50 @@ WHS.Shape = class {
 		
 		return WHS.API.loadMaterial(mat_props)._material;
 		
+	}
+
+	/**
+	 * Clone shape.
+	 */
+	clone() {
+
+		let clone = this.constructor(
+				WHS.API.extend({
+					pos: this.position,
+					rot: this.rotation,
+					scale: this.scale,
+					morph: this.morph,
+					target: this.target
+				}, this.__params),
+				this._type
+			);
+
+		function isObject( val ) {
+			return typeof val === "object" || val === null;
+		}
+
+		function clone_local_obj( obj ) {
+
+			let clone = obj.constructor() || obj;
+
+			for (var key in obj) {
+				clone[key] = !isObject( obj[key] ) != "object" 
+					? obj[key] 
+					: clone_local_obj( obj[key] );
+			}
+
+			return clone;
+
+		}
+
+		for (var key in this) {
+			clone[key] = !isObject( this[key] ) != "object" 
+				? this[key] 
+				: clone_local_obj( this[key] );
+		}
+
+		return clone;
+
 	}
 
 	/**

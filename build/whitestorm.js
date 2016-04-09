@@ -1614,6 +1614,44 @@ WHS.Light = function() {
         }
 
         /**
+         * Clone light.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            var clone = this.constructor(WHS.API.extend({
+                pos: this.position,
+                rot: this.rotation,
+                shadowmap: this._shadowmap,
+                light: this._light,
+                target: this.target
+            }, this.__params), this._type);
+
+            function isObject(val) {
+                return (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === "object" || val === null;
+            }
+
+            function clone_local_obj(obj) {
+
+                var clone = obj.constructor() || obj;
+
+                for (var key in obj) {
+                    clone[key] = !isObject(obj[key]) != "object" ? obj[key] : clone_local_obj(obj[key]);
+                }
+
+                return clone;
+            }
+
+            for (var key in this) {
+                clone[key] = !isObject(this[key]) != "object" ? this[key] : clone_local_obj(this[key]);
+            }
+
+            return clone;
+        }
+
+        /**
          * Remove this light from world.
          */
 
@@ -1841,6 +1879,7 @@ WHS.Shape = function() {
             _type: type,
             _whsobject: true,
             __releaseTime: new Date().getTime(),
+            __params: params,
             parent: null,
 
             wait: [],
@@ -2054,6 +2093,44 @@ WHS.Shape = function() {
         value: function _initMaterial(mat_props) {
 
             return WHS.API.loadMaterial(mat_props)._material;
+        }
+
+        /**
+         * Clone shape.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            var clone = this.constructor(WHS.API.extend({
+                pos: this.position,
+                rot: this.rotation,
+                scale: this.scale,
+                morph: this.morph,
+                target: this.target
+            }, this.__params), this._type);
+
+            function isObject(val) {
+                return (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === "object" || val === null;
+            }
+
+            function clone_local_obj(obj) {
+
+                var clone = obj.constructor() || obj;
+
+                for (var key in obj) {
+                    clone[key] = !isObject(obj[key]) != "object" ? obj[key] : clone_local_obj(obj[key]);
+                }
+
+                return clone;
+            }
+
+            for (var key in this) {
+                clone[key] = !isObject(this[key]) != "object" ? this[key] : clone_local_obj(this[key]);
+            }
+
+            return clone;
         }
 
         /**
