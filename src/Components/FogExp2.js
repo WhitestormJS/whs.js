@@ -12,8 +12,8 @@ WHS.FogExp2 = class FogExp2 {
      * Create fog (exp2).
      *
      * @param {Object} params - Optional fog parameters.
-	 * @param {Number} params.hex - Fog hex value
-	 * @param {Number} params.density - Fog density
+	 * @param {Color} params.hex - Fog color.
+	 * @param {Number} params.density - Defines how fast the fog will grow dense.
      */
 	constructor( params = {} ) {
 

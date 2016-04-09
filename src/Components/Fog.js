@@ -13,9 +13,9 @@ WHS.Fog = class Fog {
      * Creates fog.
      *
      * @param {Object} params - Optional fog parameters.
-     * @param {Number} params.hex - Fog hex value
-	 * @param {Number} params.near - Fog near value
-	 * @param {Number} params.far - Fog far value
+     * @param {Color} params.hex - Fog color.
+	 * @param {Number} params.near - The minimum distance to start fog.
+	 * @param {Number} params.far - The maximum distance to start fog.
      */
 	constructor( params = {} ) {
 
