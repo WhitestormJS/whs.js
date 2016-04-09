@@ -4371,13 +4371,17 @@ WHS.World.prototype.OrbitControls = function(object) {
 };
 
 /**
- * Three.js Fog.
+ * Three.js fog effect.
+ *
  */
 WHS.Fog = function() {
     /**
-     * Fog constructing.
+     * Creates fog.
      *
      * @param {Object} params - Optional fog parameters.
+     * @param {Color} params.hex - Fog color.
+     * @param {Number} params.near - The minimum distance to start fog.
+     * @param {Number} params.far - The maximum distance to start fog.
      */
 
     function Fog() {
@@ -4422,13 +4426,15 @@ WHS.World.prototype.Fog = function(params) {
 };
 
 /**
- * Three.js FogExp2.
+ * Three.js FogExp2 effect.
  */
 WHS.FogExp2 = function() {
     /**
-     * Fog (exp2) constructing.
+     * Create fog (exp2).
      *
      * @param {Object} params - Optional fog parameters.
+     * @param {Color} params.hex - Fog color.
+     * @param {Number} params.density - Defines how fast the fog will grow dense.
      */
 
     function FogExp2() {
@@ -4471,8 +4477,25 @@ WHS.World.prototype.FogExp2 = function(params) {
     return object;
 };
 
+/**
+ * WhitestormJS skybox.
+ *
+ * @extends WHS.Shape
+ */
+
 WHS.Skybox = function(_WHS$Shape22) {
     _inherits(Skybox, _WHS$Shape22);
+
+    /**
+     * Create a skybox.
+     *
+     * @param {Object} params - Skybox options
+     * @param {String} params.skyType - Skybox type (box/sphere)
+     * @param {String} params.detail - Skybox image extension (.png, .jpg, etc.)
+     * @param {Number} params.radius - Skybox radius
+     * @param {Boolean} params.fog - Skybox fog
+     * @param {String} params.path - Skybox image path
+     */
 
     function Skybox() {
         var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];

@@ -5,13 +5,17 @@
 */
 
 /**
- * Three.js Fog.
+ * Three.js fog effect.
+ *
  */
 WHS.Fog = class Fog {
     /**
-     * Fog constructing.
+     * Creates fog.
      *
      * @param {Object} params - Optional fog parameters.
+     * @param {Color} params.hex - Fog color.
+	 * @param {Number} params.near - The minimum distance to start fog.
+	 * @param {Number} params.far - The maximum distance to start fog.
      */
 	constructor( params = {} ) {
 
@@ -33,7 +37,7 @@ WHS.Fog = class Fog {
      * Add fog to scene.
      */
     addTo( root ) {
-        
+
         root.scene.fog = this.fog;
 
     }
