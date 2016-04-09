@@ -5,13 +5,15 @@
 */
 
 /**
- * Three.js FogExp2.
+ * Three.js FogExp2 effect.
  */
 WHS.FogExp2 = class FogExp2 {
     /**
-     * Fog (exp2) constructing.
+     * Create fog (exp2).
      *
      * @param {Object} params - Optional fog parameters.
+	 * @param {Number} params.hex - Fog hex value
+	 * @param {Number} params.density - Fog density
      */
 	constructor( params = {} ) {
 
@@ -32,7 +34,7 @@ WHS.FogExp2 = class FogExp2 {
      * Add fog to scene.
      */
     addTo( root ) {
-        
+
         root.scene.fog = this.fog;
 
     }
