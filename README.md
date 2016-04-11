@@ -78,6 +78,8 @@ world.start(); // Start animations and physics simulation.
 
 [![Join the chat at https://gitter.im/WhitestormJS/whitestorm.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+##### Documentation: [Look here](http://whitestormjs.xyz//)
+
 <br>
 
 ## Game example
@@ -92,7 +94,6 @@ world.start(); // Start animations and physics simulation.
  * [Plugin/Color](http://192.241.128.187/current/examples/plugin_example.html)  (Basic plugin example.)
  * [Skybox](http://192.241.128.187/current/examples/skybox.html) (Skybox example)
 
-##### Docs: [Look here](http://whitestormjs.xyz/init/)
 ##### Changelog: [Look here](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
 
 ----
