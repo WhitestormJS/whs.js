@@ -15,7 +15,7 @@
 
 /* ================ WHITESTORM|JS ==================== */
 var WHS = {
-    REVISION: "7",
+    REVISION: "r8",
 
     loader: {
         JSON: new THREE.JSONLoader(),
