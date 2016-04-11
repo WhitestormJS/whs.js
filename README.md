@@ -22,6 +22,13 @@
 
 * **Simple shape crafting** — We use JSON-like structure for creating objects by inputed data and adding them to 3d world.
 
+<p align="center">
+    <img src="http://whitestormjs.xyz/images/shapes/dodecahedron.gif" height="100" alt="dodecahedron"> 
+    <img src="http://whitestormjs.xyz/images/shapes/polyhedron.gif" height="100" alt="polyhedron">
+    <img src="http://whitestormjs.xyz/images/shapes/icosahedron.gif" height="100" alt="icosahedron"> 
+    <img src="http://whitestormjs.xyz/images/shapes/tetrahedron.gif" height="100" alt="tetrahedron">
+</p>
+
 * **Physics with WebWorkers** — It uses [Physi.js](https://github.com/chandlerprall/Physijs/blob/master/physi.js) library for calculating physics of 3D shapes with **WebWorkers technology** that allows to make rendering an calculating physics in multiple threads.
 
 * **Plugin system** — Framework supports *plugins & components* made by other users. You need to include them after whitestorm.js and follow provided instructions.
