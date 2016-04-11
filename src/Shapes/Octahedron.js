@@ -32,7 +32,9 @@ WHS.Octahedron = class Octahedron extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh(
+        let mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh;
+
+		this.mesh = new mesh(
             new THREE.OctahedronGeometry(
 
                 params.geometry.radius,

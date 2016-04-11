@@ -148,7 +148,7 @@ var icosahedron = GAME.Icosahedron({
     }
 });
 
-GAME.ground = GAME.Smooth({
+GAME.ground = GAME.Plane({
         
     geometry: {
         width: 250,
@@ -164,10 +164,20 @@ GAME.ground = GAME.Smooth({
         x: 0,
         y: 0,
         z: 0
+    },
+
+    rot: {
+        x: -Math.PI/2,
+        y: 0,
+        z: 0
     }
 });
 
+//GAME.ground.mesh.__dirtyRotation = true;
+//GAME.ground.rotation.set(-Math.PI/2, 0, 0);
+
 GAME.start();
+GAME.OrbitControls();
 
 preloader.check();
 </script>

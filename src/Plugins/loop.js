@@ -38,3 +38,16 @@ WHS.loop.prototype.stop = function() {
     this.loop.enabled = false;
 
 };
+
+/**
+ * Removes loop from WHS.loops array.
+ */
+WHS.loop.prototype.remove = function() {
+
+    this.loop.enabled = false;
+
+    WHS.loops.filter( el => {
+    	return el !== this.loop;
+    });
+
+};

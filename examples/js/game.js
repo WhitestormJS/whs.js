@@ -144,7 +144,7 @@ GAME.skybox = GAME.Skybox( {
     pos: { y: - 200 }
 } );
 
-GAME.cube1 = GAME.Cube( {
+GAME.cube1 = GAME.Box( {
 
     geometry: {
         width: 2,
@@ -168,7 +168,7 @@ GAME.cube1 = GAME.Cube( {
 
 } );
 
-GAME.cube2 = GAME.Cube( {
+GAME.cube2 = GAME.Box( {
     geometry: {
         width: 2,
         height: 2,

@@ -36,7 +36,9 @@ WHS.Cylinder = class Cylinder extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.CylinderMesh(
+        let mesh = this.physics ? Physijs.CylinderMesh : THREE.Mesh;
+
+		this.mesh = new mesh(
             new THREE.CylinderGeometry(
 
                 params.geometry.radiusTop,
