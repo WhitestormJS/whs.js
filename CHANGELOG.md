@@ -49,6 +49,7 @@
 - Added `physics` parameter to `WHS.Model`.
 - Added `clone()` function to `WHS.Shape` and `WHS.Light`.
 - *WHS.Cube -> WHS.Box*
+- Removed `stone_wall.html` example.
  
 **v0.0.7**
 - Fixed #16 "object.assign() chrome bug."
