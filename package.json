@@ -1,7 +1,7 @@
 {
   "name": "whitestormjs",
-  "version": "0.0.7",
-  "description": "Three.js + Cannon.js render library.",
+  "version": "r8",
+  "description": "Framework for developing 3D web apps with physics.",
   "main": "build/whitestorm.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

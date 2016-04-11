@@ -1,7 +1,7 @@
 ## Changelog
 
 ##### Before contibuting here see [rules](https://github.com/WhitestormJS/whitestorm.js/blob/master/CONTRIBUTING.md#-adding-changes-to-changelogmd)
-**current**
+**r8**
 - Engine rebuild commit:
    - Functions (prototype) replaced with es6 classes
    - *api.construct -> WHS.Shape*

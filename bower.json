@@ -1,6 +1,6 @@
 {
   "name": "whitestormjs",
-  "version": "0.0.7",
+  "version": "r8",
   "homepage": "https://github.com/WhitestormJS/whitestorm.js",
   "repository" : {
       "type": "git",
@@ -9,12 +9,12 @@
   "authors": [
     "sasha240100 <siteprogcom@gmail.com>"
   ],
-  "description": "WhitestormJS is a library to combine Three.Js with Cannon.js. It makes WebGL development easy.",
+  "description": "Framework for developing 3D web apps with physics.",
   "main": "index.html",
   "moduleType": [
     "globals"
   ],
-  "license": "Apache",
+  "license": "ISC",
   "ignore": [
     "**/.*",
     "node_modules",
