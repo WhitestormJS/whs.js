@@ -40,7 +40,7 @@ WHS.Torusknot = class Torusknot extends WHS.Shape {
 
         });
 
-        let mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh;
+        let mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh;
 
 		this.mesh = new mesh(
             new THREE.TorusKnotGeometry(
