@@ -151,11 +151,12 @@ var dodecahedron = GAME.Dodecahedron({
 
 } );
 
-var ground = GAME.Plane({
+var ground = GAME.Box({
 
     geometry: {
         width: 15,
-        height: 15
+        height: 1,
+        depth: 15
     },
 
     material: {
