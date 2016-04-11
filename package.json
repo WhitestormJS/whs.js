@@ -1,6 +1,6 @@
 {
   "name": "whitestormjs",
-  "version": "8",
+  "version": "0.8.0",
   "description": "Framework for developing 3D web apps with physics.",
   "main": "build/whitestorm.js",
   "scripts": {
