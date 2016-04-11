@@ -11,7 +11,7 @@
     <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>
     <br>
 
-    <p align="center"><i><b>jQuery for Three.js and Physi.js</b></i></p>
+    <p align="center"><i><b>Framework for developing 3D web apps with physics.</b></i></p>
 </p>
 
 <br>
@@ -27,6 +27,11 @@
 * **Plugin system** — Framework supports *plugins & components* made by other users. You need to include them after whitestorm.js and follow provided instructions.
 
 * **Automatization of rendering** — Framework does rendering automatically and doesn't need function to be called for it. Functionality like `resize` function can be called automatically by setting additional parameters such as `autoresize: true`.
+
+* **ES6 Features** - Framework is written with using latest features of ECMAScript 6 and ECMAScript 7 (beta) features and compiled with [Babel](https://babeljs.io/).
+<p align="center"><img src="http://blog.makersquare.com/wp-content/uploads/2015/06/es6-logo.png" height="100" alt="es6">&nbsp;&nbsp; &nbsp;&nbsp; 
+<img src="https://cms-assets.tutsplus.com/uploads/users/16/posts/24511/preview_image/babel-1.png" height="100" alt="babel"></p>
+
 
 ## Installation
 
