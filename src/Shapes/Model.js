@@ -29,19 +29,18 @@ WHS.Model = class Model extends WHS.Shape {
             path: "",
             physics: "",
 
-
         });
 
         var scope = this;
 
         super.wait(
-            new Promise(function(resolve, reject) {
+            new Promise( function( resolve, reject ) {
 
-                WHS.API.loadJSON(params.geometry.path, function(data, materials) {
+                WHS.API.loadJSON(params.geometry.path, function( data, materials ) {
 
                 	if (params.geometry.physics != "") {
 
-                		WHS.API.loadJSON(params.geometry.physics, function(data2) {
+                		WHS.API.loadJSON(params.geometry.physics, function( data2 ) {
 
                 			if (params.material.useVertexColors)
 		                        var material = WHS.API.loadMaterial(
@@ -61,9 +60,9 @@ WHS.Model = class Model extends WHS.Shape {
 		                    data.computeFaceNormals();
 		                    data.computeVertexNormals();
 
+        					let mesh = scope.physics ? Physijs.ConcaveMesh : THREE.Mesh;
 
-
-		                    scope.mesh = new Physijs.ConcaveMesh( 
+		                    scope.mesh = new mesh( 
 		                    	data, 
 		                    	material, 
 		                    	params.mass,
@@ -92,7 +91,9 @@ WHS.Model = class Model extends WHS.Shape {
 	                    data.computeFaceNormals();
 	                    data.computeVertexNormals();
 
-	                    scope.mesh = new Physijs.ConcaveMesh( 
+        				let mesh = scope.physics ? Physijs.ConcaveMesh : THREE.Mesh;
+
+	                    scope.mesh = new mesh( 
 	                    	data, 
 	                    	material, 
 	                    	params.mass

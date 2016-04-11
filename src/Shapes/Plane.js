@@ -34,7 +34,9 @@ WHS.Plane = class Plane extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.PlaneMesh(
+        let mesh = this.physics ? Physijs.PlaneMesh : THREE.Mesh;
+
+		this.mesh = new mesh(
             new THREE.PlaneGeometry(
 
                 params.geometry.width,
@@ -43,8 +45,7 @@ WHS.Plane = class Plane extends WHS.Shape {
 
             ),
 
-            super._initMaterial(params.material),
-            params.mass
+            super._initMaterial(params.material)
         );
 
         super.build();

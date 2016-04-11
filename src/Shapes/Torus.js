@@ -38,7 +38,9 @@ WHS.Torus = class Torus extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh(
+        let mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh;
+
+		this.mesh = new mesh(
             new THREE.TorusGeometry(
 
                 params.geometry.radius,

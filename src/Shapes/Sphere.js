@@ -34,7 +34,9 @@ WHS.Sphere = class Sphere extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.SphereMesh(
+        let mesh = this.physics ? Physijs.SphereMesh : THREE.Mesh;
+
+		this.mesh = new mesh(
 			new THREE.SphereGeometry(
 
 	            params.geometry.radius,

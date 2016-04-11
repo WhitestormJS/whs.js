@@ -38,7 +38,9 @@ WHS.Tube = class Tube extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh(
+        let mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh;
+
+		this.mesh = new mesh(
             new THREE.TubeGeometry(
 
                 params.geometry.path,

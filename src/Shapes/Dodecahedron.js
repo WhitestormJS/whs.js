@@ -32,7 +32,9 @@ WHS.Dodecahedron = class Dodecahedron extends WHS.Shape {
 
         });
 
-		this.mesh = new Physijs.ConvexMesh(
+        let mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh;
+
+		this.mesh = new mesh(
             new THREE.DodecahedronGeometry(
 
                 params.geometry.radius,
@@ -40,7 +42,7 @@ WHS.Dodecahedron = class Dodecahedron extends WHS.Shape {
 
             ),
 
-            super._initMaterial(params.material),
+            super._initMaterial( params.material ),
             params.mass
         );
 
