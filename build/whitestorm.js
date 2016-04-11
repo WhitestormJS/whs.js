@@ -1616,37 +1616,29 @@ WHS.Light = function() {
         key: 'clone',
         value: function clone() {
 
-            var clone = this.constructor(WHS.API.extend({
-                pos: this.position,
-                rot: this.rotation,
-                shadowmap: this._shadowmap,
-                light: this._light,
-                target: this.target
-            }, this.__params), this._type);
+            return new WHS.Light(this.__params, this._type).copy(this);
+        }
 
-            function isObject(val) {
-                return (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === "object" && val !== null;
-            }
+        /**
+         * Copy light.
+         *
+         * @param {WHS.Light} source - Source object, that will be applied to this.
+         */
 
-            function clone_local_obj(obj) {
+    }, {
+        key: 'copy',
+        value: function copy(source) {
 
-                if (obj instanceof THREE.Light || obj instanceof THREE.Object3D) return obj.clone();
-                if (obj instanceof Element || obj instanceof Node || obj instanceof WHS.World) return obj;
+            this.mesh = source.mesh.clone();
 
-                var clone = obj.constructor() || obj;
+            this.build();
 
-                for (var key in obj) {
-                    clone[key] = !isObject(obj[key]) ? obj[key] : clone_local_obj(obj[key]);
-                }
+            this.position = source.position.clone();
+            this.rotation = source.rotation.clone();
 
-                return clone;
-            }
+            this._type = source._type;
 
-            for (var key in this) {
-                clone[key] = !isObject(this[key]) ? this[key] : clone_local_obj(this[key]);
-            }
-
-            return clone;
+            return this;
         }
 
         /**
@@ -1690,7 +1682,7 @@ WHS.Light = function() {
             return this.mesh.position;
         },
         set: function set(vector3) {
-            return this.mesh.position = vector3;
+            return this.mesh.position.copy(vector3);
         }
     }, {
         key: 'rotation',
@@ -1698,7 +1690,7 @@ WHS.Light = function() {
             return this.mesh.rotation;
         },
         set: function set(euler) {
-            return this.mesh.rotation = euler;
+            return this.mesh.rotation.copy(euler);
         }
     }, {
         key: 'target',
@@ -1706,7 +1698,7 @@ WHS.Light = function() {
             return this.mesh.target.position;
         },
         set: function set(vector3) {
-            return this.mesh.target.position = vector3;
+            return this.mesh.target.position.copy(vector3);
         }
     }]);
 
@@ -2117,42 +2109,33 @@ WHS.Shape = function() {
         key: 'clone',
         value: function clone() {
 
-            var clone = this.constructor(WHS.API.extend({
-                pos: this.position,
-                rot: this.rotation,
-                scale: this.scale,
-                morph: this.morph,
-                target: this.target,
-                physics: this.physics
-            }, this.__params), this._type);
-
-            function isObject(val) {
-                return (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === "object" && val !== null;
-            }
-
-            function clone_local_obj(obj) {
-
-                if (obj instanceof THREE.Mesh) return obj.clone();
-                if (obj instanceof Element || obj instanceof Node || obj instanceof WHS.World) return obj;
-
-                var clone = obj.constructor() || obj;
-
-                for (var key in obj) {
-                    clone[key] = !isObject(obj[key]) ? obj[key] : clone_local_obj(obj[key]);
-                }
-
-                return clone;
-            }
-
-            for (var key in this) {
-                clone[key] = !isObject(this[key]) ? this[key] : clone_local_obj(this[key]);
-            }
-
-            return clone;
+            return new WHS.Shape(this.__params, this._type).copy(this);
         }
 
         /**
-         * Remove this light from world.
+         * Copy shape.
+         *
+         * @param {WHS.Shape} source - Source object, that will be applied to this.
+         */
+
+    }, {
+        key: 'copy',
+        value: function copy(source) {
+
+            this.mesh = source.mesh.clone();
+
+            this.build();
+
+            this.position = source.position.clone();
+            this.rotation = source.rotation.clone();
+
+            this._type = source._type;
+
+            return this;
+        }
+
+        /**
+         * Remove this shape from world.
          *
          * @return {THREE.Shape} - this.
          */
@@ -2197,8 +2180,6 @@ WHS.Shape = function() {
     }, {
         key: 'setPosition',
 
-        // Custom setters.
-
         /**
          * Overwriting mesh position values.
          *
@@ -2208,7 +2189,8 @@ WHS.Shape = function() {
          * @return {THREE.Shape} - this.
          */
         value: function setPosition(x, y, z) {
-            this.position = new THREE.Vector3(x, y, z);
+            this.position.set(x, y, z);
+            this.mesh.__dirtyPosition = true;
 
             return this;
         }
@@ -2225,7 +2207,8 @@ WHS.Shape = function() {
     }, {
         key: 'setRotation',
         value: function setRotation(x, y, z) {
-            this.rotation = new THREE.Euler(x, y, z);
+            this.rotation.set(x, y, z);
+            this.mesh.__dirtyRotation = true;
 
             return this;
         }
@@ -3800,7 +3783,7 @@ WHS.Torus = function(_WHS$Shape18) {
 
         });
 
-        var mesh = _this20.physics ? Physijs.ConcaveMesh : THREE.Mesh;
+        var mesh = _this20.physics ? Physijs.ConvexMesh : THREE.Mesh;
 
         _this20.mesh = new mesh(new THREE.TorusGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.arc), _get(Object.getPrototypeOf(Torus.prototype), '_initMaterial', _this20).call(_this20, params.material), params.mass);
 

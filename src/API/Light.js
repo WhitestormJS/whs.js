@@ -259,48 +259,27 @@ WHS.Light = class {
 	 */
 	clone() {
 
-		let clone = this.constructor(
-				WHS.API.extend({
-					pos: this.position,
-					rot: this.rotation,
-					shadowmap: this._shadowmap,
-					light: this._light,
-					target: this.target
-				}, this.__params),
-				this._type
-			);
+		return new WHS.Light( this.__params, this._type ).copy( this );
 
-		function isObject( val ) {
-			return typeof val === "object" && val !== null;
-		}
+	}
 
-		function clone_local_obj( obj ) {
+	/**
+	 * Copy light.
+	 *
+	 * @param {WHS.Light} source - Source object, that will be applied to this.
+	 */
+	copy( source ) {
 
-			if ( obj instanceof THREE.Light
-				|| obj instanceof THREE.Object3D ) return obj.clone();
-			if ( obj instanceof Element 
-				|| obj instanceof Node
-				|| obj instanceof WHS.World ) return obj;
+		this.mesh = source.mesh.clone();
 
-			let clone = obj.constructor() || obj;
+		this.build();
 
-			for (var key in obj) {
-				clone[key] = !isObject( obj[key] )
-					? obj[key] 
-					: clone_local_obj( obj[key] );
-			}
+		this.position = source.position.clone();
+		this.rotation = source.rotation.clone();
 
-			return clone;
+		this._type = source._type;
 
-		}
-
-		for (var key in this) {
-			clone[key] = !isObject( this[key] )
-				? this[key] 
-				: clone_local_obj( this[key] );
-		}
-
-		return clone;
+		return this;
 
 	}
 
@@ -342,7 +321,7 @@ WHS.Light = class {
 	}
 
 	set position( vector3 ) {
-		return this.mesh.position = vector3;
+		return this.mesh.position.copy( vector3 );
 	}
 
 	get rotation() {
@@ -350,7 +329,7 @@ WHS.Light = class {
 	}
 
 	set rotation( euler ) {
-		return this.mesh.rotation = euler;
+		return this.mesh.rotation.copy( euler );
 	}
 
 	get target() {
@@ -358,7 +337,7 @@ WHS.Light = class {
 	}
 
 	set target( vector3 ) {
-		return this.mesh.target.position = vector3;
+		return this.mesh.target.position.copy( vector3 );
 	}
 
 }
