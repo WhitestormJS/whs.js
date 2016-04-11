@@ -83,7 +83,7 @@ world.start(); // Start animations and physics simulation.
 <br>
 
 ## Game example
-<a href="http://192.241.128.187/current/examples/fps.html"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/splash.png"></a>
+<a href="http://192.241.128.187/current/examples/fps.html" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/splash.png"></a>
 
 ## Other examples:
  * [FPS](http://192.241.128.187/current/examples/fps_fog.html)  (First person example with Wagner effects and terrain. + fog)
