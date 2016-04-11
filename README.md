@@ -90,7 +90,6 @@ world.start(); // Start animations and physics simulation.
  * [Basic](http://192.241.128.187/current/examples/basic.html)  (Basic "Hello world!" example.)
  * [Material](http://192.241.128.187/current/examples/basic_material.html)  (Basic example with material.)
  * [Object/Model](http://192.241.128.187/current/examples/basic_model.html)  (Teapot model with *Three.js* JSONLoader.)
- * [Object/Wall](http://192.241.128.187/current/examples/stone_wall.html)  (Stone wall (basic).)
  * [Plugin/Color](http://192.241.128.187/current/examples/plugin_example.html)  (Basic plugin example.)
  * [Skybox](http://192.241.128.187/current/examples/skybox.html) (Skybox example)
 
