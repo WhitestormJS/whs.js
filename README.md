@@ -107,6 +107,8 @@ world.start(); // Start animations and physics simulation.
 
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-bdirl-blue.svg)](https://github.com/bdirl)
 
+[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-t4r0-blue.svg)](https://github.com/t4r0)
+
 <br>
 
 ## License
