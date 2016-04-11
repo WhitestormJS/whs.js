@@ -30,7 +30,7 @@ WHS.API.extend = function( object, ...extensions ) { // $.extend alternative, ..
 					
 			else
 				object[prop] = ( object[prop] === 0 )? 0 : object[prop];
-				if( !object[prop] && typeof object[prop] != "boolean" ) object[prop] = extension[prop]; // Add values that do not already exist.
+				if( typeof object[prop] == "undefined" ) object[prop] = extension[prop]; // Add values that do not already exist.
 		}
 	}
 

@@ -188,12 +188,15 @@ GAME.sphere = GAME.Sphere({
 });
 
 
-GAME.ground = GAME.Smooth({
+GAME.ground = GAME.Box({
 
     geometry:{
         width: 250,
-        height: 250
+        height: 1,
+        depth: 250
     },
+
+    mass: 0,
     
     material: {
         color: 0xff0000,

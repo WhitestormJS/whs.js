@@ -92,12 +92,9 @@ WHS.Light = class {
 			_type: type,
 			_whsobject: true,
 			__releaseTime: new Date().getTime(),
+			__params: target,
 
 			parent: null,
-
-			position: target.pos,
-			rotation: target.rot,
-			target: target.target,
 
 			_light: target.light,
 			_shadowmap: target.shadowmap,
@@ -130,16 +127,16 @@ WHS.Light = class {
 				mesh.castShadow = true;
 				mesh.receiveShadow = true;
 
-				mesh.position.set( 
-					this.position.x, 
-					this.position.y, 
-					this.position.z 
+				_scope.position.set(
+					_scope.__params.pos.x, 
+					_scope.__params.pos.y, 
+					_scope.__params.pos.z 
 				);
 
-				mesh.rotation.set( 
-					this.rotation.x, 
-					this.rotation.y, 
-					this.rotation.z 
+				_scope.rotation.set( 
+					_scope.__params.rot.x, 
+					_scope.__params.rot.y, 
+					_scope.__params.rot.z 
 				);
 
 				tags.forEach(tag => {
@@ -274,10 +271,16 @@ WHS.Light = class {
 			);
 
 		function isObject( val ) {
-			return typeof val === "object" || val === null;
+			return typeof val === "object" && val !== null;
 		}
 
 		function clone_local_obj( obj ) {
+
+			if ( obj instanceof THREE.Light
+				|| obj instanceof THREE.Object3D ) return obj.clone();
+			if ( obj instanceof Element 
+				|| obj instanceof Node
+				|| obj instanceof WHS.World ) return obj;
 
 			let clone = obj.constructor() || obj;
 
@@ -331,6 +334,31 @@ WHS.Light = class {
 
 		return this;
 
+	}
+
+
+	get position() {
+		return this.mesh.position;
+	}
+
+	set position( vector3 ) {
+		return this.mesh.position = vector3;
+	}
+
+	get rotation() {
+		return this.mesh.rotation;
+	}
+
+	set rotation( euler ) {
+		return this.mesh.rotation = euler;
+	}
+
+	get target() {
+		return this.mesh.target.position;
+	}
+
+	set target( vector3 ) {
+		return this.mesh.target.position = vector3;
 	}
 
 }

@@ -92,7 +92,7 @@ WHS.API.loadMaterial = function( material ) {
 		break;
 	}
 
-	scope._material = Physijs.createMaterial( 
+	scope._materialP = Physijs.createMaterial( 
 		scope._material, 
 		scope._friction, 
 		scope._restitution 

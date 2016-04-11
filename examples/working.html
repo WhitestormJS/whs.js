@@ -110,102 +110,80 @@
 var preloader = Preloader();
 
 var GAME = new WHS.World({
-    
+
     stats: "fps", // fps, ms, mb
     autoresize: true,
 
     gravity: {
         x: 0,
-        y: -200,
+        y: 0,
         z: 0
     },
 
     camera: {
-        far: 10000,
+        far: 1200,
+        near: 500,
         y: 10,
-        z: 30
+        z: 1000
     }
 
 });
 
-var cube = GAME.Box({
-
+var dodecahedron = GAME.Octahedron({
     geometry: {
-        width: 20,
-        height: 12,
-        depth: 2
+        radius: 200
     },
 
-    mass: 10,
+    mass: 0,
+    physics: false,
 
     material: {
-        shading: THREE.SmoothShading,
-        map: WHS.API.texture('assets/textures/bricks.jpg'),
-        restitution: 0,
-        friction: 1,
-        kind: "phong"
-    },
-
-    pos: {
-        x: 0,
-        y: 100,
-        z: 0
-    },
-
-    rot: {
-        x: 0,
-        y: 45,
-        z: 0
-    }
-
-});
-
-var ground = GAME.Plane({
-
-    geometry: {
-        width: 250,
-        height: 250
-    },
-    
-    material: {
-        color: 0xffffff,
+        color: 0x000000,
+        wireframe: true,
         kind: "basic"
     },
-    
+
     pos: {
         x: 0,
         y: 0,
         z: 0
     }
-
 });
 
-var light = GAME.DirectionalLight({ 
+var dodecahedron2 = GAME.Octahedron({
+    geometry: {
+        radius: 200
+    },
 
-    light: {
-        color: 0xffffff, //0x00ff00,
-        intensity: 6
+    mass: 0,
+    physics: false,
+
+    material: {
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.3,
+        kind: "depth"
     },
-    
+
     pos: {
-        x: 0,
-        y: 1,
-        z: 3
-    },
-    
-    target: {
         x: 0,
         y: 0,
         z: 0
     }
-    
 });
-
-GAME.OrbitControls();
 
 GAME.start();
+GAME.OrbitControls();
+
+var loop = new WHS.loop(() => {
+    dodecahedron.mesh.__dirtyRotation = true;
+    dodecahedron2.mesh.__dirtyRotation = true;
+    dodecahedron.rotation.y += 0.05;
+    dodecahedron2.rotation.y += 0.05;
+});
+
+loop.start();
 
 preloader.check();
-
 </script>
 </html>

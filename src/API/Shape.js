@@ -64,6 +64,8 @@ WHS.Shape = class {
 				duration: 1
 			},
 
+			physics: true
+
 		});
 
 		var scope = Object.assign( this,
@@ -76,11 +78,12 @@ WHS.Shape = class {
 
 			wait: [],
 
-			position: params.pos,
+			/*position: params.pos,
 			rotation: params.rot,
 			scale: params.scale,
 			morph: params.morph,
-			target: params.target
+			target: params.target,*/
+			physics: params.physics
 		},
 		new Events());
 
@@ -121,28 +124,23 @@ WHS.Shape = class {
 						_scope.mesh.castShadow = true;
 						_scope.mesh.receiveShadow = true;
 
-						_scope.mesh.position.set( 
-							_scope.position.x, 
-							_scope.position.y, 
-							_scope.position.z 
+						_scope.position.set(
+							_scope.__params.pos.x, 
+							_scope.__params.pos.y, 
+							_scope.__params.pos.z 
 						);
 
-						_scope.mesh.rotation.set( 
-							_scope.rotation.x, 
-							_scope.rotation.y, 
-							_scope.rotation.z 
+						_scope.rotation.set( 
+							_scope.__params.rot.x, 
+							_scope.__params.rot.y, 
+							_scope.__params.rot.z 
 						);
 
-						_scope.mesh.scale.set( 
-							_scope.scale.x, 
-							_scope.scale.y, 
-							_scope.scale.z 
+						_scope.scale.set( 
+							_scope.__params.scale.x, 
+							_scope.__params.scale.y, 
+							_scope.__params.scale.z 
 						);
-
-		                //References, I consider this a bad way of solving the problem, but it works for now
-		                _scope.position = _scope.mesh.position;
-		                _scope.rotation = _scope.mesh.rotation;
-		                _scope.scale = _scope.mesh.scale;
 
 		                if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
 		                	+ _scope._type + " is ready.", _scope);
@@ -171,29 +169,23 @@ WHS.Shape = class {
 					_scope.mesh.castShadow = true;
 					_scope.mesh.receiveShadow = true;
 
-					_scope.mesh.position.set( 
-						_scope.position.x, 
-						_scope.position.y, 
-						_scope.position.z 
+					_scope.position.set(
+						_scope.__params.pos.x, 
+						_scope.__params.pos.y, 
+						_scope.__params.pos.z 
 					);
 
-					_scope.mesh.rotation.set( 
-						_scope.rotation.x, 
-						_scope.rotation.y, 
-						_scope.rotation.z 
+					_scope.rotation.set( 
+						_scope.__params.rot.x, 
+						_scope.__params.rot.y, 
+						_scope.__params.rot.z 
 					);
 
-					_scope.mesh.scale.set( 
-						_scope.scale.x, 
-						_scope.scale.y, 
-						_scope.scale.z 
+					_scope.scale.set( 
+						_scope.__params.scale.x, 
+						_scope.__params.scale.y, 
+						_scope.__params.scale.z 
 					);
-
-	                // References, I consider this a bad way of solving 
-	                // the problem, but it works for now.
-	                _scope.position = _scope.mesh.position;
-	                _scope.rotation = _scope.mesh.rotation;
-	                _scope.scale = _scope.mesh.scale;
 
 	                if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
 		            	+ _scope._type + " is ready.", _scope);
@@ -319,9 +311,11 @@ WHS.Shape = class {
 	/**
 	 * Initialize shape's material object.
 	 */
-	_initMaterial(mat_props) {
+	_initMaterial( params ) {
 		
-		return WHS.API.loadMaterial(mat_props)._material;
+		return this.physics
+			? WHS.API.loadMaterial( params )._material
+			: WHS.API.loadMaterial( params )._materialP;
 		
 	}
 
@@ -336,16 +330,22 @@ WHS.Shape = class {
 					rot: this.rotation,
 					scale: this.scale,
 					morph: this.morph,
-					target: this.target
+					target: this.target,
+					physics: this.physics
 				}, this.__params),
 				this._type
 			);
 
 		function isObject( val ) {
-			return typeof val === "object" || val === null;
+			return typeof val === "object" && val !== null;
 		}
 
 		function clone_local_obj( obj ) {
+
+			if ( obj instanceof THREE.Mesh ) return obj.clone();
+			if ( obj instanceof Element 
+				|| obj instanceof Node
+				|| obj instanceof WHS.World ) return obj;
 
 			let clone = obj.constructor() || obj;
 
@@ -371,6 +371,8 @@ WHS.Shape = class {
 
 	/**
 	 * Remove this light from world.
+	 *
+	 * @return {THREE.Shape} - this.
 	 */
 	remove() {
 		
@@ -391,6 +393,8 @@ WHS.Shape = class {
 
 	/**
 	 * Add this light to last applied world.
+	 *
+	 * @return {THREE.Shape} - this.
 	 */
 	retrieve() {
 
@@ -407,6 +411,62 @@ WHS.Shape = class {
 
 		return this;
 
+	}
+
+	get position() {
+		return this.mesh.position;
+	}
+
+	set position( vector3 ) {
+		this.mesh.__dirtyPosition = true;
+		return this.mesh.position.copy( vector3 );
+	}
+
+	get rotation() {
+		return this.mesh.rotation;
+	}
+
+	set rotation( euler ) {
+		this.mesh.__dirtyRotation = true;
+		return this.mesh.rotation.copy( euler );
+	}
+
+	get scale() {
+		return this.mesh.scale;
+	}
+
+	set scale( vector3 ) {
+		return this.mesh.scale = vector3;
+	}
+
+	/**
+	 * Overwriting mesh position values.
+	 *
+	 * @param {Number} x - X coord.
+	 * @param {Number} y - Y coord.
+	 * @param {Number} z - Z coord.
+	 * @return {THREE.Shape} - this.
+	 */
+	setPosition( x, y, z ) {
+		this.position.set( x, y, z );
+		this.mesh.__dirtyPosition = true;
+
+		return this;
+	}
+
+	/**
+	 * Overwriting mesh rotation values.
+	 *
+	 * @param {Number} x - X coord.
+	 * @param {Number} y - Y coord.
+	 * @param {Number} z - Z coord.
+	 * @return {THREE.Shape} - this.
+	 */
+	setRotation( x, y, z ) {
+		this.rotation.set( x, y, z );
+		this.mesh.__dirtyRotation = true;
+
+		return this;
 	}
 
 }

@@ -153,7 +153,7 @@ var torusknot = GAME.Torusknot({
 
 });
 
-var ground = GAME.Smooth({
+var ground = GAME.Plane({
 
     geometry: {
         width: 250,
@@ -170,6 +170,10 @@ var ground = GAME.Smooth({
         x: 0,
         y: 0,
         z: 0
+    },
+
+    rot: {
+        x: -Math.PI/2
     }
 
 });

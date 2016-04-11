@@ -148,7 +148,7 @@ var tetrahedron = GAME.Tetrahedron({
     }
 });
 
-GAME.ground = GAME.Smooth({
+GAME.ground = GAME.Plane({
         
     geometry: {
         width: 250,
@@ -164,6 +164,10 @@ GAME.ground = GAME.Smooth({
         x: 0,
         y: 0,
         z: 0
+    },
+
+    rot: {
+        x: -Math.PI/2
     }
 });
 
