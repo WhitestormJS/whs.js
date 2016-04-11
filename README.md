@@ -30,7 +30,7 @@
 </p>
 
 * **Physics with WebWorkers** — It uses [Physi.js](https://github.com/chandlerprall/Physijs/blob/master/physi.js) library for calculating physics of 3D shapes with **WebWorkers technology** that allows to make rendering an calculating physics in multiple threads.
-* 
+
 <img src="http://i.imgur.com/LN1Ymsz.gif" height="100">
 
 * **Plugin system** — Framework supports *plugins & components* made by other users. You need to include them after whitestorm.js and follow provided instructions.
