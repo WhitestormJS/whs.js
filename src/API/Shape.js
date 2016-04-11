@@ -324,53 +324,32 @@ WHS.Shape = class {
 	 */
 	clone() {
 
-		let clone = this.constructor(
-				WHS.API.extend({
-					pos: this.position,
-					rot: this.rotation,
-					scale: this.scale,
-					morph: this.morph,
-					target: this.target,
-					physics: this.physics
-				}, this.__params),
-				this._type
-			);
-
-		function isObject( val ) {
-			return typeof val === "object" && val !== null;
-		}
-
-		function clone_local_obj( obj ) {
-
-			if ( obj instanceof THREE.Mesh ) return obj.clone();
-			if ( obj instanceof Element 
-				|| obj instanceof Node
-				|| obj instanceof WHS.World ) return obj;
-
-			let clone = obj.constructor() || obj;
-
-			for (var key in obj) {
-				clone[key] = !isObject( obj[key] )
-					? obj[key] 
-					: clone_local_obj( obj[key] );
-			}
-
-			return clone;
-
-		}
-
-		for (var key in this) {
-			clone[key] = !isObject( this[key] )
-				? this[key] 
-				: clone_local_obj( this[key] );
-		}
-
-		return clone;
+		return new WHS.Shape( this.__params, this._type ).copy( this );
 
 	}
 
 	/**
-	 * Remove this light from world.
+	 * Copy shape.
+	 *
+	 * @param {WHS.Shape} source - Source object, that will be applied to this.
+	 */
+	copy( source ) {
+
+		this.mesh = source.mesh.clone();
+
+		this.build();
+
+		this.position = source.position.clone();
+		this.rotation = source.rotation.clone();
+
+		this._type = source._type;
+
+		return this;
+
+	}
+
+	/**
+	 * Remove this shape from world.
 	 *
 	 * @return {THREE.Shape} - this.
 	 */
