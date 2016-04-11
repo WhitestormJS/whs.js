@@ -14,7 +14,7 @@
   "moduleType": [
     "globals"
   ],
-  "license": "ISC",
+  "license": "Apache",
   "ignore": [
     "**/.*",
     "node_modules",
