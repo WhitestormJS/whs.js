@@ -3,7 +3,9 @@
 ##### Before contibuting here see [rules](https://github.com/WhitestormJS/whitestorm.js/blob/master/CONTRIBUTING.md#-adding-changes-to-changelogmd)
 **current**
 - #75: Helpers
-   - PointLight and SpotLight helper.
+   - PointLight and SpotLight helpers.
+   - Box and Bounding box helpers. 
+   - DirectionalLight helper.
 
 **r8**
 - Engine rebuild commit:
