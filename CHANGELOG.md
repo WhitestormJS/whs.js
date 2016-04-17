@@ -6,6 +6,8 @@
    - PointLight and SpotLight helpers.
    - Box and Bounding box helpers. 
    - DirectionalLight helper.
+   - HemisphereLight and faceNormals helper.
+   - !! Edge helper doesn't work properly.
 
 **r8**
 - Engine rebuild commit:
