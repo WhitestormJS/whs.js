@@ -114,6 +114,16 @@ var GAME = new WHS.World({
     stats: "fps", // fps, ms, mb
     autoresize: true,
 
+    helpers: {
+        grid: {
+            size: 300,
+            step: 3
+        },
+        axis: {
+            size: 100
+        }
+    },
+
     gravity: {
         x: 0,
         y: -100,
@@ -124,7 +134,9 @@ var GAME = new WHS.World({
         far: 10000,
         y: 10,
         z: 30
-    }
+    },
+
+    background: 0xffffff
 
 });
 
@@ -135,12 +147,6 @@ var icosahedron = GAME.Icosahedron({
     },
 
     mass: 10,
-
-    helpers: {
-        faceNormals: {
-            color: 0x0000ff
-        }
-    },
 
     material: {
         color: 0xffffff,
