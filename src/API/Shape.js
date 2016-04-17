@@ -33,7 +33,9 @@ WHS.Shape = class {
 
 			helpers: {
 				box: false,
-				boundingBox: false
+				boundingBox: false,
+				edges: false,
+				faceNormals: false
 			},
 
 			pos: {
@@ -152,8 +154,6 @@ WHS.Shape = class {
 								_scope.mesh
 							);
 
-							_scope.helpers.box.position.sub( _scope.mesh.position );
-
 						}
 
 						// Bounding box helper.
@@ -164,6 +164,35 @@ WHS.Shape = class {
 								_scope.__params.helpers.boundingBox.color
 								? _scope.__params.helpers.boundingBox.color
 								: 0xffffff
+							);
+
+						}
+
+						// Edges helper.
+						if ( _scope.__params.helpers.edges ) {
+				
+							_scope.helpers.edges = new THREE.EdgesHelper( 
+								_scope.mesh,
+								_scope.__params.helpers.edges.color
+								? _scope.__params.helpers.edges.color
+								: 0xffffff
+							);
+						}
+
+						// faceNormals helper.
+						if ( _scope.__params.helpers.faceNormals ) {
+				
+							_scope.helpers.faceNormals = new THREE.FaceNormalsHelper( 
+								_scope.mesh,
+								_scope.__params.helpers.faceNormals.size
+								? _scope.__params.helpers.faceNormals.size
+								: 2,
+								_scope.__params.helpers.faceNormals.color
+								? _scope.__params.helpers.faceNormals.color
+								: 0xffffff,
+								_scope.__params.helpers.faceNormals.linewidth
+								? _scope.__params.helpers.faceNormals.linewidth
+								: 1
 							);
 
 						}
@@ -220,8 +249,6 @@ WHS.Shape = class {
 							_scope.mesh
 						);
 
-						_scope.helpers.box.position.sub( _scope.mesh.position );
-
 					}
 
 					// Bounding box helper.
@@ -232,6 +259,35 @@ WHS.Shape = class {
 							_scope.__params.helpers.boundingBox.color
 							? _scope.__params.helpers.boundingBox.color
 							: 0xffffff
+						);
+
+					}
+
+					// Edges helper.
+					if ( _scope.__params.helpers.edges ) {
+			
+						_scope.helpers.edges = new THREE.EdgesHelper( 
+							_scope.mesh,
+							_scope.__params.helpers.edges.color
+							? _scope.__params.helpers.edges.color
+							: 0xffffff
+						);
+					}
+
+					// faceNormals helper.
+					if ( _scope.__params.helpers.faceNormals ) {
+			
+						_scope.helpers.faceNormals = new THREE.FaceNormalsHelper( 
+							_scope.mesh,
+							_scope.__params.helpers.faceNormals.size
+							? _scope.__params.helpers.faceNormals.size
+							: 2,
+							_scope.__params.helpers.faceNormals.color
+							? _scope.__params.helpers.faceNormals.color
+							: 0xffffff,
+							_scope.__params.helpers.faceNormals.linewidth
+							? _scope.__params.helpers.faceNormals.linewidth
+							: 1
 						);
 
 					}
@@ -286,10 +342,16 @@ WHS.Shape = class {
 						_scope.parent.children.push( _scope );
 
 						if ( _scope.__params.helpers.box ) 
-							_scope.mesh.add( _helpers.box );
+							_scope.parent.scene.add( _helpers.box );
 
 						if ( _scope.__params.helpers.boundingBox ) 
-							_scope.mesh.add( _helpers.boundingBox );
+							_scope.parent.scene.add( _helpers.boundingBox );
+
+						if ( _scope.__params.helpers.edges ) 
+							_scope.parent.scene.add( _helpers.edges );
+
+						if ( _scope.__params.helpers.faceNormals ) 
+							_scope.parent.scene.add( _helpers.faceNormals );
 
 					} catch ( err ) {
 
@@ -333,10 +395,16 @@ WHS.Shape = class {
 					_scope.parent.children.push( _scope );
 
 					if ( _scope.__params.helpers.box ) 
-						_scope.mesh.add( _helpers.box );
+						_scope.parent.scene.add( _helpers.box );
 
 					if ( _scope.__params.helpers.boundingBox ) 
-						_scope.mesh.add( _helpers.boundingBox );
+						_scope.parent.scene.add( _helpers.boundingBox );
+
+					if ( _scope.__params.helpers.edges ) 
+						_scope.parent.scene.add( _helpers.edges );
+
+					if ( _scope.__params.helpers.faceNormals ) 
+						_scope.parent.scene.add( _helpers.faceNormals );
 
 				} catch ( err ) {
 

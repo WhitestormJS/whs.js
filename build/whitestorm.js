@@ -1863,7 +1863,9 @@ WHS.Shape = function() {
 
             helpers: {
                 box: false,
-                boundingBox: false
+                boundingBox: false,
+                edges: false,
+                faceNormals: false
             },
 
             pos: {
@@ -1972,16 +1974,24 @@ WHS.Shape = function() {
                             if (_scope.__params.helpers.box) {
 
                                 _scope.helpers.box = new THREE.BoxHelper(_scope.mesh);
-
-                                _scope.helpers.box.position.sub(_scope.mesh.position);
                             }
 
                             // Bounding box helper.
                             if (_scope.__params.helpers.boundingBox) {
 
                                 _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(_scope.mesh, _scope.__params.helpers.boundingBox.color ? _scope.__params.helpers.boundingBox.color : 0xffffff);
+                            }
 
-                                //_scope.helpers.boundingBox.position.sub( _scope.mesh.position );
+                            // Edges helper.
+                            if (_scope.__params.helpers.edges) {
+
+                                _scope.helpers.edges = new THREE.EdgesHelper(_scope.mesh, _scope.__params.helpers.edges.color ? _scope.__params.helpers.edges.color : 0xffffff);
+                            }
+
+                            // faceNormals helper.
+                            if (_scope.__params.helpers.faceNormals) {
+
+                                _scope.helpers.faceNormals = new THREE.FaceNormalsHelper(_scope.mesh, _scope.__params.helpers.faceNormals.size ? _scope.__params.helpers.faceNormals.size : 2, _scope.__params.helpers.faceNormals.color ? _scope.__params.helpers.faceNormals.color : 0xffffff, _scope.__params.helpers.faceNormals.linewidth ? _scope.__params.helpers.faceNormals.linewidth : 1);
                             }
 
                             if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " is ready.", _scope);
@@ -2015,16 +2025,24 @@ WHS.Shape = function() {
                         if (_scope.__params.helpers.box) {
 
                             _scope.helpers.box = new THREE.BoxHelper(_scope.mesh);
-
-                            _scope.helpers.box.position.sub(_scope.mesh.position);
                         }
 
                         // Bounding box helper.
                         if (_scope.__params.helpers.boundingBox) {
 
                             _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(_scope.mesh, _scope.__params.helpers.boundingBox.color ? _scope.__params.helpers.boundingBox.color : 0xffffff);
+                        }
 
-                            //_scope.helpers.boundingBox.position.sub( _scope.mesh.position );
+                        // Edges helper.
+                        if (_scope.__params.helpers.edges) {
+
+                            _scope.helpers.edges = new THREE.EdgesHelper(_scope.mesh, _scope.__params.helpers.edges.color ? _scope.__params.helpers.edges.color : 0xffffff);
+                        }
+
+                        // faceNormals helper.
+                        if (_scope.__params.helpers.faceNormals) {
+
+                            _scope.helpers.faceNormals = new THREE.FaceNormalsHelper(_scope.mesh, _scope.__params.helpers.faceNormals.size ? _scope.__params.helpers.faceNormals.size : 2, _scope.__params.helpers.faceNormals.color ? _scope.__params.helpers.faceNormals.color : 0xffffff, _scope.__params.helpers.faceNormals.linewidth ? _scope.__params.helpers.faceNormals.linewidth : 1);
                         }
 
                         if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " is ready.", _scope);
@@ -2078,9 +2096,13 @@ WHS.Shape = function() {
                             _scope.parent.scene.add(_mesh);
                             _scope.parent.children.push(_scope);
 
-                            if (_scope.__params.helpers.box) _scope.mesh.add(_helpers.box);
+                            if (_scope.__params.helpers.box) _scope.parent.scene.add(_helpers.box);
 
-                            if (_scope.__params.helpers.boundingBox) _scope.mesh.add(_helpers.boundingBox);
+                            if (_scope.__params.helpers.boundingBox) _scope.parent.scene.add(_helpers.boundingBox);
+
+                            if (_scope.__params.helpers.edges) _scope.parent.scene.add(_helpers.edges);
+
+                            if (_scope.__params.helpers.faceNormals) _scope.parent.scene.add(_helpers.faceNormals);
                         } catch (err) {
 
                             console.error(err.message);
@@ -2113,9 +2135,13 @@ WHS.Shape = function() {
                         _scope.parent.scene.add(_mesh);
                         _scope.parent.children.push(_scope);
 
-                        if (_scope.__params.helpers.box) _scope.mesh.add(_helpers.box);
+                        if (_scope.__params.helpers.box) _scope.parent.scene.add(_helpers.box);
 
-                        if (_scope.__params.helpers.boundingBox) _scope.mesh.add(_helpers.boundingBox);
+                        if (_scope.__params.helpers.boundingBox) _scope.parent.scene.add(_helpers.boundingBox);
+
+                        if (_scope.__params.helpers.edges) _scope.parent.scene.add(_helpers.edges);
+
+                        if (_scope.__params.helpers.faceNormals) _scope.parent.scene.add(_helpers.faceNormals);
                     } catch (err) {
 
                         console.error(err.message);
@@ -4059,6 +4085,8 @@ WHS.DirectionalLight = function(_WHS$Light2) {
 
         _this24.mesh = new THREE.DirectionalLight(params.light.color, params.light.intensity);
 
+        if (params.helper) _this24.helper = new THREE.DirectionalLightHelper(_this24.mesh, params.helper.size ? params.helper.size : 0);
+
         _get(Object.getPrototypeOf(DirectionalLight.prototype), 'build', _this24).call(_this24);
         _get(Object.getPrototypeOf(DirectionalLight.prototype), 'buildShadow', _this24).call(_this24);
 
@@ -4100,6 +4128,8 @@ WHS.HemisphereLight = function(_WHS$Light3) {
         var _this25 = _possibleConstructorReturn(this, Object.getPrototypeOf(HemisphereLight).call(this, params, "hemispherelight"));
 
         _this25.mesh = new THREE.HemisphereLight(params.light.skyColor, params.light.groundColor, params.light.intensity);
+
+        if (params.helper) _this25.helper = new THREE.HemisphereLightHelper(_this25.mesh, params.helper.size ? params.helper.size : 0);
 
         _get(Object.getPrototypeOf(HemisphereLight.prototype), 'build', _this25).call(_this25);
         _get(Object.getPrototypeOf(HemisphereLight.prototype), 'buildShadow', _this25).call(_this25);
