@@ -6,8 +6,8 @@
    - PointLight and SpotLight helpers.
    - Box and Bounding box helpers. 
    - DirectionalLight helper.
-   - HemisphereLight and faceNormals helper.
-   - !! Edge helper doesn't work properly.
+   - HemisphereLight, edge and faceNormals helper.
+   - axis, grid and vertexNormals helper.
 
 **r8**
 - Engine rebuild commit:

@@ -197,6 +197,24 @@ WHS.Shape = class {
 
 						}
 
+						// vertexNormals helper.
+						if ( _scope.__params.helpers.vertexNormals ) {
+				
+							_scope.helpers.vertexNormals = new THREE.VertexNormalsHelper( 
+								_scope.mesh,
+								_scope.__params.helpers.vertexNormals.size
+								? _scope.__params.helpers.vertexNormals.size
+								: 2,
+								_scope.__params.helpers.vertexNormals.color
+								? _scope.__params.helpers.vertexNormals.color
+								: 0xffffff,
+								_scope.__params.helpers.vertexNormals.linewidth
+								? _scope.__params.helpers.vertexNormals.linewidth
+								: 1
+							);
+
+						}
+
 		                if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
 		                	+ _scope._type + " is ready.", _scope);
 
@@ -287,6 +305,24 @@ WHS.Shape = class {
 							: 0xffffff,
 							_scope.__params.helpers.faceNormals.linewidth
 							? _scope.__params.helpers.faceNormals.linewidth
+							: 1
+						);
+
+					}
+
+					// vertexNormals helper.
+					if ( _scope.__params.helpers.vertexNormals ) {
+			
+						_scope.helpers.vertexNormals = new THREE.VertexNormalsHelper( 
+							_scope.mesh,
+							_scope.__params.helpers.vertexNormals.size
+							? _scope.__params.helpers.vertexNormals.size
+							: 2,
+							_scope.__params.helpers.vertexNormals.color
+							? _scope.__params.helpers.vertexNormals.color
+							: 0xffffff,
+							_scope.__params.helpers.vertexNormals.linewidth
+							? _scope.__params.helpers.vertexNormals.linewidth
 							: 1
 						);
 
