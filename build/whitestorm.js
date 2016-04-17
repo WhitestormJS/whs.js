@@ -1861,6 +1861,11 @@ WHS.Shape = function() {
 
             mass: 10,
 
+            helpers: {
+                box: false,
+                boundingBox: false
+            },
+
             pos: {
                 x: 0,
                 y: 0,
@@ -1906,12 +1911,10 @@ WHS.Shape = function() {
             parent: null,
 
             wait: [],
+            helpers: {
+                box: false
+            },
 
-            /*position: params.pos,
-            rotation: params.rot,
-            scale: params.scale,
-            morph: params.morph,
-            target: params.target,*/
             physics: params.physics
         }, new Events());
 
@@ -1965,6 +1968,22 @@ WHS.Shape = function() {
 
                             _scope.scale.set(_scope.__params.scale.x, _scope.__params.scale.y, _scope.__params.scale.z);
 
+                            // Box helper.
+                            if (_scope.__params.helpers.box) {
+
+                                _scope.helpers.box = new THREE.BoxHelper(_scope.mesh);
+
+                                _scope.helpers.box.position.sub(_scope.mesh.position);
+                            }
+
+                            // Bounding box helper.
+                            if (_scope.__params.helpers.boundingBox) {
+
+                                _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(_scope.mesh, _scope.__params.helpers.boundingBox.color ? _scope.__params.helpers.boundingBox.color : 0xffffff);
+
+                                //_scope.helpers.boundingBox.position.sub( _scope.mesh.position );
+                            }
+
                             if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " is ready.", _scope);
 
                             _scope.emit("ready");
@@ -1991,6 +2010,22 @@ WHS.Shape = function() {
                         _scope.rotation.set(_scope.__params.rot.x, _scope.__params.rot.y, _scope.__params.rot.z);
 
                         _scope.scale.set(_scope.__params.scale.x, _scope.__params.scale.y, _scope.__params.scale.z);
+
+                        // Box helper.
+                        if (_scope.__params.helpers.box) {
+
+                            _scope.helpers.box = new THREE.BoxHelper(_scope.mesh);
+
+                            _scope.helpers.box.position.sub(_scope.mesh.position);
+                        }
+
+                        // Bounding box helper.
+                        if (_scope.__params.helpers.boundingBox) {
+
+                            _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(_scope.mesh, _scope.__params.helpers.boundingBox.color ? _scope.__params.helpers.boundingBox.color : 0xffffff);
+
+                            //_scope.helpers.boundingBox.position.sub( _scope.mesh.position );
+                        }
 
                         if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " is ready.", _scope);
 
@@ -2024,7 +2059,9 @@ WHS.Shape = function() {
             this.parent = parent;
             this._lastWorld = parent;
 
-            var _scope = this;
+            var _mesh = this.mesh,
+                _helpers = this.helpers,
+                _scope = this;
 
             for (var _len4 = arguments.length, tags = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
                 tags[_key4 - 1] = arguments[_key4];
@@ -2038,8 +2075,12 @@ WHS.Shape = function() {
 
                         try {
 
-                            WHS.API.merge(_scope.parent.scene, _scope.mesh);
+                            _scope.parent.scene.add(_mesh);
                             _scope.parent.children.push(_scope);
+
+                            if (_scope.__params.helpers.box) _scope.mesh.add(_helpers.box);
+
+                            if (_scope.__params.helpers.boundingBox) _scope.mesh.add(_helpers.boundingBox);
                         } catch (err) {
 
                             console.error(err.message);
@@ -2069,8 +2110,12 @@ WHS.Shape = function() {
 
                     try {
 
-                        WHS.API.merge(_scope.parent.scene, _scope.mesh);
+                        _scope.parent.scene.add(_mesh);
                         _scope.parent.children.push(_scope);
+
+                        if (_scope.__params.helpers.box) _scope.mesh.add(_helpers.box);
+
+                        if (_scope.__params.helpers.boundingBox) _scope.mesh.add(_helpers.boundingBox);
                     } catch (err) {
 
                         console.error(err.message);
