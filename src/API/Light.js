@@ -45,6 +45,8 @@ WHS.Light = class {
                 decay: 1
 	        },
 
+	        helper: false,
+
 	        shadowmap: {
 	            cast: true,
 
@@ -175,14 +177,17 @@ WHS.Light = class {
 		this._lastWorld = parent;
 
 		var _mesh = this.mesh,
+			_helper = this.helper,
 			_scope = this;
 
 		return new Promise( (resolve, reject) => {
 
 			try {
 
-				WHS.API.merge( _scope.parent.scene, _mesh );
+				_scope.parent.scene.add( _mesh );
 				_scope.parent.children.push( _scope );
+
+				if ( _helper ) _scope.parent.scene.add( _helper );
 
 			} catch ( err ) {
 
@@ -192,7 +197,7 @@ WHS.Light = class {
 			} finally {
 
 				if ( WHS.debug ) console.debug("@WHS.Light: Light " 
-		        	+ _scope._type + " was added to worl.", 
+		        	+ _scope._type + " was added to world.", 
 		        	[_scope, _scope.parent]);
 
 
@@ -271,6 +276,7 @@ WHS.Light = class {
 	copy( source ) {
 
 		this.mesh = source.mesh.clone();
+		if ( source.helper ) this.helper = source.helper.clone();
 
 		this.build();
 
@@ -289,6 +295,7 @@ WHS.Light = class {
 	remove() {
 		
 		this.parent.scene.remove( this.mesh );
+		if ( source.helper ) this.parent.scene.remove( this.helper );
 
         this.parent.children.splice( this.parent.children.indexOf( this ), 1);
         this.parent = null;

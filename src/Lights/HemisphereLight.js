@@ -27,6 +27,12 @@ WHS.HemisphereLight = class HemisphereLight extends WHS.Light {
             params.light.intensity
         );
 
+        if ( params.helper )
+            this.helper = new THREE.HemisphereLightHelper( 
+                this.mesh, 
+                params.helper.size ? params.helper.size : 0
+            );
+
         super.build();
         super.buildShadow();
 

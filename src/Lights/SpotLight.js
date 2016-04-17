@@ -33,6 +33,9 @@ WHS.SpotLight = class SpotLight extends WHS.Light {
             params.light.decay
         );
 
+        if ( params.helper )
+            this.helper = new THREE.SpotLightHelper( this.mesh );
+
         super.build();
         super.buildShadow();
 
