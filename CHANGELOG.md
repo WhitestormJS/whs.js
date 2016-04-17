@@ -1,6 +1,14 @@
 ## Changelog
 
 ##### Before contibuting here see [rules](https://github.com/WhitestormJS/whitestorm.js/blob/master/CONTRIBUTING.md#-adding-changes-to-changelogmd)
+**current**
+- #75: Helpers
+   - PointLight and SpotLight helpers.
+   - Box and Bounding box helpers. 
+   - DirectionalLight helper.
+   - HemisphereLight, edge and faceNormals helper.
+   - axis, grid and vertexNormals helper.
+
 **r8**
 - Engine rebuild commit:
    - Functions (prototype) replaced with es6 classes
