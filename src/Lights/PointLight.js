@@ -29,6 +29,13 @@ WHS.PointLight = class PointLight extends WHS.Light {
             params.light.decay
         );
 
+        if ( params.helper )
+            this.helper = new THREE.PointLightHelper( 
+                this.mesh, 
+                params.helper.size ? params.helper.size : 0
+            );
+        
+
         super.build();
         super.buildShadow();
 
