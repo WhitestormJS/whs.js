@@ -1413,6 +1413,8 @@ WHS.Light = function() {
                 decay: 1
             },
 
+            helper: false,
+
             shadowmap: {
                 cast: true,
 
@@ -1538,21 +1540,24 @@ WHS.Light = function() {
             this._lastWorld = parent;
 
             var _mesh = this.mesh,
+                _helper = this.helper,
                 _scope = this;
 
             return new Promise(function(resolve, reject) {
 
                 try {
 
-                    WHS.API.merge(_scope.parent.scene, _mesh);
+                    _scope.parent.scene.add(_mesh);
                     _scope.parent.children.push(_scope);
+
+                    if (_helper) _scope.parent.scene.add(_helper);
                 } catch (err) {
 
                     console.error(err.message);
                     reject();
                 } finally {
 
-                    if (WHS.debug) console.debug("@WHS.Light: Light " + _scope._type + " was added to worl.", [_scope, _scope.parent]);
+                    if (WHS.debug) console.debug("@WHS.Light: Light " + _scope._type + " was added to world.", [_scope, _scope.parent]);
 
                     if (_scope._wait) {
 
@@ -1630,6 +1635,7 @@ WHS.Light = function() {
         value: function copy(source) {
 
             this.mesh = source.mesh.clone();
+            if (source.helper) this.helper = source.helper.clone();
 
             this.build();
 
@@ -1650,6 +1656,7 @@ WHS.Light = function() {
         value: function remove() {
 
             this.parent.scene.remove(this.mesh);
+            if (source.helper) this.parent.scene.remove(this.helper);
 
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
             this.parent = null;
@@ -4132,6 +4139,8 @@ WHS.PointLight = function(_WHS$Light5) {
 
         _this27.mesh = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance, params.light.decay);
 
+        if (params.helper) _this27.helper = new THREE.PointLightHelper(_this27.mesh, params.helper.size ? params.helper.size : 0);
+
         _get(Object.getPrototypeOf(PointLight.prototype), 'build', _this27).call(_this27);
         _get(Object.getPrototypeOf(PointLight.prototype), 'buildShadow', _this27).call(_this27);
 
@@ -4176,6 +4185,8 @@ WHS.SpotLight = function(_WHS$Light6) {
         var _this28 = _possibleConstructorReturn(this, Object.getPrototypeOf(SpotLight).call(this, params, "spotlight"));
 
         _this28.mesh = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle, params.light.exponent, params.light.decay);
+
+        if (params.helper) _this28.helper = new THREE.SpotLightHelper(_this28.mesh);
 
         _get(Object.getPrototypeOf(SpotLight.prototype), 'build', _this28).call(_this28);
         _get(Object.getPrototypeOf(SpotLight.prototype), 'buildShadow', _this28).call(_this28);
