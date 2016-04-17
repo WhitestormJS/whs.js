@@ -136,8 +136,16 @@ var icosahedron = GAME.Icosahedron({
 
     mass: 10,
 
+    helpers: {
+        boundingBox: {
+            color: 0x0000ff
+        }
+    },
+
     material: {
         color: 0xffffff,
+        transparent: true,
+        opacity: 0.1,
         kind: "basic"
     },
 
