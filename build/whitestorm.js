@@ -1413,6 +1413,8 @@ WHS.Light = function() {
                 decay: 1
             },
 
+            helper: false,
+
             shadowmap: {
                 cast: true,
 
@@ -1538,21 +1540,24 @@ WHS.Light = function() {
             this._lastWorld = parent;
 
             var _mesh = this.mesh,
+                _helper = this.helper,
                 _scope = this;
 
             return new Promise(function(resolve, reject) {
 
                 try {
 
-                    WHS.API.merge(_scope.parent.scene, _mesh);
+                    _scope.parent.scene.add(_mesh);
                     _scope.parent.children.push(_scope);
+
+                    if (_helper) _scope.parent.scene.add(_helper);
                 } catch (err) {
 
                     console.error(err.message);
                     reject();
                 } finally {
 
-                    if (WHS.debug) console.debug("@WHS.Light: Light " + _scope._type + " was added to worl.", [_scope, _scope.parent]);
+                    if (WHS.debug) console.debug("@WHS.Light: Light " + _scope._type + " was added to world.", [_scope, _scope.parent]);
 
                     if (_scope._wait) {
 
@@ -1630,6 +1635,7 @@ WHS.Light = function() {
         value: function copy(source) {
 
             this.mesh = source.mesh.clone();
+            if (source.helper) this.helper = source.helper.clone();
 
             this.build();
 
@@ -1650,6 +1656,7 @@ WHS.Light = function() {
         value: function remove() {
 
             this.parent.scene.remove(this.mesh);
+            if (source.helper) this.parent.scene.remove(this.helper);
 
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
             this.parent = null;
@@ -1854,6 +1861,13 @@ WHS.Shape = function() {
 
             mass: 10,
 
+            helpers: {
+                box: false,
+                boundingBox: false,
+                edges: false,
+                faceNormals: false
+            },
+
             pos: {
                 x: 0,
                 y: 0,
@@ -1899,12 +1913,10 @@ WHS.Shape = function() {
             parent: null,
 
             wait: [],
+            helpers: {
+                box: false
+            },
 
-            /*position: params.pos,
-            rotation: params.rot,
-            scale: params.scale,
-            morph: params.morph,
-            target: params.target,*/
             physics: params.physics
         }, new Events());
 
@@ -1958,6 +1970,36 @@ WHS.Shape = function() {
 
                             _scope.scale.set(_scope.__params.scale.x, _scope.__params.scale.y, _scope.__params.scale.z);
 
+                            // Box helper.
+                            if (_scope.__params.helpers.box) {
+
+                                _scope.helpers.box = new THREE.BoxHelper(_scope.mesh);
+                            }
+
+                            // Bounding box helper.
+                            if (_scope.__params.helpers.boundingBox) {
+
+                                _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(_scope.mesh, _scope.__params.helpers.boundingBox.color ? _scope.__params.helpers.boundingBox.color : 0xffffff);
+                            }
+
+                            // Edges helper.
+                            if (_scope.__params.helpers.edges) {
+
+                                _scope.helpers.edges = new THREE.EdgesHelper(_scope.mesh, _scope.__params.helpers.edges.color ? _scope.__params.helpers.edges.color : 0xffffff);
+                            }
+
+                            // faceNormals helper.
+                            if (_scope.__params.helpers.faceNormals) {
+
+                                _scope.helpers.faceNormals = new THREE.FaceNormalsHelper(_scope.mesh, _scope.__params.helpers.faceNormals.size ? _scope.__params.helpers.faceNormals.size : 2, _scope.__params.helpers.faceNormals.color ? _scope.__params.helpers.faceNormals.color : 0xffffff, _scope.__params.helpers.faceNormals.linewidth ? _scope.__params.helpers.faceNormals.linewidth : 1);
+                            }
+
+                            // vertexNormals helper.
+                            if (_scope.__params.helpers.vertexNormals) {
+
+                                _scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(_scope.mesh, _scope.__params.helpers.vertexNormals.size ? _scope.__params.helpers.vertexNormals.size : 2, _scope.__params.helpers.vertexNormals.color ? _scope.__params.helpers.vertexNormals.color : 0xffffff, _scope.__params.helpers.vertexNormals.linewidth ? _scope.__params.helpers.vertexNormals.linewidth : 1);
+                            }
+
                             if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " is ready.", _scope);
 
                             _scope.emit("ready");
@@ -1984,6 +2026,36 @@ WHS.Shape = function() {
                         _scope.rotation.set(_scope.__params.rot.x, _scope.__params.rot.y, _scope.__params.rot.z);
 
                         _scope.scale.set(_scope.__params.scale.x, _scope.__params.scale.y, _scope.__params.scale.z);
+
+                        // Box helper.
+                        if (_scope.__params.helpers.box) {
+
+                            _scope.helpers.box = new THREE.BoxHelper(_scope.mesh);
+                        }
+
+                        // Bounding box helper.
+                        if (_scope.__params.helpers.boundingBox) {
+
+                            _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(_scope.mesh, _scope.__params.helpers.boundingBox.color ? _scope.__params.helpers.boundingBox.color : 0xffffff);
+                        }
+
+                        // Edges helper.
+                        if (_scope.__params.helpers.edges) {
+
+                            _scope.helpers.edges = new THREE.EdgesHelper(_scope.mesh, _scope.__params.helpers.edges.color ? _scope.__params.helpers.edges.color : 0xffffff);
+                        }
+
+                        // faceNormals helper.
+                        if (_scope.__params.helpers.faceNormals) {
+
+                            _scope.helpers.faceNormals = new THREE.FaceNormalsHelper(_scope.mesh, _scope.__params.helpers.faceNormals.size ? _scope.__params.helpers.faceNormals.size : 2, _scope.__params.helpers.faceNormals.color ? _scope.__params.helpers.faceNormals.color : 0xffffff, _scope.__params.helpers.faceNormals.linewidth ? _scope.__params.helpers.faceNormals.linewidth : 1);
+                        }
+
+                        // vertexNormals helper.
+                        if (_scope.__params.helpers.vertexNormals) {
+
+                            _scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(_scope.mesh, _scope.__params.helpers.vertexNormals.size ? _scope.__params.helpers.vertexNormals.size : 2, _scope.__params.helpers.vertexNormals.color ? _scope.__params.helpers.vertexNormals.color : 0xffffff, _scope.__params.helpers.vertexNormals.linewidth ? _scope.__params.helpers.vertexNormals.linewidth : 1);
+                        }
 
                         if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " is ready.", _scope);
 
@@ -2017,7 +2089,9 @@ WHS.Shape = function() {
             this.parent = parent;
             this._lastWorld = parent;
 
-            var _scope = this;
+            var _mesh = this.mesh,
+                _helpers = this.helpers,
+                _scope = this;
 
             for (var _len4 = arguments.length, tags = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
                 tags[_key4 - 1] = arguments[_key4];
@@ -2031,8 +2105,16 @@ WHS.Shape = function() {
 
                         try {
 
-                            WHS.API.merge(_scope.parent.scene, _scope.mesh);
+                            _scope.parent.scene.add(_mesh);
                             _scope.parent.children.push(_scope);
+
+                            if (_scope.__params.helpers.box) _scope.parent.scene.add(_helpers.box);
+
+                            if (_scope.__params.helpers.boundingBox) _scope.parent.scene.add(_helpers.boundingBox);
+
+                            if (_scope.__params.helpers.edges) _scope.parent.scene.add(_helpers.edges);
+
+                            if (_scope.__params.helpers.faceNormals) _scope.parent.scene.add(_helpers.faceNormals);
                         } catch (err) {
 
                             console.error(err.message);
@@ -2062,8 +2144,16 @@ WHS.Shape = function() {
 
                     try {
 
-                        WHS.API.merge(_scope.parent.scene, _scope.mesh);
+                        _scope.parent.scene.add(_mesh);
                         _scope.parent.children.push(_scope);
+
+                        if (_scope.__params.helpers.box) _scope.parent.scene.add(_helpers.box);
+
+                        if (_scope.__params.helpers.boundingBox) _scope.parent.scene.add(_helpers.boundingBox);
+
+                        if (_scope.__params.helpers.edges) _scope.parent.scene.add(_helpers.edges);
+
+                        if (_scope.__params.helpers.faceNormals) _scope.parent.scene.add(_helpers.faceNormals);
                     } catch (err) {
 
                         console.error(err.message);
@@ -2388,6 +2478,11 @@ WHS.World = function() {
                 type: THREE.PCFSoftShadowMap
             },
 
+            helpers: {
+                grid: false,
+                axis: false
+            },
+
             gravity: {
                 x: 0,
                 y: 0,
@@ -2444,6 +2539,7 @@ WHS.World = function() {
         this._initStats();
         this._initCamera();
         this._initRenderer();
+        this._initHelpers();
 
         // NOTE: ==================== Autoresize. ======================
         var scope = this;
@@ -2580,6 +2676,19 @@ WHS.World = function() {
 
             this._renderer.domElement.style.width = '100%';
             this._renderer.domElement.style.height = '100%';
+        }
+
+        /**
+         * Add helpers to scene.
+         */
+
+    }, {
+        key: '_initHelpers',
+        value: function _initHelpers() {
+
+            if (this._settings.helpers.axis) this.scene.add(new THREE.AxisHelper(this._settings.helpers.axis.size ? this._settings.helpers.axis.size : 5));
+
+            if (this._settings.helpers.grid) this.scene.add(new THREE.GridHelper(this._settings.helpers.grid.size ? this._settings.helpers.grid.size : 10, this._settings.helpers.grid.step ? this._settings.helpers.grid.step : 1));
         }
 
         /**
@@ -4007,6 +4116,8 @@ WHS.DirectionalLight = function(_WHS$Light2) {
 
         _this24.mesh = new THREE.DirectionalLight(params.light.color, params.light.intensity);
 
+        if (params.helper) _this24.helper = new THREE.DirectionalLightHelper(_this24.mesh, params.helper.size ? params.helper.size : 0);
+
         _get(Object.getPrototypeOf(DirectionalLight.prototype), 'build', _this24).call(_this24);
         _get(Object.getPrototypeOf(DirectionalLight.prototype), 'buildShadow', _this24).call(_this24);
 
@@ -4048,6 +4159,8 @@ WHS.HemisphereLight = function(_WHS$Light3) {
         var _this25 = _possibleConstructorReturn(this, Object.getPrototypeOf(HemisphereLight).call(this, params, "hemispherelight"));
 
         _this25.mesh = new THREE.HemisphereLight(params.light.skyColor, params.light.groundColor, params.light.intensity);
+
+        if (params.helper) _this25.helper = new THREE.HemisphereLightHelper(_this25.mesh, params.helper.size ? params.helper.size : 0);
 
         _get(Object.getPrototypeOf(HemisphereLight.prototype), 'build', _this25).call(_this25);
         _get(Object.getPrototypeOf(HemisphereLight.prototype), 'buildShadow', _this25).call(_this25);
@@ -4132,6 +4245,8 @@ WHS.PointLight = function(_WHS$Light5) {
 
         _this27.mesh = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance, params.light.decay);
 
+        if (params.helper) _this27.helper = new THREE.PointLightHelper(_this27.mesh, params.helper.size ? params.helper.size : 0);
+
         _get(Object.getPrototypeOf(PointLight.prototype), 'build', _this27).call(_this27);
         _get(Object.getPrototypeOf(PointLight.prototype), 'buildShadow', _this27).call(_this27);
 
@@ -4176,6 +4291,8 @@ WHS.SpotLight = function(_WHS$Light6) {
         var _this28 = _possibleConstructorReturn(this, Object.getPrototypeOf(SpotLight).call(this, params, "spotlight"));
 
         _this28.mesh = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle, params.light.exponent, params.light.decay);
+
+        if (params.helper) _this28.helper = new THREE.SpotLightHelper(_this28.mesh);
 
         _get(Object.getPrototypeOf(SpotLight.prototype), 'build', _this28).call(_this28);
         _get(Object.getPrototypeOf(SpotLight.prototype), 'buildShadow', _this28).call(_this28);
