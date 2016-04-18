@@ -120,9 +120,9 @@ WHS.Shape = class {
 
 		if (tags.indexOf("wait") >= 0) {
 
-			Promise.all( _scope.wait ).then(function() {
+			return new Promise( (resolve, reject) => {
 
-				return new Promise( (resolve, reject) => {
+				Promise.all( _scope.wait ).then(function() {
 
 					try {
 
@@ -368,13 +368,13 @@ WHS.Shape = class {
 
 		if ( tags.indexOf("wait") >= 0 ) {
 
-			Promise.all( _scope.wait ).then(function() {
+			return new Promise( (resolve, reject) => {
 
-				return new Promise( (resolve, reject) => {
+				Promise.all( _scope.wait ).then(function() {
 
 					try {
 
-						_scope.parent.scene.add( _mesh );
+						_scope.parent.scene.add( _scope.mesh );
 						_scope.parent.children.push( _scope );
 
 						if ( _scope.__params.helpers.box ) 
@@ -414,7 +414,7 @@ WHS.Shape = class {
 						});
 
 						if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
-			                + scope._type + " was added to world.", 
+			                + _scope._type + " was added to world.", 
 			                [_scope, _scope.parent]);
 
 
@@ -430,7 +430,7 @@ WHS.Shape = class {
 
 				try {
 
-					_scope.parent.scene.add( _mesh );
+					_scope.parent.scene.add( _scope.mesh );
 					_scope.parent.children.push( _scope );
 
 					if ( _scope.__params.helpers.box ) 
@@ -472,7 +472,7 @@ WHS.Shape = class {
 					});
 
 					if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
-		                + scope._type + " was added to world", 
+		                + _scope._type + " was added to world", 
 		                [_scope, _scope.parent]);
 
 				}

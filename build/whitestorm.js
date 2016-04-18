@@ -1955,9 +1955,9 @@ WHS.Shape = function() {
 
             if (tags.indexOf("wait") >= 0) {
 
-                Promise.all(_scope.wait).then(function() {
+                return new Promise(function(resolve, reject) {
 
-                    return new Promise(function(resolve, reject) {
+                    Promise.all(_scope.wait).then(function() {
 
                         try {
 
@@ -2099,13 +2099,13 @@ WHS.Shape = function() {
 
             if (tags.indexOf("wait") >= 0) {
 
-                Promise.all(_scope.wait).then(function() {
+                return new Promise(function(resolve, reject) {
 
-                    return new Promise(function(resolve, reject) {
+                    Promise.all(_scope.wait).then(function() {
 
                         try {
 
-                            _scope.parent.scene.add(_mesh);
+                            _scope.parent.scene.add(_scope.mesh);
                             _scope.parent.children.push(_scope);
 
                             if (_scope.__params.helpers.box) _scope.parent.scene.add(_helpers.box);
@@ -2136,7 +2136,7 @@ WHS.Shape = function() {
                                 _scope.emit("collide");
                             });
 
-                            if (WHS.debug) console.debug("@WHS.Shape: Shape " + scope._type + " was added to world.", [_scope, _scope.parent]);
+                            if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " was added to world.", [_scope, _scope.parent]);
                         }
                     });
                 });
@@ -2146,7 +2146,7 @@ WHS.Shape = function() {
 
                     try {
 
-                        _scope.parent.scene.add(_mesh);
+                        _scope.parent.scene.add(_scope.mesh);
                         _scope.parent.children.push(_scope);
 
                         if (_scope.__params.helpers.box) _scope.parent.scene.add(_helpers.box);
@@ -2178,7 +2178,7 @@ WHS.Shape = function() {
                             _scope.emit("ready");
                         });
 
-                        if (WHS.debug) console.debug("@WHS.Shape: Shape " + scope._type + " was added to world", [_scope, _scope.parent]);
+                        if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " was added to world", [_scope, _scope.parent]);
                     }
                 });
             }
