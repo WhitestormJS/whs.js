@@ -81,10 +81,6 @@ GAME.light1 = GAME.SpotLight( {
         distance: 500,
     },
 
-    helper: {
-        size: 1
-    },
-
     shadowmap: {
         width: 2048,
         height: 2048,
