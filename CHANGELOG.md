@@ -8,6 +8,8 @@
    - DirectionalLight helper.
    - HemisphereLight, edge and faceNormals helper.
    - axis, grid and vertexNormals helper.
+- Shape exmaples moved to *examples/shapes/*
+- Added debug & physics example.
 
 **r8**
 - Engine rebuild commit:
