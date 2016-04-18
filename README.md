@@ -88,7 +88,8 @@ world.start(); // Start animations and physics simulation.
 ## Other examples:
  * [FPS](http://192.241.128.187/current/examples/fps_fog.html)  (First person example with Wagner effects and terrain. + fog)
  * [Basic](http://192.241.128.187/current/examples/basic.html)  (Basic "Hello world!" example.)
- * [Material](http://192.241.128.187/current/examples/basic_material.html)  (Basic example with material.)
+ * [Physics/Dominos](http://192.241.128.187/current/examples/physics.html)  (Physics example with dominos.)
+ * [Debugging](http://192.241.128.187/current/examples/debugging.html)  (Object's debug example.)
  * [Object/Model](http://192.241.128.187/current/examples/basic_model.html)  (Teapot model with *Three.js* JSONLoader.)
  * [Plugin/Color](http://192.241.128.187/current/examples/plugin_example.html)  (Basic plugin example.)
  * [Skybox](http://192.241.128.187/current/examples/skybox.html) (Skybox example)
