@@ -389,6 +389,9 @@ WHS.Shape = class {
 						if ( _scope.__params.helpers.faceNormals ) 
 							_scope.parent.scene.add( _helpers.faceNormals );
 
+						if ( _scope.__params.helpers.vertexNormals ) 
+							_scope.parent.scene.add( _helpers.vertexNormals );
+
 					} catch ( err ) {
 
 						console.error( err.message );
@@ -441,6 +444,9 @@ WHS.Shape = class {
 
 					if ( _scope.__params.helpers.faceNormals ) 
 						_scope.parent.scene.add( _helpers.faceNormals );
+
+					if ( _scope.__params.helpers.vertexNormals ) 
+							_scope.parent.scene.add( _helpers.vertexNormals );
 
 				} catch ( err ) {
 
