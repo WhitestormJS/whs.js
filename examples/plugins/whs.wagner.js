@@ -23,6 +23,28 @@ function _classCallCheck(instance, Constructor) {
     }
 }
 
+function _possibleConstructorReturn(self, call) {
+    if (!self) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+            value: subClass,
+            enumerable: false,
+            writable: true,
+            configurable: true
+        }
+    });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
 /**
  * © Alexander Buzin, 2014-2015
  * Site: http://alexbuzin.me/
@@ -37,13 +59,17 @@ function _classCallCheck(instance, Constructor) {
  * @return {Object} Scope.
  */
 
-WHS.Wagner = function() {
+WHS.Wagner = function(_WHS$Object) {
+    _inherits(Wagner, _WHS$Object);
+
     function Wagner(scope) {
         _classCallCheck(this, Wagner);
 
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Wagner).call(this));
+
         scope._composer = new WAGNER.Composer(scope._renderer);
 
-        scope._composer.setSize(+(scope._settings.width * scope._settings.rWidth).toFixed(), +(scope._settings.height * scope._settings.rHeight).toFixed());
+        scope._composer.setSize(+(scope.__params.width * scope.__params.rWidth).toFixed(), +(scope.__params.height * scope.__params.rHeight).toFixed());
 
         scope._composer.autoClearColor = true;
 
@@ -52,9 +78,11 @@ WHS.Wagner = function() {
 
         scope._composer.stack = new WAGNER.Stack(new WAGNER.ShadersPool());
 
-        this._settings = {
+        _this.setParams({
             composer: scope._composer
-        };
+        });
+
+        return _this;
     }
 
     _createClass(Wagner, [{
@@ -77,8 +105,8 @@ WHS.Wagner = function() {
                         strength: .05,
 
                         center: {
-                            x: .5 * this._settings.composer.width,
-                            y: .5 * this._settings.composer.height
+                            x: .5 * this.__params.composer.width,
+                            y: .5 * this.__params.composer.height
                         }
                     });
 
@@ -94,8 +122,8 @@ WHS.Wagner = function() {
                         useTexture: true,
 
                         center: {
-                            x: .5 * this._settings.composer.width,
-                            y: .5 * this._settings.composer.height
+                            x: .5 * this.__params.composer.width,
+                            y: .5 * this.__params.composer.height
                         }
                     });
 
@@ -192,14 +220,14 @@ WHS.Wagner = function() {
                     return;
             }
 
-            this._settings.composer.stack.addPass(type, true, target);
+            this.__params.composer.stack.addPass(type, true, target);
 
             return this;
         }
     }]);
 
     return Wagner;
-}();
+}(WHS.Object);
 
 WHS.World.prototype.Wagner = function() {
     return new WHS.Wagner(this);

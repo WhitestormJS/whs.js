@@ -5,7 +5,7 @@
 */
 
 /** Class that initializates 3d world. */
-WHS.World = class {
+WHS.World = class extends WHS.Object {
     /**
      * Create a 3D world and define defaults.
      *
@@ -21,7 +21,7 @@ WHS.World = class {
         if (!Physijs)
             console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
 
-        var target = WHS.API.extend(params, {
+        super({
 
             stats: false,
             autoresize: false,
@@ -84,7 +84,7 @@ WHS.World = class {
 
         });
 
-        this._settings = target;
+        super.setParams( params );
 
         // INIT.
         this._initScene();
@@ -97,15 +97,17 @@ WHS.World = class {
         // NOTE: ==================== Autoresize. ======================
         var scope = this;
 
-        if (target.autoresize)
+        if ( this.__params.autoresize )
             window.addEventListener('resize', () => {
-                scope.resize();
+                scope.setSize( 
+                    window.innerWidth, 
+                    window.innerHeight
+                );
             });
 
         return scope;
 
     }
-
 
     /**
      * Initialize Three.js scene object.
@@ -118,9 +120,9 @@ WHS.World = class {
 
         this.scene.setGravity(
             new THREE.Vector3(
-                this._settings.gravity.x, 
-                this._settings.gravity.y,
-                this._settings.gravity.z
+                this.__params.gravity.x, 
+                this.__params.gravity.y,
+                this.__params.gravity.z
             )
         );
 
@@ -136,8 +138,8 @@ WHS.World = class {
 
         this.simulate = true;
 
-        Physijs.scripts.worker = this._settings.path_worker;
-        Physijs.scripts.ammo = this._settings.path_ammo;
+        Physijs.scripts.worker = this.__params.path_worker;
+        Physijs.scripts.ammo = this.__params.path_ammo;
 
     }
 
@@ -146,15 +148,15 @@ WHS.World = class {
      */
     _initDOM() {
 
-        this._settings.container.style.margin = 0;
-        this._settings.container.style.padding = 0;
-        this._settings.container.style.position = 'relative';
-        this._settings.container.style.overflow = 'hidden';
+        this.__params.container.style.margin = 0;
+        this.__params.container.style.padding = 0;
+        this.__params.container.style.position = 'relative';
+        this.__params.container.style.overflow = 'hidden';
 
         this._dom = document.createElement('div');
         this._dom.className = "whs";
 
-        this._settings.container.appendChild(this._dom);
+        this.__params.container.appendChild(this._dom);
 
         return this._dom;
 
@@ -166,17 +168,17 @@ WHS.World = class {
     _initStats() {
 
         // Debug Renderer
-        if (this._settings.stats) {
+        if (this.__params.stats) {
 
             this._stats = new Stats();
 
-            if (this._settings.stats == "fps")
+            if (this.__params.stats == "fps")
                 this._stats.setMode(0);
 
-            else if (this._settings.stats == "ms")
+            else if (this.__params.stats == "ms")
                 this._stats.setMode(1);
 
-            else if (this._settings.stats == "mb")
+            else if (this.__params.stats == "mb")
                 this._stats.setMode(1);
 
             else {
@@ -201,16 +203,16 @@ WHS.World = class {
     _initCamera() {
 
         this._camera = new THREE.PerspectiveCamera(
-            this._settings.camera.aspect,
-            this._settings.width / this._settings.height,
-            this._settings.camera.near,
-            this._settings.camera.far
+            this.__params.camera.aspect,
+            this.__params.width / this.__params.height,
+            this.__params.camera.near,
+            this.__params.camera.far
         );
 
         this._camera.position.set(
-            this._settings.camera.x,
-            this._settings.camera.y,
-            this._settings.camera.z
+            this.__params.camera.x,
+            this.__params.camera.y,
+            this.__params.camera.z
         );
 
         this.scene.add( this._camera );
@@ -226,16 +228,16 @@ WHS.World = class {
 
         // Renderer.
         this._renderer = new THREE.WebGLRenderer();
-        this._renderer.setClearColor(this._settings.background);
+        this._renderer.setClearColor(this.__params.background);
 
         // Shadowmap.
-        this._renderer.shadowMap.enabled = this._settings.shadowmap.enabled;
-        this._renderer.shadowMap.type = this._settings.shadowmap.type;
+        this._renderer.shadowMap.enabled = this.__params.shadowmap.enabled;
+        this._renderer.shadowMap.type = this.__params.shadowmap.type;
         this._renderer.shadowMap.cascade = true;
 
         this._renderer.setSize( 
-            +(this._settings.width * this._settings.rWidth).toFixed(), 
-            +(this._settings.height * this._settings.rHeight).toFixed()
+            +(this.__params.width * this.__params.rWidth).toFixed(), 
+            +(this.__params.height * this.__params.rHeight).toFixed()
         );
 
         this._renderer.render(this.scene, this._camera);
@@ -252,23 +254,23 @@ WHS.World = class {
      */
     _initHelpers() {
 
-        if ( this._settings.helpers.axis )
+        if ( this.__params.helpers.axis )
             this.scene.add( 
                 new THREE.AxisHelper( 
-                    this._settings.helpers.axis.size 
-                    ? this._settings.helpers.axis.size 
+                    this.__params.helpers.axis.size 
+                    ? this.__params.helpers.axis.size 
                     : 5
                 ) 
             );
 
-        if ( this._settings.helpers.grid )
+        if ( this.__params.helpers.grid )
             this.scene.add( 
                 new THREE.GridHelper( 
-                    this._settings.helpers.grid.size 
-                    ? this._settings.helpers.grid.size 
+                    this.__params.helpers.grid.size 
+                    ? this.__params.helpers.grid.size 
                     : 10,
-                    this._settings.helpers.grid.step 
-                    ? this._settings.helpers.grid.step 
+                    this.__params.helpers.grid.step 
+                    ? this.__params.helpers.grid.step 
                     : 1
                 ) 
             );
@@ -293,7 +295,7 @@ WHS.World = class {
             if (scope._stats)
                  scope._stats.begin();
 
-            //if (scope._settings.anaglyph)
+            //if (scope.__params.anaglyph)
             //  scope.effect.render(scope.scene, scope._camera);
 
             scope._process( clock );
@@ -383,14 +385,16 @@ WHS.World = class {
     /**
      * This functon will scene properties when it's called.
      */
-    resize() {
+    setSize( width = 1, height = 1) {
 
-        this._camera.aspect = this._settings.width / this._settings.height;
+        console.log(width, height);
+
+        this._camera.aspect = width / height;
         this._camera.updateProjectionMatrix();
         
         this._renderer.setSize( 
-            +(this._settings.width * this._settings.rWidth).toFixed(), 
-            +(this._settings.height * this._settings.rHeight).toFixed()
+            +(width * this.__params.rWidth).toFixed(), 
+            +(height * this.__params.rHeight).toFixed()
         );
 
     }
