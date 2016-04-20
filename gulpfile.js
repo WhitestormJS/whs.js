@@ -10,9 +10,9 @@ var babel = require("gulp-babel");
 var sources = [
     'src/libs/*.js',
     'src/libs/**/*.js',
-    'src/Core/*.js',
     'src/Polyfill.js',
     'src/Prefix.js',
+    'src/Core/*.js',
     'src/API/*.js',
     'src/Watchers/*.js',
     'src/Plugins/*.js',
