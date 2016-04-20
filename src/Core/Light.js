@@ -5,7 +5,7 @@
 */
 
 /** Light super class */
-WHS.Light = class {
+WHS.Light = class extends WHS.Object {
 	/**
 	 * Constructing WHS.Light object.
 	 * 
@@ -26,12 +26,8 @@ WHS.Light = class {
 
 		}
 
-		if ( params.pos ) params.pos.set = _set;
-		if ( params.rot ) params.rot.set = _set;
-		if ( params.target ) params.target.set = _set;
-
 		// Polyfill for 3D.
-		var target = WHS.API.extend(params, {
+		super({
 
 	        light: {
 	        	color: 0xffffff,
@@ -89,19 +85,15 @@ WHS.Light = class {
 
 		});
 
+		super.setParams( params );
+
 		var scope = Object.assign(this,
 		{
 			_type: type,
-			_whsobject: true,
-			__releaseTime: new Date().getTime(),
-			__params: target,
 
-			parent: null,
-
-			_light: target.light,
-			_shadowmap: target.shadowmap,
-		},
-		new Events());
+			_light: this.__params.light,
+			_shadowmap: this.__params.shadowmap,
+		});
 
 		if ( WHS.debug ) console.debug("@WHS.Light: Light " + scope._type +
 			" found.", scope);
@@ -305,23 +297,6 @@ WHS.Light = class {
 		return this;
 
 	}
-
-	/**
-	 * Add this light to last applied world.
-	 */
-	retrieve() {
-
-        this.parent = this._lastWorld;
-                
-		this.parent.scene.add( this.mesh );
-		this.parent.children.push( this );
-
-		this.emit("retrieve");
-
-		return this;
-
-	}
-
 
 	get position() {
 		return this.mesh.position;
