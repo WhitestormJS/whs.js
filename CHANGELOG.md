@@ -10,6 +10,11 @@
    - axis, grid and vertexNormals helper.
 - Shape exmaples moved to *examples/shapes/*
 - Added debug & physics example.
+- #81: Added WHS.Object as a base of WHS.Shape, WHS.Light and WHS.World.
+   - *src/Core.js -> src/Core/World.js*
+   - *src/API/Shape.js -> src/Core/Shape.js*
+   - *src/API/Light.js -> src/Core/Light.js*
+- Fixed autoresize.
 
 **r8**
 - Engine rebuild commit:
