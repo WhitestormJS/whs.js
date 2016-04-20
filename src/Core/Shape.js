@@ -5,7 +5,7 @@
 */
 
 /** Shape super class */
-WHS.Shape = class {
+WHS.Shape = class extends WHS.Object {
 	/**
 	 * Constructing WHS.Shape object.
 	 * 
@@ -18,7 +18,7 @@ WHS.Shape = class {
 		if ( !type ) 
 			console.error( "@constructor: Please specify \" type \"." );
 
-		var _set = function( x, y, z ) {
+		let _set = function( x, y, z ) {
 
 			this.x = x;
 			this.y = y;
@@ -26,8 +26,7 @@ WHS.Shape = class {
 
 		}
 
-		// Polyfill for 3D.
-		WHS.API.extend(params, {
+		super({
 
 			mass: 10,
 
@@ -75,13 +74,12 @@ WHS.Shape = class {
 
 		});
 
+		super.setParams( params );
+
 		var scope = Object.assign( this,
 		{
 			_type: type,
-			_whsobject: true,
-			__releaseTime: new Date().getTime(),
 			__params: params,
-			parent: null,
 
 			wait: [],
 			helpers: {
@@ -89,8 +87,7 @@ WHS.Shape = class {
 			},
 
 			physics: params.physics
-		},
-		new Events());
+		});
 
 		if ( WHS.debug ) console.debug("@WHS.Shape: Shape " + scope._type +
 			" found.", scope);
