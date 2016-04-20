@@ -5,19 +5,17 @@ var beautify = require('gulp-beautify');
 var replace = require('gulp-replace-task');
 var insert = require('gulp-insert');
 var watch = require('gulp-watch');
-var sourcemaps = require("gulp-sourcemaps");
 var babel = require("gulp-babel");
-//var browserify = require('gulp-browserify');
 
 var sources = [
     'src/libs/*.js',
     'src/libs/**/*.js',
+    'src/Core/*.js',
     'src/Polyfill.js',
     'src/Prefix.js',
     'src/API/*.js',
     'src/Watchers/*.js',
     'src/Plugins/*.js',
-    'src/Core.js',
     'src/Objects/*.js',
     'src/Shapes/*.js',
     'src/Lights/*.js',
@@ -29,30 +27,16 @@ var sources_test = [
     'src/libs/*.js',
     'src/libs/**/*.js',
     'src/Prefix.js',
+    'src/Core/*.js',
     'src/API/*.js',
     'src/Watchers/*.js',
     'src/Plugins/*.js',
-    'src/Core.js',
     'src/Objects/*.js',
     'src/Shapes/*.js',
     'src/Lights/*.js',
     'src/Controls/*.js',
     'src/Components/*.js'
 ]
-
-var codes = [
-    'src/Prefix.js',
-    'src/API/*.js',
-    'src/Watchers/*.js',
-    'src/Core.js',
-    'src/Objects/*.js',
-    'src/Shapes/*.js',
-    'src/Lights/*.js',
-    'src/Controls/*.js',
-    'src/Components/*.js'
-]
-
-
 
 var author_comment = "/**\n" +
     " * © Alexander Buzin, 2014-2015\n" +
@@ -69,9 +53,9 @@ var lib_includes = [
 
 /* =========================== GULP COMMANDS =========================== */
 
-// Build command.
 gulp.task('build', function() {
 
+    // Original.
     gulp.src(sources)
         .pipe(replace({
             patterns: [
@@ -90,7 +74,6 @@ gulp.task('build', function() {
                 }
             ]
         }))
-        .pipe(sourcemaps.init())
         .pipe(concat('whitestorm.js'))
         .pipe(babel({
             presets: ['es2015']
@@ -99,6 +82,7 @@ gulp.task('build', function() {
         .pipe(insert.prepend(author_comment))
         .pipe(gulp.dest('./build/'));
 
+    // For testing.
     gulp.src(sources_test)
         .pipe(concat("whitestorm.test.js"))
         .pipe(babel({
@@ -109,6 +93,7 @@ gulp.task('build', function() {
         .pipe(insert.prepend(author_comment))
         .pipe(gulp.dest("./build/"));
 
+    // Minified.
     gulp.src(sources)
         .pipe(concat('whitestorm.min.js'))
         .pipe(babel({
@@ -117,33 +102,5 @@ gulp.task('build', function() {
         .pipe(uglify())
         .pipe(insert.prepend(author_comment))
         .pipe(gulp.dest('./build/'));
-
-});
-
-// Test command.
-gulp.task('test', function() {
-
-    gulp.src(sources)
-        .pipe(concat('whitestorm.js'))
-        .pipe(babel({
-            presets: ['es2015']
-        }))
-        .pipe(gulp.dest('./build/'));
-
-});
-
-// Watch command.
-gulp.task('watch', function() {
-
-    gulp.watch(sources, ['test']);
-
-    watch('src/**/*.js', {
-        events: ['add']
-    }, function(file) {
-
-    gulp.src(file.path).pipe(insert.prepend(author_comment))
-        .pipe(gulp.dest(file.dirname));
-            
-    });
 
 });

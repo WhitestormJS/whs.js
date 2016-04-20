@@ -1121,257 +1121,6 @@ THREE.SubdivisionModifier.prototype.modify = function(geometry) {
     };
 })();
 
-/* ================ MODERNIZING BROWSER WHS.API IF NOT EXIST ==================== */
-
-//Replacing jQuery fadeIn and fadeOut
-function addCSSRule(sheet, selector, rules, index) {
-
-    if (sheet.insertRule) sheet.insertRule(selector + '{' + rules + '}', index);
-    else if (sheet.addRule) sheet.addRule(selector, rules, index);
-}
-
-//Adds CSS style sheets
-addCSSRule(document.styleSheets[0], '@keyframes fadeOut', 'to {opacity: 0}', 0);
-
-addCSSRule(document.styleSheets[0], '@keyframes fadeIn', 'from {opacity: 0} to {opacity: 1}', 0);
-
-//Adds function to triggers animation
-Element.prototype.fadeOut = function(t) {
-
-    this.style.webkitAnimationDuration = (t || 1) + 's';
-    this.style.webkitAnimationName = "fadeOut";
-    this.style.webkitAnimationPlayState = 'running';
-
-    this.addEventListener('animationend', function() {
-        this.style.display = 'none';
-        this.style.webkitAnimationPlayState = 'paused';
-    });
-};
-
-Element.prototype.fadeIn = function(t, display) {
-
-    this.style.display = display || 'block';
-
-    this.style.webkitAnimationDuration = (t || 1) + 's';
-    this.style.webkitAnimationName = "fadeIn";
-    this.style.webkitAnimationPlayState = 'running';
-
-    this.addEventListener('animationend', function() {
-        this.style.display = display || 'block';
-    });
-};
-
-// Array.isArray;
-if (typeof Array.isArray === 'undefined') {
-
-    Array.isArray = function(obj) {
-
-        'use strict';
-
-        return Object.prototype.toString.call(obj) === '[object Array]';
-    };
-}
-
-// event.movementX and event.movementY kind of polyfill
-(function() {
-
-    if (!MouseEvent.prototype.hasOwnProperty('movementX') || !MouseEvent.prototype.hasOwnProperty('mozMovementX')) {
-        //Checks for support
-
-        // If movementX and ... are not supported, an object Mouse is added to the WHS
-        // that contains information about last coords of the mouse.
-        var mouse = {
-            lastX: 0,
-            lastY: 0
-        };
-
-        MouseEvent.prototype.getMovementX = function() {
-            'use strict';
-
-            var value = this.clientX - mouse.lastX;
-            mouse.lastX = this.clientX;
-
-            return value;
-        };
-
-        MouseEvent.prototype.getMovementY = function() {
-            'use strict';
-
-            var value = this.clientY - mouse.lastY;
-            mouse.lastY = this.clientY;
-
-            return value;
-        };
-    }
-})();
-
-// Object.assign|es6+;
-if (!Object.assign) {
-    Object.defineProperty(Object, 'assign', {
-        enumerable: false,
-        configurable: true,
-        writable: true,
-        value: function value(target) {
-            'use strict';
-
-            if (target === undefined || target === null) {
-                throw new TypeError('Cannot convert first argument to object');
-            }
-
-            var to = Object(target);
-            for (var i = 1; i < arguments.length; i++) {
-                var nextSource = arguments[i];
-                if (nextSource === undefined || nextSource === null) {
-                    continue;
-                }
-                nextSource = Object(nextSource);
-
-                var keysArray = Object.keys(nextSource);
-                for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
-                    var nextKey = keysArray[nextIndex];
-                    var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
-                    if (desc !== undefined && desc.enumerable) {
-                        to[nextKey] = nextSource[nextKey];
-                    }
-                }
-            }
-            return to;
-        }
-    });
-}
-
-// [x]#TODO:130 RESTRUCTURIZE.
-// [x]#TODO:120 RESTRUCTURIZE threejs and cannonjs library calling.
-// [x]#DONE:30 Add stats.
-// #TODO:10 Add http://underscorejs.org/.
-// DONE:20 clean all console.logs.
-// DOING:0 Wagner.base.js is not a part of library.
-// FIXME: Fix fog.
-// DOING:10 improve libraries support.
-
-/* ================ WHITESTORM|JS ==================== */
-var WHS = {
-    REVISION: "r8",
-
-    loader: {
-        JSON: new THREE.JSONLoader(),
-        Texture: new THREE.TextureLoader(),
-        Font: new THREE.FontLoader()
-    },
-
-    API: {},
-
-    _settings: {
-
-        assets: "./assets",
-
-        path_worker: '../libs/physijs_worker.js',
-        path_ammo: '../libs/ammo.js'
-
-    },
-
-    debug: false,
-
-    loops: []
-};
-
-console.log('WhitestormJS', WHS.REVISION);
-
-WHS.API.loadJSON = function(url, callback, texturePath) {
-    return WHS.loader.JSON.load(url, callback, texturePath);
-};
-
-WHS.API.loadTexture = function(url, onLoad, onProgress, onError) {
-    return WHS.loader.Texture.load(url, onLoad, onProgress, onError);
-};
-
-WHS.API.loadFont = function(url, onLoad, onProgress, onError) {
-    return WHS.loader.Font.load(url, onLoad, onProgress, onError);
-};
-
-if (typeof define === 'function' && define.amd) {
-
-    define('whitestorm', WHS);
-} else if ('undefined' !== typeof exports && 'undefined' !== typeof module) {
-
-    module.exports = WHS;
-}
-
-/**
- * Extending object with other objects.
- *
- * @param {Object} object - Object that will be overwritten.
- * @param {...Objects} extensions - other objects that will be merged to first.
- * @return {Object} Extended object.
- */
-WHS.API.extend = function(object) {
-    for (var _len = arguments.length, extensions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        extensions[_key - 1] = arguments[_key];
-    }
-
-    // $.extend alternative, ... is the spread operator.
-
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-        for (var _iterator = extensions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var extension = _step.value;
-
-            //console.log(extension);
-            //console.log(typeof extension);
-
-            if (!extension) continue; // Ignore null and undefined objects and paramaters.
-
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
-
-            try {
-                for (var _iterator2 = Object.getOwnPropertyNames(extension)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                    var prop = _step2.value;
-                    // Do not traverse the prototype chain.
-                    if (object[prop] != undefined && object[prop].toString() == '[object Object]' && extension[prop].toString() == '[object Object]')
-
-                    //Goes deep only if object[prop] and extension[prop] are both objects !
-                        WHS.API.extend(object[prop], extension[prop]);
-                    else object[prop] = object[prop] === 0 ? 0 : object[prop];
-                    if (typeof object[prop] == "undefined") object[prop] = extension[prop]; // Add values that do not already exist.
-                }
-            } catch (err) {
-                _didIteratorError2 = true;
-                _iteratorError2 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                        _iterator2.return();
-                    }
-                } finally {
-                    if (_didIteratorError2) {
-                        throw _iteratorError2;
-                    }
-                }
-            }
-        }
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
-        }
-    }
-
-    return object;
-};
-
 /** Light super class */
 WHS.Light = function() {
     /**
@@ -1487,8 +1236,8 @@ WHS.Light = function() {
 
             'use strict';
 
-            for (var _len2 = arguments.length, tags = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-                tags[_key2] = arguments[_key2];
+            for (var _len = arguments.length, tags = Array(_len), _key = 0; _key < _len; _key++) {
+                tags[_key] = arguments[_key];
             }
 
             var mesh = this.mesh,
@@ -1712,128 +1461,6 @@ WHS.Light = function() {
     return _class;
 }();
 
-WHS.API.loadMaterial = function(material) {
-
-    'use strict';
-
-    if (typeof material.kind !== "string") console.error("Type of material is undefined or not a string. @loadMaterial");
-
-    var scope = {
-        _type: material.kind,
-        _restitution: !isNaN(parseFloat(material.restitution)) ? material.restitution : !isNaN(parseFloat(material.rest)) ? material.rest : 0.3,
-        _friction: !isNaN(parseFloat(material.friction)) ? material.friction : !isNaN(parseFloat(material.fri)) ? material.fri : 0.8
-    };
-
-    var params = WHS.API.extend({}, material);
-
-    delete params["kind"];
-
-    delete params["friction"];
-    delete params["fri"];
-
-    delete params["restitution"];
-    delete params["rest"];
-
-    delete params["useCustomMaterial"];
-    delete params["useVertexColors"];
-
-    switch (material.kind) {
-        case "basic":
-            scope._material = new THREE.MeshBasicMaterial(params);
-            break;
-
-        case "linebasic":
-            scope._params = new THREE.LineBasicMaterial(params);
-            break;
-
-        case "linedashed":
-            scope._material = new THREE.LineDashedMaterial(params);
-            break;
-
-        case "material":
-            scope._material = new THREE.Material(params);
-            break;
-
-        case "depth":
-            scope._material = new THREE.MeshDepthMaterial(params);
-            break;
-
-        case "face":
-            scope._material = new THREE.MeshFaceMaterial(params);
-            break;
-
-        case "lambert":
-            scope._material = new THREE.MeshLambertMaterial(params);
-            break;
-
-        case "normal":
-            scope._material = new THREE.MeshNormalMaterial(params);
-            break;
-
-        case "phong":
-            scope._material = new THREE.MeshPhongMaterial(params);
-            break;
-
-        case "pointcloud":
-            scope._material = new THREE.PointCloudMaterial(params);
-            break;
-
-        case "rawshader":
-            scope._material = new THREE.RawShaderMaterial(params);
-            break;
-
-        case "shader":
-            scope._material = new THREE.ShaderMaterial(params);
-            break;
-
-        case "spritecanvas":
-            scope._material = new THREE.SpriteCanvasMaterial(params);
-            break;
-
-        case "sprite":
-            scope._material = new THREE.SpriteMaterial(params);
-            break;
-    }
-
-    scope._materialP = Physijs.createMaterial(scope._material, scope._friction, scope._restitution);
-
-    return scope;
-};
-
-/**
- * Adds multiple objects to first object with .add method.
- *
- * @param {Object} box Object to be merged. (REQUIRED)
- * @param {Object} rabbits Object to be added. (REQUIRED)
- * @deprecated since v0.0.6
- */
-WHS.API.merge = function(box, rabbits) {
-
-    'use strict';
-
-    // More presice checking.
-
-    if (!((typeof box === 'undefined' ? 'undefined' : _typeof(box)) === 'object' && (typeof rabbits === 'undefined' ? 'undefined' : _typeof(rabbits)) === 'object')) console.error("No rabbits for the box. (arguments)", [typeof box === 'undefined' ? 'undefined' : _typeof(box), typeof rabbits === 'undefined' ? 'undefined' : _typeof(rabbits)]);
-
-    // Will only get here if box and rabbits are objects, arrays are object !
-    if (!box) // Box should not be null, null is an object too !
-
-    // #FIXME:0 Fix caller function line number.
-        console.error("box is undefined. Line " + new Error().lineNumber + ". Func merge.", [box, rabbits]);
-    else {
-
-        if (Array.isArray(rabbits) && rabbits.length === 1) box.add(rabbits[0]); // Should not be 0.
-
-        else if (Array.isArray(rabbits) && rabbits.length > 1 && box) {
-
-            for (var i = 0; i < rabbits.length; i++) {
-
-                box.add(rabbits[i]);
-            }
-        } else if (!Array.isArray(rabbits)) box.add(rabbits);
-    }
-};
-
 /** Shape super class */
 WHS.Shape = function() {
     /**
@@ -1949,8 +1576,8 @@ WHS.Shape = function() {
 
             var _scope = this;
 
-            for (var _len3 = arguments.length, tags = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-                tags[_key3] = arguments[_key3];
+            for (var _len2 = arguments.length, tags = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+                tags[_key2] = arguments[_key2];
             }
 
             if (tags.indexOf("wait") >= 0) {
@@ -2093,8 +1720,8 @@ WHS.Shape = function() {
                 _helpers = this.helpers,
                 _scope = this;
 
-            for (var _len4 = arguments.length, tags = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
-                tags[_key4 - 1] = arguments[_key4];
+            for (var _len3 = arguments.length, tags = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+                tags[_key3 - 1] = arguments[_key3];
             }
 
             if (tags.indexOf("wait") >= 0) {
@@ -2336,121 +1963,6 @@ WHS.Shape = function() {
 
     return _class2;
 }();
-
-/**
- * Texture. Loads texture object.
- *
- * @param {String} url - Url adress of texture *JSON*.
- * @param {Object} options - Parameters of texture.
- * @return {Object} Three.JS texture.
- */
-WHS.API.texture = function(url, options) {
-
-    'use strict';
-
-    var texture = WHS.API.loadTexture(url);
-
-    if (options) {
-
-        var opt = WHS.API.extend(options, {
-
-            offset: {
-                x: 0,
-                y: 0
-            },
-
-            repeat: {
-                x: 1,
-                y: 1
-            }
-
-        });
-
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
-        texture.offset.set(opt.offset.x, opt.offset.y);
-        texture.repeat.set(opt.repeat.x, opt.repeat.y);
-
-        texture.magFilter = THREE.NearestFilter;
-        texture.minFilter = THREE.LinearMipMapLinearFilter;
-    }
-
-    return texture;
-};
-
-WHS.Watch = function(queue) {
-
-    'use strict';
-
-    this._queue = Array.isArray(queue) ? queue.slice() : [];
-
-    return this;
-};
-
-WHS.Watch.prototype.add = function(element) {
-
-    'use strict';
-
-    this._queue.push(element);
-
-    return this;
-};
-
-WHS.Watch.prototype.remove = function(element) {
-
-    'use strict';
-
-    this._queue = this._queue.filter(function(item) {
-        return item != element;
-    });
-
-    return this;
-};
-
-/**
- * WhitestormJS plugin loop
- *
- * @param  {Function} func - Function to be executed
- */
-WHS.loop = function(func) {
-
-    this.loop = {
-        func: func,
-        id: WHS.loops.length,
-        enabled: false
-    };
-
-    WHS.loops.push(this.loop);
-};
-
-/**
- * Starts the loop
- */
-WHS.loop.prototype.start = function() {
-
-    this.loop.enabled = true;
-};
-
-/**
- * Stops the loop
- */
-WHS.loop.prototype.stop = function() {
-
-    this.loop.enabled = false;
-};
-
-/**
- * Removes loop from WHS.loops array.
- */
-WHS.loop.prototype.remove = function() {
-    var _this2 = this;
-
-    this.loop.enabled = false;
-
-    WHS.loops.filter(function(el) {
-        return el !== _this2.loop;
-    });
-};
 
 /** Class that initializates 3d world. */
 WHS.World = function() {
@@ -2813,6 +2325,494 @@ WHS.World = function() {
 
     return _class3;
 }();
+
+/* ================ MODERNIZING BROWSER WHS.API IF NOT EXIST ==================== */
+
+//Replacing jQuery fadeIn and fadeOut
+function addCSSRule(sheet, selector, rules, index) {
+
+    if (sheet.insertRule) sheet.insertRule(selector + '{' + rules + '}', index);
+    else if (sheet.addRule) sheet.addRule(selector, rules, index);
+}
+
+//Adds CSS style sheets
+addCSSRule(document.styleSheets[0], '@keyframes fadeOut', 'to {opacity: 0}', 0);
+
+addCSSRule(document.styleSheets[0], '@keyframes fadeIn', 'from {opacity: 0} to {opacity: 1}', 0);
+
+//Adds function to triggers animation
+Element.prototype.fadeOut = function(t) {
+
+    this.style.webkitAnimationDuration = (t || 1) + 's';
+    this.style.webkitAnimationName = "fadeOut";
+    this.style.webkitAnimationPlayState = 'running';
+
+    this.addEventListener('animationend', function() {
+        this.style.display = 'none';
+        this.style.webkitAnimationPlayState = 'paused';
+    });
+};
+
+Element.prototype.fadeIn = function(t, display) {
+
+    this.style.display = display || 'block';
+
+    this.style.webkitAnimationDuration = (t || 1) + 's';
+    this.style.webkitAnimationName = "fadeIn";
+    this.style.webkitAnimationPlayState = 'running';
+
+    this.addEventListener('animationend', function() {
+        this.style.display = display || 'block';
+    });
+};
+
+// Array.isArray;
+if (typeof Array.isArray === 'undefined') {
+
+    Array.isArray = function(obj) {
+
+        'use strict';
+
+        return Object.prototype.toString.call(obj) === '[object Array]';
+    };
+}
+
+// event.movementX and event.movementY kind of polyfill
+(function() {
+
+    if (!MouseEvent.prototype.hasOwnProperty('movementX') || !MouseEvent.prototype.hasOwnProperty('mozMovementX')) {
+        //Checks for support
+
+        // If movementX and ... are not supported, an object Mouse is added to the WHS
+        // that contains information about last coords of the mouse.
+        var mouse = {
+            lastX: 0,
+            lastY: 0
+        };
+
+        MouseEvent.prototype.getMovementX = function() {
+            'use strict';
+
+            var value = this.clientX - mouse.lastX;
+            mouse.lastX = this.clientX;
+
+            return value;
+        };
+
+        MouseEvent.prototype.getMovementY = function() {
+            'use strict';
+
+            var value = this.clientY - mouse.lastY;
+            mouse.lastY = this.clientY;
+
+            return value;
+        };
+    }
+})();
+
+// Object.assign|es6+;
+if (!Object.assign) {
+    Object.defineProperty(Object, 'assign', {
+        enumerable: false,
+        configurable: true,
+        writable: true,
+        value: function value(target) {
+            'use strict';
+
+            if (target === undefined || target === null) {
+                throw new TypeError('Cannot convert first argument to object');
+            }
+
+            var to = Object(target);
+            for (var i = 1; i < arguments.length; i++) {
+                var nextSource = arguments[i];
+                if (nextSource === undefined || nextSource === null) {
+                    continue;
+                }
+                nextSource = Object(nextSource);
+
+                var keysArray = Object.keys(nextSource);
+                for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+                    var nextKey = keysArray[nextIndex];
+                    var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+                    if (desc !== undefined && desc.enumerable) {
+                        to[nextKey] = nextSource[nextKey];
+                    }
+                }
+            }
+            return to;
+        }
+    });
+}
+
+// [x]#TODO:130 RESTRUCTURIZE.
+// [x]#TODO:120 RESTRUCTURIZE threejs and cannonjs library calling.
+// [x]#DONE:30 Add stats.
+// #TODO:10 Add http://underscorejs.org/.
+// DONE:20 clean all console.logs.
+// DOING:0 Wagner.base.js is not a part of library.
+// FIXME: Fix fog.
+// DOING:10 improve libraries support.
+
+/* ================ WHITESTORM|JS ==================== */
+var WHS = {
+    REVISION: "r8",
+
+    loader: {
+        JSON: new THREE.JSONLoader(),
+        Texture: new THREE.TextureLoader(),
+        Font: new THREE.FontLoader()
+    },
+
+    API: {},
+
+    _settings: {
+
+        assets: "./assets",
+
+        path_worker: '../libs/physijs_worker.js',
+        path_ammo: '../libs/ammo.js'
+
+    },
+
+    debug: false,
+
+    loops: []
+};
+
+console.log('WhitestormJS', WHS.REVISION);
+
+WHS.API.loadJSON = function(url, callback, texturePath) {
+    return WHS.loader.JSON.load(url, callback, texturePath);
+};
+
+WHS.API.loadTexture = function(url, onLoad, onProgress, onError) {
+    return WHS.loader.Texture.load(url, onLoad, onProgress, onError);
+};
+
+WHS.API.loadFont = function(url, onLoad, onProgress, onError) {
+    return WHS.loader.Font.load(url, onLoad, onProgress, onError);
+};
+
+if (typeof define === 'function' && define.amd) {
+
+    define('whitestorm', WHS);
+} else if ('undefined' !== typeof exports && 'undefined' !== typeof module) {
+
+    module.exports = WHS;
+}
+
+/**
+ * Extending object with other objects.
+ *
+ * @param {Object} object - Object that will be overwritten.
+ * @param {...Objects} extensions - other objects that will be merged to first.
+ * @return {Object} Extended object.
+ */
+WHS.API.extend = function(object) {
+    for (var _len4 = arguments.length, extensions = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+        extensions[_key4 - 1] = arguments[_key4];
+    }
+
+    // $.extend alternative, ... is the spread operator.
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+        for (var _iterator = extensions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var extension = _step.value;
+
+            //console.log(extension);
+            //console.log(typeof extension);
+
+            if (!extension) continue; // Ignore null and undefined objects and paramaters.
+
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = Object.getOwnPropertyNames(extension)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var prop = _step2.value;
+                    // Do not traverse the prototype chain.
+                    if (object[prop] != undefined && object[prop].toString() == '[object Object]' && extension[prop].toString() == '[object Object]')
+
+                    //Goes deep only if object[prop] and extension[prop] are both objects !
+                        WHS.API.extend(object[prop], extension[prop]);
+                    else object[prop] = object[prop] === 0 ? 0 : object[prop];
+                    if (typeof object[prop] == "undefined") object[prop] = extension[prop]; // Add values that do not already exist.
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+        }
+    } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+                _iterator.return();
+            }
+        } finally {
+            if (_didIteratorError) {
+                throw _iteratorError;
+            }
+        }
+    }
+
+    return object;
+};
+
+WHS.API.loadMaterial = function(material) {
+
+    'use strict';
+
+    if (typeof material.kind !== "string") console.error("Type of material is undefined or not a string. @loadMaterial");
+
+    var scope = {
+        _type: material.kind,
+        _restitution: !isNaN(parseFloat(material.restitution)) ? material.restitution : !isNaN(parseFloat(material.rest)) ? material.rest : 0.3,
+        _friction: !isNaN(parseFloat(material.friction)) ? material.friction : !isNaN(parseFloat(material.fri)) ? material.fri : 0.8
+    };
+
+    var params = WHS.API.extend({}, material);
+
+    delete params["kind"];
+
+    delete params["friction"];
+    delete params["fri"];
+
+    delete params["restitution"];
+    delete params["rest"];
+
+    delete params["useCustomMaterial"];
+    delete params["useVertexColors"];
+
+    switch (material.kind) {
+        case "basic":
+            scope._material = new THREE.MeshBasicMaterial(params);
+            break;
+
+        case "linebasic":
+            scope._params = new THREE.LineBasicMaterial(params);
+            break;
+
+        case "linedashed":
+            scope._material = new THREE.LineDashedMaterial(params);
+            break;
+
+        case "material":
+            scope._material = new THREE.Material(params);
+            break;
+
+        case "depth":
+            scope._material = new THREE.MeshDepthMaterial(params);
+            break;
+
+        case "face":
+            scope._material = new THREE.MeshFaceMaterial(params);
+            break;
+
+        case "lambert":
+            scope._material = new THREE.MeshLambertMaterial(params);
+            break;
+
+        case "normal":
+            scope._material = new THREE.MeshNormalMaterial(params);
+            break;
+
+        case "phong":
+            scope._material = new THREE.MeshPhongMaterial(params);
+            break;
+
+        case "pointcloud":
+            scope._material = new THREE.PointCloudMaterial(params);
+            break;
+
+        case "rawshader":
+            scope._material = new THREE.RawShaderMaterial(params);
+            break;
+
+        case "shader":
+            scope._material = new THREE.ShaderMaterial(params);
+            break;
+
+        case "spritecanvas":
+            scope._material = new THREE.SpriteCanvasMaterial(params);
+            break;
+
+        case "sprite":
+            scope._material = new THREE.SpriteMaterial(params);
+            break;
+    }
+
+    scope._materialP = Physijs.createMaterial(scope._material, scope._friction, scope._restitution);
+
+    return scope;
+};
+
+/**
+ * Adds multiple objects to first object with .add method.
+ *
+ * @param {Object} box Object to be merged. (REQUIRED)
+ * @param {Object} rabbits Object to be added. (REQUIRED)
+ * @deprecated since v0.0.6
+ */
+WHS.API.merge = function(box, rabbits) {
+
+    'use strict';
+
+    // More presice checking.
+
+    if (!((typeof box === 'undefined' ? 'undefined' : _typeof(box)) === 'object' && (typeof rabbits === 'undefined' ? 'undefined' : _typeof(rabbits)) === 'object')) console.error("No rabbits for the box. (arguments)", [typeof box === 'undefined' ? 'undefined' : _typeof(box), typeof rabbits === 'undefined' ? 'undefined' : _typeof(rabbits)]);
+
+    // Will only get here if box and rabbits are objects, arrays are object !
+    if (!box) // Box should not be null, null is an object too !
+
+    // #FIXME:0 Fix caller function line number.
+        console.error("box is undefined. Line " + new Error().lineNumber + ". Func merge.", [box, rabbits]);
+    else {
+
+        if (Array.isArray(rabbits) && rabbits.length === 1) box.add(rabbits[0]); // Should not be 0.
+
+        else if (Array.isArray(rabbits) && rabbits.length > 1 && box) {
+
+            for (var i = 0; i < rabbits.length; i++) {
+
+                box.add(rabbits[i]);
+            }
+        } else if (!Array.isArray(rabbits)) box.add(rabbits);
+    }
+};
+
+/**
+ * Texture. Loads texture object.
+ *
+ * @param {String} url - Url adress of texture *JSON*.
+ * @param {Object} options - Parameters of texture.
+ * @return {Object} Three.JS texture.
+ */
+WHS.API.texture = function(url, options) {
+
+    'use strict';
+
+    var texture = WHS.API.loadTexture(url);
+
+    if (options) {
+
+        var opt = WHS.API.extend(options, {
+
+            offset: {
+                x: 0,
+                y: 0
+            },
+
+            repeat: {
+                x: 1,
+                y: 1
+            }
+
+        });
+
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+        texture.offset.set(opt.offset.x, opt.offset.y);
+        texture.repeat.set(opt.repeat.x, opt.repeat.y);
+
+        texture.magFilter = THREE.NearestFilter;
+        texture.minFilter = THREE.LinearMipMapLinearFilter;
+    }
+
+    return texture;
+};
+
+WHS.Watch = function(queue) {
+
+    'use strict';
+
+    this._queue = Array.isArray(queue) ? queue.slice() : [];
+
+    return this;
+};
+
+WHS.Watch.prototype.add = function(element) {
+
+    'use strict';
+
+    this._queue.push(element);
+
+    return this;
+};
+
+WHS.Watch.prototype.remove = function(element) {
+
+    'use strict';
+
+    this._queue = this._queue.filter(function(item) {
+        return item != element;
+    });
+
+    return this;
+};
+
+/**
+ * WhitestormJS plugin loop
+ *
+ * @param  {Function} func - Function to be executed
+ */
+WHS.loop = function(func) {
+
+    this.loop = {
+        func: func,
+        id: WHS.loops.length,
+        enabled: false
+    };
+
+    WHS.loops.push(this.loop);
+};
+
+/**
+ * Starts the loop
+ */
+WHS.loop.prototype.start = function() {
+
+    this.loop.enabled = true;
+};
+
+/**
+ * Stops the loop
+ */
+WHS.loop.prototype.stop = function() {
+
+    this.loop.enabled = false;
+};
+
+/**
+ * Removes loop from WHS.loops array.
+ */
+WHS.loop.prototype.remove = function() {
+    var _this2 = this;
+
+    this.loop.enabled = false;
+
+    WHS.loops.filter(function(el) {
+        return el !== _this2.loop;
+    });
+};
 
 /**
  * WhitestormJS box shape.
