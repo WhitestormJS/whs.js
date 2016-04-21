@@ -1473,8 +1473,11 @@ WHS.Light = function(_WHS$Object) {
 
                 try {
 
-                    mesh.castShadow = true;
-                    mesh.receiveShadow = true;
+                    if (tags.indexOf("noshadows") < 0) {
+
+                        mesh.castShadow = true;
+                        mesh.receiveShadow = true;
+                    }
 
                     _scope.position.set(_scope.__params.pos.x, _scope.__params.pos.y, _scope.__params.pos.z);
 
@@ -4122,7 +4125,7 @@ WHS.AmbientLight = function(_WHS$Light) {
 
         _this26.mesh = new THREE.AmbientLight(params.light.color, params.light.intensity);
 
-        _get(Object.getPrototypeOf(AmbientLight.prototype), 'build', _this26).call(_this26);
+        _get(Object.getPrototypeOf(AmbientLight.prototype), 'build', _this26).call(_this26, "noshadows");
 
         return _this26;
     }

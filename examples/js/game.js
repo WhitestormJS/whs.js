@@ -78,7 +78,7 @@ GAME.light1 = GAME.SpotLight( {
     light: {
         color: 0xffffff, //0x00ff00,
         intensity: 0.3,
-        distance: 500,
+        distance: 500
     },
 
     shadowmap: {
