@@ -118,8 +118,12 @@ WHS.Light = class extends WHS.Object {
 
 			try {
 
-				mesh.castShadow = true;
-				mesh.receiveShadow = true;
+				if (tags.indexOf("noshadows") < 0) {
+
+					mesh.castShadow = true;
+					mesh.receiveShadow = true;
+
+				}
 
 				_scope.position.set(
 					_scope.__params.pos.x, 
