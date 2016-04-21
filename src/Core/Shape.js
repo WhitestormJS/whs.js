@@ -357,7 +357,6 @@ WHS.Shape = class extends WHS.Object {
 		'use strict';
 
 		this.parent = parent;
-		this._lastWorld = parent;
 
 		var _mesh = this.mesh,
 			_helpers = this.helpers,
