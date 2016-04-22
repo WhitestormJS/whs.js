@@ -202,12 +202,14 @@ WHS.World = class extends WHS.Object {
      */
     _initCamera() {
 
-        this._camera = new THREE.PerspectiveCamera(
-            this.__params.camera.aspect,
-            this.__params.width / this.__params.height,
-            this.__params.camera.near,
-            this.__params.camera.far
-        );
+        this._camera = new WHS.PerspectiveCamera({
+            camera: {
+                fov: this.__params.camera.aspect,
+                aspect: this.__params.width / this.__params.height,
+                near: this.__params.camera.near,
+                far: this.__params.camera.far
+            }
+        });
 
         this._camera.position.set(
             this.__params.camera.x,
@@ -215,7 +217,7 @@ WHS.World = class extends WHS.Object {
             this.__params.camera.z
         );
 
-        this.scene.add( this._camera );
+        this._camera.addTo( this );
 
     }
 
@@ -240,7 +242,7 @@ WHS.World = class extends WHS.Object {
             +(this.__params.height * this.__params.rHeight).toFixed()
         );
 
-        this._renderer.render(this.scene, this._camera);
+        this._renderer.render(this.scene, this._camera.camera);
 
         this._dom.appendChild(this._renderer.domElement);
 
@@ -311,7 +313,7 @@ WHS.World = class extends WHS.Object {
 
                 if ( scope.render ) scope._composer.render( 
                     scope.scene, 
-                    scope._camera 
+                    scope._camera.camera 
                 );
 
                 scope._composer.pass( scope._composer.stack );
@@ -322,7 +324,7 @@ WHS.World = class extends WHS.Object {
 
                 if ( scope.render ) scope._renderer.render( 
                     scope.scene, 
-                    scope._camera 
+                    scope._camera.camera 
                 );
 
             }
@@ -387,10 +389,8 @@ WHS.World = class extends WHS.Object {
      */
     setSize( width = 1, height = 1) {
 
-        console.log(width, height);
-
-        this._camera.aspect = width / height;
-        this._camera.updateProjectionMatrix();
+        this._camera.camera.aspect = width / height;
+        this._camera.camera.updateProjectionMatrix();
         
         this._renderer.setSize( 
             +(width * this.__params.rWidth).toFixed(), 

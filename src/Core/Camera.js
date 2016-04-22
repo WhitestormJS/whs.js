@@ -41,6 +41,8 @@ WHS.Camera = class extends WHS.Object{
 				cubeResolution: 128
 			},
 
+			helper: false,
+
 			pos: {
 				x: 0,
 				y: 0,
@@ -54,7 +56,9 @@ WHS.Camera = class extends WHS.Object{
 				z: 0,
 				set: _set
 			}
-		}, false);
+		});
+
+		super.setParams( params );
 
 		var scope = Object.assign( this,
 		{
@@ -78,7 +82,7 @@ WHS.Camera = class extends WHS.Object{
 
 		'use strict';
 
-		var mesh = this.mesh,
+		var camera = this.camera,
 		_scope = this;
 
 		return new Promise( (resolve, reject) => {
@@ -96,6 +100,11 @@ WHS.Camera = class extends WHS.Object{
 					_scope.__params.rot.y, 
 					_scope.__params.rot.z 
 				);
+
+				if ( _scope.__params.helper )
+		            _scope.helper = new THREE.CameraHelper( 
+		                _scope.camera
+		            );
 
 				tags.forEach(tag => {
 					_scope[tag] = true;
@@ -131,7 +140,7 @@ WHS.Camera = class extends WHS.Object{
 
 		this.parent = parent;
 
-		var _mesh = this.mesh,
+		var _camera = this.camera,
 			_helper = this.helper,
 			_scope = this;
 
@@ -139,7 +148,7 @@ WHS.Camera = class extends WHS.Object{
 
 			try {
 
-				_scope.parent.scene.add( _mesh );
+				_scope.parent.scene.add( _camera );
 				_scope.parent.children.push( _scope );
 
 				if ( _helper ) _scope.parent.scene.add( _helper );
@@ -164,4 +173,19 @@ WHS.Camera = class extends WHS.Object{
 		} );
 	}
 
+	get position() {
+		return this.camera.position;
+	}
+
+	set position( vector3 ) {
+		return this.camera.position.copy( vector3 );
+	}
+
+	get rotation() {
+		return this.camera.rotation;
+	}
+
+	set rotation( euler ) {
+		return this.camera.rotation.copy( euler );
+	}
 }
