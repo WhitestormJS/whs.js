@@ -22,24 +22,35 @@ WHS.PointLight = class PointLight extends WHS.Light {
 
 		super( params, "pointlight" );
 
-		this.light = new THREE.PointLight(
-            params.light.color,
-            params.light.intensity,
-            params.light.distance,
-            params.light.decay
-        );
-
-        if ( params.helper )
-            this.helper = new THREE.PointLightHelper( 
-                this.light, 
-                params.helper.size ? params.helper.size : 0
-            );
-        
+		this.build( params );
 
         super.wrap();
         super.wrapShadow();
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this;
+
+        return new Promise( (resolve, reject) => {
+            _scope.light = new THREE.PointLight(
+                params.light.color,
+                params.light.intensity,
+                params.light.distance,
+                params.light.decay
+            );
+
+            if ( params.helper )
+                _scope.helper = new THREE.PointLightHelper( 
+                    _scope.light, 
+                    params.helper.size ? params.helper.size : 0
+                );
+
+            resolve();
+        });
+
+    }
 
 }
 

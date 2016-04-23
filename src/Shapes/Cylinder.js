@@ -36,25 +36,37 @@ WHS.Cylinder = class Cylinder extends WHS.Shape {
 
         });
 
-        let mesh = this.physics ? Physijs.CylinderMesh : THREE.Mesh;
-
-		this.mesh = new mesh(
-            new THREE.CylinderGeometry(
-
-                params.geometry.radiusTop,
-                params.geometry.radiusBottom,
-                params.geometry.height,
-                params.geometry.radiusSegments
-
-            ),
-
-            super._initMaterial(params.material),
-            params.mass
-        );
+        this.build( params );
 
         super.wrap();
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this,
+            mesh = this.physics ? Physijs.CylinderMesh : THREE.Mesh,
+            material = super._initMaterial(params.material);
+
+        return new Promise( (resolve, reject) => {
+            _scope.mesh = new mesh(
+                new THREE.CylinderGeometry(
+
+                    params.geometry.radiusTop,
+                    params.geometry.radiusBottom,
+                    params.geometry.height,
+                    params.geometry.radiusSegments
+
+                ),
+
+                material,
+                params.mass
+            );
+
+            resolve();
+        });
+
+    }
 
 }
 

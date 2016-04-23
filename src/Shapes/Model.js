@@ -33,83 +33,90 @@ WHS.Model = class Model extends WHS.Shape {
 
         var scope = this;
 
-        super.wait(
-            new Promise( function( resolve, reject ) {
+        this.build( params );
 
-                WHS.API.loadJSON(params.geometry.path, function( data, materials ) {
+        super.wrap("wait");
 
-                	if (params.geometry.physics != "") {
+	}
 
-                		WHS.API.loadJSON(params.geometry.physics, function( data2 ) {
+	build( params = {} ) {
 
-                			if (params.material.useVertexColors)
-		                        var material = WHS.API.loadMaterial(
-		                            WHS.API.extend(params.material, {
-		                                morphTargets: true,
-		                                vertexColors: THREE.FaceColors
-		                            })
-		                        )._material;
-		                    else if (!materials || params.material.useCustomMaterial)
-		                        var material = WHS.API.loadMaterial(
-		                            params.material
-		                        )._material;
-		                    else var material = new THREE.MultiMaterial(materials);
+        let _scope = this,
+            mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh;
 
-		                    console.log(data);
+        let promise = new Promise( ( resolve, reject ) => {
 
-		                    data.computeFaceNormals();
-		                    data.computeVertexNormals();
+            WHS.API.loadJSON(params.geometry.path, ( data, materials ) => {
 
-        					let mesh = scope.physics ? Physijs.ConcaveMesh : THREE.Mesh;
+            	if (params.geometry.physics != "") {
 
-		                    scope.mesh = new mesh( 
-		                    	data, 
-		                    	material, 
-		                    	params.mass,
-		                    	data2,
-		                    	params.scale
-		                	);
+            		WHS.API.loadJSON(params.geometry.physics, data2 => {
 
-		                    resolve();
-
-                		});
-                	} else {
-
-	                    if (!materials || params.material.useVertexColors)
+            			if (params.material.useVertexColors)
 	                        var material = WHS.API.loadMaterial(
 	                            WHS.API.extend(params.material, {
 	                                morphTargets: true,
 	                                vertexColors: THREE.FaceColors
 	                            })
 	                        )._material;
-	                    else if (params.material.useCustomMaterial)
+	                    else if (!materials || params.material.useCustomMaterial)
 	                        var material = WHS.API.loadMaterial(
 	                            params.material
 	                        )._material;
 	                    else var material = new THREE.MultiMaterial(materials);
 
+	                    console.log(data);
+
 	                    data.computeFaceNormals();
 	                    data.computeVertexNormals();
 
-        				let mesh = scope.physics ? Physijs.ConcaveMesh : THREE.Mesh;
-
-	                    scope.mesh = new mesh( 
+	                    _scope.mesh = new mesh( 
 	                    	data, 
 	                    	material, 
-	                    	params.mass
-						);
+	                    	params.mass,
+	                    	data2,
+	                    	params.scale
+	                	);
 
 	                    resolve();
-	                }
 
-                });
+            		});
+            	} else {
 
-            })
-        );
+                    if (!materials || params.material.useVertexColors)
+                        var material = WHS.API.loadMaterial(
+                            WHS.API.extend(params.material, {
+                                morphTargets: true,
+                                vertexColors: THREE.FaceColors
+                            })
+                        )._material;
+                    else if (params.material.useCustomMaterial)
+                        var material = WHS.API.loadMaterial(
+                            params.material
+                        )._material;
+                    else var material = new THREE.MultiMaterial(materials);
 
-        super.wrap("wait");
+                    data.computeFaceNormals();
+                    data.computeVertexNormals();
 
-	}
+                    _scope.mesh = new mesh( 
+                    	data, 
+                    	material, 
+                    	params.mass
+					);
+
+                    resolve();
+                }
+
+            });
+
+        });
+        
+        super.wait( promise );
+
+        return promise;
+
+    }
 
 }
 

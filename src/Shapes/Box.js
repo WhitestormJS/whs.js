@@ -34,24 +34,36 @@ WHS.Box = class Box extends WHS.Shape {
 
         });
 
-        let mesh = this.physics ? Physijs.BoxMesh : THREE.Mesh;
-
-		this.mesh = new mesh(
-            new THREE.BoxGeometry(
-
-                params.geometry.width,
-                params.geometry.height,
-                params.geometry.depth
-
-            ),
-
-            super._initMaterial(params.material),
-            params.mass
-        );
+        this.build( params );
 
         super.wrap();
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this,
+            mesh = this.physics ? Physijs.BoxMesh : THREE.Mesh,
+            material = super._initMaterial(params.material);
+
+        return new Promise( (resolve, reject) => {
+            _scope.mesh = new mesh(
+                new THREE.BoxGeometry(
+
+                    params.geometry.width,
+                    params.geometry.height,
+                    params.geometry.depth
+
+                ),
+
+                material,
+                params.mass
+            );
+
+            resolve();
+        });
+
+    }
 
 }
 

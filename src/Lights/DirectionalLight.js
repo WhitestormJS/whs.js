@@ -20,21 +20,33 @@ WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
 
 		super( params, "directionallight" );
 
-		this.light = new THREE.DirectionalLight(
-            params.light.color,
-            params.light.intensity
-        );
-
-        if ( params.helper )
-            this.helper = new THREE.DirectionalLightHelper( 
-                this.light, 
-                params.helper.size ? params.helper.size : 0
-            );
+		this.build( params );
 
         super.wrap();
         super.wrapShadow();
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this;
+
+        return new Promise( (resolve, reject) => {
+            _scope.light = new THREE.DirectionalLight(
+                params.light.color,
+                params.light.intensity
+            );
+
+            if ( params.helper )
+                _scope.helper = new THREE.DirectionalLightHelper( 
+                    _scope.light, 
+                    params.helper.size ? params.helper.size : 0
+                );
+
+            resolve();
+        });
+
+    }
 
 }
 

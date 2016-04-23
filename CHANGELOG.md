@@ -14,6 +14,7 @@
    - *src/Core.js -> src/Core/World.js*
    - *src/API/Shape.js -> src/Core/Shape.js*
    - *src/API/Light.js -> src/Core/Light.js*
+- *libs/three.js r75 -> libs/three.js r76*
 - Fixed autoresize.
 - *WHS.Object: build() -> wrap()*
 
