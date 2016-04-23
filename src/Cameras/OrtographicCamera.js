@@ -24,7 +24,7 @@ WHS.OrtographicCamera = class OrtographicCamera extends WHS.Camera {
 
 		super( params, "ortographiccamera" );
 
-		super.build();
+		this.build( params );
 
         super.wrap();
 

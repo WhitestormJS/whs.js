@@ -38,26 +38,38 @@ WHS.Torus = class Torus extends WHS.Shape {
 
         });
 
-        let mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh;
-
-		this.mesh = new mesh(
-            new THREE.TorusGeometry(
-
-                params.geometry.radius,
-                params.geometry.tube,
-                params.geometry.radialSegments,
-                params.geometry.tubularSegments,
-                params.geometry.arc
-
-            ),
-
-            super._initMaterial(params.material),
-            params.mass
-        );
+		this.build( params );
 
         super.wrap();
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this,
+            mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+            material = super._initMaterial(params.material);
+
+        return new Promise( (resolve, reject) => {
+            _scope.mesh = new mesh(
+                new THREE.TorusGeometry(
+
+                    params.geometry.radius,
+                    params.geometry.tube,
+                    params.geometry.radialSegments,
+                    params.geometry.tubularSegments,
+                    params.geometry.arc
+
+                ),
+
+                material,
+                params.mass
+            );
+
+            resolve();
+        });
+
+    }
 
 }
 

@@ -34,24 +34,36 @@ WHS.Parametric = class Parametric extends WHS.Shape {
 
         });
 
-        let mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh;
-
-		this.mesh = new mesh(
-            new THREE.ParametricGeometry(
-
-                params.geometry.func,
-                params.geometry.slices,
-                params.geometry.stacks
-
-            ),
-
-            super._initMaterial(params.material),
-            params.mass
-        );
+        this.build( params );
 
         super.wrap();
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this,
+            mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh,
+            material = super._initMaterial(params.material);
+
+        return new Promise( (resolve, reject) => {
+            _scope.mesh = new mesh(
+                new THREE.ParametricGeometry(
+
+                    params.geometry.func,
+                    params.geometry.slices,
+                    params.geometry.stacks
+
+                ),
+
+                material,
+                params.mass
+            );
+
+            resolve();
+        });
+
+    }
 
 }
 
