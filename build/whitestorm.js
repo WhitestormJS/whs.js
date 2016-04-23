@@ -1541,20 +1541,30 @@ WHS.Curve = function(_WHS$Object2) {
      * Todo
      */
 
-    function Curve(curve) {
+    function Curve(params) {
         var _ret2;
 
         _classCallCheck(this, Curve);
 
         var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(Curve).call(this, {
-
-            points: []
-
+            geometry: {
+                curve: false,
+                points: 50
+            }
         }));
 
+        _get(Object.getPrototypeOf(Curve.prototype), 'setParams', _this2).call(_this2, params);
+
+        var geometry = new THREE.Geometry();
+
+        geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
+
+        var mesh = new THREE.Line(geometry, WHS.API.loadMaterial(params.material, false)._material);
+
         var scope = Object.assign(_this2, {
-            _type: type,
-            __params: params
+            _type: "curve",
+            curve: mesh,
+            __path: params.geometry.curve
         });
 
         return _ret2 = scope, _possibleConstructorReturn(_this2, _ret2);
@@ -1578,7 +1588,7 @@ WHS.Curve = function(_WHS$Object2) {
 
                 try {
 
-                    _scope.parent.scene.add(_scope.mesh);
+                    _scope.parent.scene.add(_scope.curve);
                     _scope.parent.children.push(_scope);
                 } catch (err) {
 
@@ -1586,11 +1596,61 @@ WHS.Curve = function(_WHS$Object2) {
                     reject();
                 } finally {
 
-                    if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " was added to world.", [_scope, _scope.parent]);
+                    if (WHS.debug) console.debug("@WHS.Curve: Curve " + _scope._type + " was added to world.", [_scope, _scope.parent]);
 
                     resolve(_scope);
                 }
             });
+        }
+
+        /**
+         * Clone curve.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Curve(this.__params).copy(this);
+        }
+
+        /**
+         * Copy curve.
+         *
+         * @param {WHS.Curve} source - Source object, that will be applied to this.
+         */
+
+    }, {
+        key: 'copy',
+        value: function copy(source) {
+
+            this.curve = source.curve.clone();
+
+            this._type = source._type;
+
+            return this;
+        }
+
+        /**
+         * Remove this curve from world.
+         *
+         * @return {THREE.Curve} - this.
+         */
+
+    }, {
+        key: 'remove',
+        value: function remove() {
+
+            this.parent.scene.remove(this.curve);
+
+            this.parent.children.splice(this.parent.children.indexOf(this), 1);
+            this.parent = null;
+
+            this.emit("remove");
+
+            if (WHS.debug) console.debug("@WHS.Curve: Curve " + this._type + " was removed from world", [_scope]);
+
+            return this;
         }
     }]);
 
@@ -2384,6 +2444,46 @@ WHS.Shape = function(_WHS$Object4) {
             return this;
         }
     }, {
+        key: 'follow',
+        value: function follow(curve) {
+            var time = arguments.length <= 1 || arguments[1] === undefined ? 1000 : arguments[1];
+            var loop = arguments[2];
+
+            var _scope = this,
+                gEnd = time;
+
+            var animation = new WHS.loop(function(clock) {
+
+                var u = clock.getElapsedTime() * 1000 / gEnd;
+                var vec1 = curve.getPoint(u);
+                var vec2 = curve.getPoint((u + 0.01) % 1);
+
+                _scope.setPosition(vec1.x, vec1.y, vec1.z);
+                _scope.mesh.lookAt(vec2);
+            });
+
+            animation.start();
+
+            if (loop) setInterval(function() {
+                animation.stop();
+
+                animation = new WHS.loop(function(clock) {
+
+                    var u = clock.getElapsedTime() * 1000 / gEnd;
+                    var vec1 = curve.getPoint(u);
+                    var vec2 = curve.getPoint((u + 0.01) % 1);
+
+                    _scope.setPosition(vec1.x, vec1.y, vec1.z);
+                    _scope.mesh.lookAt(vec2);
+                });
+
+                animation.start();
+            }, time);
+            else setTimeout(function() {
+                animation.stop();
+            }, time);
+        }
+    }, {
         key: 'position',
         get: function get() {
             return this.mesh.position;
@@ -2691,6 +2791,8 @@ WHS.World = function(_WHS$Object5) {
                 //if (scope.__params.anaglyph)
                 //  scope.effect.render(scope.scene, scope._camera);
 
+                scope.__localTime = time;
+
                 scope._process(clock);
 
                 if (scope.simulate) scope.scene.simulate();
@@ -2734,7 +2836,7 @@ WHS.World = function(_WHS$Object5) {
         value: function _execLoops(time) {
 
             WHS.loops.forEach(function(loop) {
-                if (loop.enabled) loop.func(time);
+                if (loop.enabled) loop.func(loop.clock, time);
             });
         }
 
@@ -2763,9 +2865,11 @@ WHS.World = function(_WHS$Object5) {
         key: '_process',
         value: function _process(clock) {
 
+            var delta = clock.getDelta();
+
             for (var i = 0; i < this.children.length; i++) {
 
-                if (this.children[i]._type == "morph") this.children[i].mesh.mixer.update(clock.getDelta());
+                if (this.children[i]._type == "morph") this.children[i].mesh.mixer.update(delta);
             }
         }
 
@@ -2868,6 +2972,7 @@ WHS.API.loadMaterial = function(material) {
 
     'use strict';
 
+    var isPhysics = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
     if (typeof material.kind !== "string") console.error("Type of material is undefined or not a string. @loadMaterial");
 
     var scope = {
@@ -2895,7 +3000,7 @@ WHS.API.loadMaterial = function(material) {
             break;
 
         case "linebasic":
-            scope._params = new THREE.LineBasicMaterial(params);
+            scope._material = new THREE.LineBasicMaterial(params);
             break;
 
         case "linedashed":
@@ -2947,7 +3052,7 @@ WHS.API.loadMaterial = function(material) {
             break;
     }
 
-    scope._materialP = Physijs.createMaterial(scope._material, scope._friction, scope._restitution);
+    if (isPhysics) scope._materialP = Physijs.createMaterial(scope._material, scope._friction, scope._restitution);
 
     return scope;
 };
@@ -3066,6 +3171,7 @@ WHS.loop = function(func) {
     this.loop = {
         func: func,
         id: WHS.loops.length,
+        clock: new THREE.Clock(),
         enabled: false
     };
 
@@ -3077,6 +3183,8 @@ WHS.loop = function(func) {
  */
 WHS.loop.prototype.start = function() {
 
+    this.loop.clock.start();
+
     this.loop.enabled = true;
 };
 
@@ -3084,6 +3192,8 @@ WHS.loop.prototype.start = function() {
  * Stops the loop
  */
 WHS.loop.prototype.stop = function() {
+
+    this.loop.clock.stop();
 
     this.loop.enabled = false;
 };
@@ -3093,6 +3203,8 @@ WHS.loop.prototype.stop = function() {
  */
 WHS.loop.prototype.remove = function() {
     var _this7 = this;
+
+    this.loop.clock.stop();
 
     this.loop.enabled = false;
 
