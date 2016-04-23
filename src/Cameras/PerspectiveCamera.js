@@ -22,16 +22,28 @@ WHS.PerspectiveCamera = class PerspectiveCamera extends WHS.Camera {
 
 		super( params, "perspectivecamera" );
 
-		this.camera = new THREE.PerspectiveCamera(
-            params.camera.fov,
-            params.camera.aspect,
-            params.camera.near,
-            params.camera.far
-        );
+		super.build();
 
         super.wrap();
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this;
+
+        return new Promise( (resolve, reject) => {
+            _scope.camera = new THREE.PerspectiveCamera(
+                params.camera.fov,
+                params.camera.aspect,
+                params.camera.near,
+                params.camera.far
+            );
+
+            resolve();
+        });
+
+    }
 
 }
 

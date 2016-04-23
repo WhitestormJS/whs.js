@@ -4557,12 +4557,27 @@ WHS.CubeCamera = function(_WHS$Camera) {
 
         var _this33 = _possibleConstructorReturn(this, Object.getPrototypeOf(CubeCamera).call(this, params, "cubecamera"));
 
-        _this33.camera = new THREE.CubeCamera(params.camera.near, params.camera.far, params.camera.cubeResolution);
+        _get(Object.getPrototypeOf(CubeCamera.prototype), 'build', _this33).call(_this33, params);
 
         _get(Object.getPrototypeOf(CubeCamera.prototype), 'wrap', _this33).call(_this33);
 
         return _this33;
     }
+
+    _createClass(CubeCamera, [{
+        key: 'build',
+        value: function build() {
+            var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+            var _scope = this;
+
+            return new Promise(function(resolve, reject) {
+                _scope.camera = new THREE.CubeCamera(params.camera.near, params.camera.far, params.camera.cubeResolution);
+
+                resolve();
+            });
+        }
+    }]);
 
     return CubeCamera;
 }(WHS.Camera);
