@@ -4532,18 +4532,105 @@ WHS.World.prototype.SpotLight = function(params) {
 };
 
 /**
- * WhitestormJS directional light.
+ * WhitestormJS cube camera.
  *
- * @extends WHS.Light
+ * @extends WHS.Camera
  */
-WHS.PerspectiveCamera = function(_WHS$Camera) {
-    _inherits(PerspectiveCamera, _WHS$Camera);
+WHS.CubeCamera = function(_WHS$Camera) {
+    _inherits(CubeCamera, _WHS$Camera);
 
     /**
      * Directional light.
      *
-     * @param {Object} params.light.color - Light color.
-     * @param {Object} params.light.intensity - Light intensity.
+     * @param {Object} params.camera.near - Near distance from camera position.
+     * @param {Object} params.camera.far - Far distance from camera position.
+     * @param {Object} params.camera.cubeResolution - Sets the width of the cube.
+     */
+
+    function CubeCamera() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+        _classCallCheck(this, CubeCamera);
+
+        var _this33 = _possibleConstructorReturn(this, Object.getPrototypeOf(CubeCamera).call(this, params, "cubecamera"));
+
+        _this33.camera = new THREE.CubeCamera(params.camera.near, params.camera.far, params.camera.cubeResolution);
+
+        _get(Object.getPrototypeOf(CubeCamera.prototype), 'build', _this33).call(_this33);
+
+        return _this33;
+    }
+
+    return CubeCamera;
+}(WHS.Camera);
+
+WHS.World.prototype.CubeCamera = function(params) {
+    var camera = new WHS.CubeCamera(params);
+
+    camera.addTo(this);
+
+    return camera;
+};
+
+/**
+ * WhitestormJS ortographic camera.
+ *
+ * @extends WHS.Camera
+ */
+WHS.OrtographicCamera = function(_WHS$Camera2) {
+    _inherits(OrtographicCamera, _WHS$Camera2);
+
+    /**
+     * Ortographic camera.
+     *
+     * @param {Object} params.camera.left - Left distance.
+     * @param {Object} params.camera.right - Right distance.
+     * @param {Object} params.camera.top - Top distance.
+     * @param {Object} params.camera.bottom - Bottom distance.
+     * @param {Object} params.camera.near - Near distance.
+     * @param {Object} params.camera.far - Far distance.
+     */
+
+    function OrtographicCamera() {
+        var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+        _classCallCheck(this, OrtographicCamera);
+
+        var _this34 = _possibleConstructorReturn(this, Object.getPrototypeOf(OrtographicCamera).call(this, params, "ortographiccamera"));
+
+        _this34.camera = new THREE.OrtographicCamera(params.camera.left, params.camera.right, params.camera.top, params.camera.bottom, params.camera.near, params.camera.far);
+
+        _get(Object.getPrototypeOf(OrtographicCamera.prototype), 'build', _this34).call(_this34);
+
+        return _this34;
+    }
+
+    return OrtographicCamera;
+}(WHS.Camera);
+
+WHS.World.prototype.OrtographicCamera = function(params) {
+    var camera = new WHS.OrtographicCamera(params);
+
+    camera.addTo(this);
+
+    return camera;
+};
+
+/**
+ * WhitestormJS perspective light.
+ *
+ * @extends WHS.Light
+ */
+WHS.PerspectiveCamera = function(_WHS$Camera3) {
+    _inherits(PerspectiveCamera, _WHS$Camera3);
+
+    /**
+     * Perspective camera.
+     *
+     * @param {Object} params.camera.fov - Fov.
+     * @param {Object} params.camera.aspect - Aspect.
+     * @param {Object} params.camera.near - Near distance.
+     * @param {Object} params.camera.far - Far distance.
      */
 
     function PerspectiveCamera() {
@@ -4551,13 +4638,13 @@ WHS.PerspectiveCamera = function(_WHS$Camera) {
 
         _classCallCheck(this, PerspectiveCamera);
 
-        var _this33 = _possibleConstructorReturn(this, Object.getPrototypeOf(PerspectiveCamera).call(this, params, "perspectivecamera"));
+        var _this35 = _possibleConstructorReturn(this, Object.getPrototypeOf(PerspectiveCamera).call(this, params, "perspectivecamera"));
 
-        _this33.camera = new THREE.PerspectiveCamera(params.camera.fov, params.camera.aspect, params.camera.near, params.camera.far);
+        _this35.camera = new THREE.PerspectiveCamera(params.camera.fov, params.camera.aspect, params.camera.near, params.camera.far);
 
-        _get(Object.getPrototypeOf(PerspectiveCamera.prototype), 'build', _this33).call(_this33);
+        _get(Object.getPrototypeOf(PerspectiveCamera.prototype), 'build', _this35).call(_this35);
 
-        return _this33;
+        return _this35;
     }
 
     return PerspectiveCamera;
@@ -5018,7 +5105,7 @@ WHS.Skybox = function(_WHS$Shape21) {
 
         _classCallCheck(this, Skybox);
 
-        var _this34 = _possibleConstructorReturn(this, Object.getPrototypeOf(Skybox).call(this, params, "skybox"));
+        var _this36 = _possibleConstructorReturn(this, Object.getPrototypeOf(Skybox).call(this, params, "skybox"));
 
         WHS.API.extend(params, {
 
@@ -5067,12 +5154,12 @@ WHS.Skybox = function(_WHS$Shape21) {
                 break;
         }
 
-        _this34.mesh = new THREE.Mesh(skyGeometry, skyMat);
-        _this34.mesh.renderDepth = 1000.0;
+        _this36.mesh = new THREE.Mesh(skyGeometry, skyMat);
+        _this36.mesh.renderDepth = 1000.0;
 
-        _get(Object.getPrototypeOf(Skybox.prototype), 'build', _this34).call(_this34);
+        _get(Object.getPrototypeOf(Skybox.prototype), 'build', _this36).call(_this36);
 
-        return _this34;
+        return _this36;
     }
 
     return Skybox;
