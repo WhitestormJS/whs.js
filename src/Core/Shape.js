@@ -616,4 +616,44 @@ WHS.Shape = class extends WHS.Object {
 		return this;
 	}
 
+	follow( curve, time = 1000, loop ) {
+
+		let _scope = this,
+		gEnd = time;
+
+		let animation = new WHS.loop( clock => {
+
+			let u =  clock.getElapsedTime() * 1000 / gEnd;
+			let vec1 = curve.getPoint( u );
+			let vec2 = curve.getPoint( (u + 0.01) % 1 );
+
+			_scope.setPosition( vec1.x, vec1.y, vec1.z );
+			_scope.mesh.lookAt( vec2 );
+			
+		});
+
+		animation.start();
+
+		if ( loop )	setInterval( () => { 
+				animation.stop();
+
+				animation = new WHS.loop( clock => {
+
+					let u =  clock.getElapsedTime() * 1000 / gEnd;
+					let vec1 = curve.getPoint( u );
+					let vec2 = curve.getPoint( (u + 0.01) % 1 );
+
+					_scope.setPosition( vec1.x, vec1.y, vec1.z );
+					_scope.mesh.lookAt( vec2 );
+					
+				});
+
+				animation.start();
+			}, time);
+
+		else setTimeout( () => { 
+				animation.stop() 
+		}, time);
+	}
+
 }

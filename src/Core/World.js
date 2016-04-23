@@ -300,6 +300,8 @@ WHS.World = class extends WHS.Object {
             //if (scope.__params.anaglyph)
             //  scope.effect.render(scope.scene, scope._camera);
 
+            scope.__localTime = time;
+
             scope._process( clock );
 
             if ( scope.simulate ) scope.scene.simulate();
@@ -349,7 +351,7 @@ WHS.World = class extends WHS.Object {
     _execLoops( time ) {
 
         WHS.loops.forEach( loop => {
-            if ( loop.enabled ) loop.func( time );
+            if ( loop.enabled ) loop.func( loop.clock, time );
         } );
 
     }
@@ -375,10 +377,12 @@ WHS.World = class extends WHS.Object {
      */
     _process( clock ) {
 
+            let delta = clock.getDelta();
+
             for ( var i = 0; i < this.children.length; i++ ) {
 
                 if ( this.children[i]._type == "morph" ) 
-                    this.children[i].mesh.mixer.update( clock.getDelta() );
+                    this.children[i].mesh.mixer.update( delta );
 
             }
 
