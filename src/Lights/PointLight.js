@@ -22,7 +22,7 @@ WHS.PointLight = class PointLight extends WHS.Light {
 
 		super( params, "pointlight" );
 
-		this.mesh = new THREE.PointLight(
+		this.light = new THREE.PointLight(
             params.light.color,
             params.light.intensity,
             params.light.distance,
@@ -31,7 +31,7 @@ WHS.PointLight = class PointLight extends WHS.Light {
 
         if ( params.helper )
             this.helper = new THREE.PointLightHelper( 
-                this.mesh, 
+                this.light, 
                 params.helper.size ? params.helper.size : 0
             );
         

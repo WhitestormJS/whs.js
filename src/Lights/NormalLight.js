@@ -19,7 +19,7 @@ WHS.NormalLight = class NormalLight extends WHS.Light {
 
 		super( params, "normallight" );
 
-		this.mesh = new THREE.Light(
+		this.light = new THREE.Light(
             params.light.color
         );
 
