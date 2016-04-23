@@ -24,7 +24,7 @@ WHS.SpotLight = class SpotLight extends WHS.Light {
 
 		super( params, "spotlight" );
 
-		this.mesh = new THREE.SpotLight(
+		this.light = new THREE.SpotLight(
             params.light.color,
             params.light.intensity,
             params.light.distance,
@@ -34,7 +34,7 @@ WHS.SpotLight = class SpotLight extends WHS.Light {
         );
 
         if ( params.helper )
-            this.helper = new THREE.SpotLightHelper( this.mesh );
+            this.helper = new THREE.SpotLightHelper( this.light );
 
         super.wrap();
         super.wrapShadow();
