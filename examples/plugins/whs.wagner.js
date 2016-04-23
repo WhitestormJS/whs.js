@@ -74,7 +74,7 @@ WHS.Wagner = function(_WHS$Object) {
         scope._composer.autoClearColor = true;
 
         scope._composer.reset();
-        scope._composer.render(scope.scene, scope._camera);
+        scope._composer.render(scope.scene, scope._camera.camera);
 
         scope._composer.stack = new WAGNER.Stack(new WAGNER.ShadersPool());
 

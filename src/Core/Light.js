@@ -170,7 +170,6 @@ WHS.Light = class extends WHS.Object {
 		'use strict';
 
 		this.parent = parent;
-		this._lastWorld = parent;
 
 		var _mesh = this.mesh,
 			_helper = this.helper,
@@ -192,24 +191,13 @@ WHS.Light = class extends WHS.Object {
 
 			} finally {
 
-				if ( WHS.debug ) console.debug("@WHS.Light: Light " 
+				if ( WHS.debug ) console.debug("@WHS.Camera: Camera " 
 		        	+ _scope._type + " was added to world.", 
 		        	[_scope, _scope.parent]);
 
+				resolve( _scope );
 
-				if ( _scope._wait ) {
-
-					_scope._mesh.addEventListener( 'ready', function() {
-						resolve( _scope );
-
-						_scope.emit("ready");
-					} );
-
-				} else {
-					resolve( _scope );
-
-					_scope.emit("ready");
-				}
+				_scope.emit("ready");
 
 			}
 

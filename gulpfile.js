@@ -17,9 +17,9 @@ var sources = [
     'src/API/*.js',
     'src/Watchers/*.js',
     'src/Plugins/*.js',
-    'src/Objects/*.js',
     'src/Shapes/*.js',
     'src/Lights/*.js',
+    'src/Cameras/*.js',
     'src/Controls/*.js',
     'src/Components/*.js'
 ]
@@ -33,9 +33,9 @@ var sources_test = [
     'src/API/*.js',
     'src/Watchers/*.js',
     'src/Plugins/*.js',
-    'src/Objects/*.js',
     'src/Shapes/*.js',
     'src/Lights/*.js',
+    'src/Cameras/*.js',
     'src/Controls/*.js',
     'src/Components/*.js'
 ]
