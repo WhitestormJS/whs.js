@@ -20,14 +20,14 @@ WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
 
 		super( params, "directionallight" );
 
-		this.mesh = new THREE.DirectionalLight(
+		this.light = new THREE.DirectionalLight(
             params.light.color,
             params.light.intensity
         );
 
         if ( params.helper )
             this.helper = new THREE.DirectionalLightHelper( 
-                this.mesh, 
+                this.light, 
                 params.helper.size ? params.helper.size : 0
             );
 
