@@ -413,7 +413,6 @@ WHS.Shape = class extends WHS.Object {
 			                + _scope._type + " was added to world.", 
 			                [_scope, _scope.parent]);
 
-
 					}
 
 				});
