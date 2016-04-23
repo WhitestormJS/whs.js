@@ -36,7 +36,7 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
             player = mesh,
             pitchObject = new THREE.Object3D();
 
-        pitchObject.add( camera );
+        pitchObject.add( camera.camera );
 
         var yawObject = new THREE.Object3D();
 
