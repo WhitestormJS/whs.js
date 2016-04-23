@@ -46,7 +46,7 @@ WHS.Tetrahedron = class Tetrahedron extends WHS.Shape {
             params.mass
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

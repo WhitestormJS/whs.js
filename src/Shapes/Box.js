@@ -49,7 +49,7 @@ WHS.Box = class Box extends WHS.Shape {
             params.mass
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

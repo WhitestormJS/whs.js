@@ -48,7 +48,7 @@ WHS.Plane = class Plane extends WHS.Shape {
             super._initMaterial(params.material)
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

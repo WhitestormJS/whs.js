@@ -190,7 +190,7 @@ var tramplin = GAME.Box({
 var tramplin2 = tramplin.clone();
 tramplin2.__params.pos.y = 44;
 tramplin2.mesh.mass = 0;
-tramplin2.build();
+tramplin2.wrap();
 tramplin2.addTo( GAME );
 
 var tramplin2 = tramplin.clone();
@@ -198,7 +198,7 @@ tramplin2.__params.pos.y = 24;
 tramplin2.__params.pos.x = 24;
 tramplin2.__params.rot.z = Math.PI/6;
 tramplin2.mesh.mass = 0;
-tramplin2.build();
+tramplin2.wrap();
 tramplin2.addTo( GAME );
 
 var domino = GAME.Box({
@@ -227,7 +227,7 @@ var d;
 for (var i = 0; i < 4; i++) {
     d = domino.clone();
     d.__params.pos.x += 8;
-    d.build();
+    d.wrap();
     d.addTo( GAME );
 }
 

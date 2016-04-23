@@ -78,7 +78,7 @@ WHS.Camera = class extends WHS.Object{
 	 * @param {...String} tags - Tags that defines what to do with light 
 	 * additionally.
 	 */
-	build( ...tags ) {
+	wrap( ...tags ) {
 
 		'use strict';
 

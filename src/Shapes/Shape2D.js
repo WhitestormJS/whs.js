@@ -39,7 +39,7 @@ WHS.Shape2D = class Shape2D extends WHS.Shape {
             super._initMaterial(params.material)
         );
 
-        super.build("onlyvis");
+        super.wrap("onlyvis");
 
 	}
 

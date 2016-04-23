@@ -36,8 +36,8 @@ WHS.PointLight = class PointLight extends WHS.Light {
             );
         
 
-        super.build();
-        super.buildShadow();
+        super.wrap();
+        super.wrapShadow();
 
 	}
 

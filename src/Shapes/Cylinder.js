@@ -52,7 +52,7 @@ WHS.Cylinder = class Cylinder extends WHS.Shape {
             params.mass
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

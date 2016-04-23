@@ -76,7 +76,7 @@ WHS.Morph = class Morph extends WHS.Shape {
             })
         );
 
-        super.build("wait");
+        super.wrap("wait");
 
 	}
 

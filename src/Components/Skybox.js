@@ -76,7 +76,7 @@ WHS.Skybox = class Skybox extends WHS.Shape {
         this.mesh = new THREE.Mesh( skyGeometry, skyMat );
         this.mesh.renderDepth = 1000.0;
 
-        super.build();
+        super.wrap();
 
 	}
 

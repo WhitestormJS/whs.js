@@ -52,7 +52,7 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
             params.mass
         );
 
-        super.build();
+        super.wrap();
 
 	}
 
