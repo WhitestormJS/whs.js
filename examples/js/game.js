@@ -112,7 +112,7 @@ var parrot = new WHS.Morph( {
 
     material: {
         useVertexColors: true,
-        kind: "basic"
+        kind: "lambert"
     },
 
     pos: {
@@ -165,7 +165,7 @@ var flamingo = new WHS.Morph( {
 
     material: {
         useVertexColors: true,
-        kind: "basic"
+        kind: "lambert"
     },
 
     pos: {
