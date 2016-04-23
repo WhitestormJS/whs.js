@@ -49,7 +49,7 @@ WHS.Parametric = class Parametric extends WHS.Shape {
             params.mass
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

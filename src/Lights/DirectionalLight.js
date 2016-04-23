@@ -31,8 +31,8 @@ WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
                 params.helper.size ? params.helper.size : 0
             );
 
-        super.build();
-        super.buildShadow();
+        super.wrap();
+        super.wrapShadow();
 
 	}
 

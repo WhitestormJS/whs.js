@@ -170,7 +170,7 @@ sphere2.__params.helpers.box = false;
 sphere2.__params.helpers.faceNormals = {color: 0x0000ff, size: 0.5};
 
 sphere2.__params.pos.x = 10;
-sphere2.build();
+sphere2.wrap();
 sphere2.addTo( GAME );
 
 var sphere3 = sphere2.clone();
@@ -179,7 +179,7 @@ sphere3.__params.helpers.faceNormals = false;
 sphere3.__params.helpers.edges = {color: 0x0000ff, size: 0.5};
 
 sphere3.__params.pos.z = 10;
-sphere3.build();
+sphere3.wrap();
 sphere3.addTo( GAME );
 
 var sphere4 = sphere3.clone();
@@ -188,7 +188,7 @@ sphere4.__params.helpers.edges = false;
 sphere4.__params.helpers.vertexNormals = {color: 0x00ff00, size: 0.5};
 
 sphere4.__params.pos.x = 0;
-sphere4.build();
+sphere4.wrap();
 sphere4.addTo( GAME );
 
 var ground = GAME.Plane({

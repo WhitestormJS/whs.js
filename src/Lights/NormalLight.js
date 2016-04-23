@@ -23,8 +23,8 @@ WHS.NormalLight = class NormalLight extends WHS.Light {
             params.light.color
         );
 
-        super.build();
-        super.buildShadow();
+        super.wrap();
+        super.wrapShadow();
 
 	}
 

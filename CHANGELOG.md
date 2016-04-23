@@ -15,6 +15,7 @@
    - *src/API/Shape.js -> src/Core/Shape.js*
    - *src/API/Light.js -> src/Core/Light.js*
 - Fixed autoresize.
+- *WHS.Object: build() -> wrap()*
 
 **r8**
 - Engine rebuild commit:

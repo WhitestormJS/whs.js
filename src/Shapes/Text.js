@@ -77,7 +77,7 @@ WHS.Text = class Text extends WHS.Shape {
             })
         );
 
-        super.build("wait");
+        super.wrap("wait");
 
 	}
 

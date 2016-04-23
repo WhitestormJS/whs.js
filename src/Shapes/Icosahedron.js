@@ -46,7 +46,7 @@ WHS.Icosahderon = class Icosahedron extends WHS.Shape {
             params.mass
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

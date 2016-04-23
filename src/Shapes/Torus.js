@@ -55,7 +55,7 @@ WHS.Torus = class Torus extends WHS.Shape {
             params.mass
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

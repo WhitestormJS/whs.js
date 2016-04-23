@@ -29,7 +29,7 @@ WHS.PerspectiveCamera = class PerspectiveCamera extends WHS.Camera {
             params.camera.far
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

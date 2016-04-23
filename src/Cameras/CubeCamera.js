@@ -27,7 +27,7 @@ WHS.CubeCamera = class CubeCamera extends WHS.Camera {
             params.camera.cubeResolution
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

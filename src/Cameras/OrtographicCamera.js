@@ -33,7 +33,7 @@ WHS.OrtographicCamera = class OrtographicCamera extends WHS.Camera {
             params.camera.far
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

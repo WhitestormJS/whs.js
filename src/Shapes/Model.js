@@ -107,7 +107,7 @@ WHS.Model = class Model extends WHS.Shape {
             })
         );
 
-        super.build("wait");
+        super.wrap("wait");
 
 	}
 
