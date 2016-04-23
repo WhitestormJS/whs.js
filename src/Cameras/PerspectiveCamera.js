@@ -5,16 +5,18 @@
 */
 
 /**
- * WhitestormJS directional light.
+ * WhitestormJS perspective light.
  *
  * @extends WHS.Light
  */
 WHS.PerspectiveCamera = class PerspectiveCamera extends WHS.Camera {
 	/**
-     * Directional light.
+     * Perspective camera.
      *
-     * @param {Object} params.light.color - Light color.
-     * @param {Object} params.light.intensity - Light intensity.
+     * @param {Object} params.camera.fov - Fov.
+     * @param {Object} params.camera.aspect - Aspect.
+     * @param {Object} params.camera.near - Near distance.
+     * @param {Object} params.camera.far - Far distance.
      */
 	constructor( params = {} ) {
 
