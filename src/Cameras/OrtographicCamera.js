@@ -5,16 +5,20 @@
 */
 
 /**
- * WhitestormJS directional light.
+ * WhitestormJS ortographic camera.
  *
- * @extends WHS.Light
+ * @extends WHS.Camera
  */
 WHS.OrtographicCamera = class OrtographicCamera extends WHS.Camera {
 	/**
-     * Directional light.
+     * Ortographic camera.
      *
-     * @param {Object} params.light.color - Light color.
-     * @param {Object} params.light.intensity - Light intensity.
+     * @param {Object} params.camera.left - Left distance.
+     * @param {Object} params.camera.right - Right distance.
+     * @param {Object} params.camera.top - Top distance.
+     * @param {Object} params.camera.bottom - Bottom distance.
+     * @param {Object} params.camera.near - Near distance.
+     * @param {Object} params.camera.far - Far distance.
      */
 	constructor( params = {} ) {
 
