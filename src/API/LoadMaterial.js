@@ -4,7 +4,7 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.API.loadMaterial = function( material ) {
+WHS.API.loadMaterial = function( material, isPhysics = true ) {
 	
 	'use strict';
 
@@ -40,7 +40,7 @@ WHS.API.loadMaterial = function( material ) {
 		break;
 
 		case "linebasic":
-			scope._params = new THREE.LineBasicMaterial( params );
+			scope._material = new THREE.LineBasicMaterial( params );
 		break;
 
 		case "linedashed":
@@ -92,11 +92,12 @@ WHS.API.loadMaterial = function( material ) {
 		break;
 	}
 
-	scope._materialP = Physijs.createMaterial( 
-		scope._material, 
-		scope._friction, 
-		scope._restitution 
-	);
+	if ( isPhysics ) 
+		scope._materialP = Physijs.createMaterial( 
+			scope._material, 
+			scope._friction, 
+			scope._restitution 
+		);
 
 	return scope;
 

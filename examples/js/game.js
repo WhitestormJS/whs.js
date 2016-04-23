@@ -101,7 +101,7 @@ GAME.light1 = GAME.SpotLight( {
     }
 } );
 
-GAME.parrot = GAME.Morph( {
+var parrot = new WHS.Morph( {
 
     geometry: {
         width: 2,
@@ -128,11 +128,107 @@ GAME.parrot = GAME.Morph( {
     },
 
     morph: {
-        duration: 0.5,
-        speed: 250
+        duration: 0.4,
+        speed: 200
     }
 
 } );
+
+var parrot_path = [
+    new THREE.CubicBezierCurve3(
+            new THREE.Vector3( -100, 100, 50 ),
+            new THREE.Vector3( -200, 120, -50 ),
+            new THREE.Vector3( 200, 120, -50 ),
+            new THREE.Vector3( 100, 100, 50 )
+        ),
+    new THREE.CubicBezierCurve3(
+            new THREE.Vector3( 100, 100, 50 ),
+            new THREE.Vector3( -200, 80, 150 ),
+            new THREE.Vector3( 200, 60, 150 ),
+            new THREE.Vector3( -100, 100, 50 )
+        )
+];
+
+var parrotgoes = new THREE.CurvePath();
+
+parrotgoes.add( parrot_path[0] );
+parrotgoes.add( parrot_path[1] );
+
+var flamingo = new WHS.Morph( {
+
+    geometry: {
+        width: 2,
+        height: 2,
+        depth: 2,
+        path: "assets/models/morph/flamingo.js"
+    },
+
+    material: {
+        useVertexColors: true,
+        kind: "basic"
+    },
+
+    pos: {
+        x: 70,
+        y: 72,
+        z: 70
+    },
+
+    scale: {
+        x: 0.1,
+        y: 0.1,
+        z: 0.1
+    },
+
+    morph: {
+        duration: 2,
+        speed: 50
+    }
+
+} );
+
+var flamingo_path = [
+    new THREE.CubicBezierCurve3(
+            new THREE.Vector3( -100, 100, 50 ),
+            new THREE.Vector3( -100, 160, 300 ),
+            new THREE.Vector3( 200, 180, 30 ),
+            new THREE.Vector3( 100, 140, 80 )
+        ),
+    new THREE.CubicBezierCurve3(
+            new THREE.Vector3( 100, 140, 80 ),
+            new THREE.Vector3( 200, 80, 150 ),
+            new THREE.Vector3( -200, 60, -100 ),
+            new THREE.Vector3( 200, 100, 350 )
+        ),
+    new THREE.CubicBezierCurve3(
+            new THREE.Vector3( 200, 100, 350 ),
+            new THREE.Vector3( 200, 80, 150 ),
+            new THREE.Vector3( -200, 60, -100 ),
+            new THREE.Vector3( -100, 100, 50 )
+        )
+];
+
+var flamingogoes = new THREE.CurvePath();
+
+flamingogoes.add( flamingo_path[0] );
+flamingogoes.add( flamingo_path[1] );
+flamingogoes.add( flamingo_path[2] );
+
+flamingo.addTo( GAME, "wait" ).then(function (obj) {
+    obj.follow(
+        parrotgoes, //flamingogoes
+        26000,
+        true
+    );
+});
+
+parrot.addTo( GAME, "wait" ).then(function (obj) {
+    obj.follow(
+        flamingogoes,
+        20000,
+        true
+    );
+});
 
 GAME.skybox = GAME.Skybox( {
     path: "assets/textures/skybox/skymap",
@@ -238,7 +334,62 @@ for (var x = 0; x < 20; x++) {
 
     }
 }*/
+/*
+var curve = new WHS.Curve(
+{
+    geometry: {
+        curve: new THREE.CubicBezierCurve3(
+            new THREE.Vector3( -100, 100, 50 ),
+            new THREE.Vector3( -100, 160, 300 ),
+            new THREE.Vector3( 200, 180, 30 ),
+            new THREE.Vector3( 100, 140, 80 )
+        )
+    },
 
+    material: {
+        kind: "linebasic",
+        color: 0xff0000
+    }
+});
+
+var curve2 = new WHS.Curve(
+{
+    geometry: {
+        curve: new THREE.CubicBezierCurve3(
+            new THREE.Vector3( 100, 140, 80 ),
+            new THREE.Vector3( 200, 80, 150 ),
+            new THREE.Vector3( -200, 60, -100 ),
+            new THREE.Vector3( 200, 100, 350 )
+        )
+    },
+
+    material: {
+        kind: "linebasic",
+        color: 0x00ff00
+    }
+});
+
+var curve3 = new WHS.Curve(
+{
+    geometry: {
+        curve: new THREE.CubicBezierCurve3(
+            new THREE.Vector3( 200, 100, 350 ),
+            new THREE.Vector3( 200, 80, 150 ),
+            new THREE.Vector3( -200, 60, -100 ),
+            new THREE.Vector3( -100, 100, 50 )
+        )
+    },
+
+    material: {
+        kind: "linebasic",
+        color: 0x0000ff
+    }
+});
+
+curve.addTo( GAME );
+curve2.addTo( GAME );
+curve3.addTo( GAME );
+*/
 GAME.start();
 
 preloader.check();

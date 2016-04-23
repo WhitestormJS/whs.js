@@ -14,6 +14,7 @@ WHS.loop = function( func ) {
     this.loop = {
         func: func,
         id: WHS.loops.length,
+        clock: new THREE.Clock(),
         enabled: false
     };
 
@@ -26,6 +27,8 @@ WHS.loop = function( func ) {
  */
 WHS.loop.prototype.start = function() {
 
+    this.loop.clock.start();
+
     this.loop.enabled = true;
 
 };
@@ -35,6 +38,8 @@ WHS.loop.prototype.start = function() {
  */
 WHS.loop.prototype.stop = function() {
 
+    this.loop.clock.stop();
+
     this.loop.enabled = false;
 
 };
@@ -43,6 +48,8 @@ WHS.loop.prototype.stop = function() {
  * Removes loop from WHS.loops array.
  */
 WHS.loop.prototype.remove = function() {
+
+    this.loop.clock.stop();
 
     this.loop.enabled = false;
 
