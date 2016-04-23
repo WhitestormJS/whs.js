@@ -34,23 +34,36 @@ WHS.Plane = class Plane extends WHS.Shape {
 
         });
 
-        let mesh = this.physics ? Physijs.PlaneMesh : THREE.Mesh;
-
-		this.mesh = new mesh(
-            new THREE.PlaneGeometry(
-
-                params.geometry.width,
-                params.geometry.height,
-                params.geometry.segments
-
-            ),
-
-            super._initMaterial(params.material)
-        );
+        this.build( params );
 
         super.wrap();
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this,
+            mesh = this.physics ? Physijs.PlaneMesh : THREE.Mesh,
+            material = super._initMaterial(params.material);
+
+        return new Promise( (resolve, reject) => {
+            _scope.mesh = new mesh(
+                new THREE.PlaneGeometry(
+
+                    params.geometry.width,
+                    params.geometry.height,
+                    params.geometry.segments
+
+                ),
+
+                material,
+                params.mass
+            );
+
+            resolve();
+        });
+
+    }
 
 }
 

@@ -20,14 +20,26 @@ WHS.AmbientLight = class AmbientLight extends WHS.Light {
 
 		super( params, "ambientlight" );
 
-		this.light = new THREE.AmbientLight(
-            params.light.color,
-            params.light.intensity
-        );
+		this.build( params );
 
         super.wrap("noshadows");
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this;
+
+        return new Promise( (resolve, reject) => {
+            _scope.light = new THREE.AmbientLight(
+                params.light.color,
+                params.light.intensity
+            );
+
+            resolve();
+        });
+
+    }
 
 }
 

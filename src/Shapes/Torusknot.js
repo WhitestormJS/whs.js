@@ -40,28 +40,40 @@ WHS.Torusknot = class Torusknot extends WHS.Shape {
 
         });
 
-        let mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh;
-
-		this.mesh = new mesh(
-            new THREE.TorusKnotGeometry(
-
-                params.geometry.radius,
-                params.geometry.tube,
-                params.geometry.radialSegments,
-                params.geometry.tubularSegments,
-                params.geometry.p,
-                params.geometry.q,
-                params.geometry.heightScale
-
-            ),
-
-            super._initMaterial(params.material),
-            params.mass
-        );
+		this.build( params );
 
         super.wrap();
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this,
+            mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+            material = super._initMaterial(params.material);
+
+        return new Promise( (resolve, reject) => {
+            _scope.mesh = new mesh(
+                new THREE.TorusKnotGeometry(
+
+                    params.geometry.radius,
+                    params.geometry.tube,
+                    params.geometry.radialSegments,
+                    params.geometry.tubularSegments,
+                    params.geometry.p,
+                    params.geometry.q,
+                    params.geometry.heightScale
+
+                ),
+
+                material,
+                params.mass
+            );
+
+            resolve();
+        });
+
+    }
 
 }
 

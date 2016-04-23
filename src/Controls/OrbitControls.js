@@ -12,7 +12,7 @@
 WHS.World.prototype.OrbitControls = function( object ) {
 
 	this.controls = new THREE.OrbitControls( 
-		this._camera, 
+		this._camera.camera, 
 		this._renderer.domElement 
 	);
 	

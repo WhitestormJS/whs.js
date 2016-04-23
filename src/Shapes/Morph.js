@@ -35,50 +35,60 @@ WHS.Morph = class Morph extends WHS.Shape {
 
         var scope = this;
 
-        super.wait(
-            new Promise(function(resolve, reject) {
-
-                WHS.API.loadJSON(params.geometry.path, function(data, materials) {
-
-                    if (params.material.useVertexColors)
-                        var material = WHS.API.loadMaterial(
-                            WHS.API.extend(params.material, {
-                                morphTargets: true,
-                                vertexColors: THREE.FaceColors
-                            })
-                        )._material;
-
-                    else if (!materials || params.material.useCustomMaterial)
-                        var material = WHS.API.loadMaterial(
-                            params.material
-                        )._material;
-                    
-                    else var material = new THREE.MultiMaterial(materials);
-
-                    data.computeFaceNormals();
-                    data.computeVertexNormals();
-
-                    // Visualization.
-                    scope.mesh = new THREE.Mesh( data, material );
-                    scope.mesh.speed = params.morph.speed;
-
-                    scope.mesh.mixer = new THREE.AnimationMixer( scope.mesh );
-
-                    scope.mesh.mixer
-                        .clipAction( data.animations[ 0 ] )
-                        .setDuration( params.morph.duration )
-                        .play();
-
-                    resolve();
-
-                });
-
-            })
-        );
+        this.build( params );
 
         super.wrap("wait");
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this;
+
+        let promise = new Promise(function(resolve, reject) {
+
+            WHS.API.loadJSON(params.geometry.path, function(data, materials) {
+
+                if (params.material.useVertexColors)
+                    var material = WHS.API.loadMaterial(
+                        WHS.API.extend(params.material, {
+                            morphTargets: true,
+                            vertexColors: THREE.FaceColors
+                        })
+                    )._material;
+
+                else if (!materials || params.material.useCustomMaterial)
+                    var material = WHS.API.loadMaterial(
+                        params.material
+                    )._material;
+                
+                else var material = new THREE.MultiMaterial(materials);
+
+                data.computeFaceNormals();
+                data.computeVertexNormals();
+
+                // Visualization.
+                _scope.mesh = new THREE.Mesh( data, material );
+                _scope.mesh.speed = params.morph.speed;
+
+                _scope.mesh.mixer = new THREE.AnimationMixer( _scope.mesh );
+
+                _scope.mesh.mixer
+                    .clipAction( data.animations[ 0 ] )
+                    .setDuration( params.morph.duration )
+                    .play();
+
+                resolve();
+
+            });
+
+        });
+        
+        super.wait( promise );
+
+        return promise;
+
+    }
 
 }
 

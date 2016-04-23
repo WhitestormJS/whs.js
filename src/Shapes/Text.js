@@ -47,39 +47,49 @@ WHS.Text = class Text extends WHS.Shape {
 
         });
 
-        var scope = this;
-
-        super.wait(
-            new Promise(function(resolve, reject) {
-
-                WHS.API.loadFont(params.geometry.parameters.font, function( font ) {
-
-                    params.geometry.parameters.font = font;
-
-                    let mesh = scope.physics ? Physijs.ConcaveMesh : THREE.Mesh;
-
-            		scope.mesh = new mesh(
-                        new THREE.TextGeometry(
-
-                            params.geometry.text,
-                            params.geometry.parameters
-
-                        ),
-
-                        WHS.API.loadMaterial(params.material)._material,
-                        params.mass
-                    );
-
-                    resolve();
-
-                });
-
-            })
-        );
+        this.build( params );
 
         super.wrap("wait");
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this,
+            mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh,
+            material = super._initMaterial(params.material);
+
+        let promise = new Promise( (resolve, reject) => {
+
+            WHS.API.loadFont(params.geometry.parameters.font, function( font ) {
+
+                params.geometry.parameters.font = font;
+
+                let mesh = scope.physics ? Physijs.ConcaveMesh : THREE.Mesh;
+
+                _scope.mesh = new mesh(
+                    new THREE.TextGeometry(
+
+                        params.geometry.text,
+                        params.geometry.parameters
+
+                    ),
+
+                    material,
+                    params.mass
+                );
+
+                resolve();
+
+            });
+
+        });
+        
+        super.wait( promise );
+
+        return promise;
+
+    }
 
 }
 

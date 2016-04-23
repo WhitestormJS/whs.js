@@ -40,24 +40,37 @@ WHS.Ring = class Ring extends WHS.Shape {
 
         });
 
-		this.mesh = new THREE.Mesh(
-            new THREE.RingGeometry(
-
-                params.geometry.innerRadius,
-                params.geometry.outerRadius,
-                params.geometry.thetaSegments,
-                params.geometry.phiSegments,
-                params.geometry.thetaStart,
-                params.geometry.thetaLength
-
-            ),
-
-            super._initMaterial(params.material)
-        );
+		this.build( params );
 
         super.wrap("onlyvis");
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this,
+            material = super._initMaterial(params.material);
+
+        return new Promise( (resolve, reject) => {
+            _scope.mesh = new THREE.Mesh(
+                new THREE.RingGeometry(
+
+                    params.geometry.innerRadius,
+                    params.geometry.outerRadius,
+                    params.geometry.thetaSegments,
+                    params.geometry.phiSegments,
+                    params.geometry.thetaStart,
+                    params.geometry.thetaLength
+
+                ),
+
+                material
+            );
+
+            resolve();
+        });
+
+    }
 
 }
 

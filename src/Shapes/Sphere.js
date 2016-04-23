@@ -34,24 +34,36 @@ WHS.Sphere = class Sphere extends WHS.Shape {
 
         });
 
-        let mesh = this.physics ? Physijs.SphereMesh : THREE.Mesh;
-
-		this.mesh = new mesh(
-			new THREE.SphereGeometry(
-
-	            params.geometry.radius,
-	            params.geometry.segmentA,
-	            params.geometry.segmentB
-
-	        ),
-
-			super._initMaterial(params.material),
-			params.mass
-		);
+        this.build( params );
 
         super.wrap();
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this,
+            mesh = this.physics ? Physijs.SphereMesh : THREE.Mesh,
+            material = super._initMaterial(params.material);
+
+        return new Promise( (resolve, reject) => {
+            _scope.mesh = new mesh(
+                new THREE.SphereGeometry(
+
+                    params.geometry.radius,
+                    params.geometry.segmentA,
+                    params.geometry.segmentB
+
+                ),
+
+                material,
+                params.mass
+            );
+
+            resolve();
+        });
+
+    }
 
 }
 

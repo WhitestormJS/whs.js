@@ -21,22 +21,34 @@ WHS.HemisphereLight = class HemisphereLight extends WHS.Light {
 
 		super( params, "hemispherelight" );
 
-		this.light = new THREE.HemisphereLight(
-            params.light.skyColor,
-            params.light.groundColor,
-            params.light.intensity
-        );
-
-        if ( params.helper )
-            this.helper = new THREE.HemisphereLightHelper( 
-                this.light, 
-                params.helper.size ? params.helper.size : 0
-            );
+		this.build( params );
 
         super.wrap();
         super.wrapShadow();
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this;
+
+        return new Promise( (resolve, reject) => {
+            _scope.light = new THREE.HemisphereLight(
+                params.light.skyColor,
+                params.light.groundColor,
+                params.light.intensity
+            );
+
+            if ( params.helper )
+                _scope.helper = new THREE.HemisphereLightHelper( 
+                    _scope.light, 
+                    params.helper.size ? params.helper.size : 0
+                );
+
+            resolve();
+        });
+
+    }
 
 }
 
