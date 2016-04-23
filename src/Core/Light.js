@@ -107,7 +107,7 @@ WHS.Light = class extends WHS.Object {
 	 * @param {...String} tags - Tags that defines what to do with light 
 	 * additionally.
 	 */
-	build( ...tags ) {
+	wrap( ...tags ) {
 
 		'use strict';
 
@@ -207,7 +207,7 @@ WHS.Light = class extends WHS.Object {
 	/** 
 	 * Set shadow properties for light.
 	 */
-	buildShadow() {
+	wrapShadow() {
 
 		let _scope = this;
 
@@ -262,7 +262,7 @@ WHS.Light = class extends WHS.Object {
 		this.mesh = source.mesh.clone();
 		if ( source.helper ) this.helper = source.helper.clone();
 
-		this.build();
+		this.wrap();
 
 		this.position = source.position.clone();
 		this.rotation = source.rotation.clone();

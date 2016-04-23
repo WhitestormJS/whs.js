@@ -59,7 +59,7 @@ WHS.Torusknot = class Torusknot extends WHS.Shape {
             params.mass
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

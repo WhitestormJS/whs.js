@@ -46,7 +46,7 @@ WHS.Octahedron = class Octahedron extends WHS.Shape {
             params.mass
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

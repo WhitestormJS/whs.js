@@ -45,7 +45,7 @@ WHS.Extrude = class Extrude extends WHS.Shape {
             params.mass
         );
 
-        super.build();
+        super.wrap();
 
 	}
 

@@ -55,7 +55,7 @@ WHS.Ring = class Ring extends WHS.Shape {
             super._initMaterial(params.material)
         );
 
-        super.build("onlyvis");
+        super.wrap("onlyvis");
 
 	}
 

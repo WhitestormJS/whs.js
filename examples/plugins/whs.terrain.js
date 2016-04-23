@@ -340,7 +340,7 @@ WHS.Terrain = function(_WHS$Shape) {
         _this.mesh.castShadow = true;
         _this.mesh.receiveShadow = true;
 
-        _get(Object.getPrototypeOf(Terrain.prototype), "build", _this).call(_this, "skip");
+        _get(Object.getPrototypeOf(Terrain.prototype), "wrap", _this).call(_this, "skip");
 
         _this.setRotation(Math.PI / 180 * -90, 0, 0);
 

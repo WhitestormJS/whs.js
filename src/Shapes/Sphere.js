@@ -49,7 +49,7 @@ WHS.Sphere = class Sphere extends WHS.Shape {
 			params.mass
 		);
 
-        super.build();
+        super.wrap();
 
 	}
 

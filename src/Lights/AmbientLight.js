@@ -25,7 +25,7 @@ WHS.AmbientLight = class AmbientLight extends WHS.Light {
             params.light.intensity
         );
 
-        super.build("noshadows");
+        super.wrap("noshadows");
 
 	}
 

@@ -55,7 +55,7 @@ WHS.Tube = class Tube extends WHS.Shape {
             params.mass
         );
 
-        super.build();
+        super.wrap();
 
 	}
 
