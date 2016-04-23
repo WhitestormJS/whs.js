@@ -21,15 +21,27 @@ WHS.CubeCamera = class CubeCamera extends WHS.Camera {
 
 		super( params, "cubecamera" );
 
-		this.camera = new THREE.CubeCamera(
-            params.camera.near,
-            params.camera.far,
-            params.camera.cubeResolution
-        );
+		super.build( params );
 
         super.wrap();
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this;
+
+        return new Promise( (resolve, reject) => {
+            _scope.camera = new THREE.CubeCamera(
+                params.camera.near,
+                params.camera.far,
+                params.camera.cubeResolution
+            );
+
+            resolve();
+        });
+
+    }
 
 }
 
