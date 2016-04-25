@@ -32,7 +32,7 @@ WHS.Dodecahedron = class Dodecahedron extends WHS.Shape {
 
         });
 
-        this.build();
+        this.build( params );
 
         super.wrap();
 
