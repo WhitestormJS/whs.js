@@ -3391,7 +3391,7 @@ WHS.Dodecahedron = function(_WHS$Shape3) {
 
         });
 
-        _this10.build();
+        _this10.build(params);
 
         _get(Object.getPrototypeOf(Dodecahedron.prototype), 'wrap', _this10).call(_this10);
 
