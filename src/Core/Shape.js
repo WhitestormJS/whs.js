@@ -538,28 +538,6 @@ WHS.Shape = class extends WHS.Object {
 
 	}
 
-	/**
-	 * Add this light to last applied world.
-	 *
-	 * @return {THREE.Shape} - this.
-	 */
-	retrieve() {
-
-        this.parent = this._lastWorld;
-                
-		this.parent.scene.add( this.mesh );
-		this.parent.children.push( this );
-
-		this.emit("retrieve");
-
-		if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
-            + this._type + " was retrieved to world", 
-            [_scope, _scope.parent]);
-
-		return this;
-
-	}
-
 	get position() {
 		return this.mesh.position;
 	}
