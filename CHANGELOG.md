@@ -17,6 +17,7 @@
 - *libs/three.js r75 -> libs/three.js r76*
 - Fixed autoresize.
 - *WHS.Object: build() -> wrap()*
+- Added polyfill to WHS.Camera.
 
 **r8**
 - Engine rebuild commit:
