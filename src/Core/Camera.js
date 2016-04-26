@@ -230,6 +230,34 @@ WHS.Camera = class extends WHS.Object{
 		return this.camera.rotation.copy( euler );
 	}
 
+	/**
+	 * Overwriting camera position values.
+	 *
+	 * @param {Number} x - X coord.
+	 * @param {Number} y - Y coord.
+	 * @param {Number} z - Z coord.
+	 * @return {WHS.Camera} - this.
+	 */
+	setPosition( x, y, z ) {
+		this.position.set( x, y, z );
+
+		return this;
+	}
+
+	/**
+	 * Overwriting camera rotation values.
+	 *
+	 * @param {Number} x - X coord.
+	 * @param {Number} y - Y coord.
+	 * @param {Number} z - Z coord.
+	 * @return {WHS.Camera} - this.
+	 */
+	setRotation( x, y, z ) {
+		this.rotation.set( x, y, z );
+
+		return this;
+	}
+
 	/* =========== POLYFILL =========== */
 
 	lookAt( vector3 ) {

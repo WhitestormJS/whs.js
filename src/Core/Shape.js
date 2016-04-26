@@ -570,7 +570,7 @@ WHS.Shape = class extends WHS.Object {
 	 * @param {Number} x - X coord.
 	 * @param {Number} y - Y coord.
 	 * @param {Number} z - Z coord.
-	 * @return {THREE.Shape} - this.
+	 * @return {WHS.Shape} - this.
 	 */
 	setPosition( x, y, z ) {
 		this.position.set( x, y, z );
@@ -585,7 +585,7 @@ WHS.Shape = class extends WHS.Object {
 	 * @param {Number} x - X coord.
 	 * @param {Number} y - Y coord.
 	 * @param {Number} z - Z coord.
-	 * @return {THREE.Shape} - this.
+	 * @return {WHS.Shape} - this.
 	 */
 	setRotation( x, y, z ) {
 		this.rotation.set( x, y, z );

@@ -18,6 +18,7 @@
 - Fixed autoresize.
 - *WHS.Object: build() -> wrap()*
 - Added polyfill to WHS.Camera.
+- `setPosition` and `setRotation` added to `WHS.Camera` and `WHS.Light`.
 
 **r8**
 - Engine rebuild commit:
