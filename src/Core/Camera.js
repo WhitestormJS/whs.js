@@ -26,6 +26,8 @@ WHS.Camera = class extends WHS.Object{
 
 		}
 
+		params.useTarget = !!params.target;
+
 		super({
 			camera: {
 				fov: 45,
@@ -51,6 +53,13 @@ WHS.Camera = class extends WHS.Object{
 			},
 
 			rot: {
+				x: 0,
+				y: 0,
+				z: 0,
+				set: _set
+			},
+
+			target: {
 				x: 0,
 				y: 0,
 				z: 0,
@@ -100,6 +109,9 @@ WHS.Camera = class extends WHS.Object{
 					_scope.__params.rot.y, 
 					_scope.__params.rot.z 
 				);
+
+				if ( _scope.__params.useTarget )
+					_scope.lookAt( _scope.__params.target );
 
 				if ( _scope.__params.helper )
 		            _scope.helper = new THREE.CameraHelper( 
@@ -173,6 +185,35 @@ WHS.Camera = class extends WHS.Object{
 		} );
 	}
 
+	/**
+	 * Clone camera.
+	 */
+	clone() {
+
+		return new WHS.Shape( this.__params, this._type ).copy( this );
+
+	}
+
+	/**
+	 * Copy camera.
+	 *
+	 * @param {WHS.Camera} source - Source object, that will be applied to this.
+	 */
+	copy( source ) {
+
+		this.mesh = source.mesh.clone();
+
+		this.wrap();
+
+		this.position = source.position.clone();
+		this.rotation = source.rotation.clone();
+
+		this._type = source._type;
+
+		return this;
+
+	}
+
 	get position() {
 		return this.camera.position;
 	}
@@ -187,5 +228,15 @@ WHS.Camera = class extends WHS.Object{
 
 	set rotation( euler ) {
 		return this.camera.rotation.copy( euler );
+	}
+
+	/* =========== POLYFILL =========== */
+
+	lookAt( vector3 ) {
+		return this.camera.lookAt( vector3 );
+	}
+
+	getWorldDirection( vector3 ) {
+		return this.camera.getWorldDirection( vector3 );
 	}
 }

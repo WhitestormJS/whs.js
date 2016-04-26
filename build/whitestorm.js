@@ -1375,6 +1375,8 @@ WHS.Camera = function(_WHS$Object) {
             this.z = z;
         };
 
+        params.useTarget = !!params.target;
+
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(_class2).call(this, {
             camera: {
                 fov: 45,
@@ -1400,6 +1402,13 @@ WHS.Camera = function(_WHS$Object) {
             },
 
             rot: {
+                x: 0,
+                y: 0,
+                z: 0,
+                set: _set
+            },
+
+            target: {
                 x: 0,
                 y: 0,
                 z: 0,
@@ -1446,6 +1455,8 @@ WHS.Camera = function(_WHS$Object) {
                     _scope.position.set(_scope.__params.pos.x, _scope.__params.pos.y, _scope.__params.pos.z);
 
                     _scope.rotation.set(_scope.__params.rot.x, _scope.__params.rot.y, _scope.__params.rot.z);
+
+                    if (_scope.__params.useTarget) _scope.lookAt(_scope.__params.target);
 
                     if (_scope.__params.helper) _scope.helper = new THREE.CameraHelper(_scope.camera);
 
@@ -1507,6 +1518,52 @@ WHS.Camera = function(_WHS$Object) {
                     _scope.emit("ready");
                 }
             });
+        }
+
+        /**
+         * Clone camera.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Shape(this.__params, this._type).copy(this);
+        }
+
+        /**
+         * Copy camera.
+         *
+         * @param {WHS.Camera} source - Source object, that will be applied to this.
+         */
+
+    }, {
+        key: 'copy',
+        value: function copy(source) {
+
+            this.mesh = source.mesh.clone();
+
+            this.wrap();
+
+            this.position = source.position.clone();
+            this.rotation = source.rotation.clone();
+
+            this._type = source._type;
+
+            return this;
+        }
+    }, {
+        key: 'lookAt',
+
+        /* =========== POLYFILL =========== */
+
+        value: function lookAt(vector3) {
+            return this.camera.lookAt(vector3);
+        }
+    }, {
+        key: 'getWorldDirection',
+        value: function getWorldDirection(vector3) {
+            return this.camera.getWorldDirection(vector3);
         }
     }, {
         key: 'position',
@@ -2386,28 +2443,6 @@ WHS.Shape = function(_WHS$Object4) {
 
             return this;
         }
-
-        /**
-         * Add this light to last applied world.
-         *
-         * @return {THREE.Shape} - this.
-         */
-
-    }, {
-        key: 'retrieve',
-        value: function retrieve() {
-
-            this.parent = this._lastWorld;
-
-            this.parent.scene.add(this.mesh);
-            this.parent.children.push(this);
-
-            this.emit("retrieve");
-
-            if (WHS.debug) console.debug("@WHS.Shape: Shape " + this._type + " was retrieved to world", [_scope, _scope.parent]);
-
-            return this;
-        }
     }, {
         key: 'setPosition',
 
@@ -2535,8 +2570,8 @@ WHS.World = function(_WHS$Object5) {
 
         _classCallCheck(this, _class5);
 
-        if (!THREE) console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
-        if (!Physijs) console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
+        if (!THREE) console.warn('WhitestormJS requires Three.js. {Object} THREE is undefined.');
+        if (!Physijs) console.warn('WhitestormJS requires Physi.js. {Object} Physijs is undefined.');
 
         var _this6 = _possibleConstructorReturn(this, Object.getPrototypeOf(_class5).call(this, {
 
@@ -2871,6 +2906,22 @@ WHS.World = function(_WHS$Object5) {
 
                 if (this.children[i]._type == "morph") this.children[i].mesh.mixer.update(delta);
             }
+        }
+
+        /**
+         * Set a camera for rendering world.
+         *
+         * @params {WHS.Camera} camera - The camera to be rendered.
+         */
+
+    }, {
+        key: 'setCamera',
+        value: function setCamera(camera) {
+
+            if (camera instanceof WHS.Camera) this._camera = camera;
+            else console.error("@WHS.World: camera in not an instance of WHS.Camera.");
+
+            return this;
         }
 
         /**
