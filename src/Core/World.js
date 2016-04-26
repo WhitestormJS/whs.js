@@ -17,9 +17,9 @@ WHS.World = class extends WHS.Object {
         'use strict';
 
         if (!THREE)
-            console.warn('whitestormJS requires THREE.js. {Object} THREE not found.');
+            console.warn('WhitestormJS requires Three.js. {Object} THREE is undefined.');
         if (!Physijs)
-            console.warn('whitestormJS requires PHYSI.js. {Object} Physijs not found.');
+            console.warn('WhitestormJS requires Physi.js. {Object} Physijs is undefined.');
 
         super({
 
@@ -385,6 +385,22 @@ WHS.World = class extends WHS.Object {
                     this.children[i].mesh.mixer.update( delta );
 
             }
+
+    }
+
+    /**
+     * Set a camera for rendering world.
+     *
+     * @params {WHS.Camera} camera - The camera to be rendered.
+     */
+    setCamera( camera ) {
+
+        if ( camera instanceof WHS.Camera )
+            this._camera = camera;
+        else
+            console.error("@WHS.World: camera in not an instance of WHS.Camera.");
+
+        return this;
 
     }
 
