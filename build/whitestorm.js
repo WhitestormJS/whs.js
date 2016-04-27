@@ -1585,6 +1585,59 @@ WHS.Camera = function(_WHS$Object) {
 
             return this;
         }
+    }, {
+        key: 'follow',
+        value: function follow(curve) {
+            var time = arguments.length <= 1 || arguments[1] === undefined ? 1000 : arguments[1];
+            var loop = arguments[2];
+            var lookAt = arguments[3];
+
+            var _scope = this,
+                gEnd = time;
+
+            var animation = new WHS.loop(function(clock) {
+
+                var u = clock.getElapsedTime() * 1000 / gEnd;
+                var vec1 = curve.getPoint(u);
+                var vec2 = curve.getPoint((u + 0.01) % 1);
+
+                _scope.setPosition(vec1.x, vec1.y, vec1.z);
+
+                if (!lookAt) _scope.lookAt(vec2);
+                else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+                else if (lookAt instanceof THREE.Curve || lookAt instanceof THREE.CurvePath) {
+
+                    _scope.lookAt(lookAt.getPoint(u));
+                }
+            });
+
+            animation.start();
+
+            if (loop) setInterval(function() {
+                animation.stop();
+
+                animation = new WHS.loop(function(clock) {
+
+                    var u = clock.getElapsedTime() * 1000 / gEnd;
+                    var vec1 = curve.getPoint(u);
+                    var vec2 = curve.getPoint((u + 0.01) % 1);
+
+                    _scope.setPosition(vec1.x, vec1.y, vec1.z);
+
+                    if (!lookAt) _scope.lookAt(vec2);
+                    else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+                    else if (lookAt instanceof THREE.Curve || lookAt instanceof THREE.CurvePath) {
+
+                        _scope.lookAt(lookAt.getPoint(u));
+                    }
+                });
+
+                animation.start();
+            }, time);
+            else setTimeout(function() {
+                animation.stop();
+            }, time);
+        }
 
         /* =========== POLYFILL =========== */
 

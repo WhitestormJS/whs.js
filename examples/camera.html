@@ -289,6 +289,10 @@ var globalLight = GAME.AmbientLight({
 });
 
 var newcamera = new WHS.PerspectiveCamera({
+    camera: {
+        far: 10000
+    },
+
     pos: {
         x: 0,
         y: 100,
@@ -303,11 +307,120 @@ var newcamera = new WHS.PerspectiveCamera({
 });
 
 GAME.setCamera( newcamera );
+
 //GAME.ground.mesh.__dirtyRotation = true;
 //GAME.ground.rotation.set(-Math.PI/2, 0, 0);
 
+var curve = new WHS.Curve(
+{
+    geometry: {
+        curve: new THREE.SplineCurve3( [
+            new THREE.Vector3( -100,  100, 110 ),
+            new THREE.Vector3(  -50,  150,  105 ),
+            new THREE.Vector3(   00,  100,  100 ),
+            new THREE.Vector3(   50,  50,   105 ),
+            new THREE.Vector3(  100,  100, 110 )
+        ] ),
+    },
+
+    material: {
+        kind: "linebasic",
+        color: 0x00ff00
+    }
+});
+
+var curve2 = new WHS.Curve(
+{
+    geometry: {
+        curve: new THREE.SplineCurve3( [
+            new THREE.Vector3( -100,  80,  100 ),
+            new THREE.Vector3(  -60,  100,  75 ),
+            new THREE.Vector3(  -20,  80,   50 ),
+            new THREE.Vector3(   20,  30,   35 ),
+            new THREE.Vector3(   60,  80,  20 )
+        ] ),
+    },
+
+    material: {
+        kind: "linebasic",
+        color: 0xff0000
+    }
+});
+
+/*var curve2 = new WHS.Curve(
+{
+    geometry: {
+        curve: new THREE.CubicBezierCurve3(
+            new THREE.Vector3( 100, 140, 80 ),
+            new THREE.Vector3( 200, 80, 150 ),
+            new THREE.Vector3( -200, 60, -100 ),
+            new THREE.Vector3( 200, 100, 350 )
+        )
+    },
+
+    material: {
+        kind: "linebasic",
+        color: 0x00ff00
+    }
+});
+
+var curve3 = new WHS.Curve(
+{
+    geometry: {
+        curve: new THREE.CubicBezierCurve3(
+            new THREE.Vector3( 200, 100, 350 ),
+            new THREE.Vector3( 200, 80, 150 ),
+            new THREE.Vector3( -200, 60, -100 ),
+            new THREE.Vector3( -100, 100, 50 )
+        )
+    },
+
+    material: {
+        kind: "linebasic",
+        color: 0x0000ff
+    }
+});*/
+
+
+var camera_path = [
+    new THREE.SplineCurve3( [
+            new THREE.Vector3( -100,  100, 110 ),
+            new THREE.Vector3(  -50,  150,  105 ),
+            new THREE.Vector3(   00,  100,  100 ),
+            new THREE.Vector3(   50,  50,   105 ),
+            new THREE.Vector3(  100,  100, 110 )
+        ] )
+];
+
+var camera_path2 = [
+    new THREE.SplineCurve3( [
+            new THREE.Vector3( -100,  80,  100 ),
+            new THREE.Vector3(  -60,  100,  75 ),
+            new THREE.Vector3(  -20,  80,   50 ),
+            new THREE.Vector3(   20,  30,   35 ),
+            new THREE.Vector3(   60,  80,  20 )
+        ] )
+];
+
+var cameragoes = new THREE.CurvePath();
+
+cameragoes.add( camera_path[0] );
+
+var cameragoes2 = new THREE.CurvePath();
+
+cameragoes2.add( camera_path2[0] );
+
+newcamera.follow( cameragoes, 8000, true, cameragoes2 );
+
+curve.addTo( GAME );
+curve2.addTo( GAME );
+//curve3.addTo( GAME );
+
 GAME.start();
 
+//GAME.OrbitControls();
+
 preloader.check();
+
 </script>
 </html>
