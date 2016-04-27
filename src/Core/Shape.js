@@ -17,6 +17,8 @@ WHS.Shape = class extends WHS.Object {
 
 		if ( !type ) 
 			console.error( "@constructor: Please specify \" type \"." );
+			
+		let mesh; //Private variables
 
 		let _set = function( x, y, z ) {
 
@@ -123,8 +125,8 @@ WHS.Shape = class extends WHS.Object {
 
 					try {
 
-						_scope.mesh.castShadow = true;
-						_scope.mesh.receiveShadow = true;
+						mesh.castShadow = true;
+						mesh.receiveShadow = true;
 
 						_scope.position.set(
 							_scope.__params.pos.x, 
@@ -148,7 +150,7 @@ WHS.Shape = class extends WHS.Object {
 						if ( _scope.__params.helpers.box ) {
 				
 							_scope.helpers.box = new THREE.BoxHelper( 
-								_scope.mesh
+								mesh
 							);
 
 						}
@@ -157,7 +159,7 @@ WHS.Shape = class extends WHS.Object {
 						if ( _scope.__params.helpers.boundingBox ) {
 				
 							_scope.helpers.boundingBox = new THREE.BoundingBoxHelper( 
-								_scope.mesh,
+								mesh,
 								_scope.__params.helpers.boundingBox.color
 								? _scope.__params.helpers.boundingBox.color
 								: 0xffffff
@@ -169,7 +171,7 @@ WHS.Shape = class extends WHS.Object {
 						if ( _scope.__params.helpers.edges ) {
 				
 							_scope.helpers.edges = new THREE.EdgesHelper( 
-								_scope.mesh,
+								mesh,
 								_scope.__params.helpers.edges.color
 								? _scope.__params.helpers.edges.color
 								: 0xffffff
@@ -180,7 +182,7 @@ WHS.Shape = class extends WHS.Object {
 						if ( _scope.__params.helpers.faceNormals ) {
 				
 							_scope.helpers.faceNormals = new THREE.FaceNormalsHelper( 
-								_scope.mesh,
+								mesh,
 								_scope.__params.helpers.faceNormals.size
 								? _scope.__params.helpers.faceNormals.size
 								: 2,
@@ -198,7 +200,7 @@ WHS.Shape = class extends WHS.Object {
 						if ( _scope.__params.helpers.vertexNormals ) {
 				
 							_scope.helpers.vertexNormals = new THREE.VertexNormalsHelper( 
-								_scope.mesh,
+								mesh,
 								_scope.__params.helpers.vertexNormals.size
 								? _scope.__params.helpers.vertexNormals.size
 								: 2,
@@ -236,8 +238,8 @@ WHS.Shape = class extends WHS.Object {
 
 				try {
 
-					_scope.mesh.castShadow = true;
-					_scope.mesh.receiveShadow = true;
+					mesh.castShadow = true;
+					mesh.receiveShadow = true;
 
 					_scope.position.set(
 						_scope.__params.pos.x, 
@@ -261,7 +263,7 @@ WHS.Shape = class extends WHS.Object {
 					if ( _scope.__params.helpers.box ) {
 			
 						_scope.helpers.box = new THREE.BoxHelper( 
-							_scope.mesh
+							mesh
 						);
 
 					}
@@ -270,7 +272,7 @@ WHS.Shape = class extends WHS.Object {
 					if ( _scope.__params.helpers.boundingBox ) {
 			
 						_scope.helpers.boundingBox = new THREE.BoundingBoxHelper( 
-							_scope.mesh,
+							mesh,
 							_scope.__params.helpers.boundingBox.color
 							? _scope.__params.helpers.boundingBox.color
 							: 0xffffff
@@ -282,7 +284,7 @@ WHS.Shape = class extends WHS.Object {
 					if ( _scope.__params.helpers.edges ) {
 			
 						_scope.helpers.edges = new THREE.EdgesHelper( 
-							_scope.mesh,
+							mesh,
 							_scope.__params.helpers.edges.color
 							? _scope.__params.helpers.edges.color
 							: 0xffffff
@@ -293,7 +295,7 @@ WHS.Shape = class extends WHS.Object {
 					if ( _scope.__params.helpers.faceNormals ) {
 			
 						_scope.helpers.faceNormals = new THREE.FaceNormalsHelper( 
-							_scope.mesh,
+							mesh,
 							_scope.__params.helpers.faceNormals.size
 							? _scope.__params.helpers.faceNormals.size
 							: 2,
@@ -311,7 +313,7 @@ WHS.Shape = class extends WHS.Object {
 					if ( _scope.__params.helpers.vertexNormals ) {
 			
 						_scope.helpers.vertexNormals = new THREE.VertexNormalsHelper( 
-							_scope.mesh,
+							mesh,
 							_scope.__params.helpers.vertexNormals.size
 							? _scope.__params.helpers.vertexNormals.size
 							: 2,
@@ -358,7 +360,7 @@ WHS.Shape = class extends WHS.Object {
 
 		this.parent = parent;
 
-		var _mesh = this.mesh,
+		var _mesh = mesh,
 			_helpers = this.helpers,
 			_scope = this;
 
@@ -370,7 +372,7 @@ WHS.Shape = class extends WHS.Object {
 
 					try {
 
-						_scope.parent.scene.add( _scope.mesh );
+						_scope.parent.scene.add( mesh );
 						_scope.parent.children.push( _scope );
 
 						if ( _scope.__params.helpers.box ) 
@@ -397,7 +399,7 @@ WHS.Shape = class extends WHS.Object {
 
 						if ( _scope._wait ) {
 
-							_scope.mesh.addEventListener('ready', function() {
+							mesh.addEventListener('ready', function() {
 								resolve( _scope );
 							});
 
@@ -405,7 +407,7 @@ WHS.Shape = class extends WHS.Object {
 							resolve( _scope );
 						}
 
-						_scope.mesh.addEventListener('collide', function() {
+						mesh.addEventListener('collide', function() {
 							_scope.emit("collide");
 						});
 
@@ -425,7 +427,7 @@ WHS.Shape = class extends WHS.Object {
 
 				try {
 
-					_scope.parent.scene.add( _scope.mesh );
+					_scope.parent.scene.add( mesh );
 					_scope.parent.children.push( _scope );
 
 					if ( _scope.__params.helpers.box ) 
@@ -452,7 +454,7 @@ WHS.Shape = class extends WHS.Object {
 
 					if ( _scope._wait ) {
 
-						_scope.mesh.addEventListener('ready', function() {
+						mesh.addEventListener('ready', function() {
 
 							resolve( _scope );
 
@@ -462,7 +464,7 @@ WHS.Shape = class extends WHS.Object {
 						resolve( _scope );
 					}
 
-					_scope.mesh.addEventListener('collide', function() {
+					mesh.addEventListener('collide', function() {
 						_scope.emit("ready");
 					});
 
@@ -503,7 +505,7 @@ WHS.Shape = class extends WHS.Object {
 	 */
 	copy( source ) {
 
-		this.mesh = source.mesh.clone();
+		mesh = source.getNative().clone();
 
 		this.wrap();
 
@@ -523,7 +525,7 @@ WHS.Shape = class extends WHS.Object {
 	 */
 	remove() {
 		
-		this.parent.scene.remove( this.mesh );
+		this.parent.scene.remove( mesh );
 
         this.parent.children.splice( this.parent.children.indexOf( this ), 1);
         this.parent = null;
@@ -539,29 +541,29 @@ WHS.Shape = class extends WHS.Object {
 	}
 
 	get position() {
-		return this.mesh.position;
+		return mesh.position;
 	}
 
 	set position( vector3 ) {
-		this.mesh.__dirtyPosition = true;
-		return this.mesh.position.copy( vector3 );
+		mesh.__dirtyPosition = true;
+		return mesh.position.copy( vector3 );
 	}
 
 	get rotation() {
-		return this.mesh.rotation;
+		return mesh.rotation;
 	}
 
 	set rotation( euler ) {
-		this.mesh.__dirtyRotation = true;
-		return this.mesh.rotation.copy( euler );
+		mesh.__dirtyRotation = true;
+		return mesh.rotation.copy( euler );
 	}
 
 	get scale() {
-		return this.mesh.scale;
+		return mesh.scale;
 	}
 
 	set scale( vector3 ) {
-		return this.mesh.scale = vector3;
+		return mesh.scale = vector3;
 	}
 
 	/**
@@ -574,7 +576,7 @@ WHS.Shape = class extends WHS.Object {
 	 */
 	setPosition( x, y, z ) {
 		this.position.set( x, y, z );
-		this.mesh.__dirtyPosition = true;
+		mesh.__dirtyPosition = true;
 
 		return this;
 	}
@@ -589,9 +591,13 @@ WHS.Shape = class extends WHS.Object {
 	 */
 	setRotation( x, y, z ) {
 		this.rotation.set( x, y, z );
-		this.mesh.__dirtyRotation = true;
+		mesh.__dirtyRotation = true;
 
 		return this;
+	}
+	
+	getNative(){
+		return mesh;
 	}
 
 	follow( curve, time = 1000, loop ) {
@@ -606,7 +612,7 @@ WHS.Shape = class extends WHS.Object {
 			let vec2 = curve.getPoint( (u + 0.01) % 1 );
 
 			_scope.setPosition( vec1.x, vec1.y, vec1.z );
-			_scope.mesh.lookAt( vec2 );
+			mesh.lookAt( vec2 );
 			
 		});
 
@@ -622,7 +628,7 @@ WHS.Shape = class extends WHS.Object {
 					let vec2 = curve.getPoint( (u + 0.01) % 1 );
 
 					_scope.setPosition( vec1.x, vec1.y, vec1.z );
-					_scope.mesh.lookAt( vec2 );
+					mesh.lookAt( vec2 );
 					
 				});
 
