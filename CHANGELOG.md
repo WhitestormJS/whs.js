@@ -19,6 +19,7 @@
 - *WHS.Object: build() -> wrap()*
 - Added polyfill to WHS.Camera.
 - `setPosition` and `setRotation` added to `WHS.Camera` and `WHS.Light`.
+- `follow()` function for `WHS.Camera`.
 
 **r8**
 - Engine rebuild commit:
