@@ -1553,10 +1553,43 @@ WHS.Camera = function(_WHS$Object) {
             return this;
         }
     }, {
-        key: 'lookAt',
+        key: 'setPosition',
+
+        /**
+         * Overwriting camera position values.
+         *
+         * @param {Number} x - X coord.
+         * @param {Number} y - Y coord.
+         * @param {Number} z - Z coord.
+         * @return {WHS.Camera} - this.
+         */
+        value: function setPosition(x, y, z) {
+            this.position.set(x, y, z);
+
+            return this;
+        }
+
+        /**
+         * Overwriting camera rotation values.
+         *
+         * @param {Number} x - X coord.
+         * @param {Number} y - Y coord.
+         * @param {Number} z - Z coord.
+         * @return {WHS.Camera} - this.
+         */
+
+    }, {
+        key: 'setRotation',
+        value: function setRotation(x, y, z) {
+            this.rotation.set(x, y, z);
+
+            return this;
+        }
 
         /* =========== POLYFILL =========== */
 
+    }, {
+        key: 'lookAt',
         value: function lookAt(vector3) {
             return this.camera.lookAt(vector3);
         }
@@ -1995,6 +2028,40 @@ WHS.Light = function(_WHS$Object3) {
             this.parent = null;
 
             this.emit("remove");
+
+            return this;
+        }
+
+        /**
+         * Overwriting light position values.
+         *
+         * @param {Number} x - X coord.
+         * @param {Number} y - Y coord.
+         * @param {Number} z - Z coord.
+         * @return {WHS.Light} - this.
+         */
+
+    }, {
+        key: 'setPosition',
+        value: function setPosition(x, y, z) {
+            this.position.set(x, y, z);
+
+            return this;
+        }
+
+        /**
+         * Overwriting light rotation values.
+         *
+         * @param {Number} x - X coord.
+         * @param {Number} y - Y coord.
+         * @param {Number} z - Z coord.
+         * @return {WHS.Light} - this.
+         */
+
+    }, {
+        key: 'setRotation',
+        value: function setRotation(x, y, z) {
+            this.rotation.set(x, y, z);
 
             return this;
         }
@@ -2452,7 +2519,7 @@ WHS.Shape = function(_WHS$Object4) {
          * @param {Number} x - X coord.
          * @param {Number} y - Y coord.
          * @param {Number} z - Z coord.
-         * @return {THREE.Shape} - this.
+         * @return {WHS.Shape} - this.
          */
         value: function setPosition(x, y, z) {
             this.position.set(x, y, z);
@@ -2467,7 +2534,7 @@ WHS.Shape = function(_WHS$Object4) {
          * @param {Number} x - X coord.
          * @param {Number} y - Y coord.
          * @param {Number} z - Z coord.
-         * @return {THREE.Shape} - this.
+         * @return {WHS.Shape} - this.
          */
 
     }, {
