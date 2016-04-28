@@ -538,6 +538,7 @@ WHS.Shape = class extends WHS.Object {
 	}
 
 	get position() {
+		this.getNative().__dirtyPosition = true;
 		return this.getNative().position;
 	}
 
@@ -547,6 +548,7 @@ WHS.Shape = class extends WHS.Object {
 	}
 
 	get rotation() {
+		this.getNative().__dirtyRotation = true;
 		return this.getNative().rotation;
 	}
 
@@ -561,36 +563,6 @@ WHS.Shape = class extends WHS.Object {
 
 	set scale( vector3 ) {
 		return this.getNative().scale = vector3;
-	}
-
-	/**
-	 * Overwriting mesh position values.
-	 *
-	 * @param {Number} x - X coord.
-	 * @param {Number} y - Y coord.
-	 * @param {Number} z - Z coord.
-	 * @return {WHS.Shape} - this.
-	 */
-	setPosition( x, y, z ) {
-		this.position.set( x, y, z );
-		this.getNative().__dirtyPosition = true;
-
-		return this;
-	}
-
-	/**
-	 * Overwriting mesh rotation values.
-	 *
-	 * @param {Number} x - X coord.
-	 * @param {Number} y - Y coord.
-	 * @param {Number} z - Z coord.
-	 * @return {WHS.Shape} - this.
-	 */
-	setRotation( x, y, z ) {
-		this.rotation.set( x, y, z );
-		this.getNative().__dirtyRotation = true;
-
-		return this;
 	}
 
 	/* Access private data */
@@ -618,7 +590,7 @@ WHS.Shape = class extends WHS.Object {
 			let vec1 = curve.getPoint( u % 1);
 			let vec2 = curve.getPoint( (u + 0.01) % 1 );
 
-			_scope.setPosition( vec1.x, vec1.y, vec1.z );
+			_scope.position.set( vec1.x, vec1.y, vec1.z );
 			_scope.getNative().lookAt( vec2 );
 			
 		});
@@ -634,7 +606,7 @@ WHS.Shape = class extends WHS.Object {
 					let vec1 = curve.getPoint( u % 1 );
 					let vec2 = curve.getPoint( (u + 0.01) % 1 );
 
-					_scope.setPosition( vec1.x, vec1.y, vec1.z );
+					_scope.position.set( vec1.x, vec1.y, vec1.z );
 					_scope.getNative().lookAt( vec2 );
 					
 				});

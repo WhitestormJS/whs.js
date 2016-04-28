@@ -288,34 +288,6 @@ WHS.Light = class extends WHS.Object {
 
 	}
 
-	/**
-	 * Overwriting light position values.
-	 *
-	 * @param {Number} x - X coord.
-	 * @param {Number} y - Y coord.
-	 * @param {Number} z - Z coord.
-	 * @return {WHS.Light} - this.
-	 */
-	setPosition( x, y, z ) {
-		this.position.set( x, y, z );
-
-		return this;
-	}
-
-	/**
-	 * Overwriting light rotation values.
-	 *
-	 * @param {Number} x - X coord.
-	 * @param {Number} y - Y coord.
-	 * @param {Number} z - Z coord.
-	 * @return {WHS.Light} - this.
-	 */
-	setRotation( x, y, z ) {
-		this.rotation.set( x, y, z );
-
-		return this;
-	}
-
 	/* Access private data */
 
 	setNative( light ) {
