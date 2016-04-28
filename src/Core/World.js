@@ -86,6 +86,8 @@ WHS.World = class extends WHS.Object {
 
         super.setParams( params );
 
+        native.set( this, {} );
+
         // INIT.
         this._initScene();
         this._initDOM();
@@ -116,9 +118,9 @@ WHS.World = class extends WHS.Object {
 
         this._initPhysiJS();
 
-        this.scene = new Physijs.Scene;
+        let scene = new Physijs.Scene;
 
-        this.scene.setGravity(
+        scene.setGravity(
             new THREE.Vector3(
                 this.__params.gravity.x, 
                 this.__params.gravity.y,
@@ -126,7 +128,9 @@ WHS.World = class extends WHS.Object {
             )
         );
 
-        // Arrays for processing.
+        this.setScene( scene );
+
+        // Array for processing.
         this.children = [];
 
     }
@@ -202,22 +206,22 @@ WHS.World = class extends WHS.Object {
      */
     _initCamera() {
 
-        this._camera = new WHS.PerspectiveCamera({
+        this.setCamera( new WHS.PerspectiveCamera({
             camera: {
                 fov: this.__params.camera.aspect,
                 aspect: this.__params.width / this.__params.height,
                 near: this.__params.camera.near,
                 far: this.__params.camera.far
+            },
+
+            pos: {
+                x: this.__params.camera.x,
+                y: this.__params.camera.y,
+                z: this.__params.camera.z
             }
-        });
+        }) );
 
-        this._camera.position.set(
-            this.__params.camera.x,
-            this.__params.camera.y,
-            this.__params.camera.z
-        );
-
-        this._camera.addTo( this );
+        this.getCamera().addTo( this );
 
     }
 
@@ -229,25 +233,25 @@ WHS.World = class extends WHS.Object {
         this.render = true;
 
         // Renderer.
-        this._renderer = new THREE.WebGLRenderer();
-        this._renderer.setClearColor(this.__params.background);
+        this.setRenderer( new THREE.WebGLRenderer() );
+        this.getRenderer().setClearColor( this.__params.background );
 
         // Shadowmap.
-        this._renderer.shadowMap.enabled = this.__params.shadowmap.enabled;
-        this._renderer.shadowMap.type = this.__params.shadowmap.type;
-        this._renderer.shadowMap.cascade = true;
+        this.getRenderer().shadowMap.enabled = this.__params.shadowmap.enabled;
+        this.getRenderer().shadowMap.type = this.__params.shadowmap.type;
+        this.getRenderer().shadowMap.cascade = true;
 
-        this._renderer.setSize( 
-            +(this.__params.width * this.__params.rWidth).toFixed(), 
-            +(this.__params.height * this.__params.rHeight).toFixed()
+        this.getRenderer().setSize( 
+            +( this.__params.width * this.__params.rWidth ).toFixed(), 
+            +( this.__params.height * this.__params.rHeight ).toFixed()
         );
 
-        this._renderer.render(this.scene, this._camera.camera);
+        this.getRenderer().render( this.getScene(), this.getCamera().getNative() );
 
-        this._dom.appendChild(this._renderer.domElement);
+        this._dom.appendChild( this.getRenderer().domElement );
 
-        this._renderer.domElement.style.width = '100%';
-        this._renderer.domElement.style.height = '100%';
+        this.getRenderer().domElement.style.width = '100%';
+        this.getRenderer().domElement.style.height = '100%';
 
     }
 
@@ -257,7 +261,7 @@ WHS.World = class extends WHS.Object {
     _initHelpers() {
 
         if ( this.__params.helpers.axis )
-            this.scene.add( 
+            this.getScene().add( 
                 new THREE.AxisHelper( 
                     this.__params.helpers.axis.size 
                     ? this.__params.helpers.axis.size 
@@ -266,7 +270,7 @@ WHS.World = class extends WHS.Object {
             );
 
         if ( this.__params.helpers.grid )
-            this.scene.add( 
+            this.getScene().add( 
                 new THREE.GridHelper( 
                     this.__params.helpers.grid.size 
                     ? this.__params.helpers.grid.size 
@@ -304,7 +308,7 @@ WHS.World = class extends WHS.Object {
 
             scope._process( clock );
 
-            if ( scope.simulate ) scope.scene.simulate();
+            if ( scope.simulate ) scope.getScene().simulate();
 
             scope._updateControls();
 
@@ -314,8 +318,8 @@ WHS.World = class extends WHS.Object {
                 scope._composer.reset();
 
                 if ( scope.render ) scope._composer.render( 
-                    scope.scene, 
-                    scope._camera.camera 
+                    scope.getScene(), 
+                    scope.getCamera().getNative() 
                 );
 
                 scope._composer.pass( scope._composer.stack );
@@ -324,9 +328,9 @@ WHS.World = class extends WHS.Object {
 
             } else {
 
-                if ( scope.render ) scope._renderer.render( 
-                    scope.scene, 
-                    scope._camera.camera 
+                if ( scope.render ) scope.getRenderer().render( 
+                    scope.getScene(), 
+                    scope.getCamera().getNative() 
                 );
 
             }
@@ -389,6 +393,37 @@ WHS.World = class extends WHS.Object {
     }
 
     /**
+     * This functon will scene properties when it's called.
+     */
+    setSize( width = 1, height = 1) {
+
+        this.getCamera().getNative().aspect = width / height;
+        this.getCamera().getNative().updateProjectionMatrix();
+        
+        this.getRenderer().setSize( 
+            +(width * this.__params.rWidth).toFixed(), 
+            +(height * this.__params.rHeight).toFixed()
+        );
+
+    }
+
+    setScene( scene ) {
+        return native.get( this ).scene = scene; 
+    }
+
+    getScene() {
+        return native.get( this ).scene; 
+    }
+
+    setRenderer( renderer ) {
+        return native.get( this ).renderer = renderer; 
+    }
+
+    getRenderer() {
+        return native.get( this ).renderer; 
+    }
+
+    /**
      * Set a camera for rendering world.
      *
      * @params {WHS.Camera} camera - The camera to be rendered.
@@ -396,7 +431,7 @@ WHS.World = class extends WHS.Object {
     setCamera( camera ) {
 
         if ( camera instanceof WHS.Camera )
-            this._camera = camera;
+            native.get( this ).camera = camera;
         else
             console.error("@WHS.World: camera in not an instance of WHS.Camera.");
 
@@ -404,19 +439,8 @@ WHS.World = class extends WHS.Object {
 
     }
 
-    /**
-     * This functon will scene properties when it's called.
-     */
-    setSize( width = 1, height = 1) {
-
-        this._camera.camera.aspect = width / height;
-        this._camera.camera.updateProjectionMatrix();
-        
-        this._renderer.setSize( 
-            +(width * this.__params.rWidth).toFixed(), 
-            +(height * this.__params.rHeight).toFixed()
-        );
-
+    getCamera() {
+        return native.get( this ).camera;
     }
 
 }

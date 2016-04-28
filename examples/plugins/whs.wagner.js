@@ -67,14 +67,14 @@ WHS.Wagner = function(_WHS$Object) {
 
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Wagner).call(this));
 
-        scope._composer = new WAGNER.Composer(scope._renderer);
+        scope._composer = new WAGNER.Composer(scope.getRenderer());
 
         scope._composer.setSize(+(scope.__params.width * scope.__params.rWidth).toFixed(), +(scope.__params.height * scope.__params.rHeight).toFixed());
 
         scope._composer.autoClearColor = true;
 
         scope._composer.reset();
-        scope._composer.render(scope.scene, scope._camera.camera);
+        scope._composer.render(scope.getScene(), scope.getCamera().getNative());
 
         scope._composer.stack = new WAGNER.Stack(new WAGNER.ShadersPool());
 

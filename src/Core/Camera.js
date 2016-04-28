@@ -91,8 +91,7 @@ WHS.Camera = class extends WHS.Object{
 
 		'use strict';
 
-		var camera = this.camera,
-		_scope = this;
+		let _scope = this;
 
 		return new Promise( (resolve, reject) => {
 
@@ -104,7 +103,7 @@ WHS.Camera = class extends WHS.Object{
 					_scope.__params.pos.z 
 				);
 
-				_scope.rotation.set( 
+				_scope.rotation.set(
 					_scope.__params.rot.x, 
 					_scope.__params.rot.y, 
 					_scope.__params.rot.z 
@@ -115,7 +114,7 @@ WHS.Camera = class extends WHS.Object{
 
 				if ( _scope.__params.helper )
 		            _scope.helper = new THREE.CameraHelper( 
-		                _scope.camera
+		                _scope.getNative()
 		            );
 
 				tags.forEach(tag => {
@@ -152,18 +151,17 @@ WHS.Camera = class extends WHS.Object{
 
 		this.parent = parent;
 
-		var _camera = this.camera,
-			_helper = this.helper,
+		let _helper = this.helper,
 			_scope = this;
 
 		return new Promise( (resolve, reject) => {
 
 			try {
 
-				_scope.parent.scene.add( _camera );
+				_scope.parent.getScene().add( _scope.getNative() );
 				_scope.parent.children.push( _scope );
 
-				if ( _helper ) _scope.parent.scene.add( _helper );
+				if ( _helper ) _scope.parent.getScene().add( _helper );
 
 			} catch ( err ) {
 
@@ -214,20 +212,34 @@ WHS.Camera = class extends WHS.Object{
 
 	}
 
+	/* Access private data */
+
+    setNative( camera ) {
+
+        return native.set( this, camera );
+        
+    }
+    
+    getNative() {
+
+        return native.get( this );
+
+    }
+
 	get position() {
-		return this.camera.position;
+		return this.getNative().position;
 	}
 
 	set position( vector3 ) {
-		return this.camera.position.copy( vector3 );
+		return this.getNative().position.copy( vector3 );
 	}
 
 	get rotation() {
-		return this.camera.rotation;
+		return this.getNative().rotation;
 	}
 
 	set rotation( euler ) {
-		return this.camera.rotation.copy( euler );
+		return this.getNative().rotation.copy( euler );
 	}
 
 	/**
@@ -318,10 +330,10 @@ WHS.Camera = class extends WHS.Object{
 	/* =========== POLYFILL =========== */
 
 	lookAt( vector3 ) {
-		return this.camera.lookAt( vector3 );
+		return this.getNative().lookAt( vector3 );
 	}
 
 	getWorldDirection( vector3 ) {
-		return this.camera.getWorldDirection( vector3 );
+		return this.getNative().getWorldDirection( vector3 );
 	}
 }

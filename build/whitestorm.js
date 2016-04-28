@@ -1277,6 +1277,8 @@ var WHS = {
 
 console.log('WhitestormJS', WHS.REVISION);
 
+var native = new WeakMap(); // Store private variables.
+
 WHS.API.loadJSON = function(url, callback, texturePath) {
     return WHS.loader.JSON.load(url, callback, texturePath);
 };
@@ -1445,8 +1447,7 @@ WHS.Camera = function(_WHS$Object) {
                 tags[_key] = arguments[_key];
             }
 
-            var camera = this.camera,
-                _scope = this;
+            var _scope = this;
 
             return new Promise(function(resolve, reject) {
 
@@ -1458,7 +1459,7 @@ WHS.Camera = function(_WHS$Object) {
 
                     if (_scope.__params.useTarget) _scope.lookAt(_scope.__params.target);
 
-                    if (_scope.__params.helper) _scope.helper = new THREE.CameraHelper(_scope.camera);
+                    if (_scope.__params.helper) _scope.helper = new THREE.CameraHelper(_scope.getNative());
 
                     tags.forEach(function(tag) {
                         _scope[tag] = true;
@@ -1493,18 +1494,17 @@ WHS.Camera = function(_WHS$Object) {
 
             this.parent = parent;
 
-            var _camera = this.camera,
-                _helper = this.helper,
+            var _helper = this.helper,
                 _scope = this;
 
             return new Promise(function(resolve, reject) {
 
                 try {
 
-                    _scope.parent.scene.add(_camera);
+                    _scope.parent.getScene().add(_scope.getNative());
                     _scope.parent.children.push(_scope);
 
-                    if (_helper) _scope.parent.scene.add(_helper);
+                    if (_helper) _scope.parent.getScene().add(_helper);
                 } catch (err) {
 
                     console.error(err.message);
@@ -1551,6 +1551,21 @@ WHS.Camera = function(_WHS$Object) {
             this._type = source._type;
 
             return this;
+        }
+
+        /* Access private data */
+
+    }, {
+        key: 'setNative',
+        value: function setNative(camera) {
+
+            return native.set(this, camera);
+        }
+    }, {
+        key: 'getNative',
+        value: function getNative() {
+
+            return native.get(this);
         }
     }, {
         key: 'setPosition',
@@ -1644,28 +1659,28 @@ WHS.Camera = function(_WHS$Object) {
     }, {
         key: 'lookAt',
         value: function lookAt(vector3) {
-            return this.camera.lookAt(vector3);
+            return this.getNative().lookAt(vector3);
         }
     }, {
         key: 'getWorldDirection',
         value: function getWorldDirection(vector3) {
-            return this.camera.getWorldDirection(vector3);
+            return this.getNative().getWorldDirection(vector3);
         }
     }, {
         key: 'position',
         get: function get() {
-            return this.camera.position;
+            return this.getNative().position;
         },
         set: function set(vector3) {
-            return this.camera.position.copy(vector3);
+            return this.getNative().position.copy(vector3);
         }
     }, {
         key: 'rotation',
         get: function get() {
-            return this.camera.rotation;
+            return this.getNative().rotation;
         },
         set: function set(euler) {
-            return this.camera.rotation.copy(euler);
+            return this.getNative().rotation.copy(euler);
         }
     }]);
 
@@ -1702,11 +1717,12 @@ WHS.Curve = function(_WHS$Object2) {
 
         geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
 
-        var mesh = new THREE.Line(geometry, WHS.API.loadMaterial(params.material, false)._material);
+        var curve = new THREE.Line(geometry, WHS.API.loadMaterial(params.material, false)._material);
+
+        _this2.setNative(curve);
 
         var scope = Object.assign(_this2, {
             _type: "curve",
-            curve: mesh,
             __path: params.geometry.curve
         });
 
@@ -1731,7 +1747,7 @@ WHS.Curve = function(_WHS$Object2) {
 
                 try {
 
-                    _scope.parent.scene.add(_scope.curve);
+                    _scope.parent.getScene().add(_scope.getNative());
                     _scope.parent.children.push(_scope);
                 } catch (err) {
 
@@ -1744,6 +1760,21 @@ WHS.Curve = function(_WHS$Object2) {
                     resolve(_scope);
                 }
             });
+        }
+
+        /* Access private data */
+
+    }, {
+        key: 'setNative',
+        value: function setNative(curve) {
+
+            return native.set(this, curve);
+        }
+    }, {
+        key: 'getNative',
+        value: function getNative() {
+
+            return native.get(this);
         }
 
         /**
@@ -1767,7 +1798,7 @@ WHS.Curve = function(_WHS$Object2) {
         key: 'copy',
         value: function copy(source) {
 
-            this.curve = source.curve.clone();
+            this.setNative(source.getNative().clone());
 
             this._type = source._type;
 
@@ -1784,7 +1815,7 @@ WHS.Curve = function(_WHS$Object2) {
         key: 'remove',
         value: function remove() {
 
-            this.parent.scene.remove(this.curve);
+            this.parent.getScene().remove(this.getNative());
 
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
             this.parent = null;
@@ -1917,8 +1948,7 @@ WHS.Light = function(_WHS$Object3) {
                 tags[_key2] = arguments[_key2];
             }
 
-            var light = this.light,
-                _scope = this;
+            var _scope = this;
 
             return new Promise(function(resolve, reject) {
 
@@ -1926,8 +1956,8 @@ WHS.Light = function(_WHS$Object3) {
 
                     if (tags.indexOf("noshadows") < 0) {
 
-                        light.castShadow = true;
-                        light.receiveShadow = true;
+                        _scope.getNative().castShadow = true;
+                        _scope.getNative().receiveShadow = true;
                     }
 
                     _scope.position.set(_scope.__params.pos.x, _scope.__params.pos.y, _scope.__params.pos.z);
@@ -1967,18 +1997,17 @@ WHS.Light = function(_WHS$Object3) {
 
             this.parent = parent;
 
-            var _light = this.light,
-                _helper = this.helper,
+            var _helper = this.helper,
                 _scope = this;
 
             return new Promise(function(resolve, reject) {
 
                 try {
 
-                    _scope.parent.scene.add(_light);
+                    _scope.parent.getScene().add(_scope.getNative());
                     _scope.parent.children.push(_scope);
 
-                    if (_helper) _scope.parent.scene.add(_helper);
+                    if (_helper) _scope.parent.getScene().add(_helper);
                 } catch (err) {
 
                     console.error(err.message);
@@ -2009,18 +2038,18 @@ WHS.Light = function(_WHS$Object3) {
 
                 try {
 
-                    _this4.light.shadow.mapSize.width = _this4._shadowmap.width;
-                    _this4.light.shadow.mapSize.height = _this4._shadowmap.height;
-                    _this4.light.shadow.bias = _this4._shadowmap.bias;
+                    _scope.getNative().shadow.mapSize.width = _this4._shadowmap.width;
+                    _scope.getNative().shadow.mapSize.height = _this4._shadowmap.height;
+                    _scope.getNative().shadow.bias = _this4._shadowmap.bias;
 
-                    _this4.light.shadow.camera.near = _this4._shadowmap.near;
-                    _this4.light.shadow.camera.far = _this4._shadowmap.far;
-                    _this4.light.shadow.camera.fov = _this4._shadowmap.fov;
+                    _scope.getNative().shadow.camera.near = _this4._shadowmap.near;
+                    _scope.getNative().shadow.camera.far = _this4._shadowmap.far;
+                    _scope.getNative().shadow.camera.fov = _this4._shadowmap.fov;
 
-                    _this4.light.shadow.camera.Left = _this4._shadowmap.left;
-                    _this4.light.shadow.camera.right = _this4._shadowmap.right;
-                    _this4.light.shadow.camera.top = _this4._shadowmap.top;
-                    _this4.light.shadow.camera.bottom = _this4._shadowmap.bottom;
+                    _scope.getNative().shadow.camera.Left = _this4._shadowmap.left;
+                    _scope.getNative().shadow.camera.right = _this4._shadowmap.right;
+                    _scope.getNative().shadow.camera.top = _this4._shadowmap.top;
+                    _scope.getNative().shadow.camera.bottom = _this4._shadowmap.bottom;
                 } catch (err) {
 
                     console.error(err.message);
@@ -2053,7 +2082,7 @@ WHS.Light = function(_WHS$Object3) {
         key: 'copy',
         value: function copy(source) {
 
-            this.light = source.light.clone();
+            this.light = source.getNative().clone();
             if (source.helper) this.helper = source.helper.clone();
 
             this.wrap();
@@ -2074,8 +2103,8 @@ WHS.Light = function(_WHS$Object3) {
         key: 'remove',
         value: function remove() {
 
-            this.parent.scene.remove(this.light);
-            if (source.helper) this.parent.scene.remove(this.helper);
+            this.parent.getScene().remove(this.getNative());
+            if (source.helper) this.parent.getScene().remove(this.helper);
 
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
             this.parent = null;
@@ -2118,36 +2147,49 @@ WHS.Light = function(_WHS$Object3) {
 
             return this;
         }
+
+        /* Access private data */
+
+    }, {
+        key: 'setNative',
+        value: function setNative(light) {
+
+            return native.set(this, light);
+        }
+    }, {
+        key: 'getNative',
+        value: function getNative() {
+
+            return native.get(this);
+        }
     }, {
         key: 'position',
         get: function get() {
-            return this.light.position;
+            return this.getNative().position;
         },
         set: function set(vector3) {
-            return this.light.position.copy(vector3);
+            return this.getNative().position.copy(vector3);
         }
     }, {
         key: 'rotation',
         get: function get() {
-            return this.light.rotation;
+            return this.getNative().rotation;
         },
         set: function set(euler) {
-            return this.light.rotation.copy(euler);
+            return this.getNative().rotation.copy(euler);
         }
     }, {
         key: 'target',
         get: function get() {
-            return this.light.target.position;
+            return this.getNative().target.position;
         },
         set: function set(vector3) {
-            return this.light.target.position.copy(vector3);
+            return this.getNative().target.position.copy(vector3);
         }
     }]);
 
     return _class3;
 }(WHS.Object);
-
-var native = new WeakMap(); //Private variables
 
 /** Shape super class */
 WHS.Shape = function(_WHS$Object4) {
@@ -2420,18 +2462,18 @@ WHS.Shape = function(_WHS$Object4) {
 
                         try {
 
-                            _scope.parent.scene.add(_scope.getNative());
+                            _scope.parent.getScene().add(_scope.getNative());
                             _scope.parent.children.push(_scope);
 
-                            if (_scope.__params.helpers.box) _scope.parent.scene.add(_helpers.box);
+                            if (_scope.__params.helpers.box) _scope.parent.getScene().add(_helpers.box);
 
-                            if (_scope.__params.helpers.boundingBox) _scope.parent.scene.add(_helpers.boundingBox);
+                            if (_scope.__params.helpers.boundingBox) _scope.parent.getScene().add(_helpers.boundingBox);
 
-                            if (_scope.__params.helpers.edges) _scope.parent.scene.add(_helpers.edges);
+                            if (_scope.__params.helpers.edges) _scope.parent.getScene().add(_helpers.edges);
 
-                            if (_scope.__params.helpers.faceNormals) _scope.parent.scene.add(_helpers.faceNormals);
+                            if (_scope.__params.helpers.faceNormals) _scope.parent.getScene().add(_helpers.faceNormals);
 
-                            if (_scope.__params.helpers.vertexNormals) _scope.parent.scene.add(_helpers.vertexNormals);
+                            if (_scope.__params.helpers.vertexNormals) _scope.parent.getScene().add(_helpers.vertexNormals);
                         } catch (err) {
 
                             console.error(err.message);
@@ -2461,18 +2503,18 @@ WHS.Shape = function(_WHS$Object4) {
 
                     try {
 
-                        _scope.parent.scene.add(_scope.getNative());
+                        _scope.parent.getScene().add(_scope.getNative());
                         _scope.parent.children.push(_scope);
 
-                        if (_scope.__params.helpers.box) _scope.parent.scene.add(_helpers.box);
+                        if (_scope.__params.helpers.box) _scope.parent.getScene().add(_helpers.box);
 
-                        if (_scope.__params.helpers.boundingBox) _scope.parent.scene.add(_helpers.boundingBox);
+                        if (_scope.__params.helpers.boundingBox) _scope.parent.getScene().add(_helpers.boundingBox);
 
-                        if (_scope.__params.helpers.edges) _scope.parent.scene.add(_helpers.edges);
+                        if (_scope.__params.helpers.edges) _scope.parent.getScene().add(_helpers.edges);
 
-                        if (_scope.__params.helpers.faceNormals) _scope.parent.scene.add(_helpers.faceNormals);
+                        if (_scope.__params.helpers.faceNormals) _scope.parent.getScene().add(_helpers.faceNormals);
 
-                        if (_scope.__params.helpers.vertexNormals) _scope.parent.scene.add(_helpers.vertexNormals);
+                        if (_scope.__params.helpers.vertexNormals) _scope.parent.getScene().add(_helpers.vertexNormals);
                     } catch (err) {
 
                         console.error(err.message);
@@ -2553,7 +2595,7 @@ WHS.Shape = function(_WHS$Object4) {
         key: 'remove',
         value: function remove() {
 
-            this.parent.scene.remove(this.getNative());
+            this.parent.getScene().remove(this.getNative());
 
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
             this.parent = null;
@@ -2626,7 +2668,7 @@ WHS.Shape = function(_WHS$Object4) {
             var animation = new WHS.loop(function(clock) {
 
                 var u = clock.getElapsedTime() * 1000 / gEnd;
-                var vec1 = curve.getPoint(u);
+                var vec1 = curve.getPoint(u % 1);
                 var vec2 = curve.getPoint((u + 0.01) % 1);
 
                 _scope.setPosition(vec1.x, vec1.y, vec1.z);
@@ -2641,7 +2683,7 @@ WHS.Shape = function(_WHS$Object4) {
                 animation = new WHS.loop(function(clock) {
 
                     var u = clock.getElapsedTime() * 1000 / gEnd;
-                    var vec1 = curve.getPoint(u);
+                    var vec1 = curve.getPoint(u % 1);
                     var vec2 = curve.getPoint((u + 0.01) % 1);
 
                     _scope.setPosition(vec1.x, vec1.y, vec1.z);
@@ -2774,6 +2816,8 @@ WHS.World = function(_WHS$Object5) {
 
         _get(Object.getPrototypeOf(_class5.prototype), 'setParams', _this6).call(_this6, params);
 
+        native.set(_this6, {});
+
         // INIT.
         _this6._initScene();
         _this6._initDOM();
@@ -2802,11 +2846,13 @@ WHS.World = function(_WHS$Object5) {
 
             this._initPhysiJS();
 
-            this.scene = new Physijs.Scene();
+            var scene = new Physijs.Scene();
 
-            this.scene.setGravity(new THREE.Vector3(this.__params.gravity.x, this.__params.gravity.y, this.__params.gravity.z));
+            scene.setGravity(new THREE.Vector3(this.__params.gravity.x, this.__params.gravity.y, this.__params.gravity.z));
 
-            // Arrays for processing.
+            this.setScene(scene);
+
+            // Array for processing.
             this.children = [];
         }
 
@@ -2883,18 +2929,22 @@ WHS.World = function(_WHS$Object5) {
         key: '_initCamera',
         value: function _initCamera() {
 
-            this._camera = new WHS.PerspectiveCamera({
+            this.setCamera(new WHS.PerspectiveCamera({
                 camera: {
                     fov: this.__params.camera.aspect,
                     aspect: this.__params.width / this.__params.height,
                     near: this.__params.camera.near,
                     far: this.__params.camera.far
+                },
+
+                pos: {
+                    x: this.__params.camera.x,
+                    y: this.__params.camera.y,
+                    z: this.__params.camera.z
                 }
-            });
+            }));
 
-            this._camera.position.set(this.__params.camera.x, this.__params.camera.y, this.__params.camera.z);
-
-            this._camera.addTo(this);
+            this.getCamera().addTo(this);
         }
 
         /**
@@ -2908,22 +2958,22 @@ WHS.World = function(_WHS$Object5) {
             this.render = true;
 
             // Renderer.
-            this._renderer = new THREE.WebGLRenderer();
-            this._renderer.setClearColor(this.__params.background);
+            this.setRenderer(new THREE.WebGLRenderer());
+            this.getRenderer().setClearColor(this.__params.background);
 
             // Shadowmap.
-            this._renderer.shadowMap.enabled = this.__params.shadowmap.enabled;
-            this._renderer.shadowMap.type = this.__params.shadowmap.type;
-            this._renderer.shadowMap.cascade = true;
+            this.getRenderer().shadowMap.enabled = this.__params.shadowmap.enabled;
+            this.getRenderer().shadowMap.type = this.__params.shadowmap.type;
+            this.getRenderer().shadowMap.cascade = true;
 
-            this._renderer.setSize(+(this.__params.width * this.__params.rWidth).toFixed(), +(this.__params.height * this.__params.rHeight).toFixed());
+            this.getRenderer().setSize(+(this.__params.width * this.__params.rWidth).toFixed(), +(this.__params.height * this.__params.rHeight).toFixed());
 
-            this._renderer.render(this.scene, this._camera.camera);
+            this.getRenderer().render(this.getScene(), this.getCamera().getNative());
 
-            this._dom.appendChild(this._renderer.domElement);
+            this._dom.appendChild(this.getRenderer().domElement);
 
-            this._renderer.domElement.style.width = '100%';
-            this._renderer.domElement.style.height = '100%';
+            this.getRenderer().domElement.style.width = '100%';
+            this.getRenderer().domElement.style.height = '100%';
         }
 
         /**
@@ -2934,9 +2984,9 @@ WHS.World = function(_WHS$Object5) {
         key: '_initHelpers',
         value: function _initHelpers() {
 
-            if (this.__params.helpers.axis) this.scene.add(new THREE.AxisHelper(this.__params.helpers.axis.size ? this.__params.helpers.axis.size : 5));
+            if (this.__params.helpers.axis) this.getScene().add(new THREE.AxisHelper(this.__params.helpers.axis.size ? this.__params.helpers.axis.size : 5));
 
-            if (this.__params.helpers.grid) this.scene.add(new THREE.GridHelper(this.__params.helpers.grid.size ? this.__params.helpers.grid.size : 10, this.__params.helpers.grid.step ? this.__params.helpers.grid.step : 1));
+            if (this.__params.helpers.grid) this.getScene().add(new THREE.GridHelper(this.__params.helpers.grid.size ? this.__params.helpers.grid.size : 10, this.__params.helpers.grid.step ? this.__params.helpers.grid.step : 1));
         }
 
         /**
@@ -2966,7 +3016,7 @@ WHS.World = function(_WHS$Object5) {
 
                 scope._process(clock);
 
-                if (scope.simulate) scope.scene.simulate();
+                if (scope.simulate) scope.getScene().simulate();
 
                 scope._updateControls();
 
@@ -2975,14 +3025,14 @@ WHS.World = function(_WHS$Object5) {
 
                     scope._composer.reset();
 
-                    if (scope.render) scope._composer.render(scope.scene, scope._camera.camera);
+                    if (scope.render) scope._composer.render(scope.getScene(), scope.getCamera().getNative());
 
                     scope._composer.pass(scope._composer.stack);
 
                     scope._composer.toScreen();
                 } else {
 
-                    if (scope.render) scope._renderer.render(scope.scene, scope._camera.camera);
+                    if (scope.render) scope.getRenderer().render(scope.getScene(), scope.getCamera().getNative());
                 }
 
                 scope._execLoops(time);
@@ -3045,22 +3095,6 @@ WHS.World = function(_WHS$Object5) {
         }
 
         /**
-         * Set a camera for rendering world.
-         *
-         * @params {WHS.Camera} camera - The camera to be rendered.
-         */
-
-    }, {
-        key: 'setCamera',
-        value: function setCamera(camera) {
-
-            if (camera instanceof WHS.Camera) this._camera = camera;
-            else console.error("@WHS.World: camera in not an instance of WHS.Camera.");
-
-            return this;
-        }
-
-        /**
          * This functon will scene properties when it's called.
          */
 
@@ -3070,10 +3104,51 @@ WHS.World = function(_WHS$Object5) {
             var width = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
             var height = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
 
-            this._camera.camera.aspect = width / height;
-            this._camera.camera.updateProjectionMatrix();
+            this.getCamera().getNative().aspect = width / height;
+            this.getCamera().getNative().updateProjectionMatrix();
 
-            this._renderer.setSize(+(width * this.__params.rWidth).toFixed(), +(height * this.__params.rHeight).toFixed());
+            this.getRenderer().setSize(+(width * this.__params.rWidth).toFixed(), +(height * this.__params.rHeight).toFixed());
+        }
+    }, {
+        key: 'setScene',
+        value: function setScene(scene) {
+            return native.get(this).scene = scene;
+        }
+    }, {
+        key: 'getScene',
+        value: function getScene() {
+            return native.get(this).scene;
+        }
+    }, {
+        key: 'setRenderer',
+        value: function setRenderer(renderer) {
+            return native.get(this).renderer = renderer;
+        }
+    }, {
+        key: 'getRenderer',
+        value: function getRenderer() {
+            return native.get(this).renderer;
+        }
+
+        /**
+         * Set a camera for rendering world.
+         *
+         * @params {WHS.Camera} camera - The camera to be rendered.
+         */
+
+    }, {
+        key: 'setCamera',
+        value: function setCamera(camera) {
+
+            if (camera instanceof WHS.Camera) native.get(this).camera = camera;
+            else console.error("@WHS.World: camera in not an instance of WHS.Camera.");
+
+            return this;
+        }
+    }, {
+        key: 'getCamera',
+        value: function getCamera() {
+            return native.get(this).camera;
         }
     }]);
 
@@ -4976,7 +5051,7 @@ WHS.AmbientLight = function(_WHS$Light) {
             var _scope = this;
 
             return new Promise(function(resolve, reject) {
-                _scope.light = new THREE.AmbientLight(params.light.color, params.light.intensity);
+                _scope.setNative(new THREE.AmbientLight(params.light.color, params.light.intensity));
 
                 resolve();
             });
@@ -5032,7 +5107,7 @@ WHS.DirectionalLight = function(_WHS$Light2) {
             var _scope = this;
 
             return new Promise(function(resolve, reject) {
-                _scope.light = new THREE.DirectionalLight(params.light.color, params.light.intensity);
+                _scope.setNative(new THREE.DirectionalLight(params.light.color, params.light.intensity));
 
                 if (params.helper) _scope.helper = new THREE.DirectionalLightHelper(_scope.light, params.helper.size ? params.helper.size : 0);
 
@@ -5091,7 +5166,7 @@ WHS.HemisphereLight = function(_WHS$Light3) {
             var _scope = this;
 
             return new Promise(function(resolve, reject) {
-                _scope.light = new THREE.HemisphereLight(params.light.skyColor, params.light.groundColor, params.light.intensity);
+                _scope.setNative(new THREE.HemisphereLight(params.light.skyColor, params.light.groundColor, params.light.intensity));
 
                 if (params.helper) _scope.helper = new THREE.HemisphereLightHelper(_scope.light, params.helper.size ? params.helper.size : 0);
 
@@ -5148,7 +5223,7 @@ WHS.NormalLight = function(_WHS$Light4) {
             var _scope = this;
 
             return new Promise(function(resolve, reject) {
-                _scope.light = new THREE.Light(params.light.color);
+                _scope.setNative(new THREE.Light(params.light.color));
 
                 resolve();
             });
@@ -5206,7 +5281,7 @@ WHS.PointLight = function(_WHS$Light5) {
             var _scope = this;
 
             return new Promise(function(resolve, reject) {
-                _scope.light = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance, params.light.decay);
+                _scope.setNative(new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance, params.light.decay));
 
                 if (params.helper) _scope.helper = new THREE.PointLightHelper(_scope.light, params.helper.size ? params.helper.size : 0);
 
@@ -5268,7 +5343,7 @@ WHS.SpotLight = function(_WHS$Light6) {
             var _scope = this;
 
             return new Promise(function(resolve, reject) {
-                _scope.light = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle, params.light.exponent, params.light.decay);
+                _scope.setNative(new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle, params.light.exponent, params.light.decay));
 
                 if (params.helper) _scope.helper = new THREE.SpotLightHelper(_scope.light);
 
@@ -5326,7 +5401,7 @@ WHS.CubeCamera = function(_WHS$Camera) {
             var _scope = this;
 
             return new Promise(function(resolve, reject) {
-                _scope.camera = new THREE.CubeCamera(params.camera.near, params.camera.far, params.camera.cubeResolution);
+                _scope.setNative(new THREE.CubeCamera(params.camera.near, params.camera.far, params.camera.cubeResolution));
 
                 resolve();
             });
@@ -5385,7 +5460,7 @@ WHS.OrtographicCamera = function(_WHS$Camera2) {
             var _scope = this;
 
             return new Promise(function(resolve, reject) {
-                _scope.camera = new THREE.OrtographicCamera(params.camera.left, params.camera.right, params.camera.top, params.camera.bottom, params.camera.near, params.camera.far);
+                _scope.setNative(new THREE.OrtographicCamera(params.camera.left, params.camera.right, params.camera.top, params.camera.bottom, params.camera.near, params.camera.far));
 
                 resolve();
             });
@@ -5442,7 +5517,7 @@ WHS.PerspectiveCamera = function(_WHS$Camera3) {
             var _scope = this;
 
             return new Promise(function(resolve, reject) {
-                _scope.camera = new THREE.PerspectiveCamera(params.camera.fov, params.camera.aspect, params.camera.near, params.camera.far);
+                _scope.setNative(new THREE.PerspectiveCamera(params.camera.fov, params.camera.aspect, params.camera.near, params.camera.far));
 
                 resolve();
             });
@@ -5497,7 +5572,7 @@ WHS.World.prototype.FPSControls = function(object) {
             player = mesh,
             pitchObject = new THREE.Object3D();
 
-        pitchObject.add(camera.camera);
+        pitchObject.add(camera.getNative());
 
         var yawObject = new THREE.Object3D();
 
@@ -5688,11 +5763,11 @@ WHS.World.prototype.FPSControls = function(object) {
 
             yawObject.position.copy(player.position);
         };
-    }(this._camera, object.getNative(), target);
+    }(this.getCamera(), object.getNative(), target);
 
     var controls = this.controls;
 
-    WHS.API.merge(this.scene, this.controls.getObject());
+    this.getScene().add(this.controls.getObject());
 
     if ('pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document) {
 

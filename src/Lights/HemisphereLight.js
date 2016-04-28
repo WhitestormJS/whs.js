@@ -33,11 +33,11 @@ WHS.HemisphereLight = class HemisphereLight extends WHS.Light {
         let _scope = this;
 
         return new Promise( (resolve, reject) => {
-            _scope.light = new THREE.HemisphereLight(
+            _scope.setNative( new THREE.HemisphereLight(
                 params.light.skyColor,
                 params.light.groundColor,
                 params.light.intensity
-            );
+            ) );
 
             if ( params.helper )
                 _scope.helper = new THREE.HemisphereLightHelper( 

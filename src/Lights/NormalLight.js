@@ -31,9 +31,9 @@ WHS.NormalLight = class NormalLight extends WHS.Light {
         let _scope = this;
 
         return new Promise( (resolve, reject) => {
-            _scope.light = new THREE.Light(
+            _scope.setNative( new THREE.Light(
                 params.light.color
-            );
+            ) );
 
             resolve();
         });

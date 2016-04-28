@@ -133,15 +133,6 @@ GAME.parrot = GAME.Morph( {
 
 } );
 
-GAME.skybox = GAME.Skybox( {
-    path: "assets/textures/skybox/skymap",
-    imgSuffix: ".png",
-    skyType: "sphere",
-    radius: GAME._camera.far,
-    rot: { y: Math.PI / 180 * - 90 },
-    pos: { y: - 200 }
-} );
-
 GAME.cube1 = GAME.Box( {
 
     geometry: {

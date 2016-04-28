@@ -4,8 +4,6 @@
  * Email: alexbuzin88@gmail.com
 */
 
-const native = new WeakMap(); //Private variables
-
 /** Shape super class */
 WHS.Shape = class extends WHS.Object {
 	/**
@@ -371,23 +369,23 @@ WHS.Shape = class extends WHS.Object {
 
 					try {
 
-						_scope.parent.scene.add( _scope.getNative() );
+						_scope.parent.getScene().add( _scope.getNative() );
 						_scope.parent.children.push( _scope );
 
 						if ( _scope.__params.helpers.box ) 
-							_scope.parent.scene.add( _helpers.box );
+							_scope.parent.getScene().add( _helpers.box );
 
 						if ( _scope.__params.helpers.boundingBox ) 
-							_scope.parent.scene.add( _helpers.boundingBox );
+							_scope.parent.getScene().add( _helpers.boundingBox );
 
 						if ( _scope.__params.helpers.edges ) 
-							_scope.parent.scene.add( _helpers.edges );
+							_scope.parent.getScene().add( _helpers.edges );
 
 						if ( _scope.__params.helpers.faceNormals ) 
-							_scope.parent.scene.add( _helpers.faceNormals );
+							_scope.parent.getScene().add( _helpers.faceNormals );
 
 						if ( _scope.__params.helpers.vertexNormals ) 
-							_scope.parent.scene.add( _helpers.vertexNormals );
+							_scope.parent.getScene().add( _helpers.vertexNormals );
 
 					} catch ( err ) {
 
@@ -426,23 +424,23 @@ WHS.Shape = class extends WHS.Object {
 
 				try {
 
-					_scope.parent.scene.add( _scope.getNative() );
+					_scope.parent.getScene().add( _scope.getNative() );
 					_scope.parent.children.push( _scope );
 
 					if ( _scope.__params.helpers.box ) 
-						_scope.parent.scene.add( _helpers.box );
+						_scope.parent.getScene().add( _helpers.box );
 
 					if ( _scope.__params.helpers.boundingBox ) 
-						_scope.parent.scene.add( _helpers.boundingBox );
+						_scope.parent.getScene().add( _helpers.boundingBox );
 
 					if ( _scope.__params.helpers.edges ) 
-						_scope.parent.scene.add( _helpers.edges );
+						_scope.parent.getScene().add( _helpers.edges );
 
 					if ( _scope.__params.helpers.faceNormals ) 
-						_scope.parent.scene.add( _helpers.faceNormals );
+						_scope.parent.getScene().add( _helpers.faceNormals );
 
 					if ( _scope.__params.helpers.vertexNormals ) 
-							_scope.parent.scene.add( _helpers.vertexNormals );
+							_scope.parent.getScene().add( _helpers.vertexNormals );
 
 				} catch ( err ) {
 
@@ -524,7 +522,7 @@ WHS.Shape = class extends WHS.Object {
 	 */
 	remove() {
 		
-		this.parent.scene.remove( this.getNative() );
+		this.parent.getScene().remove( this.getNative() );
 
         this.parent.children.splice( this.parent.children.indexOf( this ), 1);
         this.parent = null;
@@ -617,7 +615,7 @@ WHS.Shape = class extends WHS.Object {
 		let animation = new WHS.loop( clock => {
 
 			let u =  clock.getElapsedTime() * 1000 / gEnd;
-			let vec1 = curve.getPoint( u );
+			let vec1 = curve.getPoint( u % 1);
 			let vec2 = curve.getPoint( (u + 0.01) % 1 );
 
 			_scope.setPosition( vec1.x, vec1.y, vec1.z );
@@ -633,7 +631,7 @@ WHS.Shape = class extends WHS.Object {
 				animation = new WHS.loop( clock => {
 
 					let u =  clock.getElapsedTime() * 1000 / gEnd;
-					let vec1 = curve.getPoint( u );
+					let vec1 = curve.getPoint( u % 1 );
 					let vec2 = curve.getPoint( (u + 0.01) % 1 );
 
 					_scope.setPosition( vec1.x, vec1.y, vec1.z );

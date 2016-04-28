@@ -234,7 +234,7 @@ GAME.skybox = GAME.Skybox( {
     path: "assets/textures/skybox/skymap",
     imgSuffix: ".png",
     skyType: "sphere",
-    radius: GAME._camera.__params.camera.far,
+    radius: GAME.getCamera().__params.camera.far,
     rot: { y: Math.PI / 180 * - 90 },
     pos: { y: - 200 }
 } );
