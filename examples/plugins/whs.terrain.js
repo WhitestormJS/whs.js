@@ -330,15 +330,15 @@ WHS.Terrain = function(_WHS$Shape) {
             }
         }
 
-        _this.mesh = new Physijs.HeightfieldMesh(geom, Physijs.createMaterial(material, 0.8, 0.1));
+        var mesh = new Physijs.HeightfieldMesh(geom, Physijs.createMaterial(material, 0.8, 0.1));
 
         geom.computeVertexNormals();
         geom.computeFaceNormals();
         geom.computeTangents();
 
-        _this.mesh.updateMatrix();
-        _this.mesh.castShadow = true;
-        _this.mesh.receiveShadow = true;
+        mesh.updateMatrix();
+
+        _this.setNative(mesh);
 
         _get(Object.getPrototypeOf(Terrain.prototype), "wrap", _this).call(_this, "skip");
 

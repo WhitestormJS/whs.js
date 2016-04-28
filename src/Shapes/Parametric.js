@@ -47,7 +47,7 @@ WHS.Parametric = class Parametric extends WHS.Shape {
             material = super._initMaterial(params.material);
 
         return new Promise( (resolve, reject) => {
-            _scope.mesh = new mesh(
+            _scope.setNative( new mesh(
                 new THREE.ParametricGeometry(
 
                     params.geometry.func,
@@ -58,7 +58,7 @@ WHS.Parametric = class Parametric extends WHS.Shape {
 
                 material,
                 params.mass
-            );
+            ) );
 
             resolve();
         });

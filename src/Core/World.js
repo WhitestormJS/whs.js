@@ -382,7 +382,7 @@ WHS.World = class extends WHS.Object {
             for ( var i = 0; i < this.children.length; i++ ) {
 
                 if ( this.children[i]._type == "morph" ) 
-                    this.children[i].mesh.mixer.update( delta );
+                    this.children[i].getNative().mixer.update( delta );
 
             }
 

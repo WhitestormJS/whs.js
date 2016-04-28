@@ -29,19 +29,32 @@ WHS.Shape2D = class Shape2D extends WHS.Shape {
 
         });
 
-		this.mesh = new THREE.Mesh(
-            new THREE.ShapeGeometry(
-
-                params.geometry.shapes
-
-            ),
-
-            super._initMaterial(params.material)
-        );
+        super.build( params )
 
         super.wrap("onlyvis");
 
 	}
+
+    build( params = {} ) {
+
+        let _scope = this,
+            material = super._initMaterial(params.material);
+
+        return new Promise( (resolve, reject) => {
+            _scope.setNative( new THREE.Mesh(
+                new THREE.ShapeGeometry(
+
+                    params.geometry.shapes
+
+                ),
+
+                material
+            ) );
+
+            resolve();
+        });
+
+    }
 
 }
 
