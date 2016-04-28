@@ -5790,7 +5790,7 @@ WHS.Fog = function() {
         key: 'addTo',
         value: function addTo(root) {
 
-            root.scene.fog = this.fog;
+            root.getScene().fog = this.fog;
         }
     }]);
 
@@ -5842,7 +5842,7 @@ WHS.FogExp2 = function() {
         key: 'addTo',
         value: function addTo(root) {
 
-            root.scene.fog = this.fog;
+            root.getScene().fog = this.fog;
         }
     }]);
 
