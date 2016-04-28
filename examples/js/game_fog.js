@@ -23,7 +23,7 @@ var GAME = new WHS.World( {
     rWidth: 1,
     rHeight: 1,
 
-    background: 0x70DBFF
+    background: 0x000000
     
 } );
 
