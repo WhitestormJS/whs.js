@@ -17,7 +17,7 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
 
     'use strict';
 
-    var target = WHS.API.extend(params, {
+    let target = WHS.API.extend(params, {
         block: document.getElementById('blocker'),
         speed: 1,
         ypos: 1
@@ -26,24 +26,24 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
     this.controls = new (function ( camera, mesh, params) {
 
         /* Velocity properties */
-        var velocityFactor = 1,
+        let velocityFactor = 1,
             runVelocity = 0.25;
 
         mesh.setAngularFactor({x: 0, y: 0, z: 0});
 
         /* Init */
-        var scope = this,
+        let scope = this,
             player = mesh,
             pitchObject = new THREE.Object3D();
 
-        pitchObject.add( camera.camera );
+        pitchObject.add( camera.getNative() );
 
-        var yawObject = new THREE.Object3D();
+        let yawObject = new THREE.Object3D();
 
         yawObject.position.y = params.ypos; // eyes are 2 meters above the ground
         yawObject.add( pitchObject );
 
-        var quat = new THREE.Quaternion(),
+        let quat = new THREE.Quaternion(),
 
             moveForward = false,
             moveBackward = false,
@@ -60,7 +60,7 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
         function onMouseMove ( event ) {
             if ( scope.enabled === false ) return;
 
-            var movementX = event.movementX || event.mozMovementX || event.getMovementX() || 0,
+            let movementX = event.movementX || event.mozMovementX || event.getMovementX() || 0,
                 movementY = event.movementY || event.mozMovementY || event.getMovementY() || 0;
 
             yawObject.rotation.y -= movementX * 0.002,
@@ -161,12 +161,12 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
 
         // Moves the camera to the Cannon.js object position
         // and adds velocity to the object if the run key is down.
-        var inputVelocity = new THREE.Vector3(),
+        let inputVelocity = new THREE.Vector3(),
             euler = new THREE.Euler();
 
         this.update = function ( delta ) {
 
-            var moveVec = new THREE.Vector3();
+            let moveVec = new THREE.Vector3();
 
             if ( scope.enabled === false ) return;
 
@@ -175,7 +175,7 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
 
             inputVelocity.set(0,0,0);
 
-            var speed = velocityFactor * delta * params.speed * runVelocity;
+            let speed = velocityFactor * delta * params.speed * runVelocity;
 
             if ( moveForward ){
                 inputVelocity.z = -speed;
@@ -209,11 +209,11 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
             yawObject.position.copy(player.position);
         };
 
-    })(this._camera, object.getNative(), target);
+    })(this.getCamera(), object.getNative(), target);
 
-    var controls = this.controls;
+    let controls = this.controls;
 
-    WHS.API.merge(this.scene, this.controls.getObject());
+    this.getScene().add( this.controls.getObject() );
 
     if ('pointerLockElement' in document ||
         'mozPointerLockElement' in document ||

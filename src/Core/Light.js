@@ -111,8 +111,7 @@ WHS.Light = class extends WHS.Object {
 
 		'use strict';
 
-		var light = this.light,
-		_scope = this;
+		let _scope = this;
 
 		return new Promise( (resolve, reject) => {
 
@@ -120,8 +119,8 @@ WHS.Light = class extends WHS.Object {
 
 				if (tags.indexOf("noshadows") < 0) {
 
-					light.castShadow = true;
-					light.receiveShadow = true;
+					_scope.getNative().castShadow = true;
+					_scope.getNative().receiveShadow = true;
 
 				}
 
@@ -171,18 +170,17 @@ WHS.Light = class extends WHS.Object {
 
 		this.parent = parent;
 
-		var _light = this.light,
-			_helper = this.helper,
+		let _helper = this.helper,
 			_scope = this;
 
 		return new Promise( (resolve, reject) => {
 
 			try {
 
-				_scope.parent.scene.add( _light );
+				_scope.parent.getScene().add( _scope.getNative() );
 				_scope.parent.children.push( _scope );
 
-				if ( _helper ) _scope.parent.scene.add( _helper );
+				if ( _helper ) _scope.parent.getScene().add( _helper );
 
 			} catch ( err ) {
 
@@ -215,18 +213,18 @@ WHS.Light = class extends WHS.Object {
 
 		    try {
 
-			    this.light.shadow.mapSize.width = this._shadowmap.width;
-			    this.light.shadow.mapSize.height = this._shadowmap.height;
-			    this.light.shadow.bias = this._shadowmap.bias;
+			    _scope.getNative().shadow.mapSize.width = this._shadowmap.width;
+			    _scope.getNative().shadow.mapSize.height = this._shadowmap.height;
+			    _scope.getNative().shadow.bias = this._shadowmap.bias;
 
-			    this.light.shadow.camera.near = this._shadowmap.near;
-			    this.light.shadow.camera.far = this._shadowmap.far;
-			    this.light.shadow.camera.fov = this._shadowmap.fov;
+			    _scope.getNative().shadow.camera.near = this._shadowmap.near;
+			    _scope.getNative().shadow.camera.far = this._shadowmap.far;
+			    _scope.getNative().shadow.camera.fov = this._shadowmap.fov;
 
-			    this.light.shadow.camera.Left = this._shadowmap.left;
-			    this.light.shadow.camera.right = this._shadowmap.right;
-			    this.light.shadow.camera.top = this._shadowmap.top;
-			    this.light.shadow.camera.bottom = this._shadowmap.bottom;
+			    _scope.getNative().shadow.camera.Left = this._shadowmap.left;
+			    _scope.getNative().shadow.camera.right = this._shadowmap.right;
+			    _scope.getNative().shadow.camera.top = this._shadowmap.top;
+			    _scope.getNative().shadow.camera.bottom = this._shadowmap.bottom;
 
 			} catch ( err ) {
 
@@ -259,7 +257,7 @@ WHS.Light = class extends WHS.Object {
 	 */
 	copy( source ) {
 
-		this.light = source.light.clone();
+		this.light = source.getNative().clone();
 		if ( source.helper ) this.helper = source.helper.clone();
 
 		this.wrap();
@@ -278,8 +276,8 @@ WHS.Light = class extends WHS.Object {
 	 */
 	remove() {
 		
-		this.parent.scene.remove( this.light );
-		if ( source.helper ) this.parent.scene.remove( this.helper );
+		this.parent.getScene().remove( this.getNative() );
+		if ( source.helper ) this.parent.getScene().remove( this.helper );
 
         this.parent.children.splice( this.parent.children.indexOf( this ), 1);
         this.parent = null;
@@ -318,28 +316,42 @@ WHS.Light = class extends WHS.Object {
 		return this;
 	}
 
+	/* Access private data */
+
+	setNative( light ) {
+
+		return native.set( this, light );
+		
+	}
+	
+	getNative() {
+
+		return native.get( this );
+
+	}
+
 	get position() {
-		return this.light.position;
+		return this.getNative().position;
 	}
 
 	set position( vector3 ) {
-		return this.light.position.copy( vector3 );
+		return this.getNative().position.copy( vector3 );
 	}
 
 	get rotation() {
-		return this.light.rotation;
+		return this.getNative().rotation;
 	}
 
 	set rotation( euler ) {
-		return this.light.rotation.copy( euler );
+		return this.getNative().rotation.copy( euler );
 	}
 
 	get target() {
-		return this.light.target.position;
+		return this.getNative().target.position;
 	}
 
 	set target( vector3 ) {
-		return this.light.target.position.copy( vector3 );
+		return this.getNative().target.position.copy( vector3 );
 	}
 
 }

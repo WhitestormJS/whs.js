@@ -28,15 +28,16 @@ WHS.Curve = class Curve extends WHS.Object {
 
         geometry.vertices = params.geometry.curve.getPoints( params.geometry.points );
 
-        let mesh = new THREE.Line(
+        let curve = new THREE.Line(
             geometry,
             WHS.API.loadMaterial( params.material, false )._material
         );
 
+        this.setNative( curve );
+
         let scope = Object.assign( this,
         {
             _type: "curve",
-            curve: mesh,
             __path: params.geometry.curve
         });
 
@@ -59,7 +60,7 @@ WHS.Curve = class Curve extends WHS.Object {
 
             try {
 
-                _scope.parent.scene.add( _scope.curve );
+                _scope.parent.getScene().add( _scope.getNative() );
                 _scope.parent.children.push( _scope );
 
             } catch(err) {
@@ -81,6 +82,20 @@ WHS.Curve = class Curve extends WHS.Object {
 
     }
 
+    /* Access private data */
+
+    setNative( curve ) {
+
+        return native.set( this, curve );
+        
+    }
+    
+    getNative() {
+
+        return native.get( this );
+
+    }
+
     /**
      * Clone curve.
      */
@@ -97,7 +112,7 @@ WHS.Curve = class Curve extends WHS.Object {
      */
     copy( source ) {
 
-        this.curve = source.curve.clone();
+        this.setNative( source.getNative().clone() );
 
         this._type = source._type;
 
@@ -112,7 +127,7 @@ WHS.Curve = class Curve extends WHS.Object {
      */
     remove() {
         
-        this.parent.scene.remove( this.curve );
+        this.parent.getScene().remove( this.getNative() );
 
         this.parent.children.splice( this.parent.children.indexOf( this ), 1);
         this.parent = null;

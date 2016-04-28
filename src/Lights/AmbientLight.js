@@ -31,10 +31,10 @@ WHS.AmbientLight = class AmbientLight extends WHS.Light {
         let _scope = this;
 
         return new Promise( (resolve, reject) => {
-            _scope.light = new THREE.AmbientLight(
+            _scope.setNative( new THREE.AmbientLight(
                 params.light.color,
                 params.light.intensity
-            );
+            ) );
 
             resolve();
         });

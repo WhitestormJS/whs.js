@@ -36,14 +36,14 @@ WHS.SpotLight = class SpotLight extends WHS.Light {
         let _scope = this;
 
         return new Promise( (resolve, reject) => {
-            _scope.light = new THREE.SpotLight(
+            _scope.setNative( new THREE.SpotLight(
                 params.light.color,
                 params.light.intensity,
                 params.light.distance,
                 params.light.angle,
                 params.light.exponent,
                 params.light.decay
-            );
+            ) );
 
             if ( params.helper )
                 _scope.helper = new THREE.SpotLightHelper( _scope.light );
