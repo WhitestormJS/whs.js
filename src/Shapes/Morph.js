@@ -68,15 +68,17 @@ WHS.Morph = class Morph extends WHS.Shape {
                 data.computeVertexNormals();
 
                 // Visualization.
-                _scope.mesh = new THREE.Mesh( data, material );
-                _scope.mesh.speed = params.morph.speed;
+                let mesh = new THREE.Mesh( data, material );
+                    mesh.speed = params.morph.speed;
 
-                _scope.mesh.mixer = new THREE.AnimationMixer( _scope.mesh );
+                    mesh.mixer = new THREE.AnimationMixer( mesh );
 
-                _scope.mesh.mixer
+                    mesh.mixer
                     .clipAction( data.animations[ 0 ] )
                     .setDuration( params.morph.duration )
                     .play();
+
+                _scope.setNative( mesh );
 
                 resolve();
 

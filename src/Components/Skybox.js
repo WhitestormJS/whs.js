@@ -73,8 +73,10 @@ WHS.Skybox = class Skybox extends WHS.Shape {
                 break;
         }
 
-        this.mesh = new THREE.Mesh( skyGeometry, skyMat );
-        this.mesh.renderDepth = 1000.0;
+        let mesh = new THREE.Mesh( skyGeometry, skyMat );
+        mesh.renderDepth = 1000.0;
+
+        super.setNative( mesh );
 
         super.wrap();
 

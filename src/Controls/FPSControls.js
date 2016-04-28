@@ -209,7 +209,7 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
             yawObject.position.copy(player.position);
         };
 
-    })(this._camera, object.mesh, target);
+    })(this._camera, object.getNative(), target);
 
     var controls = this.controls;
 
