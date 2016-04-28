@@ -41,6 +41,8 @@ var WHS = {
 
 console.log('WhitestormJS', WHS.REVISION);
 
+const native = new WeakMap(); // Store private variables.
+
 WHS.API.loadJSON = function(url, callback, texturePath) { 
     return WHS.loader.JSON.load(url, callback, texturePath) 
 };
