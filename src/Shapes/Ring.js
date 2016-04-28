@@ -52,7 +52,7 @@ WHS.Ring = class Ring extends WHS.Shape {
             material = super._initMaterial(params.material);
 
         return new Promise( (resolve, reject) => {
-            _scope.mesh = new THREE.Mesh(
+            _scope.setNative( new THREE.Mesh(
                 new THREE.RingGeometry(
 
                     params.geometry.innerRadius,
@@ -65,7 +65,7 @@ WHS.Ring = class Ring extends WHS.Shape {
                 ),
 
                 material
-            );
+            ) );
 
             resolve();
         });

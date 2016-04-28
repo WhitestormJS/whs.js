@@ -70,13 +70,13 @@ WHS.Model = class Model extends WHS.Shape {
 	                    data.computeFaceNormals();
 	                    data.computeVertexNormals();
 
-	                    _scope.mesh = new mesh( 
+	                    _scope.setNative( new mesh( 
 	                    	data, 
 	                    	material, 
 	                    	params.mass,
 	                    	data2,
 	                    	params.scale
-	                	);
+	                	) );
 
 	                    resolve();
 
@@ -99,11 +99,11 @@ WHS.Model = class Model extends WHS.Shape {
                     data.computeFaceNormals();
                     data.computeVertexNormals();
 
-                    _scope.mesh = new mesh( 
+                    _scope.setNative( new mesh( 
                     	data, 
                     	material, 
                     	params.mass
-					);
+					) );
 
                     resolve();
                 }

@@ -49,7 +49,7 @@ WHS.Cylinder = class Cylinder extends WHS.Shape {
             material = super._initMaterial(params.material);
 
         return new Promise( (resolve, reject) => {
-            _scope.mesh = new mesh(
+            _scope.setNative( new mesh(
                 new THREE.CylinderGeometry(
 
                     params.geometry.radiusTop,
@@ -61,7 +61,7 @@ WHS.Cylinder = class Cylinder extends WHS.Shape {
 
                 material,
                 params.mass
-            );
+            ) );
 
             resolve();
         });

@@ -2147,6 +2147,8 @@ WHS.Light = function(_WHS$Object3) {
     return _class3;
 }(WHS.Object);
 
+var native = new WeakMap(); //Private variables
+
 /** Shape super class */
 WHS.Shape = function(_WHS$Object4) {
     _inherits(_class4, _WHS$Object4);
@@ -2276,8 +2278,8 @@ WHS.Shape = function(_WHS$Object4) {
 
                         try {
 
-                            _scope.mesh.castShadow = true;
-                            _scope.mesh.receiveShadow = true;
+                            _scope.getNative().castShadow = true;
+                            _scope.getNative().receiveShadow = true;
 
                             _scope.position.set(_scope.__params.pos.x, _scope.__params.pos.y, _scope.__params.pos.z);
 
@@ -2288,31 +2290,31 @@ WHS.Shape = function(_WHS$Object4) {
                             // Box helper.
                             if (_scope.__params.helpers.box) {
 
-                                _scope.helpers.box = new THREE.BoxHelper(_scope.mesh);
+                                _scope.helpers.box = new THREE.BoxHelper(_scope.getNative());
                             }
 
                             // Bounding box helper.
                             if (_scope.__params.helpers.boundingBox) {
 
-                                _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(_scope.mesh, _scope.__params.helpers.boundingBox.color ? _scope.__params.helpers.boundingBox.color : 0xffffff);
+                                _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(_scope.getNative(), _scope.__params.helpers.boundingBox.color ? _scope.__params.helpers.boundingBox.color : 0xffffff);
                             }
 
                             // Edges helper.
                             if (_scope.__params.helpers.edges) {
 
-                                _scope.helpers.edges = new THREE.EdgesHelper(_scope.mesh, _scope.__params.helpers.edges.color ? _scope.__params.helpers.edges.color : 0xffffff);
+                                _scope.helpers.edges = new THREE.EdgesHelper(_scope.getNative(), _scope.__params.helpers.edges.color ? _scope.__params.helpers.edges.color : 0xffffff);
                             }
 
                             // faceNormals helper.
                             if (_scope.__params.helpers.faceNormals) {
 
-                                _scope.helpers.faceNormals = new THREE.FaceNormalsHelper(_scope.mesh, _scope.__params.helpers.faceNormals.size ? _scope.__params.helpers.faceNormals.size : 2, _scope.__params.helpers.faceNormals.color ? _scope.__params.helpers.faceNormals.color : 0xffffff, _scope.__params.helpers.faceNormals.linewidth ? _scope.__params.helpers.faceNormals.linewidth : 1);
+                                _scope.helpers.faceNormals = new THREE.FaceNormalsHelper(_scope.getNative(), _scope.__params.helpers.faceNormals.size ? _scope.__params.helpers.faceNormals.size : 2, _scope.__params.helpers.faceNormals.color ? _scope.__params.helpers.faceNormals.color : 0xffffff, _scope.__params.helpers.faceNormals.linewidth ? _scope.__params.helpers.faceNormals.linewidth : 1);
                             }
 
                             // vertexNormals helper.
                             if (_scope.__params.helpers.vertexNormals) {
 
-                                _scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(_scope.mesh, _scope.__params.helpers.vertexNormals.size ? _scope.__params.helpers.vertexNormals.size : 2, _scope.__params.helpers.vertexNormals.color ? _scope.__params.helpers.vertexNormals.color : 0xffffff, _scope.__params.helpers.vertexNormals.linewidth ? _scope.__params.helpers.vertexNormals.linewidth : 1);
+                                _scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(_scope.getNative(), _scope.__params.helpers.vertexNormals.size ? _scope.__params.helpers.vertexNormals.size : 2, _scope.__params.helpers.vertexNormals.color ? _scope.__params.helpers.vertexNormals.color : 0xffffff, _scope.__params.helpers.vertexNormals.linewidth ? _scope.__params.helpers.vertexNormals.linewidth : 1);
                             }
 
                             if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " is ready.", _scope);
@@ -2333,8 +2335,8 @@ WHS.Shape = function(_WHS$Object4) {
 
                     try {
 
-                        _scope.mesh.castShadow = true;
-                        _scope.mesh.receiveShadow = true;
+                        _scope.getNative().castShadow = true;
+                        _scope.getNative().receiveShadow = true;
 
                         _scope.position.set(_scope.__params.pos.x, _scope.__params.pos.y, _scope.__params.pos.z);
 
@@ -2345,31 +2347,31 @@ WHS.Shape = function(_WHS$Object4) {
                         // Box helper.
                         if (_scope.__params.helpers.box) {
 
-                            _scope.helpers.box = new THREE.BoxHelper(_scope.mesh);
+                            _scope.helpers.box = new THREE.BoxHelper(_scope.getNative());
                         }
 
                         // Bounding box helper.
                         if (_scope.__params.helpers.boundingBox) {
 
-                            _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(_scope.mesh, _scope.__params.helpers.boundingBox.color ? _scope.__params.helpers.boundingBox.color : 0xffffff);
+                            _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(_scope.getNative(), _scope.__params.helpers.boundingBox.color ? _scope.__params.helpers.boundingBox.color : 0xffffff);
                         }
 
                         // Edges helper.
                         if (_scope.__params.helpers.edges) {
 
-                            _scope.helpers.edges = new THREE.EdgesHelper(_scope.mesh, _scope.__params.helpers.edges.color ? _scope.__params.helpers.edges.color : 0xffffff);
+                            _scope.helpers.edges = new THREE.EdgesHelper(_scope.getNative(), _scope.__params.helpers.edges.color ? _scope.__params.helpers.edges.color : 0xffffff);
                         }
 
                         // faceNormals helper.
                         if (_scope.__params.helpers.faceNormals) {
 
-                            _scope.helpers.faceNormals = new THREE.FaceNormalsHelper(_scope.mesh, _scope.__params.helpers.faceNormals.size ? _scope.__params.helpers.faceNormals.size : 2, _scope.__params.helpers.faceNormals.color ? _scope.__params.helpers.faceNormals.color : 0xffffff, _scope.__params.helpers.faceNormals.linewidth ? _scope.__params.helpers.faceNormals.linewidth : 1);
+                            _scope.helpers.faceNormals = new THREE.FaceNormalsHelper(_scope.getNative(), _scope.__params.helpers.faceNormals.size ? _scope.__params.helpers.faceNormals.size : 2, _scope.__params.helpers.faceNormals.color ? _scope.__params.helpers.faceNormals.color : 0xffffff, _scope.__params.helpers.faceNormals.linewidth ? _scope.__params.helpers.faceNormals.linewidth : 1);
                         }
 
                         // vertexNormals helper.
                         if (_scope.__params.helpers.vertexNormals) {
 
-                            _scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(_scope.mesh, _scope.__params.helpers.vertexNormals.size ? _scope.__params.helpers.vertexNormals.size : 2, _scope.__params.helpers.vertexNormals.color ? _scope.__params.helpers.vertexNormals.color : 0xffffff, _scope.__params.helpers.vertexNormals.linewidth ? _scope.__params.helpers.vertexNormals.linewidth : 1);
+                            _scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(_scope.getNative(), _scope.__params.helpers.vertexNormals.size ? _scope.__params.helpers.vertexNormals.size : 2, _scope.__params.helpers.vertexNormals.color ? _scope.__params.helpers.vertexNormals.color : 0xffffff, _scope.__params.helpers.vertexNormals.linewidth ? _scope.__params.helpers.vertexNormals.linewidth : 1);
                         }
 
                         if (WHS.debug) console.debug("@WHS.Shape: Shape " + _scope._type + " is ready.", _scope);
@@ -2403,8 +2405,7 @@ WHS.Shape = function(_WHS$Object4) {
 
             this.parent = parent;
 
-            var _mesh = this.mesh,
-                _helpers = this.helpers,
+            var _helpers = this.helpers,
                 _scope = this;
 
             for (var _len4 = arguments.length, tags = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
@@ -2419,7 +2420,7 @@ WHS.Shape = function(_WHS$Object4) {
 
                         try {
 
-                            _scope.parent.scene.add(_scope.mesh);
+                            _scope.parent.scene.add(_scope.getNative());
                             _scope.parent.children.push(_scope);
 
                             if (_scope.__params.helpers.box) _scope.parent.scene.add(_helpers.box);
@@ -2439,14 +2440,14 @@ WHS.Shape = function(_WHS$Object4) {
 
                             if (_scope._wait) {
 
-                                _scope.mesh.addEventListener('ready', function() {
+                                _scope.getNative().addEventListener('ready', function() {
                                     resolve(_scope);
                                 });
                             } else {
                                 resolve(_scope);
                             }
 
-                            _scope.mesh.addEventListener('collide', function() {
+                            _scope.getNative().addEventListener('collide', function() {
                                 _scope.emit("collide");
                             });
 
@@ -2460,7 +2461,7 @@ WHS.Shape = function(_WHS$Object4) {
 
                     try {
 
-                        _scope.parent.scene.add(_scope.mesh);
+                        _scope.parent.scene.add(_scope.getNative());
                         _scope.parent.children.push(_scope);
 
                         if (_scope.__params.helpers.box) _scope.parent.scene.add(_helpers.box);
@@ -2480,7 +2481,7 @@ WHS.Shape = function(_WHS$Object4) {
 
                         if (_scope._wait) {
 
-                            _scope.mesh.addEventListener('ready', function() {
+                            _scope.getNative().addEventListener('ready', function() {
 
                                 resolve(_scope);
                             });
@@ -2488,7 +2489,7 @@ WHS.Shape = function(_WHS$Object4) {
                             resolve(_scope);
                         }
 
-                        _scope.mesh.addEventListener('collide', function() {
+                        _scope.getNative().addEventListener('collide', function() {
                             _scope.emit("ready");
                         });
 
@@ -2530,7 +2531,7 @@ WHS.Shape = function(_WHS$Object4) {
         key: 'copy',
         value: function copy(source) {
 
-            this.mesh = source.mesh.clone();
+            this.setNative(source.getNative().clone());
 
             this.wrap();
 
@@ -2552,7 +2553,7 @@ WHS.Shape = function(_WHS$Object4) {
         key: 'remove',
         value: function remove() {
 
-            this.parent.scene.remove(this.mesh);
+            this.parent.scene.remove(this.getNative());
 
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
             this.parent = null;
@@ -2576,7 +2577,7 @@ WHS.Shape = function(_WHS$Object4) {
          */
         value: function setPosition(x, y, z) {
             this.position.set(x, y, z);
-            this.mesh.__dirtyPosition = true;
+            this.getNative().__dirtyPosition = true;
 
             return this;
         }
@@ -2594,9 +2595,24 @@ WHS.Shape = function(_WHS$Object4) {
         key: 'setRotation',
         value: function setRotation(x, y, z) {
             this.rotation.set(x, y, z);
-            this.mesh.__dirtyRotation = true;
+            this.getNative().__dirtyRotation = true;
 
             return this;
+        }
+
+        /* Access private data */
+
+    }, {
+        key: 'setNative',
+        value: function setNative(mesh) {
+
+            return native.set(this, mesh);
+        }
+    }, {
+        key: 'getNative',
+        value: function getNative() {
+
+            return native.get(this);
         }
     }, {
         key: 'follow',
@@ -2614,7 +2630,7 @@ WHS.Shape = function(_WHS$Object4) {
                 var vec2 = curve.getPoint((u + 0.01) % 1);
 
                 _scope.setPosition(vec1.x, vec1.y, vec1.z);
-                _scope.mesh.lookAt(vec2);
+                _scope.getNative().lookAt(vec2);
             });
 
             animation.start();
@@ -2629,7 +2645,7 @@ WHS.Shape = function(_WHS$Object4) {
                     var vec2 = curve.getPoint((u + 0.01) % 1);
 
                     _scope.setPosition(vec1.x, vec1.y, vec1.z);
-                    _scope.mesh.lookAt(vec2);
+                    _scope.getNative().lookAt(vec2);
                 });
 
                 animation.start();
@@ -2641,28 +2657,28 @@ WHS.Shape = function(_WHS$Object4) {
     }, {
         key: 'position',
         get: function get() {
-            return this.mesh.position;
+            return this.getNative().position;
         },
         set: function set(vector3) {
-            this.mesh.__dirtyPosition = true;
-            return this.mesh.position.copy(vector3);
+            this.getNative().__dirtyPosition = true;
+            return this.getNative().position.copy(vector3);
         }
     }, {
         key: 'rotation',
         get: function get() {
-            return this.mesh.rotation;
+            return this.getNative().rotation;
         },
         set: function set(euler) {
-            this.mesh.__dirtyRotation = true;
-            return this.mesh.rotation.copy(euler);
+            this.getNative().__dirtyRotation = true;
+            return this.getNative().rotation.copy(euler);
         }
     }, {
         key: 'scale',
         get: function get() {
-            return this.mesh.scale;
+            return this.getNative().scale;
         },
         set: function set(vector3) {
-            return this.mesh.scale = vector3;
+            return this.getNative().scale = vector3;
         }
     }]);
 
@@ -3024,7 +3040,7 @@ WHS.World = function(_WHS$Object5) {
 
             for (var i = 0; i < this.children.length; i++) {
 
-                if (this.children[i]._type == "morph") this.children[i].mesh.mixer.update(delta);
+                if (this.children[i]._type == "morph") this.children[i].getNative().mixer.update(delta);
             }
         }
 
@@ -3437,7 +3453,7 @@ WHS.Box = function(_WHS$Shape) {
                 material = _get(Object.getPrototypeOf(Box.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.BoxGeometry(params.geometry.width, params.geometry.height, params.geometry.depth), material, params.mass);
+                _scope.setNative(new mesh(new THREE.BoxGeometry(params.geometry.width, params.geometry.height, params.geometry.depth), material, params.mass));
 
                 resolve();
             });
@@ -3510,7 +3526,7 @@ WHS.Cylinder = function(_WHS$Shape2) {
                 material = _get(Object.getPrototypeOf(Cylinder.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.CylinderGeometry(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments), material, params.mass);
+                _scope.setNative(new mesh(new THREE.CylinderGeometry(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments), material, params.mass));
 
                 resolve();
             });
@@ -3579,7 +3595,7 @@ WHS.Dodecahedron = function(_WHS$Shape3) {
                 material = _get(Object.getPrototypeOf(Dodecahedron.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.DodecahedronGeometry(params.geometry.radius, params.geometry.detail), material, params.mass);
+                _scope.setNative(new mesh(new THREE.DodecahedronGeometry(params.geometry.radius, params.geometry.detail), material, params.mass));
 
                 resolve();
             });
@@ -3647,7 +3663,7 @@ WHS.Extrude = function(_WHS$Shape4) {
                 material = _get(Object.getPrototypeOf(Extrude.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.ExtrudeGeometry(params.geometry.shapes, params.geometry.options), material, params.mass);
+                _scope.setNative(new mesh(new THREE.ExtrudeGeometry(params.geometry.shapes, params.geometry.options), material, params.mass));
 
                 resolve();
             });
@@ -3716,7 +3732,7 @@ WHS.Icosahderon = function(_WHS$Shape5) {
                 material = _get(Object.getPrototypeOf(Icosahedron.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.IcosahedronGeometry(params.geometry.radius, params.geometry.detail), material, params.mass);
+                _scope.setNative(new mesh(new THREE.IcosahedronGeometry(params.geometry.radius, params.geometry.detail), material, params.mass));
 
                 resolve();
             });
@@ -3783,7 +3799,7 @@ WHS.Lathe = function(_WHS$Shape6) {
                 material = _get(Object.getPrototypeOf(Lathe.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.LatheGeometry(params.geometry.points), material, params.mass);
+                _scope.setNative(new mesh(new THREE.LatheGeometry(params.geometry.points), material, params.mass));
 
                 resolve();
             });
@@ -3871,7 +3887,7 @@ WHS.Model = function(_WHS$Shape7) {
                             data.computeFaceNormals();
                             data.computeVertexNormals();
 
-                            _scope.mesh = new mesh(data, material, params.mass, data2, params.scale);
+                            _scope.setNative(new mesh(data, material, params.mass, data2, params.scale));
 
                             resolve();
                         });
@@ -3887,7 +3903,7 @@ WHS.Model = function(_WHS$Shape7) {
                         data.computeFaceNormals();
                         data.computeVertexNormals();
 
-                        _scope.mesh = new mesh(data, material, params.mass);
+                        _scope.setNative(new mesh(data, material, params.mass));
 
                         resolve();
                     }
@@ -3977,12 +3993,14 @@ WHS.Morph = function(_WHS$Shape8) {
                     data.computeVertexNormals();
 
                     // Visualization.
-                    _scope.mesh = new THREE.Mesh(data, material);
-                    _scope.mesh.speed = params.morph.speed;
+                    var mesh = new THREE.Mesh(data, material);
+                    mesh.speed = params.morph.speed;
 
-                    _scope.mesh.mixer = new THREE.AnimationMixer(_scope.mesh);
+                    mesh.mixer = new THREE.AnimationMixer(mesh);
 
-                    _scope.mesh.mixer.clipAction(data.animations[0]).setDuration(params.morph.duration).play();
+                    mesh.mixer.clipAction(data.animations[0]).setDuration(params.morph.duration).play();
+
+                    _scope.setNative(mesh);
 
                     resolve();
                 });
@@ -4056,7 +4074,7 @@ WHS.Octahedron = function(_WHS$Shape9) {
                 material = _get(Object.getPrototypeOf(Octahedron.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.OctahedronGeometry(params.geometry.radius, params.geometry.detail), material, params.mass);
+                _scope.setNative(new mesh(new THREE.OctahedronGeometry(params.geometry.radius, params.geometry.detail), material, params.mass));
 
                 resolve();
             });
@@ -4127,7 +4145,7 @@ WHS.Parametric = function(_WHS$Shape10) {
                 material = _get(Object.getPrototypeOf(Parametric.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.ParametricGeometry(params.geometry.func, params.geometry.slices, params.geometry.stacks), material, params.mass);
+                _scope.setNative(new mesh(new THREE.ParametricGeometry(params.geometry.func, params.geometry.slices, params.geometry.stacks), material, params.mass));
 
                 resolve();
             });
@@ -4198,7 +4216,7 @@ WHS.Plane = function(_WHS$Shape11) {
                 material = _get(Object.getPrototypeOf(Plane.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.PlaneGeometry(params.geometry.width, params.geometry.height, params.geometry.segments), material, params.mass);
+                _scope.setNative(new mesh(new THREE.PlaneGeometry(params.geometry.width, params.geometry.height, params.geometry.segments), material, params.mass));
 
                 resolve();
             });
@@ -4271,7 +4289,7 @@ WHS.Polyhedron = function(_WHS$Shape12) {
                 material = _get(Object.getPrototypeOf(Polyhedron.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.PolyhedronGeometry(params.geometry.verticesOfCube, params.geometry.indicesOfFaces, params.geometry.radius, params.geometry.detail), material, params.mass);
+                _scope.setNative(new mesh(new THREE.PolyhedronGeometry(params.geometry.verticesOfCube, params.geometry.indicesOfFaces, params.geometry.radius, params.geometry.detail), material, params.mass));
 
                 resolve();
             });
@@ -4359,7 +4377,7 @@ WHS.Ring = function(_WHS$Shape13) {
                 material = _get(Object.getPrototypeOf(Ring.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), material);
+                _scope.setNative(new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), material));
 
                 resolve();
             });
@@ -4408,12 +4426,28 @@ WHS.Shape2D = function(_WHS$Shape14) {
 
         });
 
-        _this21.mesh = new THREE.Mesh(new THREE.ShapeGeometry(params.geometry.shapes), _get(Object.getPrototypeOf(Shape2D.prototype), '_initMaterial', _this21).call(_this21, params.material));
+        _get(Object.getPrototypeOf(Shape2D.prototype), 'build', _this21).call(_this21, params);
 
         _get(Object.getPrototypeOf(Shape2D.prototype), 'wrap', _this21).call(_this21, "onlyvis");
 
         return _this21;
     }
+
+    _createClass(Shape2D, [{
+        key: 'build',
+        value: function build() {
+            var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+            var _scope = this,
+                material = _get(Object.getPrototypeOf(Shape2D.prototype), '_initMaterial', this).call(this, params.material);
+
+            return new Promise(function(resolve, reject) {
+                _scope.setNative(new THREE.Mesh(new THREE.ShapeGeometry(params.geometry.shapes), material));
+
+                resolve();
+            });
+        }
+    }]);
 
     return Shape2D;
 }(WHS.Shape);
@@ -4479,7 +4513,7 @@ WHS.Sphere = function(_WHS$Shape15) {
                 material = _get(Object.getPrototypeOf(Sphere.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.SphereGeometry(params.geometry.radius, params.geometry.segmentA, params.geometry.segmentB), material, params.mass);
+                _scope.setNative(new mesh(new THREE.SphereGeometry(params.geometry.radius, params.geometry.segmentA, params.geometry.segmentB), material, params.mass));
 
                 resolve();
             });
@@ -4548,7 +4582,7 @@ WHS.Tetrahedron = function(_WHS$Shape16) {
                 material = _get(Object.getPrototypeOf(Tetrahedron.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.TetrahedronGeometry(params.geometry.radius, params.geometry.detail), material, params.mass);
+                _scope.setNative(new mesh(new THREE.TetrahedronGeometry(params.geometry.radius, params.geometry.detail), material, params.mass));
 
                 resolve();
             });
@@ -4639,7 +4673,7 @@ WHS.Text = function(_WHS$Shape17) {
 
                     var mesh = scope.physics ? Physijs.ConcaveMesh : THREE.Mesh;
 
-                    _scope.mesh = new mesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), material, params.mass);
+                    _scope.setNative(new mesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), material, params.mass));
 
                     resolve();
                 });
@@ -4719,7 +4753,7 @@ WHS.Torus = function(_WHS$Shape18) {
                 material = _get(Object.getPrototypeOf(Torus.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.TorusGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.arc), material, params.mass);
+                _scope.setNative(new mesh(new THREE.TorusGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.arc), material, params.mass));
 
                 resolve();
             });
@@ -4796,7 +4830,7 @@ WHS.Torusknot = function(_WHS$Shape19) {
                 material = _get(Object.getPrototypeOf(Torusknot.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.TorusKnotGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.p, params.geometry.q, params.geometry.heightScale), material, params.mass);
+                _scope.setNative(new mesh(new THREE.TorusKnotGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.p, params.geometry.q, params.geometry.heightScale), material, params.mass));
 
                 resolve();
             });
@@ -4871,7 +4905,7 @@ WHS.Tube = function(_WHS$Shape20) {
                 material = _get(Object.getPrototypeOf(Tube.prototype), '_initMaterial', this).call(this, params.material);
 
             return new Promise(function(resolve, reject) {
-                _scope.mesh = new mesh(new THREE.TubeGeometry(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed), material, params.mass);
+                _scope.setNative(new mesh(new THREE.TubeGeometry(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed), material, params.mass));
 
                 resolve();
             });
@@ -5654,7 +5688,7 @@ WHS.World.prototype.FPSControls = function(object) {
 
             yawObject.position.copy(player.position);
         };
-    }(this._camera, object.mesh, target);
+    }(this._camera, object.getNative(), target);
 
     var controls = this.controls;
 
@@ -5922,8 +5956,10 @@ WHS.Skybox = function(_WHS$Shape21) {
                 break;
         }
 
-        _this37.mesh = new THREE.Mesh(skyGeometry, skyMat);
-        _this37.mesh.renderDepth = 1000.0;
+        var mesh = new THREE.Mesh(skyGeometry, skyMat);
+        mesh.renderDepth = 1000.0;
+
+        _get(Object.getPrototypeOf(Skybox.prototype), 'setNative', _this37).call(_this37, mesh);
 
         _get(Object.getPrototypeOf(Skybox.prototype), 'wrap', _this37).call(_this37);
 
