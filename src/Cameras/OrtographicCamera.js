@@ -35,14 +35,14 @@ WHS.OrtographicCamera = class OrtographicCamera extends WHS.Camera {
         let _scope = this;
 
         return new Promise( (resolve, reject) => {
-            _scope.camera = new THREE.OrtographicCamera(
+            _scope.setNative( new THREE.OrtographicCamera(
                 params.camera.left,
                 params.camera.right,
                 params.camera.top,
                 params.camera.bottom,
                 params.camera.near,
                 params.camera.far
-            );
+            ) );
 
             resolve();
         });

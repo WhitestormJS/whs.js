@@ -32,10 +32,10 @@ WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
         let _scope = this;
 
         return new Promise( (resolve, reject) => {
-            _scope.light = new THREE.DirectionalLight(
+            _scope.setNative( new THREE.DirectionalLight(
                 params.light.color,
                 params.light.intensity
-            );
+            ) );
 
             if ( params.helper )
                 _scope.helper = new THREE.DirectionalLightHelper( 

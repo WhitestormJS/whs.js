@@ -32,11 +32,11 @@ WHS.CubeCamera = class CubeCamera extends WHS.Camera {
         let _scope = this;
 
         return new Promise( (resolve, reject) => {
-            _scope.camera = new THREE.CubeCamera(
+            _scope.setNative( new THREE.CubeCamera(
                 params.camera.near,
                 params.camera.far,
                 params.camera.cubeResolution
-            );
+            ) );
 
             resolve();
         });

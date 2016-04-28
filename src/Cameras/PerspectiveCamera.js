@@ -33,12 +33,12 @@ WHS.PerspectiveCamera = class PerspectiveCamera extends WHS.Camera {
         let _scope = this;
 
         return new Promise( (resolve, reject) => {
-            _scope.camera = new THREE.PerspectiveCamera(
+            _scope.setNative( new THREE.PerspectiveCamera(
                 params.camera.fov,
                 params.camera.aspect,
                 params.camera.near,
                 params.camera.far
-            );
+            ) );
 
             resolve();
         });
