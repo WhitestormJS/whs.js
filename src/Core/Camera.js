@@ -242,34 +242,6 @@ WHS.Camera = class extends WHS.Object{
 		return this.getNative().rotation.copy( euler );
 	}
 
-	/**
-	 * Overwriting camera position values.
-	 *
-	 * @param {Number} x - X coord.
-	 * @param {Number} y - Y coord.
-	 * @param {Number} z - Z coord.
-	 * @return {WHS.Camera} - this.
-	 */
-	setPosition( x, y, z ) {
-		this.position.set( x, y, z );
-
-		return this;
-	}
-
-	/**
-	 * Overwriting camera rotation values.
-	 *
-	 * @param {Number} x - X coord.
-	 * @param {Number} y - Y coord.
-	 * @param {Number} z - Z coord.
-	 * @return {WHS.Camera} - this.
-	 */
-	setRotation( x, y, z ) {
-		this.rotation.set( x, y, z );
-
-		return this;
-	}
-
 	follow( curve, time = 1000, loop, lookAt ) {
 
 		let _scope = this,
@@ -281,7 +253,7 @@ WHS.Camera = class extends WHS.Object{
 			let vec1 = curve.getPoint( u );
 			let vec2 = curve.getPoint( (u + 0.01) % 1 );
 
-			_scope.setPosition( vec1.x, vec1.y, vec1.z );
+			_scope.position.set( vec1.x, vec1.y, vec1.z );
 			
 			if ( !lookAt ) _scope.lookAt( vec2 );
 			else if ( lookAt instanceof THREE.Vector3 ) _scope.lookAt( lookAt );
@@ -291,7 +263,6 @@ WHS.Camera = class extends WHS.Object{
 				 _scope.lookAt( lookAt.getPoint( u ) );
 
 			}
-
 			
 		});
 
@@ -306,7 +277,7 @@ WHS.Camera = class extends WHS.Object{
 					let vec1 = curve.getPoint( u );
 					let vec2 = curve.getPoint( (u + 0.01) % 1 );
 
-					_scope.setPosition( vec1.x, vec1.y, vec1.z );
+					_scope.position.set( vec1.x, vec1.y, vec1.z );
 
 					if ( !lookAt ) _scope.lookAt( vec2 );
 					else if ( lookAt instanceof THREE.Vector3 ) _scope.lookAt( lookAt );

@@ -21,6 +21,7 @@
 - `setPosition` and `setRotation` added to `WHS.Camera` and `WHS.Light`.
 - `follow()` function for `WHS.Camera`.
 - *WHS.Shape: .mesh -> getNative()*
+- `setPosition` and `setRotation` -> `position.set` and `rotation.set`
 
 **r8**
 - Engine rebuild commit:
