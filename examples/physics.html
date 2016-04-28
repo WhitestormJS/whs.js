@@ -189,17 +189,17 @@ var tramplin = GAME.Box({
 
 var tramplin2 = tramplin.clone();
 tramplin2.__params.pos.y = 44;
-tramplin2.mesh.mass = 0;
+tramplin2.getNative().mass = 0;
 tramplin2.wrap();
 tramplin2.addTo( GAME );
 
-var tramplin2 = tramplin.clone();
-tramplin2.__params.pos.y = 24;
-tramplin2.__params.pos.x = 24;
-tramplin2.__params.rot.z = Math.PI/6;
-tramplin2.mesh.mass = 0;
-tramplin2.wrap();
-tramplin2.addTo( GAME );
+var tramplin3 = tramplin.clone();
+tramplin3.__params.pos.y = 24;
+tramplin3.__params.pos.x = 24;
+tramplin3.__params.rot.z = Math.PI/6;
+tramplin3.getNative().mass = 0;
+tramplin3.wrap();
+tramplin3.addTo( GAME );
 
 var domino = GAME.Box({
     geometry: {
