@@ -38,7 +38,7 @@ WHS.Fog = class Fog {
      */
     addTo( root ) {
 
-        root.scene.fog = this.fog;
+        root.getScene().fog = this.fog;
 
     }
 
