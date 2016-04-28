@@ -1568,39 +1568,6 @@ WHS.Camera = function(_WHS$Object) {
             return native.get(this);
         }
     }, {
-        key: 'setPosition',
-
-        /**
-         * Overwriting camera position values.
-         *
-         * @param {Number} x - X coord.
-         * @param {Number} y - Y coord.
-         * @param {Number} z - Z coord.
-         * @return {WHS.Camera} - this.
-         */
-        value: function setPosition(x, y, z) {
-            this.position.set(x, y, z);
-
-            return this;
-        }
-
-        /**
-         * Overwriting camera rotation values.
-         *
-         * @param {Number} x - X coord.
-         * @param {Number} y - Y coord.
-         * @param {Number} z - Z coord.
-         * @return {WHS.Camera} - this.
-         */
-
-    }, {
-        key: 'setRotation',
-        value: function setRotation(x, y, z) {
-            this.rotation.set(x, y, z);
-
-            return this;
-        }
-    }, {
         key: 'follow',
         value: function follow(curve) {
             var time = arguments.length <= 1 || arguments[1] === undefined ? 1000 : arguments[1];
@@ -1616,7 +1583,7 @@ WHS.Camera = function(_WHS$Object) {
                 var vec1 = curve.getPoint(u);
                 var vec2 = curve.getPoint((u + 0.01) % 1);
 
-                _scope.setPosition(vec1.x, vec1.y, vec1.z);
+                _scope.position.set(vec1.x, vec1.y, vec1.z);
 
                 if (!lookAt) _scope.lookAt(vec2);
                 else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
@@ -1637,7 +1604,7 @@ WHS.Camera = function(_WHS$Object) {
                     var vec1 = curve.getPoint(u);
                     var vec2 = curve.getPoint((u + 0.01) % 1);
 
-                    _scope.setPosition(vec1.x, vec1.y, vec1.z);
+                    _scope.position.set(vec1.x, vec1.y, vec1.z);
 
                     if (!lookAt) _scope.lookAt(vec2);
                     else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
@@ -2114,40 +2081,6 @@ WHS.Light = function(_WHS$Object3) {
             return this;
         }
 
-        /**
-         * Overwriting light position values.
-         *
-         * @param {Number} x - X coord.
-         * @param {Number} y - Y coord.
-         * @param {Number} z - Z coord.
-         * @return {WHS.Light} - this.
-         */
-
-    }, {
-        key: 'setPosition',
-        value: function setPosition(x, y, z) {
-            this.position.set(x, y, z);
-
-            return this;
-        }
-
-        /**
-         * Overwriting light rotation values.
-         *
-         * @param {Number} x - X coord.
-         * @param {Number} y - Y coord.
-         * @param {Number} z - Z coord.
-         * @return {WHS.Light} - this.
-         */
-
-    }, {
-        key: 'setRotation',
-        value: function setRotation(x, y, z) {
-            this.rotation.set(x, y, z);
-
-            return this;
-        }
-
         /* Access private data */
 
     }, {
@@ -2607,45 +2540,10 @@ WHS.Shape = function(_WHS$Object4) {
             return this;
         }
     }, {
-        key: 'setPosition',
-
-        /**
-         * Overwriting mesh position values.
-         *
-         * @param {Number} x - X coord.
-         * @param {Number} y - Y coord.
-         * @param {Number} z - Z coord.
-         * @return {WHS.Shape} - this.
-         */
-        value: function setPosition(x, y, z) {
-            this.position.set(x, y, z);
-            this.getNative().__dirtyPosition = true;
-
-            return this;
-        }
-
-        /**
-         * Overwriting mesh rotation values.
-         *
-         * @param {Number} x - X coord.
-         * @param {Number} y - Y coord.
-         * @param {Number} z - Z coord.
-         * @return {WHS.Shape} - this.
-         */
-
-    }, {
-        key: 'setRotation',
-        value: function setRotation(x, y, z) {
-            this.rotation.set(x, y, z);
-            this.getNative().__dirtyRotation = true;
-
-            return this;
-        }
+        key: 'setNative',
 
         /* Access private data */
 
-    }, {
-        key: 'setNative',
         value: function setNative(mesh) {
 
             return native.set(this, mesh);
@@ -2671,7 +2569,7 @@ WHS.Shape = function(_WHS$Object4) {
                 var vec1 = curve.getPoint(u % 1);
                 var vec2 = curve.getPoint((u + 0.01) % 1);
 
-                _scope.setPosition(vec1.x, vec1.y, vec1.z);
+                _scope.position.set(vec1.x, vec1.y, vec1.z);
                 _scope.getNative().lookAt(vec2);
             });
 
@@ -2686,7 +2584,7 @@ WHS.Shape = function(_WHS$Object4) {
                     var vec1 = curve.getPoint(u % 1);
                     var vec2 = curve.getPoint((u + 0.01) % 1);
 
-                    _scope.setPosition(vec1.x, vec1.y, vec1.z);
+                    _scope.position.set(vec1.x, vec1.y, vec1.z);
                     _scope.getNative().lookAt(vec2);
                 });
 
@@ -2699,6 +2597,7 @@ WHS.Shape = function(_WHS$Object4) {
     }, {
         key: 'position',
         get: function get() {
+            this.getNative().__dirtyPosition = true;
             return this.getNative().position;
         },
         set: function set(vector3) {
@@ -2708,6 +2607,7 @@ WHS.Shape = function(_WHS$Object4) {
     }, {
         key: 'rotation',
         get: function get() {
+            this.getNative().__dirtyRotation = true;
             return this.getNative().rotation;
         },
         set: function set(euler) {

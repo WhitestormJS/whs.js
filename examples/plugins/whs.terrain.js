@@ -342,7 +342,7 @@ WHS.Terrain = function(_WHS$Shape) {
 
         _get(Object.getPrototypeOf(Terrain.prototype), "wrap", _this).call(_this, "skip");
 
-        _this.setRotation(Math.PI / 180 * -90, 0, 0);
+        _this.rotation.set(Math.PI / 180 * -90, 0, 0);
 
         return _this;
     }
