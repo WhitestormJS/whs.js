@@ -65,6 +65,15 @@ WHS.Plane = class Plane extends WHS.Shape {
 
     }
 
+    /**
+     * Clone plane.
+     */
+    clone() {
+
+        return new WHS.Plane( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Plane = function( params ) {

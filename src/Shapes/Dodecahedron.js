@@ -62,6 +62,15 @@ WHS.Dodecahedron = class Dodecahedron extends WHS.Shape {
 
     }
 
+    /**
+     * Clone dodecahedron.
+     */
+    clone() {
+
+        return new WHS.Dodecahedron( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Dodecahedron = function( params ) {

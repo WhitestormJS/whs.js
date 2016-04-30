@@ -91,6 +91,15 @@ WHS.Tube = class Tube extends WHS.Shape {
 
     }
 
+    /**
+     * Clone tube.
+     */
+    clone() {
+
+        return new WHS.Tube( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Tube = function( params ) {

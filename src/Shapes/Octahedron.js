@@ -62,6 +62,15 @@ WHS.Octahedron = class Octahedron extends WHS.Shape {
 
     }
 
+    /**
+     * Clone octahedron.
+     */
+    clone() {
+
+        return new WHS.Octahedron( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Octahedron = function( params ) {

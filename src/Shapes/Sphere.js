@@ -65,6 +65,15 @@ WHS.Sphere = class Sphere extends WHS.Shape {
 
     }
 
+    /**
+     * Clone sphere.
+     */
+    clone() {
+
+        return new WHS.Sphere( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Sphere = function( params ) {

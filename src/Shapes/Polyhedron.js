@@ -90,6 +90,15 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
 
     }
 
+    /**
+     * Clone polyhedron.
+     */
+    clone() {
+
+        return new WHS.Polyhedron( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Polyhedron = function( params ) {
