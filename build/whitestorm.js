@@ -1346,6 +1346,33 @@ WHS.Object = function() {
 
             this.__params = WHS.API.extend(params, this.__params);
         }
+    }, {
+        key: 'getParams',
+        value: function getParams() {
+
+            return this.__params;
+        }
+    }, {
+        key: 'add',
+        value: function add(children) {
+
+            var _scope = this;
+
+            if (children instanceof WHS.Shape || children instanceof WHS.Light) return children.addTo(this);
+            else if (children instanceof WHS.Object) {
+
+                return new Promise(function(resolve, reject) {
+
+                    children.parent = _scope;
+
+                    _scope.getNative().add(children.getNative());
+
+                    _scope.children.push(_scope);
+
+                    resolve();
+                });
+            }
+        }
     }]);
 
     return _class;
@@ -2395,18 +2422,20 @@ WHS.Shape = function(_WHS$Object4) {
 
                         try {
 
-                            _scope.parent.getScene().add(_scope.getNative());
+                            var parentNative = _scope.parent instanceof WHS.World ? _scope.parent.getScene() : _scope.parent.getNative();
+
+                            parentNative.add(_scope.getNative());
                             _scope.parent.children.push(_scope);
 
-                            if (_scope.__params.helpers.box) _scope.parent.getScene().add(_helpers.box);
+                            if (_scope.__params.helpers.box) parentNative.add(_helpers.box);
 
-                            if (_scope.__params.helpers.boundingBox) _scope.parent.getScene().add(_helpers.boundingBox);
+                            if (_scope.__params.helpers.boundingBox) parentNative.add(_helpers.boundingBox);
 
-                            if (_scope.__params.helpers.edges) _scope.parent.getScene().add(_helpers.edges);
+                            if (_scope.__params.helpers.edges) parentNative.add(_helpers.edges);
 
-                            if (_scope.__params.helpers.faceNormals) _scope.parent.getScene().add(_helpers.faceNormals);
+                            if (_scope.__params.helpers.faceNormals) parentNative.add(_helpers.faceNormals);
 
-                            if (_scope.__params.helpers.vertexNormals) _scope.parent.getScene().add(_helpers.vertexNormals);
+                            if (_scope.__params.helpers.vertexNormals) parentNative.add(_helpers.vertexNormals);
                         } catch (err) {
 
                             console.error(err.message);
@@ -2436,18 +2465,20 @@ WHS.Shape = function(_WHS$Object4) {
 
                     try {
 
-                        _scope.parent.getScene().add(_scope.getNative());
+                        var parentNative = _scope.parent instanceof WHS.World ? _scope.parent.getScene() : _scope.parent.getNative();
+
+                        parentNative.add(_scope.getNative());
                         _scope.parent.children.push(_scope);
 
-                        if (_scope.__params.helpers.box) _scope.parent.getScene().add(_helpers.box);
+                        if (_scope.__params.helpers.box) parentNative.add(_helpers.box);
 
-                        if (_scope.__params.helpers.boundingBox) _scope.parent.getScene().add(_helpers.boundingBox);
+                        if (_scope.__params.helpers.boundingBox) parentNative.add(_helpers.boundingBox);
 
-                        if (_scope.__params.helpers.edges) _scope.parent.getScene().add(_helpers.edges);
+                        if (_scope.__params.helpers.edges) parentNative.add(_helpers.edges);
 
-                        if (_scope.__params.helpers.faceNormals) _scope.parent.getScene().add(_helpers.faceNormals);
+                        if (_scope.__params.helpers.faceNormals) parentNative.add(_helpers.faceNormals);
 
-                        if (_scope.__params.helpers.vertexNormals) _scope.parent.getScene().add(_helpers.vertexNormals);
+                        if (_scope.__params.helpers.vertexNormals) parentNative.add(_helpers.vertexNormals);
                     } catch (err) {
 
                         console.error(err.message);
@@ -2493,7 +2524,7 @@ WHS.Shape = function(_WHS$Object4) {
         key: 'clone',
         value: function clone() {
 
-            return new WHS.Shape(this.__params, this._type).copy(this);
+            return new WHS.Shape(this.getParams(), this._type).copy(this);
         }
 
         /**
@@ -2538,6 +2569,19 @@ WHS.Shape = function(_WHS$Object4) {
             if (WHS.debug) console.debug("@WHS.Shape: Shape " + this._type + " was removed from world", [_scope]);
 
             return this;
+        }
+    }, {
+        key: 'getWorld',
+        value: function getWorld() {
+
+            var p = this.parent;
+
+            while (!(p instanceof WHS.World)) {
+                if (p) p = p.parent;
+                else return false;
+            }
+
+            return p;
         }
     }, {
         key: 'setNative',
@@ -2714,9 +2758,11 @@ WHS.World = function(_WHS$Object5) {
 
         }));
 
-        _get(Object.getPrototypeOf(_class5.prototype), 'setParams', _this6).call(_this6, params);
+        console.log(_get(Object.getPrototypeOf(_class5.prototype), 'setParams', _this6).call(_this6, params));
 
         native.set(_this6, {});
+
+        console.log(_get(Object.getPrototypeOf(_class5.prototype), 'getParams', _this6).call(_this6));
 
         // INIT.
         _this6._initScene();
@@ -2729,7 +2775,7 @@ WHS.World = function(_WHS$Object5) {
         // NOTE: ==================== Autoresize. ======================
         var scope = _this6;
 
-        if (_this6.__params.autoresize) window.addEventListener('resize', function() {
+        if (_this6.getParams().autoresize) window.addEventListener('resize', function() {
             scope.setSize(window.innerWidth, window.innerHeight);
         });
 
@@ -2748,7 +2794,7 @@ WHS.World = function(_WHS$Object5) {
 
             var scene = new Physijs.Scene();
 
-            scene.setGravity(new THREE.Vector3(this.__params.gravity.x, this.__params.gravity.y, this.__params.gravity.z));
+            scene.setGravity(new THREE.Vector3(this.getParams().gravity.x, this.getParams().gravity.y, this.getParams().gravity.z));
 
             this.setScene(scene);
 
@@ -2766,8 +2812,8 @@ WHS.World = function(_WHS$Object5) {
 
             this.simulate = true;
 
-            Physijs.scripts.worker = this.__params.path_worker;
-            Physijs.scripts.ammo = this.__params.path_ammo;
+            Physijs.scripts.worker = this.getParams().path_worker;
+            Physijs.scripts.ammo = this.getParams().path_ammo;
         }
 
         /**
@@ -2778,15 +2824,15 @@ WHS.World = function(_WHS$Object5) {
         key: '_initDOM',
         value: function _initDOM() {
 
-            this.__params.container.style.margin = 0;
-            this.__params.container.style.padding = 0;
-            this.__params.container.style.position = 'relative';
-            this.__params.container.style.overflow = 'hidden';
+            this.getParams().container.style.margin = 0;
+            this.getParams().container.style.padding = 0;
+            this.getParams().container.style.position = 'relative';
+            this.getParams().container.style.overflow = 'hidden';
 
             this._dom = document.createElement('div');
             this._dom.className = "whs";
 
-            this.__params.container.appendChild(this._dom);
+            this.getParams().container.appendChild(this._dom);
 
             return this._dom;
         }
@@ -2800,13 +2846,13 @@ WHS.World = function(_WHS$Object5) {
         value: function _initStats() {
 
             // Debug Renderer
-            if (this.__params.stats) {
+            if (this.getParams().stats) {
 
                 this._stats = new Stats();
 
-                if (this.__params.stats == "fps") this._stats.setMode(0);
-                else if (this.__params.stats == "ms") this._stats.setMode(1);
-                else if (this.__params.stats == "mb") this._stats.setMode(1);
+                if (this.getParams().stats == "fps") this._stats.setMode(0);
+                else if (this.getParams().stats == "ms") this._stats.setMode(1);
+                else if (this.getParams().stats == "mb") this._stats.setMode(1);
                 else {
                     this._stats.setMode(0);
 
@@ -2831,16 +2877,16 @@ WHS.World = function(_WHS$Object5) {
 
             this.setCamera(new WHS.PerspectiveCamera({
                 camera: {
-                    fov: this.__params.camera.aspect,
-                    aspect: this.__params.width / this.__params.height,
-                    near: this.__params.camera.near,
-                    far: this.__params.camera.far
+                    fov: this.getParams().camera.aspect,
+                    aspect: this.getParams().width / this.getParams().height,
+                    near: this.getParams().camera.near,
+                    far: this.getParams().camera.far
                 },
 
                 pos: {
-                    x: this.__params.camera.x,
-                    y: this.__params.camera.y,
-                    z: this.__params.camera.z
+                    x: this.getParams().camera.x,
+                    y: this.getParams().camera.y,
+                    z: this.getParams().camera.z
                 }
             }));
 
@@ -2859,14 +2905,14 @@ WHS.World = function(_WHS$Object5) {
 
             // Renderer.
             this.setRenderer(new THREE.WebGLRenderer());
-            this.getRenderer().setClearColor(this.__params.background);
+            this.getRenderer().setClearColor(this.getParams().background);
 
             // Shadowmap.
-            this.getRenderer().shadowMap.enabled = this.__params.shadowmap.enabled;
-            this.getRenderer().shadowMap.type = this.__params.shadowmap.type;
+            this.getRenderer().shadowMap.enabled = this.getParams().shadowmap.enabled;
+            this.getRenderer().shadowMap.type = this.getParams().shadowmap.type;
             this.getRenderer().shadowMap.cascade = true;
 
-            this.getRenderer().setSize(+(this.__params.width * this.__params.rWidth).toFixed(), +(this.__params.height * this.__params.rHeight).toFixed());
+            this.getRenderer().setSize(+(this.getParams().width * this.getParams().rWidth).toFixed(), +(this.getParams().height * this.getParams().rHeight).toFixed());
 
             this.getRenderer().render(this.getScene(), this.getCamera().getNative());
 
@@ -2884,9 +2930,9 @@ WHS.World = function(_WHS$Object5) {
         key: '_initHelpers',
         value: function _initHelpers() {
 
-            if (this.__params.helpers.axis) this.getScene().add(new THREE.AxisHelper(this.__params.helpers.axis.size ? this.__params.helpers.axis.size : 5));
+            if (this.getParams().helpers.axis) this.getScene().add(new THREE.AxisHelper(this.getParams().helpers.axis.size ? this.getParams().helpers.axis.size : 5));
 
-            if (this.__params.helpers.grid) this.getScene().add(new THREE.GridHelper(this.__params.helpers.grid.size ? this.__params.helpers.grid.size : 10, this.__params.helpers.grid.step ? this.__params.helpers.grid.step : 1));
+            if (this.getParams().helpers.grid) this.getScene().add(new THREE.GridHelper(this.getParams().helpers.grid.size ? this.getParams().helpers.grid.size : 10, this.getParams().helpers.grid.step ? this.getParams().helpers.grid.step : 1));
         }
 
         /**
@@ -2909,7 +2955,7 @@ WHS.World = function(_WHS$Object5) {
                 // Init stats.
                 if (scope._stats) scope._stats.begin();
 
-                //if (scope.__params.anaglyph)
+                //if (scope.getParams().anaglyph)
                 //  scope.effect.render(scope.scene, scope._camera);
 
                 scope.__localTime = time;
@@ -3007,7 +3053,7 @@ WHS.World = function(_WHS$Object5) {
             this.getCamera().getNative().aspect = width / height;
             this.getCamera().getNative().updateProjectionMatrix();
 
-            this.getRenderer().setSize(+(width * this.__params.rWidth).toFixed(), +(height * this.__params.rHeight).toFixed());
+            this.getRenderer().setSize(+(width * this.getParams().rWidth).toFixed(), +(height * this.getParams().rHeight).toFixed());
         }
     }, {
         key: 'setScene',
@@ -3433,6 +3479,17 @@ WHS.Box = function(_WHS$Shape) {
                 resolve();
             });
         }
+
+        /**
+         * Clone box.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Box(this.getParams(), this._type).copy(this);
+        }
     }]);
 
     return Box;
@@ -3506,6 +3563,17 @@ WHS.Cylinder = function(_WHS$Shape2) {
                 resolve();
             });
         }
+
+        /**
+         * Clone cylinder.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Cylinder(this.getParams(), this._type).copy(this);
+        }
     }]);
 
     return Cylinder;
@@ -3575,6 +3643,17 @@ WHS.Dodecahedron = function(_WHS$Shape3) {
                 resolve();
             });
         }
+
+        /**
+         * Clone dodecahedron.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Dodecahedron(this.getParams(), this._type).copy(this);
+        }
     }]);
 
     return Dodecahedron;
@@ -3642,6 +3721,17 @@ WHS.Extrude = function(_WHS$Shape4) {
 
                 resolve();
             });
+        }
+
+        /**
+         * Clone extrude.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Extrude(this.getParams(), this._type).copy(this);
         }
     }]);
 
@@ -3712,6 +3802,17 @@ WHS.Icosahderon = function(_WHS$Shape5) {
                 resolve();
             });
         }
+
+        /**
+         * Clone icosahderon.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Icosahderon(this.getParams(), this._type).copy(this);
+        }
     }]);
 
     return Icosahedron;
@@ -3778,6 +3879,17 @@ WHS.Lathe = function(_WHS$Shape6) {
 
                 resolve();
             });
+        }
+
+        /**
+         * Clone lathe.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Lathe(this.getParams(), this._type).copy(this);
         }
     }]);
 
@@ -3889,6 +4001,17 @@ WHS.Model = function(_WHS$Shape7) {
 
             return promise;
         }
+
+        /**
+         * Clone model.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Model(this.getParams(), this._type).copy(this);
+        }
     }]);
 
     return Model;
@@ -3985,6 +4108,17 @@ WHS.Morph = function(_WHS$Shape8) {
 
             return promise;
         }
+
+        /**
+         * Clone morph.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Morph(this.getParams(), this._type).copy(this);
+        }
     }]);
 
     return Morph;
@@ -4053,6 +4187,17 @@ WHS.Octahedron = function(_WHS$Shape9) {
 
                 resolve();
             });
+        }
+
+        /**
+         * Clone octahedron.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Octahedron(this.getParams(), this._type).copy(this);
         }
     }]);
 
@@ -4125,6 +4270,17 @@ WHS.Parametric = function(_WHS$Shape10) {
                 resolve();
             });
         }
+
+        /**
+         * Clone parametric.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Parametric(this.getParams(), this._type).copy(this);
+        }
     }]);
 
     return Parametric;
@@ -4195,6 +4351,17 @@ WHS.Plane = function(_WHS$Shape11) {
 
                 resolve();
             });
+        }
+
+        /**
+         * Clone plane.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Plane(this.getParams(), this._type).copy(this);
         }
     }]);
 
@@ -4268,6 +4435,16 @@ WHS.Polyhedron = function(_WHS$Shape12) {
 
                 resolve();
             });
+        }
+    }, {
+        key: 'clone',
+
+        /**
+         * Clone polyhedron.
+         */
+        value: function clone() {
+
+            return new WHS.Polyhedron(this.getParams(), this._type).copy(this);
         }
     }, {
         key: 'verticesOfCube',
@@ -4357,6 +4534,17 @@ WHS.Ring = function(_WHS$Shape13) {
                 resolve();
             });
         }
+
+        /**
+         * Clone ring.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Ring(this.getParams(), this._type).copy(this);
+        }
     }]);
 
     return Ring;
@@ -4421,6 +4609,17 @@ WHS.Shape2D = function(_WHS$Shape14) {
 
                 resolve();
             });
+        }
+
+        /**
+         * Clone shape2d.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Shape2D(this.getParams(), this._type).copy(this);
         }
     }]);
 
@@ -4493,6 +4692,17 @@ WHS.Sphere = function(_WHS$Shape15) {
                 resolve();
             });
         }
+
+        /**
+         * Clone sphere.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Sphere(this.getParams(), this._type).copy(this);
+        }
     }]);
 
     return Sphere;
@@ -4561,6 +4771,17 @@ WHS.Tetrahedron = function(_WHS$Shape16) {
 
                 resolve();
             });
+        }
+
+        /**
+         * Clone tetrahedron.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Tetrahedron(this.getParams(), this._type).copy(this);
         }
     }]);
 
@@ -4658,6 +4879,17 @@ WHS.Text = function(_WHS$Shape17) {
 
             return promise;
         }
+
+        /**
+         * Clone text.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Text(this.getParams(), this._type).copy(this);
+        }
     }]);
 
     return Text;
@@ -4732,6 +4964,17 @@ WHS.Torus = function(_WHS$Shape18) {
 
                 resolve();
             });
+        }
+
+        /**
+         * Clone torus.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Torus(this.getParams(), this._type).copy(this);
         }
     }]);
 
@@ -4810,6 +5053,17 @@ WHS.Torusknot = function(_WHS$Shape19) {
                 resolve();
             });
         }
+
+        /**
+         * Clone torusknot.
+         */
+
+    }, {
+        key: 'clone',
+        value: function clone() {
+
+            return new WHS.Torusknot(this.getParams(), this._type).copy(this);
+        }
     }]);
 
     return Torusknot;
@@ -4884,6 +5138,16 @@ WHS.Tube = function(_WHS$Shape20) {
 
                 resolve();
             });
+        }
+    }, {
+        key: 'clone',
+
+        /**
+         * Clone tube.
+         */
+        value: function clone() {
+
+            return new WHS.Tube(this.getParams(), this._type).copy(this);
         }
     }, {
         key: 'CustomSinCurve',
@@ -5858,13 +6122,41 @@ WHS.World.prototype.FogExp2 = function(params) {
 };
 
 /**
+ * WhitestormJS group.
+ *
+ * @extends WHS.Shape
+ */
+
+WHS.Group = function(_WHS$Shape21) {
+    _inherits(Group, _WHS$Shape21);
+
+    /**
+     * Create a group of shapes.
+     */
+
+    function Group() {
+        _classCallCheck(this, Group);
+
+        var _this37 = _possibleConstructorReturn(this, Object.getPrototypeOf(Group).call(this, {}, "group"));
+
+        _get(Object.getPrototypeOf(Group.prototype), 'setNative', _this37).call(_this37, new THREE.Object3D());
+
+        _get(Object.getPrototypeOf(Group.prototype), 'wrap', _this37).call(_this37);
+
+        return _this37;
+    }
+
+    return Group;
+}(WHS.Shape);
+
+/**
  * WhitestormJS skybox.
  *
  * @extends WHS.Shape
  */
 
-WHS.Skybox = function(_WHS$Shape21) {
-    _inherits(Skybox, _WHS$Shape21);
+WHS.Skybox = function(_WHS$Shape22) {
+    _inherits(Skybox, _WHS$Shape22);
 
     /**
      * Create a skybox.
@@ -5882,7 +6174,7 @@ WHS.Skybox = function(_WHS$Shape21) {
 
         _classCallCheck(this, Skybox);
 
-        var _this37 = _possibleConstructorReturn(this, Object.getPrototypeOf(Skybox).call(this, params, "skybox"));
+        var _this38 = _possibleConstructorReturn(this, Object.getPrototypeOf(Skybox).call(this, params, "skybox"));
 
         WHS.API.extend(params, {
 
@@ -5934,11 +6226,11 @@ WHS.Skybox = function(_WHS$Shape21) {
         var mesh = new THREE.Mesh(skyGeometry, skyMat);
         mesh.renderDepth = 1000.0;
 
-        _get(Object.getPrototypeOf(Skybox.prototype), 'setNative', _this37).call(_this37, mesh);
+        _get(Object.getPrototypeOf(Skybox.prototype), 'setNative', _this38).call(_this38, mesh);
 
-        _get(Object.getPrototypeOf(Skybox.prototype), 'wrap', _this37).call(_this37);
+        _get(Object.getPrototypeOf(Skybox.prototype), 'wrap', _this38).call(_this38);
 
-        return _this37;
+        return _this38;
     }
 
     return Skybox;

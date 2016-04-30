@@ -91,6 +91,15 @@ WHS.Text = class Text extends WHS.Shape {
 
     }
 
+    /**
+     * Clone text.
+     */
+    clone() {
+
+        return new WHS.Text( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Text = function( params ) {

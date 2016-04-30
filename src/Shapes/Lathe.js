@@ -59,6 +59,15 @@ WHS.Lathe = class Lathe extends WHS.Shape {
 
     }
 
+    /**
+     * Clone lathe.
+     */
+    clone() {
+
+        return new WHS.Lathe( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Lathe = function( params ) {

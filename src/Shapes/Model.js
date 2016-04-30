@@ -118,6 +118,15 @@ WHS.Model = class Model extends WHS.Shape {
 
     }
 
+    /**
+     * Clone model.
+     */
+    clone() {
+
+        return new WHS.Model( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Model = function( params ) {

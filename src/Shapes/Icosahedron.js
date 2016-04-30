@@ -62,6 +62,15 @@ WHS.Icosahderon = class Icosahedron extends WHS.Shape {
 
     }
 
+    /**
+     * Clone icosahderon.
+     */
+    clone() {
+
+        return new WHS.Icosahderon( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Icosahedron = function( params ) {

@@ -369,23 +369,27 @@ WHS.Shape = class extends WHS.Object {
 
 					try {
 
-						_scope.parent.getScene().add( _scope.getNative() );
+						let parentNative = _scope.parent instanceof WHS.World 
+							? _scope.parent.getScene()
+							: _scope.parent.getNative();
+
+						parentNative.add( _scope.getNative() );
 						_scope.parent.children.push( _scope );
 
 						if ( _scope.__params.helpers.box ) 
-							_scope.parent.getScene().add( _helpers.box );
+							parentNative.add( _helpers.box );
 
 						if ( _scope.__params.helpers.boundingBox ) 
-							_scope.parent.getScene().add( _helpers.boundingBox );
+							parentNative.add( _helpers.boundingBox );
 
 						if ( _scope.__params.helpers.edges ) 
-							_scope.parent.getScene().add( _helpers.edges );
+							parentNative.add( _helpers.edges );
 
 						if ( _scope.__params.helpers.faceNormals ) 
-							_scope.parent.getScene().add( _helpers.faceNormals );
+							parentNative.add( _helpers.faceNormals );
 
 						if ( _scope.__params.helpers.vertexNormals ) 
-							_scope.parent.getScene().add( _helpers.vertexNormals );
+							parentNative.add( _helpers.vertexNormals );
 
 					} catch ( err ) {
 
@@ -424,23 +428,27 @@ WHS.Shape = class extends WHS.Object {
 
 				try {
 
-					_scope.parent.getScene().add( _scope.getNative() );
+					let parentNative = _scope.parent instanceof WHS.World 
+						? _scope.parent.getScene()
+						: _scope.parent.getNative();
+
+					parentNative.add( _scope.getNative() );
 					_scope.parent.children.push( _scope );
 
 					if ( _scope.__params.helpers.box ) 
-						_scope.parent.getScene().add( _helpers.box );
+						parentNative.add( _helpers.box );
 
 					if ( _scope.__params.helpers.boundingBox ) 
-						_scope.parent.getScene().add( _helpers.boundingBox );
+						parentNative.add( _helpers.boundingBox );
 
 					if ( _scope.__params.helpers.edges ) 
-						_scope.parent.getScene().add( _helpers.edges );
+						parentNative.add( _helpers.edges );
 
 					if ( _scope.__params.helpers.faceNormals ) 
-						_scope.parent.getScene().add( _helpers.faceNormals );
+						parentNative.add( _helpers.faceNormals );
 
 					if ( _scope.__params.helpers.vertexNormals ) 
-							_scope.parent.getScene().add( _helpers.vertexNormals );
+						parentNative.add( _helpers.vertexNormals );
 
 				} catch ( err ) {
 
@@ -491,7 +499,7 @@ WHS.Shape = class extends WHS.Object {
 	 */
 	clone() {
 
-		return new WHS.Shape( this.__params, this._type ).copy( this );
+		return new WHS.Shape( this.getParams(), this._type ).copy( this );
 
 	}
 
@@ -534,6 +542,19 @@ WHS.Shape = class extends WHS.Object {
             [_scope]);
 
 		return this;
+
+	}
+
+	getWorld() {
+
+		let p = this.parent;
+
+		while( !(p instanceof WHS.World) ) {
+			if ( p ) p = p.parent;
+			else return false;
+		}
+
+		return p;
 
 	}
 

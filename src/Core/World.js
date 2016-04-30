@@ -84,9 +84,11 @@ WHS.World = class extends WHS.Object {
 
         });
 
-        super.setParams( params );
+        console.log( super.setParams( params ) );
 
         native.set( this, {} );
+
+        console.log( super.getParams() );
 
         // INIT.
         this._initScene();
@@ -99,7 +101,7 @@ WHS.World = class extends WHS.Object {
         // NOTE: ==================== Autoresize. ======================
         var scope = this;
 
-        if ( this.__params.autoresize )
+        if ( this.getParams().autoresize )
             window.addEventListener('resize', () => {
                 scope.setSize( 
                     window.innerWidth, 
@@ -122,9 +124,9 @@ WHS.World = class extends WHS.Object {
 
         scene.setGravity(
             new THREE.Vector3(
-                this.__params.gravity.x, 
-                this.__params.gravity.y,
-                this.__params.gravity.z
+                this.getParams().gravity.x, 
+                this.getParams().gravity.y,
+                this.getParams().gravity.z
             )
         );
 
@@ -142,8 +144,8 @@ WHS.World = class extends WHS.Object {
 
         this.simulate = true;
 
-        Physijs.scripts.worker = this.__params.path_worker;
-        Physijs.scripts.ammo = this.__params.path_ammo;
+        Physijs.scripts.worker = this.getParams().path_worker;
+        Physijs.scripts.ammo = this.getParams().path_ammo;
 
     }
 
@@ -152,15 +154,15 @@ WHS.World = class extends WHS.Object {
      */
     _initDOM() {
 
-        this.__params.container.style.margin = 0;
-        this.__params.container.style.padding = 0;
-        this.__params.container.style.position = 'relative';
-        this.__params.container.style.overflow = 'hidden';
+        this.getParams().container.style.margin = 0;
+        this.getParams().container.style.padding = 0;
+        this.getParams().container.style.position = 'relative';
+        this.getParams().container.style.overflow = 'hidden';
 
         this._dom = document.createElement('div');
         this._dom.className = "whs";
 
-        this.__params.container.appendChild(this._dom);
+        this.getParams().container.appendChild(this._dom);
 
         return this._dom;
 
@@ -172,17 +174,17 @@ WHS.World = class extends WHS.Object {
     _initStats() {
 
         // Debug Renderer
-        if (this.__params.stats) {
+        if (this.getParams().stats) {
 
             this._stats = new Stats();
 
-            if (this.__params.stats == "fps")
+            if (this.getParams().stats == "fps")
                 this._stats.setMode(0);
 
-            else if (this.__params.stats == "ms")
+            else if (this.getParams().stats == "ms")
                 this._stats.setMode(1);
 
-            else if (this.__params.stats == "mb")
+            else if (this.getParams().stats == "mb")
                 this._stats.setMode(1);
 
             else {
@@ -208,16 +210,16 @@ WHS.World = class extends WHS.Object {
 
         this.setCamera( new WHS.PerspectiveCamera({
             camera: {
-                fov: this.__params.camera.aspect,
-                aspect: this.__params.width / this.__params.height,
-                near: this.__params.camera.near,
-                far: this.__params.camera.far
+                fov: this.getParams().camera.aspect,
+                aspect: this.getParams().width / this.getParams().height,
+                near: this.getParams().camera.near,
+                far: this.getParams().camera.far
             },
 
             pos: {
-                x: this.__params.camera.x,
-                y: this.__params.camera.y,
-                z: this.__params.camera.z
+                x: this.getParams().camera.x,
+                y: this.getParams().camera.y,
+                z: this.getParams().camera.z
             }
         }) );
 
@@ -234,16 +236,16 @@ WHS.World = class extends WHS.Object {
 
         // Renderer.
         this.setRenderer( new THREE.WebGLRenderer() );
-        this.getRenderer().setClearColor( this.__params.background );
+        this.getRenderer().setClearColor( this.getParams().background );
 
         // Shadowmap.
-        this.getRenderer().shadowMap.enabled = this.__params.shadowmap.enabled;
-        this.getRenderer().shadowMap.type = this.__params.shadowmap.type;
+        this.getRenderer().shadowMap.enabled = this.getParams().shadowmap.enabled;
+        this.getRenderer().shadowMap.type = this.getParams().shadowmap.type;
         this.getRenderer().shadowMap.cascade = true;
 
         this.getRenderer().setSize( 
-            +( this.__params.width * this.__params.rWidth ).toFixed(), 
-            +( this.__params.height * this.__params.rHeight ).toFixed()
+            +( this.getParams().width * this.getParams().rWidth ).toFixed(), 
+            +( this.getParams().height * this.getParams().rHeight ).toFixed()
         );
 
         this.getRenderer().render( this.getScene(), this.getCamera().getNative() );
@@ -260,23 +262,23 @@ WHS.World = class extends WHS.Object {
      */
     _initHelpers() {
 
-        if ( this.__params.helpers.axis )
+        if ( this.getParams().helpers.axis )
             this.getScene().add( 
                 new THREE.AxisHelper( 
-                    this.__params.helpers.axis.size 
-                    ? this.__params.helpers.axis.size 
+                    this.getParams().helpers.axis.size 
+                    ? this.getParams().helpers.axis.size 
                     : 5
                 ) 
             );
 
-        if ( this.__params.helpers.grid )
+        if ( this.getParams().helpers.grid )
             this.getScene().add( 
                 new THREE.GridHelper( 
-                    this.__params.helpers.grid.size 
-                    ? this.__params.helpers.grid.size 
+                    this.getParams().helpers.grid.size 
+                    ? this.getParams().helpers.grid.size 
                     : 10,
-                    this.__params.helpers.grid.step 
-                    ? this.__params.helpers.grid.step 
+                    this.getParams().helpers.grid.step 
+                    ? this.getParams().helpers.grid.step 
                     : 1
                 ) 
             );
@@ -301,7 +303,7 @@ WHS.World = class extends WHS.Object {
             if (scope._stats)
                  scope._stats.begin();
 
-            //if (scope.__params.anaglyph)
+            //if (scope.getParams().anaglyph)
             //  scope.effect.render(scope.scene, scope._camera);
 
             scope.__localTime = time;
@@ -401,8 +403,8 @@ WHS.World = class extends WHS.Object {
         this.getCamera().getNative().updateProjectionMatrix();
         
         this.getRenderer().setSize( 
-            +(width * this.__params.rWidth).toFixed(), 
-            +(height * this.__params.rHeight).toFixed()
+            +(width * this.getParams().rWidth).toFixed(), 
+            +(height * this.getParams().rHeight).toFixed()
         );
 
     }

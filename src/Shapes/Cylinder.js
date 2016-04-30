@@ -68,6 +68,15 @@ WHS.Cylinder = class Cylinder extends WHS.Shape {
 
     }
 
+    /**
+     * Clone cylinder.
+     */
+    clone() {
+
+        return new WHS.Cylinder( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Cylinder = function( params ) {

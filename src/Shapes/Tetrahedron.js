@@ -62,6 +62,15 @@ WHS.Tetrahedron = class Tetrahedron extends WHS.Shape {
 
     }
 
+    /**
+     * Clone tetrahedron.
+     */
+    clone() {
+
+        return new WHS.Tetrahedron( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Tetrahedron = function( params ) {

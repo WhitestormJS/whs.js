@@ -56,6 +56,15 @@ WHS.Shape2D = class Shape2D extends WHS.Shape {
 
     }
 
+    /**
+     * Clone shape2d.
+     */
+    clone() {
+
+        return new WHS.Shape2D( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Shape2D = function( params ) {
