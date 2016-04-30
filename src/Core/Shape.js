@@ -600,6 +600,12 @@ WHS.Shape = class extends WHS.Object {
 
 	}
 
+	setMaterial( material ) {
+
+		return native.get( this ).material = material;
+
+	}
+
 	follow( curve, time = 1000, loop ) {
 
 		let _scope = this,
