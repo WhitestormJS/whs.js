@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>WhitestormJS development</title>
+    <title>Saturn planet | WhitestormJS</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="WhitestormJS is a 3D Javascript engine based on Three.js (http://threejs.org/). It uses physics and effects libraries to define WhitestormJS API that contains useful scripts for terrain generation, skybox, animation, physics simulation and post-effects. WhitestormJS simplifies Three.js object crafting algorithm to javascript methods with parameters." />
@@ -88,7 +88,7 @@
 
 <body>
 
-<div class="preloader" style="width: 100%;
+<!--<div class="preloader" style="width: 100%;
         height: 100%;
         position: fixed;
         top: 0px;
@@ -102,16 +102,32 @@
         <center style="vertical-align: middle; top: calc(50% - 50px); position:relative;">
                 <div id="animation" style="background: url('data:image/png;base64,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'); background-size: auto 100%; width:10000px; height:100px;"></div>
         </center>
-</div>
+</div>-->
 <script src="../build/whitestorm.js"></script>
 <script defer>
 
-// NOTE: Basic scene with sphere and ground.
-var preloader = Preloader();
+var radiusMin = 100,
+    radiusMax = 200,
+    particleCount = 400,
+    particleMinRadius = 1,
+    particleMaxRadius = 4,
+    planetSize = 50, // Radius.
+
+    particles = [];
+
+
+var colors = {
+    green : 0x8fc999,
+    blue : 0x5fc4d0,
+    orange : 0xee5624,
+    yellow : 0xfaff70,
+}
+
+/* -=========== WHITESTORM|JS "Saturn planet" example ===========- */
 
 var GAME = new WHS.World({
 
-    stats: "fps", // fps, ms, mb
+    stats: false,
     autoresize: true,
 
     gravity: {
@@ -123,19 +139,21 @@ var GAME = new WHS.World({
     camera: {
         far: 2000,
         near: 1,
-        z: 1000
-    }
+        z: 400,
+        y: 100
+    },
+
+    background: 0x2a3340
 
 });
 
-var tetrah = new WHS.Tetrahedron({
+var planet = new WHS.Tetrahedron({
     geometry: {
-        radius: 200,
+        radius: planetSize,
         detail: 2
     },
 
-    mass: 0,
-    physics: false,
+    mass: 100,
 
     material: {
         color: 0xee5624,
@@ -150,18 +168,26 @@ var tetrah = new WHS.Tetrahedron({
     }
 });
 
-var light = new WHS.AmbientLight({
+var ambientLight = new WHS.AmbientLight({
     light:{
         color: 0x663344,
         intensity: 2
     }
 });
 
-var light2 = new WHS.DirectionalLight({
+var directionalLight = new WHS.DirectionalLight({
     light:{
         color: 0xffffff,
         intensity: 1.5,
-        distance: 400
+        distance: 800
+    },
+
+    shadowmap: {
+        left: -800,
+        right: 800,
+        top: 800,
+        bottom: -800,
+        far: 800
     },
 
     pos: {
@@ -176,76 +202,155 @@ var light2 = new WHS.DirectionalLight({
     }
 });
 
-GAME.add( tetrah );
-GAME.add( light );
-GAME.add( light2 );
+GAME.add( planet );
 
+// Add lights.
+GAME.add( ambientLight );
+GAME.add( directionalLight );
+
+// Group of shapes.
 var ring = new WHS.Group();
 
 GAME.add( ring );
 
-var particle_shape = new WHS.Sphere({
+var particle_shape1 = new WHS.Dodecahedron({
     geometry: {
         radius: 10
     },
 
-    mass: 1,
+    mass: 0,
+    physics: false,
 
     material: {
-        kind: "basic"
+        shading: THREE.FlatShading,
+        kind: "phong"
     }
 });
 
-var Colors = {
-  green : 0x8fc999,
-  blue : 0x5fc4d0,
-  orange : 0xee5624,
-  yellow : 0xfaff70,
-}
+var particle_shape2 = new WHS.Box({
+    geometry: {
+        width: 10,
+        height: 10,
+        depth: 10
+    },
 
-for (var i = 0; i < 100; i++ ) {
-    let particle = particle_shape.clone();
+    mass: 0,
+    physics: false,
 
-    let color = Colors[Object.keys( Colors )[ Math.floor( Object.keys( Colors ).length * Math.random() ) ]];
+    material: {
+        shading: THREE.FlatShading,
+        kind: "phong"
+    }
+});
+
+var particle_shape3 = new WHS.Cylinder({
+    geometry: {
+        radiusTop: 0,
+        radiusBottom: 10,
+        height: 10
+    },
+
+    mass: 0,
+    physics: false,
+
+    material: {
+        shading: THREE.FlatShading,
+        kind: "phong"
+    }
+});
+
+var particle_shape4 = new WHS.Sphere({
+    geometry: {
+        radius: 10
+    },
+
+    mass: 0,
+    physics: false,
+
+    material: {
+        shading: THREE.FlatShading,
+        kind: "phong"
+    }
+});
+
+// Materials.
+var mat = [
+    new THREE.MeshPhongMaterial({ color: colors.green, shading: THREE.FlatShading }),
+    new THREE.MeshPhongMaterial({ color: colors.blue, shading: THREE.FlatShading }),
+    new THREE.MeshPhongMaterial({ color: colors.orange, shading: THREE.FlatShading }),
+    new THREE.MeshPhongMaterial({ color: colors.yellow, shading: THREE.FlatShading })
+]
+
+for (var i = 0; i < particleCount; i++ ) {
+    let particle = Math.random() > .25 
+                ? particle_shape1.clone() : 
+                Math.random() > .5 
+                ? particle_shape2.clone()
+                : Math.random() > .75  
+                ? particle_shape3.clone()
+                : particle_shape4.clone();
 
 
-    particle.updateParams({ material: {
-        color: color
-    }});
+    let radius = particleMinRadius + Math.random() * (particleMaxRadius - particleMinRadius);
 
-    console.log(particle);
+    particle.updateParams({ 
+        geometry: {
+            radiusBottom: radius,
+            height: particle instanceof WHS.Cylinder ? radius*2 : radius,
+            width: radius,
+            depth: radius,
+            radius: radius
+        }
+    });
 
-    particle.build( particle.getParams() );
+    particle.build( particle.getParams() ); // Apply geometry parameters & rebuild shape.
 
-    particle.getNative().mass = 1;
+    particle.setMaterial( mat[ Math.floor( 4 * Math.random() ) ] ); // Set custom THREE.Material to mesh.
 
+    // Overwrite shadows.
+    particle.getNative().castShadow = true;
+    particle.getNative().receiveShadow = true;
+
+    // Particle data.
     particle.data = {
-        distance: 250 + Math.random()*100,
+        distance: radiusMin + Math.random()*( radiusMax - radiusMin ),
         angle: Math.random() * Math.PI * 2
     }
 
+    // Set position & rotation.
     particle.position.x = Math.cos( particle.data.angle ) * particle.data.distance;
     particle.position.z = Math.sin( particle.data.angle ) * particle.data.distance;
-    particle.position.y = -2 * Math.random() + 4;
+    particle.position.y = -20 * Math.random() + 4;
 
-    ring.add( particle );
+    particle.rotation.set( Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random() );
+
+    GAME.add( particle );
+    particles.push( particle );
 }
 
+// Animating rotating shapes around planet.
+var animation = new WHS.loop(function(clock) {
+    for (let i = 0; i < particles.length; i++) {
+        let particle = particles[i];
 
+        particle.data.angle += 0.02 * particle.data.distance / radiusMax;
 
+        particle.position.x = Math.cos( particle.data.angle ) * particle.data.distance;
+        particle.position.z = Math.sin( particle.data.angle ) * particle.data.distance;
 
+        particle.rotation.x += Math.PI / 60;
+        particle.rotation.y += Math.PI / 60;
+    }
+
+    planet.rotation.y += 0.005;
+});
+
+animation.start();
+
+// Start rendering.
 GAME.start();
+
+// Orbit controls.
 GAME.OrbitControls();
-
-/*var loop = new WHS.loop(() => {
-    dodecahedron.mesh.__dirtyRotation = true;
-    dodecahedron2.mesh.__dirtyRotation = true;
-    dodecahedron.rotation.y += 0.05;
-    dodecahedron2.rotation.y += 0.05;
-});*/
-
-//loop.start();
-
-preloader.check();
 </script>
 </html>

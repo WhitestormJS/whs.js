@@ -2040,7 +2040,7 @@ WHS.Light = function(_WHS$Object3) {
                     _scope.getNative().shadow.camera.far = _this4._shadowmap.far;
                     _scope.getNative().shadow.camera.fov = _this4._shadowmap.fov;
 
-                    _scope.getNative().shadow.camera.Left = _this4._shadowmap.left;
+                    _scope.getNative().shadow.camera.left = _this4._shadowmap.left;
                     _scope.getNative().shadow.camera.right = _this4._shadowmap.right;
                     _scope.getNative().shadow.camera.top = _this4._shadowmap.top;
                     _scope.getNative().shadow.camera.bottom = _this4._shadowmap.bottom;
@@ -2597,6 +2597,12 @@ WHS.Shape = function(_WHS$Object4) {
         value: function getNative() {
 
             return native.get(this);
+        }
+    }, {
+        key: 'setMaterial',
+        value: function setMaterial(material) {
+
+            return native.get(this).material = material;
         }
     }, {
         key: 'follow',

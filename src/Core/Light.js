@@ -221,7 +221,7 @@ WHS.Light = class extends WHS.Object {
 			    _scope.getNative().shadow.camera.far = this._shadowmap.far;
 			    _scope.getNative().shadow.camera.fov = this._shadowmap.fov;
 
-			    _scope.getNative().shadow.camera.Left = this._shadowmap.left;
+			    _scope.getNative().shadow.camera.left = this._shadowmap.left;
 			    _scope.getNative().shadow.camera.right = this._shadowmap.right;
 			    _scope.getNative().shadow.camera.top = this._shadowmap.top;
 			    _scope.getNative().shadow.camera.bottom = this._shadowmap.bottom;
