@@ -71,6 +71,15 @@ WHS.Torus = class Torus extends WHS.Shape {
 
     }
 
+    /**
+     * Clone torus.
+     */
+    clone() {
+
+        return new WHS.Torus( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Torus = function( params ) {

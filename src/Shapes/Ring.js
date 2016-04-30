@@ -72,6 +72,15 @@ WHS.Ring = class Ring extends WHS.Shape {
 
     }
 
+    /**
+     * Clone ring.
+     */
+    clone() {
+
+        return new WHS.Ring( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Ring = function( params ) {

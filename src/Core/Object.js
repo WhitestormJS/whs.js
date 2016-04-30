@@ -50,4 +50,34 @@ WHS.Object = class {
 
 	}
 
+	getParams() {
+
+		return this.__params;
+
+	}
+
+	add( children ) {
+
+		let _scope = this;
+
+		if ( children instanceof WHS.Shape || children instanceof WHS.Light )
+			return children.addTo( this );
+		else if ( children instanceof WHS.Object ) {
+
+			return new Promise((resolve, reject) => {
+
+				children.parent = _scope;
+
+				_scope.getNative().add( children.getNative() );
+
+				_scope.children.push( _scope );
+
+				resolve();
+
+			});
+
+		}
+
+	}
+
 }

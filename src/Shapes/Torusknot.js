@@ -75,6 +75,15 @@ WHS.Torusknot = class Torusknot extends WHS.Shape {
 
     }
 
+    /**
+     * Clone torusknot.
+     */
+    clone() {
+
+        return new WHS.Torusknot( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Torusknot = function( params ) {

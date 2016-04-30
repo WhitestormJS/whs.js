@@ -92,6 +92,15 @@ WHS.Morph = class Morph extends WHS.Shape {
 
     }
 
+    /**
+     * Clone morph.
+     */
+    clone() {
+
+        return new WHS.Morph( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Morph = function( params ) {

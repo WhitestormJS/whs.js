@@ -65,6 +65,15 @@ WHS.Parametric = class Parametric extends WHS.Shape {
 
     }
 
+    /**
+     * Clone parametric.
+     */
+    clone() {
+
+        return new WHS.Parametric( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Parametric = function( params ) {

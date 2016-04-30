@@ -61,6 +61,15 @@ WHS.Extrude = class Extrude extends WHS.Shape {
 
     }
 
+    /**
+     * Clone extrude.
+     */
+    clone() {
+
+        return new WHS.Extrude( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Extrude = function( params ) {

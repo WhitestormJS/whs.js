@@ -65,6 +65,15 @@ WHS.Box = class Box extends WHS.Shape {
 
     }
 
+    /**
+     * Clone box.
+     */
+    clone() {
+
+        return new WHS.Box( this.getParams(), this._type ).copy( this );
+
+    }
+
 }
 
 WHS.World.prototype.Box = function( params ) {
