@@ -65,7 +65,7 @@ WHS.Text = class Text extends WHS.Shape {
 
                 params.geometry.parameters.font = font;
 
-                let mesh = scope.physics ? Physijs.ConcaveMesh : THREE.Mesh;
+                let mesh = _scope.physics ? Physijs.ConvexMesh : THREE.Mesh;
 
                 _scope.setNative( new mesh(
                     new THREE.TextGeometry(

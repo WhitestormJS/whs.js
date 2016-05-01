@@ -1086,7 +1086,6 @@ window.Physijs = (function() {
 		}
 	};
 
-
 	// Physijs.PlaneMesh
 	Physijs.PlaneMesh = function ( geometry, material, mass ) {
 		var width, height;
@@ -1289,7 +1288,7 @@ window.Physijs = (function() {
 
 
 	// Physijs.ConvexMesh
-	Physijs.ConvexMesh = function( geometry, material, mass ) {
+	Physijs.ConvexMesh = function( geometry, material, mass, cGeometry, cScale ) {
 		var i,
 			width, height, depth,
 			points = [];
@@ -1300,14 +1299,18 @@ window.Physijs = (function() {
 			geometry.computeBoundingBox();
 		}
 
+		cScale = cScale || {x:1, y:1, z:1};
+		cScale.x = cScale.x || 1;
+		cScale.y = cScale.y || 1;
+		cScale.z = cScale.z || 1;
+
 		for ( i = 0; i < geometry.vertices.length; i++ ) {
 			points.push({
-				x: geometry.vertices[i].x,
-				y: geometry.vertices[i].y,
-				z: geometry.vertices[i].z
+				x: geometry.vertices[i].x * cScale.x,
+				y: geometry.vertices[i].y * cScale.y,
+				z: geometry.vertices[i].z * cScale.z
 			});
 		}
-
 
 		width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
 		height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
