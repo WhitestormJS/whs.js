@@ -4,7 +4,7 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.API.loadMaterial = function( material, isPhysics = true ) {
+WHS.API.loadMaterial = function( material = {}, isPhysics = true ) {
 	
 	'use strict';
 
@@ -18,8 +18,10 @@ WHS.API.loadMaterial = function( material, isPhysics = true ) {
 			material.rest : 0.3,
 		_friction: !isNaN(parseFloat(material.friction)) ? 
 			material.friction :  !isNaN(parseFloat(material.fri)) ? 
-			material.fri : 0.8
+			material.fri : 0.8,
 	};
+
+	if ( material.texture ) material.map = WHS.API.texture( material.texture );
 
 	var params = WHS.API.extend( {}, material );
 
