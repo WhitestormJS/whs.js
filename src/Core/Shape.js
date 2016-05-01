@@ -512,6 +512,8 @@ WHS.Shape = class extends WHS.Object {
 
 		this.setNative( source.getNative().clone() );
 
+		console.log( source.rotation );
+
 		this.wrap();
 
 		this.position = source.position.clone();

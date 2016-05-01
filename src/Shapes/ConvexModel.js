@@ -5,12 +5,12 @@
 */
 
 /**
- * WhitestormJS model
+ * WhitestormJS convex model
  *
  * @extends WHS.Shape
  */
 
-WHS.Model = class Model extends WHS.Shape {
+WHS.ConvexModel = class ConvexModel extends WHS.Shape {
     /**
      * Create a model
      *
@@ -42,11 +42,13 @@ WHS.Model = class Model extends WHS.Shape {
 	build( params = {} ) {
 
         let _scope = this,
-            mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh;
+            mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh;
 
         let promise = new Promise( ( resolve, reject ) => {
 
             WHS.API.loadJSON(params.geometry.path, ( data, materials ) => {
+
+                console.log(materials);
 
             	if (params.geometry.physics != "") {
 
@@ -121,14 +123,14 @@ WHS.Model = class Model extends WHS.Shape {
      */
     clone() {
 
-        return new WHS.Model( this.getParams(), this._type ).copy( this );
+        return new WHS.ConvexModel( this.getParams() ).copy( this );
 
     }
 
 }
 
-WHS.World.prototype.Model = function( params ) {
-    let object = new WHS.Model(  params );
+WHS.World.prototype.ConvexModel = function( params ) {
+    let object = new WHS.ConvexModel(  params );
 
     object.addTo( this, "wait" );
 
