@@ -326,4 +326,60 @@ WHS.Light = class extends WHS.Object {
 		return this.getNative().target.position.copy( vector3 );
 	}
 
+	follow( curve, time = 1000, loop, lookAt ) {
+
+		let _scope = this,
+		gEnd = time;
+
+		let animation = new WHS.loop( clock => {
+
+			let u =  clock.getElapsedTime() * 1000 / gEnd;
+			let vec1 = curve.getPoint( u );
+			let vec2 = curve.getPoint( (u + 0.01) % 1 );
+
+			_scope.position.set( vec1.x, vec1.y, vec1.z );
+			
+			if ( !lookAt ) _scope.lookAt( vec2 );
+			else if ( lookAt instanceof THREE.Vector3 ) _scope.lookAt( lookAt );
+			else if ( lookAt instanceof THREE.Curve || 
+					  lookAt instanceof THREE.CurvePath ) {
+
+				 _scope.lookAt( lookAt.getPoint( u ) );
+
+			}
+			
+		});
+
+		animation.start();
+
+		if ( loop )	setInterval( () => { 
+				animation.stop();
+
+				animation = new WHS.loop( clock => {
+
+					let u =  clock.getElapsedTime() * 1000 / gEnd;
+					let vec1 = curve.getPoint( u );
+					let vec2 = curve.getPoint( (u + 0.01) % 1 );
+
+					_scope.position.set( vec1.x, vec1.y, vec1.z );
+
+					if ( !lookAt ) _scope.lookAt( vec2 );
+					else if ( lookAt instanceof THREE.Vector3 ) _scope.lookAt( lookAt );
+					else if ( lookAt instanceof THREE.Curve || 
+							  lookAt instanceof THREE.CurvePath ) {
+
+						 _scope.lookAt( lookAt.getPoint( u ) );
+						
+					}
+					
+				});
+
+				animation.start();
+			}, time);
+
+		else setTimeout( () => { 
+				animation.stop() 
+		}, time);
+	}
+
 }
