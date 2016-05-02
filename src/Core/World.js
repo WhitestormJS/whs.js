@@ -84,11 +84,7 @@ WHS.World = class extends WHS.Object {
 
         });
 
-        console.log( super.setParams( params ) );
-
         native.set( this, {} );
-
-        console.log( super.getParams() );
 
         // INIT.
         this._initScene();
@@ -295,24 +291,31 @@ WHS.World = class extends WHS.Object {
         var clock = new THREE.Clock();
         var scope = this;
 
+        window.requestAnimFrame = (function(){
+            return  window.requestAnimationFrame       ||
+                    window.webkitRequestAnimationFrame ||
+                    window.mozRequestAnimationFrame    ||
+                    function( callback ){
+                        window.setTimeout(callback, 1000 / 60);
+                    };
+        })();
+
+
+        let scene = scope.getScene(),
+            camera_native = scope.getCamera().getNative(),
+            renderer = scope.getRenderer();
+
         function reDraw(time) {
 
-            requestAnimationFrame(reDraw);
+            window.requestAnimFrame( reDraw );
 
             // Init stats.
-            if (scope._stats)
-                 scope._stats.begin();
-
-            //if (scope.getParams().anaglyph)
-            //  scope.effect.render(scope.scene, scope._camera);
-
-            scope.__localTime = time;
+            if (scope._stats) scope._stats.begin();
 
             scope._process( clock );
 
-            if ( scope.simulate ) scope.getScene().simulate();
-
-            scope._updateControls();
+            if ( scope.simulate ) scene.simulate();
+            if ( scope.controls ) scope._updateControls();
 
             // Effects rendering.
             if ( scope._composer ) {
@@ -320,8 +323,8 @@ WHS.World = class extends WHS.Object {
                 scope._composer.reset();
 
                 if ( scope.render ) scope._composer.render( 
-                    scope.getScene(), 
-                    scope.getCamera().getNative() 
+                    scene, 
+                    camera_native
                 );
 
                 scope._composer.pass( scope._composer.stack );
@@ -330,9 +333,9 @@ WHS.World = class extends WHS.Object {
 
             } else {
 
-                if ( scope.render ) scope.getRenderer().render( 
-                    scope.getScene(), 
-                    scope.getCamera().getNative() 
+                if ( scope.render ) renderer.render( 
+                    scene, 
+                    camera_native
                 );
 
             }
@@ -340,8 +343,7 @@ WHS.World = class extends WHS.Object {
             scope._execLoops( time );
 
             // End helper.
-            if (scope._stats)
-                scope._stats.end();
+            if (scope._stats) scope._stats.end();
         }
 
         this._update = reDraw;
@@ -356,9 +358,10 @@ WHS.World = class extends WHS.Object {
      */
     _execLoops( time ) {
 
-        WHS.loops.forEach( loop => {
-            if ( loop.enabled ) loop.func( loop.clock, time );
-        } );
+        for(let i = 0; i < WHS.loops.length; i++) {
+            let l = WHS.loops[i];
+            if ( l.enabled ) l.func( l.clock, time );
+        }
 
     }
 
@@ -367,12 +370,8 @@ WHS.World = class extends WHS.Object {
      */
     _updateControls() {
 
-        if (this.controls) {
-
-            this.controls.update(Date.now() - this.time);
-            this.time = Date.now();
-
-        }
+        this.controls.update(Date.now() - this.time);
+        this.time = Date.now();
 
     }
 
@@ -385,7 +384,7 @@ WHS.World = class extends WHS.Object {
 
             let delta = clock.getDelta();
 
-            for ( var i = 0; i < this.children.length; i++ ) {
+            for ( let i = 0; i < this.children.length; i++ ) {
 
                 if ( this.children[i]._type == "morph" ) 
                     this.children[i].getNative().mixer.update( delta );

@@ -23,7 +23,7 @@ var WHS = {
         Font: new THREE.FontLoader()
     },
 
-    API: {},
+    API: new Object,
 
     _settings: {
         
@@ -36,7 +36,7 @@ var WHS = {
 
     debug: false,
     
-    loops: []
+    loops: new Array
 };
 
 console.log('WhitestormJS', WHS.REVISION);
