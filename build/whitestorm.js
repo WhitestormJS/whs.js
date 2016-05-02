@@ -2832,6 +2832,8 @@ WHS.World = function(_WHS$Object5) {
 
         }));
 
+        _get(Object.getPrototypeOf(_class5.prototype), 'setParams', _this6).call(_this6, params);
+
         native.set(_this6, {});
 
         // INIT.
