@@ -608,7 +608,7 @@ WHS.Shape = class extends WHS.Object {
 
 	}
 
-	follow( curve, time = 1000, loop, lookAt ) {
+	follow( curve, time = 1000, loop ) {
 
 		let _scope = this,
 		gEnd = time;
@@ -616,19 +616,11 @@ WHS.Shape = class extends WHS.Object {
 		let animation = new WHS.loop( clock => {
 
 			let u =  clock.getElapsedTime() * 1000 / gEnd;
-			let vec1 = curve.getPoint( u );
+			let vec1 = curve.getPoint( u % 1);
 			let vec2 = curve.getPoint( (u + 0.01) % 1 );
 
 			_scope.position.set( vec1.x, vec1.y, vec1.z );
-			
-			if ( !lookAt ) _scope.lookAt( vec2 );
-			else if ( lookAt instanceof THREE.Vector3 ) _scope.lookAt( lookAt );
-			else if ( lookAt instanceof THREE.Curve || 
-					  lookAt instanceof THREE.CurvePath ) {
-
-				 _scope.lookAt( lookAt.getPoint( u ) );
-
-			}
+			_scope.getNative().lookAt( vec2 );
 			
 		});
 
@@ -640,19 +632,11 @@ WHS.Shape = class extends WHS.Object {
 				animation = new WHS.loop( clock => {
 
 					let u =  clock.getElapsedTime() * 1000 / gEnd;
-					let vec1 = curve.getPoint( u );
+					let vec1 = curve.getPoint( u % 1 );
 					let vec2 = curve.getPoint( (u + 0.01) % 1 );
 
 					_scope.position.set( vec1.x, vec1.y, vec1.z );
-
-					if ( !lookAt ) _scope.lookAt( vec2 );
-					else if ( lookAt instanceof THREE.Vector3 ) _scope.lookAt( lookAt );
-					else if ( lookAt instanceof THREE.Curve || 
-							  lookAt instanceof THREE.CurvePath ) {
-
-						 _scope.lookAt( lookAt.getPoint( u ) );
-						
-					}
+					_scope.getNative().lookAt( vec2 );
 					
 				});
 

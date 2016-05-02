@@ -334,7 +334,7 @@ for (var x = 0; x < 20; x++) {
 
     }
 }*/
-
+/*
 var curve = new WHS.Curve(
 {
     geometry: {
@@ -389,7 +389,7 @@ var curve3 = new WHS.Curve(
 curve.addTo( GAME );
 curve2.addTo( GAME );
 curve3.addTo( GAME );
-
+*/
 GAME.start();
 
 preloader.check();
