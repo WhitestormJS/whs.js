@@ -84,6 +84,8 @@ WHS.World = class extends WHS.Object {
 
         });
 
+        super.setParams( params );
+
         native.set( this, {} );
 
         // INIT.
