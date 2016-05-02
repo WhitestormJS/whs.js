@@ -111,12 +111,12 @@
 var color = new THREE.Color(0x000000);
 
 WHS.Shape.prototype.changeColor = function(time) {
-    var object = this;
+    var object = this.getNative();
 
     console.log(color);
 
     var animation = new WHS.loop(function() {
-        object.mesh.material.color = color;
+        object.material.color = color;
 
         if (color.r <= 1)
             color.r+=0.01;
@@ -133,7 +133,7 @@ WHS.Shape.prototype.changeColor = function(time) {
             color.setRGB(1, 0, 0);
 
             var animation2 = new WHS.loop(function() {
-                object.mesh.material.color = color;
+                object.material.color = color;
 
                 if (color.r >= 0)
                     color.r-=0.01;
@@ -150,7 +150,7 @@ WHS.Shape.prototype.changeColor = function(time) {
                     color.setRGB(0, 1, 0);
 
                     var animation3 = new WHS.loop(function() {
-                        object.mesh.material.color = color;
+                        object.material.color = color;
 
                         if (color.r >= 0)
                             color.r-=0.01;

@@ -1259,7 +1259,7 @@ var WHS = {
         Font: new THREE.FontLoader()
     },
 
-    API: {},
+    API: new Object(),
 
     _settings: {
 
@@ -1272,7 +1272,7 @@ var WHS = {
 
     debug: false,
 
-    loops: []
+    loops: new Array()
 };
 
 console.log('WhitestormJS', WHS.REVISION);
@@ -2956,37 +2956,41 @@ WHS.World = function(_WHS$Object5) {
             var clock = new THREE.Clock();
             var scope = this;
 
+            window.requestAnimFrame = function() {
+                return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function(callback) {
+                    window.setTimeout(callback, 1000 / 60);
+                };
+            }();
+
+            var scene = scope.getScene(),
+                camera_native = scope.getCamera().getNative(),
+                renderer = scope.getRenderer();
+
             function reDraw(time) {
 
-                requestAnimationFrame(reDraw);
+                window.requestAnimFrame(reDraw);
 
                 // Init stats.
                 if (scope._stats) scope._stats.begin();
 
-                //if (scope.getParams().anaglyph)
-                //  scope.effect.render(scope.scene, scope._camera);
-
-                scope.__localTime = time;
-
                 scope._process(clock);
 
-                if (scope.simulate) scope.getScene().simulate();
-
-                scope._updateControls();
+                if (scope.simulate) scene.simulate();
+                if (scope.controls) scope._updateControls();
 
                 // Effects rendering.
                 if (scope._composer) {
 
                     scope._composer.reset();
 
-                    if (scope.render) scope._composer.render(scope.getScene(), scope.getCamera().getNative());
+                    if (scope.render) scope._composer.render(scene, camera_native);
 
                     scope._composer.pass(scope._composer.stack);
 
                     scope._composer.toScreen();
                 } else {
 
-                    if (scope.render) scope.getRenderer().render(scope.getScene(), scope.getCamera().getNative());
+                    if (scope.render) renderer.render(scene, camera_native);
                 }
 
                 scope._execLoops(time);
@@ -3010,9 +3014,10 @@ WHS.World = function(_WHS$Object5) {
         key: '_execLoops',
         value: function _execLoops(time) {
 
-            WHS.loops.forEach(function(loop) {
-                if (loop.enabled) loop.func(loop.clock, time);
-            });
+            for (var i = 0; i < WHS.loops.length; i++) {
+                var l = WHS.loops[i];
+                if (l.enabled) l.func(l.clock, time);
+            }
         }
 
         /**
@@ -3023,11 +3028,8 @@ WHS.World = function(_WHS$Object5) {
         key: '_updateControls',
         value: function _updateControls() {
 
-            if (this.controls) {
-
-                this.controls.update(Date.now() - this.time);
-                this.time = Date.now();
-            }
+            this.controls.update(Date.now() - this.time);
+            this.time = Date.now();
         }
 
         /**
