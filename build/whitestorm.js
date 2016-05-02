@@ -2123,6 +2123,59 @@ WHS.Light = function(_WHS$Object3) {
             return native.get(this);
         }
     }, {
+        key: 'follow',
+        value: function follow(curve) {
+            var time = arguments.length <= 1 || arguments[1] === undefined ? 1000 : arguments[1];
+            var loop = arguments[2];
+            var lookAt = arguments[3];
+
+            var _scope = this,
+                gEnd = time;
+
+            var animation = new WHS.loop(function(clock) {
+
+                var u = clock.getElapsedTime() * 1000 / gEnd;
+                var vec1 = curve.getPoint(u);
+                var vec2 = curve.getPoint((u + 0.01) % 1);
+
+                _scope.position.set(vec1.x, vec1.y, vec1.z);
+
+                if (!lookAt) _scope.lookAt(vec2);
+                else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+                else if (lookAt instanceof THREE.Curve || lookAt instanceof THREE.CurvePath) {
+
+                    _scope.lookAt(lookAt.getPoint(u));
+                }
+            });
+
+            animation.start();
+
+            if (loop) setInterval(function() {
+                animation.stop();
+
+                animation = new WHS.loop(function(clock) {
+
+                    var u = clock.getElapsedTime() * 1000 / gEnd;
+                    var vec1 = curve.getPoint(u);
+                    var vec2 = curve.getPoint((u + 0.01) % 1);
+
+                    _scope.position.set(vec1.x, vec1.y, vec1.z);
+
+                    if (!lookAt) _scope.lookAt(vec2);
+                    else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+                    else if (lookAt instanceof THREE.Curve || lookAt instanceof THREE.CurvePath) {
+
+                        _scope.lookAt(lookAt.getPoint(u));
+                    }
+                });
+
+                animation.start();
+            }, time);
+            else setTimeout(function() {
+                animation.stop();
+            }, time);
+        }
+    }, {
         key: 'position',
         get: function get() {
             return this.getNative().position;
@@ -2611,6 +2664,7 @@ WHS.Shape = function(_WHS$Object4) {
         value: function follow(curve) {
             var time = arguments.length <= 1 || arguments[1] === undefined ? 1000 : arguments[1];
             var loop = arguments[2];
+            var lookAt = arguments[3];
 
             var _scope = this,
                 gEnd = time;
@@ -2618,11 +2672,17 @@ WHS.Shape = function(_WHS$Object4) {
             var animation = new WHS.loop(function(clock) {
 
                 var u = clock.getElapsedTime() * 1000 / gEnd;
-                var vec1 = curve.getPoint(u % 1);
+                var vec1 = curve.getPoint(u);
                 var vec2 = curve.getPoint((u + 0.01) % 1);
 
                 _scope.position.set(vec1.x, vec1.y, vec1.z);
-                _scope.getNative().lookAt(vec2);
+
+                if (!lookAt) _scope.lookAt(vec2);
+                else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+                else if (lookAt instanceof THREE.Curve || lookAt instanceof THREE.CurvePath) {
+
+                    _scope.lookAt(lookAt.getPoint(u));
+                }
             });
 
             animation.start();
@@ -2633,11 +2693,17 @@ WHS.Shape = function(_WHS$Object4) {
                 animation = new WHS.loop(function(clock) {
 
                     var u = clock.getElapsedTime() * 1000 / gEnd;
-                    var vec1 = curve.getPoint(u % 1);
+                    var vec1 = curve.getPoint(u);
                     var vec2 = curve.getPoint((u + 0.01) % 1);
 
                     _scope.position.set(vec1.x, vec1.y, vec1.z);
-                    _scope.getNative().lookAt(vec2);
+
+                    if (!lookAt) _scope.lookAt(vec2);
+                    else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+                    else if (lookAt instanceof THREE.Curve || lookAt instanceof THREE.CurvePath) {
+
+                        _scope.lookAt(lookAt.getPoint(u));
+                    }
                 });
 
                 animation.start();
@@ -2766,11 +2832,7 @@ WHS.World = function(_WHS$Object5) {
 
         }));
 
-        console.log(_get(Object.getPrototypeOf(_class5.prototype), 'setParams', _this6).call(_this6, params));
-
         native.set(_this6, {});
-
-        console.log(_get(Object.getPrototypeOf(_class5.prototype), 'getParams', _this6).call(_this6));
 
         // INIT.
         _this6._initScene();
