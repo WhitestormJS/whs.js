@@ -88,6 +88,7 @@ world.start(); // Start animations and physics simulation.
 ## Other examples:
  * [FPS](http://192.241.128.187/current/examples/fps_fog.html)  (First person example with Wagner effects and terrain. + fog)
  * [Saturn planet](http://192.241.128.187/current/examples/saturn.html)  (Saturn planet example from: http://codepen.io/Yakudoo/pen/qbygaJ)
+ * [Happy easter!](http://192.241.128.187/current/examples/easter.html)  (Easter rabbit with easter eggs.)
  * [Basic](http://192.241.128.187/current/examples/basic.html)  (Basic "Hello world!" example.)
  * [Physics/Dominos](http://192.241.128.187/current/examples/physics.html)  (Physics example with dominos.)
  * [Debugging](http://192.241.128.187/current/examples/debugging.html)  (Object's debug example.)
