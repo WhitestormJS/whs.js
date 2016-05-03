@@ -121,25 +121,7 @@
 <h1>Happy Easter!</h1>
 <script src="../build/whitestorm.js"></script>
 <script defer>
-
-var radiusMin = 100,
-    radiusMax = 200,
-    particleCount = 400,
-    particleMinRadius = 1,
-    particleMaxRadius = 4,
-    planetSize = 50, // Radius.
-
-    particles = [];
-
-
-var colors = {
-    green : 0x8fc999,
-    blue : 0x5fc4d0,
-    orange : 0xee5624,
-    yellow : 0xfaff70,
-}
-
-/* -=========== WHITESTORM|JS "Saturn planet" example ===========- */
+/* -=========== WHITESTORM|JS "Easter eggs" example ===========- */
 
 var GAME = new WHS.World({
 
@@ -297,7 +279,7 @@ var rabbit = new WHS.Model({
 
     pos: {
         y: 5,
-        x: 0
+        x: -3
     },
 
     rot: {
@@ -413,6 +395,13 @@ document.body.addEventListener("mousemove", function(e) {
     GAME.getCamera().position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
     GAME.getCamera().position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
     GAME.getCamera().lookAt(new THREE.Vector3(-4,0,0));
+});
+
+document.body.addEventListener("click", function(e) {
+    rabbit.getNative().setLinearVelocity(new THREE.Vector3(0, 5, 0));
+    egg.getNative().setAngularVelocity(new THREE.Vector3(0, 10, 0));
+    egg2.getNative().setAngularVelocity(new THREE.Vector3(0, -10, 0));
+    egg3.getNative().setAngularVelocity(new THREE.Vector3(0, -10, 0));
 });
 
 // Orbit controls.
