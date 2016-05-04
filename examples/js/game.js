@@ -239,7 +239,7 @@ GAME.skybox = GAME.Skybox( {
     pos: { y: - 200 }
 } );
 
-GAME.cube1 = GAME.Box( {
+var box = new WHS.Box( {
 
     geometry: {
         width: 2,
@@ -263,6 +263,19 @@ GAME.cube1 = GAME.Box( {
 
 } );
 
+GAME.add( box ).then(function() {
+    var checker1 = new WHS.loop(function() {
+        if ( box.nposition.y <  -200 ) {
+            box.position.set( 50, 70, 60 );
+
+            box.setAngularVelocity(new THREE.Vector3(0,0,0));
+            box.setLinearVelocity(new THREE.Vector3(0,0,0));
+        }
+    });
+
+    checker1.start();
+});
+
 GAME.cube2 = GAME.Box( {
     geometry: {
         width: 2,
@@ -271,7 +284,6 @@ GAME.cube2 = GAME.Box( {
     },
 
     mass: 1,
-    onlyvis: false,
 
     material: {
         kind: "lambert",
@@ -286,14 +298,13 @@ GAME.cube2 = GAME.Box( {
 
 } );
 
-GAME.person = GAME.Sphere( {
+var person = new WHS.Sphere( {
 
     geometry: {
         radius: 2
     },
 
     mass: 10,
-    onlyvis: false,
 
     material: {
         color: 0xffffff,
@@ -310,6 +321,19 @@ GAME.person = GAME.Sphere( {
 
 } );
 
+GAME.add( person ).then(function() {
+    var checker2 = new WHS.loop(function() {
+        if ( person.nposition.y < -200 )  {
+            person.position.set( 0, 100, 0 );
+
+            person.setAngularVelocity(new THREE.Vector3(0,0,0));
+            person.setLinearVelocity(new THREE.Vector3(0,0,0));
+        }
+    });
+
+    checker2.start();
+});
+
 // EFFECTS.
 var effects = new WHS.Wagner(GAME);
 
@@ -318,7 +342,7 @@ effects.add( "VignettePass", {} );
 
 //var directionalblurEffect = GAME.addWagner( "motionBlurPass", {} ).apply();
 
-GAME.FPSControls( GAME.person, { // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
+GAME.FPSControls( person, { // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
     block: document.getElementById('blocker'),
     speed: 5 // 5
 } );
