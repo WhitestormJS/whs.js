@@ -2660,6 +2660,20 @@ WHS.Shape = function(_WHS$Object4) {
             return native.get(this).material = material;
         }
     }, {
+        key: 'setAngularVelocity',
+        value: function setAngularVelocity() {
+            var _getNative;
+
+            return (_getNative = this.getNative()).setAngularVelocity.apply(_getNative, arguments);
+        }
+    }, {
+        key: 'setLinearVelocity',
+        value: function setLinearVelocity() {
+            var _getNative2;
+
+            return (_getNative2 = this.getNative()).setLinearVelocity.apply(_getNative2, arguments);
+        }
+    }, {
         key: 'follow',
         value: function follow(curve) {
             var time = arguments.length <= 1 || arguments[1] === undefined ? 1000 : arguments[1];
@@ -2698,6 +2712,16 @@ WHS.Shape = function(_WHS$Object4) {
             else setTimeout(function() {
                 animation.stop();
             }, time);
+        }
+    }, {
+        key: 'nposition',
+        get: function get() {
+            return this.getNative().position;
+        }
+    }, {
+        key: 'nrotation',
+        get: function get() {
+            return this.getNative().position;
         }
     }, {
         key: 'position',

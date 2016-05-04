@@ -560,6 +560,14 @@ WHS.Shape = class extends WHS.Object {
 
 	}
 
+	get nposition () {
+		return this.getNative().position;
+	}
+
+	get nrotation () {
+		return this.getNative().position;
+	}
+
 	get position() {
 		this.getNative().__dirtyPosition = true;
 		return this.getNative().position;
@@ -606,6 +614,14 @@ WHS.Shape = class extends WHS.Object {
 
 		return native.get( this ).material = material;
 
+	}
+
+	setAngularVelocity( ...args ) {
+		return this.getNative().setAngularVelocity( ...args );
+	}
+
+	setLinearVelocity( ...args ) {
+		return this.getNative().setLinearVelocity( ...args );
 	}
 
 	follow( curve, time = 1000, loop ) {
