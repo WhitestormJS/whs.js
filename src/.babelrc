@@ -1,0 +1,14 @@
+{
+    "env": {
+        "node": {
+            "presets": [
+                "es2015"
+            ]
+        },
+        "browser": {
+            "presets": [
+                "es2015-webpack"
+            ]
+        }
+    }
+}
