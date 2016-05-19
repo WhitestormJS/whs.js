@@ -29,6 +29,16 @@ gulp.task('babel', () => {
         .pipe(gulp.dest(dest));
 });
 
+gulp.task('webpack', () => {
+  throw new Error('webpack task is not yet implemented.');
+});
+
+gulp.task('lint', () => {
+  gulp.src(src)
+    .pipe($.cached('lint', {optimizeMemory: true}))
+    .pipe($.xo());
+});
+
 gulp.task('clean', (callback) => {
   del(dest).then(() => callback());
 });
