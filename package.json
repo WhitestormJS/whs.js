@@ -2,9 +2,14 @@
   "name": "whitestormjs",
   "version": "0.8.0",
   "description": "Framework for developing 3D web apps with physics.",
-  "main": "build/whitestorm.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babel": "gulp babel",
+    "webpack": "gulp webpack",
+    "lint": "gulp lint",
+    "clean": "gulp clean"
   },
   "repository": {
     "type": "git",
@@ -26,35 +31,23 @@
     "url": "https://github.com/WhitestormJS/whitestorm.js/issues"
   },
   "homepage": "https://github.com/WhitestormJS/whitestorm.js#readme",
-  "devDependencies": {
-    "babel-plugin-transform-es2015-template-literals": "^6.3.13",
-    "babel-preset-es2015": "^6.6.0",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^6.1.1",
-    "gulp-replace-task": "^0.11.0",
-    "gulp-xo": "^0.11.0",
-    "jquery": "^2.2.0",
-    "request": "^2.65.0",
-    "three": "^0.75.0"
-  },
-  "directories": {
-    "example": "examples",
-    "test": "test"
-  },
   "dependencies": {
-    "gulp": "^3.9.1",
-    "gulp-beautify": "^2.0.0",
-    "gulp-concat": "^2.6.0",
-    "gulp-insert": "^0.5.0",
-    "gulp-replace-task": "^0.11.0",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.5.1",
-    "gulp-watch": "^4.3.5"
+    "three": "^0.76.1",
+    "whitestormjs-physijs": "^1.0.1"
   },
-  "babel": {
-    "plugins": [
-      "transform-es2015-template-literals"
-    ],
-    "compact": false
+  "devDependencies": {
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-es2015-webpack": "^6.4.1",
+    "babel-register": "^6.8.0",
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-cached": "^1.1.0",
+    "gulp-if": "^2.0.0",
+    "gulp-load-plugins": "^1.2.2",
+    "gulp-sourcemaps": "^2.0.0-alpha",
+    "gulp-util": "^3.0.7",
+    "gulp-xo": "^0.11.0",
+    "run-sequence": "^1.1.5"
   }
 }
