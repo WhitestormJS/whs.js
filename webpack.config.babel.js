@@ -8,7 +8,7 @@ function config(production) {
     devtool: production ? 'hidden-source-map' : 'eval-source-map',
     entry: './src/index.js',
     output: {
-      path: join(__dirname, 'build'),
+      path: join(__dirname, 'dist'),
       library: 'WHS',
       libraryTarget: 'umd',
     },
