@@ -7,13 +7,7 @@
 var WHS = {
     REVISION: "r8",
 
-    loader: {
-        JSON: new THREE.JSONLoader(),
-        Texture: new THREE.TextureLoader(),
-        Font: new THREE.FontLoader()
-    },
-
-    API: new Object(),
+    API: {},
 
     _settings: {
         
@@ -26,7 +20,7 @@ var WHS = {
 
     debug: false,
     
-    loops: new Array()
+    loops: []
 };
 
 if ( typeof define === 'function' && define.amd ) {
