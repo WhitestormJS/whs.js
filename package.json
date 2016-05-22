@@ -48,6 +48,10 @@
     "gulp-sourcemaps": "^2.0.0-alpha",
     "gulp-util": "^3.0.7",
     "gulp-xo": "^0.11.0",
-    "run-sequence": "^1.1.5"
+    "run-sequence": "^1.1.5",
+    "xo": "^0.15.1"
+  },
+  "xo": {
+    "space": 4
   }
 }
