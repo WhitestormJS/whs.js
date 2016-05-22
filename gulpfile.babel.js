@@ -4,15 +4,13 @@ import runSequence from 'run-sequence';
 import del from 'del';
 
 const $ = loadPlugins();
+const isProduction = process.env.NODE_ENV === 'production';
 
 const src = 'src/**/*';
 const dest = 'lib';
 
-const isProduction = process.env.NODE_ENV == 'production';
-
 process.env.BABEL_ENV = 'node';
 
-// default task
 gulp.task('default', ['build']);
 
 gulp.task('build', (callback) => {
@@ -24,28 +22,29 @@ gulp.task('babel', () => {
         .pipe($.cached('babel', {optimizeMemory: true}))
         .pipe($.if(!isProduction, $.sourcemaps.init()))
         .pipe($.babel())
-        .on('error', onBuildError)
+        .on('error', makeBuildErrorHandler('babel'))
         .pipe($.if(!isProduction, $.sourcemaps.write('.')))
         .pipe(gulp.dest(dest));
 });
 
 gulp.task('webpack', () => {
-  throw new Error('webpack task is not yet implemented.');
+    throw new Error('webpack task is not yet implemented.');
 });
 
 gulp.task('lint', () => {
-  gulp.src(src)
-    .pipe($.cached('lint', {optimizeMemory: true}))
-    .pipe($.xo());
+    gulp.src(src)
+        .pipe($.cached('lint', {optimizeMemory: true}))
+        .pipe($.xo())
+        .on('error', makeBuildErrorHandler('lint'));
 });
 
 gulp.task('clean', (callback) => {
-  del(dest).then(() => callback());
+    del(dest).then(() => callback());
 });
 
-function onBuildError({name, message, codeFrame}) {
-    let errorMessage = `${$.util.colors.red(name)} ${message}\n${codeFrame}`;
-
-    $.util.log('[babel]', errorMessage);
-    this.emit('end');
+function makeBuildErrorHandler(taskName) {
+    return function ({name, message, codeFrame}) {
+        $.util.log(`[${taskName}]`, `${$.util.colors.red(name)} ${message}${codeFrame ? `\n${codeFrame}` : ''}`);
+        this.emit('end');
+    };
 }
