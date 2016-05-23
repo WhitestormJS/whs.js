@@ -51,6 +51,7 @@
     "gulp-util": "^3.0.7",
     "gulp-xo": "^0.11.0",
     "run-sequence": "^1.1.5",
+    "webpack": "^2.1.0-beta.7",
     "xo": "^0.15.1"
   },
   "xo": {
