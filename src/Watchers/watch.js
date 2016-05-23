@@ -4,34 +4,22 @@
  * Email: alexbuzin88@gmail.com
 */
 
-WHS.Watch = function (queue) {
-
-  'use strict';
-
-  this._queue = Array.isArray(queue) ? queue.slice() : [];
-
-  return this;
-
+class Watch {
+  constructor(queue) {
+    this._queue = Array.isArray(queue) ? queue.slice() : [];
+  }
+  
+  add(element) {
+    this._queue.push(element);
+  }
+  
+  remove(element) {
+    this._queue = this._queue.filter(function (item) {
+      return item != element;
+    });
+  }
 }
 
-WHS.Watch.prototype.add = function (element) {
-
-  'use strict';
-
-  this._queue.push(element);
-
-  return this;
-
-}
-
-WHS.Watch.prototype.remove = function (element) {
-
-  'use strict';
-
-  this._queue = this._queue.filter(function (item) {
-    return item != element;
-  });
-
-  return this;
-
-}
+export {
+  Watch as default
+};
