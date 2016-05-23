@@ -2,9 +2,13 @@ import gulp from 'gulp';
 import loadPlugins from 'gulp-load-plugins';
 import runSequence from 'run-sequence';
 import del from 'del';
+import webpack from 'webpack';
+import webpackConfig from './webpack.config.babel.js';
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 const $ = loadPlugins();
-const isProduction = process.env.NODE_ENV === 'production';
+const webpackCompiler = webpack(webpackConfig({production: isProduction}));
 
 const src = 'src/**/*';
 const dest = 'lib';
@@ -27,8 +31,15 @@ gulp.task('babel', () => {
         .pipe(gulp.dest(dest));
 });
 
-gulp.task('webpack', () => {
-    throw new Error('webpack task is not yet implemented.');
+gulp.task('webpack', (callback) => {
+    webpackCompiler.run((error, stats) => {
+        if (error) {
+            throw new $.util.PluginError('webpack', error);
+        }
+
+        $.util.log('[webpack]', stats.toString({colors: true}));
+        callback();
+    });
 });
 
 gulp.task('lint', () => {
