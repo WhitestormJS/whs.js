@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "gulp build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "xo",
     "babel": "gulp babel",
     "webpack": "gulp webpack",
     "lint": "gulp lint",
@@ -54,8 +54,5 @@
     "run-sequence": "^1.1.5",
     "webpack": "^2.1.0-beta.7",
     "xo": "^0.15.1"
-  },
-  "xo": {
-    "space": 2
   }
 }
