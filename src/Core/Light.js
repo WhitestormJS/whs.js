@@ -6,380 +6,410 @@
 
 /** Light super class */
 WHS.Light = class extends WHS.Object {
-	/**
-	 * Constructing WHS.Light object.
-	 * 
-	 * @param {Object} params - Inputed parameters.
-	 * @param {String} type - Light type.
-	 * @return {WHS.Light}
-	 */
-	constructor( params, type ) {
-
-		if ( !type ) 
-			console.error( "@constructor: Please specify \" type \"." );
 
-		var _set = function( x, y, z ) {
+  /**
+   * Constructing WHS.Light object.
+   *
+   * @param {Object} params - Inputed parameters.
+   * @param {String} type - Light type.
+   * @return {WHS.Light}
+   */
+  constructor(params, type) {
 
-			this.x = x;
-			this.y = y;
-			this.z = z;
+    if (!type)
+      console.error('@constructor: Please specify " type ".');
 
-		}
+    const _set = function (x, y, z) {
 
-		// Polyfill for 3D.
-		super({
+      this.x = x;
+      this.y = y;
+      this.z = z;
 
-	        light: {
-	        	color: 0xffffff,
-	        	skyColor: 0xffffff,
-	        	groundColor: 0xffffff,
+    };
 
-	        	intensity: 1,
-	        	distance: 100,
-	        	angle: Math.PI/3,
-                exponent: 0,
-                decay: 1
-	        },
+    // Polyfill for 3D.
+    super({
 
-	        helper: false,
+      light: {
+        color: 0xffffff,
+        skyColor: 0xffffff,
+        groundColor: 0xffffff,
 
-	        shadowmap: {
-	            cast: true,
+        intensity: 1,
+        distance: 100,
+        angle: Math.PI / 3,
+        exponent: 0,
+        decay: 1
+      },
 
-	            bias: 0,
+      helper: false,
 
-	            width: 1024,
-	            height: 1024,
+      shadowmap: {
+        cast: true,
 
-	            near: true,
-	            far: 400,
-	            fov: 60,
-	            darkness: 0.3,
+        bias: 0,
 
-	            top: 200,
-	            bottom: -200,
-	            left: -200,
-	            right: 200
-	        },
+        width: 1024,
+        height: 1024,
 
-			pos: {
-				x: 0,
-				y: 0,
-				z: 0,
-				set: _set
-			},
+        near: true,
+        far: 400,
+        fov: 60,
+        darkness: 0.3,
 
-			rot: {
-				x: 0,
-				y: 0,
-				z: 0,
-				set: _set
-			},
+        top: 200,
+        bottom: -200,
+        left: -200,
+        right: 200
+      },
 
-			target: {
-				x: 0,
-				y: 0,
-				z: 0,
-				set: _set
-			}
+      pos: {
+        x: 0,
+        y: 0,
+        z: 0,
+        set: _set
+      },
 
-		});
+      rot: {
+        x: 0,
+        y: 0,
+        z: 0,
+        set: _set
+      },
 
-		super.setParams( params );
+      target: {
+        x: 0,
+        y: 0,
+        z: 0,
+        set: _set
+      }
 
-		var scope = Object.assign(this,
-		{
-			_type: type,
+    });
 
-			_light: this.__params.light,
-			_shadowmap: this.__params.shadowmap,
-		});
+    super.setParams(params);
 
-		if ( WHS.debug ) console.debug("@WHS.Light: Light " + scope._type +
-			" found.", scope);
+    const scope = Object.assign(this,
+      {
+        _type: type,
 
-		return scope;
-	}
+        _light: this.__params.light,
+        _shadowmap: this.__params.shadowmap
+      });
 
-	/**
-	 * Applying shadow & position & rotation.
-	 *
-	 * @param {...String} tags - Tags that defines what to do with light 
-	 * additionally.
-	 */
-	wrap( ...tags ) {
+    if (WHS.debug)
+      console.debug(`@WHS.Light: Light ${scope._type} found.`, scope);
 
-		'use strict';
+    return scope;
 
-		let _scope = this;
+  }
 
-		return new Promise( (resolve, reject) => {
+  /**
+   * Applying shadow & position & rotation.
+   *
+   * @param {...String} tags - Tags that defines what to do with light
+   * additionally.
+   */
+  wrap(...tags) {
 
-			try {
+    'use strict';
 
-				if (tags.indexOf("noshadows") < 0) {
+    const _scope = this;
 
-					_scope.getNative().castShadow = true;
-					_scope.getNative().receiveShadow = true;
+    return new Promise((resolve, reject) => {
 
-				}
+      try {
 
-				_scope.position.set(
-					_scope.__params.pos.x, 
-					_scope.__params.pos.y, 
-					_scope.__params.pos.z 
-				);
+        if (tags.indexOf('noshadows') < 0) {
 
-				_scope.rotation.set( 
-					_scope.__params.rot.x, 
-					_scope.__params.rot.y, 
-					_scope.__params.rot.z 
-				);
+          _scope.getNative().castShadow = true;
+          _scope.getNative().receiveShadow = true;
 
-				tags.forEach(tag => {
-					_scope[tag] = true;
-				});		                
+        }
 
-				if ( WHS.debug ) console.debug("@WHS.Light: Light " 
-		        	+ _scope._type + " is ready.", _scope);
+        _scope.position.set(
+          _scope.__params.pos.x,
+          _scope.__params.pos.y,
+          _scope.__params.pos.z
+        );
 
-				_scope.emit("ready");
+        _scope.rotation.set(
+          _scope.__params.rot.x,
+          _scope.__params.rot.y,
+          _scope.__params.rot.z
+        );
 
-				resolve( _scope );
+        tags.forEach(tag => {
 
-			} catch ( err ) {
+          _scope[tag] = true;
 
-				console.error( err.message );
+        });
 
-				reject();
+        if (WHS.debug)
+          console.debug(`@WHS.Light: Light ${_scope._type} + ' is ready.`, _scope);
 
-			}
+        _scope.emit('ready');
 
-		});
-	}
+        resolve(_scope);
 
-	/**
-	 * Add light to WHS.World object.
-	 *
-	 * @param {WHS.World} root - World, were this light will be. 
-	 * @param {...String} tags - Tags for compiling. 
-	 */
-	addTo( parent ) {
+      } catch (err) {
 
-		'use strict';
+        console.error(err.message);
 
-		this.parent = parent;
+        reject();
 
-		let _helper = this.helper,
-			_scope = this;
+      }
 
-		return new Promise( (resolve, reject) => {
+    });
 
-			try {
+  }
 
-				_scope.parent.getScene().add( _scope.getNative() );
-				_scope.parent.children.push( _scope );
+  /**
+   * Add light to WHS.World object.
+   *
+   * @param {WHS.World} root - World, were this light will be.
+   * @param {...String} tags - Tags for compiling.
+   */
+  addTo(parent) {
 
-				if ( _helper ) _scope.parent.getScene().add( _helper );
+    'use strict';
 
-			} catch ( err ) {
+    this.parent = parent;
 
-				console.error( err.message );
-				reject();
+    const _helper = this.helper,
+      _scope = this;
 
-			} finally {
+    return new Promise((resolve, reject) => {
 
-				if ( WHS.debug ) console.debug("@WHS.Camera: Camera " 
-		        	+ _scope._type + " was added to world.", 
-		        	[_scope, _scope.parent]);
+      try {
 
-				resolve( _scope );
+        _scope.parent.getScene().add(_scope.getNative());
+        _scope.parent.children.push(_scope);
 
-				_scope.emit("ready");
+        if (_helper) _scope.parent.getScene().add(_helper);
 
-			}
+      } catch (err) {
 
-		} );
-	}
+        console.error(err.message);
+        reject();
 
-	/** 
-	 * Set shadow properties for light.
-	 */
-	wrapShadow() {
+      } finally {
 
-		let _scope = this;
+        if (WHS.debug) {
 
-		return new Promise( (resolve, reject) => {
+          console.debug(
+            `@WHS.Camera: Camera ${_scope._type} was added to world.`,
+            [_scope, _scope.parent]
+          );
 
-		    try {
+        }
 
-			    _scope.getNative().shadow.mapSize.width = this._shadowmap.width;
-			    _scope.getNative().shadow.mapSize.height = this._shadowmap.height;
-			    _scope.getNative().shadow.bias = this._shadowmap.bias;
+        resolve(_scope);
 
-			    _scope.getNative().shadow.camera.near = this._shadowmap.near;
-			    _scope.getNative().shadow.camera.far = this._shadowmap.far;
-			    _scope.getNative().shadow.camera.fov = this._shadowmap.fov;
+        _scope.emit('ready');
 
-			    _scope.getNative().shadow.camera.left = this._shadowmap.left;
-			    _scope.getNative().shadow.camera.right = this._shadowmap.right;
-			    _scope.getNative().shadow.camera.top = this._shadowmap.top;
-			    _scope.getNative().shadow.camera.bottom = this._shadowmap.bottom;
+      }
 
-			} catch ( err ) {
+    });
 
-				console.error( err.message );
-				reject();
+  }
 
-			} finally {
+  /**
+   * Set shadow properties for light.
+   */
+  wrapShadow() {
 
-				resolve( _scope );
+    const _scope = this;
 
-			}
+    return new Promise((resolve, reject) => {
 
-		});
+      try {
 
-	}
+        _scope.getNative().shadow.mapSize.width = this._shadowmap.width;
+        _scope.getNative().shadow.mapSize.height = this._shadowmap.height;
+        _scope.getNative().shadow.bias = this._shadowmap.bias;
 
-	/**
-	 * Clone light.
-	 */
-	clone() {
+        _scope.getNative().shadow.camera.near = this._shadowmap.near;
+        _scope.getNative().shadow.camera.far = this._shadowmap.far;
+        _scope.getNative().shadow.camera.fov = this._shadowmap.fov;
 
-		return new WHS.Light( this.__params, this._type ).copy( this );
+        _scope.getNative().shadow.camera.left = this._shadowmap.left;
+        _scope.getNative().shadow.camera.right = this._shadowmap.right;
+        _scope.getNative().shadow.camera.top = this._shadowmap.top;
+        _scope.getNative().shadow.camera.bottom = this._shadowmap.bottom;
 
-	}
+      } catch (err) {
 
-	/**
-	 * Copy light.
-	 *
-	 * @param {WHS.Light} source - Source object, that will be applied to this.
-	 */
-	copy( source ) {
+        console.error(err.message);
+        reject();
 
-		this.light = source.getNative().clone();
-		if ( source.helper ) this.helper = source.helper.clone();
+      } finally {
 
-		this.wrap();
+        resolve(_scope);
 
-		this.position = source.position.clone();
-		this.rotation = source.rotation.clone();
+      }
 
-		this._type = source._type;
+    });
 
-		return this;
+  }
 
-	}
+  /**
+   * Clone light.
+   */
+  clone() {
 
-	/**
-	 * Remove this light from world.
-	 */
-	remove() {
-		
-		this.parent.getScene().remove( this.getNative() );
-		if ( source.helper ) this.parent.getScene().remove( this.helper );
+    return new WHS.Light(this.__params, this._type).copy(this);
 
-        this.parent.children.splice( this.parent.children.indexOf( this ), 1);
-        this.parent = null;
+  }
 
-        this.emit("remove");
+  /**
+   * Copy light.
+   *
+   * @param {WHS.Light} source - Source object, that will be applied to this.
+   */
+  copy(source) {
 
-		return this;
+    this.light = source.getNative().clone();
+    if (source.helper) this.helper = source.helper.clone();
 
-	}
+    this.wrap();
 
-	/* Access private data */
+    this.position = source.position.clone();
+    this.rotation = source.rotation.clone();
 
-	setNative( light ) {
+    this._type = source._type;
 
-		return native.set( this, light );
-		
-	}
-	
-	getNative() {
+    return this;
 
-		return native.get( this );
+  }
 
-	}
+  /**
+   * Remove this light from world.
+   */
+  remove() {
 
-	get position() {
-		return this.getNative().position;
-	}
+    this.parent.getScene().remove(this.getNative());
+    if (source.helper) this.parent.getScene().remove(this.helper);
 
-	set position( vector3 ) {
-		return this.getNative().position.copy( vector3 );
-	}
+    this.parent.children.splice(this.parent.children.indexOf(this), 1);
+    this.parent = null;
 
-	get rotation() {
-		return this.getNative().rotation;
-	}
+    this.emit('remove');
 
-	set rotation( euler ) {
-		return this.getNative().rotation.copy( euler );
-	}
+    return this;
 
-	get target() {
-		return this.getNative().target.position;
-	}
+  }
 
-	set target( vector3 ) {
-		return this.getNative().target.position.copy( vector3 );
-	}
+  /* Access private data */
 
-	follow( curve, time = 1000, loop, lookAt ) {
+  setNative(light) {
 
-		let _scope = this,
-		gEnd = time;
+    return native.set(this, light);
 
-		let animation = new WHS.loop( clock => {
+  }
 
-			let u =  clock.getElapsedTime() * 1000 / gEnd;
-			let vec1 = curve.getPoint( u );
-			let vec2 = curve.getPoint( (u + 0.01) % 1 );
+  getNative() {
 
-			_scope.position.set( vec1.x, vec1.y, vec1.z );
-			
-			if ( !lookAt ) _scope.lookAt( vec2 );
-			else if ( lookAt instanceof THREE.Vector3 ) _scope.lookAt( lookAt );
-			else if ( lookAt instanceof THREE.Curve || 
-					  lookAt instanceof THREE.CurvePath ) {
+    return native.get(this);
 
-				 _scope.lookAt( lookAt.getPoint( u ) );
+  }
 
-			}
-			
-		});
+  get position() {
 
-		animation.start();
+    return this.getNative().position;
 
-		if ( loop )	setInterval( () => { 
-				animation.stop();
+  }
 
-				animation = new WHS.loop( clock => {
+  set position(vector3) {
 
-					let u =  clock.getElapsedTime() * 1000 / gEnd;
-					let vec1 = curve.getPoint( u );
-					let vec2 = curve.getPoint( (u + 0.01) % 1 );
+    return this.getNative().position.copy(vector3);
 
-					_scope.position.set( vec1.x, vec1.y, vec1.z );
+  }
 
-					if ( !lookAt ) _scope.lookAt( vec2 );
-					else if ( lookAt instanceof THREE.Vector3 ) _scope.lookAt( lookAt );
-					else if ( lookAt instanceof THREE.Curve || 
-							  lookAt instanceof THREE.CurvePath ) {
+  get rotation() {
 
-						 _scope.lookAt( lookAt.getPoint( u ) );
-						
-					}
-					
-				});
+    return this.getNative().rotation;
 
-				animation.start();
-			}, time);
+  }
 
-		else setTimeout( () => { 
-				animation.stop() 
-		}, time);
-	}
+  set rotation(euler) {
 
-}
+    return this.getNative().rotation.copy(euler);
+
+  }
+
+  get target() {
+
+    return this.getNative().target.position;
+
+  }
+
+  set target(vector3) {
+
+    return this.getNative().target.position.copy(vector3);
+
+  }
+
+  follow(curve, time = 1000, loop, lookAt) {
+
+    const _scope = this,
+      gEnd = time;
+
+    let animation = new WHS.loop(clock => {
+
+      const u = clock.getElapsedTime() * 1000 / gEnd,
+        vec1 = curve.getPoint(u),
+        vec2 = curve.getPoint((u + 0.01) % 1);
+
+      _scope.position.set(vec1.x, vec1.y, vec1.z);
+
+      if (!lookAt) _scope.lookAt(vec2);
+      else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+      else if (
+          lookAt instanceof THREE.Curve
+          || lookAt instanceof THREE.CurvePath
+        ) _scope.lookAt(lookAt.getPoint(u));
+
+    });
+
+    animation.start();
+
+    if (loop) {
+
+      setInterval(() => {
+
+        animation.stop();
+
+        animation = new WHS.loop(clock => {
+
+          const u = clock.getElapsedTime() * 1000 / gEnd,
+            vec1 = curve.getPoint(u),
+            vec2 = curve.getPoint((u + 0.01) % 1);
+
+          _scope.position.set(vec1.x, vec1.y, vec1.z);
+
+          if (!lookAt) _scope.lookAt(vec2);
+          else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+          else if (
+              lookAt instanceof THREE.Curve
+              || lookAt instanceof THREE.CurvePath
+            ) _scope.lookAt(lookAt.getPoint(u));
+
+        });
+
+        animation.start();
+
+      }, time);
+
+    } else {
+
+      setTimeout(() => {
+
+        animation.stop();
+
+      }, time);
+
+    }
+
+  }
+
+};
