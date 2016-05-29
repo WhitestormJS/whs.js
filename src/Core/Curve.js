@@ -8,138 +8,150 @@
  * Whitestormjs curve.
  */
 WHS.Curve = class Curve extends WHS.Object {
-    /**
-     * Create curve.
-     *
-     * Todo
-     */
-	constructor( params ) {
 
-        super({
-            geometry: {
-                curve: false,
-                points: 50
-            }
-        });
+  /**
+   * Create curve.
+   *
+   * Todo
+   */
+  constructor(params) {
 
-        super.setParams( params );
+    super({
+      geometry: {
+        curve: false,
+        points: 50
+      }
+    });
 
-        let geometry = new THREE.Geometry();
+    super.setParams(params);
 
-        geometry.vertices = params.geometry.curve.getPoints( params.geometry.points );
+    const geometry = new THREE.Geometry();
 
-        let curve = new THREE.Line(
-            geometry,
-            WHS.API.loadMaterial( params.material, false )._material
-        );
+    geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
 
-        this.setNative( curve );
+    const curve = new THREE.Line(
+        geometry,
+        WHS.API.loadMaterial(params.material, false)._material
+    );
 
-        let scope = Object.assign( this,
-        {
-            _type: "curve",
-            __path: params.geometry.curve
-        });
+    this.setNative(curve);
 
-        return scope;
+    const scope = Object.assign(this,
+      {
+        _type: 'curve',
+        __path: params.geometry.curve
+      }
+    );
 
-	}
+    return scope;
+
+  }
 
     /**
      * Add curve to scene.
      */
-    addTo( parent ) {
+  addTo(parent) {
 
-        'use strict';
+    'use strict';
 
-        this.parent = parent;
+    this.parent = parent;
 
-        let _scope = this;
+    const _scope = this;
 
-        return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
-            try {
+      try {
 
-                _scope.parent.getScene().add( _scope.getNative() );
-                _scope.parent.children.push( _scope );
+        _scope.parent.getScene().add(_scope.getNative());
+        _scope.parent.children.push(_scope);
 
-            } catch(err) {
+      } catch (err) {
 
-                console.error( err.message );
-                reject();
+        console.error(err.message);
+        reject();
 
-            } finally {
+      } finally {
 
-                if ( WHS.debug ) console.debug("@WHS.Curve: Curve " 
-                            + _scope._type + " was added to world.", 
-                            [_scope, _scope.parent]);
+        if (WHS.debug) {
 
-                resolve( _scope );
+          console.debug(
+            `@WHS.Curve: Curve ${_scope._type} was added to world.`,
+            [_scope, _scope.parent]
+          );
 
-            }
+        }
 
-        });
+        resolve(_scope);
 
-    }
+      }
+
+    });
+
+  }
 
     /* Access private data */
 
-    setNative( curve ) {
+  setNative(curve) {
 
-        return native.set( this, curve );
-        
-    }
-    
-    getNative() {
+    return native.set(this, curve);
 
-        return native.get( this );
+  }
 
-    }
+  getNative() {
+
+    return native.get(this);
+
+  }
 
     /**
      * Clone curve.
      */
-    clone() {
+  clone() {
 
-        return new WHS.Curve( this.__params ).copy( this );
+    return new WHS.Curve(this.__params).copy(this);
 
-    }
+  }
 
     /**
      * Copy curve.
      *
      * @param {WHS.Curve} source - Source object, that will be applied to this.
      */
-    copy( source ) {
+  copy(source) {
 
-        this.setNative( source.getNative().clone() );
+    this.setNative(source.getNative().clone());
 
-        this._type = source._type;
+    this._type = source._type;
 
-        return this;
+    return this;
 
-    }
+  }
 
     /**
      * Remove this curve from world.
      *
      * @return {THREE.Curve} - this.
      */
-    remove() {
-        
-        this.parent.getScene().remove( this.getNative() );
+  remove() {
 
-        this.parent.children.splice( this.parent.children.indexOf( this ), 1);
-        this.parent = null;
+    this.parent.getScene().remove(this.getNative());
 
-        this.emit("remove");
+    this.parent.children.splice(this.parent.children.indexOf(this), 1);
+    this.parent = null;
 
-        if ( WHS.debug ) console.debug("@WHS.Curve: Curve " 
-            + this._type + " was removed from world", 
-            [_scope]);
+    this.emit('remove');
 
-        return this;
+    if (WHS.debug) {
+
+      console.debug(
+        `@WHS.Curve: Curve ${this._type} was removed from world`,
+        [_scope]
+      );
 
     }
 
-}
+    return this;
+
+  }
+
+};
