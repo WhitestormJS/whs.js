@@ -33,6 +33,8 @@
   "homepage": "https://github.com/WhitestormJS/whitestorm.js#readme",
   "dependencies": {
     "babel-runtime": "^6.9.0",
+    "eventemitter3": "^1.2.0",
+    "stats.js": "^0.16.0",
     "three": "^0.76.1",
     "whitestormjs-physijs": "^1.0.1"
   },
