@@ -1,4 +1,5 @@
 WHS.Camera = class extends WHS.Object {
+
   constructor(params, type) {
 
     if (!type) console.error('@constructor: Please specify " type ".');
@@ -235,16 +236,13 @@ WHS.Camera = class extends WHS.Object {
 
       _scope.position.set(vec1.x, vec1.y, vec1.z);
 
-      if (!lookAt) {
-        _scope.lookAt(vec2);
-      } else if (lookAt instanceof THREE.Vector3) {
-        _scope.lookAt(lookAt);
-      } else if (
-          lookAt instanceof THREE.Curve ||
-          lookAt instanceof THREE.CurvePath
-        ) {
-        _scope.lookAt(lookAt.getPoint(u));
-      }
+      if (!lookAt) _scope.lookAt(vec2);
+      else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+      else if (
+          lookAt instanceof THREE.Curve
+          || lookAt instanceof THREE.CurvePath
+        ) _scope.lookAt(lookAt.getPoint(u));
+
     });
 
     animation.start();
