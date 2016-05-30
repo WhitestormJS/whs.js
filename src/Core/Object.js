@@ -1,69 +1,84 @@
+/**
+ * © Alexander Buzin, 2014-2015
+ * Site: http://alexbuzin.me/
+ * Email: alexbuzin88@gmail.com
+*/
+
+/* Global WhitestormJS (WHS) object class */
 WHS.Object = class {
-	constructor( defaults = {}, structurable = true ) {
 
-		var scope = structurable
-		? Object.assign( this,
-		{
-			__whsobject: true,
-			__releaseTime: new Date().getTime(),
-			__params: {},
-			__defaults: defaults,
+  /**
+   * Constructing WHS.Shape object.
+   *
+   * @param {Boolean} structurable - true if object has parents and children.
+   * @param {String} type - Shape type.
+   * @return {WHS.Object}
+   */
+  constructor(defaults = {}, structurable = true) {
 
-			parent: null,
-			children: []
-		},
-		new Events())
-		: Object.assign( this,
-		{
-			__whsobject: true,
-			__releaseTime: new Date().getTime(),
-			__params: {}
-		},
-		new Events());
+    const scope = structurable
+    ? Object.assign(this,
+      {
+        __whsobject: true,
+        __releaseTime: new Date().getTime(),
+        __params: {},
+        __defaults: defaults,
 
-		return scope;
-	}
+        parent: null,
+        children: []
+      },
+    new Events())
+    : Object.assign(this,
+      {
+        __whsobject: true,
+        __releaseTime: new Date().getTime(),
+        __params: {}
+      },
+    new Events());
 
-	setParams( params = {} ) {
+    return scope;
 
-		this.__params = WHS.API.extend( params, this.__defaults );
+  }
 
-	}
+  setParams(params = {}) {
 
-	updateParams( params = {} ) {
+    this.__params = WHS.API.extend(params, this.__defaults);
 
-		this.__params = WHS.API.extend( params, this.__params );
+  }
 
-	}
+  updateParams(params = {}) {
 
-	getParams() {
+    this.__params = WHS.API.extend(params, this.__params);
 
-		return this.__params;
+  }
 
-	}
+  getParams() {
 
-	add( children ) {
+    return this.__params;
 
-		let _scope = this;
+  }
 
-		if ( children instanceof WHS.Shape || children instanceof WHS.Light )
-			return children.addTo( this );
-		else if ( children instanceof WHS.Object ) {
+  add(children) {
 
-			return new Promise((resolve, reject) => {
+    const _scope = this;
 
-				children.parent = _scope;
+    if (children instanceof WHS.Shape || children instanceof WHS.Light)
+      return children.addTo(this);
+    else if (children instanceof WHS.Object) {
 
-				_scope.getNative().add( children.getNative() );
+      return new Promise((resolve, reject) => {
 
-				_scope.children.push( _scope );
+        children.parent = _scope;
 
-				resolve();
+        _scope.getNative().add(children.getNative());
+        _scope.children.push(_scope);
 
-			});
+        resolve();
 
-		}
+      });
 
-	}
+    }
 
-}
+  }
+
+};
