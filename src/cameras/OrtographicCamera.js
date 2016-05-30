@@ -1,39 +1,43 @@
 WHS.OrtographicCamera = class OrtographicCamera extends WHS.Camera {
-	constructor( params = {} ) {
 
-		super( params, "ortographiccamera" );
+  constructor(params = {}) {
 
-		this.build( params );
+    super(params, 'ortographiccamera');
 
-        super.wrap();
+    this.build(params);
 
-	}
+    super.wrap();
 
-    build( params = {} ) {
+  }
 
-        let _scope = this;
+  build(params = {}) {
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new THREE.OrtographicCamera(
-                params.camera.left,
-                params.camera.right,
-                params.camera.top,
-                params.camera.bottom,
-                params.camera.near,
-                params.camera.far
-            ) );
+    const _scope = this;
 
-            resolve();
-        });
+    return new Promise((resolve, reject) => {
 
-    }
+      _scope.setNative(new THREE.OrtographicCamera(
+        params.camera.left,
+        params.camera.right,
+        params.camera.top,
+        params.camera.bottom,
+        params.camera.near,
+        params.camera.far
+      ));
 
-}
+      resolve();
 
-WHS.World.prototype.OrtographicCamera = function( params ) {
-    let camera = new WHS.OrtographicCamera( params );
+    });
 
-    camera.addTo( this );
+  }
 
-    return camera;
-}
+};
+
+WHS.World.prototype.OrtographicCamera = function (params) {
+
+  const camera = new WHS.OrtographicCamera(params);
+  camera.addTo(this);
+
+  return camera;
+
+};

@@ -1,36 +1,40 @@
 WHS.CubeCamera = class CubeCamera extends WHS.Camera {
-	constructor( params = {} ) {
 
-		super( params, "cubecamera" );
+  constructor(params = {}) {
 
-		this.build( params );
+    super(params, 'cubecamera');
 
-        super.wrap();
+    this.build(params);
 
-	}
+    super.wrap();
 
-    build( params = {} ) {
+  }
 
-        let _scope = this;
+  build(params = {}) {
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new THREE.CubeCamera(
-                params.camera.near,
-                params.camera.far,
-                params.camera.cubeResolution
-            ) );
+    const _scope = this;
 
-            resolve();
-        });
+    return new Promise((resolve, reject) => {
 
-    }
+      _scope.setNative(new THREE.CubeCamera(
+        params.camera.near,
+        params.camera.far,
+        params.camera.cubeResolution
+      ));
 
-}
+      resolve();
 
-WHS.World.prototype.CubeCamera = function( params ) {
-    let camera = new WHS.CubeCamera( params );
+    });
 
-    camera.addTo( this );
+  }
 
-    return camera;
-}
+};
+
+WHS.World.prototype.CubeCamera = function (params) {
+
+  const camera = new WHS.CubeCamera(params);
+  camera.addTo(this);
+
+  return camera;
+
+};
