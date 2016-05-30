@@ -1,73 +1,68 @@
 WHS.Plane = class Plane extends WHS.Shape {
-    /**
-     * Creates a plane.
-     *
-     * @param {Object} params - Plane options
-     * @param {Object} params.geometry - Plane geometry options
-     * @param {Number} params.geometry.width - Plane width
-     * @param {Number} params.geometry.height - Plane height
-     * @param {Number} params.geometry.segments - Plane segments
-     * @param {Material} params.material - Plane material
-     * @param {Number} params.mass - Plane mass
-     */
-	constructor( params = {} ) {
 
-		super( params, "plane" );
+  /**
+   * Creates a plane.
+   *
+   * @param {Object} params - Plane options
+   * @param {Object} params.geometry - Plane geometry options
+   * @param {Number} params.geometry.width - Plane width
+   * @param {Number} params.geometry.height - Plane height
+   * @param {Number} params.geometry.segments - Plane segments
+   * @param {Material} params.material - Plane material
+   * @param {Number} params.mass - Plane mass
+   */
+  constructor(params = {}) {
 
-		WHS.API.extend(params.geometry, {
+    super(params, 'plane');
 
-            width: 10,
-            height: 10,
-            segments: 32
+    WHS.API.extend(params.geometry, {
 
-        });
+      width: 10,
+      height: 10,
+      segments: 32
 
-        this.build( params );
+    });
 
-        super.wrap();
+    this.build(params);
 
-	}
+    super.wrap();
 
-    build( params = {} ) {
+  }
 
-        let _scope = this,
-            mesh = this.physics ? Physijs.PlaneMesh : THREE.Mesh,
-            material = super._initMaterial(params.material);
+  build(params = {}) {
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new mesh(
-                new THREE.PlaneGeometry(
+    const _scope = this,
+      mesh = this.physics ? Physijs.PlaneMesh : THREE.Mesh,
+      material = super._initMaterial(params.material);
 
-                    params.geometry.width,
-                    params.geometry.height,
-                    params.geometry.segments
+    return new Promise((resolve, reject) => {
 
-                ),
+      _scope.setNative(new mesh(
+        new THREE.PlaneGeometry(
 
-                material,
-                params.mass
-            ) );
+          params.geometry.width,
+          params.geometry.height,
+          params.geometry.segments
 
-            resolve();
-        });
+        ),
 
-    }
+        material,
+        params.mass
+      ));
 
-    /**
-     * Clone plane.
-     */
-    clone() {
+      resolve();
 
-        return new WHS.Plane( this.getParams(), this._type ).copy( this );
+    });
 
-    }
+  }
 
-}
+  /**
+   * Clone plane.
+   */
+  clone() {
 
-WHS.World.prototype.Plane = function( params ) {
-    let object = new WHS.Plane( params );
+    return new WHS.Plane(this.getParams(), this._type).copy(this);
 
-    object.addTo( this );
+  }
 
-    return object;
-}
+};

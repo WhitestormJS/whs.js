@@ -1,112 +1,119 @@
 class ConvexModel extends WHS.Shape {
-	constructor(params = {}) {
-		super(params, 'model');
 
-		WHS.API.extend(params.geometry, {
+  constructor(params = {}) {
+
+    super(params, 'model');
+
+    WHS.API.extend(params.geometry, {
       path: '',
-      physics: '',
+      physics: ''
     });
 
-    var scope = this;
+    const scope = this;
 
-    this.build( params );
+    this.build(params);
     super.wrap('wait');
-	}
 
-	build( params = {} ) {
+  }
 
-        let _scope = this,
-            mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh;
+  build(params = {}) {
 
-        let promise = new Promise( ( resolve, reject ) => {
+    const _scope = this,
+      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh;
 
-            WHS.API.loadJSON(params.geometry.path, ( data, materials ) => {
+    const promise = new Promise((resolve, reject) => {
 
-                console.log(materials);
+      WHS.API.loadJSON(params.geometry.path, (data, materials) => {
 
-            	if (params.geometry.physics != "") {
+        if (params.geometry.physics) {
 
-            		WHS.API.loadJSON(params.geometry.physics, data2 => {
+          WHS.API.loadJSON(params.geometry.physics, data2 => {
 
-            			if (params.material.useVertexColors)
-	                        var material = WHS.API.loadMaterial(
-	                            WHS.API.extend(params.material, {
-	                                morphTargets: true,
-	                                vertexColors: THREE.FaceColors
-	                            })
-	                        )._material;
-	                    else if (!materials || params.material.useCustomMaterial)
-	                        var material = WHS.API.loadMaterial(
-	                            params.material
-	                        )._material;
-	                    else var material = new THREE.MultiMaterial(materials);
+            let material;
 
-	                    data.computeFaceNormals();
-	                    data.computeVertexNormals();
+            if (params.material.useVertexColors) {
 
-	                    _scope.setNative( new mesh(
-	                    	data,
-	                    	material,
-	                    	params.mass,
-	                    	data2,
-	                    	params.scale
-	                	) );
+              material = WHS.API.loadMaterial(
+                WHS.API.extend(params.material, {
+                  morphTargets: true,
+                  vertexColors: THREE.FaceColors
+                })
+              )._material;
 
-	                    resolve();
+            } else if (!materials || params.material.useCustomMaterial) {
 
-            		});
-            	} else {
+              material = WHS.API.loadMaterial(
+                params.material
+              )._material;
 
-                    if (!materials || params.material.useVertexColors)
-                        var material = WHS.API.loadMaterial(
-                            WHS.API.extend(params.material, {
-                                morphTargets: true,
-                                vertexColors: THREE.FaceColors
-                            })
-                        )._material;
-                    else if (params.material.useCustomMaterial)
-                        var material = WHS.API.loadMaterial(
-                            params.material
-                        )._material;
-                    else var material = new THREE.MultiMaterial(materials);
+            } else material = new THREE.MultiMaterial(materials);
 
-                    data.computeFaceNormals();
-                    data.computeVertexNormals();
+            data.computeFaceNormals();
+            data.computeVertexNormals();
 
-                    _scope.setNative( new mesh(
-                    	data,
-                    	material,
-                    	params.mass
-					) );
+            _scope.setNative(new mesh(
+              data,
+              material,
+              params.mass,
+              data2,
+              params.scale
+            ));
 
-                    resolve();
-                }
+            resolve();
 
-            });
+          });
 
-        });
+        } else {
 
-        super.wait( promise );
+          let material;
 
-        return promise;
+          if (params.material.useVertexColors) {
 
-    }
+            material = WHS.API.loadMaterial(
+              WHS.API.extend(params.material, {
+                morphTargets: true,
+                vertexColors: THREE.FaceColors
+              })
+            )._material;
 
-    /**
-     * Clone model.
-     */
-    clone() {
+          } else if (!materials || params.material.useCustomMaterial) {
 
-        return new WHS.ConvexModel( this.getParams() ).copy( this );
+            material = WHS.API.loadMaterial(
+              params.material
+            )._material;
 
-    }
+          } else material = new THREE.MultiMaterial(materials);
 
-}
+          data.computeFaceNormals();
+          data.computeVertexNormals();
 
-WHS.World.prototype.ConvexModel = function( params ) {
-    let object = new WHS.ConvexModel(  params );
+          _scope.setNative(new mesh(
+            data,
+            material,
+            params.mass
+          ));
 
-    object.addTo( this, "wait" );
+          resolve();
 
-    return object;
+        }
+
+      });
+
+    });
+
+    super.wait(promise);
+
+    return promise;
+
+  }
+
+  /**
+   * Clone model.
+   */
+  clone() {
+
+    return new WHS.ConvexModel(this.getParams()).copy(this);
+
+  }
+
 }

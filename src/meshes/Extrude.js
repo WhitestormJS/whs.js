@@ -1,70 +1,65 @@
 WHS.Extrude = class Extrude extends WHS.Shape {
-    /**
-     * Extrude a shape
-     *
-     * @param {Object} params - General options
-     * @param {Object} params.geometry - Geometry options
-     * @param {Array} params.geometry.shapes - Shapes to extrude
-     * @param {Object} params.geometry.options - Options concerning shapes to extrude
-     * @param {Material} params.material - Material
-     * @param {Number} params.mass - Mass
-     */
-	constructor( params = {} ) {
 
-		super( params, "extrude" );
+  /**
+   * Extrude a shape
+   *
+   * @param {Object} params - General options
+   * @param {Object} params.geometry - Geometry options
+   * @param {Array} params.geometry.shapes - Shapes to extrude
+   * @param {Object} params.geometry.options - Options concerning shapes to extrude
+   * @param {Material} params.material - Material
+   * @param {Number} params.mass - Mass
+   */
+  constructor(params = {}) {
 
-		WHS.API.extend(params.geometry, {
+    super(params, 'extrude');
 
-            shapes: [],
-            options: {}
+    WHS.API.extend(params.geometry, {
 
-        });
+      shapes: [],
+      options: {}
 
-        this.build( params );
+    });
 
-        super.wrap();
+    this.build(params);
 
-	}
+    super.wrap();
 
-    build( params = {} ) {
+  }
 
-        let _scope = this,
-            mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-            material = super._initMaterial(params.material);
+  build(params = {}) {
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new mesh(
-                new THREE.ExtrudeGeometry(
+    const _scope = this,
+      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      material = super._initMaterial(params.material);
 
-                    params.geometry.shapes,
-                    params.geometry.options
+    return new Promise((resolve, reject) => {
 
-                ),
+      _scope.setNative(new mesh(
+        new THREE.ExtrudeGeometry(
 
-                material,
-                params.mass
-            ) );
+          params.geometry.shapes,
+          params.geometry.options
 
-            resolve();
-        });
+        ),
 
-    }
+        material,
+        params.mass
+      ));
 
-    /**
-     * Clone extrude.
-     */
-    clone() {
+      resolve();
 
-        return new WHS.Extrude( this.getParams(), this._type ).copy( this );
+    });
 
-    }
+  }
 
-}
+  /**
+   * Clone extrude.
+   */
+  clone() {
 
-WHS.World.prototype.Extrude = function( params ) {
-    let object = new WHS.Extrude( params );
+    return new WHS.Extrude(this.getParams(), this._type).copy(this);
 
-    object.addTo( this );
+  }
 
-    return object;
-}
+};

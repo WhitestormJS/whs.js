@@ -1,100 +1,92 @@
 WHS.Morph = class Morph extends WHS.Shape {
-    /**
-     * Create a morph
-     *
-     * @param {Object} params - Morph options
-     * @param {Object} params.geometry - Morph geometry options
-     * @param {String} params.geometry.path - Path to morph JSON
-     * @param {Material} params.material - Morph material
-     * @param {Number} params.mass - Morph mass
-     * @param {Object} params.morph - Morph options
-     * @param {Number} params.morph.speed - Morph speed
-     * @param {Number} params.morph.duration - Morph duration
-     */
-	constructor( params = {} ) {
 
-		super( params, "morph" );
+  /**
+   * Create a morph
+   *
+   * @param {Object} params - Morph options
+   * @param {Object} params.geometry - Morph geometry options
+   * @param {String} params.geometry.path - Path to morph JSON
+   * @param {Material} params.material - Morph material
+   * @param {Number} params.mass - Morph mass
+   * @param {Object} params.morph - Morph options
+   * @param {Number} params.morph.speed - Morph speed
+   * @param {Number} params.morph.duration - Morph duration
+   */
+  constructor(params = {}) {
 
-		WHS.API.extend(params.geometry, {
+    super(params, 'morph');
 
-            path: ""
+    WHS.API.extend(params.geometry, {
 
-        });
+      path: ''
 
-        var scope = this;
+    });
 
-        this.build( params );
+    this.build(params);
 
-        super.wrap("wait");
+    super.wrap('wait');
 
-	}
+  }
 
-    build( params = {} ) {
+  build(params = {}) {
 
-        let _scope = this;
+    const _scope = this;
 
-        let promise = new Promise(function(resolve, reject) {
+    const promise = new Promise((resolve, reject) => {
 
-            WHS.API.loadJSON(params.geometry.path, function(data, materials) {
+      WHS.API.loadJSON(params.geometry.path, (data, materials) => {
 
-                if (params.material.useVertexColors)
-                    var material = WHS.API.loadMaterial(
-                        WHS.API.extend(params.material, {
-                            morphTargets: true,
-                            vertexColors: THREE.FaceColors
-                        })
-                    )._material;
+        if (params.material.useVertexColors) {
 
-                else if (!materials || params.material.useCustomMaterial)
-                    var material = WHS.API.loadMaterial(
-                        params.material
-                    )._material;
+          material = WHS.API.loadMaterial(
+            WHS.API.extend(params.material, {
+              morphTargets: true,
+              vertexColors: THREE.FaceColors
+            })
+          )._material;
 
-                else var material = new THREE.MultiMaterial(materials);
+        } else if (!materials || params.material.useCustomMaterial) {
 
-                data.computeFaceNormals();
-                data.computeVertexNormals();
+          material = WHS.API.loadMaterial(
+            params.material
+          )._material;
 
-                // Visualization.
-                let mesh = new THREE.Mesh( data, material );
-                    mesh.speed = params.morph.speed;
+        } else material = new THREE.MultiMaterial(materials);
 
-                    mesh.mixer = new THREE.AnimationMixer( mesh );
+        data.computeFaceNormals();
+        data.computeVertexNormals();
 
-                    mesh.mixer
-                    .clipAction( data.animations[ 0 ] )
-                    .setDuration( params.morph.duration )
-                    .play();
+        // Visualization.
+        const mesh = new THREE.Mesh(data, material);
+        mesh.speed = params.morph.speed;
+        mesh.mixer = new THREE.AnimationMixer(mesh);
 
-                _scope.setNative( mesh );
+        mesh.mixer
+          .clipAction(data.animations[0])
+          .setDuration(params.morph.duration)
+          .play();
 
-                resolve();
+        _scope.setNative(mesh);
 
-            });
+        resolve();
 
-        });
+      });
 
-        super.wait( promise );
+    });
 
-        return promise;
+    super.wait(promise);
 
-    }
+    return promise;
 
-    /**
-     * Clone morph.
-     */
-    clone() {
+  }
 
-        return new WHS.Morph( this.getParams(), this._type ).copy( this );
+  /**
+   * Clone morph.
+   */
+  clone() {
 
-    }
+    return new WHS.Morph(this.getParams(), this._type).copy(this);
 
-}
+  }
 
-WHS.World.prototype.Morph = function( params ) {
-    let object = new WHS.Morph(  params );
-
-    object.addTo( this, "wait" );
-
-    return object;
-}
+};

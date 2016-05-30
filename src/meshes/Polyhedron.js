@@ -1,98 +1,93 @@
 WHS.Polyhedron = class Polyhedron extends WHS.Shape {
-    /**
-     * Creates a polyhedron
-     *
-     * @param {Object} params - Polyhedron options
-     * @param {Object} params.geometry - Polyhedron geometry options
-     * @param {Number} params.geometry.radius - Polyhedron radius
-     * @param {Number} param.geometry.verticesOfCube - Vertices of cube
-     * @param {Number} param.geometry.indicesOfFaces - Indices of faces
-     * @param {Number} param.geometry.detail - Polyhedron detail
-     * @param {Material} param.material - Polyhedron material
-     * @param {Number} param.mass - Polyhedron mass
-     */
-	constructor( params = {} ) {
 
-		super( params, "polyhedron" );
+  /**
+   * Creates a polyhedron
+   *
+   * @param {Object} params - Polyhedron options
+   * @param {Object} params.geometry - Polyhedron geometry options
+   * @param {Number} params.geometry.radius - Polyhedron radius
+   * @param {Number} param.geometry.verticesOfCube - Vertices of cube
+   * @param {Number} param.geometry.indicesOfFaces - Indices of faces
+   * @param {Number} param.geometry.detail - Polyhedron detail
+   * @param {Material} param.material - Polyhedron material
+   * @param {Number} param.mass - Polyhedron mass
+   */
+  constructor(params = {}) {
 
-		WHS.API.extend(params.geometry, {
+    super(params, 'polyhedron');
 
-            verticesOfCube: this.verticesOfCube,
-            indicesOfFaces: this.indicesOfFaces,
-            radius: 6,
-            detail: 2
+    WHS.API.extend(params.geometry, {
 
-        });
+      verticesOfCube: this.verticesOfCube,
+      indicesOfFaces: this.indicesOfFaces,
+      radius: 6,
+      detail: 2
 
-        this.build( params );
+    });
 
-        super.wrap();
+    this.build(params);
 
-	}
+    super.wrap();
 
-    build( params = {} ) {
+  }
 
-        let _scope = this,
-            mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-            material = super._initMaterial(params.material);
+  build(params = {}) {
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new mesh(
-                new THREE.PolyhedronGeometry(
+    const _scope = this,
+      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      material = super._initMaterial(params.material);
 
-                    params.geometry.verticesOfCube,
-                    params.geometry.indicesOfFaces,
-                    params.geometry.radius,
-                    params.geometry.detail
+    return new Promise((resolve, reject) => {
 
-                ),
+      _scope.setNative(new mesh(
+        new THREE.PolyhedronGeometry(
 
-                material,
-                params.mass
-            ) );
+          params.geometry.verticesOfCube,
+          params.geometry.indicesOfFaces,
+          params.geometry.radius,
+          params.geometry.detail
 
-            resolve();
-        });
+        ),
 
-    }
+        material,
+        params.mass
+      ));
 
-    get verticesOfCube() {
+      resolve();
 
-        return [
-            -1,-1,-1,    1,-1,-1,    1, 1,-1,    -1, 1,-1,
-            -1,-1, 1,    1,-1, 1,    1, 1, 1,    -1, 1, 1,
-        ];
+    });
 
-    }
+  }
 
-    get indicesOfFaces() {
+  get verticesOfCube() {
 
-        return [
-            2,1,0,    0,3,2,
-            0,4,7,    7,3,0,
-            0,1,5,    5,4,0,
-            1,2,6,    6,5,1,
-            2,3,7,    7,6,2,
-            4,5,6,    6,7,4
-        ];
+    return [
+      -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
+      -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1
+    ];
 
-    }
+  }
 
-    /**
-     * Clone polyhedron.
-     */
-    clone() {
+  get indicesOfFaces() {
 
-        return new WHS.Polyhedron( this.getParams(), this._type ).copy( this );
+    return [
+      2, 1, 0, 0, 3, 2,
+      0, 4, 7, 7, 3, 0,
+      0, 1, 5, 5, 4, 0,
+      1, 2, 6, 6, 5, 1,
+      2, 3, 7, 7, 6, 2,
+      4, 5, 6, 6, 7, 4
+    ];
 
-    }
+  }
 
-}
+  /**
+   * Clone polyhedron.
+   */
+  clone() {
 
-WHS.World.prototype.Polyhedron = function( params ) {
-    let object = new WHS.Polyhedron( params );
+    return new WHS.Polyhedron(this.getParams(), this._type).copy(this);
 
-    object.addTo( this );
+  }
 
-    return object;
-}
+};
