@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS 2D shape
- *
- * @extends WHS.Shape
- */
-
 WHS.Shape2D = class Shape2D extends WHS.Shape {
     /**
      * Creates a 2D shape

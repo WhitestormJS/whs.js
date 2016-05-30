@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS icosahedron shape.
- *
- * @extends WHS.Shape
- */
-
 WHS.Icosahderon = class Icosahedron extends WHS.Shape {
     /**
      * Create an icosahedron
@@ -37,7 +25,7 @@ WHS.Icosahderon = class Icosahedron extends WHS.Shape {
         super.wrap();
 
 	}
-    
+
     build( params = {} ) {
 
         let _scope = this,

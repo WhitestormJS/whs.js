@@ -1,21 +1,7 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/** Light super class */
 WHS.Light = class extends WHS.Object {
-	/**
-	 * Constructing WHS.Light object.
-	 * 
-	 * @param {Object} params - Inputed parameters.
-	 * @param {String} type - Light type.
-	 * @return {WHS.Light}
-	 */
 	constructor( params, type ) {
 
-		if ( !type ) 
+		if ( !type )
 			console.error( "@constructor: Please specify \" type \"." );
 
 		var _set = function( x, y, z ) {
@@ -26,7 +12,6 @@ WHS.Light = class extends WHS.Object {
 
 		}
 
-		// Polyfill for 3D.
 		super({
 
 	        light: {
@@ -101,12 +86,6 @@ WHS.Light = class extends WHS.Object {
 		return scope;
 	}
 
-	/**
-	 * Applying shadow & position & rotation.
-	 *
-	 * @param {...String} tags - Tags that defines what to do with light 
-	 * additionally.
-	 */
 	wrap( ...tags ) {
 
 		'use strict';
@@ -125,22 +104,22 @@ WHS.Light = class extends WHS.Object {
 				}
 
 				_scope.position.set(
-					_scope.__params.pos.x, 
-					_scope.__params.pos.y, 
-					_scope.__params.pos.z 
+					_scope.__params.pos.x,
+					_scope.__params.pos.y,
+					_scope.__params.pos.z
 				);
 
-				_scope.rotation.set( 
-					_scope.__params.rot.x, 
-					_scope.__params.rot.y, 
-					_scope.__params.rot.z 
+				_scope.rotation.set(
+					_scope.__params.rot.x,
+					_scope.__params.rot.y,
+					_scope.__params.rot.z
 				);
 
 				tags.forEach(tag => {
 					_scope[tag] = true;
-				});		                
+				});
 
-				if ( WHS.debug ) console.debug("@WHS.Light: Light " 
+				if ( WHS.debug ) console.debug("@WHS.Light: Light "
 		        	+ _scope._type + " is ready.", _scope);
 
 				_scope.emit("ready");
@@ -158,12 +137,6 @@ WHS.Light = class extends WHS.Object {
 		});
 	}
 
-	/**
-	 * Add light to WHS.World object.
-	 *
-	 * @param {WHS.World} root - World, were this light will be. 
-	 * @param {...String} tags - Tags for compiling. 
-	 */
 	addTo( parent ) {
 
 		'use strict';
@@ -189,8 +162,8 @@ WHS.Light = class extends WHS.Object {
 
 			} finally {
 
-				if ( WHS.debug ) console.debug("@WHS.Camera: Camera " 
-		        	+ _scope._type + " was added to world.", 
+				if ( WHS.debug ) console.debug("@WHS.Camera: Camera "
+		        	+ _scope._type + " was added to world.",
 		        	[_scope, _scope.parent]);
 
 				resolve( _scope );
@@ -202,9 +175,6 @@ WHS.Light = class extends WHS.Object {
 		} );
 	}
 
-	/** 
-	 * Set shadow properties for light.
-	 */
 	wrapShadow() {
 
 		let _scope = this;
@@ -241,20 +211,12 @@ WHS.Light = class extends WHS.Object {
 
 	}
 
-	/**
-	 * Clone light.
-	 */
 	clone() {
 
 		return new WHS.Light( this.__params, this._type ).copy( this );
 
 	}
 
-	/**
-	 * Copy light.
-	 *
-	 * @param {WHS.Light} source - Source object, that will be applied to this.
-	 */
 	copy( source ) {
 
 		this.light = source.getNative().clone();
@@ -271,11 +233,8 @@ WHS.Light = class extends WHS.Object {
 
 	}
 
-	/**
-	 * Remove this light from world.
-	 */
 	remove() {
-		
+
 		this.parent.getScene().remove( this.getNative() );
 		if ( source.helper ) this.parent.getScene().remove( this.helper );
 
@@ -288,14 +247,12 @@ WHS.Light = class extends WHS.Object {
 
 	}
 
-	/* Access private data */
-
 	setNative( light ) {
 
 		return native.set( this, light );
-		
+
 	}
-	
+
 	getNative() {
 
 		return native.get( this );
@@ -338,21 +295,21 @@ WHS.Light = class extends WHS.Object {
 			let vec2 = curve.getPoint( (u + 0.01) % 1 );
 
 			_scope.position.set( vec1.x, vec1.y, vec1.z );
-			
+
 			if ( !lookAt ) _scope.lookAt( vec2 );
 			else if ( lookAt instanceof THREE.Vector3 ) _scope.lookAt( lookAt );
-			else if ( lookAt instanceof THREE.Curve || 
+			else if ( lookAt instanceof THREE.Curve ||
 					  lookAt instanceof THREE.CurvePath ) {
 
 				 _scope.lookAt( lookAt.getPoint( u ) );
 
 			}
-			
+
 		});
 
 		animation.start();
 
-		if ( loop )	setInterval( () => { 
+		if ( loop )	setInterval( () => {
 				animation.stop();
 
 				animation = new WHS.loop( clock => {
@@ -365,20 +322,20 @@ WHS.Light = class extends WHS.Object {
 
 					if ( !lookAt ) _scope.lookAt( vec2 );
 					else if ( lookAt instanceof THREE.Vector3 ) _scope.lookAt( lookAt );
-					else if ( lookAt instanceof THREE.Curve || 
+					else if ( lookAt instanceof THREE.Curve ||
 							  lookAt instanceof THREE.CurvePath ) {
 
 						 _scope.lookAt( lookAt.getPoint( u ) );
-						
+
 					}
-					
+
 				});
 
 				animation.start();
 			}, time);
 
-		else setTimeout( () => { 
-				animation.stop() 
+		else setTimeout( () => {
+				animation.stop()
 		}, time);
 	}
 

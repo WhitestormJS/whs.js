@@ -1,14 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS hemisphere light.
- *
- * @extends WHS.Light
- */
 WHS.HemisphereLight = class HemisphereLight extends WHS.Light {
     /**
      * Hemisphere light.
@@ -40,8 +29,8 @@ WHS.HemisphereLight = class HemisphereLight extends WHS.Light {
             ) );
 
             if ( params.helper )
-                _scope.helper = new THREE.HemisphereLightHelper( 
-                    _scope.light, 
+                _scope.helper = new THREE.HemisphereLightHelper(
+                    _scope.light,
                     params.helper.size ? params.helper.size : 0
                 );
 

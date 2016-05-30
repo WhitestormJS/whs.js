@@ -1,14 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS spot light.
- *
- * @extends WHS.Light
- */
 WHS.SpotLight = class SpotLight extends WHS.Light {
     /**
      * Point light.

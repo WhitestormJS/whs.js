@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS tetrahedron shape
- *
- * @extends WHS.Shape
- */
-
 WHS.Tetrahedron = class Tetrahedron extends WHS.Shape {
     /**
      * Creates a tetrahedron

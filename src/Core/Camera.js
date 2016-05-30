@@ -1,18 +1,4 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/** Camera super class */
 WHS.Camera = class extends WHS.Object {
-  /**
-   * Constructing WHS.Camera object.
-   *
-   * @param {Object} params - Inputed parameters.
-   * @param {String} type - Camera type.
-   * @return {WHS.Camera}
-   */
   constructor(params, type) {
     if (!type) {
       console.error('@constructor: Please specify " type ".');
@@ -83,12 +69,6 @@ WHS.Camera = class extends WHS.Object {
     return scope;
   }
 
-  /**
-   * Applying position & rotation.
-   *
-   * @param {...String} tags - Tags that defines what to do with light
-   * additionally.
-   */
   wrap(...tags) {
     'use strict';
 
@@ -137,12 +117,6 @@ WHS.Camera = class extends WHS.Object {
     });
   }
 
-  /**
-   * Add light to WHS.World object.
-   *
-   * @param {WHS.World} root - World, were this light will be.
-   * @param {...String} tags - Tags for compiling.
-   */
   addTo(parent) {
     'use strict';
 
@@ -177,18 +151,10 @@ WHS.Camera = class extends WHS.Object {
     });
   }
 
-  /**
-   * Clone camera.
-   */
   clone() {
     return new WHS.Shape(this.__params, this._type).copy(this);
   }
 
-  /**
-   * Copy camera.
-   *
-   * @param {WHS.Camera} source - Source object, that will be applied to this.
-   */
   copy(source) {
     this.mesh = source.mesh.clone();
 
@@ -201,8 +167,6 @@ WHS.Camera = class extends WHS.Object {
 
     return this;
   }
-
-  /* Access private data */
 
   setNative(camera) {
     return native.set(this, camera);
@@ -238,7 +202,7 @@ WHS.Camera = class extends WHS.Object {
       let vec2 = curve.getPoint((u + 0.01) % 1);
 
       _scope.position.set(vec1.x, vec1.y, vec1.z);
-  
+
       if (!lookAt) {
         _scope.lookAt(vec2);
       } else if (lookAt instanceof THREE.Vector3) {
@@ -284,8 +248,6 @@ WHS.Camera = class extends WHS.Object {
       }, time);
     }
   }
-
-  /* =========== POLYFILL =========== */
 
   lookAt(vector3) {
     return this.getNative().lookAt(vector3);

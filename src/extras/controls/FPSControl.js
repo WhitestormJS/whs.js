@@ -1,22 +1,6 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * First person controls.
- *
- * @param {Object} object - *WHS* figure/object.
- * @param {Object} params - Controls parameter objects.
- */
-
 const PI_2 = Math.PI/2;
 
 WHS.World.prototype.FPSControls = function( object, params = {} ) {
-
-    'use strict';
-
     let target = WHS.API.extend(params, {
         block: document.getElementById('blocker'),
         speed: 1,
@@ -24,8 +8,6 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
     });
 
     this.controls = new (function ( camera, mesh, params) {
-
-        /* Velocity properties */
         let velocityFactor = 1,
             runVelocity = 0.25;
 
@@ -53,8 +35,8 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
             canJump = false;
 
         player.addEventListener("collision", function(other_object, v, r, contactNormal){
-            if(contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
-                    canJump = true;
+          if(contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
+            canJump = true;
         });
 
         function onMouseMove ( event ) {

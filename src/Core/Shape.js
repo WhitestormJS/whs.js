@@ -1,21 +1,7 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/** Shape super class */
 WHS.Shape = class extends WHS.Object {
-	/**
-	 * Constructing WHS.Shape object.
-	 * 
-	 * @param {Object} params - Inputed parameters.
-	 * @param {String} type - Shape type.
-	 * @return {WHS.Shape}
-	 */
 	constructor( params, type ) {
 
-		if ( !type ) 
+		if ( !type )
 			console.error( "@constructor: Please specify \" type \"." );
 
 		let _set = function( x, y, z ) {
@@ -98,19 +84,13 @@ WHS.Shape = class extends WHS.Object {
 	wait( promise ) {
 
 		this.wait.push( promise );
-		
+
 		return this;
 
 	}
 
-	/**
-	 * Applying shadow & position & rotation.
-	 *
-	 * @param {...String} tags - Tags that defines what to do with shape 
-	 * additionally.
-	 */
 	wrap( ...tags ) {
-		
+
 		'use strict';
 
 		let _scope = this;
@@ -127,27 +107,27 @@ WHS.Shape = class extends WHS.Object {
 						_scope.getNative().receiveShadow = true;
 
 						_scope.position.set(
-							_scope.__params.pos.x, 
-							_scope.__params.pos.y, 
-							_scope.__params.pos.z 
+							_scope.__params.pos.x,
+							_scope.__params.pos.y,
+							_scope.__params.pos.z
 						);
 
-						_scope.rotation.set( 
-							_scope.__params.rot.x, 
-							_scope.__params.rot.y, 
-							_scope.__params.rot.z 
+						_scope.rotation.set(
+							_scope.__params.rot.x,
+							_scope.__params.rot.y,
+							_scope.__params.rot.z
 						);
 
-						_scope.scale.set( 
-							_scope.__params.scale.x, 
-							_scope.__params.scale.y, 
-							_scope.__params.scale.z 
+						_scope.scale.set(
+							_scope.__params.scale.x,
+							_scope.__params.scale.y,
+							_scope.__params.scale.z
 						);
 
 						// Box helper.
 						if ( _scope.__params.helpers.box ) {
-				
-							_scope.helpers.box = new THREE.BoxHelper( 
+
+							_scope.helpers.box = new THREE.BoxHelper(
 								_scope.getNative()
 							);
 
@@ -155,8 +135,8 @@ WHS.Shape = class extends WHS.Object {
 
 						// Bounding box helper.
 						if ( _scope.__params.helpers.boundingBox ) {
-				
-							_scope.helpers.boundingBox = new THREE.BoundingBoxHelper( 
+
+							_scope.helpers.boundingBox = new THREE.BoundingBoxHelper(
 								_scope.getNative(),
 								_scope.__params.helpers.boundingBox.color
 								? _scope.__params.helpers.boundingBox.color
@@ -167,8 +147,8 @@ WHS.Shape = class extends WHS.Object {
 
 						// Edges helper.
 						if ( _scope.__params.helpers.edges ) {
-				
-							_scope.helpers.edges = new THREE.EdgesHelper( 
+
+							_scope.helpers.edges = new THREE.EdgesHelper(
 								_scope.getNative(),
 								_scope.__params.helpers.edges.color
 								? _scope.__params.helpers.edges.color
@@ -178,8 +158,8 @@ WHS.Shape = class extends WHS.Object {
 
 						// faceNormals helper.
 						if ( _scope.__params.helpers.faceNormals ) {
-				
-							_scope.helpers.faceNormals = new THREE.FaceNormalsHelper( 
+
+							_scope.helpers.faceNormals = new THREE.FaceNormalsHelper(
 								_scope.getNative(),
 								_scope.__params.helpers.faceNormals.size
 								? _scope.__params.helpers.faceNormals.size
@@ -196,8 +176,8 @@ WHS.Shape = class extends WHS.Object {
 
 						// vertexNormals helper.
 						if ( _scope.__params.helpers.vertexNormals ) {
-				
-							_scope.helpers.vertexNormals = new THREE.VertexNormalsHelper( 
+
+							_scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(
 								_scope.getNative(),
 								_scope.__params.helpers.vertexNormals.size
 								? _scope.__params.helpers.vertexNormals.size
@@ -212,7 +192,7 @@ WHS.Shape = class extends WHS.Object {
 
 						}
 
-		                if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
+		                if ( WHS.debug ) console.debug("@WHS.Shape: Shape "
 		                	+ _scope._type + " is ready.", _scope);
 
 						_scope.emit("ready");
@@ -240,27 +220,27 @@ WHS.Shape = class extends WHS.Object {
 					_scope.getNative().receiveShadow = true;
 
 					_scope.position.set(
-						_scope.__params.pos.x, 
-						_scope.__params.pos.y, 
-						_scope.__params.pos.z 
+						_scope.__params.pos.x,
+						_scope.__params.pos.y,
+						_scope.__params.pos.z
 					);
 
-					_scope.rotation.set( 
-						_scope.__params.rot.x, 
-						_scope.__params.rot.y, 
-						_scope.__params.rot.z 
+					_scope.rotation.set(
+						_scope.__params.rot.x,
+						_scope.__params.rot.y,
+						_scope.__params.rot.z
 					);
 
-					_scope.scale.set( 
-						_scope.__params.scale.x, 
-						_scope.__params.scale.y, 
-						_scope.__params.scale.z 
+					_scope.scale.set(
+						_scope.__params.scale.x,
+						_scope.__params.scale.y,
+						_scope.__params.scale.z
 					);
 
 					// Box helper.
 					if ( _scope.__params.helpers.box ) {
-			
-						_scope.helpers.box = new THREE.BoxHelper( 
+
+						_scope.helpers.box = new THREE.BoxHelper(
 							_scope.getNative()
 						);
 
@@ -268,8 +248,8 @@ WHS.Shape = class extends WHS.Object {
 
 					// Bounding box helper.
 					if ( _scope.__params.helpers.boundingBox ) {
-			
-						_scope.helpers.boundingBox = new THREE.BoundingBoxHelper( 
+
+						_scope.helpers.boundingBox = new THREE.BoundingBoxHelper(
 							_scope.getNative(),
 							_scope.__params.helpers.boundingBox.color
 							? _scope.__params.helpers.boundingBox.color
@@ -280,8 +260,8 @@ WHS.Shape = class extends WHS.Object {
 
 					// Edges helper.
 					if ( _scope.__params.helpers.edges ) {
-			
-						_scope.helpers.edges = new THREE.EdgesHelper( 
+
+						_scope.helpers.edges = new THREE.EdgesHelper(
 							_scope.getNative(),
 							_scope.__params.helpers.edges.color
 							? _scope.__params.helpers.edges.color
@@ -291,8 +271,8 @@ WHS.Shape = class extends WHS.Object {
 
 					// faceNormals helper.
 					if ( _scope.__params.helpers.faceNormals ) {
-			
-						_scope.helpers.faceNormals = new THREE.FaceNormalsHelper( 
+
+						_scope.helpers.faceNormals = new THREE.FaceNormalsHelper(
 							_scope.getNative(),
 							_scope.__params.helpers.faceNormals.size
 							? _scope.__params.helpers.faceNormals.size
@@ -309,8 +289,8 @@ WHS.Shape = class extends WHS.Object {
 
 					// vertexNormals helper.
 					if ( _scope.__params.helpers.vertexNormals ) {
-			
-						_scope.helpers.vertexNormals = new THREE.VertexNormalsHelper( 
+
+						_scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(
 							_scope.getNative(),
 							_scope.__params.helpers.vertexNormals.size
 							? _scope.__params.helpers.vertexNormals.size
@@ -325,7 +305,7 @@ WHS.Shape = class extends WHS.Object {
 
 					}
 
-	                if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
+	                if ( WHS.debug ) console.debug("@WHS.Shape: Shape "
 		            	+ _scope._type + " is ready.", _scope);
 
 					resolve();
@@ -346,12 +326,6 @@ WHS.Shape = class extends WHS.Object {
 		return this;
 	}
 
-	/**
-	 * Add shape to WHS.World object.
-	 *
-	 * @param {WHS.World} parent - World, were this shape will be.
-	 * @param {...String} tags - Tags for compiling. 
-	 */
 	addTo( parent, ...tags ) {
 
 		'use strict';
@@ -369,26 +343,26 @@ WHS.Shape = class extends WHS.Object {
 
 					try {
 
-						let parentNative = _scope.parent instanceof WHS.World 
+						let parentNative = _scope.parent instanceof WHS.World
 							? _scope.parent.getScene()
 							: _scope.parent.getNative();
 
 						parentNative.add( _scope.getNative() );
 						_scope.parent.children.push( _scope );
 
-						if ( _scope.__params.helpers.box ) 
+						if ( _scope.__params.helpers.box )
 							parentNative.add( _helpers.box );
 
-						if ( _scope.__params.helpers.boundingBox ) 
+						if ( _scope.__params.helpers.boundingBox )
 							parentNative.add( _helpers.boundingBox );
 
-						if ( _scope.__params.helpers.edges ) 
+						if ( _scope.__params.helpers.edges )
 							parentNative.add( _helpers.edges );
 
-						if ( _scope.__params.helpers.faceNormals ) 
+						if ( _scope.__params.helpers.faceNormals )
 							parentNative.add( _helpers.faceNormals );
 
-						if ( _scope.__params.helpers.vertexNormals ) 
+						if ( _scope.__params.helpers.vertexNormals )
 							parentNative.add( _helpers.vertexNormals );
 
 					} catch ( err ) {
@@ -412,8 +386,8 @@ WHS.Shape = class extends WHS.Object {
 							_scope.emit("collide");
 						});
 
-						if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
-			                + _scope._type + " was added to world.", 
+						if ( WHS.debug ) console.debug("@WHS.Shape: Shape "
+			                + _scope._type + " was added to world.",
 			                [_scope, _scope.parent]);
 
 					}
@@ -428,26 +402,26 @@ WHS.Shape = class extends WHS.Object {
 
 				try {
 
-					let parentNative = _scope.parent instanceof WHS.World 
+					let parentNative = _scope.parent instanceof WHS.World
 						? _scope.parent.getScene()
 						: _scope.parent.getNative();
 
 					parentNative.add( _scope.getNative() );
 					_scope.parent.children.push( _scope );
 
-					if ( _scope.__params.helpers.box ) 
+					if ( _scope.__params.helpers.box )
 						parentNative.add( _helpers.box );
 
-					if ( _scope.__params.helpers.boundingBox ) 
+					if ( _scope.__params.helpers.boundingBox )
 						parentNative.add( _helpers.boundingBox );
 
-					if ( _scope.__params.helpers.edges ) 
+					if ( _scope.__params.helpers.edges )
 						parentNative.add( _helpers.edges );
 
-					if ( _scope.__params.helpers.faceNormals ) 
+					if ( _scope.__params.helpers.faceNormals )
 						parentNative.add( _helpers.faceNormals );
 
-					if ( _scope.__params.helpers.vertexNormals ) 
+					if ( _scope.__params.helpers.vertexNormals )
 						parentNative.add( _helpers.vertexNormals );
 
 				} catch ( err ) {
@@ -473,8 +447,8 @@ WHS.Shape = class extends WHS.Object {
 						_scope.emit("ready");
 					});
 
-					if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
-		                + _scope._type + " was added to world", 
+					if ( WHS.debug ) console.debug("@WHS.Shape: Shape "
+		                + _scope._type + " was added to world",
 		                [_scope, _scope.parent]);
 
 				}
@@ -483,31 +457,20 @@ WHS.Shape = class extends WHS.Object {
 		}
 	}
 
-	/**
-	 * Initialize shape's material object.
-	 */
 	_initMaterial( params ) {
-		
+
 		return this.physics
 			? WHS.API.loadMaterial( params )._material
 			: WHS.API.loadMaterial( params )._materialP;
-		
+
 	}
 
-	/**
-	 * Clone shape.
-	 */
 	clone() {
 
 		return new WHS.Shape( this.getParams(), this._type ).copy( this );
 
 	}
 
-	/**
-	 * Copy shape.
-	 *
-	 * @param {WHS.Shape} source - Source object, that will be applied to this.
-	 */
 	copy( source ) {
 
 		this.setNative( source.getNative().clone() );
@@ -525,13 +488,8 @@ WHS.Shape = class extends WHS.Object {
 
 	}
 
-	/**
-	 * Remove this shape from world.
-	 *
-	 * @return {THREE.Shape} - this.
-	 */
 	remove() {
-		
+
 		this.parent.getScene().remove( this.getNative() );
 
         this.parent.children.splice( this.parent.children.indexOf( this ), 1);
@@ -539,8 +497,8 @@ WHS.Shape = class extends WHS.Object {
 
         this.emit("remove");
 
-        if ( WHS.debug ) console.debug("@WHS.Shape: Shape " 
-            + this._type + " was removed from world", 
+        if ( WHS.debug ) console.debug("@WHS.Shape: Shape "
+            + this._type + " was removed from world",
             [_scope]);
 
 		return this;
@@ -596,14 +554,12 @@ WHS.Shape = class extends WHS.Object {
 		return this.getNative().scale = vector3;
 	}
 
-	/* Access private data */
-
 	setNative( mesh ) {
 
 		return native.set( this, mesh );
-		
+
 	}
-	
+
 	getNative() {
 
 		return native.get( this );
@@ -637,12 +593,12 @@ WHS.Shape = class extends WHS.Object {
 
 			_scope.position.set( vec1.x, vec1.y, vec1.z );
 			_scope.getNative().lookAt( vec2 );
-			
+
 		});
 
 		animation.start();
 
-		if ( loop )	setInterval( () => { 
+		if ( loop )	setInterval( () => {
 				animation.stop();
 
 				animation = new WHS.loop( clock => {
@@ -653,14 +609,14 @@ WHS.Shape = class extends WHS.Object {
 
 					_scope.position.set( vec1.x, vec1.y, vec1.z );
 					_scope.getNative().lookAt( vec2 );
-					
+
 				});
 
 				animation.start();
 			}, time);
 
-		else setTimeout( () => { 
-				animation.stop() 
+		else setTimeout( () => {
+				animation.stop()
 		}, time);
 	}
 

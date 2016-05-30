@@ -1,14 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS shape extrude
- *
- * @extends WHS.Shape
- */
 WHS.Extrude = class Extrude extends WHS.Shape {
     /**
      * Extrude a shape

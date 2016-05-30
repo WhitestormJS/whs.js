@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS sphere shape
- *
- * @extends WHS.Shape
- */
-
 WHS.Sphere = class Sphere extends WHS.Shape {
     /**
      * Creates a sphere.

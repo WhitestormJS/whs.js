@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS morph
- *
- * @extends WHS.Shape
- */
-
 WHS.Morph = class Morph extends WHS.Shape {
     /**
      * Create a morph
@@ -61,7 +49,7 @@ WHS.Morph = class Morph extends WHS.Shape {
                     var material = WHS.API.loadMaterial(
                         params.material
                     )._material;
-                
+
                 else var material = new THREE.MultiMaterial(materials);
 
                 data.computeFaceNormals();
@@ -85,7 +73,7 @@ WHS.Morph = class Morph extends WHS.Shape {
             });
 
         });
-        
+
         super.wait( promise );
 
         return promise;

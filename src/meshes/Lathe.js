@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS lathe Shape
- *
- * @extends WHS.Shape
- */
-
 WHS.Lathe = class Lathe extends WHS.Shape {
     /**
      * Create a lathe

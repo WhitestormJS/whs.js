@@ -1,42 +1,16 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS convex model
- *
- * @extends WHS.Shape
- */
-
-WHS.ConvexModel = class ConvexModel extends WHS.Shape {
-    /**
-     * Create a model
-     *
-     * @param {Object} params - Model options
-     * @param {Object} params.geometry - Model geometry options
-     * @param {String} params.geometry.path - Path to model JSON
-     * @param {Material} params.material - Model material
-     * @param {Number} params.mass - Model mass
-     */
-	constructor( params = {} ) {
-
-		super( params, "model" );
+class ConvexModel extends WHS.Shape {
+	constructor(params = {}) {
+		super(params, 'model');
 
 		WHS.API.extend(params.geometry, {
+      path: '',
+      physics: '',
+    });
 
-            path: "",
-            physics: "",
+    var scope = this;
 
-        });
-
-        var scope = this;
-
-        this.build( params );
-
-        super.wrap("wait");
-
+    this.build( params );
+    super.wrap('wait');
 	}
 
 	build( params = {} ) {
@@ -70,9 +44,9 @@ WHS.ConvexModel = class ConvexModel extends WHS.Shape {
 	                    data.computeFaceNormals();
 	                    data.computeVertexNormals();
 
-	                    _scope.setNative( new mesh( 
-	                    	data, 
-	                    	material, 
+	                    _scope.setNative( new mesh(
+	                    	data,
+	                    	material,
 	                    	params.mass,
 	                    	data2,
 	                    	params.scale
@@ -99,9 +73,9 @@ WHS.ConvexModel = class ConvexModel extends WHS.Shape {
                     data.computeFaceNormals();
                     data.computeVertexNormals();
 
-                    _scope.setNative( new mesh( 
-                    	data, 
-                    	material, 
+                    _scope.setNative( new mesh(
+                    	data,
+                    	material,
                     	params.mass
 					) );
 
@@ -111,7 +85,7 @@ WHS.ConvexModel = class ConvexModel extends WHS.Shape {
             });
 
         });
-        
+
         super.wait( promise );
 
         return promise;

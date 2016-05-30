@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS parametric
- *
- * @extends WHS.Shape
- */
-
 WHS.Parametric = class Parametric extends WHS.Shape {
     /**
      * Creates a parametric
