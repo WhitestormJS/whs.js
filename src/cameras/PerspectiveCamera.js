@@ -1,37 +1,41 @@
 WHS.PerspectiveCamera = class PerspectiveCamera extends WHS.Camera {
-	constructor( params = {} ) {
 
-		super( params, "perspectivecamera" );
+  constructor(params = {}) {
 
-		this.build( params );
+    super(params, 'perspectivecamera');
 
-        super.wrap();
+    this.build(params);
 
-	}
+    super.wrap();
 
-    build( params = {} ) {
+  }
 
-        let _scope = this;
+  build(params = {}) {
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new THREE.PerspectiveCamera(
-                params.camera.fov,
-                params.camera.aspect,
-                params.camera.near,
-                params.camera.far
-            ) );
+    const _scope = this;
 
-            resolve();
-        });
+    return new Promise((resolve, reject) => {
 
-    }
+      _scope.setNative(new THREE.PerspectiveCamera(
+        params.camera.fov,
+        params.camera.aspect,
+        params.camera.near,
+        params.camera.far
+      ));
 
-}
+      resolve();
 
-WHS.World.prototype.PerspectiveCamera = function( params ) {
-    let camera = new WHS.PerspectiveCamera( params );
+    });
 
-    camera.addTo( this );
+  }
 
-    return camera;
-}
+};
+
+WHS.World.prototype.PerspectiveCamera = function (params) {
+
+  const camera = new WHS.PerspectiveCamera(params);
+  camera.addTo(this);
+
+  return camera;
+
+};
