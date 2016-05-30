@@ -1,5 +1,12 @@
 WHS.Camera = class extends WHS.Object {
 
+  /**
+   * Constructing WHS.Camera object.
+   *
+   * @param {Object} params - Inputed parameters.
+   * @param {String} type - Shape type.
+   * @return {WHS.Camera}
+   */
   constructor(params, type) {
 
     if (!type) console.error('@constructor: Please specify " type ".');
@@ -70,6 +77,12 @@ WHS.Camera = class extends WHS.Object {
 
   }
 
+  /**
+   * Applying shadow & position & rotation.
+   *
+   * @param {...String} tags - Tags that defines what to do with camera
+   * additionally.
+   */
   wrap(...tags) {
 
     const _scope = this;
@@ -124,6 +137,12 @@ WHS.Camera = class extends WHS.Object {
 
   }
 
+  /**
+   * Add camera to WHS.World object.
+   *
+   * @param {WHS.World} parent - World, were this camera will be.
+   * @param {...String} tags - Tags for compiling.
+   */
   addTo(parent) {
 
     this.parent = parent;
@@ -166,12 +185,20 @@ WHS.Camera = class extends WHS.Object {
 
   }
 
+  /**
+   * Clone shape.
+   */
   clone() {
 
     return new WHS.Shape(this.__params, this._type).copy(this);
 
   }
 
+  /**
+   * Copy shape.
+   *
+   * @param {WHS.Camera} source - Source object, that will be applied to this.
+   */
   copy(source) {
 
     this.mesh = source.mesh.clone();
