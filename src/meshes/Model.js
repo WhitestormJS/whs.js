@@ -1,124 +1,125 @@
 WHS.Model = class Model extends WHS.Shape {
-    /**
-     * Create a model
-     *
-     * @param {Object} params - Model options
-     * @param {Object} params.geometry - Model geometry options
-     * @param {String} params.geometry.path - Path to model JSON
-     * @param {Material} params.material - Model material
-     * @param {Number} params.mass - Model mass
-     */
-	constructor( params = {} ) {
 
-		super( params, "model" );
+  /**
+   * Create a model
+   *
+   * @param {Object} params - Model options
+   * @param {Object} params.geometry - Model geometry options
+   * @param {String} params.geometry.path - Path to model JSON
+   * @param {Material} params.material - Model material
+   * @param {Number} params.mass - Model mass
+   */
+  constructor(params = {}) {
 
-		WHS.API.extend(params.geometry, {
+    super(params, 'model');
 
-            path: "",
-            physics: "",
+    WHS.API.extend(params.geometry, {
 
-        });
+      path: '',
+      physics: ''
 
-        var scope = this;
+    });
 
-        this.build( params );
+    this.build(params);
 
-        super.wrap("wait");
+    super.wrap('wait');
 
-	}
+  }
 
-	build( params = {} ) {
+  build(params = {}) {
 
-        let _scope = this,
-            mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh;
+    const _scope = this,
+      mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh;
 
-        let promise = new Promise( ( resolve, reject ) => {
+    const promise = new Promise((resolve, reject) => {
 
-            WHS.API.loadJSON(params.geometry.path, ( data, materials ) => {
+      WHS.API.loadJSON(params.geometry.path, (data, materials) => {
 
-            	if (params.geometry.physics != "") {
+        if (params.geometry.physics) {
 
-            		WHS.API.loadJSON(params.geometry.physics, data2 => {
+          WHS.API.loadJSON(params.geometry.physics, data2 => {
 
-            			if (params.material.useVertexColors)
-	                        var material = WHS.API.loadMaterial(
-	                            WHS.API.extend(params.material, {
-	                                morphTargets: true,
-	                                vertexColors: THREE.FaceColors
-	                            })
-	                        )._material;
-	                    else if (!materials || params.material.useCustomMaterial)
-	                        var material = WHS.API.loadMaterial(
-	                            params.material
-	                        )._material;
-	                    else var material = new THREE.MultiMaterial(materials);
+            if (params.material.useVertexColors) {
 
-	                    data.computeFaceNormals();
-	                    data.computeVertexNormals();
+              material = WHS.API.loadMaterial(
+                WHS.API.extend(params.material, {
+                  morphTargets: true,
+                  vertexColors: THREE.FaceColors
+                })
+              )._material;
 
-	                    _scope.setNative( new mesh(
-	                    	data,
-	                    	material,
-	                    	params.mass,
-	                    	data2,
-	                    	params.scale
-	                	) );
+            } else if (!materials || params.material.useCustomMaterial) {
 
-	                    resolve();
+              material = WHS.API.loadMaterial(
+                params.material
+              )._material;
 
-            		});
-            	} else {
+            } else material = new THREE.MultiMaterial(materials);
 
-                    if (!materials || params.material.useVertexColors)
-                        var material = WHS.API.loadMaterial(
-                            WHS.API.extend(params.material, {
-                                morphTargets: true,
-                                vertexColors: THREE.FaceColors
-                            })
-                        )._material;
-                    else if (params.material.useCustomMaterial)
-                        var material = WHS.API.loadMaterial(
-                            params.material
-                        )._material;
-                    else var material = new THREE.MultiMaterial(materials);
+            data.computeFaceNormals();
+            data.computeVertexNormals();
 
-                    data.computeFaceNormals();
-                    data.computeVertexNormals();
+            _scope.setNative(new mesh(
+              data,
+              material,
+              params.mass,
+              data2,
+              params.scale
+            ));
 
-                    _scope.setNative( new mesh(
-                    	data,
-                    	material,
-                    	params.mass
-					) );
+            resolve();
 
-                    resolve();
-                }
+          });
 
-            });
+        } else {
 
-        });
+          if (params.material.useVertexColors) {
 
-        super.wait( promise );
+            material = WHS.API.loadMaterial(
+              WHS.API.extend(params.material, {
+                morphTargets: true,
+                vertexColors: THREE.FaceColors
+              })
+            )._material;
 
-        return promise;
+          } else if (!materials || params.material.useCustomMaterial) {
 
-    }
+            material = WHS.API.loadMaterial(
+              params.material
+            )._material;
 
-    /**
-     * Clone model.
-     */
-    clone() {
+          } else material = new THREE.MultiMaterial(materials);
 
-        return new WHS.Model( this.getParams(), this._type ).copy( this );
+          data.computeFaceNormals();
+          data.computeVertexNormals();
 
-    }
+          _scope.setNative(new mesh(
+            data,
+            material,
+            params.mass
+          ));
 
-}
+          resolve();
 
-WHS.World.prototype.Model = function( params ) {
-    let object = new WHS.Model(  params );
+        }
 
-    object.addTo( this, "wait" );
+      });
 
-    return object;
-}
+    });
+
+    super.wait(promise);
+
+    return promise;
+
+  }
+
+  /**
+   * Clone model.
+   */
+  clone() {
+
+    return new WHS.Model(this.getParams(), this._type).copy(this);
+
+  }
+
+};

@@ -1,67 +1,62 @@
 WHS.Lathe = class Lathe extends WHS.Shape {
-    /**
-     * Create a lathe
-     *
-     * @param {Object} params - Lathe options
-     * @param {Object} params.geometry - Lathe geometry options
-     * @param {Array} params.geometry.points - Lathe points
-     * @param {Material} params.material - Lathe material
-     * @param {Number} params.mass - Lathe mass
-     */
-	constructor( params = {} ) {
 
-		super( params, "lathe" );
+  /**
+   * Create a lathe
+   *
+   * @param {Object} params - Lathe options
+   * @param {Object} params.geometry - Lathe geometry options
+   * @param {Array} params.geometry.points - Lathe points
+   * @param {Material} params.material - Lathe material
+   * @param {Number} params.mass - Lathe mass
+   */
+  constructor(params = {}) {
 
-		WHS.API.extend(params.geometry, {
+    super(params, 'lathe');
 
-            points: []
+    WHS.API.extend(params.geometry, {
 
-        });
+      points: []
 
-        this.build( params );
+    });
 
-        super.wrap();
+    this.build(params);
 
-	}
+    super.wrap();
 
-    build( params = {} ) {
+  }
 
-        let _scope = this,
-            mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-            material = super._initMaterial(params.material);
+  build(params = {}) {
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new mesh(
-                new THREE.LatheGeometry(
+    const _scope = this,
+      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      material = super._initMaterial(params.material);
 
-                    params.geometry.points
+    return new Promise((resolve, reject) => {
 
-                ),
+      _scope.setNative(new mesh(
+        new THREE.LatheGeometry(
 
-                material,
-                params.mass
-            ) );
+          params.geometry.points
 
-            resolve();
-        });
+        ),
 
-    }
+        material,
+        params.mass
+      ));
 
-    /**
-     * Clone lathe.
-     */
-    clone() {
+      resolve();
 
-        return new WHS.Lathe( this.getParams(), this._type ).copy( this );
+    });
 
-    }
+  }
 
-}
+  /**
+   * Clone lathe.
+   */
+  clone() {
 
-WHS.World.prototype.Lathe = function( params ) {
-    let object = new WHS.Lathe( params );
+    return new WHS.Lathe(this.getParams(), this._type).copy(this);
 
-    object.addTo( this );
+  }
 
-    return object;
-}
+};

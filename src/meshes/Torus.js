@@ -1,79 +1,74 @@
 WHS.Torus = class Torus extends WHS.Shape {
-    /**
-     * Creates a torus
-     *
-     * @param {Object} params - Torus options
-     * @param {Object} params.geometry - Torus geometry options
-     * @param {Number} params.geometry.radius - Torus radius
-     * @param {Number} params.geometry.tube - Torus tube size
-     * @param {Number} params.geometry.radialSegments - Amount of radial segments
-     * @param {Number} params.geometry.tubularSegments - Amount of tubular segments
-     * @param {Number} params.geometry.arc - Torus arc
-     * @param {Material} params.material - Torus material
-     * @param {Number} params.mass - Torus mass
-     */
-	constructor( params = {} ) {
 
-		super( params, "torus" );
+  /**
+   * Creates a torus
+   *
+   * @param {Object} params - Torus options
+   * @param {Object} params.geometry - Torus geometry options
+   * @param {Number} params.geometry.radius - Torus radius
+   * @param {Number} params.geometry.tube - Torus tube size
+   * @param {Number} params.geometry.radialSegments - Amount of radial segments
+   * @param {Number} params.geometry.tubularSegments - Amount of tubular segments
+   * @param {Number} params.geometry.arc - Torus arc
+   * @param {Material} params.material - Torus material
+   * @param {Number} params.mass - Torus mass
+   */
+  constructor(params = {}) {
 
-		WHS.API.extend(params.geometry, {
+    super(params, 'torus');
 
-            radius: 100,
-            tube: 40,
-            radialSegments: 8,
-            tubularSegments: 6,
-            arc: Math.PI * 2,
+    WHS.API.extend(params.geometry, {
 
-        });
+      radius: 100,
+      tube: 40,
+      radialSegments: 8,
+      tubularSegments: 6,
+      arc: Math.PI * 2
 
-		this.build( params );
+    });
 
-        super.wrap();
+    this.build(params);
 
-	}
+    super.wrap();
 
-    build( params = {} ) {
+  }
 
-        let _scope = this,
-            mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-            material = super._initMaterial(params.material);
+  build(params = {}) {
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new mesh(
-                new THREE.TorusGeometry(
+    const _scope = this,
+      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      material = super._initMaterial(params.material);
 
-                    params.geometry.radius,
-                    params.geometry.tube,
-                    params.geometry.radialSegments,
-                    params.geometry.tubularSegments,
-                    params.geometry.arc
+    return new Promise((resolve, reject) => {
 
-                ),
+      _scope.setNative(new mesh(
+        new THREE.TorusGeometry(
 
-                material,
-                params.mass
-            ) );
+          params.geometry.radius,
+          params.geometry.tube,
+          params.geometry.radialSegments,
+          params.geometry.tubularSegments,
+          params.geometry.arc
 
-            resolve();
-        });
+        ),
 
-    }
+        material,
+        params.mass
+      ));
 
-    /**
-     * Clone torus.
-     */
-    clone() {
+      resolve();
 
-        return new WHS.Torus( this.getParams(), this._type ).copy( this );
+    });
 
-    }
+  }
 
-}
+  /**
+   * Clone torus.
+   */
+  clone() {
 
-WHS.World.prototype.Torus = function( params ) {
-    let object = new WHS.Torus( params );
+    return new WHS.Torus(this.getParams(), this._type).copy(this);
 
-    object.addTo( this );
+  }
 
-    return object;
-}
+};

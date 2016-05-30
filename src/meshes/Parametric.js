@@ -1,73 +1,68 @@
 WHS.Parametric = class Parametric extends WHS.Shape {
-    /**
-     * Creates a parametric
-     *
-     * @param {Object} params - Parametric options
-     * @param {Object} params.geometry - Parametric geometry options
-     * @param {Function} params.func - Parametric function
-     * @param {Number} params.slices - Parametric slices
-     * @param {Number} params.stacks - Parametric stacks
-     * @param {Material} params.material - Parametric material
-     * @param {Number} params.mass - Parametric mass
-     */
-	constructor( params = {} ) {
 
-		super( params, "parametric" );
+  /**
+   * Creates a parametric
+   *
+   * @param {Object} params - Parametric options
+   * @param {Object} params.geometry - Parametric geometry options
+   * @param {Function} params.func - Parametric function
+   * @param {Number} params.slices - Parametric slices
+   * @param {Number} params.stacks - Parametric stacks
+   * @param {Material} params.material - Parametric material
+   * @param {Number} params.mass - Parametric mass
+   */
+  constructor(params = {}) {
 
-		WHS.API.extend(params.geometry, {
+    super(params, 'parametric');
 
-            func: function() {},
-            slices: 10,
-            stacks: 10
+    WHS.API.extend(params.geometry, {
 
-        });
+      func() {},
+      slices: 10,
+      stacks: 10
 
-        this.build( params );
+    });
 
-        super.wrap();
+    this.build(params);
 
-	}
+    super.wrap();
 
-    build( params = {} ) {
+  }
 
-        let _scope = this,
-            mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh,
-            material = super._initMaterial(params.material);
+  build(params = {}) {
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new mesh(
-                new THREE.ParametricGeometry(
+    const _scope = this,
+      mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh,
+      material = super._initMaterial(params.material);
 
-                    params.geometry.func,
-                    params.geometry.slices,
-                    params.geometry.stacks
+    return new Promise((resolve, reject) => {
 
-                ),
+      _scope.setNative(new mesh(
+        new THREE.ParametricGeometry(
 
-                material,
-                params.mass
-            ) );
+          params.geometry.func,
+          params.geometry.slices,
+          params.geometry.stacks
 
-            resolve();
-        });
+        ),
 
-    }
+        material,
+        params.mass
+      ));
 
-    /**
-     * Clone parametric.
-     */
-    clone() {
+      resolve();
 
-        return new WHS.Parametric( this.getParams(), this._type ).copy( this );
+    });
 
-    }
+  }
 
-}
+  /**
+   * Clone parametric.
+   */
+  clone() {
 
-WHS.World.prototype.Parametric = function( params ) {
-    let object = new WHS.Parametric( params );
+    return new WHS.Parametric(this.getParams(), this._type).copy(this);
 
-    object.addTo( this );
+  }
 
-    return object;
-}
+};

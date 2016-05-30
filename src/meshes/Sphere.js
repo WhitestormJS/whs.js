@@ -1,73 +1,67 @@
 WHS.Sphere = class Sphere extends WHS.Shape {
-    /**
-     * Creates a sphere.
-     *
-     * @param {Object} params - Sphere options
-     * @param {Object} params.geometry - Sphere geometry options
-     * @param {Number} params.geometry.radius - Sphere radius
-     * @param {Number} params.geometry.segmentA - Sphere segment A count
-     * @param {Number} params.geometry.segmentB - Sphere segment B count
-     * @param {Material} params.material - Sphere material
-     * @param {Number} params.mass - Sphere mass
-     */
-	constructor( params = {} ) {
+  /**
+   * Creates a sphere.
+   *
+   * @param {Object} params - Sphere options
+   * @param {Object} params.geometry - Sphere geometry options
+   * @param {Number} params.geometry.radius - Sphere radius
+   * @param {Number} params.geometry.segmentA - Sphere segment A count
+   * @param {Number} params.geometry.segmentB - Sphere segment B count
+   * @param {Material} params.material - Sphere material
+   * @param {Number} params.mass - Sphere mass
+   */
+  constructor(params = {}) {
 
-		super( params, "sphere" );
+    super(params, 'sphere');
 
-		WHS.API.extend(params.geometry, {
+    WHS.API.extend(params.geometry, {
 
-            radius: 1,
-            segmentA: 32,
-            segmentB: 32
+      radius: 1,
+      segmentA: 32,
+      segmentB: 32
 
-        });
+    });
 
-        this.build( params );
+    this.build(params);
 
-        super.wrap();
+    super.wrap();
 
-	}
+  }
 
-    build( params = {} ) {
+  build(params = {}) {
 
-        let _scope = this,
-            mesh = this.physics ? Physijs.SphereMesh : THREE.Mesh,
-            material = super._initMaterial(params.material);
+    const _scope = this,
+      mesh = this.physics ? Physijs.SphereMesh : THREE.Mesh,
+      material = super._initMaterial(params.material);
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new mesh(
-                new THREE.SphereGeometry(
+    return new Promise((resolve, reject) => {
 
-                    params.geometry.radius,
-                    params.geometry.segmentA,
-                    params.geometry.segmentB
+      _scope.setNative(new mesh(
+        new THREE.SphereGeometry(
 
-                ),
+          params.geometry.radius,
+          params.geometry.segmentA,
+          params.geometry.segmentB
 
-                material,
-                params.mass
-            ) );
+        ),
 
-            resolve();
-        });
+        material,
+        params.mass
+      ));
 
-    }
+      resolve();
 
-    /**
-     * Clone sphere.
-     */
-    clone() {
+    });
 
-        return new WHS.Sphere( this.getParams(), this._type ).copy( this );
+  }
 
-    }
+  /**
+   * Clone sphere.
+   */
+  clone() {
 
-}
+    return new WHS.Sphere(this.getParams(), this._type).copy(this);
 
-WHS.World.prototype.Sphere = function( params ) {
-    let object = new WHS.Sphere( params );
+  }
 
-    object.addTo( this );
-
-    return object;
-}
+};

@@ -1,83 +1,78 @@
 WHS.Torusknot = class Torusknot extends WHS.Shape {
-    /**
-     * Creates a torus knot
-     *
-     * @param {Object} params - Knot options
-     * @param {Object} params.geometry - Knot geometry options
-     * @param {Number} params.geometry.radius - Knot radius
-     * @param {Number} params.geometry.tube - Knot tube size
-     * @param {Number} params.geometry.radialSegments - Amount of radial segments
-     * @param {Number} params.geometry.tubularSegments - Amount of tubular segments
-     * @param {Number} params.geometry.p - P
-     * @param {Number} params.geometry.q - Q
-     * @param {Number} params.geometry.heightScale - Knot height scale
-     */
-	constructor( params = {} ) {
 
-		super( params, "Torusknot" );
+  /**
+   * Creates a torus knot
+   *
+   * @param {Object} params - Knot options
+   * @param {Object} params.geometry - Knot geometry options
+   * @param {Number} params.geometry.radius - Knot radius
+   * @param {Number} params.geometry.tube - Knot tube size
+   * @param {Number} params.geometry.radialSegments - Amount of radial segments
+   * @param {Number} params.geometry.tubularSegments - Amount of tubular segments
+   * @param {Number} params.geometry.p - P
+   * @param {Number} params.geometry.q - Q
+   * @param {Number} params.geometry.heightScale - Knot height scale
+   */
+  constructor(params = {}) {
 
-		WHS.API.extend(params.geometry, {
+    super(params, 'Torusknot');
 
-            radius: 100,
-            tube: 40,
-            radialSegments: 64,
-            tubularSegments: 8,
-            p: 2,
-            q: 3,
-            heightScale: 1
+    WHS.API.extend(params.geometry, {
 
-        });
+      radius: 100,
+      tube: 40,
+      radialSegments: 64,
+      tubularSegments: 8,
+      p: 2,
+      q: 3,
+      heightScale: 1
 
-		this.build( params );
+    });
 
-        super.wrap();
+    this.build(params);
 
-	}
+    super.wrap();
 
-    build( params = {} ) {
+  }
 
-        let _scope = this,
-            mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-            material = super._initMaterial(params.material);
+  build(params = {}) {
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new mesh(
-                new THREE.TorusKnotGeometry(
+    const _scope = this,
+      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      material = super._initMaterial(params.material);
 
-                    params.geometry.radius,
-                    params.geometry.tube,
-                    params.geometry.radialSegments,
-                    params.geometry.tubularSegments,
-                    params.geometry.p,
-                    params.geometry.q,
-                    params.geometry.heightScale
+    return new Promise((resolve, reject) => {
 
-                ),
+      _scope.setNative(new mesh(
+        new THREE.TorusKnotGeometry(
 
-                material,
-                params.mass
-            ) );
+          params.geometry.radius,
+          params.geometry.tube,
+          params.geometry.radialSegments,
+          params.geometry.tubularSegments,
+          params.geometry.p,
+          params.geometry.q,
+          params.geometry.heightScale
 
-            resolve();
-        });
+        ),
 
-    }
+        material,
+        params.mass
+      ));
 
-    /**
-     * Clone torusknot.
-     */
-    clone() {
+      resolve();
 
-        return new WHS.Torusknot( this.getParams(), this._type ).copy( this );
+    });
 
-    }
+  }
 
-}
+  /**
+   * Clone torusknot.
+   */
+  clone() {
 
-WHS.World.prototype.Torusknot = function( params ) {
-    let object = new WHS.Torusknot( params );
+    return new WHS.Torusknot(this.getParams(), this._type).copy(this);
 
-    object.addTo( this );
+  }
 
-    return object;
-}
+};
