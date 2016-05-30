@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS tube shape
- *
- * @extends WHS.Shape
- */
-
 WHS.Tube = class Tube extends WHS.Shape {
     /**
      * Creates a tube

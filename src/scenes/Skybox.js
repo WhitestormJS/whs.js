@@ -1,93 +1,66 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+import {
+	CubeGeometry,
+	SphereGeometry,
+	MeshBasicMaterial,
+	Mesh,
+	ImageUtils,
+	BackSide
+} from 'three';
 
-/**
- * WhitestormJS skybox.
- *
- * @extends WHS.Shape
- */
+import Shapre from '../core/Shape';
 
-WHS.Skybox = class Skybox extends WHS.Shape {
-    /**
-     * Create a skybox.
-     *
-     * @param {Object} params - Skybox options
-     * @param {String} params.skyType - Skybox type (box/sphere)
-     * @param {String} params.detail - Skybox image extension (.png, .jpg, etc.)
-     * @param {Number} params.radius - Skybox radius
-     * @param {Boolean} params.fog - Skybox fog
-     * @param {String} params.path - Skybox image path
-     */
-	constructor( params = {} ) {
+class Skybox extends Shape {
+	constructor(params = {}) {
+		super(params, 'skybox');
 
-		super( params, "skybox" );
+    WHS.API.extend(params, {
+      skyType: "box",
+      detail: ".png",
+      radius: 10,
+      fog: true,
+      path: ''
+    });
 
-        WHS.API.extend(params, {
+    let skyGeometry, skyMat;
 
-            skyType: "box",
-            detail: ".png",
-            radius: 10,
-            fog: true,
+		switch (params.skyType) {
+      case 'box':
+          let directions = ['xpos', 'xneg', 'ypos', 'yneg', 'zpos', 'zneg'];
+					let matArray = [];
 
-            path: ""
+          skyGeometry = new CubeGeometry(params.radius, params.radius, params.radius);
 
+          for (let i = 0; i < 6; i++) {
+            matArray.push(new MeshBasicMaterial({
+              map: ImageUtils.loadTexture(params.path + directions[i] + params.imgSuffix),
+              side: BackSide,
+              fog: params.fog
+            }));
+          }
+
+          skyMat = new THREE.MeshFaceMaterial(matArray);
+
+          break;
+      case 'sphere':
+        skyGeometry = new SphereGeometry(params.radius / 2, 60, 40);
+        skyMat = new MeshBasicMaterial({
+          map: ImageUtils.loadTexture(params.path + params.imgSuffix),
+          side: BackSide,
+          fog: params.fog
         });
 
-        var skyGeometry, skyMat;
+				break;
+			default:
+    }
 
-		switch ( params.skyType ) {
-            case "box":
+    let mesh = new THREE.Mesh( skyGeometry, skyMat );
+    mesh.renderDepth = 1000.0;
 
-                var directions = [ "xpos", "xneg", "ypos", "yneg", "zpos", "zneg" ];
-
-                skyGeometry = new THREE.CubeGeometry( params.radius, params.radius, params.radius );
-
-                var matArray = [];
-
-                for ( var i = 0; i < 6; i ++ ) {
-
-                    matArray.push( new THREE.MeshBasicMaterial( {
-                        map: THREE.ImageUtils.loadTexture( params.path + directions[ i ] + params.imgSuffix ),
-                        side: THREE.BackSide,
-                        fog: params.fog
-                    } ) );
-
-                }
-
-                skyMat = new THREE.MeshFaceMaterial( matArray );
-
-                break;
-            case "sphere":
-
-                skyGeometry = new THREE.SphereGeometry( params.radius / 2, 60, 40 );
-
-                skyMat = new THREE.MeshBasicMaterial( {
-                    map: THREE.ImageUtils.loadTexture( params.path + params.imgSuffix ),
-                    side: THREE.BackSide,
-                    fog: params.fog
-                } );
-
-                break;
-        }
-
-        let mesh = new THREE.Mesh( skyGeometry, skyMat );
-        mesh.renderDepth = 1000.0;
-
-        super.setNative( mesh );
-
-        super.wrap();
-
+    super.setNative( mesh );
+    super.wrap();
 	}
-
 }
 
-WHS.World.prototype.Skybox = function( params ) {
-    let object = new WHS.Skybox( params );
-
-    object.addTo( this );
-
-    return object;
-}
+export {
+	Skybox as default
+};

@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS dodecahedron shape
- *
- * @extends WHS.Shape
- */
-
 WHS.Dodecahedron = class Dodecahedron extends WHS.Shape {
     /**
      * Create a dodecahedron

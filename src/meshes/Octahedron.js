@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS octahedron shape
- *
- * @extends WHS.Shape
- */
-
 WHS.Octahedron = class Octahedron extends WHS.Shape {
     /**
      * Creates an octahedron

@@ -1,14 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS default light.
- *
- * @extends WHS.Light
- */
 WHS.NormalLight = class NormalLight extends WHS.Light {
     /**
      * Normal light.

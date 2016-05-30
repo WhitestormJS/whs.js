@@ -1,14 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS point light.
- *
- * @extends WHS.Light
- */
 WHS.PointLight = class PointLight extends WHS.Light {
     /**
      * Point light.
@@ -42,8 +31,8 @@ WHS.PointLight = class PointLight extends WHS.Light {
             ) );
 
             if ( params.helper )
-                _scope.helper = new THREE.PointLightHelper( 
-                    _scope.light, 
+                _scope.helper = new THREE.PointLightHelper(
+                    _scope.light,
                     params.helper.size ? params.helper.size : 0
                 );
 

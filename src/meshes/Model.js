@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS model
- *
- * @extends WHS.Shape
- */
-
 WHS.Model = class Model extends WHS.Shape {
     /**
      * Create a model
@@ -68,9 +56,9 @@ WHS.Model = class Model extends WHS.Shape {
 	                    data.computeFaceNormals();
 	                    data.computeVertexNormals();
 
-	                    _scope.setNative( new mesh( 
-	                    	data, 
-	                    	material, 
+	                    _scope.setNative( new mesh(
+	                    	data,
+	                    	material,
 	                    	params.mass,
 	                    	data2,
 	                    	params.scale
@@ -97,9 +85,9 @@ WHS.Model = class Model extends WHS.Shape {
                     data.computeFaceNormals();
                     data.computeVertexNormals();
 
-                    _scope.setNative( new mesh( 
-                    	data, 
-                    	material, 
+                    _scope.setNative( new mesh(
+                    	data,
+                    	material,
                     	params.mass
 					) );
 
@@ -109,7 +97,7 @@ WHS.Model = class Model extends WHS.Shape {
             });
 
         });
-        
+
         super.wait( promise );
 
         return promise;

@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS text
- *
- * @extends WHS.Shape
- */
-
 WHS.Text = class Text extends WHS.Shape {
     /**
      * Creates 3D text
@@ -84,7 +72,7 @@ WHS.Text = class Text extends WHS.Shape {
             });
 
         });
-        
+
         super.wait( promise );
 
         return promise;

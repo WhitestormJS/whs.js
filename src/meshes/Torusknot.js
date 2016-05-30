@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS torus knot
- *
- * @extends WHS.Shape
- */
-
 WHS.Torusknot = class Torusknot extends WHS.Shape {
     /**
      * Creates a torus knot

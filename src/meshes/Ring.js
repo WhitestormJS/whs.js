@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS ring shape
- *
- * @extends WHS.Shape
- */
-
 WHS.Ring = class Ring extends WHS.Shape {
     /**
      * Creates a ring.

@@ -1,18 +1,4 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * Whitestormjs curve.
- */
 WHS.Curve = class Curve extends WHS.Object {
-    /**
-     * Create curve.
-     *
-     * Todo
-     */
 	constructor( params ) {
 
         super({
@@ -45,9 +31,6 @@ WHS.Curve = class Curve extends WHS.Object {
 
 	}
 
-    /**
-     * Add curve to scene.
-     */
     addTo( parent ) {
 
         'use strict';
@@ -70,8 +53,8 @@ WHS.Curve = class Curve extends WHS.Object {
 
             } finally {
 
-                if ( WHS.debug ) console.debug("@WHS.Curve: Curve " 
-                            + _scope._type + " was added to world.", 
+                if ( WHS.debug ) console.debug("@WHS.Curve: Curve "
+                            + _scope._type + " was added to world.",
                             [_scope, _scope.parent]);
 
                 resolve( _scope );
@@ -82,34 +65,24 @@ WHS.Curve = class Curve extends WHS.Object {
 
     }
 
-    /* Access private data */
-
     setNative( curve ) {
 
         return native.set( this, curve );
-        
+
     }
-    
+
     getNative() {
 
         return native.get( this );
 
     }
 
-    /**
-     * Clone curve.
-     */
     clone() {
 
         return new WHS.Curve( this.__params ).copy( this );
 
     }
 
-    /**
-     * Copy curve.
-     *
-     * @param {WHS.Curve} source - Source object, that will be applied to this.
-     */
     copy( source ) {
 
         this.setNative( source.getNative().clone() );
@@ -120,13 +93,8 @@ WHS.Curve = class Curve extends WHS.Object {
 
     }
 
-    /**
-     * Remove this curve from world.
-     *
-     * @return {THREE.Curve} - this.
-     */
     remove() {
-        
+
         this.parent.getScene().remove( this.getNative() );
 
         this.parent.children.splice( this.parent.children.indexOf( this ), 1);
@@ -134,8 +102,8 @@ WHS.Curve = class Curve extends WHS.Object {
 
         this.emit("remove");
 
-        if ( WHS.debug ) console.debug("@WHS.Curve: Curve " 
-            + this._type + " was removed from world", 
+        if ( WHS.debug ) console.debug("@WHS.Curve: Curve "
+            + this._type + " was removed from world",
             [_scope]);
 
         return this;

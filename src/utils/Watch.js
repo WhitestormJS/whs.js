@@ -1,9 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
 class Watch {
   constructor(queue) {
     this._queue = Array.isArray(queue) ? queue.slice() : [];
