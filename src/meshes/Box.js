@@ -1,85 +1,41 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+import {BoxGeometry, Mesh} from 'three';
+import {BoxMesh} from 'whitestormjs-physijs';
+import Shape from '../core/Shape';
 
-/**
- * WhitestormJS box shape.
- *
- * @extends WHS.Shape
- */
+class Box extends Shape {
+	constructor(params = {}) {
+		super(params, 'box');
 
-WHS.Box = class Box extends WHS.Shape {
-    /**
-     * Create a box.
-     *
-     * @param {Object} params - Box options
-     * @param {Object} params.geometry - Box geometry
-     * @param {Number} params.geometry.width - Box width
-     * @param {Number} params.geometry.height - Box height
-     * @param {Number} params.geometry.depth - Box depth
-     * @param {Material} params.material - Box material
-     * @param {Number} params.mass - Box mass
-     */
-	constructor( params = {} ) {
+		WHS.API.extend(params.geometry, {
+      width: 1,
+      height: 1,
+      depth: 1
+	  });
 
-		super( params, "box" );
-
-		WHS.API.extend( params.geometry, {
-
-            width: 1,
-            height: 1,
-            depth: 1
-
-        });
-
-        this.build( params );
-
-        super.wrap();
-
+    this.build(params);
+    super.wrap();
 	}
 
-    build( params = {} ) {
+  build(params = {}) {
+		const PhysicsMesh = this.physics ? BoxMesh : Mesh;
+    const material = super._initMaterial(params.material);
 
-        let _scope = this,
-            mesh = this.physics ? Physijs.BoxMesh : THREE.Mesh,
-            material = super._initMaterial(params.material);
+    return new Promise((resolve, reject) => {
+      this.setNative(new PhysicsMesh(
+        new BoxGeometry(
+          params.geometry.width,
+          params.geometry.height,
+          params.geometry.depth
+        ),
+        material,
+        params.mass
+      ));
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new mesh(
-                new THREE.BoxGeometry(
+      resolve();
+    });
+  }
 
-                    params.geometry.width,
-                    params.geometry.height,
-                    params.geometry.depth
-
-                ),
-
-                material,
-                params.mass
-            ) );
-
-            resolve();
-        });
-
-    }
-
-    /**
-     * Clone box.
-     */
-    clone() {
-
-        return new WHS.Box( this.getParams(), this._type ).copy( this );
-
-    }
-
-}
-
-WHS.World.prototype.Box = function( params ) {
-    let object = new WHS.Box( params );
-
-    object.addTo( this );
-
-    return object;
+  clone() {
+    return new Box(this.getParams(), this._type).copy(this);
+  }
 }

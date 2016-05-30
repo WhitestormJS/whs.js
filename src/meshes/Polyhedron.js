@@ -1,15 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS polyhedron shape
- *
- * @extends WHS.Shape
- */
-
 WHS.Polyhedron = class Polyhedron extends WHS.Shape {
     /**
      * Creates a polyhedron

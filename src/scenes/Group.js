@@ -1,29 +1,15 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+import {Object3D} from 'three';
+import {Shape} from '../core/Shape';
 
-/**
- * WhitestormJS group.
- *
- * @extends WHS.Shape
- */
-
-WHS.Group = class Group extends WHS.Shape {
-    /**
-     * Create a group of shapes.
-     */
+class Group extends Shape {
 	constructor() {
+		super({}, 'group');
 
-		super({}, "group");
-
-		super.setNative(
-			new THREE.Object3D()
-		);
-
+		super.setNative(new Object3D());
 		super.wrap();
-
 	}
-
 }
+
+export {
+	Group as default
+};

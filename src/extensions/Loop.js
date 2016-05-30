@@ -1,60 +1,37 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
+import {Clock} from 'three';
 
-/**
- * WhitestormJS plugin loop
- *
- * @param  {Function} func - Function to be executed
- */
-WHS.loop = function( func ) {
-
-    this.loop = {
-        func: func,
-        id: WHS.loops.length,
-        clock: new THREE.Clock(),
-        enabled: false
-    };
-
-    WHS.loops.push( this.loop );
-
+class Loop {
+  constructor(func) {
+    this.func = func;
+    this.clock = new Clock();
+    this.enabled = false;
+  }
 }
 
-/**
- * Starts the loop
- */
-WHS.loop.prototype.start = function() {
+WHS.loop = (func) => {
+  this.loop = {
+    func: func,
+    id: WHS.loops.length,
+    clock: new Clock(),
+    enabled: false
+  };
 
-    this.loop.clock.start();
+  WHS.loops.push(this.loop);
+}
 
-    this.loop.enabled = true;
-
+WHS.loop.prototype.start = () => {
+  this.loop.clock.start();
+  this.loop.enabled = true;
 };
 
-/**
- * Stops the loop
- */
-WHS.loop.prototype.stop = function() {
-
-    this.loop.clock.stop();
-
-    this.loop.enabled = false;
-
+WHS.loop.prototype.stop = () => {
+  this.loop.clock.stop();
+  this.loop.enabled = false;
 };
 
-/**
- * Removes loop from WHS.loops array.
- */
-WHS.loop.prototype.remove = function() {
+WHS.loop.prototype.remove = () => {
+  this.loop.clock.stop();
+  this.loop.enabled = false;
 
-    this.loop.clock.stop();
-
-    this.loop.enabled = false;
-
-    WHS.loops.filter( el => {
-    	return el !== this.loop;
-    });
-
+  WHS.loops.filter((el) => el !== this.loop);
 };

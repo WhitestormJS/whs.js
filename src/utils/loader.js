@@ -1,15 +1,8 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
- */
+import {JSONLoader, TextureLoader, FontLoader} from 'three';
 
-import THREE from "three";
-
-const
-  loadJson = (new THREE.JSONLoader()).load,
-  loadTexture = (new THREE.TextureLoader()).load,
-  loadFont = (new THREE.FontLoader()).load;
+const loadJson = new JSONLoader().load;
+const loadTexture = new TextureLoader().load;
+const loadFont = new FontLoader().load;
 
 export {
   loadJson,

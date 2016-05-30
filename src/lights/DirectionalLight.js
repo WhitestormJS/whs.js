@@ -1,14 +1,3 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/**
- * WhitestormJS directional light.
- *
- * @extends WHS.Light
- */
 WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
 	/**
      * Directional light.
@@ -38,8 +27,8 @@ WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
             ) );
 
             if ( params.helper )
-                _scope.helper = new THREE.DirectionalLightHelper( 
-                    _scope.light, 
+                _scope.helper = new THREE.DirectionalLightHelper(
+                    _scope.light,
                     params.helper.size ? params.helper.size : 0
                 );
 
