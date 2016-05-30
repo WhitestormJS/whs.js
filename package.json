@@ -69,12 +69,14 @@
 
     "rules": {
       "operator-linebreak": [2, "before"],
-      "padded-blocks": [2, { "blocks": "always", "switches": "always", "classes": "always" }],
+      "padded-blocks": [2, { "blocks": "always", "switches": "never", "classes": "always" }],
       "curly": [2, "multi-or-nest"],
       "one-var": [1, "always"],
       "no-else-return": 1,
-      "no-undef": 1,
-      "new-cap":  [1, {"newIsCap": true, "capIsNew": true}]
+      "no-undef": 0,
+      "new-cap":  [1, {"newIsCap": true, "capIsNew": true}],
+      "babel/new-cap":  [1, {"newIsCap": true, "capIsNew": true}],
+      "xo/filename-case": 1
     },
 
     "globals": ["WHS", "THREE"]
