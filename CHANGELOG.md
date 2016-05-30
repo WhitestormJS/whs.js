@@ -22,6 +22,7 @@
 - `follow()` function for `WHS.Camera`.
 - *WHS.Shape: .mesh -> getNative()*
 - `setPosition` and `setRotation` -> `position.set` and `rotation.set`
+- `path_worker`, `path_ammo` -> `paths.worker` & `paths.ammo` 
 
 **r8**
 - Engine rebuild commit:
