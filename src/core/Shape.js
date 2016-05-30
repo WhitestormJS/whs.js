@@ -560,6 +560,9 @@ WHS.Shape = class extends WHS.Object {
 
   }
 
+  /**
+   * @return {WHS.World} - World object.
+   */
   getWorld() {
 
     let p = this.parent;

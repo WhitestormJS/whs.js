@@ -53,6 +53,7 @@
     "gulp-sourcemaps": "^2.0.0-alpha",
     "gulp-util": "^3.0.7",
     "gulp-xo": "^0.11.0",
+    "jsdoc": "^3.4.0",
     "run-sequence": "^1.1.5",
     "webpack": "^2.1.0-beta.7",
     "xo": "^0.15.1"
@@ -60,25 +61,53 @@
   "xo": {
     "space": 2,
     "esnext": true,
-
     "envs": [
       "node",
       "browser",
       "es6"
     ],
-
     "rules": {
-      "operator-linebreak": [2, "before"],
-      "padded-blocks": [2, { "blocks": "always", "switches": "never", "classes": "always" }],
-      "curly": [2, "multi-or-nest"],
-      "one-var": [1, "always"],
+      "operator-linebreak": [
+        2,
+        "before"
+      ],
+      "padded-blocks": [
+        2,
+        {
+          "blocks": "always",
+          "switches": "never",
+          "classes": "always"
+        }
+      ],
+      "curly": [
+        2,
+        "multi-or-nest"
+      ],
+      "one-var": [
+        1,
+        "always"
+      ],
       "no-else-return": 1,
       "no-undef": 0,
-      "new-cap":  [1, {"newIsCap": true, "capIsNew": true}],
-      "babel/new-cap":  [1, {"newIsCap": true, "capIsNew": true}],
+      "new-cap": [
+        1,
+        {
+          "newIsCap": true,
+          "capIsNew": true
+        }
+      ],
+      "babel/new-cap": [
+        1,
+        {
+          "newIsCap": true,
+          "capIsNew": true
+        }
+      ],
       "xo/filename-case": 1
     },
-
-    "globals": ["WHS", "THREE"]
+    "globals": [
+      "WHS",
+      "THREE"
+    ]
   }
 }
