@@ -282,7 +282,7 @@ WHS.World = class extends WHS.Object {
       return window.requestAnimationFrame
         || window.webkitRequestAnimationFrame
         || window.mozRequestAnimationFrame
-        || (callback) => {
+        || function(callback) {
           window.setTimeout(callback, 1000 / 60);
         };
     })();
