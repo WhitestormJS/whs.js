@@ -1,6 +1,6 @@
 import THREE from "three";
 import Physijs from "whitestormjs-physijs";
-import {loadJson, loadTexture, loadFont} from "../loader";
+import {loadJson, loadTexture, loadFont} from "../utils/loader";
 
 const extend = Object.assign;
 
