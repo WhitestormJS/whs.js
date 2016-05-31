@@ -16,10 +16,7 @@
  */
 
 THREE.SubdivisionModifier = function ( subdivisions ) {
-    'use strict';
-
 	this.subdivisions = ( subdivisions === undefined ) ? 1 : subdivisions;
-
 };
 
 // Applies the "modify" pattern
