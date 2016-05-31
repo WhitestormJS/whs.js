@@ -143,9 +143,6 @@ whs.Light = class extends WHS.Object {
    * @param {...String} tags - Tags for compiling.
    */
   addTo(parent) {
-
-    'use strict';
-
     this.parent = parent;
 
     const _helper = this.helper,

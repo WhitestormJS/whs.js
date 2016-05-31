@@ -1,4 +1,4 @@
-var WHS = {
+const WHS = {
     REVISION: 'r8',
     API: {},
 
