@@ -71,14 +71,6 @@
         2,
         "before"
       ],
-      "padded-blocks": [
-        2,
-        {
-          "blocks": "always",
-          "switches": "never",
-          "classes": "always"
-        }
-      ],
       "curly": [
         2,
         "multi-or-nest"
