@@ -1,3 +1,12 @@
+import {
+  // Helpers.
+  BoxHelper as TBoxHelper,
+  BoundingBoxHelper as TBoundingBoxHelper,
+  EdgesHelper as TEdgesHelper,
+  FaceNormalsHelper as TFaceNormalsHelper,
+  VertexNormalsHelper as TVertexNormalsHelper
+} from 'three';
+
 WHS.Shape = class extends WHS.Object {
   /**
    * Constructing WHS.Shape object.
@@ -124,14 +133,14 @@ WHS.Shape = class extends WHS.Object {
 
             // Box helper.
             if (_scope.__params.helpers.box) {
-              _scope.helpers.box = new THREE.BoxHelper(
+              _scope.helpers.box = new TBoxHelper(
                 _scope.getNative()
               );
             }
 
             // Bounding box helper.
             if (_scope.__params.helpers.boundingBox) {
-              _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(
+              _scope.helpers.boundingBox = new TBoundingBoxHelper(
                 _scope.getNative(),
                 _scope.__params.helpers.boundingBox.color
                 ? _scope.__params.helpers.boundingBox.color
@@ -141,7 +150,7 @@ WHS.Shape = class extends WHS.Object {
 
             // Edges helper.
             if (_scope.__params.helpers.edges) {
-              _scope.helpers.edges = new THREE.EdgesHelper(
+              _scope.helpers.edges = new TEdgesHelper(
                 _scope.getNative(),
                 _scope.__params.helpers.edges.color
                 ? _scope.__params.helpers.edges.color
@@ -151,7 +160,7 @@ WHS.Shape = class extends WHS.Object {
 
             // faceNormals helper.
             if (_scope.__params.helpers.faceNormals) {
-              _scope.helpers.faceNormals = new THREE.FaceNormalsHelper(
+              _scope.helpers.faceNormals = new TFaceNormalsHelper(
                 _scope.getNative(),
                 _scope.__params.helpers.faceNormals.size
                 ? _scope.__params.helpers.faceNormals.size
@@ -167,7 +176,7 @@ WHS.Shape = class extends WHS.Object {
 
             // vertexNormals helper.
             if (_scope.__params.helpers.vertexNormals) {
-              _scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(
+              _scope.helpers.vertexNormals = new TVertexNormalsHelper(
                 _scope.getNative(),
                 _scope.__params.helpers.vertexNormals.size
                 ? _scope.__params.helpers.vertexNormals.size
@@ -218,14 +227,14 @@ WHS.Shape = class extends WHS.Object {
 
           // Box helper.
           if (_scope.__params.helpers.box) {
-            _scope.helpers.box = new THREE.BoxHelper(
+            _scope.helpers.box = new TBoxHelper(
               _scope.getNative()
             );
           }
 
           // Bounding box helper.
           if (_scope.__params.helpers.boundingBox) {
-            _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(
+            _scope.helpers.boundingBox = new TBoundingBoxHelper(
               _scope.getNative(),
               _scope.__params.helpers.boundingBox.color
               ? _scope.__params.helpers.boundingBox.color
@@ -235,7 +244,7 @@ WHS.Shape = class extends WHS.Object {
 
           // Edges helper.
           if (_scope.__params.helpers.edges) {
-            _scope.helpers.edges = new THREE.EdgesHelper(
+            _scope.helpers.edges = new TEdgesHelper(
               _scope.getNative(),
               _scope.__params.helpers.edges.color
               ? _scope.__params.helpers.edges.color
@@ -245,7 +254,7 @@ WHS.Shape = class extends WHS.Object {
 
           // faceNormals helper.
           if (_scope.__params.helpers.faceNormals) {
-            _scope.helpers.faceNormals = new THREE.FaceNormalsHelper(
+            _scope.helpers.faceNormals = new TFaceNormalsHelper(
               _scope.getNative(),
               _scope.__params.helpers.faceNormals.size
               ? _scope.__params.helpers.faceNormals.size
@@ -261,7 +270,7 @@ WHS.Shape = class extends WHS.Object {
 
           // vertexNormals helper.
           if (_scope.__params.helpers.vertexNormals) {
-            _scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(
+            _scope.helpers.vertexNormals = new TVertexNormalsHelper(
               _scope.getNative(),
               _scope.__params.helpers.vertexNormals.size
               ? _scope.__params.helpers.vertexNormals.size
@@ -431,7 +440,7 @@ WHS.Shape = class extends WHS.Object {
   /**
    * Remove this shape from world.
    *
-   * @return {THREE.Shape} - this.
+   * @return {WHS.Shape} - this.
    */
   remove() {
     this.parent.getScene().remove(this.getNative());

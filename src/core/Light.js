@@ -1,3 +1,9 @@
+import {
+  Vector3 as TVector3,
+  Curve as TCurve,
+  CurvePath as TCurvePath
+} from 'three';
+
 whs.Light = class extends WHS.Object {
   /**
    * Constructing WHS.Light object.
@@ -287,10 +293,10 @@ whs.Light = class extends WHS.Object {
       _scope.position.set(vec1.x, vec1.y, vec1.z);
 
       if (!lookAt) _scope.lookAt(vec2);
-      else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+      else if (lookAt instanceof TVector3) _scope.lookAt(lookAt);
       else if (
-          lookAt instanceof THREE.Curve
-          || lookAt instanceof THREE.CurvePath
+          lookAt instanceof TCurve
+          || lookAt instanceof TCurvePath
         ) _scope.lookAt(lookAt.getPoint(u));
     });
 
@@ -308,10 +314,10 @@ whs.Light = class extends WHS.Object {
           _scope.position.set(vec1.x, vec1.y, vec1.z);
 
           if (!lookAt) _scope.lookAt(vec2);
-          else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+          else if (lookAt instanceof TVector3) _scope.lookAt(lookAt);
           else if (
-              lookAt instanceof THREE.Curve
-              || lookAt instanceof THREE.CurvePath
+              lookAt instanceof TCurve
+              || lookAt instanceof TCurvePath
             ) _scope.lookAt(lookAt.getPoint(u));
         });
 

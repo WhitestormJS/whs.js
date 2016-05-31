@@ -1,3 +1,8 @@
+import {
+  Geometry as TGeometry,
+  Line as TLine
+} from 'three';
+
 import Object from './Object';
 
 class Curve extends Object {
@@ -16,11 +21,11 @@ class Curve extends Object {
 
     super.setParams(params);
 
-    const geometry = new THREE.Geometry();
+    const geometry = new TGeometry();
 
     geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
 
-    const curve = new THREE.Line(
+    const curve = new TLine(
         geometry,
         WHS.API.loadMaterial(params.material, false)._material
     );
@@ -97,7 +102,7 @@ class Curve extends Object {
     /**
      * Remove this curve from world.
      *
-     * @return {THREE.Curve} - this.
+     * @return {WHS.Curve} - this.
      */
   remove() {
     this.parent.getScene().remove(this.getNative());
