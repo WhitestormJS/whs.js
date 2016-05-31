@@ -1,35 +1,30 @@
 WHS.AmbientLight = class AmbientLight extends WHS.Light {
-	constructor( params = {} ) {
 
-		super( params, "ambientlight" );
+  constructor(params = {}) {
 
-		this.build( params );
+    super(params, 'ambientlight');
 
-        super.wrap("noshadows");
+    this.build(params);
 
-	}
+    super.wrap('noshadows');
 
-    build( params = {} ) {
+  }
 
-        let _scope = this;
+  build(params = {}) {
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new THREE.AmbientLight(
-                params.light.color,
-                params.light.intensity
-            ) );
+    const _scope = this;
 
-            resolve();
-        });
+    return new Promise((resolve, reject) => {
 
-    }
+      _scope.setNative(new THREE.AmbientLight(
+        params.light.color,
+        params.light.intensity
+      ));
 
-}
+      resolve();
 
-WHS.World.prototype.AmbientLight = function( params ) {
-    let object = new WHS.AmbientLight( params );
+    });
 
-    object.addTo( this );
+  }
 
-    return object;
-}
+};

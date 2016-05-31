@@ -1,40 +1,35 @@
 WHS.NormalLight = class NormalLight extends WHS.Light {
-    /**
-     * Normal light.
-     *
-     * @param {Object} params.light.color - Light color.
-     */
-	constructor( params = {} ) {
 
-		super( params, "normallight" );
+  /**
+   * Normal light.
+   *
+   * @param {Object} params.light.color - Light color.
+   */
+  constructor(params = {}) {
 
-		this.build( params );
+    super(params, 'normallight');
 
-        super.wrap();
-        super.wrapShadow();
+    this.build(params);
 
-	}
+    super.wrap();
+    super.wrapShadow();
 
-    build( params = {} ) {
+  }
 
-        let _scope = this;
+  build(params = {}) {
 
-        return new Promise( (resolve, reject) => {
-            _scope.setNative( new THREE.Light(
-                params.light.color
-            ) );
+    const _scope = this;
 
-            resolve();
-        });
+    return new Promise((resolve, reject) => {
 
-    }
+      _scope.setNative(new THREE.Light(
+        params.light.color
+      ));
 
-}
+      resolve();
 
-WHS.World.prototype.NormalLight = function( params ) {
-    let object = new WHS.NormalLight( params );
+    });
 
-    object.addTo( this );
+  }
 
-    return object;
-}
+};
