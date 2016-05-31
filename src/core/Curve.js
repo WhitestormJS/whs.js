@@ -3,6 +3,7 @@ import {
   Line as TLine
 } from 'three';
 
+import loadMaterial from '../extras/api';
 import Object from './Object';
 
 class Curve extends Object {
@@ -27,7 +28,7 @@ class Curve extends Object {
 
     const curve = new TLine(
         geometry,
-        WHS.API.loadMaterial(params.material, false)._material
+        loadMaterial(params.material, false)._material
     );
 
     this.setNative(curve);
@@ -83,7 +84,7 @@ class Curve extends Object {
      * Clone curve.
      */
   clone() {
-    return new WHS.Curve(this.__params).copy(this);
+    return new Curve(this.__params).copy(this);
   }
 
     /**

@@ -7,7 +7,11 @@ import {
   Clock as TClock
 } from 'three';
 
-WHS.World = class extends WHS.Object {
+import PerspectiveCamera from '../cameras/PerspectiveCamera';
+import Camera from './Camera';
+import Object from './Object';
+
+class World extends Object {
   /**
    * Create a 3D world and define defaults.
    *
@@ -198,7 +202,7 @@ WHS.World = class extends WHS.Object {
    * Create a camera and add it to scene.
    */
   _initCamera() {
-    this.setCamera(new WHS.PerspectiveCamera({
+    this.setCamera(new PerspectiveCamera({
       camera: {
         fov: this.getParams().camera.aspect,
         aspect: this.getParams().width / this.getParams().height,
@@ -286,7 +290,7 @@ WHS.World = class extends WHS.Object {
       return window.requestAnimationFrame
         || window.webkitRequestAnimationFrame
         || window.mozRequestAnimationFrame
-        || function(callback) {
+        || function (callback) {
           window.setTimeout(callback, 1000 / 60);
         };
     })();
@@ -390,7 +394,7 @@ WHS.World = class extends WHS.Object {
    * @params {WHS.Camera} camera - The camera to be rendered.
    */
   setCamera(camera) {
-    if (camera instanceof WHS.Camera)
+    if (camera instanceof Camera)
       native.get(this).camera = camera;
     else
       console.error('@WHS.World: camera in not an instance of WHS.Camera.');
@@ -399,4 +403,9 @@ WHS.World = class extends WHS.Object {
   getCamera() {
     return native.get(this).camera;
   }
+}
+
+export {
+  World as default
 };
+

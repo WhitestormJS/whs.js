@@ -4,7 +4,10 @@ import {
   CurvePath as TCurvePath
 } from 'three';
 
-whs.Light = class extends WHS.Object {
+import Loop from '../extensions/Loop';
+import Object from './Object';
+
+class Light extends Object {
   /**
    * Constructing WHS.Light object.
    *
@@ -210,7 +213,7 @@ whs.Light = class extends WHS.Object {
    * Clone light.
    */
   clone() {
-    return new WHS.Light(this.__params, this._type).copy(this);
+    return new Light(this.__params, this._type).copy(this);
   }
 
   /**
@@ -285,7 +288,7 @@ whs.Light = class extends WHS.Object {
     const _scope = this,
       gEnd = time;
 
-    let animation = new WHS.loop(clock => {
+    let animation = new Loop(clock => {
       const u = clock.getElapsedTime() * 1000 / gEnd,
         vec1 = curve.getPoint(u),
         vec2 = curve.getPoint((u + 0.01) % 1);
@@ -306,7 +309,7 @@ whs.Light = class extends WHS.Object {
       setInterval(() => {
         animation.stop();
 
-        animation = new WHS.loop(clock => {
+        animation = new Loop(clock => {
           const u = clock.getElapsedTime() * 1000 / gEnd,
             vec1 = curve.getPoint(u),
             vec2 = curve.getPoint((u + 0.01) % 1);
@@ -329,4 +332,8 @@ whs.Light = class extends WHS.Object {
       }, time);
     }
   }
+}
+
+export {
+  Light as default
 };

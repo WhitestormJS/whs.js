@@ -1,4 +1,4 @@
-WHS.Object = class {
+class Object {
   /**
    * Constructing WHS.Shape object.
    *
@@ -48,7 +48,7 @@ WHS.Object = class {
     if (children instanceof WHS.Shape || children instanceof WHS.Light)
       return children.addTo(this);
     else if (children instanceof WHS.Object) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         children.parent = _scope;
 
         _scope.getNative().add(children.getNative());
@@ -58,4 +58,8 @@ WHS.Object = class {
       });
     }
   }
+}
+
+export {
+  Object as default
 };
