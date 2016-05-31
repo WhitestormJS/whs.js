@@ -1,4 +1,6 @@
-WHS.SpotLight = class SpotLight extends WHS.Light {
+import Light from './Light';
+
+class SpotLight extends Light {
   /**
    * Point light.
    *
@@ -21,7 +23,7 @@ WHS.SpotLight = class SpotLight extends WHS.Light {
   build(params = {}) {
     const _scope = this;
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       _scope.setNative(new THREE.SpotLight(
         params.light.color,
         params.light.intensity,
@@ -37,4 +39,8 @@ WHS.SpotLight = class SpotLight extends WHS.Light {
       resolve();
     });
   }
+}
+
+export {
+  SpotLight as default
 };
