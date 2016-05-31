@@ -1,22 +1,16 @@
-WHS.OrtographicCamera = class OrtographicCamera extends WHS.Camera {
+import Camera from '../core/Camera';
 
+class OrtographicCamera extends Camera {
   constructor(params = {}) {
-
     super(params, 'ortographiccamera');
 
     this.build(params);
-
     super.wrap();
-
   }
 
   build(params = {}) {
-
-    const _scope = this;
-
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new THREE.OrtographicCamera(
+    return new Promise((resolve) => {
+      this.setNative(new THREE.OrtographicCamera(
         params.camera.left,
         params.camera.right,
         params.camera.top,
@@ -26,18 +20,10 @@ WHS.OrtographicCamera = class OrtographicCamera extends WHS.Camera {
       ));
 
       resolve();
-
     });
-
   }
+}
 
-};
-
-WHS.World.prototype.OrtographicCamera = function (params) {
-
-  const camera = new WHS.OrtographicCamera(params);
-  camera.addTo(this);
-
-  return camera;
-
+export {
+  OrtographicCamera as default
 };

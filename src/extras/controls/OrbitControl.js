@@ -11,21 +11,21 @@
  */
 WHS.World.prototype.OrbitControls = function( object ) {
 
-	this.controls = new THREE.OrbitControls( 
-		this.getCamera().getNative(), 
-		this.getRenderer().domElement 
+	this.controls = new THREE.OrbitControls(
+		this.getCamera().getNative(),
+		this.getRenderer().domElement
 	);
-	
+
 	if ( object ) {
 
 		if ( object._whsobject ) {
 
-			var target = object ? object.mesh.position 
+			let target = object ? object.mesh.position 
 				: new THREE.Vector3( 0, 0, 0 );
 
 			this.controls.target = target;
 
-		} 
+		}
 		else if ( typeof object == "object" )
 			this.controls.target.copy(target);
 		else

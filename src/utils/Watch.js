@@ -8,7 +8,7 @@ class Watch {
   }
 
   remove(element) {
-    this._queue = this._queue.filter(function (item) {
+    this._queue = this._queue.filter((item) => {
       return item !== element;
     });
   }
