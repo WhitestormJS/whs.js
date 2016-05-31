@@ -1,22 +1,11 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/** Class that initializates 3d world. */
 WHS.World = class extends WHS.Object {
-  
-    /**
-     * Create a 3D world and define defaults.
-     *
-     * @param {object} params - The scene settings object.
-     * @return {World} A 3D world whs object.
-     */
+  /**
+   * Create a 3D world and define defaults.
+   *
+   * @param {object} params - The scene settings object.
+   * @return {World} A 3D world whs object.
+   */
   constructor(params = {}) {
-
-    'use strict';
-
     if (!THREE)
       console.warn('WhitestormJS requires Three.js. {Object} THREE is undefined.');
     if (!Physijs)
@@ -103,24 +92,18 @@ WHS.World = class extends WHS.Object {
     const scope = this;
 
     if (this.getParams().autoresize) {
-
       window.addEventListener('resize', () => {
-
         scope.setSize(window.innerWidth, window.innerHeight);
-
       });
-
     }
 
     return scope;
-
   }
 
-    /**
-     * Initialize Three.js scene object.
-     */
+  /**
+   * Initialize Three.js scene object.
+   */
   _initScene() {
-
     this._initPhysiJS();
 
     const scene = new Physijs.Scene();
@@ -135,28 +118,24 @@ WHS.World = class extends WHS.Object {
 
     this.setScene(scene);
 
-        // Array for processing.
+    // Array for processing.
     this.children = [];
-
   }
 
-    /**
-     * Set Physi.js scripts pathes.
-     */
+  /**
+   * Set Physi.js scripts pathes.
+   */
   _initPhysiJS() {
-
     this.simulate = true;
 
     Physijs.scripts.worker = this.getParams().paths.worker;
     Physijs.scripts.ammo = this.getParams().paths.ammo;
-
   }
 
-    /**
-     * Initialize DOM structure for whitestorm.
-     */
+  /**
+   * Initialize DOM structure for whitestorm.
+   */
   _initDOM() {
-
     this.getParams().container.style.margin = 0;
     this.getParams().container.style.padding = 0;
     this.getParams().container.style.position = 'relative';
@@ -168,17 +147,14 @@ WHS.World = class extends WHS.Object {
     this.getParams().container.appendChild(this._dom);
 
     return this._dom;
-
   }
 
-    /**
-     * Inititialize stats plugin.
-     */
+  /**
+   * Inititialize stats plugin.
+   */
   _initStats() {
-
-        // Debug Renderer
+    // Debug Renderer
     if (this.getParams().stats) {
-
       this._stats = new Stats();
 
       if (this.getParams().stats === 'fps')
@@ -191,10 +167,8 @@ WHS.World = class extends WHS.Object {
         this._stats.setMode(1);
 
       else {
-
         this._stats.setMode(0);
         console.warn([this._stats], 'Please, apply stats mode [fps, ms, mb] .');
-
       }
 
       this._stats.domElement.style.position = 'absolute';
@@ -202,16 +176,13 @@ WHS.World = class extends WHS.Object {
       this._stats.domElement.style.bottom = '0px';
 
       this._dom.appendChild(this._stats.domElement);
-
     }
-
   }
 
-    /**
-     * Create a camera and add it to scene.
-     */
+  /**
+   * Create a camera and add it to scene.
+   */
   _initCamera() {
-
     this.setCamera(new WHS.PerspectiveCamera({
       camera: {
         fov: this.getParams().camera.aspect,
@@ -228,14 +199,12 @@ WHS.World = class extends WHS.Object {
     }));
 
     this.getCamera().addTo(this);
-
   }
 
-    /**
-     * Create a renderer and apply it's options.
-     */
+  /**
+   * Create a renderer and apply it's options.
+   */
   _initRenderer() {
-
     this.render = true;
 
         // Renderer.
@@ -258,16 +227,13 @@ WHS.World = class extends WHS.Object {
 
     this.getRenderer().domElement.style.width = '100%';
     this.getRenderer().domElement.style.height = '100%';
-
   }
 
-    /**
-     * Add helpers to scene.
-     */
+  /**
+   * Add helpers to scene.
+   */
   _initHelpers() {
-
     if (this.getParams().helpers.axis) {
-
       this.getScene().add(
         new THREE.AxisHelper(
           this.getParams().helpers.axis.size
@@ -275,11 +241,9 @@ WHS.World = class extends WHS.Object {
           : 5
         )
       );
-
     }
 
     if (this.getParams().helpers.grid) {
-
       this.getScene().add(
         new THREE.GridHelper(
           this.getParams().helpers.grid.size
@@ -290,18 +254,13 @@ WHS.World = class extends WHS.Object {
           : 1
         )
       );
-
     }
-
   }
 
-    /**
-     * Start animation.
-     */
+  /**
+   * Start animation.
+   */
   start() {
-
-    'use strict';
-
     const clock = new THREE.Clock(),
       scope = this,
       scene = scope.getScene(),
@@ -309,23 +268,18 @@ WHS.World = class extends WHS.Object {
       renderer = scope.getRenderer();
 
     window.requestAnimFrame = (() => {
-
       return window.requestAnimationFrame
         || window.webkitRequestAnimationFrame
         || window.mozRequestAnimationFrame
         || function (callback) {
-
           window.setTimeout(callback, 1000 / 60);
-
         };
-
     })();
 
     function reDraw(time) {
-
       window.requestAnimFrame(reDraw);
 
-            // Init stats.
+      // Init stats.
       if (scope._stats) scope._stats.begin();
 
       scope._process(clock);
@@ -333,130 +287,101 @@ WHS.World = class extends WHS.Object {
       if (scope.simulate) scene.simulate();
       if (scope.controls) scope._updateControls();
 
-            // Effects rendering.
+      // Effects rendering.
       if (scope._composer && scope.render) {
-
         scope._composer.reset();
         scope._composer.render(scene, cameraNative);
         scope._composer.pass(scope._composer.stack);
         scope._composer.toScreen();
-
       } else if (scope.render) renderer.render(scene, cameraNative);
 
       scope._execLoops(time);
 
-            // End helper.
+      // End helper.
       if (scope._stats) scope._stats.end();
-
     }
 
     this._update = reDraw;
 
     scope._update();
-
   }
 
-    /**
-     * Execute all loops with a specific time.
-     *
-     * @params {number} time - The time value that will be passed to loops.
-     */
+  /**
+   * Execute all loops with a specific time.
+   *
+   * @params {number} time - The time value that will be passed to loops.
+   */
   _execLoops(time) {
-
     for (let i = 0; i < WHS.loops.length; i++) {
-
       const l = WHS.loops[i];
       if (l.enabled) l.func(l.clock, time);
-
     }
-
   }
 
-    /**
-     * Update controls time values.
-     */
+  /**
+   * Update controls time values.
+   */
   _updateControls() {
-
     this.controls.update(Date.now() - this.time);
     this.time = Date.now();
-
   }
 
-    /**
-     * Update morphs animations.
-     *
-     * @params {THREE.Clock} clock - The clock object, which.
-     */
+  /**
+   * Update morphs animations.
+   *
+   * @params {THREE.Clock} clock - The clock object, which.
+   */
   _process(clock) {
-
     const delta = clock.getDelta();
 
     for (let i = 0; i < this.children.length; i++)
       if (this.children[i]._type === 'morph') this.children[i].getNative().mixer.update(delta);
-
   }
 
-    /**
-     * This functon will scene properties when it's called.
-     */
+  /**
+   * This functon will scene properties when it's called.
+   */
   setSize(width = 1, height = 1) {
-
     this.getCamera().getNative().aspect = width / height;
     this.getCamera().getNative().updateProjectionMatrix();
 
     this.getRenderer().setSize(
-            Number(width * this.getParams().rWidth).toFixed(),
-            Number(height * this.getParams().rHeight).toFixed()
-        );
-
+      Number(width * this.getParams().rWidth).toFixed(),
+      Number(height * this.getParams().rHeight).toFixed()
+    );
   }
 
   setScene(scene) {
-
     native.get(this).scene = scene;
     return native.get(this).scene;
-
   }
 
   getScene() {
-
     return native.get(this).scene;
-
   }
 
   setRenderer(renderer) {
-
     native.get(this).renderer = renderer;
     return native.get(this).renderer;
-
   }
 
   getRenderer() {
-
     return native.get(this).renderer;
-
   }
 
-    /**
-     * Set a camera for rendering world.
-     *
-     * @params {WHS.Camera} camera - The camera to be rendered.
-     */
+  /**
+   * Set a camera for rendering world.
+   *
+   * @params {WHS.Camera} camera - The camera to be rendered.
+   */
   setCamera(camera) {
-
     if (camera instanceof WHS.Camera)
       native.get(this).camera = camera;
     else
       console.error('@WHS.World: camera in not an instance of WHS.Camera.');
-
-    return this;
-
   }
 
   getCamera() {
-
     return native.get(this).camera;
-
   }
-
 };
