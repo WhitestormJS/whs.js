@@ -21,7 +21,7 @@ class Skybox extends Shape {
       path: ''
     });
 
-    const skyGeometry, skyMat, mesh;
+    let skyGeometry, skyMat;
 
     switch (params.skyType) {
       case 'box': {
@@ -55,7 +55,7 @@ class Skybox extends Shape {
       default:
     }
 
-    mesh = new Mesh(skyGeometry, skyMat);
+    const mesh = new Mesh(skyGeometry, skyMat);
     mesh.renderDepth = 1000.0;
 
     super.setNative(mesh);
