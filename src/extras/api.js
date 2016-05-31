@@ -5,10 +5,7 @@ import {loadJson, loadTexture, loadFont} from "../loader";
 const extend = Object.assign;
 
 const texture = function (url, options) {
-
-  'use strict';
-
-  var texture = loadTexture(url);
+  const texture = loadTexture(url);
 
   if (options) {
 
@@ -40,9 +37,6 @@ const texture = function (url, options) {
 };
 
 const loadMaterial = function (material = {}, isPhysics = true) {
-
-  'use strict';
-
   if (typeof material.kind !== "string")
     console.error("Type of material is undefined or not a string. @loadMaterial");
 
