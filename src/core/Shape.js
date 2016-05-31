@@ -7,7 +7,12 @@ import {
   VertexNormalsHelper as TVertexNormalsHelper
 } from 'three';
 
-WHS.Shape = class extends WHS.Object {
+import loadMaterial from '../extras/api';
+import Loop from '../extensions/Loop';
+import World from './World';
+import Object from './Object';
+
+class Shape extends Object {
   /**
    * Constructing WHS.Shape object.
    *
@@ -313,7 +318,7 @@ WHS.Shape = class extends WHS.Object {
       return new Promise((resolve, reject) => {
         Promise.all(_scope.wait).then(() => {
           try {
-            const parentNative = _scope.parent instanceof WHS.World
+            const parentNative = _scope.parent instanceof World
               ? _scope.parent.getScene()
               : _scope.parent.getNative();
 
@@ -355,7 +360,7 @@ WHS.Shape = class extends WHS.Object {
     } else {
       return new Promise((resolve, reject) => {
         try {
-          const parentNative = _scope.parent instanceof WHS.World
+          const parentNative = _scope.parent instanceof World
             ? _scope.parent.getScene()
             : _scope.parent.getNative();
 
@@ -406,8 +411,8 @@ WHS.Shape = class extends WHS.Object {
    */
   _initMaterial(params) {
     return this.physics
-      ? WHS.API.loadMaterial(params)._material
-      : WHS.API.loadMaterial(params)._materialP;
+      ? loadMaterial(params)._material
+      : loadMaterial(params)._materialP;
   }
 
   /**
@@ -466,7 +471,7 @@ WHS.Shape = class extends WHS.Object {
   getWorld() {
     let p = this.parent;
 
-    while (!(p instanceof WHS.World)) {
+    while (!(p instanceof World)) {
       if (p) p = p.parent;
       else return false;
     }
@@ -540,7 +545,7 @@ WHS.Shape = class extends WHS.Object {
     const _scope = this,
       gEnd = time;
 
-    let animation = new WHS.loop(clock => {
+    let animation = new Loop(clock => {
       const u = clock.getElapsedTime() * 1000 / gEnd,
         vec1 = curve.getPoint(u % 1),
         vec2 = curve.getPoint((u + 0.01) % 1);
@@ -555,7 +560,7 @@ WHS.Shape = class extends WHS.Object {
       setInterval(() => {
         animation.stop();
 
-        animation = new WHS.loop(clock => {
+        animation = new Loop(clock => {
           const u = clock.getElapsedTime() * 1000 / gEnd,
             vec1 = curve.getPoint(u % 1),
             vec2 = curve.getPoint((u + 0.01) % 1);
@@ -572,4 +577,8 @@ WHS.Shape = class extends WHS.Object {
       }, time);
     }
   }
+}
+
+export {
+  Shape as default
 };
