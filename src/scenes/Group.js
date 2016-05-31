@@ -2,14 +2,14 @@ import {Object3D} from 'three';
 import {Shape} from '../core/Shape';
 
 class Group extends Shape {
-	constructor() {
-		super({}, 'group');
+  constructor() {
+    super({}, 'group');
 
-		super.setNative(new Object3D());
-		super.wrap();
-	}
+    super.setNative(new Object3D());
+    super.wrap();
+  }
 }
 
 export {
-	Group as default
+  Group as default
 };
