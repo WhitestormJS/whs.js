@@ -7,6 +7,7 @@ import {
   CurvePath as TCurvePath
 } from 'three';
 
+import Loop from '../extensions/Loop';
 import Object from './Object';
 
 class Camera extends Object {
@@ -138,14 +139,14 @@ class Camera extends Object {
   }
 
   /**
-   * Clone shape.
+   * Clone camera.
    */
   clone() {
-    return new WHS.Shape(this.__params, this._type).copy(this);
+    return new Shape(this.__params, this._type).copy(this);
   }
 
   /**
-   * Copy shape.
+   * Copy camera.
    *
    * @param {WHS.Camera} source - Source object, that will be applied to this.
    */
@@ -211,7 +212,7 @@ class Camera extends Object {
       setInterval(() => {
         animation.stop();
 
-        animation = new WHS.loop(clock => {
+        animation = new Loop(clock => {
           const u = clock.getElapsedTime() * 1000 / gEnd,
             vec1 = curve.getPoint(u),
             vec2 = curve.getPoint((u + 0.01) % 1);
