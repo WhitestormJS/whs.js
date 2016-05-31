@@ -1,5 +1,4 @@
 WHS.PointLight = class PointLight extends WHS.Light {
-
   /**
    * Point light.
    *
@@ -9,22 +8,18 @@ WHS.PointLight = class PointLight extends WHS.Light {
    * @param {Object} params.light.decay - Light decay.
    */
   constructor(params = {}) {
-
     super(params, 'pointlight');
 
     this.build(params);
 
     super.wrap();
     super.wrapShadow();
-
   }
 
   build(params = {}) {
-
     const _scope = this;
 
     return new Promise((resolve, reject) => {
-
       _scope.setNative(new THREE.PointLight(
         params.light.color,
         params.light.intensity,
@@ -33,18 +28,13 @@ WHS.PointLight = class PointLight extends WHS.Light {
       ));
 
       if (params.helper) {
-
         _scope.helper = new THREE.PointLightHelper(
           _scope.light,
           params.helper.size ? params.helper.size : 0
         );
-
       }
 
       resolve();
-
     });
-
   }
-
 };
