@@ -10,7 +10,7 @@ whs.Light = class extends WHS.Object {
     if (!type)
       console.error('@constructor: Please specify " type ".');
 
-    const _set = function (x, y, z) {
+    const _set = (x, y, z) => {
       this.x = x;
       this.y = y;
       this.z = z;

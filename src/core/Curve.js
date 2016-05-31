@@ -1,4 +1,6 @@
-WHS.Curve = class Curve extends WHS.Object {
+import Object from './Object';
+
+class Curve extends Object {
   /**
    * Create curve.
    *
@@ -114,4 +116,8 @@ WHS.Curve = class Curve extends WHS.Object {
 
     return this;
   }
+}
+
+export {
+  Curve as default
 };

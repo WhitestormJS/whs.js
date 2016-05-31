@@ -97,6 +97,8 @@ WHS.World = class extends WHS.Object {
       });
     }
 
+    scope.loops = [];
+
     return scope;
   }
 
@@ -120,6 +122,11 @@ WHS.World = class extends WHS.Object {
 
     // Array for processing.
     this.children = [];
+  }
+
+  addExtension(extension) {
+    this.loops.push(extension); // TODO: Process loops on start
+    // like: this.loops.forEach((elem) => elem.start());
   }
 
   /**
@@ -271,7 +278,7 @@ WHS.World = class extends WHS.Object {
       return window.requestAnimationFrame
         || window.webkitRequestAnimationFrame
         || window.mozRequestAnimationFrame
-        || function (callback) {
+        || (callback) => {
           window.setTimeout(callback, 1000 / 60);
         };
     })();

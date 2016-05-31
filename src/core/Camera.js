@@ -1,15 +1,10 @@
-WHS.Camera = class extends WHS.Object {
-  /**
-   * Constructing WHS.Camera object.
-   *
-   * @param {Object} params - Inputed parameters.
-   * @param {String} type - Shape type.
-   * @return {WHS.Camera}
-   */
+import Object from './Object';
+
+class Camera extends Object {
   constructor(params, type) {
     if (!type) console.error('@constructor: Please specify " type ".');
 
-    const _set = function (x, y, z) {
+    const _set = (x, y, z) => {
       this.x = x;
       this.y = y;
       this.z = z;
@@ -23,31 +18,25 @@ WHS.Camera = class extends WHS.Object {
         aspect: window.innerWidth / window.innerHeight,
         near: 1,
         far: 1000,
-
         left: window.innerWidth / -2,
         right: window.innerWidth / 2,
         top: window.innerHeight / 2,
         bottom: window.innerHeight / -2,
-
         cubeResolution: 128
       },
-
       helper: false,
-
       pos: {
         x: 0,
         y: 0,
         z: 0,
         set: _set
       },
-
       rot: {
         x: 0,
         y: 0,
         z: 0,
         set: _set
       },
-
       target: {
         x: 0,
         y: 0,
@@ -58,13 +47,10 @@ WHS.Camera = class extends WHS.Object {
 
     super.setParams(params);
 
-    const scope = Object.assign(
-      this,
-      {
-        _type: type,
-        helper: false
-      }
-    );
+    const scope = Object.assign(this, {
+      _type: type,
+      helper: false
+    });
 
     if (WHS.debug)
       console.debug(`@WHS.Camera: Camera ${scope._type} found.`, scope);
@@ -72,48 +58,39 @@ WHS.Camera = class extends WHS.Object {
     return scope;
   }
 
-  /**
-   * Applying shadow & position & rotation.
-   *
-   * @param {...String} tags - Tags that defines what to do with camera
-   * additionally.
-   */
   wrap(...tags) {
-    const _scope = this;
-
     return new Promise((resolve, reject) => {
       try {
-
-        _scope.position.set(
-          _scope.__params.pos.x,
-          _scope.__params.pos.y,
-          _scope.__params.pos.z
+        this.position.set(
+          this.__params.pos.x,
+          this.__params.pos.y,
+          this.__params.pos.z
         );
 
-        _scope.rotation.set(
-          _scope.__params.rot.x,
-          _scope.__params.rot.y,
-          _scope.__params.rot.z
+        this.rotation.set(
+          this.__params.rot.x,
+          this.__params.rot.y,
+          this.__params.rot.z
         );
 
-        if (_scope.__params.useTarget) _scope.lookAt(_scope.__params.target);
+        if (this.__params.useTarget) this.lookAt(this.__params.target);
 
-        if (_scope.__params.helper) {
-          _scope.helper = new THREE.CameraHelper(
-            _scope.getNative()
+        if (this.__params.helper) {
+          this.helper = new THREE.CameraHelper(
+            this.getNative()
           );
         }
 
         tags.forEach(tag => {
-          _scope[tag] = true;
+          this[tag] = true;
         });
 
         if (WHS.debug)
-          console.debug(`@WHS.Camera: Camera ${_scope._type} is ready.`, _scope);
+          console.debug(`@WHS.Camera: Camera ${this._type} is ready.`, this);
 
-        _scope.emit('ready');
+        this.emit('ready');
 
-        resolve(_scope);
+        resolve(this);
       } catch (err) {
         console.error(err.message);
         reject();
@@ -121,12 +98,6 @@ WHS.Camera = class extends WHS.Object {
     });
   }
 
-  /**
-   * Add camera to WHS.World object.
-   *
-   * @param {WHS.World} parent - World, were this camera will be.
-   * @param {...String} tags - Tags for compiling.
-   */
   addTo(parent) {
     this.parent = parent;
 
@@ -210,7 +181,7 @@ WHS.Camera = class extends WHS.Object {
     const _scope = this,
       gEnd = time;
 
-    let animation = new WHS.loop(clock => {
+    let animation = new Loop(clock => {
       const u = clock.getElapsedTime() * 1000 / gEnd,
         vec1 = curve.getPoint(u),
         vec2 = curve.getPoint((u + 0.01) % 1);
@@ -262,4 +233,8 @@ WHS.Camera = class extends WHS.Object {
   getWorldDirection(vector3) {
     return this.getNative().getWorldDirection(vector3);
   }
+}
+
+export {
+  Camera as default
 };
