@@ -8,15 +8,17 @@ class Loop {
   }
 
   start() {
-
+    this.clock.start();
+    this.enabled = true;
   }
 
   stop() {
-
+    this.clock.stop();
+    this.enabled = false;
   }
 
-  remove() {
-
+  execute(time) {
+    return this.func(this.clock, time);
   }
 }
 

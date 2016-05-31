@@ -80,7 +80,7 @@ WHS.World = class extends WHS.Object {
 
     native.set(this, {});
 
-        // INIT.
+    // INIT.
     this._initScene();
     this._initDOM();
     this._initStats();
@@ -88,7 +88,7 @@ WHS.World = class extends WHS.Object {
     this._initRenderer();
     this._initHelpers();
 
-        // NOTE: ==================== Autoresize. ======================
+    // NOTE: ==================== Autoresize. ======================
     const scope = this;
 
     if (this.getParams().autoresize) {
@@ -111,12 +111,12 @@ WHS.World = class extends WHS.Object {
     const scene = new Physijs.Scene();
 
     scene.setGravity(
-            new THREE.Vector3(
-                this.getParams().gravity.x,
-                this.getParams().gravity.y,
-                this.getParams().gravity.z
-            )
-        );
+      new THREE.Vector3(
+        this.getParams().gravity.x,
+        this.getParams().gravity.y,
+        this.getParams().gravity.z
+      )
+    );
 
     this.setScene(scene);
 
@@ -124,9 +124,13 @@ WHS.World = class extends WHS.Object {
     this.children = [];
   }
 
-  addExtension(extension) {
-    this.loops.push(extension); // TODO: Process loops on start
+  addLoop(loop) {
+    this.loops.push(loop); // TODO: Process loops on start
     // like: this.loops.forEach((elem) => elem.start());
+  }
+
+  removeLoop(loop) {
+    this.loops.filter((l) => l !== loop);
   }
 
   /**
@@ -319,9 +323,9 @@ WHS.World = class extends WHS.Object {
    * @params {number} time - The time value that will be passed to loops.
    */
   _execLoops(time) {
-    for (let i = 0; i < WHS.loops.length; i++) {
-      const l = WHS.loops[i];
-      if (l.enabled) l.func(l.clock, time);
+    for (let i = 0; i < this.loops.length; i++) {
+      const e = this.loops[i];
+      if (e.enabled) e.execute(e.clock, time);
     }
   }
 
