@@ -4,7 +4,7 @@ import {loadJson, loadTexture, loadFont} from "../loader";
 
 const extend = Object.assign;
 
-const texture = function (url, options) {
+const texture = (url, options) => {
   const texture = loadTexture(url);
 
   if (options) {
@@ -36,11 +36,11 @@ const texture = function (url, options) {
   return texture;
 };
 
-const loadMaterial = function (material = {}, isPhysics = true) {
+const loadMaterial = (material = {}, isPhysics = true) => {
   if (typeof material.kind !== "string")
     console.error("Type of material is undefined or not a string. @loadMaterial");
 
-  var scope = {
+  const scope = {
     _type: material.kind,
     _restitution: !isNaN(parseFloat(material.restitution)) ?
       material.restitution : !isNaN(parseFloat(material.rest)) ?
@@ -52,7 +52,7 @@ const loadMaterial = function (material = {}, isPhysics = true) {
 
   if (material.texture) material.map = texture(material.texture);
 
-  var params = Object.assign({}, material);
+  let params = Object.assign({}, material);
 
   delete params["kind"];
 

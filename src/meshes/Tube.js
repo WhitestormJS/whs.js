@@ -66,13 +66,13 @@ WHS.Tube = class Tube extends WHS.Shape {
 
     return THREE.Curve.create(
 
-      function (scale) { // custom curve constructor
+      (scale) => { // custom curve constructor
 
         this.scale = scale || 1;
 
       },
 
-      function (t) { // getPoint: t is between 0-1
+      (t) => { // getPoint: t is between 0-1
 
         const tx = t * 3 - 1.5,
           ty = Math.sin(2 * Math.PI * t),

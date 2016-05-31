@@ -7,7 +7,7 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
         ypos: 1
     });
 
-    this.controls = new (function ( camera, mesh, params) {
+    this.controls = new ((camera, mesh, params) => {
         let velocityFactor = 1,
             runVelocity = 0.25;
 
@@ -132,11 +132,11 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
 
         this.enabled = false;
 
-        this.getObject = function () {
+        this.getObject = () => {
             return yawObject;
         };
 
-        this.getDirection = function(targetVec){
+        this.getDirection = (targetVec) => {
             targetVec.set(0,0,-1);
             quat.multiplyVector3(targetVec);
         }
@@ -146,7 +146,7 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
         let inputVelocity = new THREE.Vector3(),
             euler = new THREE.Euler();
 
-        this.update = function ( delta ) {
+        this.update = ( delta ) => {
 
             let moveVec = new THREE.Vector3();
 
@@ -201,7 +201,7 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
         'mozPointerLockElement' in document ||
         'webkitPointerLockElement' in document) {
 
-        var element = document.body;
+        let element = document.body;
 
         this.pointerlockchange = function() {
             if (document.pointerLockElement === element ||
@@ -253,7 +253,7 @@ WHS.World.prototype.FPSControls = function( object, params = {} ) {
 
         if (/Firefox/i.test(navigator.userAgent)) {
 
-            var fullscreenchange = function() {
+            let fullscreenchange = function() {
                 if (document.fullscreenElement === element ||
                     document.mozFullscreenElement === element ||
                     document.mozFullScreenElement === element) {
