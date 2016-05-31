@@ -1,9 +1,9 @@
-import {Clock} from 'three';
+import {Clock as TClock} from 'three';
 
 class Loop {
   constructor(func) {
     this.func = func;
-    this.clock = new Clock();
+    this.clock = new TClock();
     this.enabled = false;
   }
 
