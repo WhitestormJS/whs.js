@@ -1,4 +1,6 @@
-WHS.NormalLight = class NormalLight extends WHS.Light {
+import Light from './Light';
+
+class NormalLight extends Light {
   /**
    * Normal light.
    *
@@ -16,7 +18,7 @@ WHS.NormalLight = class NormalLight extends WHS.Light {
   build(params = {}) {
     const _scope = this;
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       _scope.setNative(new THREE.Light(
         params.light.color
       ));
@@ -24,4 +26,8 @@ WHS.NormalLight = class NormalLight extends WHS.Light {
       resolve();
     });
   }
+}
+
+export {
+  NormalLight as default
 };

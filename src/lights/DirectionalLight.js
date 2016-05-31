@@ -1,4 +1,6 @@
-WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
+import Light from './Light';
+
+class DirectionalLight extends Light {
   /**
    * Directional light.
    *
@@ -17,7 +19,7 @@ WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
   build(params = {}) {
     const _scope = this;
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       _scope.setNative(new THREE.DirectionalLight(
         params.light.color,
         params.light.intensity
@@ -33,4 +35,8 @@ WHS.DirectionalLight = class DirectionalLight extends WHS.Light {
       resolve();
     });
   }
+}
+
+export {
+  DirectionalLight as default
 };

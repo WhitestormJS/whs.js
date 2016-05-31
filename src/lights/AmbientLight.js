@@ -1,4 +1,6 @@
-WHS.AmbientLight = class AmbientLight extends WHS.Light {
+import Light from './Light';
+
+class AmbientLight extends Light {
   constructor(params = {}) {
     super(params, 'ambientlight');
 
@@ -10,7 +12,7 @@ WHS.AmbientLight = class AmbientLight extends WHS.Light {
   build(params = {}) {
     const _scope = this;
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       _scope.setNative(new THREE.AmbientLight(
         params.light.color,
         params.light.intensity
@@ -19,4 +21,8 @@ WHS.AmbientLight = class AmbientLight extends WHS.Light {
       resolve();
     });
   }
+}
+
+export {
+  AmbientLight as default
 };

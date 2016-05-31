@@ -1,4 +1,6 @@
-WHS.HemisphereLight = class HemisphereLight extends WHS.Light {
+import Light from './Light';
+
+class HemisphereLight extends Light {
   /**
    * Hemisphere light.
    *
@@ -18,7 +20,7 @@ WHS.HemisphereLight = class HemisphereLight extends WHS.Light {
   build(params = {}) {
     const _scope = this;
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       _scope.setNative(new THREE.HemisphereLight(
         params.light.skyColor,
         params.light.groundColor,
@@ -35,4 +37,8 @@ WHS.HemisphereLight = class HemisphereLight extends WHS.Light {
       resolve();
     });
   }
+}
+
+export {
+  HemisphereLight as default
 };
