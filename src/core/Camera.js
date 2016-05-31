@@ -1,5 +1,4 @@
 WHS.Camera = class extends WHS.Object {
-
   /**
    * Constructing WHS.Camera object.
    *
@@ -8,15 +7,12 @@ WHS.Camera = class extends WHS.Object {
    * @return {WHS.Camera}
    */
   constructor(params, type) {
-
     if (!type) console.error('@constructor: Please specify " type ".');
 
     const _set = function (x, y, z) {
-
       this.x = x;
       this.y = y;
       this.z = z;
-
     };
 
     params.useTarget = Boolean(params.target);
@@ -74,7 +70,6 @@ WHS.Camera = class extends WHS.Object {
       console.debug(`@WHS.Camera: Camera ${scope._type} found.`, scope);
 
     return scope;
-
   }
 
   /**
@@ -84,11 +79,9 @@ WHS.Camera = class extends WHS.Object {
    * additionally.
    */
   wrap(...tags) {
-
     const _scope = this;
 
     return new Promise((resolve, reject) => {
-
       try {
 
         _scope.position.set(
@@ -106,17 +99,13 @@ WHS.Camera = class extends WHS.Object {
         if (_scope.__params.useTarget) _scope.lookAt(_scope.__params.target);
 
         if (_scope.__params.helper) {
-
           _scope.helper = new THREE.CameraHelper(
             _scope.getNative()
           );
-
         }
 
         tags.forEach(tag => {
-
           _scope[tag] = true;
-
         });
 
         if (WHS.debug)
@@ -125,16 +114,11 @@ WHS.Camera = class extends WHS.Object {
         _scope.emit('ready');
 
         resolve(_scope);
-
       } catch (err) {
-
         console.error(err.message);
         reject();
-
       }
-
     });
-
   }
 
   /**
@@ -144,54 +128,40 @@ WHS.Camera = class extends WHS.Object {
    * @param {...String} tags - Tags for compiling.
    */
   addTo(parent) {
-
     this.parent = parent;
 
     const _helper = this.helper,
       _scope = this;
 
     return new Promise((resolve, reject) => {
-
       try {
-
         _scope.parent.getScene().add(_scope.getNative());
         _scope.parent.children.push(_scope);
 
         if (_helper) _scope.parent.getScene().add(_helper);
-
       } catch (err) {
-
         console.error(err.message);
         reject();
-
       } finally {
-
         if (WHS.debug) {
-
           console.debug(
             `@WHS.Camera: Camera ${_scope._type} was added to world.`,
             [_scope, _scope.parent]
           );
-
         }
 
         resolve(_scope);
 
         _scope.emit('ready');
-
       }
-
     });
-
   }
 
   /**
    * Clone shape.
    */
   clone() {
-
     return new WHS.Shape(this.__params, this._type).copy(this);
-
   }
 
   /**
@@ -200,7 +170,6 @@ WHS.Camera = class extends WHS.Object {
    * @param {WHS.Camera} source - Source object, that will be applied to this.
    */
   copy(source) {
-
     this.mesh = source.mesh.clone();
 
     this.wrap();
@@ -211,52 +180,37 @@ WHS.Camera = class extends WHS.Object {
     this._type = source._type;
 
     return this;
-
   }
 
   setNative(camera) {
-
     return native.set(this, camera);
-
   }
 
   getNative() {
-
     return native.get(this);
-
   }
 
   get position() {
-
     return this.getNative().position;
-
   }
 
   set position(vector3) {
-
     return this.getNative().position.copy(vector3);
-
   }
 
   get rotation() {
-
     return this.getNative().rotation;
-
   }
 
   set rotation(euler) {
-
     return this.getNative().rotation.copy(euler);
-
   }
 
   follow(curve, time = 1000, loop, lookAt) {
-
     const _scope = this,
       gEnd = time;
 
     let animation = new WHS.loop(clock => {
-
       const u = clock.getElapsedTime() * 1000 / gEnd,
         vec1 = curve.getPoint(u),
         vec2 = curve.getPoint((u + 0.01) % 1);
@@ -269,19 +223,15 @@ WHS.Camera = class extends WHS.Object {
           lookAt instanceof THREE.Curve
           || lookAt instanceof THREE.CurvePath
         ) _scope.lookAt(lookAt.getPoint(u));
-
     });
 
     animation.start();
 
     if (loop) {
-
       setInterval(() => {
-
         animation.stop();
 
         animation = new WHS.loop(clock => {
-
           const u = clock.getElapsedTime() * 1000 / gEnd,
             vec1 = curve.getPoint(u),
             vec2 = curve.getPoint((u + 0.01) % 1);
@@ -294,35 +244,22 @@ WHS.Camera = class extends WHS.Object {
               lookAt instanceof THREE.Curve
               || lookAt instanceof THREE.CurvePath
             ) _scope.lookAt(lookAt.getPoint(u));
-
         });
 
         animation.start();
-
       }, time);
-
     } else {
-
       setTimeout(() => {
-
         animation.stop();
-
       }, time);
-
     }
-
   }
 
   lookAt(vector3) {
-
     return this.getNative().lookAt(vector3);
-
   }
 
   getWorldDirection(vector3) {
-
     return this.getNative().getWorldDirection(vector3);
-
   }
-
 };

@@ -1,12 +1,4 @@
-/**
- * © Alexander Buzin, 2014-2015
- * Site: http://alexbuzin.me/
- * Email: alexbuzin88@gmail.com
-*/
-
-/** Shape super class */
 WHS.Shape = class extends WHS.Object {
-
   /**
    * Constructing WHS.Shape object.
    *
@@ -15,15 +7,12 @@ WHS.Shape = class extends WHS.Object {
    * @return {WHS.Shape}
    */
   constructor(params, type) {
-
     if (!type) console.error('@constructor: Please specify " type ".');
 
     const _set = function (x, y, z) {
-
       this.x = x;
       this.y = y;
       this.z = z;
-
     };
 
     super({
@@ -92,15 +81,11 @@ WHS.Shape = class extends WHS.Object {
     if (WHS.debug) console.debug(`@WHS.Shape: Shape ${scope._type} found.`, scope);
 
     return scope;
-
   }
 
   wait(promise) {
-
     this.wait.push(promise);
-
     return this;
-
   }
 
   /**
@@ -110,19 +95,12 @@ WHS.Shape = class extends WHS.Object {
    * additionally.
    */
   wrap(...tags) {
-
-    'use strict';
-
     const _scope = this;
 
     if (tags.indexOf('wait') >= 0) {
-
       return new Promise((resolve, reject) => {
-
         Promise.all(_scope.wait).then(() => {
-
           try {
-
             _scope.getNative().castShadow = true;
             _scope.getNative().receiveShadow = true;
 
@@ -146,40 +124,33 @@ WHS.Shape = class extends WHS.Object {
 
             // Box helper.
             if (_scope.__params.helpers.box) {
-
               _scope.helpers.box = new THREE.BoxHelper(
                 _scope.getNative()
               );
-
             }
 
             // Bounding box helper.
             if (_scope.__params.helpers.boundingBox) {
-
               _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(
                 _scope.getNative(),
                 _scope.__params.helpers.boundingBox.color
                 ? _scope.__params.helpers.boundingBox.color
                 : 0xffffff
               );
-
             }
 
             // Edges helper.
             if (_scope.__params.helpers.edges) {
-
               _scope.helpers.edges = new THREE.EdgesHelper(
                 _scope.getNative(),
                 _scope.__params.helpers.edges.color
                 ? _scope.__params.helpers.edges.color
                 : 0xffffff
               );
-
             }
 
             // faceNormals helper.
             if (_scope.__params.helpers.faceNormals) {
-
               _scope.helpers.faceNormals = new THREE.FaceNormalsHelper(
                 _scope.getNative(),
                 _scope.__params.helpers.faceNormals.size
@@ -192,12 +163,10 @@ WHS.Shape = class extends WHS.Object {
                 ? _scope.__params.helpers.faceNormals.linewidth
                 : 1
               );
-
             }
 
             // vertexNormals helper.
             if (_scope.__params.helpers.vertexNormals) {
-
               _scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(
                 _scope.getNative(),
                 _scope.__params.helpers.vertexNormals.size
@@ -210,7 +179,6 @@ WHS.Shape = class extends WHS.Object {
                 ? _scope.__params.helpers.vertexNormals.linewidth
                 : 1
               );
-
             }
 
             if (WHS.debug) console.debug(`@WHS.Shape: Shape ${_scope._type} is ready.`, _scope);
@@ -218,24 +186,15 @@ WHS.Shape = class extends WHS.Object {
             _scope.emit('ready');
 
             resolve();
-
           } catch (err) {
-
             console.error(err.message);
             reject();
-
           }
-
         });
-
       });
-
     } else {
-
       return new Promise((resolve, reject) => {
-
         try {
-
           _scope.getNative().castShadow = true;
           _scope.getNative().receiveShadow = true;
 
@@ -259,40 +218,33 @@ WHS.Shape = class extends WHS.Object {
 
           // Box helper.
           if (_scope.__params.helpers.box) {
-
             _scope.helpers.box = new THREE.BoxHelper(
               _scope.getNative()
             );
-
           }
 
           // Bounding box helper.
           if (_scope.__params.helpers.boundingBox) {
-
             _scope.helpers.boundingBox = new THREE.BoundingBoxHelper(
               _scope.getNative(),
               _scope.__params.helpers.boundingBox.color
               ? _scope.__params.helpers.boundingBox.color
               : 0xffffff
             );
-
           }
 
           // Edges helper.
           if (_scope.__params.helpers.edges) {
-
             _scope.helpers.edges = new THREE.EdgesHelper(
               _scope.getNative(),
               _scope.__params.helpers.edges.color
               ? _scope.__params.helpers.edges.color
               : 0xffffff
             );
-
           }
 
           // faceNormals helper.
           if (_scope.__params.helpers.faceNormals) {
-
             _scope.helpers.faceNormals = new THREE.FaceNormalsHelper(
               _scope.getNative(),
               _scope.__params.helpers.faceNormals.size
@@ -305,12 +257,10 @@ WHS.Shape = class extends WHS.Object {
               ? _scope.__params.helpers.faceNormals.linewidth
               : 1
             );
-
           }
 
           // vertexNormals helper.
           if (_scope.__params.helpers.vertexNormals) {
-
             _scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(
               _scope.getNative(),
               _scope.__params.helpers.vertexNormals.size
@@ -323,7 +273,6 @@ WHS.Shape = class extends WHS.Object {
               ? _scope.__params.helpers.vertexNormals.linewidth
               : 1
             );
-
           }
 
           if (WHS.debug) console.debug(`@WHS.Shape: Shape ${_scope._type} is ready.`, _scope);
@@ -331,18 +280,12 @@ WHS.Shape = class extends WHS.Object {
           resolve();
 
           _scope.emit('ready');
-
         } catch (err) {
-
           console.error(err.message);
           reject();
-
         }
-
       });
-
     }
-
   }
 
   /**
@@ -352,22 +295,15 @@ WHS.Shape = class extends WHS.Object {
    * @param {...String} tags - Tags for compiling.
    */
   addTo(parent, ...tags) {
-
-    'use strict';
-
-    this.parent = parent;
-
     const _helpers = this.helpers,
       _scope = this;
 
+    _scope.parent = parent;
+
     if (tags.indexOf('wait') >= 0) {
-
       return new Promise((resolve, reject) => {
-
         Promise.all(_scope.wait).then(() => {
-
           try {
-
             const parentNative = _scope.parent instanceof WHS.World
               ? _scope.parent.getScene()
               : _scope.parent.getNative();
@@ -384,51 +320,32 @@ WHS.Shape = class extends WHS.Object {
             if (_scope.__params.helpers.faceNormals) parentNative.add(_helpers.faceNormals);
 
             if (_scope.__params.helpers.vertexNormals) parentNative.add(_helpers.vertexNormals);
-
           } catch (err) {
-
             console.error(err.message);
             reject();
-
           } finally {
-
             if (_scope._wait) {
-
               _scope.getNative().addEventListener('ready', () => {
-
                 resolve(_scope);
-
               });
-
             } else resolve(_scope);
 
             _scope.getNative().addEventListener('collide', () => {
-
               _scope.emit('collide');
-
             });
 
             if (WHS.debug) {
-
               console.debug(
                 `@WHS.Shape: Shape ${_scope._type} was added to world.`,
                 [_scope, _scope.parent]
               );
-
             }
-
           }
-
         });
-
       });
-
     } else {
-
       return new Promise((resolve, reject) => {
-
         try {
-
           const parentNative = _scope.parent instanceof WHS.World
             ? _scope.parent.getScene()
             : _scope.parent.getNative();
@@ -450,65 +367,45 @@ WHS.Shape = class extends WHS.Object {
 
           if (_scope.__params.helpers.vertexNormals)
             parentNative.add(_helpers.vertexNormals);
-
         } catch (err) {
-
           console.error(err.message);
           reject();
-
         } finally {
-
           if (_scope._wait) {
-
             _scope.getNative().addEventListener('ready', () => {
-
               resolve(_scope);
-
             });
-
           } else resolve(_scope);
 
           _scope.getNative().addEventListener('collide', () => {
-
             _scope.emit('ready');
-
           });
 
           if (WHS.debug) {
-
             console.debug(
                 `@WHS.Shape: Shape ${_scope._type} was added to world.`,
                 [_scope, _scope.parent]
               );
-
           }
-
         }
-
       });
-
     }
-
   }
 
   /**
    * Initialize shape's material object.
    */
   _initMaterial(params) {
-
     return this.physics
       ? WHS.API.loadMaterial(params)._material
       : WHS.API.loadMaterial(params)._materialP;
-
   }
 
   /**
    * Clone shape.
    */
   clone() {
-
     return new WHS.Shape(this.getParams(), this._type).copy(this);
-
   }
 
   /**
@@ -517,7 +414,6 @@ WHS.Shape = class extends WHS.Object {
    * @param {WHS.Shape} source - Source object, that will be applied to this.
    */
   copy(source) {
-
     this.setNative(source.getNative().clone());
 
     console.log(source.rotation);
@@ -530,7 +426,6 @@ WHS.Shape = class extends WHS.Object {
     this._type = source._type;
 
     return this;
-
   }
 
   /**
@@ -539,7 +434,6 @@ WHS.Shape = class extends WHS.Object {
    * @return {THREE.Shape} - this.
    */
   remove() {
-
     this.parent.getScene().remove(this.getNative());
 
     this.parent.children.splice(this.parent.children.indexOf(this), 1);
@@ -548,173 +442,125 @@ WHS.Shape = class extends WHS.Object {
     this.emit('remove');
 
     if (WHS.debug) {
-
       console.debug(
         `@WHS.Shape: Shape ${this._type} was removed from world`,
         [this]
       );
-
     }
 
     return this;
-
   }
 
   /**
    * @return {WHS.World} - World object.
    */
   getWorld() {
-
     let p = this.parent;
 
     while (!(p instanceof WHS.World)) {
-
       if (p) p = p.parent;
       else return false;
-
     }
 
     return p;
-
   }
 
   get nposition() {
-
     return this.getNative().position;
-
   }
 
   get nrotation() {
-
     return this.getNative().position;
-
   }
 
   get position() {
-
     this.getNative().__dirtyPosition = true;
     return this.getNative().position;
-
   }
 
   set position(vector3) {
-
     this.getNative().__dirtyPosition = true;
     return this.getNative().position.copy(vector3);
-
   }
 
   get rotation() {
-
     this.getNative().__dirtyRotation = true;
     return this.getNative().rotation;
-
   }
 
   set rotation(euler) {
-
     this.getNative().__dirtyRotation = true;
     this.getNative().rotation.copy(euler);
 
     return this.getNative().rotation;
-
   }
 
   get scale() {
-
     return this.getNative().scale;
-
   }
 
   set scale(vector3) {
-
     this.getNative().scale = vector3;
     return this.getNative().scale;
-
   }
 
   /* Access private data */
 
   setNative(mesh) {
-
     return native.set(this, mesh);
-
   }
 
   getNative() {
-
     return native.get(this);
-
   }
 
   setMaterial(material) {
-
     native.get(this).material = material;
     return native.get(this).material;
-
   }
 
   setAngularVelocity(...args) {
-
     return this.getNative().setAngularVelocity(...args);
-
   }
 
   setLinearVelocity(...args) {
-
     return this.getNative().setLinearVelocity(...args);
-
   }
 
   follow(curve, time = 1000, loop) {
-
     const _scope = this,
       gEnd = time;
 
     let animation = new WHS.loop(clock => {
-
       const u = clock.getElapsedTime() * 1000 / gEnd,
         vec1 = curve.getPoint(u % 1),
         vec2 = curve.getPoint((u + 0.01) % 1);
 
       _scope.position.set(vec1.x, vec1.y, vec1.z);
       _scope.getNative().lookAt(vec2);
-
     });
 
     animation.start();
 
     if (loop) {
-
       setInterval(() => {
-
         animation.stop();
 
         animation = new WHS.loop(clock => {
-
           const u = clock.getElapsedTime() * 1000 / gEnd,
             vec1 = curve.getPoint(u % 1),
             vec2 = curve.getPoint((u + 0.01) % 1);
 
           _scope.position.set(vec1.x, vec1.y, vec1.z);
           _scope.getNative().lookAt(vec2);
-
         });
 
         animation.start();
-
       }, time);
-
     } else {
-
       setTimeout(() => {
-
         animation.stop();
-
       }, time);
-
     }
-
   }
-
 };
