@@ -1,3 +1,12 @@
+import {
+  // Helpers.
+  CameraHelper as TCameraHelper,
+  // Other.
+  Vector3 as TVector3,
+  Curve as TCurve,
+  CurvePath as TCurvePath
+} from 'three';
+
 import Object from './Object';
 
 class Camera extends Object {
@@ -76,7 +85,7 @@ class Camera extends Object {
         if (this.__params.useTarget) this.lookAt(this.__params.target);
 
         if (this.__params.helper) {
-          this.helper = new THREE.CameraHelper(
+          this.helper = new TCameraHelper(
             this.getNative()
           );
         }
@@ -189,10 +198,10 @@ class Camera extends Object {
       _scope.position.set(vec1.x, vec1.y, vec1.z);
 
       if (!lookAt) _scope.lookAt(vec2);
-      else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+      else if (lookAt instanceof TVector3) _scope.lookAt(lookAt);
       else if (
-          lookAt instanceof THREE.Curve
-          || lookAt instanceof THREE.CurvePath
+          lookAt instanceof TCurve
+          || lookAt instanceof TCurvePath
         ) _scope.lookAt(lookAt.getPoint(u));
     });
 
@@ -210,10 +219,10 @@ class Camera extends Object {
           _scope.position.set(vec1.x, vec1.y, vec1.z);
 
           if (!lookAt) _scope.lookAt(vec2);
-          else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
+          else if (lookAt instanceof TVector3) _scope.lookAt(lookAt);
           else if (
-              lookAt instanceof THREE.Curve
-              || lookAt instanceof THREE.CurvePath
+              lookAt instanceof TCurve
+              || lookAt instanceof TCurvePath
             ) _scope.lookAt(lookAt.getPoint(u));
         });
 

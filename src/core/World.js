@@ -1,3 +1,12 @@
+import {
+  PCFSoftShadowMap as TPCFSoftShadowMap,
+  Vector3 as TVector3,
+  WebGLRenderer as TWebGLRenderer,
+  AxisHelper as TAxisHelper,
+  GridHelper as TGridHelper,
+  Clock as TClock
+} from 'three';
+
 WHS.World = class extends WHS.Object {
   /**
    * Create a 3D world and define defaults.
@@ -6,11 +15,6 @@ WHS.World = class extends WHS.Object {
    * @return {World} A 3D world whs object.
    */
   constructor(params = {}) {
-    if (!THREE)
-      console.warn('WhitestormJS requires Three.js. {Object} THREE is undefined.');
-    if (!Physijs)
-      console.warn('WhitestormJS requires Physi.js. {Object} Physijs is undefined.');
-
     super({
 
       stats: false,
@@ -18,7 +22,7 @@ WHS.World = class extends WHS.Object {
 
       shadowmap: {
         enabled: true,
-        type: THREE.PCFSoftShadowMap
+        type: TPCFSoftShadowMap
       },
 
       helpers: {
@@ -111,7 +115,7 @@ WHS.World = class extends WHS.Object {
     const scene = new Physijs.Scene();
 
     scene.setGravity(
-      new THREE.Vector3(
+      new TVector3(
         this.getParams().gravity.x,
         this.getParams().gravity.y,
         this.getParams().gravity.z
@@ -219,7 +223,7 @@ WHS.World = class extends WHS.Object {
     this.render = true;
 
         // Renderer.
-    this.setRenderer(new THREE.WebGLRenderer());
+    this.setRenderer(new TWebGLRenderer());
     this.getRenderer().setClearColor(this.getParams().background);
 
         // Shadowmap.
@@ -246,7 +250,7 @@ WHS.World = class extends WHS.Object {
   _initHelpers() {
     if (this.getParams().helpers.axis) {
       this.getScene().add(
-        new THREE.AxisHelper(
+        new TAxisHelper(
           this.getParams().helpers.axis.size
           ? this.getParams().helpers.axis.size
           : 5
@@ -256,7 +260,7 @@ WHS.World = class extends WHS.Object {
 
     if (this.getParams().helpers.grid) {
       this.getScene().add(
-        new THREE.GridHelper(
+        new TGridHelper(
           this.getParams().helpers.grid.size
           ? this.getParams().helpers.grid.size
           : 10,
@@ -272,7 +276,7 @@ WHS.World = class extends WHS.Object {
    * Start animation.
    */
   start() {
-    const clock = new THREE.Clock(),
+    const clock = new TClock(),
       scope = this,
       scene = scope.getScene(),
       cameraNative = scope.getCamera().getNative(),
