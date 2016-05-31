@@ -95,11 +95,8 @@
           "capIsNew": true
         }
       ],
-      "xo/filename-case": 1
-    },
-    "globals": [
-      "WHS",
-      "THREE"
-    ]
+      "babel/arrow-parens": 0,
+      "xo/filename-case": 0
+    }
   }
 }
