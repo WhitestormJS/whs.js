@@ -1,20 +1,8 @@
-WHS.Torus = class Torus extends WHS.Shape {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
-  /**
-   * Creates a torus
-   *
-   * @param {Object} params - Torus options
-   * @param {Object} params.geometry - Torus geometry options
-   * @param {Number} params.geometry.radius - Torus radius
-   * @param {Number} params.geometry.tube - Torus tube size
-   * @param {Number} params.geometry.radialSegments - Amount of radial segments
-   * @param {Number} params.geometry.tubularSegments - Amount of tubular segments
-   * @param {Number} params.geometry.arc - Torus arc
-   * @param {Material} params.material - Torus material
-   * @param {Number} params.mass - Torus mass
-   */
+class Torus extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'torus');
 
     WHS.API.extend(params.geometry, {
@@ -28,28 +16,22 @@ WHS.Torus = class Torus extends WHS.Shape {
     });
 
     this.build(params);
-
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.TorusGeometry(
-
           params.geometry.radius,
           params.geometry.tube,
           params.geometry.radialSegments,
           params.geometry.tubularSegments,
           params.geometry.arc
-
         ),
 
         material,
@@ -57,18 +39,14 @@ WHS.Torus = class Torus extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
 
-  /**
-   * Clone torus.
-   */
   clone() {
-
     return new WHS.Torus(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Torus as default
 };

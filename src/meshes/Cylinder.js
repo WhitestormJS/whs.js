@@ -1,19 +1,8 @@
-WHS.Cylinder = class Cylinder extends WHS.Shape {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
-  /**
-   * Create a cylinder.
-   *
-   * @param {Object} params - Cylinder options
-   * @param {Object} params.geometry - Cylinder geometry
-   * @param {Number} params.geometry.radiusTop - The cylinder's top radius
-   * @param {Number} params.geometry.radiusBottom - The cylinder's bottom radius
-   * @param {Number} params.geometry.height - The cylinder's height
-   * @param {Number} params.geometry.radiusSegments - The number of radius segments the cylinder has
-   * @param {Material} params.material - The cylinder's material
-   * @param {Number} params.mass - The cylinder's mass
-   */
+class Cylinder extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'cylinder');
 
     WHS.API.extend(params.geometry, {
@@ -28,18 +17,15 @@ WHS.Cylinder = class Cylinder extends WHS.Shape {
     this.build(params);
 
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.CylinderMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.CylinderMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.CylinderGeometry(
 
           params.geometry.radiusTop,
@@ -54,18 +40,14 @@ WHS.Cylinder = class Cylinder extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
 
-  /**
-   * Clone cylinder.
-   */
   clone() {
-
     return new WHS.Cylinder(this.getParams(), this._type).copy(this);
-
   }
+};
 
+export {
+  Cylinder as default
 };

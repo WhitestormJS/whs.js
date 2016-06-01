@@ -1,12 +1,4 @@
-import {
-  CubeGeometry,
-  SphereGeometry,
-  MeshBasicMaterial,
-  Mesh,
-  ImageUtils,
-  BackSide
-} from 'three';
-
+import THREE from 'three';
 import Shape from '../core/Shape';
 
 class Skybox extends Shape {
@@ -28,12 +20,12 @@ class Skybox extends Shape {
         const directions = ['xpos', 'xneg', 'ypos', 'yneg', 'zpos', 'zneg'],
           matArray = [];
 
-        skyGeometry = new CubeGeometry(params.radius, params.radius, params.radius);
+        skyGeometry = new THREE.CubeGeometry(params.radius, params.radius, params.radius);
 
         for (let i = 0; i < 6; i++) {
           matArray.push(new MeshBasicMaterial({
-            map: ImageUtils.loadTexture(params.path + directions[i] + params.imgSuffix),
-            side: BackSide,
+            map: THREE.ImageUtils.loadTexture(params.path + directions[i] + params.imgSuffix),
+            side: THREE.BackSide,
             fog: params.fog
           }));
         }
@@ -43,8 +35,8 @@ class Skybox extends Shape {
         break;
       }
       case 'sphere': {
-        skyGeometry = new SphereGeometry(params.radius / 2, 60, 40);
-        skyMat = new MeshBasicMaterial({
+        skyGeometry = new THREE.SphereGeometry(params.radius / 2, 60, 40);
+        skyMat = new THREE.MeshBasicMaterial({
           map: ImageUtils.loadTexture(params.path + params.imgSuffix),
           side: BackSide,
           fog: params.fog
@@ -55,7 +47,7 @@ class Skybox extends Shape {
       default:
     }
 
-    const mesh = new Mesh(skyGeometry, skyMat);
+    const mesh = new THREE.Mesh(skyGeometry, skyMat);
     mesh.renderDepth = 1000.0;
 
     super.setNative(mesh);

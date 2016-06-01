@@ -1,7 +1,4 @@
-import {
-  Geometry as TGeometry,
-  Line as TLine
-} from 'three';
+import THREE from 'three';
 
 import loadMaterial from '../extras/api';
 import Object from './Object';
@@ -22,11 +19,11 @@ class Curve extends Object {
 
     super.setParams(params);
 
-    const geometry = new TGeometry();
+    const geometry = new THREE.Geometry();
 
     geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
 
-    const curve = new TLine(
+    const curve = new THREE.Line(
         geometry,
         loadMaterial(params.material, false)._material
     );

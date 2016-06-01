@@ -1,20 +1,8 @@
-WHS.Torusknot = class Torusknot extends WHS.Shape {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
-  /**
-   * Creates a torus knot
-   *
-   * @param {Object} params - Knot options
-   * @param {Object} params.geometry - Knot geometry options
-   * @param {Number} params.geometry.radius - Knot radius
-   * @param {Number} params.geometry.tube - Knot tube size
-   * @param {Number} params.geometry.radialSegments - Amount of radial segments
-   * @param {Number} params.geometry.tubularSegments - Amount of tubular segments
-   * @param {Number} params.geometry.p - P
-   * @param {Number} params.geometry.q - Q
-   * @param {Number} params.geometry.heightScale - Knot height scale
-   */
+class Torusknot extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'Torusknot');
 
     WHS.API.extend(params.geometry, {
@@ -32,18 +20,15 @@ WHS.Torusknot = class Torusknot extends WHS.Shape {
     this.build(params);
 
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.TorusKnotGeometry(
 
           params.geometry.radius,
@@ -61,18 +46,14 @@ WHS.Torusknot = class Torusknot extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
 
-  /**
-   * Clone torusknot.
-   */
   clone() {
-
     return new WHS.Torusknot(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Torusknot as default
 };

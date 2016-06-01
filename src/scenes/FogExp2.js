@@ -1,3 +1,5 @@
+import THREE from 'three';
+
 class FogExp2 {
   constructor(params = {}) {
     WHS.API.extend(params, {

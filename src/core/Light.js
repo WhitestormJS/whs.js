@@ -1,8 +1,4 @@
-import {
-  Vector3 as TVector3,
-  Curve as TCurve,
-  CurvePath as TCurvePath
-} from 'three';
+import THREE from 'three';
 
 import Loop from '../extensions/Loop';
 import Object from './Object';
@@ -296,10 +292,10 @@ class Light extends Object {
       _scope.position.set(vec1.x, vec1.y, vec1.z);
 
       if (!lookAt) _scope.lookAt(vec2);
-      else if (lookAt instanceof TVector3) _scope.lookAt(lookAt);
+      else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
       else if (
-          lookAt instanceof TCurve
-          || lookAt instanceof TCurvePath
+          lookAt instanceof THREE.Curve
+          || lookAt instanceof THREE.CurvePath
         ) _scope.lookAt(lookAt.getPoint(u));
     });
 
@@ -310,17 +306,17 @@ class Light extends Object {
         animation.stop();
 
         animation = new Loop(clock => {
-          const u = clock.getElapsedTime() * 1000 / gEnd,
+          const u = clock.getElapsedtime() * 1000 / gEnd,
             vec1 = curve.getPoint(u),
             vec2 = curve.getPoint((u + 0.01) % 1);
 
           _scope.position.set(vec1.x, vec1.y, vec1.z);
 
           if (!lookAt) _scope.lookAt(vec2);
-          else if (lookAt instanceof TVector3) _scope.lookAt(lookAt);
+          else if (lookAt instanceof THREE.Vector3) _scope.lookAt(lookAt);
           else if (
-              lookAt instanceof TCurve
-              || lookAt instanceof TCurvePath
+              lookAt instanceof THREE.Curve
+              || lookAt instanceof THREE.CurvePath
             ) _scope.lookAt(lookAt.getPoint(u));
         });
 

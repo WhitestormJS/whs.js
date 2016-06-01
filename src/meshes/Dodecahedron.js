@@ -1,17 +1,8 @@
-WHS.Dodecahedron = class Dodecahedron extends WHS.Shape {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
-  /**
-   * Create a dodecahedron
-   *
-   * @param {Object} params - The dodecahedron's options
-   * @param {Object} params.geometry - The dodecahedron's geometry
-   * @param {Number} params.geometry.radius - The dodecahedron's radius
-   * @param {Number} params.geometry.detail - The dodecahedron's detail
-   * @param {Material} params.material - The dodecahedron's material
-   * @param {Number} params.mass - The dodecahedron's mass
-   */
+class Dodecahedron extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'dodecahedron');
 
     WHS.API.extend(params.geometry, {
@@ -22,20 +13,16 @@ WHS.Dodecahedron = class Dodecahedron extends WHS.Shape {
     });
 
     this.build(params);
-
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.DodecahedronGeometry(
 
           params.geometry.radius,
@@ -48,18 +35,14 @@ WHS.Dodecahedron = class Dodecahedron extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
 
-  /**
-   * Clone dodecahedron.
-   */
   clone() {
-
     return new WHS.Dodecahedron(this.getParams(), this._type).copy(this);
-
   }
+}
 
-};
+export {
+  Dodecahedron as default
+}
