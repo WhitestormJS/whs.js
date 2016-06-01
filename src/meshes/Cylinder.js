@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Cylinder extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Cylinder extends Shape {
   constructor(params = {}) {
     super(params, 'cylinder');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       radiusTop: 1,
       radiusBottom: 1,
@@ -44,9 +47,9 @@ class Cylinder extends WHS.Shape {
   }
 
   clone() {
-    return new WHS.Cylinder(this.getParams(), this._type).copy(this);
+    return new Cylinder(this.getParams(), this._type).copy(this);
   }
-};
+}
 
 export {
   Cylinder as default
