@@ -11,7 +11,7 @@ function config({production}) {
       path: join(__dirname, 'build'),
       filename: 'whitestorm.js',
       library: 'WHS',
-      libraryTarget: 'umd'
+      libraryTarget: 'var'
     },
     module: {
       loaders: [

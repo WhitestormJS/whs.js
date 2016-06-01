@@ -1,0 +1,1 @@
+{"version":3,"sources":["extras/index.js"],"names":[],"mappings":";;;;;;;;;;;AAEA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;;;;;;;;;;QAFO,U;QACA,Y","file":"index.js","sourcesContent":["export FPSControl from './controls/FPSControl';\r\nexport OrbitControl from './controls/OrbitControl';\r\nexport * from './api';\r\n"]}
