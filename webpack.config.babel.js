@@ -30,6 +30,9 @@ function config({production}) {
           compress: {
             warnings: false
           }
+        }),
+        new webpack.ProvidePlugin({
+          THREE: 'three'
         })
       ]
       : []
