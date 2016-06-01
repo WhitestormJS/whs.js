@@ -44,5 +44,5 @@ class Box extends Shape {
 }
 
 export {
-  Box as default;
-}
+  Box as default
+};
