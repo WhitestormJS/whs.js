@@ -1,4 +1,4 @@
-import Light from './Light';
+import Light from '../core/Light';
 
 class HemisphereLight extends Light {
   /**
