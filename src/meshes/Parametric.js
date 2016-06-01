@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Parametric extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Parametric extends Shape {
   constructor(params = {}) {
     super(params, 'parametric');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       func() {},
       slices: 10,
@@ -45,7 +48,7 @@ class Parametric extends WHS.Shape {
    * Clone parametric.
    */
   clone() {
-    return new WHS.Parametric(this.getParams(), this._type).copy(this);
+    return new Parametric(this.getParams(), this._type).copy(this);
   }
 }
 

@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Text extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend, loadJSON, loadMaterial} from '../extras/api';
+
+class Text extends Shape {
   constructor(params = {}) {
     super(params, 'text');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
       text: 'Hello World!',
 
       parameters: {
@@ -29,7 +32,7 @@ class Text extends WHS.Shape {
       material = super._initMaterial(params.material);
 
     const promise = new Promise((resolve) => {
-      WHS.API.loadFont(params.geometry.parameters.font, font => {
+      loadFont(params.geometry.parameters.font, font => {
         params.geometry.parameters.font = font;
 
         _scope.setNative(new Mesh(
@@ -50,9 +53,9 @@ class Text extends WHS.Shape {
 
     return promise;
   }
-  
+
   clone() {
-    return new WHS.Text(this.getParams(), this._type).copy(this);
+    return new Text(this.getParams(), this._type).copy(this);
   }
 }
 

@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Sphere extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Sphere extends Shape {
   constructor(params = {}) {
     super(params, 'sphere');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       radius: 1,
       segmentA: 32,
@@ -39,9 +42,9 @@ class Sphere extends WHS.Shape {
       resolve();
     });
   }
-  
+
   clone() {
-    return new WHS.Sphere(this.getParams(), this._type).copy(this);
+    return new Sphere(this.getParams(), this._type).copy(this);
   }
 }
 

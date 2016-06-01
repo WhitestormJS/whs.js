@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Octahedron extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Octahedron extends Shape {
   constructor(params = {}) {
     super(params, 'octahedron');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       radius: 1,
       detail: 0
@@ -37,7 +40,7 @@ class Octahedron extends WHS.Shape {
   }
 
   clone() {
-    return new WHS.Octahedron(this.getParams(), this._type).copy(this);
+    return new Octahedron(this.getParams(), this._type).copy(this);
   }
 }
 
