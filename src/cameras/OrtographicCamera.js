@@ -1,3 +1,4 @@
+import {OrtographicCamera as TOrtographicCamera} from 'three';
 import Camera from '../core/Camera';
 
 class OrtographicCamera extends Camera {
@@ -10,7 +11,7 @@ class OrtographicCamera extends Camera {
 
   build(params = {}) {
     return new Promise((resolve) => {
-      this.setNative(new THREE.OrtographicCamera(
+      this.setNative(new TOrtographicCamera(
         params.camera.left,
         params.camera.right,
         params.camera.top,
