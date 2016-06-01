@@ -1,4 +1,4 @@
-import {CubeCamera as TCubeCamera} from 'three';
+import THREE from 'three';
 import Camera from '../core/Camera';
 
 class CubeCamera extends Camera {
@@ -11,7 +11,7 @@ class CubeCamera extends Camera {
 
   build(params = {}) {
     return new Promse((resolve) => {
-      this.setNative(new TCubeCamera(
+      this.setNative(new THREE.CubeCamera(
         params.camera.near,
         params.camera.far,
         params.camera.cubeResolution
