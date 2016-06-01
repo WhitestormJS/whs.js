@@ -1,14 +1,15 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Lathe extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Lathe extends Shape {
   constructor(params = {}) {
     super(params, 'lathe');
 
-    WHS.API.extend(params.geometry, {
-
+    extend(params.geometry, {
       points: []
-
     });
 
     this.build(params);
@@ -34,11 +35,8 @@ class Lathe extends WHS.Shape {
     });
   }
 
-  /**
-   * Clone lathe.
-   */
   clone() {
-    return new WHS.Lathe(this.getParams(), this._type).copy(this);
+    return new Lathe(this.getParams(), this._type).copy(this);
   }
 }
 

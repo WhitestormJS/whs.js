@@ -1,15 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
-import Shape from '../core/Shape';
 
-import THREE from 'three';
-import Physijs from 'whitestormjs-physijs';
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
 
 class Box extends Shape {
   constructor(params = {}) {
     super(params, 'box');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
       width: 1,
       height: 1,
       depth: 1

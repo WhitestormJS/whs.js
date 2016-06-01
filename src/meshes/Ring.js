@@ -1,10 +1,13 @@
 import THREE from 'three';
 
-class Ring extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Ring extends Shape {
   constructor(params = {}) {
     super(params, 'ring');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       innerRadius: 0,
       outerRadius: 50,
@@ -44,7 +47,7 @@ class Ring extends WHS.Shape {
   }
 
   clone() {
-    return new WHS.Ring(this.getParams(), this._type).copy(this);
+    return new Ring(this.getParams(), this._type).copy(this);
   }
 }
 

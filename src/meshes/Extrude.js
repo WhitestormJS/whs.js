@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Extrude extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Extrude extends Shape {
   constructor(params = {}) {
     super(params, 'extrude');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       shapes: [],
       options: {}
@@ -13,7 +16,6 @@ class Extrude extends WHS.Shape {
     });
 
     this.build(params);
-
     super.wrap();
   }
 
@@ -25,10 +27,8 @@ class Extrude extends WHS.Shape {
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
         new THREE.ExtrudeGeometry(
-
           params.geometry.shapes,
           params.geometry.options
-
         ),
 
         material,
@@ -40,7 +40,7 @@ class Extrude extends WHS.Shape {
   }
 
   clone() {
-    return new WHS.Extrude(this.getParams(), this._type).copy(this);
+    return new Extrude(this.getParams(), this._type).copy(this);
   }
 }
 

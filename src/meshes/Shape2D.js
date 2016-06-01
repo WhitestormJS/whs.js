@@ -1,13 +1,14 @@
 import THREE from 'three';
 
-class Shape2D extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Shape2D extends Shape {
   constructor(params = {}) {
     super(params, 'shape2D');
 
-    WHS.API.extend(params.geometry, {
-
+    extend(params.geometry, {
       shapes: []
-
     });
 
     super.build(params);
@@ -32,7 +33,7 @@ class Shape2D extends WHS.Shape {
   }
 
   clone() {
-    return new WHS.Shape2D(this.getParams(), this._type).copy(this);
+    return new Shape2D(this.getParams(), this._type).copy(this);
   }
 }
 

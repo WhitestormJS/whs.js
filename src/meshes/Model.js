@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Model extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend, loadJSON, loadMaterial} from '../extras/api';
+
+class Model extends Shape {
   constructor(params = {}) {
     super(params, 'model');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       path: '',
       physics: ''
@@ -21,18 +24,18 @@ class Model extends WHS.Shape {
       Mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh;
 
     const promise = new Promise((resolve) => {
-      WHS.API.loadJSON(params.geometry.path, (data, materials) => {
+      loadJSON(params.geometry.path, (data, materials) => {
         if (params.geometry.physics) {
-          WHS.API.loadJSON(params.geometry.physics, data2 => {
+          loadJSON(params.geometry.physics, data2 => {
             if (params.material.useVertexColors) {
-              material = WHS.API.loadMaterial(
-                WHS.API.extend(params.material, {
+              material = loadMaterial(
+                extend(params.material, {
                   morphTargets: true,
                   vertexColors: THREE.FaceColors
                 })
               )._material;
             } else if (!materials || params.material.useCustomMaterial) {
-              material = WHS.API.loadMaterial(
+              material = loadMaterial(
                 params.material
               )._material;
             } else material = new THREE.MultiMaterial(materials);
@@ -52,14 +55,14 @@ class Model extends WHS.Shape {
           });
         } else {
           if (params.material.useVertexColors) {
-            material = WHS.API.loadMaterial(
-              WHS.API.extend(params.material, {
+            material = loadMaterial(
+              extend(params.material, {
                 morphTargets: true,
                 vertexColors: THREE.FaceColors
               })
             )._material;
           } else if (!materials || params.material.useCustomMaterial) {
-            material = WHS.API.loadMaterial(
+            material = loadMaterial(
               params.material
             )._material;
           } else material = new THREE.MultiMaterial(materials);
@@ -84,7 +87,7 @@ class Model extends WHS.Shape {
   }
 
   clone() {
-    return new WHS.Model(this.getParams(), this._type).copy(this);
+    return new Model(this.getParams(), this._type).copy(this);
   }
 }
 

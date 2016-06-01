@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Polyhedron extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Polyhedron extends Shape {
   constructor(params = {}) {
     super(params, 'polyhedron');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       verticesOfCube: this.verticesOfCube,
       indicesOfFaces: this.indicesOfFaces,
@@ -62,7 +65,7 @@ class Polyhedron extends WHS.Shape {
   }
 
   clone() {
-    return new WHS.Polyhedron(this.getParams(), this._type).copy(this);
+    return new Polyhedron(this.getParams(), this._type).copy(this);
   }
 }
 
