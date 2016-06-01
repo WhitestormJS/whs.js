@@ -1,17 +1,8 @@
-WHS.Octahedron = class Octahedron extends WHS.Shape {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
-  /**
-   * Creates an octahedron
-   *
-   * @param {Object} params - Octahedron options
-   * @param {Object} params.geometry - Octahedron geometry options
-   * @param {Number} params.geometry.radius - Octahedron radius
-   * @param {Number} params.geometry.detail - Octahedron detail
-   * @param {Material} params.material - Octahedron material
-   * @param {Number} params.mass - Octahedron mass
-   */
+class Octahedron extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'octahedron');
 
     WHS.API.extend(params.geometry, {
@@ -22,25 +13,19 @@ WHS.Octahedron = class Octahedron extends WHS.Shape {
     });
 
     this.build(params);
-
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.OctahedronGeometry(
-
           params.geometry.radius,
           params.geometry.detail
-
         ),
 
         material,
@@ -48,18 +33,14 @@ WHS.Octahedron = class Octahedron extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
 
-  /**
-   * Clone octahedron.
-   */
   clone() {
-
     return new WHS.Octahedron(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Octahedron as default
 };

@@ -1,4 +1,4 @@
-import {Fog as _Fog} from 'three';
+import THREE from 'three';
 
 class Fog {
   constructor(params = {}) {
@@ -8,7 +8,7 @@ class Fog {
       far: 1000
     });
 
-    this.fog = new _Fog(params.hex, params.near, params.far);
+    this.fog = new THREE.Fog(params.hex, params.near, params.far);
     this.type = 'fog';
   }
 

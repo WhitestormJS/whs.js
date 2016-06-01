@@ -1,18 +1,8 @@
-WHS.Parametric = class Parametric extends WHS.Shape {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
-  /**
-   * Creates a parametric
-   *
-   * @param {Object} params - Parametric options
-   * @param {Object} params.geometry - Parametric geometry options
-   * @param {Function} params.func - Parametric function
-   * @param {Number} params.slices - Parametric slices
-   * @param {Number} params.stacks - Parametric stacks
-   * @param {Material} params.material - Parametric material
-   * @param {Number} params.mass - Parametric mass
-   */
+class Parametric extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'parametric');
 
     WHS.API.extend(params.geometry, {
@@ -26,18 +16,15 @@ WHS.Parametric = class Parametric extends WHS.Shape {
     this.build(params);
 
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.ParametricGeometry(
 
           params.geometry.func,
@@ -51,18 +38,17 @@ WHS.Parametric = class Parametric extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
 
   /**
    * Clone parametric.
    */
   clone() {
-
     return new WHS.Parametric(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Parametric as default
 };

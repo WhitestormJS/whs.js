@@ -1,17 +1,8 @@
-WHS.Sphere = class Sphere extends WHS.Shape {
-  /**
-   * Creates a sphere.
-   *
-   * @param {Object} params - Sphere options
-   * @param {Object} params.geometry - Sphere geometry options
-   * @param {Number} params.geometry.radius - Sphere radius
-   * @param {Number} params.geometry.segmentA - Sphere segment A count
-   * @param {Number} params.geometry.segmentB - Sphere segment B count
-   * @param {Material} params.material - Sphere material
-   * @param {Number} params.mass - Sphere mass
-   */
-  constructor(params = {}) {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
+class Sphere extends WHS.Shape {
+  constructor(params = {}) {
     super(params, 'sphere');
 
     WHS.API.extend(params.geometry, {
@@ -23,20 +14,16 @@ WHS.Sphere = class Sphere extends WHS.Shape {
     });
 
     this.build(params);
-
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.SphereMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.SphereMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.SphereGeometry(
 
           params.geometry.radius,
@@ -50,18 +37,14 @@ WHS.Sphere = class Sphere extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
-
-  /**
-   * Clone sphere.
-   */
+  
   clone() {
-
     return new WHS.Sphere(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Sphere as default
 };

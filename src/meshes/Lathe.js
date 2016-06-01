@@ -1,16 +1,8 @@
-WHS.Lathe = class Lathe extends WHS.Shape {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
-  /**
-   * Create a lathe
-   *
-   * @param {Object} params - Lathe options
-   * @param {Object} params.geometry - Lathe geometry options
-   * @param {Array} params.geometry.points - Lathe points
-   * @param {Material} params.material - Lathe material
-   * @param {Number} params.mass - Lathe mass
-   */
+class Lathe extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'lathe');
 
     WHS.API.extend(params.geometry, {
@@ -20,24 +12,18 @@ WHS.Lathe = class Lathe extends WHS.Shape {
     });
 
     this.build(params);
-
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.LatheGeometry(
-
           params.geometry.points
-
         ),
 
         material,
@@ -45,18 +31,17 @@ WHS.Lathe = class Lathe extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
 
   /**
    * Clone lathe.
    */
   clone() {
-
     return new WHS.Lathe(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Lathe as default
 };

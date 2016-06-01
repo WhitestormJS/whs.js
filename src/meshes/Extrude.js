@@ -1,17 +1,8 @@
-WHS.Extrude = class Extrude extends WHS.Shape {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
-  /**
-   * Extrude a shape
-   *
-   * @param {Object} params - General options
-   * @param {Object} params.geometry - Geometry options
-   * @param {Array} params.geometry.shapes - Shapes to extrude
-   * @param {Object} params.geometry.options - Options concerning shapes to extrude
-   * @param {Material} params.material - Material
-   * @param {Number} params.mass - Mass
-   */
+class Extrude extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'extrude');
 
     WHS.API.extend(params.geometry, {
@@ -24,18 +15,15 @@ WHS.Extrude = class Extrude extends WHS.Shape {
     this.build(params);
 
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.ExtrudeGeometry(
 
           params.geometry.shapes,
@@ -48,18 +36,14 @@ WHS.Extrude = class Extrude extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
 
-  /**
-   * Clone extrude.
-   */
   clone() {
-
     return new WHS.Extrude(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Extrude as default
 };

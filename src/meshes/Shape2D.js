@@ -1,15 +1,7 @@
-WHS.Shape2D = class Shape2D extends WHS.Shape {
+import THREE from 'three';
 
-  /**
-   * Creates a 2D shape
-   *
-   * @param {Object} params - Shape options
-   * @param {Object} params.geometry - Shape geometry options
-   * @param {Array} params.geometry.shapes - Shapes
-   * @param {Material} params.material - Shape material
-   */
+class Shape2D extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'shape2D');
 
     WHS.API.extend(params.geometry, {
@@ -19,41 +11,31 @@ WHS.Shape2D = class Shape2D extends WHS.Shape {
     });
 
     super.build(params);
-
     super.wrap('onlyvis');
-
   }
 
   build(params = {}) {
-
     const _scope = this,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
+    return new Promise((resolve) => {
       _scope.setNative(new THREE.Mesh(
         new THREE.ShapeGeometry(
-
           params.geometry.shapes
-
         ),
 
         material
       ));
 
       resolve();
-
     });
-
   }
 
-  /**
-   * Clone shape2d.
-   */
   clone() {
-
     return new WHS.Shape2D(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Shape2D as default
 };
