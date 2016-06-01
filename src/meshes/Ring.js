@@ -1,21 +1,7 @@
-WHS.Ring = class Ring extends WHS.Shape {
+import THREE from 'three';
 
-  /**
-   * Creates a ring.
-   *
-   * @param {Object} params - Ring options
-   * @param {Object} params.geometry - Ring geometry options
-   * @param {Number} params.geometry.innerRadius - Ring inner radius
-   * @param {Number} params.geometry.outerRadius - Ring outer radius
-   * @param {Number} params.geometry.thetaSegments - Ring theta segments
-   * @param {Number} params.geometry.phiSegments - Ring phi segments
-   * @param {Number} params.geometry.thetaStart - Ring theta start
-   * @param {Number} params.geometry.thetaLength - Ring theta length
-   * @param {Material} params.material - Ring material
-   * @param {Number} params.mass - Ring mass
-   */
+class Ring extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'ring');
 
     WHS.API.extend(params.geometry, {
@@ -30,18 +16,14 @@ WHS.Ring = class Ring extends WHS.Shape {
     });
 
     this.build(params);
-
     super.wrap('onlyvis');
-
   }
 
   build(params = {}) {
-
     const _scope = this,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
+    return new Promise((resolve) => {
       _scope.setNative(new THREE.Mesh(
         new THREE.RingGeometry(
 
@@ -58,18 +40,14 @@ WHS.Ring = class Ring extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
 
-  /**
-   * Clone ring.
-   */
   clone() {
-
     return new WHS.Ring(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Ring as default
 };

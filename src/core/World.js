@@ -1,11 +1,4 @@
-import {
-  PCFSoftShadowMap as TPCFSoftShadowMap,
-  Vector3 as TVector3,
-  WebGLRenderer as TWebGLRenderer,
-  AxisHelper as TAxisHelper,
-  GridHelper as TGridHelper,
-  Clock as TClock
-} from 'three';
+import THREE from 'three';
 
 import PerspectiveCamera from '../cameras/PerspectiveCamera';
 import Camera from './Camera';
@@ -26,7 +19,7 @@ class World extends Object {
 
       shadowmap: {
         enabled: true,
-        type: TPCFSoftShadowMap
+        type: THREE.PCFSoftShadowMap
       },
 
       helpers: {
@@ -119,7 +112,7 @@ class World extends Object {
     const scene = new Physijs.Scene();
 
     scene.setGravity(
-      new TVector3(
+      new THREE.Vector3(
         this.getParams().gravity.x,
         this.getParams().gravity.y,
         this.getParams().gravity.z
@@ -227,7 +220,7 @@ class World extends Object {
     this.render = true;
 
         // Renderer.
-    this.setRenderer(new TWebGLRenderer());
+    this.setRenderer(new THREE.WebGLRenderer());
     this.getRenderer().setClearColor(this.getParams().background);
 
         // Shadowmap.
@@ -254,7 +247,7 @@ class World extends Object {
   _initHelpers() {
     if (this.getParams().helpers.axis) {
       this.getScene().add(
-        new TAxisHelper(
+        new THREE.AxisHelper(
           this.getParams().helpers.axis.size
           ? this.getParams().helpers.axis.size
           : 5
@@ -264,7 +257,7 @@ class World extends Object {
 
     if (this.getParams().helpers.grid) {
       this.getScene().add(
-        new TGridHelper(
+        new THREE.GridHelper(
           this.getParams().helpers.grid.size
           ? this.getParams().helpers.grid.size
           : 10,
@@ -280,7 +273,7 @@ class World extends Object {
    * Start animation.
    */
   start() {
-    const clock = new TClock(),
+    const clock = new THREE.Clock(),
       scope = this,
       scene = scope.getScene(),
       cameraNative = scope.getCamera().getNative(),

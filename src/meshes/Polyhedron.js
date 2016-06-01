@@ -1,19 +1,8 @@
-WHS.Polyhedron = class Polyhedron extends WHS.Shape {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
-  /**
-   * Creates a polyhedron
-   *
-   * @param {Object} params - Polyhedron options
-   * @param {Object} params.geometry - Polyhedron geometry options
-   * @param {Number} params.geometry.radius - Polyhedron radius
-   * @param {Number} param.geometry.verticesOfCube - Vertices of cube
-   * @param {Number} param.geometry.indicesOfFaces - Indices of faces
-   * @param {Number} param.geometry.detail - Polyhedron detail
-   * @param {Material} param.material - Polyhedron material
-   * @param {Number} param.mass - Polyhedron mass
-   */
+class Polyhedron extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'polyhedron');
 
     WHS.API.extend(params.geometry, {
@@ -28,18 +17,15 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
     this.build(params);
 
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.PolyhedronGeometry(
 
           params.geometry.verticesOfCube,
@@ -54,22 +40,17 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
 
   get verticesOfCube() {
-
     return [
       -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
       -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1
     ];
-
   }
 
   get indicesOfFaces() {
-
     return [
       2, 1, 0, 0, 3, 2,
       0, 4, 7, 7, 3, 0,
@@ -78,16 +59,13 @@ WHS.Polyhedron = class Polyhedron extends WHS.Shape {
       2, 3, 7, 7, 6, 2,
       4, 5, 6, 6, 7, 4
     ];
-
   }
 
-  /**
-   * Clone polyhedron.
-   */
   clone() {
-
     return new WHS.Polyhedron(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Polyhedron as default
 };

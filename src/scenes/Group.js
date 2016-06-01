@@ -1,4 +1,4 @@
-import {Object3D} from 'three';
+import THREE from 'three';
 import {Shape} from '../core/Shape';
 
 class Group extends Shape {

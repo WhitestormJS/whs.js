@@ -1,20 +1,8 @@
-WHS.Tube = class Tube extends WHS.Shape {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
-  /**
-   * Creates a tube
-   *
-   * @param {Object} params - Tube options
-   * @param {Object} params.geometry - Tube geometry options
-   * @param {Number} params.geometry.path - Tube path
-   * @param {Number} params.geometry.segments - Tube segments
-   * @param {Number} params.geometry.radius - Tube radius
-   * @param {Number} params.geometry.radiusSegments - Amount of radius segments
-   * @param {Boolean} params.geometry.closed - Whether or not the tube is closed
-   * @param {Material} params.material - Tube material
-   * @param {Number} params.mass - Tube mass
-   */
+class Tube extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'tube');
 
     WHS.API.extend(params.geometry, {
@@ -30,18 +18,15 @@ WHS.Tube = class Tube extends WHS.Shape {
     this.build(params);
 
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.TubeGeometry(
 
           params.geometry.path,
@@ -57,42 +42,35 @@ WHS.Tube = class Tube extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
 
   get CustomSinCurve() {
-
     return THREE.Curve.create(
 
       (scale) => { // custom curve constructor
-
         this.scale = scale || 1;
-
       },
 
       (t) => { // getPoint: t is between 0-1
-
         const tx = t * 3 - 1.5,
           ty = Math.sin(2 * Math.PI * t),
           tz = 0;
 
         return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
-
       }
 
     );
-
   }
 
   /**
    * Clone tube.
    */
   clone() {
-
     return new WHS.Tube(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Tube as default
 };

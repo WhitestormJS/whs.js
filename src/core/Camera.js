@@ -1,11 +1,4 @@
-import {
-  // Helpers.
-  CameraHelper as TCameraHelper,
-  // Other.
-  Vector3 as TVector3,
-  Curve as TCurve,
-  CurvePath as TCurvePath
-} from 'three';
+import THREE from 'three';
 
 import Loop from '../extensions/Loop';
 import Object from './Object';
@@ -86,7 +79,7 @@ class Camera extends Object {
         if (this.__params.useTarget) this.lookAt(this.__params.target);
 
         if (this.__params.helper) {
-          this.helper = new TCameraHelper(
+          this.helper = new THREE.CameraHelper(
             this.getNative()
           );
         }

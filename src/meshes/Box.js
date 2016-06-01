@@ -1,11 +1,12 @@
-import {BoxGeometry, Mesh} from 'three';
-import {BoxMesh} from 'whitestormjs-physijs';
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 import Shape from '../core/Shape';
 
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
+
 class Box extends Shape {
-
   constructor(params = {}) {
-
     super(params, 'box');
 
     WHS.API.extend(params.geometry, {
@@ -16,18 +17,15 @@ class Box extends Shape {
 
     this.build(params);
     super.wrap();
-
   }
 
   build(params = {}) {
-
-    const PhysicsMesh = this.physics ? BoxMesh : Mesh;
+    const Mesh = this.physics ? Physijs.BoxMesh : THREE.Mesh;
     const material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      this.setNative(new PhysicsMesh(
-        new BoxGeometry(
+    return new Promise((resolve) => {
+      this.setNative(new Mesh(
+        new THREE.BoxGeometry(
           params.geometry.width,
           params.geometry.height,
           params.geometry.depth
@@ -37,15 +35,14 @@ class Box extends Shape {
       ));
 
       resolve();
-
     });
-
   }
 
   clone() {
-
     return new Box(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Box as default;
 }

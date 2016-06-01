@@ -1,18 +1,8 @@
-WHS.Plane = class Plane extends WHS.Shape {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
-  /**
-   * Creates a plane.
-   *
-   * @param {Object} params - Plane options
-   * @param {Object} params.geometry - Plane geometry options
-   * @param {Number} params.geometry.width - Plane width
-   * @param {Number} params.geometry.height - Plane height
-   * @param {Number} params.geometry.segments - Plane segments
-   * @param {Material} params.material - Plane material
-   * @param {Number} params.mass - Plane mass
-   */
+class Plane extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'plane');
 
     WHS.API.extend(params.geometry, {
@@ -26,24 +16,19 @@ WHS.Plane = class Plane extends WHS.Shape {
     this.build(params);
 
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.PlaneMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.PlaneMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.PlaneGeometry(
-
           params.geometry.width,
           params.geometry.height,
           params.geometry.segments
-
         ),
 
         material,
@@ -51,18 +36,14 @@ WHS.Plane = class Plane extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
 
-  /**
-   * Clone plane.
-   */
   clone() {
-
     return new WHS.Plane(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Plane as default
 };

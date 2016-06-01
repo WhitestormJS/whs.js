@@ -1,17 +1,8 @@
-WHS.Icosahderon = class Icosahedron extends WHS.Shape {
+import THREE from 'three';
+import Physijs from 'whitestormjs-physijs';
 
-  /**
-   * Create an icosahedron
-   *
-   * @param {Object} params - Icosahedron options
-   * @param {Object} params.geometry - Icosahedron geometry options
-   * @param {Number} params.geometry.radius - Icosahedron radius
-   * @param {Number} params.geometry.detail - Icosahedron detail
-   * @param {Material} params.material - Icosahedron material
-   * @param {Number} params.mass - Icosahedron mass
-   */
+class Icosahedron extends WHS.Shape {
   constructor(params = {}) {
-
     super(params, 'icosahedron');
 
     WHS.API.extend(params.geometry, {
@@ -24,18 +15,15 @@ WHS.Icosahderon = class Icosahedron extends WHS.Shape {
     this.build(params);
 
     super.wrap();
-
   }
 
   build(params = {}) {
-
     const _scope = this,
-      mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
+      Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
       material = super._initMaterial(params.material);
 
-    return new Promise((resolve, reject) => {
-
-      _scope.setNative(new mesh(
+    return new Promise((resolve) => {
+      _scope.setNative(new Mesh(
         new THREE.IcosahedronGeometry(
 
           params.geometry.radius,
@@ -48,18 +36,14 @@ WHS.Icosahderon = class Icosahedron extends WHS.Shape {
       ));
 
       resolve();
-
     });
-
   }
-
-  /**
-   * Clone icosahderon.
-   */
+  
   clone() {
-
     return new WHS.Icosahderon(this.getParams(), this._type).copy(this);
-
   }
+}
 
+export {
+  Icosahderon as default
 };
