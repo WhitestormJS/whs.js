@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Plane extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Plane extends Shape {
   constructor(params = {}) {
     super(params, 'plane');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       width: 10,
       height: 10,
@@ -40,7 +43,7 @@ class Plane extends WHS.Shape {
   }
 
   clone() {
-    return new WHS.Plane(this.getParams(), this._type).copy(this);
+    return new Plane(this.getParams(), this._type).copy(this);
   }
 }
 

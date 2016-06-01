@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Dodecahedron extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Dodecahedron extends Shape {
   constructor(params = {}) {
     super(params, 'dodecahedron');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       radius: 1,
       detail: 0
@@ -24,10 +27,8 @@ class Dodecahedron extends WHS.Shape {
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
         new THREE.DodecahedronGeometry(
-
           params.geometry.radius,
           params.geometry.detail
-
         ),
 
         material,
@@ -39,10 +40,10 @@ class Dodecahedron extends WHS.Shape {
   }
 
   clone() {
-    return new WHS.Dodecahedron(this.getParams(), this._type).copy(this);
+    return new Dodecahedron(this.getParams(), this._type).copy(this);
   }
 }
 
 export {
   Dodecahedron as default
-}
+};

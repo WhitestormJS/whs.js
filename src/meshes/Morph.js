@@ -1,14 +1,15 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Morph extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend, loadJSON, loadMaterial} from '../extras/api';
+
+class Morph extends Shape {
   constructor(params = {}) {
     super(params, 'morph');
 
-    WHS.API.extend(params.geometry, {
-
+    extend(params.geometry, {
       path: ''
-
     });
 
     this.build(params);
@@ -19,16 +20,16 @@ class Morph extends WHS.Shape {
     const _scope = this;
 
     const promise = new Promise((resolve, reject) => {
-      WHS.API.loadJSON(params.geometry.path, (data, materials) => {
+      loadJSON(params.geometry.path, (data, materials) => {
         if (params.material.useVertexColors) {
-          material = WHS.API.loadMaterial(
-            WHS.API.extend(params.material, {
+          material = loadMaterial(
+            extend(params.material, {
               morphTargets: true,
               vertexColors: THREE.FaceColors
             })
           )._material;
         } else if (!materials || params.material.useCustomMaterial) {
-          material = WHS.API.loadMaterial(
+          material = loadMaterial(
             params.material
           )._material;
         } else material = new THREE.MultiMaterial(materials);
@@ -56,9 +57,9 @@ class Morph extends WHS.Shape {
 
     return promise;
   }
-  
+
   clone() {
-    return new WHS.Morph(this.getParams(), this._type).copy(this);
+    return new Morph(this.getParams(), this._type).copy(this);
   }
 }
 

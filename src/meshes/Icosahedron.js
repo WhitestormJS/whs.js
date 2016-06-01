@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Icosahedron extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Icosahedron extends Shape {
   constructor(params = {}) {
     super(params, 'icosahedron');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       radius: 1,
       detail: 0
@@ -25,10 +28,8 @@ class Icosahedron extends WHS.Shape {
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
         new THREE.IcosahedronGeometry(
-
           params.geometry.radius,
           params.geometry.detail
-
         ),
 
         material,
@@ -38,12 +39,12 @@ class Icosahedron extends WHS.Shape {
       resolve();
     });
   }
-  
+
   clone() {
-    return new WHS.Icosahderon(this.getParams(), this._type).copy(this);
+    return new Icosahderon(this.getParams(), this._type).copy(this);
   }
 }
 
 export {
-  Icosahderon as default
+  Icosahedron as default
 };

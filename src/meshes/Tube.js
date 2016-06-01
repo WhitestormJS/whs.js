@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Tube extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Tube extends Shape {
   constructor(params = {}) {
     super(params, 'tube');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       path: options.geometryOptions.path ? new this.CustomSinCurve(100) : false,
       segments: 20,
@@ -67,7 +70,7 @@ class Tube extends WHS.Shape {
    * Clone tube.
    */
   clone() {
-    return new WHS.Tube(this.getParams(), this._type).copy(this);
+    return new Tube(this.getParams(), this._type).copy(this);
   }
 }
 

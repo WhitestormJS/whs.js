@@ -1,11 +1,14 @@
 import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
-class Torus extends WHS.Shape {
+import Shape from '../core/Shape';
+import {extend} from '../extras/api';
+
+class Torus extends Shape {
   constructor(params = {}) {
     super(params, 'torus');
 
-    WHS.API.extend(params.geometry, {
+    extend(params.geometry, {
 
       radius: 100,
       tube: 40,
@@ -43,7 +46,7 @@ class Torus extends WHS.Shape {
   }
 
   clone() {
-    return new WHS.Torus(this.getParams(), this._type).copy(this);
+    return new Torus(this.getParams(), this._type).copy(this);
   }
 }
 
