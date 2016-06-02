@@ -1,6 +1,6 @@
 import THREE from 'three';
 
-import loadMaterial from '../extras/api';
+import {loadMaterial} from '../extras/api';
 import Object from './Object';
 
 class Curve extends Object {

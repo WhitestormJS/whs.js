@@ -2,7 +2,8 @@ import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
 import Shape from '../core/Shape';
-import {extend, loadJSON, loadMaterial} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
+import {loadJson} from '../utils/loader';
 
 class ConvexModel extends Shape {
   constructor(params = {}) {
@@ -22,9 +23,9 @@ class ConvexModel extends Shape {
       Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh;
 
     const promise = new Promise((resolve) => {
-      loadJSON(params.geometry.path, (data, materials) => {
+      loadJson(params.geometry.path, (data, materials) => {
         if (params.geometry.physics) {
-          loadJSON(params.geometry.physics, data2 => {
+          loadJson(params.geometry.physics, data2 => {
             let material;
 
             if (params.material.useVertexColors) {

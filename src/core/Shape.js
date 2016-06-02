@@ -1,6 +1,6 @@
 import THREE from 'three';
 
-import loadMaterial from '../extras/api';
+import {loadMaterial} from '../extras/api';
 import Loop from '../extensions/Loop';
 import World from './World';
 import Object from './Object';

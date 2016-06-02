@@ -4,14 +4,34 @@ import runSequence from 'run-sequence';
 import del from 'del';
 import webpack from 'webpack';
 import webpackConfig from './webpack.config.babel.js';
+import rollup from 'gulp-rollup';
+import rename from 'gulp-rename';
+import babel from 'gulp-babel';
+import rollupIncludePaths from 'rollup-plugin-includepaths';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 const $ = loadPlugins();
 const webpackCompiler = webpack(webpackConfig({production: isProduction}));
 
+// NPM.
 const src = 'src/**/*';
 const dest = 'lib';
+
+// Browser.
+const srcIndex = 'src/extensions/index.js';
+const includePathOptions = {
+  paths: [
+    'cameras',
+    'core',
+    'extensions',
+    'extras',
+    'lights',
+    'meshes',
+    'scenes',
+    'utils'
+  ]
+};
 
 process.env.BABEL_ENV = 'node';
 
@@ -37,6 +57,17 @@ gulp.task('webpack', (callback) => {
     $.util.log('[webpack]', stats.toString({colors: true}));
     callback();
   });
+});
+
+gulp.task('rollup', () => {
+  return gulp.src(srcIndex)
+    .pipe(rollup({
+      moduleName: 'WHS',
+      format: 'es6'
+    }))
+    // .pipe(babel())
+    .pipe(rename('bundle.js'))
+    .pipe(gulp.dest('build'));
 });
 
 gulp.task('lint', () => {
