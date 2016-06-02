@@ -13,7 +13,7 @@
         },
         "browser": {
             "presets": [
-                "es2015-webpack"
+                "es2015-rollup"
             ]
         }
     }

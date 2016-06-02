@@ -2,7 +2,8 @@ import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
 import Shape from '../core/Shape';
-import {extend, loadJSON, loadMaterial} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
+import {loadJson} from '../utils/loader';
 
 class Morph extends Shape {
   constructor(params = {}) {
@@ -19,8 +20,8 @@ class Morph extends Shape {
   build(params = {}) {
     const _scope = this;
 
-    const promise = new Promise((resolve, reject) => {
-      loadJSON(params.geometry.path, (data, materials) => {
+    const promise = new Promise((resolve) => {
+      loadJson(params.geometry.path, (data, materials) => {
         if (params.material.useVertexColors) {
           material = loadMaterial(
             extend(params.material, {

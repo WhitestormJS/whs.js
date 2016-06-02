@@ -2,7 +2,7 @@ import THREE from 'three';
 import Physijs from 'whitestormjs-physijs';
 
 import Shape from '../core/Shape';
-import {extend, loadJSON, loadMaterial} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Text extends Shape {
   constructor(params = {}) {
