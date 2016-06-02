@@ -1,3 +1,3 @@
-export CubeCamera from './CubeCamera';
-export OrtographicCamera from './OrtographicCamera';
-export PerspectiveCamera from './PerspectiveCamera';
+export * from './CubeCamera';
+export * from './OrtographicCamera';
+export * from './PerspectiveCamera';

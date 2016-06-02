@@ -1,5 +1,5 @@
 import THREE from 'three';
-import {Shape} from '../core/Shape';
+import Shape from '../core/Shape';
 
 class Group extends Shape {
   constructor() {

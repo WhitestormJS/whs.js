@@ -22,6 +22,4 @@ class Loop {
   }
 }
 
-export {
-  Loop as default
-};
+export { Loop };

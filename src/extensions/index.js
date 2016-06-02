@@ -1,1 +1,1 @@
-export Loop from './Loop';
+export * from './Loop';
