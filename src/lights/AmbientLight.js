@@ -1,4 +1,4 @@
-import Light from '../core/Light';
+import {Light} from '../core/Light';
 
 class AmbientLight extends Light {
   constructor(params = {}) {
@@ -24,5 +24,5 @@ class AmbientLight extends Light {
 }
 
 export {
-  AmbientLight as default
+  AmbientLight
 };

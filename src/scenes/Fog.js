@@ -1,4 +1,4 @@
-import THREE from 'three';
+import * as THREE from 'three';
 
 class Fog {
   constructor(params = {}) {
@@ -18,5 +18,5 @@ class Fog {
 }
 
 export {
-	Fog as default
+	Fog
 };

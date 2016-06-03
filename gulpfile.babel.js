@@ -7,7 +7,8 @@ import webpackConfig from './webpack.config.babel.js';
 import rollup from 'gulp-rollup';
 import rename from 'gulp-rename';
 import babel from 'gulp-babel';
-import rollupIncludePaths from 'rollup-plugin-includepaths';
+import nodeResolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -19,7 +20,7 @@ const src = 'src/**/*';
 const dest = 'lib';
 
 // Browser.
-const srcIndex = 'src/extensions/index.js';
+const srcIndex = 'src/index.js';
 const includePathOptions = {
   paths: [
     'cameras',
@@ -61,12 +62,27 @@ gulp.task('webpack', (callback) => {
 
 gulp.task('rollup', () => {
   return gulp.src(srcIndex)
+    .pipe(babel())
     .pipe(rollup({
       moduleName: 'WHS',
-      format: 'es6'
+      format: 'iife',
+      globals: {
+        three: 'THREE'
+      },
+      plugins: [
+        nodeResolve({
+          jsnext: false,
+          main: true,
+          browser: false,
+          preferBuiltins: false,
+
+          skip: ['three']
+        }),
+        commonjs()
+      ],
+      outro: 'window.Physijs = Physijs;'
     }))
-    // .pipe(babel())
-    .pipe(rename('bundle.js'))
+    .pipe(rename('whitestorm.js'))
     .pipe(gulp.dest('build'));
 });
 

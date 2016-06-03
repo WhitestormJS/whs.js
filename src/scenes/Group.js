@@ -1,5 +1,5 @@
-import THREE from 'three';
-import Shape from '../core/Shape';
+import * as THREE from 'three';
+import {Shape} from '../core/Shape';
 
 class Group extends Shape {
   constructor() {
@@ -11,5 +11,5 @@ class Group extends Shape {
 }
 
 export {
-  Group as default
+  Group
 };

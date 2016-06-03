@@ -1,7 +1,7 @@
-import THREE from 'three';
-import Physijs from 'whitestormjs-physijs';
+import * as THREE from 'three';
+import Physijs  from '../physics/physi.js';
 
-import Shape from '../core/Shape';
+import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
 
 class Octahedron extends Shape {
@@ -45,5 +45,5 @@ class Octahedron extends Shape {
 }
 
 export {
-  Octahedron as default
+  Octahedron
 };

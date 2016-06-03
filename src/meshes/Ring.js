@@ -1,6 +1,6 @@
-import THREE from 'three';
+import * as THREE from 'three';
 
-import Shape from '../core/Shape';
+import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
 
 class Ring extends Shape {
@@ -52,5 +52,5 @@ class Ring extends Shape {
 }
 
 export {
-  Ring as default
+  Ring
 };

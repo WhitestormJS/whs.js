@@ -1,4 +1,4 @@
-import Light from '../core/Light';
+import {Light} from '../core/Light';
 
 class DirectionalLight extends Light {
   /**
@@ -38,5 +38,5 @@ class DirectionalLight extends Light {
 }
 
 export {
-  DirectionalLight as default
+  DirectionalLight
 };

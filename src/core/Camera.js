@@ -1,9 +1,9 @@
-import THREE from 'three';
+import * as THREE from 'three';
 
-import Loop from '../extensions/Loop';
-import Object from './Object';
+import {Loop} from '../extensions/Loop';
+import {WHSObject} from './Object';
 
-class Camera extends Object {
+class Camera extends WHSObject {
   constructor(params, type) {
     if (!type) console.error('@constructor: Please specify " type ".');
 
@@ -156,12 +156,13 @@ class Camera extends Object {
     return this;
   }
 
-  setNative(camera) {
-    return native.set(this, camera);
+  setNative(native) {
+    this.native = native;
+    return this.native;
   }
 
   getNative() {
-    return native.get(this);
+    return this.native;
   }
 
   get position() {
@@ -239,5 +240,5 @@ class Camera extends Object {
 }
 
 export {
-  Camera as default
+  Camera
 };

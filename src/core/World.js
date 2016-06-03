@@ -1,10 +1,11 @@
-import THREE from 'three';
+import * as THREE from 'three';
+import Physijs  from '../physics/physi.js';
 
-import PerspectiveCamera from '../cameras/PerspectiveCamera';
-import Camera from './Camera';
-import Object from './Object';
+import {PerspectiveCamera} from '../cameras/PerspectiveCamera';
+import {Camera} from './Camera';
+import {WHSObject} from './Object';
 
-class World extends Object {
+class World extends WHSObject {
   /**
    * Create a 3D world and define defaults.
    *
@@ -79,8 +80,6 @@ class World extends Object {
 
     super.setParams(params);
 
-    native.set(this, {});
-
     // INIT.
     this._initScene();
     this._initDOM();
@@ -104,7 +103,7 @@ class World extends Object {
   }
 
   /**
-   * Initialize Three.js scene object.
+   * Initialize THREE.js scene object.
    */
   _initScene() {
     this._initPhysiJS();
@@ -364,21 +363,21 @@ class World extends Object {
   }
 
   setScene(scene) {
-    native.get(this).scene = scene;
-    return native.get(this).scene;
+    this.scene = scene;
+    return this.scene;
   }
 
   getScene() {
-    return native.get(this).scene;
+    return this.scene;
   }
 
   setRenderer(renderer) {
-    native.get(this).renderer = renderer;
-    return native.get(this).renderer;
+    this.renderer = renderer;
+    return this.renderer;
   }
 
   getRenderer() {
-    return native.get(this).renderer;
+    return this.renderer;
   }
 
   /**
@@ -388,17 +387,17 @@ class World extends Object {
    */
   setCamera(camera) {
     if (camera instanceof Camera)
-      native.get(this).camera = camera;
+      this.camera = camera;
     else
       console.error('@WHS.World: camera in not an instance of WHS.Camera.');
   }
 
   getCamera() {
-    return native.get(this).camera;
+    return this.camera;
   }
 }
 
 export {
-  World as default
+  World
 };
 
