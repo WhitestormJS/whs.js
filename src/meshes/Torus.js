@@ -1,7 +1,7 @@
-import THREE from 'three';
-import Physijs from 'whitestormjs-physijs';
+import * as THREE from 'three';
+import Physijs  from '../physics/physi.js';
 
-import Shape from '../core/Shape';
+import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
 
 class Torus extends Shape {
@@ -51,5 +51,5 @@ class Torus extends Shape {
 }
 
 export {
-  Torus as default
+  Torus
 };

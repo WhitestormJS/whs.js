@@ -1,5 +1,5 @@
-import THREE from 'three';
-import Physijs from 'whitestormjs-physijs';
+import * as THREE from 'three';
+import Physijs  from '../physics/physi.js';
 
 import {loadJson, loadTexture, loadFont} from '../utils/loader';
 

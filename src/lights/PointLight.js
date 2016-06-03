@@ -1,4 +1,4 @@
-import Light from '../core/Light';
+import {Light} from '../core/Light';
 
 class PointLight extends Light {
   /**
@@ -42,5 +42,5 @@ class PointLight extends Light {
 }
 
 export {
-  PointLight as default
+  PointLight
 };

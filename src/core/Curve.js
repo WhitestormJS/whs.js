@@ -1,9 +1,9 @@
-import THREE from 'three';
+import * as THREE from 'three';
 
 import {loadMaterial} from '../extras/api';
-import Object from './Object';
+import {WHSObject} from './Object';
 
-class Curve extends Object {
+class Curve extends WHSObject {
   /**
    * Create curve.
    *
@@ -67,14 +67,14 @@ class Curve extends Object {
     });
   }
 
-    /* Access private data */
-
-  setNative(curve) {
-    return native.set(this, curve);
+  /* Access private data */
+  setNative(native) {
+    this.native = native;
+    return this.native;
   }
 
   getNative() {
-    return native.get(this);
+    return this.native;
   }
 
     /**
@@ -122,5 +122,5 @@ class Curve extends Object {
 }
 
 export {
-  Curve as default
+  Curve
 };

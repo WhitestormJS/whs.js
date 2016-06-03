@@ -1,4 +1,8 @@
-class Object {
+import Events from 'minivents';
+
+import {extend} from '../extras/api';
+
+class WHSObject {
   /**
    * Constructing WHS.Shape object.
    *
@@ -31,11 +35,11 @@ class Object {
   }
 
   setParams(params = {}) {
-    this.__params = WHS.API.extend(params, this.__defaults);
+    this.__params = extend(params, this.__defaults);
   }
 
   updateParams(params = {}) {
-    this.__params = WHS.API.extend(params, this.__params);
+    this.__params = extend(params, this.__params);
   }
 
   getParams() {
@@ -61,5 +65,5 @@ class Object {
 }
 
 export {
-  Object as default
+  WHSObject
 };

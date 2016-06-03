@@ -1,9 +1,9 @@
-import THREE from 'three';
+import * as THREE from 'three';
 
-import Loop from '../extensions/Loop';
-import Object from './Object';
+import {Loop} from '../extensions/Loop';
+import {WHSObject} from './Object';
 
-class Light extends Object {
+class Light extends WHSObject {
   /**
    * Constructing WHS.Light object.
    *
@@ -248,12 +248,13 @@ class Light extends Object {
 
   /* Access private data */
 
-  setNative(light) {
-    return native.set(this, light);
+  setNative(native) {
+    this.native = native;
+    return this.native;
   }
 
   getNative() {
-    return native.get(this);
+    return this.native;
   }
 
   get position() {
@@ -331,5 +332,5 @@ class Light extends Object {
 }
 
 export {
-  Light as default
+  Light
 };

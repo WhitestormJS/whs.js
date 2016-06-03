@@ -1,4 +1,4 @@
-import Light from '../core/Light';
+import {Light} from '../core/Light';
 
 class HemisphereLight extends Light {
   /**
@@ -40,5 +40,5 @@ class HemisphereLight extends Light {
 }
 
 export {
-  HemisphereLight as default
+  HemisphereLight
 };

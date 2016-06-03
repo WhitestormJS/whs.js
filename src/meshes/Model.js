@@ -1,7 +1,7 @@
-import THREE from 'three';
-import Physijs from 'whitestormjs-physijs';
+import * as THREE from 'three';
+import Physijs  from '../physics/physi.js';
 
-import Shape from '../core/Shape';
+import {Shape} from '../core/Shape';
 import {extend, loadMaterial} from '../extras/api';
 import {loadJson} from '../utils/loader';
 
@@ -93,5 +93,5 @@ class Model extends Shape {
 }
 
 export {
-  Model as default
+  Model
 };
