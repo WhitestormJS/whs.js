@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Stats from 'stats.js';
 import Physijs  from '../physics/physi.js';
 
 import {PerspectiveCamera} from '../cameras/PerspectiveCamera';
@@ -194,6 +195,8 @@ class World extends WHSObject {
    * Create a camera and add it to scene.
    */
   _initCamera() {
+    console.log(this.getParams());
+
     this.setCamera(new PerspectiveCamera({
       camera: {
         fov: this.getParams().camera.aspect,
