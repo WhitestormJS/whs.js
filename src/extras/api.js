@@ -1,9 +1,32 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/physi.js';
+import Physijs from '../physics/physi.js';
 
 import {loadJson, loadTexture, loadFont} from '../utils/loader';
 
-const extend = Object.assign;
+const extend = (object, ...extensions) => { // $.extend alternative, ... is the spread operator.
+  for (const extension of extensions) {
+    // console.log(extension);
+    // console.log(typeof extension);
+
+    if (!extension)
+      continue; // Ignore null and undefined objects and paramaters.
+
+    for (const prop of Object.getOwnPropertyNames(extension)) { // Do not traverse the prototype chain.
+      if (object[prop] !== undefined
+        && object[prop].toString() === '[object Object]'
+        && extension[prop].toString() === '[object Object]')
+
+        // Goes deep only if object[prop] and extension[prop] are both objects !
+        extend(object[prop], extension[prop]);
+
+      else
+        object[prop] = (object[prop] === 0) ? 0 : object[prop];
+      if (typeof object[prop] === 'undefined') object[prop] = extension[prop]; // Add values that do not already exist.
+    }
+  }
+
+  return object;
+};
 
 const texture = (url, options) => {
   const texture = loadTexture(url);
@@ -43,7 +66,7 @@ const loadMaterial = (material = {}, isPhysics = true) => {
       material.rest : 0.3,
     _friction: !isNaN(parseFloat(material.friction)) ?
       material.friction : !isNaN(parseFloat(material.fri)) ?
-      material.fri : 0.8,
+      material.fri : 0.8
   };
 
   if (material.texture) material.map = texture(material.texture);
