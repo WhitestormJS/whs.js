@@ -1,6 +1,6 @@
-import THREE from 'three';
+import * as THREE from 'three';
 
-import Shape from '../core/Shape';
+import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
 
 class Shape2D extends Shape {
@@ -38,5 +38,5 @@ class Shape2D extends Shape {
 }
 
 export {
-  Shape2D as default
+  Shape2D
 };

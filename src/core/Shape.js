@@ -1,11 +1,11 @@
-import THREE from 'three';
+import * as THREE from 'three';
 
 import {loadMaterial} from '../extras/api';
-import Loop from '../extensions/Loop';
-import World from './World';
-import Object from './Object';
+import {Loop} from '../extensions/Loop';
+import {World} from './World';
+import {WHSObject} from './Object';
 
-class Shape extends Object {
+class Shape extends WHSObject {
   /**
    * Constructing WHS.Shape object.
    *
@@ -513,17 +513,18 @@ class Shape extends Object {
 
   /* Access private data */
 
-  setNative(mesh) {
-    return native.set(this, mesh);
+  setNative(native) {
+    this.native = native;
+    return this.native;
   }
 
   getNative() {
-    return native.get(this);
+    return this.native;
   }
 
   setMaterial(material) {
-    native.get(this).material = material;
-    return native.get(this).material;
+    this.native.material = material;
+    return this.native.material;
   }
 
   setAngularVelocity(...args) {
@@ -573,5 +574,5 @@ class Shape extends Object {
 }
 
 export {
-  Shape as default
+  Shape
 };

@@ -1,5 +1,5 @@
-import THREE from 'three';
-import Shape from '../core/Shape';
+import * as THREE from 'three';
+import {Shape} from '../core/Shape';
 
 class Skybox extends Shape {
   constructor(params = {}) {
@@ -56,5 +56,5 @@ class Skybox extends Shape {
 }
 
 export {
-  Skybox as default
+  Skybox
 };

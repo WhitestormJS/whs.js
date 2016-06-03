@@ -15,5 +15,5 @@ class Watch {
 }
 
 export {
-  Watch as default
+  Watch
 };

@@ -1,4 +1,4 @@
-import THREE from 'three';
+import * as THREE from 'three';
 
 class Loop {
   constructor(func) {
@@ -23,5 +23,5 @@ class Loop {
 }
 
 export {
-  Loop as default
+  Loop
 };

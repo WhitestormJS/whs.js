@@ -1,5 +1,5 @@
-import THREE from 'three';
-import Camera from '../core/Camera';
+import * as THREE from 'three';
+import {Camera} from '../core/Camera';
 
 class CubeCamera extends Camera {
   constructor(params = {}) {
@@ -23,5 +23,5 @@ class CubeCamera extends Camera {
 }
 
 export {
-  CubeCamera as default
+  CubeCamera
 };

@@ -1,4 +1,4 @@
-import Light from '../core/Light';
+import {Light} from '../core/Light';
 
 class NormalLight extends Light {
   /**
@@ -29,5 +29,5 @@ class NormalLight extends Light {
 }
 
 export {
-  NormalLight as default
+  NormalLight
 };

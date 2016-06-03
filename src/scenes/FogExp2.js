@@ -1,4 +1,4 @@
-import THREE from 'three';
+import * as THREE from 'three';
 
 class FogExp2 {
   constructor(params = {}) {
@@ -17,5 +17,5 @@ class FogExp2 {
 }
 
 export {
-	FogExp2 as default
+	FogExp2
 };
