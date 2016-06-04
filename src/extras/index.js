@@ -1,3 +1,3 @@
-// export * from './controls/FPSControl';
-// export * from './controls/OrbitControl';
+export * from './controls/firstPersonControls';
+export * from './controls/orbitControls';
 export * from './api';
