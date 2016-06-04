@@ -65,6 +65,7 @@
     "rollup-plugin-node-resolve": "^1.5.0",
     "run-sequence": "^1.1.5",
     "stats.js": "^0.16.0",
+    "three-orbit-controls": "^72.0.0",
     "webpack": "^2.1.0-beta.7",
     "xo": "^0.15.1"
   },
