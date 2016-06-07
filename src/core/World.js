@@ -383,6 +383,11 @@ class World extends WHSObject {
     return this.renderer;
   }
 
+  setControls(controls) {
+    this.controls = controls(this);
+    return this.controls;
+  }
+
   /**
    * Set a camera for rendering world.
    *

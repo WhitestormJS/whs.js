@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import Physijs from '../physics/physi.js';
 
-import {loadJson, loadTexture, loadFont} from '../utils/loader';
+import {JSONLoader, TextureLoader, FontLoader} from '../utils/loaders';
 
 const extend = (object, ...extensions) => { // $.extend alternative, ... is the spread operator.
   for (const extension of extensions) {
@@ -29,7 +29,7 @@ const extend = (object, ...extensions) => { // $.extend alternative, ... is the 
 };
 
 const texture = (url, options) => {
-  const texture = loadTexture(url);
+  const texture = TextureLoader.load(url);
 
   if (options) {
     const opt = Object.assign({}, options, {
@@ -156,9 +156,9 @@ const loadMaterial = (material = {}, isPhysics = true) => {
 };
 
 export {
-  loadFont,
-  loadJson,
-  loadTexture,
+  FontLoader,
+  JSONLoader,
+  TextureLoader,
   texture,
   extend,
   loadMaterial

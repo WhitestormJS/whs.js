@@ -1,21 +1,23 @@
 import * as THREE from 'three';
-import ThreeOrbitControls from 'three-orbit-controls';
+import getOrbitControls from 'three-orbit-controls';
 
-export function OrbitControls(object) {
-  const controls = new ThreeOrbitControls(
-    this.getCamera().getNative(),
-    this.getRenderer().domElement
-  );
+const ThreeOrbitControls = getOrbitControls(THREE);
 
-  if (object && object.__whsobject) {
-    const target = object ? object.mesh.position
-      : new THREE.Vector3(0, 0, 0);
+export function orbitControls(object) {
+  return function (world) {
+    const controls = new ThreeOrbitControls(
+      world.getCamera().getNative(),
+      world.getRenderer().domElement
+    );
 
-    controls.target = target;
-  } else if (typeof object === 'object')
-    controls.target.copy(target);
-  else
-    console.error('Object must be a THREE.JS vector! @OrbitControls');
+    if (object && object.__whsobject) {
+      const target = object ? object.mesh.position
+        : new THREE.Vector3(0, 0, 0);
 
-  return controls;
+      controls.target = target;
+    } else if (typeof object === 'object')
+      controls.target.copy(target);
+
+    return controls;
+  };
 }

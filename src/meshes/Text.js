@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import Physijs  from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial} from '../extras/api';
+import {extend, loadMaterial, FontLoader} from '../extras/api';
 
 class Text extends Shape {
   constructor(params = {}) {
@@ -32,7 +32,7 @@ class Text extends Shape {
       material = super._initMaterial(params.material);
 
     const promise = new Promise((resolve) => {
-      loadFont(params.geometry.parameters.font, font => {
+      FontLoader.load(params.geometry.parameters.font, font => {
         params.geometry.parameters.font = font;
 
         _scope.setNative(new Mesh(
