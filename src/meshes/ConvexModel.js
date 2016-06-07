@@ -2,8 +2,7 @@ import * as THREE from 'three';
 import Physijs  from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial} from '../extras/api';
-import {loadJson} from '../utils/loader';
+import {extend, loadMaterial, JSONLoader} from '../extras/api';
 
 class ConvexModel extends Shape {
   constructor(params = {}) {
@@ -23,9 +22,9 @@ class ConvexModel extends Shape {
       Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh;
 
     const promise = new Promise((resolve) => {
-      loadJson(params.geometry.path, (data, materials) => {
+      JSONLoader.load(params.geometry.path, (data, materials) => {
         if (params.geometry.physics) {
-          loadJson(params.geometry.physics, data2 => {
+          JSONLoader.load(params.geometry.physics, data2 => {
             let material;
 
             if (params.material.useVertexColors) {

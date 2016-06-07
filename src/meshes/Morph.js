@@ -3,7 +3,7 @@ import Physijs  from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
 import {extend, loadMaterial} from '../extras/api';
-import {loadJson} from '../utils/loader';
+import {loadJson} from '../utils/loaders';
 
 class Morph extends Shape {
   constructor(params = {}) {
