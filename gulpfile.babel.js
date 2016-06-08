@@ -83,7 +83,7 @@ gulp.task('examples:watch', () => {
   const watcher = gulp.watch(examplesSources, (obj) => {
     if (obj.type === 'changed') {
       if (path.extname(obj.path) === '.js') {
-        console.log('.js change deleted.');
+        console.log('.js change detected.');
         const filePath = path.relative(path.resolve('./'), obj.path);
 
         gulp.src([
@@ -107,7 +107,7 @@ gulp.task('examples:watch', () => {
 
         console.log(`Swig, babelify & browserify: ${filePath}`);
       } else if (path.extname(obj.path) === '.html') {
-        console.log('.html change deleted.');
+        console.log('.html change detected.');
         const filePath = path.relative(path.resolve('./'), obj.path);
 
         gulp.src(filePath)
@@ -123,7 +123,7 @@ gulp.task('examples:watch', () => {
 
         console.log(`Swig: ${filePath}`);
       } else {
-        console.log('Other file change deleted.');
+        console.log('Other file change detected.');
         const filePath = path.relative(path.resolve('./'), obj.path);
 
         gulp.src([
