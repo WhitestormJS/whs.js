@@ -1,5 +1,5 @@
-import gulp from 'gulp';
 import path from 'path';
+import gulp from 'gulp';
 import loadPlugins from 'gulp-load-plugins';
 import runSequence from 'run-sequence';
 import del from 'del';
@@ -11,7 +11,7 @@ import babel from 'gulp-babel';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import swig from 'gulp-swig';
-import browserify from 'gulp-browserify';
+import gbrowser from 'gulp-browser';
 import webpackConfig from './webpack.config.babel.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -68,7 +68,7 @@ gulp.task('webpack', (callback) => {
   });
 });
 
-gulp.task('dev', () => {
+gulp.task('dev', ['examples:watch'], () => {
   const server = new WebpackDevServer(webpackCompiler, {
     contentBase: examplesDest,
     publicPath: '/build/',
@@ -77,47 +77,75 @@ gulp.task('dev', () => {
   });
 
   server.listen(8080, 'localhost', () => {});
+});
 
-  const watcher = gulp.watch(examplesSources, () => {
-    gulp.src([
-      `${examplesDev}/**/*`,
-      `!${examplesDev}/**/*.html`,
-      `!${examplesDev}/!(libs)/*.js`,
-      `!${examplesDev}/**/index.js`,
-      `${examplesDev}/libs/**/*`,
-      `${examplesDev}/assets/**/*.js`
-    ])
-    .pipe(gulp.dest(examplesDest));
+gulp.task('examples:watch', () => {
+  const watcher = gulp.watch(examplesSources, (obj) => {
+    if (obj.type === 'changed') {
+      if (path.extname(obj.path) === '.js') {
+        console.log('.js change deleted.');
+        const filePath = path.relative(path.resolve('./'), obj.path);
 
-    gulp.src([
-      `${examplesDev}/**/*.js`,
-      `!${examplesDev}/**/index.js`,
-      `!${examplesDev}/libs/**/*`,
-      `!${examplesDev}/assets/**/*.js`
-    ])
-    .pipe(babel({
-      presets: ['es2015']
-    }))
-    .pipe(browserify({
-      insertGlobals: true,
-      debug: !gulp.env.production
-    }))
-    .pipe(gulp.dest(examplesDest));
+        gulp.src([
+          obj.path,
+          `!${examplesDev}/libs/**/*`,
+          `!${examplesDev}/assets/**/*.js`
+        ])
+          .pipe(swig(Object.assign({}, swigOpts, {ext: '.js'})))
+          .pipe(gbrowser.browserify({
+            transform: 'babelify',
+            options: {presets: ['es2015']}
+          }))
+          .pipe(
+            gulp.dest(
+              path.join(
+                path.relative(path.resolve('./'), path.resolve(examplesDest)),
+                path.relative(path.resolve(examplesDev), path.dirname(obj.path))
+              )
+            )
+          );
 
-    gulp.src(`${examplesDev}/**/index.js`)
-      .pipe(swig(swigOpts))
-      .pipe(babel({
-        presets: ['es2015']
-      }))
-      .pipe(browserify({
-        insertGlobals: true,
-        debug: !gulp.env.production
-      }))
-      .pipe(gulp.dest(examplesDest));
+        console.log(`Swig, babelify & browserify: ${filePath}`);
+      } else if (path.extname(obj.path) === '.html') {
+        console.log('.html change deleted.');
+        const filePath = path.relative(path.resolve('./'), obj.path);
 
-    gulp.src(`${examplesDev}/**/*.html`)
-      .pipe(swig(swigOpts))
-      .pipe(gulp.dest(examplesDest));
+        gulp.src(filePath)
+          .pipe(swig(swigOpts))
+          .pipe(
+            gulp.dest(
+              path.join(
+                path.relative(path.resolve('./'), path.resolve(examplesDest)),
+                path.relative(path.resolve(examplesDev), path.dirname(obj.path))
+              )
+            )
+          );
+
+        console.log(`Swig: ${filePath}`);
+      } else {
+        console.log('Other file change deleted.');
+        const filePath = path.relative(path.resolve('./'), obj.path);
+
+        gulp.src([
+          filePath,
+          `!${examplesDev}/**/*.html`,
+          `!${examplesDev}/!(libs)/*.js`,
+          `!${examplesDev}/**/script.js`,
+          `${examplesDev}/libs/**/*`,
+          `${examplesDev}/assets/**/*.js`
+        ])
+          .pipe(
+            gulp.dest(
+              path.join(
+                path.relative(path.resolve('./'), path.resolve(examplesDest)),
+                path.relative(path.resolve(examplesDev), path.dirname(obj.path))
+              )
+            )
+          );
+
+        console.log(`File copied: ${filePath}`);
+      }
+    }
   });
 
   watcher.on('change', (event) => {
@@ -138,7 +166,7 @@ gulp.task('examples', () => {
     `${examplesDev}/**/*`,
     `!${examplesDev}/**/*.html`,
     `!${examplesDev}/!(libs)/*.js`,
-    `!${examplesDev}/**/index.js`,
+    `!${examplesDev}/**/script.js`,
     `${examplesDev}/libs/**/*`,
     `${examplesDev}/assets/**/*.js`
   ])
@@ -146,29 +174,16 @@ gulp.task('examples', () => {
 
   gulp.src([
     `${examplesDev}/**/*.js`,
-    `!${examplesDev}/**/index.js`,
+    `!${examplesDev}/**/*.html`,
     `!${examplesDev}/libs/**/*`,
     `!${examplesDev}/assets/**/*.js`
   ])
-  .pipe(babel({
-    presets: ['es2015']
-  }))
-  .pipe(browserify({
-    insertGlobals: true,
-    debug: !gulp.env.production
+  .pipe(swig(Object.assign({}, swigOpts, {ext: '.js'})))
+  .pipe(gbrowser.browserify({
+    transform: 'babelify',
+    options: {presets: ['es2015']}
   }))
   .pipe(gulp.dest(examplesDest));
-
-  gulp.src(`${examplesDev}/**/index.js`)
-    .pipe(swig(swigOpts))
-    .pipe(babel({
-      presets: ['es2015']
-    }))
-    .pipe(browserify({
-      insertGlobals: true,
-      debug: !gulp.env.production
-    }))
-    .pipe(gulp.dest(examplesDest));
 
   gulp.src(`${examplesDev}/**/*.html`)
     .pipe(swig(swigOpts))

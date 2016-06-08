@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import {Loop} from '../extensions/Loop';
+import {defaults} from '../utils/defaults';
 import {WHSObject} from './Object';
 
 class Camera extends WHSObject {
@@ -55,7 +56,7 @@ class Camera extends WHSObject {
       helper: false
     });
 
-    if (WHS.debug)
+    if (defaults.debug)
       console.debug(`@WHS.Camera: Camera ${scope._type} found.`, scope);
 
     return scope;
@@ -88,7 +89,7 @@ class Camera extends WHSObject {
           this[tag] = true;
         });
 
-        if (WHS.debug)
+        if (defaults.debug)
           console.debug(`@WHS.Camera: Camera ${this._type} is ready.`, this);
 
         this.emit('ready');
@@ -117,7 +118,7 @@ class Camera extends WHSObject {
         console.error(err.message);
         reject();
       } finally {
-        if (WHS.debug) {
+        if (defaults.debug) {
           console.debug(
             `@WHS.Camera: Camera ${_scope._type} was added to world.`,
             [_scope, _scope.parent]

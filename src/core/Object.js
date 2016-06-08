@@ -1,5 +1,4 @@
 import Events from 'minivents';
-
 import {extend} from '../extras/api';
 
 class WHSObject {
@@ -49,9 +48,9 @@ class WHSObject {
   add(children) {
     const _scope = this;
 
-    if (children instanceof WHS.Shape || children instanceof WHS.Light)
+    if (children.addTo)
       return children.addTo(this);
-    else if (children instanceof WHS.Object) {
+    else if (children instanceof Object) {
       return new Promise((resolve) => {
         children.parent = _scope;
 
