@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import {loadMaterial} from '../extras/api';
+import {defaults} from '../utils/defaults';
 import {WHSObject} from './Object';
 
 class Curve extends WHSObject {
@@ -20,7 +21,6 @@ class Curve extends WHSObject {
     super.setParams(params);
 
     const geometry = new THREE.Geometry();
-
     geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
 
     const curve = new THREE.Line(
@@ -30,12 +30,10 @@ class Curve extends WHSObject {
 
     this.setNative(curve);
 
-    const scope = Object.assign(this,
-      {
-        _type: 'curve',
-        __path: params.geometry.curve
-      }
-    );
+    const scope = Object.assign(this, {
+      _type: 'curve',
+      __path: params.geometry.curve
+    });
 
     return scope;
   }
@@ -55,7 +53,7 @@ class Curve extends WHSObject {
         console.error(err.message);
         reject();
       } finally {
-        if (WHS.debug) {
+        if (defaults.debug) {
           console.debug(
             `@WHS.Curve: Curve ${_scope._type} was added to world.`,
             [_scope, _scope.parent]
@@ -110,7 +108,7 @@ class Curve extends WHSObject {
 
     this.emit('remove');
 
-    if (WHS.debug) {
+    if (defaults.debug) {
       console.debug(
         `@WHS.Curve: Curve ${this._type} was removed from world`,
         [_scope]

@@ -3,7 +3,12 @@
       "stage-1"
     ],
     "plugins": [
-        "transform-runtime"
+        "transform-runtime",
+        ["transform-es2015-modules-commonjs", {
+            "allowTopLevelThis": true,
+            "strict": true,
+            "loose": true
+        }]
     ],
     "env": {
         "node": {

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import {Loop} from '../extensions/Loop';
+import {defaults} from '../utils/defaults';
 import {WHSObject} from './Object';
 
 class Light extends WHSObject {
@@ -90,7 +91,7 @@ class Light extends WHSObject {
         _shadowmap: this.__params.shadowmap
       });
 
-    if (WHS.debug)
+    if (defaults.debug)
       console.debug(`@WHS.Light: Light ${scope._type} found.`, scope);
 
     return scope;
@@ -128,7 +129,7 @@ class Light extends WHSObject {
           _scope[tag] = true;
         });
 
-        if (WHS.debug)
+        if (defaults.debug)
           console.debug(`@WHS.Light: Light ${_scope._type} + ' is ready.`, _scope);
 
         _scope.emit('ready');
@@ -163,7 +164,7 @@ class Light extends WHSObject {
         console.error(err.message);
         reject();
       } finally {
-        if (WHS.debug) {
+        if (defaults.debug) {
           console.debug(
             `@WHS.Camera: Camera ${_scope._type} was added to world.`,
             [_scope, _scope.parent]
