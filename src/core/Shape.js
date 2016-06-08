@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import {loadMaterial} from '../extras/api';
 import {Loop} from '../extensions/Loop';
+import {defaults} from '../utils/defaults';
 import {World} from './World';
 import {WHSObject} from './Object';
 
@@ -85,7 +86,7 @@ class Shape extends WHSObject {
         physics: params.physics
       });
 
-    if (WHS.debug) console.debug(`@WHS.Shape: Shape ${scope._type} found.`, scope);
+    if (defaults.debug) console.debug(`@WHS.Shape: Shape ${scope._type} found.`, scope);
 
     return scope;
   }
@@ -188,7 +189,7 @@ class Shape extends WHSObject {
               );
             }
 
-            if (WHS.debug) console.debug(`@WHS.Shape: Shape ${_scope._type} is ready.`, _scope);
+            if (defaults.debug) console.debug(`@WHS.Shape: Shape ${_scope._type} is ready.`, _scope);
 
             _scope.emit('ready');
 
@@ -282,7 +283,7 @@ class Shape extends WHSObject {
             );
           }
 
-          if (WHS.debug) console.debug(`@WHS.Shape: Shape ${_scope._type} is ready.`, _scope);
+          if (defaults.debug) console.debug(`@WHS.Shape: Shape ${_scope._type} is ready.`, _scope);
 
           resolve();
 
@@ -341,7 +342,7 @@ class Shape extends WHSObject {
               _scope.emit('collide');
             });
 
-            if (WHS.debug) {
+            if (defaults.debug) {
               console.debug(
                 `@WHS.Shape: Shape ${_scope._type} was added to world.`,
                 [_scope, _scope.parent]
@@ -388,7 +389,7 @@ class Shape extends WHSObject {
             _scope.emit('ready');
           });
 
-          if (WHS.debug) {
+          if (defaults.debug) {
             console.debug(
                 `@WHS.Shape: Shape ${_scope._type} was added to world.`,
                 [_scope, _scope.parent]
@@ -448,7 +449,7 @@ class Shape extends WHSObject {
 
     this.emit('remove');
 
-    if (WHS.debug) {
+    if (defaults.debug) {
       console.debug(
         `@WHS.Shape: Shape ${this._type} was removed from world`,
         [this]

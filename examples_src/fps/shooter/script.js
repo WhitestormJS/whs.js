@@ -1,4 +1,4 @@
-import defaultTerrainMap from '../../assets/terrain/default_terrain';
+import defaultTerrainMap from './assets/terrain/default_terrain';
 
 const GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb

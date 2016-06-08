@@ -1,6 +1,5 @@
 import {join} from 'path';
 import webpack from 'webpack';
-import fs from 'fs';
 
 process.env.BABEL_ENV = 'browser';
 

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import Stats from 'stats.js';
-import Physijs  from '../physics/physi.js';
+import Physijs from '../physics/physi.js';
 
 import {PerspectiveCamera} from '../cameras/PerspectiveCamera';
 import {Camera} from './Camera';

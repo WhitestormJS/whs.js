@@ -20,6 +20,8 @@ const GAME = new WHS.World({
   }
 });
 
+console.log("Privet, Papa");
+
 const sphere = new WHS.Sphere({
   geometry: {
     radius: 3

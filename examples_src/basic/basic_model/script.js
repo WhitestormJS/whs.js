@@ -26,8 +26,8 @@ const GAME = new WHS.World({
 
 new WHS.Model({
   geometry: {
-    path: '{{ assets }}/models/utah-teapot-large.json',
-    physics: '{{ assets }}/models/utah-teapot-light.json'
+    path: '../{{ assets }}/models/utah-teapot-large.json',
+    physics: '../{{ assets }}/models/utah-teapot-light.json'
   },
 
   mass: 100,
@@ -35,7 +35,7 @@ new WHS.Model({
 
   material: {
     shading: THREE.SmoothShading,
-    map: WHS.texture('{{ assets }}/textures/teapot.jpg', {repeat: {x: 2, y: 2}}),
+    map: WHS.texture('../{{ assets }}/textures/teapot.jpg', {repeat: {x: 2, y: 2}}),
     kind: 'phong',
     side: THREE.DoubleSide,
     useCustomMaterial: true,
