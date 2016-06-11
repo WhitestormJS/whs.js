@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import {Light} from '../core/Light';
 
 class AmbientLight extends Light {

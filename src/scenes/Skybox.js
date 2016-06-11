@@ -1,11 +1,13 @@
 import * as THREE from 'three';
+
+import {extend, texture} from '../extras/api';
 import {Shape} from '../core/Shape';
 
 class Skybox extends Shape {
   constructor(params = {}) {
     super(params, 'skybox');
 
-    WHS.API.extend(params, {
+    extend(params, {
       skyType: 'box',
       detail: '.png',
       radius: 10,
@@ -24,7 +26,7 @@ class Skybox extends Shape {
 
         for (let i = 0; i < 6; i++) {
           matArray.push(new MeshBasicMaterial({
-            map: THREE.ImageUtils.loadTexture(params.path + directions[i] + params.imgSuffix),
+            map: texture(params.path + directions[i] + params.imgSuffix),
             side: THREE.BackSide,
             fog: params.fog
           }));
@@ -37,8 +39,8 @@ class Skybox extends Shape {
       case 'sphere': {
         skyGeometry = new THREE.SphereGeometry(params.radius / 2, 60, 40);
         skyMat = new THREE.MeshBasicMaterial({
-          map: ImageUtils.loadTexture(params.path + params.imgSuffix),
-          side: BackSide,
+          map: texture(params.path + params.imgSuffix),
+          side: THREE.BackSide,
           fog: params.fog
         });
 

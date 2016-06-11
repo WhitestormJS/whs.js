@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as Physijs  from './physics/physi.js';
 
 export * from './cameras/index';
 export * from './core/index';
@@ -10,4 +11,5 @@ export * from './scenes/index';
 
 if (window) {
   window.THREE = THREE;
+  window.Physijs = Physijs;
 }

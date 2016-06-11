@@ -1,11 +1,7 @@
+import * as THREE from 'three';
 import {Light} from '../core/Light';
 
 class NormalLight extends Light {
-  /**
-   * Normal light.
-   *
-   * @param {Object} params.light.color - Light color.
-   */
   constructor(params = {}) {
     super(params, 'normallight');
 

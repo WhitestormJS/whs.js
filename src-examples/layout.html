@@ -22,9 +22,11 @@
     <link rel="shortcut icon" type="image/x-icon" href="http://whitestormjs.xyz/favicon.ico" />
     <link rel="apple-touch-icon-precomposed" href="http://whitestormjs.xyz/favicon.ico" sizes="57x57" />
     <meta name="msapplication-square150x150logo" content="../development/art/logo/Icon-72@2.png" />
+    {% block head %} {% endblock %}
   </head>
   <body>
 
+    {% block body %} {% endblock %}
     <script src="../../build/whitestorm.js"></script>
     {% block script %} {% endblock %}
   </body>
