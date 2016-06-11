@@ -1,5 +1,3 @@
-import WHS from '../lib/index';
-
 const GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
   autoresize: true,
