@@ -1,9 +1,9 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var _whsPlugin = require('whs-plugin');
+var _whsTerrain = require('whs-terrain');
 
-var _whsPlugin2 = _interopRequireDefault(_whsPlugin);
+var _whsTerrain2 = _interopRequireDefault(_whsTerrain);
 
 var _default_terrain = require('./assets/terrain/default_terrain');
 
@@ -40,7 +40,7 @@ var GAME = new WHS.World({
   }
 });
 
-window.terrain = new _whsPlugin2.default({
+window.terrain = new _whsTerrain2.default({
   geometry: {
     map: _default_terrain2.default,
     depth: 100,
@@ -191,8 +191,6 @@ flamingogoes.add(flamingoPath[1]);
 flamingogoes.add(flamingoPath[2]);
 
 flamingo.addTo(GAME, 'wait').then(function (obj) {
-  console.log(obj.follow(parrotgoes, // flamingogoes
-  26000, true));
   obj.follow(parrotgoes, // flamingogoes
   26000, true);
 });
@@ -387,7 +385,7 @@ curve3.addTo( GAME );
 */
 GAME.start();
 
-},{"./assets/terrain/default_terrain":2,"whs-plugin":113}],2:[function(require,module,exports){
+},{"./assets/terrain/default_terrain":2,"whs-terrain":113}],2:[function(require,module,exports){
 'use strict';
 
 var defaultTerrainMap = new Image();
@@ -2298,7 +2296,7 @@ for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList'
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+      value: true
 });
 
 var _assign = require('babel-runtime/core-js/object/assign');
@@ -2338,167 +2336,167 @@ var _whitestormjs = (typeof window !== "undefined" ? window['WHS'] : typeof glob
 var _ShaderTerrain = require('./shaders/ShaderTerrain');
 
 function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
+      return obj && obj.__esModule ? obj : { default: obj };
 }
 
 var Terrain = function (_Shape) {
-  (0, _inherits3.default)(Terrain, _Shape);
+      (0, _inherits3.default)(Terrain, _Shape);
 
-  function Terrain() {
-    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-    (0, _classCallCheck3.default)(this, Terrain);
+      function Terrain() {
+            var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+            (0, _classCallCheck3.default)(this, Terrain);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Terrain).call(this, params, 'terrain'));
+            var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Terrain).call(this, params, 'terrain'));
 
-    (0, _whitestormjs.extend)(params.geometry, {
-      width: 1,
-      height: 1,
-      depth: 1,
-      map: false
-    });
+            (0, _whitestormjs.extend)(params.geometry, {
+                  width: 1,
+                  height: 1,
+                  depth: 1,
+                  map: false
+            });
 
-    _this.build(params);
-    (0, _get3.default)((0, _getPrototypeOf2.default)(Terrain.prototype), 'wrap', _this).call(_this);
+            _this.build(params);
+            (0, _get3.default)((0, _getPrototypeOf2.default)(Terrain.prototype), 'wrap', _this).call(_this);
 
-    _this.rotation.set(Math.PI / 180 * -90, 0, 0);
-    return _this;
-  }
+            _this.rotation.set(Math.PI / 180 * -90, 0, 0);
+            return _this;
+      }
 
-  (0, _createClass3.default)(Terrain, [{
-    key: 'build',
-    value: function build() {
-      var _this2 = this;
+      (0, _createClass3.default)(Terrain, [{
+            key: 'build',
+            value: function build() {
+                  var _this2 = this;
 
-      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                  var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      // const Mesh = this.physics ? Physijs.HeightfieldMesh : THREE.Mesh;
+                  // const Mesh = this.physics ? Physijs.HeightfieldMesh : THREE.Mesh;
 
-      return new _promise2.default(function (resolve) {
-        var canvas = document.createElement('canvas');
-        canvas.setAttribute('width', params.geometry.width);
-        canvas.setAttribute('height', params.geometry.height);
+                  return new _promise2.default(function (resolve) {
+                        var canvas = document.createElement('canvas');
+                        canvas.setAttribute('width', params.geometry.width);
+                        canvas.setAttribute('height', params.geometry.height);
 
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(params.geometry.map, 0, 0);
+                        var ctx = canvas.getContext('2d');
+                        ctx.drawImage(params.geometry.map, 0, 0);
 
-        // Ocean texture.
-        var oceanTexture = _whitestormjs.TextureLoader.load('../../assets/textures/terrain/dirt-512.jpg');
+                        // Ocean texture.
+                        var oceanTexture = _whitestormjs.TextureLoader.load('../../assets/textures/terrain/dirt-512.jpg');
 
-        oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
+                        oceanTexture.wrapS = oceanTexture.wrapT = THREE.RepeatWrapping;
 
-        // Sandy texture.
-        var sandyTexture = _whitestormjs.TextureLoader.load('../../assets/textures/terrain/sand-512.jpg');
+                        // Sandy texture.
+                        var sandyTexture = _whitestormjs.TextureLoader.load('../../assets/textures/terrain/sand-512.jpg');
 
-        sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
+                        sandyTexture.wrapS = sandyTexture.wrapT = THREE.RepeatWrapping;
 
-        // Grass texture.
-        var grassTexture = _whitestormjs.TextureLoader.load('../../assets/textures/terrain/grass-512.jpg');
+                        // Grass texture.
+                        var grassTexture = _whitestormjs.TextureLoader.load('../../assets/textures/terrain/grass-512.jpg');
 
-        grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
+                        grassTexture.wrapS = grassTexture.wrapT = THREE.RepeatWrapping;
 
-        // Rocky texture.
-        var rockyTexture = _whitestormjs.TextureLoader.load('../../assets/textures/terrain/rock-512.jpg');
+                        // Rocky texture.
+                        var rockyTexture = _whitestormjs.TextureLoader.load('../../assets/textures/terrain/rock-512.jpg');
 
-        rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
+                        rockyTexture.wrapS = rockyTexture.wrapT = THREE.RepeatWrapping;
 
-        // Snowy texture.
-        var snowyTexture = _whitestormjs.TextureLoader.load('../../assets/textures/terrain/snow-512.jpg');
+                        // Snowy texture.
+                        var snowyTexture = _whitestormjs.TextureLoader.load('../../assets/textures/terrain/snow-512.jpg');
 
-        snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
+                        snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping;
 
-        var rx = 256,
-            ry = 256;
+                        var rx = 256,
+                            ry = 256;
 
-        var pars = {
-          minFilter: THREE.LinearFilter,
-          magFilter: THREE.LinearFilter,
+                        var pars = {
+                              minFilter: THREE.LinearFilter,
+                              magFilter: THREE.LinearFilter,
 
-          format: THREE.RGBFormat
-        };
+                              format: THREE.RGBFormat
+                        };
 
-        // Heightmap.
-        var heightMap = new THREE.WebGLRenderTarget(rx, ry, pars);
+                        // Heightmap.
+                        var heightMap = new THREE.WebGLRenderTarget(rx, ry, pars);
 
-        heightMap.texture = _whitestormjs.TextureLoader.load('../../assets/terrain/default_terrain.png');
+                        heightMap.texture = _whitestormjs.TextureLoader.load('../../assets/terrain/default_terrain.png');
 
-        // Normalmap.
-        var normalMap = new THREE.WebGLRenderTarget(rx, ry, pars);
+                        // Normalmap.
+                        var normalMap = new THREE.WebGLRenderTarget(rx, ry, pars);
 
-        normalMap.texture = _whitestormjs.TextureLoader.load('../../assets/terrain/NormalMap.png');
+                        normalMap.texture = _whitestormjs.TextureLoader.load('../../assets/terrain/NormalMap.png');
 
-        // Specularmap.
-        var specularMap = new THREE.WebGLRenderTarget(256, 256, pars); // 2048
+                        // Specularmap.
+                        var specularMap = new THREE.WebGLRenderTarget(256, 256, pars); // 2048
 
-        specularMap.texture = _whitestormjs.TextureLoader.load('../../assets/terrain/default_terrain.png');
+                        specularMap.texture = _whitestormjs.TextureLoader.load('../../assets/terrain/default_terrain.png');
 
-        // Terrain shader (ShaderTerrain.js).
-        var terrainShader = _ShaderTerrain.shaderTerrain.terrain;
+                        // Terrain shader (ShaderTerrain.js).
+                        var terrainShader = _ShaderTerrain.shaderTerrain.terrain;
 
-        var uniformsTerrain = (0, _assign2.default)(THREE.UniformsUtils.clone(terrainShader.uniforms), {
-          oceanTexture: { type: 't', value: oceanTexture },
-          sandyTexture: { type: 't', value: sandyTexture },
-          grassTexture: { type: 't', value: grassTexture },
-          rockyTexture: { type: 't', value: rockyTexture },
-          snowyTexture: { type: 't', value: snowyTexture },
-          fog: true,
-          lights: true
-        }, THREE.UniformsLib.common, THREE.UniformsLib.fog, THREE.UniformsLib.lights, THREE.UniformsLib.ambient, THREE.UniformsLib.shadowmap, {
-          ambient: { type: 'c', value: new THREE.Color(0xffffff) },
-          emissive: { type: 'c', value: new THREE.Color(0x000000) },
-          wrapRGB: { type: 'v3', value: new THREE.Vector3(1, 1, 1) }
-        });
+                        var uniformsTerrain = (0, _assign2.default)(THREE.UniformsUtils.clone(terrainShader.uniforms), {
+                              oceanTexture: { type: 't', value: oceanTexture },
+                              sandyTexture: { type: 't', value: sandyTexture },
+                              grassTexture: { type: 't', value: grassTexture },
+                              rockyTexture: { type: 't', value: rockyTexture },
+                              snowyTexture: { type: 't', value: snowyTexture },
+                              fog: true,
+                              lights: true
+                        }, THREE.UniformsLib.common, THREE.UniformsLib.fog, THREE.UniformsLib.lights, THREE.UniformsLib.ambient, THREE.UniformsLib.shadowmap, {
+                              ambient: { type: 'c', value: new THREE.Color(0xffffff) },
+                              emissive: { type: 'c', value: new THREE.Color(0x000000) },
+                              wrapRGB: { type: 'v3', value: new THREE.Vector3(1, 1, 1) }
+                        });
 
-        uniformsTerrain.tDisplacement.value = heightMap;
-        uniformsTerrain.spotShadowMap.value = [normalMap];
+                        uniformsTerrain.tDisplacement.value = heightMap;
+                        uniformsTerrain.spotShadowMap.value = [normalMap];
 
-        uniformsTerrain.uDisplacementScale.value = 100;
-        uniformsTerrain.uRepeatOverlay.value.set(6, 6);
+                        uniformsTerrain.uDisplacementScale.value = 100;
+                        uniformsTerrain.uRepeatOverlay.value.set(6, 6);
 
-        var material = new THREE.ShaderMaterial({
-          uniforms: uniformsTerrain,
-          vertexShader: terrainShader.vertexShader,
-          fragmentShader: terrainShader.fragmentShader,
-          lights: true,
-          fog: true,
-          side: THREE.FrontSide,
-          shading: THREE.SmoothShading
-        });
+                        var material = new THREE.ShaderMaterial({
+                              uniforms: uniformsTerrain,
+                              vertexShader: terrainShader.vertexShader,
+                              fragmentShader: terrainShader.fragmentShader,
+                              lights: true,
+                              fog: true,
+                              side: THREE.FrontSide,
+                              shading: THREE.SmoothShading
+                        });
 
-        var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
-        geom.verticesNeedUpdate = true;
+                        var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
+                        geom.verticesNeedUpdate = true;
 
-        var index = 0,
-            i = 0;
+                        var index = 0,
+                            i = 0;
 
-        var imgdata = ctx.getImageData(0, 0, 256, 256).data;
+                        var imgdata = ctx.getImageData(0, 0, 256, 256).data;
 
-        for (var x = 0; x <= 255; x++) {
-          for (var y = 255; y >= 0; y--) {
-            geom.vertices[index].z = imgdata[i] / 255 * 100;
+                        for (var x = 0; x <= 255; x++) {
+                              for (var y = 255; y >= 0; y--) {
+                                    geom.vertices[index].z = imgdata[i] / 255 * 100;
 
-            i += 4;
-            index++;
-          }
-        }
+                                    i += 4;
+                                    index++;
+                              }
+                        }
 
-        geom.computeVertexNormals();
-        geom.computeFaceNormals();
-        geom.computeTangents();
+                        geom.computeVertexNormals();
+                        geom.computeFaceNormals();
+                        geom.computeTangents();
 
-        _this2.setNative(new Physijs.default.HeightfieldMesh(geom, Physijs.default.createMaterial(material, 1.0, 0.8), params.mass));
+                        _this2.setNative(new Physijs.default.HeightfieldMesh(geom, Physijs.default.createMaterial(material, 1.0, 0.8), params.mass));
 
-        _this2.getNative().updateMatrix();
+                        _this2.getNative().updateMatrix();
 
-        resolve();
-      });
-    }
-  }, {
-    key: 'clone',
-    value: function clone() {
-      return new Terrain(this.getParams(), this._type).copy(this);
-    }
-  }]);
-  return Terrain;
+                        resolve();
+                  });
+            }
+      }, {
+            key: 'clone',
+            value: function clone() {
+                  return new Terrain(this.getParams(), this._type).copy(this);
+            }
+      }]);
+      return Terrain;
 }(_whitestormjs.Shape);
 
 exports.default = Terrain;

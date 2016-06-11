@@ -1,4 +1,4 @@
-import Terrain from 'whs-plugin';
+import Terrain from 'whs-terrain';
 import defaultTerrainMap from './assets/terrain/default_terrain';
 
 const GAME = new WHS.World({
@@ -213,11 +213,6 @@ flamingogoes.add(flamingoPath[1]);
 flamingogoes.add(flamingoPath[2]);
 
 flamingo.addTo(GAME, 'wait').then((obj) => {
-  console.log(obj.follow(
-    parrotgoes, // flamingogoes
-    26000,
-    true
-  ));
   obj.follow(
     parrotgoes, // flamingogoes
     26000,
