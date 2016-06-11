@@ -87,13 +87,6 @@
       "browser",
       "es6"
     ],
-    "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "jsx": true
-      }
-    },
     "rules": {
       "operator-linebreak": [
         2,
@@ -106,6 +99,7 @@
       "one-var": 0,
       "no-else-return": 1,
       "no-undef": 0,
+      "no-new": 0,
       "new-cap": [
         1,
         {
