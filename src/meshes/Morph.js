@@ -3,7 +3,7 @@ import Physijs  from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
 import {extend, loadMaterial} from '../extras/api';
-import {loadJson} from '../utils/loaders';
+import {JSONLoader} from '../utils/loaders';
 
 class Morph extends Shape {
   constructor(params = {}) {
@@ -21,7 +21,8 @@ class Morph extends Shape {
     const _scope = this;
 
     const promise = new Promise((resolve) => {
-      loadJson(params.geometry.path, (data, materials) => {
+      JSONLoader.load(params.geometry.path, (data, materials) => {
+        let material;
         if (params.material.useVertexColors) {
           material = loadMaterial(
             extend(params.material, {

@@ -1,12 +1,7 @@
+import * as THREE from 'three';
 import {Light} from '../core/Light';
 
 class DirectionalLight extends Light {
-  /**
-   * Directional light.
-   *
-   * @param {Object} params.light.color - Light color.
-   * @param {Object} params.light.intensity - Light intensity.
-   */
   constructor(params = {}) {
     super(params, 'directionallight');
 

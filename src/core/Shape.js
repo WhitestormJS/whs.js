@@ -312,6 +312,7 @@ class Shape extends WHSObject {
       return new Promise((resolve, reject) => {
         Promise.all(_scope.wait).then(() => {
           try {
+            console.log(_scope.parent instanceof World);
             const parentNative = _scope.parent instanceof World
               ? _scope.parent.getScene()
               : _scope.parent.getNative();
@@ -354,6 +355,7 @@ class Shape extends WHSObject {
     } else {
       return new Promise((resolve, reject) => {
         try {
+          console.log(_scope.parent instanceof World);
           const parentNative = _scope.parent instanceof World
             ? _scope.parent.getScene()
             : _scope.parent.getNative();
@@ -549,6 +551,8 @@ class Shape extends WHSObject {
       _scope.getNative().lookAt(vec2);
     });
 
+    _scope.getWorld().addLoop(animation);
+
     animation.start();
 
     if (loop) {
@@ -564,11 +568,14 @@ class Shape extends WHSObject {
           _scope.getNative().lookAt(vec2);
         });
 
+        _scope.getWorld().addLoop(animation);
+
         animation.start();
       }, time);
     } else {
       setTimeout(() => {
         animation.stop();
+         _scope.getWorld().removeLoop(animation);
       }, time);
     }
   }

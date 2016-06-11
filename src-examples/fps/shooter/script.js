@@ -1,3 +1,4 @@
+import Terrain from 'whs-plugin';
 import defaultTerrainMap from './assets/terrain/default_terrain';
 
 const GAME = new WHS.World({
@@ -21,16 +22,23 @@ const GAME = new WHS.World({
   rWidth: 1,
   rHeight: 1,
 
-  background: 0x70DBFF
+  background: 0x70DBFF,
+
+  paths: {
+    worker: '{{ libs }}/physijs_worker.js',
+    ammo: '{{ libs }}/ammo.js'
+  }
 });
 
-new WHS.Terrain({
+window.terrain = new Terrain({
   geometry: {
     map: defaultTerrainMap,
     depth: 100,
     width: 256,
     height: 256
   },
+
+  mass: 0,
 
   material: {
     color: 0xff0000,
@@ -43,7 +51,7 @@ new WHS.Terrain({
     y: 0,
     z: 0
   }
-}).addTo(GAME);
+}).addTo(GAME, 'wait');
 
 // NOTE: Default light.
 new WHS.AmbientLight({
@@ -99,7 +107,7 @@ const parrot = new WHS.Morph({
     width: 2,
     height: 2,
     depth: 2,
-    path: 'assets/models/morph/parrot.js'
+    path: '../{{ assets }}/models/morph/parrot.js'
   },
 
   material: {
@@ -151,7 +159,7 @@ const flamingo = new WHS.Morph({
     width: 2,
     height: 2,
     depth: 2,
-    path: 'assets/models/morph/flamingo.js'
+    path: '../{{ assets }}/models/morph/flamingo.js'
   },
 
   material: {
@@ -205,6 +213,11 @@ flamingogoes.add(flamingoPath[1]);
 flamingogoes.add(flamingoPath[2]);
 
 flamingo.addTo(GAME, 'wait').then((obj) => {
+  console.log(obj.follow(
+    parrotgoes, // flamingogoes
+    26000,
+    true
+  ));
   obj.follow(
     parrotgoes, // flamingogoes
     26000,
@@ -221,7 +234,7 @@ parrot.addTo(GAME, 'wait').then((obj) => {
 });
 
 new WHS.Skybox({
-  path: 'assets/textures/skybox/skymap',
+  path: '../{{ assets }}/textures/skybox/skymap',
   imgSuffix: '.png',
   skyType: 'sphere',
   radius: GAME.getCamera().__params.camera.far,
@@ -242,7 +255,7 @@ const box = new WHS.Box({
 
   material: {
     kind: 'lambert',
-    map: WHS.API.texture('assets/textures/box.jpg')
+    map: WHS.texture('../{{ assets }}/textures/box.jpg')
   },
 
   pos: {
@@ -263,6 +276,8 @@ GAME.add(box).then(() => {
     }
   });
 
+  GAME.addLoop(checker1);
+
   checker1.start();
 });
 
@@ -277,7 +292,7 @@ new WHS.Box({
 
   material: {
     kind: 'lambert',
-    map: WHS.API.texture('assets/textures/box.jpg')
+    map: WHS.texture('../{{ assets }}/textures/box.jpg')
   },
 
   pos: {
@@ -318,20 +333,21 @@ GAME.add(person).then(() => {
     }
   });
 
+  GAME.addLoop(checker2);
+
   checker2.start();
 });
 
 // EFFECTS.
-const effects = new WHS.Wagner(GAME);
+// const effects = new WHS.Wagner(GAME);
 
 // effects.add( "ZoomBlurPass", {} );
-effects.add('VignettePass', {});
+// effects.add('VignettePass', {});
 
 // var directionalblurEffect = GAME.addWagner( "motionBlurPass", {} ).apply();
 
 GAME.setControls(
   WHS.firstPersonControls(person, { // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
-    block: document.getElementById('blocker'),
     speed: 5 // 5
   })
 );

@@ -1,16 +1,7 @@
+import * as THREE from 'three';
 import {Light} from '../core/Light';
 
 class SpotLight extends Light {
-  /**
-   * Point light.
-   *
-   * @param {Object} params.light.color - Light color.
-   * @param {Object} params.light.intensity - Light intensity.
-   * @param {Object} params.light.distance - Light distance.
-   * @param {Object} params.light.angle - Light angle.
-   * @param {Object} params.light.exponent - Light exponent.
-   * @param {Object} params.light.decay - Light decay.
-   */
   constructor(params = {}) {
     super(params, 'spotlight');
 
