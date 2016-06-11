@@ -1,6 +1,6 @@
 {
   "name": "whitestormjs",
-  "version": "0.8.0",
+  "version": "0.8.23",
   "description": "Framework for developing 3D web apps with physics.",
   "main": "lib/index.js",
   "scripts": {
@@ -32,11 +32,8 @@
   },
   "homepage": "https://github.com/WhitestormJS/whitestorm.js#readme",
   "dependencies": {
-    "babel-runtime": "^6.9.0",
-    "eventemitter3": "^1.2.0",
     "stats.js": "^0.16.0",
-    "three": "^0.76.1",
-    "whitestormjs-physijs": "^1.0.2"
+    "three": "^0.76.1"
   },
   "devDependencies": {
     "babel-loader": "^6.2.4",
@@ -49,21 +46,22 @@
     "babel-register": "^6.8.0",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
+    "browserify-shim": "^3.8.12",
     "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
-    "gulp-browser": "^2.1.9",
+    "gulp-browser-basedir": "^1.0.1",
     "gulp-browserify": "^0.5.1",
     "gulp-cached": "^1.1.0",
     "gulp-changed": "^1.3.0",
     "gulp-if": "^2.0.0",
     "gulp-load-plugins": "^1.2.2",
+    "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-rollup": "^1.9.0",
     "gulp-sourcemaps": "^2.0.0-alpha",
     "gulp-swig": "^0.8.0",
     "gulp-util": "^3.0.7",
-    "gulp-webpack": "^1.5.0",
     "gulp-xo": "^0.11.0",
     "minivents": "^2.0.2",
     "path": "^0.12.7",
@@ -76,9 +74,6 @@
     "swig": "^1.4.2",
     "swig-webpack-plugin": "^0.5.1",
     "three-orbit-controls": "^72.0.0",
-    "through2": "^2.0.1",
-    "vinyl-named": "^1.1.0",
-    "vinyl-transform": "^1.0.0",
     "webpack": "^2.1.0-beta.7",
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.2.0",
@@ -92,6 +87,13 @@
       "browser",
       "es6"
     ],
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
     "rules": {
       "operator-linebreak": [
         2,
@@ -121,5 +123,44 @@
       "babel/arrow-parens": 0,
       "xo/filename-case": 0
     }
+  },
+  "eslintConfig": {
+    "ecmaFeatures": {
+      "modules": true,
+      "spread": true,
+      "restParams": true
+    },
+    "env": {
+      "es6": true,
+      "node": true,
+      "browser": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    }
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ],
+      [
+        "browserify-shim"
+      ]
+    ]
+  },
+  "browserify-shim": {
+    "three": "global:THREE",
+    "whitestormjs": "global:WHS",
+    "whitestormjs-physijs": "global:Physijs"
   }
 }

@@ -5,13 +5,9 @@ import runSequence from 'run-sequence';
 import del from 'del';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import rollup from 'gulp-rollup';
-import rename from 'gulp-rename';
-import babel from 'gulp-babel';
-import nodeResolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
 import swig from 'gulp-swig';
-import gbrowser from 'gulp-browser';
+import gbrowser from 'gulp-browser-basedir';
+import plumber from 'gulp-plumber';
 import webpackConfig from './webpack.config.babel.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -22,7 +18,7 @@ const webpackCompiler = webpack(webpackConfig({production: isProduction}));
 // Globals.
 const src = 'src/**/*',
   dest = 'lib',
-  examplesDev = 'examples_src',
+  examplesDev = 'src-examples',
   examplesSources = `${examplesDev}/**/*`,
   examplesDest = 'examples',
   swigOpts = {
@@ -47,7 +43,7 @@ process.env.BABEL_ENV = 'node';
 gulp.task('default', ['build']);
 
 gulp.task('build', (callback) => {
-  runSequence('clean', 'babel', callback);
+  runSequence('clean', 'babel', 'webpack', callback);
 });
 
 gulp.task('babel', () => {
@@ -91,8 +87,9 @@ gulp.task('examples:watch', () => {
           `!${examplesDev}/libs/**/*`,
           `!${examplesDev}/assets/**/*.js`
         ])
+          .pipe(plumber())
           .pipe(swig(Object.assign({}, swigOpts, {ext: '.js'})))
-          .pipe(gbrowser.browserify({
+          .pipe(gbrowser.browserify({basedir: path.resolve(examplesDest)}, {
             transform: 'babelify',
             options: {presets: ['es2015']}
           }))
@@ -111,6 +108,7 @@ gulp.task('examples:watch', () => {
         const filePath = path.relative(path.resolve('./'), obj.path);
 
         gulp.src(filePath)
+          .pipe(plumber())
           .pipe(swig(swigOpts))
           .pipe(
             gulp.dest(
@@ -134,6 +132,7 @@ gulp.task('examples:watch', () => {
           `${examplesDev}/libs/**/*`,
           `${examplesDev}/assets/**/*.js`
         ])
+          .pipe(plumber())
           .pipe(
             gulp.dest(
               path.join(
@@ -170,7 +169,8 @@ gulp.task('examples', () => {
     `${examplesDev}/libs/**/*`,
     `${examplesDev}/assets/**/*.js`
   ])
-  .pipe(gulp.dest(examplesDest));
+    .pipe(plumber())
+    .pipe(gulp.dest(examplesDest));
 
   gulp.src([
     `${examplesDev}/**/*.js`,
@@ -178,14 +178,17 @@ gulp.task('examples', () => {
     `!${examplesDev}/libs/**/*`,
     `!${examplesDev}/assets/**/*.js`
   ])
-  .pipe(swig(Object.assign({}, swigOpts, {ext: '.js'})))
-  .pipe(gbrowser.browserify({
-    transform: 'babelify',
-    options: {presets: ['es2015']}
-  }))
-  .pipe(gulp.dest(examplesDest));
+    .pipe(plumber())
+    .pipe(swig(Object.assign({}, swigOpts, {ext: '.js'})))
+    .pipe(gbrowser.browserify({basedir: path.resolve(examplesDest)}, 
+    {
+      transform: 'babelify',
+      options: {presets: ['es2015']}
+    }))
+    .pipe(gulp.dest(examplesDest));
 
   gulp.src(`${examplesDev}/**/*.html`)
+    .pipe(plumber())
     .pipe(swig(swigOpts))
     .pipe(gulp.dest(examplesDest));
 });

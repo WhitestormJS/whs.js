@@ -11,15 +11,15 @@ export function firstPersonControls(object, params = {}) {
       ypos: 1
     });
 
-    const controls = new ((camera, mesh, params) => {
+    let controls = new (function (camera, mesh, params) {
       const velocityFactor = 1;
       let runVelocity = 0.25;
 
       mesh.setAngularFactor({x: 0, y: 0, z: 0});
 
       /* Init */
-      const scope = this,
-        player = mesh,
+      let scope = this;
+      const player = mesh,
         pitchObject = new THREE.Object3D();
 
       pitchObject.add(camera.getNative());
@@ -46,8 +46,14 @@ export function firstPersonControls(object, params = {}) {
       function onMouseMove(event) {
         if (scope.enabled === false) return;
 
-        const movementX = event.movementX || event.mozMovementX || event.getMovementX() || 0,
-          movementY = event.movementY || event.mozMovementY || event.getMovementY() || 0;
+        const movementX = typeof event.movementX === 'number'
+          ? event.movementX : typeof event.mozMovementX === 'number'
+          ? event.mozMovementX : typeof event.getMovementX === 'function'
+          ? event.getMovementX() : 0;
+        const movementY = typeof event.movementY === 'number'
+          ? event.movementY : typeof event.mozMovementY === 'number'
+          ? event.mozMovementY : typeof event.getMovementY === 'function'
+          ? event.getMovementY() : 0;
 
         yawObject.rotation.y -= movementX * 0.002;
         pitchObject.rotation.x -= movementY * 0.002;
@@ -141,8 +147,6 @@ export function firstPersonControls(object, params = {}) {
         euler = new THREE.Euler();
 
       this.update = (delta) => {
-        const moveVec = new THREE.Vector3();
-
         if (scope.enabled === false) return;
 
         delta = delta || 0.5;
@@ -174,8 +178,6 @@ export function firstPersonControls(object, params = {}) {
       };
     })(world.getCamera(), object.getNative(), target);
 
-    world.getScene().add(world.controls.getObject());
-
     if ('pointerLockElement' in document
         || 'mozPointerLockElement' in document
         || 'webkitPointerLockElement' in document) {
@@ -186,55 +188,59 @@ export function firstPersonControls(object, params = {}) {
           || document.mozPointerLockElement === element
           || document.webkitPointerLockElement === element) {
           controls.enabled = true;
-          target.block.fadeOut();
+          target.block.style.display = 'none';
         } else {
           controls.enabled = false;
-          target.block.fadeIn();
+          target.block.style.display = 'block';
         }
       };
+
+      document.addEventListener('pointerlockchange', world.pointerlockchange, false);
+      document.addEventListener('mozpointerlockchange', world.pointerlockchange, false);
+      document.addEventListener('webkitpointerlockchange', world.pointerlockchange, false);
+
+      world.pointerlockerror = function () {
+        console.warn('Pointer lock error.');
+      };
+
+      document.addEventListener('pointerlockerror', world.pointerlockerror, false);
+      document.addEventListener('mozpointerlockerror', world.pointerlockerror, false);
+      document.addEventListener('webkitpointerlockerror', world.pointerlockerror, false);
+
+      target.block.addEventListener('click', () => {
+        element.requestPointerLock = element.requestPointerLock
+          || element.mozRequestPointerLock
+          || element.webkitRequestPointerLock;
+
+        element.requestFullscreen = element.requestFullscreen
+          || element.mozRequestFullscreen
+          || element.mozRequestFullScreen
+          || element.webkitRequestFullscreen;
+
+        if (/Firefox/i.test(navigator.userAgent)) {
+          const fullscreenchange = () => {
+            if (document.fullscreenElement === element
+              || document.mozFullscreenElement === element
+              || document.mozFullScreenElement === element) {
+              document.removeEventListener('fullscreenchange', fullscreenchange);
+              document.removeEventListener('mozfullscreenchange', fullscreenchange);
+
+              element.requestPointerLock();
+            }
+          };
+
+          document.addEventListener('fullscreenchange', fullscreenchange, false);
+          document.addEventListener('mozfullscreenchange', fullscreenchange, false);
+
+          element.requestFullscreen();
+        } else element.requestPointerLock();
+      });
     } else console.warn('Your browser does not support the PointerLock WHS.API.');
 
-    document.addEventListener('pointerlockchange', world.pointerlockchange, false);
-    document.addEventListener('mozpointerlockchange', world.pointerlockchange, false);
-    document.addEventListener('webkitpointerlockchange', world.pointerlockchange, false);
+    function callback(world) {
+      world.getScene().add(world.controls.getObject());
+    }
 
-    world.pointerlockerror = function () {
-      console.warn('Pointer lock error.');
-    };
-
-    document.addEventListener('pointerlockerror', world.pointerlockerror, false);
-    document.addEventListener('mozpointerlockerror', world.pointerlockerror, false);
-    document.addEventListener('webkitpointerlockerror', world.pointerlockerror, false);
-
-    target.block.addEventListener('click', () => {
-      element.requestPointerLock = element.requestPointerLock
-        || element.mozRequestPointerLock
-        || element.webkitRequestPointerLock;
-
-      element.requestFullscreen = element.requestFullscreen
-        || element.mozRequestFullscreen
-        || element.mozRequestFullScreen
-        || element.webkitRequestFullscreen;
-
-      if (/Firefox/i.test(navigator.userAgent)) {
-        const fullscreenchange = () => {
-          if (document.fullscreenElement === element
-            || document.mozFullscreenElement === element
-            || document.mozFullScreenElement === element) {
-            document.removeEventListener('fullscreenchange', fullscreenchange);
-            document.removeEventListener('mozfullscreenchange', fullscreenchange);
-
-            element.requestPointerLock();
-          }
-        };
-
-        document.addEventListener('fullscreenchange', fullscreenchange, false);
-        document.addEventListener('mozfullscreenchange', fullscreenchange, false);
-
-        element.requestFullscreen();
-      } else element.requestPointerLock();
-    });
-
-    return controls;
-  }
+    return [controls, callback];
+  };
 }

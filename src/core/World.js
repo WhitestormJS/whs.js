@@ -384,7 +384,15 @@ class World extends WHSObject {
   }
 
   setControls(controls) {
-    this.controls = controls(this);
+    const recieved = controls(this);
+
+    this.controls = recieved instanceof Array ? recieved[0] : recieved;
+
+    if (
+      recieved instanceof Array
+      && typeof recieved[1] === 'function'
+    ) recieved[1](this);
+
     return this.controls;
   }
 

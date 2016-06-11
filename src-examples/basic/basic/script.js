@@ -1,3 +1,5 @@
+import WHS from '../lib/index';
+
 const GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
   autoresize: true,
@@ -19,8 +21,6 @@ const GAME = new WHS.World({
     ammo: '{{ libs }}/ammo.js'
   }
 });
-
-console.log(123);
 
 const sphere = new WHS.Sphere({
   geometry: {
