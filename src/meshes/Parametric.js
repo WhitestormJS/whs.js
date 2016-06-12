@@ -9,16 +9,15 @@ class Parametric extends Shape {
     super(params, 'parametric');
 
     extend(params.geometry, {
-
       func() {},
       slices: 10,
       stacks: 10
-
     });
 
-    this.build(params);
-
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -28,14 +27,7 @@ class Parametric extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.ParametricGeometry(
-
-          params.geometry.func,
-          params.geometry.slices,
-          params.geometry.stacks
-
-        ),
-
+        this.buildGeometry(params),
         material,
         params.mass
       ));
@@ -44,11 +36,16 @@ class Parametric extends Shape {
     });
   }
 
-  /**
-   * Clone parametric.
-   */
+  buildGeometry(params = {}) {
+    return new THREE.ParametricGeometry(
+      params.geometry.func,
+      params.geometry.slices,
+      params.geometry.stacks
+    );
+  }
+
   clone() {
-    return new Parametric(this.getParams(), this._type).copy(this);
+    return new Parametric({build: false}).copy(this);
   }
 }
 

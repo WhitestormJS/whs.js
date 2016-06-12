@@ -9,15 +9,14 @@ class Icosahedron extends Shape {
     super(params, 'icosahedron');
 
     extend(params.geometry, {
-
       radius: 1,
       detail: 0
-
     });
 
-    this.build(params);
-
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -27,11 +26,7 @@ class Icosahedron extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.IcosahedronGeometry(
-          params.geometry.radius,
-          params.geometry.detail
-        ),
-
+        this.buildGeometry(params),
         material,
         params.mass
       ));
@@ -40,8 +35,15 @@ class Icosahedron extends Shape {
     });
   }
 
+  buildGeometry(params = {}) {
+    return new THREE.IcosahedronGeometry(
+      params.geometry.radius,
+      params.geometry.detail
+    );
+  }
+
   clone() {
-    return new Icosahderon(this.getParams(), this._type).copy(this);
+    return new Icosahderon({build: false}).copy(this);
   }
 }
 

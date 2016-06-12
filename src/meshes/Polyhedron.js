@@ -9,17 +9,16 @@ class Polyhedron extends Shape {
     super(params, 'polyhedron');
 
     extend(params.geometry, {
-
       verticesOfCube: this.verticesOfCube,
       indicesOfFaces: this.indicesOfFaces,
       radius: 6,
       detail: 2
-
     });
 
-    this.build(params);
-
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -29,15 +28,7 @@ class Polyhedron extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.PolyhedronGeometry(
-
-          params.geometry.verticesOfCube,
-          params.geometry.indicesOfFaces,
-          params.geometry.radius,
-          params.geometry.detail
-
-        ),
-
+        this.buildGeometry(params),
         material,
         params.mass
       ));
@@ -64,8 +55,17 @@ class Polyhedron extends Shape {
     ];
   }
 
+  buildGeometry(params = {}) {
+    return new THREE.PolyhedronGeometry(
+      params.geometry.verticesOfCube,
+      params.geometry.indicesOfFaces,
+      params.geometry.radius,
+      params.geometry.detail
+    );
+  }
+
   clone() {
-    return new Polyhedron(this.getParams(), this._type).copy(this);
+    return new Polyhedron({build: false}).copy(this);
   }
 }
 

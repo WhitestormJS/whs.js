@@ -26,6 +26,12 @@ class Shape extends WHSObject {
     super({
 
       mass: 10,
+      build: true,
+      geometry: {},
+      
+      material: {
+        kind: 'basic'
+      },
 
       helpers: {
         box: false,
@@ -312,7 +318,6 @@ class Shape extends WHSObject {
       return new Promise((resolve, reject) => {
         Promise.all(_scope.wait).then(() => {
           try {
-            console.log(_scope.parent instanceof World);
             const parentNative = _scope.parent instanceof World
               ? _scope.parent.getScene()
               : _scope.parent.getNative();
@@ -355,7 +360,6 @@ class Shape extends WHSObject {
     } else {
       return new Promise((resolve, reject) => {
         try {
-          console.log(_scope.parent instanceof World);
           const parentNative = _scope.parent instanceof World
             ? _scope.parent.getScene()
             : _scope.parent.getNative();
@@ -425,8 +429,6 @@ class Shape extends WHSObject {
    */
   copy(source) {
     this.setNative(source.getNative().clone());
-
-    console.log(source.rotation);
 
     this.wrap();
 
@@ -512,6 +514,14 @@ class Shape extends WHSObject {
   set scale(vector3) {
     this.getNative().scale = vector3;
     return this.getNative().scale;
+  }
+
+  G_(params = {}) {
+    if (this.buildGeometry) {
+      this.native.geometry = this.buildGeometry(
+        this.updateParams({geometry: params})
+      );
+    }
   }
 
   /* Access private data */

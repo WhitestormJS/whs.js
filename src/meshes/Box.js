@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/physi.js';
+import Physijs from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -14,8 +14,10 @@ class Box extends Shape {
       depth: 1
     });
 
-    this.build(params);
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -24,11 +26,7 @@ class Box extends Shape {
 
     return new Promise((resolve) => {
       this.setNative(new Mesh(
-        new THREE.BoxGeometry(
-          params.geometry.width,
-          params.geometry.height,
-          params.geometry.depth
-        ),
+        this.buildGeometry(params),
         material,
         params.mass
       ));
@@ -37,8 +35,16 @@ class Box extends Shape {
     });
   }
 
+  buildGeometry(params = {}) {
+    return new THREE.BoxGeometry(
+      params.geometry.width,
+      params.geometry.height,
+      params.geometry.depth
+    );
+  }
+
   clone() {
-    return new Box(this.getParams(), this._type).copy(this);
+    return new Box({build: false}).copy(this);
   }
 }
 

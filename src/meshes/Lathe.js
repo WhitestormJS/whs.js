@@ -12,8 +12,10 @@ class Lathe extends Shape {
       points: []
     });
 
-    this.build(params);
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -23,10 +25,7 @@ class Lathe extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.LatheGeometry(
-          params.geometry.points
-        ),
-
+        this.buildGeometry(params),
         material,
         params.mass
       ));
@@ -35,8 +34,14 @@ class Lathe extends Shape {
     });
   }
 
+  buildGeometry(params = {}) {
+    return new THREE.LatheGeometry(
+      params.geometry.points
+    );
+  }
+
   clone() {
-    return new Lathe(this.getParams(), this._type).copy(this);
+    return new Lathe({build: false}).copy(this);
   }
 }
 
