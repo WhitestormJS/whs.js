@@ -16,6 +16,7 @@ const colors = {
 const GAME = new WHS.World({
   stats: false,
   autoresize: true,
+  stats: 'fps',
 
   gravity: {
     x: 0,
@@ -38,7 +39,7 @@ const GAME = new WHS.World({
   background: 0x2a3340
 });
 
-const planet = new WHS.Tetrahedron({
+window.planet = new WHS.Tetrahedron({
   geometry: {
     radius: planetSize,
     detail: 2
@@ -84,7 +85,6 @@ new WHS.DirectionalLight({
   }
 }).addTo(GAME);
 
-
 const s1 = new WHS.Dodecahedron({
   geometry: {
     radius: 10
@@ -98,7 +98,7 @@ const s1 = new WHS.Dodecahedron({
     kind: 'phong'
   }
 });
-const s2 =new WHS.Box({
+const s2 = new WHS.Box({
   geometry: {
     width: 10,
     height: 10,
@@ -113,7 +113,7 @@ const s2 =new WHS.Box({
     kind: 'phong'
   }
 });
-const s3 =new WHS.Cylinder({
+const s3 = new WHS.Cylinder({
   geometry: {
     radiusTop: 0,
     radiusBottom: 10,
@@ -128,7 +128,7 @@ const s3 =new WHS.Cylinder({
     kind: 'phong'
   }
 });
-const s4 =new WHS.Sphere({
+const s4 = new WHS.Sphere({
   geometry: {
     radius: 10
   },
@@ -154,17 +154,25 @@ for (let i = 0; i < particleCount; i++) {
   const particle = [s1, s2, s3, s4][Math.ceil(Math.random() * 3)].clone(),
     radius = particleMinRadius + Math.random() * (particleMaxRadius - particleMinRadius);
 
-  particle.updateParams({
-    geometry: {
-      radiusBottom: radius,
-      height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
-      width: radius,
-      depth: radius,
-      radius
-    }
+  //particle.updateParams({
+  //  geometry: {
+  //    radiusBottom: radius,
+  //    height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
+  //    width: radius,
+  //    depth: radius,
+  //    radius
+  //  }
+  //});
+  //
+  particle.G_({
+    radiusBottom: radius,
+    height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
+    width: radius,
+    depth: radius,
+    radius
   });
 
-  particle.build(particle.getParams()); // Apply geometry parameters & rebuild shape.
+  // particle.build(particle.getParams()); // Apply geometry parameters & rebuild shape.
 
   particle.setMaterial(mat[Math.floor(4 * Math.random())]); // Set custom THREE.Material to mesh.
 

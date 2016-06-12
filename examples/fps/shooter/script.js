@@ -209,7 +209,6 @@ new WHS.Skybox({
 }).addTo(GAME);
 
 var box = new WHS.Box({
-
   geometry: {
     width: 2,
     height: 2,
@@ -229,7 +228,6 @@ var box = new WHS.Box({
     y: 70,
     z: 60
   }
-
 });
 
 GAME.add(box).then(function () {

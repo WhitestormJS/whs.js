@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/physi.js';
+import Physijs from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -9,7 +9,6 @@ class Torusknot extends Shape {
     super(params, 'Torusknot');
 
     extend(params.geometry, {
-
       radius: 100,
       tube: 40,
       radialSegments: 64,
@@ -17,12 +16,12 @@ class Torusknot extends Shape {
       p: 2,
       q: 3,
       heightScale: 1
-
     });
 
-    this.build(params);
-
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -32,24 +31,25 @@ class Torusknot extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.TorusKnotGeometry(
-
-          params.geometry.radius,
-          params.geometry.tube,
-          params.geometry.radialSegments,
-          params.geometry.tubularSegments,
-          params.geometry.p,
-          params.geometry.q,
-          params.geometry.heightScale
-
-        ),
-
+        this.buildGeometry(params),
         material,
         params.mass
       ));
 
       resolve();
     });
+  }
+
+  buildGeometry(params = {}) {
+    return new THREE.TorusKnotGeometry(
+      params.geometry.radius,
+      params.geometry.tube,
+      params.geometry.radialSegments,
+      params.geometry.tubularSegments,
+      params.geometry.p,
+      params.geometry.q,
+      params.geometry.heightScale
+    );
   }
 
   clone() {

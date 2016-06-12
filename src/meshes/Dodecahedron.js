@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/physi.js';
+import Physijs from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -9,14 +9,14 @@ class Dodecahedron extends Shape {
     super(params, 'dodecahedron');
 
     extend(params.geometry, {
-
       radius: 1,
       detail: 0
-
     });
 
-    this.build(params);
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -26,11 +26,7 @@ class Dodecahedron extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.DodecahedronGeometry(
-          params.geometry.radius,
-          params.geometry.detail
-        ),
-
+        this.buildGeometry(params),
         material,
         params.mass
       ));
@@ -39,8 +35,15 @@ class Dodecahedron extends Shape {
     });
   }
 
+  buildGeometry(params = {}) {
+    return new THREE.DodecahedronGeometry(
+      params.geometry.radius,
+      params.geometry.detail
+    );
+  }
+
   clone() {
-    return new Dodecahedron(this.getParams(), this._type).copy(this);
+    return new Dodecahedron({build: false}).copy(this);
   }
 }
 

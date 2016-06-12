@@ -22,8 +22,10 @@ class Text extends Shape {
       }
     });
 
-    this.build(params);
-    super.wrap('wait');
+    if (params.build) {
+      this.build(params);
+      super.wrap('wait');
+    }
   }
 
   build(params = {}) {
@@ -55,7 +57,7 @@ class Text extends Shape {
   }
 
   clone() {
-    return new Text(this.getParams(), this._type).copy(this);
+    return new Text({build: false}).copy(this);
   }
 }
 

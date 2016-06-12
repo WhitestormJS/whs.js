@@ -8,18 +8,18 @@ class Ring extends Shape {
     super(params, 'ring');
 
     extend(params.geometry, {
-
       innerRadius: 0,
       outerRadius: 50,
       thetaSegments: 8,
       phiSegments: 8,
       thetaStart: 0,
       thetaLength: Math.PI * 2
-
     });
 
-    this.build(params);
-    super.wrap('onlyvis');
+    if (params.build) {
+      this.build(params);
+      super.wrap('onlyvis');
+    }
   }
 
   build(params = {}) {
@@ -29,14 +29,12 @@ class Ring extends Shape {
     return new Promise((resolve) => {
       _scope.setNative(new THREE.Mesh(
         new THREE.RingGeometry(
-
           params.geometry.innerRadius,
           params.geometry.outerRadius,
           params.geometry.thetaSegments,
           params.geometry.phiSegments,
           params.geometry.thetaStart,
           params.geometry.thetaLength
-
         ),
 
         material
@@ -46,8 +44,19 @@ class Ring extends Shape {
     });
   }
 
+  buildGeometry(params = {}) {
+    return new THREE.RingGeometry(
+      params.geometry.innerRadius,
+      params.geometry.outerRadius,
+      params.geometry.thetaSegments,
+      params.geometry.phiSegments,
+      params.geometry.thetaStart,
+      params.geometry.thetaLength
+    );
+  }
+
   clone() {
-    return new Ring(this.getParams(), this._type).copy(this);
+    return new Ring({build: false}).copy(this);
   }
 }
 

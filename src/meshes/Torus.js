@@ -9,17 +9,17 @@ class Torus extends Shape {
     super(params, 'torus');
 
     extend(params.geometry, {
-
       radius: 100,
       tube: 40,
       radialSegments: 8,
       tubularSegments: 6,
       arc: Math.PI * 2
-
     });
 
-    this.build(params);
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -29,14 +29,7 @@ class Torus extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.TorusGeometry(
-          params.geometry.radius,
-          params.geometry.tube,
-          params.geometry.radialSegments,
-          params.geometry.tubularSegments,
-          params.geometry.arc
-        ),
-
+        this.buildGeometry(params),
         material,
         params.mass
       ));
@@ -45,8 +38,18 @@ class Torus extends Shape {
     });
   }
 
+  buildGeometry(params = {}) {
+    return new THREE.TorusGeometry(
+      params.geometry.radius,
+      params.geometry.tube,
+      params.geometry.radialSegments,
+      params.geometry.tubularSegments,
+      params.geometry.arc
+    );
+  }
+
   clone() {
-    return new Torus(this.getParams(), this._type).copy(this);
+    return new Torus({build: false}).copy(this);
   }
 }
 

@@ -13,8 +13,10 @@ class ConvexModel extends Shape {
       physics: ''
     });
 
-    this.build(params);
-    super.wrap('wait');
+    if (params.build) {
+      this.build(params);
+      super.wrap('wait');
+    }
   }
 
   build(params = {}) {
@@ -89,7 +91,7 @@ class ConvexModel extends Shape {
   }
 
   clone() {
-    return new ConvexModel(this.getParams()).copy(this);
+    return new ConvexModel({build: false}).copy(this);
   }
 }
 

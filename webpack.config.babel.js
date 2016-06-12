@@ -5,8 +5,9 @@ process.env.BABEL_ENV = 'browser';
 
 function config({production}) {
   return {
-    devtool: production ? 'hidden-source-map' : 'eval-source-map',
+    devtool: production ? 'hidden-source-map' : 'source-map',
     entry: './src/index.js',
+    target: 'web',
     output: {
       path: join(__dirname, 'build'),
       filename: 'whitestorm.js',

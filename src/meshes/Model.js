@@ -15,8 +15,10 @@ class Model extends Shape {
 
     });
 
-    this.build(params);
-    super.wrap('wait');
+    if (params.build) {
+      this.build(params);
+      super.wrap('wait');
+    }
   }
 
   build(params = {}) {
@@ -89,7 +91,7 @@ class Model extends Shape {
   }
 
   clone() {
-    return new Model(this.getParams(), this._type).copy(this);
+    return new Model({build: false}).copy(this);
   }
 }
 

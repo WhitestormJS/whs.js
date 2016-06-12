@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/physi.js';
+import Physijs from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -9,14 +9,14 @@ class Tetrahedron extends Shape {
     super(params, 'tetrahedron');
 
     extend(params.geometry, {
-
       radius: 1,
       detail: 0
-
     });
 
-    this.build(params);
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -26,11 +26,7 @@ class Tetrahedron extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.TetrahedronGeometry(
-          params.geometry.radius,
-          params.geometry.detail
-        ),
-
+        this.buildGeometry(params),
         material,
         params.mass
       ));
@@ -38,9 +34,16 @@ class Tetrahedron extends Shape {
       resolve();
     });
   }
-  
+
+  buildGeometry(params = {}) {
+    return new THREE.TetrahedronGeometry(
+      params.geometry.radius,
+      params.geometry.detail
+    );
+  }
+
   clone() {
-    return new Tetrahedron(this.getParams(), this._type).copy(this);
+    return new Tetrahedron({build: false}).copy(this);
   }
 }
 

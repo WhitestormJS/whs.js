@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/physi.js';
+import Physijs from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -9,17 +9,16 @@ class Cylinder extends Shape {
     super(params, 'cylinder');
 
     extend(params.geometry, {
-
-      radiusTop: 1,
+      radiusTop: 0,
       radiusBottom: 1,
       height: 1,
       radiusSegments: 32
-
     });
 
-    this.build(params);
-
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -29,15 +28,7 @@ class Cylinder extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.CylinderGeometry(
-
-          params.geometry.radiusTop,
-          params.geometry.radiusBottom,
-          params.geometry.height,
-          params.geometry.radiusSegments
-
-        ),
-
+        this.buildGeometry(params),
         material,
         params.mass
       ));
@@ -46,8 +37,17 @@ class Cylinder extends Shape {
     });
   }
 
+  buildGeometry(params = {}) {
+    return new THREE.CylinderGeometry(
+      params.geometry.radiusTop,
+      params.geometry.radiusBottom,
+      params.geometry.height,
+      params.geometry.radiusSegments
+    );
+  }
+
   clone() {
-    return new Cylinder(this.getParams(), this._type).copy(this);
+    return new Cylinder({build: false}).copy(this);
   }
 }
 
