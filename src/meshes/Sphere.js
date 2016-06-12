@@ -49,6 +49,26 @@ class Sphere extends Shape {
     this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
   }
 
+  get G_radius() {
+    return this.native.geometry.parameters.radius;
+  }
+
+  set G_widthSegments(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {widthSegments: val}}));
+  }
+
+  get G_widthSegments() {
+    return this.native.geometry.parameters.widthSegments;
+  }
+
+  set G_heightSegments(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {widthSegments: val}}));
+  }
+
+  get G_heightSegments() {
+    return this.native.geometry.parameters.widthSegments;
+  }
+
   clone() {
     return new Sphere({build: false}).copy(this);
   }

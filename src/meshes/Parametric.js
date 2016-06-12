@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/physi.js';
+import Physijs from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -42,6 +42,30 @@ class Parametric extends Shape {
       params.geometry.slices,
       params.geometry.stacks
     );
+  }
+
+  set G_func(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {func: val}}));
+  }
+
+  get G_func() {
+    return this.native.geometry.parameters.func;
+  }
+
+  set G_slices(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {slices: val}}));
+  }
+
+  get G_slices() {
+    return this.native.geometry.parameters.slices;
+  }
+
+  set G_stacks(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {stacks: val}}));
+  }
+
+  get G_stacks() {
+    return this.native.geometry.parameters.stacks;
   }
 
   clone() {

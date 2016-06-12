@@ -42,6 +42,22 @@ class Icosahedron extends Shape {
     );
   }
 
+  set G_radius(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
+  }
+
+  get G_radius() {
+    return this.native.geometry.parameters.radius;
+  }
+
+  set G_detail(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {detail: val}}));
+  }
+
+  get G_detail() {
+    return this.native.geometry.parameters.detail;
+  }
+
   clone() {
     return new Icosahderon({build: false}).copy(this);
   }

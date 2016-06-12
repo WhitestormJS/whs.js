@@ -16,7 +16,6 @@ const colors = {
 const GAME = new WHS.World({
   stats: false,
   autoresize: true,
-  stats: 'fps',
 
   gravity: {
     x: 0,
@@ -154,16 +153,6 @@ for (let i = 0; i < particleCount; i++) {
   const particle = [s1, s2, s3, s4][Math.ceil(Math.random() * 3)].clone(),
     radius = particleMinRadius + Math.random() * (particleMaxRadius - particleMinRadius);
 
-  //particle.updateParams({
-  //  geometry: {
-  //    radiusBottom: radius,
-  //    height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
-  //    width: radius,
-  //    depth: radius,
-  //    radius
-  //  }
-  //});
-  //
   particle.G_({
     radiusBottom: radius,
     height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
@@ -171,8 +160,6 @@ for (let i = 0; i < particleCount; i++) {
     depth: radius,
     radius
   });
-
-  // particle.build(particle.getParams()); // Apply geometry parameters & rebuild shape.
 
   particle.setMaterial(mat[Math.floor(4 * Math.random())]); // Set custom THREE.Material to mesh.
 

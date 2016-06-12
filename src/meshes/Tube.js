@@ -66,6 +66,46 @@ class Tube extends Shape {
     );
   }
 
+  set G_path(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {path: val}}));
+  }
+
+  get G_path() {
+    return this.native.geometry.parameters.path;
+  }
+
+  set G_segments(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {segments: val}}));
+  }
+
+  get G_segments() {
+    return this.native.geometry.parameters.segments;
+  }
+
+  set G_radius(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
+  }
+
+  get G_radius() {
+    return this.native.geometry.parameters.radius;
+  }
+
+  set G_radiusSegments(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusSegments: val}}));
+  }
+
+  get G_radiusSegments() {
+    return this.native.geometry.parameters.radiusSegments;
+  }
+
+  set G_closed(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {closed: val}}));
+  }
+
+  get G_closed() {
+    return this.native.geometry.parameters.closed;
+  }
+
   clone() {
     return new Tube({build: false}).copy(this);
   }

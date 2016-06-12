@@ -48,6 +48,46 @@ class Torus extends Shape {
     );
   }
 
+  set G_radius(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
+  }
+
+  get G_radius() {
+    return this.native.geometry.parameters.radius;
+  }
+
+  set G_tube(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {tube: val}}));
+  }
+
+  get G_tube() {
+    return this.native.geometry.parameters.tube;
+  }
+
+  set G_radialSegments(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radialSegments: val}}));
+  }
+
+  get G_radialSegments() {
+    return this.native.geometry.parameters.radialSegments;
+  }
+
+  set G_tubularSegments(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {tubularSegments: val}}));
+  }
+
+  get G_tubularSegments() {
+    return this.native.geometry.parameters.tubularSegments;
+  }
+
+  set G_arc(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {arc: val}}));
+  }
+
+  get G_arc() {
+    return this.native.geometry.parameters.arc;
+  }
+
   clone() {
     return new Torus({build: false}).copy(this);
   }

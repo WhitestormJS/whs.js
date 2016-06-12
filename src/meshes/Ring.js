@@ -55,6 +55,54 @@ class Ring extends Shape {
     );
   }
 
+  set G_innerRadius(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {innerRadius: val}}));
+  }
+
+  get G_innerRadius() {
+    return this.native.geometry.parameters.innerRadius;
+  }
+
+  set G_outerRadius(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {outerRadius: val}}));
+  }
+
+  get G_outerRadius() {
+    return this.native.geometry.parameters.outerRadius;
+  }
+
+  set G_thetaSegments(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {thetaSegments: val}}));
+  }
+
+  get G_thetaSegments() {
+    return this.native.geometry.parameters.thetaSegments;
+  }
+
+  set G_phiSegments(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {phiSegments: val}}));
+  }
+
+  get G_phiSegments() {
+    return this.native.geometry.parameters.phiSegments;
+  }
+
+  set G_thetaStart(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {thetaStart: val}}));
+  }
+
+  get G_thetaStart() {
+    return this.native.geometry.parameters.thetaStart;
+  }
+
+  set G_thetaLength(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {thetaLength: val}}));
+  }
+
+  get G_thetaLength() {
+    return this.native.geometry.parameters.thetaLength;
+  }
+
   clone() {
     return new Ring({build: false}).copy(this);
   }

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/physi.js';
+import Physijs from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -62,6 +62,38 @@ class Polyhedron extends Shape {
       params.geometry.radius,
       params.geometry.detail
     );
+  }
+
+  set G_verticesOfCube(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {verticesOfCube: val}}));
+  }
+
+  get G_verticesOfCube() {
+    return this.native.geometry.parameters.verticesOfCube;
+  }
+
+  set G_indicesOfFaces(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {indicesOfFaces: val}}));
+  }
+
+  get G_indicesOfFaces() {
+    return this.native.geometry.parameters.indicesOfFaces;
+  }
+
+  set G_radius(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
+  }
+
+  get G_radius() {
+    return this.native.geometry.parameters.radius;
+  }
+
+  set G_detail(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {detail: val}}));
+  }
+
+  get G_detail() {
+    return this.native.geometry.parameters.detail;
   }
 
   clone() {
