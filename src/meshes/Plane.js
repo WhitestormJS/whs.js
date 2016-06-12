@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/physi.js';
+import Physijs from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -42,6 +42,30 @@ class Plane extends Shape {
       params.geometry.height,
       params.geometry.segments
     );
+  }
+
+  set G_width(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {width: val}}));
+  }
+
+  get G_width() {
+    return this.native.geometry.parameters.width;
+  }
+
+  set G_height(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {height: val}}));
+  }
+
+  get G_height() {
+    return this.native.geometry.parameters.height;
+  }
+
+  set G_segments(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {segments: val}}));
+  }
+
+  get G_segments() {
+    return this.native.geometry.parameters.segments;
   }
 
   clone() {

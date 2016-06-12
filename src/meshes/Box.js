@@ -43,6 +43,30 @@ class Box extends Shape {
     );
   }
 
+  set G_width(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {width: val}}));
+  }
+
+  get G_width() {
+    return this.native.geometry.parameters.width;
+  }
+
+  set G_height(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {height: val}}));
+  }
+
+  get G_height() {
+    return this.native.geometry.parameters.height;
+  }
+
+  set G_depth(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {depth: val}}));
+  }
+
+  get G_depth() {
+    return this.native.geometry.parameters.depth;
+  }
+
   clone() {
     return new Box({build: false}).copy(this);
   }

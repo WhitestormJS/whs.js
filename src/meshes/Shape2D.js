@@ -37,6 +37,14 @@ class Shape2D extends Shape {
     );
   }
 
+  set G_shapes(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {shapes: val}}));
+  }
+
+  get G_shapes() {
+    return this.native.geometry.parameters.shapes;
+  }
+
   clone() {
     return new Shape2D({build: false}).copy(this);
   }

@@ -105,14 +105,16 @@
         1,
         {
           "newIsCap": true,
-          "capIsNew": true
+          "capIsNew": true,
+          "properties": false
         }
       ],
       "babel/new-cap": [
         1,
         {
           "newIsCap": true,
-          "capIsNew": true
+          "capIsNew": true,
+          "properties": false
         }
       ],
       "babel/arrow-parens": 0,
