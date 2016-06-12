@@ -46,6 +46,38 @@ class Cylinder extends Shape {
     );
   }
 
+  set G_radiusTop(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusTop: val}}));
+  }
+
+  get G_radiusTop() {
+    return this.native.geometry.parameters.radiusTop;
+  }
+
+  set G_radiusBottom(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusBottom: val}}));
+  }
+
+  get G_radiusBottom() {
+    return this.native.geometry.parameters.radiusBottom;
+  }
+
+  set G_height(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {height: val}}));
+  }
+
+  get G_height() {
+    return this.native.geometry.parameters.height;
+  }
+
+  set G_radiusSegments(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusSegments: val}}));
+  }
+
+  get G_radiusSegments() {
+    return this.native.geometry.parameters.radiusSegments;
+  }
+
   clone() {
     return new Cylinder({build: false}).copy(this);
   }

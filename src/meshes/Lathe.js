@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/physi.js';
+import Physijs from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -38,6 +38,14 @@ class Lathe extends Shape {
     return new THREE.LatheGeometry(
       params.geometry.points
     );
+  }
+
+  set G_points(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {points: val}}));
+  }
+
+  get G_points() {
+    return this.native.geometry.parameters.points;
   }
 
   clone() {
