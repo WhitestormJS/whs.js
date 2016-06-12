@@ -9,18 +9,17 @@ class Tube extends Shape {
     super(params, 'tube');
 
     extend(params.geometry, {
-
       path: options.geometryOptions.path ? new this.CustomSinCurve(100) : false,
       segments: 20,
       radius: 2,
       radiusSegments: 8,
       closed: false
-
     });
 
-    this.build(params);
-
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -30,16 +29,7 @@ class Tube extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.TubeGeometry(
-
-          params.geometry.path,
-          params.geometry.segments,
-          params.geometry.radius,
-          params.geometry.radiusSegments,
-          params.geometry.closed
-
-        ),
-
+        this.buildGeometry(params),
         material,
         params.mass
       ));
@@ -66,11 +56,18 @@ class Tube extends Shape {
     );
   }
 
-  /**
-   * Clone tube.
-   */
+  buildGeometry(params = {}) {
+    return new THREE.TubeGeometry(
+      params.geometry.path,
+      params.geometry.segments,
+      params.geometry.radius,
+      params.geometry.radiusSegments,
+      params.geometry.closed
+    );
+  }
+
   clone() {
-    return new Tube(this.getParams(), this._type).copy(this);
+    return new Tube({build: false}).copy(this);
   }
 }
 

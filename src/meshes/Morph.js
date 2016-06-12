@@ -13,8 +13,10 @@ class Morph extends Shape {
       path: ''
     });
 
-    this.build(params);
-    super.wrap('wait');
+    if (params.build) {
+      this.build(params);
+      super.wrap('wait');
+    }
   }
 
   build(params = {}) {
@@ -56,12 +58,11 @@ class Morph extends Shape {
     });
 
     super.wait(promise);
-
     return promise;
   }
 
   clone() {
-    return new Morph(this.getParams(), this._type).copy(this);
+    return new Morph({build: false}).copy(this);
   }
 }
 

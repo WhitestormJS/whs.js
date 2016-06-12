@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/physi.js';
+import Physijs from '../physics/physi.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -9,15 +9,15 @@ class Sphere extends Shape {
     super(params, 'sphere');
 
     extend(params.geometry, {
-
       radius: 1,
-      segmentA: 32,
-      segmentB: 32
-
+      widthSegments: 8,
+      heightSegments: 6
     });
 
-    this.build(params);
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -27,13 +27,7 @@ class Sphere extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.SphereGeometry(
-
-          params.geometry.radius,
-          params.geometry.segmentA,
-          params.geometry.segmentB
-
-        ),
+        _scope.buildGeometry(params),
 
         material,
         params.mass
@@ -43,8 +37,20 @@ class Sphere extends Shape {
     });
   }
 
+  buildGeometry(params = {}) {
+    return new THREE.SphereGeometry(
+      params.geometry.radius,
+      params.geometry.widthSegments,
+      params.geometry.heightSegments
+    );
+  }
+
+  set G_radius(val) {
+    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
+  }
+
   clone() {
-    return new Sphere(this.getParams(), this._type).copy(this);
+    return new Sphere({build: false}).copy(this);
   }
 }
 

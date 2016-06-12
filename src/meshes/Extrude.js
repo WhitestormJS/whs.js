@@ -9,14 +9,14 @@ class Extrude extends Shape {
     super(params, 'extrude');
 
     extend(params.geometry, {
-
       shapes: [],
       options: {}
-
     });
 
-    this.build(params);
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -26,11 +26,7 @@ class Extrude extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.ExtrudeGeometry(
-          params.geometry.shapes,
-          params.geometry.options
-        ),
-
+        this.buildGeometry(params),
         material,
         params.mass
       ));
@@ -39,8 +35,15 @@ class Extrude extends Shape {
     });
   }
 
+  buildGeometry(params = {}) {
+    return new THREE.ExtrudeGeometry(
+      params.geometry.shapes,
+      params.geometry.options
+    );
+  }
+
   clone() {
-    return new Extrude(this.getParams(), this._type).copy(this);
+    return new Extrude({build: false}).copy(this);
   }
 }
 

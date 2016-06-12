@@ -1,6 +1,10 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+var _ref;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var radiusMin = 100,
     radiusMax = 200,
     particleCount = 400,
@@ -17,32 +21,24 @@ var colors = {
   yellow: 0xfaff70
 };
 
-var GAME = new WHS.World({
+var GAME = new WHS.World((_ref = {
   stats: false,
-  autoresize: true,
+  autoresize: true
+}, _defineProperty(_ref, 'stats', 'fps'), _defineProperty(_ref, 'gravity', {
+  x: 0,
+  y: 0,
+  z: 0
+}), _defineProperty(_ref, 'camera', {
+  far: 2000,
+  near: 1,
+  z: 400,
+  y: 100
+}), _defineProperty(_ref, 'paths', {
+  worker: '../../libs/physijs_worker.js',
+  ammo: '../../libs/ammo.js'
+}), _defineProperty(_ref, 'background', 0x2a3340), _ref));
 
-  gravity: {
-    x: 0,
-    y: 0,
-    z: 0
-  },
-
-  camera: {
-    far: 2000,
-    near: 1,
-    z: 400,
-    y: 100
-  },
-
-  paths: {
-    worker: '../../libs/physijs_worker.js',
-    ammo: '../../libs/ammo.js'
-  },
-
-  background: 0x2a3340
-});
-
-var planet = new WHS.Tetrahedron({
+window.planet = new WHS.Tetrahedron({
   geometry: {
     radius: planetSize,
     detail: 2
@@ -152,17 +148,25 @@ for (var i = 0; i < particleCount; i++) {
   var particle = [s1, s2, s3, s4][Math.ceil(Math.random() * 3)].clone(),
       radius = particleMinRadius + Math.random() * (particleMaxRadius - particleMinRadius);
 
-  particle.updateParams({
-    geometry: {
-      radiusBottom: radius,
-      height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
-      width: radius,
-      depth: radius,
-      radius: radius
-    }
+  //particle.updateParams({
+  //  geometry: {
+  //    radiusBottom: radius,
+  //    height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
+  //    width: radius,
+  //    depth: radius,
+  //    radius
+  //  }
+  //});
+  //
+  particle.G_({
+    radiusBottom: radius,
+    height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
+    width: radius,
+    depth: radius,
+    radius: radius
   });
 
-  particle.build(particle.getParams()); // Apply geometry parameters & rebuild shape.
+  // particle.build(particle.getParams()); // Apply geometry parameters & rebuild shape.
 
   particle.setMaterial(mat[Math.floor(4 * Math.random())]); // Set custom THREE.Material to mesh.
 

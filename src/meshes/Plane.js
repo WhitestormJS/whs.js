@@ -9,16 +9,15 @@ class Plane extends Shape {
     super(params, 'plane');
 
     extend(params.geometry, {
-
       width: 10,
       height: 10,
       segments: 32
-
     });
 
-    this.build(params);
-
-    super.wrap();
+    if (params.build) {
+      this.build(params);
+      super.wrap();
+    }
   }
 
   build(params = {}) {
@@ -28,12 +27,7 @@ class Plane extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new Mesh(
-        new THREE.PlaneGeometry(
-          params.geometry.width,
-          params.geometry.height,
-          params.geometry.segments
-        ),
-
+        this.buildGeometry(params),
         material,
         params.mass
       ));
@@ -42,8 +36,16 @@ class Plane extends Shape {
     });
   }
 
+  buildGeometry(params = {}) {
+    return new THREE.PlaneGeometry(
+      params.geometry.width,
+      params.geometry.height,
+      params.geometry.segments
+    );
+  }
+
   clone() {
-    return new Plane(this.getParams(), this._type).copy(this);
+    return new Plane({build: false}).copy(this);
   }
 }
 

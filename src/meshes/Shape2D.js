@@ -11,8 +11,10 @@ class Shape2D extends Shape {
       shapes: []
     });
 
-    super.build(params);
-    super.wrap('onlyvis');
+    if (params.build) {
+      this.build(params);
+      super.wrap('onlyvis');
+    }
   }
 
   build(params = {}) {
@@ -21,10 +23,7 @@ class Shape2D extends Shape {
 
     return new Promise((resolve) => {
       _scope.setNative(new THREE.Mesh(
-        new THREE.ShapeGeometry(
-          params.geometry.shapes
-        ),
-
+        this.buildGeometry(params),
         material
       ));
 
@@ -32,8 +31,14 @@ class Shape2D extends Shape {
     });
   }
 
+  buildGeometry(params = {}) {
+    return new THREE.ShapeGeometry(
+      params.geometry.shapes
+    );
+  }
+
   clone() {
-    return new Shape2D(this.getParams(), this._type).copy(this);
+    return new Shape2D({build: false}).copy(this);
   }
 }
 
