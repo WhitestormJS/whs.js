@@ -1,5 +1,5 @@
 import Terrain from 'whs-terrain';
-import defaultTerrainMap from './assets/terrain/default_terrain';
+import defaultTerrainMap from './_assets/terrain/default_terrain';
 
 const GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
@@ -40,18 +40,23 @@ window.terrain = new Terrain({
 
   mass: 0,
 
-  material: {
-    color: 0xff0000,
-    side: THREE.DoubleSide,
-    kind: 'basic'
-  },
+  material: ['default',
+    [
+      WHS.texture('{{ assets }}/textures/terrain/dirt-512.jpg', {}),
+      WHS.texture('{{ assets }}/textures/terrain/sand-512.jpg', {}),
+      WHS.texture('{{ assets }}/textures/terrain/grass-512.jpg', {}),
+      WHS.texture('{{ assets }}/textures/terrain/rock-512.jpg', {}),
+      WHS.texture('{{ assets }}/textures/terrain/snow-512.jpg', {})
+    ]
+  ],
 
   pos: {
     x: 0,
     y: 0,
     z: 0
   }
-}).addTo(GAME, 'wait');
+});
+window.terrain.addTo(GAME, 'wait');
 
 // NOTE: Default light.
 new WHS.AmbientLight({
@@ -107,7 +112,7 @@ const parrot = new WHS.Morph({
     width: 2,
     height: 2,
     depth: 2,
-    path: '../{{ assets }}/models/morph/parrot.js'
+    path: '{{ assets }}/models/morph/parrot.js'
   },
 
   material: {
@@ -159,7 +164,7 @@ const flamingo = new WHS.Morph({
     width: 2,
     height: 2,
     depth: 2,
-    path: '../{{ assets }}/models/morph/flamingo.js'
+    path: '{{ assets }}/models/morph/flamingo.js'
   },
 
   material: {
@@ -229,7 +234,7 @@ parrot.addTo(GAME, 'wait').then((obj) => {
 });
 
 new WHS.Skybox({
-  path: '../{{ assets }}/textures/skybox/skymap',
+  path: '{{ assets }}/textures/skybox/skymap',
   imgSuffix: '.png',
   skyType: 'sphere',
   radius: GAME.getCamera().__params.camera.far,
@@ -249,7 +254,7 @@ const box = new WHS.Box({
 
   material: {
     kind: 'lambert',
-    map: WHS.texture('../{{ assets }}/textures/box.jpg')
+    map: WHS.texture('{{ assets }}/textures/box.jpg')
   },
 
   pos: {
@@ -261,7 +266,7 @@ const box = new WHS.Box({
 
 GAME.add(box).then(() => {
   const checker1 = new WHS.Loop(() => {
-    if (box.nposition.y < -200) {
+    if (box.position.y < -200) {
       box.position.set(50, 70, 60);
 
       box.setAngularVelocity(new THREE.Vector3(0, 0, 0));
@@ -285,7 +290,7 @@ new WHS.Box({
 
   material: {
     kind: 'lambert',
-    map: WHS.texture('../{{ assets }}/textures/box.jpg')
+    map: WHS.texture('{{ assets }}/textures/box.jpg')
   },
 
   pos: {
@@ -318,7 +323,7 @@ const person = new WHS.Sphere({
 
 GAME.add(person).then(() => {
   const checker2 = new WHS.Loop(() => {
-    if (person.nposition.y < -200) {
+    if (person.position.y < -200) {
       person.position.set(0, 100, 0);
 
       person.setAngularVelocity(new THREE.Vector3(0, 0, 0));

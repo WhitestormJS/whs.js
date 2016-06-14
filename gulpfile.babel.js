@@ -22,16 +22,12 @@ const src = 'src/**/*',
   examplesSources = `${examplesDev}/**/*`,
   examplesDest = 'examples',
   swigOpts = {
-    data: {
-      assets: '../assets'
-    },
-
     defaults: {
       cache: false,
 
       locals: {
-        assets: '../../assets',
-        libs: '../../libs'
+        assets: '../../_assets',
+        libs: '../../_libs'
       }
     }
   };
@@ -84,8 +80,8 @@ gulp.task('examples:watch', () => {
 
         gulp.src([
           obj.path,
-          `!${examplesDev}/libs/**/*`,
-          `!${examplesDev}/assets/**/*.js`
+          `!${examplesDev}/_libs/**/*`,
+          `!${examplesDev}/_assets/**/*.js`
         ])
           .pipe(plumber())
           .pipe(swig(Object.assign({}, swigOpts, {ext: '.js'})))
@@ -127,10 +123,10 @@ gulp.task('examples:watch', () => {
         gulp.src([
           filePath,
           `!${examplesDev}/**/*.html`,
-          `!${examplesDev}/!(libs)/*.js`,
+          `!${examplesDev}/!(_libs)/*.js`,
           `!${examplesDev}/**/script.js`,
-          `${examplesDev}/libs/**/*`,
-          `${examplesDev}/assets/**/*.js`
+          `${examplesDev}/_libs/**/*`,
+          `${examplesDev}/_assets/**/*.js`
         ])
           .pipe(plumber())
           .pipe(
@@ -164,10 +160,10 @@ gulp.task('examples', () => {
   gulp.src([
     `${examplesDev}/**/*`,
     `!${examplesDev}/**/*.html`,
-    `!${examplesDev}/!(libs)/*.js`,
+    `!${examplesDev}/!(_libs)/*.js`,
     `!${examplesDev}/**/script.js`,
-    `${examplesDev}/libs/**/*`,
-    `${examplesDev}/assets/**/*.js`
+    `${examplesDev}/_libs/**/*`,
+    `${examplesDev}/_assets/**/*.js`
   ])
     .pipe(plumber())
     .pipe(gulp.dest(examplesDest));
@@ -175,13 +171,12 @@ gulp.task('examples', () => {
   gulp.src([
     `${examplesDev}/**/*.js`,
     `!${examplesDev}/**/*.html`,
-    `!${examplesDev}/libs/**/*`,
-    `!${examplesDev}/assets/**/*.js`
+    `!${examplesDev}/_libs/*.js`,
+    `!${examplesDev}/_assets/**/*.js`
   ])
     .pipe(plumber())
     .pipe(swig(Object.assign({}, swigOpts, {ext: '.js'})))
-    .pipe(gbrowser.browserify({basedir: path.resolve(examplesDest)}, 
-    {
+    .pipe(gbrowser.browserify({basedir: path.resolve(examplesDest)}, {
       transform: 'babelify',
       options: {presets: ['es2015']}
     }))

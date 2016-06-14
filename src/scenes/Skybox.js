@@ -26,7 +26,7 @@ class Skybox extends Shape {
 
         for (let i = 0; i < 6; i++) {
           matArray.push(new MeshBasicMaterial({
-            map: texture(params.path + directions[i] + params.imgSuffix),
+            map: texture(params.path + directions[i] + params.imgSuffix, false),
             side: THREE.BackSide,
             fog: params.fog
           }));
@@ -39,7 +39,7 @@ class Skybox extends Shape {
       case 'sphere': {
         skyGeometry = new THREE.SphereGeometry(params.radius / 2, 60, 40);
         skyMat = new THREE.MeshBasicMaterial({
-          map: texture(params.path + params.imgSuffix),
+          map: texture(params.path + params.imgSuffix, false),
           side: THREE.BackSide,
           fog: params.fog
         });
