@@ -4,16 +4,16 @@
     ],
     "plugins": [
         "transform-runtime",
-        ["transform-es2015-modules-commonjs", {
-            "allowTopLevelThis": true,
-            "strict": true,
-            "loose": true
-        }]
+        "add-module-exports"
     ],
     "env": {
         "node": {
             "presets": [
                 "es2015"
+            ],
+            "plugins": [
+                "transform-runtime",
+                "add-module-exports"
             ]
         },
         "browser": {

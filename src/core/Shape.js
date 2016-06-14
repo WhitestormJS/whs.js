@@ -24,11 +24,10 @@ class Shape extends WHSObject {
     };
 
     super({
-
       mass: 10,
       build: true,
       geometry: {},
-      
+
       material: {
         kind: 'basic'
       },
@@ -83,6 +82,8 @@ class Shape extends WHSObject {
       {
         _type: type,
         __params: params,
+        __c_pos: false,
+        __c_rot: false,
 
         wait: [],
         helpers: {
@@ -115,26 +116,30 @@ class Shape extends WHSObject {
       return new Promise((resolve, reject) => {
         Promise.all(_scope.wait).then(() => {
           try {
-            _scope.getNative().castShadow = true;
-            _scope.getNative().receiveShadow = true;
+            if (tags.indexOf('no-shadows') < 0) {
+              _scope.getNative().castShadow = true;
+              _scope.getNative().receiveShadow = true;
+            }
 
-            _scope.position.set(
-              _scope.__params.pos.x,
-              _scope.__params.pos.y,
-              _scope.__params.pos.z
-            );
+            if (tags.indexOf('no-transforms') < 0) {
+              _scope.position.set(
+                _scope.__params.pos.x,
+                _scope.__params.pos.y,
+                _scope.__params.pos.z
+              );
 
-            _scope.rotation.set(
-              _scope.__params.rot.x,
-              _scope.__params.rot.y,
-              _scope.__params.rot.z
-            );
+              _scope.rotation.set(
+                _scope.__params.rot.x,
+                _scope.__params.rot.y,
+                _scope.__params.rot.z
+              );
 
-            _scope.scale.set(
-              _scope.__params.scale.x,
-              _scope.__params.scale.y,
-              _scope.__params.scale.z
-            );
+              _scope.scale.set(
+                _scope.__params.scale.x,
+                _scope.__params.scale.y,
+                _scope.__params.scale.z
+              );
+            }
 
             // Box helper.
             if (_scope.__params.helpers.box) {
@@ -199,7 +204,7 @@ class Shape extends WHSObject {
 
             _scope.emit('ready');
 
-            resolve();
+            resolve(_scope);
           } catch (err) {
             console.error(err.message);
             reject();
@@ -209,26 +214,30 @@ class Shape extends WHSObject {
     } else {
       return new Promise((resolve, reject) => {
         try {
-          _scope.getNative().castShadow = true;
-          _scope.getNative().receiveShadow = true;
+          if (tags.indexOf('no-shadows') < 0) {
+            _scope.getNative().castShadow = true;
+            _scope.getNative().receiveShadow = true;
+          }
 
-          _scope.position.set(
-            _scope.__params.pos.x,
-            _scope.__params.pos.y,
-            _scope.__params.pos.z
-          );
+          if (tags.indexOf('no-transforms') < 0) {
+            _scope.position.set(
+              _scope.__params.pos.x,
+              _scope.__params.pos.y,
+              _scope.__params.pos.z
+            );
 
-          _scope.rotation.set(
-            _scope.__params.rot.x,
-            _scope.__params.rot.y,
-            _scope.__params.rot.z
-          );
+            _scope.rotation.set(
+              _scope.__params.rot.x,
+              _scope.__params.rot.y,
+              _scope.__params.rot.z
+            );
 
-          _scope.scale.set(
-            _scope.__params.scale.x,
-            _scope.__params.scale.y,
-            _scope.__params.scale.z
-          );
+            _scope.scale.set(
+              _scope.__params.scale.x,
+              _scope.__params.scale.y,
+              _scope.__params.scale.z
+            );
+          }
 
           // Box helper.
           if (_scope.__params.helpers.box) {
@@ -291,7 +300,7 @@ class Shape extends WHSObject {
 
           if (defaults.debug) console.debug(`@WHS.Shape: Shape ${_scope._type} is ready.`, _scope);
 
-          resolve();
+          resolve(_scope);
 
           _scope.emit('ready');
         } catch (err) {
@@ -409,7 +418,7 @@ class Shape extends WHSObject {
   /**
    * Initialize shape's material object.
    */
-  _initMaterial(params) {
+  _initMaterial(params = {}) {
     return this.physics
       ? loadMaterial(params)._material
       : loadMaterial(params)._materialP;
@@ -432,10 +441,12 @@ class Shape extends WHSObject {
 
     this.wrap();
 
-    this.position = source.position.clone();
-    this.rotation = source.rotation.clone();
+    this.position.copy(source.position);
+    this.rotation.copy(source.rotation);
+    this.quaternion.copy(source.quaternion);
 
-    this._type = source._type;
+    console.log(source.position);
+    console.log(this.position);
 
     return this;
   }
@@ -477,34 +488,96 @@ class Shape extends WHSObject {
     return p;
   }
 
-  get nposition() {
-    return this.getNative().position;
-  }
-
-  get nrotation() {
-    return this.getNative().position;
-  }
-
   get position() {
-    this.getNative().__dirtyPosition = true;
     return this.getNative().position;
   }
 
   set position(vector3) {
-    this.getNative().__dirtyPosition = true;
-    return this.getNative().position.copy(vector3);
+    const pos = this.getNative().position,
+      native = this.getNative();
+
+    Object.defineProperties(pos, {
+      x: {
+        get() {
+          return this._x;
+        },
+
+        set(x) {
+          native.__dirtyPosition = true;
+          this._x = x;
+        }
+      },
+      y: {
+        get() {
+          return this._y;
+        },
+
+        set(y) {
+          native.__dirtyPosition = true;
+          this._y = y;
+        }
+      },
+      z: {
+        get() {
+          return this._z;
+        },
+
+        set(z) {
+          native.__dirtyPosition = true;
+          this._z = z;
+        }
+      }
+    });
+
+    native.__dirtyPosition = true;
+
+    return pos.copy(vector3);
+  }
+
+  get quaternion() {
+    this.__c_rot = true;
+    return this.getNative().quaternion;
+  }
+
+  set quaternion(quaternion) {
+    const quat = this.getNative().quaternion,
+      native = this.getNative();
+
+    quat.copy(quaternion);
+
+    quat.onChange(() => {
+      if (this.__c_rot) {
+        if (native.__dirtyRotation === true) {
+          this.__c_rot = false;
+          native.__dirtyRotation = false;
+        }
+        native.__dirtyRotation = true;
+      }
+    });
+
+    return quat;
   }
 
   get rotation() {
-    this.getNative().__dirtyRotation = true;
+    this.__c_rot = true;
     return this.getNative().rotation;
   }
 
   set rotation(euler) {
-    this.getNative().__dirtyRotation = true;
-    this.getNative().rotation.copy(euler);
+    const rot = this.getNative().rotation,
+      native = this.getNative();
 
-    return this.getNative().rotation;
+    rot.copy(euler);
+
+    rot.onChange(() => {
+      if (this.__c_rot) {
+        this.quaternion.copy(new THREE.Quaternion().setFromEuler(rot));
+        native.__dirtyRotation = true;
+        // this.__c_rot = false;
+      }
+    });
+
+    return rot;
   }
 
   get scale() {
@@ -524,10 +597,20 @@ class Shape extends WHSObject {
     }
   }
 
+  M_(params = {}) {
+    this.native.material = this._initMaterial(
+      this.updateParams({material: params}).material
+    );
+  }
+
   /* Access private data */
 
   setNative(native) {
     this.native = native;
+    this.position = this.native.position.clone();
+    this.quaternion = this.native.quaternion.clone();
+    this.rotation = this.native.rotation.clone();
+
     return this.native;
   }
 
@@ -585,7 +668,7 @@ class Shape extends WHSObject {
     } else {
       setTimeout(() => {
         animation.stop();
-         _scope.getWorld().removeLoop(animation);
+          _scope.getWorld().removeLoop(animation);
       }, time);
     }
   }

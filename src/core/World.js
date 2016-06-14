@@ -109,6 +109,8 @@ class World extends WHSObject {
   _initScene() {
     this._initPhysiJS();
 
+    console.log(Physijs.scripts.worker);
+
     const scene = new Physijs.Scene();
 
     scene.setGravity(
