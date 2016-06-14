@@ -108,22 +108,24 @@ class Light extends WHSObject {
 
     return new Promise((resolve, reject) => {
       try {
-        if (tags.indexOf('noshadows') < 0) {
+        if (tags.indexOf('no-shadows') < 0) {
           _scope.getNative().castShadow = true;
           _scope.getNative().receiveShadow = true;
         }
 
-        _scope.position.set(
-          _scope.__params.pos.x,
-          _scope.__params.pos.y,
-          _scope.__params.pos.z
-        );
+        if (tags.indexOf('no-transforms') < 0) {
+          _scope.position.set(
+            _scope.__params.pos.x,
+            _scope.__params.pos.y,
+            _scope.__params.pos.z
+          );
 
-        _scope.rotation.set(
-          _scope.__params.rot.x,
-          _scope.__params.rot.y,
-          _scope.__params.rot.z
-        );
+          _scope.rotation.set(
+            _scope.__params.rot.x,
+            _scope.__params.rot.y,
+            _scope.__params.rot.z
+          );
+        }
 
         tags.forEach(tag => {
           _scope[tag] = true;

@@ -35,8 +35,8 @@ var GAME = new WHS.World({
   },
 
   paths: {
-    worker: '../../libs/physijs_worker.js',
-    ammo: '../../libs/ammo.js'
+    worker: '../../_libs/physijs_worker.js',
+    ammo: '../../_libs/ammo.js'
   },
 
   background: 0x2a3340

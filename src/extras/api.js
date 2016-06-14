@@ -28,11 +28,11 @@ const extend = (object, ...extensions) => { // $.extend alternative, ... is the 
   return object;
 };
 
-const texture = (url, options) => {
+const texture = (url, repeat = {}) => {
   const texture = TextureLoader.load(url);
 
-  if (options) {
-    const opt = Object.assign({}, options, {
+  if (repeat) {
+    const opt = extend(repeat, {
       offset: {
         x: 0,
         y: 0
