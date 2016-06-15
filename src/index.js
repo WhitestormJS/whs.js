@@ -9,7 +9,10 @@ export * from './lights/index';
 export * from './meshes/index';
 export * from './scenes/index';
 
-if (window) {
+if (typeof window !== 'undefined') {
   window.THREE = THREE;
   window.Physijs = Physijs;
+} else if (typeof global !== 'undefined') {
+  global.THREE = THREE;
+  global.Physijs = Physijs;
 }
