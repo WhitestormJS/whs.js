@@ -5,11 +5,12 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "gulp build",
-    "test": "xo",
+    "test": "xo && ava",
     "babel": "gulp babel",
     "webpack": "gulp webpack",
     "lint": "gulp lint",
-    "clean": "gulp clean"
+    "clean": "gulp clean",
+    "init": "ava --init"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,7 @@
     "three": "^0.76.1"
   },
   "devDependencies": {
+    "ava": "^0.11.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
     "babel-plugin-transform-runtime": "^6.9.0",
