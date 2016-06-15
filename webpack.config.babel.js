@@ -1,4 +1,4 @@
-import {join} from 'path';
+import path from 'path';
 import webpack from 'webpack';
 
 process.env.BABEL_ENV = 'browser';
@@ -9,7 +9,7 @@ function config({production}) {
     entry: './src/index.js',
     target: 'web',
     output: {
-      path: join(__dirname, 'build'),
+      path: path.join(__dirname, 'build'),
       filename: 'whitestorm.js',
       library: 'WHS',
       libraryTarget: 'var'
