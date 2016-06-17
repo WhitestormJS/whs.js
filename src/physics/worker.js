@@ -1,3 +1,5 @@
+import Ammo from 'whs-ammo';
+
 module.exports = function(self) {
 	'use strict';
 	var
@@ -217,7 +219,7 @@ module.exports = function(self) {
 						p ++;
 						p2 += 4;
 					}
-				} 
+				}
 
 				shape = new Ammo.btHeightfieldTerrainShape(
 						description.xpts,
@@ -251,7 +253,6 @@ module.exports = function(self) {
 	};
 
 	public_functions.init = function( params ) {
-		importScripts('./ammo.js');
 
 		_transform = new Ammo.btTransform;
 		_vec3_1 = new Ammo.btVector3(0,0,0);
@@ -1436,4 +1437,4 @@ module.exports = function(self) {
 		}
 
 	};
-};
+}

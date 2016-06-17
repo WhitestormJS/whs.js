@@ -33,7 +33,6 @@ const src = 'src/**/*',
   };
 
 // Browser.
-const srcIndex = 'src/index.js';
 process.env.BABEL_ENV = 'node';
 
 gulp.task('default', ['build']);
@@ -186,32 +185,6 @@ gulp.task('examples', () => {
     .pipe(plumber())
     .pipe(swig(swigOpts))
     .pipe(gulp.dest(examplesDest));
-});
-
-gulp.task('rollup', () => {
-  return gulp.src(srcIndex)
-    .pipe(babel())
-    .pipe(rollup({
-      moduleName: 'WHS',
-      format: 'iife',
-      globals: {
-        three: 'THREE'
-      },
-      plugins: [
-        nodeResolve({
-          jsnext: false,
-          main: true,
-          browser: false,
-          preferBuiltins: false,
-
-          skip: ['three']
-        }),
-        commonjs()
-      ],
-      outro: 'window.Physijs = Physijs;'
-    }))
-    .pipe(rename('whitestorm.js'))
-    .pipe(gulp.dest('build'));
 });
 
 gulp.task('lint', () => {
