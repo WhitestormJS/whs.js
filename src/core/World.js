@@ -84,7 +84,12 @@ class World extends WHSObject {
     // INIT.
     this._initScene();
     this._initDOM();
-    this._initStats();
+
+    if (!(
+      typeof process === 'object'
+      && Object.prototype.toString.call(process) === '[object process]'
+      )) this._initStats();
+
     this._initCamera();
     this._initRenderer();
     this._initHelpers();
