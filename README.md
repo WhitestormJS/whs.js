@@ -80,17 +80,22 @@ world.start(); // Start animations and physics simulation.
 <a href="http://192.241.128.187/current/examples/fps/shooter/" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/splash.png"></a>
 
 ## Other examples:
+
+#### BASIC:
  * [Basic / Hello world](http://192.241.128.187/current/examples/basic/helloworld/)  (Basic "Hello world!" example.)
  * [Basic / Model](http://192.241.128.187/current/examples/basic/model/)  (Basic model example.)
  * [Basic / Debugging](http://192.241.128.187/current/examples/debugging/)  (Object's debug example.)
  * [Basic / Extending API](http://192.241.128.187/current/examples/extending/)  (Extending api example.)
 
+#### DESIGN:
  * [Design / Saturn](http://192.241.128.187/current/examples/design/saturn/)  (Saturn planet example from: http://codepen.io/Yakudoo/pen/qbygaJ)
  * [Design / Easter](http://192.241.128.187/current/examples/design/easter/)  (Easter rabbit with easter eggs.)
 
+#### FIRST-PERSON:
  * [FPS / Shooter](http://192.241.128.187/current/examples/fps/shooter/)  (First person example with Wagner effects and terrain. + fog)
  * [FPS / Fog](http://192.241.128.187/current/examples/fps/fog/)  (First person game with animated objects)
 
+#### PHYSICS:
  * [Physics/Dominos](http://192.241.128.187/current/examples/physics/dominos/)  (Physics example with dominos.)
 
 ##### Changelog: [Look here](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
