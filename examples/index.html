@@ -23,26 +23,167 @@
     <link rel="apple-touch-icon-precomposed" href="http://whitestormjs.xyz/favicon.ico" sizes="57x57" />
     <meta name="msapplication-square150x150logo" content="../development/art/logo/Icon-72@2.png" />
     <style>
-    @import url(https://fonts.googleapis.com/css?family=Passion+One|Nunito|Abel);
+    @import url(https://fonts.googleapis.com/css?family=Nunito|Abel);
+    @import url(https://fonts.googleapis.com/css?family=Inconsolata);
 
     body {
       margin: 0;
       padding: 0;
-      background: #4f5b66;
+      background: #fff;
     }
 
-    h1 {
-      font-family: 'Passion One', cursive;
-      padding: 20px 40px;
+    #showcase {
+      position: absolute;
+      display: flex;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      z-index: 1;
+      flex-wrap: wrap;
+    }
+
+    .item {
+      transition: all 0.3s ease-in-out;
+
+      width: 25%;
+      padding-bottom: 11%;
+      background-size: 120%;
+      background-position: center center;
+      position: relative;
+    }
+
+    .item:hover {
+      transition: all 0.3s ease-in-out;
+
+      background-position: 30%;
+    }
+
+    .item.placeholder {
+      background-color: #65737e;
+      width: calc(25% - 2px);
+      border: 1px solid #4f5b66;
+    }
+
+    .item .splash {
+      transition: all 0.3s ease-in;
+
+      position: absolute;
+      transform: translateX(20px);
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.8);
+      opacity: 0;
+    }
+
+    .item:hover .splash {
+      transition: all 0.3s ease-in;
+
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .item .splash h4 {
+      padding: 10px;
+      margin: 0;
+      font-family: 'Nunito';
+      color: black;
+    }
+
+    .item .splash h4 span {
+      color: #00f1ff;
+      text-shadow: 0px 0px 1px black;
+    }
+
+    .item .splash h4 span.type {
+      color: #08ffb1;
     }
     </style>
   </head>
   <body>
     <section>
-      <h1>BASIC</h1>
       <div id="showcase">
-        <div class="item">
+        <div class="item" style="background-image: url('./basic/helloworld/screenshot.png');">
+          <a href="./basic/helloworld/"><div class="splash">
+            <h4>Hello world <span>- example</span><span class="type"> - basic</span></h4>
+          </div></a>
+        </div>
+        <div class="item" style="background-image: url('./basic/model/screenshot.png');">
+          <a href="./basic/model/"><div class="splash">
+            <h4>Model <span>- example</span><span class="type"> - basic</span></h4>
+          </div></a>
+        </div>
+        <div class="item" style="background-image: url('./basic/extending/screenshot.png');">
+          <a href="./basic/extending/"><div class="splash">
+            <h4>Extending API <span>- example</span><span class="type"> - basic</span></h4>
+          </div></a>
+        </div>
+        <div class="item" style="background-image: url('./basic/debugging/screenshot.png');">
+          <a href="./basic/debugging/"><div class="splash">
+            <h4>Debugging <span>- example</span><span class="type"> - basic</span></h4>
+          </div></a>
+        </div>
 
+        <div class="item" style="background-image: url('./design/easter/screenshot.png');">
+          <a href="./basic/easter/"><div class="splash">
+            <h4>Easter <span>- example</span><span class="type"> - design</span></h4>
+          </div></a>
+        </div>
+        <div class="item" style="background-image: url('./design/saturn/screenshot.png');">
+          <a href="./design/saturn/"><div class="splash">
+            <h4>Saturn planet <span>- example</span><span class="type"> - design</span></h4>
+          </div></a>
+        </div>
+        <div class="item" style="background-image: url('./fps/shooter/screenshot.png');">
+          <a href="./fps/shooter/"><div class="splash">
+            <h4>Shooter <span>- example</span><span class="type"> - fps</span></h4>
+          </div></a>
+        </div>
+        <div class="item" style="background-image: url('./fps/fog/screenshot.png');">
+          <a href="./fps/fog/"><div class="splash">
+            <h4>Fog <span>- example</span><span class="type"> - fps</span></h4>
+          </div></a>
+        </div>
+
+        <div class="item" style="background-image: url('./physics/domino/screenshot.png');">
+          <a href="./physics/domino/"><div class="splash">
+            <h4>Dominoes <span>- example</span><span class="type"> - physics</span></h4>
+          </div></a>
+        </div>
+        <div class="item placeholder">
+          <a href="#"><div class="splash">
+            <h4>Placeholder <span>- example</span><span class="type"> - basic</span></h4>
+          </div></a>
+        </div>
+        <div class="item placeholder">
+          <a href="#"><div class="splash">
+            <h4>Placeholder <span>- example</span><span class="type"> - basic</span></h4>
+          </div></a>
+        </div>
+        <div class="item placeholder">
+          <a href="#"><div class="splash">
+            <h4>Placeholder <span>- example</span><span class="type"> - basic</span></h4>
+          </div></a>
+        </div>
+
+        <div class="item placeholder">
+          <a href="#"><div class="splash">
+            <h4>Placeholder <span>- example</span><span class="type"> - basic</span></h4>
+          </div></a>
+        </div>
+        <div class="item placeholder">
+          <a href="#"><div class="splash">
+            <h4>Placeholder <span>- example</span><span class="type"> - basic</span></h4>
+          </div></a>
+        </div>
+        <div class="item placeholder">
+          <a href="#"><div class="splash">
+            <h4>Placeholder <span>- example</span><span class="type"> - basic</span></h4>
+          </div></a>
+        </div>
+        <div class="item placeholder">
+          <a href="#"><div class="splash">
+            <h4>Placeholder <span>- example</span><span class="type"> - basic</span></h4>
+          </div></a>
         </div>
       </div>
     </section>
