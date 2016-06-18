@@ -76,7 +76,7 @@ world.start(); // Start animations and physics simulation.
 ## Game example
 <a href="http://192.241.128.187/current/examples/fps/shooter/" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/splash.png"></a>
 
-## [Examples](http://192.241.128.187/current/):
+## [Examples](http://192.241.128.187/current/examples/):
 
 #### BASIC:
  * [Basic / Hello world](http://192.241.128.187/current/examples/basic/helloworld/)  (Basic "Hello world!" example.)
