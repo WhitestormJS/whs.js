@@ -3,7 +3,7 @@ import webpack from 'webpack';
 
 process.env.BABEL_ENV = 'browser';
 
-function config({production}) {
+export function config({production}) {
   return {
     devtool: production ? 'hidden-source-map' : 'source-map',
     entry: './src/index.js',
@@ -58,6 +58,27 @@ function config({production}) {
   };
 }
 
-export {
-  config as default
-};
+export function light_config({production}) {
+  const conf = config({production});
+  conf.output.filename = 'whitestorm.light.js';
+
+  conf.module.preLoaders.push({
+    test: /\.js$/,
+    loader: 'string-replace',
+    query: {
+      multiple: [
+        {
+          search: 'physics/physi.js\';',
+          replace: 'physics/nophysi.js\';'
+        },
+        {
+          search: '!!\'physics\'',
+          replace: 'false',
+          flags: 'g'
+        }
+      ]
+    }
+  });
+
+  return conf;
+}
