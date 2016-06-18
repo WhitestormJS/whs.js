@@ -15,23 +15,25 @@ function config({production}) {
       libraryTarget: 'var'
     },
     module: {
+      preLoaders: [
+        {
+          test: /physi\.js$/,
+          loader: 'string-replace',
+          query: {
+            multiple: [
+              {
+                search: 'from \'inline-worker\';',
+                replace: 'from \'webworkify-webpack\';'
+              },
+              {
+                search: 'new Worker(require(\'./worker.js\'));',
+                replace: 'Worker(require(\'./worker.js\'));'
+              }
+            ]
+          }
+        }
+      ],
       loaders: [
-        {
-          test: /\.js$/,
-          loader: 'string-replace',
-          query: {
-            search: 'from \'inline-worker\';',
-            replace: 'from \'webworkify-webpack\';'
-          }
-        },
-        {
-          test: /\.js$/,
-          loader: 'string-replace',
-          query: {
-            search: 'new Worker(require(\'./worker.js\'));',
-            replace: 'Worker(require(\'./worker.js\'));'
-          }
-        },
         {
           test: /\.js$/,
           exclude: /node_modules/,

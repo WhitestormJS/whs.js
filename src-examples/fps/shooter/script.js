@@ -22,12 +22,7 @@ const GAME = new WHS.World({
   rWidth: 1,
   rHeight: 1,
 
-  background: 0x70DBFF,
-
-  paths: {
-    worker: '{{ libs }}/physijs_worker.js',
-    ammo: '{{ libs }}/ammo.js'
-  }
+  background: 0x70DBFF
 });
 
 window.terrain = new Terrain({

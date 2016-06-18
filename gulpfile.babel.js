@@ -84,7 +84,7 @@ gulp.task('examples:watch', () => {
         ])
           .pipe(plumber())
           .pipe(swig(Object.assign({}, swigOpts, {ext: '.js'})))
-          .pipe(gbrowser.browserify({basedir: path.resolve(examplesDest)}, {
+          .pipe(gbrowser.browserify({basedir: path.resolve(examplesDev)}, {
             transform: 'babelify',
             options: {presets: ['es2015']}
           }))
@@ -156,35 +156,37 @@ gulp.task('examples:watch', () => {
 });
 
 gulp.task('examples', () => {
-  gulp.src([
-    `${examplesDev}/**/*`,
-    `!${examplesDev}/**/*.html`,
-    `!${examplesDev}/!(_libs)/*.js`,
-    `!${examplesDev}/**/script.js`,
-    `${examplesDev}/_libs/**/*`,
-    `${examplesDev}/_assets/**/*.js`
-  ])
-    .pipe(plumber())
-    .pipe(gulp.dest(examplesDest));
+  del(examplesDest).then(() => {
+    gulp.src([
+      `${examplesDev}/**/*`,
+      `!${examplesDev}/**/*.html`,
+      `!${examplesDev}/!(_libs)/*.js`,
+      `!${examplesDev}/**/script.js`,
+      `${examplesDev}/_libs/**/*`,
+      `${examplesDev}/_assets/**/*.js`
+    ])
+      .pipe(plumber())
+      .pipe(gulp.dest(examplesDest));
 
-  gulp.src([
-    `${examplesDev}/**/*.js`,
-    `!${examplesDev}/**/*.html`,
-    `!${examplesDev}/_libs/*.js`,
-    `!${examplesDev}/_assets/**/*.js`
-  ])
-    .pipe(plumber())
-    .pipe(swig(Object.assign({}, swigOpts, {ext: '.js'})))
-    .pipe(gbrowser.browserify({basedir: path.resolve(examplesDest)}, {
-      transform: 'babelify',
-      options: {presets: ['es2015']}
-    }))
-    .pipe(gulp.dest(examplesDest));
+    gulp.src([
+      `${examplesDev}/**/*.js`,
+      `!${examplesDev}/**/*.html`,
+      `!${examplesDev}/_libs/*.js`,
+      `!${examplesDev}/_assets/**/*.js`
+    ])
+      .pipe(plumber())
+      .pipe(swig(Object.assign({}, swigOpts, {ext: '.js'})))
+      .pipe(gbrowser.browserify({basedir: path.resolve(examplesDev)}, {
+        transform: 'babelify',
+        options: {presets: ['es2015']}
+      }))
+      .pipe(gulp.dest(examplesDest));
 
-  gulp.src(`${examplesDev}/**/*.html`)
-    .pipe(plumber())
-    .pipe(swig(swigOpts))
-    .pipe(gulp.dest(examplesDest));
+    gulp.src(`${examplesDev}/**/*.html`)
+      .pipe(plumber())
+      .pipe(swig(swigOpts))
+      .pipe(gulp.dest(examplesDest));
+  });
 });
 
 gulp.task('lint', () => {

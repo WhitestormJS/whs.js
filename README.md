@@ -50,25 +50,19 @@ Include [Three.js](http://threejs.org/build/three.min.js) and [Physi.js](https:/
 Include a script tag linking the [WhitestormJS](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js) library in your `head` or after your `body`:
 
 ```html
-<script src="three.js"></script>
-<script src="physi.js"></script>
-<!-- WhitestormJS library -->
 <script src="{path_to_lib}/whitestorm.js"></script>
 ```
 
 After adding these libraries, you can configure your app:
 ```javascript
-var world = new WHS.World({
+const world = new WHS.World({
     stats: "fps", // fps, ms, mb or false if not need.
 
     gravity: { // Physic gravity.
         x: 0,
         y: -100,
         z: 0
-    },
-
-    path_worker: 'physijs_worker.js', // Path to Physijs worker here.
-    path_ammo: 'ammo.js' // Path to Ammo.js from Physijs worker.
+    }
 });
 
 // Define your scene objects here.
@@ -83,18 +77,21 @@ world.start(); // Start animations and physics simulation.
 <br>
 
 ## Game example
-<a href="http://192.241.128.187/current/examples/fps.html" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/splash.png"></a>
+<a href="http://192.241.128.187/current/examples/fps/shooter/" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/splash.png"></a>
 
 ## Other examples:
- * [FPS](http://192.241.128.187/current/examples/fps_fog.html)  (First person example with Wagner effects and terrain. + fog)
- * [Saturn planet](http://192.241.128.187/current/examples/saturn.html)  (Saturn planet example from: http://codepen.io/Yakudoo/pen/qbygaJ)
- * [Happy easter!](http://192.241.128.187/current/examples/easter.html)  (Easter rabbit with easter eggs.)
- * [Basic](http://192.241.128.187/current/examples/basic.html)  (Basic "Hello world!" example.)
- * [Physics/Dominos](http://192.241.128.187/current/examples/physics.html)  (Physics example with dominos.)
- * [Debugging](http://192.241.128.187/current/examples/debugging.html)  (Object's debug example.)
- * [Object/Model](http://192.241.128.187/current/examples/basic_model.html)  (Teapot model with *Three.js* JSONLoader.)
- * [Plugin/Color](http://192.241.128.187/current/examples/plugin_example.html)  (Basic plugin example.)
- * [Skybox](http://192.241.128.187/current/examples/skybox.html) (Skybox example)
+ * [Basic / Hello world](http://192.241.128.187/current/examples/basic/helloworld/)  (Basic "Hello world!" example.)
+ * [Basic / Model](http://192.241.128.187/current/examples/basic/model/)  (Basic model example.)
+ * [Basic / Debugging](http://192.241.128.187/current/examples/debugging/)  (Object's debug example.)
+ * [Basic / Extending API](http://192.241.128.187/current/examples/extending/)  (Extending api example.)
+
+ * [Design / Saturn](http://192.241.128.187/current/examples/design/saturn/)  (Saturn planet example from: http://codepen.io/Yakudoo/pen/qbygaJ)
+ * [Design / Easter](http://192.241.128.187/current/examples/design/easter/)  (Easter rabbit with easter eggs.)
+
+ * [FPS / Shooter](http://192.241.128.187/current/examples/fps/shooter/)  (First person example with Wagner effects and terrain. + fog)
+ * [FPS / Fog](http://192.241.128.187/current/examples/fps/fog/)  (First person game with animated objects)
+
+ * [Physics/Dominos](http://192.241.128.187/current/examples/physics/dominos/)  (Physics example with dominos.)
 
 ##### Changelog: [Look here](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
 
@@ -109,7 +106,9 @@ world.start(); // Start animations and physics simulation.
 
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-bdirl-blue.svg)](https://github.com/bdirl)
 
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-t4r0-blue.svg)](https://github.com/t4r0)
+[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-preco21-blue.svg)](https://github.com/preco21)
+
+[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-yeliex-blue.svg)](https://github.com/yeliex)
 
 <br>
 

@@ -52,7 +52,6 @@ class World extends WHSObject {
       height: window.innerHeight, // Container(height).
 
       physics: {
-
         quatNormalizeSkip: 0,
         quatNormalizeFast: false,
 
@@ -65,17 +64,20 @@ class World extends WHSObject {
           contactEquationStiffness: 1e8,
           contactEquationRegularizationTime: 3
         }
+      },
 
+      fog: {
+        type: false,
+
+        density: 0.00025,
+        hex: 0x000000,
+        near: 1,
+        far: 1000
       },
 
       background: 0x000000,
       assets: './assets',
-      container: document.body,
-
-      paths: {
-        worker: '../libs/physijs_worker.js',
-        ammo: '../libs/ammo.js'
-      }
+      container: document.body
 
     });
 
@@ -114,17 +116,22 @@ class World extends WHSObject {
   _initScene() {
     this._initPhysiJS();
 
-    console.log(Physijs.scripts.worker);
-
-    const scene = new Physijs.Scene();
+    const scene = new Physijs.Scene(),
+      params = this.getParams();
 
     scene.setGravity(
       new THREE.Vector3(
-        this.getParams().gravity.x,
-        this.getParams().gravity.y,
-        this.getParams().gravity.z
+        params.gravity.x,
+        params.gravity.y,
+        params.gravity.z
       )
     );
+
+    if (params.fog.type === 'regular')
+      scene.fog = new THREE.Fog(params.fog.hex, params.fog.near, params.fog.far);
+    else if (params.fog.type === 'exp'
+      || params.fog.type === 'expodential')
+      scene.fog = new THREE.FogExp2(params.fog.hex, params.fog.density);
 
     this.setScene(scene);
 
@@ -146,24 +153,23 @@ class World extends WHSObject {
    */
   _initPhysiJS() {
     this.simulate = true;
-
-    Physijs.scripts.worker = this.getParams().paths.worker;
-    Physijs.scripts.ammo = this.getParams().paths.ammo;
   }
 
   /**
    * Initialize DOM structure for whitestorm.
    */
   _initDOM() {
-    this.getParams().container.style.margin = 0;
-    this.getParams().container.style.padding = 0;
-    this.getParams().container.style.position = 'relative';
-    this.getParams().container.style.overflow = 'hidden';
+    const params = this.getParams();
+
+    params.container.style.margin = 0;
+    params.container.style.padding = 0;
+    params.container.style.position = 'relative';
+    params.container.style.overflow = 'hidden';
 
     this._dom = document.createElement('div');
     this._dom.className = 'whs';
 
-    this.getParams().container.appendChild(this._dom);
+    params.container.appendChild(this._dom);
 
     return this._dom;
   }
@@ -172,17 +178,18 @@ class World extends WHSObject {
    * Inititialize stats plugin.
    */
   _initStats() {
-    // Debug Renderer
-    if (this.getParams().stats) {
+    const params = this.getParams();
+
+    if (params.stats) {
       this._stats = new Stats();
 
-      if (this.getParams().stats === 'fps')
+      if (params.stats === 'fps')
         this._stats.setMode(0);
 
-      else if (this.getParams().stats === 'ms')
+      else if (params.stats === 'ms')
         this._stats.setMode(1);
 
-      else if (this.getParams().stats === 'mb')
+      else if (params.stats === 'mb')
         this._stats.setMode(1);
 
       else {
@@ -202,20 +209,20 @@ class World extends WHSObject {
    * Create a camera and add it to scene.
    */
   _initCamera() {
-    console.log(this.getParams());
+    const params = this.getParams();
 
     this.setCamera(new PerspectiveCamera({
       camera: {
-        fov: this.getParams().camera.aspect,
-        aspect: this.getParams().width / this.getParams().height,
-        near: this.getParams().camera.near,
-        far: this.getParams().camera.far
+        fov: params.camera.aspect,
+        aspect: params.width / params.height,
+        near: params.camera.near,
+        far: params.camera.far
       },
 
       pos: {
-        x: this.getParams().camera.x,
-        y: this.getParams().camera.y,
-        z: this.getParams().camera.z
+        x: params.camera.x,
+        y: params.camera.y,
+        z: params.camera.z
       }
     }));
 
@@ -230,48 +237,53 @@ class World extends WHSObject {
 
         // Renderer.
     this.setRenderer(new THREE.WebGLRenderer());
-    this.getRenderer().setClearColor(this.getParams().background);
+
+    const renderer = this.getRenderer();
+    renderer.setClearColor(this.getParams().background);
 
         // Shadowmap.
-    this.getRenderer().shadowMap.enabled = this.getParams().shadowmap.enabled;
-    this.getRenderer().shadowMap.type = this.getParams().shadowmap.type;
-    this.getRenderer().shadowMap.cascade = true;
+    renderer.shadowMap.enabled = this.getParams().shadowmap.enabled;
+    renderer.shadowMap.type = this.getParams().shadowmap.type;
+    renderer.shadowMap.cascade = true;
 
-    this.getRenderer().setSize(
+    renderer.setSize(
             Number(this.getParams().width * this.getParams().rWidth).toFixed(),
             Number(this.getParams().height * this.getParams().rHeight).toFixed()
         );
 
-    this.getRenderer().render(this.getScene(), this.getCamera().getNative());
+    renderer.render(this.getScene(), this.getCamera().getNative());
 
-    this._dom.appendChild(this.getRenderer().domElement);
+    this._dom.appendChild(renderer.domElement);
 
-    this.getRenderer().domElement.style.width = '100%';
-    this.getRenderer().domElement.style.height = '100%';
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
   }
 
   /**
    * Add helpers to scene.
    */
   _initHelpers() {
-    if (this.getParams().helpers.axis) {
-      this.getScene().add(
+    const params = this.getParams(),
+      scene = this.getScene();
+
+    if (params.helpers.axis) {
+      scene.add(
         new THREE.AxisHelper(
-          this.getParams().helpers.axis.size
-          ? this.getParams().helpers.axis.size
+          params.helpers.axis.size
+          ? params.helpers.axis.size
           : 5
         )
       );
     }
 
-    if (this.getParams().helpers.grid) {
-      this.getScene().add(
+    if (params.helpers.grid) {
+      scene.add(
         new THREE.GridHelper(
-          this.getParams().helpers.grid.size
-          ? this.getParams().helpers.grid.size
+          params.helpers.grid.size
+          ? params.helpers.grid.size
           : 10,
-          this.getParams().helpers.grid.step
-          ? this.getParams().helpers.grid.step
+          params.helpers.grid.step
+          ? params.helpers.grid.step
           : 1
         )
       );
@@ -283,10 +295,10 @@ class World extends WHSObject {
    */
   start() {
     const clock = new THREE.Clock(),
-      scope = this,
-      scene = scope.getScene(),
-      cameraNative = scope.getCamera().getNative(),
-      renderer = scope.getRenderer();
+      _scope = this,
+      scene = _scope.getScene(),
+      cameraNative = _scope.getCamera().getNative(),
+      renderer = _scope.getRenderer();
 
     window.requestAnimFrame = (() => {
       return window.requestAnimationFrame
@@ -301,30 +313,30 @@ class World extends WHSObject {
       window.requestAnimFrame(reDraw);
 
       // Init stats.
-      if (scope._stats) scope._stats.begin();
+      if (_scope._stats) _scope._stats.begin();
 
-      scope._process(clock);
+      _scope._process(clock.getDelta());
 
-      if (scope.simulate) scene.simulate();
-      if (scope.controls) scope._updateControls();
+      if (_scope.simulate) scene.simulate();
+      if (_scope.controls) _scope._updateControls();
 
       // Effects rendering.
-      if (scope._composer && scope.render) {
-        scope._composer.reset();
-        scope._composer.render(scene, cameraNative);
-        scope._composer.pass(scope._composer.stack);
-        scope._composer.toScreen();
-      } else if (scope.render) renderer.render(scene, cameraNative);
+      if (_scope._composer && _scope.render) {
+        _scope._composer.reset();
+        _scope._composer.render(scene, cameraNative);
+        _scope._composer.pass(_scope._composer.stack);
+        _scope._composer.toScreen();
+      } else if (_scope.render) renderer.render(scene, cameraNative);
 
-      scope._execLoops(time);
+      _scope._execLoops(time);
 
       // End helper.
-      if (scope._stats) scope._stats.end();
+      if (_scope._stats) _scope._stats.end();
     }
 
     this._update = reDraw;
 
-    scope._update();
+    _scope._update();
   }
 
   /**
@@ -352,9 +364,7 @@ class World extends WHSObject {
    *
    * @params {THREE.Clock} clock - The clock object, which.
    */
-  _process(clock) {
-    const delta = clock.getDelta();
-
+  _process(delta) {
     for (let i = 0; i < this.children.length; i++)
       if (this.children[i]._type === 'morph') this.children[i].getNative().mixer.update(delta);
   }
