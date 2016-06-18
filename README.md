@@ -38,7 +38,8 @@
 * **Automatization of rendering** — Framework does rendering automatically and doesn't need function to be called for it. Functionality like `resize` function can be called automatically by setting additional parameters such as `autoresize: true`.
 
 * **ES6 Features** - Framework is written with using latest features of ECMAScript 6 and ECMAScript 7 (beta) features and compiled with [Babel](https://babeljs.io/).
-<p align="center"><img src="http://blog.makersquare.com/wp-content/uploads/2015/06/es6-logo.png" height="100" alt="es6">&nbsp;&nbsp; &nbsp;&nbsp; 
+
+<p align="center"><img src="https://cdn-images-1.medium.com/max/800/1*_6hv_Ab_V061r07IXioLAg.jpeg" height="100" alt="es6">&nbsp;&nbsp; &nbsp;&nbsp; 
 <img src="https://cms-assets.tutsplus.com/uploads/users/16/posts/24511/preview_image/babel-1.png" height="100" alt="babel"></p>
 
 
