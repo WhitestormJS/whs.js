@@ -30,11 +30,6 @@ const GAME = new WHS.World({
     y: 100
   },
 
-  paths: {
-    worker: '{{ libs }}/physijs_worker.js',
-    ammo: '{{ libs }}/ammo.js'
-  },
-
   background: 0x2a3340
 });
 
@@ -97,6 +92,7 @@ const s1 = new WHS.Dodecahedron({
     kind: 'phong'
   }
 });
+
 const s2 = new WHS.Box({
   geometry: {
     width: 10,
@@ -112,6 +108,7 @@ const s2 = new WHS.Box({
     kind: 'phong'
   }
 });
+
 const s3 = new WHS.Cylinder({
   geometry: {
     radiusTop: 0,
@@ -127,6 +124,7 @@ const s3 = new WHS.Cylinder({
     kind: 'phong'
   }
 });
+
 const s4 = new WHS.Sphere({
   geometry: {
     radius: 10
@@ -164,8 +162,7 @@ for (let i = 0; i < particleCount; i++) {
   particle.setMaterial(mat[Math.floor(4 * Math.random())]); // Set custom THREE.Material to mesh.
 
   // Overwrite shadows.
-  particle.getNative().castShadow = true;
-  particle.getNative().receiveShadow = true;
+  particle.wrap('no-transforms');
 
   // Particle data.
   particle.data = {

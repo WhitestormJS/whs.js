@@ -41847,7 +41847,6 @@ var WHS =
 	
 	var loadMaterial = function loadMaterial() {
 	  var material = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	  var isPhysics = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 	
 	  if (typeof material.kind !== 'string') console.error('Type of material is undefined or not a string. @loadMaterial');
 	
@@ -41856,6 +41855,8 @@ var WHS =
 	    _restitution: !isNaN(parseFloat(material.restitution)) ? material.restitution : !isNaN(parseFloat(material.rest)) ? material.rest : 0.3,
 	    _friction: !isNaN(parseFloat(material.friction)) ? material.friction : !isNaN(parseFloat(material.fri)) ? material.fri : 0.8
 	  };
+	
+	  console.log(material);
 	
 	  if (material.texture) material.map = texture(material.texture);
 	
@@ -41932,7 +41933,7 @@ var WHS =
 	    default:
 	  }
 	
-	  if (isPhysics) {
+	  if (true) {
 	    scope._materialP = _physi2.default.createMaterial(scope._material, scope._friction, scope._restitution);
 	  }
 	
@@ -42069,7 +42070,7 @@ var WHS =
 	        duration: 1
 	      },
 	
-	      physics: true
+	      physics: !!'physics'
 	
 	    }));
 	
@@ -42329,7 +42330,7 @@ var WHS =
 	    value: function _initMaterial() {
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      return this.physics ? (0, _api.loadMaterial)(params)._material : (0, _api.loadMaterial)(params)._materialP;
+	      return this.getParams().physics ? (0, _api.loadMaterial)(params)._materialP : (0, _api.loadMaterial)(params)._material;
 	    }
 	
 	    /**
@@ -45686,12 +45687,14 @@ var WHS =
 	  (0, _createClass3.default)(World, [{
 	    key: '_initScene',
 	    value: function _initScene() {
-	      this._initPhysiJS();
-	
-	      var scene = new _physi2.default.Scene(),
+	      var scene =  true ? new _physi2.default.Scene() : new THREE.Scene(),
 	          params = this.getParams();
 	
-	      scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
+	      if (true) {
+	        scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
+	
+	        this.simulate = true;
+	      } else this.simulate = false;
 	
 	      if (params.fog.type === 'regular') scene.fog = new THREE.Fog(params.fog.hex, params.fog.near, params.fog.far);else if (params.fog.type === 'exp' || params.fog.type === 'expodential') scene.fog = new THREE.FogExp2(params.fog.hex, params.fog.density);
 	
@@ -45712,16 +45715,6 @@ var WHS =
 	      this.loops.filter(function (l) {
 	        return l !== loop;
 	      });
-	    }
-	
-	    /**
-	     * Set Physi.js scripts pathes.
-	     */
-	
-	  }, {
-	    key: '_initPhysiJS',
-	    value: function _initPhysiJS() {
-	      this.simulate = true;
 	    }
 	
 	    /**

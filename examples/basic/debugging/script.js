@@ -26,11 +26,6 @@ var GAME = new WHS.World({
     far: 10000,
     y: 10,
     z: 30
-  },
-
-  paths: {
-    worker: '../../_libs/physijs_worker.js',
-    ammo: '../../_libs/ammo.js'
   }
 });
 
