@@ -8,12 +8,13 @@ import WebpackDevServer from 'webpack-dev-server';
 import swig from 'gulp-swig';
 import gbrowser from 'gulp-browser-basedir';
 import plumber from 'gulp-plumber';
-import webpackConfig from './webpack.config.babel.js';
+import {config, light_config} from './webpack.config.babel.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 const $ = loadPlugins();
-const webpackCompiler = webpack(webpackConfig({production: isProduction}));
+const webpackCompiler = webpack(config({production: isProduction}));
+const lightWebpackCompiler = webpack(light_config({production: isProduction}));
 
 // Globals.
 const src = 'src/**/*',
@@ -55,7 +56,12 @@ gulp.task('webpack', (callback) => {
   webpackCompiler.run((error, stats) => {
     if (error) throw new $.util.PluginError('webpack', error);
     $.util.log('[webpack]', stats.toString({colors: true}));
-    callback();
+
+    lightWebpackCompiler.run((error, stats) => {
+      if (error) throw new $.util.PluginError('webpack', error);
+      $.util.log('[webpack]', stats.toString({colors: true}));
+      callback();
+    });
   });
 });
 
@@ -102,17 +108,35 @@ gulp.task('examples:watch', () => {
         console.log('.html change detected.');
         const filePath = path.relative(path.resolve('./'), obj.path);
 
-        gulp.src(filePath)
-          .pipe(plumber())
-          .pipe(swig(swigOpts))
-          .pipe(
-            gulp.dest(
-              path.join(
-                path.relative(path.resolve('./'), path.resolve(examplesDest)),
-                path.relative(path.resolve(examplesDev), path.dirname(obj.path))
+        if (obj.path.indexOf('layout') > -1) {
+          gulp.src([
+            `${examplesDev}/**/*.html`
+          ])
+            .pipe(plumber())
+            .pipe(swig(swigOpts))
+            .pipe(
+              gulp.dest(
+                path.join(
+                  path.relative(path.resolve('./'), path.resolve(examplesDest)),
+                  path.relative(path.resolve(examplesDev), path.dirname(obj.path))
+                )
               )
-            )
-          );
+            );
+
+          console.log(`Swig LAYOUT: ${filePath}`);
+        } else {
+          gulp.src(filePath)
+            .pipe(plumber())
+            .pipe(swig(swigOpts))
+            .pipe(
+              gulp.dest(
+                path.join(
+                  path.relative(path.resolve('./'), path.resolve(examplesDest)),
+                  path.relative(path.resolve(examplesDev), path.dirname(obj.path))
+                )
+              )
+            );
+        }
 
         console.log(`Swig: ${filePath}`);
       } else {

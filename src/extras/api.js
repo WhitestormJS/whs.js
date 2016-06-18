@@ -55,7 +55,7 @@ const texture = (url, repeat = {}) => {
   return texture;
 };
 
-const loadMaterial = (material = {}, isPhysics = true) => {
+const loadMaterial = (material = {}) => {
   if (typeof material.kind !== 'string')
     console.error('Type of material is undefined or not a string. @loadMaterial');
 
@@ -68,6 +68,8 @@ const loadMaterial = (material = {}, isPhysics = true) => {
       material.friction : !isNaN(parseFloat(material.fri)) ?
       material.fri : 0.8
   };
+
+  console.log(material);
 
   if (material.texture) material.map = texture(material.texture);
 
@@ -144,7 +146,7 @@ const loadMaterial = (material = {}, isPhysics = true) => {
     default:
   }
 
-  if (isPhysics) {
+  if (!!'physics') {
     scope._materialP = Physijs.createMaterial(
       scope._material,
       scope._friction,

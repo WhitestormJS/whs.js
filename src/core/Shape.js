@@ -72,7 +72,7 @@ class Shape extends WHSObject {
         duration: 1
       },
 
-      physics: true
+      physics: !!'physics'
 
     });
 
@@ -419,9 +419,9 @@ class Shape extends WHSObject {
    * Initialize shape's material object.
    */
   _initMaterial(params = {}) {
-    return this.physics
-      ? loadMaterial(params)._material
-      : loadMaterial(params)._materialP;
+    return this.getParams().physics
+      ? loadMaterial(params)._materialP
+      : loadMaterial(params)._material;
   }
 
   /**
@@ -676,7 +676,7 @@ class Shape extends WHSObject {
     } else {
       setTimeout(() => {
         animation.stop();
-          _scope.getWorld().removeLoop(animation);
+        _scope.getWorld().removeLoop(animation);
       }, time);
     }
   }
