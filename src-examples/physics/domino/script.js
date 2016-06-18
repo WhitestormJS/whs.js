@@ -97,7 +97,8 @@ const domino = new WHS.Box({
   material: {
     color: 0x00ff00,
     kind: 'phong',
-    rest: 0
+    rest: 0.5,
+    fri: 1
   },
 
   pos: {
@@ -127,7 +128,7 @@ new WHS.Box({
     color: 0xcccccc,
     kind: 'basic',
     rest: 0,
-    fri: 0
+    fri: 1
   },
 
   pos: {

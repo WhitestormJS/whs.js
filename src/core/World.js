@@ -114,18 +114,20 @@ class World extends WHSObject {
    * Initialize THREE.js scene object.
    */
   _initScene() {
-    this._initPhysiJS();
-
-    const scene = new Physijs.Scene(),
+    const scene = !!'physics' ? new Physijs.Scene() : new THREE.Scene(),
       params = this.getParams();
 
-    scene.setGravity(
-      new THREE.Vector3(
-        params.gravity.x,
-        params.gravity.y,
-        params.gravity.z
-      )
-    );
+    if (!!'physics') {
+      scene.setGravity(
+        new THREE.Vector3(
+          params.gravity.x,
+          params.gravity.y,
+          params.gravity.z
+        )
+      );
+
+      this.simulate = true;
+    } else this.simulate = false;
 
     if (params.fog.type === 'regular')
       scene.fog = new THREE.Fog(params.fog.hex, params.fog.near, params.fog.far);
@@ -146,13 +148,6 @@ class World extends WHSObject {
 
   removeLoop(loop) {
     this.loops.filter((l) => l !== loop);
-  }
-
-  /**
-   * Set Physi.js scripts pathes.
-   */
-  _initPhysiJS() {
-    this.simulate = true;
   }
 
   /**

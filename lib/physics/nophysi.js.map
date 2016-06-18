@@ -1,0 +1,1 @@
+{"version":3,"sources":["physics/nophysi.js"],"names":[],"mappings":";;;;;;kBAAe,YAAY;AACzB,SAAO,EAAP;AACD,C","file":"nophysi.js","sourcesContent":["export default function () {\n  return {};\n}\n"]}
