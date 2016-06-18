@@ -2530,85 +2530,10 @@ GAME.add(person).then(function () {
   checker2.start();
 });
 
-// EFFECTS.
-// const effects = new WHS.Wagner(GAME);
-
-// effects.add( "ZoomBlurPass", {} );
-// effects.add('VignettePass', {});
-
-// var directionalblurEffect = GAME.addWagner( "motionBlurPass", {} ).apply();
-
-GAME.setControls(WHS.firstPersonControls(person, { // *WHS* object, Pointer lock controls object, Jquery blocker div selector.
-  speed: 5 // 5
+GAME.setControls(WHS.firstPersonControls(person, {
+  speed: 5
 }));
 
-/* var grasscoords = [];
-
-for (var x = 0; x < 20; x++) {
-  for (var y = 0; y < 15; y++) {
-  grasscoords.push({
-    x: x,
-    y: y
-  });
-
-  }
-}*/
-/*
-var curve = new WHS.Curve(
-{
-  geometry: {
-    curve: new THREE.CubicBezierCurve3(
-      new THREE.Vector3( -100, 100, 50 ),
-      new THREE.Vector3( -100, 160, 300 ),
-      new THREE.Vector3( 200, 180, 30 ),
-      new THREE.Vector3( 100, 140, 80 )
-    )
-  },
-
-  material: {
-    kind: "linebasic",
-    color: 0xff0000
-  }
-});
-
-var curve2 = new WHS.Curve(
-{
-  geometry: {
-    curve: new THREE.CubicBezierCurve3(
-      new THREE.Vector3( 100, 140, 80 ),
-      new THREE.Vector3( 200, 80, 150 ),
-      new THREE.Vector3( -200, 60, -100 ),
-      new THREE.Vector3( 200, 100, 350 )
-    )
-  },
-
-  material: {
-    kind: "linebasic",
-    color: 0x00ff00
-  }
-});
-
-var curve3 = new WHS.Curve(
-{
-  geometry: {
-    curve: new THREE.CubicBezierCurve3(
-      new THREE.Vector3( 200, 100, 350 ),
-      new THREE.Vector3( 200, 80, 150 ),
-      new THREE.Vector3( -200, 60, -100 ),
-      new THREE.Vector3( -100, 100, 50 )
-    )
-  },
-
-  material: {
-    kind: "linebasic",
-    color: 0x0000ff
-  }
-});
-
-curve.addTo( GAME );
-curve2.addTo( GAME );
-curve3.addTo( GAME );
-*/
 GAME.start();
 
 },{"./_assets/terrain/default_terrain":114,"whs-terrain":111}]},{},[115]);

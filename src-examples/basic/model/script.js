@@ -16,18 +16,13 @@ const GAME = new WHS.World({
 
   shadowmap: {
     type: THREE.PCFSoftShadowMap
-  },
-
-  paths: {
-    worker: '{{ libs }}/physijs_worker.js',
-    ammo: '{{ libs }}/ammo.js'
   }
 });
 
-window.model = new WHS.Model({
+new WHS.Model({
   geometry: {
-    path: '../{{ assets }}/models/utah-teapot-large.json',
-    physics: '../{{ assets }}/models/utah-teapot-light.json'
+    path: '{{ assets }}/models/utah-teapot-large.json',
+    physics: '{{ assets }}/models/utah-teapot-light.json'
   },
 
   mass: 100,
@@ -35,7 +30,7 @@ window.model = new WHS.Model({
 
   material: {
     shading: THREE.SmoothShading,
-    map: WHS.texture('../{{ assets }}/textures/teapot.jpg', {repeat: {x: 2, y: 2}}),
+    map: WHS.texture('{{ assets }}/textures/teapot.jpg', {repeat: {x: 2, y: 2}}),
     kind: 'phong',
     side: THREE.DoubleSide,
     useCustomMaterial: true,
@@ -54,9 +49,7 @@ window.model = new WHS.Model({
     y: 4,
     z: 4
   }
-});
-
-window.model.addTo(GAME, 'wait');
+}).addTo(GAME, 'wait');
 
 new WHS.Sphere({
   geometry: {
