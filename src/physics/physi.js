@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Worker from 'webworkify-webpack';
+import Worker from 'inline-worker';
 
 var SUPPORT_TRANSFERABLE,
   _Physijs = Physijs, // used for noConflict method
@@ -426,7 +426,7 @@ Physijs.Scene = function (params) {
   Eventable.call(this);
   THREE.Scene.call(this);
 
-  this._worker = Worker(require('./worker.js'));
+  this._worker = new Worker(require('./worker.js'));
   this._worker.transferableMessage = this._worker.webkitPostMessage || this._worker.postMessage;
   this._materials_ref_counts = {};
   this._objects = {};

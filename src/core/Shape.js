@@ -445,8 +445,7 @@ class Shape extends WHSObject {
     this.rotation.copy(source.rotation);
     this.quaternion.copy(source.quaternion);
 
-    console.log(source.position);
-    console.log(this.position);
+    this.getNative().mass = source.getNative().mass;
 
     return this;
   }
@@ -601,6 +600,15 @@ class Shape extends WHSObject {
     this.native.material = this._initMaterial(
       this.updateParams({material: params}).material
     );
+  }
+
+  set M_color(val) {
+    this.updateParams({material: {color: val}});
+    this.native.material.color = new THREE.Color(val);
+  }
+
+  get M_color() {
+    return this.native.material.color;
   }
 
   /* Access private data */
