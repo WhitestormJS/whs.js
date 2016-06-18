@@ -21,12 +21,7 @@ const GAME = new WHS.World({
     type: THREE.PCFSoftShadowMap
   },
 
-  background: 0xffffff,
-
-  paths: {
-    worker: '{{ libs }}/physijs_worker.js',
-    ammo: '{{ libs }}/ammo.js'
-  }
+  background: 0xffffff
 });
 
 GAME.getCamera().lookAt(new THREE.Vector3(0, 0, 0));
@@ -54,23 +49,6 @@ new WHS.Box({
     z: 0
   }
 }).addTo(GAME);
-
-/* var egg = new WHS.Sphere({
-  geometry: {
-    radius: 40
-  },
-
-  mass: 10,
-
-  material: {
-    kind: "phong",
-    color: 0xffffff
-  },
-
-  pos: {
-    y: 100
-  }
-});*/
 
 const egg = new WHS.ConvexModel({
   geometry: {
@@ -278,14 +256,14 @@ document.body.addEventListener('mousemove', (e) => {
 });
 
 document.body.addEventListener('click', () => {
-  rabbit.getNative().setLinearVelocity(new THREE.Vector3(0, 5, 0));
-  egg.getNative().setAngularVelocity(new THREE.Vector3(0, 10, 0));
-  egg2.getNative().setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg3.getNative().setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg4.getNative().setAngularVelocity(new THREE.Vector3(0, 10, 0));
-  egg5.getNative().setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg6.getNative().setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg7.getNative().setAngularVelocity(new THREE.Vector3(0, 10, 0));
-  egg8.getNative().setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg9.getNative().setAngularVelocity(new THREE.Vector3(0, -10, 0));
+  rabbit.setLinearVelocity(new THREE.Vector3(0, 5, 0));
+  egg.setAngularVelocity(new THREE.Vector3(0, 10, 0));
+  egg2.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+  egg3.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+  egg4.setAngularVelocity(new THREE.Vector3(0, 10, 0));
+  egg5.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+  egg6.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+  egg7.setAngularVelocity(new THREE.Vector3(0, 10, 0));
+  egg8.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+  egg9.setAngularVelocity(new THREE.Vector3(0, -10, 0));
 });

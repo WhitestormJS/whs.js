@@ -15,7 +15,7 @@ const GAME = new WHS.World({
   }
 });
 
-window.sphere = new WHS.Sphere({
+new WHS.Sphere({
   geometry: {
     radius: 3
   },
@@ -33,9 +33,9 @@ window.sphere = new WHS.Sphere({
     y: 100,
     z: 0
   }
-});
+}).addTo(GAME);
 
-window.plane = new WHS.Plane({
+new WHS.Plane({
   geometry: {
     width: 250,
     height: 250
@@ -57,8 +57,6 @@ window.plane = new WHS.Plane({
   rot: {
     x: -Math.PI / 2
   }
-});
+}).addTo(GAME);
 
-GAME.add(sphere);
-GAME.add(plane);
-GAME.start(plane);
+GAME.start();

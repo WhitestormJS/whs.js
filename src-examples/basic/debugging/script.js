@@ -23,11 +23,6 @@ const GAME = new WHS.World({
     far: 10000,
     y: 10,
     z: 30
-  },
-
-  paths: {
-    worker: '{{ libs }}/physijs_worker.js',
-    ammo: '{{ libs }}/ammo.js'
   }
 });
 
