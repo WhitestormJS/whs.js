@@ -34,7 +34,7 @@ const src = 'src/**/*',
       }
     }
   },
-  testFile = 'test/benchmark/benchmark.htl';
+  testFile = 'test/benchmark/benchmark.js';
 
   const karmaServer = karma.Server;
 
