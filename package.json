@@ -49,6 +49,7 @@
     "babel-preset-stage-1": "^6.5.0",
     "babel-register": "^6.8.0",
     "babelify": "^7.3.0",
+    "benchmark": "^2.1.0",
     "browserify": "^13.0.1",
     "browserify-shim": "^3.8.12",
     "del": "^2.2.0",

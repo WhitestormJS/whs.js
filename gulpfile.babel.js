@@ -33,7 +33,7 @@ const src = 'src/**/*',
       }
     }
   },
-  testDir = 'test/**/*';
+  testFile = 'test/benchmark/benchmark.js';
 
 // Browser.
 process.env.BABEL_ENV = 'node';
@@ -216,11 +216,11 @@ gulp.task('examples', () => {
 });
 
 gulp.task('test', () => {
-  gulp.src(testDir, { read: false})
+  gulp.src(testFile, { read: false})
       .pipe(
         benchmark({
           reporters: [
-            benchmark.reporters.etalon("RegExp#test");
+            benchmark.reporters.etalon("RegExp#test")
           ]
       }))
       .pipe(gulp.dest('.'));
