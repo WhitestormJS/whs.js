@@ -10,6 +10,7 @@ import gbrowser from 'gulp-browser-basedir';
 import plumber from 'gulp-plumber';
 import benchmark from 'gulp-benchmark';
 import karma from 'karma';
+
 import {config, light_config} from './webpack.config.babel.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -221,20 +222,15 @@ gulp.task('examples', () => {
 gulp.task('test', () => {
   gulp.src(testFile, {read: false})
     .pipe(
-      benchmark({
-        reporters: [
-          benchmark.reporters.etalon('RegExp#test')
-        ]
-      })
+      benchmark()
     )
     .pipe(gulp.dest('.'));
 });
 
 
 gulp.task('karma', (done) => {
-  new karmaServer({
-    configFile: __dirname + '/test/karma.conf.js',
-    singleRun: true
+  return new karmaServer( {
+    configFile: __dirname + '/test/karma.conf.js'
   }, done).start();
 })
 
