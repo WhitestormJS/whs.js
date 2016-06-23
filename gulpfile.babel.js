@@ -217,11 +217,13 @@ gulp.task('examples', () => {
 
 gulp.task('test', () => {
   gulp.src(testDir, { read: false})
-      .pipe(benchmark({
-        resporters: [
-          benchmark.reporters.etalon("RegExp#test");
-        ]
-      }));
+      .pipe(
+        benchmark({
+          reporters: [
+            benchmark.reporters.etalon("RegExp#test");
+          ]
+      }))
+      .pipe(gulp.dest('.'));
 });
 
 gulp.task('lint', () => {
