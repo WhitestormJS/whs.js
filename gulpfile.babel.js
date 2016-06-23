@@ -9,6 +9,7 @@ import swig from 'gulp-swig';
 import gbrowser from 'gulp-browser-basedir';
 import plumber from 'gulp-plumber';
 import benchmark from 'gulp-benchmark';
+import karma from 'karma';
 import {config, light_config} from './webpack.config.babel.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -34,6 +35,8 @@ const src = 'src/**/*',
     }
   },
   testFile = 'test/benchmark/benchmark.htl';
+
+  const karmaServer = karma.Server;
 
 // Browser.
 process.env.BABEL_ENV = 'node';
@@ -226,6 +229,14 @@ gulp.task('test', () => {
     )
     .pipe(gulp.dest('.'));
 });
+
+
+gulp.task('karma', (done) => {
+  new karmaServer({
+    configFile: __dirname + '/test/karma.conf.js',
+    singleRun: true
+  }, done).start();
+})
 
 gulp.task('lint', () => {
   gulp.src(src)
