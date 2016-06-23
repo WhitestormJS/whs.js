@@ -216,14 +216,14 @@ gulp.task('examples', () => {
 });
 
 gulp.task('test', () => {
-  gulp.src(testFile, { read: false})
-      .pipe(
-        benchmark({
-          reporters: [
-            benchmark.reporters.etalon("RegExp#test")
-          ]
-      }))
-      .pipe(gulp.dest('.'));
+  gulp.src(testFile, {read: false})
+    .pipe(
+      benchmark({
+        reporters: [
+          benchmark.reporters.etalon('RegExp#test')
+        ]
+    }))
+    .pipe(gulp.dest('.'));
 });
 
 gulp.task('lint', () => {
