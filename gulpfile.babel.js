@@ -8,6 +8,7 @@ import WebpackDevServer from 'webpack-dev-server';
 import swig from 'gulp-swig';
 import gbrowser from 'gulp-browser-basedir';
 import plumber from 'gulp-plumber';
+import benchmark from 'gulp-benchmark';
 import {config, light_config} from './webpack.config.babel.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -31,7 +32,8 @@ const src = 'src/**/*',
         libs: '../../_libs'
       }
     }
-  };
+  },
+  testDir = 'test/**/*';
 
 // Browser.
 process.env.BABEL_ENV = 'node';
@@ -211,6 +213,15 @@ gulp.task('examples', () => {
       .pipe(swig(swigOpts))
       .pipe(gulp.dest(examplesDest));
   });
+});
+
+gulp.task('test', () => {
+  gulp.src(testDir, { read: false})
+      .pipe(benchmark({
+        resporters: [
+          benchmark.reporters.etalon("RegExp#test");
+        ]
+      }));
 });
 
 gulp.task('lint', () => {
