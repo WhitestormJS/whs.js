@@ -222,7 +222,8 @@ gulp.task('test', () => {
         reporters: [
           benchmark.reporters.etalon('RegExp#test')
         ]
-    }))
+      })
+    )
     .pipe(gulp.dest('.'));
 });
 
