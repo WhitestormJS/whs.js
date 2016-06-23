@@ -33,7 +33,7 @@ const src = 'src/**/*',
       }
     }
   },
-  testFile = 'test/benchmark/benchmark.html';
+  testFile = 'test/benchmark/benchmark.js';
 
 // Browser.
 process.env.BABEL_ENV = 'node';
