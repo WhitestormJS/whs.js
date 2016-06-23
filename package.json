@@ -54,6 +54,7 @@
     "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
+    "gulp-benchmark": "^1.1.1",
     "gulp-browser-basedir": "^1.0.1",
     "gulp-browserify": "^0.5.1",
     "gulp-cached": "^1.1.0",
