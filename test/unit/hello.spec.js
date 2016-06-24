@@ -1,16 +1,25 @@
-var suite = new Benchmark.Suite;
+suite('Array iteration', () => {
+  benchmark('_.each', () => {
+    this.list.forEach((number) => {
+      return number;
+    });
+  });
 
-// add tests
-suite.add('RegExp#test', function() {
-  /o/.test('Hello World!');
-})
-.add('String#indexOf', function() {
-  'Hello World!'.indexOf('o') > -1;
-})
-// add listeners
-.on('cycle', function(event) {
-  console.log(String(event.target));
-})
-.on('complete', function() {
-  console.log('Fastest is ' + this.filter('fastest').map('name'));
-})
+  benchmark('native forEach', () => {
+    this.list.forEach((number) => {
+      return number;
+    });
+  });
+}, {
+  onCycle: (event) => {
+    const suite = this;
+    const benchmark = event.target;
+    console.log('Cycle completed for ' + suite.name + ': ' + benchmark.name);
+  },
+  setup: () => {
+    this.list = [5, 4, 3];
+  },
+  teardown: () => {
+    this.list = null;
+  }
+});
