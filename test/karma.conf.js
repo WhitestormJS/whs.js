@@ -1,4 +1,4 @@
-module.exports = function(config){
+module.exports = (config) => {
   config.set({
     basePath: '../',
     frameworks: ['benchmark'],
@@ -11,5 +11,5 @@ module.exports = function(config){
     ],
     autoWatch: false,
     singleRun: true
-  })
-}
+  });
+};
