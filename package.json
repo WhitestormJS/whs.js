@@ -73,6 +73,7 @@
     "karma": "^1.0.0",
     "karma-benchmark": "^0.4.0",
     "karma-benchmark-reporter": "^0.1.1",
+    "karma-chrome-launcher": "^1.0.1",
     "minivents": "^2.0.2",
     "path": "^0.12.7",
     "run-sequence": "^1.1.5",

@@ -227,7 +227,7 @@ gulp.task('test', () => {
 });
 
 gulp.task('karma', (done) => {
-  return new KarmaServer({
+  new KarmaServer({
     configFile: `${__dirname}/test/karma.conf.js`
   }, () => {
     done();
