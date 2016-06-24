@@ -35,9 +35,8 @@ const src = 'src/**/*',
       }
     }
   },
-  testFile = 'test/benchmark/benchmark.js';
-
-  const karmaServer = karma.Server;
+  testFile = 'test/benchmark/benchmark.js',
+  KarmaServer = karma.Server;
 
 // Browser.
 process.env.BABEL_ENV = 'node';
@@ -227,12 +226,13 @@ gulp.task('test', () => {
     .pipe(gulp.dest('.'));
 });
 
-
 gulp.task('karma', (done) => {
-  return new karmaServer( {
-    configFile: __dirname + '/test/karma.conf.js'
-  }, done).start();
-})
+  return new KarmaServer({
+    configFile: `${__dirname}/test/karma.conf.js`
+  }, () => {
+    done();
+  }).start();
+});
 
 gulp.task('lint', () => {
   gulp.src(src)
