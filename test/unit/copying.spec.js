@@ -1,8 +1,6 @@
 define(['whslight'], function (WHS) {
   suite('Cloning objects', () => {
     const cloningAmmount = 400;
-    console.info("hello trololo");
-    dump("hello trololo");
 
     benchmark('clone spheres', () => {
       for (let i = 0; i < cloningAmmount; i++) {
@@ -38,13 +36,25 @@ define(['whslight'], function (WHS) {
           kind: 'phong'
         }
       });
-    },
-    onComplete: () => {
-      console.info("hello trololo");
-      dump("hello trololo");
+
+      this.perfTime = performance.now();
     },
     teardown: () => {
-      this.list = null;
+      const t = performance.now() - perfTime;
+      this.additional = [
+        {
+          field: 'Objects cloned',
+          value: window.clonedObjects
+        },
+        {
+          field: ' :: Time',
+          value: t + 'ms.'
+        },
+        {
+          field: ' :: Time per object',
+          value: t / window.clonedObjects + 'ms.'
+        }
+      ];
     }
   });
 });
