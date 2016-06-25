@@ -77,6 +77,7 @@
     "karma-logcapture-reporter": "0.0.1",
     "karma-requirejs": "^1.0.0",
     "karma-webpack": "^1.7.0",
+    "karma-whitestormjs-reporter": "^0.0.6",
     "minivents": "^2.0.2",
     "path": "^0.12.7",
     "requirejs": "^2.2.0",
