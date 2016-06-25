@@ -6,18 +6,17 @@ for (let file in window.__karma__.files) {
 
 requirejs.config({
   // Karma serves files from '/base'
-  baseUrl: '/base',
+  baseUrl: '/base/',
 
   paths: {
-    whitestormjs: 'lib/index'
+    'whitestormjs': 'build/whitestorm.js'
   },
 
-  // shim: {
-  //   whitestormjs: {
-  //     deps: ['threejs', 'minievents'],
-  //     exports: 'WHS'
-  //   }
-  // },
+  shim: {
+    'whitestormjs': {
+      exports: 'WHS'
+    }
+  },
 
   // ask Require.js to load these files (all our tests)
   deps: tests,
