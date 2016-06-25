@@ -10,6 +10,7 @@ module.exports = (config) => {
     files: [
       'test/test-main.js',
       {pattern: 'build/whitestorm.js', included: false},
+      {pattern: 'build/whitestorm.light.js', included: false},
       {pattern: 'test/**/*.spec.js', included: false}
     ],
 
@@ -22,10 +23,14 @@ module.exports = (config) => {
     preprocessors: {
     },
 
+    client: {
+      captureConsole: true
+    },
+
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['benchmark'],
 
     // web server port
     port: 9876,
@@ -35,7 +40,7 @@ module.exports = (config) => {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_DEBUG,
+    logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
@@ -47,6 +52,8 @@ module.exports = (config) => {
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: true,
+
+    browserNoActivityTimeout: 100000,
 
     // Concurrency level
     // how many browser should be started simultaneous
