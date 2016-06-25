@@ -1,4 +1,4 @@
-define(['whitestormjs'], function (WHS) {
+define(['whslight'], function (WHS) {
   suite('Array iteration', () => {
     benchmark('_.each', () => {
       this.list.forEach((number) => {
