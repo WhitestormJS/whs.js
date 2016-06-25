@@ -74,6 +74,7 @@
     "karma-benchmark": "^0.4.0",
     "karma-benchmark-reporter": "^0.1.1",
     "karma-chrome-launcher": "^1.0.1",
+    "karma-logcapture-reporter": "0.0.1",
     "karma-requirejs": "^1.0.0",
     "karma-webpack": "^1.7.0",
     "minivents": "^2.0.2",

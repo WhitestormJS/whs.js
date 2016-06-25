@@ -17,11 +17,15 @@ require.config({
   baseUrl: '/base/',
 
   paths: {
-    whitestormjs: 'build/whitestorm'
+    whs: 'build/whitestorm',
+    whslight: 'build/whitestorm.light'
   },
 
   shim: {
-    whitestormjs: {
+    whs: {
+      exports: 'WHS'
+    },
+    whslight: {
       exports: 'WHS'
     }
   },
