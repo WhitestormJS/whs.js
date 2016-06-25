@@ -1,15 +1,24 @@
 module.exports = (config) => {
   config.set({
     basePath: '../',
-    frameworks: ['benchmark'],
+
+    frameworks: [
+      'requirejs',
+      'benchmark'
+    ],
+
     browsers: ['Chrome'],
     reporters: ['benchmark'],
+
     files: [
-      'test/**/*.spec.js'
+      'test/test-main.js',
+      {pattern: 'lib/index.js', included: false},
+      // {pattern: 'build/whitestorm.js', included: true},
+      {pattern: 'test/**/*.spec.js', included: false}
     ],
-    brosers: [
-      'Chrome'
-    ],
+
+    logLevel: config.LOG_DEBUG,
+
     autoWatch: false,
     singleRun: true
   });
