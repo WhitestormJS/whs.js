@@ -16,6 +16,7 @@ define(['whitestormjs'], function (WHS) {
       const suite = this;
       const benchmark = event.target;
       console.log(`Cycle completed for ${suite.name} : ${benchmark.name}`);
+      console.log(WHS);
     },
     setup: () => {
       this.list = [5, 4, 3];
