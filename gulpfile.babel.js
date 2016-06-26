@@ -8,6 +8,9 @@ import WebpackDevServer from 'webpack-dev-server';
 import swig from 'gulp-swig';
 import gbrowser from 'gulp-browser-basedir';
 import plumber from 'gulp-plumber';
+import benchmark from 'gulp-benchmark';
+import karma from 'karma';
+
 import {config, light_config} from './webpack.config.babel.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -31,7 +34,9 @@ const src = 'src/**/*',
         libs: '../../_libs'
       }
     }
-  };
+  },
+  testFile = 'test/benchmark/benchmark.js',
+  KarmaServer = karma.Server;
 
 // Browser.
 process.env.BABEL_ENV = 'node';
@@ -211,6 +216,22 @@ gulp.task('examples', () => {
       .pipe(swig(swigOpts))
       .pipe(gulp.dest(examplesDest));
   });
+});
+
+gulp.task('test', () => {
+  gulp.src(testFile, {read: false})
+    .pipe(
+      benchmark()
+    )
+    .pipe(gulp.dest('.'));
+});
+
+gulp.task('karma', (done) => {
+  new KarmaServer({
+    configFile: `${__dirname}/test/karma.conf.js`
+  }, () => {
+    done();
+  }).start();
 });
 
 gulp.task('lint', () => {
