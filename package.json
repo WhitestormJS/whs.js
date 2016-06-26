@@ -71,7 +71,7 @@
     "gulp-xo": "^0.11.0",
     "inline-worker": "^1.1.0",
     "karma": "^1.0.0",
-    "karma-benchmark": "^0.4.0",
+    "karma-whs-benchmark": "^0.0.1",
     "karma-benchmark-reporter": "^0.1.1",
     "karma-chrome-launcher": "^1.0.1",
     "karma-logcapture-reporter": "0.0.1",
