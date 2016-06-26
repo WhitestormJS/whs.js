@@ -23,6 +23,7 @@
 - *WHS.Shape: .mesh -> getNative()*
 - `setPosition` and `setRotation` -> `position.set` and `rotation.set`
 - `path_worker`, `path_ammo` -> `paths.worker` & `paths.ammo` 
+- remove `Fog` and `FogExp` classes.
 
 **r8**
 - Engine rebuild commit:
