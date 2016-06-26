@@ -6,7 +6,7 @@
   "scripts": {
     "build": "gulp build",
     "dev": "gulp dev",
-    "test": "xo",
+    "test": "karma start './test/karma.conf.js'",
     "babel": "gulp babel",
     "webpack": "gulp webpack",
     "lint": "gulp lint",
