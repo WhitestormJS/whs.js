@@ -2,7 +2,8 @@ language: node_js
 node_js:
   - "4"
 before_script:
-    - npm install
+  - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
+  - npm install
 script: gulp karma
 branches:
   only:
