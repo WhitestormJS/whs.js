@@ -75,7 +75,13 @@ class World extends WHSObject {
         far: 1000
       },
 
-      background: 0x000000,
+      background: {
+        color: 0x000000,
+        opacity: 1
+      },
+
+      renderer: {},
+
       assets: './assets',
       container: document.body
 
@@ -230,21 +236,21 @@ class World extends WHSObject {
   _initRenderer() {
     this.render = true;
 
-        // Renderer.
-    this.setRenderer(new THREE.WebGLRenderer());
+    // Renderer.
+    this.setRenderer(new THREE.WebGLRenderer(this.getParams().renderer));
 
     const renderer = this.getRenderer();
-    renderer.setClearColor(this.getParams().background);
+    renderer.setClearColor(this.getParams().background.color, this.getParams().background.opacity);
 
-        // Shadowmap.
+    // Shadowmap.
     renderer.shadowMap.enabled = this.getParams().shadowmap.enabled;
     renderer.shadowMap.type = this.getParams().shadowmap.type;
     renderer.shadowMap.cascade = true;
 
     renderer.setSize(
-            Number(this.getParams().width * this.getParams().rWidth).toFixed(),
-            Number(this.getParams().height * this.getParams().rHeight).toFixed()
-        );
+      Number(this.getParams().width * this.getParams().rWidth).toFixed(),
+      Number(this.getParams().height * this.getParams().rHeight).toFixed()
+    );
 
     renderer.render(this.getScene(), this.getCamera().getNative());
 

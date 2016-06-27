@@ -25,7 +25,9 @@ const GAME = new WHS.World({
     z: 44
   },
 
-  background: 0xcccccc
+  background: {
+    color: 0xcccccc
+  }
 });
 
 new WHS.Sphere({
