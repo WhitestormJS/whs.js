@@ -3,7 +3,7 @@ import Eventable from '../eventable';
 
 export default class Scene extends THREE.Scene {
   constructor() {
-    super();
+    super(this);
     Eventable.call(this);
     Eventable.make(this);
 
