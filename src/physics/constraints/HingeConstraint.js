@@ -1,6 +1,6 @@
 import {convertWorldPositionToObject, getObjectId} from '../api';
 
-export default class HingeConstraint {
+export class HingeConstraint {
   constructor(objecta, objectb, position, axis) {
     if (axis === undefined) {
       axis = position;

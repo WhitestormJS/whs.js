@@ -1,6 +1,6 @@
 import {convertWorldPositionToObject, getObjectId} from '../api';
 
-export default class SliderConstraint {
+export class SliderConstraint {
   constructor(objecta, objectb, position, axis) {
     if (axis === undefined) {
       axis = position;

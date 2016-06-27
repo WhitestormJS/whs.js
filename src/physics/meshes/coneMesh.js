@@ -1,8 +1,8 @@
-import Mesh from '../core/mesh';
+import {Mesh} from '../core/mesh';
 
-export default class ConeMesh extends Mesh {
+export class ConeMesh extends Mesh {
   constructor(geometry, material, mass) {
-    super(this, geometry, material, mass);
+    super(geometry, material, mass);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
 

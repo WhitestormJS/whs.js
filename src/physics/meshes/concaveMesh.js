@@ -1,11 +1,11 @@
-import Mesh from '../core/mesh';
+import {Mesh} from '../core/mesh';
 
-export default class ConcaveMesh extends Mesh {
+export class ConcaveMesh extends Mesh {
   constructor(geom, material, mass, cGeometry, cScale) {
     const geometry = cGeometry ? cGeometry : geom,
       triangles = new Array(geometry.faces.length);
 
-    super(this, geom, material, mass);
+    super(geom, material, mass);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
 

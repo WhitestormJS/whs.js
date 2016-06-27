@@ -1,6 +1,6 @@
 import {convertWorldPositionToObject, getObjectId} from '../api';
 
-export default class ConeTwistConstraint {
+export class ConeTwistConstraint {
   constructor(objecta, objectb, position) {
     if (position === undefined) console.error('Both objects must be defined in a ConeTwistConstraint.');
     this.type = 'conetwist';

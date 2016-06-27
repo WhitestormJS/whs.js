@@ -84,7 +84,9 @@ export function firstPersonControls(object, params = {}) {
             break;
 
           case 32: // space
-            if (canJump === true) player.applyCentralImpulse({x: 0, y: 300, z: 0});
+            if (canJump === true) {
+              player.applyCentralImpulse({x: 0, y: 300, z: 0});
+            }
             canJump = false;
             break;
 
