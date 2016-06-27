@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import VehicleTunning from './tunning';
+import {VehicleTunning} from './tunning';
 
-export default class Vehicle {
+export class Vehicle {
   constructor(mesh, tuning = new VehicleTuning()) {
     this.mesh = mesh;
     this.wheels = [];

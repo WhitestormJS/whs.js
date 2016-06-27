@@ -1,13 +1,25 @@
 import * as THREE from 'three';
-import Eventable from '../eventable';
+import {Eventable} from '../eventable';
+import Worker from 'inline-worker';
+import {
+  addObjectChildren,
+  MESSAGE_TYPES,
+  temp1Vector3,
+  temp1Matrix4,
+  REPORT_ITEMSIZE,
+  COLLISIONREPORT_ITEMSIZE,
+  VEHICLEREPORT,
+  CONSTRAINTREPORT
+} from '../api';
 
-export default class Scene extends THREE.Scene {
-  constructor() {
-    super(this);
-    Eventable.call(this);
-    Eventable.make(this);
+export class Scene extends THREE.Scene {
+  constructor(params) {
+    super();
 
-    this._worker = new Worker(require('./worker.js'));
+    Object.assign(this, new Eventable());
+    Eventable.make(Scene);
+
+    this._worker = new Worker(require('../worker.js'));
     this._worker.transferableMessage = this._worker.webkitPostMessage || this._worker.postMessage;
     this._materials_ref_counts = {};
     this._objects = {};
@@ -19,7 +31,7 @@ export default class Scene extends THREE.Scene {
     this._worker.transferableMessage(ab, [ab]);
     this.SUPPORT_TRANSFERABLE = (ab.byteLength === 0);
 
-    this._worker.onmessage = function (event) {
+    this._worker.onmessage = (event) => {
       let _temp,
         data = event.data;
 
@@ -30,19 +42,19 @@ export default class Scene extends THREE.Scene {
         // transferable object
         switch (data[0]) {
           case MESSAGE_TYPES.WORLDREPORT:
-            self._updateScene(data);
+            this._updateScene(data);
             break;
 
           case MESSAGE_TYPES.COLLISIONREPORT:
-            self._updateCollisions(data);
+            this._updateCollisions(data);
             break;
 
           case MESSAGE_TYPES.VEHICLEREPORT:
-            self._updateVehicles(data);
+            this._updateVehicles(data);
             break;
 
           case MESSAGE_TYPES.CONSTRAINTREPORT:
-            self._updateConstraints(data);
+            this._updateConstraints(data);
             break;
           default:
         }
@@ -51,11 +63,11 @@ export default class Scene extends THREE.Scene {
         switch (data.cmd) {
           case 'objectReady':
             _temp = data.params;
-            if (self._objects[_temp]) self._objects[_temp].dispatchEvent('ready');
+            if (this._objects[_temp]) this._objects[_temp].dispatchEvent('ready');
             break;
 
           case 'worldReady':
-            self.dispatchEvent('ready');
+            this.dispatchEvent('ready');
             break;
 
           case 'vehicle':
@@ -71,19 +83,19 @@ export default class Scene extends THREE.Scene {
       } else {
         switch (data[0]) {
           case MESSAGE_TYPES.WORLDREPORT:
-            self._updateScene(data);
+            this._updateScene(data);
             break;
 
           case MESSAGE_TYPES.COLLISIONREPORT:
-            self._updateCollisions(data);
+            this._updateCollisions(data);
             break;
 
           case MESSAGE_TYPES.VEHICLEREPORT:
-            self._updateVehicles(data);
+            this._updateVehicles(data);
             break;
 
           case MESSAGE_TYPES.CONSTRAINTREPORT:
-            self._updateConstraints(data);
+            this._updateConstraints(data);
             break;
           default:
         }
@@ -91,7 +103,6 @@ export default class Scene extends THREE.Scene {
     };
 
     params = params || {};
-    params.ammo = Physijs.scripts.ammo || 'ammo.js';
     params.fixedTimeStep = params.fixedTimeStep || 1 / 60;
     params.rateLimit = params.rateLimit || true;
     this.execute('init', params);
@@ -253,10 +264,10 @@ export default class Scene extends THREE.Scene {
               object._physijs.touches.push(id2);
 
               temp1Vector3.subVectors(object.getLinearVelocity(), object2.getLinearVelocity());
-              temp1 = temp1Vector3.clone();
+              const temp1 = temp1Vector3.clone();
 
               temp1Vector3.subVectors(object.getAngularVelocity(), object2.getAngularVelocity());
-              temp2 = temp1Vector3.clone();
+              const temp2 = temp1Vector3.clone();
 
               let normal_offset = normal_offsets[`${object._physijs.id}-${object2._physijs.id}`];
 
@@ -374,5 +385,132 @@ export default class Scene extends THREE.Scene {
 
   execute(cmd, params) {
     this._worker.postMessage({cmd, params});
+  }
+
+  add(object) {
+    THREE.Mesh.prototype.add.call(this, object);
+
+    if (object._physijs) {
+      object.world = this;
+
+      if (object instanceof Physijs.Vehicle) {
+        this.add(object.mesh);
+        this._vehicles[object._physijs.id] = object;
+        this.execute('addVehicle', object._physijs);
+      } else {
+        object.__dirtyPosition = false;
+        object.__dirtyRotation = false;
+        this._objects[object._physijs.id] = object;
+
+        if (object.children.length) {
+          object._physijs.children = [];
+          addObjectChildren(object, object);
+        }
+
+        if (object.material._physijs) {
+          if (this._materials_ref_counts.hasOwnProperty(object.material._physijs.id))
+            this._materials_ref_counts[object.material._physijs.id]++;
+          else {
+            this.execute('registerMaterial', object.material._physijs);
+            object._physijs.materialId = object.material._physijs.id;
+            this._materials_ref_counts[object.material._physijs.id] = 1;
+          }
+        }
+
+        // Object starting position + rotation
+        object._physijs.position = {
+          x: object.position.x,
+          y: object.position.y,
+          z: object.position.z
+        };
+
+        object._physijs.rotation = {
+          x: object.quaternion.x,
+          y: object.quaternion.y,
+          z: object.quaternion.z,
+          w: object.quaternion.w
+        };
+
+        // Check for scaling
+        // var mass_scaling = new THREE.Vector3(1, 1, 1);
+
+        if (object._physijs.width) object._physijs.width *= object.scale.x;
+        if (object._physijs.height) object._physijs.height *= object.scale.y;
+        if (object._physijs.depth) object._physijs.depth *= object.scale.z;
+
+        this.execute('addObject', object._physijs);
+      }
+    }
+  }
+
+  remove(object) {
+    if (object instanceof Physijs.Vehicle) {
+      this.execute('removeVehicle', {id: object._physijs.id});
+      while (object.wheels.length) this.remove(object.wheels.pop());
+
+      this.remove(object.mesh);
+      this._vehicles[object._physijs.id] = null;
+    } else {
+      THREE.Mesh.prototype.remove.call(this, object);
+
+      if (object._physijs) {
+        this._objects[object._physijs.id] = null;
+        this.execute('removeObject', {id: object._physijs.id});
+      }
+    }
+    if (object.material && object.material._physijs && this._materials_ref_counts.hasOwnProperty(object.material._physijs.id)) {
+      this._materials_ref_counts[object.material._physijs.id]--;
+
+      if (this._materials_ref_counts[object.material._physijs.id] === 0) {
+        this.execute('unRegisterMaterial', object.material._physijs);
+        this._materials_ref_counts[object.material._physijs.id] = null;
+      }
+    }
+  }
+
+  setFixedTimeStep(fixedTimeStep) {
+    if (fixedTimeStep) this.execute('setFixedTimeStep', fixedTimeStep);
+  }
+
+  setGravity(gravity) {
+    if (gravity) this.execute('setGravity', gravity);
+  }
+
+  simulate(timeStep, maxSubSteps) {
+    if (this._is_simulating) return false;
+
+    this._is_simulating = true;
+
+    for (const object_id in this._objects) {
+      if (!this._objects.hasOwnProperty(object_id)) continue;
+
+      const object = this._objects[object_id];
+
+      if (object.__dirtyPosition || object.__dirtyRotation) {
+        const update = {id: object._physijs.id};
+
+        if (object.__dirtyPosition) {
+          update.pos = {x: object.position.x, y: object.position.y, z: object.position.z};
+          object.__dirtyPosition = false;
+        }
+
+        if (object.__dirtyRotation) {
+          update.quat = {
+            x: object.quaternion.x,
+            y: object.quaternion.y,
+            z: object.quaternion.z,
+            w: object.quaternion.w
+          };
+
+          object.__dirtyRotation = false;
+        }
+
+        this.execute('updateTransform', update);
+      }
+    }
+
+    this.execute('simulate', {timeStep, maxSubSteps});
+
+    return true;
   }
 }

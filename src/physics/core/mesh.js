@@ -1,11 +1,14 @@
 import * as THREE from 'three';
+import {Eventable} from '../eventable';
+import {getObjectId} from '../api';
 
-export default class Mesh extends THREE.Mesh {
+export class Mesh extends THREE.Mesh {
   constructor(geometry, material, mass) {
     if (!geometry) return;
 
-    super(this, geometry, material);
-    Eventable.call(this);
+    super(geometry, material);
+    Object.assign(this, new Eventable());
+    Eventable.make(Mesh);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
 

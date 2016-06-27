@@ -1,8 +1,8 @@
-import Mesh from '../core/mesh';
+import {Mesh} from '../core/mesh';
 
-export default class HeightfieldMesh extends Mesh {
+export class HeightfieldMesh extends Mesh {
   constructor(geometry, material, mass, xdiv, ydiv) {
-    super(this, geometry, material, mass);
+    super(geometry, material, mass);
 
     this._physijs.type = 'heightfield';
     this._physijs.xsize = geometry.boundingBox.max.x - geometry.boundingBox.min.x;

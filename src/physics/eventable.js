@@ -1,4 +1,4 @@
-export default class Eventable {
+export class Eventable {
   constructor() {
     this._eventListeners = {};
   }

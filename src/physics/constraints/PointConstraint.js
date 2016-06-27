@@ -1,6 +1,6 @@
 import {convertWorldPositionToObject, getObjectId} from '../api';
 
-export default class PointConstraint {
+export class PointConstraint {
   constructor(objecta, objectb, position) {
     if (position === undefined) {
       position = objectb;
