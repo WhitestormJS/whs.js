@@ -1,4 +1,4 @@
-import {convertWorldPositionToObject} from '../api';
+import {convertWorldPositionToObject, getObjectId} from '../api';
 
 export default class PointConstraint {
   constructor(objecta, objectb, position) {

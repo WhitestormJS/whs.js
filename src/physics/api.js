@@ -42,8 +42,16 @@ const convertWorldPositionToObject = (position, object) => {
   return temp1Vector3.sub(temp2Vector3).applyMatrix4(temp1Matrix4);
 };
 
+const getObjectId = (() => {
+  let _id = 1;
+  return () => {
+    return _id++;
+  };
+})();
+
 export {
   getEulerXYZFromQuaternion,
   getQuatertionFromEuler,
-  convertWorldPositionToObject
+  convertWorldPositionToObject,
+  getObjectId
 };
