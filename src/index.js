@@ -1,5 +1,5 @@
-import THREE from 'three';
-import Physijs from './physics/physi.js';
+import * as THREE from 'three';
+import * as Physijs from './physics/index.js';
 
 export * from './cameras/index';
 export * from './core/index';
