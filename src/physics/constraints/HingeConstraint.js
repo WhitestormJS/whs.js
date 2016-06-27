@@ -34,4 +34,26 @@ export default class HingeConstraint {
       axis: this.axis
     };
   }
+
+  setLimits(low, high, bias_factor, relaxation_factor) {
+    this.scene.execute('hinge_setLimits', {
+      constraint: this.id,
+      low,
+      high,
+      bias_factor,
+      relaxation_factor
+    });
+  }
+
+  enableAngularMotor(velocity, acceleration) {
+    this.scene.execute('hinge_enableAngularMotor', {
+      constraint: this.id,
+      velocity,
+      acceleration
+    });
+  }
+
+  disableMotor() {
+    this.scene.execute('hinge_disableMotor', {constraint: this.id});
+  }
 }
