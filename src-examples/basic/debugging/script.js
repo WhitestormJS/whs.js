@@ -1,7 +1,9 @@
 const GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
   autoresize: true,
-  background: 0xcccccc,
+  background: {
+    color: 0xcccccc
+  },
 
   helpers: {
     grid: {

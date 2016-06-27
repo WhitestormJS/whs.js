@@ -24,7 +24,9 @@ var GAME = new WHS.World({
     type: THREE.PCFSoftShadowMap
   },
 
-  background: 0xffffff
+  background: {
+    color: 0xffffff
+  }
 });
 
 GAME.getCamera().lookAt(new THREE.Vector3(0, 0, 0));

@@ -30,7 +30,9 @@ const GAME = new WHS.World({
     y: 100
   },
 
-  background: 0x2a3340
+  background: {
+    color: 0x2a3340
+  }
 });
 
 window.planet = new WHS.Tetrahedron({
