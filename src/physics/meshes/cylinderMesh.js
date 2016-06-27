@@ -1,8 +1,8 @@
-import Mesh from '../core/mesh';
+import {Mesh} from '../core/mesh';
 
-export default class CylinderMesh extends Mesh {
+export class CylinderMesh extends Mesh {
   constructor(geometry, material, mass) {
-    super(this, geometry, material, mass);
+    super(geometry, material, mass);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
 

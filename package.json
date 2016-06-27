@@ -1,6 +1,6 @@
 {
   "name": "whitestormjs",
-  "version": "0.9.0",
+  "version": "0.9.2",
   "description": "Framework for developing 3D web apps with physics.",
   "main": "lib/index.js",
   "scripts": {
@@ -71,13 +71,13 @@
     "gulp-xo": "^0.11.0",
     "inline-worker": "^1.1.0",
     "karma": "^1.0.0",
-    "karma-whs-benchmark": "^0.0.1",
     "karma-benchmark-reporter": "^0.1.1",
     "karma-chrome-launcher": "^1.0.1",
     "karma-logcapture-reporter": "0.0.1",
     "karma-requirejs": "^1.0.0",
     "karma-webpack": "^1.7.0",
     "karma-whitestormjs-reporter": "^0.0.6",
+    "karma-whs-benchmark": "^0.0.1",
     "minivents": "^2.0.2",
     "path": "^0.12.7",
     "requirejs": "^2.2.0",
@@ -92,6 +92,7 @@
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.2.0",
     "webworkify-webpack": "^0.0.1",
+    "whs-terrain": "0.0.8",
     "xo": "^0.15.1"
   },
   "xo": {

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import Stats from 'stats.js';
-import Physijs from '../physics/physi.js';
+import * as Physijs from '../physics/index.js';
 
 import {PerspectiveCamera} from '../cameras/PerspectiveCamera';
 import {Camera} from './Camera';
@@ -114,6 +114,7 @@ class World extends WHSObject {
    * Initialize THREE.js scene object.
    */
   _initScene() {
+    console.log(Physijs);
     const scene = !!'physics' ? new Physijs.Scene() : new THREE.Scene(),
       params = this.getParams();
 
