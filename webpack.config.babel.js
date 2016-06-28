@@ -68,7 +68,7 @@ export function light_config({production}) {
     query: {
       multiple: [
         {
-          search: 'physics/physi.js\';',
+          search: 'physics/index.js\';',
           replace: 'physics/nophysi.js\';'
         },
         {
