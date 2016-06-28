@@ -49143,7 +49143,8 @@ var Plane = function (_Shape) {
     (0, _api.extend)(params.geometry, {
       width: 10,
       height: 10,
-      segments: 32
+      wSegments: 32,
+      hSegments: 32
     });
 
     if (params.build) {
@@ -49175,7 +49176,7 @@ var Plane = function (_Shape) {
     value: function buildGeometry() {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      return new THREE.PlaneGeometry(params.geometry.width, params.geometry.height, params.geometry.segments);
+      return new THREE.PlaneGeometry(params.geometry.width, params.geometry.height, params.geometry.wSegments, params.geometry.hSegments);
     }
   }, {
     key: 'clone',
