@@ -17,7 +17,7 @@ export function config({production}) {
     module: {
       preLoaders: [
         {
-          test: /physi\.js$/,
+          test: /scene\.js$/,
           loader: 'string-replace',
           query: {
             multiple: [
@@ -26,8 +26,8 @@ export function config({production}) {
                 replace: 'from \'webworkify-webpack\';'
               },
               {
-                search: 'new Worker(require(\'./worker.js\'));',
-                replace: 'Worker(require(\'./worker.js\'));'
+                search: 'new Worker(require(\'../worker.js\'));',
+                replace: 'Worker(require(\'../worker.js\'));'
               }
             ]
           }
