@@ -753,7 +753,7 @@ module.exports = function (self) {
         }
         break;
       }
-      case 'slider':
+      case 'slider': {
         let transformb;
         const transforma = new Ammo.btTransform();
 
@@ -799,14 +799,12 @@ module.exports = function (self) {
         if (transformb !== undefined) Ammo.destroy(transformb);
 
         break;
-
-      case 'conetwist':
-        var transforma, transformb;
-
-        transforma = new Ammo.btTransform();
+      }
+      case 'conetwist': {
+        const transforma = new Ammo.btTransform();
         transforma.setIdentity();
 
-        transformb = new Ammo.btTransform();
+        const transformb = new Ammo.btTransform();
         transformb.setIdentity();
 
         _vec3_1.setX(details.positiona.x);
@@ -820,7 +818,7 @@ module.exports = function (self) {
         transforma.setOrigin(_vec3_1);
         transformb.setOrigin(_vec3_2);
 
-        var rotation = transforma.getRotation();
+        let rotation = transforma.getRotation();
         rotation.setEulerZYX(-details.axisa.z, -details.axisa.y, -details.axisa.x);
         transforma.setRotation(rotation);
 
@@ -841,11 +839,11 @@ module.exports = function (self) {
         Ammo.destroy(transformb);
 
         break;
+      }
+      case 'dof': {
+        let transformb;
 
-      case 'dof':
-        var transforma, transformb, rotation;
-
-        transforma = new Ammo.btTransform();
+        const transforma = new Ammo.btTransform();
         transforma.setIdentity();
 
         _vec3_1.setX(details.positiona.x);
@@ -854,7 +852,7 @@ module.exports = function (self) {
 
         transforma.setOrigin(_vec3_1);
 
-        rotation = transforma.getRotation();
+        let rotation = transforma.getRotation();
         rotation.setEulerZYX(-details.axisa.z, -details.axisa.y, -details.axisa.x);
         transforma.setRotation(rotation);
 
@@ -891,10 +889,9 @@ module.exports = function (self) {
           Ammo.destroy(transformb);
         }
         break;
-
+      }
       default:
         return;
-
     }
 
     world.addConstraint(constraint);
