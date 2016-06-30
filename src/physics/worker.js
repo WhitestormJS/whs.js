@@ -22,14 +22,8 @@ module.exports = function (self) {
     _num_wheels = 0,
     _num_constraints = 0,
 
-    // functions
-    reportVehicles,
-    reportCollisions,
-    reportConstraints,
-
     // world variables
     fixedTimeStep, // used when calling stepSimulation
-    rateLimit, // sets whether or not to sync the simulation rate with fixedTimeStep
     last_simulation_time,
 
     world,
@@ -315,9 +309,7 @@ module.exports = function (self) {
     }
 
     world = new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-
     fixedTimeStep = params.fixedTimeStep;
-    rateLimit = params.rateLimit;
 
     transferableMessage({cmd: 'worldReady'});
   };
@@ -1139,12 +1131,12 @@ module.exports = function (self) {
     if (constraint.b) constraint.b.activate();
   };
 
-  const reportWorld = function () {
+  const reportWorld = () => {
     if (SUPPORT_TRANSFERABLE) {
       if (worldreport.length < 2 + _num_objects * WORLDREPORT_ITEMSIZE) {
         worldreport = new Float32Array(
-          2 + // message id & # objects in report
-          (Math.ceil(_num_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE) * WORLDREPORT_ITEMSIZE // # of values needed * item size
+          2// message id & # objects in report
+          + (Math.ceil(_num_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE) * WORLDREPORT_ITEMSIZE // # of values needed * item size
         );
         worldreport[0] = MESSAGE_TYPES.WORLDREPORT;
       }
@@ -1152,44 +1144,47 @@ module.exports = function (self) {
 
     worldreport[1] = _num_objects; // record how many objects we're reporting on
 
-    let offset = 0, i = 0;
+    {
+      let offset = 0,
+        i = 0;
 
-    // for ( i = 0; i < worldreport[1]; i++ ) {
-    for (const index in _objects) {
-      if (_objects.hasOwnProperty(index)) {
-        const object = _objects[index];
+      // for ( i = 0; i < worldreport[1]; i++ ) {
+      for (const index in _objects) {
+        if (_objects.hasOwnProperty(index)) {
+          const object = _objects[index];
 
-        // #TODO: we can't use center of mass transform when center of mass can change,
-        //        but getMotionState().getWorldTransform() screws up on objects that have been moved
-        // object.getMotionState().getWorldTransform( transform );
-        const transform = object.getCenterOfMassTransform();
+          // #TODO: we can't use center of mass transform when center of mass can change,
+          //        but getMotionState().getWorldTransform() screws up on objects that have been moved
+          // object.getMotionState().getWorldTransform( transform );
+          const transform = object.getCenterOfMassTransform();
 
-        const origin = transform.getOrigin();
-        const rotation = transform.getRotation();
+          const origin = transform.getOrigin();
+          const rotation = transform.getRotation();
 
-        // add values to report
-        offset = 2 + (i++) * WORLDREPORT_ITEMSIZE;
+          // add values to report
+          offset = 2 + (i++) * WORLDREPORT_ITEMSIZE;
 
-        worldreport[offset] = object.id;
+          worldreport[offset] = object.id;
 
-        worldreport[offset + 1] = origin.x();
-        worldreport[offset + 2] = origin.y();
-        worldreport[offset + 3] = origin.z();
+          worldreport[offset + 1] = origin.x();
+          worldreport[offset + 2] = origin.y();
+          worldreport[offset + 3] = origin.z();
 
-        worldreport[offset + 4] = rotation.x();
-        worldreport[offset + 5] = rotation.y();
-        worldreport[offset + 6] = rotation.z();
-        worldreport[offset + 7] = rotation.w();
+          worldreport[offset + 4] = rotation.x();
+          worldreport[offset + 5] = rotation.y();
+          worldreport[offset + 6] = rotation.z();
+          worldreport[offset + 7] = rotation.w();
 
-        _vector = object.getLinearVelocity();
-        worldreport[offset + 8] = _vector.x();
-        worldreport[offset + 9] = _vector.y();
-        worldreport[offset + 10] = _vector.z();
+          _vector = object.getLinearVelocity();
+          worldreport[offset + 8] = _vector.x();
+          worldreport[offset + 9] = _vector.y();
+          worldreport[offset + 10] = _vector.z();
 
-        _vector = object.getAngularVelocity();
-        worldreport[offset + 11] = _vector.x();
-        worldreport[offset + 12] = _vector.y();
-        worldreport[offset + 13] = _vector.z();
+          _vector = object.getAngularVelocity();
+          worldreport[offset + 11] = _vector.x();
+          worldreport[offset + 12] = _vector.y();
+          worldreport[offset + 13] = _vector.z();
+        }
       }
     }
 
@@ -1197,18 +1192,16 @@ module.exports = function (self) {
     else transferableMessage(worldreport);
   };
 
-  reportCollisions = function () {
-    var i, offset,
-      dp = world.getDispatcher(),
-      num = dp.getNumManifolds(),
-      manifold, num_contacts, j, pt,
-      _collided = false;
+  const reportCollisions = () => {
+    const dp = world.getDispatcher(),
+      num = dp.getNumManifolds();
+      // _collided = false;
 
     if (SUPPORT_TRANSFERABLE) {
       if (collisionreport.length < 2 + num * COLLISIONREPORT_ITEMSIZE) {
         collisionreport = new Float32Array(
-          2 + // message id & # objects in report
-          (Math.ceil(_num_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE) * COLLISIONREPORT_ITEMSIZE // # of values needed * item size
+          2 // message id & # objects in report
+          + (Math.ceil(_num_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE) * COLLISIONREPORT_ITEMSIZE // # of values needed * item size
         );
         collisionreport[0] = MESSAGE_TYPES.COLLISIONREPORT;
       }
@@ -1216,19 +1209,17 @@ module.exports = function (self) {
 
     collisionreport[1] = 0; // how many collisions we're reporting on
 
-    for (i = 0; i < num; i++) {
-      manifold = dp.getManifoldByIndexInternal(i);
+    for (let i = 0; i < num; i++) {
+      const manifold = dp.getManifoldByIndexInternal(i),
+        num_contacts = manifold.getNumContacts();
 
-      num_contacts = manifold.getNumContacts();
-      if (num_contacts === 0) {
-        continue;
-      }
+      if (num_contacts === 0) continue;
 
-      for (j = 0; j < num_contacts; j++) {
-        pt = manifold.getContactPoint(j);
+      for (let j = 0; j < num_contacts; j++) {
+        const pt = manifold.getContactPoint(j);
 
         // if ( pt.getDistance() < 0 ) {
-        offset = 2 + (collisionreport[1]++) * COLLISIONREPORT_ITEMSIZE;
+        const offset = 2 + (collisionreport[1]++) * COLLISIONREPORT_ITEMSIZE;
         collisionreport[offset] = _objects_ammo[manifold.getBody0().ptr];
         collisionreport[offset + 1] = _objects_ammo[manifold.getBody1().ptr];
 
@@ -1238,156 +1229,128 @@ module.exports = function (self) {
         collisionreport[offset + 4] = _vector.z();
         break;
         // }
-
-        transferableMessage(_objects_ammo);
-
+        // transferableMessage(_objects_ammo);
       }
     }
 
-
-    if (SUPPORT_TRANSFERABLE) {
-      transferableMessage(collisionreport.buffer, [collisionreport.buffer]);
-    } else {
-      transferableMessage(collisionreport);
-    }
+    if (SUPPORT_TRANSFERABLE) transferableMessage(collisionreport.buffer, [collisionreport.buffer]);
+    else transferableMessage(collisionreport);
   };
 
-  reportVehicles = function () {
-    var index, vehicle,
-      transform, origin, rotation,
-      offset = 0,
-      i = 0, j = 0;
-
+  const reportVehicles = function () {
     if (SUPPORT_TRANSFERABLE) {
       if (vehiclereport.length < 2 + _num_wheels * VEHICLEREPORT_ITEMSIZE) {
         vehiclereport = new Float32Array(
-          2 + // message id & # objects in report
-          (Math.ceil(_num_wheels / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE) * VEHICLEREPORT_ITEMSIZE // # of values needed * item size
+          2 // message id & # objects in report
+          + (Math.ceil(_num_wheels / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE) * VEHICLEREPORT_ITEMSIZE // # of values needed * item size
         );
         vehiclereport[0] = MESSAGE_TYPES.VEHICLEREPORT;
       }
     }
 
-    for (index in _vehicles) {
-      if (_vehicles.hasOwnProperty(index)) {
-        vehicle = _vehicles[index];
+    {
+      let offset = 0,
+        i = 0,
+        j = 0;
 
-        for (j = 0; j < vehicle.getNumWheels(); j++) {
+      for (const index in _vehicles) {
+        if (_vehicles.hasOwnProperty(index)) {
+          const vehicle = _vehicles[index];
 
-          // vehicle.updateWheelTransform( j, true );
+          for (j = 0; j < vehicle.getNumWheels(); j++) {
+            // vehicle.updateWheelTransform( j, true );
+            // transform = vehicle.getWheelTransformWS( j );
+            const transform = vehicle.getWheelInfo(j).get_m_worldTransform();
 
-          // transform = vehicle.getWheelTransformWS( j );
-          transform = vehicle.getWheelInfo(j).get_m_worldTransform();
+            const origin = transform.getOrigin();
+            const rotation = transform.getRotation();
 
-          origin = transform.getOrigin();
-          rotation = transform.getRotation();
+            // add values to report
+            offset = 1 + (i++) * VEHICLEREPORT_ITEMSIZE;
 
-          // add values to report
-          offset = 1 + (i++) * VEHICLEREPORT_ITEMSIZE;
+            vehiclereport[offset] = index;
+            vehiclereport[offset + 1] = j;
 
-          vehiclereport[offset] = index;
-          vehiclereport[offset + 1] = j;
+            vehiclereport[offset + 2] = origin.x();
+            vehiclereport[offset + 3] = origin.y();
+            vehiclereport[offset + 4] = origin.z();
 
-          vehiclereport[offset + 2] = origin.x();
-          vehiclereport[offset + 3] = origin.y();
-          vehiclereport[offset + 4] = origin.z();
-
-          vehiclereport[offset + 5] = rotation.x();
-          vehiclereport[offset + 6] = rotation.y();
-          vehiclereport[offset + 7] = rotation.z();
-          vehiclereport[offset + 8] = rotation.w();
-
+            vehiclereport[offset + 5] = rotation.x();
+            vehiclereport[offset + 6] = rotation.y();
+            vehiclereport[offset + 7] = rotation.z();
+            vehiclereport[offset + 8] = rotation.w();
+          }
         }
-
       }
-    }
 
-    if (j !== 0) {
-      if (SUPPORT_TRANSFERABLE) {
-        transferableMessage(vehiclereport.buffer, [vehiclereport.buffer]);
-      } else {
-        transferableMessage(vehiclereport);
-      }
+      if (SUPPORT_TRANSFERABLE && j !== 0) transferableMessage(vehiclereport.buffer, [vehiclereport.buffer]);
+      else if (j !== 0) transferableMessage(vehiclereport);
     }
   };
 
-  reportConstraints = function () {
-    var index, constraint,
-      offset_body,
-      transform, origin,
-      offset = 0,
-      i = 0;
-
+  const reportConstraints = function () {
     if (SUPPORT_TRANSFERABLE) {
       if (constraintreport.length < 2 + _num_constraints * CONSTRAINTREPORT_ITEMSIZE) {
         constraintreport = new Float32Array(
-          2 + // message id & # objects in report
-          (Math.ceil(_num_constraints / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE) * CONSTRAINTREPORT_ITEMSIZE // # of values needed * item size
+          2 // message id & # objects in report
+          + (Math.ceil(_num_constraints / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE) * CONSTRAINTREPORT_ITEMSIZE // # of values needed * item size
         );
         constraintreport[0] = MESSAGE_TYPES.CONSTRAINTREPORT;
       }
     }
 
-    for (index in _constraints) {
-      if (_constraints.hasOwnProperty(index)) {
-        constraint = _constraints[index];
-        offset_body = constraint.a;
-        transform = constraint.ta;
-        origin = transform.getOrigin();
+    {
+      let offset = 0,
+        i = 0;
 
-        // add values to report
-        offset = 1 + (i++) * CONSTRAINTREPORT_ITEMSIZE;
+      for (const index in _constraints) {
+        if (_constraints.hasOwnProperty(index)) {
+          const constraint = _constraints[index];
+          const offset_body = constraint.a;
+          const transform = constraint.ta;
+          const origin = transform.getOrigin();
 
-        constraintreport[offset] = index;
-        constraintreport[offset + 1] = offset_body.id;
-        constraintreport[offset + 2] = origin.x;
-        constraintreport[offset + 3] = origin.y;
-        constraintreport[offset + 4] = origin.z;
-        constraintreport[offset + 5] = constraint.getBreakingImpulseThreshold();
+          // add values to report
+          offset = 1 + (i++) * CONSTRAINTREPORT_ITEMSIZE;
+
+          constraintreport[offset] = index;
+          constraintreport[offset + 1] = offset_body.id;
+          constraintreport[offset + 2] = origin.x;
+          constraintreport[offset + 3] = origin.y;
+          constraintreport[offset + 4] = origin.z;
+          constraintreport[offset + 5] = constraint.getBreakingImpulseThreshold();
+        }
       }
+
+      if (SUPPORT_TRANSFERABLE && i !== 0) transferableMessage(constraintreport.buffer, [constraintreport.buffer]);
+      else if (i !== 0) transferableMessage(constraintreport);
     }
-
-
-    if (i !== 0) {
-      if (SUPPORT_TRANSFERABLE) {
-        transferableMessage(constraintreport.buffer, [constraintreport.buffer]);
-      } else {
-        transferableMessage(constraintreport);
-      }
-    }
-
   };
 
   self.onmessage = function (event) {
-
     if (event.data instanceof Float32Array) {
       // transferable object
-
       switch (event.data[0]) {
-        case MESSAGE_TYPES.WORLDREPORT:
+        case MESSAGE_TYPES.WORLDREPORT: {
           worldreport = new Float32Array(event.data);
           break;
-
-        case MESSAGE_TYPES.COLLISIONREPORT:
+        }
+        case MESSAGE_TYPES.COLLISIONREPORT: {
           collisionreport = new Float32Array(event.data);
           break;
-
-        case MESSAGE_TYPES.VEHICLEREPORT:
+        }
+        case MESSAGE_TYPES.VEHICLEREPORT: {
           vehiclereport = new Float32Array(event.data);
           break;
-
-        case MESSAGE_TYPES.CONSTRAINTREPORT:
+        }
+        case MESSAGE_TYPES.CONSTRAINTREPORT: {
           constraintreport = new Float32Array(event.data);
           break;
+        }
+        default:
       }
 
       return;
-    }
-
-    if (event.data.cmd && public_functions[event.data.cmd]) {
-      // if ( event.data.params.id !== undefined && _objects[event.data.params.id] === undefined && event.data.cmd !== 'addObject' && event.data.cmd !== 'registerMaterial' ) return;
-      public_functions[event.data.cmd](event.data.params);
-    }
-
+    } else if (event.data.cmd && public_functions[event.data.cmd]) public_functions[event.data.cmd](event.data.params);
   };
 };
