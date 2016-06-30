@@ -23,7 +23,6 @@ module.exports = function (self) {
     _num_constraints = 0,
 
     // functions
-    reportWorld,
     reportVehicles,
     reportCollisions,
     reportConstraints,
@@ -1141,11 +1140,6 @@ module.exports = function (self) {
   };
 
   const reportWorld = function () {
-    var index, object,
-      transform, origin, rotation,
-      offset = 0,
-      i = 0;
-
     if (SUPPORT_TRANSFERABLE) {
       if (worldreport.length < 2 + _num_objects * WORLDREPORT_ITEMSIZE) {
         worldreport = new Float32Array(
@@ -1158,18 +1152,20 @@ module.exports = function (self) {
 
     worldreport[1] = _num_objects; // record how many objects we're reporting on
 
+    let offset = 0, i = 0;
+
     // for ( i = 0; i < worldreport[1]; i++ ) {
-    for (index in _objects) {
+    for (const index in _objects) {
       if (_objects.hasOwnProperty(index)) {
-        object = _objects[index];
+        const object = _objects[index];
 
         // #TODO: we can't use center of mass transform when center of mass can change,
         //        but getMotionState().getWorldTransform() screws up on objects that have been moved
         // object.getMotionState().getWorldTransform( transform );
-        transform = object.getCenterOfMassTransform();
+        const transform = object.getCenterOfMassTransform();
 
-        origin = transform.getOrigin();
-        rotation = transform.getRotation();
+        const origin = transform.getOrigin();
+        const rotation = transform.getRotation();
 
         // add values to report
         offset = 2 + (i++) * WORLDREPORT_ITEMSIZE;
@@ -1197,12 +1193,8 @@ module.exports = function (self) {
       }
     }
 
-    if (SUPPORT_TRANSFERABLE) {
-      transferableMessage(worldreport.buffer, [worldreport.buffer]);
-    } else {
-      transferableMessage(worldreport);
-    }
-
+    if (SUPPORT_TRANSFERABLE) transferableMessage(worldreport.buffer, [worldreport.buffer]);
+    else transferableMessage(worldreport);
   };
 
   reportCollisions = function () {
