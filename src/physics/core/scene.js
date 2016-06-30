@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import {Eventable} from '../eventable';
 import Worker from 'inline-worker';
+import Stats from 'stats.js';
 import {
   addObjectChildren,
   MESSAGE_TYPES,
@@ -13,7 +14,7 @@ import {
 } from '../api';
 
 export class Scene extends THREE.Scene {
-  constructor(params) {
+  constructor(params = {}, init = {}) {
     super();
 
     Object.assign(this, new Eventable());
@@ -102,9 +103,20 @@ export class Scene extends THREE.Scene {
       }
     };
 
-    params = params || {};
     params.fixedTimeStep = params.fixedTimeStep || 1 / 60;
     params.rateLimit = params.rateLimit || true;
+    this._stats = init.stats ? new Stats() : false;
+    this._world = init.world || false;
+
+    if (this._stats) {
+      this._stats.setMode(0);
+      this._stats.domElement.style.position = 'absolute';
+      this._stats.domElement.style.left = '0px';
+      this._stats.domElement.style.top = '48px';
+
+      this._world._dom.appendChild(this._stats.domElement);
+    }
+
     this.execute('init', params);
   }
 
@@ -477,6 +489,8 @@ export class Scene extends THREE.Scene {
   }
 
   simulate(timeStep, maxSubSteps) {
+    if (this._stats) this._stats.begin();
+
     if (this._is_simulating) return false;
 
     this._is_simulating = true;
@@ -511,6 +525,7 @@ export class Scene extends THREE.Scene {
 
     this.execute('simulate', {timeStep, maxSubSteps});
 
+    if (this._stats) this._stats.end();
     return true;
   }
 }
