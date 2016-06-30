@@ -157,22 +157,21 @@ module.exports = function (self) {
       }
       case 'concave': {
         const triangle_mesh = new Ammo.btTriangleMesh();
-        if (!description.triangles.length) return false;
+        if (!description.data.length) return false;
+        const data = description.data;
 
-        for (let i = 0; i < description.triangles.length; i++) {
-          const triangle = description.triangles[i];
+        for (let i = 0; i < data.length / 9; i++) {
+          _vec3_1.setX(data[i * 9]);
+          _vec3_1.setY(data[i * 9 + 1]);
+          _vec3_1.setZ(data[i * 9 + 2]);
 
-          _vec3_1.setX(triangle[0].x);
-          _vec3_1.setY(triangle[0].y);
-          _vec3_1.setZ(triangle[0].z);
+          _vec3_2.setX(data[i * 9 + 3]);
+          _vec3_2.setY(data[i * 9 + 4]);
+          _vec3_2.setZ(data[i * 9 + 5]);
 
-          _vec3_2.setX(triangle[1].x);
-          _vec3_2.setY(triangle[1].y);
-          _vec3_2.setZ(triangle[1].z);
-
-          _vec3_3.setX(triangle[2].x);
-          _vec3_3.setY(triangle[2].y);
-          _vec3_3.setZ(triangle[2].z);
+          _vec3_3.setX(data[i * 9 + 6]);
+          _vec3_3.setY(data[i * 9 + 7]);
+          _vec3_3.setZ(data[i * 9 + 8]);
 
           triangle_mesh.addTriangle(
             _vec3_1,
@@ -193,13 +192,12 @@ module.exports = function (self) {
       }
       case 'convex': {
         shape = new Ammo.btConvexHullShape();
+        const data = description.data;
 
-        for (let i = 0; i < description.points.length; i++) {
-          const point = description.points[i];
-
-          _vec3_1.setX(point.x);
-          _vec3_1.setY(point.y);
-          _vec3_1.setZ(point.z);
+        for (let i = 0; i < data.length / 3; i++) {
+          _vec3_1.setX(data[i * 3 ]);
+          _vec3_1.setY(data[i * 3 + 1]);
+          _vec3_1.setZ(data[i * 3 + 2]);
 
           shape.addPoint(_vec3_1);
         }
