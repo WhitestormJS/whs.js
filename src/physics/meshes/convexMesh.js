@@ -6,14 +6,12 @@ export class ConvexMesh extends Mesh {
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
 
-    const points = [];
+    const data = new Float32Array(geometry.vertices.length * 3);
 
     for (let i = 0; i < geometry.vertices.length; i++) {
-      points.push({
-        x: geometry.vertices[i].x,
-        y: geometry.vertices[i].y,
-        z: geometry.vertices[i].z
-      });
+      data[i * 3] = geometry.vertices[i].x;
+      data[i * 3 + 1] = geometry.vertices[i].y;
+      data[i * 3 + 2] = geometry.vertices[i].z;
     }
 
     const width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
@@ -21,7 +19,7 @@ export class ConvexMesh extends Mesh {
     const depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
 
     this._physijs.type = 'convex';
-    this._physijs.points = points;
+    this._physijs.data = data;
     this._physijs.mass = (typeof mass === 'undefined') ? width * height * depth : mass;
   }
 }
