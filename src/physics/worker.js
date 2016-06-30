@@ -884,10 +884,10 @@ module.exports = function (self) {
             true
           );
         }
+
         Ammo.destroy(transforma);
-        if (transformb != undefined) {
-          Ammo.destroy(transformb);
-        }
+        if (transformb !== undefined) Ammo.destroy(transformb);
+
         break;
       }
       default:
@@ -909,45 +909,34 @@ module.exports = function (self) {
     if (SUPPORT_TRANSFERABLE) {
       constraintreport = new Float32Array(1 + _num_constraints * CONSTRAINTREPORT_ITEMSIZE); // message id & ( # of objects to report * # of values per object )
       constraintreport[0] = MESSAGE_TYPES.CONSTRAINTREPORT;
-    } else {
-      constraintreport = [MESSAGE_TYPES.CONSTRAINTREPORT];
-    }
+    } else constraintreport = [MESSAGE_TYPES.CONSTRAINTREPORT];
   };
 
-  public_functions.removeConstraint = function (details) {
-    var constraint = _constraints[details.id];
+  public_functions.removeConstraint = (details) => {
+    const constraint = _constraints[details.id];
+
     if (constraint !== undefined) {
       world.removeConstraint(constraint);
-      delete _constraints[details.id];
+      _constraints[details.id] = null;
       _num_constraints--;
     }
   };
 
-  public_functions.constraint_setBreakingImpulseThreshold = function (details) {
-    var constraint = _constraints[details.id];
-    if (constraint !== undefind) {
-      constraint.setBreakingImpulseThreshold(details.threshold);
-    }
+  public_functions.constraint_setBreakingImpulseThreshold = (details) => {
+    const constraint = _constraints[details.id];
+    if (constraint !== undefind) constraint.setBreakingImpulseThreshold(details.threshold);
   };
 
-  public_functions.simulate = function simulate(params) {
+  public_functions.simulate = (params = {}) => {
     if (world) {
-      params = params || {};
+      if (params.timeStep && params.timeStep < fixedTimeStep)
+        params.timeStep = fixedTimeStep;
+      else if (!params.timeStep && last_simulation_time) {
+        params.timeStep = 0;
 
-      if (!params.timeStep) {
-        if (last_simulation_time) {
-          params.timeStep = 0;
-          while (params.timeStep + last_simulation_duration <= fixedTimeStep) {
-            params.timeStep = (Date.now() - last_simulation_time) / 1000; // time since last simulation
-          }
-        } else {
-          params.timeStep = fixedTimeStep; // handle first frame
-        }
-      } else {
-        if (params.timeStep < fixedTimeStep) {
-          params.timeStep = fixedTimeStep;
-        }
-      }
+        while (params.timeStep + last_simulation_duration <= fixedTimeStep)
+          params.timeStep = (Date.now() - last_simulation_time) / 1000; // time since last simulation
+      } else if (!params.timeStep) params.timeStep = fixedTimeStep; // handle first frame
 
       params.maxSubSteps = params.maxSubSteps || Math.ceil(params.timeStep / fixedTimeStep); // If maxSubSteps is not defined, keep the simulation fully up to date
 
@@ -964,92 +953,89 @@ module.exports = function (self) {
     }
   };
 
-
   // Constraint functions
-  public_functions.hinge_setLimits = function (params) {
+  public_functions.hinge_setLimits = (params) => {
     _constraints[params.constraint].setLimit(params.low, params.high, 0, params.bias_factor, params.relaxation_factor);
   };
-  public_functions.hinge_enableAngularMotor = function (params) {
-    var constraint = _constraints[params.constraint];
+
+  public_functions.hinge_enableAngularMotor = (params) => {
+    const constraint = _constraints[params.constraint];
     constraint.enableAngularMotor(true, params.velocity, params.acceleration);
     constraint.a.activate();
-    if (constraint.b) {
-      constraint.b.activate();
-    }
-  };
-  public_functions.hinge_disableMotor = function (params) {
-    _constraints[params.constraint].enableMotor(false);
-    if (constraint.b) {
-      constraint.b.activate();
-    }
+    if (constraint.b) constraint.b.activate();
   };
 
-  public_functions.slider_setLimits = function (params) {
-    var constraint = _constraints[params.constraint];
+  public_functions.hinge_disableMotor = (params) => {
+    _constraints[params.constraint].enableMotor(false);
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.slider_setLimits = (params) => {
+    const constraint = _constraints[params.constraint];
     constraint.setLowerLinLimit(params.lin_lower || 0);
     constraint.setUpperLinLimit(params.lin_upper || 0);
 
     constraint.setLowerAngLimit(params.ang_lower || 0);
     constraint.setUpperAngLimit(params.ang_upper || 0);
   };
-  public_functions.slider_setRestitution = function (params) {
-    var constraint = _constraints[params.constraint];
+
+  public_functions.slider_setRestitution = (params) => {
+    const constraint = _constraints[params.constraint];
     constraint.setSoftnessLimLin(params.linear || 0);
     constraint.setSoftnessLimAng(params.angular || 0);
   };
-  public_functions.slider_enableLinearMotor = function (params) {
-    var constraint = _constraints[params.constraint];
+
+  public_functions.slider_enableLinearMotor = (params) => {
+    const constraint = _constraints[params.constraint];
     constraint.setTargetLinMotorVelocity(params.velocity);
     constraint.setMaxLinMotorForce(params.acceleration);
     constraint.setPoweredLinMotor(true);
     constraint.a.activate();
-    if (constraint.b) {
-      constraint.b.activate();
-    }
+    if (constraint.b) constraint.b.activate();
   };
-  public_functions.slider_disableLinearMotor = function (params) {
-    var constraint = _constraints[params.constraint];
+
+  public_functions.slider_disableLinearMotor = (params) => {
+    const constraint = _constraints[params.constraint];
     constraint.setPoweredLinMotor(false);
-    if (constraint.b) {
-      constraint.b.activate();
-    }
+    if (constraint.b) constraint.b.activate();
   };
-  public_functions.slider_enableAngularMotor = function (params) {
-    var constraint = _constraints[params.constraint];
+
+  public_functions.slider_enableAngularMotor = (params) => {
+    const constraint = _constraints[params.constraint];
     constraint.setTargetAngMotorVelocity(params.velocity);
     constraint.setMaxAngMotorForce(params.acceleration);
     constraint.setPoweredAngMotor(true);
     constraint.a.activate();
-    if (constraint.b) {
-      constraint.b.activate();
-    }
-  };
-  public_functions.slider_disableAngularMotor = function (params) {
-    var constraint = _constraints[params.constraint];
-    constraint.setPoweredAngMotor(false);
-    constraint.a.activate();
-    if (constraint.b) {
-      constraint.b.activate();
-    }
+    if (constraint.b) constraint.b.activate();
   };
 
-  public_functions.conetwist_setLimit = function (params) {
+  public_functions.slider_disableAngularMotor = (params) => {
+    const constraint = _constraints[params.constraint];
+    constraint.setPoweredAngMotor(false);
+    constraint.a.activate();
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.conetwist_setLimit = (params) => {
     _constraints[params.constraint].setLimit(params.z, params.y, params.x); // ZYX order
   };
-  public_functions.conetwist_enableMotor = function (params) {
-    var constraint = _constraints[params.constraint];
+
+  public_functions.conetwist_enableMotor = (params) => {
+    const constraint = _constraints[params.constraint];
     constraint.enableMotor(true);
     constraint.a.activate();
     constraint.b.activate();
   };
-  public_functions.conetwist_setMaxMotorImpulse = function (params) {
-    var constraint = _constraints[params.constraint];
+
+  public_functions.conetwist_setMaxMotorImpulse = (params) => {
+    const constraint = _constraints[params.constraint];
     constraint.setMaxMotorImpulse(params.max_impulse);
     constraint.a.activate();
     constraint.b.activate();
   };
-  public_functions.conetwist_setMotorTarget = function (params) {
-    var constraint = _constraints[params.constraint];
+
+  public_functions.conetwist_setMotorTarget = (params) => {
+    const constraint = _constraints[params.constraint];
 
     _quat.setX(params.x);
     _quat.setY(params.y);
@@ -1061,110 +1047,100 @@ module.exports = function (self) {
     constraint.a.activate();
     constraint.b.activate();
   };
-  public_functions.conetwist_disableMotor = function (params) {
-    var constraint = _constraints[params.constraint];
+
+  public_functions.conetwist_disableMotor = (params) => {
+    const constraint = _constraints[params.constraint];
     constraint.enableMotor(false);
     constraint.a.activate();
     constraint.b.activate();
   };
 
-  public_functions.dof_setLinearLowerLimit = function (params) {
-    var constraint = _constraints[params.constraint];
+  public_functions.dof_setLinearLowerLimit = (params) => {
+    const constraint = _constraints[params.constraint];
 
     _vec3_1.setX(params.x);
     _vec3_1.setY(params.y);
     _vec3_1.setZ(params.z);
 
     constraint.setLinearLowerLimit(_vec3_1);
-
     constraint.a.activate();
-    if (constraint.b) {
-      constraint.b.activate();
-    }
+
+    if (constraint.b) constraint.b.activate();
   };
-  public_functions.dof_setLinearUpperLimit = function (params) {
-    var constraint = _constraints[params.constraint];
+
+  public_functions.dof_setLinearUpperLimit = (params) => {
+    const constraint = _constraints[params.constraint];
 
     _vec3_1.setX(params.x);
     _vec3_1.setY(params.y);
     _vec3_1.setZ(params.z);
 
     constraint.setLinearUpperLimit(_vec3_1);
-
     constraint.a.activate();
-    if (constraint.b) {
-      constraint.b.activate();
-    }
+
+    if (constraint.b) constraint.b.activate();
   };
-  public_functions.dof_setAngularLowerLimit = function (params) {
-    var constraint = _constraints[params.constraint];
+
+  public_functions.dof_setAngularLowerLimit = (params) => {
+    const constraint = _constraints[params.constraint];
 
     _vec3_1.setX(params.x);
     _vec3_1.setY(params.y);
     _vec3_1.setZ(params.z);
 
     constraint.setAngularLowerLimit(_vec3_1);
-
     constraint.a.activate();
-    if (constraint.b) {
-      constraint.b.activate();
-    }
+
+    if (constraint.b) constraint.b.activate();
   };
-  public_functions.dof_setAngularUpperLimit = function (params) {
-    var constraint = _constraints[params.constraint];
+
+  public_functions.dof_setAngularUpperLimit = (params) => {
+    const constraint = _constraints[params.constraint];
 
     _vec3_1.setX(params.x);
     _vec3_1.setY(params.y);
     _vec3_1.setZ(params.z);
 
     constraint.setAngularUpperLimit(_vec3_1);
-
     constraint.a.activate();
-    if (constraint.b) {
-      constraint.b.activate();
-    }
-  };
-  public_functions.dof_enableAngularMotor = function (params) {
-    var constraint = _constraints[params.constraint];
 
-    var motor = constraint.getRotationalLimitMotor(params.which);
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_enableAngularMotor = (params) => {
+    const constraint = _constraints[params.constraint];
+
+    const motor = constraint.getRotationalLimitMotor(params.which);
     motor.set_m_enableMotor(true);
-
     constraint.a.activate();
-    if (constraint.b) {
-      constraint.b.activate();
-    }
-  };
-  public_functions.dof_configureAngularMotor = function (params) {
-    var constraint = _constraints[params.constraint];
 
-    var motor = constraint.getRotationalLimitMotor(params.which);
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_configureAngularMotor = (params) => {
+    const constraint = _constraints[params.constraint],
+      motor = constraint.getRotationalLimitMotor(params.which);
 
     motor.set_m_loLimit(params.low_angle);
-
-    console.log(motor.get_m_targetVelocity());
     motor.set_m_hiLimit(params.high_angle);
     motor.set_m_targetVelocity(params.velocity);
     motor.set_m_maxMotorForce(params.max_force);
-
     constraint.a.activate();
-    if (constraint.b) {
-      constraint.b.activate();
-    }
-  };
-  public_functions.dof_disableAngularMotor = function (params) {
-    var constraint = _constraints[params.constraint];
 
-    var motor = constraint.getRotationalLimitMotor(params.which);
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_disableAngularMotor = (params) => {
+    const constraint = _constraints[params.constraint],
+      motor = constraint.getRotationalLimitMotor(params.which);
+
     motor.set_m_enableMotor(false);
-
     constraint.a.activate();
-    if (constraint.b) {
-      constraint.b.activate();
-    }
+
+    if (constraint.b) constraint.b.activate();
   };
 
-  reportWorld = function () {
+  const reportWorld = function () {
     var index, object,
       transform, origin, rotation,
       offset = 0,
@@ -1220,7 +1196,6 @@ module.exports = function (self) {
         worldreport[offset + 13] = _vector.z();
       }
     }
-
 
     if (SUPPORT_TRANSFERABLE) {
       transferableMessage(worldreport.buffer, [worldreport.buffer]);
