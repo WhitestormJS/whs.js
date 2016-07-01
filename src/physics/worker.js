@@ -34,10 +34,10 @@ module.exports = function (self) {
 
     // private cache
   const public_functions = {},
-    _objects = {},
-    _vehicles = {},
-    _constraints = {},
-    _materials = {},
+    _objects = [],
+    _vehicles = [],
+    _constraints = [],
+    _materials = [],
     _objects_ammo = {},
     _object_shapes = {},
 
@@ -1130,37 +1130,33 @@ module.exports = function (self) {
   };
 
   const reportWorld = () => {
-    if (SUPPORT_TRANSFERABLE) {
-      if (worldreport.length < 2 + _num_objects * WORLDREPORT_ITEMSIZE) {
-        worldreport = new Float32Array(
-          2// message id & # objects in report
-          + (Math.ceil(_num_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE) * WORLDREPORT_ITEMSIZE // # of values needed * item size
-        );
-        worldreport[0] = MESSAGE_TYPES.WORLDREPORT;
-      }
+    if (SUPPORT_TRANSFERABLE && worldreport.length < 2 + _num_objects * WORLDREPORT_ITEMSIZE) {
+      worldreport = new Float32Array(
+        2// message id & # objects in report
+        + (Math.ceil(_num_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE) * WORLDREPORT_ITEMSIZE // # of values needed * item size
+      );
+      worldreport[0] = MESSAGE_TYPES.WORLDREPORT;
     }
 
     worldreport[1] = _num_objects; // record how many objects we're reporting on
 
     {
-      let offset = 0,
-        i = 0;
+      let i = 0,
+        index = _objects.length;
 
-      // for ( i = 0; i < worldreport[1]; i++ ) {
-      for (const index in _objects) {
-        if (_objects.hasOwnProperty(index)) {
+      while (index--) {
+        if (_objects[index]) {
           const object = _objects[index];
 
           // #TODO: we can't use center of mass transform when center of mass can change,
           //        but getMotionState().getWorldTransform() screws up on objects that have been moved
           // object.getMotionState().getWorldTransform( transform );
           const transform = object.getCenterOfMassTransform();
-
           const origin = transform.getOrigin();
           const rotation = transform.getRotation();
 
           // add values to report
-          offset = 2 + (i++) * WORLDREPORT_ITEMSIZE;
+          const offset = 2 + (i++) * WORLDREPORT_ITEMSIZE;
 
           worldreport[offset] = object.id;
 
@@ -1247,12 +1243,12 @@ module.exports = function (self) {
     }
 
     {
-      let offset = 0,
-        i = 0,
-        j = 0;
+      let i = 0,
+        j = 0,
+        index = _vehicles.length;
 
-      for (const index in _vehicles) {
-        if (_vehicles.hasOwnProperty(index)) {
+      while (index--) {
+        if (_vehicles[index]) {
           const vehicle = _vehicles[index];
 
           for (j = 0; j < vehicle.getNumWheels(); j++) {
@@ -1264,7 +1260,7 @@ module.exports = function (self) {
             const rotation = transform.getRotation();
 
             // add values to report
-            offset = 1 + (i++) * VEHICLEREPORT_ITEMSIZE;
+            const offset = 1 + (i++) * VEHICLEREPORT_ITEMSIZE;
 
             vehiclereport[offset] = index;
             vehiclereport[offset + 1] = j;
@@ -1299,10 +1295,11 @@ module.exports = function (self) {
 
     {
       let offset = 0,
-        i = 0;
+        i = 0,
+        index = _constraints.lenght;
 
-      for (const index in _constraints) {
-        if (_constraints.hasOwnProperty(index)) {
+      while (index--) {
+        if (_constraints[index]) {
           const constraint = _constraints[index];
           const offset_body = constraint.a;
           const transform = constraint.ta;

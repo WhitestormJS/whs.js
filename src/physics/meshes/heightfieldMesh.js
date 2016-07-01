@@ -12,12 +12,17 @@ export class HeightfieldMesh extends Mesh {
     // note - this assumes our plane geometry is square, unless we pass in specific xdiv and ydiv
     this._physijs.absMaxHeight = Math.max(geometry.boundingBox.max.z, Math.abs(geometry.boundingBox.min.z));
 
-    const points = [];
+    let size = geometry.vertices.length;
 
-    for (let i = 0; i < geometry.vertices.length; i++) {
-      const a = i % this._physijs.xpts;
-      const b = Math.round((i / this._physijs.xpts) - ((i % this._physijs.xpts) / this._physijs.xpts));
-      points[i] = geometry.vertices[a +  ((this._physijs.ypts - b - 1) * this._physijs.ypts)].z;
+    const points = new Float32Array(size),
+      xpts = this._physijs.xpts,
+      ypts = this._physijs.ypts;
+
+    while (size--) {
+      points[size] = geometry.vertices[
+        size % xpts
+        + ((ypts - Math.round((size / xpts) - ((size % xpts) / xpts)) - 1) * ypts)
+      ].z;
     }
 
     this._physijs.points = points;
