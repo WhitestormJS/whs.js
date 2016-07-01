@@ -7,7 +7,7 @@ var GAME = new WHS.World({
 
   gravity: {
     x: 0,
-    y: -100,
+    y: -1000,
     z: 0
   },
 
@@ -37,11 +37,13 @@ var stick = new WHS.Box({
     depth: 8
   },
 
+  mass: 100,
+
   material: {
     kind: 'lambert',
     color: 0xffa54f,
     friction: 1,
-    restitution: 1
+    restitution: 0
   },
 
   pos: {
