@@ -37,12 +37,12 @@ var stick = new WHS.Box({
     depth: 8
   },
 
-  mass: 100,
+  mass: 75,
 
   material: {
     kind: 'lambert',
     color: 0xffa54f,
-    friction: 1,
+    friction: 0,
     restitution: 0
   },
 
