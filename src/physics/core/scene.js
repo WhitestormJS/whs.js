@@ -121,12 +121,11 @@ export class Scene extends THREE.Scene {
   }
 
   _updateScene(data) {
-    const num_objects = data[1];
-    let object, offset;
+    let index = data[1];
 
-    for (let i = 0; i < num_objects; i++) {
-      offset = 2 + i * REPORT_ITEMSIZE;
-      object = this._objects[data[offset]];
+    while (index--) {
+      const offset = 2 + index * REPORT_ITEMSIZE;
+      const object = this._objects[data[offset]];
 
       if (object === undefined) continue;
 
@@ -168,10 +167,10 @@ export class Scene extends THREE.Scene {
   }
 
   _updateVehicles(data) {
-    let vehicle, wheel, offset;
+    let vehicle, wheel;
 
     for (let i = 0; i < (data.length - 1) / VEHICLEREPORT_ITEMSIZE; i++) {
-      offset = 1 + i * VEHICLEREPORT_ITEMSIZE;
+      const offset = 1 + i * VEHICLEREPORT_ITEMSIZE;
       vehicle = this._vehicles[data[offset]];
 
       if (vehicle === undefined) continue;
@@ -197,10 +196,10 @@ export class Scene extends THREE.Scene {
   }
 
   _updateConstraints(data) {
-    let constraint, object, offset;
+    let constraint, object;
 
     for (let i = 0; i < (data.length - 1) / CONSTRAINTREPORT_ITEMSIZE; i++) {
-      offset = 1 + i * CONSTRAINTREPORT_ITEMSIZE;
+      const offset = 1 + i * CONSTRAINTREPORT_ITEMSIZE;
       constraint = this._constraints[data[offset]];
       object = this._objects[data[offset + 1]];
 
