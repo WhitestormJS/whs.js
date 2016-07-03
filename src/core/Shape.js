@@ -26,6 +26,7 @@ class Shape extends WHSObject {
     super({
       mass: 10,
       build: true,
+      softbody: false,
       geometry: {},
 
       material: {
