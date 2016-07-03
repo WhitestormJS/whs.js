@@ -9,18 +9,25 @@ module.exports = function (self) {
       WORLDREPORT: 0,
       COLLISIONREPORT: 1,
       VEHICLEREPORT: 2,
-      CONSTRAINTREPORT: 3
-    };
+      CONSTRAINTREPORT: 3,
+      SOFTREPORT: 4
+    },
+
+    softBodyHelpers = new Ammo.btSoftBodyHelpers();
 
     // temp variables
   let _object,
     _vector,
     _transform,
+    _softbody_enabled = false,
     last_simulation_duration = 0,
 
     _num_objects = 0,
+    _num_rigidbody_objects = 0,
+    _num_softbody_objects = 0,
     _num_wheels = 0,
     _num_constraints = 0,
+    _softbody_report_size = 0,
 
     // world variables
     fixedTimeStep, // used when calling stepSimulation
@@ -55,6 +62,7 @@ module.exports = function (self) {
     // object reporting
   let REPORT_CHUNKSIZE, // report array is increased in increments of this chunk size
     worldreport,
+    softreport,
     collisionreport,
     vehiclereport,
     constraintreport;
@@ -246,7 +254,7 @@ module.exports = function (self) {
     return shape;
   };
 
-  public_functions.init = (params) => {
+  public_functions.init = (params = {}) => {
     _transform = new Ammo.btTransform();
     _vec3_1 = new Ammo.btVector3(0, 0, 0);
     _vec3_2 = new Ammo.btVector3(0, 0, 0);
@@ -274,7 +282,9 @@ module.exports = function (self) {
     vehiclereport[0] = MESSAGE_TYPES.VEHICLEREPORT;
     constraintreport[0] = MESSAGE_TYPES.CONSTRAINTREPORT;
 
-    const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration(),
+    const collisionConfiguration = params.whs.softbody
+      ? new Ammo.btSoftBodyRigidBodyCollisionConfiguration()
+      : new Ammo.btDefaultCollisionConfiguration(),
       dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration),
       solver = new Ammo.btSequentialImpulseConstraintSolver();
 
@@ -306,8 +316,12 @@ module.exports = function (self) {
         break;
     }
 
-    world = new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+    world = params.whs.softbody
+      ? new Ammo.btSoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, new Ammo.btDefaultSoftBodySolver())
+      : new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
     fixedTimeStep = params.fixedTimeStep;
+
+    if (params.whs.softbody) _softbody_enabled = true;
 
     transferableMessage({cmd: 'worldReady'});
   };
@@ -332,79 +346,105 @@ module.exports = function (self) {
   };
 
   public_functions.addObject = (description) => {
-    let shape = createShape(description);
+    let body, motionState;
 
-    if (!shape) return;
+    if (description.type === 'softbody') {
+      if (!description.aVertices.length) return false;
 
-    // If there are children then this is a compound shape
-    if (description.children) {
-      const compound_shape = new Ammo.btCompoundShape();
-      compound_shape.addChildShape(_transform, shape);
+      body = softBodyHelpers.CreateFromTriMesh(
+        world.getWorldInfo(),
+        description.aVertices,
+        description.aIndices,
+        description.aIndices.length / 3,
+        true
+      );
 
-      for (let i = 0; i < description.children.length; i++) {
-        const _child = description.children[i];
+      body.setTotalMass(description.mass, false);
 
-        const trans = new Ammo.btTransform();
-        trans.setIdentity();
+      Ammo.castObject(body, Ammo.btCollisionObject).getCollisionShape().setMargin(description.margin ? description.margin : 0);
+      body.setActivationState(4);
+      body.type = 0; // SoftBody.
 
-        _vec3_1.setX(_child.position_offset.x);
-        _vec3_1.setY(_child.position_offset.y);
-        _vec3_1.setZ(_child.position_offset.z);
-        trans.setOrigin(_vec3_1);
+      world.addSoftBody(body, 1, -1);
+      _softbody_report_size += body.get_m_nodes().size();
+      _num_softbody_objects++;
+    } else {
+      let shape = createShape(description);
 
-        _quat.setX(_child.rotation.x);
-        _quat.setY(_child.rotation.y);
-        _quat.setZ(_child.rotation.z);
-        _quat.setW(_child.rotation.w);
-        trans.setRotation(_quat);
+      if (!shape) return;
 
-        shape = createShape(description.children[i]);
-        compound_shape.addChildShape(trans, shape);
-        Ammo.destroy(trans);
+      // If there are children then this is a compound shape
+      if (description.children) {
+        const compound_shape = new Ammo.btCompoundShape();
+        compound_shape.addChildShape(_transform, shape);
+
+        for (let i = 0; i < description.children.length; i++) {
+          const _child = description.children[i];
+
+          const trans = new Ammo.btTransform();
+          trans.setIdentity();
+
+          _vec3_1.setX(_child.position_offset.x);
+          _vec3_1.setY(_child.position_offset.y);
+          _vec3_1.setZ(_child.position_offset.z);
+          trans.setOrigin(_vec3_1);
+
+          _quat.setX(_child.rotation.x);
+          _quat.setY(_child.rotation.y);
+          _quat.setZ(_child.rotation.z);
+          _quat.setW(_child.rotation.w);
+          trans.setRotation(_quat);
+
+          shape = createShape(description.children[i]);
+          compound_shape.addChildShape(trans, shape);
+          Ammo.destroy(trans);
+        }
+
+        shape = compound_shape;
+        _compound_shapes[description.id] = shape;
       }
 
-      shape = compound_shape;
-      _compound_shapes[description.id] = shape;
+      _vec3_1.setX(0);
+      _vec3_1.setY(0);
+      _vec3_1.setZ(0);
+      shape.calculateLocalInertia(description.mass, _vec3_1);
+
+      _transform.setIdentity();
+
+      _vec3_2.setX(description.position.x);
+      _vec3_2.setY(description.position.y);
+      _vec3_2.setZ(description.position.z);
+      _transform.setOrigin(_vec3_2);
+
+      _quat.setX(description.rotation.x);
+      _quat.setY(description.rotation.y);
+      _quat.setZ(description.rotation.z);
+      _quat.setW(description.rotation.w);
+      _transform.setRotation(_quat);
+
+      motionState = new Ammo.btDefaultMotionState(_transform); // #TODO: btDefaultMotionState supports center of mass offset as second argument - implement
+      const rbInfo = new Ammo.btRigidBodyConstructionInfo(description.mass, motionState, shape, _vec3_1);
+
+      if (description.materialId !== undefined) {
+        rbInfo.set_m_friction(_materials[description.materialId].friction);
+        rbInfo.set_m_restitution(_materials[description.materialId].restitution);
+      }
+
+      body = new Ammo.btRigidBody(rbInfo);
+      Ammo.destroy(rbInfo);
+
+      if (typeof description.collision_flags !== 'undefined') body.setCollisionFlags(description.collision_flags);
+
+      world.addRigidBody(body);
+      body.type = 1; // RigidBody.
+      _num_rigidbody_objects++;
     }
-
-    _vec3_1.setX(0);
-    _vec3_1.setY(0);
-    _vec3_1.setZ(0);
-    shape.calculateLocalInertia(description.mass, _vec3_1);
-
-    _transform.setIdentity();
-
-    _vec3_2.setX(description.position.x);
-    _vec3_2.setY(description.position.y);
-    _vec3_2.setZ(description.position.z);
-    _transform.setOrigin(_vec3_2);
-
-    _quat.setX(description.rotation.x);
-    _quat.setY(description.rotation.y);
-    _quat.setZ(description.rotation.z);
-    _quat.setW(description.rotation.w);
-    _transform.setRotation(_quat);
-
-    const motionState = new Ammo.btDefaultMotionState(_transform); // #TODO: btDefaultMotionState supports center of mass offset as second argument - implement
-    const rbInfo = new Ammo.btRigidBodyConstructionInfo(description.mass, motionState, shape, _vec3_1);
-
-    if (description.materialId !== undefined) {
-      rbInfo.set_m_friction(_materials[description.materialId].friction);
-      rbInfo.set_m_restitution(_materials[description.materialId].restitution);
-    }
-
-    const body = new Ammo.btRigidBody(rbInfo);
-    Ammo.destroy(rbInfo);
-
-    if (typeof description.collision_flags !== 'undefined') body.setCollisionFlags(description.collision_flags);
-
-    world.addRigidBody(body);
 
     body.id = description.id;
     _objects[body.id] = body;
     _motion_states[body.id] = motionState;
 
-    _objects_ammo[body.a == undefined ? body.ptr : body.a] = body.id;
+    _objects_ammo[body.a === undefined ? body.ptr : body.a] = body.id;
     _num_objects++;
 
     transferableMessage({cmd: 'objectReady', params: body.id});
@@ -492,6 +532,11 @@ module.exports = function (self) {
   };
 
   public_functions.removeObject = (details) => {
+    if (_objects[details.id].type === 0) {
+      _num_softbody_objects--;
+      _softbody_report_size -= _objects[details.id].get_m_nodes().size();
+    } else if (_objects[details.id].type === 1) _num_rigidbody_objects--;
+
     world.removeRigidBody(_objects[details.id]);
     Ammo.destroy(_objects[details.id]);
     Ammo.destroy(_motion_states[details.id]);
@@ -509,25 +554,28 @@ module.exports = function (self) {
 
   public_functions.updateTransform = (details) => {
     _object = _objects[details.id];
-    _object.getMotionState().getWorldTransform(_transform);
 
-    if (details.pos) {
-      _vec3_1.setX(details.pos.x);
-      _vec3_1.setY(details.pos.y);
-      _vec3_1.setZ(details.pos.z);
-      _transform.setOrigin(_vec3_1);
-    }
+    if (_object.type === 1) {
+      _object.getMotionState().getWorldTransform(_transform);
 
-    if (details.quat) {
-      _quat.setX(details.quat.x);
-      _quat.setY(details.quat.y);
-      _quat.setZ(details.quat.z);
-      _quat.setW(details.quat.w);
-      _transform.setRotation(_quat);
-    }
+      if (details.pos) {
+        _vec3_1.setX(details.pos.x);
+        _vec3_1.setY(details.pos.y);
+        _vec3_1.setZ(details.pos.z);
+        _transform.setOrigin(_vec3_1);
+      }
 
-    _object.setWorldTransform(_transform);
-    _object.activate();
+      if (details.quat) {
+        _quat.setX(details.quat.x);
+        _quat.setY(details.quat.y);
+        _quat.setZ(details.quat.z);
+        _quat.setW(details.quat.w);
+        _transform.setRotation(_quat);
+      }
+
+      _object.setWorldTransform(_transform);
+      _object.activate();
+    } // TODO: Make for SoftBodies.
   };
 
   public_functions.updateMass = (details) => {
@@ -547,7 +595,6 @@ module.exports = function (self) {
   };
 
   public_functions.applyCentralImpulse = (details) => {
-
     _vec3_1.setX(details.x);
     _vec3_1.setY(details.y);
     _vec3_1.setZ(details.z);
@@ -557,7 +604,6 @@ module.exports = function (self) {
   };
 
   public_functions.applyImpulse = (details) => {
-
     _vec3_1.setX(details.impulse_x);
     _vec3_1.setY(details.impulse_y);
     _vec3_1.setZ(details.impulse_z);
@@ -574,7 +620,6 @@ module.exports = function (self) {
   };
 
   public_functions.applyTorque = (details) => {
-
     _vec3_1.setX(details.torque_x);
     _vec3_1.setY(details.torque_y);
     _vec3_1.setZ(details.torque_z);
@@ -586,7 +631,6 @@ module.exports = function (self) {
   };
 
   public_functions.applyCentralForce = (details) => {
-
     _vec3_1.setX(details.x);
     _vec3_1.setY(details.y);
     _vec3_1.setZ(details.z);
@@ -596,7 +640,6 @@ module.exports = function (self) {
   };
 
   public_functions.applyForce = (details) => {
-
     _vec3_1.setX(details.force_x);
     _vec3_1.setY(details.force_y);
     _vec3_1.setZ(details.force_z);
@@ -936,6 +979,7 @@ module.exports = function (self) {
       reportCollisions();
       reportConstraints();
       reportWorld();
+      if (_softbody_enabled) reportWorld_softbodies();
 
       last_simulation_duration = (Date.now() - last_simulation_duration) / 1000;
       last_simulation_time = Date.now();
@@ -1130,24 +1174,25 @@ module.exports = function (self) {
   };
 
   const reportWorld = () => {
-    if (SUPPORT_TRANSFERABLE && worldreport.length < 2 + _num_objects * WORLDREPORT_ITEMSIZE) {
+    if (SUPPORT_TRANSFERABLE && worldreport.length < 2 + _num_rigidbody_objects * WORLDREPORT_ITEMSIZE) {
       worldreport = new Float32Array(
         2// message id & # objects in report
-        + (Math.ceil(_num_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE) * WORLDREPORT_ITEMSIZE // # of values needed * item size
+        + (Math.ceil(_num_rigidbody_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE) * WORLDREPORT_ITEMSIZE // # of values needed * item size
       );
+
       worldreport[0] = MESSAGE_TYPES.WORLDREPORT;
     }
 
-    worldreport[1] = _num_objects; // record how many objects we're reporting on
+    worldreport[1] = _num_rigidbody_objects; // record how many objects we're reporting on
 
     {
       let i = 0,
         index = _objects.length;
 
       while (index--) {
-        if (_objects[index]) {
-          const object = _objects[index];
+        const object = _objects[index];
 
+        if (object && object.type === 1) { // RigidBodies.
           // #TODO: we can't use center of mass transform when center of mass can change,
           //        but getMotionState().getWorldTransform() screws up on objects that have been moved
           // object.getMotionState().getWorldTransform( transform );
@@ -1184,6 +1229,57 @@ module.exports = function (self) {
 
     if (SUPPORT_TRANSFERABLE) transferableMessage(worldreport.buffer, [worldreport.buffer]);
     else transferableMessage(worldreport);
+  };
+
+  const reportWorld_softbodies = () => {
+    // TODO: Add SUPPORTTRANSFERABLE.
+
+    softreport = new Float32Array(
+      2 // message id & # objects in report
+      + _num_softbody_objects * 2
+      + _softbody_report_size * 6
+    );
+
+    softreport[0] = MESSAGE_TYPES.SOFTREPORT;
+    softreport[1] = _num_softbody_objects; // record how many objects we're reporting on
+
+    {
+      let offset = 2,
+        index = _objects.length;
+
+      while (index--) {
+        const object = _objects[index];
+
+        if (object && object.type === 0) { // SoftBodies.
+          const size = object.get_m_nodes().size();
+
+          softreport[offset] = object.id;
+          softreport[offset + 1] = size; // Vertices ammount.
+
+          const offsetVert = offset + 2;
+
+          for (let i = 0; i < size; i++) {
+            const node = object.get_m_nodes().at(i);
+            const vert = node.get_m_x();
+            const normal = node.get_m_n();
+
+            softreport[offsetVert + i * 3] = vert.x();
+            softreport[offsetVert + i * 3 + 1] = vert.y();
+            softreport[offsetVert + i * 3 + 2] = vert.z();
+
+            softreport[offsetVert + i * 3 + 3] = normal.x();
+            softreport[offsetVert + i * 3 + 4] = normal.y();
+            softreport[offsetVert + i * 3 + 5] = normal.z();
+          }
+
+          offset += size * 6 + 2;
+        }
+      }
+    }
+
+    // if (SUPPORT_TRANSFERABLE) transferableMessage(softreport.buffer, [softreport.buffer]);
+    // else transferableMessage(softreport);
+    transferableMessage(softreport);
   };
 
   const reportCollisions = () => {
