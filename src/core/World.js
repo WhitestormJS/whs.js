@@ -15,9 +15,9 @@ class World extends WHSObject {
    */
   constructor(params = {}) {
     super({
-
       stats: false,
       autoresize: false,
+      softbody: false,
 
       shadowmap: {
         enabled: true,
@@ -86,7 +86,6 @@ class World extends WHSObject {
 
       assets: './assets',
       container: document.body
-
     });
 
     super.setParams(params);
@@ -130,7 +129,8 @@ class World extends WHSObject {
         },
         {
           stats: params.stats,
-          world: this
+          world: this,
+          softbody: params.softbody
         }
       ) : new THREE.Scene();
 
