@@ -55,7 +55,7 @@ window.sphere.addTo(GAME);
 
 new WHS.Sphere({
   geometry: {
-    radius: 12,
+    radius: 6,
     widthSegments: 16,
     heightSegments: 16
   },
@@ -63,12 +63,11 @@ new WHS.Sphere({
   mass: 100,
 
   material: {
-    color: 0x000ff
+    color: 0x00ff00
   },
 
   pos: {
-    y: 30,
-    x: 30
+    y: 70
   }
 }).addTo(GAME);
 
@@ -94,7 +93,6 @@ new WHS.Box({
 }).addTo(GAME);
 
 new WHS.DirectionalLight({
-
   light: {
     color: 0xffffff, // 0x00ff00,
     intensity: 1

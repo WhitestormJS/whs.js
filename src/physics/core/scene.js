@@ -201,8 +201,6 @@ export class Scene extends THREE.Scene {
 
         const assocVertex = association[i];
 
-        console.log(assocVertex);
-
         for (let k = 0, kl = assocVertex.length; k < kl; k++) {
           let indexVertex = assocVertex[k];
 

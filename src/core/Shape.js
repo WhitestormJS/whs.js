@@ -123,23 +123,25 @@ class Shape extends WHSObject {
             }
 
             if (tags.indexOf('no-transforms') < 0) {
-              _scope.position.set(
-                _scope.__params.pos.x,
-                _scope.__params.pos.y,
-                _scope.__params.pos.z
-              );
+              if (!_scope.getParams().softbody) {
+                _scope.position.set(
+                  _scope.__params.pos.x,
+                  _scope.__params.pos.y,
+                  _scope.__params.pos.z
+                );
 
-              _scope.rotation.set(
-                _scope.__params.rot.x,
-                _scope.__params.rot.y,
-                _scope.__params.rot.z
-              );
+                _scope.rotation.set(
+                  _scope.__params.rot.x,
+                  _scope.__params.rot.y,
+                  _scope.__params.rot.z
+                );
 
-              _scope.scale.set(
-                _scope.__params.scale.x,
-                _scope.__params.scale.y,
-                _scope.__params.scale.z
-              );
+                _scope.scale.set(
+                  _scope.__params.scale.x,
+                  _scope.__params.scale.y,
+                  _scope.__params.scale.z
+                );
+              }
             }
 
             // Box helper.
@@ -221,23 +223,25 @@ class Shape extends WHSObject {
           }
 
           if (tags.indexOf('no-transforms') < 0) {
-            _scope.position.set(
-              _scope.__params.pos.x,
-              _scope.__params.pos.y,
-              _scope.__params.pos.z
-            );
+            if (!_scope.getParams().softbody) {
+              _scope.position.set(
+                _scope.__params.pos.x,
+                _scope.__params.pos.y,
+                _scope.__params.pos.z
+              );
 
-            _scope.rotation.set(
-              _scope.__params.rot.x,
-              _scope.__params.rot.y,
-              _scope.__params.rot.z
-            );
+              _scope.rotation.set(
+                _scope.__params.rot.x,
+                _scope.__params.rot.y,
+                _scope.__params.rot.z
+              );
 
-            _scope.scale.set(
-              _scope.__params.scale.x,
-              _scope.__params.scale.y,
-              _scope.__params.scale.z
-            );
+              _scope.scale.set(
+                _scope.__params.scale.x,
+                _scope.__params.scale.y,
+                _scope.__params.scale.z
+              );
+            }
           }
 
           // Box helper.
