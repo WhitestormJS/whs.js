@@ -28,7 +28,7 @@ const GAME = new WHS.World({
   }
 });
 
-new WHS.Sphere({
+window.sphere = new WHS.Sphere({
   geometry: {
     radius: 12,
     widthSegments: 16,
@@ -39,13 +39,16 @@ new WHS.Sphere({
   softbody: true,
 
   material: {
-    color: 0x000ff
+    color: 0x000ff,
+    kind: 'phong'
   },
 
   pos: {
     y: 30
   }
-}).addTo(GAME);
+});
+
+window.sphere.addTo(GAME);
 
 new WHS.Sphere({
   geometry: {
@@ -62,7 +65,7 @@ new WHS.Sphere({
 
   pos: {
     y: 30,
-    x: 20
+    x: 30
   }
 }).addTo(GAME);
 
