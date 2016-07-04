@@ -43,11 +43,21 @@ class Sphere extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.SphereGeometry(
+    const geometry = new THREE.SphereGeometry(
       params.geometry.radius,
       params.geometry.widthSegments,
       params.geometry.heightSegments
     );
+
+    if (this.getParams().softbody) {
+      geometry.translate(
+        this.__params.pos.x,
+        this.__params.pos.y,
+        this.__params.pos.z
+      );
+    }
+
+    return geometry;
   }
 
   set G_radius(val) {
