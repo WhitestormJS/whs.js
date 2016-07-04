@@ -1263,13 +1263,13 @@ module.exports = function (self) {
             const vert = node.get_m_x();
             const normal = node.get_m_n();
 
-            softreport[offsetVert + i * 3] = vert.x();
-            softreport[offsetVert + i * 3 + 1] = vert.y();
-            softreport[offsetVert + i * 3 + 2] = vert.z();
+            softreport[offsetVert + i * 6] = vert.x();
+            softreport[offsetVert + i * 6 + 1] = vert.y();
+            softreport[offsetVert + i * 6 + 2] = vert.z();
 
-            softreport[offsetVert + i * 3 + 3] = normal.x();
-            softreport[offsetVert + i * 3 + 4] = normal.y();
-            softreport[offsetVert + i * 3 + 5] = normal.z();
+            softreport[offsetVert + i * 6 + 3] = normal.x();
+            softreport[offsetVert + i * 6 + 4] = normal.y();
+            softreport[offsetVert + i * 6 + 5] = normal.z();
           }
 
           offset += size * 6 + 2;
