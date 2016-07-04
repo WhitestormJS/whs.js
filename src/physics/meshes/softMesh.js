@@ -9,6 +9,7 @@ export class SoftMesh extends Mesh {
 
     super(geometry, material, mass);
 
+    tempGeometry.mergeVertices();
     const idxGeometry = this.createIndexedBufferGeometryFromGeometry(tempGeometry);
     if (!tempGeometry.boundingBox) tempGeometry.computeBoundingBox();
 
