@@ -23,16 +23,7 @@
 
 * **Simple shape crafting** — We use JSON-like structure for creating objects by inputed data and adding them to 3d world.
 
-<p align="center">
-    <img src="http://whitestormjs.xyz/images/shapes/dodecahedron.gif" height="100" alt="dodecahedron"> 
-    <img src="http://whitestormjs.xyz/images/shapes/polyhedron.gif" height="100" alt="polyhedron">
-    <img src="http://whitestormjs.xyz/images/shapes/icosahedron.gif" height="100" alt="icosahedron"> 
-    <img src="http://whitestormjs.xyz/images/shapes/tetrahedron.gif" height="100" alt="tetrahedron">
-</p>
-
 * **Physics with WebWorkers** — It uses [Physi.js](https://github.com/chandlerprall/Physijs/blob/master/physi.js) library for calculating physics of 3D shapes with **WebWorkers technology** that allows to make rendering an calculating physics in multiple threads.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://i.imgur.com/LN1Ymsz.gif" height="100">
 
 * **Plugin system** — Framework supports *plugins & components* made by other users. You need to include them after whitestorm.js and follow provided instructions.
 
@@ -40,8 +31,7 @@
 
 * **ES6 Features** - Framework is written with using latest features of ECMAScript 6 and ECMAScript 7 (beta) features and compiled with [Babel](https://babeljs.io/).
 
-<p align="center"><img src="https://cdn-images-1.medium.com/max/800/1*_6hv_Ab_V061r07IXioLAg.jpeg" height="100" alt="es6">&nbsp;&nbsp; &nbsp;&nbsp; 
-<img src="https://cms-assets.tutsplus.com/uploads/users/16/posts/24511/preview_image/babel-1.png" height="100" alt="babel"></p>
+* **Softbodies** - WhitestormJS is the only engine (except native ammo.js) that supports softbodies. 
 
 
 ## Installation
@@ -55,6 +45,7 @@ After adding these libraries, you can configure your app:
 ```javascript
 const world = new WHS.World({
     stats: "fps", // fps, ms, mb or false if not need.
+    autoresize: true,
 
     gravity: { // Physic gravity.
         x: 0,
@@ -63,14 +54,32 @@ const world = new WHS.World({
     }
 });
 
-// Define your scene objects here.
+const sphere = new WHS.Sphere({ // Create
+  geometry: {
+    radius: 3
+  },
+
+  mass: 10,
+
+  material: {
+    color: 0xffffff,
+    kind: 'basic'
+  },
+
+  pos: {
+    x: 0,
+    y: 100,
+    z: 0
+  }
+})
+
+sphere.addTo(GAME);
 
 world.start(); // Start animations and physics simulation.
 ```
 
 [![Join the chat at https://gitter.im/WhitestormJS/whitestorm.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-##### Documentation: [Look here](http://whitestormjs.xyz//)
 
 <br>
 
@@ -84,6 +93,7 @@ world.start(); // Start animations and physics simulation.
  * [Basic / Model](http://192.241.128.187/current/examples/basic/model/)  (Basic model example.)
  * [Basic / Debugging](http://192.241.128.187/current/examples/basic/debugging/)  (Object's debug example.)
  * [Basic / Extending API](http://192.241.128.187/current/examples/basic/extending/)  (Extending api example.)
+ * [Basic / Softbody](http://192.241.128.187/current/examples/basic/softbody/)  (Basic softbody implementation.)
 
 #### DESIGN:
  * [Design / Saturn](http://192.241.128.187/current/examples/design/saturn/)  (Saturn planet example from: http://codepen.io/Yakudoo/pen/qbygaJ)
@@ -94,13 +104,19 @@ world.start(); // Start animations and physics simulation.
  * [FPS / Fog](http://192.241.128.187/current/examples/fps/fog/)  (First person game with animated objects)
 
 #### PHYSICS:
- * [Physics/Dominos](http://192.241.128.187/current/examples/physics/domino/)  (Physics example with dominos.)
+ * [Physics / Dominos](http://192.241.128.187/current/examples/physics/domino/)  (Physics example with dominos.)
 
-##### Changelog: [Look here](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
+#### PERFORMANCE:
+ * [Performance / Sticks](http://192.241.128.187/current/examples/performance/sticks/)  (Collisions performance of 320 basic box objects.)
+ * [Performance / Softbodies](http://192.241.128.187/current/examples/performance/softbodies/)  (Collisions performance of 10 softbodies.)
 
 ----
 
-### Contributors:
+#### [Changelog](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md) | [Documentation](http://whitestormjs.xyz/)
+
+----
+
+## [Contributors](https://github.com/WhitestormJS/whitestorm.js/graphs/contributors):
 [![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-red.svg)](https://github.com/sasha240100)
 
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-jackdalton-blue.svg)](https://github.com/jackdalton)
@@ -115,5 +131,4 @@ world.start(); // Start animations and physics simulation.
 
 <br>
 
-## License
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://alexbuzin.me/)   <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Лицензия Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a>

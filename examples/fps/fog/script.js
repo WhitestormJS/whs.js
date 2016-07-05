@@ -2004,9 +2004,6 @@ var Terrain = function (_Shape) {
         canvas.setAttribute('width', params.geometry.width);
         canvas.setAttribute('height', params.geometry.height);
 
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(params.geometry.map, 0, 0);
-
         var textures = typeof params.material[0] === 'string' ? (0, _persets.loadPerset)((0, _persets.persets)()[params.material[0]], params.material[1]) : params.material;
 
         var rx = 256,
@@ -2019,76 +2016,70 @@ var Terrain = function (_Shape) {
           format: THREE.RGBFormat
         };
 
-        // Heightmap.
-        var heightMap = new THREE.WebGLRenderTarget(rx, ry, pars);
+        var heightMapTexture = _whitestormjs.TextureLoader.load(params.geometry.map, function (texture) {
+          // Heightmap.
+          var heightMap = new THREE.WebGLRenderTarget(rx, ry, pars);
+          heightMap.texture = texture;
 
-        heightMap.texture = _whitestormjs.TextureLoader.load('../../assets/terrain/default_terrain.png');
+          _this2.heightMap = heightMap;
 
-        // Normalmap.
-        var normalMap = new THREE.WebGLRenderTarget(rx, ry, pars);
+          // Terrain shader (ShaderTerrain.js).
+          var terrainShader = (0, _ShaderTerrain2.default)(textures).terrain;
+          var uniformsTerrain = (0, _assign2.default)(THREE.UniformsUtils.clone(terrainShader.uniforms), {
+            fog: true,
+            lights: true
+          }, THREE.UniformsLib.common, THREE.UniformsLib.fog, THREE.UniformsLib.lights, THREE.UniformsLib.ambient, THREE.UniformsLib.shadowmap, {
+            ambient: { type: 'c', value: new THREE.Color(0xffffff) },
+            emissive: { type: 'c', value: new THREE.Color(0x000000) },
+            wrapRGB: { type: 'v3', value: new THREE.Vector3(1, 1, 1) }
+          });
 
-        normalMap.texture = _whitestormjs.TextureLoader.load('../../assets/terrain/NormalMap.png');
+          uniformsTerrain.tDisplacement.value = heightMap;
 
-        // Specularmap.
-        var specularMap = new THREE.WebGLRenderTarget(256, 256, pars); // 2048
+          uniformsTerrain.uDisplacementScale.value = 100;
+          uniformsTerrain.uRepeatOverlay.value.set(6, 6);
 
-        specularMap.texture = _whitestormjs.TextureLoader.load('../../assets/terrain/default_terrain.png');
+          for (var _i = 0; _i < textures.length; _i++) {
+            uniformsTerrain['textureBound' + _i] = { type: 't', value: textures[_i].texture };
+          }var material = new THREE.ShaderMaterial({
+            uniforms: uniformsTerrain,
+            vertexShader: terrainShader.vertexShader,
+            fragmentShader: terrainShader.fragmentShader,
+            lights: true,
+            fog: true,
+            side: THREE.FrontSide,
+            shading: THREE.SmoothShading
+          });
 
-        // Terrain shader (ShaderTerrain.js).
-        var terrainShader = (0, _ShaderTerrain2.default)(textures).terrain;
-        var uniformsTerrain = (0, _assign2.default)(THREE.UniformsUtils.clone(terrainShader.uniforms), {
-          fog: true,
-          lights: true
-        }, THREE.UniformsLib.common, THREE.UniformsLib.fog, THREE.UniformsLib.lights, THREE.UniformsLib.ambient, THREE.UniformsLib.shadowmap, {
-          ambient: { type: 'c', value: new THREE.Color(0xffffff) },
-          emissive: { type: 'c', value: new THREE.Color(0x000000) },
-          wrapRGB: { type: 'v3', value: new THREE.Vector3(1, 1, 1) }
-        });
+          var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
+          geom.verticesNeedUpdate = true;
 
-        uniformsTerrain.tDisplacement.value = heightMap;
-        uniformsTerrain.spotShadowMap.value = [normalMap];
+          var index = 0,
+              i = 0;
 
-        uniformsTerrain.uDisplacementScale.value = 100;
-        uniformsTerrain.uRepeatOverlay.value.set(6, 6);
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(texture.image, 0, 0);
 
-        for (var _i = 0; _i < textures.length; _i++) {
-          uniformsTerrain['textureBound' + _i] = { type: 't', value: textures[_i].texture };
-        }var material = new THREE.ShaderMaterial({
-          uniforms: uniformsTerrain,
-          vertexShader: terrainShader.vertexShader,
-          fragmentShader: terrainShader.fragmentShader,
-          lights: true,
-          fog: true,
-          side: THREE.FrontSide,
-          shading: THREE.SmoothShading
-        });
+          var imgdata = ctx.getImageData(0, 0, 256, 256).data;
 
-        var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
-        geom.verticesNeedUpdate = true;
+          for (var x = 0; x <= 255; x++) {
+            for (var y = 255; y >= 0; y--) {
+              geom.vertices[index].z = imgdata[i] / 255 * 100;
 
-        var index = 0,
-            i = 0;
-
-        var imgdata = ctx.getImageData(0, 0, 256, 256).data;
-
-        for (var x = 0; x <= 255; x++) {
-          for (var y = 255; y >= 0; y--) {
-            geom.vertices[index].z = imgdata[i] / 255 * 100;
-
-            i += 4;
-            index++;
+              i += 4;
+              index++;
+            }
           }
-        }
 
-        geom.computeVertexNormals();
-        geom.computeFaceNormals();
-        geom.computeTangents();
+          geom.computeVertexNormals();
+          geom.computeFaceNormals();
+          geom.computeTangents();
 
-        _this2.setNative(new Physijs.HeightfieldMesh(geom, Physijs.createMaterial(material, 1.0, 0.8), params.mass));
+          _this2.setNative(new Physijs.HeightfieldMesh(geom, Physijs.createMaterial(material, 1.0, 0.8), params.mass));
 
-        _this2.getNative().updateMatrix();
-
-        resolve();
+          _this2.getNative().updateMatrix();
+          resolve();
+        });
       });
 
       (0, _get3.default)((0, _getPrototypeOf2.default)(Terrain.prototype), 'wait', this).call(this, promise);
@@ -2184,7 +2175,7 @@ function shaderTerrain(textures) {
 
   return {
     terrain: {
-      uniforms: _three2.default.UniformsUtils.merge([_three2.default.UniformsLib.fog, _three2.default.UniformsLib.lighta, _three2.default.UniformsLib.shadowmap, {
+      uniforms: _three2.default.UniformsUtils.merge([_three2.default.UniformsLib.fog, _three2.default.UniformsLib.lights, _three2.default.UniformsLib.shadowmap, {
         enableDiffuse1: { type: 'i', value: 0 },
         enableDiffuse2: { type: 'i', value: 0 },
         enableSpecular: { type: 'i', value: 0 },

@@ -7,3 +7,4 @@ export * from './cylinderMesh';
 export * from './heightfieldMesh';
 export * from './planeMesh';
 export * from './sphereMesh';
+export * from './softMesh';
