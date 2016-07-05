@@ -30,7 +30,7 @@
 
 * **Softbodies** - WhitestormJS is the only engine (except native ammo.js) that supports softbodies. 
 
-## GAME EXAMPLE &#127918;
+## GAME EXAMPLE :video_game:
 <a href="http://192.241.128.187/current/examples/fps/shooter/" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/splash.png"></a>
 
 ## INSTALLATION &#10540; USAGE
@@ -80,27 +80,27 @@ world.start(); // Start animations and physics simulation.
 
 <br>
 
-## &#128640; [Examples](http://192.241.128.187/current/examples/):
+## [Examples](http://192.241.128.187/current/examples/):
 
-#### BASIC:
+#### :space_invader: BASIC:
  * [Basic / Hello world](http://192.241.128.187/current/examples/basic/helloworld/)  (Basic "Hello world!" example.)
  * [Basic / Model](http://192.241.128.187/current/examples/basic/model/)  (Basic model example.)
  * [Basic / Debugging](http://192.241.128.187/current/examples/basic/debugging/)  (Object's debug example.)
  * [Basic / Extending API](http://192.241.128.187/current/examples/basic/extending/)  (Extending api example.)
  * [Basic / Softbody](http://192.241.128.187/current/examples/basic/softbody/)  (Basic softbody implementation.)
 
-#### DESIGN:
+#### :gem: DESIGN:
  * [Design / Saturn](http://192.241.128.187/current/examples/design/saturn/)  (Saturn planet example from: http://codepen.io/Yakudoo/pen/qbygaJ)
  * [Design / Easter](http://192.241.128.187/current/examples/design/easter/)  (Easter rabbit with easter eggs.)
 
-#### FIRST-PERSON:
+#### :snowboarder: FIRST-PERSON:
  * [FPS / Shooter](http://192.241.128.187/current/examples/fps/shooter/)  (First person example with Wagner effects and terrain. + fog)
  * [FPS / Fog](http://192.241.128.187/current/examples/fps/fog/)  (First person game with animated objects)
 
-#### PHYSICS:
+#### :bowling: PHYSICS:
  * [Physics / Dominos](http://192.241.128.187/current/examples/physics/domino/)  (Physics example with dominos.)
 
-#### PERFORMANCE:
+#### :rocket: PERFORMANCE:
  * [Performance / Sticks](http://192.241.128.187/current/examples/performance/sticks/)  (Collisions performance of 320 basic box objects.)
  * [Performance / Softbodies](http://192.241.128.187/current/examples/performance/softbodies/)  (Collisions performance of 10 softbodies.)
 
