@@ -15,9 +15,9 @@ class World extends WHSObject {
    */
   constructor(params = {}) {
     super({
-
       stats: false,
       autoresize: false,
+      softbody: false,
 
       shadowmap: {
         enabled: true,
@@ -52,6 +52,8 @@ class World extends WHSObject {
       height: window.innerHeight, // Container(height).
 
       physics: {
+        fixedTimeStep: 1 / 60,
+
         quatNormalizeSkip: 0,
         quatNormalizeFast: false,
 
@@ -84,14 +86,13 @@ class World extends WHSObject {
 
       assets: './assets',
       container: document.body
-
     });
 
     super.setParams(params);
 
     // INIT.
-    this._initScene();
     this._initDOM();
+    this._initScene();
 
     if (!(
       typeof process === 'object'
@@ -120,9 +121,18 @@ class World extends WHSObject {
    * Initialize THREE.js scene object.
    */
   _initScene() {
-    console.log(Physijs);
-    const scene = !!'physics' ? new Physijs.Scene() : new THREE.Scene(),
-      params = this.getParams();
+    const params = this.getParams(),
+      scene = !!'physics'
+      ? new Physijs.Scene(
+        {
+          fixedTimeStep: params.physics.fixedTimeStep
+        },
+        {
+          stats: params.stats,
+          world: this,
+          softbody: params.softbody
+        }
+      ) : new THREE.Scene();
 
     if (!!'physics') {
       scene.setGravity(
@@ -134,6 +144,11 @@ class World extends WHSObject {
       );
 
       this.simulate = true;
+      scene.addEventListener('update', () => {
+        if (this.simulate) scene.simulate(undefined, 1);
+      });
+
+      scene.simulate();
     } else this.simulate = false;
 
     if (params.fog.type === 'regular')
@@ -318,8 +333,6 @@ class World extends WHSObject {
       if (_scope._stats) _scope._stats.begin();
 
       _scope._process(clock.getDelta());
-
-      if (_scope.simulate) scene.simulate();
       if (_scope.controls) _scope._updateControls();
 
       // Effects rendering.

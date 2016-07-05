@@ -11,8 +11,7 @@ class Plane extends Shape {
     extend(params.geometry, {
       width: 10,
       height: 10,
-      wSegments: 32,
-      hSegments: 32
+      segments: 32
     });
 
     if (params.build) {
@@ -41,8 +40,7 @@ class Plane extends Shape {
     return new THREE.PlaneGeometry(
       params.geometry.width,
       params.geometry.height,
-      params.geometry.wSegments,
-      params.geometry.hSegments
+      params.geometry.segments
     );
   }
 

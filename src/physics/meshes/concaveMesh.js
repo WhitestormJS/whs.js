@@ -3,7 +3,7 @@ import {Mesh} from '../core/mesh';
 export class ConcaveMesh extends Mesh {
   constructor(geom, material, mass, cGeometry, cScale) {
     const geometry = cGeometry ? cGeometry : geom,
-      triangles = new Array(geometry.faces.length);
+      data = new Float32Array(geometry.faces.length * 9);
 
     super(geom, material, mass);
 
@@ -19,11 +19,17 @@ export class ConcaveMesh extends Mesh {
     for (let i = 0; i < geometry.faces.length; i++) {
       const face = geometry.faces[i];
 
-      triangles[i] = [
-        {x: vertices[face.a].x * cScale.x, y: vertices[face.a].y * cScale.y, z: vertices[face.a].z * cScale.z},
-        {x: vertices[face.b].x * cScale.x, y: vertices[face.b].y * cScale.y, z: vertices[face.b].z * cScale.z},
-        {x: vertices[face.c].x * cScale.x, y: vertices[face.c].y * cScale.y, z: vertices[face.c].z * cScale.z}
-      ];
+      data[i * 9] = vertices[face.a].x * cScale.x;
+      data[i * 9 + 1] = vertices[face.a].y * cScale.y;
+      data[i * 9 + 2] = vertices[face.a].z * cScale.z;
+
+      data[i * 9 + 3] = vertices[face.b].x * cScale.x;
+      data[i * 9 + 4] = vertices[face.b].y * cScale.y;
+      data[i * 9 + 5] = vertices[face.b].z * cScale.z;
+
+      data[i * 9 + 6] = vertices[face.c].x * cScale.x;
+      data[i * 9 + 7] = vertices[face.c].y * cScale.y;
+      data[i * 9 + 8] = vertices[face.c].z * cScale.z;
     }
 
     const width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
@@ -31,7 +37,7 @@ export class ConcaveMesh extends Mesh {
     const depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
 
     this._physijs.type = 'concave';
-    this._physijs.triangles = triangles;
+    this._physijs.data = data;
     this._physijs.mass = (typeof mass === 'undefined') ? width * height * depth : mass;
   }
 }

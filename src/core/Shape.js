@@ -26,6 +26,7 @@ class Shape extends WHSObject {
     super({
       mass: 10,
       build: true,
+      softbody: false,
       geometry: {},
 
       material: {
@@ -122,23 +123,25 @@ class Shape extends WHSObject {
             }
 
             if (tags.indexOf('no-transforms') < 0) {
-              _scope.position.set(
-                _scope.__params.pos.x,
-                _scope.__params.pos.y,
-                _scope.__params.pos.z
-              );
+              if (!_scope.getParams().softbody) {
+                _scope.position.set(
+                  _scope.__params.pos.x,
+                  _scope.__params.pos.y,
+                  _scope.__params.pos.z
+                );
 
-              _scope.rotation.set(
-                _scope.__params.rot.x,
-                _scope.__params.rot.y,
-                _scope.__params.rot.z
-              );
+                _scope.rotation.set(
+                  _scope.__params.rot.x,
+                  _scope.__params.rot.y,
+                  _scope.__params.rot.z
+                );
 
-              _scope.scale.set(
-                _scope.__params.scale.x,
-                _scope.__params.scale.y,
-                _scope.__params.scale.z
-              );
+                _scope.scale.set(
+                  _scope.__params.scale.x,
+                  _scope.__params.scale.y,
+                  _scope.__params.scale.z
+                );
+              }
             }
 
             // Box helper.
@@ -220,23 +223,25 @@ class Shape extends WHSObject {
           }
 
           if (tags.indexOf('no-transforms') < 0) {
-            _scope.position.set(
-              _scope.__params.pos.x,
-              _scope.__params.pos.y,
-              _scope.__params.pos.z
-            );
+            if (!_scope.getParams().softbody) {
+              _scope.position.set(
+                _scope.__params.pos.x,
+                _scope.__params.pos.y,
+                _scope.__params.pos.z
+              );
 
-            _scope.rotation.set(
-              _scope.__params.rot.x,
-              _scope.__params.rot.y,
-              _scope.__params.rot.z
-            );
+              _scope.rotation.set(
+                _scope.__params.rot.x,
+                _scope.__params.rot.y,
+                _scope.__params.rot.z
+              );
 
-            _scope.scale.set(
-              _scope.__params.scale.x,
-              _scope.__params.scale.y,
-              _scope.__params.scale.z
-            );
+              _scope.scale.set(
+                _scope.__params.scale.x,
+                _scope.__params.scale.y,
+                _scope.__params.scale.z
+              );
+            }
           }
 
           // Box helper.
@@ -334,14 +339,15 @@ class Shape extends WHSObject {
             parentNative.add(_scope.getNative());
             _scope.parent.children.push(_scope);
 
+            if (_scope.__params.softbody) {
+              _scope.native.position.set(0, 0, 0);
+              _scope.native.rotation.set(0, 0, 0);
+            }
+
             if (_scope.__params.helpers.box) parentNative.add(_helpers.box);
-
             if (_scope.__params.helpers.boundingBox) parentNative.add(_helpers.boundingBox);
-
             if (_scope.__params.helpers.edges) parentNative.add(_helpers.edges);
-
             if (_scope.__params.helpers.faceNormals) parentNative.add(_helpers.faceNormals);
-
             if (_scope.__params.helpers.vertexNormals) parentNative.add(_helpers.vertexNormals);
           } catch (err) {
             console.error(err.message);
@@ -376,20 +382,16 @@ class Shape extends WHSObject {
           parentNative.add(_scope.getNative());
           _scope.parent.children.push(_scope);
 
-          if (_scope.__params.helpers.box)
-            parentNative.add(_helpers.box);
+          if (_scope.__params.softbody) {
+            _scope.native.position.set(0, 0, 0);
+            _scope.native.rotation.set(0, 0, 0);
+          }
 
-          if (_scope.__params.helpers.boundingBox)
-            parentNative.add(_helpers.boundingBox);
-
-          if (_scope.__params.helpers.edges)
-            parentNative.add(_helpers.edges);
-
-          if (_scope.__params.helpers.faceNormals)
-            parentNative.add(_helpers.faceNormals);
-
-          if (_scope.__params.helpers.vertexNormals)
-            parentNative.add(_helpers.vertexNormals);
+          if (_scope.__params.helpers.box) parentNative.add(_helpers.box);
+          if (_scope.__params.helpers.boundingBox) parentNative.add(_helpers.boundingBox);
+          if (_scope.__params.helpers.edges) parentNative.add(_helpers.edges);
+          if (_scope.__params.helpers.faceNormals) parentNative.add(_helpers.faceNormals);
+          if (_scope.__params.helpers.vertexNormals) parentNative.add(_helpers.vertexNormals);
         } catch (err) {
           console.error(err.message);
           reject();
@@ -437,7 +439,11 @@ class Shape extends WHSObject {
    * @param {WHS.Shape} source - Source object, that will be applied to this.
    */
   copy(source) {
-    this.setNative(source.getNative().clone());
+    const sourceNative = source.getNative();
+
+    if (source.getParams().softbody)
+      this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));
+    else this.setNative(sourceNative.clone());
 
     this.wrap();
 
@@ -588,6 +594,10 @@ class Shape extends WHSObject {
     return this.getNative().scale;
   }
 
+  G_translate(x = 0, y = 0, z = 0) {
+    this.native.geometry.translate(x, y, z);
+  }
+
   G_(params = {}) {
     if (this.buildGeometry) {
       this.native.geometry = this.buildGeometry(
@@ -609,6 +619,24 @@ class Shape extends WHSObject {
 
   get M_color() {
     return this.native.material.color;
+  }
+
+  proccessSoftbodyGeometry(geometry) {
+    geometry.rotateX(this.__params.rot.x);
+    geometry.rotateY(this.__params.rot.x);
+    geometry.rotateZ(this.__params.rot.x);
+
+    geometry.scale(
+      this.__params.scale.x,
+      this.__params.scale.y,
+      this.__params.scale.z
+    );
+
+    geometry.translate(
+      this.__params.pos.x,
+      this.__params.pos.y,
+      this.__params.pos.z
+    );
   }
 
   /* Access private data */

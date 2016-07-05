@@ -21,14 +21,19 @@ class Box extends Shape {
   }
 
   build(params = {}) {
-    const Mesh = this.physics ? Physijs.BoxMesh : THREE.Mesh;
     const material = super._initMaterial(params.material);
+
+    let Mesh;
+
+    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
+    else if (this.physics) Mesh = Physijs.BoxMesh;
+    else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
       this.setNative(new Mesh(
         this.buildGeometry(params),
         material,
-        params.mass
+        this.getParams()
       ));
 
       resolve();
@@ -36,11 +41,17 @@ class Box extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.BoxGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.BoxBufferGeometry : THREE.BoxGeometry;
+
+    const geometry = new GConstruct(
       params.geometry.width,
       params.geometry.height,
       params.geometry.depth
     );
+
+    if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+
+    return geometry;
   }
 
   set G_width(val) {
@@ -68,7 +79,7 @@ class Box extends Shape {
   }
 
   clone() {
-    return new Box({build: false}).copy(this);
+    return this.getParams().softbody ? new Box(this.getParams()) : new Box({build: false}).copy(this);
   }
 }
 
