@@ -6,9 +6,8 @@
     <a href="https://travis-ci.org/WhitestormJS/whitestorm.js" align="center"><img src="https://travis-ci.org/WhitestormJS/whitestorm.js.svg"></a>&nbsp;&nbsp;
     <a href="https://www.npmjs.com/package/whitestormjs"><img src="http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg"></a>&nbsp;&nbsp;          
     <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg"></a>&nbsp;&nbsp;
-    <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>
-    <a href="http://baikal.io/sasha240100/whitestorm-js"><img alt="Baikal" src="http://baikal.io/badges/sasha240100/whitestorm-js"></a>
-    <br>
+    <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>&nbsp;&nbsp;
+    <a href="https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge" alt="Join the chat at https://gitter.im/WhitestormJS/whitestorm.js"><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
 
     <p align="center"><i><b>Framework for developing 3D web apps with physics.</b></i></p>
 </p>
@@ -52,12 +51,12 @@ const world = new WHS.World({
     }
 });
 
-const sphere = new WHS.Sphere({ // Create
+const sphere = new WHS.Sphere({ // Create sphere object.
   geometry: {
     radius: 3
   },
 
-  mass: 10,
+  mass: 10, // Mass of physics object.
 
   material: {
     color: 0xffffff,
@@ -69,15 +68,13 @@ const sphere = new WHS.Sphere({ // Create
     y: 100,
     z: 0
   }
-})
+});
 
 sphere.addTo(GAME);
+sphere.getNative(); // Returns THREE.Mesh of this object.
 
 world.start(); // Start animations and physics simulation.
 ```
-
-[![Join the chat at https://gitter.im/WhitestormJS/whitestorm.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 
 <br>
 
