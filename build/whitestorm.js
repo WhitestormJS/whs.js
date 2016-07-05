@@ -53,7 +53,7 @@ var WHS =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 78);
+/******/ 	return __webpack_require__(__webpack_require__.s = 79);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -80,11 +80,11 @@ exports.default = function (instance, Constructor) {
 
 exports.__esModule = true;
 
-var _setPrototypeOf = __webpack_require__(131);
+var _setPrototypeOf = __webpack_require__(133);
 
 var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);
 
-var _create = __webpack_require__(127);
+var _create = __webpack_require__(129);
 
 var _create2 = _interopRequireDefault(_create);
 
@@ -41668,7 +41668,7 @@ if (true) {
 
 exports.__esModule = true;
 
-var _defineProperty = __webpack_require__(128);
+var _defineProperty = __webpack_require__(130);
 
 var _defineProperty2 = _interopRequireDefault(_defineProperty);
 
@@ -41701,11 +41701,11 @@ exports.default = function () {
 
 exports.__esModule = true;
 
-var _getPrototypeOf = __webpack_require__(130);
+var _getPrototypeOf = __webpack_require__(132);
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
-var _getOwnPropertyDescriptor = __webpack_require__(129);
+var _getOwnPropertyDescriptor = __webpack_require__(131);
 
 var _getOwnPropertyDescriptor2 = _interopRequireDefault(_getOwnPropertyDescriptor);
 
@@ -42034,6 +42034,7 @@ var Shape = function (_WHSObject) {
     var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Shape).call(this, {
       mass: 10,
       build: true,
+      softbody: false,
       geometry: {},
 
       material: {
@@ -42138,11 +42139,13 @@ var Shape = function (_WHSObject) {
               }
 
               if (tags.indexOf('no-transforms') < 0) {
-                _scope.position.set(_scope.__params.pos.x, _scope.__params.pos.y, _scope.__params.pos.z);
+                if (!_scope.getParams().softbody) {
+                  _scope.position.set(_scope.__params.pos.x, _scope.__params.pos.y, _scope.__params.pos.z);
 
-                _scope.rotation.set(_scope.__params.rot.x, _scope.__params.rot.y, _scope.__params.rot.z);
+                  _scope.rotation.set(_scope.__params.rot.x, _scope.__params.rot.y, _scope.__params.rot.z);
 
-                _scope.scale.set(_scope.__params.scale.x, _scope.__params.scale.y, _scope.__params.scale.z);
+                  _scope.scale.set(_scope.__params.scale.x, _scope.__params.scale.y, _scope.__params.scale.z);
+                }
               }
 
               // Box helper.
@@ -42190,11 +42193,13 @@ var Shape = function (_WHSObject) {
             }
 
             if (tags.indexOf('no-transforms') < 0) {
-              _scope.position.set(_scope.__params.pos.x, _scope.__params.pos.y, _scope.__params.pos.z);
+              if (!_scope.getParams().softbody) {
+                _scope.position.set(_scope.__params.pos.x, _scope.__params.pos.y, _scope.__params.pos.z);
 
-              _scope.rotation.set(_scope.__params.rot.x, _scope.__params.rot.y, _scope.__params.rot.z);
+                _scope.rotation.set(_scope.__params.rot.x, _scope.__params.rot.y, _scope.__params.rot.z);
 
-              _scope.scale.set(_scope.__params.scale.x, _scope.__params.scale.y, _scope.__params.scale.z);
+                _scope.scale.set(_scope.__params.scale.x, _scope.__params.scale.y, _scope.__params.scale.z);
+              }
             }
 
             // Box helper.
@@ -42263,14 +42268,15 @@ var Shape = function (_WHSObject) {
               parentNative.add(_scope.getNative());
               _scope.parent.children.push(_scope);
 
+              if (_scope.__params.softbody) {
+                _scope.native.position.set(0, 0, 0);
+                _scope.native.rotation.set(0, 0, 0);
+              }
+
               if (_scope.__params.helpers.box) parentNative.add(_helpers.box);
-
               if (_scope.__params.helpers.boundingBox) parentNative.add(_helpers.boundingBox);
-
               if (_scope.__params.helpers.edges) parentNative.add(_helpers.edges);
-
               if (_scope.__params.helpers.faceNormals) parentNative.add(_helpers.faceNormals);
-
               if (_scope.__params.helpers.vertexNormals) parentNative.add(_helpers.vertexNormals);
             } catch (err) {
               console.error(err.message);
@@ -42300,14 +42306,15 @@ var Shape = function (_WHSObject) {
             parentNative.add(_scope.getNative());
             _scope.parent.children.push(_scope);
 
+            if (_scope.__params.softbody) {
+              _scope.native.position.set(0, 0, 0);
+              _scope.native.rotation.set(0, 0, 0);
+            }
+
             if (_scope.__params.helpers.box) parentNative.add(_helpers.box);
-
             if (_scope.__params.helpers.boundingBox) parentNative.add(_helpers.boundingBox);
-
             if (_scope.__params.helpers.edges) parentNative.add(_helpers.edges);
-
             if (_scope.__params.helpers.faceNormals) parentNative.add(_helpers.faceNormals);
-
             if (_scope.__params.helpers.vertexNormals) parentNative.add(_helpers.vertexNormals);
           } catch (err) {
             console.error(err.message);
@@ -42362,7 +42369,9 @@ var Shape = function (_WHSObject) {
   }, {
     key: 'copy',
     value: function copy(source) {
-      this.setNative(source.getNative().clone());
+      var sourceNative = source.getNative();
+
+      if (source.getParams().softbody) this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));else this.setNative(sourceNative.clone());
 
       this.wrap();
 
@@ -42414,6 +42423,15 @@ var Shape = function (_WHSObject) {
       return p;
     }
   }, {
+    key: 'G_translate',
+    value: function G_translate() {
+      var x = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+      var y = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+      var z = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
+
+      this.native.geometry.translate(x, y, z);
+    }
+  }, {
     key: 'G_',
     value: function G_() {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -42430,11 +42448,21 @@ var Shape = function (_WHSObject) {
       this.native.material = this._initMaterial(this.updateParams({ material: params }).material);
     }
   }, {
-    key: 'setNative',
+    key: 'proccessSoftbodyGeometry',
+    value: function proccessSoftbodyGeometry(geometry) {
+      geometry.rotateX(this.__params.rot.x);
+      geometry.rotateY(this.__params.rot.x);
+      geometry.rotateZ(this.__params.rot.x);
 
+      geometry.scale(this.__params.scale.x, this.__params.scale.y, this.__params.scale.z);
+
+      geometry.translate(this.__params.pos.x, this.__params.pos.y, this.__params.pos.z);
+    }
 
     /* Access private data */
 
+  }, {
+    key: 'setNative',
     value: function setNative(native) {
       this.native = native;
       this.position = this.native.position.clone();
@@ -42666,7 +42694,7 @@ Object.keys(_eventable).forEach(function (key) {
   });
 });
 
-var _index = __webpack_require__(111);
+var _index = __webpack_require__(112);
 
 Object.keys(_index).forEach(function (key) {
   if (key === "default") return;
@@ -42678,7 +42706,7 @@ Object.keys(_index).forEach(function (key) {
   });
 });
 
-var _index2 = __webpack_require__(110);
+var _index2 = __webpack_require__(111);
 
 Object.keys(_index2).forEach(function (key) {
   if (key === "default") return;
@@ -42690,7 +42718,7 @@ Object.keys(_index2).forEach(function (key) {
   });
 });
 
-var _index3 = __webpack_require__(119);
+var _index3 = __webpack_require__(120);
 
 Object.keys(_index3).forEach(function (key) {
   if (key === "default") return;
@@ -42702,7 +42730,7 @@ Object.keys(_index3).forEach(function (key) {
   });
 });
 
-var _index4 = __webpack_require__(122);
+var _index4 = __webpack_require__(124);
 
 Object.keys(_index4).forEach(function (key) {
   if (key === "default") return;
@@ -42911,7 +42939,7 @@ if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 /***/ function(module, exports, __webpack_require__) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __webpack_require__(146)
+var IObject = __webpack_require__(148)
   , defined = __webpack_require__(33);
 module.exports = function(it){
   return IObject(defined(it));
@@ -43335,7 +43363,8 @@ var MESSAGE_TYPES = {
   WORLDREPORT: 0,
   COLLISIONREPORT: 1,
   VEHICLEREPORT: 2,
-  CONSTRAINTREPORT: 3
+  CONSTRAINTREPORT: 3,
+  SOFTREPORT: 4
 };
 
 var REPORT_ITEMSIZE = 14,
@@ -43513,7 +43542,7 @@ var _createClass2 = __webpack_require__(4);
 
 var _createClass3 = _interopRequireDefault(_createClass2);
 
-var _minivents = __webpack_require__(171);
+var _minivents = __webpack_require__(173);
 
 var _minivents2 = _interopRequireDefault(_minivents);
 
@@ -44095,11 +44124,11 @@ exports.defaults = defaults;
 
 exports.__esModule = true;
 
-var _iterator = __webpack_require__(133);
+var _iterator = __webpack_require__(135);
 
 var _iterator2 = _interopRequireDefault(_iterator);
 
-var _symbol = __webpack_require__(132);
+var _symbol = __webpack_require__(134);
 
 var _symbol2 = _interopRequireDefault(_symbol);
 
@@ -44258,7 +44287,7 @@ module.exports = true;
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject    = __webpack_require__(23)
-  , dPs         = __webpack_require__(152)
+  , dPs         = __webpack_require__(154)
   , enumBugKeys = __webpack_require__(34)
   , IE_PROTO    = __webpack_require__(41)('IE_PROTO')
   , Empty       = function(){ /* empty */ }
@@ -44272,7 +44301,7 @@ var createDict = function(){
     , gt     = '>'
     , iframeDocument;
   iframe.style.display = 'none';
-  __webpack_require__(145).appendChild(iframe);
+  __webpack_require__(147).appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
   // createDict = iframe.contentWindow.Object;
   // html.removeChild(iframe);
@@ -44620,7 +44649,7 @@ var _three = __webpack_require__(3);
 
 var THREE = _interopRequireWildcard(_three);
 
-var _stats = __webpack_require__(173);
+var _stats = __webpack_require__(64);
 
 var _stats2 = _interopRequireDefault(_stats);
 
@@ -44655,9 +44684,9 @@ var World = function (_WHSObject) {
     (0, _classCallCheck3.default)(this, World);
 
     var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(World).call(this, {
-
       stats: false,
       autoresize: false,
+      softbody: false,
 
       shadowmap: {
         enabled: true,
@@ -44692,6 +44721,8 @@ var World = function (_WHSObject) {
       height: window.innerHeight, // Container(height).
 
       physics: {
+        fixedTimeStep: 1 / 60,
+
         quatNormalizeSkip: 0,
         quatNormalizeFast: false,
 
@@ -44724,14 +44755,13 @@ var World = function (_WHSObject) {
 
       assets: './assets',
       container: document.body
-
     }));
 
     (0, _get3.default)(Object.getPrototypeOf(World.prototype), 'setParams', _this).call(_this, params);
 
     // INIT.
-    _this._initScene();
     _this._initDOM();
+    _this._initScene();
 
     if (!((typeof process === 'undefined' ? 'undefined' : (0, _typeof3.default)(process)) === 'object' && Object.prototype.toString.call(process) === '[object process]')) _this._initStats();
 
@@ -44761,14 +44791,26 @@ var World = function (_WHSObject) {
   (0, _createClass3.default)(World, [{
     key: '_initScene',
     value: function _initScene() {
-      console.log(Physijs);
-      var scene =  true ? new Physijs.Scene() : new THREE.Scene(),
-          params = this.getParams();
+      var _this2 = this;
+
+      var params = this.getParams(),
+          scene =  true ? new Physijs.Scene({
+        fixedTimeStep: params.physics.fixedTimeStep
+      }, {
+        stats: params.stats,
+        world: this,
+        softbody: params.softbody
+      }) : new THREE.Scene();
 
       if (true) {
         scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
 
         this.simulate = true;
+        scene.addEventListener('update', function () {
+          if (_this2.simulate) scene.simulate(undefined, 1);
+        });
+
+        scene.simulate();
       } else this.simulate = false;
 
       if (params.fog.type === 'regular') scene.fog = new THREE.Fog(params.fog.hex, params.fog.near, params.fog.far);else if (params.fog.type === 'exp' || params.fog.type === 'expodential') scene.fog = new THREE.FogExp2(params.fog.hex, params.fog.density);
@@ -44941,8 +44983,6 @@ var World = function (_WHSObject) {
         if (_scope._stats) _scope._stats.begin();
 
         _scope._process(clock.getDelta());
-
-        if (_scope.simulate) scene.simulate();
         if (_scope.controls) _scope._updateControls();
 
         // Effects rendering.
@@ -45152,7 +45192,7 @@ module.exports = function(it){
 /***/ function(module, exports, __webpack_require__) {
 
 // optional / simple context binding
-var aFunction = __webpack_require__(141);
+var aFunction = __webpack_require__(143);
 module.exports = function(fn, that, length){
   aFunction(fn);
   if(that === undefined)return fn;
@@ -45204,7 +45244,7 @@ var LIBRARY        = __webpack_require__(36)
   , hide           = __webpack_require__(20)
   , has            = __webpack_require__(16)
   , Iterators      = __webpack_require__(35)
-  , $iterCreate    = __webpack_require__(148)
+  , $iterCreate    = __webpack_require__(150)
   , setToStringTag = __webpack_require__(40)
   , getPrototypeOf = __webpack_require__(59)
   , ITERATOR       = __webpack_require__(21)('iterator')
@@ -45310,7 +45350,7 @@ module.exports = Object.getPrototypeOf || function(O){
 
 var has          = __webpack_require__(16)
   , toIObject    = __webpack_require__(12)
-  , arrayIndexOf = __webpack_require__(143)(false)
+  , arrayIndexOf = __webpack_require__(145)(false)
   , IE_PROTO     = __webpack_require__(41)('IE_PROTO');
 
 module.exports = function(object, names){
@@ -45359,6 +45399,17 @@ module.exports = function(it){
 
 /***/ },
 /* 64 */
+/***/ function(module, exports) {
+
+// stats.js - http://github.com/mrdoob/stats.js
+var Stats=function(){function h(a){c.appendChild(a.dom);return a}function k(a){for(var d=0;d<c.children.length;d++)c.children[d].style.display=d===a?"block":"none";l=a}var l=0,c=document.createElement("div");c.style.cssText="position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000";c.addEventListener("click",function(a){a.preventDefault();k(++l%c.children.length)},!1);var g=(performance||Date).now(),e=g,a=0,r=h(new Stats.Panel("FPS","#0ff","#002")),f=h(new Stats.Panel("MS","#0f0","#020"));
+if(self.performance&&self.performance.memory)var t=h(new Stats.Panel("MB","#f08","#201"));k(0);return{REVISION:16,dom:c,addPanel:h,showPanel:k,begin:function(){g=(performance||Date).now()},end:function(){a++;var c=(performance||Date).now();f.update(c-g,200);if(c>e+1E3&&(r.update(1E3*a/(c-e),100),e=c,a=0,t)){var d=performance.memory;t.update(d.usedJSHeapSize/1048576,d.jsHeapSizeLimit/1048576)}return c},update:function(){g=this.end()},domElement:c,setMode:k}};
+Stats.Panel=function(h,k,l){var c=Infinity,g=0,e=Math.round,a=e(window.devicePixelRatio||1),r=80*a,f=48*a,t=3*a,u=2*a,d=3*a,m=15*a,n=74*a,p=30*a,q=document.createElement("canvas");q.width=r;q.height=f;q.style.cssText="width:80px;height:48px";var b=q.getContext("2d");b.font="bold "+9*a+"px Helvetica,Arial,sans-serif";b.textBaseline="top";b.fillStyle=l;b.fillRect(0,0,r,f);b.fillStyle=k;b.fillText(h,t,u);b.fillRect(d,m,n,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d,m,n,p);return{dom:q,update:function(f,
+v){c=Math.min(c,f);g=Math.max(g,f);b.fillStyle=l;b.globalAlpha=1;b.fillRect(0,0,r,m);b.fillStyle=k;b.fillText(e(f)+" "+h+" ("+e(c)+"-"+e(g)+")",t,u);b.drawImage(q,d+a,m,n-a,p,d,m,n-a,p);b.fillRect(d+n-a,m,a,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d+n-a,m,a,e((1-f/v)*p))}}};"object"===typeof module&&(module.exports=Stats);
+
+
+/***/ },
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45368,7 +45419,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _CubeCamera = __webpack_require__(73);
+var _CubeCamera = __webpack_require__(74);
 
 Object.keys(_CubeCamera).forEach(function (key) {
   if (key === "default") return;
@@ -45380,7 +45431,7 @@ Object.keys(_CubeCamera).forEach(function (key) {
   });
 });
 
-var _OrtographicCamera = __webpack_require__(74);
+var _OrtographicCamera = __webpack_require__(75);
 
 Object.keys(_OrtographicCamera).forEach(function (key) {
   if (key === "default") return;
@@ -45405,7 +45456,7 @@ Object.keys(_PerspectiveCamera).forEach(function (key) {
 });
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45427,7 +45478,7 @@ Object.keys(_Camera).forEach(function (key) {
   });
 });
 
-var _Curve = __webpack_require__(75);
+var _Curve = __webpack_require__(76);
 
 Object.keys(_Curve).forEach(function (key) {
   if (key === "default") return;
@@ -45488,7 +45539,7 @@ Object.keys(_World).forEach(function (key) {
 });
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45511,7 +45562,7 @@ Object.keys(_Loop).forEach(function (key) {
 });
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45521,7 +45572,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _firstPersonControls = __webpack_require__(76);
+var _firstPersonControls = __webpack_require__(77);
 
 Object.keys(_firstPersonControls).forEach(function (key) {
   if (key === "default") return;
@@ -45533,7 +45584,7 @@ Object.keys(_firstPersonControls).forEach(function (key) {
   });
 });
 
-var _orbitControls = __webpack_require__(77);
+var _orbitControls = __webpack_require__(78);
 
 Object.keys(_orbitControls).forEach(function (key) {
   if (key === "default") return;
@@ -45558,7 +45609,7 @@ Object.keys(_api).forEach(function (key) {
 });
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45568,7 +45619,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _AmbientLight = __webpack_require__(79);
+var _AmbientLight = __webpack_require__(80);
 
 Object.keys(_AmbientLight).forEach(function (key) {
   if (key === "default") return;
@@ -45580,7 +45631,7 @@ Object.keys(_AmbientLight).forEach(function (key) {
   });
 });
 
-var _DirectionalLight = __webpack_require__(80);
+var _DirectionalLight = __webpack_require__(81);
 
 Object.keys(_DirectionalLight).forEach(function (key) {
   if (key === "default") return;
@@ -45592,7 +45643,7 @@ Object.keys(_DirectionalLight).forEach(function (key) {
   });
 });
 
-var _HemisphereLight = __webpack_require__(81);
+var _HemisphereLight = __webpack_require__(82);
 
 Object.keys(_HemisphereLight).forEach(function (key) {
   if (key === "default") return;
@@ -45604,7 +45655,7 @@ Object.keys(_HemisphereLight).forEach(function (key) {
   });
 });
 
-var _NormalLight = __webpack_require__(82);
+var _NormalLight = __webpack_require__(83);
 
 Object.keys(_NormalLight).forEach(function (key) {
   if (key === "default") return;
@@ -45616,7 +45667,7 @@ Object.keys(_NormalLight).forEach(function (key) {
   });
 });
 
-var _PointLight = __webpack_require__(83);
+var _PointLight = __webpack_require__(84);
 
 Object.keys(_PointLight).forEach(function (key) {
   if (key === "default") return;
@@ -45628,7 +45679,7 @@ Object.keys(_PointLight).forEach(function (key) {
   });
 });
 
-var _SpotLight = __webpack_require__(84);
+var _SpotLight = __webpack_require__(85);
 
 Object.keys(_SpotLight).forEach(function (key) {
   if (key === "default") return;
@@ -45636,269 +45687,6 @@ Object.keys(_SpotLight).forEach(function (key) {
     enumerable: true,
     get: function get() {
       return _SpotLight[key];
-    }
-  });
-});
-
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _Box = __webpack_require__(85);
-
-Object.keys(_Box).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Box[key];
-    }
-  });
-});
-
-var _ConvexModel = __webpack_require__(86);
-
-Object.keys(_ConvexModel).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _ConvexModel[key];
-    }
-  });
-});
-
-var _Cylinder = __webpack_require__(87);
-
-Object.keys(_Cylinder).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Cylinder[key];
-    }
-  });
-});
-
-var _Dodecahedron = __webpack_require__(88);
-
-Object.keys(_Dodecahedron).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Dodecahedron[key];
-    }
-  });
-});
-
-var _Extrude = __webpack_require__(89);
-
-Object.keys(_Extrude).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Extrude[key];
-    }
-  });
-});
-
-var _Icosahedron = __webpack_require__(90);
-
-Object.keys(_Icosahedron).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Icosahedron[key];
-    }
-  });
-});
-
-var _Lathe = __webpack_require__(91);
-
-Object.keys(_Lathe).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Lathe[key];
-    }
-  });
-});
-
-var _Model = __webpack_require__(92);
-
-Object.keys(_Model).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Model[key];
-    }
-  });
-});
-
-var _Morph = __webpack_require__(93);
-
-Object.keys(_Morph).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Morph[key];
-    }
-  });
-});
-
-var _Octahedron = __webpack_require__(94);
-
-Object.keys(_Octahedron).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Octahedron[key];
-    }
-  });
-});
-
-var _Parametric = __webpack_require__(95);
-
-Object.keys(_Parametric).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Parametric[key];
-    }
-  });
-});
-
-var _Plane = __webpack_require__(96);
-
-Object.keys(_Plane).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Plane[key];
-    }
-  });
-});
-
-var _Polyhedron = __webpack_require__(97);
-
-Object.keys(_Polyhedron).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Polyhedron[key];
-    }
-  });
-});
-
-var _Ring = __webpack_require__(98);
-
-Object.keys(_Ring).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Ring[key];
-    }
-  });
-});
-
-var _Shape2D = __webpack_require__(99);
-
-Object.keys(_Shape2D).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Shape2D[key];
-    }
-  });
-});
-
-var _Sphere = __webpack_require__(100);
-
-Object.keys(_Sphere).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Sphere[key];
-    }
-  });
-});
-
-var _Tetrahedron = __webpack_require__(101);
-
-Object.keys(_Tetrahedron).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Tetrahedron[key];
-    }
-  });
-});
-
-var _Text = __webpack_require__(102);
-
-Object.keys(_Text).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Text[key];
-    }
-  });
-});
-
-var _Torus = __webpack_require__(103);
-
-Object.keys(_Torus).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Torus[key];
-    }
-  });
-});
-
-var _Torusknot = __webpack_require__(104);
-
-Object.keys(_Torusknot).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Torusknot[key];
-    }
-  });
-});
-
-var _Tube = __webpack_require__(105);
-
-Object.keys(_Tube).forEach(function (key) {
-  if (key === "default") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Tube[key];
     }
   });
 });
@@ -45914,7 +45702,270 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Group = __webpack_require__(125);
+var _Box = __webpack_require__(86);
+
+Object.keys(_Box).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Box[key];
+    }
+  });
+});
+
+var _ConvexModel = __webpack_require__(87);
+
+Object.keys(_ConvexModel).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ConvexModel[key];
+    }
+  });
+});
+
+var _Cylinder = __webpack_require__(88);
+
+Object.keys(_Cylinder).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Cylinder[key];
+    }
+  });
+});
+
+var _Dodecahedron = __webpack_require__(89);
+
+Object.keys(_Dodecahedron).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Dodecahedron[key];
+    }
+  });
+});
+
+var _Extrude = __webpack_require__(90);
+
+Object.keys(_Extrude).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Extrude[key];
+    }
+  });
+});
+
+var _Icosahedron = __webpack_require__(91);
+
+Object.keys(_Icosahedron).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Icosahedron[key];
+    }
+  });
+});
+
+var _Lathe = __webpack_require__(92);
+
+Object.keys(_Lathe).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Lathe[key];
+    }
+  });
+});
+
+var _Model = __webpack_require__(93);
+
+Object.keys(_Model).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Model[key];
+    }
+  });
+});
+
+var _Morph = __webpack_require__(94);
+
+Object.keys(_Morph).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Morph[key];
+    }
+  });
+});
+
+var _Octahedron = __webpack_require__(95);
+
+Object.keys(_Octahedron).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Octahedron[key];
+    }
+  });
+});
+
+var _Parametric = __webpack_require__(96);
+
+Object.keys(_Parametric).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Parametric[key];
+    }
+  });
+});
+
+var _Plane = __webpack_require__(97);
+
+Object.keys(_Plane).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Plane[key];
+    }
+  });
+});
+
+var _Polyhedron = __webpack_require__(98);
+
+Object.keys(_Polyhedron).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Polyhedron[key];
+    }
+  });
+});
+
+var _Ring = __webpack_require__(99);
+
+Object.keys(_Ring).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Ring[key];
+    }
+  });
+});
+
+var _Shape2D = __webpack_require__(100);
+
+Object.keys(_Shape2D).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Shape2D[key];
+    }
+  });
+});
+
+var _Sphere = __webpack_require__(101);
+
+Object.keys(_Sphere).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Sphere[key];
+    }
+  });
+});
+
+var _Tetrahedron = __webpack_require__(102);
+
+Object.keys(_Tetrahedron).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Tetrahedron[key];
+    }
+  });
+});
+
+var _Text = __webpack_require__(103);
+
+Object.keys(_Text).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Text[key];
+    }
+  });
+});
+
+var _Torus = __webpack_require__(104);
+
+Object.keys(_Torus).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Torus[key];
+    }
+  });
+});
+
+var _Torusknot = __webpack_require__(105);
+
+Object.keys(_Torusknot).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Torusknot[key];
+    }
+  });
+});
+
+var _Tube = __webpack_require__(106);
+
+Object.keys(_Tube).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Tube[key];
+    }
+  });
+});
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Group = __webpack_require__(127);
 
 Object.keys(_Group).forEach(function (key) {
   if (key === "default") return;
@@ -45926,7 +45977,7 @@ Object.keys(_Group).forEach(function (key) {
   });
 });
 
-var _Skybox = __webpack_require__(126);
+var _Skybox = __webpack_require__(128);
 
 Object.keys(_Skybox).forEach(function (key) {
   if (key === "default") return;
@@ -45939,7 +45990,7 @@ Object.keys(_Skybox).forEach(function (key) {
 });
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports) {
 
 var g;
@@ -45964,7 +46015,7 @@ module.exports = g;
 
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45995,11 +46046,15 @@ var _three = __webpack_require__(3);
 
 var THREE = _interopRequireWildcard(_three);
 
-var _eventable = __webpack_require__(32);
-
-var _webworkifyWebpack = __webpack_require__(175);
+var _webworkifyWebpack = __webpack_require__(176);
 
 var _webworkifyWebpack2 = _interopRequireDefault(_webworkifyWebpack);
+
+var _stats = __webpack_require__(64);
+
+var _stats2 = _interopRequireDefault(_stats);
+
+var _eventable = __webpack_require__(32);
 
 var _api = __webpack_require__(14);
 
@@ -46010,7 +46065,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Scene = exports.Scene = function (_THREE$Scene) {
   (0, _inherits3.default)(Scene, _THREE$Scene);
 
-  function Scene(params) {
+  function Scene() {
+    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    var init = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
     (0, _classCallCheck3.default)(this, Scene);
 
     var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Scene).call(this));
@@ -46018,7 +46075,7 @@ var Scene = exports.Scene = function (_THREE$Scene) {
     Object.assign(_this, new _eventable.Eventable());
     _eventable.Eventable.make(Scene);
 
-    _this._worker = (0, _webworkifyWebpack2.default)(__webpack_require__(124));
+    _this._worker = (0, _webworkifyWebpack2.default)(__webpack_require__(126));
     _this._worker.transferableMessage = _this._worker.webkitPostMessage || _this._worker.postMessage;
     _this._materials_ref_counts = {};
     _this._objects = {};
@@ -46042,6 +46099,10 @@ var Scene = exports.Scene = function (_THREE$Scene) {
         switch (data[0]) {
           case _api.MESSAGE_TYPES.WORLDREPORT:
             _this._updateScene(data);
+            break;
+
+          case _api.MESSAGE_TYPES.SOFTREPORT:
+            _this._updateSoftbodies(data);
             break;
 
           case _api.MESSAGE_TYPES.COLLISIONREPORT:
@@ -46101,9 +46162,25 @@ var Scene = exports.Scene = function (_THREE$Scene) {
       }
     };
 
-    params = params || {};
     params.fixedTimeStep = params.fixedTimeStep || 1 / 60;
     params.rateLimit = params.rateLimit || true;
+
+    params.whs = {
+      softbody: init.softbody
+    };
+
+    _this._stats = init.stats ? new _stats2.default() : false;
+    _this._world = init.world || false;
+
+    if (_this._stats) {
+      _this._stats.setMode(0);
+      _this._stats.domElement.style.position = 'absolute';
+      _this._stats.domElement.style.left = '0px';
+      _this._stats.domElement.style.top = '48px';
+
+      _this._world._dom.appendChild(_this._stats.domElement);
+    }
+
     _this.execute('init', params);
     return _this;
   }
@@ -46111,13 +46188,11 @@ var Scene = exports.Scene = function (_THREE$Scene) {
   (0, _createClass3.default)(Scene, [{
     key: '_updateScene',
     value: function _updateScene(data) {
-      var num_objects = data[1];
-      var object = void 0,
-          offset = void 0;
+      var index = data[1];
 
-      for (var i = 0; i < num_objects; i++) {
-        offset = 2 + i * _api.REPORT_ITEMSIZE;
-        object = this._objects[data[offset]];
+      while (index--) {
+        var offset = 2 + index * _api.REPORT_ITEMSIZE;
+        var object = this._objects[data[offset]];
 
         if (object === undefined) continue;
 
@@ -46140,14 +46215,68 @@ var Scene = exports.Scene = function (_THREE$Scene) {
       this.dispatchEvent('update');
     }
   }, {
+    key: '_updateSoftbodies',
+    value: function _updateSoftbodies(data) {
+      var index = data[1],
+          offset = 2;
+
+      while (index--) {
+        var size = data[offset + 1];
+        var object = this._objects[data[offset]];
+        var association = object._physijs.aIdxAssoc;
+        var attributes = object.geometry.attributes;
+
+        var volumePositions = attributes.position.array;
+        var volumeNormals = attributes.normal.array;
+
+        var offsetVert = offset + 2;
+
+        for (var i = 0; i < size; i++) {
+          var x = data[offsetVert + i * 6];
+          var y = data[offsetVert + i * 6 + 1];
+          var z = data[offsetVert + i * 6 + 2];
+
+          var nx = data[offsetVert + i * 6 + 3];
+          var ny = data[offsetVert + i * 6 + 4];
+          var nz = data[offsetVert + i * 6 + 5];
+
+          var assocVertex = association[i];
+
+          for (var k = 0, kl = assocVertex.length; k < kl; k++) {
+            var indexVertex = assocVertex[k];
+
+            volumePositions[indexVertex] = x;
+            volumeNormals[indexVertex] = nx;
+            indexVertex++;
+
+            volumePositions[indexVertex] = y;
+            volumeNormals[indexVertex] = ny;
+            indexVertex++;
+
+            volumePositions[indexVertex] = z;
+            volumeNormals[indexVertex] = nz;
+          }
+        }
+
+        attributes.position.needsUpdate = true;
+        attributes.normal.needsUpdate = true;
+
+        offset += 2 + size * 6;
+      }
+
+      // if (this.SUPPORT_TRANSFERABLE)
+      //   this._worker.transferableMessage(data.buffer, [data.buffer]); // Give the typed array back to the worker
+
+      this._is_simulating = false;
+    }
+  }, {
     key: '_updateVehicles',
     value: function _updateVehicles(data) {
       var vehicle = void 0,
-          wheel = void 0,
-          offset = void 0;
+          wheel = void 0;
 
-      for (var i = 0; i < (data.length - 1) / VEHICLEREPORT_ITEMSIZE; i++) {
-        offset = 1 + i * VEHICLEREPORT_ITEMSIZE;
+      for (var i = 0; i < (data.length - 1) / _api.VEHICLEREPORT_ITEMSIZE; i++) {
+        var offset = 1 + i * _api.VEHICLEREPORT_ITEMSIZE;
         vehicle = this._vehicles[data[offset]];
 
         if (vehicle === undefined) continue;
@@ -46165,11 +46294,10 @@ var Scene = exports.Scene = function (_THREE$Scene) {
     key: '_updateConstraints',
     value: function _updateConstraints(data) {
       var constraint = void 0,
-          object = void 0,
-          offset = void 0;
+          object = void 0;
 
-      for (var i = 0; i < (data.length - 1) / CONSTRAINTREPORT_ITEMSIZE; i++) {
-        offset = 1 + i * CONSTRAINTREPORT_ITEMSIZE;
+      for (var i = 0; i < (data.length - 1) / _api.CONSTRAINTREPORT_ITEMSIZE; i++) {
+        var offset = 1 + i * _api.CONSTRAINTREPORT_ITEMSIZE;
         constraint = this._constraints[data[offset]];
         object = this._objects[data[offset + 1]];
 
@@ -46434,6 +46562,8 @@ var Scene = exports.Scene = function (_THREE$Scene) {
   }, {
     key: 'simulate',
     value: function simulate(timeStep, maxSubSteps) {
+      if (this._stats) this._stats.begin();
+
       if (this._is_simulating) return false;
 
       this._is_simulating = true;
@@ -46447,7 +46577,14 @@ var Scene = exports.Scene = function (_THREE$Scene) {
           var update = { id: object._physijs.id };
 
           if (object.__dirtyPosition) {
-            update.pos = { x: object.position.x, y: object.position.y, z: object.position.z };
+            update.pos = {
+              x: object.position.x,
+              y: object.position.y,
+              z: object.position.z
+            };
+
+            if (object._physijs.type === 'softbody') object.position.set(0, 0, 0);
+
             object.__dirtyPosition = false;
           }
 
@@ -46459,6 +46596,8 @@ var Scene = exports.Scene = function (_THREE$Scene) {
               w: object.quaternion.w
             };
 
+            if (object._physijs.type === 'softbody') object.rotation.set(0, 0, 0);
+
             object.__dirtyRotation = false;
           }
 
@@ -46468,6 +46607,7 @@ var Scene = exports.Scene = function (_THREE$Scene) {
 
       this.execute('simulate', { timeStep: timeStep, maxSubSteps: maxSubSteps });
 
+      if (this._stats) this._stats.end();
       return true;
     }
   }]);
@@ -46475,7 +46615,7 @@ var Scene = exports.Scene = function (_THREE$Scene) {
 }(THREE.Scene);
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46550,7 +46690,7 @@ var CubeCamera = function (_Camera) {
 exports.CubeCamera = CubeCamera;
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46625,7 +46765,7 @@ var OrtographicCamera = function (_Camera) {
 exports.OrtographicCamera = OrtographicCamera;
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46805,7 +46945,7 @@ var Curve = function (_WHSObject) {
 exports.Curve = Curve;
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47072,7 +47212,7 @@ function firstPersonControls(object) {
 }
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47092,7 +47232,7 @@ var _three = __webpack_require__(3);
 
 var THREE = _interopRequireWildcard(_three);
 
-var _threeOrbitControls = __webpack_require__(174);
+var _threeOrbitControls = __webpack_require__(175);
 
 var _threeOrbitControls2 = _interopRequireDefault(_threeOrbitControls);
 
@@ -47117,7 +47257,7 @@ function orbitControls(object) {
 }
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47127,7 +47267,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _index = __webpack_require__(64);
+var _index = __webpack_require__(65);
 
 Object.keys(_index).forEach(function (key) {
   if (key === "default") return;
@@ -47139,7 +47279,7 @@ Object.keys(_index).forEach(function (key) {
   });
 });
 
-var _index2 = __webpack_require__(65);
+var _index2 = __webpack_require__(66);
 
 Object.keys(_index2).forEach(function (key) {
   if (key === "default") return;
@@ -47151,7 +47291,7 @@ Object.keys(_index2).forEach(function (key) {
   });
 });
 
-var _index3 = __webpack_require__(66);
+var _index3 = __webpack_require__(67);
 
 Object.keys(_index3).forEach(function (key) {
   if (key === "default") return;
@@ -47163,7 +47303,7 @@ Object.keys(_index3).forEach(function (key) {
   });
 });
 
-var _index4 = __webpack_require__(67);
+var _index4 = __webpack_require__(68);
 
 Object.keys(_index4).forEach(function (key) {
   if (key === "default") return;
@@ -47175,7 +47315,7 @@ Object.keys(_index4).forEach(function (key) {
   });
 });
 
-var _index5 = __webpack_require__(68);
+var _index5 = __webpack_require__(69);
 
 Object.keys(_index5).forEach(function (key) {
   if (key === "default") return;
@@ -47187,7 +47327,7 @@ Object.keys(_index5).forEach(function (key) {
   });
 });
 
-var _index6 = __webpack_require__(69);
+var _index6 = __webpack_require__(70);
 
 Object.keys(_index6).forEach(function (key) {
   if (key === "default") return;
@@ -47199,7 +47339,7 @@ Object.keys(_index6).forEach(function (key) {
   });
 });
 
-var _index7 = __webpack_require__(70);
+var _index7 = __webpack_require__(71);
 
 Object.keys(_index7).forEach(function (key) {
   if (key === "default") return;
@@ -47228,10 +47368,10 @@ if (typeof window !== 'undefined') {
   global.THREE = THREE;
   global.Physijs = Physijs;
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(71)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(72)))
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47307,7 +47447,7 @@ var AmbientLight = function (_Light) {
 exports.AmbientLight = AmbientLight;
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47388,7 +47528,7 @@ var DirectionalLight = function (_Light) {
 exports.DirectionalLight = DirectionalLight;
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47469,7 +47609,7 @@ var HemisphereLight = function (_Light) {
 exports.HemisphereLight = HemisphereLight;
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47546,7 +47686,7 @@ var NormalLight = function (_Light) {
 exports.NormalLight = NormalLight;
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47627,7 +47767,7 @@ var PointLight = function (_Light) {
 exports.PointLight = PointLight;
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47706,7 +47846,7 @@ var SpotLight = function (_Light) {
 exports.SpotLight = SpotLight;
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47782,11 +47922,14 @@ var Box = function (_Shape) {
 
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var Mesh = this.physics ? Physijs.BoxMesh : THREE.Mesh;
       var material = (0, _get3.default)(Object.getPrototypeOf(Box.prototype), '_initMaterial', this).call(this, params.material);
 
+      var Mesh = void 0;
+
+      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.BoxMesh;else Mesh = THREE.Mesh;
+
       return new Promise(function (resolve) {
-        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 
         resolve();
       });
@@ -47796,12 +47939,18 @@ var Box = function (_Shape) {
     value: function buildGeometry() {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      return new THREE.BoxGeometry(params.geometry.width, params.geometry.height, params.geometry.depth);
+      var GConstruct = params.buffer && !params.softbody ? THREE.BoxBufferGeometry : THREE.BoxGeometry;
+
+      var geometry = new GConstruct(params.geometry.width, params.geometry.height, params.geometry.depth);
+
+      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+
+      return geometry;
     }
   }, {
     key: 'clone',
     value: function clone() {
-      return new Box({ build: false }).copy(this);
+      return this.getParams().softbody ? new Box(this.getParams()) : new Box({ build: false }).copy(this);
     }
   }, {
     key: 'G_width',
@@ -47834,7 +47983,7 @@ var Box = function (_Shape) {
 exports.Box = Box;
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47970,7 +48119,7 @@ var ConvexModel = function (_Shape) {
 exports.ConvexModel = ConvexModel;
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48108,7 +48257,7 @@ var Cylinder = function (_Shape) {
 exports.Cylinder = Cylinder;
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48228,7 +48377,7 @@ var Dodecahedron = function (_Shape) {
 exports.Dodecahedron = Dodecahedron;
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48348,7 +48497,7 @@ var Extrude = function (_Shape) {
 exports.Extrude = Extrude;
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48468,7 +48617,7 @@ var Icosahedron = function (_Shape) {
 exports.Icosahedron = Icosahedron;
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48579,7 +48728,7 @@ var Lathe = function (_Shape) {
 exports.Lathe = Lathe;
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48715,7 +48864,7 @@ var Model = function (_Shape) {
 exports.Model = Model;
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48834,7 +48983,7 @@ var Morph = function (_Shape) {
 exports.Morph = Morph;
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48954,7 +49103,7 @@ var Octahedron = function (_Shape) {
 exports.Octahedron = Octahedron;
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49084,7 +49233,7 @@ var Parametric = function (_Shape) {
 exports.Parametric = Parametric;
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49213,7 +49362,7 @@ var Plane = function (_Shape) {
 exports.Plane = Plane;
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49361,7 +49510,7 @@ var Polyhedron = function (_Shape) {
 exports.Polyhedron = Polyhedron;
 
 /***/ },
-/* 98 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49510,7 +49659,7 @@ var Ring = function (_Shape) {
 exports.Ring = Ring;
 
 /***/ },
-/* 99 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49616,7 +49765,7 @@ var Shape2D = function (_Shape) {
 exports.Shape2D = Shape2D;
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49688,14 +49837,18 @@ var Sphere = function (_Shape) {
   (0, _createClass3.default)(Sphere, [{
     key: 'build',
     value: function build() {
+      var _this2 = this;
+
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var _scope = this,
-          Mesh = this.physics ? Physijs.SphereMesh : THREE.Mesh,
-          material = (0, _get3.default)(Object.getPrototypeOf(Sphere.prototype), '_initMaterial', this).call(this, params.material);
+      var material = (0, _get3.default)(Object.getPrototypeOf(Sphere.prototype), '_initMaterial', this).call(this, params.material);
+
+      var Mesh = void 0;
+
+      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.SphereMesh;else Mesh = THREE.Mesh;
 
       return new Promise(function (resolve) {
-        _scope.setNative(new Mesh(_scope.buildGeometry(params), material, params.mass));
+        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 
         resolve();
       });
@@ -49705,12 +49858,18 @@ var Sphere = function (_Shape) {
     value: function buildGeometry() {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      return new THREE.SphereGeometry(params.geometry.radius, params.geometry.widthSegments, params.geometry.heightSegments);
+      var GConstruct = params.buffer && !params.softbody ? THREE.SphereBufferGeometry : THREE.SphereGeometry;
+
+      var geometry = new GConstruct(params.geometry.radius, params.geometry.widthSegments, params.geometry.heightSegments);
+
+      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+
+      return geometry;
     }
   }, {
     key: 'clone',
     value: function clone() {
-      return new Sphere({ build: false }).copy(this);
+      return this.getParams().softbody ? new Sphere(this.getParams()) : new Sphere({ build: false }).copy(this);
     }
   }, {
     key: 'G_radius',
@@ -49743,7 +49902,7 @@ var Sphere = function (_Shape) {
 exports.Sphere = Sphere;
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49863,7 +50022,7 @@ var Tetrahedron = function (_Shape) {
 exports.Tetrahedron = Tetrahedron;
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49975,7 +50134,7 @@ var Text = function (_Shape) {
 exports.Text = Text;
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50012,7 +50171,7 @@ var THREE = _interopRequireWildcard(_three);
 
 var _index = __webpack_require__(8);
 
-var _index2 = _interopRequireDefault(_index);
+var Physijs = _interopRequireWildcard(_index);
 
 var _Shape2 = __webpack_require__(7);
 
@@ -50054,7 +50213,7 @@ var Torus = function (_Shape) {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       var _scope = this,
-          Mesh = this.physics ? _index2.default.ConvexMesh : THREE.Mesh,
+          Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
           material = (0, _get3.default)(Object.getPrototypeOf(Torus.prototype), '_initMaterial', this).call(this, params.material);
 
       return new Promise(function (resolve) {
@@ -50122,7 +50281,7 @@ var Torus = function (_Shape) {
 exports.Torus = Torus;
 
 /***/ },
-/* 104 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50287,7 +50446,7 @@ var Torusknot = function (_Shape) {
 exports.Torusknot = Torusknot;
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50451,7 +50610,7 @@ var Tube = function (_Shape) {
 exports.Tube = Tube;
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50538,7 +50697,7 @@ var ConeTwistConstraint = exports.ConeTwistConstraint = function () {
 }();
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50629,7 +50788,7 @@ var HingeConstraint = exports.HingeConstraint = function () {
 }();
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50690,7 +50849,7 @@ var PointConstraint = exports.PointConstraint = function () {
 }();
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50803,7 +50962,7 @@ var SliderConstraint = exports.SliderConstraint = function () {
 }();
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50813,7 +50972,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _ConeTwistConstraint = __webpack_require__(106);
+var _ConeTwistConstraint = __webpack_require__(107);
 
 Object.keys(_ConeTwistConstraint).forEach(function (key) {
   if (key === "default") return;
@@ -50825,7 +50984,7 @@ Object.keys(_ConeTwistConstraint).forEach(function (key) {
   });
 });
 
-var _HingeConstraint = __webpack_require__(107);
+var _HingeConstraint = __webpack_require__(108);
 
 Object.keys(_HingeConstraint).forEach(function (key) {
   if (key === "default") return;
@@ -50837,7 +50996,7 @@ Object.keys(_HingeConstraint).forEach(function (key) {
   });
 });
 
-var _PointConstraint = __webpack_require__(108);
+var _PointConstraint = __webpack_require__(109);
 
 Object.keys(_PointConstraint).forEach(function (key) {
   if (key === "default") return;
@@ -50849,7 +51008,7 @@ Object.keys(_PointConstraint).forEach(function (key) {
   });
 });
 
-var _SliderConstraint = __webpack_require__(109);
+var _SliderConstraint = __webpack_require__(110);
 
 Object.keys(_SliderConstraint).forEach(function (key) {
   if (key === "default") return;
@@ -50862,7 +51021,7 @@ Object.keys(_SliderConstraint).forEach(function (key) {
 });
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50884,7 +51043,7 @@ Object.keys(_mesh).forEach(function (key) {
   });
 });
 
-var _scene = __webpack_require__(72);
+var _scene = __webpack_require__(73);
 
 Object.keys(_scene).forEach(function (key) {
   if (key === "default") return;
@@ -50897,14 +51056,14 @@ Object.keys(_scene).forEach(function (key) {
 });
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.BoxMesh = undefined;
 
@@ -50925,32 +51084,33 @@ var _mesh = __webpack_require__(9);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var BoxMesh = exports.BoxMesh = function (_Mesh) {
-    (0, _inherits3.default)(BoxMesh, _Mesh);
+  (0, _inherits3.default)(BoxMesh, _Mesh);
 
-    function BoxMesh(geometry, material, mass) {
-        (0, _classCallCheck3.default)(this, BoxMesh);
+  function BoxMesh(geometry, material) {
+    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+    (0, _classCallCheck3.default)(this, BoxMesh);
 
-        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(BoxMesh).call(this, geometry, material, mass));
+    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(BoxMesh).call(this, geometry, material, params.mass));
 
-        if (!geometry.boundingBox) geometry.computeBoundingBox();
+    if (!geometry.boundingBox) geometry.computeBoundingBox();
 
-        var width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-        var height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
-        var depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
+    var width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+    var height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+    var depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
 
-        _this._physijs.type = 'box';
-        _this._physijs.width = width;
-        _this._physijs.height = height;
-        _this._physijs.depth = depth;
-        _this._physijs.mass = typeof mass === 'undefined' ? width * height * depth : mass;
-        return _this;
-    }
+    _this._physijs.type = 'box';
+    _this._physijs.width = width;
+    _this._physijs.height = height;
+    _this._physijs.depth = depth;
+    _this._physijs.mass = typeof params.mass === 'undefined' ? width * height * depth : params.mass;
+    return _this;
+  }
 
-    return BoxMesh;
+  return BoxMesh;
 }(_mesh.Mesh);
 
 /***/ },
-/* 113 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51002,7 +51162,7 @@ var CapsuleMesh = exports.CapsuleMesh = function (_Mesh) {
 }(_mesh.Mesh);
 
 /***/ },
-/* 114 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51036,7 +51196,7 @@ var ConcaveMesh = exports.ConcaveMesh = function (_Mesh) {
         (0, _classCallCheck3.default)(this, ConcaveMesh);
 
         var geometry = cGeometry ? cGeometry : geom,
-            triangles = new Array(geometry.faces.length);
+            data = new Float32Array(geometry.faces.length * 9);
 
         var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(ConcaveMesh).call(this, geom, material, mass));
 
@@ -51052,7 +51212,17 @@ var ConcaveMesh = exports.ConcaveMesh = function (_Mesh) {
         for (var i = 0; i < geometry.faces.length; i++) {
             var face = geometry.faces[i];
 
-            triangles[i] = [{ x: vertices[face.a].x * cScale.x, y: vertices[face.a].y * cScale.y, z: vertices[face.a].z * cScale.z }, { x: vertices[face.b].x * cScale.x, y: vertices[face.b].y * cScale.y, z: vertices[face.b].z * cScale.z }, { x: vertices[face.c].x * cScale.x, y: vertices[face.c].y * cScale.y, z: vertices[face.c].z * cScale.z }];
+            data[i * 9] = vertices[face.a].x * cScale.x;
+            data[i * 9 + 1] = vertices[face.a].y * cScale.y;
+            data[i * 9 + 2] = vertices[face.a].z * cScale.z;
+
+            data[i * 9 + 3] = vertices[face.b].x * cScale.x;
+            data[i * 9 + 4] = vertices[face.b].y * cScale.y;
+            data[i * 9 + 5] = vertices[face.b].z * cScale.z;
+
+            data[i * 9 + 6] = vertices[face.c].x * cScale.x;
+            data[i * 9 + 7] = vertices[face.c].y * cScale.y;
+            data[i * 9 + 8] = vertices[face.c].z * cScale.z;
         }
 
         var width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
@@ -51060,7 +51230,7 @@ var ConcaveMesh = exports.ConcaveMesh = function (_Mesh) {
         var depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
 
         _this._physijs.type = 'concave';
-        _this._physijs.triangles = triangles;
+        _this._physijs.data = data;
         _this._physijs.mass = typeof mass === 'undefined' ? width * height * depth : mass;
         return _this;
     }
@@ -51069,7 +51239,7 @@ var ConcaveMesh = exports.ConcaveMesh = function (_Mesh) {
 }(_mesh.Mesh);
 
 /***/ },
-/* 115 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51120,7 +51290,7 @@ var ConeMesh = exports.ConeMesh = function (_Mesh) {
 }(_mesh.Mesh);
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51157,14 +51327,12 @@ var ConvexMesh = exports.ConvexMesh = function (_Mesh) {
 
         if (!geometry.boundingBox) geometry.computeBoundingBox();
 
-        var points = [];
+        var data = new Float32Array(geometry.vertices.length * 3);
 
         for (var i = 0; i < geometry.vertices.length; i++) {
-            points.push({
-                x: geometry.vertices[i].x,
-                y: geometry.vertices[i].y,
-                z: geometry.vertices[i].z
-            });
+            data[i * 3] = geometry.vertices[i].x;
+            data[i * 3 + 1] = geometry.vertices[i].y;
+            data[i * 3 + 2] = geometry.vertices[i].z;
         }
 
         var width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
@@ -51172,7 +51340,7 @@ var ConvexMesh = exports.ConvexMesh = function (_Mesh) {
         var depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
 
         _this._physijs.type = 'convex';
-        _this._physijs.points = points;
+        _this._physijs.data = data;
         _this._physijs.mass = typeof mass === 'undefined' ? width * height * depth : mass;
         return _this;
     }
@@ -51181,7 +51349,7 @@ var ConvexMesh = exports.ConvexMesh = function (_Mesh) {
 }(_mesh.Mesh);
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51234,14 +51402,14 @@ var CylinderMesh = exports.CylinderMesh = function (_Mesh) {
 }(_mesh.Mesh);
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.HeightfieldMesh = undefined;
 
@@ -51262,38 +51430,40 @@ var _mesh = __webpack_require__(9);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var HeightfieldMesh = exports.HeightfieldMesh = function (_Mesh) {
-    (0, _inherits3.default)(HeightfieldMesh, _Mesh);
+  (0, _inherits3.default)(HeightfieldMesh, _Mesh);
 
-    function HeightfieldMesh(geometry, material, mass, xdiv, ydiv) {
-        (0, _classCallCheck3.default)(this, HeightfieldMesh);
+  function HeightfieldMesh(geometry, material, mass, xdiv, ydiv) {
+    (0, _classCallCheck3.default)(this, HeightfieldMesh);
 
-        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(HeightfieldMesh).call(this, geometry, material, mass));
+    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(HeightfieldMesh).call(this, geometry, material, mass));
 
-        _this._physijs.type = 'heightfield';
-        _this._physijs.xsize = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-        _this._physijs.ysize = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
-        _this._physijs.xpts = typeof xdiv === 'undefined' ? Math.sqrt(geometry.vertices.length) : xdiv + 1;
-        _this._physijs.ypts = typeof ydiv === 'undefined' ? Math.sqrt(geometry.vertices.length) : ydiv + 1;
-        // note - this assumes our plane geometry is square, unless we pass in specific xdiv and ydiv
-        _this._physijs.absMaxHeight = Math.max(geometry.boundingBox.max.z, Math.abs(geometry.boundingBox.min.z));
+    _this._physijs.type = 'heightfield';
+    _this._physijs.xsize = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+    _this._physijs.ysize = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+    _this._physijs.xpts = typeof xdiv === 'undefined' ? Math.sqrt(geometry.vertices.length) : xdiv + 1;
+    _this._physijs.ypts = typeof ydiv === 'undefined' ? Math.sqrt(geometry.vertices.length) : ydiv + 1;
+    // note - this assumes our plane geometry is square, unless we pass in specific xdiv and ydiv
+    _this._physijs.absMaxHeight = Math.max(geometry.boundingBox.max.z, Math.abs(geometry.boundingBox.min.z));
 
-        var points = [];
+    var size = geometry.vertices.length;
 
-        for (var i = 0; i < geometry.vertices.length; i++) {
-            var a = i % _this._physijs.xpts;
-            var b = Math.round(i / _this._physijs.xpts - i % _this._physijs.xpts / _this._physijs.xpts);
-            points[i] = geometry.vertices[a + (_this._physijs.ypts - b - 1) * _this._physijs.ypts].z;
-        }
+    var points = new Float32Array(size),
+        xpts = _this._physijs.xpts,
+        ypts = _this._physijs.ypts;
 
-        _this._physijs.points = points;
-        return _this;
+    while (size--) {
+      points[size] = geometry.vertices[size % xpts + (ypts - Math.round(size / xpts - size % xpts / xpts) - 1) * ypts].z;
     }
 
-    return HeightfieldMesh;
+    _this._physijs.points = points;
+    return _this;
+  }
+
+  return HeightfieldMesh;
 }(_mesh.Mesh);
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51303,7 +51473,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _boxMesh = __webpack_require__(112);
+var _boxMesh = __webpack_require__(113);
 
 Object.keys(_boxMesh).forEach(function (key) {
   if (key === "default") return;
@@ -51315,7 +51485,7 @@ Object.keys(_boxMesh).forEach(function (key) {
   });
 });
 
-var _capsuleMesh = __webpack_require__(113);
+var _capsuleMesh = __webpack_require__(114);
 
 Object.keys(_capsuleMesh).forEach(function (key) {
   if (key === "default") return;
@@ -51327,7 +51497,7 @@ Object.keys(_capsuleMesh).forEach(function (key) {
   });
 });
 
-var _concaveMesh = __webpack_require__(114);
+var _concaveMesh = __webpack_require__(115);
 
 Object.keys(_concaveMesh).forEach(function (key) {
   if (key === "default") return;
@@ -51339,7 +51509,7 @@ Object.keys(_concaveMesh).forEach(function (key) {
   });
 });
 
-var _coneMesh = __webpack_require__(115);
+var _coneMesh = __webpack_require__(116);
 
 Object.keys(_coneMesh).forEach(function (key) {
   if (key === "default") return;
@@ -51351,7 +51521,7 @@ Object.keys(_coneMesh).forEach(function (key) {
   });
 });
 
-var _convexMesh = __webpack_require__(116);
+var _convexMesh = __webpack_require__(117);
 
 Object.keys(_convexMesh).forEach(function (key) {
   if (key === "default") return;
@@ -51363,7 +51533,7 @@ Object.keys(_convexMesh).forEach(function (key) {
   });
 });
 
-var _cylinderMesh = __webpack_require__(117);
+var _cylinderMesh = __webpack_require__(118);
 
 Object.keys(_cylinderMesh).forEach(function (key) {
   if (key === "default") return;
@@ -51375,7 +51545,7 @@ Object.keys(_cylinderMesh).forEach(function (key) {
   });
 });
 
-var _heightfieldMesh = __webpack_require__(118);
+var _heightfieldMesh = __webpack_require__(119);
 
 Object.keys(_heightfieldMesh).forEach(function (key) {
   if (key === "default") return;
@@ -51387,7 +51557,7 @@ Object.keys(_heightfieldMesh).forEach(function (key) {
   });
 });
 
-var _planeMesh = __webpack_require__(120);
+var _planeMesh = __webpack_require__(121);
 
 Object.keys(_planeMesh).forEach(function (key) {
   if (key === "default") return;
@@ -51399,7 +51569,7 @@ Object.keys(_planeMesh).forEach(function (key) {
   });
 });
 
-var _sphereMesh = __webpack_require__(121);
+var _sphereMesh = __webpack_require__(123);
 
 Object.keys(_sphereMesh).forEach(function (key) {
   if (key === "default") return;
@@ -51411,8 +51581,20 @@ Object.keys(_sphereMesh).forEach(function (key) {
   });
 });
 
+var _softMesh = __webpack_require__(122);
+
+Object.keys(_softMesh).forEach(function (key) {
+  if (key === "default") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _softMesh[key];
+    }
+  });
+});
+
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51462,7 +51644,145 @@ var PlaneMesh = exports.PlaneMesh = function (_Mesh) {
 }(_mesh.Mesh);
 
 /***/ },
-/* 121 */
+/* 122 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SoftMesh = undefined;
+
+var _classCallCheck2 = __webpack_require__(0);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(4);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = __webpack_require__(2);
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = __webpack_require__(1);
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _mesh = __webpack_require__(9);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SoftMesh = exports.SoftMesh = function (_Mesh) {
+  (0, _inherits3.default)(SoftMesh, _Mesh);
+
+  function SoftMesh(geometry, material) {
+    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+    (0, _classCallCheck3.default)(this, SoftMesh);
+
+    console.log(geometry);
+    var tempGeometry = geometry.clone();
+
+    if (!(geometry instanceof THREE.BufferGeometry)) // Converts to BufferGeometry.
+      geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+
+    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(SoftMesh).call(this, geometry, material, params.mass));
+
+    tempGeometry.mergeVertices();
+    var idxGeometry = _this.createIndexedBufferGeometryFromGeometry(tempGeometry);
+    if (!tempGeometry.boundingBox) tempGeometry.computeBoundingBox();
+    _this.tempGeometry = tempGeometry;
+
+    var aVertices = idxGeometry.attributes.position.array;
+    var aIndices = idxGeometry.index.array;
+    var aIdxAssoc = [];
+    var vertices = geometry.attributes.position.array;
+
+    var numIdxVertices = aVertices.length / 3;
+    var numVertices = vertices.length / 3;
+
+    for (var i = 0; i < numIdxVertices; i++) {
+      var association = [];
+      aIdxAssoc.push(association);
+
+      var i3 = i * 3;
+
+      for (var j = 0; j < numVertices; j++) {
+        var j3 = j * 3;
+
+        if (_this.isEqual(aVertices[i3], aVertices[i3 + 1], aVertices[i3 + 2], vertices[j3], vertices[j3 + 1], vertices[j3 + 2])) association.push(j3);
+      }
+    }
+
+    var width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+    var height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+    var depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
+
+    _this._physijs.type = 'softbody';
+    _this._physijs.aVertices = aVertices;
+    _this._physijs.aIndices = aIndices;
+    _this._physijs.aIdxAssoc = aIdxAssoc;
+
+    var physParams = params.physics;
+
+    _this._physijs.params = {
+      friction: physParams.friction,
+      damping: physParams.damping,
+      pressure: physParams.pressure,
+      margin: physParams.margin
+    };
+
+    _this._physijs.mass = typeof params.mass === 'undefined' ? width * height * depth : params.mass;
+    return _this;
+  }
+
+  (0, _createClass3.default)(SoftMesh, [{
+    key: 'createIndexedBufferGeometryFromGeometry',
+    value: function createIndexedBufferGeometryFromGeometry(geometry) {
+      var numVertices = geometry.vertices.length;
+      var numFaces = geometry.faces.length;
+      var bufferGeom = new THREE.BufferGeometry();
+      var vertices = new Float32Array(numVertices * 3);
+      var indices = new (numFaces * 3 > 65535 ? Uint32Array : Uint16Array)(numFaces * 3);
+
+      for (var i = 0; i < numVertices; i++) {
+        var p = geometry.vertices[i];
+        var i3 = i * 3;
+
+        vertices[i3] = p.x;
+        vertices[i3 + 1] = p.y;
+        vertices[i3 + 2] = p.z;
+      }
+
+      for (var _i = 0; _i < numFaces; _i++) {
+        var f = geometry.faces[_i];
+        var _i2 = _i * 3;
+
+        indices[_i2] = f.a;
+        indices[_i2 + 1] = f.b;
+        indices[_i2 + 2] = f.c;
+      }
+
+      bufferGeom.setIndex(new THREE.BufferAttribute(indices, 1));
+      bufferGeom.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
+
+      return bufferGeom;
+    }
+  }, {
+    key: 'isEqual',
+    value: function isEqual(x1, y1, z1, x2, y2, z2) {
+      var delta = 0.000001;
+
+      return Math.abs(x2 - x1) < delta && Math.abs(y2 - y1) < delta && Math.abs(z2 - z1) < delta;
+    }
+  }]);
+  return SoftMesh;
+}(_mesh.Mesh);
+
+/***/ },
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51492,16 +51812,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var SphereMesh = exports.SphereMesh = function (_Mesh) {
   (0, _inherits3.default)(SphereMesh, _Mesh);
 
-  function SphereMesh(geometry, material, mass) {
+  function SphereMesh(geometry, material) {
+    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
     (0, _classCallCheck3.default)(this, SphereMesh);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(SphereMesh).call(this, geometry, material, mass));
+    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(SphereMesh).call(this, geometry, material, params.mass));
 
     if (!geometry.boundingSphere) geometry.computeBoundingSphere();
 
     _this._physijs.type = 'sphere';
     _this._physijs.radius = geometry.boundingSphere.radius;
-    _this._physijs.mass = typeof mass === 'undefined' ? 4 / 3 * Math.PI * Math.pow(_this._physijs.radius, 3) : mass;
+    _this._physijs.mass = typeof params.mass === 'undefined' ? 4 / 3 * Math.PI * Math.pow(_this._physijs.radius, 3) : params.mass;
     return _this;
   }
 
@@ -51509,7 +51830,7 @@ var SphereMesh = exports.SphereMesh = function (_Mesh) {
 }(_mesh.Mesh);
 
 /***/ },
-/* 122 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51531,7 +51852,7 @@ Object.keys(_tunning).forEach(function (key) {
   });
 });
 
-var _vehicle = __webpack_require__(123);
+var _vehicle = __webpack_require__(125);
 
 Object.keys(_vehicle).forEach(function (key) {
   if (key === "default") return;
@@ -51544,7 +51865,7 @@ Object.keys(_vehicle).forEach(function (key) {
 });
 
 /***/ },
-/* 123 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51647,1383 +51968,1428 @@ var Vehicle = exports.Vehicle = function () {
 }();
 
 /***/ },
-/* 124 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var _whsAmmo = __webpack_require__(176);
+var _whsAmmo = __webpack_require__(177);
 
 var _whsAmmo2 = _interopRequireDefault(_whsAmmo);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = function (self) {
-	'use strict';
-
-	var transferableMessage = self.webkitPostMessage || self.postMessage,
-
-
-	// enum
-	MESSAGE_TYPES = {
-		WORLDREPORT: 0,
-		COLLISIONREPORT: 1,
-		VEHICLEREPORT: 2,
-		CONSTRAINTREPORT: 3
-	},
-
-
-	// temp variables
-	_object,
-	    _vector,
-	    _transform,
-
-
-	// functions
-	public_functions = {},
-	    getShapeFromCache,
-	    setShapeCache,
-	    createShape,
-	    reportWorld,
-	    reportVehicles,
-	    reportCollisions,
-	    reportConstraints,
-
-
-	// world variables
-	fixedTimeStep,
-	    // used when calling stepSimulation
-	rateLimit,
-	    // sets whether or not to sync the simulation rate with fixedTimeStep
-	last_simulation_time,
-	    last_simulation_duration = 0,
-	    world,
-	    transform,
-	    _vec3_1,
-	    _vec3_2,
-	    _vec3_3,
-	    _quat,
-
-	// private cache
-	_objects = {},
-	    _vehicles = {},
-	    _constraints = {},
-	    _materials = {},
-	    _objects_ammo = {},
-	    _num_objects = 0,
-	    _num_wheels = 0,
-	    _num_constraints = 0,
-	    _object_shapes = {},
-
-
-	// The following objects are to track objects that ammo.js doesn't clean
-	// up. All are cleaned up when they're corresponding body is destroyed.
-	// Unfortunately, it's very difficult to get at these objects from the
-	// body, so we have to track them ourselves.
-	_motion_states = {},
-
-	// Don't need to worry about it for cached shapes.
-	_noncached_shapes = {},
-
-	// A body with a compound shape always has a regular shape as well, so we
-	// have track them separately.
-	_compound_shapes = {},
-
-
-	// object reporting
-	REPORT_CHUNKSIZE,
-	    // report array is increased in increments of this chunk size
-
-	WORLDREPORT_ITEMSIZE = 14,
-	    // how many float values each reported item needs
-	worldreport,
-	    COLLISIONREPORT_ITEMSIZE = 5,
-	    // one float for each object id, and a Vec3 contact normal
-	collisionreport,
-	    VEHICLEREPORT_ITEMSIZE = 9,
-	    // vehicle id, wheel index, 3 for position, 4 for rotation
-	vehiclereport,
-	    CONSTRAINTREPORT_ITEMSIZE = 6,
-	    // constraint id, offset object, offset, applied impulse
-	constraintreport;
-
-	var ab = new ArrayBuffer(1);
-
-	transferableMessage(ab, [ab]);
-	var SUPPORT_TRANSFERABLE = ab.byteLength === 0;
-
-	getShapeFromCache = function getShapeFromCache(cache_key) {
-		if (_object_shapes[cache_key] !== undefined) {
-			return _object_shapes[cache_key];
-		}
-		return null;
-	};
-
-	setShapeCache = function setShapeCache(cache_key, shape) {
-		_object_shapes[cache_key] = shape;
-	};
-
-	createShape = function createShape(description) {
-		var cache_key, shape;
-
-		_transform.setIdentity();
-		switch (description.type) {
-			case 'plane':
-				cache_key = 'plane_' + description.normal.x + '_' + description.normal.y + '_' + description.normal.z;
-				if ((shape = getShapeFromCache(cache_key)) === null) {
-					_vec3_1.setX(description.normal.x);
-					_vec3_1.setY(description.normal.y);
-					_vec3_1.setZ(description.normal.z);
-					shape = new _whsAmmo2.default.btStaticPlaneShape(_vec3_1, 0);
-					setShapeCache(cache_key, shape);
-				}
-				break;
-
-			case 'box':
-				cache_key = 'box_' + description.width + '_' + description.height + '_' + description.depth;
-				if ((shape = getShapeFromCache(cache_key)) === null) {
-					_vec3_1.setX(description.width / 2);
-					_vec3_1.setY(description.height / 2);
-					_vec3_1.setZ(description.depth / 2);
-					shape = new _whsAmmo2.default.btBoxShape(_vec3_1);
-					setShapeCache(cache_key, shape);
-				}
-				break;
-
-			case 'sphere':
-				cache_key = 'sphere_' + description.radius;
-				if ((shape = getShapeFromCache(cache_key)) === null) {
-					shape = new _whsAmmo2.default.btSphereShape(description.radius);
-					setShapeCache(cache_key, shape);
-				}
-				break;
-
-			case 'cylinder':
-				cache_key = 'cylinder_' + description.width + '_' + description.height + '_' + description.depth;
-				if ((shape = getShapeFromCache(cache_key)) === null) {
-					_vec3_1.setX(description.width / 2);
-					_vec3_1.setY(description.height / 2);
-					_vec3_1.setZ(description.depth / 2);
-					shape = new _whsAmmo2.default.btCylinderShape(_vec3_1);
-					setShapeCache(cache_key, shape);
-				}
-				break;
-
-			case 'capsule':
-				cache_key = 'capsule_' + description.radius + '_' + description.height;
-				if ((shape = getShapeFromCache(cache_key)) === null) {
-					// In Bullet, capsule height excludes the end spheres
-					shape = new _whsAmmo2.default.btCapsuleShape(description.radius, description.height - 2 * description.radius);
-					setShapeCache(cache_key, shape);
-				}
-				break;
-
-			case 'cone':
-				cache_key = 'cone_' + description.radius + '_' + description.height;
-				if ((shape = getShapeFromCache(cache_key)) === null) {
-					shape = new _whsAmmo2.default.btConeShape(description.radius, description.height);
-					setShapeCache(cache_key, shape);
-				}
-				break;
-
-			case 'concave':
-				var i,
-				    triangle,
-				    triangle_mesh = new _whsAmmo2.default.btTriangleMesh();
-				if (!description.triangles.length) return false;
-
-				for (i = 0; i < description.triangles.length; i++) {
-					triangle = description.triangles[i];
-
-					_vec3_1.setX(triangle[0].x);
-					_vec3_1.setY(triangle[0].y);
-					_vec3_1.setZ(triangle[0].z);
-
-					_vec3_2.setX(triangle[1].x);
-					_vec3_2.setY(triangle[1].y);
-					_vec3_2.setZ(triangle[1].z);
-
-					_vec3_3.setX(triangle[2].x);
-					_vec3_3.setY(triangle[2].y);
-					_vec3_3.setZ(triangle[2].z);
-
-					triangle_mesh.addTriangle(_vec3_1, _vec3_2, _vec3_3, false);
-				}
-
-				shape = new _whsAmmo2.default.btBvhTriangleMeshShape(triangle_mesh, true, true);
-				_noncached_shapes[description.id] = shape;
-				break;
-
-			case 'convex':
-				var i,
-				    point,
-				    shape = new _whsAmmo2.default.btConvexHullShape();
-				for (i = 0; i < description.points.length; i++) {
-					point = description.points[i];
-
-					_vec3_1.setX(point.x);
-					_vec3_1.setY(point.y);
-					_vec3_1.setZ(point.z);
-
-					shape.addPoint(_vec3_1);
-				}
-				_noncached_shapes[description.id] = shape;
-				break;
-
-			case 'heightfield':
-
-				var ptr = _whsAmmo2.default._malloc(4 * description.xpts * description.ypts);
-
-				var p = 0,
-				    p2 = 0;
-
-				for (var i = 0; i < description.xpts; i++) {
-					for (var j = 0; j < description.ypts; j++) {
-						_whsAmmo2.default.HEAPF32[ptr + p2 >> 2] = description.points[p];
-
-						p++;
-						p2 += 4;
-					}
-				}
-
-				shape = new _whsAmmo2.default.btHeightfieldTerrainShape(description.xpts, description.ypts, ptr, 1, -description.absMaxHeight, description.absMaxHeight, 2, "PHY_FLOAT", false);
-
-				//console.log(shape);
-
-				_vec3_1.setX(description.xsize / (description.xpts - 1));
-				_vec3_1.setY(description.ysize / (description.ypts - 1));
-				_vec3_1.setZ(1);
-
-				shape.setLocalScaling(_vec3_1);
-				_noncached_shapes[description.id] = shape;
-				break;
-
-			default:
-				// Not recognized
-				return;
-				break;
-		}
-
-		return shape;
-	};
-
-	public_functions.init = function (params) {
-
-		_transform = new _whsAmmo2.default.btTransform();
-		_vec3_1 = new _whsAmmo2.default.btVector3(0, 0, 0);
-		_vec3_2 = new _whsAmmo2.default.btVector3(0, 0, 0);
-		_vec3_3 = new _whsAmmo2.default.btVector3(0, 0, 0);
-		_quat = new _whsAmmo2.default.btQuaternion(0, 0, 0, 0);
-
-		REPORT_CHUNKSIZE = params.reportsize || 50;
-		if (SUPPORT_TRANSFERABLE) {
-			// Transferable messages are supported, take advantage of them with TypedArrays
-			worldreport = new Float32Array(2 + REPORT_CHUNKSIZE * WORLDREPORT_ITEMSIZE); // message id + # of objects to report + chunk size * # of values per object
-			collisionreport = new Float32Array(2 + REPORT_CHUNKSIZE * COLLISIONREPORT_ITEMSIZE); // message id + # of collisions to report + chunk size * # of values per object
-			vehiclereport = new Float32Array(2 + REPORT_CHUNKSIZE * VEHICLEREPORT_ITEMSIZE); // message id + # of vehicles to report + chunk size * # of values per object
-			constraintreport = new Float32Array(2 + REPORT_CHUNKSIZE * CONSTRAINTREPORT_ITEMSIZE); // message id + # of constraints to report + chunk size * # of values per object
-		} else {
-				// Transferable messages are not supported, send data as normal arrays
-				worldreport = [];
-				collisionreport = [];
-				vehiclereport = [];
-				constraintreport = [];
-			}
-		worldreport[0] = MESSAGE_TYPES.WORLDREPORT;
-		collisionreport[0] = MESSAGE_TYPES.COLLISIONREPORT;
-		vehiclereport[0] = MESSAGE_TYPES.VEHICLEREPORT;
-		constraintreport[0] = MESSAGE_TYPES.CONSTRAINTREPORT;
-
-		var collisionConfiguration = new _whsAmmo2.default.btDefaultCollisionConfiguration(),
-		    dispatcher = new _whsAmmo2.default.btCollisionDispatcher(collisionConfiguration),
-		    solver = new _whsAmmo2.default.btSequentialImpulseConstraintSolver(),
-		    broadphase;
-
-		if (!params.broadphase) params.broadphase = { type: 'dynamic' };
-		switch (params.broadphase.type) {
-			case 'sweepprune':
-
-				_vec3_1.setX(params.broadphase.aabbmin.x);
-				_vec3_1.setY(params.broadphase.aabbmin.y);
-				_vec3_1.setZ(params.broadphase.aabbmin.z);
-
-				_vec3_2.setX(params.broadphase.aabbmax.x);
-				_vec3_2.setY(params.broadphase.aabbmax.y);
-				_vec3_2.setZ(params.broadphase.aabbmax.z);
-
-				broadphase = new _whsAmmo2.default.btAxisSweep3(_vec3_1, _vec3_2);
-
-				break;
-
-			case 'dynamic':
-			default:
-				broadphase = new _whsAmmo2.default.btDbvtBroadphase();
-				break;
-		}
-
-		world = new _whsAmmo2.default.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-
-		fixedTimeStep = params.fixedTimeStep;
-		rateLimit = params.rateLimit;
-
-		transferableMessage({ cmd: 'worldReady' });
-	};
-
-	public_functions.registerMaterial = function (description) {
-		_materials[description.id] = description;
-	};
-
-	public_functions.unRegisterMaterial = function (description) {
-		delete _materials[description.id];
-	};
-
-	public_functions.setFixedTimeStep = function (description) {
-		fixedTimeStep = description;
-	};
-
-	public_functions.setGravity = function (description) {
-		_vec3_1.setX(description.x);
-		_vec3_1.setY(description.y);
-		_vec3_1.setZ(description.z);
-		world.setGravity(_vec3_1);
-	};
-
-	public_functions.addObject = function (description) {
-
-		var i, localInertia, shape, motionState, rbInfo, body;
-
-		shape = createShape(description);
-		if (!shape) return;
-		// If there are children then this is a compound shape
-		if (description.children) {
-			var compound_shape = new _whsAmmo2.default.btCompoundShape(),
-			    _child;
-			compound_shape.addChildShape(_transform, shape);
-
-			for (i = 0; i < description.children.length; i++) {
-				_child = description.children[i];
-
-				var trans = new _whsAmmo2.default.btTransform();
-				trans.setIdentity();
-
-				_vec3_1.setX(_child.position_offset.x);
-				_vec3_1.setY(_child.position_offset.y);
-				_vec3_1.setZ(_child.position_offset.z);
-				trans.setOrigin(_vec3_1);
-
-				_quat.setX(_child.rotation.x);
-				_quat.setY(_child.rotation.y);
-				_quat.setZ(_child.rotation.z);
-				_quat.setW(_child.rotation.w);
-				trans.setRotation(_quat);
-
-				shape = createShape(description.children[i]);
-				compound_shape.addChildShape(trans, shape);
-				_whsAmmo2.default.destroy(trans);
-			}
-
-			shape = compound_shape;
-			_compound_shapes[description.id] = shape;
-		}
-		_vec3_1.setX(0);
-		_vec3_1.setY(0);
-		_vec3_1.setZ(0);
-		shape.calculateLocalInertia(description.mass, _vec3_1);
-
-		_transform.setIdentity();
-
-		_vec3_2.setX(description.position.x);
-		_vec3_2.setY(description.position.y);
-		_vec3_2.setZ(description.position.z);
-		_transform.setOrigin(_vec3_2);
-
-		_quat.setX(description.rotation.x);
-		_quat.setY(description.rotation.y);
-		_quat.setZ(description.rotation.z);
-		_quat.setW(description.rotation.w);
-		_transform.setRotation(_quat);
-
-		motionState = new _whsAmmo2.default.btDefaultMotionState(_transform); // #TODO: btDefaultMotionState supports center of mass offset as second argument - implement
-		rbInfo = new _whsAmmo2.default.btRigidBodyConstructionInfo(description.mass, motionState, shape, _vec3_1);
-
-		if (description.materialId !== undefined) {
-			rbInfo.set_m_friction(_materials[description.materialId].friction);
-			rbInfo.set_m_restitution(_materials[description.materialId].restitution);
-		}
-
-		body = new _whsAmmo2.default.btRigidBody(rbInfo);
-		_whsAmmo2.default.destroy(rbInfo);
-
-		if (typeof description.collision_flags !== 'undefined') {
-			body.setCollisionFlags(description.collision_flags);
-		}
-
-		world.addRigidBody(body);
-
-		body.id = description.id;
-		_objects[body.id] = body;
-		_motion_states[body.id] = motionState;
-
-		var ptr = body.a != undefined ? body.a : body.ptr;
-		_objects_ammo[ptr] = body.id;
-		_num_objects++;
-
-		transferableMessage({ cmd: 'objectReady', params: body.id });
-	};
-
-	public_functions.addVehicle = function (description) {
-		var vehicle_tuning = new _whsAmmo2.default.btVehicleTuning(),
-		    vehicle;
-
-		vehicle_tuning.set_m_suspensionStiffness(description.suspension_stiffness);
-		vehicle_tuning.set_m_suspensionCompression(description.suspension_compression);
-		vehicle_tuning.set_m_suspensionDamping(description.suspension_damping);
-		vehicle_tuning.set_m_maxSuspensionTravelCm(description.max_suspension_travel);
-		vehicle_tuning.set_m_maxSuspensionForce(description.max_suspension_force);
-
-		vehicle = new _whsAmmo2.default.btRaycastVehicle(vehicle_tuning, _objects[description.rigidBody], new _whsAmmo2.default.btDefaultVehicleRaycaster(world));
-		vehicle.tuning = vehicle_tuning;
-
-		_objects[description.rigidBody].setActivationState(4);
-		vehicle.setCoordinateSystem(0, 1, 2);
-
-		world.addVehicle(vehicle);
-		_vehicles[description.id] = vehicle;
-	};
-	public_functions.removeVehicle = function (description) {
-		delete _vehicles[description.id];
-	};
-
-	public_functions.addWheel = function (description) {
-		if (_vehicles[description.id] !== undefined) {
-			var tuning = _vehicles[description.id].tuning;
-			if (description.tuning !== undefined) {
-				tuning = new _whsAmmo2.default.btVehicleTuning();
-				tuning.set_m_suspensionStiffness(description.tuning.suspension_stiffness);
-				tuning.set_m_suspensionCompression(description.tuning.suspension_compression);
-				tuning.set_m_suspensionDamping(description.tuning.suspension_damping);
-				tuning.set_m_maxSuspensionTravelCm(description.tuning.max_suspension_travel);
-				tuning.set_m_maxSuspensionForce(description.tuning.max_suspension_force);
-			}
-
-			_vec3_1.setX(description.connection_point.x);
-			_vec3_1.setY(description.connection_point.y);
-			_vec3_1.setZ(description.connection_point.z);
-
-			_vec3_2.setX(description.wheel_direction.x);
-			_vec3_2.setY(description.wheel_direction.y);
-			_vec3_2.setZ(description.wheel_direction.z);
-
-			_vec3_3.setX(description.wheel_axle.x);
-			_vec3_3.setY(description.wheel_axle.y);
-			_vec3_3.setZ(description.wheel_axle.z);
-
-			_vehicles[description.id].addWheel(_vec3_1, _vec3_2, _vec3_3, description.suspension_rest_length, description.wheel_radius, tuning, description.is_front_wheel);
-		}
-
-		_num_wheels++;
-
-		if (SUPPORT_TRANSFERABLE) {
-			vehiclereport = new Float32Array(1 + _num_wheels * VEHICLEREPORT_ITEMSIZE); // message id & ( # of objects to report * # of values per object )
-			vehiclereport[0] = MESSAGE_TYPES.VEHICLEREPORT;
-		} else {
-			vehiclereport = [MESSAGE_TYPES.VEHICLEREPORT];
-		}
-	};
-
-	public_functions.setSteering = function (details) {
-		if (_vehicles[details.id] !== undefined) {
-			_vehicles[details.id].setSteeringValue(details.steering, details.wheel);
-		}
-	};
-	public_functions.setBrake = function (details) {
-		if (_vehicles[details.id] !== undefined) {
-			_vehicles[details.id].setBrake(details.brake, details.wheel);
-		}
-	};
-	public_functions.applyEngineForce = function (details) {
-		if (_vehicles[details.id] !== undefined) {
-			_vehicles[details.id].applyEngineForce(details.force, details.wheel);
-		}
-	};
-
-	public_functions.removeObject = function (details) {
-		world.removeRigidBody(_objects[details.id]);
-		_whsAmmo2.default.destroy(_objects[details.id]);
-		_whsAmmo2.default.destroy(_motion_states[details.id]);
-		if (_compound_shapes[details.id]) _whsAmmo2.default.destroy(_compound_shapes[details.id]);
-		if (_noncached_shapes[details.id]) _whsAmmo2.default.destroy(_noncached_shapes[details.id]);
-		var ptr = _objects[details.id].a != undefined ? _objects[details.id].a : _objects[details.id].ptr;
-		delete _objects_ammo[ptr];
-		delete _objects[details.id];
-		delete _motion_states[details.id];
-		if (_compound_shapes[details.id]) delete _compound_shapes[details.id];
-		if (_noncached_shapes[details.id]) delete _noncached_shapes[details.id];
-		_num_objects--;
-	};
-
-	public_functions.updateTransform = function (details) {
-		_object = _objects[details.id];
-		_object.getMotionState().getWorldTransform(_transform);
-
-		if (details.pos) {
-			_vec3_1.setX(details.pos.x);
-			_vec3_1.setY(details.pos.y);
-			_vec3_1.setZ(details.pos.z);
-			_transform.setOrigin(_vec3_1);
-		}
-
-		if (details.quat) {
-			_quat.setX(details.quat.x);
-			_quat.setY(details.quat.y);
-			_quat.setZ(details.quat.z);
-			_quat.setW(details.quat.w);
-			_transform.setRotation(_quat);
-		}
-
-		_object.setWorldTransform(_transform);
-		_object.activate();
-	};
-
-	public_functions.updateMass = function (details) {
-		// #TODO: changing a static object into dynamic is buggy
-		_object = _objects[details.id];
-
-		// Per http://www.bulletphysics.org/Bullet/phpBB3/viewtopic.php?p=&f=9&t=3663#p13816
-		world.removeRigidBody(_object);
-
-		_vec3_1.setX(0);
-		_vec3_1.setY(0);
-		_vec3_1.setZ(0);
-
-		_object.setMassProps(details.mass, _vec3_1);
-		world.addRigidBody(_object);
-		_object.activate();
-	};
-
-	public_functions.applyCentralImpulse = function (details) {
-
-		_vec3_1.setX(details.x);
-		_vec3_1.setY(details.y);
-		_vec3_1.setZ(details.z);
-
-		_objects[details.id].applyCentralImpulse(_vec3_1);
-		_objects[details.id].activate();
-	};
-
-	public_functions.applyImpulse = function (details) {
-
-		_vec3_1.setX(details.impulse_x);
-		_vec3_1.setY(details.impulse_y);
-		_vec3_1.setZ(details.impulse_z);
-
-		_vec3_2.setX(details.x);
-		_vec3_2.setY(details.y);
-		_vec3_2.setZ(details.z);
-
-		_objects[details.id].applyImpulse(_vec3_1, _vec3_2);
-		_objects[details.id].activate();
-	};
-
-	public_functions.applyTorque = function (details) {
-
-		_vec3_1.setX(details.torque_x);
-		_vec3_1.setY(details.torque_y);
-		_vec3_1.setZ(details.torque_z);
-
-		_objects[details.id].applyTorque(_vec3_1);
-		_objects[details.id].activate();
-	};
-
-	public_functions.applyCentralForce = function (details) {
-
-		_vec3_1.setX(details.x);
-		_vec3_1.setY(details.y);
-		_vec3_1.setZ(details.z);
-
-		_objects[details.id].applyCentralForce(_vec3_1);
-		_objects[details.id].activate();
-	};
-
-	public_functions.applyForce = function (details) {
-
-		_vec3_1.setX(details.force_x);
-		_vec3_1.setY(details.force_y);
-		_vec3_1.setZ(details.force_z);
-
-		_vec3_2.setX(details.x);
-		_vec3_2.setY(details.y);
-		_vec3_2.setZ(details.z);
-
-		_objects[details.id].applyForce(_vec3_1, _vec3_2);
-		_objects[details.id].activate();
-	};
-
-	public_functions.onSimulationResume = function (params) {
-		last_simulation_time = Date.now();
-	};
-
-	public_functions.setAngularVelocity = function (details) {
-
-		_vec3_1.setX(details.x);
-		_vec3_1.setY(details.y);
-		_vec3_1.setZ(details.z);
-
-		_objects[details.id].setAngularVelocity(_vec3_1);
-		_objects[details.id].activate();
-	};
-
-	public_functions.setLinearVelocity = function (details) {
-
-		_vec3_1.setX(details.x);
-		_vec3_1.setY(details.y);
-		_vec3_1.setZ(details.z);
-
-		_objects[details.id].setLinearVelocity(_vec3_1);
-		_objects[details.id].activate();
-	};
-
-	public_functions.setAngularFactor = function (details) {
-
-		_vec3_1.setX(details.x);
-		_vec3_1.setY(details.y);
-		_vec3_1.setZ(details.z);
-
-		_objects[details.id].setAngularFactor(_vec3_1);
-	};
-
-	public_functions.setLinearFactor = function (details) {
-
-		_vec3_1.setX(details.x);
-		_vec3_1.setY(details.y);
-		_vec3_1.setZ(details.z);
-
-		_objects[details.id].setLinearFactor(_vec3_1);
-	};
-
-	public_functions.setDamping = function (details) {
-		_objects[details.id].setDamping(details.linear, details.angular);
-	};
-
-	public_functions.setCcdMotionThreshold = function (details) {
-		_objects[details.id].setCcdMotionThreshold(details.threshold);
-	};
-
-	public_functions.setCcdSweptSphereRadius = function (details) {
-		_objects[details.id].setCcdSweptSphereRadius(details.radius);
-	};
-
-	public_functions.addConstraint = function (details) {
-		var constraint;
-
-		switch (details.type) {
-
-			case 'point':
-				if (details.objectb === undefined) {
-
-					_vec3_1.setX(details.positiona.x);
-					_vec3_1.setY(details.positiona.y);
-					_vec3_1.setZ(details.positiona.z);
-
-					constraint = new _whsAmmo2.default.btPoint2PointConstraint(_objects[details.objecta], _vec3_1);
-				} else {
-
-					_vec3_1.setX(details.positiona.x);
-					_vec3_1.setY(details.positiona.y);
-					_vec3_1.setZ(details.positiona.z);
-
-					_vec3_2.setX(details.positionb.x);
-					_vec3_2.setY(details.positionb.y);
-					_vec3_2.setZ(details.positionb.z);
-
-					constraint = new _whsAmmo2.default.btPoint2PointConstraint(_objects[details.objecta], _objects[details.objectb], _vec3_1, _vec3_2);
-				}
-				break;
-
-			case 'hinge':
-				if (details.objectb === undefined) {
-
-					_vec3_1.setX(details.positiona.x);
-					_vec3_1.setY(details.positiona.y);
-					_vec3_1.setZ(details.positiona.z);
-
-					_vec3_2.setX(details.axis.x);
-					_vec3_2.setY(details.axis.y);
-					_vec3_2.setZ(details.axis.z);
-
-					constraint = new _whsAmmo2.default.btHingeConstraint(_objects[details.objecta], _vec3_1, _vec3_2);
-				} else {
-
-					_vec3_1.setX(details.positiona.x);
-					_vec3_1.setY(details.positiona.y);
-					_vec3_1.setZ(details.positiona.z);
-
-					_vec3_2.setX(details.positionb.x);
-					_vec3_2.setY(details.positionb.y);
-					_vec3_2.setZ(details.positionb.z);
-
-					_vec3_3.setX(details.axis.x);
-					_vec3_3.setY(details.axis.y);
-					_vec3_3.setZ(details.axis.z);
-
-					constraint = new _whsAmmo2.default.btHingeConstraint(_objects[details.objecta], _objects[details.objectb], _vec3_1, _vec3_2, _vec3_3, _vec3_3);
-				}
-				break;
-
-			case 'slider':
-				var transforma, transformb, rotation;
-
-				transforma = new _whsAmmo2.default.btTransform();
-
-				_vec3_1.setX(details.positiona.x);
-				_vec3_1.setY(details.positiona.y);
-				_vec3_1.setZ(details.positiona.z);
-
-				transforma.setOrigin(_vec3_1);
-
-				var rotation = transforma.getRotation();
-				rotation.setEuler(details.axis.x, details.axis.y, details.axis.z);
-				transforma.setRotation(rotation);
-
-				if (details.objectb) {
-					transformb = new _whsAmmo2.default.btTransform();
-
-					_vec3_2.setX(details.positionb.x);
-					_vec3_2.setY(details.positionb.y);
-					_vec3_2.setZ(details.positionb.z);
-
-					transformb.setOrigin(_vec3_2);
-
-					rotation = transformb.getRotation();
-					rotation.setEuler(details.axis.x, details.axis.y, details.axis.z);
-					transformb.setRotation(rotation);
-
-					constraint = new _whsAmmo2.default.btSliderConstraint(_objects[details.objecta], _objects[details.objectb], transforma, transformb, true);
-				} else {
-					constraint = new _whsAmmo2.default.btSliderConstraint(_objects[details.objecta], transforma, true);
-				}
-
-				_whsAmmo2.default.destroy(transforma);
-				if (transformb != undefined) {
-					_whsAmmo2.default.destroy(transformb);
-				}
-				break;
-
-			case 'conetwist':
-				var transforma, transformb;
-
-				transforma = new _whsAmmo2.default.btTransform();
-				transforma.setIdentity();
-
-				transformb = new _whsAmmo2.default.btTransform();
-				transformb.setIdentity();
-
-				_vec3_1.setX(details.positiona.x);
-				_vec3_1.setY(details.positiona.y);
-				_vec3_1.setZ(details.positiona.z);
-
-				_vec3_2.setX(details.positionb.x);
-				_vec3_2.setY(details.positionb.y);
-				_vec3_2.setZ(details.positionb.z);
-
-				transforma.setOrigin(_vec3_1);
-				transformb.setOrigin(_vec3_2);
-
-				var rotation = transforma.getRotation();
-				rotation.setEulerZYX(-details.axisa.z, -details.axisa.y, -details.axisa.x);
-				transforma.setRotation(rotation);
-
-				rotation = transformb.getRotation();
-				rotation.setEulerZYX(-details.axisb.z, -details.axisb.y, -details.axisb.x);
-				transformb.setRotation(rotation);
-
-				constraint = new _whsAmmo2.default.btConeTwistConstraint(_objects[details.objecta], _objects[details.objectb], transforma, transformb);
-
-				constraint.setLimit(Math.PI, 0, Math.PI);
-
-				_whsAmmo2.default.destroy(transforma);
-				_whsAmmo2.default.destroy(transformb);
-
-				break;
-
-			case 'dof':
-				var transforma, transformb, rotation;
-
-				transforma = new _whsAmmo2.default.btTransform();
-				transforma.setIdentity();
-
-				_vec3_1.setX(details.positiona.x);
-				_vec3_1.setY(details.positiona.y);
-				_vec3_1.setZ(details.positiona.z);
-
-				transforma.setOrigin(_vec3_1);
-
-				rotation = transforma.getRotation();
-				rotation.setEulerZYX(-details.axisa.z, -details.axisa.y, -details.axisa.x);
-				transforma.setRotation(rotation);
-
-				if (details.objectb) {
-					transformb = new _whsAmmo2.default.btTransform();
-					transformb.setIdentity();
-
-					_vec3_2.setX(details.positionb.x);
-					_vec3_2.setY(details.positionb.y);
-					_vec3_2.setZ(details.positionb.z);
-
-					transformb.setOrigin(_vec3_2);
-
-					rotation = transformb.getRotation();
-					rotation.setEulerZYX(-details.axisb.z, -details.axisb.y, -details.axisb.x);
-					transformb.setRotation(rotation);
-
-					constraint = new _whsAmmo2.default.btGeneric6DofConstraint(_objects[details.objecta], _objects[details.objectb], transforma, transformb, true);
-				} else {
-					constraint = new _whsAmmo2.default.btGeneric6DofConstraint(_objects[details.objecta], transforma, true);
-				}
-				_whsAmmo2.default.destroy(transforma);
-				if (transformb != undefined) {
-					_whsAmmo2.default.destroy(transformb);
-				}
-				break;
-
-			default:
-				return;
-
-		};
-
-		world.addConstraint(constraint);
-
-		constraint.a = _objects[details.objecta];
-		constraint.b = _objects[details.objectb];
-
-		constraint.ta = transforma;
-		constraint.tb = transformb;
-
-		constraint.enableFeedback();
-		_constraints[details.id] = constraint;
-		_num_constraints++;
-
-		if (SUPPORT_TRANSFERABLE) {
-			constraintreport = new Float32Array(1 + _num_constraints * CONSTRAINTREPORT_ITEMSIZE); // message id & ( # of objects to report * # of values per object )
-			constraintreport[0] = MESSAGE_TYPES.CONSTRAINTREPORT;
-		} else {
-			constraintreport = [MESSAGE_TYPES.CONSTRAINTREPORT];
-		}
-	};
-
-	public_functions.removeConstraint = function (details) {
-		var constraint = _constraints[details.id];
-		if (constraint !== undefined) {
-			world.removeConstraint(constraint);
-			delete _constraints[details.id];
-			_num_constraints--;
-		}
-	};
-
-	public_functions.constraint_setBreakingImpulseThreshold = function (details) {
-		var constraint = _constraints[details.id];
-		if (constraint !== undefind) {
-			constraint.setBreakingImpulseThreshold(details.threshold);
-		}
-	};
-
-	public_functions.simulate = function simulate(params) {
-		if (world) {
-			params = params || {};
-
-			if (!params.timeStep) {
-				if (last_simulation_time) {
-					params.timeStep = 0;
-					while (params.timeStep + last_simulation_duration <= fixedTimeStep) {
-						params.timeStep = (Date.now() - last_simulation_time) / 1000; // time since last simulation
-					}
-				} else {
-						params.timeStep = fixedTimeStep; // handle first frame
-					}
-			} else {
-					if (params.timeStep < fixedTimeStep) {
-						params.timeStep = fixedTimeStep;
-					}
-				}
-
-			params.maxSubSteps = params.maxSubSteps || Math.ceil(params.timeStep / fixedTimeStep); // If maxSubSteps is not defined, keep the simulation fully up to date
-
-			last_simulation_duration = Date.now();
-			world.stepSimulation(params.timeStep, params.maxSubSteps, fixedTimeStep);
-
-			reportVehicles();
-			reportCollisions();
-			reportConstraints();
-			reportWorld();
-
-			last_simulation_duration = (Date.now() - last_simulation_duration) / 1000;
-			last_simulation_time = Date.now();
-		}
-	};
-
-	// Constraint functions
-	public_functions.hinge_setLimits = function (params) {
-		_constraints[params.constraint].setLimit(params.low, params.high, 0, params.bias_factor, params.relaxation_factor);
-	};
-	public_functions.hinge_enableAngularMotor = function (params) {
-		var constraint = _constraints[params.constraint];
-		constraint.enableAngularMotor(true, params.velocity, params.acceleration);
-		constraint.a.activate();
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-	public_functions.hinge_disableMotor = function (params) {
-		_constraints[params.constraint].enableMotor(false);
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-
-	public_functions.slider_setLimits = function (params) {
-		var constraint = _constraints[params.constraint];
-		constraint.setLowerLinLimit(params.lin_lower || 0);
-		constraint.setUpperLinLimit(params.lin_upper || 0);
-
-		constraint.setLowerAngLimit(params.ang_lower || 0);
-		constraint.setUpperAngLimit(params.ang_upper || 0);
-	};
-	public_functions.slider_setRestitution = function (params) {
-		var constraint = _constraints[params.constraint];
-		constraint.setSoftnessLimLin(params.linear || 0);
-		constraint.setSoftnessLimAng(params.angular || 0);
-	};
-	public_functions.slider_enableLinearMotor = function (params) {
-		var constraint = _constraints[params.constraint];
-		constraint.setTargetLinMotorVelocity(params.velocity);
-		constraint.setMaxLinMotorForce(params.acceleration);
-		constraint.setPoweredLinMotor(true);
-		constraint.a.activate();
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-	public_functions.slider_disableLinearMotor = function (params) {
-		var constraint = _constraints[params.constraint];
-		constraint.setPoweredLinMotor(false);
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-	public_functions.slider_enableAngularMotor = function (params) {
-		var constraint = _constraints[params.constraint];
-		constraint.setTargetAngMotorVelocity(params.velocity);
-		constraint.setMaxAngMotorForce(params.acceleration);
-		constraint.setPoweredAngMotor(true);
-		constraint.a.activate();
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-	public_functions.slider_disableAngularMotor = function (params) {
-		var constraint = _constraints[params.constraint];
-		constraint.setPoweredAngMotor(false);
-		constraint.a.activate();
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-
-	public_functions.conetwist_setLimit = function (params) {
-		_constraints[params.constraint].setLimit(params.z, params.y, params.x); // ZYX order
-	};
-	public_functions.conetwist_enableMotor = function (params) {
-		var constraint = _constraints[params.constraint];
-		constraint.enableMotor(true);
-		constraint.a.activate();
-		constraint.b.activate();
-	};
-	public_functions.conetwist_setMaxMotorImpulse = function (params) {
-		var constraint = _constraints[params.constraint];
-		constraint.setMaxMotorImpulse(params.max_impulse);
-		constraint.a.activate();
-		constraint.b.activate();
-	};
-	public_functions.conetwist_setMotorTarget = function (params) {
-		var constraint = _constraints[params.constraint];
-
-		_quat.setX(params.x);
-		_quat.setY(params.y);
-		_quat.setZ(params.z);
-		_quat.setW(params.w);
-
-		constraint.setMotorTarget(_quat);
-
-		constraint.a.activate();
-		constraint.b.activate();
-	};
-	public_functions.conetwist_disableMotor = function (params) {
-		var constraint = _constraints[params.constraint];
-		constraint.enableMotor(false);
-		constraint.a.activate();
-		constraint.b.activate();
-	};
-
-	public_functions.dof_setLinearLowerLimit = function (params) {
-		var constraint = _constraints[params.constraint];
-
-		_vec3_1.setX(params.x);
-		_vec3_1.setY(params.y);
-		_vec3_1.setZ(params.z);
-
-		constraint.setLinearLowerLimit(_vec3_1);
-
-		constraint.a.activate();
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-	public_functions.dof_setLinearUpperLimit = function (params) {
-		var constraint = _constraints[params.constraint];
-
-		_vec3_1.setX(params.x);
-		_vec3_1.setY(params.y);
-		_vec3_1.setZ(params.z);
-
-		constraint.setLinearUpperLimit(_vec3_1);
-
-		constraint.a.activate();
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-	public_functions.dof_setAngularLowerLimit = function (params) {
-		var constraint = _constraints[params.constraint];
-
-		_vec3_1.setX(params.x);
-		_vec3_1.setY(params.y);
-		_vec3_1.setZ(params.z);
-
-		constraint.setAngularLowerLimit(_vec3_1);
-
-		constraint.a.activate();
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-	public_functions.dof_setAngularUpperLimit = function (params) {
-		var constraint = _constraints[params.constraint];
-
-		_vec3_1.setX(params.x);
-		_vec3_1.setY(params.y);
-		_vec3_1.setZ(params.z);
-
-		constraint.setAngularUpperLimit(_vec3_1);
-
-		constraint.a.activate();
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-	public_functions.dof_enableAngularMotor = function (params) {
-		var constraint = _constraints[params.constraint];
-
-		var motor = constraint.getRotationalLimitMotor(params.which);
-		motor.set_m_enableMotor(true);
-
-		constraint.a.activate();
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-	public_functions.dof_configureAngularMotor = function (params) {
-		var constraint = _constraints[params.constraint];
-
-		var motor = constraint.getRotationalLimitMotor(params.which);
-
-		motor.set_m_loLimit(params.low_angle);
-
-		console.log(motor.get_m_targetVelocity());
-		motor.set_m_hiLimit(params.high_angle);
-		motor.set_m_targetVelocity(params.velocity);
-		motor.set_m_maxMotorForce(params.max_force);
-
-		constraint.a.activate();
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-	public_functions.dof_disableAngularMotor = function (params) {
-		var constraint = _constraints[params.constraint];
-
-		var motor = constraint.getRotationalLimitMotor(params.which);
-		motor.set_m_enableMotor(false);
-
-		constraint.a.activate();
-		if (constraint.b) {
-			constraint.b.activate();
-		}
-	};
-
-	reportWorld = function reportWorld() {
-		var index,
-		    object,
-		    transform,
-		    origin,
-		    rotation,
-		    offset = 0,
-		    i = 0;
-
-		if (SUPPORT_TRANSFERABLE) {
-			if (worldreport.length < 2 + _num_objects * WORLDREPORT_ITEMSIZE) {
-				worldreport = new Float32Array(2 + // message id & # objects in report
-				Math.ceil(_num_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE * WORLDREPORT_ITEMSIZE // # of values needed * item size
-				);
-				worldreport[0] = MESSAGE_TYPES.WORLDREPORT;
-			}
-		}
-
-		worldreport[1] = _num_objects; // record how many objects we're reporting on
-
-		//for ( i = 0; i < worldreport[1]; i++ ) {
-		for (index in _objects) {
-			if (_objects.hasOwnProperty(index)) {
-				object = _objects[index];
-
-				// #TODO: we can't use center of mass transform when center of mass can change,
-				//        but getMotionState().getWorldTransform() screws up on objects that have been moved
-				//object.getMotionState().getWorldTransform( transform );
-				transform = object.getCenterOfMassTransform();
-
-				origin = transform.getOrigin();
-				rotation = transform.getRotation();
-
-				// add values to report
-				offset = 2 + i++ * WORLDREPORT_ITEMSIZE;
-
-				worldreport[offset] = object.id;
-
-				worldreport[offset + 1] = origin.x();
-				worldreport[offset + 2] = origin.y();
-				worldreport[offset + 3] = origin.z();
-
-				worldreport[offset + 4] = rotation.x();
-				worldreport[offset + 5] = rotation.y();
-				worldreport[offset + 6] = rotation.z();
-				worldreport[offset + 7] = rotation.w();
-
-				_vector = object.getLinearVelocity();
-				worldreport[offset + 8] = _vector.x();
-				worldreport[offset + 9] = _vector.y();
-				worldreport[offset + 10] = _vector.z();
-
-				_vector = object.getAngularVelocity();
-				worldreport[offset + 11] = _vector.x();
-				worldreport[offset + 12] = _vector.y();
-				worldreport[offset + 13] = _vector.z();
-			}
-		}
-
-		if (SUPPORT_TRANSFERABLE) {
-			transferableMessage(worldreport.buffer, [worldreport.buffer]);
-		} else {
-			transferableMessage(worldreport);
-		}
-	};
-
-	reportCollisions = function reportCollisions() {
-		var i,
-		    offset,
-		    dp = world.getDispatcher(),
-		    num = dp.getNumManifolds(),
-		    manifold,
-		    num_contacts,
-		    j,
-		    pt,
-		    _collided = false;
-
-		if (SUPPORT_TRANSFERABLE) {
-			if (collisionreport.length < 2 + num * COLLISIONREPORT_ITEMSIZE) {
-				collisionreport = new Float32Array(2 + // message id & # objects in report
-				Math.ceil(_num_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE * COLLISIONREPORT_ITEMSIZE // # of values needed * item size
-				);
-				collisionreport[0] = MESSAGE_TYPES.COLLISIONREPORT;
-			}
-		}
-
-		collisionreport[1] = 0; // how many collisions we're reporting on
-
-		for (i = 0; i < num; i++) {
-			manifold = dp.getManifoldByIndexInternal(i);
-
-			num_contacts = manifold.getNumContacts();
-			if (num_contacts === 0) {
-				continue;
-			}
-
-			for (j = 0; j < num_contacts; j++) {
-				pt = manifold.getContactPoint(j);
-
-				//if ( pt.getDistance() < 0 ) {
-				offset = 2 + collisionreport[1]++ * COLLISIONREPORT_ITEMSIZE;
-				collisionreport[offset] = _objects_ammo[manifold.getBody0().ptr];
-				collisionreport[offset + 1] = _objects_ammo[manifold.getBody1().ptr];
-
-				_vector = pt.get_m_normalWorldOnB();
-				collisionreport[offset + 2] = _vector.x();
-				collisionreport[offset + 3] = _vector.y();
-				collisionreport[offset + 4] = _vector.z();
-				break;
-				//}
-
-				transferableMessage(_objects_ammo);
-			}
-		}
-
-		if (SUPPORT_TRANSFERABLE) {
-			transferableMessage(collisionreport.buffer, [collisionreport.buffer]);
-		} else {
-			transferableMessage(collisionreport);
-		}
-	};
-
-	reportVehicles = function reportVehicles() {
-		var index,
-		    vehicle,
-		    transform,
-		    origin,
-		    rotation,
-		    offset = 0,
-		    i = 0,
-		    j = 0;
-
-		if (SUPPORT_TRANSFERABLE) {
-			if (vehiclereport.length < 2 + _num_wheels * VEHICLEREPORT_ITEMSIZE) {
-				vehiclereport = new Float32Array(2 + // message id & # objects in report
-				Math.ceil(_num_wheels / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE * VEHICLEREPORT_ITEMSIZE // # of values needed * item size
-				);
-				vehiclereport[0] = MESSAGE_TYPES.VEHICLEREPORT;
-			}
-		}
-
-		for (index in _vehicles) {
-			if (_vehicles.hasOwnProperty(index)) {
-				vehicle = _vehicles[index];
-
-				for (j = 0; j < vehicle.getNumWheels(); j++) {
-
-					//vehicle.updateWheelTransform( j, true );
-
-					//transform = vehicle.getWheelTransformWS( j );
-					transform = vehicle.getWheelInfo(j).get_m_worldTransform();
-
-					origin = transform.getOrigin();
-					rotation = transform.getRotation();
-
-					// add values to report
-					offset = 1 + i++ * VEHICLEREPORT_ITEMSIZE;
-
-					vehiclereport[offset] = index;
-					vehiclereport[offset + 1] = j;
-
-					vehiclereport[offset + 2] = origin.x();
-					vehiclereport[offset + 3] = origin.y();
-					vehiclereport[offset + 4] = origin.z();
-
-					vehiclereport[offset + 5] = rotation.x();
-					vehiclereport[offset + 6] = rotation.y();
-					vehiclereport[offset + 7] = rotation.z();
-					vehiclereport[offset + 8] = rotation.w();
-				}
-			}
-		}
-
-		if (j !== 0) {
-			if (SUPPORT_TRANSFERABLE) {
-				transferableMessage(vehiclereport.buffer, [vehiclereport.buffer]);
-			} else {
-				transferableMessage(vehiclereport);
-			}
-		}
-	};
-
-	reportConstraints = function reportConstraints() {
-		var index,
-		    constraint,
-		    offset_body,
-		    transform,
-		    origin,
-		    offset = 0,
-		    i = 0;
-
-		if (SUPPORT_TRANSFERABLE) {
-			if (constraintreport.length < 2 + _num_constraints * CONSTRAINTREPORT_ITEMSIZE) {
-				constraintreport = new Float32Array(2 + // message id & # objects in report
-				Math.ceil(_num_constraints / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE * CONSTRAINTREPORT_ITEMSIZE // # of values needed * item size
-				);
-				constraintreport[0] = MESSAGE_TYPES.CONSTRAINTREPORT;
-			}
-		}
-
-		for (index in _constraints) {
-			if (_constraints.hasOwnProperty(index)) {
-				constraint = _constraints[index];
-				offset_body = constraint.a;
-				transform = constraint.ta;
-				origin = transform.getOrigin();
-
-				// add values to report
-				offset = 1 + i++ * CONSTRAINTREPORT_ITEMSIZE;
-
-				constraintreport[offset] = index;
-				constraintreport[offset + 1] = offset_body.id;
-				constraintreport[offset + 2] = origin.x;
-				constraintreport[offset + 3] = origin.y;
-				constraintreport[offset + 4] = origin.z;
-				constraintreport[offset + 5] = constraint.getBreakingImpulseThreshold();
-			}
-		}
-
-		if (i !== 0) {
-			if (SUPPORT_TRANSFERABLE) {
-				transferableMessage(constraintreport.buffer, [constraintreport.buffer]);
-			} else {
-				transferableMessage(constraintreport);
-			}
-		}
-	};
-
-	self.onmessage = function (event) {
-
-		if (event.data instanceof Float32Array) {
-			// transferable object
-
-			switch (event.data[0]) {
-				case MESSAGE_TYPES.WORLDREPORT:
-					worldreport = new Float32Array(event.data);
-					break;
-
-				case MESSAGE_TYPES.COLLISIONREPORT:
-					collisionreport = new Float32Array(event.data);
-					break;
-
-				case MESSAGE_TYPES.VEHICLEREPORT:
-					vehiclereport = new Float32Array(event.data);
-					break;
-
-				case MESSAGE_TYPES.CONSTRAINTREPORT:
-					constraintreport = new Float32Array(event.data);
-					break;
-			}
-
-			return;
-		}
-
-		if (event.data.cmd && public_functions[event.data.cmd]) {
-			//if ( event.data.params.id !== undefined && _objects[event.data.params.id] === undefined && event.data.cmd !== 'addObject' && event.data.cmd !== 'registerMaterial' ) return;
-			public_functions[event.data.cmd](event.data.params);
-		}
-	};
+  'use strict';
+
+  var transferableMessage = self.webkitPostMessage || self.postMessage,
+
+
+  // enum
+  MESSAGE_TYPES = {
+    WORLDREPORT: 0,
+    COLLISIONREPORT: 1,
+    VEHICLEREPORT: 2,
+    CONSTRAINTREPORT: 3,
+    SOFTREPORT: 4
+  },
+      softBodyHelpers = new _whsAmmo2.default.btSoftBodyHelpers();
+
+  // temp variables
+  var _object = void 0,
+      _vector = void 0,
+      _transform = void 0,
+      _softbody_enabled = false,
+      last_simulation_duration = 0,
+      _num_objects = 0,
+      _num_rigidbody_objects = 0,
+      _num_softbody_objects = 0,
+      _num_wheels = 0,
+      _num_constraints = 0,
+      _softbody_report_size = 0,
+
+
+  // world variables
+  fixedTimeStep = void 0,
+      // used when calling stepSimulation
+  last_simulation_time = void 0,
+      world = void 0,
+      _vec3_1 = void 0,
+      _vec3_2 = void 0,
+      _vec3_3 = void 0,
+      _quat = void 0;
+
+  // private cache
+  var public_functions = {},
+      _objects = [],
+      _vehicles = [],
+      _constraints = [],
+      _materials = [],
+      _objects_ammo = {},
+      _object_shapes = {},
+
+
+  // The following objects are to track objects that ammo.js doesn't clean
+  // up. All are cleaned up when they're corresponding body is destroyed.
+  // Unfortunately, it's very difficult to get at these objects from the
+  // body, so we have to track them ourselves.
+  _motion_states = {},
+
+  // Don't need to worry about it for cached shapes.
+  _noncached_shapes = {},
+
+  // A body with a compound shape always has a regular shape as well, so we
+  // have track them separately.
+  _compound_shapes = {};
+
+  // object reporting
+  var REPORT_CHUNKSIZE = void 0,
+      // report array is increased in increments of this chunk size
+  worldreport = void 0,
+      softreport = void 0,
+      collisionreport = void 0,
+      vehiclereport = void 0,
+      constraintreport = void 0;
+
+  var WORLDREPORT_ITEMSIZE = 14,
+      // how many float values each reported item needs
+  COLLISIONREPORT_ITEMSIZE = 5,
+      // one float for each object id, and a Vec3 contact normal
+  VEHICLEREPORT_ITEMSIZE = 9,
+      // vehicle id, wheel index, 3 for position, 4 for rotation
+  CONSTRAINTREPORT_ITEMSIZE = 6; // constraint id, offset object, offset, applied impulse
+
+  var ab = new ArrayBuffer(1);
+
+  transferableMessage(ab, [ab]);
+  var SUPPORT_TRANSFERABLE = ab.byteLength === 0;
+
+  var getShapeFromCache = function getShapeFromCache(cache_key) {
+    if (_object_shapes[cache_key] !== undefined) return _object_shapes[cache_key];
+
+    return null;
+  };
+
+  var setShapeCache = function setShapeCache(cache_key, shape) {
+    _object_shapes[cache_key] = shape;
+  };
+
+  var createShape = function createShape(description) {
+    var shape = void 0;
+
+    _transform.setIdentity();
+    switch (description.type) {
+      case 'plane':
+        {
+          var cache_key = 'plane_' + description.normal.x + '_' + description.normal.y + '_' + description.normal.z;
+
+          if ((shape = getShapeFromCache(cache_key)) === null) {
+            _vec3_1.setX(description.normal.x);
+            _vec3_1.setY(description.normal.y);
+            _vec3_1.setZ(description.normal.z);
+            shape = new _whsAmmo2.default.btStaticPlaneShape(_vec3_1, 0);
+            setShapeCache(cache_key, shape);
+          }
+
+          break;
+        }
+      case 'box':
+        {
+          var _cache_key = 'box_' + description.width + '_' + description.height + '_' + description.depth;
+
+          if ((shape = getShapeFromCache(_cache_key)) === null) {
+            _vec3_1.setX(description.width / 2);
+            _vec3_1.setY(description.height / 2);
+            _vec3_1.setZ(description.depth / 2);
+            shape = new _whsAmmo2.default.btBoxShape(_vec3_1);
+            setShapeCache(_cache_key, shape);
+          }
+
+          break;
+        }
+      case 'sphere':
+        {
+          var _cache_key2 = 'sphere_' + description.radius;
+
+          if ((shape = getShapeFromCache(_cache_key2)) === null) {
+            shape = new _whsAmmo2.default.btSphereShape(description.radius);
+            setShapeCache(_cache_key2, shape);
+          }
+
+          break;
+        }
+      case 'cylinder':
+        {
+          var _cache_key3 = 'cylinder_' + description.width + '_' + description.height + '_' + description.depth;
+
+          if ((shape = getShapeFromCache(_cache_key3)) === null) {
+            _vec3_1.setX(description.width / 2);
+            _vec3_1.setY(description.height / 2);
+            _vec3_1.setZ(description.depth / 2);
+            shape = new _whsAmmo2.default.btCylinderShape(_vec3_1);
+            setShapeCache(_cache_key3, shape);
+          }
+
+          break;
+        }
+      case 'capsule':
+        {
+          var _cache_key4 = 'capsule_' + description.radius + '_' + description.height;
+
+          if ((shape = getShapeFromCache(_cache_key4)) === null) {
+            // In Bullet, capsule height excludes the end spheres
+            shape = new _whsAmmo2.default.btCapsuleShape(description.radius, description.height - 2 * description.radius);
+            setShapeCache(_cache_key4, shape);
+          }
+
+          break;
+        }
+      case 'cone':
+        {
+          var _cache_key5 = 'cone_' + description.radius + '_' + description.height;
+
+          if ((shape = getShapeFromCache(_cache_key5)) === null) {
+            shape = new _whsAmmo2.default.btConeShape(description.radius, description.height);
+            setShapeCache(_cache_key5, shape);
+          }
+
+          break;
+        }
+      case 'concave':
+        {
+          var triangle_mesh = new _whsAmmo2.default.btTriangleMesh();
+          if (!description.data.length) return false;
+          var data = description.data;
+
+          for (var i = 0; i < data.length / 9; i++) {
+            _vec3_1.setX(data[i * 9]);
+            _vec3_1.setY(data[i * 9 + 1]);
+            _vec3_1.setZ(data[i * 9 + 2]);
+
+            _vec3_2.setX(data[i * 9 + 3]);
+            _vec3_2.setY(data[i * 9 + 4]);
+            _vec3_2.setZ(data[i * 9 + 5]);
+
+            _vec3_3.setX(data[i * 9 + 6]);
+            _vec3_3.setY(data[i * 9 + 7]);
+            _vec3_3.setZ(data[i * 9 + 8]);
+
+            triangle_mesh.addTriangle(_vec3_1, _vec3_2, _vec3_3, false);
+          }
+
+          shape = new _whsAmmo2.default.btBvhTriangleMeshShape(triangle_mesh, true, true);
+          _noncached_shapes[description.id] = shape;
+
+          break;
+        }
+      case 'convex':
+        {
+          shape = new _whsAmmo2.default.btConvexHullShape();
+          var _data = description.data;
+
+          for (var _i = 0; _i < _data.length / 3; _i++) {
+            _vec3_1.setX(_data[_i * 3]);
+            _vec3_1.setY(_data[_i * 3 + 1]);
+            _vec3_1.setZ(_data[_i * 3 + 2]);
+
+            shape.addPoint(_vec3_1);
+          }
+
+          _noncached_shapes[description.id] = shape;
+
+          break;
+        }
+      case 'heightfield':
+        {
+          var ptr = _whsAmmo2.default._malloc(4 * description.xpts * description.ypts);
+
+          for (var _i2 = 0, p = 0, p2 = 0; _i2 < description.xpts; _i2++) {
+            for (var j = 0; j < description.ypts; j++) {
+              _whsAmmo2.default.HEAPF32[ptr + p2 >> 2] = description.points[p];
+
+              p++;
+              p2 += 4;
+            }
+          }
+
+          shape = new _whsAmmo2.default.btHeightfieldTerrainShape(description.xpts, description.ypts, ptr, 1, -description.absMaxHeight, description.absMaxHeight, 2, 'PHY_FLOAT', false);
+
+          _vec3_1.setX(description.xsize / (description.xpts - 1));
+          _vec3_1.setY(description.ysize / (description.ypts - 1));
+          _vec3_1.setZ(1);
+
+          shape.setLocalScaling(_vec3_1);
+          _noncached_shapes[description.id] = shape;
+          break;
+        }
+      default:
+        // Not recognized
+        return;
+    }
+
+    return shape;
+  };
+
+  public_functions.init = function () {
+    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+    _transform = new _whsAmmo2.default.btTransform();
+    _vec3_1 = new _whsAmmo2.default.btVector3(0, 0, 0);
+    _vec3_2 = new _whsAmmo2.default.btVector3(0, 0, 0);
+    _vec3_3 = new _whsAmmo2.default.btVector3(0, 0, 0);
+    _quat = new _whsAmmo2.default.btQuaternion(0, 0, 0, 0);
+
+    REPORT_CHUNKSIZE = params.reportsize || 50;
+
+    if (SUPPORT_TRANSFERABLE) {
+      // Transferable messages are supported, take advantage of them with TypedArrays
+      worldreport = new Float32Array(2 + REPORT_CHUNKSIZE * WORLDREPORT_ITEMSIZE); // message id + # of objects to report + chunk size * # of values per object
+      collisionreport = new Float32Array(2 + REPORT_CHUNKSIZE * COLLISIONREPORT_ITEMSIZE); // message id + # of collisions to report + chunk size * # of values per object
+      vehiclereport = new Float32Array(2 + REPORT_CHUNKSIZE * VEHICLEREPORT_ITEMSIZE); // message id + # of vehicles to report + chunk size * # of values per object
+      constraintreport = new Float32Array(2 + REPORT_CHUNKSIZE * CONSTRAINTREPORT_ITEMSIZE); // message id + # of constraints to report + chunk size * # of values per object
+    } else {
+        // Transferable messages are not supported, send data as normal arrays
+        worldreport = [];
+        collisionreport = [];
+        vehiclereport = [];
+        constraintreport = [];
+      }
+
+    worldreport[0] = MESSAGE_TYPES.WORLDREPORT;
+    collisionreport[0] = MESSAGE_TYPES.COLLISIONREPORT;
+    vehiclereport[0] = MESSAGE_TYPES.VEHICLEREPORT;
+    constraintreport[0] = MESSAGE_TYPES.CONSTRAINTREPORT;
+
+    var collisionConfiguration = params.whs.softbody ? new _whsAmmo2.default.btSoftBodyRigidBodyCollisionConfiguration() : new _whsAmmo2.default.btDefaultCollisionConfiguration(),
+        dispatcher = new _whsAmmo2.default.btCollisionDispatcher(collisionConfiguration),
+        solver = new _whsAmmo2.default.btSequentialImpulseConstraintSolver();
+
+    var broadphase = void 0;
+
+    if (!params.broadphase) params.broadphase = { type: 'dynamic' };
+
+    switch (params.broadphase.type) {
+      case 'sweepprune':
+
+        _vec3_1.setX(params.broadphase.aabbmin.x);
+        _vec3_1.setY(params.broadphase.aabbmin.y);
+        _vec3_1.setZ(params.broadphase.aabbmin.z);
+
+        _vec3_2.setX(params.broadphase.aabbmax.x);
+        _vec3_2.setY(params.broadphase.aabbmax.y);
+        _vec3_2.setZ(params.broadphase.aabbmax.z);
+
+        broadphase = new _whsAmmo2.default.btAxisSweep3(_vec3_1, _vec3_2);
+
+        break;
+
+      case 'dynamic':
+      default:
+        broadphase = new _whsAmmo2.default.btDbvtBroadphase();
+        break;
+    }
+
+    world = params.whs.softbody ? new _whsAmmo2.default.btSoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, new _whsAmmo2.default.btDefaultSoftBodySolver()) : new _whsAmmo2.default.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+    fixedTimeStep = params.fixedTimeStep;
+
+    if (params.whs.softbody) _softbody_enabled = true;
+
+    transferableMessage({ cmd: 'worldReady' });
+  };
+
+  public_functions.registerMaterial = function (description) {
+    _materials[description.id] = description;
+  };
+
+  public_functions.unRegisterMaterial = function (description) {
+    delete _materials[description.id];
+  };
+
+  public_functions.setFixedTimeStep = function (description) {
+    fixedTimeStep = description;
+  };
+
+  public_functions.setGravity = function (description) {
+    _vec3_1.setX(description.x);
+    _vec3_1.setY(description.y);
+    _vec3_1.setZ(description.z);
+    world.setGravity(_vec3_1);
+  };
+
+  public_functions.addObject = function (description) {
+    var body = void 0,
+        motionState = void 0;
+
+    if (description.type === 'softbody') {
+      if (!description.aVertices.length) return false;
+
+      body = softBodyHelpers.CreateFromTriMesh(world.getWorldInfo(), description.aVertices, description.aIndices, description.aIndices.length / 3, true);
+
+      var sbConfig = body.get_m_cfg(),
+          physParams = description.params;
+
+      sbConfig.set_viterations(40);
+      sbConfig.set_piterations(40);
+      sbConfig.set_collisions(0x11);
+      sbConfig.set_kDF(physParams.friction ? physParams.friction : 0.1);
+      sbConfig.set_kDP(physParams.damping ? physParams.damping : 0.01);
+      sbConfig.set_kPR(physParams.pressure ? physParams.pressure : 0);
+
+      body.get_m_materials().at(0).set_m_kLST(physParams.stiffness ? physParams.stiffness : 0.9);
+      body.get_m_materials().at(0).set_m_kAST(physParams.stiffness ? physParams.stiffness : 0.9);
+
+      _whsAmmo2.default.castObject(body, _whsAmmo2.default.btCollisionObject).getCollisionShape().setMargin(physParams.margin ? physParams.margin : 0.1);
+      body.setActivationState(4);
+      body.type = 0; // SoftBody.
+
+      _transform.setIdentity();
+
+      _vec3_1.setX(description.position.x);
+      _vec3_1.setY(description.position.y);
+      _vec3_1.setZ(description.position.z);
+      _transform.setOrigin(_vec3_1);
+
+      _quat.setX(description.rotation.x);
+      _quat.setY(description.rotation.y);
+      _quat.setZ(description.rotation.z);
+      _quat.setW(description.rotation.w);
+      _transform.setRotation(_quat);
+
+      body.transform(_transform);
+
+      body.setTotalMass(description.mass, false);
+      world.addSoftBody(body, 1, -1);
+      _softbody_report_size += body.get_m_nodes().size();
+      _num_softbody_objects++;
+    } else {
+      var shape = createShape(description);
+
+      if (!shape) return;
+
+      // If there are children then this is a compound shape
+      if (description.children) {
+        var compound_shape = new _whsAmmo2.default.btCompoundShape();
+        compound_shape.addChildShape(_transform, shape);
+
+        for (var i = 0; i < description.children.length; i++) {
+          var _child = description.children[i];
+
+          var trans = new _whsAmmo2.default.btTransform();
+          trans.setIdentity();
+
+          _vec3_1.setX(_child.position_offset.x);
+          _vec3_1.setY(_child.position_offset.y);
+          _vec3_1.setZ(_child.position_offset.z);
+          trans.setOrigin(_vec3_1);
+
+          _quat.setX(_child.rotation.x);
+          _quat.setY(_child.rotation.y);
+          _quat.setZ(_child.rotation.z);
+          _quat.setW(_child.rotation.w);
+          trans.setRotation(_quat);
+
+          shape = createShape(description.children[i]);
+          compound_shape.addChildShape(trans, shape);
+          _whsAmmo2.default.destroy(trans);
+        }
+
+        shape = compound_shape;
+        _compound_shapes[description.id] = shape;
+      }
+
+      _vec3_1.setX(0);
+      _vec3_1.setY(0);
+      _vec3_1.setZ(0);
+      shape.calculateLocalInertia(description.mass, _vec3_1);
+
+      _transform.setIdentity();
+
+      _vec3_2.setX(description.position.x);
+      _vec3_2.setY(description.position.y);
+      _vec3_2.setZ(description.position.z);
+      _transform.setOrigin(_vec3_2);
+
+      _quat.setX(description.rotation.x);
+      _quat.setY(description.rotation.y);
+      _quat.setZ(description.rotation.z);
+      _quat.setW(description.rotation.w);
+      _transform.setRotation(_quat);
+
+      motionState = new _whsAmmo2.default.btDefaultMotionState(_transform); // #TODO: btDefaultMotionState supports center of mass offset as second argument - implement
+      var rbInfo = new _whsAmmo2.default.btRigidBodyConstructionInfo(description.mass, motionState, shape, _vec3_1);
+
+      if (description.materialId !== undefined) {
+        rbInfo.set_m_friction(_materials[description.materialId].friction);
+        rbInfo.set_m_restitution(_materials[description.materialId].restitution);
+      }
+
+      body = new _whsAmmo2.default.btRigidBody(rbInfo);
+      _whsAmmo2.default.destroy(rbInfo);
+
+      if (typeof description.collision_flags !== 'undefined') body.setCollisionFlags(description.collision_flags);
+
+      world.addRigidBody(body);
+      body.type = 1; // RigidBody.
+      _num_rigidbody_objects++;
+    }
+
+    body.id = description.id;
+    _objects[body.id] = body;
+    _motion_states[body.id] = motionState;
+
+    _objects_ammo[body.a === undefined ? body.ptr : body.a] = body.id;
+    _num_objects++;
+
+    transferableMessage({ cmd: 'objectReady', params: body.id });
+  };
+
+  public_functions.addVehicle = function (description) {
+    var vehicle_tuning = new _whsAmmo2.default.btVehicleTuning();
+
+    vehicle_tuning.set_m_suspensionStiffness(description.suspension_stiffness);
+    vehicle_tuning.set_m_suspensionCompression(description.suspension_compression);
+    vehicle_tuning.set_m_suspensionDamping(description.suspension_damping);
+    vehicle_tuning.set_m_maxSuspensionTravelCm(description.max_suspension_travel);
+    vehicle_tuning.set_m_maxSuspensionForce(description.max_suspension_force);
+
+    var vehicle = new _whsAmmo2.default.btRaycastVehicle(vehicle_tuning, _objects[description.rigidBody], new _whsAmmo2.default.btDefaultVehicleRaycaster(world));
+
+    vehicle.tuning = vehicle_tuning;
+    _objects[description.rigidBody].setActivationState(4);
+    vehicle.setCoordinateSystem(0, 1, 2);
+
+    world.addVehicle(vehicle);
+    _vehicles[description.id] = vehicle;
+  };
+  public_functions.removeVehicle = function (description) {
+    delete _vehicles[description.id];
+  };
+
+  public_functions.addWheel = function (description) {
+    if (_vehicles[description.id] !== undefined) {
+      var tuning = _vehicles[description.id].tuning;
+      if (description.tuning !== undefined) {
+        tuning = new _whsAmmo2.default.btVehicleTuning();
+        tuning.set_m_suspensionStiffness(description.tuning.suspension_stiffness);
+        tuning.set_m_suspensionCompression(description.tuning.suspension_compression);
+        tuning.set_m_suspensionDamping(description.tuning.suspension_damping);
+        tuning.set_m_maxSuspensionTravelCm(description.tuning.max_suspension_travel);
+        tuning.set_m_maxSuspensionForce(description.tuning.max_suspension_force);
+      }
+
+      _vec3_1.setX(description.connection_point.x);
+      _vec3_1.setY(description.connection_point.y);
+      _vec3_1.setZ(description.connection_point.z);
+
+      _vec3_2.setX(description.wheel_direction.x);
+      _vec3_2.setY(description.wheel_direction.y);
+      _vec3_2.setZ(description.wheel_direction.z);
+
+      _vec3_3.setX(description.wheel_axle.x);
+      _vec3_3.setY(description.wheel_axle.y);
+      _vec3_3.setZ(description.wheel_axle.z);
+
+      _vehicles[description.id].addWheel(_vec3_1, _vec3_2, _vec3_3, description.suspension_rest_length, description.wheel_radius, tuning, description.is_front_wheel);
+    }
+
+    _num_wheels++;
+
+    if (SUPPORT_TRANSFERABLE) {
+      vehiclereport = new Float32Array(1 + _num_wheels * VEHICLEREPORT_ITEMSIZE); // message id & ( # of objects to report * # of values per object )
+      vehiclereport[0] = MESSAGE_TYPES.VEHICLEREPORT;
+    } else vehiclereport = [MESSAGE_TYPES.VEHICLEREPORT];
+  };
+
+  public_functions.setSteering = function (details) {
+    if (_vehicles[details.id] !== undefined) _vehicles[details.id].setSteeringValue(details.steering, details.wheel);
+  };
+
+  public_functions.setBrake = function (details) {
+    if (_vehicles[details.id] !== undefined) _vehicles[details.id].setBrake(details.brake, details.wheel);
+  };
+
+  public_functions.applyEngineForce = function (details) {
+    if (_vehicles[details.id] !== undefined) _vehicles[details.id].applyEngineForce(details.force, details.wheel);
+  };
+
+  public_functions.removeObject = function (details) {
+    if (_objects[details.id].type === 0) {
+      _num_softbody_objects--;
+      _softbody_report_size -= _objects[details.id].get_m_nodes().size();
+    } else if (_objects[details.id].type === 1) _num_rigidbody_objects--;
+
+    world.removeRigidBody(_objects[details.id]);
+    _whsAmmo2.default.destroy(_objects[details.id]);
+    _whsAmmo2.default.destroy(_motion_states[details.id]);
+    if (_compound_shapes[details.id]) _whsAmmo2.default.destroy(_compound_shapes[details.id]);
+    if (_noncached_shapes[details.id]) _whsAmmo2.default.destroy(_noncached_shapes[details.id]);
+
+    _objects_ammo[_objects[details.id].a === undefined ? _objects[details.id].a : _objects[details.id].ptr] = null;
+    _objects[details.id] = null;
+    _motion_states[details.id] = null;
+
+    if (_compound_shapes[details.id]) _compound_shapes[details.id] = null;
+    if (_noncached_shapes[details.id]) _noncached_shapes[details.id] = null;
+    _num_objects--;
+  };
+
+  public_functions.updateTransform = function (details) {
+    _object = _objects[details.id];
+
+    if (_object.type === 1) {
+      _object.getMotionState().getWorldTransform(_transform);
+
+      if (details.pos) {
+        _vec3_1.setX(details.pos.x);
+        _vec3_1.setY(details.pos.y);
+        _vec3_1.setZ(details.pos.z);
+        _transform.setOrigin(_vec3_1);
+      }
+
+      if (details.quat) {
+        _quat.setX(details.quat.x);
+        _quat.setY(details.quat.y);
+        _quat.setZ(details.quat.z);
+        _quat.setW(details.quat.w);
+        _transform.setRotation(_quat);
+      }
+
+      _object.setWorldTransform(_transform);
+      _object.activate();
+    } else if (_object.type === 0) {
+      _object.getWorldTransform(_transform);
+
+      if (details.pos) {
+        _vec3_1.setX(details.pos.x);
+        _vec3_1.setY(details.pos.y);
+        _vec3_1.setZ(details.pos.z);
+        _transform.setOrigin(_vec3_1);
+      }
+
+      if (details.quat) {
+        _quat.setX(details.quat.x);
+        _quat.setY(details.quat.y);
+        _quat.setZ(details.quat.z);
+        _quat.setW(details.quat.w);
+        _transform.setRotation(_quat);
+      }
+
+      _object.transform(_transform);
+    }
+  };
+
+  public_functions.updateMass = function (details) {
+    // #TODO: changing a static object into dynamic is buggy
+    _object = _objects[details.id];
+
+    // Per http://www.bulletphysics.org/Bullet/phpBB3/viewtopic.php?p=&f=9&t=3663#p13816
+    world.removeRigidBody(_object);
+
+    _vec3_1.setX(0);
+    _vec3_1.setY(0);
+    _vec3_1.setZ(0);
+
+    _object.setMassProps(details.mass, _vec3_1);
+    world.addRigidBody(_object);
+    _object.activate();
+  };
+
+  public_functions.applyCentralImpulse = function (details) {
+    _vec3_1.setX(details.x);
+    _vec3_1.setY(details.y);
+    _vec3_1.setZ(details.z);
+
+    _objects[details.id].applyCentralImpulse(_vec3_1);
+    _objects[details.id].activate();
+  };
+
+  public_functions.applyImpulse = function (details) {
+    _vec3_1.setX(details.impulse_x);
+    _vec3_1.setY(details.impulse_y);
+    _vec3_1.setZ(details.impulse_z);
+
+    _vec3_2.setX(details.x);
+    _vec3_2.setY(details.y);
+    _vec3_2.setZ(details.z);
+
+    _objects[details.id].applyImpulse(_vec3_1, _vec3_2);
+    _objects[details.id].activate();
+  };
+
+  public_functions.applyTorque = function (details) {
+    _vec3_1.setX(details.torque_x);
+    _vec3_1.setY(details.torque_y);
+    _vec3_1.setZ(details.torque_z);
+
+    _objects[details.id].applyTorque(_vec3_1);
+    _objects[details.id].activate();
+  };
+
+  public_functions.applyCentralForce = function (details) {
+    _vec3_1.setX(details.x);
+    _vec3_1.setY(details.y);
+    _vec3_1.setZ(details.z);
+
+    _objects[details.id].applyCentralForce(_vec3_1);
+    _objects[details.id].activate();
+  };
+
+  public_functions.applyForce = function (details) {
+    _vec3_1.setX(details.force_x);
+    _vec3_1.setY(details.force_y);
+    _vec3_1.setZ(details.force_z);
+
+    _vec3_2.setX(details.x);
+    _vec3_2.setY(details.y);
+    _vec3_2.setZ(details.z);
+
+    _objects[details.id].applyForce(_vec3_1, _vec3_2);
+    _objects[details.id].activate();
+  };
+
+  public_functions.onSimulationResume = function () {
+    last_simulation_time = Date.now();
+  };
+
+  public_functions.setAngularVelocity = function (details) {
+    _vec3_1.setX(details.x);
+    _vec3_1.setY(details.y);
+    _vec3_1.setZ(details.z);
+
+    _objects[details.id].setAngularVelocity(_vec3_1);
+    _objects[details.id].activate();
+  };
+
+  public_functions.setLinearVelocity = function (details) {
+    _vec3_1.setX(details.x);
+    _vec3_1.setY(details.y);
+    _vec3_1.setZ(details.z);
+
+    _objects[details.id].setLinearVelocity(_vec3_1);
+    _objects[details.id].activate();
+  };
+
+  public_functions.setAngularFactor = function (details) {
+    _vec3_1.setX(details.x);
+    _vec3_1.setY(details.y);
+    _vec3_1.setZ(details.z);
+
+    _objects[details.id].setAngularFactor(_vec3_1);
+  };
+
+  public_functions.setLinearFactor = function (details) {
+    _vec3_1.setX(details.x);
+    _vec3_1.setY(details.y);
+    _vec3_1.setZ(details.z);
+
+    _objects[details.id].setLinearFactor(_vec3_1);
+  };
+
+  public_functions.setDamping = function (details) {
+    _objects[details.id].setDamping(details.linear, details.angular);
+  };
+
+  public_functions.setCcdMotionThreshold = function (details) {
+    _objects[details.id].setCcdMotionThreshold(details.threshold);
+  };
+
+  public_functions.setCcdSweptSphereRadius = function (details) {
+    _objects[details.id].setCcdSweptSphereRadius(details.radius);
+  };
+
+  public_functions.addConstraint = function (details) {
+    var constraint = void 0;
+
+    switch (details.type) {
+
+      case 'point':
+        {
+          if (details.objectb === undefined) {
+            _vec3_1.setX(details.positiona.x);
+            _vec3_1.setY(details.positiona.y);
+            _vec3_1.setZ(details.positiona.z);
+
+            constraint = new _whsAmmo2.default.btPoint2PointConstraint(_objects[details.objecta], _vec3_1);
+          } else {
+            _vec3_1.setX(details.positiona.x);
+            _vec3_1.setY(details.positiona.y);
+            _vec3_1.setZ(details.positiona.z);
+
+            _vec3_2.setX(details.positionb.x);
+            _vec3_2.setY(details.positionb.y);
+            _vec3_2.setZ(details.positionb.z);
+
+            constraint = new _whsAmmo2.default.btPoint2PointConstraint(_objects[details.objecta], _objects[details.objectb], _vec3_1, _vec3_2);
+          }
+          break;
+        }
+      case 'hinge':
+        {
+          if (details.objectb === undefined) {
+            _vec3_1.setX(details.positiona.x);
+            _vec3_1.setY(details.positiona.y);
+            _vec3_1.setZ(details.positiona.z);
+
+            _vec3_2.setX(details.axis.x);
+            _vec3_2.setY(details.axis.y);
+            _vec3_2.setZ(details.axis.z);
+
+            constraint = new _whsAmmo2.default.btHingeConstraint(_objects[details.objecta], _vec3_1, _vec3_2);
+          } else {
+            _vec3_1.setX(details.positiona.x);
+            _vec3_1.setY(details.positiona.y);
+            _vec3_1.setZ(details.positiona.z);
+
+            _vec3_2.setX(details.positionb.x);
+            _vec3_2.setY(details.positionb.y);
+            _vec3_2.setZ(details.positionb.z);
+
+            _vec3_3.setX(details.axis.x);
+            _vec3_3.setY(details.axis.y);
+            _vec3_3.setZ(details.axis.z);
+
+            constraint = new _whsAmmo2.default.btHingeConstraint(_objects[details.objecta], _objects[details.objectb], _vec3_1, _vec3_2, _vec3_3, _vec3_3);
+          }
+          break;
+        }
+      case 'slider':
+        {
+          var _transformb = void 0;
+          var _transforma = new _whsAmmo2.default.btTransform();
+
+          _vec3_1.setX(details.positiona.x);
+          _vec3_1.setY(details.positiona.y);
+          _vec3_1.setZ(details.positiona.z);
+
+          _transforma.setOrigin(_vec3_1);
+
+          var rotation = _transforma.getRotation();
+          rotation.setEuler(details.axis.x, details.axis.y, details.axis.z);
+          _transforma.setRotation(rotation);
+
+          if (details.objectb) {
+            _transformb = new _whsAmmo2.default.btTransform();
+
+            _vec3_2.setX(details.positionb.x);
+            _vec3_2.setY(details.positionb.y);
+            _vec3_2.setZ(details.positionb.z);
+
+            _transformb.setOrigin(_vec3_2);
+
+            rotation = _transformb.getRotation();
+            rotation.setEuler(details.axis.x, details.axis.y, details.axis.z);
+            _transformb.setRotation(rotation);
+
+            constraint = new _whsAmmo2.default.btSliderConstraint(_objects[details.objecta], _objects[details.objectb], _transforma, _transformb, true);
+          } else {
+            constraint = new _whsAmmo2.default.btSliderConstraint(_objects[details.objecta], _transforma, true);
+          }
+
+          _whsAmmo2.default.destroy(_transforma);
+          if (_transformb !== undefined) _whsAmmo2.default.destroy(_transformb);
+
+          break;
+        }
+      case 'conetwist':
+        {
+          var _transforma2 = new _whsAmmo2.default.btTransform();
+          _transforma2.setIdentity();
+
+          var _transformb2 = new _whsAmmo2.default.btTransform();
+          _transformb2.setIdentity();
+
+          _vec3_1.setX(details.positiona.x);
+          _vec3_1.setY(details.positiona.y);
+          _vec3_1.setZ(details.positiona.z);
+
+          _vec3_2.setX(details.positionb.x);
+          _vec3_2.setY(details.positionb.y);
+          _vec3_2.setZ(details.positionb.z);
+
+          _transforma2.setOrigin(_vec3_1);
+          _transformb2.setOrigin(_vec3_2);
+
+          var _rotation = _transforma2.getRotation();
+          _rotation.setEulerZYX(-details.axisa.z, -details.axisa.y, -details.axisa.x);
+          _transforma2.setRotation(_rotation);
+
+          _rotation = _transformb2.getRotation();
+          _rotation.setEulerZYX(-details.axisb.z, -details.axisb.y, -details.axisb.x);
+          _transformb2.setRotation(_rotation);
+
+          constraint = new _whsAmmo2.default.btConeTwistConstraint(_objects[details.objecta], _objects[details.objectb], _transforma2, _transformb2);
+
+          constraint.setLimit(Math.PI, 0, Math.PI);
+
+          _whsAmmo2.default.destroy(_transforma2);
+          _whsAmmo2.default.destroy(_transformb2);
+
+          break;
+        }
+      case 'dof':
+        {
+          var _transformb3 = void 0;
+
+          var _transforma3 = new _whsAmmo2.default.btTransform();
+          _transforma3.setIdentity();
+
+          _vec3_1.setX(details.positiona.x);
+          _vec3_1.setY(details.positiona.y);
+          _vec3_1.setZ(details.positiona.z);
+
+          _transforma3.setOrigin(_vec3_1);
+
+          var _rotation2 = _transforma3.getRotation();
+          _rotation2.setEulerZYX(-details.axisa.z, -details.axisa.y, -details.axisa.x);
+          _transforma3.setRotation(_rotation2);
+
+          if (details.objectb) {
+            _transformb3 = new _whsAmmo2.default.btTransform();
+            _transformb3.setIdentity();
+
+            _vec3_2.setX(details.positionb.x);
+            _vec3_2.setY(details.positionb.y);
+            _vec3_2.setZ(details.positionb.z);
+
+            _transformb3.setOrigin(_vec3_2);
+
+            _rotation2 = _transformb3.getRotation();
+            _rotation2.setEulerZYX(-details.axisb.z, -details.axisb.y, -details.axisb.x);
+            _transformb3.setRotation(_rotation2);
+
+            constraint = new _whsAmmo2.default.btGeneric6DofConstraint(_objects[details.objecta], _objects[details.objectb], _transforma3, _transformb3, true);
+          } else {
+            constraint = new _whsAmmo2.default.btGeneric6DofConstraint(_objects[details.objecta], _transforma3, true);
+          }
+
+          _whsAmmo2.default.destroy(_transforma3);
+          if (_transformb3 !== undefined) _whsAmmo2.default.destroy(_transformb3);
+
+          break;
+        }
+      default:
+        return;
+    }
+
+    world.addConstraint(constraint);
+
+    constraint.a = _objects[details.objecta];
+    constraint.b = _objects[details.objectb];
+
+    constraint.ta = transforma;
+    constraint.tb = transformb;
+
+    constraint.enableFeedback();
+    _constraints[details.id] = constraint;
+    _num_constraints++;
+
+    if (SUPPORT_TRANSFERABLE) {
+      constraintreport = new Float32Array(1 + _num_constraints * CONSTRAINTREPORT_ITEMSIZE); // message id & ( # of objects to report * # of values per object )
+      constraintreport[0] = MESSAGE_TYPES.CONSTRAINTREPORT;
+    } else constraintreport = [MESSAGE_TYPES.CONSTRAINTREPORT];
+  };
+
+  public_functions.removeConstraint = function (details) {
+    var constraint = _constraints[details.id];
+
+    if (constraint !== undefined) {
+      world.removeConstraint(constraint);
+      _constraints[details.id] = null;
+      _num_constraints--;
+    }
+  };
+
+  public_functions.constraint_setBreakingImpulseThreshold = function (details) {
+    var constraint = _constraints[details.id];
+    if (constraint !== undefind) constraint.setBreakingImpulseThreshold(details.threshold);
+  };
+
+  public_functions.simulate = function () {
+    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+    if (world) {
+      if (params.timeStep && params.timeStep < fixedTimeStep) params.timeStep = fixedTimeStep;else if (!params.timeStep && last_simulation_time) {
+        params.timeStep = 0;
+
+        while (params.timeStep + last_simulation_duration <= fixedTimeStep) {
+          params.timeStep = (Date.now() - last_simulation_time) / 1000;
+        } // time since last simulation
+      } else if (!params.timeStep) params.timeStep = fixedTimeStep; // handle first frame
+
+      params.maxSubSteps = params.maxSubSteps || Math.ceil(params.timeStep / fixedTimeStep); // If maxSubSteps is not defined, keep the simulation fully up to date
+
+      last_simulation_duration = Date.now();
+      world.stepSimulation(params.timeStep, params.maxSubSteps, fixedTimeStep);
+
+      reportVehicles();
+      reportCollisions();
+      reportConstraints();
+      reportWorld();
+      if (_softbody_enabled) reportWorld_softbodies();
+
+      last_simulation_duration = (Date.now() - last_simulation_duration) / 1000;
+      last_simulation_time = Date.now();
+    }
+  };
+
+  // Constraint functions
+  public_functions.hinge_setLimits = function (params) {
+    _constraints[params.constraint].setLimit(params.low, params.high, 0, params.bias_factor, params.relaxation_factor);
+  };
+
+  public_functions.hinge_enableAngularMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.enableAngularMotor(true, params.velocity, params.acceleration);
+    constraint.a.activate();
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.hinge_disableMotor = function (params) {
+    _constraints[params.constraint].enableMotor(false);
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.slider_setLimits = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setLowerLinLimit(params.lin_lower || 0);
+    constraint.setUpperLinLimit(params.lin_upper || 0);
+
+    constraint.setLowerAngLimit(params.ang_lower || 0);
+    constraint.setUpperAngLimit(params.ang_upper || 0);
+  };
+
+  public_functions.slider_setRestitution = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setSoftnessLimLin(params.linear || 0);
+    constraint.setSoftnessLimAng(params.angular || 0);
+  };
+
+  public_functions.slider_enableLinearMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setTargetLinMotorVelocity(params.velocity);
+    constraint.setMaxLinMotorForce(params.acceleration);
+    constraint.setPoweredLinMotor(true);
+    constraint.a.activate();
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.slider_disableLinearMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setPoweredLinMotor(false);
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.slider_enableAngularMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setTargetAngMotorVelocity(params.velocity);
+    constraint.setMaxAngMotorForce(params.acceleration);
+    constraint.setPoweredAngMotor(true);
+    constraint.a.activate();
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.slider_disableAngularMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setPoweredAngMotor(false);
+    constraint.a.activate();
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.conetwist_setLimit = function (params) {
+    _constraints[params.constraint].setLimit(params.z, params.y, params.x); // ZYX order
+  };
+
+  public_functions.conetwist_enableMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.enableMotor(true);
+    constraint.a.activate();
+    constraint.b.activate();
+  };
+
+  public_functions.conetwist_setMaxMotorImpulse = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setMaxMotorImpulse(params.max_impulse);
+    constraint.a.activate();
+    constraint.b.activate();
+  };
+
+  public_functions.conetwist_setMotorTarget = function (params) {
+    var constraint = _constraints[params.constraint];
+
+    _quat.setX(params.x);
+    _quat.setY(params.y);
+    _quat.setZ(params.z);
+    _quat.setW(params.w);
+
+    constraint.setMotorTarget(_quat);
+
+    constraint.a.activate();
+    constraint.b.activate();
+  };
+
+  public_functions.conetwist_disableMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.enableMotor(false);
+    constraint.a.activate();
+    constraint.b.activate();
+  };
+
+  public_functions.dof_setLinearLowerLimit = function (params) {
+    var constraint = _constraints[params.constraint];
+
+    _vec3_1.setX(params.x);
+    _vec3_1.setY(params.y);
+    _vec3_1.setZ(params.z);
+
+    constraint.setLinearLowerLimit(_vec3_1);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_setLinearUpperLimit = function (params) {
+    var constraint = _constraints[params.constraint];
+
+    _vec3_1.setX(params.x);
+    _vec3_1.setY(params.y);
+    _vec3_1.setZ(params.z);
+
+    constraint.setLinearUpperLimit(_vec3_1);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_setAngularLowerLimit = function (params) {
+    var constraint = _constraints[params.constraint];
+
+    _vec3_1.setX(params.x);
+    _vec3_1.setY(params.y);
+    _vec3_1.setZ(params.z);
+
+    constraint.setAngularLowerLimit(_vec3_1);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_setAngularUpperLimit = function (params) {
+    var constraint = _constraints[params.constraint];
+
+    _vec3_1.setX(params.x);
+    _vec3_1.setY(params.y);
+    _vec3_1.setZ(params.z);
+
+    constraint.setAngularUpperLimit(_vec3_1);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_enableAngularMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+
+    var motor = constraint.getRotationalLimitMotor(params.which);
+    motor.set_m_enableMotor(true);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_configureAngularMotor = function (params) {
+    var constraint = _constraints[params.constraint],
+        motor = constraint.getRotationalLimitMotor(params.which);
+
+    motor.set_m_loLimit(params.low_angle);
+    motor.set_m_hiLimit(params.high_angle);
+    motor.set_m_targetVelocity(params.velocity);
+    motor.set_m_maxMotorForce(params.max_force);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_disableAngularMotor = function (params) {
+    var constraint = _constraints[params.constraint],
+        motor = constraint.getRotationalLimitMotor(params.which);
+
+    motor.set_m_enableMotor(false);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  var reportWorld = function reportWorld() {
+    if (SUPPORT_TRANSFERABLE && worldreport.length < 2 + _num_rigidbody_objects * WORLDREPORT_ITEMSIZE) {
+      worldreport = new Float32Array(2 // message id & # objects in report
+      + Math.ceil(_num_rigidbody_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE * WORLDREPORT_ITEMSIZE // # of values needed * item size
+      );
+
+      worldreport[0] = MESSAGE_TYPES.WORLDREPORT;
+    }
+
+    worldreport[1] = _num_rigidbody_objects; // record how many objects we're reporting on
+
+    {
+      var i = 0,
+          index = _objects.length;
+
+      while (index--) {
+        var object = _objects[index];
+
+        if (object && object.type === 1) {
+          // RigidBodies.
+          // #TODO: we can't use center of mass transform when center of mass can change,
+          //        but getMotionState().getWorldTransform() screws up on objects that have been moved
+          // object.getMotionState().getWorldTransform( transform );
+          var transform = object.getCenterOfMassTransform();
+          var origin = transform.getOrigin();
+          var rotation = transform.getRotation();
+
+          // add values to report
+          var offset = 2 + i++ * WORLDREPORT_ITEMSIZE;
+
+          worldreport[offset] = object.id;
+
+          worldreport[offset + 1] = origin.x();
+          worldreport[offset + 2] = origin.y();
+          worldreport[offset + 3] = origin.z();
+
+          worldreport[offset + 4] = rotation.x();
+          worldreport[offset + 5] = rotation.y();
+          worldreport[offset + 6] = rotation.z();
+          worldreport[offset + 7] = rotation.w();
+
+          _vector = object.getLinearVelocity();
+          worldreport[offset + 8] = _vector.x();
+          worldreport[offset + 9] = _vector.y();
+          worldreport[offset + 10] = _vector.z();
+
+          _vector = object.getAngularVelocity();
+          worldreport[offset + 11] = _vector.x();
+          worldreport[offset + 12] = _vector.y();
+          worldreport[offset + 13] = _vector.z();
+        }
+      }
+    }
+
+    if (SUPPORT_TRANSFERABLE) transferableMessage(worldreport.buffer, [worldreport.buffer]);else transferableMessage(worldreport);
+  };
+
+  var reportWorld_softbodies = function reportWorld_softbodies() {
+    // TODO: Add SUPPORTTRANSFERABLE.
+
+    softreport = new Float32Array(2 // message id & # objects in report
+    + _num_softbody_objects * 2 + _softbody_report_size * 6);
+
+    softreport[0] = MESSAGE_TYPES.SOFTREPORT;
+    softreport[1] = _num_softbody_objects; // record how many objects we're reporting on
+
+    {
+      var offset = 2,
+          index = _objects.length;
+
+      while (index--) {
+        var object = _objects[index];
+
+        if (object && object.type === 0) {
+          // SoftBodies.
+          var size = object.get_m_nodes().size();
+
+          softreport[offset] = object.id;
+          softreport[offset + 1] = size; // Vertices ammount.
+
+          var offsetVert = offset + 2;
+
+          for (var i = 0; i < size; i++) {
+            var node = object.get_m_nodes().at(i);
+            var vert = node.get_m_x();
+            var normal = node.get_m_n();
+
+            softreport[offsetVert + i * 6] = vert.x();
+            softreport[offsetVert + i * 6 + 1] = vert.y();
+            softreport[offsetVert + i * 6 + 2] = vert.z();
+
+            softreport[offsetVert + i * 6 + 3] = normal.x();
+            softreport[offsetVert + i * 6 + 4] = normal.y();
+            softreport[offsetVert + i * 6 + 5] = normal.z();
+          }
+
+          offset += size * 6 + 2;
+        }
+      }
+    }
+
+    // if (SUPPORT_TRANSFERABLE) transferableMessage(softreport.buffer, [softreport.buffer]);
+    // else transferableMessage(softreport);
+    transferableMessage(softreport);
+  };
+
+  var reportCollisions = function reportCollisions() {
+    var dp = world.getDispatcher(),
+        num = dp.getNumManifolds();
+    // _collided = false;
+
+    if (SUPPORT_TRANSFERABLE) {
+      if (collisionreport.length < 2 + num * COLLISIONREPORT_ITEMSIZE) {
+        collisionreport = new Float32Array(2 // message id & # objects in report
+        + Math.ceil(_num_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE * COLLISIONREPORT_ITEMSIZE // # of values needed * item size
+        );
+        collisionreport[0] = MESSAGE_TYPES.COLLISIONREPORT;
+      }
+    }
+
+    collisionreport[1] = 0; // how many collisions we're reporting on
+
+    for (var i = 0; i < num; i++) {
+      var manifold = dp.getManifoldByIndexInternal(i),
+          num_contacts = manifold.getNumContacts();
+
+      if (num_contacts === 0) continue;
+
+      for (var j = 0; j < num_contacts; j++) {
+        var pt = manifold.getContactPoint(j);
+
+        // if ( pt.getDistance() < 0 ) {
+        var offset = 2 + collisionreport[1]++ * COLLISIONREPORT_ITEMSIZE;
+        collisionreport[offset] = _objects_ammo[manifold.getBody0().ptr];
+        collisionreport[offset + 1] = _objects_ammo[manifold.getBody1().ptr];
+
+        _vector = pt.get_m_normalWorldOnB();
+        collisionreport[offset + 2] = _vector.x();
+        collisionreport[offset + 3] = _vector.y();
+        collisionreport[offset + 4] = _vector.z();
+        break;
+        // }
+        // transferableMessage(_objects_ammo);
+      }
+    }
+
+    if (SUPPORT_TRANSFERABLE) transferableMessage(collisionreport.buffer, [collisionreport.buffer]);else transferableMessage(collisionreport);
+  };
+
+  var reportVehicles = function reportVehicles() {
+    if (SUPPORT_TRANSFERABLE) {
+      if (vehiclereport.length < 2 + _num_wheels * VEHICLEREPORT_ITEMSIZE) {
+        vehiclereport = new Float32Array(2 // message id & # objects in report
+        + Math.ceil(_num_wheels / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE * VEHICLEREPORT_ITEMSIZE // # of values needed * item size
+        );
+        vehiclereport[0] = MESSAGE_TYPES.VEHICLEREPORT;
+      }
+    }
+
+    {
+      var i = 0,
+          j = 0,
+          index = _vehicles.length;
+
+      while (index--) {
+        if (_vehicles[index]) {
+          var vehicle = _vehicles[index];
+
+          for (j = 0; j < vehicle.getNumWheels(); j++) {
+            // vehicle.updateWheelTransform( j, true );
+            // transform = vehicle.getWheelTransformWS( j );
+            var transform = vehicle.getWheelInfo(j).get_m_worldTransform();
+
+            var origin = transform.getOrigin();
+            var rotation = transform.getRotation();
+
+            // add values to report
+            var offset = 1 + i++ * VEHICLEREPORT_ITEMSIZE;
+
+            vehiclereport[offset] = index;
+            vehiclereport[offset + 1] = j;
+
+            vehiclereport[offset + 2] = origin.x();
+            vehiclereport[offset + 3] = origin.y();
+            vehiclereport[offset + 4] = origin.z();
+
+            vehiclereport[offset + 5] = rotation.x();
+            vehiclereport[offset + 6] = rotation.y();
+            vehiclereport[offset + 7] = rotation.z();
+            vehiclereport[offset + 8] = rotation.w();
+          }
+        }
+      }
+
+      if (SUPPORT_TRANSFERABLE && j !== 0) transferableMessage(vehiclereport.buffer, [vehiclereport.buffer]);else if (j !== 0) transferableMessage(vehiclereport);
+    }
+  };
+
+  var reportConstraints = function reportConstraints() {
+    if (SUPPORT_TRANSFERABLE) {
+      if (constraintreport.length < 2 + _num_constraints * CONSTRAINTREPORT_ITEMSIZE) {
+        constraintreport = new Float32Array(2 // message id & # objects in report
+        + Math.ceil(_num_constraints / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE * CONSTRAINTREPORT_ITEMSIZE // # of values needed * item size
+        );
+        constraintreport[0] = MESSAGE_TYPES.CONSTRAINTREPORT;
+      }
+    }
+
+    {
+      var offset = 0,
+          i = 0,
+          index = _constraints.lenght;
+
+      while (index--) {
+        if (_constraints[index]) {
+          var _constraint = _constraints[index];
+          var offset_body = _constraint.a;
+          var transform = _constraint.ta;
+          var origin = transform.getOrigin();
+
+          // add values to report
+          offset = 1 + i++ * CONSTRAINTREPORT_ITEMSIZE;
+
+          constraintreport[offset] = index;
+          constraintreport[offset + 1] = offset_body.id;
+          constraintreport[offset + 2] = origin.x;
+          constraintreport[offset + 3] = origin.y;
+          constraintreport[offset + 4] = origin.z;
+          constraintreport[offset + 5] = _constraint.getBreakingImpulseThreshold();
+        }
+      }
+
+      if (SUPPORT_TRANSFERABLE && i !== 0) transferableMessage(constraintreport.buffer, [constraintreport.buffer]);else if (i !== 0) transferableMessage(constraintreport);
+    }
+  };
+
+  self.onmessage = function (event) {
+    if (event.data instanceof Float32Array) {
+      // transferable object
+      switch (event.data[0]) {
+        case MESSAGE_TYPES.WORLDREPORT:
+          {
+            worldreport = new Float32Array(event.data);
+            break;
+          }
+        case MESSAGE_TYPES.COLLISIONREPORT:
+          {
+            collisionreport = new Float32Array(event.data);
+            break;
+          }
+        case MESSAGE_TYPES.VEHICLEREPORT:
+          {
+            vehiclereport = new Float32Array(event.data);
+            break;
+          }
+        case MESSAGE_TYPES.CONSTRAINTREPORT:
+          {
+            constraintreport = new Float32Array(event.data);
+            break;
+          }
+        default:
+      }
+
+      return;
+    } else if (event.data.cmd && public_functions[event.data.cmd]) public_functions[event.data.cmd](event.data.params);
+  };
 };
 
 /***/ },
-/* 125 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53079,7 +53445,7 @@ var Group = function (_Shape) {
 exports.Group = Group;
 
 /***/ },
-/* 126 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53186,18 +53552,6 @@ var Skybox = function (_Shape) {
 exports.Skybox = Skybox;
 
 /***/ },
-/* 127 */
-/***/ function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(134), __esModule: true };
-
-/***/ },
-/* 128 */
-/***/ function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(135), __esModule: true };
-
-/***/ },
 /* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -53231,21 +53585,13 @@ module.exports = { "default": __webpack_require__(140), __esModule: true };
 /* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
-__webpack_require__(159);
-var $Object = __webpack_require__(10).Object;
-module.exports = function create(P, D){
-  return $Object.create(P, D);
-};
+module.exports = { "default": __webpack_require__(141), __esModule: true };
 
 /***/ },
 /* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
-__webpack_require__(160);
-var $Object = __webpack_require__(10).Object;
-module.exports = function defineProperty(it, key, desc){
-  return $Object.defineProperty(it, key, desc);
-};
+module.exports = { "default": __webpack_require__(142), __esModule: true };
 
 /***/ },
 /* 136 */
@@ -53253,8 +53599,8 @@ module.exports = function defineProperty(it, key, desc){
 
 __webpack_require__(161);
 var $Object = __webpack_require__(10).Object;
-module.exports = function getOwnPropertyDescriptor(it, key){
-  return $Object.getOwnPropertyDescriptor(it, key);
+module.exports = function create(P, D){
+  return $Object.create(P, D);
 };
 
 /***/ },
@@ -53262,35 +53608,55 @@ module.exports = function getOwnPropertyDescriptor(it, key){
 /***/ function(module, exports, __webpack_require__) {
 
 __webpack_require__(162);
-module.exports = __webpack_require__(10).Object.getPrototypeOf;
+var $Object = __webpack_require__(10).Object;
+module.exports = function defineProperty(it, key, desc){
+  return $Object.defineProperty(it, key, desc);
+};
 
 /***/ },
 /* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 __webpack_require__(163);
-module.exports = __webpack_require__(10).Object.setPrototypeOf;
+var $Object = __webpack_require__(10).Object;
+module.exports = function getOwnPropertyDescriptor(it, key){
+  return $Object.getOwnPropertyDescriptor(it, key);
+};
 
 /***/ },
 /* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
-__webpack_require__(166);
 __webpack_require__(164);
-__webpack_require__(167);
-__webpack_require__(168);
-module.exports = __webpack_require__(10).Symbol;
+module.exports = __webpack_require__(10).Object.getPrototypeOf;
 
 /***/ },
 /* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 __webpack_require__(165);
-__webpack_require__(169);
-module.exports = __webpack_require__(46).f('iterator');
+module.exports = __webpack_require__(10).Object.setPrototypeOf;
 
 /***/ },
 /* 141 */
+/***/ function(module, exports, __webpack_require__) {
+
+__webpack_require__(168);
+__webpack_require__(166);
+__webpack_require__(169);
+__webpack_require__(170);
+module.exports = __webpack_require__(10).Symbol;
+
+/***/ },
+/* 142 */
+/***/ function(module, exports, __webpack_require__) {
+
+__webpack_require__(167);
+__webpack_require__(171);
+module.exports = __webpack_require__(46).f('iterator');
+
+/***/ },
+/* 143 */
 /***/ function(module, exports) {
 
 module.exports = function(it){
@@ -53299,20 +53665,20 @@ module.exports = function(it){
 };
 
 /***/ },
-/* 142 */
+/* 144 */
 /***/ function(module, exports) {
 
 module.exports = function(){ /* empty */ };
 
 /***/ },
-/* 143 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = __webpack_require__(12)
-  , toLength  = __webpack_require__(157)
-  , toIndex   = __webpack_require__(156);
+  , toLength  = __webpack_require__(159)
+  , toIndex   = __webpack_require__(158);
 module.exports = function(IS_INCLUDES){
   return function($this, el, fromIndex){
     var O      = toIObject($this)
@@ -53331,7 +53697,7 @@ module.exports = function(IS_INCLUDES){
 };
 
 /***/ },
-/* 144 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 // all enumerable object keys, includes symbols
@@ -53351,13 +53717,13 @@ module.exports = function(it){
 };
 
 /***/ },
-/* 145 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(11).document && document.documentElement;
 
 /***/ },
-/* 146 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
@@ -53367,7 +53733,7 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
 };
 
 /***/ },
-/* 147 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 // 7.2.2 IsArray(argument)
@@ -53377,7 +53743,7 @@ module.exports = Array.isArray || function isArray(arg){
 };
 
 /***/ },
-/* 148 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53396,7 +53762,7 @@ module.exports = function(Constructor, NAME, next){
 };
 
 /***/ },
-/* 149 */
+/* 151 */
 /***/ function(module, exports) {
 
 module.exports = function(done, value){
@@ -53404,7 +53770,7 @@ module.exports = function(done, value){
 };
 
 /***/ },
-/* 150 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 var getKeys   = __webpack_require__(29)
@@ -53419,7 +53785,7 @@ module.exports = function(object, el){
 };
 
 /***/ },
-/* 151 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 var META     = __webpack_require__(31)('meta')
@@ -53477,7 +53843,7 @@ var meta = module.exports = {
 };
 
 /***/ },
-/* 152 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 var dP       = __webpack_require__(17)
@@ -53495,7 +53861,7 @@ module.exports = __webpack_require__(15) ? Object.defineProperties : function de
 };
 
 /***/ },
-/* 153 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
@@ -53520,7 +53886,7 @@ module.exports.f = function getOwnPropertyNames(it){
 
 
 /***/ },
-/* 154 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 // Works with __proto__ only. Old v8 can't work with null proto objects.
@@ -53550,7 +53916,7 @@ module.exports = {
 };
 
 /***/ },
-/* 155 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(43)
@@ -53572,7 +53938,7 @@ module.exports = function(TO_STRING){
 };
 
 /***/ },
-/* 156 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(43)
@@ -53584,7 +53950,7 @@ module.exports = function(index, length){
 };
 
 /***/ },
-/* 157 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 // 7.1.15 ToLength
@@ -53595,13 +53961,13 @@ module.exports = function(it){
 };
 
 /***/ },
-/* 158 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
-var addToUnscopables = __webpack_require__(142)
-  , step             = __webpack_require__(149)
+var addToUnscopables = __webpack_require__(144)
+  , step             = __webpack_require__(151)
   , Iterators        = __webpack_require__(35)
   , toIObject        = __webpack_require__(12);
 
@@ -53635,7 +54001,7 @@ addToUnscopables('values');
 addToUnscopables('entries');
 
 /***/ },
-/* 159 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(19)
@@ -53643,7 +54009,7 @@ var $export = __webpack_require__(19)
 $export($export.S, 'Object', {create: __webpack_require__(37)});
 
 /***/ },
-/* 160 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(19);
@@ -53651,7 +54017,7 @@ var $export = __webpack_require__(19);
 $export($export.S + $export.F * !__webpack_require__(15), 'Object', {defineProperty: __webpack_require__(17).f});
 
 /***/ },
-/* 161 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
@@ -53665,7 +54031,7 @@ __webpack_require__(61)('getOwnPropertyDescriptor', function(){
 });
 
 /***/ },
-/* 162 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 Object.getPrototypeOf(O)
@@ -53679,26 +54045,26 @@ __webpack_require__(61)('getPrototypeOf', function(){
 });
 
 /***/ },
-/* 163 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 // 19.1.3.19 Object.setPrototypeOf(O, proto)
 var $export = __webpack_require__(19);
-$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(154).set});
+$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(156).set});
 
 /***/ },
-/* 164 */
+/* 166 */
 /***/ function(module, exports) {
 
 
 
 /***/ },
-/* 165 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
-var $at  = __webpack_require__(155)(true);
+var $at  = __webpack_require__(157)(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
 __webpack_require__(56)(String, 'String', function(iterated){
@@ -53716,7 +54082,7 @@ __webpack_require__(56)(String, 'String', function(iterated){
 });
 
 /***/ },
-/* 166 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53727,7 +54093,7 @@ var global         = __webpack_require__(11)
   , DESCRIPTORS    = __webpack_require__(15)
   , $export        = __webpack_require__(19)
   , redefine       = __webpack_require__(62)
-  , META           = __webpack_require__(151).KEY
+  , META           = __webpack_require__(153).KEY
   , $fails         = __webpack_require__(24)
   , shared         = __webpack_require__(42)
   , setToStringTag = __webpack_require__(40)
@@ -53735,15 +54101,15 @@ var global         = __webpack_require__(11)
   , wks            = __webpack_require__(21)
   , wksExt         = __webpack_require__(46)
   , wksDefine      = __webpack_require__(45)
-  , keyOf          = __webpack_require__(150)
-  , enumKeys       = __webpack_require__(144)
-  , isArray        = __webpack_require__(147)
+  , keyOf          = __webpack_require__(152)
+  , enumKeys       = __webpack_require__(146)
+  , isArray        = __webpack_require__(149)
   , anObject       = __webpack_require__(23)
   , toIObject      = __webpack_require__(12)
   , toPrimitive    = __webpack_require__(44)
   , createDesc     = __webpack_require__(30)
   , _create        = __webpack_require__(37)
-  , gOPNExt        = __webpack_require__(153)
+  , gOPNExt        = __webpack_require__(155)
   , $GOPD          = __webpack_require__(38)
   , $DP            = __webpack_require__(17)
   , $keys          = __webpack_require__(29)
@@ -53957,22 +54323,22 @@ setToStringTag(Math, 'Math', true);
 setToStringTag(global.JSON, 'JSON', true);
 
 /***/ },
-/* 167 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 __webpack_require__(45)('asyncIterator');
 
 /***/ },
-/* 168 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 __webpack_require__(45)('observable');
 
 /***/ },
-/* 169 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
-__webpack_require__(158);
+__webpack_require__(160);
 var global        = __webpack_require__(11)
   , hide          = __webpack_require__(20)
   , Iterators     = __webpack_require__(35)
@@ -53987,20 +54353,20 @@ for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList'
 }
 
 /***/ },
-/* 170 */
+/* 172 */
 /***/ function(module, exports) {
 
 console.log("I'm `fs` modules");
 
 
 /***/ },
-/* 171 */
+/* 173 */
 /***/ function(module, exports) {
 
 module.exports=function(n){var t={},e=[];n=n||this,n.on=function(n,e,l){(t[n]=t[n]||[]).push([e,l])},n.off=function(n,l){n||(t={});for(var o=t[n]||e,i=o.length=l?o.length:0;i--;)l==o[i][0]&&o.splice(i,1)},n.emit=function(n){for(var l,o=t[n]||e,i=o.length>0?o.slice(0,o.length):o,c=0;l=i[c++];)l[0].apply(l[1],e.slice.call(arguments,1))}};
 
 /***/ },
-/* 172 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -54231,18 +54597,7 @@ var substr = 'ab'.substr(-1) === 'b'
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(47)))
 
 /***/ },
-/* 173 */
-/***/ function(module, exports) {
-
-// stats.js - http://github.com/mrdoob/stats.js
-var Stats=function(){function h(a){c.appendChild(a.dom);return a}function k(a){for(var d=0;d<c.children.length;d++)c.children[d].style.display=d===a?"block":"none";l=a}var l=0,c=document.createElement("div");c.style.cssText="position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000";c.addEventListener("click",function(a){a.preventDefault();k(++l%c.children.length)},!1);var g=(performance||Date).now(),e=g,a=0,r=h(new Stats.Panel("FPS","#0ff","#002")),f=h(new Stats.Panel("MS","#0f0","#020"));
-if(self.performance&&self.performance.memory)var t=h(new Stats.Panel("MB","#f08","#201"));k(0);return{REVISION:16,dom:c,addPanel:h,showPanel:k,begin:function(){g=(performance||Date).now()},end:function(){a++;var c=(performance||Date).now();f.update(c-g,200);if(c>e+1E3&&(r.update(1E3*a/(c-e),100),e=c,a=0,t)){var d=performance.memory;t.update(d.usedJSHeapSize/1048576,d.jsHeapSizeLimit/1048576)}return c},update:function(){g=this.end()},domElement:c,setMode:k}};
-Stats.Panel=function(h,k,l){var c=Infinity,g=0,e=Math.round,a=e(window.devicePixelRatio||1),r=80*a,f=48*a,t=3*a,u=2*a,d=3*a,m=15*a,n=74*a,p=30*a,q=document.createElement("canvas");q.width=r;q.height=f;q.style.cssText="width:80px;height:48px";var b=q.getContext("2d");b.font="bold "+9*a+"px Helvetica,Arial,sans-serif";b.textBaseline="top";b.fillStyle=l;b.fillRect(0,0,r,f);b.fillStyle=k;b.fillText(h,t,u);b.fillRect(d,m,n,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d,m,n,p);return{dom:q,update:function(f,
-v){c=Math.min(c,f);g=Math.max(g,f);b.fillStyle=l;b.globalAlpha=1;b.fillRect(0,0,r,m);b.fillStyle=k;b.fillText(e(f)+" "+h+" ("+e(c)+"-"+e(g)+")",t,u);b.drawImage(q,d+a,m,n-a,p,d,m,n-a,p);b.fillRect(d+n-a,m,a,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d+n-a,m,a,e((1-f/v)*p))}}};"object"===typeof module&&(module.exports=Stats);
-
-
-/***/ },
-/* 174 */
+/* 175 */
 /***/ function(module, exports) {
 
 module.exports = function(THREE) {
@@ -55367,7 +55722,7 @@ module.exports = function(THREE) {
 
 
 /***/ },
-/* 175 */
+/* 176 */
 /***/ function(module, exports) {
 
 var __webpack_require__ = arguments[2];
@@ -55445,7 +55800,7 @@ module.exports = function (fn) {
 
 
 /***/ },
-/* 176 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, __dirname) {
@@ -55453,7 +55808,7 @@ module.exports = function (fn) {
 var AmmoLib = function(Module) {
   Module = Module || {};
 
-var Module;if(!Module)Module=(typeof AmmoLib!=="undefined"?AmmoLib:null)||{};var moduleOverrides={};for(var key in Module){if(Module.hasOwnProperty(key)){moduleOverrides[key]=Module[key]}}var ENVIRONMENT_IS_WEB=false;var ENVIRONMENT_IS_WORKER=false;var ENVIRONMENT_IS_NODE=false;var ENVIRONMENT_IS_SHELL=false;if(Module["ENVIRONMENT"]){if(Module["ENVIRONMENT"]==="WEB"){ENVIRONMENT_IS_WEB=true}else if(Module["ENVIRONMENT"]==="WORKER"){ENVIRONMENT_IS_WORKER=true}else if(Module["ENVIRONMENT"]==="NODE"){ENVIRONMENT_IS_NODE=true}else if(Module["ENVIRONMENT"]==="SHELL"){ENVIRONMENT_IS_SHELL=true}else{throw new Error("The provided Module['ENVIRONMENT'] value is not valid. It must be one of: WEB|WORKER|NODE|SHELL.")}}else{ENVIRONMENT_IS_WEB=typeof window==="object";ENVIRONMENT_IS_WORKER=typeof importScripts==="function";ENVIRONMENT_IS_NODE=typeof process==="object"&&"function"==="function"&&!ENVIRONMENT_IS_WEB&&!ENVIRONMENT_IS_WORKER;ENVIRONMENT_IS_SHELL=!ENVIRONMENT_IS_WEB&&!ENVIRONMENT_IS_NODE&&!ENVIRONMENT_IS_WORKER}if(ENVIRONMENT_IS_NODE){if(!Module["print"])Module["print"]=console.log;if(!Module["printErr"])Module["printErr"]=console.warn;var nodeFS;var nodePath;Module["read"]=function read(filename,binary){if(!nodeFS)nodeFS=__webpack_require__(170);if(!nodePath)nodePath=__webpack_require__(172);filename=nodePath["normalize"](filename);var ret=nodeFS["readFileSync"](filename);if(!ret&&filename!=nodePath["resolve"](filename)){filename=path.join(__dirname,"..","src",filename);ret=nodeFS["readFileSync"](filename)}if(ret&&!binary)ret=ret.toString();return ret};Module["readBinary"]=function readBinary(filename){var ret=Module["read"](filename,true);if(!ret.buffer){ret=new Uint8Array(ret)}assert(ret.buffer);return ret};Module["load"]=function load(f){globalEval(read(f))};if(!Module["thisProgram"]){if(process["argv"].length>1){Module["thisProgram"]=process["argv"][1].replace(/\\/g,"/")}else{Module["thisProgram"]="unknown-program"}}Module["arguments"]=process["argv"].slice(2);if(true){module["exports"]=Module}process["on"]("uncaughtException",(function(ex){if(!(ex instanceof ExitStatus)){throw ex}}));Module["inspect"]=(function(){return"[Emscripten Module object]"})}else if(ENVIRONMENT_IS_SHELL){if(!Module["print"])Module["print"]=print;if(typeof printErr!="undefined")Module["printErr"]=printErr;if(typeof read!="undefined"){Module["read"]=read}else{Module["read"]=function read(){throw"no read() available (jsc?)"}}Module["readBinary"]=function readBinary(f){if(typeof readbuffer==="function"){return new Uint8Array(readbuffer(f))}var data=read(f,"binary");assert(typeof data==="object");return data};if(typeof scriptArgs!="undefined"){Module["arguments"]=scriptArgs}else if(typeof arguments!="undefined"){Module["arguments"]=arguments}}else if(ENVIRONMENT_IS_WEB||ENVIRONMENT_IS_WORKER){Module["read"]=function read(url){var xhr=new XMLHttpRequest;xhr.open("GET",url,false);xhr.send(null);return xhr.responseText};Module["readAsync"]=function readAsync(url,onload,onerror){var xhr=new XMLHttpRequest;xhr.open("GET",url,true);xhr.responseType="arraybuffer";xhr.onload=function xhr_onload(){if(xhr.status==200||xhr.status==0&&xhr.response){onload(xhr.response)}else{onerror()}};xhr.onerror=onerror;xhr.send(null)};if(typeof arguments!="undefined"){Module["arguments"]=arguments}if(typeof console!=="undefined"){if(!Module["print"])Module["print"]=function print(x){console.log(x)};if(!Module["printErr"])Module["printErr"]=function printErr(x){console.warn(x)}}else{var TRY_USE_DUMP=false;if(!Module["print"])Module["print"]=TRY_USE_DUMP&&typeof dump!=="undefined"?(function(x){dump(x)}):(function(x){})}if(ENVIRONMENT_IS_WORKER){Module["load"]=importScripts}if(typeof Module["setWindowTitle"]==="undefined"){Module["setWindowTitle"]=(function(title){document.title=title})}}else{throw"Unknown runtime environment. Where are we?"}function globalEval(x){abort("NO_DYNAMIC_EXECUTION=1 was set, cannot eval")}if(!Module["load"]&&Module["read"]){Module["load"]=function load(f){globalEval(Module["read"](f))}}if(!Module["print"]){Module["print"]=(function(){})}if(!Module["printErr"]){Module["printErr"]=Module["print"]}if(!Module["arguments"]){Module["arguments"]=[]}if(!Module["thisProgram"]){Module["thisProgram"]="./this.program"}Module.print=Module["print"];Module.printErr=Module["printErr"];Module["preRun"]=[];Module["postRun"]=[];for(var key in moduleOverrides){if(moduleOverrides.hasOwnProperty(key)){Module[key]=moduleOverrides[key]}}moduleOverrides=undefined;var Runtime={setTempRet0:(function(value){tempRet0=value}),getTempRet0:(function(){return tempRet0}),stackSave:(function(){return STACKTOP}),stackRestore:(function(stackTop){STACKTOP=stackTop}),getNativeTypeSize:(function(type){switch(type){case"i1":case"i8":return 1;case"i16":return 2;case"i32":return 4;case"i64":return 8;case"float":return 4;case"double":return 8;default:{if(type[type.length-1]==="*"){return Runtime.QUANTUM_SIZE}else if(type[0]==="i"){var bits=parseInt(type.substr(1));assert(bits%8===0);return bits/8}else{return 0}}}}),getNativeFieldSize:(function(type){return Math.max(Runtime.getNativeTypeSize(type),Runtime.QUANTUM_SIZE)}),STACK_ALIGN:16,prepVararg:(function(ptr,type){if(type==="double"||type==="i64"){if(ptr&7){assert((ptr&7)===4);ptr+=4}}else{assert((ptr&3)===0)}return ptr}),getAlignSize:(function(type,size,vararg){if(!vararg&&(type=="i64"||type=="double"))return 8;if(!type)return Math.min(size,8);return Math.min(size||(type?Runtime.getNativeFieldSize(type):0),Runtime.QUANTUM_SIZE)}),dynCall:(function(sig,ptr,args){if(args&&args.length){if(!args.splice)args=Array.prototype.slice.call(args);args.splice(0,0,ptr);return Module["dynCall_"+sig].apply(null,args)}else{return Module["dynCall_"+sig].call(null,ptr)}}),functionPointers:[],addFunction:(function(func){for(var i=0;i<Runtime.functionPointers.length;i++){if(!Runtime.functionPointers[i]){Runtime.functionPointers[i]=func;return 2*(1+i)}}throw"Finished up all reserved function pointers. Use a higher value for RESERVED_FUNCTION_POINTERS."}),removeFunction:(function(index){Runtime.functionPointers[(index-2)/2]=null}),warnOnce:(function(text){if(!Runtime.warnOnce.shown)Runtime.warnOnce.shown={};if(!Runtime.warnOnce.shown[text]){Runtime.warnOnce.shown[text]=1;Module.printErr(text)}}),funcWrappers:{},getFuncWrapper:(function(func,sig){assert(sig);if(!Runtime.funcWrappers[sig]){Runtime.funcWrappers[sig]={}}var sigCache=Runtime.funcWrappers[sig];if(!sigCache[func]){sigCache[func]=function dynCall_wrapper(){return Runtime.dynCall(sig,func,arguments)}}return sigCache[func]}),getCompilerSetting:(function(name){throw"You must build with -s RETAIN_COMPILER_SETTINGS=1 for Runtime.getCompilerSetting or emscripten_get_compiler_setting to work"}),stackAlloc:(function(size){var ret=STACKTOP;STACKTOP=STACKTOP+size|0;STACKTOP=STACKTOP+15&-16;return ret}),staticAlloc:(function(size){var ret=STATICTOP;STATICTOP=STATICTOP+size|0;STATICTOP=STATICTOP+15&-16;return ret}),dynamicAlloc:(function(size){var ret=DYNAMICTOP;DYNAMICTOP=DYNAMICTOP+size|0;DYNAMICTOP=DYNAMICTOP+15&-16;if(DYNAMICTOP>=TOTAL_MEMORY){var success=enlargeMemory();if(!success){DYNAMICTOP=ret;return 0}}return ret}),alignMemory:(function(size,quantum){var ret=size=Math.ceil(size/(quantum?quantum:16))*(quantum?quantum:16);return ret}),makeBigInt:(function(low,high,unsigned){var ret=unsigned?+(low>>>0)+ +(high>>>0)*+4294967296:+(low>>>0)+ +(high|0)*+4294967296;return ret}),GLOBAL_BASE:8,QUANTUM_SIZE:4,__dummy__:0};var ABORT=false;var EXITSTATUS=0;function assert(condition,text){if(!condition){abort("Assertion failed: "+text)}}function getCFunc(ident){var func=Module["_"+ident];if(!func){abort("NO_DYNAMIC_EXECUTION=1 was set, cannot eval")}assert(func,"Cannot call unknown function "+ident+" (perhaps LLVM optimizations or closure removed it?)");return func}var ccall;((function(){var JSfuncs={"stackSave":(function(){Runtime.stackSave()}),"stackRestore":(function(){Runtime.stackRestore()}),"arrayToC":(function(arr){var ret=Runtime.stackAlloc(arr.length);writeArrayToMemory(arr,ret);return ret}),"stringToC":(function(str){var ret=0;if(str!==null&&str!==undefined&&str!==0){ret=Runtime.stackAlloc((str.length<<2)+1);writeStringToMemory(str,ret)}return ret})};var toC={"string":JSfuncs["stringToC"],"array":JSfuncs["arrayToC"]};ccall=function ccallFunc(ident,returnType,argTypes,args,opts){var func=getCFunc(ident);var cArgs=[];var stack=0;if(args){for(var i=0;i<args.length;i++){var converter=toC[argTypes[i]];if(converter){if(stack===0)stack=Runtime.stackSave();cArgs[i]=converter(args[i])}else{cArgs[i]=args[i]}}}var ret=func.apply(null,cArgs);if(returnType==="string")ret=Pointer_stringify(ret);if(stack!==0){if(opts&&opts.async){EmterpreterAsync.asyncFinalizers.push((function(){Runtime.stackRestore(stack)}));return}Runtime.stackRestore(stack)}return ret};cwrap=function cwrap(ident,returnType,argTypes){return(function(){return ccall(ident,returnType,argTypes,arguments)})}}))();function setValue(ptr,value,type,noSafe){type=type||"i8";if(type.charAt(type.length-1)==="*")type="i32";switch(type){case"i1":HEAP8[ptr>>0]=value;break;case"i8":HEAP8[ptr>>0]=value;break;case"i16":HEAP16[ptr>>1]=value;break;case"i32":HEAP32[ptr>>2]=value;break;case"i64":tempI64=[value>>>0,(tempDouble=value,+Math_abs(tempDouble)>=+1?tempDouble>+0?(Math_min(+Math_floor(tempDouble/+4294967296),+4294967295)|0)>>>0:~~+Math_ceil((tempDouble- +(~~tempDouble>>>0))/+4294967296)>>>0:0)],HEAP32[ptr>>2]=tempI64[0],HEAP32[ptr+4>>2]=tempI64[1];break;case"float":HEAPF32[ptr>>2]=value;break;case"double":HEAPF64[ptr>>3]=value;break;default:abort("invalid type for setValue: "+type)}}function getValue(ptr,type,noSafe){type=type||"i8";if(type.charAt(type.length-1)==="*")type="i32";switch(type){case"i1":return HEAP8[ptr>>0];case"i8":return HEAP8[ptr>>0];case"i16":return HEAP16[ptr>>1];case"i32":return HEAP32[ptr>>2];case"i64":return HEAP32[ptr>>2];case"float":return HEAPF32[ptr>>2];case"double":return HEAPF64[ptr>>3];default:abort("invalid type for setValue: "+type)}return null}var ALLOC_NORMAL=0;var ALLOC_STATIC=2;var ALLOC_DYNAMIC=3;var ALLOC_NONE=4;function allocate(slab,types,allocator,ptr){var zeroinit,size;if(typeof slab==="number"){zeroinit=true;size=slab}else{zeroinit=false;size=slab.length}var singleType=typeof types==="string"?types:null;var ret;if(allocator==ALLOC_NONE){ret=ptr}else{ret=[typeof _malloc==="function"?_malloc:Runtime.staticAlloc,Runtime.stackAlloc,Runtime.staticAlloc,Runtime.dynamicAlloc][allocator===undefined?ALLOC_STATIC:allocator](Math.max(size,singleType?1:types.length))}if(zeroinit){var ptr=ret,stop;assert((ret&3)==0);stop=ret+(size&~3);for(;ptr<stop;ptr+=4){HEAP32[ptr>>2]=0}stop=ret+size;while(ptr<stop){HEAP8[ptr++>>0]=0}return ret}if(singleType==="i8"){if(slab.subarray||slab.slice){HEAPU8.set(slab,ret)}else{HEAPU8.set(new Uint8Array(slab),ret)}return ret}var i=0,type,typeSize,previousType;while(i<size){var curr=slab[i];if(typeof curr==="function"){curr=Runtime.getFunctionIndex(curr)}type=singleType||types[i];if(type===0){i++;continue}if(type=="i64")type="i32";setValue(ret+i,curr,type);if(previousType!==type){typeSize=Runtime.getNativeTypeSize(type);previousType=type}i+=typeSize}return ret}function Pointer_stringify(ptr,length){if(length===0||!ptr)return"";var hasUtf=0;var t;var i=0;while(1){t=HEAPU8[ptr+i>>0];hasUtf|=t;if(t==0&&!length)break;i++;if(length&&i==length)break}if(!length)length=i;var ret="";if(hasUtf<128){var MAX_CHUNK=1024;var curr;while(length>0){curr=String.fromCharCode.apply(String,HEAPU8.subarray(ptr,ptr+Math.min(length,MAX_CHUNK)));ret=ret?ret+curr:curr;ptr+=MAX_CHUNK;length-=MAX_CHUNK}return ret}return Module["UTF8ToString"](ptr)}function UTF8ArrayToString(u8Array,idx){var u0,u1,u2,u3,u4,u5;var str="";while(1){u0=u8Array[idx++];if(!u0)return str;if(!(u0&128)){str+=String.fromCharCode(u0);continue}u1=u8Array[idx++]&63;if((u0&224)==192){str+=String.fromCharCode((u0&31)<<6|u1);continue}u2=u8Array[idx++]&63;if((u0&240)==224){u0=(u0&15)<<12|u1<<6|u2}else{u3=u8Array[idx++]&63;if((u0&248)==240){u0=(u0&7)<<18|u1<<12|u2<<6|u3}else{u4=u8Array[idx++]&63;if((u0&252)==248){u0=(u0&3)<<24|u1<<18|u2<<12|u3<<6|u4}else{u5=u8Array[idx++]&63;u0=(u0&1)<<30|u1<<24|u2<<18|u3<<12|u4<<6|u5}}}if(u0<65536){str+=String.fromCharCode(u0)}else{var ch=u0-65536;str+=String.fromCharCode(55296|ch>>10,56320|ch&1023)}}}function stringToUTF8Array(str,outU8Array,outIdx,maxBytesToWrite){if(!(maxBytesToWrite>0))return 0;var startIdx=outIdx;var endIdx=outIdx+maxBytesToWrite-1;for(var i=0;i<str.length;++i){var u=str.charCodeAt(i);if(u>=55296&&u<=57343)u=65536+((u&1023)<<10)|str.charCodeAt(++i)&1023;if(u<=127){if(outIdx>=endIdx)break;outU8Array[outIdx++]=u}else if(u<=2047){if(outIdx+1>=endIdx)break;outU8Array[outIdx++]=192|u>>6;outU8Array[outIdx++]=128|u&63}else if(u<=65535){if(outIdx+2>=endIdx)break;outU8Array[outIdx++]=224|u>>12;outU8Array[outIdx++]=128|u>>6&63;outU8Array[outIdx++]=128|u&63}else if(u<=2097151){if(outIdx+3>=endIdx)break;outU8Array[outIdx++]=240|u>>18;outU8Array[outIdx++]=128|u>>12&63;outU8Array[outIdx++]=128|u>>6&63;outU8Array[outIdx++]=128|u&63}else if(u<=67108863){if(outIdx+4>=endIdx)break;outU8Array[outIdx++]=248|u>>24;outU8Array[outIdx++]=128|u>>18&63;outU8Array[outIdx++]=128|u>>12&63;outU8Array[outIdx++]=128|u>>6&63;outU8Array[outIdx++]=128|u&63}else{if(outIdx+5>=endIdx)break;outU8Array[outIdx++]=252|u>>30;outU8Array[outIdx++]=128|u>>24&63;outU8Array[outIdx++]=128|u>>18&63;outU8Array[outIdx++]=128|u>>12&63;outU8Array[outIdx++]=128|u>>6&63;outU8Array[outIdx++]=128|u&63}}outU8Array[outIdx]=0;return outIdx-startIdx}function lengthBytesUTF8(str){var len=0;for(var i=0;i<str.length;++i){var u=str.charCodeAt(i);if(u>=55296&&u<=57343)u=65536+((u&1023)<<10)|str.charCodeAt(++i)&1023;if(u<=127){++len}else if(u<=2047){len+=2}else if(u<=65535){len+=3}else if(u<=2097151){len+=4}else if(u<=67108863){len+=5}else{len+=6}}return len}function demangle(func){var hasLibcxxabi=!!Module["___cxa_demangle"];if(hasLibcxxabi){try{var buf=_malloc(func.length);writeStringToMemory(func.substr(1),buf);var status=_malloc(4);var ret=Module["___cxa_demangle"](buf,0,0,status);if(getValue(status,"i32")===0&&ret){return Pointer_stringify(ret)}}catch(e){return func}finally{if(buf)_free(buf);if(status)_free(status);if(ret)_free(ret)}}Runtime.warnOnce("warning: build with  -s DEMANGLE_SUPPORT=1  to link in libcxxabi demangling");return func}function demangleAll(text){return text.replace(/__Z[\w\d_]+/g,(function(x){var y=demangle(x);return x===y?x:x+" ["+y+"]"}))}function jsStackTrace(){var err=new Error;if(!err.stack){try{throw new Error(0)}catch(e){err=e}if(!err.stack){return"(no stack trace available)"}}return err.stack.toString()}function stackTrace(){return demangleAll(jsStackTrace())}var PAGE_SIZE=4096;function alignMemoryPage(x){if(x%4096>0){x+=4096-x%4096}return x}var HEAP;var buffer;var HEAP8,HEAPU8,HEAP16,HEAPU16,HEAP32,HEAPU32,HEAPF32,HEAPF64;function updateGlobalBufferViews(){Module["HEAP8"]=HEAP8=new Int8Array(buffer);Module["HEAP16"]=HEAP16=new Int16Array(buffer);Module["HEAP32"]=HEAP32=new Int32Array(buffer);Module["HEAPU8"]=HEAPU8=new Uint8Array(buffer);Module["HEAPU16"]=HEAPU16=new Uint16Array(buffer);Module["HEAPU32"]=HEAPU32=new Uint32Array(buffer);Module["HEAPF32"]=HEAPF32=new Float32Array(buffer);Module["HEAPF64"]=HEAPF64=new Float64Array(buffer)}var STATIC_BASE=0,STATICTOP=0,staticSealed=false;var STACK_BASE=0,STACKTOP=0,STACK_MAX=0;var DYNAMIC_BASE=0,DYNAMICTOP=0;function abortOnCannotGrowMemory(){abort("Cannot enlarge memory arrays. Either (1) compile with  -s TOTAL_MEMORY=X  with X higher than the current value "+TOTAL_MEMORY+", (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which adjusts the size at runtime but prevents some optimizations, (3) set Module.TOTAL_MEMORY to a higher value before the program runs, or if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 ")}function enlargeMemory(){abortOnCannotGrowMemory()}var TOTAL_STACK=Module["TOTAL_STACK"]||5242880;var TOTAL_MEMORY=Module["TOTAL_MEMORY"]||67108864;var totalMemory=64*1024;while(totalMemory<TOTAL_MEMORY||totalMemory<2*TOTAL_STACK){if(totalMemory<16*1024*1024){totalMemory*=2}else{totalMemory+=16*1024*1024}}if(totalMemory!==TOTAL_MEMORY){TOTAL_MEMORY=totalMemory}if(Module["buffer"]){buffer=Module["buffer"]}else{buffer=new ArrayBuffer(TOTAL_MEMORY)}updateGlobalBufferViews();HEAP32[0]=255;if(HEAPU8[0]!==255||HEAPU8[3]!==0)throw"Typed arrays 2 must be run on a little-endian system";Module["HEAP"]=HEAP;Module["buffer"]=buffer;Module["HEAP8"]=HEAP8;Module["HEAP16"]=HEAP16;Module["HEAP32"]=HEAP32;Module["HEAPU8"]=HEAPU8;Module["HEAPU16"]=HEAPU16;Module["HEAPU32"]=HEAPU32;Module["HEAPF32"]=HEAPF32;Module["HEAPF64"]=HEAPF64;function callRuntimeCallbacks(callbacks){while(callbacks.length>0){var callback=callbacks.shift();if(typeof callback=="function"){callback();continue}var func=callback.func;if(typeof func==="number"){if(callback.arg===undefined){Runtime.dynCall("v",func)}else{Runtime.dynCall("vi",func,[callback.arg])}}else{func(callback.arg===undefined?null:callback.arg)}}}var __ATPRERUN__=[];var __ATINIT__=[];var __ATMAIN__=[];var __ATEXIT__=[];var __ATPOSTRUN__=[];var runtimeInitialized=false;var runtimeExited=false;function preRun(){if(Module["preRun"]){if(typeof Module["preRun"]=="function")Module["preRun"]=[Module["preRun"]];while(Module["preRun"].length){addOnPreRun(Module["preRun"].shift())}}callRuntimeCallbacks(__ATPRERUN__)}function ensureInitRuntime(){if(runtimeInitialized)return;runtimeInitialized=true;callRuntimeCallbacks(__ATINIT__)}function preMain(){callRuntimeCallbacks(__ATMAIN__)}function exitRuntime(){callRuntimeCallbacks(__ATEXIT__);runtimeExited=true}function postRun(){if(Module["postRun"]){if(typeof Module["postRun"]=="function")Module["postRun"]=[Module["postRun"]];while(Module["postRun"].length){addOnPostRun(Module["postRun"].shift())}}callRuntimeCallbacks(__ATPOSTRUN__)}function addOnPreRun(cb){__ATPRERUN__.unshift(cb)}function addOnPreMain(cb){__ATMAIN__.unshift(cb)}function addOnPostRun(cb){__ATPOSTRUN__.unshift(cb)}function intArrayFromString(stringy,dontAddNull,length){var len=length>0?length:lengthBytesUTF8(stringy)+1;var u8array=new Array(len);var numBytesWritten=stringToUTF8Array(stringy,u8array,0,u8array.length);if(dontAddNull)u8array.length=numBytesWritten;return u8array}function writeStringToMemory(string,buffer,dontAddNull){var array=intArrayFromString(string,dontAddNull);var i=0;while(i<array.length){var chr=array[i];HEAP8[buffer+i>>0]=chr;i=i+1}}function writeArrayToMemory(array,buffer){for(var i=0;i<array.length;i++){HEAP8[buffer++>>0]=array[i]}}function writeAsciiToMemory(str,buffer,dontAddNull){for(var i=0;i<str.length;++i){HEAP8[buffer++>>0]=str.charCodeAt(i)}if(!dontAddNull)HEAP8[buffer>>0]=0}if(!Math["imul"]||Math["imul"](4294967295,5)!==-5)Math["imul"]=function imul(a,b){var ah=a>>>16;var al=a&65535;var bh=b>>>16;var bl=b&65535;return al*bl+(ah*bl+al*bh<<16)|0};Math.imul=Math["imul"];if(!Math["clz32"])Math["clz32"]=(function(x){x=x>>>0;for(var i=0;i<32;i++){if(x&1<<31-i)return i}return 32});Math.clz32=Math["clz32"];var Math_abs=Math.abs;var Math_cos=Math.cos;var Math_sin=Math.sin;var Math_tan=Math.tan;var Math_acos=Math.acos;var Math_asin=Math.asin;var Math_atan=Math.atan;var Math_atan2=Math.atan2;var Math_exp=Math.exp;var Math_log=Math.log;var Math_sqrt=Math.sqrt;var Math_ceil=Math.ceil;var Math_floor=Math.floor;var Math_pow=Math.pow;var Math_imul=Math.imul;var Math_fround=Math.fround;var Math_min=Math.min;var Math_clz32=Math.clz32;var runDependencies=0;var runDependencyWatcher=null;var dependenciesFulfilled=null;Module["preloadedImages"]={};Module["preloadedAudios"]={};var ASM_CONSTS=[(function($0,$1,$2,$3,$4,$5,$6,$7){{var self=Module["getCache"](Module["ConcreteContactResultCallback"])[$0];if(!self.hasOwnProperty("addSingleResult"))throw"a JSImplementation must implement all functions, you forgot ConcreteContactResultCallback::addSingleResult.";return self["addSingleResult"]($1,$2,$3,$4,$5,$6,$7)}})];function _emscripten_asm_const_diiiiiiii(code,a0,a1,a2,a3,a4,a5,a6,a7){return ASM_CONSTS[code](a0,a1,a2,a3,a4,a5,a6,a7)}STATIC_BASE=8;STATICTOP=STATIC_BASE+26272;__ATINIT__.push({func:(function(){__GLOBAL__sub_I_btQuickprof_cpp()})});allocate([88,37,0,0,220,37,0,0,128,37,0,0,7,38,0,0,8,0,0,0,0,0,0,0,88,37,0,0,57,38,0,0,88,37,0,0,78,38,0,0,128,37,0,0,94,38,0,0,40,0,0,0,0,0,0,0,88,37,0,0,117,38,0,0,128,37,0,0,145,38,0,0,64,0,0,0,0,0,0,0,88,37,0,0,167,38,0,0,128,37,0,0,207,38,0,0,88,0,0,0,0,0,0,0,88,37,0,0,254,38,0,0,128,37,0,0,42,39,0,0,112,0,0,0,0,0,0,0,128,37,0,0,114,40,0,0,152,0,0,0,0,0,0,0,88,37,0,0,140,40,0,0,128,37,0,0,159,40,0,0,0,4,0,0,0,0,0,0,128,37,0,0,203,40,0,0,192,0,0,0,0,0,0,0,88,37,0,0,248,40,0,0,128,37,0,0,25,41,0,0,192,0,0,0,0,0,0,0,128,37,0,0,71,41,0,0,192,0,0,0,0,0,0,0,128,37,0,0,123,41,0,0,192,0,0,0,0,0,0,0,128,37,0,0,182,41,0,0,176,3,0,0,0,0,0,0,128,37,0,0,136,42,0,0,24,1,0,0,0,0,0,0,88,37,0,0,168,42,0,0,88,37,0,0,187,42,0,0,128,37,0,0,208,42,0,0,32,1,0,0,0,0,0,0,128,37,0,0,230,42,0,0,48,8,0,0,0,0,0,0,128,37,0,0,60,43,0,0,24,1,0,0,0,0,0,0,128,37,0,0,95,43,0,0,104,1,0,0,0,0,0,0,128,37,0,0,129,43,0,0,24,1,0,0,0,0,0,0,128,37,0,0,162,43,0,0,176,7,0,0,0,0,0,0,128,37,0,0,230,43,0,0,104,1,0,0,0,0,0,0,128,37,0,0,8,44,0,0,24,1,0,0,0,0,0,0,128,37,0,0,42,44,0,0,184,1,0,0,0,0,0,0,88,37,0,0,74,44,0,0,128,37,0,0,97,44,0,0,184,1,0,0,0,0,0,0,128,37,0,0,135,44,0,0,208,7,0,0,0,0,0,0,128,37,0,0,164,44,0,0,208,7,0,0,0,0,0,0,88,37,0,0,68,45,0,0,128,37,0,0,97,45,0,0,120,7,0,0,0,0,0,0,128,37,0,0,124,45,0,0,96,2,0,0,0,0,0,0,128,37,0,0,159,45,0,0,40,2,0,0,0,0,0,0,128,37,0,0,185,45,0,0,56,2,0,0,0,0,0,0,88,37,0,0,211,45,0,0,128,37,0,0,37,46,0,0,184,1,0,0,0,0,0,0,128,37,0,0,68,46,0,0,176,3,0,0,0,0,0,0,128,37,0,0,103,46,0,0,112,2,0,0,0,0,0,0,128,37,0,0,129,46,0,0,40,5,0,0,0,0,0,0,128,37,0,0,36,47,0,0,16,0,0,0,0,0,0,0,128,37,0,0,53,48,0,0,160,2,0,0,0,0,0,0,88,37,0,0,83,48,0,0,128,37,0,0,129,48,0,0,184,2,0,0,0,0,0,0,188,37,0,0,155,48,0,0,0,0,0,0,1,0,0,0,208,2,0,0,2,4,0,0,88,37,0,0,175,48,0,0,128,37,0,0,219,48,0,0,168,2,0,0,0,0,0,0,128,37,0,0,29,49,0,0,184,2,0,0,0,0,0,0,128,37,0,0,115,49,0,0,184,2,0,0,0,0,0,0,128,37,0,0,159,49,0,0,184,2,0,0,0,0,0,0,128,37,0,0,209,49,0,0,184,2,0,0,0,0,0,0,128,37,0,0,0,50,0,0,56,3,0,0,0,0,0,0,88,37,0,0,38,50,0,0,128,37,0,0,133,50,0,0,80,3,0,0,0,0,0,0,88,37,0,0,152,50,0,0,128,37,0,0,172,50,0,0,32,0,0,0,0,0,0,0,128,37,0,0,200,50,0,0,120,3,0,0,0,0,0,0,128,37,0,0,233,50,0,0,80,3,0,0,0,0,0,0,128,37,0,0,10,51,0,0,16,0,0,0,0,0,0,0,128,37,0,0,56,51,0,0,168,3,0,0,0,0,0,0,88,37,0,0,81,51,0,0,88,37,0,0,96,51,0,0,128,37,0,0,143,51,0,0,176,3,0,0,0,0,0,0,128,37,0,0,159,51,0,0,184,3,0,0,0,0,0,0,128,37,0,0,186,51,0,0,136,9,0,0,0,0,0,0,128,37,0,0,210,51,0,0,248,3,0,0,0,0,0,0,88,37,0,0,236,51,0,0,128,37,0,0,0,52,0,0,16,4,0,0,0,0,0,0,88,37,0,0,34,52,0,0,128,37,0,0,61,52,0,0,192,0,0,0,0,0,0,0,128,37,0,0,111,52,0,0,192,0,0,0,0,0,0,0,128,37,0,0,168,52,0,0,192,0,0,0,0,0,0,0,128,37,0,0,213,52,0,0,192,0,0,0,0,0,0,0,128,37,0,0,10,53,0,0,192,0,0,0,0,0,0,0,128,37,0,0,62,53,0,0,192,0,0,0,0,0,0,0,128,37,0,0,95,53,0,0,192,0,0,0,0,0,0,0,128,37,0,0,144,53,0,0,192,0,0,0,0,0,0,0,128,37,0,0,195,53,0,0,192,0,0,0,0,0,0,0,128,37,0,0,238,53,0,0,192,0,0,0,0,0,0,0,88,37,0,0,30,54,0,0,128,37,0,0,101,54,0,0,184,1,0,0,0,0,0,0,128,37,0,0,135,54,0,0,56,10,0,0,0,0,0,0,128,37,0,0,171,54,0,0,208,7,0,0,0,0,0,0,128,37,0,0,198,54,0,0,208,7,0,0,0,0,0,0,128,37,0,0,100,55,0,0,56,10,0,0,0,0,0,0,128,37,0,0,129,55,0,0,32,5,0,0,0,0,0,0,88,37,0,0,148,55,0,0,88,37,0,0,196,55,0,0,188,37,0,0,189,56,0,0,0,0,0,0,2,0,0,0,208,7,0,0,2,0,0,0,216,7,0,0,2,4,0,0,128,37,0,0,209,56,0,0,40,2,0,0,0,0,0,0,128,37,0,0,231,56,0,0,152,9,0,0,0,0,0,0,128,37,0,0,122,57,0,0,152,9,0,0,0,0,0,0,128,37,0,0,15,58,0,0,24,1,0,0,0,0,0,0,128,37,0,0,141,58,0,0,88,0,0,0,0,0,0,0,128,37,0,0,78,59,0,0,168,9,0,0,0,0,0,0,128,37,0,0,253,59,0,0,168,9,0,0,0,0,0,0,128,37,0,0,194,60,0,0,8,0,0,0,0,0,0,0,128,37,0,0,111,61,0,0,40,2,0,0,0,0,0,0,128,37,0,0,135,61,0,0,56,2,0,0,0,0,0,0,128,37,0,0,161,61,0,0,16,5,0,0,0,0,0,0,128,37,0,0,187,61,0,0,56,10,0,0,0,0,0,0,128,37,0,0,224,61,0,0,192,0,0,0,0,0,0,0,128,37,0,0,8,62,0,0,56,10,0,0,0,0,0,0,128,37,0,0,34,62,0,0,32,5,0,0,0,0,0,0,128,37,0,0,167,62,0,0,32,5,0,0,0,0,0,0,128,37,0,0,52,63,0,0,16,5,0,0,0,0,0,0,128,37,0,0,79,63,0,0,56,10,0,0,0,0,0,0,128,37,0,0,110,63,0,0,24,1,0,0,0,0,0,0,128,37,0,0,135,63,0,0,56,10,0,0,0,0,0,0,128,37,0,0,174,63,0,0,24,1,0,0,0,0,0,0,128,37,0,0,207,63,0,0,152,7,0,0,0,0,0,0,128,37,0,0,23,64,0,0,176,7,0,0,0,0,0,0,128,37,0,0,58,64,0,0,176,6,0,0,0,0,0,0,128,37,0,0,79,64,0,0,176,6,0,0,0,0,0,0,128,37,0,0,100,64,0,0,176,7,0,0,0,0,0,0,128,37,0,0,123,64,0,0,56,7,0,0,0,0,0,0,128,37,0,0,188,64,0,0,16,7,0,0,0,0,0,0,88,37,0,0,42,65,0,0,128,37,0,0,66,65,0,0,16,7,0,0,0,0,0,0,128,37,0,0,170,65,0,0,16,7,0,0,0,0,0,0,128,37,0,0,27,66,0,0,48,8,0,0,0,0,0,0,128,37,0,0,62,66,0,0,216,7,0,0,0,0,0,0,128,37,0,0,164,66,0,0,208,7,0,0,0,0,0,0,128,37,0,0,188,66,0,0,48,8,0,0,0,0,0,0,128,37,0,0,244,66,0,0,176,7,0,0,0,0,0,0,128,37,0,0,14,67,0,0,120,7,0,0,0,0,0,0,88,37,0,0,51,67,0,0,128,37,0,0,91,67,0,0,152,7,0,0,0,0,0,0,128,37,0,0,107,67,0,0,160,7,0,0,0,0,0,0,128,37,0,0,131,67,0,0,136,7,0,0,0,0,0,0,88,37,0,0,180,67,0,0,88,37,0,0,201,67,0,0,128,37,0,0,235,67,0,0,176,7,0,0,0,0,0,0,128,37,0,0,28,68,0,0,224,7,0,0,0,0,0,0,128,37,0,0,55,68,0,0,224,7,0,0,0,0,0,0,128,37,0,0,82,68,0,0,136,7,0,0,0,0,0,0,128,37,0,0,124,68,0,0,216,7,0,0,0,0,0,0,128,37,0,0,153,68,0,0,152,7,0,0,0,0,0,0,128,37,0,0,170,68,0,0,120,7,0,0,0,0,0,0,128,37,0,0,187,68,0,0,144,9,0,0,0,0,0,0,128,37,0,0,204,68,0,0,216,7,0,0,0,0,0,0,128,37,0,0,48,69,0,0,216,7,0,0,0,0,0,0,128,37,0,0,139,69,0,0,48,8,0,0,0,0,0,0,128,37,0,0,179,69,0,0,176,7,0,0,0,0,0,0,128,37,0,0,227,69,0,0,144,8,0,0,0,0,0,0,128,37,0,0,0,70,0,0,144,8,0,0,0,0,0,0,128,37,0,0,29,70,0,0,152,10,0,0,0,0,0,0,128,37,0,0,46,70,0,0,224,8,0,0,0,0,0,0,88,37,0,0,72,70,0,0,128,37,0,0,96,70,0,0,248,8,0,0,0,0,0,0,128,37,0,0,114,70,0,0,64,0,0,0,0,0,0,0,128,37,0,0,139,70,0,0,208,8,0,0,0,0,0,0,128,37,0,0,154,70,0,0,248,8,0,0,0,0,0,0,128,37,0,0,185,70,0,0,248,3,0,0,0,0,0,0,128,37,0,0,58,71,0,0,248,3,0,0,0,0,0,0,128,37,0,0,168,71,0,0,224,8,0,0,0,0,0,0,128,37,0,0,187,71,0,0,24,1,0,0,0,0,0,0,128,37,0,0,208,71,0,0,24,1,0,0,0,0,0,0,128,37,0,0,230,71,0,0,24,1,0,0,0,0,0,0,88,37,0,0,253,71,0,0,88,37,0,0,12,72,0,0,128,37,0,0,120,72,0,0,208,7,0,0,0,0,0,0,128,37,0,0,148,72,0,0,208,7,0,0,0,0,0,0,128,37,0,0,179,72,0,0,200,9,0,0,0,0,0,0,88,37,0,0,215,72,0,0,128,37,0,0,248,72,0,0,32,5,0,0,0,0,0,0,128,37,0,0,163,73,0,0,200,9,0,0,0,0,0,0,128,37,0,0,196,73,0,0,168,3,0,0,0,0,0,0,128,37,0,0,214,73,0,0,32,5,0,0,0,0,0,0,128,37,0,0,233,73,0,0,168,3,0,0,0,0,0,0,128,37,0,0,7,74,0,0,48,10,0,0,0,0,0,0,88,37,0,0,27,74,0,0,128,37,0,0,66,74,0,0,184,1,0,0,0,0,0,0,128,37,0,0,99,74,0,0,184,1,0,0,0,0,0,0,128,37,0,0,118,74,0,0,56,10,0,0,0,0,0,0,128,37,0,0,153,74,0,0,48,10,0,0,0,0,0,0,128,37,0,0,172,74,0,0,48,10,0,0,0,0,0,0,88,37,0,0,197,74,0,0,88,37,0,0,223,74,0,0,128,37,0,0,244,74,0,0,168,10,0,0,0,0,0,0,88,37,0,0,17,75,0,0,88,37,0,0,74,86,0,0,128,37,0,0,40,86,0,0,216,10,0,0,0,0,0,0,128,37,0,0,213,85,0,0,184,10,0,0,0,0,0,0,128,37,0,0,250,85,0,0,232,10,0,0,0,0,0,0,88,37,0,0,27,86,0,0,128,37,0,0,16,87,0,0,176,10,0,0,0,0,0,0,128,37,0,0,80,87,0,0,216,10,0,0,0,0,0,0,128,37,0,0,44,87,0,0,0,11,0,0,0,0,0,0,128,37,0,0,114,87,0,0,184,10,0,0,0,0,0,0,0,0,0,0,16,0,0,0,1,0,0,0,2,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,48,0,0,0,3,0,0,0,4,0,0,0,1,0,0,0,2,0,0,0,0,0,0,0,72,0,0,0,5,0,0,0,6,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,96,0,0,0,7,0,0,0,8,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,120,0,0,0,9,0,0,0,10,0,0,0,3,0,0,0,1,0,0,0,0,0,0,0,136,0,0,0,11,0,0,0,12,0,0,0,1,0,0,0,2,0,0,0,2,0,0,0,3,0,0,0,1,0,0,0,2,0,0,0,13,0,0,0,3,0,0,0,4,0,0,0,4,0,0,0,3,0,0,0,5,0,0,0,4,0,0,0,5,0,0,0,0,0,0,0,160,0,0,0,14,0,0,0,15,0,0,0,5,0,0,0,6,0,0,0,2,0,0,0,7,0,0,0,0,0,0,0,176,0,0,0,16,0,0,0,17,0,0,0,2,0,0,0,0,0,0,0,200,0,0,0,16,0,0,0,18,0,0,0,3,0,0,0,0,0,0,0,216,0,0,0,16,0,0,0,19,0,0,0,4,0,0,0,0,0,0,0,232,0,0,0,16,0,0,0,20,0,0,0,5,0,0,0,0,0,0,0,248,0,0,0,4,0,0,0,21,0,0,0,22,0,0,0,6,0,0,0,8,0,0,0,3,0,0,0,7,0,0,0,6,0,0,0,0,0,0,0,8,1,0,0,23,0,0,0,24,0,0,0,7,0,0,0,8,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,40,1,0,0,25,0,0,0,26,0,0,0,1,0,0,0,1,0,0,0,3,0,0,0,9,0,0,0,0,0,0,0,56,1,0,0,27,0,0,0,28,0,0,0,1,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,9,0,0,0,10,0,0,0,2,0,0,0,11,0,0,0,10,0,0,0,4,0,0,0,2,0,0,0,12,0,0,0,4,0,0,0,11,0,0,0,2,0,0,0,0,0,0,0,72,1,0,0,23,0,0,0,29,0,0,0,7,0,0,0,12,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,88,1,0,0,23,0,0,0,30,0,0,0,7,0,0,0,13,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,120,1,0,0,31,0,0,0,32,0,0,0,3,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,14,0,0,0,13,0,0,0,3,0,0,0,14,0,0,0,10,0,0,0,5,0,0,0,3,0,0,0,15,0,0,0,5,0,0,0,11,0,0,0,9,0,0,0,10,0,0,0,1,0,0,0,4,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,17,0,0,0,0,0,0,0,136,1,0,0,23,0,0,0,33,0,0,0,12,0,0,0,15,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,152,1,0,0,23,0,0,0,34,0,0,0,13,0,0,0,15,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,168,1,0,0,35,0,0,0,36,0,0,0,2,0,0,0,1,0,0,0,16,0,0,0,0,0,0,0,192,1,0,0,37,0,0,0,38,0,0,0,3,0,0,0,2,0,0,0,17,0,0,0,0,0,0,0,208,1,0,0,39,0,0,0,40,0,0,0,6,0,0,0,0,0,0,0,224,1,0,0,41,0,0,0,42,0,0,0,7,0,0,0,0,0,0,0,240,1,0,0,6,0,0,0,18,0,0,0,14,0,0,0,43,0,0,0,44,0,0,0,0,0,0,0,248,1,0,0,45,0,0,0,46,0,0,0,8,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,14,0,0,0,13,0,0,0,4,0,0,0,18,0,0,0,10,0,0,0,7,0,0,0,4,0,0,0,15,0,0,0,5,0,0,0,11,0,0,0,15,0,0,0,16,0,0,0,1,0,0,0,9,0,0,0,5,0,0,0,19,0,0,0,17,0,0,0,7,0,0,0,20,0,0,0,21,0,0,0,10,0,0,0,18,0,0,0,22,0,0,0,11,0,0,0,1,0,0,0,12,0,0,0,0,0,0,0,8,2,0,0,47,0,0,0,48,0,0,0,49,0,0,0,50,0,0,0,19,0,0,0,23,0,0,0,51,0,0,0,13,0,0,0,14,0,0,0,15,0,0,0,20,0,0,0,52,0,0,0,21,0,0,0,1,0,0,0,19,0,0,0,22,0,0,0,23,0,0,0,24,0,0,0,25,0,0,0,26,0,0,0,53,0,0,0,27,0,0,0,16,0,0,0,28,0,0,0,29,0,0,0,24,0,0,0,25,0,0,0,8,0,0,0,9,0,0,0,26,0,0,0,54,0,0,0,30,0,0,0,31,0,0,0,32,0,0,0,33,0,0,0,8,0,0,0,9,0,0,0,55,0,0,0,34,0,0,0,10,0,0,0,11,0,0,0,12,0,0,0,56,0,0,0,35,0,0,0,13,0,0,0,0,0,0,0,24,2,0,0,57,0,0,0,58,0,0,0,10,0,0,0,0,0,0,0,64,2,0,0,59,0,0,0,60,0,0,0,4,0,0,0,3,0,0,0,36,0,0,0,0,0,0,0,80,2,0,0,11,0,0,0,61,0,0,0,62,0,0,0,37,0,0,0,27,0,0,0,6,0,0,0,38,0,0,0,0,0,0,0,96,2,0,0,63,0,0,0,64,0,0,0,49,0,0,0,50,0,0,0,19,0,0,0,23,0,0,0,65,0,0,0,13,0,0,0,17,0,0,0,15,0,0,0,39,0,0,0,52,0,0,0,40,0,0,0,1,0,0,0,19,0,0,0,22,0,0,0,23,0,0,0,24,0,0,0,25,0,0,0,26,0,0,0,53,0,0,0,27,0,0,0,16,0,0,0,28,0,0,0,29,0,0,0,24,0,0,0,25,0,0,0,8,0,0,0,9,0,0,0,28,0,0,0,54,0,0,0,30,0,0,0,31,0,0,0,32,0,0,0,33,0,0,0,14,0,0,0,9,0,0,0,55,0,0,0,34,0,0,0,10,0,0,0,15,0,0,0,12,0,0,0,56,0,0,0,35,0,0,0,13,0,0,0,0,0,0,0,128,2,0,0,66,0,0,0,67,0,0,0,12,0,0,0,3,0,0,0,0,0,0,0,144,2,0,0,68,0,0,0,69,0,0,0,1,0,0,0,0,0,0,0,168,2,0,0,70,0,0,0,71,0,0,0,72,0,0,0,1,0,0,0,41,0,0,0,42,0,0,0,1,0,0,0,1,0,0,0,4,0,0,0,29,0,0,0,7,0,0,0,73,0,0,0,0,0,0,0,184,2,0,0,70,0,0,0,74,0,0,0,75,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,30,0,0,0,8,0,0,0,0,0,0,0,216,2,0,0,70,0,0,0,76,0,0,0,72,0,0,0,1,0,0,0,41,0,0,0,43,0,0,0,1,0,0,0,1,0,0,0,4,0,0,0,31,0,0,0,9,0,0,0,73,0,0,0,20,0,0,0,0,0,0,0,232,2,0,0,70,0,0,0,77,0,0,0,78,0,0,0,1,0,0,0,44,0,0,0,45,0,0,0,1,0,0,0,2,0,0,0,5,0,0,0,32,0,0,0,10,0,0,0,0,0,0,0,248,2,0,0,70,0,0,0,79,0,0,0,75,0,0,0,1,0,0,0,46,0,0,0,47,0,0,0,1,0,0,0,3,0,0,0,6,0,0,0,33,0,0,0,11,0,0,0,0,0,0,0,8,3,0,0,70,0,0,0,80,0,0,0,81,0,0,0,1,0,0,0,48,0,0,0,49,0,0,0,2,0,0,0,4,0,0,0,7,0,0,0,34,0,0,0,12,0,0,0,21,0,0,0,0,0,0,0,24,3,0,0,70,0,0,0,82,0,0,0,83,0,0,0,1,0,0,0,50,0,0,0,51,0,0,0,1,0,0,0,5,0,0,0,8,0,0,0,35,0,0,0,13,0,0,0,0,0,0,0,40,3,0,0,84,0,0,0,85,0,0,0,22,0,0,0,1,0,0,0,23,0,0,0,86,0,0,0,36,0,0,0,18,0,0,0,1,0,0,0,1,0,0,0,2,0,0,0,1,0,0,0,2,0,0,0,0,0,0,0,64,3,0,0,87,0,0,0,88,0,0,0,2,0,0,0,52,0,0,0,16,0,0,0,17,0,0,0,19,0,0,0,0,0,0,0,88,3,0,0,89,0,0,0,90,0,0,0,6,0,0,0,0,0,0,0,104,3,0,0,91,0,0,0,92,0,0,0,3,0,0,0,53,0,0,0,54,0,0,0,4,0,0,0,55,0,0,0,56,0,0,0,57,0,0,0,5,0,0,0,37,0,0,0,93,0,0,0,38,0,0,0,58,0,0,0,0,0,0,0,136,3,0,0,66,0,0,0,94,0,0,0,1,0,0,0,9,0,0,0,0,0,0,0,152,3,0,0,95,0,0,0,96,0,0,0,1,0,0,0,10,215,163,60,1,0,0,0,2,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,176,3,0,0,4,0,0,0,97,0,0,0,98,0,0,0,37,0,0,0,39,0,0,0,14,0,0,0,7,0,0,0,0,0,0,0,184,3,0,0,4,0,0,0,99,0,0,0,100,0,0,0,37,0,0,0,39,0,0,0,14,0,0,0,7,0,0,0,24,0,0,0,20,0,0,0,0,0,0,0,200,3,0,0,4,0,0,0,101,0,0,0,102,0,0,0,37,0,0,0,39,0,0,0,14,0,0,0,7,0,0,0,25,0,0,0,21,0,0,0,0,0,0,0,216,3,0,0,103,0,0,0,104,0,0,0,7,0,0,0,15,0,0,0,59,0,0,0,60,0,0,0,16,0,0,0,17,0,0,0,22,0,0,0,40,0,0,0,13,0,0,0,41,0,0,0,42,0,0,0,43,0,0,0,14,0,0,0,61,0,0,0,0,0,0,0,232,3,0,0,105,0,0,0,106,0,0,0,15,0,0,0,0,0,0,0,0,4,0,0,107,0,0,0,108,0,0,0,5,0,0,0,6,0,0,0,18,0,0,0,7,0,0,0,0,0,0,0,24,4,0,0,16,0,0,0,109,0,0,0,8,0,0,0,0,0,0,0,40,4,0,0,16,0,0,0,110,0,0,0,9,0,0,0,0,0,0,0,56,4,0,0,16,0,0,0,111,0,0,0,10,0,0,0,0,0,0,0,72,4,0,0,16,0,0,0,112,0,0,0,11,0,0,0,0,0,0,0,88,4,0,0,16,0,0,0,113,0,0,0,12,0,0,0,0,0,0,0,104,4,0,0,16,0,0,0,114,0,0,0,13,0,0,0,0,0,0,0,120,4,0,0,16,0,0,0,115,0,0,0,14,0,0,0,0,0,0,0,136,4,0,0,16,0,0,0,116,0,0,0,15,0,0,0,0,0,0,0,152,4,0,0,16,0,0,0,117,0,0,0,16,0,0,0,0,0,0,0,168,4,0,0,16,0,0,0,118,0,0,0,17,0,0,0,0,0,0,0,184,4,0,0,119,0,0,0,120,0,0,0,26,0,0,0,62,0,0,0,0,0,0,0,192,4,0,0,121,0,0,0,122,0,0,0,5,0,0,0,4,0,0,0,63,0,0,0,0,0,0,0,208,4,0,0,123,0,0,0,124,0,0,0,6,0,0,0,5,0,0,0,64,0,0,0,0,0,0,0,224,4,0,0,125,0,0,0,126,0,0,0,23,0,0,0,0,0,0,0,240,4,0,0,41,0,0,0,127,0,0,0,24,0,0,0,0,0,0,0,0,5,0,0,128,0,0,0,129,0,0,0,7,0,0,0,6,0,0,0,65,0,0,0,0,0,0,0,16,5,0,0,130,0,0,0,131,0,0,0,27,0,0,0,28,0,0,0,3,0,0,0,0,0,0,0,40,5,0,0,132,0,0,0,133,0,0,0,49,0,0,0,50,0,0,0,19,0,0,0,23,0,0,0,134,0,0,0,13,0,0,0,17,0,0,0,25,0,0,0,66,0,0,0,52,0,0,0,67,0,0,0,0,0,0,0,48,5,0,0,135,0,0,0,136,0,0,0,26,0,0,0,27,0,0,0,252,255,255,255,48,5,0,0,137,0,0,0,138,0,0,0,28,0,0,0,0,0,0,0,80,5,0,0,57,0,0,0,139,0,0,0,16,0,0,0,0,0,0,0,96,5,0,0,41,0,0,0,140,0,0,0,29,0,0,0,1,0,0,0,0,0,0,0,112,5,0,0,41,0,0,0,141,0,0,0,29,0,0,0,2,0,0,0,0,0,0,0,128,5,0,0,23,0,0,0,142,0,0,0,7,0,0,0,68,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,144,5,0,0,143,0,0,0,144,0,0,0,17,0,0,0,10,0,0,0,0,0,0,0,160,5,0,0,41,0,0,0,145,0,0,0,30,0,0,0,1,0,0,0,0,0,0,0,176,5,0,0,41,0,0,0,146,0,0,0,30,0,0,0,2,0,0,0,0,0,0,0,192,5,0,0,66,0,0,0,147,0,0,0,18,0,0,0,11,0,0,0,0,0,0,0,208,5,0,0,57,0,0,0,148,0,0,0,19,0,0,0,0,0,0,0,224,5,0,0,57,0,0,0,149,0,0,0,20,0,0,0,0,0,0,0,240,5,0,0,130,0,0,0,150,0,0,0,27,0,0,0,28,0,0,0,4,0,0,0,0,0,0,0,0,6,0,0,151,0,0,0,152,0,0,0,8,0,0,0,7,0,0,0,69,0,0,0,0,0,0,0,16,6,0,0,153,0,0,0,154,0,0,0,18,0,0,0,0,0,0,0,32,6,0,0,155,0,0,0,156,0,0,0,9,0,0,0,8,0,0,0,70,0,0,0,0,0,0,0,48,6,0,0,130,0,0,0,157,0,0,0,29,0,0,0,30,0,0,0,5,0,0,0,0,0,0,0,64,6,0,0,130,0,0,0,158,0,0,0,31,0,0,0,32,0,0,0,6,0,0,0,0,0,0,0,80,6,0,0,130,0,0,0,159,0,0,0,27,0,0,0,28,0,0,0,7,0,0,0,0,0,0,0,96,6,0,0,160,0,0,0,161,0,0,0,10,0,0,0,9,0,0,0,71,0,0,0,0,0,0,0,112,6,0,0,23,0,0,0,162,0,0,0,7,0,0,0,72,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,128,6,0,0,163,0,0,0,164,0,0,0,11,0,0,0,10,0,0,0,73,0,0,0,0,0,0,0,144,6,0,0,23,0,0,0,165,0,0,0,33,0,0,0,15,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,160,6,0,0,166,0,0,0,167,0,0,0,31,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,74,0,0,0,44,0,0,0,5,0,0,0,45,0,0,0,10,0,0,0,18,0,0,0,5,0,0,0,46,0,0,0,19,0,0,0,11,0,0,0,75,0,0,0,168,0,0,0,0,0,0,0,176,6,0,0,31,0,0,0,169,0,0,0,32,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,76,0,0,0,13,0,0,0,6,0,0,0,47,0,0,0,77,0,0,0,7,0,0,0,4,0,0,0,48,0,0,0,20,0,0,0,11,0,0,0,34,0,0,0,35,0,0,0,1,0,0,0,33,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,192,6,0,0,31,0,0,0,170,0,0,0,32,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,76,0,0,0,13,0,0,0,6,0,0,0,49,0,0,0,78,0,0,0,7,0,0,0,4,0,0,0,48,0,0,0,20,0,0,0,11,0,0,0,34,0,0,0,35,0,0,0,1,0,0,0,33,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,208,6,0,0,31,0,0,0,171,0,0,0,32,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,76,0,0,0,13,0,0,0,6,0,0,0,50,0,0,0,79,0,0,0,7,0,0,0,4,0,0,0,48,0,0,0,20,0,0,0,11,0,0,0,34,0,0,0,35,0,0,0,1,0,0,0,33,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,224,6,0,0,31,0,0,0,172,0,0,0,34,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,14,0,0,0,13,0,0,0,7,0,0,0,51,0,0,0,10,0,0,0,19,0,0,0,6,0,0,0,15,0,0,0,5,0,0,0,11,0,0,0,36,0,0,0,37,0,0,0,1,0,0,0,35,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,240,6,0,0,173,0,0,0,174,0,0,0,36,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,80,0,0,0,52,0,0,0,8,0,0,0,53,0,0,0,10,0,0,0,4,0,0,0,2,0,0,0,54,0,0,0,21,0,0,0,11,0,0,0,37,0,0,0,38,0,0,0,39,0,0,0,81,0,0,0,82,0,0,0,0,0,0,0,0,7,0,0,175,0,0,0,176,0,0,0,40,0,0,0,0,0,0,0,24,7,0,0,175,0,0,0,177,0,0,0,41,0,0,0,0,0,0,0,40,7,0,0,175,0,0,0,178,0,0,0,42,0,0,0,0,0,0,0,56,7,0,0,179,0,0,0,180,0,0,0,36,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,83,0,0,0,52,0,0,0,8,0,0,0,55,0,0,0,10,0,0,0,4,0,0,0,2,0,0,0,12,0,0,0,4,0,0,0,11,0,0,0,38,0,0,0,38,0,0,0,39,0,0,0,0,0,0,0,72,7,0,0,181,0,0,0,182,0,0,0,39,0,0,0,0,0,0,0,88,7,0,0,41,0,0,0,183,0,0,0,40,0,0,0,0,0,0,0,104,7,0,0,184,0,0,0,185,0,0,0,41,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,84,0,0,0,56,0,0,0,9,0,0,0,57,0,0,0,10,0,0,0,4,0,0,0,2,0,0,0,58,0,0,0,22,0,0,0,11,0,0,0,42,0,0,0,0,0,0,0,120,7,0,0,45,0,0,0,186,0,0,0,32,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,14,0,0,0,13,0,0,0,10,0,0,0,1,0,0,0,10,0,0,0,7,0,0,0,4,0,0,0,15,0,0,0,5,0,0,0,11,0,0,0,15,0,0,0,43,0,0,0,1,0,0,0,43,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,7,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,192,7,0,0,187,0,0,0,188,0,0,0,44,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,85,0,0,0,13,0,0,0,10,0,0,0,59,0,0,0,10,0,0,0,7,0,0,0,4,0,0,0,60,0,0,0,23,0,0,0,11,0,0,0,44,0,0,0,45,0,0,0,1,0,0,0,45,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,7,0,0,0,61,0,0,0,62,0,0,0,46,0,0,0,46,0,0,0,63,0,0,0,47,0,0,0,2,0,0,0,1,0,0,0,0,0,0,0,224,7,0,0,31,0,0,0,189,0,0,0,48,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,86,0,0,0,13,0,0,0,11,0,0,0,64,0,0,0,87,0,0,0,20,0,0,0,4,0,0,0,65,0,0,0,24,0,0,0,11,0,0,0,15,0,0,0,47,0,0,0,1,0,0,0,49,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,240,7,0,0,31,0,0,0,190,0,0,0,48,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,86,0,0,0,13,0,0,0,11,0,0,0,66,0,0,0,87,0,0,0,20,0,0,0,4,0,0,0,65,0,0,0,24,0,0,0,11,0,0,0,15,0,0,0,47,0,0,0,1,0,0,0,49,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,0,8,0,0,31,0,0,0,191,0,0,0,48,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,86,0,0,0,13,0,0,0,11,0,0,0,67,0,0,0,87,0,0,0,20,0,0,0,4,0,0,0,65,0,0,0,24,0,0,0,11,0,0,0,15,0,0,0,47,0,0,0,1,0,0,0,49,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,16,8,0,0,45,0,0,0,192,0,0,0,44,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,88,0,0,0,68,0,0,0,10,0,0,0,69,0,0,0,10,0,0,0,7,0,0,0,4,0,0,0,15,0,0,0,5,0,0,0,11,0,0,0,48,0,0,0,49,0,0,0,1,0,0,0,50,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,7,0,0,0,70,0,0,0,71,0,0,0,51,0,0,0,50,0,0,0,72,0,0,0,52,0,0,0,3,0,0,0,0,0,0,0,32,8,0,0,181,0,0,0,193,0,0,0,53,0,0,0,0,0,0,0,64,8,0,0,45,0,0,0,194,0,0,0,54,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,89,0,0,0,13,0,0,0,12,0,0,0,73,0,0,0,10,0,0,0,21,0,0,0,4,0,0,0,15,0,0,0,5,0,0,0,11,0,0,0,51,0,0,0,52,0,0,0,1,0,0,0,55,0,0,0,5,0,0,0,74,0,0,0,53,0,0,0,7,0,0,0,75,0,0,0,76,0,0,0,56,0,0,0,54,0,0,0,77,0,0,0,57,0,0,0,4,0,0,0,55,0,0,0,0,0,0,0,80,8,0,0,195,0,0,0,196,0,0,0,19,0,0,0,78,0,0,0,25,0,0,0,90,0,0,0,91,0,0,0,20,0,0,0,0,0,0,0,96,8,0,0,181,0,0,0,197,0,0,0,58,0,0,0,0,0,0,0,112,8,0,0,181,0,0,0,198,0,0,0,59,0,0,0,0,0,0,0,128,8,0,0,199,0,0,0,200,0,0,0,60,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,92,0,0,0,79,0,0,0,13,0,0,0,80,0,0,0,10,0,0,0,4,0,0,0,2,0,0,0,12,0,0,0,4,0,0,0,11,0,0,0,61,0,0,0,12,0,0,0,0,0,0,0,144,8,0,0,31,0,0,0,201,0,0,0,62,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,93,0,0,0,13,0,0,0,14,0,0,0,81,0,0,0,94,0,0,0,22,0,0,0,4,0,0,0,82,0,0,0,26,0,0,0,11,0,0,0,56,0,0,0,57,0,0,0,1,0,0,0,63,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,7,0,0,0,0,0,0,0,160,8,0,0,31,0,0,0,202,0,0,0,62,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,93,0,0,0,13,0,0,0,14,0,0,0,83,0,0,0,94,0,0,0,22,0,0,0,4,0,0,0,82,0,0,0,26,0,0,0,11,0,0,0,56,0,0,0,58,0,0,0,1,0,0,0,64,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,8,0,0,0,0,0,0,0,176,8,0,0,31,0,0,0,203,0,0,0,62,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,93,0,0,0,13,0,0,0,14,0,0,0,84,0,0,0,94,0,0,0,22,0,0,0,4,0,0,0,82,0,0,0,26,0,0,0,11,0,0,0,56,0,0,0,59,0,0,0,1,0,0,0,65,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,9,0,0,0,0,0,0,0,192,8,0,0,204,0,0,0,205,0,0,0,66,0,0,0,1,0,0,0,2,0,0,0,95,0,0,0,96,0,0,0,85,0,0,0,97,0,0,0,98,0,0,0,86,0,0,0,60,0,0,0,61,0,0,0,87,0,0,0,27,0,0,0,0,0,0,0,208,8,0,0,206,0,0,0,207,0,0,0,1,0,0,0,62,0,0,0,12,0,0,0,67,0,0,0,2,0,0,0,68,0,0,0,99,0,0,0,88,0,0,0,89,0,0,0,63,0,0,0,100,0,0,0,208,0,0,0,0,0,0,0,232,8,0,0,209,0,0,0,210,0,0,0,28,0,0,0,21,0,0,0,64,0,0,0,90,0,0,0,91,0,0,0,92,0,0,0,65,0,0,0,93,0,0,0,66,0,0,0,101,0,0,0,67,0,0,0,29,0,0,0,94,0,0,0,102,0,0,0,103,0,0,0,0,0,0,0,8,9,0,0,206,0,0,0,211,0,0,0,1,0,0,0,62,0,0,0,12,0,0,0,67,0,0,0,2,0,0,0,68,0,0,0,99,0,0,0,88,0,0,0,89,0,0,0,63,0,0,0,100,0,0,0,208,0,0,0,0,0,0,0,24,9,0,0,212,0,0,0,213,0,0,0,30,0,0,0,22,0,0,0,68,0,0,0,95,0,0,0,96,0,0,0,97,0,0,0,69,0,0,0,98,0,0,0,70,0,0,0,104,0,0,0,71,0,0,0,31,0,0,0,99,0,0,0,105,0,0,0,106,0,0,0,0,0,0,0,40,9,0,0,105,0,0,0,214,0,0,0,21,0,0,0,0,0,0,0,56,9,0,0,105,0,0,0,215,0,0,0,22,0,0,0,0,0,0,0,72,9,0,0,216,0,0,0,217,0,0,0,2,0,0,0,72,0,0,0,13,0,0,0,69,0,0,0,3,0,0,0,70,0,0,0,107,0,0,0,100,0,0,0,101,0,0,0,73,0,0,0,108,0,0,0,218,0,0,0,0,0,0,0,88,9,0,0,23,0,0,0,219,0,0,0,74,0,0,0,109,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,104,9,0,0,23,0,0,0,220,0,0,0,7,0,0,0,110,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,120,9,0,0,23,0,0,0,221,0,0,0,7,0,0,0,111,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,144,9,0,0,222,0,0,0,223,0,0,0,19,0,0,0,78,0,0,0,25,0,0,0,90,0,0,0,91,0,0,0,0,0,0,0,168,9,0,0,41,0,0,0,224,0,0,0,30,0,0,0,1,0,0,0,0,0,0,0,184,9,0,0,225,0,0,0,226,0,0,0,1,0,0,0,0,0,0,0,208,9,0,0,130,0,0,0,227,0,0,0,75,0,0,0,76,0,0,0,8,0,0,0,0,0,0,0,224,9,0,0,225,0,0,0,228,0,0,0,2,0,0,0,0,0,0,0,240,9,0,0,95,0,0,0,229,0,0,0,2,0,0,0,0,0,0,0,0,10,0,0,130,0,0,0,230,0,0,0,77,0,0,0,78,0,0,0,9,0,0,0,0,0,0,0,16,10,0,0,95,0,0,0,231,0,0,0,3,0,0,0,0,0,0,0,32,10,0,0,232,0,0,0,233,0,0,0,14,0,0,0,0,0,0,0,72,10,0,0,234,0,0,0,235,0,0,0,15,0,0,0,11,0,0,0,112,0,0,0,0,0,0,0,88,10,0,0,236,0,0,0,237,0,0,0,16,0,0,0,12,0,0,0,113,0,0,0,0,0,0,0,104,10,0,0,232,0,0,0,238,0,0,0,17,0,0,0,0,0,0,0,120,10,0,0,232,0,0,0,239,0,0,0,18,0,0,0,0,0,0,0,136,10,0,0,240,0,0,0,241,0,0,0,32,0,0,0,33,0,0,0,102,0,0,0,0,0,0,0,144,10,0,0,242,0,0,0,243,0,0,0,0,0,0,0,152,10,0,0,244,0,0,0,245,0,0,0,66,0,0,0,1,0,0,0,2,0,0,0,95,0,0,0,96,0,0,0,85,0,0,0,114,0,0,0,115,0,0,0,86,0,0,0,60,0,0,0,61,0,0,0,87,0,0,0,27,0,0,0,96,100,0,0,255,255,255,255,5,0,0,0,0,0,0,0,0,0,0,0,103,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,0,0,0,35,0,0,0,157,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,184,10,0,0,246,0,0,0,247,0,0,0,248,0,0,0,249,0,0,0,36,0,0,0,4,0,0,0,19,0,0,0,71,0,0,0,0,0,0,0,200,10,0,0,246,0,0,0,250,0,0,0,248,0,0,0,249,0,0,0,36,0,0,0,5,0,0,0,20,0,0,0,72,0,0,0,0,0,0,0,240,10,0,0,251,0,0,0,252,0,0,0,104,0,0,0,0,0,0,0,32,11,0,0,246,0,0,0,253,0,0,0,248,0,0,0,249,0,0,0,36,0,0,0,6,0,0,0,21,0,0,0,73,0,0,0,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,48,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,0,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,55,67,108,111,115,101,115,116,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,0,49,56,98,116,86,101,104,105,99,108,101,82,97,121,99,97,115,116,101,114,0,49,51,98,116,77,111,116,105,111,110,83,116,97,116,101,0,50,48,98,116,68,101,102,97,117,108,116,77,111,116,105,111,110,83,116,97,116,101,0,50,53,98,116,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,67,97,108,108,98,97,99,107,0,49,57,98,116,71,104,111,115,116,80,97,105,114,67,97,108,108,98,97,99,107,0,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,49,55,82,97,121,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,0,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,52,67,108,111,115,101,115,116,82,97,121,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,0,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,49,67,111,110,116,97,99,116,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,0,50,57,67,111,110,99,114,101,116,101,67,111,110,116,97,99,116,82,101,115,117,108,116,67,97,108,108,98,97,99,107,0,123,32,118,97,114,32,115,101,108,102,32,61,32,77,111,100,117,108,101,91,39,103,101,116,67,97,99,104,101,39,93,40,77,111,100,117,108,101,91,39,67,111,110,99,114,101,116,101,67,111,110,116,97,99,116,82,101,115,117,108,116,67,97,108,108,98,97,99,107,39,93,41,91,36,48,93,59,32,105,102,32,40,33,115,101,108,102,46,104,97,115,79,119,110,80,114,111,112,101,114,116,121,40,39,97,100,100,83,105,110,103,108,101,82,101,115,117,108,116,39,41,41,32,116,104,114,111,119,32,39,97,32,74,83,73,109,112,108,101,109,101,110,116,97,116,105,111,110,32,109,117,115,116,32,105,109,112,108,101,109,101,110,116,32,97,108,108,32,102,117,110,99,116,105,111,110,115,44,32,121,111,117,32,102,111,114,103,111,116,32],"i8",ALLOC_NONE,Runtime.GLOBAL_BASE);allocate([67,111,110,99,114,101,116,101,67,111,110,116,97,99,116,82,101,115,117,108,116,67,97,108,108,98,97,99,107,58,58,97,100,100,83,105,110,103,108,101,82,101,115,117,108,116,46,39,59,32,114,101,116,117,114,110,32,115,101,108,102,91,39,97,100,100,83,105,110,103,108,101,82,101,115,117,108,116,39,93,40,36,49,44,36,50,44,36,51,44,36,52,44,36,53,44,36,54,44,36,55,41,59,32,125,0,50,51,98,116,68,101,102,97,117,108,116,83,111,102,116,66,111,100,121,83,111,108,118,101,114,0,49,54,98,116,83,111,102,116,66,111,100,121,83,111,108,118,101,114,0,52,49,98,116,83,111,102,116,66,111,100,121,82,105,103,105,100,66,111,100,121,67,111,108,108,105,115,105,111,110,67,111,110,102,105,103,117,114,97,116,105,111,110,0,78,50,56,98,116,83,111,102,116,83,111,102,116,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,51,48,98,116,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,67,114,101,97,116,101,70,117,110,99,0,78,50,57,98,116,83,111,102,116,82,105,103,105,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,53,98,116,83,111,102,116,66,111,100,121,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,53,98,116,83,111,102,116,66,111,100,121,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,55,83,119,97,112,112,101,100,67,114,101,97,116,101,70,117,110,99,69,0,49,48,98,116,83,111,102,116,66,111,100,121,0,83,111,102,116,66,111,100,121,77,97,116,101,114,105,97,108,68,97,116,97,0,83,111,102,116,66,111,100,121,78,111,100,101,68,97,116,97,0,83,111,102,116,66,111,100,121,76,105,110,107,68,97,116,97,0,83,111,102,116,66,111,100,121,70,97,99,101,68,97,116,97,0,83,111,102,116,66,111,100,121,84,101,116,114,97,68,97,116,97,0,83,111,102,116,82,105,103,105,100,65,110,99,104,111,114,68,97,116,97,0,102,108,111,97,116,0,83,111,102,116,66,111,100,121,80,111,115,101,68,97,116,97,0,83,111,102,116,66,111,100,121,67,108,117,115,116,101,114,68,97,116,97,0,105,110,116,0,98,116,83,111,102,116,66,111,100,121,74,111,105,110,116,68,97,116,97,0,98,116,83,111,102,116,66,111,100,121,70,108,111,97,116,68,97,116,97,0,78,49,48,98,116,83,111,102,116,66,111,100,121,49,53,82,97,121,70,114,111,109,84,111,67,97,115,116,101,114,69,0,78,54,98,116,68,98,118,116,56,73,67,111,108,108,105,100,101,69,0,78,49,48,98,116,83,111,102,116,66,111,100,121,53,74,111,105,110,116,69,0,78,49,48,98,116,83,111,102,116,66,111,100,121,54,67,74,111,105,110,116,69,0,50,52,98,116,83,111,102,116,66,111,100,121,67,111,108,108,105,115,105,111,110,83,104,97,112,101,0,83,111,102,116,66,111,100,121,0,85,112,100,97,116,101,67,108,117,115,116,101,114,115,0,83,111,102,116,66,111,100,121,32,97,112,112,108,121,70,111,114,99,101,115,0,65,112,112,108,121,67,108,117,115,116,101,114,115,0,78,49,53,98,116,83,111,102,116,67,111,108,108,105,100,101,114,115,49,51,67,111,108,108,105,100,101,83,68,70,95,82,83,69,0,78,49,53,98,116,83,111,102,116,67,111,108,108,105,100,101,114,115,49,50,67,111,108,108,105,100,101,67,76,95,82,83,69,0,78,49,53,98,116,83,111,102,116,67,111,108,108,105,100,101,114,115,49,49,67,108,117,115,116,101,114,66,97,115,101,69,0,50,55,98,116,83,111,102,116,67,108,117,115,116,101,114,67,111,108,108,105,115,105,111,110,83,104,97,112,101,0,83,79,70,84,67,76,85,83,84,69,82,0,98,116,67,111,110,118,101,120,73,110,116,101,114,110,97,108,83,104,97,112,101,68,97,116,97,0,78,49,53,98,116,83,111,102,116,67,111,108,108,105,100,101,114,115,49,50,67,111,108,108,105,100,101,67,76,95,83,83,69,0,78,49,53,98,116,83,111,102,116,67,111,108,108,105,100,101,114,115,49,50,67,111,108,108,105,100,101,86,70,95,83,83,69,0,50,57,98,116,83,111,102,116,82,105,103,105,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,50,48,98,116,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,51,53,98,116,83,111,102,116,66,111,100,121,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,50,54,98,116,83,111,102,116,66,111,100,121,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,0,90,78,51,53,98,116,83,111,102,116,66,111,100,121,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,50,49,99,97,108,99,117,108,97,116,101,84,105,109,101,79,102,73,109,112,97,99,116,69,80,49,55,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,83,49,95,82,75,49,54,98,116,68,105,115,112,97,116,99,104,101,114,73,110,102,111,80,49,54,98,116,77,97,110,105,102,111,108,100,82,101,115,117,108,116,69,51,49,76,111,99,97,108,84,114,105,97,110,103,108,101,83,112,104,101,114,101,67,97,115,116,67,97,108,108,98,97,99,107,0,78,49,50,98,116,67,111,110,118,101,120,67,97,115,116,49,48,67,97,115,116,82,101,115,117,108,116,69,0,49,53,98,116,84,114,105,97,110,103,108,101,83,104,97,112,101,0,84,114,105,97,110,103,108,101,0,50,52,98,116,83,111,102,116,82,105,103,105,100,68,121,110,97,109,105,99,115,87,111,114,108,100,0,114,97,121,84,101,115,116,0,50,51,98,116,83,111,102,116,83,105,110,103,108,101,82,97,121,67,97,108,108,98,97,99,107,0,50,51,98,116,66,114,111,97,100,112,104,97,115,101,82,97,121,67,97,108,108,98,97,99,107,0,50,52,98,116,66,114,111,97,100,112,104,97,115,101,65,97,98,98,67,97,108,108,98,97,99,107,0,112,114,101,100,105,99,116,85,110,99,111,110,115,116,114,97,105,110,116,77,111,116,105,111,110,83,111,102,116,66,111,100,121,0,115,111,108,118,101,83,111,102,116,67,111,110,115,116,114,97,105,110,116,115,0,50,56,98,116,83,111,102,116,83,111,102,116,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,49,49,98,116,82,105,103,105,100,66,111,100,121,0,98,116,82,105,103,105,100,66,111,100,121,70,108,111,97,116,68,97,116,97,0,50,51,98,116,68,105,115,99,114,101,116,101,68,121,110,97,109,105,99,115,87,111,114,108,100,0,49,53,98,116,68,121,110,97,109,105,99,115,87,111,114,108,100,0,100,101,98,117,103,68,114,97,119,87,111,114,108,100,0,98,116,68,121,110,97,109,105,99,115,87,111,114,108,100,70,108,111,97,116,68,97,116,97,0,115,116,101,112,83,105,109,117,108,97,116,105,111,110,0,115,121,110,99,104,114,111,110,105,122,101,77,111,116,105,111,110,83,116,97,116,101,115,0,112,114,101,100,105,99,116,85,110,99,111,110,115,116,114,97,105,110,116,77,111,116,105,111,110,0,105,110,116,101,103,114,97,116,101,84,114,97,110,115,102,111,114,109,115,0,67,67,68,32,109,111,116,105,111,110,32,99,108,97,109,112,105,110,103,0,51,52,98,116,67,108,111,115,101,115,116,78,111,116,77,101,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,0,97,112,112,108,121,32,115,112,101,99,117,108,97,116,105,118,101,32,99,111,110,116,97,99,116,32,114,101,115,116,105,116,117,116,105,111,110,0,99,97,108,99,117,108,97,116,101,83,105,109,117,108,97,116,105,111,110,73,115,108,97,110,100,115,0,115,111,108,118,101,67,111,110,115,116,114,97,105,110,116,115,0,117,112,100,97,116,101,65,99,116,105,118,97,116,105,111,110,83,116,97,116,101,0,105,110,116,101,114,110,97,108,83,105,110,103,108,101,83,116,101,112,83,105,109,117,108,97,116,105,111,110,0,99,114,101,97,116,101,80,114,101,100,105,99,116,105,118,101,67,111,110,116,97,99,116,115,0,114,101,108,101,97,115,101,32,112,114,101,100,105,99,116,105,118,101,32,99,111,110,116,97,99,116,32,109,97,110,105,102,111,108,100,115,0,112,114,101,100,105,99,116,105,118,101,32,99,111,110,118,101,120,83,119,101,101,112,84,101,115,116,0,117,112,100,97,116,101,65,99,116,105,111,110,115,0,50,55,73,110,112,108,97,99,101,83,111,108,118,101,114,73,115,108,97,110,100,67,97,108,108,98,97,99,107,0,78,50,53,98,116,83,105,109,117,108,97,116,105,111,110,73,115,108,97,110,100,77,97,110,97,103,101,114,49,52,73,115,108,97,110,100,67,97,108,108,98,97,99,107,69,0,50,51,98,116,71,101,110,101,114,105,99,54,68,111,102,67,111,110,115,116,114,97,105,110,116,0,49,55,98,116,84,121,112,101,100,67,111,110,115,116,114,97,105,110,116,0,49,51,98,116,84,121,112,101,100,79,98,106,101,99,116,0,98,116,71,101,110,101,114,105,99,54,68,111,102,67,111,110,115,116,114,97,105,110,116,68,97,116,97,0,50,57,98,116,71,101,110,101,114,105,99,54,68,111,102,83,112,114,105,110,103,67,111,110,115,116,114,97,105,110,116,0,98,116,71,101,110,101,114,105,99,54,68,111,102,83,112,114,105,110,103,67,111,110,115,116,114,97,105,110,116,68,97,116,97,0,50,51,98,116,80,111,105,110,116,50,80,111,105,110,116,67,111,110,115,116,114,97,105,110,116,0,98,116,80,111,105,110,116,50,80,111,105,110,116,67,111,110,115,116,114,97,105,110,116,70,108,111,97,116,68,97,116,97,0,98,116,84,121,112,101,100,67,111,110,115,116,114,97,105,110,116,70,108,111,97,116,68,97,116,97,0,49,56,98,116,83,108,105,100,101,114,67,111,110,115,116,114,97,105,110,116,0,98,116,83,108,105,100,101,114,67,111,110,115,116,114,97,105,110,116,68,97,116,97,0,50,49,98,116,67,111,110,101,84,119,105,115,116,67,111,110,115,116,114,97,105,110,116,0,98,116,67,111,110,101,84,119,105,115,116,67,111,110,115,116,114,97,105,110,116,68,97,116,97,0,49,55,98,116,72,105,110,103,101,67,111,110,115,116,114,97,105,110,116,0,98,116,72,105,110,103,101,67,111,110,115,116,114,97,105,110,116,70,108,111,97,116,68,97,116,97,0,51,53,98,116,83,101,113,117,101,110,116,105,97,108,73,109,112,117,108,115,101,67,111,110,115,116,114,97,105,110,116,83,111,108,118,101,114,0,49,56,98,116,67,111,110,115,116,114,97,105,110,116,83,111,108,118,101,114,0,115,111,108,118,101,71,114,111,117,112,0,115,111,108,118,101,71,114,111,117,112,67,97,99,104,101,70,114,105,101,110,100,108,121,83,101,116,117,112,0,115,111,108,118,101,71,114,111,117,112,67,97,99,104,101,70,114,105,101,110,100,108,121,73,116,101,114,97,116,105,111,110,115,0,49,54,98,116,82,97,121,99,97,115,116,86,101,104,105,99,108,101,0,49,55,98,116,65,99,116,105,111,110,73,110,116,101,114,102,97,99,101,0,50,53,98,116,68,101,102,97,117,108,116,86,101,104,105,99,108,101,82,97,121,99,97,115,116,101,114,0,51,48,98,116,75,105,110,101,109,97,116,105,99,67,104,97,114,97,99,116,101,114,67,111,110,116,114,111,108,108,101,114,0,51,48,98,116,67,104,97,114,97,99,116,101,114,67,111,110,116,114,111,108,108,101,114,73,110,116,101,114,102,97,99,101,0,52,51,98,116,75,105,110,101,109,97,116,105,99,67,108,111,115,101,115,116,78,111,116,77,101,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,0,50,50,98,116,83,117,98,115,105,109,112,108,101,120,67,111,110,118,101,120,67,97,115,116,0,49,50,98,116,67,111,110,118,101,120,67,97,115,116,0,49,55,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,0,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,70,108,111,97,116,68,97,116,97,0,49,51,98,116,71,104,111,115,116,79,98,106,101,99,116,0,50,52,98,116,80,97,105,114,67,97,99,104,105,110,103,71,104,111,115,116,79,98,106,101,99,116,0,50,49,98,116,67,111,108,108,105,115,105,111,110,68,105,115,112,97,116,99,104,101,114,0,50,51,98,116,67,111,108,108,105,115,105,111,110,80,97,105,114,67,97,108,108,98,97,99,107,0,49,55,98,116,79,118,101,114,108,97,112,67,97,108,108,98,97,99,107,0,51,49,98,116,68,101,102,97,117,108,116,67,111,108,108,105,115,105,111,110,67,111,110,102,105,103,117,114,97,116,105,111,110,0,50,52,98,116,67,111,108,108,105,115,105,111,110,67,111,110,102,105,103,117,114,97,116,105,111,110,0,78,51,51,98,116,67,111,110,118,101,120,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,51,98,116,67,111,110,118,101,120,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,55,83,119,97,112,112,101,100,67,114,101,97,116,101,70,117,110,99,69,0,78,50,56,98,116,67,111,109,112,111,117,110,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,54,98,116,67,111,109,112,111,117,110,100,67,111,109,112,111,117,110,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,50,56,98,116,67,111,109,112,111,117,110,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,55,83,119,97,112,112,101,100,67,114,101,97,116,101,70,117,110,99,69,0,78,49,54,98,116,69,109,112,116,121,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,50,98,116,83,112,104,101,114,101,83,112,104,101,114,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,52,98,116,83,112,104,101,114,101,84,114,105,97,110,103,108,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,50,54,98,116,66,111,120,66,111,120,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,49,98,116,67,111,110,118,101,120,80,108,97,110,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,50,53,98,116,83,105,109,117,108,97,116,105,111,110,73,115,108,97,110,100,77,97,110,97,103,101,114,0,105,115,108,97,110,100,85,110,105,111,110,70,105,110,100,65,110,100,81,117,105,99,107,83,111,114,116,0,112,114,111,99,101,115,115,73,115,108,97,110,100,115,0,51,49,98,116,67,111,110,118,101,120,80,108,97,110,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,51,51,98,116,67,111,110,118,101,120,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,50,52,98,116,67,111,110,118,101,120,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,0,90,78,51,51,98,116,67,111,110,118,101,120,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,50,49,99,97,108,99,117,108,97,116,101,84,105,109,101,79,102,73,109,112,97,99,116,69,80,49,55,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,83,49,95,82,75,49,54,98,116,68,105,115,112,97,116,99,104,101,114,73,110,102,111,80,49,54,98,116,77,97,110,105,102,111,108,100,82,101,115,117,108,116,69,51,49,76,111,99,97,108,84,114,105,97,110,103,108,101,83,112,104,101,114,101,67,97,115,116,67,97,108,108,98,97,99,107,0,50,54,98,116,66,111,120,66,111,120,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,49,54,98,116,77,97,110,105,102,111,108,100,82,101,115,117,108,116,0,78,51,54,98,116,68,105,115,99,114,101,116,101,67,111,108,108,105,115,105,111,110,68,101,116,101,99,116,111,114,73,110,116,101,114,102,97,99,101,54,82,101,115,117,108,116,69,0,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,0,117,112,100,97,116,101,65,97,98,98,115,0,1,79,118,101,114,102,108,111,119,32,105,110,32,65,65,66,66,44,32,111,98,106,101,99,116,32,114,101,109,111,118,101,100,32,102,114,111,109,32,115,105,109,117,108,97,116,105,111,110,0,73,102,32,121,111,117,32,99,97,110,32,114,101,112,114,111,100,117,99,101,32,116,104,105,115,44,32,112,108,101,97,115,101,32,101,109,97,105,108,32,98,117,103,115,64,99,111,110,116,105,110,117,111,117,115,112,104,121,115,105,99,115,46,99,111,109,10,0,80,108,101,97,115,101,32,105,110,99,108,117,100,101,32,97,98,111,118,101,32,105,110,102,111,114,109,97,116,105,111,110,44,32,121,111,117,114,32,80,108,97,116,102,111,114,109,44,32,118,101,114,115,105,111,110,32,111,102,32,79,83,46,10,0,84,104,97,110,107,115,46,10,0,99,97,108,99,117,108,97,116,101,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,115,0,49,55,68,101,98,117,103,68,114,97,119,99,97,108,108,98,97,99,107,0,49,57,98,116,83,105,110,103,108,101,82,97,121,67,97,108,108,98,97,99,107,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,49,114,97,121,84,101,115,116,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,50,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,49,55,82,97,121,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,69,50,57,66,114,105,100,103,101,84,114,105,97,110,103,108,101,82,97,121,99,97,115,116,67,97,108,108,98,97,99,107,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,49,114,97,121,84,101,115,116,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,50,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,49,55,82,97,121,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,69,50,57,66,114,105,100,103,101,84,114,105,97,110,103,108,101,82,97,121,99,97,115,116,67,97,108,108,98,97,99,107,95,48,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,49,114,97,121,84,101,115,116,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,50,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,49,55,82,97,121,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,69,57,82,97,121,84,101,115,116,101,114,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,49,114,97,121,84,101,115,116,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,50,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,49,55,82,97,121,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,69,49,53,76,111,99,97,108,73,110,102,111,65,100,100,101,114,50,0,112,101,114,102,111,114,109,68,105,115,99,114,101,116,101,67,111,108,108,105,115,105,111,110,68,101,116,101,99,116,105,111,110,0,100,105,115,112,97,116,99,104,65,108,108,67,111,108,108,105,115,105,111,110,80,97,105,114,115,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,53,111,98,106,101,99,116,81,117,101,114,121,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,80,75,49,51,98,116,67,111,110,118,101,120,83,104,97,112,101,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,53,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,50,48,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,102,69,51,50,66,114,105,100,103,101,84,114,105,97,110,103,108,101,67,111,110,118,101,120,99,97,115,116,67,97,108,108,98,97,99,107,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,53,111,98,106,101,99,116,81,117,101,114,121,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,80,75,49,51,98,116,67,111,110,118,101,120,83,104,97,112,101,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,53,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,50,48,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,102,69,51,50,66,114,105,100,103,101,84,114,105,97,110,103,108,101,67,111,110,118,101,120,99,97,115,116,67,97,108,108,98,97,99,107,95,48,0,99,111,110,118,101,120,83,119,101,101,112,67,111,109,112,111,117,110,100,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,53,111,98,106,101,99,116,81,117,101,114,121,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,80,75,49,51,98,116,67,111,110,118,101,120,83,104,97,112,101,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,53,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,50,48,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,102,69,49,52,76,111,99,97,108,73,110,102,111,65,100,100,101,114,0,99,111,110,118,101,120,83,119,101,101,112,84,101,115,116,0,50,49,98,116,83,105,110,103,108,101,83,119,101,101,112,67,97,108,108,98,97,99,107,0,50,51,98,116,83,105,110,103,108,101,67,111,110,116,97,99,116,67,97,108,108,98,97,99,107,0,50,51,98,116,66,114,105,100,103,101,100,77,97,110,105,102,111,108,100,82,101,115,117,108,116,0,51,52,98,116,83,112,104,101,114,101,84,114,105,97,110,103,108,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,78,50,51,98,116,67,111,110,118,101,120,67,111,110,118,101,120,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,50,51,98,116,67,111,110,118,101,120,67,111,110,118,101,120,65,108,103,111,114,105,116,104,109,0,90,78,50,51,98,116,67,111,110,118,101,120,67,111,110,118,101,120,65,108,103,111,114,105,116,104,109,49,54,112,114,111,99,101,115,115,67,111,108,108,105,115,105,111,110,69,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,83,50,95,82,75,49,54,98,116,68,105,115,112,97,116,99,104,101,114,73,110,102,111,80,49,54,98,116,77,97,110,105,102,111,108,100,82,101,115,117,108,116,69,49,51,98,116,68,117,109,109,121,82,101,115,117,108,116,0,90,78,50,51,98,116,67,111,110,118,101,120,67,111,110,118,101,120,65,108,103,111,114,105,116,104,109,49,54,112,114,111,99,101,115,115,67,111,108,108,105,115,105,111,110,69,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,83,50,95,82,75,49,54,98,116,68,105,115,112,97,116,99,104,101,114,73,110,102,111,80,49,54,98,116,77,97,110,105,102,111,108,100,82,101,115,117,108,116,69,50,49,98,116,87,105,116,104,111,117,116,77,97,114,103,105,110,82,101,115,117,108,116,0,50,52,98,116,80,101,114,116,117,114,98,101,100,67,111,110,116,97,99,116,82,101,115,117,108,116,0,50,56,98,116,67,111,109,112,111,117,110,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,50,50,98,116,67,111,109,112,111,117,110,100,76,101,97,102,67,97,108,108,98,97,99,107,0,51,54,98,116,67,111,109,112,111,117,110,100,67,111,109,112,111,117,110,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,51,48,98,116,67,111,109,112,111,117,110,100,67,111,109,112,111,117,110,100,76,101,97,102,67,97,108,108,98,97,99,107,0,49,53,98,116,67,111,109,112,111,117,110,100,83,104,97,112,101,0,67,111,109,112,111,117,110,100,0,98,116,67,111,109,112,111,117,110,100,83,104,97,112,101,67,104,105,108,100,68,97,116,97,0,98,116,67,111,109,112,111,117,110,100,83,104,97,112,101,68,97,116,97,0,49,49,98,116,67,111,110,101,83,104,97,112,101,0,67,111,110,101,0,98,116,67,111,110,101,83,104,97,112,101,68,97,116,97,0,49,50,98,116,67,111,110,101,83,104,97,112,101,90,0,67,111,110,101,90,0,49,50,98,116,67,111,110,101,83,104,97,112,101,88,0,67,111,110,101,88,0,49,51,98,116,83,112,104,101,114,101,83,104,97,112,101,0,83,80,72,69,82,69,0,50,50,98,116,66,118,104,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,0,66,86,72,84,82,73,65,78,71,76,69,77,69,83,72,0,98,116,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,68,97,116,97,0,90,78,75,50,50,98,116,66,118,104,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,49,57,112,114,111,99,101,115,115,65,108,108,84,114,105,97,110,103,108,101,115,69,80,49,56,98,116,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,82,75,57,98,116,86,101,99,116,111,114,51,83,52,95,69,50,49,77,121,78,111,100,101,79,118,101,114,108,97,112,67,97,108,108,98,97,99,107,0,50,49,98,116,78,111,100,101,79,118,101,114,108,97,112,67,97,108,108,98,97,99,107,0,90,78,50,50,98,116,66,118,104,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,49,52,112,101,114,102,111,114,109,82,97,121,99,97,115,116,69,80,49,56,98,116,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,82,75,57,98,116,86,101,99,116,111,114,51,83,52,95,69,50,49,77,121,78,111,100,101,79,118,101,114,108,97,112,67,97,108,108,98,97,99,107,0,90,78,50,50,98,116,66,118,104,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,49,55,112,101,114,102,111,114,109,67,111,110,118,101,120,99,97,115,116,69,80,49,56,98,116,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,82,75,57,98,116,86,101,99,116,111,114,51,83,52,95,83,52,95,83,52,95,69,50,49,77,121,78,111,100,101,79,118,101,114,108,97,112,67,97,108,108,98,97,99,107,0,49,57,98,116,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,0,84,82,73,65,78,71,76,69,77,69,83,72,0,90,78,75,49,57,98,116,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,49,57,112,114,111,99,101,115,115,65,108,108,84,114,105,97,110,103,108,101,115,69,80,49,56,98,116,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,82,75,57,98,116,86,101,99,116,111,114,51,83,52,95,69,49,54,70,105,108,116,101,114,101,100,67,97,108,108,98,97,99,107,0,50,49,83,117,112,112,111,114,116,86,101,114,116,101,120,67,97,108,108,98,97,99,107,0,49,56,98,116,83,116,97,116,105,99,80,108,97,110,101,83,104,97,112,101,0,83,84,65,84,73,67,80,76,65,78,69,0,98,116,83,116,97,116,105,99,80,108,97,110,101,83,104,97,112,101,68,97,116,97,0,50,51,98,116,80,111,108,121,104,101,100,114,97,108,67,111,110,118,101,120,83,104,97,112,101,0,51,52,98,116,80,111,108,121,104,101,100,114,97,108,67,111,110,118,101,120,65,97,98,98,67,97,99,104,105,110,103,83,104,97,112,101,0,49,54,98,116,67,111,108,108,105,115,105,111,110,83,104,97,112,101,0,98,116,67,111,108,108,105,115,105,111,110,83,104,97,112,101,68,97,116,97,0,49,51,98,116,67,111,110,118,101,120,83,104,97,112,101,0,50,49,98,116,67,111,110,118,101,120,73,110,116,101,114,110,97,108,83,104,97,112,101,0,49,55,98,116,67,111,110,118,101,120,72,117,108,108,83,104,97,112,101,0,67,111,110,118,101,120,0,98,116,67,111,110,118,101,120,72,117,108,108,83,104,97,112,101,68,97,116,97,0,49,56,98,116,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,0,51,49,98,116,73,110,116,101,114,110,97,108,84,114,105,97,110,103,108,101,73,110,100,101,120,67,97,108,108,98,97,99,107,0,49,52,98,116,67,97,112,115,117,108,101,83,104,97,112,101,0,67,97,112,115,117,108,101,83,104,97,112,101,0,98,116,67,97,112,115,117,108,101,83,104,97,112,101,68,97,116,97,0,49,53,98,116,67,97,112,115,117,108,101,83,104,97,112,101,88,0,67,97,112,115,117,108,101,88,0,49,53,98,116,67,97,112,115,117,108,101,83,104,97,112,101,90,0,67,97,112,115,117,108,101,90,0,50,53,98,116,67,111,110,118,101,120,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,0,67,111,110,118,101,120,84,114,105,109,101,115,104,0,50,54,76,111,99,97,108,83,117,112,112,111,114,116,86,101,114,116,101,120,67,97,108,108,98,97,99,107,0,49,52,98,116,67,111,110,99,97,118,101,83,104,97,112,101,0,49,48,98,116,66,111,120,83,104,97,112,101,0,66,111,120,0,49,52,98,116,79,112,116,105,109,105,122,101,100,66,118,104,0,90,78,49,52,98,116,79,112,116,105,109,105,122,101,100,66,118,104,53,98,117,105,108,100,69,80,50,51,98,116,83,116,114,105,100,105,110,103,77,101,115,104,73,110,116,101,114,102,97,99,101,98,82,75,57,98,116,86,101,99,116,111,114,51,83,52,95,69,50,57,81,117,97,110,116,105,122,101,100,78,111,100,101,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,0,90,78,49,52,98,116,79,112,116,105,109,105,122,101,100,66,118,104,53,98,117,105,108,100,69,80,50,51,98,116,83,116,114,105,100,105,110,103,77,101,115,104,73,110,116,101,114,102,97,99,101,98,82,75,57,98,116,86,101,99,116,111,114,51,83,52,95,69,50,48,78,111,100,101,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,0,50,53,98,116,72,101,105,103,104,116,102,105,101,108,100,84,101,114,114,97,105,110,83,104,97,112,101,0,72,69,73,71,72,84,70,73,69,76,68,0,49,53,98,116,67,121,108,105,110,100,101,114,83,104,97,112,101,0,67,121,108,105,110,100,101,114,89,0,98,116,67,121,108,105,110,100,101,114,83,104,97,112,101,68,97,116,97,0,49,54,98,116,67,121,108,105,110,100,101,114,83,104,97,112,101,88,0,67,121,108,105,110,100,101,114,88,0,49,54,98,116,67,121,108,105,110,100,101,114,83,104,97,112,101,90,0,67,121,108,105,110,100,101,114,90,0,49,52,98,116,84,114,105,97,110,103,108,101,77,101,115,104,0,50,48,98,116,65,120,105,115,83,119,101,101,112,51,73,110,116,101,114,110,97,108,73,116,69,0,50,49,98,116,66,114,111,97,100,112,104,97,115,101,73,110,116,101,114,102,97,99,101,0,49,53,98,116,78,117,108,108,80,97,105,114,67,97,99,104,101,0,50,50,98,116,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,67,97,99,104,101,0,49,50,98,116,65,120,105,115,83,119,101,101,112,51,0,50,56,98,116,72,97,115,104,101,100,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,67,97,99,104,101,0,90,78,50,56,98,116,72,97,115,104,101,100,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,67,97,99,104,101,51,55,114,101,109,111,118,101,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,115,67,111,110,116,97,105,110,105,110,103,80,114,111,120,121,69,80,49,55,98,116,66,114,111,97,100,112,104,97,115,101,80,114,111,120,121,80,49,50,98,116,68,105,115,112,97,116,99,104,101,114,69,49,56,82,101,109,111,118,101,80,97,105,114,67,97,108,108,98,97,99,107,0,90,78,50,56,98,116,72,97,115,104,101,100,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,67,97,99,104,101,49,57,99,108,101,97,110,80,114,111,120,121,70,114,111,109,80,97,105,114,115,69,80,49,55,98,116,66,114,111,97,100,112,104,97,115,101,80,114,111,120,121,80,49,50,98,116,68,105,115,112,97,116,99,104,101,114,69,49,55,67,108,101,97,110,80,97,105,114,67,97,108,108,98,97,99,107,0,49,54,98,116,68,98,118,116,66,114,111,97,100,112,104,97,115,101,0,49,56,98,116,68,98,118,116,84,114,101,101,67,111,108,108,105,100,101,114,0,49,57,66,114,111,97,100,112,104,97,115,101,82,97,121,84,101,115,116,101,114,0,50,48,66,114,111,97,100,112,104,97,115,101,65,97,98,98,84,101,115,116,101,114,0,49,50,98,116,68,105,115,112,97,116,99,104,101,114,0,49,52,98,116,81,117,97,110,116,105,122,101,100,66,118,104,0,98,116,79,112,116,105,109,105,122,101,100,66,118,104,78,111,100,101,68,97,116,97,0,98,116,81,117,97,110,116,105,122,101,100,66,118,104,78,111,100,101,68,97,116,97,0,98,116,66,118,104,83,117,98,116,114,101,101,73,110,102,111,68,97,116,97,0,98,116,81,117,97,110,116,105,122,101,100,66,118,104,70,108,111,97,116,68,97,116,97,0,50,53,98,116,84,114,105,97,110,103,108,101,82,97,121,99,97,115,116,67,97,108,108,98,97,99,107,0,50,56,98,116,84,114,105,97,110,103,108,101,67,111,110,118,101,120,99,97,115,116,67,97,108,108,98,97,99,107,0,51,51,98,116,77,105,110,107,111,119,115,107,105,80,101,110,101,116,114,97,116,105,111,110,68,101,112,116,104,83,111,108,118,101,114,0,51,48,98,116,67,111,110,118,101,120,80,101,110,101,116,114,97,116,105,111,110,68,101,112,116,104,83,111,108,118,101,114,0,90,78,51,51,98,116,77,105,110,107,111,119,115,107,105,80,101,110,101,116,114,97,116,105,111,110,68,101,112,116,104,83,111,108,118,101,114,49,50,99,97,108,99,80,101,110,68,101,112,116,104,69,82,50,50,98,116,86,111,114,111,110,111,105,83,105,109,112,108,101,120,83,111,108,118,101,114,80,75,49,51,98,116,67,111,110,118,101,120,83,104,97,112,101,83,52,95,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,55,95,82,57,98,116,86,101,99,116,111,114,51,83,57,95,83,57,95,80,49,50,98,116,73,68,101,98,117,103,68,114,97,119,69,50,48,98,116,73,110,116,101,114,109,101,100,105,97,116,101,82,101,115,117,108,116,0,51,48,98,116,71,106,107,69,112,97,80,101,110,101,116,114,97,116,105,111,110,68,101,112,116,104,83,111,108,118,101,114,0,49,53,98,116,71,106,107,67,111,110,118,101,120,67,97,115,116,0,49,54,98,116,80,111,105,110,116,67,111,108,108,101,99,116,111,114,0,50,55,98,116,67,111,110,116,105,110,117,111,117,115,67,111,110,118,101,120,67,111,108,108,105,115,105,111,110,0,49,55,98,116,71,106,107,80,97,105,114,68,101,116,101,99,116,111,114,0,51,54,98,116,68,105,115,99,114,101,116,101,67,111,108,108,105,115,105,111,110,68,101,116,101,99,116,111,114,73,110,116,101,114,102,97,99,101,0,51,48,98,116,65,99,116,105,118,97,116,105,110,103,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,49,54,98,116,69,109,112,116,121,65,108,103,111,114,105,116,104,109,0,51,50,98,116,83,112,104,101,114,101,83,112,104,101,114,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,49,54,98,116,66,111,120,66,111,120,68,101,116,101,99,116,111,114,0,50,50,83,112,104,101,114,101,84,114,105,97,110,103,108,101,68,101,116,101,99,116,111,114,0,50,51,98,116,72,97,115,104,101,100,83,105,109,112,108,101,80,97,105,114,67,97,99,104,101,0,49,56,98,116,67,111,110,118,101,120,80,111,108,121,104,101,100,114,111,110,0,50,54,98,116,84,114,105,97,110,103,108,101,73,110,100,101,120,86,101,114,116,101,120,65,114,114,97,121,0,50,51,98,116,83,116,114,105,100,105,110,103,77,101,115,104,73,110,116,101,114,102,97,99,101,0,98,116,73,110,116,73,110,100,101,120,68,97,116,97,0,98,116,83,104,111,114,116,73,110,116,73,110,100,101,120,84,114,105,112,108,101,116,68,97,116,97,0,98,116,67,104,97,114,73,110,100,101,120,84,114,105,112,108,101,116,68,97,116,97,0,98,116,86,101,99,116,111,114,51,70,108,111,97,116,68,97,116,97,0,98,116,86,101,99,116,111,114,51,68,111,117,98,108,101,68,97,116,97,0,98,116,77,101,115,104,80,97,114,116,68,97,116,97,0,98,116,83,116,114,105,100,105,110,103,77,101,115,104,73,110,116,101,114,102,97,99,101,68,97,116,97,0,82,111,111,116,0,17,0,10,0,17,17,17,0,0,0,0,5,0,0,0,0,0,0,9,0,0,0,0,11,0,0,0,0,0,0,0,0,17,0,15,10,17,17,17,3,10,7,0,1,19,9,11,11,0,0,9,6,11,0,0,11,0,6,17,0,0,0,17,17,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,17,0,10,10,17,17,17,0,10,0,0,2,0,9,11,0,0,0,9,0,11,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,12,0,0,0,0,9,12,0,0,0,0,0,12,0,0,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,0,0,0,0,0,0,0,0,0,0,0,13,0,0,0,4,13,0,0,0,0,9,14,0,0,0,0,0,14,0,0,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,15,0,0,0,0,9,16,0,0,0,0,0,16,0,0,16,0,0,18,0,0,0,18,18,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,0,0,0,18,18,18,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,10,0,0,0,0,10,0,0,0,0,9,11,0,0,0,0,0,11,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,12,0,0,0,0,9,12,0,0,0,0,0,12,0,0,12,0,0,48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,45,43,32,32,32,48,88,48,120,0,84,33,34,25,13,1,2,3,17,75,28,12,16,4,11,29,18,30,39,104,110,111,112,113,98,32,5,6,15,19,20,21,26,8,22,7,40,36,23,24,9,10,14,27,31,37,35,131,130,125,38,42,43,60,61,62,63,67,71,74,77,88,89,90,91,92,93,94,95,96,97,99,100,101,102,103,105,106,107,108,114,115,116,121,122,123,124,0,73,108,108,101,103,97,108,32,98,121,116,101,32,115,101,113,117,101,110,99,101,0,68,111,109,97,105,110,32,101,114,114,111,114,0,82,101,115,117,108,116,32,110,111,116,32,114,101,112,114,101,115,101,110,116,97,98,108,101,0,78,111,116,32,97,32,116,116,121,0,80,101,114,109,105,115,115,105,111,110,32,100,101,110,105,101,100,0,79,112,101,114,97,116,105,111,110,32,110,111,116,32,112,101,114,109,105,116,116,101,100,0,78,111,32,115,117,99,104,32,102,105,108,101,32,111,114,32,100,105,114,101,99,116,111,114,121,0,78,111,32,115,117,99,104,32,112,114,111,99,101,115,115,0,70,105,108,101,32,101,120,105,115,116,115,0,86,97,108,117,101,32,116,111,111,32,108,97,114,103,101,32,102,111,114,32,100,97,116,97,32,116,121,112,101,0,78,111,32,115,112,97,99,101,32,108,101,102,116,32,111,110,32,100,101,118,105,99,101,0,79,117,116,32,111,102,32,109,101,109,111,114,121,0,82,101,115,111,117,114,99,101,32,98,117,115,121,0,73,110,116,101,114,114,117,112,116,101,100,32,115,121,115,116,101,109,32,99,97,108,108,0,82,101,115,111,117,114,99,101,32,116,101,109,112,111,114,97,114,105,108,121,32,117,110,97,118,97,105,108,97,98,108,101,0,73,110,118,97,108,105,100,32,115,101,101,107,0,67,114,111,115,115,45,100,101,118,105,99,101,32,108,105,110,107,0,82,101,97,100,45,111,110,108,121,32,102,105,108,101,32,115,121,115,116,101,109,0,68,105,114,101,99,116,111,114,121,32,110,111,116,32,101,109,112,116,121,0,67,111,110,110,101,99,116,105,111,110,32,114,101,115,101,116,32,98,121,32,112,101,101,114,0,79,112,101,114,97,116,105,111,110,32,116,105,109,101,100,32,111,117,116,0,67,111,110,110,101,99,116,105,111,110,32,114,101,102,117,115,101,100,0,72,111,115,116,32,105,115,32,100,111,119,110,0,72,111,115,116,32,105,115,32,117,110,114,101,97,99,104,97,98,108,101,0,65,100,100,114,101,115,115,32,105,110,32,117,115,101,0,66,114,111,107,101,110,32,112,105,112,101,0,73,47,79,32,101,114,114,111,114,0,78,111,32],"i8",ALLOC_NONE,Runtime.GLOBAL_BASE+10240);allocate([115,117,99,104,32,100,101,118,105,99,101,32,111,114,32,97,100,100,114,101,115,115,0,66,108,111,99,107,32,100,101,118,105,99,101,32,114,101,113,117,105,114,101,100,0,78,111,32,115,117,99,104,32,100,101,118,105,99,101,0,78,111,116,32,97,32,100,105,114,101,99,116,111,114,121,0,73,115,32,97,32,100,105,114,101,99,116,111,114,121,0,84,101,120,116,32,102,105,108,101,32,98,117,115,121,0,69,120,101,99,32,102,111,114,109,97,116,32,101,114,114,111,114,0,73,110,118,97,108,105,100,32,97,114,103,117,109,101,110,116,0,65,114,103,117,109,101,110,116,32,108,105,115,116,32,116,111,111,32,108,111,110,103,0,83,121,109,98,111,108,105,99,32,108,105,110,107,32,108,111,111,112,0,70,105,108,101,110,97,109,101,32,116,111,111,32,108,111,110,103,0,84,111,111,32,109,97,110,121,32,111,112,101,110,32,102,105,108,101,115,32,105,110,32,115,121,115,116,101,109,0,78,111,32,102,105,108,101,32,100,101,115,99,114,105,112,116,111,114,115,32,97,118,97,105,108,97,98,108,101,0,66,97,100,32,102,105,108,101,32,100,101,115,99,114,105,112,116,111,114,0,78,111,32,99,104,105,108,100,32,112,114,111,99,101,115,115,0,66,97,100,32,97,100,100,114,101,115,115,0,70,105,108,101,32,116,111,111,32,108,97,114,103,101,0,84,111,111,32,109,97,110,121,32,108,105,110,107,115,0,78,111,32,108,111,99,107,115,32,97,118,97,105,108,97,98,108,101,0,82,101,115,111,117,114,99,101,32,100,101,97,100,108,111,99,107,32,119,111,117,108,100,32,111,99,99,117,114,0,83,116,97,116,101,32,110,111,116,32,114,101,99,111,118,101,114,97,98,108,101,0,80,114,101,118,105,111,117,115,32,111,119,110,101,114,32,100,105,101,100,0,79,112,101,114,97,116,105,111,110,32,99,97,110,99,101,108,101,100,0,70,117,110,99,116,105,111,110,32,110,111,116,32,105,109,112,108,101,109,101,110,116,101,100,0,78,111,32,109,101,115,115,97,103,101,32,111,102,32,100,101,115,105,114,101,100,32,116,121,112,101,0,73,100,101,110,116,105,102,105,101,114,32,114,101,109,111,118,101,100,0,68,101,118,105,99,101,32,110,111,116,32,97,32,115,116,114,101,97,109,0,78,111,32,100,97,116,97,32,97,118,97,105,108,97,98,108,101,0,68,101,118,105,99,101,32,116,105,109,101,111,117,116,0,79,117,116,32,111,102,32,115,116,114,101,97,109,115,32,114,101,115,111,117,114,99,101,115,0,76,105,110,107,32,104,97,115,32,98,101,101,110,32,115,101,118,101,114,101,100,0,80,114,111,116,111,99,111,108,32,101,114,114,111,114,0,66,97,100,32,109,101,115,115,97,103,101,0,70,105,108,101,32,100,101,115,99,114,105,112,116,111,114,32,105,110,32,98,97,100,32,115,116,97,116,101,0,78,111,116,32,97,32,115,111,99,107,101,116,0,68,101,115,116,105,110,97,116,105,111,110,32,97,100,100,114,101,115,115,32,114,101,113,117,105,114,101,100,0,77,101,115,115,97,103,101,32,116,111,111,32,108,97,114,103,101,0,80,114,111,116,111,99,111,108,32,119,114,111,110,103,32,116,121,112,101,32,102,111,114,32,115,111,99,107,101,116,0,80,114,111,116,111,99,111,108,32,110,111,116,32,97,118,97,105,108,97,98,108,101,0,80,114,111,116,111,99,111,108,32,110,111,116,32,115,117,112,112,111,114,116,101,100,0,83,111,99,107,101,116,32,116,121,112,101,32,110,111,116,32,115,117,112,112,111,114,116,101,100,0,78,111,116,32,115,117,112,112,111,114,116,101,100,0,80,114,111,116,111,99,111,108,32,102,97,109,105,108,121,32,110,111,116,32,115,117,112,112,111,114,116,101,100,0,65,100,100,114,101,115,115,32,102,97,109,105,108,121,32,110,111,116,32,115,117,112,112,111,114,116,101,100,32,98,121,32,112,114,111,116,111,99,111,108,0,65,100,100,114,101,115,115,32,110,111,116,32,97,118,97,105,108,97,98,108,101,0,78,101,116,119,111,114,107,32,105,115,32,100,111,119,110,0,78,101,116,119,111,114,107,32,117,110,114,101,97,99,104,97,98,108,101,0,67,111,110,110,101,99,116,105,111,110,32,114,101,115,101,116,32,98,121,32,110,101,116,119,111,114,107,0,67,111,110,110,101,99,116,105,111,110,32,97,98,111,114,116,101,100,0,78,111,32,98,117,102,102,101,114,32,115,112,97,99,101,32,97,118,97,105,108,97,98,108,101,0,83,111,99,107,101,116,32,105,115,32,99,111,110,110,101,99,116,101,100,0,83,111,99,107,101,116,32,110,111,116,32,99,111,110,110,101,99,116,101,100,0,67,97,110,110,111,116,32,115,101,110,100,32,97,102,116,101,114,32,115,111,99,107,101,116,32,115,104,117,116,100,111,119,110,0,79,112,101,114,97,116,105,111,110,32,97,108,114,101,97,100,121,32,105,110,32,112,114,111,103,114,101,115,115,0,79,112,101,114,97,116,105,111,110,32,105,110,32,112,114,111,103,114,101,115,115,0,83,116,97,108,101,32,102,105,108,101,32,104,97,110,100,108,101,0,82,101,109,111,116,101,32,73,47,79,32,101,114,114,111,114,0,81,117,111,116,97,32,101,120,99,101,101,100,101,100,0,78,111,32,109,101,100,105,117,109,32,102,111,117,110,100,0,87,114,111,110,103,32,109,101,100,105,117,109,32,116,121,112,101,0,78,111,32,101,114,114,111,114,32,105,110,102,111,114,109,97,116,105,111,110,0,0,40,110,117,108,108,41,0,45,48,88,43,48,88,32,48,88,45,48,120,43,48,120,32,48,120,0,105,110,102,0,73,78,70,0,110,97,110,0,78,65,78,0,46,0,99,97,110,110,111,116,32,122,101,114,111,32,111,117,116,32,116,104,114,101,97,100,32,118,97,108,117,101,32,102,111,114,32,95,95,99,120,97,95,103,101,116,95,103,108,111,98,97,108,115,40,41,0,99,97,110,110,111,116,32,99,114,101,97,116,101,32,112,116,104,114,101,97,100,32,107,101,121,32,102,111,114,32,95,95,99,120,97,95,103,101,116,95,103,108,111,98,97,108,115,40,41,0,112,116,104,114,101,97,100,95,111,110,99,101,32,102,97,105,108,117,114,101,32,105,110,32,95,95,99,120,97,95,103,101,116,95,103,108,111,98,97,108,115,95,102,97,115,116,40,41,0,78,49,48,95,95,99,120,120,97,98,105,118,49,50,48,95,95,115,105,95,99,108,97,115,115,95,116,121,112,101,95,105,110,102,111,69,0,78,49,48,95,95,99,120,120,97,98,105,118,49,49,54,95,95,115,104,105,109,95,116,121,112,101,95,105,110,102,111,69,0,83,116,57,116,121,112,101,95,105,110,102,111,0,78,49,48,95,95,99,120,120,97,98,105,118,49,49,55,95,95,99,108,97,115,115,95,116,121,112,101,95,105,110,102,111,69,0,83,116,57,101,120,99,101,112,116,105,111,110,0,117,110,99,97,117,103,104,116,0,116,101,114,109,105,110,97,116,105,110,103,32,119,105,116,104,32,37,115,32,101,120,99,101,112,116,105,111,110,32,111,102,32,116,121,112,101,32,37,115,58,32,37,115,0,116,101,114,109,105,110,97,116,105,110,103,32,119,105,116,104,32,37,115,32,101,120,99,101,112,116,105,111,110,32,111,102,32,116,121,112,101,32,37,115,0,116,101,114,109,105,110,97,116,105,110,103,32,119,105,116,104,32,37,115,32,102,111,114,101,105,103,110,32,101,120,99,101,112,116,105,111,110,0,116,101,114,109,105,110,97,116,105,110,103,0,116,101,114,109,105,110,97,116,101,95,104,97,110,100,108,101,114,32,117,110,101,120,112,101,99,116,101,100,108,121,32,114,101,116,117,114,110,101,100,0,83,116,57,98,97,100,95,97,108,108,111,99,0,115,116,100,58,58,98,97,100,95,97,108,108,111,99,0,78,49,48,95,95,99,120,120,97,98,105,118,49,49,57,95,95,112,111,105,110,116,101,114,95,116,121,112,101,95,105,110,102,111,69,0,78,49,48,95,95,99,120,120,97,98,105,118,49,49,55,95,95,112,98,97,115,101,95,116,121,112,101,95,105,110,102,111,69,0,78,49,48,95,95,99,120,120,97,98,105,118,49,50,49,95,95,118,109,105,95,99,108,97,115,115,95,116,121,112,101,95,105,110,102,111,69,0],"i8",ALLOC_NONE,Runtime.GLOBAL_BASE+20480);var tempDoublePtr=STATICTOP;STATICTOP+=16;Module["_i64Subtract"]=_i64Subtract;function ___setErrNo(value){if(Module["___errno_location"])HEAP32[Module["___errno_location"]()>>2]=value;return value}var ERRNO_CODES={EPERM:1,ENOENT:2,ESRCH:3,EINTR:4,EIO:5,ENXIO:6,E2BIG:7,ENOEXEC:8,EBADF:9,ECHILD:10,EAGAIN:11,EWOULDBLOCK:11,ENOMEM:12,EACCES:13,EFAULT:14,ENOTBLK:15,EBUSY:16,EEXIST:17,EXDEV:18,ENODEV:19,ENOTDIR:20,EISDIR:21,EINVAL:22,ENFILE:23,EMFILE:24,ENOTTY:25,ETXTBSY:26,EFBIG:27,ENOSPC:28,ESPIPE:29,EROFS:30,EMLINK:31,EPIPE:32,EDOM:33,ERANGE:34,ENOMSG:42,EIDRM:43,ECHRNG:44,EL2NSYNC:45,EL3HLT:46,EL3RST:47,ELNRNG:48,EUNATCH:49,ENOCSI:50,EL2HLT:51,EDEADLK:35,ENOLCK:37,EBADE:52,EBADR:53,EXFULL:54,ENOANO:55,EBADRQC:56,EBADSLT:57,EDEADLOCK:35,EBFONT:59,ENOSTR:60,ENODATA:61,ETIME:62,ENOSR:63,ENONET:64,ENOPKG:65,EREMOTE:66,ENOLINK:67,EADV:68,ESRMNT:69,ECOMM:70,EPROTO:71,EMULTIHOP:72,EDOTDOT:73,EBADMSG:74,ENOTUNIQ:76,EBADFD:77,EREMCHG:78,ELIBACC:79,ELIBBAD:80,ELIBSCN:81,ELIBMAX:82,ELIBEXEC:83,ENOSYS:38,ENOTEMPTY:39,ENAMETOOLONG:36,ELOOP:40,EOPNOTSUPP:95,EPFNOSUPPORT:96,ECONNRESET:104,ENOBUFS:105,EAFNOSUPPORT:97,EPROTOTYPE:91,ENOTSOCK:88,ENOPROTOOPT:92,ESHUTDOWN:108,ECONNREFUSED:111,EADDRINUSE:98,ECONNABORTED:103,ENETUNREACH:101,ENETDOWN:100,ETIMEDOUT:110,EHOSTDOWN:112,EHOSTUNREACH:113,EINPROGRESS:115,EALREADY:114,EDESTADDRREQ:89,EMSGSIZE:90,EPROTONOSUPPORT:93,ESOCKTNOSUPPORT:94,EADDRNOTAVAIL:99,ENETRESET:102,EISCONN:106,ENOTCONN:107,ETOOMANYREFS:109,EUSERS:87,EDQUOT:122,ESTALE:116,ENOTSUP:95,ENOMEDIUM:123,EILSEQ:84,EOVERFLOW:75,ECANCELED:125,ENOTRECOVERABLE:131,EOWNERDEAD:130,ESTRPIPE:86};function _sysconf(name){switch(name){case 30:return PAGE_SIZE;case 85:return totalMemory/PAGE_SIZE;case 132:case 133:case 12:case 137:case 138:case 15:case 235:case 16:case 17:case 18:case 19:case 20:case 149:case 13:case 10:case 236:case 153:case 9:case 21:case 22:case 159:case 154:case 14:case 77:case 78:case 139:case 80:case 81:case 82:case 68:case 67:case 164:case 11:case 29:case 47:case 48:case 95:case 52:case 51:case 46:return 200809;case 79:return 0;case 27:case 246:case 127:case 128:case 23:case 24:case 160:case 161:case 181:case 182:case 242:case 183:case 184:case 243:case 244:case 245:case 165:case 178:case 179:case 49:case 50:case 168:case 169:case 175:case 170:case 171:case 172:case 97:case 76:case 32:case 173:case 35:return-1;case 176:case 177:case 7:case 155:case 8:case 157:case 125:case 126:case 92:case 93:case 129:case 130:case 131:case 94:case 91:return 1;case 74:case 60:case 69:case 70:case 4:return 1024;case 31:case 42:case 72:return 32;case 87:case 26:case 33:return 2147483647;case 34:case 1:return 47839;case 38:case 36:return 99;case 43:case 37:return 2048;case 0:return 2097152;case 3:return 65536;case 28:return 32768;case 44:return 32767;case 75:return 16384;case 39:return 1e3;case 89:return 700;case 71:return 256;case 40:return 255;case 2:return 100;case 180:return 64;case 25:return 20;case 5:return 16;case 6:return 6;case 73:return 4;case 84:{if(typeof navigator==="object")return navigator["hardwareConcurrency"]||1;return 1}}___setErrNo(ERRNO_CODES.EINVAL);return-1}function __ZSt18uncaught_exceptionv(){return!!__ZSt18uncaught_exceptionv.uncaught_exception}var EXCEPTIONS={last:0,caught:[],infos:{},deAdjust:(function(adjusted){if(!adjusted||EXCEPTIONS.infos[adjusted])return adjusted;for(var ptr in EXCEPTIONS.infos){var info=EXCEPTIONS.infos[ptr];if(info.adjusted===adjusted){return ptr}}return adjusted}),addRef:(function(ptr){if(!ptr)return;var info=EXCEPTIONS.infos[ptr];info.refcount++}),decRef:(function(ptr){if(!ptr)return;var info=EXCEPTIONS.infos[ptr];assert(info.refcount>0);info.refcount--;if(info.refcount===0){if(info.destructor){Runtime.dynCall("vi",info.destructor,[ptr])}delete EXCEPTIONS.infos[ptr];___cxa_free_exception(ptr)}}),clearRef:(function(ptr){if(!ptr)return;var info=EXCEPTIONS.infos[ptr];info.refcount=0})};function ___resumeException(ptr){if(!EXCEPTIONS.last){EXCEPTIONS.last=ptr}EXCEPTIONS.clearRef(EXCEPTIONS.deAdjust(ptr));throw ptr+" - Exception catching is disabled, this exception cannot be caught. Compile with -s DISABLE_EXCEPTION_CATCHING=0 or DISABLE_EXCEPTION_CATCHING=2 to catch."}function ___cxa_find_matching_catch(){var thrown=EXCEPTIONS.last;if(!thrown){return(asm["setTempRet0"](0),0)|0}var info=EXCEPTIONS.infos[thrown];var throwntype=info.type;if(!throwntype){return(asm["setTempRet0"](0),thrown)|0}var typeArray=Array.prototype.slice.call(arguments);var pointer=Module["___cxa_is_pointer_type"](throwntype);if(!___cxa_find_matching_catch.buffer)___cxa_find_matching_catch.buffer=_malloc(4);HEAP32[___cxa_find_matching_catch.buffer>>2]=thrown;thrown=___cxa_find_matching_catch.buffer;for(var i=0;i<typeArray.length;i++){if(typeArray[i]&&Module["___cxa_can_catch"](typeArray[i],throwntype,thrown)){thrown=HEAP32[thrown>>2];info.adjusted=thrown;return(asm["setTempRet0"](typeArray[i]),thrown)|0}}thrown=HEAP32[thrown>>2];return(asm["setTempRet0"](throwntype),thrown)|0}function ___cxa_throw(ptr,type,destructor){EXCEPTIONS.infos[ptr]={ptr:ptr,adjusted:ptr,type:type,destructor:destructor,refcount:0};EXCEPTIONS.last=ptr;if(!("uncaught_exception"in __ZSt18uncaught_exceptionv)){__ZSt18uncaught_exceptionv.uncaught_exception=1}else{__ZSt18uncaught_exceptionv.uncaught_exception++}throw ptr+" - Exception catching is disabled, this exception cannot be caught. Compile with -s DISABLE_EXCEPTION_CATCHING=0 or DISABLE_EXCEPTION_CATCHING=2 to catch."}Module["_memset"]=_memset;function ___gxx_personality_v0(){}Module["_bitshift64Shl"]=_bitshift64Shl;function _abort(){Module["abort"]()}function _pthread_once(ptr,func){if(!_pthread_once.seen)_pthread_once.seen={};if(ptr in _pthread_once.seen)return;Runtime.dynCall("v",func);_pthread_once.seen[ptr]=1}var PTHREAD_SPECIFIC={};function _pthread_getspecific(key){return PTHREAD_SPECIFIC[key]||0}Module["_i64Add"]=_i64Add;var PTHREAD_SPECIFIC_NEXT_KEY=1;function _pthread_key_create(key,destructor){if(key==0){return ERRNO_CODES.EINVAL}HEAP32[key>>2]=PTHREAD_SPECIFIC_NEXT_KEY;PTHREAD_SPECIFIC[PTHREAD_SPECIFIC_NEXT_KEY]=0;PTHREAD_SPECIFIC_NEXT_KEY++;return 0}var _llvm_pow_f32=Math_pow;function _pthread_setspecific(key,value){if(!(key in PTHREAD_SPECIFIC)){return ERRNO_CODES.EINVAL}PTHREAD_SPECIFIC[key]=value;return 0}function _malloc(bytes){var ptr=Runtime.dynamicAlloc(bytes+8);return ptr+8&4294967288}Module["_malloc"]=_malloc;function ___cxa_allocate_exception(size){return _malloc(size)}Module["_bitshift64Ashr"]=_bitshift64Ashr;Module["_bitshift64Lshr"]=_bitshift64Lshr;function ___cxa_pure_virtual(){ABORT=true;throw"Pure virtual function called!"}function _time(ptr){var ret=Date.now()/1e3|0;if(ptr){HEAP32[ptr>>2]=ret}return ret}function _pthread_cleanup_push(routine,arg){__ATEXIT__.push((function(){Runtime.dynCall("vi",routine,[arg])}));_pthread_cleanup_push.level=__ATEXIT__.length}function ___cxa_guard_acquire(variable){if(!HEAP8[variable>>0]){HEAP8[variable>>0]=1;return 1}return 0}function _pthread_cleanup_pop(){assert(_pthread_cleanup_push.level==__ATEXIT__.length,"cannot pop if something else added meanwhile!");__ATEXIT__.pop();_pthread_cleanup_push.level=__ATEXIT__.length}function ___cxa_begin_catch(ptr){__ZSt18uncaught_exceptionv.uncaught_exception--;EXCEPTIONS.caught.push(ptr);EXCEPTIONS.addRef(EXCEPTIONS.deAdjust(ptr));return ptr}function _emscripten_memcpy_big(dest,src,num){HEAPU8.set(HEAPU8.subarray(src,src+num),dest);return dest}Module["_memcpy"]=_memcpy;var SYSCALLS={varargs:0,get:(function(varargs){SYSCALLS.varargs+=4;var ret=HEAP32[SYSCALLS.varargs-4>>2];return ret}),getStr:(function(){var ret=Pointer_stringify(SYSCALLS.get());return ret}),get64:(function(){var low=SYSCALLS.get(),high=SYSCALLS.get();if(low>=0)assert(high===0);else assert(high===-1);return low}),getZero:(function(){assert(SYSCALLS.get()===0)})};function ___syscall6(which,varargs){SYSCALLS.varargs=varargs;try{var stream=SYSCALLS.getStreamFromFD();FS.close(stream);return 0}catch(e){if(typeof FS==="undefined"||!(e instanceof FS.ErrnoError))abort(e);return-e.errno}}function _sbrk(bytes){var self=_sbrk;if(!self.called){DYNAMICTOP=alignMemoryPage(DYNAMICTOP);self.called=true;assert(Runtime.dynamicAlloc);self.alloc=Runtime.dynamicAlloc;Runtime.dynamicAlloc=(function(){abort("cannot dynamically allocate, sbrk now has control")})}var ret=DYNAMICTOP;if(bytes!=0){var success=self.alloc(bytes);if(!success)return-1>>>0}return ret}Module["_memmove"]=_memmove;function _gettimeofday(ptr){var now=Date.now();HEAP32[ptr>>2]=now/1e3|0;HEAP32[ptr+4>>2]=now%1e3*1e3|0;return 0}var _llvm_fabs_f32=Math_abs;Module["_llvm_bswap_i32"]=_llvm_bswap_i32;function _llvm_trap(){abort("trap!")}function ___cxa_guard_release(){}function _pthread_self(){return 0}function ___syscall140(which,varargs){SYSCALLS.varargs=varargs;try{var stream=SYSCALLS.getStreamFromFD(),offset_high=SYSCALLS.get(),offset_low=SYSCALLS.get(),result=SYSCALLS.get(),whence=SYSCALLS.get();var offset=offset_low;assert(offset_high===0);FS.llseek(stream,offset,whence);HEAP32[result>>2]=stream.position;if(stream.getdents&&offset===0&&whence===0)stream.getdents=null;return 0}catch(e){if(typeof FS==="undefined"||!(e instanceof FS.ErrnoError))abort(e);return-e.errno}}function ___syscall146(which,varargs){SYSCALLS.varargs=varargs;try{var stream=SYSCALLS.get(),iov=SYSCALLS.get(),iovcnt=SYSCALLS.get();var ret=0;if(!___syscall146.buffer){___syscall146.buffers=[null,[],[]];___syscall146.printChar=(function(stream,curr){var buffer=___syscall146.buffers[stream];assert(buffer);if(curr===0||curr===10){(stream===1?Module["print"]:Module["printErr"])(UTF8ArrayToString(buffer,0));buffer.length=0}else{buffer.push(curr)}})}for(var i=0;i<iovcnt;i++){var ptr=HEAP32[iov+i*8>>2];var len=HEAP32[iov+(i*8+4)>>2];for(var j=0;j<len;j++){___syscall146.printChar(stream,HEAPU8[ptr+j])}ret+=len}return ret}catch(e){if(typeof FS==="undefined"||!(e instanceof FS.ErrnoError))abort(e);return-e.errno}}__ATEXIT__.push((function(){var fflush=Module["_fflush"];if(fflush)fflush(0);var printChar=___syscall146.printChar;if(!printChar)return;var buffers=___syscall146.buffers;if(buffers[1].length)printChar(1,10);if(buffers[2].length)printChar(2,10)}));STACK_BASE=STACKTOP=Runtime.alignMemory(STATICTOP);staticSealed=true;STACK_MAX=STACK_BASE+TOTAL_STACK;DYNAMIC_BASE=DYNAMICTOP=Runtime.alignMemory(STACK_MAX);var cttz_i8=allocate([8,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,6,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,7,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,6,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0],"i8",ALLOC_DYNAMIC);function invoke_viiiii(index,a1,a2,a3,a4,a5){try{Module["dynCall_viiiii"](index,a1,a2,a3,a4,a5)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_vid(index,a1,a2){try{Module["dynCall_vid"](index,a1,a2)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_vi(index,a1){try{Module["dynCall_vi"](index,a1)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiidii(index,a1,a2,a3,a4,a5,a6){try{Module["dynCall_viiidii"](index,a1,a2,a3,a4,a5,a6)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_vii(index,a1,a2){try{Module["dynCall_vii"](index,a1,a2)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10){try{return Module["dynCall_iiiiiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_ii(index,a1){try{return Module["dynCall_ii"](index,a1)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viidi(index,a1,a2,a3,a4){try{Module["dynCall_viidi"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viddiii(index,a1,a2,a3,a4,a5,a6){try{Module["dynCall_viddiii"](index,a1,a2,a3,a4,a5,a6)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_vidii(index,a1,a2,a3,a4){try{Module["dynCall_vidii"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iiiii(index,a1,a2,a3,a4){try{return Module["dynCall_iiiii"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_vidi(index,a1,a2,a3){try{Module["dynCall_vidi"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8){try{return Module["dynCall_diiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiiddddiid(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11){try{Module["dynCall_viiiiddddiid"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diiiii(index,a1,a2,a3,a4,a5){try{return Module["dynCall_diiiii"](index,a1,a2,a3,a4,a5)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_vidd(index,a1,a2,a3){try{Module["dynCall_vidd"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iiii(index,a1,a2,a3){try{return Module["dynCall_iiii"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiiid(index,a1,a2,a3,a4,a5,a6){try{Module["dynCall_viiiiid"](index,a1,a2,a3,a4,a5,a6)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiiii(index,a1,a2,a3,a4,a5,a6){try{Module["dynCall_viiiiii"](index,a1,a2,a3,a4,a5,a6)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iiid(index,a1,a2,a3){try{return Module["dynCall_iiid"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_di(index,a1){try{return Module["dynCall_di"](index,a1)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iiiiiii(index,a1,a2,a3,a4,a5,a6){try{return Module["dynCall_iiiiiii"](index,a1,a2,a3,a4,a5,a6)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diiidii(index,a1,a2,a3,a4,a5,a6){try{return Module["dynCall_diiidii"](index,a1,a2,a3,a4,a5,a6)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viidii(index,a1,a2,a3,a4,a5){try{Module["dynCall_viidii"](index,a1,a2,a3,a4,a5)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiiiii(index,a1,a2,a3,a4,a5,a6,a7){try{Module["dynCall_viiiiiii"](index,a1,a2,a3,a4,a5,a6,a7)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9){try{Module["dynCall_viiiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10){try{Module["dynCall_viiiiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iii(index,a1,a2){try{return Module["dynCall_iii"](index,a1,a2)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diii(index,a1,a2,a3){try{return Module["dynCall_diii"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10){try{return Module["dynCall_diiiiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiid(index,a1,a2,a3,a4,a5){try{Module["dynCall_viiiid"](index,a1,a2,a3,a4,a5)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9){try{return Module["dynCall_diiiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_did(index,a1,a2){try{return Module["dynCall_did"](index,a1,a2)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiidddddidi(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12){try{Module["dynCall_viiiidddddidi"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diidii(index,a1,a2,a3,a4,a5){try{return Module["dynCall_diidii"](index,a1,a2,a3,a4,a5)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diiii(index,a1,a2,a3,a4){try{return Module["dynCall_diiii"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9){try{return Module["dynCall_iiiiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiid(index,a1,a2,a3,a4){try{Module["dynCall_viiid"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viii(index,a1,a2,a3){try{Module["dynCall_viii"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_v(index){try{Module["dynCall_v"](index)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viid(index,a1,a2,a3){try{Module["dynCall_viid"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iidid(index,a1,a2,a3,a4){try{return Module["dynCall_iidid"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiii(index,a1,a2,a3,a4){try{Module["dynCall_viiii"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}Module.asmGlobalArg={"Math":Math,"Int8Array":Int8Array,"Int16Array":Int16Array,"Int32Array":Int32Array,"Uint8Array":Uint8Array,"Uint16Array":Uint16Array,"Uint32Array":Uint32Array,"Float32Array":Float32Array,"Float64Array":Float64Array,"NaN":NaN,"Infinity":Infinity};Module.asmLibraryArg={"abort":abort,"assert":assert,"invoke_viiiii":invoke_viiiii,"invoke_vid":invoke_vid,"invoke_vi":invoke_vi,"invoke_viiidii":invoke_viiidii,"invoke_vii":invoke_vii,"invoke_iiiiiiiiiii":invoke_iiiiiiiiiii,"invoke_ii":invoke_ii,"invoke_viidi":invoke_viidi,"invoke_viddiii":invoke_viddiii,"invoke_vidii":invoke_vidii,"invoke_iiiii":invoke_iiiii,"invoke_vidi":invoke_vidi,"invoke_diiiiiiii":invoke_diiiiiiii,"invoke_viiiiddddiid":invoke_viiiiddddiid,"invoke_diiiii":invoke_diiiii,"invoke_vidd":invoke_vidd,"invoke_iiii":invoke_iiii,"invoke_viiiiid":invoke_viiiiid,"invoke_viiiiii":invoke_viiiiii,"invoke_iiid":invoke_iiid,"invoke_di":invoke_di,"invoke_iiiiiii":invoke_iiiiiii,"invoke_diiidii":invoke_diiidii,"invoke_viidii":invoke_viidii,"invoke_viiiiiii":invoke_viiiiiii,"invoke_viiiiiiiii":invoke_viiiiiiiii,"invoke_viiiiiiiiii":invoke_viiiiiiiiii,"invoke_iii":invoke_iii,"invoke_diii":invoke_diii,"invoke_diiiiiiiiii":invoke_diiiiiiiiii,"invoke_viiiid":invoke_viiiid,"invoke_diiiiiiiii":invoke_diiiiiiiii,"invoke_did":invoke_did,"invoke_viiiidddddidi":invoke_viiiidddddidi,"invoke_diidii":invoke_diidii,"invoke_diiii":invoke_diiii,"invoke_iiiiiiiiii":invoke_iiiiiiiiii,"invoke_viiid":invoke_viiid,"invoke_viii":invoke_viii,"invoke_v":invoke_v,"invoke_viid":invoke_viid,"invoke_iidid":invoke_iidid,"invoke_viiii":invoke_viiii,"_pthread_cleanup_pop":_pthread_cleanup_pop,"_abort":_abort,"___cxa_guard_acquire":___cxa_guard_acquire,"___gxx_personality_v0":___gxx_personality_v0,"___cxa_allocate_exception":___cxa_allocate_exception,"__ZSt18uncaught_exceptionv":__ZSt18uncaught_exceptionv,"___cxa_guard_release":___cxa_guard_release,"___setErrNo":___setErrNo,"_sbrk":_sbrk,"_llvm_pow_f32":_llvm_pow_f32,"___cxa_begin_catch":___cxa_begin_catch,"_emscripten_memcpy_big":_emscripten_memcpy_big,"___resumeException":___resumeException,"___cxa_find_matching_catch":___cxa_find_matching_catch,"_sysconf":_sysconf,"_pthread_getspecific":_pthread_getspecific,"_pthread_self":_pthread_self,"_llvm_fabs_f32":_llvm_fabs_f32,"_pthread_once":_pthread_once,"_llvm_trap":_llvm_trap,"_pthread_key_create":_pthread_key_create,"_emscripten_asm_const_diiiiiiii":_emscripten_asm_const_diiiiiiii,"_pthread_setspecific":_pthread_setspecific,"___cxa_throw":___cxa_throw,"___syscall6":___syscall6,"_pthread_cleanup_push":_pthread_cleanup_push,"_time":_time,"_gettimeofday":_gettimeofday,"___syscall140":___syscall140,"___cxa_pure_virtual":___cxa_pure_virtual,"___syscall146":___syscall146,"STACKTOP":STACKTOP,"STACK_MAX":STACK_MAX,"tempDoublePtr":tempDoublePtr,"ABORT":ABORT,"cttz_i8":cttz_i8};// EMSCRIPTEN_START_ASM
+var Module;if(!Module)Module=(typeof AmmoLib!=="undefined"?AmmoLib:null)||{};var moduleOverrides={};for(var key in Module){if(Module.hasOwnProperty(key)){moduleOverrides[key]=Module[key]}}var ENVIRONMENT_IS_WEB=false;var ENVIRONMENT_IS_WORKER=false;var ENVIRONMENT_IS_NODE=false;var ENVIRONMENT_IS_SHELL=false;if(Module["ENVIRONMENT"]){if(Module["ENVIRONMENT"]==="WEB"){ENVIRONMENT_IS_WEB=true}else if(Module["ENVIRONMENT"]==="WORKER"){ENVIRONMENT_IS_WORKER=true}else if(Module["ENVIRONMENT"]==="NODE"){ENVIRONMENT_IS_NODE=true}else if(Module["ENVIRONMENT"]==="SHELL"){ENVIRONMENT_IS_SHELL=true}else{throw new Error("The provided Module['ENVIRONMENT'] value is not valid. It must be one of: WEB|WORKER|NODE|SHELL.")}}else{ENVIRONMENT_IS_WEB=typeof window==="object";ENVIRONMENT_IS_WORKER=typeof importScripts==="function";ENVIRONMENT_IS_NODE=typeof process==="object"&&"function"==="function"&&!ENVIRONMENT_IS_WEB&&!ENVIRONMENT_IS_WORKER;ENVIRONMENT_IS_SHELL=!ENVIRONMENT_IS_WEB&&!ENVIRONMENT_IS_NODE&&!ENVIRONMENT_IS_WORKER}if(ENVIRONMENT_IS_NODE){if(!Module["print"])Module["print"]=console.log;if(!Module["printErr"])Module["printErr"]=console.warn;var nodeFS;var nodePath;Module["read"]=function read(filename,binary){if(!nodeFS)nodeFS=__webpack_require__(172);if(!nodePath)nodePath=__webpack_require__(174);filename=nodePath["normalize"](filename);var ret=nodeFS["readFileSync"](filename);if(!ret&&filename!=nodePath["resolve"](filename)){filename=path.join(__dirname,"..","src",filename);ret=nodeFS["readFileSync"](filename)}if(ret&&!binary)ret=ret.toString();return ret};Module["readBinary"]=function readBinary(filename){var ret=Module["read"](filename,true);if(!ret.buffer){ret=new Uint8Array(ret)}assert(ret.buffer);return ret};Module["load"]=function load(f){globalEval(read(f))};if(!Module["thisProgram"]){if(process["argv"].length>1){Module["thisProgram"]=process["argv"][1].replace(/\\/g,"/")}else{Module["thisProgram"]="unknown-program"}}Module["arguments"]=process["argv"].slice(2);if(true){module["exports"]=Module}process["on"]("uncaughtException",(function(ex){if(!(ex instanceof ExitStatus)){throw ex}}));Module["inspect"]=(function(){return"[Emscripten Module object]"})}else if(ENVIRONMENT_IS_SHELL){if(!Module["print"])Module["print"]=print;if(typeof printErr!="undefined")Module["printErr"]=printErr;if(typeof read!="undefined"){Module["read"]=read}else{Module["read"]=function read(){throw"no read() available (jsc?)"}}Module["readBinary"]=function readBinary(f){if(typeof readbuffer==="function"){return new Uint8Array(readbuffer(f))}var data=read(f,"binary");assert(typeof data==="object");return data};if(typeof scriptArgs!="undefined"){Module["arguments"]=scriptArgs}else if(typeof arguments!="undefined"){Module["arguments"]=arguments}}else if(ENVIRONMENT_IS_WEB||ENVIRONMENT_IS_WORKER){Module["read"]=function read(url){var xhr=new XMLHttpRequest;xhr.open("GET",url,false);xhr.send(null);return xhr.responseText};Module["readAsync"]=function readAsync(url,onload,onerror){var xhr=new XMLHttpRequest;xhr.open("GET",url,true);xhr.responseType="arraybuffer";xhr.onload=function xhr_onload(){if(xhr.status==200||xhr.status==0&&xhr.response){onload(xhr.response)}else{onerror()}};xhr.onerror=onerror;xhr.send(null)};if(typeof arguments!="undefined"){Module["arguments"]=arguments}if(typeof console!=="undefined"){if(!Module["print"])Module["print"]=function print(x){console.log(x)};if(!Module["printErr"])Module["printErr"]=function printErr(x){console.warn(x)}}else{var TRY_USE_DUMP=false;if(!Module["print"])Module["print"]=TRY_USE_DUMP&&typeof dump!=="undefined"?(function(x){dump(x)}):(function(x){})}if(ENVIRONMENT_IS_WORKER){Module["load"]=importScripts}if(typeof Module["setWindowTitle"]==="undefined"){Module["setWindowTitle"]=(function(title){document.title=title})}}else{throw"Unknown runtime environment. Where are we?"}function globalEval(x){abort("NO_DYNAMIC_EXECUTION=1 was set, cannot eval")}if(!Module["load"]&&Module["read"]){Module["load"]=function load(f){globalEval(Module["read"](f))}}if(!Module["print"]){Module["print"]=(function(){})}if(!Module["printErr"]){Module["printErr"]=Module["print"]}if(!Module["arguments"]){Module["arguments"]=[]}if(!Module["thisProgram"]){Module["thisProgram"]="./this.program"}Module.print=Module["print"];Module.printErr=Module["printErr"];Module["preRun"]=[];Module["postRun"]=[];for(var key in moduleOverrides){if(moduleOverrides.hasOwnProperty(key)){Module[key]=moduleOverrides[key]}}moduleOverrides=undefined;var Runtime={setTempRet0:(function(value){tempRet0=value}),getTempRet0:(function(){return tempRet0}),stackSave:(function(){return STACKTOP}),stackRestore:(function(stackTop){STACKTOP=stackTop}),getNativeTypeSize:(function(type){switch(type){case"i1":case"i8":return 1;case"i16":return 2;case"i32":return 4;case"i64":return 8;case"float":return 4;case"double":return 8;default:{if(type[type.length-1]==="*"){return Runtime.QUANTUM_SIZE}else if(type[0]==="i"){var bits=parseInt(type.substr(1));assert(bits%8===0);return bits/8}else{return 0}}}}),getNativeFieldSize:(function(type){return Math.max(Runtime.getNativeTypeSize(type),Runtime.QUANTUM_SIZE)}),STACK_ALIGN:16,prepVararg:(function(ptr,type){if(type==="double"||type==="i64"){if(ptr&7){assert((ptr&7)===4);ptr+=4}}else{assert((ptr&3)===0)}return ptr}),getAlignSize:(function(type,size,vararg){if(!vararg&&(type=="i64"||type=="double"))return 8;if(!type)return Math.min(size,8);return Math.min(size||(type?Runtime.getNativeFieldSize(type):0),Runtime.QUANTUM_SIZE)}),dynCall:(function(sig,ptr,args){if(args&&args.length){if(!args.splice)args=Array.prototype.slice.call(args);args.splice(0,0,ptr);return Module["dynCall_"+sig].apply(null,args)}else{return Module["dynCall_"+sig].call(null,ptr)}}),functionPointers:[],addFunction:(function(func){for(var i=0;i<Runtime.functionPointers.length;i++){if(!Runtime.functionPointers[i]){Runtime.functionPointers[i]=func;return 2*(1+i)}}throw"Finished up all reserved function pointers. Use a higher value for RESERVED_FUNCTION_POINTERS."}),removeFunction:(function(index){Runtime.functionPointers[(index-2)/2]=null}),warnOnce:(function(text){if(!Runtime.warnOnce.shown)Runtime.warnOnce.shown={};if(!Runtime.warnOnce.shown[text]){Runtime.warnOnce.shown[text]=1;Module.printErr(text)}}),funcWrappers:{},getFuncWrapper:(function(func,sig){assert(sig);if(!Runtime.funcWrappers[sig]){Runtime.funcWrappers[sig]={}}var sigCache=Runtime.funcWrappers[sig];if(!sigCache[func]){sigCache[func]=function dynCall_wrapper(){return Runtime.dynCall(sig,func,arguments)}}return sigCache[func]}),getCompilerSetting:(function(name){throw"You must build with -s RETAIN_COMPILER_SETTINGS=1 for Runtime.getCompilerSetting or emscripten_get_compiler_setting to work"}),stackAlloc:(function(size){var ret=STACKTOP;STACKTOP=STACKTOP+size|0;STACKTOP=STACKTOP+15&-16;return ret}),staticAlloc:(function(size){var ret=STATICTOP;STATICTOP=STATICTOP+size|0;STATICTOP=STATICTOP+15&-16;return ret}),dynamicAlloc:(function(size){var ret=DYNAMICTOP;DYNAMICTOP=DYNAMICTOP+size|0;DYNAMICTOP=DYNAMICTOP+15&-16;if(DYNAMICTOP>=TOTAL_MEMORY){var success=enlargeMemory();if(!success){DYNAMICTOP=ret;return 0}}return ret}),alignMemory:(function(size,quantum){var ret=size=Math.ceil(size/(quantum?quantum:16))*(quantum?quantum:16);return ret}),makeBigInt:(function(low,high,unsigned){var ret=unsigned?+(low>>>0)+ +(high>>>0)*+4294967296:+(low>>>0)+ +(high|0)*+4294967296;return ret}),GLOBAL_BASE:8,QUANTUM_SIZE:4,__dummy__:0};var ABORT=false;var EXITSTATUS=0;function assert(condition,text){if(!condition){abort("Assertion failed: "+text)}}function getCFunc(ident){var func=Module["_"+ident];if(!func){abort("NO_DYNAMIC_EXECUTION=1 was set, cannot eval")}assert(func,"Cannot call unknown function "+ident+" (perhaps LLVM optimizations or closure removed it?)");return func}var ccall;((function(){var JSfuncs={"stackSave":(function(){Runtime.stackSave()}),"stackRestore":(function(){Runtime.stackRestore()}),"arrayToC":(function(arr){var ret=Runtime.stackAlloc(arr.length);writeArrayToMemory(arr,ret);return ret}),"stringToC":(function(str){var ret=0;if(str!==null&&str!==undefined&&str!==0){ret=Runtime.stackAlloc((str.length<<2)+1);writeStringToMemory(str,ret)}return ret})};var toC={"string":JSfuncs["stringToC"],"array":JSfuncs["arrayToC"]};ccall=function ccallFunc(ident,returnType,argTypes,args,opts){var func=getCFunc(ident);var cArgs=[];var stack=0;if(args){for(var i=0;i<args.length;i++){var converter=toC[argTypes[i]];if(converter){if(stack===0)stack=Runtime.stackSave();cArgs[i]=converter(args[i])}else{cArgs[i]=args[i]}}}var ret=func.apply(null,cArgs);if(returnType==="string")ret=Pointer_stringify(ret);if(stack!==0){if(opts&&opts.async){EmterpreterAsync.asyncFinalizers.push((function(){Runtime.stackRestore(stack)}));return}Runtime.stackRestore(stack)}return ret};cwrap=function cwrap(ident,returnType,argTypes){return(function(){return ccall(ident,returnType,argTypes,arguments)})}}))();function setValue(ptr,value,type,noSafe){type=type||"i8";if(type.charAt(type.length-1)==="*")type="i32";switch(type){case"i1":HEAP8[ptr>>0]=value;break;case"i8":HEAP8[ptr>>0]=value;break;case"i16":HEAP16[ptr>>1]=value;break;case"i32":HEAP32[ptr>>2]=value;break;case"i64":tempI64=[value>>>0,(tempDouble=value,+Math_abs(tempDouble)>=+1?tempDouble>+0?(Math_min(+Math_floor(tempDouble/+4294967296),+4294967295)|0)>>>0:~~+Math_ceil((tempDouble- +(~~tempDouble>>>0))/+4294967296)>>>0:0)],HEAP32[ptr>>2]=tempI64[0],HEAP32[ptr+4>>2]=tempI64[1];break;case"float":HEAPF32[ptr>>2]=value;break;case"double":HEAPF64[ptr>>3]=value;break;default:abort("invalid type for setValue: "+type)}}function getValue(ptr,type,noSafe){type=type||"i8";if(type.charAt(type.length-1)==="*")type="i32";switch(type){case"i1":return HEAP8[ptr>>0];case"i8":return HEAP8[ptr>>0];case"i16":return HEAP16[ptr>>1];case"i32":return HEAP32[ptr>>2];case"i64":return HEAP32[ptr>>2];case"float":return HEAPF32[ptr>>2];case"double":return HEAPF64[ptr>>3];default:abort("invalid type for setValue: "+type)}return null}var ALLOC_NORMAL=0;var ALLOC_STATIC=2;var ALLOC_DYNAMIC=3;var ALLOC_NONE=4;function allocate(slab,types,allocator,ptr){var zeroinit,size;if(typeof slab==="number"){zeroinit=true;size=slab}else{zeroinit=false;size=slab.length}var singleType=typeof types==="string"?types:null;var ret;if(allocator==ALLOC_NONE){ret=ptr}else{ret=[typeof _malloc==="function"?_malloc:Runtime.staticAlloc,Runtime.stackAlloc,Runtime.staticAlloc,Runtime.dynamicAlloc][allocator===undefined?ALLOC_STATIC:allocator](Math.max(size,singleType?1:types.length))}if(zeroinit){var ptr=ret,stop;assert((ret&3)==0);stop=ret+(size&~3);for(;ptr<stop;ptr+=4){HEAP32[ptr>>2]=0}stop=ret+size;while(ptr<stop){HEAP8[ptr++>>0]=0}return ret}if(singleType==="i8"){if(slab.subarray||slab.slice){HEAPU8.set(slab,ret)}else{HEAPU8.set(new Uint8Array(slab),ret)}return ret}var i=0,type,typeSize,previousType;while(i<size){var curr=slab[i];if(typeof curr==="function"){curr=Runtime.getFunctionIndex(curr)}type=singleType||types[i];if(type===0){i++;continue}if(type=="i64")type="i32";setValue(ret+i,curr,type);if(previousType!==type){typeSize=Runtime.getNativeTypeSize(type);previousType=type}i+=typeSize}return ret}function Pointer_stringify(ptr,length){if(length===0||!ptr)return"";var hasUtf=0;var t;var i=0;while(1){t=HEAPU8[ptr+i>>0];hasUtf|=t;if(t==0&&!length)break;i++;if(length&&i==length)break}if(!length)length=i;var ret="";if(hasUtf<128){var MAX_CHUNK=1024;var curr;while(length>0){curr=String.fromCharCode.apply(String,HEAPU8.subarray(ptr,ptr+Math.min(length,MAX_CHUNK)));ret=ret?ret+curr:curr;ptr+=MAX_CHUNK;length-=MAX_CHUNK}return ret}return Module["UTF8ToString"](ptr)}function UTF8ArrayToString(u8Array,idx){var u0,u1,u2,u3,u4,u5;var str="";while(1){u0=u8Array[idx++];if(!u0)return str;if(!(u0&128)){str+=String.fromCharCode(u0);continue}u1=u8Array[idx++]&63;if((u0&224)==192){str+=String.fromCharCode((u0&31)<<6|u1);continue}u2=u8Array[idx++]&63;if((u0&240)==224){u0=(u0&15)<<12|u1<<6|u2}else{u3=u8Array[idx++]&63;if((u0&248)==240){u0=(u0&7)<<18|u1<<12|u2<<6|u3}else{u4=u8Array[idx++]&63;if((u0&252)==248){u0=(u0&3)<<24|u1<<18|u2<<12|u3<<6|u4}else{u5=u8Array[idx++]&63;u0=(u0&1)<<30|u1<<24|u2<<18|u3<<12|u4<<6|u5}}}if(u0<65536){str+=String.fromCharCode(u0)}else{var ch=u0-65536;str+=String.fromCharCode(55296|ch>>10,56320|ch&1023)}}}function stringToUTF8Array(str,outU8Array,outIdx,maxBytesToWrite){if(!(maxBytesToWrite>0))return 0;var startIdx=outIdx;var endIdx=outIdx+maxBytesToWrite-1;for(var i=0;i<str.length;++i){var u=str.charCodeAt(i);if(u>=55296&&u<=57343)u=65536+((u&1023)<<10)|str.charCodeAt(++i)&1023;if(u<=127){if(outIdx>=endIdx)break;outU8Array[outIdx++]=u}else if(u<=2047){if(outIdx+1>=endIdx)break;outU8Array[outIdx++]=192|u>>6;outU8Array[outIdx++]=128|u&63}else if(u<=65535){if(outIdx+2>=endIdx)break;outU8Array[outIdx++]=224|u>>12;outU8Array[outIdx++]=128|u>>6&63;outU8Array[outIdx++]=128|u&63}else if(u<=2097151){if(outIdx+3>=endIdx)break;outU8Array[outIdx++]=240|u>>18;outU8Array[outIdx++]=128|u>>12&63;outU8Array[outIdx++]=128|u>>6&63;outU8Array[outIdx++]=128|u&63}else if(u<=67108863){if(outIdx+4>=endIdx)break;outU8Array[outIdx++]=248|u>>24;outU8Array[outIdx++]=128|u>>18&63;outU8Array[outIdx++]=128|u>>12&63;outU8Array[outIdx++]=128|u>>6&63;outU8Array[outIdx++]=128|u&63}else{if(outIdx+5>=endIdx)break;outU8Array[outIdx++]=252|u>>30;outU8Array[outIdx++]=128|u>>24&63;outU8Array[outIdx++]=128|u>>18&63;outU8Array[outIdx++]=128|u>>12&63;outU8Array[outIdx++]=128|u>>6&63;outU8Array[outIdx++]=128|u&63}}outU8Array[outIdx]=0;return outIdx-startIdx}function lengthBytesUTF8(str){var len=0;for(var i=0;i<str.length;++i){var u=str.charCodeAt(i);if(u>=55296&&u<=57343)u=65536+((u&1023)<<10)|str.charCodeAt(++i)&1023;if(u<=127){++len}else if(u<=2047){len+=2}else if(u<=65535){len+=3}else if(u<=2097151){len+=4}else if(u<=67108863){len+=5}else{len+=6}}return len}function demangle(func){var hasLibcxxabi=!!Module["___cxa_demangle"];if(hasLibcxxabi){try{var buf=_malloc(func.length);writeStringToMemory(func.substr(1),buf);var status=_malloc(4);var ret=Module["___cxa_demangle"](buf,0,0,status);if(getValue(status,"i32")===0&&ret){return Pointer_stringify(ret)}}catch(e){return func}finally{if(buf)_free(buf);if(status)_free(status);if(ret)_free(ret)}}Runtime.warnOnce("warning: build with  -s DEMANGLE_SUPPORT=1  to link in libcxxabi demangling");return func}function demangleAll(text){return text.replace(/__Z[\w\d_]+/g,(function(x){var y=demangle(x);return x===y?x:x+" ["+y+"]"}))}function jsStackTrace(){var err=new Error;if(!err.stack){try{throw new Error(0)}catch(e){err=e}if(!err.stack){return"(no stack trace available)"}}return err.stack.toString()}function stackTrace(){return demangleAll(jsStackTrace())}var PAGE_SIZE=4096;function alignMemoryPage(x){if(x%4096>0){x+=4096-x%4096}return x}var HEAP;var buffer;var HEAP8,HEAPU8,HEAP16,HEAPU16,HEAP32,HEAPU32,HEAPF32,HEAPF64;function updateGlobalBufferViews(){Module["HEAP8"]=HEAP8=new Int8Array(buffer);Module["HEAP16"]=HEAP16=new Int16Array(buffer);Module["HEAP32"]=HEAP32=new Int32Array(buffer);Module["HEAPU8"]=HEAPU8=new Uint8Array(buffer);Module["HEAPU16"]=HEAPU16=new Uint16Array(buffer);Module["HEAPU32"]=HEAPU32=new Uint32Array(buffer);Module["HEAPF32"]=HEAPF32=new Float32Array(buffer);Module["HEAPF64"]=HEAPF64=new Float64Array(buffer)}var STATIC_BASE=0,STATICTOP=0,staticSealed=false;var STACK_BASE=0,STACKTOP=0,STACK_MAX=0;var DYNAMIC_BASE=0,DYNAMICTOP=0;function abortOnCannotGrowMemory(){abort("Cannot enlarge memory arrays. Either (1) compile with  -s TOTAL_MEMORY=X  with X higher than the current value "+TOTAL_MEMORY+", (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which adjusts the size at runtime but prevents some optimizations, (3) set Module.TOTAL_MEMORY to a higher value before the program runs, or if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 ")}function enlargeMemory(){abortOnCannotGrowMemory()}var TOTAL_STACK=Module["TOTAL_STACK"]||5242880;var TOTAL_MEMORY=Module["TOTAL_MEMORY"]||67108864;var totalMemory=64*1024;while(totalMemory<TOTAL_MEMORY||totalMemory<2*TOTAL_STACK){if(totalMemory<16*1024*1024){totalMemory*=2}else{totalMemory+=16*1024*1024}}if(totalMemory!==TOTAL_MEMORY){TOTAL_MEMORY=totalMemory}if(Module["buffer"]){buffer=Module["buffer"]}else{buffer=new ArrayBuffer(TOTAL_MEMORY)}updateGlobalBufferViews();HEAP32[0]=255;if(HEAPU8[0]!==255||HEAPU8[3]!==0)throw"Typed arrays 2 must be run on a little-endian system";Module["HEAP"]=HEAP;Module["buffer"]=buffer;Module["HEAP8"]=HEAP8;Module["HEAP16"]=HEAP16;Module["HEAP32"]=HEAP32;Module["HEAPU8"]=HEAPU8;Module["HEAPU16"]=HEAPU16;Module["HEAPU32"]=HEAPU32;Module["HEAPF32"]=HEAPF32;Module["HEAPF64"]=HEAPF64;function callRuntimeCallbacks(callbacks){while(callbacks.length>0){var callback=callbacks.shift();if(typeof callback=="function"){callback();continue}var func=callback.func;if(typeof func==="number"){if(callback.arg===undefined){Runtime.dynCall("v",func)}else{Runtime.dynCall("vi",func,[callback.arg])}}else{func(callback.arg===undefined?null:callback.arg)}}}var __ATPRERUN__=[];var __ATINIT__=[];var __ATMAIN__=[];var __ATEXIT__=[];var __ATPOSTRUN__=[];var runtimeInitialized=false;var runtimeExited=false;function preRun(){if(Module["preRun"]){if(typeof Module["preRun"]=="function")Module["preRun"]=[Module["preRun"]];while(Module["preRun"].length){addOnPreRun(Module["preRun"].shift())}}callRuntimeCallbacks(__ATPRERUN__)}function ensureInitRuntime(){if(runtimeInitialized)return;runtimeInitialized=true;callRuntimeCallbacks(__ATINIT__)}function preMain(){callRuntimeCallbacks(__ATMAIN__)}function exitRuntime(){callRuntimeCallbacks(__ATEXIT__);runtimeExited=true}function postRun(){if(Module["postRun"]){if(typeof Module["postRun"]=="function")Module["postRun"]=[Module["postRun"]];while(Module["postRun"].length){addOnPostRun(Module["postRun"].shift())}}callRuntimeCallbacks(__ATPOSTRUN__)}function addOnPreRun(cb){__ATPRERUN__.unshift(cb)}function addOnPreMain(cb){__ATMAIN__.unshift(cb)}function addOnPostRun(cb){__ATPOSTRUN__.unshift(cb)}function intArrayFromString(stringy,dontAddNull,length){var len=length>0?length:lengthBytesUTF8(stringy)+1;var u8array=new Array(len);var numBytesWritten=stringToUTF8Array(stringy,u8array,0,u8array.length);if(dontAddNull)u8array.length=numBytesWritten;return u8array}function writeStringToMemory(string,buffer,dontAddNull){var array=intArrayFromString(string,dontAddNull);var i=0;while(i<array.length){var chr=array[i];HEAP8[buffer+i>>0]=chr;i=i+1}}function writeArrayToMemory(array,buffer){for(var i=0;i<array.length;i++){HEAP8[buffer++>>0]=array[i]}}function writeAsciiToMemory(str,buffer,dontAddNull){for(var i=0;i<str.length;++i){HEAP8[buffer++>>0]=str.charCodeAt(i)}if(!dontAddNull)HEAP8[buffer>>0]=0}if(!Math["imul"]||Math["imul"](4294967295,5)!==-5)Math["imul"]=function imul(a,b){var ah=a>>>16;var al=a&65535;var bh=b>>>16;var bl=b&65535;return al*bl+(ah*bl+al*bh<<16)|0};Math.imul=Math["imul"];if(!Math["clz32"])Math["clz32"]=(function(x){x=x>>>0;for(var i=0;i<32;i++){if(x&1<<31-i)return i}return 32});Math.clz32=Math["clz32"];var Math_abs=Math.abs;var Math_cos=Math.cos;var Math_sin=Math.sin;var Math_tan=Math.tan;var Math_acos=Math.acos;var Math_asin=Math.asin;var Math_atan=Math.atan;var Math_atan2=Math.atan2;var Math_exp=Math.exp;var Math_log=Math.log;var Math_sqrt=Math.sqrt;var Math_ceil=Math.ceil;var Math_floor=Math.floor;var Math_pow=Math.pow;var Math_imul=Math.imul;var Math_fround=Math.fround;var Math_min=Math.min;var Math_clz32=Math.clz32;var runDependencies=0;var runDependencyWatcher=null;var dependenciesFulfilled=null;Module["preloadedImages"]={};Module["preloadedAudios"]={};var ASM_CONSTS=[(function($0,$1,$2,$3,$4,$5,$6,$7){{var self=Module["getCache"](Module["ConcreteContactResultCallback"])[$0];if(!self.hasOwnProperty("addSingleResult"))throw"a JSImplementation must implement all functions, you forgot ConcreteContactResultCallback::addSingleResult.";return self["addSingleResult"]($1,$2,$3,$4,$5,$6,$7)}})];function _emscripten_asm_const_diiiiiiii(code,a0,a1,a2,a3,a4,a5,a6,a7){return ASM_CONSTS[code](a0,a1,a2,a3,a4,a5,a6,a7)}STATIC_BASE=8;STATICTOP=STATIC_BASE+26272;__ATINIT__.push({func:(function(){__GLOBAL__sub_I_btQuickprof_cpp()})});allocate([88,37,0,0,220,37,0,0,128,37,0,0,7,38,0,0,8,0,0,0,0,0,0,0,88,37,0,0,57,38,0,0,88,37,0,0,78,38,0,0,128,37,0,0,94,38,0,0,40,0,0,0,0,0,0,0,88,37,0,0,117,38,0,0,128,37,0,0,145,38,0,0,64,0,0,0,0,0,0,0,88,37,0,0,167,38,0,0,128,37,0,0,207,38,0,0,88,0,0,0,0,0,0,0,88,37,0,0,254,38,0,0,128,37,0,0,42,39,0,0,112,0,0,0,0,0,0,0,128,37,0,0,114,40,0,0,152,0,0,0,0,0,0,0,88,37,0,0,140,40,0,0,128,37,0,0,159,40,0,0,0,4,0,0,0,0,0,0,128,37,0,0,203,40,0,0,192,0,0,0,0,0,0,0,88,37,0,0,248,40,0,0,128,37,0,0,25,41,0,0,192,0,0,0,0,0,0,0,128,37,0,0,71,41,0,0,192,0,0,0,0,0,0,0,128,37,0,0,123,41,0,0,192,0,0,0,0,0,0,0,128,37,0,0,182,41,0,0,176,3,0,0,0,0,0,0,128,37,0,0,136,42,0,0,24,1,0,0,0,0,0,0,88,37,0,0,168,42,0,0,88,37,0,0,187,42,0,0,128,37,0,0,208,42,0,0,32,1,0,0,0,0,0,0,128,37,0,0,230,42,0,0,48,8,0,0,0,0,0,0,128,37,0,0,60,43,0,0,24,1,0,0,0,0,0,0,128,37,0,0,95,43,0,0,104,1,0,0,0,0,0,0,128,37,0,0,129,43,0,0,24,1,0,0,0,0,0,0,128,37,0,0,162,43,0,0,176,7,0,0,0,0,0,0,128,37,0,0,230,43,0,0,104,1,0,0,0,0,0,0,128,37,0,0,8,44,0,0,24,1,0,0,0,0,0,0,128,37,0,0,42,44,0,0,184,1,0,0,0,0,0,0,88,37,0,0,74,44,0,0,128,37,0,0,97,44,0,0,184,1,0,0,0,0,0,0,128,37,0,0,135,44,0,0,208,7,0,0,0,0,0,0,128,37,0,0,164,44,0,0,208,7,0,0,0,0,0,0,88,37,0,0,68,45,0,0,128,37,0,0,97,45,0,0,120,7,0,0,0,0,0,0,128,37,0,0,124,45,0,0,96,2,0,0,0,0,0,0,128,37,0,0,159,45,0,0,40,2,0,0,0,0,0,0,128,37,0,0,185,45,0,0,56,2,0,0,0,0,0,0,88,37,0,0,211,45,0,0,128,37,0,0,37,46,0,0,184,1,0,0,0,0,0,0,128,37,0,0,68,46,0,0,176,3,0,0,0,0,0,0,128,37,0,0,103,46,0,0,112,2,0,0,0,0,0,0,128,37,0,0,129,46,0,0,40,5,0,0,0,0,0,0,128,37,0,0,36,47,0,0,16,0,0,0,0,0,0,0,128,37,0,0,53,48,0,0,160,2,0,0,0,0,0,0,88,37,0,0,83,48,0,0,128,37,0,0,129,48,0,0,184,2,0,0,0,0,0,0,188,37,0,0,155,48,0,0,0,0,0,0,1,0,0,0,208,2,0,0,2,4,0,0,88,37,0,0,175,48,0,0,128,37,0,0,219,48,0,0,168,2,0,0,0,0,0,0,128,37,0,0,29,49,0,0,184,2,0,0,0,0,0,0,128,37,0,0,115,49,0,0,184,2,0,0,0,0,0,0,128,37,0,0,159,49,0,0,184,2,0,0,0,0,0,0,128,37,0,0,209,49,0,0,184,2,0,0,0,0,0,0,128,37,0,0,0,50,0,0,56,3,0,0,0,0,0,0,88,37,0,0,38,50,0,0,128,37,0,0,133,50,0,0,80,3,0,0,0,0,0,0,88,37,0,0,152,50,0,0,128,37,0,0,172,50,0,0,32,0,0,0,0,0,0,0,128,37,0,0,200,50,0,0,120,3,0,0,0,0,0,0,128,37,0,0,233,50,0,0,80,3,0,0,0,0,0,0,128,37,0,0,10,51,0,0,16,0,0,0,0,0,0,0,128,37,0,0,56,51,0,0,168,3,0,0,0,0,0,0,88,37,0,0,81,51,0,0,88,37,0,0,96,51,0,0,128,37,0,0,143,51,0,0,176,3,0,0,0,0,0,0,128,37,0,0,159,51,0,0,184,3,0,0,0,0,0,0,128,37,0,0,186,51,0,0,136,9,0,0,0,0,0,0,128,37,0,0,210,51,0,0,248,3,0,0,0,0,0,0,88,37,0,0,236,51,0,0,128,37,0,0,0,52,0,0,16,4,0,0,0,0,0,0,88,37,0,0,34,52,0,0,128,37,0,0,61,52,0,0,192,0,0,0,0,0,0,0,128,37,0,0,111,52,0,0,192,0,0,0,0,0,0,0,128,37,0,0,168,52,0,0,192,0,0,0,0,0,0,0,128,37,0,0,213,52,0,0,192,0,0,0,0,0,0,0,128,37,0,0,10,53,0,0,192,0,0,0,0,0,0,0,128,37,0,0,62,53,0,0,192,0,0,0,0,0,0,0,128,37,0,0,95,53,0,0,192,0,0,0,0,0,0,0,128,37,0,0,144,53,0,0,192,0,0,0,0,0,0,0,128,37,0,0,195,53,0,0,192,0,0,0,0,0,0,0,128,37,0,0,238,53,0,0,192,0,0,0,0,0,0,0,88,37,0,0,30,54,0,0,128,37,0,0,101,54,0,0,184,1,0,0,0,0,0,0,128,37,0,0,135,54,0,0,56,10,0,0,0,0,0,0,128,37,0,0,171,54,0,0,208,7,0,0,0,0,0,0,128,37,0,0,198,54,0,0,208,7,0,0,0,0,0,0,128,37,0,0,100,55,0,0,56,10,0,0,0,0,0,0,128,37,0,0,129,55,0,0,32,5,0,0,0,0,0,0,88,37,0,0,148,55,0,0,88,37,0,0,196,55,0,0,188,37,0,0,189,56,0,0,0,0,0,0,2,0,0,0,208,7,0,0,2,0,0,0,216,7,0,0,2,4,0,0,128,37,0,0,209,56,0,0,40,2,0,0,0,0,0,0,128,37,0,0,231,56,0,0,152,9,0,0,0,0,0,0,128,37,0,0,122,57,0,0,152,9,0,0,0,0,0,0,128,37,0,0,15,58,0,0,24,1,0,0,0,0,0,0,128,37,0,0,141,58,0,0,88,0,0,0,0,0,0,0,128,37,0,0,78,59,0,0,168,9,0,0,0,0,0,0,128,37,0,0,253,59,0,0,168,9,0,0,0,0,0,0,128,37,0,0,194,60,0,0,8,0,0,0,0,0,0,0,128,37,0,0,111,61,0,0,40,2,0,0,0,0,0,0,128,37,0,0,135,61,0,0,56,2,0,0,0,0,0,0,128,37,0,0,161,61,0,0,16,5,0,0,0,0,0,0,128,37,0,0,187,61,0,0,56,10,0,0,0,0,0,0,128,37,0,0,224,61,0,0,192,0,0,0,0,0,0,0,128,37,0,0,8,62,0,0,56,10,0,0,0,0,0,0,128,37,0,0,34,62,0,0,32,5,0,0,0,0,0,0,128,37,0,0,167,62,0,0,32,5,0,0,0,0,0,0,128,37,0,0,52,63,0,0,16,5,0,0,0,0,0,0,128,37,0,0,79,63,0,0,56,10,0,0,0,0,0,0,128,37,0,0,110,63,0,0,24,1,0,0,0,0,0,0,128,37,0,0,135,63,0,0,56,10,0,0,0,0,0,0,128,37,0,0,174,63,0,0,24,1,0,0,0,0,0,0,128,37,0,0,207,63,0,0,152,7,0,0,0,0,0,0,128,37,0,0,23,64,0,0,176,7,0,0,0,0,0,0,128,37,0,0,58,64,0,0,176,6,0,0,0,0,0,0,128,37,0,0,79,64,0,0,176,6,0,0,0,0,0,0,128,37,0,0,100,64,0,0,176,7,0,0,0,0,0,0,128,37,0,0,123,64,0,0,56,7,0,0,0,0,0,0,128,37,0,0,188,64,0,0,16,7,0,0,0,0,0,0,88,37,0,0,42,65,0,0,128,37,0,0,66,65,0,0,16,7,0,0,0,0,0,0,128,37,0,0,170,65,0,0,16,7,0,0,0,0,0,0,128,37,0,0,27,66,0,0,48,8,0,0,0,0,0,0,128,37,0,0,62,66,0,0,216,7,0,0,0,0,0,0,128,37,0,0,164,66,0,0,208,7,0,0,0,0,0,0,128,37,0,0,188,66,0,0,48,8,0,0,0,0,0,0,128,37,0,0,244,66,0,0,176,7,0,0,0,0,0,0,128,37,0,0,14,67,0,0,120,7,0,0,0,0,0,0,88,37,0,0,51,67,0,0,128,37,0,0,91,67,0,0,152,7,0,0,0,0,0,0,128,37,0,0,107,67,0,0,160,7,0,0,0,0,0,0,128,37,0,0,131,67,0,0,136,7,0,0,0,0,0,0,88,37,0,0,180,67,0,0,88,37,0,0,201,67,0,0,128,37,0,0,235,67,0,0,176,7,0,0,0,0,0,0,128,37,0,0,28,68,0,0,224,7,0,0,0,0,0,0,128,37,0,0,55,68,0,0,224,7,0,0,0,0,0,0,128,37,0,0,82,68,0,0,136,7,0,0,0,0,0,0,128,37,0,0,124,68,0,0,216,7,0,0,0,0,0,0,128,37,0,0,153,68,0,0,152,7,0,0,0,0,0,0,128,37,0,0,170,68,0,0,120,7,0,0,0,0,0,0,128,37,0,0,187,68,0,0,144,9,0,0,0,0,0,0,128,37,0,0,204,68,0,0,216,7,0,0,0,0,0,0,128,37,0,0,48,69,0,0,216,7,0,0,0,0,0,0,128,37,0,0,139,69,0,0,48,8,0,0,0,0,0,0,128,37,0,0,179,69,0,0,176,7,0,0,0,0,0,0,128,37,0,0,227,69,0,0,144,8,0,0,0,0,0,0,128,37,0,0,0,70,0,0,144,8,0,0,0,0,0,0,128,37,0,0,29,70,0,0,152,10,0,0,0,0,0,0,128,37,0,0,46,70,0,0,224,8,0,0,0,0,0,0,88,37,0,0,72,70,0,0,128,37,0,0,96,70,0,0,248,8,0,0,0,0,0,0,128,37,0,0,114,70,0,0,64,0,0,0,0,0,0,0,128,37,0,0,139,70,0,0,208,8,0,0,0,0,0,0,128,37,0,0,154,70,0,0,248,8,0,0,0,0,0,0,128,37,0,0,185,70,0,0,248,3,0,0,0,0,0,0,128,37,0,0,58,71,0,0,248,3,0,0,0,0,0,0,128,37,0,0,168,71,0,0,224,8,0,0,0,0,0,0,128,37,0,0,187,71,0,0,24,1,0,0,0,0,0,0,128,37,0,0,208,71,0,0,24,1,0,0,0,0,0,0,128,37,0,0,230,71,0,0,24,1,0,0,0,0,0,0,88,37,0,0,253,71,0,0,88,37,0,0,12,72,0,0,128,37,0,0,120,72,0,0,208,7,0,0,0,0,0,0,128,37,0,0,148,72,0,0,208,7,0,0,0,0,0,0,128,37,0,0,179,72,0,0,200,9,0,0,0,0,0,0,88,37,0,0,215,72,0,0,128,37,0,0,248,72,0,0,32,5,0,0,0,0,0,0,128,37,0,0,163,73,0,0,200,9,0,0,0,0,0,0,128,37,0,0,196,73,0,0,168,3,0,0,0,0,0,0,128,37,0,0,214,73,0,0,32,5,0,0,0,0,0,0,128,37,0,0,233,73,0,0,168,3,0,0,0,0,0,0,128,37,0,0,7,74,0,0,48,10,0,0,0,0,0,0,88,37,0,0,27,74,0,0,128,37,0,0,66,74,0,0,184,1,0,0,0,0,0,0,128,37,0,0,99,74,0,0,184,1,0,0,0,0,0,0,128,37,0,0,118,74,0,0,56,10,0,0,0,0,0,0,128,37,0,0,153,74,0,0,48,10,0,0,0,0,0,0,128,37,0,0,172,74,0,0,48,10,0,0,0,0,0,0,88,37,0,0,197,74,0,0,88,37,0,0,223,74,0,0,128,37,0,0,244,74,0,0,168,10,0,0,0,0,0,0,88,37,0,0,17,75,0,0,88,37,0,0,74,86,0,0,128,37,0,0,40,86,0,0,216,10,0,0,0,0,0,0,128,37,0,0,213,85,0,0,184,10,0,0,0,0,0,0,128,37,0,0,250,85,0,0,232,10,0,0,0,0,0,0,88,37,0,0,27,86,0,0,128,37,0,0,16,87,0,0,176,10,0,0,0,0,0,0,128,37,0,0,80,87,0,0,216,10,0,0,0,0,0,0,128,37,0,0,44,87,0,0,0,11,0,0,0,0,0,0,128,37,0,0,114,87,0,0,184,10,0,0,0,0,0,0,0,0,0,0,16,0,0,0,1,0,0,0,2,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,48,0,0,0,3,0,0,0,4,0,0,0,1,0,0,0,2,0,0,0,0,0,0,0,72,0,0,0,5,0,0,0,6,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,96,0,0,0,7,0,0,0,8,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,120,0,0,0,9,0,0,0,10,0,0,0,3,0,0,0,1,0,0,0,0,0,0,0,136,0,0,0,11,0,0,0,12,0,0,0,1,0,0,0,2,0,0,0,2,0,0,0,3,0,0,0,1,0,0,0,2,0,0,0,13,0,0,0,3,0,0,0,4,0,0,0,4,0,0,0,3,0,0,0,5,0,0,0,4,0,0,0,5,0,0,0,0,0,0,0,160,0,0,0,14,0,0,0,15,0,0,0,5,0,0,0,6,0,0,0,2,0,0,0,7,0,0,0,0,0,0,0,176,0,0,0,16,0,0,0,17,0,0,0,2,0,0,0,0,0,0,0,200,0,0,0,16,0,0,0,18,0,0,0,3,0,0,0,0,0,0,0,216,0,0,0,16,0,0,0,19,0,0,0,4,0,0,0,0,0,0,0,232,0,0,0,16,0,0,0,20,0,0,0,5,0,0,0,0,0,0,0,248,0,0,0,4,0,0,0,21,0,0,0,22,0,0,0,6,0,0,0,8,0,0,0,3,0,0,0,7,0,0,0,6,0,0,0,0,0,0,0,8,1,0,0,23,0,0,0,24,0,0,0,7,0,0,0,8,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,40,1,0,0,25,0,0,0,26,0,0,0,1,0,0,0,1,0,0,0,3,0,0,0,9,0,0,0,0,0,0,0,56,1,0,0,27,0,0,0,28,0,0,0,1,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,9,0,0,0,10,0,0,0,2,0,0,0,11,0,0,0,10,0,0,0,4,0,0,0,2,0,0,0,12,0,0,0,4,0,0,0,11,0,0,0,2,0,0,0,0,0,0,0,72,1,0,0,23,0,0,0,29,0,0,0,7,0,0,0,12,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,88,1,0,0,23,0,0,0,30,0,0,0,7,0,0,0,13,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,120,1,0,0,31,0,0,0,32,0,0,0,3,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,14,0,0,0,13,0,0,0,3,0,0,0,14,0,0,0,10,0,0,0,5,0,0,0,3,0,0,0,15,0,0,0,5,0,0,0,11,0,0,0,9,0,0,0,10,0,0,0,1,0,0,0,4,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,17,0,0,0,0,0,0,0,136,1,0,0,23,0,0,0,33,0,0,0,12,0,0,0,15,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,152,1,0,0,23,0,0,0,34,0,0,0,13,0,0,0,15,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,168,1,0,0,35,0,0,0,36,0,0,0,2,0,0,0,1,0,0,0,16,0,0,0,0,0,0,0,192,1,0,0,37,0,0,0,38,0,0,0,3,0,0,0,2,0,0,0,17,0,0,0,0,0,0,0,208,1,0,0,39,0,0,0,40,0,0,0,6,0,0,0,0,0,0,0,224,1,0,0,41,0,0,0,42,0,0,0,7,0,0,0,0,0,0,0,240,1,0,0,6,0,0,0,18,0,0,0,14,0,0,0,43,0,0,0,44,0,0,0,0,0,0,0,248,1,0,0,45,0,0,0,46,0,0,0,8,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,14,0,0,0,13,0,0,0,4,0,0,0,18,0,0,0,10,0,0,0,7,0,0,0,4,0,0,0,15,0,0,0,5,0,0,0,11,0,0,0,15,0,0,0,16,0,0,0,1,0,0,0,9,0,0,0,5,0,0,0,19,0,0,0,17,0,0,0,7,0,0,0,20,0,0,0,21,0,0,0,10,0,0,0,18,0,0,0,22,0,0,0,11,0,0,0,1,0,0,0,12,0,0,0,0,0,0,0,8,2,0,0,47,0,0,0,48,0,0,0,49,0,0,0,50,0,0,0,19,0,0,0,23,0,0,0,51,0,0,0,13,0,0,0,14,0,0,0,15,0,0,0,20,0,0,0,52,0,0,0,21,0,0,0,1,0,0,0,19,0,0,0,22,0,0,0,23,0,0,0,24,0,0,0,25,0,0,0,26,0,0,0,53,0,0,0,27,0,0,0,16,0,0,0,28,0,0,0,29,0,0,0,24,0,0,0,25,0,0,0,8,0,0,0,9,0,0,0,26,0,0,0,54,0,0,0,30,0,0,0,31,0,0,0,32,0,0,0,33,0,0,0,8,0,0,0,9,0,0,0,55,0,0,0,34,0,0,0,10,0,0,0,11,0,0,0,12,0,0,0,56,0,0,0,35,0,0,0,13,0,0,0,0,0,0,0,24,2,0,0,57,0,0,0,58,0,0,0,10,0,0,0,0,0,0,0,64,2,0,0,59,0,0,0,60,0,0,0,4,0,0,0,3,0,0,0,36,0,0,0,0,0,0,0,80,2,0,0,11,0,0,0,61,0,0,0,62,0,0,0,37,0,0,0,27,0,0,0,6,0,0,0,38,0,0,0,0,0,0,0,96,2,0,0,63,0,0,0,64,0,0,0,49,0,0,0,50,0,0,0,19,0,0,0,23,0,0,0,65,0,0,0,13,0,0,0,17,0,0,0,15,0,0,0,39,0,0,0,52,0,0,0,40,0,0,0,1,0,0,0,19,0,0,0,22,0,0,0,23,0,0,0,24,0,0,0,25,0,0,0,26,0,0,0,53,0,0,0,27,0,0,0,16,0,0,0,28,0,0,0,29,0,0,0,24,0,0,0,25,0,0,0,8,0,0,0,9,0,0,0,28,0,0,0,54,0,0,0,30,0,0,0,31,0,0,0,32,0,0,0,33,0,0,0,14,0,0,0,9,0,0,0,55,0,0,0,34,0,0,0,10,0,0,0,15,0,0,0,12,0,0,0,56,0,0,0,35,0,0,0,13,0,0,0,0,0,0,0,128,2,0,0,66,0,0,0,67,0,0,0,12,0,0,0,3,0,0,0,0,0,0,0,144,2,0,0,68,0,0,0,69,0,0,0,1,0,0,0,0,0,0,0,168,2,0,0,70,0,0,0,71,0,0,0,72,0,0,0,1,0,0,0,41,0,0,0,42,0,0,0,1,0,0,0,1,0,0,0,4,0,0,0,29,0,0,0,7,0,0,0,73,0,0,0,0,0,0,0,184,2,0,0,70,0,0,0,74,0,0,0,75,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,30,0,0,0,8,0,0,0,0,0,0,0,216,2,0,0,70,0,0,0,76,0,0,0,72,0,0,0,1,0,0,0,41,0,0,0,43,0,0,0,1,0,0,0,1,0,0,0,4,0,0,0,31,0,0,0,9,0,0,0,73,0,0,0,20,0,0,0,0,0,0,0,232,2,0,0,70,0,0,0,77,0,0,0,78,0,0,0,1,0,0,0,44,0,0,0,45,0,0,0,1,0,0,0,2,0,0,0,5,0,0,0,32,0,0,0,10,0,0,0,0,0,0,0,248,2,0,0,70,0,0,0,79,0,0,0,75,0,0,0,1,0,0,0,46,0,0,0,47,0,0,0,1,0,0,0,3,0,0,0,6,0,0,0,33,0,0,0,11,0,0,0,0,0,0,0,8,3,0,0,70,0,0,0,80,0,0,0,81,0,0,0,1,0,0,0,48,0,0,0,49,0,0,0,2,0,0,0,4,0,0,0,7,0,0,0,34,0,0,0,12,0,0,0,21,0,0,0,0,0,0,0,24,3,0,0,70,0,0,0,82,0,0,0,83,0,0,0,1,0,0,0,50,0,0,0,51,0,0,0,1,0,0,0,5,0,0,0,8,0,0,0,35,0,0,0,13,0,0,0,0,0,0,0,40,3,0,0,84,0,0,0,85,0,0,0,22,0,0,0,1,0,0,0,23,0,0,0,86,0,0,0,36,0,0,0,18,0,0,0,1,0,0,0,1,0,0,0,2,0,0,0,1,0,0,0,2,0,0,0,0,0,0,0,64,3,0,0,87,0,0,0,88,0,0,0,2,0,0,0,52,0,0,0,16,0,0,0,17,0,0,0,19,0,0,0,0,0,0,0,88,3,0,0,89,0,0,0,90,0,0,0,6,0,0,0,0,0,0,0,104,3,0,0,91,0,0,0,92,0,0,0,3,0,0,0,53,0,0,0,54,0,0,0,4,0,0,0,55,0,0,0,56,0,0,0,57,0,0,0,5,0,0,0,37,0,0,0,93,0,0,0,38,0,0,0,58,0,0,0,0,0,0,0,136,3,0,0,66,0,0,0,94,0,0,0,1,0,0,0,9,0,0,0,0,0,0,0,152,3,0,0,95,0,0,0,96,0,0,0,1,0,0,0,10,215,163,60,1,0,0,0,2,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,176,3,0,0,4,0,0,0,97,0,0,0,98,0,0,0,37,0,0,0,39,0,0,0,14,0,0,0,7,0,0,0,0,0,0,0,184,3,0,0,4,0,0,0,99,0,0,0,100,0,0,0,37,0,0,0,39,0,0,0,14,0,0,0,7,0,0,0,24,0,0,0,20,0,0,0,0,0,0,0,200,3,0,0,4,0,0,0,101,0,0,0,102,0,0,0,37,0,0,0,39,0,0,0,14,0,0,0,7,0,0,0,25,0,0,0,21,0,0,0,0,0,0,0,216,3,0,0,103,0,0,0,104,0,0,0,7,0,0,0,15,0,0,0,59,0,0,0,60,0,0,0,16,0,0,0,17,0,0,0,22,0,0,0,40,0,0,0,13,0,0,0,41,0,0,0,42,0,0,0,43,0,0,0,14,0,0,0,61,0,0,0,0,0,0,0,232,3,0,0,105,0,0,0,106,0,0,0,15,0,0,0,0,0,0,0,0,4,0,0,107,0,0,0,108,0,0,0,5,0,0,0,6,0,0,0,18,0,0,0,7,0,0,0,0,0,0,0,24,4,0,0,16,0,0,0,109,0,0,0,8,0,0,0,0,0,0,0,40,4,0,0,16,0,0,0,110,0,0,0,9,0,0,0,0,0,0,0,56,4,0,0,16,0,0,0,111,0,0,0,10,0,0,0,0,0,0,0,72,4,0,0,16,0,0,0,112,0,0,0,11,0,0,0,0,0,0,0,88,4,0,0,16,0,0,0,113,0,0,0,12,0,0,0,0,0,0,0,104,4,0,0,16,0,0,0,114,0,0,0,13,0,0,0,0,0,0,0,120,4,0,0,16,0,0,0,115,0,0,0,14,0,0,0,0,0,0,0,136,4,0,0,16,0,0,0,116,0,0,0,15,0,0,0,0,0,0,0,152,4,0,0,16,0,0,0,117,0,0,0,16,0,0,0,0,0,0,0,168,4,0,0,16,0,0,0,118,0,0,0,17,0,0,0,0,0,0,0,184,4,0,0,119,0,0,0,120,0,0,0,26,0,0,0,62,0,0,0,0,0,0,0,192,4,0,0,121,0,0,0,122,0,0,0,5,0,0,0,4,0,0,0,63,0,0,0,0,0,0,0,208,4,0,0,123,0,0,0,124,0,0,0,6,0,0,0,5,0,0,0,64,0,0,0,0,0,0,0,224,4,0,0,125,0,0,0,126,0,0,0,23,0,0,0,0,0,0,0,240,4,0,0,41,0,0,0,127,0,0,0,24,0,0,0,0,0,0,0,0,5,0,0,128,0,0,0,129,0,0,0,7,0,0,0,6,0,0,0,65,0,0,0,0,0,0,0,16,5,0,0,130,0,0,0,131,0,0,0,27,0,0,0,28,0,0,0,3,0,0,0,0,0,0,0,40,5,0,0,132,0,0,0,133,0,0,0,49,0,0,0,50,0,0,0,19,0,0,0,23,0,0,0,134,0,0,0,13,0,0,0,17,0,0,0,25,0,0,0,66,0,0,0,52,0,0,0,67,0,0,0,0,0,0,0,48,5,0,0,135,0,0,0,136,0,0,0,26,0,0,0,27,0,0,0,252,255,255,255,48,5,0,0,137,0,0,0,138,0,0,0,28,0,0,0,0,0,0,0,80,5,0,0,57,0,0,0,139,0,0,0,16,0,0,0,0,0,0,0,96,5,0,0,41,0,0,0,140,0,0,0,29,0,0,0,1,0,0,0,0,0,0,0,112,5,0,0,41,0,0,0,141,0,0,0,29,0,0,0,2,0,0,0,0,0,0,0,128,5,0,0,23,0,0,0,142,0,0,0,7,0,0,0,68,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,144,5,0,0,143,0,0,0,144,0,0,0,17,0,0,0,10,0,0,0,0,0,0,0,160,5,0,0,41,0,0,0,145,0,0,0,30,0,0,0,1,0,0,0,0,0,0,0,176,5,0,0,41,0,0,0,146,0,0,0,30,0,0,0,2,0,0,0,0,0,0,0,192,5,0,0,66,0,0,0,147,0,0,0,18,0,0,0,11,0,0,0,0,0,0,0,208,5,0,0,57,0,0,0,148,0,0,0,19,0,0,0,0,0,0,0,224,5,0,0,57,0,0,0,149,0,0,0,20,0,0,0,0,0,0,0,240,5,0,0,130,0,0,0,150,0,0,0,27,0,0,0,28,0,0,0,4,0,0,0,0,0,0,0,0,6,0,0,151,0,0,0,152,0,0,0,8,0,0,0,7,0,0,0,69,0,0,0,0,0,0,0,16,6,0,0,153,0,0,0,154,0,0,0,18,0,0,0,0,0,0,0,32,6,0,0,155,0,0,0,156,0,0,0,9,0,0,0,8,0,0,0,70,0,0,0,0,0,0,0,48,6,0,0,130,0,0,0,157,0,0,0,29,0,0,0,30,0,0,0,5,0,0,0,0,0,0,0,64,6,0,0,130,0,0,0,158,0,0,0,31,0,0,0,32,0,0,0,6,0,0,0,0,0,0,0,80,6,0,0,130,0,0,0,159,0,0,0,27,0,0,0,28,0,0,0,7,0,0,0,0,0,0,0,96,6,0,0,160,0,0,0,161,0,0,0,10,0,0,0,9,0,0,0,71,0,0,0,0,0,0,0,112,6,0,0,23,0,0,0,162,0,0,0,7,0,0,0,72,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,128,6,0,0,163,0,0,0,164,0,0,0,11,0,0,0,10,0,0,0,73,0,0,0,0,0,0,0,144,6,0,0,23,0,0,0,165,0,0,0,33,0,0,0,15,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,160,6,0,0,166,0,0,0,167,0,0,0,31,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,74,0,0,0,44,0,0,0,5,0,0,0,45,0,0,0,10,0,0,0,18,0,0,0,5,0,0,0,46,0,0,0,19,0,0,0,11,0,0,0,75,0,0,0,168,0,0,0,0,0,0,0,176,6,0,0,31,0,0,0,169,0,0,0,32,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,76,0,0,0,13,0,0,0,6,0,0,0,47,0,0,0,77,0,0,0,7,0,0,0,4,0,0,0,48,0,0,0,20,0,0,0,11,0,0,0,34,0,0,0,35,0,0,0,1,0,0,0,33,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,192,6,0,0,31,0,0,0,170,0,0,0,32,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,76,0,0,0,13,0,0,0,6,0,0,0,49,0,0,0,78,0,0,0,7,0,0,0,4,0,0,0,48,0,0,0,20,0,0,0,11,0,0,0,34,0,0,0,35,0,0,0,1,0,0,0,33,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,208,6,0,0,31,0,0,0,171,0,0,0,32,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,76,0,0,0,13,0,0,0,6,0,0,0,50,0,0,0,79,0,0,0,7,0,0,0,4,0,0,0,48,0,0,0,20,0,0,0,11,0,0,0,34,0,0,0,35,0,0,0,1,0,0,0,33,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,224,6,0,0,31,0,0,0,172,0,0,0,34,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,14,0,0,0,13,0,0,0,7,0,0,0,51,0,0,0,10,0,0,0,19,0,0,0,6,0,0,0,15,0,0,0,5,0,0,0,11,0,0,0,36,0,0,0,37,0,0,0,1,0,0,0,35,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,240,6,0,0,173,0,0,0,174,0,0,0,36,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,80,0,0,0,52,0,0,0,8,0,0,0,53,0,0,0,10,0,0,0,4,0,0,0,2,0,0,0,54,0,0,0,21,0,0,0,11,0,0,0,37,0,0,0,38,0,0,0,39,0,0,0,81,0,0,0,82,0,0,0,0,0,0,0,0,7,0,0,175,0,0,0,176,0,0,0,40,0,0,0,0,0,0,0,24,7,0,0,175,0,0,0,177,0,0,0,41,0,0,0,0,0,0,0,40,7,0,0,175,0,0,0,178,0,0,0,42,0,0,0,0,0,0,0,56,7,0,0,179,0,0,0,180,0,0,0,36,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,83,0,0,0,52,0,0,0,8,0,0,0,55,0,0,0,10,0,0,0,4,0,0,0,2,0,0,0,12,0,0,0,4,0,0,0,11,0,0,0,38,0,0,0,38,0,0,0,39,0,0,0,0,0,0,0,72,7,0,0,181,0,0,0,182,0,0,0,39,0,0,0,0,0,0,0,88,7,0,0,41,0,0,0,183,0,0,0,40,0,0,0,0,0,0,0,104,7,0,0,184,0,0,0,185,0,0,0,41,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,84,0,0,0,56,0,0,0,9,0,0,0,57,0,0,0,10,0,0,0,4,0,0,0,2,0,0,0,58,0,0,0,22,0,0,0,11,0,0,0,42,0,0,0,0,0,0,0,120,7,0,0,45,0,0,0,186,0,0,0,32,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,14,0,0,0,13,0,0,0,10,0,0,0,1,0,0,0,10,0,0,0,7,0,0,0,4,0,0,0,15,0,0,0,5,0,0,0,11,0,0,0,15,0,0,0,43,0,0,0,1,0,0,0,43,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,7,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,192,7,0,0,187,0,0,0,188,0,0,0,44,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,85,0,0,0,13,0,0,0,10,0,0,0,59,0,0,0,10,0,0,0,7,0,0,0,4,0,0,0,60,0,0,0,23,0,0,0,11,0,0,0,44,0,0,0,45,0,0,0,1,0,0,0,45,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,7,0,0,0,61,0,0,0,62,0,0,0,46,0,0,0,46,0,0,0,63,0,0,0,47,0,0,0,2,0,0,0,1,0,0,0,0,0,0,0,224,7,0,0,31,0,0,0,189,0,0,0,48,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,86,0,0,0,13,0,0,0,11,0,0,0,64,0,0,0,87,0,0,0,20,0,0,0,4,0,0,0,65,0,0,0,24,0,0,0,11,0,0,0,15,0,0,0,47,0,0,0,1,0,0,0,49,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,240,7,0,0,31,0,0,0,190,0,0,0,48,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,86,0,0,0,13,0,0,0,11,0,0,0,66,0,0,0,87,0,0,0,20,0,0,0,4,0,0,0,65,0,0,0,24,0,0,0,11,0,0,0,15,0,0,0,47,0,0,0,1,0,0,0,49,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,0,8,0,0,31,0,0,0,191,0,0,0,48,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,86,0,0,0,13,0,0,0,11,0,0,0,67,0,0,0,87,0,0,0,20,0,0,0,4,0,0,0,65,0,0,0,24,0,0,0,11,0,0,0,15,0,0,0,47,0,0,0,1,0,0,0,49,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,0,0,0,0,16,8,0,0,45,0,0,0,192,0,0,0,44,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,88,0,0,0,68,0,0,0,10,0,0,0,69,0,0,0,10,0,0,0,7,0,0,0,4,0,0,0,15,0,0,0,5,0,0,0,11,0,0,0,48,0,0,0,49,0,0,0,1,0,0,0,50,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,7,0,0,0,70,0,0,0,71,0,0,0,51,0,0,0,50,0,0,0,72,0,0,0,52,0,0,0,3,0,0,0,0,0,0,0,32,8,0,0,181,0,0,0,193,0,0,0,53,0,0,0,0,0,0,0,64,8,0,0,45,0,0,0,194,0,0,0,54,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,89,0,0,0,13,0,0,0,12,0,0,0,73,0,0,0,10,0,0,0,21,0,0,0,4,0,0,0,15,0,0,0,5,0,0,0,11,0,0,0,51,0,0,0,52,0,0,0,1,0,0,0,55,0,0,0,5,0,0,0,74,0,0,0,53,0,0,0,7,0,0,0,75,0,0,0,76,0,0,0,56,0,0,0,54,0,0,0,77,0,0,0,57,0,0,0,4,0,0,0,55,0,0,0,0,0,0,0,80,8,0,0,195,0,0,0,196,0,0,0,19,0,0,0,78,0,0,0,25,0,0,0,90,0,0,0,91,0,0,0,20,0,0,0,0,0,0,0,96,8,0,0,181,0,0,0,197,0,0,0,58,0,0,0,0,0,0,0,112,8,0,0,181,0,0,0,198,0,0,0,59,0,0,0,0,0,0,0,128,8,0,0,199,0,0,0,200,0,0,0,60,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,92,0,0,0,79,0,0,0,13,0,0,0,80,0,0,0,10,0,0,0,4,0,0,0,2,0,0,0,12,0,0,0,4,0,0,0,11,0,0,0,61,0,0,0,12,0,0,0,0,0,0,0,144,8,0,0,31,0,0,0,201,0,0,0,62,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,93,0,0,0,13,0,0,0,14,0,0,0,81,0,0,0,94,0,0,0,22,0,0,0,4,0,0,0,82,0,0,0,26,0,0,0,11,0,0,0,56,0,0,0,57,0,0,0,1,0,0,0,63,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,7,0,0,0,0,0,0,0,160,8,0,0,31,0,0,0,202,0,0,0,62,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,93,0,0,0,13,0,0,0,14,0,0,0,83,0,0,0,94,0,0,0,22,0,0,0,4,0,0,0,82,0,0,0,26,0,0,0,11,0,0,0,56,0,0,0,58,0,0,0,1,0,0,0,64,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,8,0,0,0,0,0,0,0,176,8,0,0,31,0,0,0,203,0,0,0,62,0,0,0,8,0,0,0,1,0,0,0,1,0,0,0,93,0,0,0,13,0,0,0,14,0,0,0,84,0,0,0,94,0,0,0,22,0,0,0,4,0,0,0,82,0,0,0,26,0,0,0,11,0,0,0,56,0,0,0,59,0,0,0,1,0,0,0,65,0,0,0,5,0,0,0,16,0,0,0,11,0,0,0,9,0,0,0,0,0,0,0,192,8,0,0,204,0,0,0,205,0,0,0,66,0,0,0,1,0,0,0,2,0,0,0,95,0,0,0,96,0,0,0,85,0,0,0,97,0,0,0,98,0,0,0,86,0,0,0,60,0,0,0,61,0,0,0,87,0,0,0,27,0,0,0,0,0,0,0,208,8,0,0,206,0,0,0,207,0,0,0,1,0,0,0,62,0,0,0,12,0,0,0,67,0,0,0,2,0,0,0,68,0,0,0,99,0,0,0,88,0,0,0,89,0,0,0,63,0,0,0,100,0,0,0,208,0,0,0,0,0,0,0,232,8,0,0,209,0,0,0,210,0,0,0,28,0,0,0,21,0,0,0,64,0,0,0,90,0,0,0,91,0,0,0,92,0,0,0,65,0,0,0,93,0,0,0,66,0,0,0,101,0,0,0,67,0,0,0,29,0,0,0,94,0,0,0,102,0,0,0,103,0,0,0,0,0,0,0,8,9,0,0,206,0,0,0,211,0,0,0,1,0,0,0,62,0,0,0,12,0,0,0,67,0,0,0,2,0,0,0,68,0,0,0,99,0,0,0,88,0,0,0,89,0,0,0,63,0,0,0,100,0,0,0,208,0,0,0,0,0,0,0,24,9,0,0,212,0,0,0,213,0,0,0,30,0,0,0,22,0,0,0,68,0,0,0,95,0,0,0,96,0,0,0,97,0,0,0,69,0,0,0,98,0,0,0,70,0,0,0,104,0,0,0,71,0,0,0,31,0,0,0,99,0,0,0,105,0,0,0,106,0,0,0,0,0,0,0,40,9,0,0,105,0,0,0,214,0,0,0,21,0,0,0,0,0,0,0,56,9,0,0,105,0,0,0,215,0,0,0,22,0,0,0,0,0,0,0,72,9,0,0,216,0,0,0,217,0,0,0,2,0,0,0,72,0,0,0,13,0,0,0,69,0,0,0,3,0,0,0,70,0,0,0,107,0,0,0,100,0,0,0,101,0,0,0,73,0,0,0,108,0,0,0,218,0,0,0,0,0,0,0,88,9,0,0,23,0,0,0,219,0,0,0,74,0,0,0,109,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,104,9,0,0,23,0,0,0,220,0,0,0,7,0,0,0,110,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,120,9,0,0,23,0,0,0,221,0,0,0,7,0,0,0,111,0,0,0,1,0,0,0,5,0,0,0,6,0,0,0,0,0,0,0,144,9,0,0,222,0,0,0,223,0,0,0,19,0,0,0,78,0,0,0,25,0,0,0,90,0,0,0,91,0,0,0,0,0,0,0,168,9,0,0,41,0,0,0,224,0,0,0,30,0,0,0,1,0,0,0,0,0,0,0,184,9,0,0,225,0,0,0,226,0,0,0,1,0,0,0,0,0,0,0,208,9,0,0,130,0,0,0,227,0,0,0,75,0,0,0,76,0,0,0,8,0,0,0,0,0,0,0,224,9,0,0,225,0,0,0,228,0,0,0,2,0,0,0,0,0,0,0,240,9,0,0,95,0,0,0,229,0,0,0,2,0,0,0,0,0,0,0,0,10,0,0,130,0,0,0,230,0,0,0,77,0,0,0,78,0,0,0,9,0,0,0,0,0,0,0,16,10,0,0,95,0,0,0,231,0,0,0,3,0,0,0,0,0,0,0,32,10,0,0,232,0,0,0,233,0,0,0,14,0,0,0,0,0,0,0,72,10,0,0,234,0,0,0,235,0,0,0,15,0,0,0,11,0,0,0,112,0,0,0,0,0,0,0,88,10,0,0,236,0,0,0,237,0,0,0,16,0,0,0,12,0,0,0,113,0,0,0,0,0,0,0,104,10,0,0,232,0,0,0,238,0,0,0,17,0,0,0,0,0,0,0,120,10,0,0,232,0,0,0,239,0,0,0,18,0,0,0,0,0,0,0,136,10,0,0,240,0,0,0,241,0,0,0,32,0,0,0,33,0,0,0,102,0,0,0,0,0,0,0,144,10,0,0,242,0,0,0,243,0,0,0,0,0,0,0,152,10,0,0,244,0,0,0,245,0,0,0,66,0,0,0,1,0,0,0,2,0,0,0,95,0,0,0,96,0,0,0,85,0,0,0,114,0,0,0,115,0,0,0,86,0,0,0,60,0,0,0,61,0,0,0,87,0,0,0,27,0,0,0,96,100,0,0,255,255,255,255,5,0,0,0,0,0,0,0,0,0,0,0,103,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,0,0,0,35,0,0,0,157,102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,184,10,0,0,246,0,0,0,247,0,0,0,248,0,0,0,249,0,0,0,36,0,0,0,4,0,0,0,19,0,0,0,71,0,0,0,0,0,0,0,200,10,0,0,246,0,0,0,250,0,0,0,248,0,0,0,249,0,0,0,36,0,0,0,5,0,0,0,20,0,0,0,72,0,0,0,0,0,0,0,240,10,0,0,251,0,0,0,252,0,0,0,104,0,0,0,0,0,0,0,32,11,0,0,246,0,0,0,253,0,0,0,248,0,0,0,249,0,0,0,36,0,0,0,6,0,0,0,21,0,0,0,73,0,0,0,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,48,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,0,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,55,67,108,111,115,101,115,116,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,0,49,56,98,116,86,101,104,105,99,108,101,82,97,121,99,97,115,116,101,114,0,49,51,98,116,77,111,116,105,111,110,83,116,97,116,101,0,50,48,98,116,68,101,102,97,117,108,116,77,111,116,105,111,110,83,116,97,116,101,0,50,53,98,116,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,67,97,108,108,98,97,99,107,0,49,57,98,116,71,104,111,115,116,80,97,105,114,67,97,108,108,98,97,99,107,0,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,49,55,82,97,121,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,0,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,52,67,108,111,115,101,115,116,82,97,121,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,0,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,49,67,111,110,116,97,99,116,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,0,50,57,67,111,110,99,114,101,116,101,67,111,110,116,97,99,116,82,101,115,117,108,116,67,97,108,108,98,97,99,107,0,123,32,118,97,114,32,115,101,108,102,32,61,32,77,111,100,117,108,101,91,39,103,101,116,67,97,99,104,101,39,93,40,77,111,100,117,108,101,91,39,67,111,110,99,114,101,116,101,67,111,110,116,97,99,116,82,101,115,117,108,116,67,97,108,108,98,97,99,107,39,93,41,91,36,48,93,59,32,105,102,32,40,33,115,101,108,102,46,104,97,115,79,119,110,80,114,111,112,101,114,116,121,40,39,97,100,100,83,105,110,103,108,101,82,101,115,117,108,116,39,41,41,32,116,104,114,111,119,32,39,97,32,74,83,73,109,112,108,101,109,101,110,116,97,116,105,111,110,32,109,117,115,116,32,105,109,112,108,101,109,101,110,116,32,97,108,108,32,102,117,110,99,116,105,111,110,115,44,32,121,111,117,32,102,111,114,103,111,116,32],"i8",ALLOC_NONE,Runtime.GLOBAL_BASE);allocate([67,111,110,99,114,101,116,101,67,111,110,116,97,99,116,82,101,115,117,108,116,67,97,108,108,98,97,99,107,58,58,97,100,100,83,105,110,103,108,101,82,101,115,117,108,116,46,39,59,32,114,101,116,117,114,110,32,115,101,108,102,91,39,97,100,100,83,105,110,103,108,101,82,101,115,117,108,116,39,93,40,36,49,44,36,50,44,36,51,44,36,52,44,36,53,44,36,54,44,36,55,41,59,32,125,0,50,51,98,116,68,101,102,97,117,108,116,83,111,102,116,66,111,100,121,83,111,108,118,101,114,0,49,54,98,116,83,111,102,116,66,111,100,121,83,111,108,118,101,114,0,52,49,98,116,83,111,102,116,66,111,100,121,82,105,103,105,100,66,111,100,121,67,111,108,108,105,115,105,111,110,67,111,110,102,105,103,117,114,97,116,105,111,110,0,78,50,56,98,116,83,111,102,116,83,111,102,116,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,51,48,98,116,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,67,114,101,97,116,101,70,117,110,99,0,78,50,57,98,116,83,111,102,116,82,105,103,105,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,53,98,116,83,111,102,116,66,111,100,121,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,53,98,116,83,111,102,116,66,111,100,121,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,55,83,119,97,112,112,101,100,67,114,101,97,116,101,70,117,110,99,69,0,49,48,98,116,83,111,102,116,66,111,100,121,0,83,111,102,116,66,111,100,121,77,97,116,101,114,105,97,108,68,97,116,97,0,83,111,102,116,66,111,100,121,78,111,100,101,68,97,116,97,0,83,111,102,116,66,111,100,121,76,105,110,107,68,97,116,97,0,83,111,102,116,66,111,100,121,70,97,99,101,68,97,116,97,0,83,111,102,116,66,111,100,121,84,101,116,114,97,68,97,116,97,0,83,111,102,116,82,105,103,105,100,65,110,99,104,111,114,68,97,116,97,0,102,108,111,97,116,0,83,111,102,116,66,111,100,121,80,111,115,101,68,97,116,97,0,83,111,102,116,66,111,100,121,67,108,117,115,116,101,114,68,97,116,97,0,105,110,116,0,98,116,83,111,102,116,66,111,100,121,74,111,105,110,116,68,97,116,97,0,98,116,83,111,102,116,66,111,100,121,70,108,111,97,116,68,97,116,97,0,78,49,48,98,116,83,111,102,116,66,111,100,121,49,53,82,97,121,70,114,111,109,84,111,67,97,115,116,101,114,69,0,78,54,98,116,68,98,118,116,56,73,67,111,108,108,105,100,101,69,0,78,49,48,98,116,83,111,102,116,66,111,100,121,53,74,111,105,110,116,69,0,78,49,48,98,116,83,111,102,116,66,111,100,121,54,67,74,111,105,110,116,69,0,50,52,98,116,83,111,102,116,66,111,100,121,67,111,108,108,105,115,105,111,110,83,104,97,112,101,0,83,111,102,116,66,111,100,121,0,85,112,100,97,116,101,67,108,117,115,116,101,114,115,0,83,111,102,116,66,111,100,121,32,97,112,112,108,121,70,111,114,99,101,115,0,65,112,112,108,121,67,108,117,115,116,101,114,115,0,78,49,53,98,116,83,111,102,116,67,111,108,108,105,100,101,114,115,49,51,67,111,108,108,105,100,101,83,68,70,95,82,83,69,0,78,49,53,98,116,83,111,102,116,67,111,108,108,105,100,101,114,115,49,50,67,111,108,108,105,100,101,67,76,95,82,83,69,0,78,49,53,98,116,83,111,102,116,67,111,108,108,105,100,101,114,115,49,49,67,108,117,115,116,101,114,66,97,115,101,69,0,50,55,98,116,83,111,102,116,67,108,117,115,116,101,114,67,111,108,108,105,115,105,111,110,83,104,97,112,101,0,83,79,70,84,67,76,85,83,84,69,82,0,98,116,67,111,110,118,101,120,73,110,116,101,114,110,97,108,83,104,97,112,101,68,97,116,97,0,78,49,53,98,116,83,111,102,116,67,111,108,108,105,100,101,114,115,49,50,67,111,108,108,105,100,101,67,76,95,83,83,69,0,78,49,53,98,116,83,111,102,116,67,111,108,108,105,100,101,114,115,49,50,67,111,108,108,105,100,101,86,70,95,83,83,69,0,50,57,98,116,83,111,102,116,82,105,103,105,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,50,48,98,116,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,51,53,98,116,83,111,102,116,66,111,100,121,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,50,54,98,116,83,111,102,116,66,111,100,121,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,0,90,78,51,53,98,116,83,111,102,116,66,111,100,121,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,50,49,99,97,108,99,117,108,97,116,101,84,105,109,101,79,102,73,109,112,97,99,116,69,80,49,55,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,83,49,95,82,75,49,54,98,116,68,105,115,112,97,116,99,104,101,114,73,110,102,111,80,49,54,98,116,77,97,110,105,102,111,108,100,82,101,115,117,108,116,69,51,49,76,111,99,97,108,84,114,105,97,110,103,108,101,83,112,104,101,114,101,67,97,115,116,67,97,108,108,98,97,99,107,0,78,49,50,98,116,67,111,110,118,101,120,67,97,115,116,49,48,67,97,115,116,82,101,115,117,108,116,69,0,49,53,98,116,84,114,105,97,110,103,108,101,83,104,97,112,101,0,84,114,105,97,110,103,108,101,0,50,52,98,116,83,111,102,116,82,105,103,105,100,68,121,110,97,109,105,99,115,87,111,114,108,100,0,114,97,121,84,101,115,116,0,50,51,98,116,83,111,102,116,83,105,110,103,108,101,82,97,121,67,97,108,108,98,97,99,107,0,50,51,98,116,66,114,111,97,100,112,104,97,115,101,82,97,121,67,97,108,108,98,97,99,107,0,50,52,98,116,66,114,111,97,100,112,104,97,115,101,65,97,98,98,67,97,108,108,98,97,99,107,0,112,114,101,100,105,99,116,85,110,99,111,110,115,116,114,97,105,110,116,77,111,116,105,111,110,83,111,102,116,66,111,100,121,0,115,111,108,118,101,83,111,102,116,67,111,110,115,116,114,97,105,110,116,115,0,50,56,98,116,83,111,102,116,83,111,102,116,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,49,49,98,116,82,105,103,105,100,66,111,100,121,0,98,116,82,105,103,105,100,66,111,100,121,70,108,111,97,116,68,97,116,97,0,50,51,98,116,68,105,115,99,114,101,116,101,68,121,110,97,109,105,99,115,87,111,114,108,100,0,49,53,98,116,68,121,110,97,109,105,99,115,87,111,114,108,100,0,100,101,98,117,103,68,114,97,119,87,111,114,108,100,0,98,116,68,121,110,97,109,105,99,115,87,111,114,108,100,70,108,111,97,116,68,97,116,97,0,115,116,101,112,83,105,109,117,108,97,116,105,111,110,0,115,121,110,99,104,114,111,110,105,122,101,77,111,116,105,111,110,83,116,97,116,101,115,0,112,114,101,100,105,99,116,85,110,99,111,110,115,116,114,97,105,110,116,77,111,116,105,111,110,0,105,110,116,101,103,114,97,116,101,84,114,97,110,115,102,111,114,109,115,0,67,67,68,32,109,111,116,105,111,110,32,99,108,97,109,112,105,110,103,0,51,52,98,116,67,108,111,115,101,115,116,78,111,116,77,101,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,0,97,112,112,108,121,32,115,112,101,99,117,108,97,116,105,118,101,32,99,111,110,116,97,99,116,32,114,101,115,116,105,116,117,116,105,111,110,0,99,97,108,99,117,108,97,116,101,83,105,109,117,108,97,116,105,111,110,73,115,108,97,110,100,115,0,115,111,108,118,101,67,111,110,115,116,114,97,105,110,116,115,0,117,112,100,97,116,101,65,99,116,105,118,97,116,105,111,110,83,116,97,116,101,0,105,110,116,101,114,110,97,108,83,105,110,103,108,101,83,116,101,112,83,105,109,117,108,97,116,105,111,110,0,99,114,101,97,116,101,80,114,101,100,105,99,116,105,118,101,67,111,110,116,97,99,116,115,0,114,101,108,101,97,115,101,32,112,114,101,100,105,99,116,105,118,101,32,99,111,110,116,97,99,116,32,109,97,110,105,102,111,108,100,115,0,112,114,101,100,105,99,116,105,118,101,32,99,111,110,118,101,120,83,119,101,101,112,84,101,115,116,0,117,112,100,97,116,101,65,99,116,105,111,110,115,0,50,55,73,110,112,108,97,99,101,83,111,108,118,101,114,73,115,108,97,110,100,67,97,108,108,98,97,99,107,0,78,50,53,98,116,83,105,109,117,108,97,116,105,111,110,73,115,108,97,110,100,77,97,110,97,103,101,114,49,52,73,115,108,97,110,100,67,97,108,108,98,97,99,107,69,0,50,51,98,116,71,101,110,101,114,105,99,54,68,111,102,67,111,110,115,116,114,97,105,110,116,0,49,55,98,116,84,121,112,101,100,67,111,110,115,116,114,97,105,110,116,0,49,51,98,116,84,121,112,101,100,79,98,106,101,99,116,0,98,116,71,101,110,101,114,105,99,54,68,111,102,67,111,110,115,116,114,97,105,110,116,68,97,116,97,0,50,57,98,116,71,101,110,101,114,105,99,54,68,111,102,83,112,114,105,110,103,67,111,110,115,116,114,97,105,110,116,0,98,116,71,101,110,101,114,105,99,54,68,111,102,83,112,114,105,110,103,67,111,110,115,116,114,97,105,110,116,68,97,116,97,0,50,51,98,116,80,111,105,110,116,50,80,111,105,110,116,67,111,110,115,116,114,97,105,110,116,0,98,116,80,111,105,110,116,50,80,111,105,110,116,67,111,110,115,116,114,97,105,110,116,70,108,111,97,116,68,97,116,97,0,98,116,84,121,112,101,100,67,111,110,115,116,114,97,105,110,116,70,108,111,97,116,68,97,116,97,0,49,56,98,116,83,108,105,100,101,114,67,111,110,115,116,114,97,105,110,116,0,98,116,83,108,105,100,101,114,67,111,110,115,116,114,97,105,110,116,68,97,116,97,0,50,49,98,116,67,111,110,101,84,119,105,115,116,67,111,110,115,116,114,97,105,110,116,0,98,116,67,111,110,101,84,119,105,115,116,67,111,110,115,116,114,97,105,110,116,68,97,116,97,0,49,55,98,116,72,105,110,103,101,67,111,110,115,116,114,97,105,110,116,0,98,116,72,105,110,103,101,67,111,110,115,116,114,97,105,110,116,70,108,111,97,116,68,97,116,97,0,51,53,98,116,83,101,113,117,101,110,116,105,97,108,73,109,112,117,108,115,101,67,111,110,115,116,114,97,105,110,116,83,111,108,118,101,114,0,49,56,98,116,67,111,110,115,116,114,97,105,110,116,83,111,108,118,101,114,0,115,111,108,118,101,71,114,111,117,112,0,115,111,108,118,101,71,114,111,117,112,67,97,99,104,101,70,114,105,101,110,100,108,121,83,101,116,117,112,0,115,111,108,118,101,71,114,111,117,112,67,97,99,104,101,70,114,105,101,110,100,108,121,73,116,101,114,97,116,105,111,110,115,0,49,54,98,116,82,97,121,99,97,115,116,86,101,104,105,99,108,101,0,49,55,98,116,65,99,116,105,111,110,73,110,116,101,114,102,97,99,101,0,50,53,98,116,68,101,102,97,117,108,116,86,101,104,105,99,108,101,82,97,121,99,97,115,116,101,114,0,51,48,98,116,75,105,110,101,109,97,116,105,99,67,104,97,114,97,99,116,101,114,67,111,110,116,114,111,108,108,101,114,0,51,48,98,116,67,104,97,114,97,99,116,101,114,67,111,110,116,114,111,108,108,101,114,73,110,116,101,114,102,97,99,101,0,52,51,98,116,75,105,110,101,109,97,116,105,99,67,108,111,115,101,115,116,78,111,116,77,101,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,0,50,50,98,116,83,117,98,115,105,109,112,108,101,120,67,111,110,118,101,120,67,97,115,116,0,49,50,98,116,67,111,110,118,101,120,67,97,115,116,0,49,55,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,0,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,70,108,111,97,116,68,97,116,97,0,49,51,98,116,71,104,111,115,116,79,98,106,101,99,116,0,50,52,98,116,80,97,105,114,67,97,99,104,105,110,103,71,104,111,115,116,79,98,106,101,99,116,0,50,49,98,116,67,111,108,108,105,115,105,111,110,68,105,115,112,97,116,99,104,101,114,0,50,51,98,116,67,111,108,108,105,115,105,111,110,80,97,105,114,67,97,108,108,98,97,99,107,0,49,55,98,116,79,118,101,114,108,97,112,67,97,108,108,98,97,99,107,0,51,49,98,116,68,101,102,97,117,108,116,67,111,108,108,105,115,105,111,110,67,111,110,102,105,103,117,114,97,116,105,111,110,0,50,52,98,116,67,111,108,108,105,115,105,111,110,67,111,110,102,105,103,117,114,97,116,105,111,110,0,78,51,51,98,116,67,111,110,118,101,120,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,51,98,116,67,111,110,118,101,120,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,55,83,119,97,112,112,101,100,67,114,101,97,116,101,70,117,110,99,69,0,78,50,56,98,116,67,111,109,112,111,117,110,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,54,98,116,67,111,109,112,111,117,110,100,67,111,109,112,111,117,110,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,50,56,98,116,67,111,109,112,111,117,110,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,55,83,119,97,112,112,101,100,67,114,101,97,116,101,70,117,110,99,69,0,78,49,54,98,116,69,109,112,116,121,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,50,98,116,83,112,104,101,114,101,83,112,104,101,114,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,52,98,116,83,112,104,101,114,101,84,114,105,97,110,103,108,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,50,54,98,116,66,111,120,66,111,120,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,78,51,49,98,116,67,111,110,118,101,120,80,108,97,110,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,50,53,98,116,83,105,109,117,108,97,116,105,111,110,73,115,108,97,110,100,77,97,110,97,103,101,114,0,105,115,108,97,110,100,85,110,105,111,110,70,105,110,100,65,110,100,81,117,105,99,107,83,111,114,116,0,112,114,111,99,101,115,115,73,115,108,97,110,100,115,0,51,49,98,116,67,111,110,118,101,120,80,108,97,110,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,51,51,98,116,67,111,110,118,101,120,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,50,52,98,116,67,111,110,118,101,120,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,0,90,78,51,51,98,116,67,111,110,118,101,120,67,111,110,99,97,118,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,50,49,99,97,108,99,117,108,97,116,101,84,105,109,101,79,102,73,109,112,97,99,116,69,80,49,55,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,83,49,95,82,75,49,54,98,116,68,105,115,112,97,116,99,104,101,114,73,110,102,111,80,49,54,98,116,77,97,110,105,102,111,108,100,82,101,115,117,108,116,69,51,49,76,111,99,97,108,84,114,105,97,110,103,108,101,83,112,104,101,114,101,67,97,115,116,67,97,108,108,98,97,99,107,0,50,54,98,116,66,111,120,66,111,120,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,49,54,98,116,77,97,110,105,102,111,108,100,82,101,115,117,108,116,0,78,51,54,98,116,68,105,115,99,114,101,116,101,67,111,108,108,105,115,105,111,110,68,101,116,101,99,116,111,114,73,110,116,101,114,102,97,99,101,54,82,101,115,117,108,116,69,0,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,0,117,112,100,97,116,101,65,97,98,98,115,0,1,79,118,101,114,102,108,111,119,32,105,110,32,65,65,66,66,44,32,111,98,106,101,99,116,32,114,101,109,111,118,101,100,32,102,114,111,109,32,115,105,109,117,108,97,116,105,111,110,0,73,102,32,121,111,117,32,99,97,110,32,114,101,112,114,111,100,117,99,101,32,116,104,105,115,44,32,112,108,101,97,115,101,32,101,109,97,105,108,32,98,117,103,115,64,99,111,110,116,105,110,117,111,117,115,112,104,121,115,105,99,115,46,99,111,109,10,0,80,108,101,97,115,101,32,105,110,99,108,117,100,101,32,97,98,111,118,101,32,105,110,102,111,114,109,97,116,105,111,110,44,32,121,111,117,114,32,80,108,97,116,102,111,114,109,44,32,118,101,114,115,105,111,110,32,111,102,32,79,83,46,10,0,84,104,97,110,107,115,46,10,0,99,97,108,99,117,108,97,116,101,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,115,0,49,55,68,101,98,117,103,68,114,97,119,99,97,108,108,98,97,99,107,0,49,57,98,116,83,105,110,103,108,101,82,97,121,67,97,108,108,98,97,99,107,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,49,114,97,121,84,101,115,116,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,50,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,49,55,82,97,121,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,69,50,57,66,114,105,100,103,101,84,114,105,97,110,103,108,101,82,97,121,99,97,115,116,67,97,108,108,98,97,99,107,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,49,114,97,121,84,101,115,116,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,50,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,49,55,82,97,121,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,69,50,57,66,114,105,100,103,101,84,114,105,97,110,103,108,101,82,97,121,99,97,115,116,67,97,108,108,98,97,99,107,95,48,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,49,114,97,121,84,101,115,116,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,50,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,49,55,82,97,121,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,69,57,82,97,121,84,101,115,116,101,114,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,49,114,97,121,84,101,115,116,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,50,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,49,55,82,97,121,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,69,49,53,76,111,99,97,108,73,110,102,111,65,100,100,101,114,50,0,112,101,114,102,111,114,109,68,105,115,99,114,101,116,101,67,111,108,108,105,115,105,111,110,68,101,116,101,99,116,105,111,110,0,100,105,115,112,97,116,99,104,65,108,108,67,111,108,108,105,115,105,111,110,80,97,105,114,115,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,53,111,98,106,101,99,116,81,117,101,114,121,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,80,75,49,51,98,116,67,111,110,118,101,120,83,104,97,112,101,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,53,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,50,48,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,102,69,51,50,66,114,105,100,103,101,84,114,105,97,110,103,108,101,67,111,110,118,101,120,99,97,115,116,67,97,108,108,98,97,99,107,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,53,111,98,106,101,99,116,81,117,101,114,121,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,80,75,49,51,98,116,67,111,110,118,101,120,83,104,97,112,101,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,53,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,50,48,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,102,69,51,50,66,114,105,100,103,101,84,114,105,97,110,103,108,101,67,111,110,118,101,120,99,97,115,116,67,97,108,108,98,97,99,107,95,48,0,99,111,110,118,101,120,83,119,101,101,112,67,111,109,112,111,117,110,100,0,90,78,49,54,98,116,67,111,108,108,105,115,105,111,110,87,111,114,108,100,50,53,111,98,106,101,99,116,81,117,101,114,121,83,105,110,103,108,101,73,110,116,101,114,110,97,108,69,80,75,49,51,98,116,67,111,110,118,101,120,83,104,97,112,101,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,53,95,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,82,78,83,95,50,48,67,111,110,118,101,120,82,101,115,117,108,116,67,97,108,108,98,97,99,107,69,102,69,49,52,76,111,99,97,108,73,110,102,111,65,100,100,101,114,0,99,111,110,118,101,120,83,119,101,101,112,84,101,115,116,0,50,49,98,116,83,105,110,103,108,101,83,119,101,101,112,67,97,108,108,98,97,99,107,0,50,51,98,116,83,105,110,103,108,101,67,111,110,116,97,99,116,67,97,108,108,98,97,99,107,0,50,51,98,116,66,114,105,100,103,101,100,77,97,110,105,102,111,108,100,82,101,115,117,108,116,0,51,52,98,116,83,112,104,101,114,101,84,114,105,97,110,103,108,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,78,50,51,98,116,67,111,110,118,101,120,67,111,110,118,101,120,65,108,103,111,114,105,116,104,109,49,48,67,114,101,97,116,101,70,117,110,99,69,0,50,51,98,116,67,111,110,118,101,120,67,111,110,118,101,120,65,108,103,111,114,105,116,104,109,0,90,78,50,51,98,116,67,111,110,118,101,120,67,111,110,118,101,120,65,108,103,111,114,105,116,104,109,49,54,112,114,111,99,101,115,115,67,111,108,108,105,115,105,111,110,69,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,83,50,95,82,75,49,54,98,116,68,105,115,112,97,116,99,104,101,114,73,110,102,111,80,49,54,98,116,77,97,110,105,102,111,108,100,82,101,115,117,108,116,69,49,51,98,116,68,117,109,109,121,82,101,115,117,108,116,0,90,78,50,51,98,116,67,111,110,118,101,120,67,111,110,118,101,120,65,108,103,111,114,105,116,104,109,49,54,112,114,111,99,101,115,115,67,111,108,108,105,115,105,111,110,69,80,75,50,52,98,116,67,111,108,108,105,115,105,111,110,79,98,106,101,99,116,87,114,97,112,112,101,114,83,50,95,82,75,49,54,98,116,68,105,115,112,97,116,99,104,101,114,73,110,102,111,80,49,54,98,116,77,97,110,105,102,111,108,100,82,101,115,117,108,116,69,50,49,98,116,87,105,116,104,111,117,116,77,97,114,103,105,110,82,101,115,117,108,116,0,50,52,98,116,80,101,114,116,117,114,98,101,100,67,111,110,116,97,99,116,82,101,115,117,108,116,0,50,56,98,116,67,111,109,112,111,117,110,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,50,50,98,116,67,111,109,112,111,117,110,100,76,101,97,102,67,97,108,108,98,97,99,107,0,51,54,98,116,67,111,109,112,111,117,110,100,67,111,109,112,111,117,110,100,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,51,48,98,116,67,111,109,112,111,117,110,100,67,111,109,112,111,117,110,100,76,101,97,102,67,97,108,108,98,97,99,107,0,49,53,98,116,67,111,109,112,111,117,110,100,83,104,97,112,101,0,67,111,109,112,111,117,110,100,0,98,116,67,111,109,112,111,117,110,100,83,104,97,112,101,67,104,105,108,100,68,97,116,97,0,98,116,67,111,109,112,111,117,110,100,83,104,97,112,101,68,97,116,97,0,49,49,98,116,67,111,110,101,83,104,97,112,101,0,67,111,110,101,0,98,116,67,111,110,101,83,104,97,112,101,68,97,116,97,0,49,50,98,116,67,111,110,101,83,104,97,112,101,90,0,67,111,110,101,90,0,49,50,98,116,67,111,110,101,83,104,97,112,101,88,0,67,111,110,101,88,0,49,51,98,116,83,112,104,101,114,101,83,104,97,112,101,0,83,80,72,69,82,69,0,50,50,98,116,66,118,104,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,0,66,86,72,84,82,73,65,78,71,76,69,77,69,83,72,0,98,116,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,68,97,116,97,0,90,78,75,50,50,98,116,66,118,104,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,49,57,112,114,111,99,101,115,115,65,108,108,84,114,105,97,110,103,108,101,115,69,80,49,56,98,116,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,82,75,57,98,116,86,101,99,116,111,114,51,83,52,95,69,50,49,77,121,78,111,100,101,79,118,101,114,108,97,112,67,97,108,108,98,97,99,107,0,50,49,98,116,78,111,100,101,79,118,101,114,108,97,112,67,97,108,108,98,97,99,107,0,90,78,50,50,98,116,66,118,104,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,49,52,112,101,114,102,111,114,109,82,97,121,99,97,115,116,69,80,49,56,98,116,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,82,75,57,98,116,86,101,99,116,111,114,51,83,52,95,69,50,49,77,121,78,111,100,101,79,118,101,114,108,97,112,67,97,108,108,98,97,99,107,0,90,78,50,50,98,116,66,118,104,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,49,55,112,101,114,102,111,114,109,67,111,110,118,101,120,99,97,115,116,69,80,49,56,98,116,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,82,75,57,98,116,86,101,99,116,111,114,51,83,52,95,83,52,95,83,52,95,69,50,49,77,121,78,111,100,101,79,118,101,114,108,97,112,67,97,108,108,98,97,99,107,0,49,57,98,116,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,0,84,82,73,65,78,71,76,69,77,69,83,72,0,90,78,75,49,57,98,116,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,49,57,112,114,111,99,101,115,115,65,108,108,84,114,105,97,110,103,108,101,115,69,80,49,56,98,116,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,82,75,57,98,116,86,101,99,116,111,114,51,83,52,95,69,49,54,70,105,108,116,101,114,101,100,67,97,108,108,98,97,99,107,0,50,49,83,117,112,112,111,114,116,86,101,114,116,101,120,67,97,108,108,98,97,99,107,0,49,56,98,116,83,116,97,116,105,99,80,108,97,110,101,83,104,97,112,101,0,83,84,65,84,73,67,80,76,65,78,69,0,98,116,83,116,97,116,105,99,80,108,97,110,101,83,104,97,112,101,68,97,116,97,0,50,51,98,116,80,111,108,121,104,101,100,114,97,108,67,111,110,118,101,120,83,104,97,112,101,0,51,52,98,116,80,111,108,121,104,101,100,114,97,108,67,111,110,118,101,120,65,97,98,98,67,97,99,104,105,110,103,83,104,97,112,101,0,49,54,98,116,67,111,108,108,105,115,105,111,110,83,104,97,112,101,0,98,116,67,111,108,108,105,115,105,111,110,83,104,97,112,101,68,97,116,97,0,49,51,98,116,67,111,110,118,101,120,83,104,97,112,101,0,50,49,98,116,67,111,110,118,101,120,73,110,116,101,114,110,97,108,83,104,97,112,101,0,49,55,98,116,67,111,110,118,101,120,72,117,108,108,83,104,97,112,101,0,67,111,110,118,101,120,0,98,116,67,111,110,118,101,120,72,117,108,108,83,104,97,112,101,68,97,116,97,0,49,56,98,116,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,0,51,49,98,116,73,110,116,101,114,110,97,108,84,114,105,97,110,103,108,101,73,110,100,101,120,67,97,108,108,98,97,99,107,0,49,52,98,116,67,97,112,115,117,108,101,83,104,97,112,101,0,67,97,112,115,117,108,101,83,104,97,112,101,0,98,116,67,97,112,115,117,108,101,83,104,97,112,101,68,97,116,97,0,49,53,98,116,67,97,112,115,117,108,101,83,104,97,112,101,88,0,67,97,112,115,117,108,101,88,0,49,53,98,116,67,97,112,115,117,108,101,83,104,97,112,101,90,0,67,97,112,115,117,108,101,90,0,50,53,98,116,67,111,110,118,101,120,84,114,105,97,110,103,108,101,77,101,115,104,83,104,97,112,101,0,67,111,110,118,101,120,84,114,105,109,101,115,104,0,50,54,76,111,99,97,108,83,117,112,112,111,114,116,86,101,114,116,101,120,67,97,108,108,98,97,99,107,0,49,52,98,116,67,111,110,99,97,118,101,83,104,97,112,101,0,49,48,98,116,66,111,120,83,104,97,112,101,0,66,111,120,0,49,52,98,116,79,112,116,105,109,105,122,101,100,66,118,104,0,90,78,49,52,98,116,79,112,116,105,109,105,122,101,100,66,118,104,53,98,117,105,108,100,69,80,50,51,98,116,83,116,114,105,100,105,110,103,77,101,115,104,73,110,116,101,114,102,97,99,101,98,82,75,57,98,116,86,101,99,116,111,114,51,83,52,95,69,50,57,81,117,97,110,116,105,122,101,100,78,111,100,101,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,0,90,78,49,52,98,116,79,112,116,105,109,105,122,101,100,66,118,104,53,98,117,105,108,100,69,80,50,51,98,116,83,116,114,105,100,105,110,103,77,101,115,104,73,110,116,101,114,102,97,99,101,98,82,75,57,98,116,86,101,99,116,111,114,51,83,52,95,69,50,48,78,111,100,101,84,114,105,97,110,103,108,101,67,97,108,108,98,97,99,107,0,50,53,98,116,72,101,105,103,104,116,102,105,101,108,100,84,101,114,114,97,105,110,83,104,97,112,101,0,72,69,73,71,72,84,70,73,69,76,68,0,49,53,98,116,67,121,108,105,110,100,101,114,83,104,97,112,101,0,67,121,108,105,110,100,101,114,89,0,98,116,67,121,108,105,110,100,101,114,83,104,97,112,101,68,97,116,97,0,49,54,98,116,67,121,108,105,110,100,101,114,83,104,97,112,101,88,0,67,121,108,105,110,100,101,114,88,0,49,54,98,116,67,121,108,105,110,100,101,114,83,104,97,112,101,90,0,67,121,108,105,110,100,101,114,90,0,49,52,98,116,84,114,105,97,110,103,108,101,77,101,115,104,0,50,48,98,116,65,120,105,115,83,119,101,101,112,51,73,110,116,101,114,110,97,108,73,116,69,0,50,49,98,116,66,114,111,97,100,112,104,97,115,101,73,110,116,101,114,102,97,99,101,0,49,53,98,116,78,117,108,108,80,97,105,114,67,97,99,104,101,0,50,50,98,116,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,67,97,99,104,101,0,49,50,98,116,65,120,105,115,83,119,101,101,112,51,0,50,56,98,116,72,97,115,104,101,100,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,67,97,99,104,101,0,90,78,50,56,98,116,72,97,115,104,101,100,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,67,97,99,104,101,51,55,114,101,109,111,118,101,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,115,67,111,110,116,97,105,110,105,110,103,80,114,111,120,121,69,80,49,55,98,116,66,114,111,97,100,112,104,97,115,101,80,114,111,120,121,80,49,50,98,116,68,105,115,112,97,116,99,104,101,114,69,49,56,82,101,109,111,118,101,80,97,105,114,67,97,108,108,98,97,99,107,0,90,78,50,56,98,116,72,97,115,104,101,100,79,118,101,114,108,97,112,112,105,110,103,80,97,105,114,67,97,99,104,101,49,57,99,108,101,97,110,80,114,111,120,121,70,114,111,109,80,97,105,114,115,69,80,49,55,98,116,66,114,111,97,100,112,104,97,115,101,80,114,111,120,121,80,49,50,98,116,68,105,115,112,97,116,99,104,101,114,69,49,55,67,108,101,97,110,80,97,105,114,67,97,108,108,98,97,99,107,0,49,54,98,116,68,98,118,116,66,114,111,97,100,112,104,97,115,101,0,49,56,98,116,68,98,118,116,84,114,101,101,67,111,108,108,105,100,101,114,0,49,57,66,114,111,97,100,112,104,97,115,101,82,97,121,84,101,115,116,101,114,0,50,48,66,114,111,97,100,112,104,97,115,101,65,97,98,98,84,101,115,116,101,114,0,49,50,98,116,68,105,115,112,97,116,99,104,101,114,0,49,52,98,116,81,117,97,110,116,105,122,101,100,66,118,104,0,98,116,79,112,116,105,109,105,122,101,100,66,118,104,78,111,100,101,68,97,116,97,0,98,116,81,117,97,110,116,105,122,101,100,66,118,104,78,111,100,101,68,97,116,97,0,98,116,66,118,104,83,117,98,116,114,101,101,73,110,102,111,68,97,116,97,0,98,116,81,117,97,110,116,105,122,101,100,66,118,104,70,108,111,97,116,68,97,116,97,0,50,53,98,116,84,114,105,97,110,103,108,101,82,97,121,99,97,115,116,67,97,108,108,98,97,99,107,0,50,56,98,116,84,114,105,97,110,103,108,101,67,111,110,118,101,120,99,97,115,116,67,97,108,108,98,97,99,107,0,51,51,98,116,77,105,110,107,111,119,115,107,105,80,101,110,101,116,114,97,116,105,111,110,68,101,112,116,104,83,111,108,118,101,114,0,51,48,98,116,67,111,110,118,101,120,80,101,110,101,116,114,97,116,105,111,110,68,101,112,116,104,83,111,108,118,101,114,0,90,78,51,51,98,116,77,105,110,107,111,119,115,107,105,80,101,110,101,116,114,97,116,105,111,110,68,101,112,116,104,83,111,108,118,101,114,49,50,99,97,108,99,80,101,110,68,101,112,116,104,69,82,50,50,98,116,86,111,114,111,110,111,105,83,105,109,112,108,101,120,83,111,108,118,101,114,80,75,49,51,98,116,67,111,110,118,101,120,83,104,97,112,101,83,52,95,82,75,49,49,98,116,84,114,97,110,115,102,111,114,109,83,55,95,82,57,98,116,86,101,99,116,111,114,51,83,57,95,83,57,95,80,49,50,98,116,73,68,101,98,117,103,68,114,97,119,69,50,48,98,116,73,110,116,101,114,109,101,100,105,97,116,101,82,101,115,117,108,116,0,51,48,98,116,71,106,107,69,112,97,80,101,110,101,116,114,97,116,105,111,110,68,101,112,116,104,83,111,108,118,101,114,0,49,53,98,116,71,106,107,67,111,110,118,101,120,67,97,115,116,0,49,54,98,116,80,111,105,110,116,67,111,108,108,101,99,116,111,114,0,50,55,98,116,67,111,110,116,105,110,117,111,117,115,67,111,110,118,101,120,67,111,108,108,105,115,105,111,110,0,49,55,98,116,71,106,107,80,97,105,114,68,101,116,101,99,116,111,114,0,51,54,98,116,68,105,115,99,114,101,116,101,67,111,108,108,105,115,105,111,110,68,101,116,101,99,116,111,114,73,110,116,101,114,102,97,99,101,0,51,48,98,116,65,99,116,105,118,97,116,105,110,103,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,49,54,98,116,69,109,112,116,121,65,108,103,111,114,105,116,104,109,0,51,50,98,116,83,112,104,101,114,101,83,112,104,101,114,101,67,111,108,108,105,115,105,111,110,65,108,103,111,114,105,116,104,109,0,49,54,98,116,66,111,120,66,111,120,68,101,116,101,99,116,111,114,0,50,50,83,112,104,101,114,101,84,114,105,97,110,103,108,101,68,101,116,101,99,116,111,114,0,50,51,98,116,72,97,115,104,101,100,83,105,109,112,108,101,80,97,105,114,67,97,99,104,101,0,49,56,98,116,67,111,110,118,101,120,80,111,108,121,104,101,100,114,111,110,0,50,54,98,116,84,114,105,97,110,103,108,101,73,110,100,101,120,86,101,114,116,101,120,65,114,114,97,121,0,50,51,98,116,83,116,114,105,100,105,110,103,77,101,115,104,73,110,116,101,114,102,97,99,101,0,98,116,73,110,116,73,110,100,101,120,68,97,116,97,0,98,116,83,104,111,114,116,73,110,116,73,110,100,101,120,84,114,105,112,108,101,116,68,97,116,97,0,98,116,67,104,97,114,73,110,100,101,120,84,114,105,112,108,101,116,68,97,116,97,0,98,116,86,101,99,116,111,114,51,70,108,111,97,116,68,97,116,97,0,98,116,86,101,99,116,111,114,51,68,111,117,98,108,101,68,97,116,97,0,98,116,77,101,115,104,80,97,114,116,68,97,116,97,0,98,116,83,116,114,105,100,105,110,103,77,101,115,104,73,110,116,101,114,102,97,99,101,68,97,116,97,0,82,111,111,116,0,17,0,10,0,17,17,17,0,0,0,0,5,0,0,0,0,0,0,9,0,0,0,0,11,0,0,0,0,0,0,0,0,17,0,15,10,17,17,17,3,10,7,0,1,19,9,11,11,0,0,9,6,11,0,0,11,0,6,17,0,0,0,17,17,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,17,0,10,10,17,17,17,0,10,0,0,2,0,9,11,0,0,0,9,0,11,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,12,0,0,0,0,9,12,0,0,0,0,0,12,0,0,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14,0,0,0,0,0,0,0,0,0,0,0,13,0,0,0,4,13,0,0,0,0,9,14,0,0,0,0,0,14,0,0,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,15,0,0,0,0,9,16,0,0,0,0,0,16,0,0,16,0,0,18,0,0,0,18,18,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,0,0,0,18,18,18,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,10,0,0,0,0,10,0,0,0,0,9,11,0,0,0,0,0,11,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,0,0,0,0,0,0,0,12,0,0,0,0,12,0,0,0,0,9,12,0,0,0,0,0,12,0,0,12,0,0,48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,45,43,32,32,32,48,88,48,120,0,84,33,34,25,13,1,2,3,17,75,28,12,16,4,11,29,18,30,39,104,110,111,112,113,98,32,5,6,15,19,20,21,26,8,22,7,40,36,23,24,9,10,14,27,31,37,35,131,130,125,38,42,43,60,61,62,63,67,71,74,77,88,89,90,91,92,93,94,95,96,97,99,100,101,102,103,105,106,107,108,114,115,116,121,122,123,124,0,73,108,108,101,103,97,108,32,98,121,116,101,32,115,101,113,117,101,110,99,101,0,68,111,109,97,105,110,32,101,114,114,111,114,0,82,101,115,117,108,116,32,110,111,116,32,114,101,112,114,101,115,101,110,116,97,98,108,101,0,78,111,116,32,97,32,116,116,121,0,80,101,114,109,105,115,115,105,111,110,32,100,101,110,105,101,100,0,79,112,101,114,97,116,105,111,110,32,110,111,116,32,112,101,114,109,105,116,116,101,100,0,78,111,32,115,117,99,104,32,102,105,108,101,32,111,114,32,100,105,114,101,99,116,111,114,121,0,78,111,32,115,117,99,104,32,112,114,111,99,101,115,115,0,70,105,108,101,32,101,120,105,115,116,115,0,86,97,108,117,101,32,116,111,111,32,108,97,114,103,101,32,102,111,114,32,100,97,116,97,32,116,121,112,101,0,78,111,32,115,112,97,99,101,32,108,101,102,116,32,111,110,32,100,101,118,105,99,101,0,79,117,116,32,111,102,32,109,101,109,111,114,121,0,82,101,115,111,117,114,99,101,32,98,117,115,121,0,73,110,116,101,114,114,117,112,116,101,100,32,115,121,115,116,101,109,32,99,97,108,108,0,82,101,115,111,117,114,99,101,32,116,101,109,112,111,114,97,114,105,108,121,32,117,110,97,118,97,105,108,97,98,108,101,0,73,110,118,97,108,105,100,32,115,101,101,107,0,67,114,111,115,115,45,100,101,118,105,99,101,32,108,105,110,107,0,82,101,97,100,45,111,110,108,121,32,102,105,108,101,32,115,121,115,116,101,109,0,68,105,114,101,99,116,111,114,121,32,110,111,116,32,101,109,112,116,121,0,67,111,110,110,101,99,116,105,111,110,32,114,101,115,101,116,32,98,121,32,112,101,101,114,0,79,112,101,114,97,116,105,111,110,32,116,105,109,101,100,32,111,117,116,0,67,111,110,110,101,99,116,105,111,110,32,114,101,102,117,115,101,100,0,72,111,115,116,32,105,115,32,100,111,119,110,0,72,111,115,116,32,105,115,32,117,110,114,101,97,99,104,97,98,108,101,0,65,100,100,114,101,115,115,32,105,110,32,117,115,101,0,66,114,111,107,101,110,32,112,105,112,101,0,73,47,79,32,101,114,114,111,114,0,78,111,32],"i8",ALLOC_NONE,Runtime.GLOBAL_BASE+10240);allocate([115,117,99,104,32,100,101,118,105,99,101,32,111,114,32,97,100,100,114,101,115,115,0,66,108,111,99,107,32,100,101,118,105,99,101,32,114,101,113,117,105,114,101,100,0,78,111,32,115,117,99,104,32,100,101,118,105,99,101,0,78,111,116,32,97,32,100,105,114,101,99,116,111,114,121,0,73,115,32,97,32,100,105,114,101,99,116,111,114,121,0,84,101,120,116,32,102,105,108,101,32,98,117,115,121,0,69,120,101,99,32,102,111,114,109,97,116,32,101,114,114,111,114,0,73,110,118,97,108,105,100,32,97,114,103,117,109,101,110,116,0,65,114,103,117,109,101,110,116,32,108,105,115,116,32,116,111,111,32,108,111,110,103,0,83,121,109,98,111,108,105,99,32,108,105,110,107,32,108,111,111,112,0,70,105,108,101,110,97,109,101,32,116,111,111,32,108,111,110,103,0,84,111,111,32,109,97,110,121,32,111,112,101,110,32,102,105,108,101,115,32,105,110,32,115,121,115,116,101,109,0,78,111,32,102,105,108,101,32,100,101,115,99,114,105,112,116,111,114,115,32,97,118,97,105,108,97,98,108,101,0,66,97,100,32,102,105,108,101,32,100,101,115,99,114,105,112,116,111,114,0,78,111,32,99,104,105,108,100,32,112,114,111,99,101,115,115,0,66,97,100,32,97,100,100,114,101,115,115,0,70,105,108,101,32,116,111,111,32,108,97,114,103,101,0,84,111,111,32,109,97,110,121,32,108,105,110,107,115,0,78,111,32,108,111,99,107,115,32,97,118,97,105,108,97,98,108,101,0,82,101,115,111,117,114,99,101,32,100,101,97,100,108,111,99,107,32,119,111,117,108,100,32,111,99,99,117,114,0,83,116,97,116,101,32,110,111,116,32,114,101,99,111,118,101,114,97,98,108,101,0,80,114,101,118,105,111,117,115,32,111,119,110,101,114,32,100,105,101,100,0,79,112,101,114,97,116,105,111,110,32,99,97,110,99,101,108,101,100,0,70,117,110,99,116,105,111,110,32,110,111,116,32,105,109,112,108,101,109,101,110,116,101,100,0,78,111,32,109,101,115,115,97,103,101,32,111,102,32,100,101,115,105,114,101,100,32,116,121,112,101,0,73,100,101,110,116,105,102,105,101,114,32,114,101,109,111,118,101,100,0,68,101,118,105,99,101,32,110,111,116,32,97,32,115,116,114,101,97,109,0,78,111,32,100,97,116,97,32,97,118,97,105,108,97,98,108,101,0,68,101,118,105,99,101,32,116,105,109,101,111,117,116,0,79,117,116,32,111,102,32,115,116,114,101,97,109,115,32,114,101,115,111,117,114,99,101,115,0,76,105,110,107,32,104,97,115,32,98,101,101,110,32,115,101,118,101,114,101,100,0,80,114,111,116,111,99,111,108,32,101,114,114,111,114,0,66,97,100,32,109,101,115,115,97,103,101,0,70,105,108,101,32,100,101,115,99,114,105,112,116,111,114,32,105,110,32,98,97,100,32,115,116,97,116,101,0,78,111,116,32,97,32,115,111,99,107,101,116,0,68,101,115,116,105,110,97,116,105,111,110,32,97,100,100,114,101,115,115,32,114,101,113,117,105,114,101,100,0,77,101,115,115,97,103,101,32,116,111,111,32,108,97,114,103,101,0,80,114,111,116,111,99,111,108,32,119,114,111,110,103,32,116,121,112,101,32,102,111,114,32,115,111,99,107,101,116,0,80,114,111,116,111,99,111,108,32,110,111,116,32,97,118,97,105,108,97,98,108,101,0,80,114,111,116,111,99,111,108,32,110,111,116,32,115,117,112,112,111,114,116,101,100,0,83,111,99,107,101,116,32,116,121,112,101,32,110,111,116,32,115,117,112,112,111,114,116,101,100,0,78,111,116,32,115,117,112,112,111,114,116,101,100,0,80,114,111,116,111,99,111,108,32,102,97,109,105,108,121,32,110,111,116,32,115,117,112,112,111,114,116,101,100,0,65,100,100,114,101,115,115,32,102,97,109,105,108,121,32,110,111,116,32,115,117,112,112,111,114,116,101,100,32,98,121,32,112,114,111,116,111,99,111,108,0,65,100,100,114,101,115,115,32,110,111,116,32,97,118,97,105,108,97,98,108,101,0,78,101,116,119,111,114,107,32,105,115,32,100,111,119,110,0,78,101,116,119,111,114,107,32,117,110,114,101,97,99,104,97,98,108,101,0,67,111,110,110,101,99,116,105,111,110,32,114,101,115,101,116,32,98,121,32,110,101,116,119,111,114,107,0,67,111,110,110,101,99,116,105,111,110,32,97,98,111,114,116,101,100,0,78,111,32,98,117,102,102,101,114,32,115,112,97,99,101,32,97,118,97,105,108,97,98,108,101,0,83,111,99,107,101,116,32,105,115,32,99,111,110,110,101,99,116,101,100,0,83,111,99,107,101,116,32,110,111,116,32,99,111,110,110,101,99,116,101,100,0,67,97,110,110,111,116,32,115,101,110,100,32,97,102,116,101,114,32,115,111,99,107,101,116,32,115,104,117,116,100,111,119,110,0,79,112,101,114,97,116,105,111,110,32,97,108,114,101,97,100,121,32,105,110,32,112,114,111,103,114,101,115,115,0,79,112,101,114,97,116,105,111,110,32,105,110,32,112,114,111,103,114,101,115,115,0,83,116,97,108,101,32,102,105,108,101,32,104,97,110,100,108,101,0,82,101,109,111,116,101,32,73,47,79,32,101,114,114,111,114,0,81,117,111,116,97,32,101,120,99,101,101,100,101,100,0,78,111,32,109,101,100,105,117,109,32,102,111,117,110,100,0,87,114,111,110,103,32,109,101,100,105,117,109,32,116,121,112,101,0,78,111,32,101,114,114,111,114,32,105,110,102,111,114,109,97,116,105,111,110,0,0,40,110,117,108,108,41,0,45,48,88,43,48,88,32,48,88,45,48,120,43,48,120,32,48,120,0,105,110,102,0,73,78,70,0,110,97,110,0,78,65,78,0,46,0,99,97,110,110,111,116,32,122,101,114,111,32,111,117,116,32,116,104,114,101,97,100,32,118,97,108,117,101,32,102,111,114,32,95,95,99,120,97,95,103,101,116,95,103,108,111,98,97,108,115,40,41,0,99,97,110,110,111,116,32,99,114,101,97,116,101,32,112,116,104,114,101,97,100,32,107,101,121,32,102,111,114,32,95,95,99,120,97,95,103,101,116,95,103,108,111,98,97,108,115,40,41,0,112,116,104,114,101,97,100,95,111,110,99,101,32,102,97,105,108,117,114,101,32,105,110,32,95,95,99,120,97,95,103,101,116,95,103,108,111,98,97,108,115,95,102,97,115,116,40,41,0,78,49,48,95,95,99,120,120,97,98,105,118,49,50,48,95,95,115,105,95,99,108,97,115,115,95,116,121,112,101,95,105,110,102,111,69,0,78,49,48,95,95,99,120,120,97,98,105,118,49,49,54,95,95,115,104,105,109,95,116,121,112,101,95,105,110,102,111,69,0,83,116,57,116,121,112,101,95,105,110,102,111,0,78,49,48,95,95,99,120,120,97,98,105,118,49,49,55,95,95,99,108,97,115,115,95,116,121,112,101,95,105,110,102,111,69,0,83,116,57,101,120,99,101,112,116,105,111,110,0,117,110,99,97,117,103,104,116,0,116,101,114,109,105,110,97,116,105,110,103,32,119,105,116,104,32,37,115,32,101,120,99,101,112,116,105,111,110,32,111,102,32,116,121,112,101,32,37,115,58,32,37,115,0,116,101,114,109,105,110,97,116,105,110,103,32,119,105,116,104,32,37,115,32,101,120,99,101,112,116,105,111,110,32,111,102,32,116,121,112,101,32,37,115,0,116,101,114,109,105,110,97,116,105,110,103,32,119,105,116,104,32,37,115,32,102,111,114,101,105,103,110,32,101,120,99,101,112,116,105,111,110,0,116,101,114,109,105,110,97,116,105,110,103,0,116,101,114,109,105,110,97,116,101,95,104,97,110,100,108,101,114,32,117,110,101,120,112,101,99,116,101,100,108,121,32,114,101,116,117,114,110,101,100,0,83,116,57,98,97,100,95,97,108,108,111,99,0,115,116,100,58,58,98,97,100,95,97,108,108,111,99,0,78,49,48,95,95,99,120,120,97,98,105,118,49,49,57,95,95,112,111,105,110,116,101,114,95,116,121,112,101,95,105,110,102,111,69,0,78,49,48,95,95,99,120,120,97,98,105,118,49,49,55,95,95,112,98,97,115,101,95,116,121,112,101,95,105,110,102,111,69,0,78,49,48,95,95,99,120,120,97,98,105,118,49,50,49,95,95,118,109,105,95,99,108,97,115,115,95,116,121,112,101,95,105,110,102,111,69,0],"i8",ALLOC_NONE,Runtime.GLOBAL_BASE+20480);var tempDoublePtr=STATICTOP;STATICTOP+=16;Module["_i64Subtract"]=_i64Subtract;function ___setErrNo(value){if(Module["___errno_location"])HEAP32[Module["___errno_location"]()>>2]=value;return value}var ERRNO_CODES={EPERM:1,ENOENT:2,ESRCH:3,EINTR:4,EIO:5,ENXIO:6,E2BIG:7,ENOEXEC:8,EBADF:9,ECHILD:10,EAGAIN:11,EWOULDBLOCK:11,ENOMEM:12,EACCES:13,EFAULT:14,ENOTBLK:15,EBUSY:16,EEXIST:17,EXDEV:18,ENODEV:19,ENOTDIR:20,EISDIR:21,EINVAL:22,ENFILE:23,EMFILE:24,ENOTTY:25,ETXTBSY:26,EFBIG:27,ENOSPC:28,ESPIPE:29,EROFS:30,EMLINK:31,EPIPE:32,EDOM:33,ERANGE:34,ENOMSG:42,EIDRM:43,ECHRNG:44,EL2NSYNC:45,EL3HLT:46,EL3RST:47,ELNRNG:48,EUNATCH:49,ENOCSI:50,EL2HLT:51,EDEADLK:35,ENOLCK:37,EBADE:52,EBADR:53,EXFULL:54,ENOANO:55,EBADRQC:56,EBADSLT:57,EDEADLOCK:35,EBFONT:59,ENOSTR:60,ENODATA:61,ETIME:62,ENOSR:63,ENONET:64,ENOPKG:65,EREMOTE:66,ENOLINK:67,EADV:68,ESRMNT:69,ECOMM:70,EPROTO:71,EMULTIHOP:72,EDOTDOT:73,EBADMSG:74,ENOTUNIQ:76,EBADFD:77,EREMCHG:78,ELIBACC:79,ELIBBAD:80,ELIBSCN:81,ELIBMAX:82,ELIBEXEC:83,ENOSYS:38,ENOTEMPTY:39,ENAMETOOLONG:36,ELOOP:40,EOPNOTSUPP:95,EPFNOSUPPORT:96,ECONNRESET:104,ENOBUFS:105,EAFNOSUPPORT:97,EPROTOTYPE:91,ENOTSOCK:88,ENOPROTOOPT:92,ESHUTDOWN:108,ECONNREFUSED:111,EADDRINUSE:98,ECONNABORTED:103,ENETUNREACH:101,ENETDOWN:100,ETIMEDOUT:110,EHOSTDOWN:112,EHOSTUNREACH:113,EINPROGRESS:115,EALREADY:114,EDESTADDRREQ:89,EMSGSIZE:90,EPROTONOSUPPORT:93,ESOCKTNOSUPPORT:94,EADDRNOTAVAIL:99,ENETRESET:102,EISCONN:106,ENOTCONN:107,ETOOMANYREFS:109,EUSERS:87,EDQUOT:122,ESTALE:116,ENOTSUP:95,ENOMEDIUM:123,EILSEQ:84,EOVERFLOW:75,ECANCELED:125,ENOTRECOVERABLE:131,EOWNERDEAD:130,ESTRPIPE:86};function _sysconf(name){switch(name){case 30:return PAGE_SIZE;case 85:return totalMemory/PAGE_SIZE;case 132:case 133:case 12:case 137:case 138:case 15:case 235:case 16:case 17:case 18:case 19:case 20:case 149:case 13:case 10:case 236:case 153:case 9:case 21:case 22:case 159:case 154:case 14:case 77:case 78:case 139:case 80:case 81:case 82:case 68:case 67:case 164:case 11:case 29:case 47:case 48:case 95:case 52:case 51:case 46:return 200809;case 79:return 0;case 27:case 246:case 127:case 128:case 23:case 24:case 160:case 161:case 181:case 182:case 242:case 183:case 184:case 243:case 244:case 245:case 165:case 178:case 179:case 49:case 50:case 168:case 169:case 175:case 170:case 171:case 172:case 97:case 76:case 32:case 173:case 35:return-1;case 176:case 177:case 7:case 155:case 8:case 157:case 125:case 126:case 92:case 93:case 129:case 130:case 131:case 94:case 91:return 1;case 74:case 60:case 69:case 70:case 4:return 1024;case 31:case 42:case 72:return 32;case 87:case 26:case 33:return 2147483647;case 34:case 1:return 47839;case 38:case 36:return 99;case 43:case 37:return 2048;case 0:return 2097152;case 3:return 65536;case 28:return 32768;case 44:return 32767;case 75:return 16384;case 39:return 1e3;case 89:return 700;case 71:return 256;case 40:return 255;case 2:return 100;case 180:return 64;case 25:return 20;case 5:return 16;case 6:return 6;case 73:return 4;case 84:{if(typeof navigator==="object")return navigator["hardwareConcurrency"]||1;return 1}}___setErrNo(ERRNO_CODES.EINVAL);return-1}function __ZSt18uncaught_exceptionv(){return!!__ZSt18uncaught_exceptionv.uncaught_exception}var EXCEPTIONS={last:0,caught:[],infos:{},deAdjust:(function(adjusted){if(!adjusted||EXCEPTIONS.infos[adjusted])return adjusted;for(var ptr in EXCEPTIONS.infos){var info=EXCEPTIONS.infos[ptr];if(info.adjusted===adjusted){return ptr}}return adjusted}),addRef:(function(ptr){if(!ptr)return;var info=EXCEPTIONS.infos[ptr];info.refcount++}),decRef:(function(ptr){if(!ptr)return;var info=EXCEPTIONS.infos[ptr];assert(info.refcount>0);info.refcount--;if(info.refcount===0){if(info.destructor){Runtime.dynCall("vi",info.destructor,[ptr])}delete EXCEPTIONS.infos[ptr];___cxa_free_exception(ptr)}}),clearRef:(function(ptr){if(!ptr)return;var info=EXCEPTIONS.infos[ptr];info.refcount=0})};function ___resumeException(ptr){if(!EXCEPTIONS.last){EXCEPTIONS.last=ptr}EXCEPTIONS.clearRef(EXCEPTIONS.deAdjust(ptr));throw ptr+" - Exception catching is disabled, this exception cannot be caught. Compile with -s DISABLE_EXCEPTION_CATCHING=0 or DISABLE_EXCEPTION_CATCHING=2 to catch."}function ___cxa_find_matching_catch(){var thrown=EXCEPTIONS.last;if(!thrown){return(asm["setTempRet0"](0),0)|0}var info=EXCEPTIONS.infos[thrown];var throwntype=info.type;if(!throwntype){return(asm["setTempRet0"](0),thrown)|0}var typeArray=Array.prototype.slice.call(arguments);var pointer=Module["___cxa_is_pointer_type"](throwntype);if(!___cxa_find_matching_catch.buffer)___cxa_find_matching_catch.buffer=_malloc(4);HEAP32[___cxa_find_matching_catch.buffer>>2]=thrown;thrown=___cxa_find_matching_catch.buffer;for(var i=0;i<typeArray.length;i++){if(typeArray[i]&&Module["___cxa_can_catch"](typeArray[i],throwntype,thrown)){thrown=HEAP32[thrown>>2];info.adjusted=thrown;return(asm["setTempRet0"](typeArray[i]),thrown)|0}}thrown=HEAP32[thrown>>2];return(asm["setTempRet0"](throwntype),thrown)|0}function ___cxa_throw(ptr,type,destructor){EXCEPTIONS.infos[ptr]={ptr:ptr,adjusted:ptr,type:type,destructor:destructor,refcount:0};EXCEPTIONS.last=ptr;if(!("uncaught_exception"in __ZSt18uncaught_exceptionv)){__ZSt18uncaught_exceptionv.uncaught_exception=1}else{__ZSt18uncaught_exceptionv.uncaught_exception++}throw ptr+" - Exception catching is disabled, this exception cannot be caught. Compile with -s DISABLE_EXCEPTION_CATCHING=0 or DISABLE_EXCEPTION_CATCHING=2 to catch."}Module["_memset"]=_memset;function ___gxx_personality_v0(){}Module["_bitshift64Shl"]=_bitshift64Shl;function _abort(){Module["abort"]()}function _pthread_once(ptr,func){if(!_pthread_once.seen)_pthread_once.seen={};if(ptr in _pthread_once.seen)return;Runtime.dynCall("v",func);_pthread_once.seen[ptr]=1}var PTHREAD_SPECIFIC={};function _pthread_getspecific(key){return PTHREAD_SPECIFIC[key]||0}Module["_i64Add"]=_i64Add;var PTHREAD_SPECIFIC_NEXT_KEY=1;function _pthread_key_create(key,destructor){if(key==0){return ERRNO_CODES.EINVAL}HEAP32[key>>2]=PTHREAD_SPECIFIC_NEXT_KEY;PTHREAD_SPECIFIC[PTHREAD_SPECIFIC_NEXT_KEY]=0;PTHREAD_SPECIFIC_NEXT_KEY++;return 0}var _llvm_pow_f32=Math_pow;function _pthread_setspecific(key,value){if(!(key in PTHREAD_SPECIFIC)){return ERRNO_CODES.EINVAL}PTHREAD_SPECIFIC[key]=value;return 0}function _malloc(bytes){var ptr=Runtime.dynamicAlloc(bytes+8);return ptr+8&4294967288}Module["_malloc"]=_malloc;function ___cxa_allocate_exception(size){return _malloc(size)}Module["_bitshift64Ashr"]=_bitshift64Ashr;Module["_bitshift64Lshr"]=_bitshift64Lshr;function ___cxa_pure_virtual(){ABORT=true;throw"Pure virtual function called!"}function _time(ptr){var ret=Date.now()/1e3|0;if(ptr){HEAP32[ptr>>2]=ret}return ret}function _pthread_cleanup_push(routine,arg){__ATEXIT__.push((function(){Runtime.dynCall("vi",routine,[arg])}));_pthread_cleanup_push.level=__ATEXIT__.length}function ___cxa_guard_acquire(variable){if(!HEAP8[variable>>0]){HEAP8[variable>>0]=1;return 1}return 0}function _pthread_cleanup_pop(){assert(_pthread_cleanup_push.level==__ATEXIT__.length,"cannot pop if something else added meanwhile!");__ATEXIT__.pop();_pthread_cleanup_push.level=__ATEXIT__.length}function ___cxa_begin_catch(ptr){__ZSt18uncaught_exceptionv.uncaught_exception--;EXCEPTIONS.caught.push(ptr);EXCEPTIONS.addRef(EXCEPTIONS.deAdjust(ptr));return ptr}function _emscripten_memcpy_big(dest,src,num){HEAPU8.set(HEAPU8.subarray(src,src+num),dest);return dest}Module["_memcpy"]=_memcpy;var SYSCALLS={varargs:0,get:(function(varargs){SYSCALLS.varargs+=4;var ret=HEAP32[SYSCALLS.varargs-4>>2];return ret}),getStr:(function(){var ret=Pointer_stringify(SYSCALLS.get());return ret}),get64:(function(){var low=SYSCALLS.get(),high=SYSCALLS.get();if(low>=0)assert(high===0);else assert(high===-1);return low}),getZero:(function(){assert(SYSCALLS.get()===0)})};function ___syscall6(which,varargs){SYSCALLS.varargs=varargs;try{var stream=SYSCALLS.getStreamFromFD();FS.close(stream);return 0}catch(e){if(typeof FS==="undefined"||!(e instanceof FS.ErrnoError))abort(e);return-e.errno}}function _sbrk(bytes){var self=_sbrk;if(!self.called){DYNAMICTOP=alignMemoryPage(DYNAMICTOP);self.called=true;assert(Runtime.dynamicAlloc);self.alloc=Runtime.dynamicAlloc;Runtime.dynamicAlloc=(function(){abort("cannot dynamically allocate, sbrk now has control")})}var ret=DYNAMICTOP;if(bytes!=0){var success=self.alloc(bytes);if(!success)return-1>>>0}return ret}Module["_memmove"]=_memmove;function _gettimeofday(ptr){var now=Date.now();HEAP32[ptr>>2]=now/1e3|0;HEAP32[ptr+4>>2]=now%1e3*1e3|0;return 0}var _llvm_fabs_f32=Math_abs;Module["_llvm_bswap_i32"]=_llvm_bswap_i32;function _llvm_trap(){abort("trap!")}function ___cxa_guard_release(){}function _pthread_self(){return 0}function ___syscall140(which,varargs){SYSCALLS.varargs=varargs;try{var stream=SYSCALLS.getStreamFromFD(),offset_high=SYSCALLS.get(),offset_low=SYSCALLS.get(),result=SYSCALLS.get(),whence=SYSCALLS.get();var offset=offset_low;assert(offset_high===0);FS.llseek(stream,offset,whence);HEAP32[result>>2]=stream.position;if(stream.getdents&&offset===0&&whence===0)stream.getdents=null;return 0}catch(e){if(typeof FS==="undefined"||!(e instanceof FS.ErrnoError))abort(e);return-e.errno}}function ___syscall146(which,varargs){SYSCALLS.varargs=varargs;try{var stream=SYSCALLS.get(),iov=SYSCALLS.get(),iovcnt=SYSCALLS.get();var ret=0;if(!___syscall146.buffer){___syscall146.buffers=[null,[],[]];___syscall146.printChar=(function(stream,curr){var buffer=___syscall146.buffers[stream];assert(buffer);if(curr===0||curr===10){(stream===1?Module["print"]:Module["printErr"])(UTF8ArrayToString(buffer,0));buffer.length=0}else{buffer.push(curr)}})}for(var i=0;i<iovcnt;i++){var ptr=HEAP32[iov+i*8>>2];var len=HEAP32[iov+(i*8+4)>>2];for(var j=0;j<len;j++){___syscall146.printChar(stream,HEAPU8[ptr+j])}ret+=len}return ret}catch(e){if(typeof FS==="undefined"||!(e instanceof FS.ErrnoError))abort(e);return-e.errno}}__ATEXIT__.push((function(){var fflush=Module["_fflush"];if(fflush)fflush(0);var printChar=___syscall146.printChar;if(!printChar)return;var buffers=___syscall146.buffers;if(buffers[1].length)printChar(1,10);if(buffers[2].length)printChar(2,10)}));STACK_BASE=STACKTOP=Runtime.alignMemory(STATICTOP);staticSealed=true;STACK_MAX=STACK_BASE+TOTAL_STACK;DYNAMIC_BASE=DYNAMICTOP=Runtime.alignMemory(STACK_MAX);var cttz_i8=allocate([8,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,6,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,7,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,6,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0],"i8",ALLOC_DYNAMIC);function invoke_viiiii(index,a1,a2,a3,a4,a5){try{Module["dynCall_viiiii"](index,a1,a2,a3,a4,a5)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_vid(index,a1,a2){try{Module["dynCall_vid"](index,a1,a2)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_vi(index,a1){try{Module["dynCall_vi"](index,a1)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiidii(index,a1,a2,a3,a4,a5,a6){try{Module["dynCall_viiidii"](index,a1,a2,a3,a4,a5,a6)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_vii(index,a1,a2){try{Module["dynCall_vii"](index,a1,a2)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10){try{return Module["dynCall_iiiiiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_ii(index,a1){try{return Module["dynCall_ii"](index,a1)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viidi(index,a1,a2,a3,a4){try{Module["dynCall_viidi"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viddiii(index,a1,a2,a3,a4,a5,a6){try{Module["dynCall_viddiii"](index,a1,a2,a3,a4,a5,a6)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_vidii(index,a1,a2,a3,a4){try{Module["dynCall_vidii"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iiiii(index,a1,a2,a3,a4){try{return Module["dynCall_iiiii"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_vidi(index,a1,a2,a3){try{Module["dynCall_vidi"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8){try{return Module["dynCall_diiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiiddddiid(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11){try{Module["dynCall_viiiiddddiid"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diiiii(index,a1,a2,a3,a4,a5){try{return Module["dynCall_diiiii"](index,a1,a2,a3,a4,a5)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_vidd(index,a1,a2,a3){try{Module["dynCall_vidd"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iiii(index,a1,a2,a3){try{return Module["dynCall_iiii"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiiid(index,a1,a2,a3,a4,a5,a6){try{Module["dynCall_viiiiid"](index,a1,a2,a3,a4,a5,a6)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiiii(index,a1,a2,a3,a4,a5,a6){try{Module["dynCall_viiiiii"](index,a1,a2,a3,a4,a5,a6)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iiid(index,a1,a2,a3){try{return Module["dynCall_iiid"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_di(index,a1){try{return Module["dynCall_di"](index,a1)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iiiiiii(index,a1,a2,a3,a4,a5,a6){try{return Module["dynCall_iiiiiii"](index,a1,a2,a3,a4,a5,a6)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diiidii(index,a1,a2,a3,a4,a5,a6){try{return Module["dynCall_diiidii"](index,a1,a2,a3,a4,a5,a6)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viidii(index,a1,a2,a3,a4,a5){try{Module["dynCall_viidii"](index,a1,a2,a3,a4,a5)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiiiii(index,a1,a2,a3,a4,a5,a6,a7){try{Module["dynCall_viiiiiii"](index,a1,a2,a3,a4,a5,a6,a7)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9){try{Module["dynCall_viiiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10){try{Module["dynCall_viiiiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iii(index,a1,a2){try{return Module["dynCall_iii"](index,a1,a2)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diii(index,a1,a2,a3){try{return Module["dynCall_diii"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10){try{return Module["dynCall_diiiiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiid(index,a1,a2,a3,a4,a5){try{Module["dynCall_viiiid"](index,a1,a2,a3,a4,a5)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9){try{return Module["dynCall_diiiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_did(index,a1,a2){try{return Module["dynCall_did"](index,a1,a2)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiiidddddidi(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12){try{Module["dynCall_viiiidddddidi"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diidii(index,a1,a2,a3,a4,a5){try{return Module["dynCall_diidii"](index,a1,a2,a3,a4,a5)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_diiii(index,a1,a2,a3,a4){try{return Module["dynCall_diiii"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9){try{return Module["dynCall_iiiiiiiiii"](index,a1,a2,a3,a4,a5,a6,a7,a8,a9)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiid(index,a1,a2,a3,a4){try{Module["dynCall_viiid"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viii(index,a1,a2,a3){try{Module["dynCall_viii"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_v(index){try{Module["dynCall_v"](index)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viid(index,a1,a2,a3){try{Module["dynCall_viid"](index,a1,a2,a3)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_iidid(index,a1,a2,a3,a4){try{return Module["dynCall_iidid"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}function invoke_viiii(index,a1,a2,a3,a4){try{Module["dynCall_viiii"](index,a1,a2,a3,a4)}catch(e){if(typeof e!=="number"&&e!=="longjmp")throw e;asm["setThrew"](1,0)}}Module.asmGlobalArg={"Math":Math,"Int8Array":Int8Array,"Int16Array":Int16Array,"Int32Array":Int32Array,"Uint8Array":Uint8Array,"Uint16Array":Uint16Array,"Uint32Array":Uint32Array,"Float32Array":Float32Array,"Float64Array":Float64Array,"NaN":NaN,"Infinity":Infinity};Module.asmLibraryArg={"abort":abort,"assert":assert,"invoke_viiiii":invoke_viiiii,"invoke_vid":invoke_vid,"invoke_vi":invoke_vi,"invoke_viiidii":invoke_viiidii,"invoke_vii":invoke_vii,"invoke_iiiiiiiiiii":invoke_iiiiiiiiiii,"invoke_ii":invoke_ii,"invoke_viidi":invoke_viidi,"invoke_viddiii":invoke_viddiii,"invoke_vidii":invoke_vidii,"invoke_iiiii":invoke_iiiii,"invoke_vidi":invoke_vidi,"invoke_diiiiiiii":invoke_diiiiiiii,"invoke_viiiiddddiid":invoke_viiiiddddiid,"invoke_diiiii":invoke_diiiii,"invoke_vidd":invoke_vidd,"invoke_iiii":invoke_iiii,"invoke_viiiiid":invoke_viiiiid,"invoke_viiiiii":invoke_viiiiii,"invoke_iiid":invoke_iiid,"invoke_di":invoke_di,"invoke_iiiiiii":invoke_iiiiiii,"invoke_diiidii":invoke_diiidii,"invoke_viidii":invoke_viidii,"invoke_viiiiiii":invoke_viiiiiii,"invoke_viiiiiiiii":invoke_viiiiiiiii,"invoke_viiiiiiiiii":invoke_viiiiiiiiii,"invoke_iii":invoke_iii,"invoke_diii":invoke_diii,"invoke_diiiiiiiiii":invoke_diiiiiiiiii,"invoke_viiiid":invoke_viiiid,"invoke_diiiiiiiii":invoke_diiiiiiiii,"invoke_did":invoke_did,"invoke_viiiidddddidi":invoke_viiiidddddidi,"invoke_diidii":invoke_diidii,"invoke_diiii":invoke_diiii,"invoke_iiiiiiiiii":invoke_iiiiiiiiii,"invoke_viiid":invoke_viiid,"invoke_viii":invoke_viii,"invoke_v":invoke_v,"invoke_viid":invoke_viid,"invoke_iidid":invoke_iidid,"invoke_viiii":invoke_viiii,"_pthread_cleanup_pop":_pthread_cleanup_pop,"_abort":_abort,"___cxa_guard_acquire":___cxa_guard_acquire,"___gxx_personality_v0":___gxx_personality_v0,"___cxa_allocate_exception":___cxa_allocate_exception,"__ZSt18uncaught_exceptionv":__ZSt18uncaught_exceptionv,"___cxa_guard_release":___cxa_guard_release,"___setErrNo":___setErrNo,"_sbrk":_sbrk,"_llvm_pow_f32":_llvm_pow_f32,"___cxa_begin_catch":___cxa_begin_catch,"_emscripten_memcpy_big":_emscripten_memcpy_big,"___resumeException":___resumeException,"___cxa_find_matching_catch":___cxa_find_matching_catch,"_sysconf":_sysconf,"_pthread_getspecific":_pthread_getspecific,"_pthread_self":_pthread_self,"_llvm_fabs_f32":_llvm_fabs_f32,"_pthread_once":_pthread_once,"_llvm_trap":_llvm_trap,"_pthread_key_create":_pthread_key_create,"_emscripten_asm_const_diiiiiiii":_emscripten_asm_const_diiiiiiii,"_pthread_setspecific":_pthread_setspecific,"___cxa_throw":___cxa_throw,"___syscall6":___syscall6,"_pthread_cleanup_push":_pthread_cleanup_push,"_time":_time,"_gettimeofday":_gettimeofday,"___syscall140":___syscall140,"___cxa_pure_virtual":___cxa_pure_virtual,"___syscall146":___syscall146,"STACKTOP":STACKTOP,"STACK_MAX":STACK_MAX,"tempDoublePtr":tempDoublePtr,"ABORT":ABORT,"cttz_i8":cttz_i8};// EMSCRIPTEN_START_ASM
 var asm=(function(global,env,buffer) {
 "use asm";var a=new global.Int8Array(buffer);var b=new global.Int16Array(buffer);var c=new global.Int32Array(buffer);var d=new global.Uint8Array(buffer);var e=new global.Uint16Array(buffer);var f=new global.Uint32Array(buffer);var g=new global.Float32Array(buffer);var h=new global.Float64Array(buffer);var i=env.STACKTOP|0;var j=env.STACK_MAX|0;var k=env.tempDoublePtr|0;var l=env.ABORT|0;var m=env.cttz_i8|0;var n=0;var o=0;var p=0;var q=0;var r=global.NaN,s=global.Infinity;var t=0,u=0,v=0,w=0,x=0,y=0,z=0,A=0,B=0;var C=0;var D=0;var E=0;var F=0;var G=0;var H=0;var I=0;var J=0;var K=0;var L=0;var M=global.Math.floor;var N=global.Math.abs;var O=global.Math.sqrt;var P=global.Math.pow;var Q=global.Math.cos;var R=global.Math.sin;var S=global.Math.tan;var T=global.Math.acos;var U=global.Math.asin;var V=global.Math.atan;var W=global.Math.atan2;var X=global.Math.exp;var Y=global.Math.log;var Z=global.Math.ceil;var _=global.Math.imul;var $=global.Math.min;var aa=global.Math.clz32;var ba=env.abort;var ca=env.assert;var da=env.invoke_viiiii;var ea=env.invoke_vid;var fa=env.invoke_vi;var ga=env.invoke_viiidii;var ha=env.invoke_vii;var ia=env.invoke_iiiiiiiiiii;var ja=env.invoke_ii;var ka=env.invoke_viidi;var la=env.invoke_viddiii;var ma=env.invoke_vidii;var na=env.invoke_iiiii;var oa=env.invoke_vidi;var pa=env.invoke_diiiiiiii;var qa=env.invoke_viiiiddddiid;var ra=env.invoke_diiiii;var sa=env.invoke_vidd;var ta=env.invoke_iiii;var ua=env.invoke_viiiiid;var va=env.invoke_viiiiii;var wa=env.invoke_iiid;var xa=env.invoke_di;var ya=env.invoke_iiiiiii;var za=env.invoke_diiidii;var Aa=env.invoke_viidii;var Ba=env.invoke_viiiiiii;var Ca=env.invoke_viiiiiiiii;var Da=env.invoke_viiiiiiiiii;var Ea=env.invoke_iii;var Fa=env.invoke_diii;var Ga=env.invoke_diiiiiiiiii;var Ha=env.invoke_viiiid;var Ia=env.invoke_diiiiiiiii;var Ja=env.invoke_did;var Ka=env.invoke_viiiidddddidi;var La=env.invoke_diidii;var Ma=env.invoke_diiii;var Na=env.invoke_iiiiiiiiii;var Oa=env.invoke_viiid;var Pa=env.invoke_viii;var Qa=env.invoke_v;var Ra=env.invoke_viid;var Sa=env.invoke_iidid;var Ta=env.invoke_viiii;var Ua=env._pthread_cleanup_pop;var Va=env._abort;var Wa=env.___cxa_guard_acquire;var Xa=env.___gxx_personality_v0;var Ya=env.___cxa_allocate_exception;var Za=env.__ZSt18uncaught_exceptionv;var _a=env.___cxa_guard_release;var $a=env.___setErrNo;var ab=env._sbrk;var bb=env._llvm_pow_f32;var cb=env.___cxa_begin_catch;var db=env._emscripten_memcpy_big;var eb=env.___resumeException;var fb=env.___cxa_find_matching_catch;var gb=env._sysconf;var hb=env._pthread_getspecific;var ib=env._pthread_self;var jb=env._llvm_fabs_f32;var kb=env._pthread_once;var lb=env._llvm_trap;var mb=env._pthread_key_create;var nb=env._emscripten_asm_const_diiiiiiii;var ob=env._pthread_setspecific;var pb=env.___cxa_throw;var qb=env.___syscall6;var rb=env._pthread_cleanup_push;var sb=env._time;var tb=env._gettimeofday;var ub=env.___syscall140;var vb=env.___cxa_pure_virtual;var wb=env.___syscall146;var xb=0;
 // EMSCRIPTEN_START_FUNCS

@@ -1,14 +1,11 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
-
-window.GAME = new WHS.World({
+const GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
   autoresize: true,
   softbody: true,
 
   gravity: {
     x: 0,
-    y: -9.8 * 100,
+    y: -9.8 * 10,
     z: 0
   },
 
@@ -31,14 +28,14 @@ window.GAME = new WHS.World({
   }
 });
 
-var sphere = new WHS.Sphere({ // Softbody.
+new WHS.Sphere({ // Softbody (blue).
   geometry: {
     radius: 12,
     widthSegments: 32,
     heightSegments: 32
   },
 
-  mass: 15000,
+  mass: 15,
   softbody: true,
 
   physics: {
@@ -53,15 +50,25 @@ var sphere = new WHS.Sphere({ // Softbody.
   pos: {
     y: 12
   }
-});
+}).addTo(GAME);
 
-sphere.addTo(GAME).then(function () {
-  for (var i = 0; i < 10; i++) {
-    var newSphere = sphere.clone();
-    newSphere.position.y = 50 * (i + 1);
-    newSphere.addTo(GAME);
+new WHS.Sphere({ // Rigidbody (green).
+  geometry: {
+    radius: 3,
+    widthSegments: 16,
+    heightSegments: 16
+  },
+
+  mass: 10,
+
+  material: {
+    color: 0x00ff00
+  },
+
+  pos: {
+    y: 50
   }
-});
+}).addTo(GAME);
 
 new WHS.Box({
   geometry: {
@@ -112,5 +119,3 @@ new WHS.AmbientLight({
 
 GAME.setControls(WHS.orbitControls());
 GAME.start();
-
-},{}]},{},[1]);
