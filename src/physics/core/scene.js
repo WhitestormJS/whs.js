@@ -1,6 +1,7 @@
 import * as THREE from 'three';
-import {Eventable} from '../eventable';
 import Worker from 'inline-worker';
+import Stats from 'stats.js';
+import {Eventable} from '../eventable';
 import {
   addObjectChildren,
   MESSAGE_TYPES,
@@ -8,12 +9,12 @@ import {
   temp1Matrix4,
   REPORT_ITEMSIZE,
   COLLISIONREPORT_ITEMSIZE,
-  VEHICLEREPORT,
-  CONSTRAINTREPORT
+  VEHICLEREPORT_ITEMSIZE,
+  CONSTRAINTREPORT_ITEMSIZE
 } from '../api';
 
 export class Scene extends THREE.Scene {
-  constructor(params) {
+  constructor(params = {}, init = {}) {
     super();
 
     Object.assign(this, new Eventable());
@@ -43,6 +44,10 @@ export class Scene extends THREE.Scene {
         switch (data[0]) {
           case MESSAGE_TYPES.WORLDREPORT:
             this._updateScene(data);
+            break;
+
+          case MESSAGE_TYPES.SOFTREPORT:
+            this._updateSoftbodies(data);
             break;
 
           case MESSAGE_TYPES.COLLISIONREPORT:
@@ -102,19 +107,34 @@ export class Scene extends THREE.Scene {
       }
     };
 
-    params = params || {};
     params.fixedTimeStep = params.fixedTimeStep || 1 / 60;
     params.rateLimit = params.rateLimit || true;
+
+    params.whs = {
+      softbody: init.softbody
+    };
+
+    this._stats = init.stats ? new Stats() : false;
+    this._world = init.world || false;
+
+    if (this._stats) {
+      this._stats.setMode(0);
+      this._stats.domElement.style.position = 'absolute';
+      this._stats.domElement.style.left = '0px';
+      this._stats.domElement.style.top = '48px';
+
+      this._world._dom.appendChild(this._stats.domElement);
+    }
+
     this.execute('init', params);
   }
 
   _updateScene(data) {
-    const num_objects = data[1];
-    let object, offset;
+    let index = data[1];
 
-    for (let i = 0; i < num_objects; i++) {
-      offset = 2 + i * REPORT_ITEMSIZE;
-      object = this._objects[data[offset]];
+    while (index--) {
+      const offset = 2 + index * REPORT_ITEMSIZE;
+      const object = this._objects[data[offset]];
 
       if (object === undefined) continue;
 
@@ -155,11 +175,65 @@ export class Scene extends THREE.Scene {
     this.dispatchEvent('update');
   }
 
+  _updateSoftbodies(data) {
+    let index = data[1],
+      offset = 2;
+
+    while (index--) {
+      const size = data[offset + 1];
+      const object = this._objects[data[offset]];
+      const association = object._physijs.aIdxAssoc;
+      const attributes = object.geometry.attributes;
+
+      const volumePositions = attributes.position.array;
+      const volumeNormals = attributes.normal.array;
+
+      const offsetVert = offset + 2;
+
+      for (let i = 0; i < size; i++) {
+        const x = data[offsetVert + i * 6];
+        const y = data[offsetVert + i * 6 + 1];
+        const z = data[offsetVert + i * 6 + 2];
+
+        const nx = data[offsetVert + i * 6 + 3];
+        const ny = data[offsetVert + i * 6 + 4];
+        const nz = data[offsetVert + i * 6 + 5];
+
+        const assocVertex = association[i];
+
+        for (let k = 0, kl = assocVertex.length; k < kl; k++) {
+          let indexVertex = assocVertex[k];
+
+          volumePositions[indexVertex] = x;
+          volumeNormals[indexVertex] = nx;
+          indexVertex++;
+
+          volumePositions[indexVertex] = y;
+          volumeNormals[indexVertex] = ny;
+          indexVertex++;
+
+          volumePositions[indexVertex] = z;
+          volumeNormals[indexVertex] = nz;
+        }
+      }
+
+      attributes.position.needsUpdate = true;
+      attributes.normal.needsUpdate = true;
+
+      offset += 2 + size * 6;
+    }
+
+    // if (this.SUPPORT_TRANSFERABLE)
+    //   this._worker.transferableMessage(data.buffer, [data.buffer]); // Give the typed array back to the worker
+
+    this._is_simulating = false;
+  }
+
   _updateVehicles(data) {
-    let vehicle, wheel, offset;
+    let vehicle, wheel;
 
     for (let i = 0; i < (data.length - 1) / VEHICLEREPORT_ITEMSIZE; i++) {
-      offset = 1 + i * VEHICLEREPORT_ITEMSIZE;
+      const offset = 1 + i * VEHICLEREPORT_ITEMSIZE;
       vehicle = this._vehicles[data[offset]];
 
       if (vehicle === undefined) continue;
@@ -185,10 +259,10 @@ export class Scene extends THREE.Scene {
   }
 
   _updateConstraints(data) {
-    let constraint, object, offset;
+    let constraint, object;
 
     for (let i = 0; i < (data.length - 1) / CONSTRAINTREPORT_ITEMSIZE; i++) {
-      offset = 1 + i * CONSTRAINTREPORT_ITEMSIZE;
+      const offset = 1 + i * CONSTRAINTREPORT_ITEMSIZE;
       constraint = this._constraints[data[offset]];
       object = this._objects[data[offset + 1]];
 
@@ -477,6 +551,8 @@ export class Scene extends THREE.Scene {
   }
 
   simulate(timeStep, maxSubSteps) {
+    if (this._stats) this._stats.begin();
+
     if (this._is_simulating) return false;
 
     this._is_simulating = true;
@@ -490,7 +566,14 @@ export class Scene extends THREE.Scene {
         const update = {id: object._physijs.id};
 
         if (object.__dirtyPosition) {
-          update.pos = {x: object.position.x, y: object.position.y, z: object.position.z};
+          update.pos = {
+            x: object.position.x,
+            y: object.position.y,
+            z: object.position.z
+          };
+
+          if (object._physijs.type === 'softbody') object.position.set(0, 0, 0);
+
           object.__dirtyPosition = false;
         }
 
@@ -502,6 +585,8 @@ export class Scene extends THREE.Scene {
             w: object.quaternion.w
           };
 
+          if (object._physijs.type === 'softbody') object.rotation.set(0, 0, 0);
+
           object.__dirtyRotation = false;
         }
 
@@ -511,6 +596,7 @@ export class Scene extends THREE.Scene {
 
     this.execute('simulate', {timeStep, maxSubSteps});
 
+    if (this._stats) this._stats.end();
     return true;
   }
 }
