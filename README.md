@@ -30,6 +30,8 @@
 
 * **Softbodies** - WhitestormJS is the only engine (except native ammo.js) that supports softbodies. 
 
+## GAME EXAMPLE
+<a href="http://192.241.128.187/current/examples/fps/shooter/" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/splash.png"></a>
 
 ## Installation
 Include a script tag linking the [WhitestormJS](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js) library in your `head` or after your `body`:
@@ -77,9 +79,6 @@ world.start(); // Start animations and physics simulation.
 ```
 
 <br>
-
-## Game example
-<a href="http://192.241.128.187/current/examples/fps/shooter/" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/splash.png"></a>
 
 ## [Examples](http://192.241.128.187/current/examples/):
 
