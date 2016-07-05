@@ -80,7 +80,6 @@ world.start(); // Start animations and physics simulation.
 
 [![Join the chat at https://gitter.im/WhitestormJS/whitestorm.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-##### Documentation: [Look here](http://whitestormjs.xyz//)
 
 <br>
 
@@ -113,7 +112,7 @@ world.start(); // Start animations and physics simulation.
 
 ----
 
-#### [Changelog](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
+#### [Changelog](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md) | [Documentation](http://whitestormjs.xyz/)
 
 ----
 
