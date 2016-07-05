@@ -7,7 +7,7 @@
     <a href="https://www.npmjs.com/package/whitestormjs"><img src="http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg"></a>&nbsp;&nbsp;          
     <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg"></a>&nbsp;&nbsp;
     <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>
-   .<a href="http://baikal.io/sasha240100/whitestorm-js"><img alt="Baikal" src="http://baikal.io/badges/sasha240100/whitestorm-js"></a>
+    <a href="http://baikal.io/sasha240100/whitestorm-js"><img alt="Baikal" src="http://baikal.io/badges/sasha240100/whitestorm-js"></a>
     <br>
 
     <p align="center"><i><b>Framework for developing 3D web apps with physics.</b></i></p>
