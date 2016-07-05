@@ -80,7 +80,7 @@ world.start(); // Start animations and physics simulation.
 
 <br>
 
-## [Examples](http://192.241.128.187/current/examples/):
+## &#128640; [Examples](http://192.241.128.187/current/examples/):
 
 #### BASIC:
  * [Basic / Hello world](http://192.241.128.187/current/examples/basic/helloworld/)  (Basic "Hello world!" example.)
