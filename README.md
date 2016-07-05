@@ -16,7 +16,7 @@
 
 ------
 
-## Features
+## FEATURES
 
 * **Simple shape crafting** — We use JSON-like structure for creating objects by inputed data and adding them to 3d world.
 
@@ -33,7 +33,7 @@
 ## GAME EXAMPLE
 <a href="http://192.241.128.187/current/examples/fps/shooter/" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/splash.png"></a>
 
-## Installation
+## INSTALLATION
 Include a script tag linking the [WhitestormJS](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js) library in your `head` or after your `body`:
 
 ```html
