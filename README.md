@@ -3,9 +3,7 @@
 <p align="center"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/logo/big-inverse-cropped.png"></p>
 
 <p align="center">
-    <a href="https://travis-ci.org/WhitestormJS/whitestorm.js" align="center">
-        <img src="https://travis-ci.org/WhitestormJS/whitestorm.js.svg">
-    </a>&nbsp;&nbsp;
+    <a href="https://travis-ci.org/WhitestormJS/whitestorm.js" align="center"><img src="https://travis-ci.org/WhitestormJS/whitestorm.js.svg"></a>&nbsp;&nbsp;
     <a href="https://www.npmjs.com/package/whitestormjs"><img src="http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg"></a>&nbsp;&nbsp;          
     <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg"></a>&nbsp;&nbsp;
     <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>
