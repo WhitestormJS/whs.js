@@ -359,24 +359,39 @@ module.exports = function (self) {
         true
       );
 
-      const sbConfig = body.get_m_cfg();
+      const sbConfig = body.get_m_cfg(),
+        physParams = description.params;
+
       sbConfig.set_viterations(40);
       sbConfig.set_piterations(40);
       sbConfig.set_collisions(0x11);
-      sbConfig.set_kDF(0.1);
-      sbConfig.set_kDP(0.01);
-      sbConfig.set_kPR(480);
-      body.get_m_materials().at(0).set_m_kLST(0.9);
-      body.get_m_materials().at(0).set_m_kAST(0.9);
+      sbConfig.set_kDF(physParams.friction ? physParams.friction : 0.1);
+      sbConfig.set_kDP(physParams.damping ? physParams.damping : 0.01);
+      sbConfig.set_kPR(physParams.pressure ? physParams.pressure : 0);
 
-      console.log(description.mass);
+      body.get_m_materials().at(0).set_m_kLST(physParams.stiffness ? physParams.stiffness : 0.9);
+      body.get_m_materials().at(0).set_m_kAST(physParams.stiffness ? physParams.stiffness : 0.9);
 
-      body.setTotalMass(description.mass, false);
-
-      Ammo.castObject(body, Ammo.btCollisionObject).getCollisionShape().setMargin(description.margin ? description.margin : 1);
+      Ammo.castObject(body, Ammo.btCollisionObject).getCollisionShape().setMargin(physParams.margin ? physParams.margin : 0.1);
       body.setActivationState(4);
       body.type = 0; // SoftBody.
 
+      _transform.setIdentity();
+
+      _vec3_1.setX(description.position.x);
+      _vec3_1.setY(description.position.y);
+      _vec3_1.setZ(description.position.z);
+      _transform.setOrigin(_vec3_1);
+
+      _quat.setX(description.rotation.x);
+      _quat.setY(description.rotation.y);
+      _quat.setZ(description.rotation.z);
+      _quat.setW(description.rotation.w);
+      _transform.setRotation(_quat);
+
+      body.transform(_transform);
+
+      body.setTotalMass(description.mass, false);
       world.addSoftBody(body, 1, -1);
       _softbody_report_size += body.get_m_nodes().size();
       _num_softbody_objects++;
@@ -587,7 +602,26 @@ module.exports = function (self) {
 
       _object.setWorldTransform(_transform);
       _object.activate();
-    } // TODO: Make for SoftBodies.
+    } else if (_object.type === 0) {
+      _object.getWorldTransform(_transform);
+
+      if (details.pos) {
+        _vec3_1.setX(details.pos.x);
+        _vec3_1.setY(details.pos.y);
+        _vec3_1.setZ(details.pos.z);
+        _transform.setOrigin(_vec3_1);
+      }
+
+      if (details.quat) {
+        _quat.setX(details.quat.x);
+        _quat.setY(details.quat.y);
+        _quat.setZ(details.quat.z);
+        _quat.setW(details.quat.w);
+        _transform.setRotation(_quat);
+      }
+
+      _object.transform(_transform);
+    }
   };
 
   public_functions.updateMass = (details) => {

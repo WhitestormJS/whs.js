@@ -21,8 +21,7 @@ class Sphere extends Shape {
   }
 
   build(params = {}) {
-    const _scope = this,
-      material = super._initMaterial(params.material);
+    const material = super._initMaterial(params.material);
 
     let Mesh;
 
@@ -31,11 +30,11 @@ class Sphere extends Shape {
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
-      _scope.setNative(new Mesh(
-        _scope.buildGeometry(params),
+      this.setNative(new Mesh(
+        this.buildGeometry(params),
 
         material,
-        params.mass
+        this.getParams()
       ));
 
       resolve();
@@ -43,19 +42,15 @@ class Sphere extends Shape {
   }
 
   buildGeometry(params = {}) {
-    const geometry = new THREE.SphereGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.SphereBufferGeometry : THREE.SphereGeometry;
+
+    const geometry = new GConstruct(
       params.geometry.radius,
       params.geometry.widthSegments,
       params.geometry.heightSegments
     );
 
-    if (this.getParams().softbody) {
-      geometry.translate(
-        this.__params.pos.x,
-        this.__params.pos.y,
-        this.__params.pos.z
-      );
-    }
+    if (params.softbody) this.proccessSoftbodyGeometry(geometry);
 
     return geometry;
   }
@@ -85,7 +80,7 @@ class Sphere extends Shape {
   }
 
   clone() {
-    return new Sphere({build: false}).copy(this);
+    return this.getParams().softbody ? new Sphere(this.getParams()) : new Sphere({build: false}).copy(this);
   }
 }
 
