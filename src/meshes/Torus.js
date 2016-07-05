@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/index.js';
+import * as Physijs  from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';

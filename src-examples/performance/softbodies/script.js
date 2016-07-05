@@ -1,11 +1,11 @@
-const GAME = new WHS.World({
+window.GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
   autoresize: true,
   softbody: true,
 
   gravity: {
     x: 0,
-    y: -100,
+    y: -9.8 * 100,
     z: 0
   },
 
@@ -28,15 +28,19 @@ const GAME = new WHS.World({
   }
 });
 
-window.sphere = new WHS.Sphere({
+const sphere = new WHS.Sphere({ // Softbody.
   geometry: {
     radius: 12,
-    widthSegments: 16,
-    heightSegments: 16
+    widthSegments: 32,
+    heightSegments: 32
   },
 
-  mass: 100,
+  mass: 15000,
   softbody: true,
+
+  physics: {
+    pressure: 50000
+  },
 
   material: {
     color: 0x000ff,
@@ -44,29 +48,17 @@ window.sphere = new WHS.Sphere({
   },
 
   pos: {
-    y: 30
+    y: 12
   }
 });
 
-window.sphere.addTo(GAME);
-
-new WHS.Sphere({
-  geometry: {
-    radius: 6,
-    widthSegments: 16,
-    heightSegments: 16
-  },
-
-  mass: 100,
-
-  material: {
-    color: 0x00ff00
-  },
-
-  pos: {
-    y: 70
+sphere.addTo(GAME).then(() => {
+  for (let i = 0; i < 10; i++) {
+    const newSphere = sphere.clone();
+    newSphere.position.y = 50 * (i + 1);
+    newSphere.addTo(GAME);
   }
-}).addTo(GAME);
+});
 
 new WHS.Box({
   geometry: {

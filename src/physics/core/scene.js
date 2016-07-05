@@ -566,7 +566,14 @@ export class Scene extends THREE.Scene {
         const update = {id: object._physijs.id};
 
         if (object.__dirtyPosition) {
-          update.pos = {x: object.position.x, y: object.position.y, z: object.position.z};
+          update.pos = {
+            x: object.position.x,
+            y: object.position.y,
+            z: object.position.z
+          };
+
+          if (object._physijs.type === 'softbody') object.position.set(0, 0, 0);
+
           object.__dirtyPosition = false;
         }
 
@@ -577,6 +584,8 @@ export class Scene extends THREE.Scene {
             z: object.quaternion.z,
             w: object.quaternion.w
           };
+
+          if (object._physijs.type === 'softbody') object.rotation.set(0, 0, 0);
 
           object.__dirtyRotation = false;
         }
