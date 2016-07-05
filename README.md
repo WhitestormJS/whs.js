@@ -115,6 +115,8 @@ world.start(); // Start animations and physics simulation.
 
 #### [Changelog](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
 
+----
+
 ## [Contributors](https://github.com/WhitestormJS/whitestorm.js/graphs/contributors):
 [![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-red.svg)](https://github.com/sasha240100)
 
