@@ -5,6 +5,8 @@ import * as Physijs from '../physics/index.js';
 import {PerspectiveCamera} from '../cameras/PerspectiveCamera';
 import {Camera} from './Camera';
 import {WHSObject} from './Object';
+import {Shape} from './Shape';
+import {Light} from './Light';
 
 class World extends WHSObject {
   /**
@@ -35,6 +37,13 @@ class World extends WHSObject {
         z: 0
       },
 
+      init: {
+        scene: true,
+        camera: true,
+        renderer: true,
+        helpers: true
+      },
+
       camera: {
         aspect: 75,
         near: 1,
@@ -52,20 +61,7 @@ class World extends WHSObject {
       height: window.innerHeight, // Container(height).
 
       physics: {
-        fixedTimeStep: 1 / 60,
-
-        quatNormalizeSkip: 0,
-        quatNormalizeFast: false,
-
-        solver: {
-          iterations: 20,
-          tolerance: 0
-        },
-
-        defMaterial: {
-          contactEquationStiffness: 1e8,
-          contactEquationRegularizationTime: 3
-        }
+        fixedTimeStep: 1 / 60
       },
 
       fog: {
@@ -90,18 +86,20 @@ class World extends WHSObject {
 
     super.setParams(params);
 
+    const initParams = this.getParams().init;
+
     // INIT.
     this._initDOM();
-    this._initScene();
+    if (initParams.scene) this._initScene();
 
     if (!(
       typeof process === 'object'
       && Object.prototype.toString.call(process) === '[object process]'
       )) this._initStats();
 
-    this._initCamera();
-    this._initRenderer();
-    this._initHelpers();
+    if (initParams.scene && initParams.camera) this._initCamera();
+    if (initParams.scene && initParams.renderer) this._initRenderer();
+    if (initParams.scene && initParams.helpers) this._initHelpers();
 
     // NOTE: ==================== Autoresize. ======================
     const scope = this;
@@ -397,8 +395,20 @@ class World extends WHSObject {
     );
   }
 
-  setScene(scene) {
+  setScene(scene, import_three = false) {
     this.scene = scene;
+
+    if (import_three) {
+      this.children = [];
+      const scch = scene.children;
+
+      for (let i = 0, max = scch.length; i < max; i++) {
+        const obj3D = scch[i];
+        if (obj3D instanceof THREE.Light) new Light(obj3D).addTo(this);
+        else new Shape(obj3D).addTo(this);
+      }
+    }
+
     return this.scene;
   }
 

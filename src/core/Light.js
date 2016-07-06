@@ -12,10 +12,7 @@ class Light extends WHSObject {
    * @param {String} type - Light type.
    * @return {WHS.Light}
    */
-  constructor(params, type) {
-    if (!type)
-      console.error('@constructor: Please specify " type ".');
-
+  constructor(params = {}, type = 'light') {
     const _set = (x, y, z) => {
       this.x = x;
       this.y = y;
@@ -24,7 +21,6 @@ class Light extends WHSObject {
 
     // Polyfill for 3D.
     super({
-
       light: {
         color: 0xffffff,
         skyColor: 0xffffff,
@@ -78,21 +74,26 @@ class Light extends WHSObject {
         z: 0,
         set: _set
       }
-
     });
 
-    super.setParams(params);
+    if (params instanceof THREE.Light) {
+      super.setParams({
+        pos: {x: params.position.x, y: params.position.y, z: params.position.z},
+        rot: {x: params.rotation.x, y: params.rotation.y, z: params.rotation.z},
+        target: {x: params.target.x, y: params.target.y, z: params.target.z}
+      });
+    } else super.setParams(params);
 
     const scope = Object.assign(this,
       {
         _type: type,
-
         _light: this.__params.light,
         _shadowmap: this.__params.shadowmap
-      });
+      }
+    );
 
-    if (defaults.debug)
-      console.debug(`@WHS.Light: Light ${scope._type} found.`, scope);
+    if (params instanceof THREE.Light) this.setNative(params);
+    if (defaults.debug) console.debug(`@WHS.Light: Light ${scope._type} found.`, scope);
 
     return scope;
   }
