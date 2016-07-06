@@ -14,9 +14,7 @@ class Shape extends WHSObject {
    * @param {String} type - Shape type.
    * @return {WHS.Shape}
    */
-  constructor(params, type) {
-    if (!type) console.error('@constructor: Please specify " type ".');
-
+  constructor(params = {}, type = 'mesh') {
     const _set = (x, y, z) => {
       this.x = x;
       this.y = y;
@@ -74,15 +72,21 @@ class Shape extends WHSObject {
       },
 
       physics: !!'physics'
-
     });
 
-    super.setParams(params);
+    if (params instanceof THREE.Object3D) {
+      super.setParams({
+        pos: {x: params.position.x, y: params.position.y, z: params.position.z},
+        rot: {x: params.rotation.x, y: params.rotation.y, z: params.rotation.z},
+        scale: {x: params.scale.x, y: params.scale.y, z: params.scale.z},
+        mass: params.mass,
+        physics: Boolean(params._physijs)
+      });
+    } else super.setParams(params);
 
     const scope = Object.assign(this,
       {
         _type: type,
-        __params: params,
         __c_pos: false,
         __c_rot: false,
 
@@ -92,8 +96,10 @@ class Shape extends WHSObject {
         },
 
         physics: params.physics
-      });
+      }
+    );
 
+    if (params instanceof THREE.Object3D) this.setNative(params);
     if (defaults.debug) console.debug(`@WHS.Shape: Shape ${scope._type} found.`, scope);
 
     return scope;

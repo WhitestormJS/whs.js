@@ -1,5 +1,4 @@
 import Terrain from 'whs-terrain';
-import defaultTerrainMap from './_assets/terrain/default_terrain';
 
 const GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
@@ -34,7 +33,7 @@ const GAME = new WHS.World({
 
 window.terrain = new Terrain({
   geometry: {
-    map: defaultTerrainMap,
+    map: '{{ assets }}/terrain/default_terrain.png',
     depth: 100,
     width: 256,
     height: 256
