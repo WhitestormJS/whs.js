@@ -3,7 +3,7 @@ node_js:
   - "4"
 before_script:
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
-  - npm install
+  - npm install --verbose
 script: gulp karma
 branches:
   only:
