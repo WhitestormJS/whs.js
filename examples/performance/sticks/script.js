@@ -141,7 +141,7 @@ new WHS.Box({
   }
 }).addTo(GAME);
 
-new WHS.DirectionaLight({
+new WHS.DirectionalLight({
   light: {
     color: 0xffffff, // 0x00ff00,
     intensity: 1,
@@ -164,7 +164,7 @@ new WHS.DirectionaLight({
 new WHS.AmbientLight({
   light: {
     color: 0xffffff,
-    intensity: 0.5
+    intensity: 0.2
   }
 }).addTo(GAME);
 
