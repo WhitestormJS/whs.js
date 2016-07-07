@@ -36,7 +36,7 @@
     "stats.js": "^0.16.0",
     "three": "^0.76.1",
     "webworkify-webpack": "^1.1.0",
-    "whs-ammo": "^0.0.1"
+    "whs-ammo": "^0.0.2"
   },
   "devDependencies": {
     "babel-loader": "^6.2.4",
