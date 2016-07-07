@@ -40,9 +40,8 @@ const stick = new WHS.Box({
     kind: 'phong',
     map: WHS.texture('{{ assets }}/textures/retina_wood.jpg'),
     specularMap: WHS.texture('{{ assets }}/textures/SpecularMap.png'),
-    displacementMap: WHS.texture('{{ assets }}/textures/NormalMap.png'),
+    normalMap: WHS.texture('{{ assets }}/textures/NormalMap.png'),
     shininess: 0,
-    specular: 0xffa54f,
     friction: 0,
     restitution: 0
   },
@@ -57,8 +56,8 @@ stick2.position.set(0, 4, 20);
 
 const height = 10; // BASE: 6, 0, 2, 2.
 const delta = 0;
-const cols = 4,
-  rows = 2;
+const cols = 3,
+  rows = 3;
 
 let objects = 0;
 
@@ -102,7 +101,8 @@ new WHS.Sphere({
   mass: 1000,
 
   material: {
-    color: 0x000ff
+    color: 0x000ff,
+    kind: 'phong'
   },
 
   pos: {
@@ -127,7 +127,8 @@ new WHS.Box({
   mass: 0,
 
   material: {
-    color: 0xff0000,
+    map: WHS.texture('{{ assets }}/textures/metal.png', {repeat:{x:20, y:20}}),
+    normalMap: WHS.texture('{{ assets }}/textures/NormalMap_metal.png'),
     kind: 'phong'
   },
 
