@@ -125,6 +125,14 @@ class Light extends WHSObject {
             _scope.__params.rot.y,
             _scope.__params.rot.z
           );
+
+          if (_scope.getNative().target) {
+            _scope.target.set(
+              _scope.__params.target.x,
+              _scope.__params.target.y,
+              _scope.__params.target.z
+            );
+          }
         }
 
         tags.forEach(tag => {
