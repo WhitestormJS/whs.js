@@ -40,8 +40,12 @@ var stick = new WHS.Box({
   mass: 75,
 
   material: {
-    kind: 'lambert',
-    color: 0xffa54f,
+    kind: 'phong',
+    map: WHS.texture('../../_assets/textures/retina_wood.jpg'),
+    specularMap: WHS.texture('../../_assets/textures/SpecularMap.png'),
+    displacementMap: WHS.texture('../../_assets/textures/NormalMap.png'),
+    shininess: 0,
+    specular: 0xffa54f,
     friction: 0,
     restitution: 0
   },
@@ -57,7 +61,7 @@ stick2.position.set(0, 4, 20);
 var height = 10; // BASE: 6, 0, 2, 2.
 var delta = 0;
 var cols = 4,
-    rows = 4;
+    rows = 2;
 
 var objects = 0;
 
@@ -137,17 +141,17 @@ new WHS.Box({
   }
 }).addTo(GAME);
 
-new WHS.DirectionalLight({
-
+new WHS.DirectionaLight({
   light: {
     color: 0xffffff, // 0x00ff00,
-    intensity: 1
+    intensity: 1,
+    distance: 400
   },
 
   pos: {
     x: 0,
-    y: 10,
-    z: 30
+    y: 100,
+    z: 300
   },
 
   target: {
