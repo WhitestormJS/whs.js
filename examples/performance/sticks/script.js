@@ -40,8 +40,11 @@ var stick = new WHS.Box({
   mass: 75,
 
   material: {
-    kind: 'lambert',
-    color: 0xffa54f,
+    kind: 'phong',
+    map: WHS.texture('../../_assets/textures/retina_wood.jpg'),
+    specularMap: WHS.texture('../../_assets/textures/SpecularMap.png'),
+    normalMap: WHS.texture('../../_assets/textures/NormalMap.png'),
+    shininess: 0,
     friction: 0,
     restitution: 0
   },
@@ -56,8 +59,8 @@ stick2.position.set(0, 4, 20);
 
 var height = 10; // BASE: 6, 0, 2, 2.
 var delta = 0;
-var cols = 4,
-    rows = 4;
+var cols = 3,
+    rows = 3;
 
 var objects = 0;
 
@@ -101,7 +104,8 @@ new WHS.Sphere({
   mass: 1000,
 
   material: {
-    color: 0x000ff
+    color: 0x000ff,
+    kind: 'phong'
   },
 
   pos: {
@@ -126,7 +130,8 @@ new WHS.Box({
   mass: 0,
 
   material: {
-    color: 0xff0000,
+    map: WHS.texture('../../_assets/textures/metal.png', { repeat: { x: 20, y: 20 } }),
+    normalMap: WHS.texture('../../_assets/textures/NormalMap_metal.png', { repeat: { x: 20, y: 20 } }),
     kind: 'phong'
   },
 
@@ -137,30 +142,35 @@ new WHS.Box({
   }
 }).addTo(GAME);
 
-new WHS.DirectionalLight({
-
+var light = new WHS.DirectionalLight({
   light: {
     color: 0xffffff, // 0x00ff00,
-    intensity: 1
+    intensity: 1,
+    distance: 400
+  },
+
+  shadowmap: {
+    far: 2500,
+
+    left: -400,
+    right: 400
   },
 
   pos: {
     x: 0,
-    y: 10,
-    z: 30
-  },
-
-  target: {
-    x: 0,
-    y: 0,
-    z: 0
+    y: 100,
+    z: 300
   }
-}).addTo(GAME);
+});
+
+light.addTo(GAME);
+
+console.log(light);
 
 new WHS.AmbientLight({
   light: {
     color: 0xffffff,
-    intensity: 0.5
+    intensity: 0.2
   }
 }).addTo(GAME);
 

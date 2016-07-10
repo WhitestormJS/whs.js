@@ -12,28 +12,27 @@ class Curve extends WHSObject {
    */
   constructor(params) {
     super({
-      geometry: {
-        curve: false,
-        points: 50
-      }
+      curve: false,
+      points: 50
     });
 
     super.setParams(params);
 
     const geometry = new THREE.Geometry();
-    geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
+    geometry.vertices = params.curve.getPoints(params.points);
 
     const curve = new THREE.Line(
-        geometry,
-        loadMaterial(params.material, false)._material
+      geometry,
+      loadMaterial(params.material, false)._material
     );
 
     this.setNative(curve);
 
     const scope = Object.assign(this, {
-      _type: 'curve',
-      __path: params.geometry.curve
+      type: 'curve'
     });
+
+    scope.setNative(param.curve);
 
     return scope;
   }
@@ -65,28 +64,18 @@ class Curve extends WHSObject {
     });
   }
 
-  /* Access private data */
-  setNative(native) {
-    this.native = native;
-    return this.native;
-  }
-
-  getNative() {
-    return this.native;
-  }
-
-    /**
-     * Clone curve.
-     */
+  /**
+   * Clone curve.
+   */
   clone() {
     return new Curve(this.__params).copy(this);
   }
 
-    /**
-     * Copy curve.
-     *
-     * @param {WHS.Curve} source - Source object, that will be applied to this.
-     */
+  /**
+   * Copy curve.
+   *
+   * @param {WHS.Curve} source - Source object, that will be applied to this.
+   */
   copy(source) {
     this.setNative(source.getNative().clone());
 
@@ -95,11 +84,11 @@ class Curve extends WHSObject {
     return this;
   }
 
-    /**
-     * Remove this curve from world.
-     *
-     * @return {WHS.Curve} - this.
-     */
+  /**
+   * Remove this curve from world.
+   *
+   * @return {WHS.Curve} - this.
+   */
   remove() {
     this.parent.getScene().remove(this.getNative());
 
