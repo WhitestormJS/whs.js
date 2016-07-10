@@ -22,9 +22,7 @@ class Light extends WHSObject {
       this.z = z;
     };
 
-    // Polyfill for 3D.
     super({
-
       light: {
         color: 0xffffff,
         skyColor: 0xffffff,
@@ -50,7 +48,6 @@ class Light extends WHSObject {
         near: true,
         far: 400,
         fov: 60,
-        darkness: 0.3,
 
         top: 200,
         bottom: -200,
@@ -78,7 +75,6 @@ class Light extends WHSObject {
         z: 0,
         set: _set
       }
-
     });
 
     super.setParams(params);
@@ -109,8 +105,7 @@ class Light extends WHSObject {
     return new Promise((resolve, reject) => {
       try {
         if (tags.indexOf('no-shadows') < 0) {
-          _scope.getNative().castShadow = true;
-          _scope.getNative().receiveShadow = true;
+          _scope.getNative().castShadow = this._shadowmap.cast;
         }
 
         if (tags.indexOf('no-transforms') < 0) {
@@ -255,17 +250,6 @@ class Light extends WHSObject {
     this.emit('remove');
 
     return this;
-  }
-
-  /* Access private data */
-
-  setNative(native) {
-    this.native = native;
-    return this.native;
-  }
-
-  getNative() {
-    return this.native;
   }
 
   get position() {

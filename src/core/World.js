@@ -52,20 +52,7 @@ class World extends WHSObject {
       height: window.innerHeight, // Container(height).
 
       physics: {
-        fixedTimeStep: 1 / 60,
-
-        quatNormalizeSkip: 0,
-        quatNormalizeFast: false,
-
-        solver: {
-          iterations: 20,
-          tolerance: 0
-        },
-
-        defMaterial: {
-          contactEquationStiffness: 1e8,
-          contactEquationRegularizationTime: 3
-        }
+        fixedTimeStep: 1 / 60
       },
 
       fog: {
@@ -83,8 +70,6 @@ class World extends WHSObject {
       },
 
       renderer: {},
-
-      assets: './assets',
       container: document.body
     });
 
@@ -442,6 +427,29 @@ class World extends WHSObject {
 
   getCamera() {
     return this.camera;
+  }
+
+  /**
+   * Remove this shape from world.
+   *
+   * @return {WHS.Shape} - this.
+   */
+  remove(source) {
+    this.getScene().remove(source.getNative());
+
+    this.children.splice(this.children.indexOf(source), 1);
+    source.parent = null;
+
+    source.emit('remove');
+
+    if (WHS.debug) {
+      console.debug(
+        `@WHS.Shape: Shape ${source._type} was removed from world`,
+        [source]
+      );
+    }
+
+    return this;
   }
 }
 
