@@ -9,7 +9,7 @@ class Skybox extends Shape {
 
     extend(params, {
       skyType: 'box',
-      detail: '.png',
+      imgSuffix: '.png',
       radius: 10,
       fog: true,
       path: ''
