@@ -457,29 +457,6 @@ class Shape extends WHSObject {
   }
 
   /**
-   * Remove this shape from world.
-   *
-   * @return {WHS.Shape} - this.
-   */
-  remove() {
-    this.parent.getScene().remove(this.getNative());
-
-    this.parent.children.splice(this.parent.children.indexOf(this), 1);
-    this.parent = null;
-
-    this.emit('remove');
-
-    if (defaults.debug) {
-      console.debug(
-        `@WHS.Shape: Shape ${this._type} was removed from world`,
-        [this]
-      );
-    }
-
-    return this;
-  }
-
-  /**
    * @return {WHS.World} - World object.
    */
   getWorld() {
@@ -594,10 +571,6 @@ class Shape extends WHSObject {
     return this.getNative().scale;
   }
 
-  G_translate(x = 0, y = 0, z = 0) {
-    this.native.geometry.translate(x, y, z);
-  }
-
   G_(params = {}) {
     if (this.buildGeometry) {
       this.native.geometry = this.buildGeometry(
@@ -647,10 +620,6 @@ class Shape extends WHSObject {
     this.quaternion = this.native.quaternion.clone();
     this.rotation = this.native.rotation.clone();
 
-    return this.native;
-  }
-
-  getNative() {
     return this.native;
   }
 

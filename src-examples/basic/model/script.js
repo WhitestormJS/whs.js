@@ -26,7 +26,10 @@ new WHS.Model({
   },
 
   mass: 100,
-  onlyvis: false,
+  
+  physics: {
+    type: 'concave'
+  },
 
   material: {
     shading: THREE.SmoothShading,

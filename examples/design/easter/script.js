@@ -55,7 +55,7 @@ new WHS.Box({
   }
 }).addTo(GAME);
 
-var egg = new WHS.ConvexModel({
+var egg = new WHS.Model({
   geometry: {
     path: '../../_assets/models/egg_light.json',
     physics: '../../_assets/models/egg_low.json'
@@ -97,6 +97,10 @@ var rabbit = new WHS.Model({
     kind: 'lambert',
     side: THREE.DoubleSide,
     rest: 1
+  },
+
+  physics: {
+    type: 'concave'
   },
 
   scale: {

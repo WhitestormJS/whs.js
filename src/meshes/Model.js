@@ -9,10 +9,8 @@ class Model extends Shape {
     super(params, 'model');
 
     extend(params.geometry, {
-
       path: '',
       physics: ''
-
     });
 
     if (params.build) {
@@ -22,14 +20,18 @@ class Model extends Shape {
   }
 
   build(params = {}) {
-    const _scope = this,
-      Mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh;
+    let Mesh;
+
+    if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;
+    else if (this.physics) Mesh = Physijs.ConvexMesh;
+    else Mesh = THREE.Mesh
 
     const promise = new Promise((resolve) => {
       JSONLoader.load(params.geometry.path, (data, materials) => {
         if (params.geometry.physics) {
           JSONLoader.load(params.geometry.physics, data2 => {
             let material;
+
             if (params.material.useVertexColors) {
               material = loadMaterial(
                 extend(params.material, {
@@ -46,7 +48,7 @@ class Model extends Shape {
             data.computeFaceNormals();
             data.computeVertexNormals();
 
-            _scope.setNative(new Mesh(
+            this.setNative(new Mesh(
               data,
               material,
               params.mass,
@@ -57,8 +59,9 @@ class Model extends Shape {
             resolve();
           });
         } else {
+          let material;
+
           if (params.material.useVertexColors) {
-            let material;
             material = loadMaterial(
               extend(params.material, {
                 morphTargets: true,
@@ -74,7 +77,7 @@ class Model extends Shape {
           data.computeFaceNormals();
           data.computeVertexNormals();
 
-          _scope.setNative(new Mesh(
+          this.setNative(new Mesh(
             data,
             material,
             params.mass
