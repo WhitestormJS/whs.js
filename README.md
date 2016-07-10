@@ -1,16 +1,13 @@
 
 
-<p align="center"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/logo/big-inverse.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/logo/big-inverse-cropped.png"></p>
 
 <p align="center">
-    <a href="https://travis-ci.org/WhitestormJS/whitestorm.js" align="center">
-        <img src="https://travis-ci.org/WhitestormJS/whitestorm.js.svg">
-    </a>&nbsp;&nbsp;
+    <a href="https://travis-ci.org/WhitestormJS/whitestorm.js" align="center"><img src="https://travis-ci.org/WhitestormJS/whitestorm.js.svg"></a>&nbsp;&nbsp;
     <a href="https://www.npmjs.com/package/whitestormjs"><img src="http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg"></a>&nbsp;&nbsp;          
     <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg"></a>&nbsp;&nbsp;
-    <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>
-   .<a href="http://baikal.io/sasha240100/whitestorm-js"><img alt="Baikal" src="http://baikal.io/badges/sasha240100/whitestorm-js"></a>
-    <br>
+    <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>&nbsp;&nbsp;
+    <a href="https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge" alt="Join the chat at https://gitter.im/WhitestormJS/whitestorm.js"><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
 
     <p align="center"><i><b>Framework for developing 3D web apps with physics.</b></i></p>
 </p>
@@ -19,7 +16,7 @@
 
 ------
 
-## Features
+## FEATURES
 
 * **Simple shape crafting** — We use JSON-like structure for creating objects by inputed data and adding them to 3d world.
 
@@ -33,8 +30,10 @@
 
 * **Softbodies** - WhitestormJS is the only engine (except native ammo.js) that supports softbodies. 
 
+## GAME EXAMPLE :video_game:
+<a href="http://192.241.128.187/current/examples/fps/shooter/" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/splash.png"></a>
 
-## Installation
+## INSTALLATION &#10540; USAGE
 Include a script tag linking the [WhitestormJS](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js) library in your `head` or after your `body`:
 
 ```html
@@ -54,12 +53,12 @@ const world = new WHS.World({
     }
 });
 
-const sphere = new WHS.Sphere({ // Create
+const sphere = new WHS.Sphere({ // Create sphere object.
   geometry: {
     radius: 3
   },
 
-  mass: 10,
+  mass: 10, // Mass of physics object.
 
   material: {
     color: 0xffffff,
@@ -71,48 +70,43 @@ const sphere = new WHS.Sphere({ // Create
     y: 100,
     z: 0
   }
-})
+});
 
 sphere.addTo(GAME);
+sphere.getNative(); // Returns THREE.Mesh of this object.
 
 world.start(); // Start animations and physics simulation.
 ```
 
-[![Join the chat at https://gitter.im/WhitestormJS/whitestorm.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-
 <br>
-
-## Game example
-<a href="http://192.241.128.187/current/examples/fps/shooter/" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/splash.png"></a>
 
 ## [Examples](http://192.241.128.187/current/examples/):
 
-#### BASIC:
+#### :space_invader: BASIC:
  * [Basic / Hello world](http://192.241.128.187/current/examples/basic/helloworld/)  (Basic "Hello world!" example.)
  * [Basic / Model](http://192.241.128.187/current/examples/basic/model/)  (Basic model example.)
  * [Basic / Debugging](http://192.241.128.187/current/examples/basic/debugging/)  (Object's debug example.)
  * [Basic / Extending API](http://192.241.128.187/current/examples/basic/extending/)  (Extending api example.)
  * [Basic / Softbody](http://192.241.128.187/current/examples/basic/softbody/)  (Basic softbody implementation.)
 
-#### DESIGN:
+#### :gem: DESIGN:
  * [Design / Saturn](http://192.241.128.187/current/examples/design/saturn/)  (Saturn planet example from: http://codepen.io/Yakudoo/pen/qbygaJ)
  * [Design / Easter](http://192.241.128.187/current/examples/design/easter/)  (Easter rabbit with easter eggs.)
 
-#### FIRST-PERSON:
+#### :snowboarder: FIRST-PERSON:
  * [FPS / Shooter](http://192.241.128.187/current/examples/fps/shooter/)  (First person example with Wagner effects and terrain. + fog)
  * [FPS / Fog](http://192.241.128.187/current/examples/fps/fog/)  (First person game with animated objects)
 
-#### PHYSICS:
+#### :bowling: PHYSICS:
  * [Physics / Dominos](http://192.241.128.187/current/examples/physics/domino/)  (Physics example with dominos.)
 
-#### PERFORMANCE:
+#### :rocket: PERFORMANCE:
  * [Performance / Sticks](http://192.241.128.187/current/examples/performance/sticks/)  (Collisions performance of 320 basic box objects.)
  * [Performance / Softbodies](http://192.241.128.187/current/examples/performance/softbodies/)  (Collisions performance of 10 softbodies.)
 
 ----
 
-#### [Changelog](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md) | [Documentation](http://whitestormjs.xyz/)
+#### :chart_with_upwards_trend: [Changelog](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md) | :book: [Documentation](http://whitestormjs.xyz/)
 
 ----
 
