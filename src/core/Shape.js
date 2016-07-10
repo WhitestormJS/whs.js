@@ -645,6 +645,10 @@ class Shape extends WHSObject {
     return this.getNative().setLinearVelocity(...args);
   }
 
+  raycast(raycaster, intersects) {
+    return this.getNative().lookAt(vector3);
+  }
+
   follow(curve, time = 1000, loop) {
     const _scope = this,
       gEnd = time;
