@@ -1,5 +1,4 @@
 export * from './Box';
-export * from './ConvexModel';
 export * from './Cylinder';
 export * from './Dodecahedron';
 export * from './Extrude';
