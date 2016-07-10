@@ -55,6 +55,23 @@ class WHSObject {
   getNative() {
     return this.native;
   }
+
+  add(children) {
+    const _scope = this;
+
+    if (children.addTo)
+      return children.addTo(this);
+    else if (children instanceof Object) {
+      return new Promise((resolve) => {
+        children.parent = _scope;
+
+        _scope.getNative().add(children.getNative());
+        _scope.children.push(_scope);
+
+        resolve();
+      });
+    }
+  }
 }
 
 export {
