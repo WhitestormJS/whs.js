@@ -41,7 +41,7 @@ const src = 'src/**/*',
 // Browser.
 process.env.BABEL_ENV = 'node';
 
-gulp.task('default', ['examples', 'build']);
+gulp.task('default', ['build']);
 
 gulp.task('build', (callback) => {
   runSequence('clean', 'babel', 'webpack', callback);

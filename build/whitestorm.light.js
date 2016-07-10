@@ -42018,13 +42018,12 @@ var Shape = function (_WHSObject) {
    * @return {WHS.Shape}
    */
 
-  function Shape() {
-    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
+  function Shape(params, type) {
     var _ret;
 
-    var type = arguments.length <= 1 || arguments[1] === undefined ? 'mesh' : arguments[1];
     (0, _classCallCheck3.default)(this, Shape);
+
+    if (!type) console.error('@constructor: Please specify " type ".');
 
     var _set = function _set(x, y, z) {
       _this.x = x;
@@ -42083,20 +42082,14 @@ var Shape = function (_WHSObject) {
       },
 
       physics: false
+
     }));
 
-    if (params instanceof THREE.Object3D) {
-      (0, _get3.default)(Object.getPrototypeOf(Shape.prototype), 'setParams', _this).call(_this, {
-        pos: { x: params.position.x, y: params.position.y, z: params.position.z },
-        rot: { x: params.rotation.x, y: params.rotation.y, z: params.rotation.z },
-        scale: { x: params.scale.x, y: params.scale.y, z: params.scale.z },
-        mass: params.mass,
-        physics: Boolean(params._physijs)
-      });
-    } else (0, _get3.default)(Object.getPrototypeOf(Shape.prototype), 'setParams', _this).call(_this, params);
+    (0, _get3.default)(Object.getPrototypeOf(Shape.prototype), 'setParams', _this).call(_this, params);
 
     var scope = Object.assign(_this, {
       _type: type,
+      __params: params,
       __c_pos: false,
       __c_rot: false,
 
@@ -42108,7 +42101,6 @@ var Shape = function (_WHSObject) {
       physics: params.physics
     });
 
-    if (params instanceof THREE.Object3D) _this.setNative(params);
     if (_defaults.defaults.debug) console.debug('@WHS.Shape: Shape ' + scope._type + ' found.', scope);
 
     return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
@@ -42935,6 +42927,26 @@ if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ },
 /* 11 */
+/***/ function(module, exports) {
+
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+var global = module.exports = typeof window != 'undefined' && window.Math == Math
+  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+// to indexed object, toObject with fallback for non-array-like ES3 strings
+var IObject = __webpack_require__(148)
+  , defined = __webpack_require__(33);
+module.exports = function(it){
+  return IObject(defined(it));
+};
+
+/***/ },
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42990,13 +43002,12 @@ var Light = function (_WHSObject) {
    * @return {WHS.Light}
    */
 
-  function Light() {
-    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
+  function Light(params, type) {
     var _ret;
 
-    var type = arguments.length <= 1 || arguments[1] === undefined ? 'light' : arguments[1];
     (0, _classCallCheck3.default)(this, Light);
+
+    if (!type) console.error('@constructor: Please specify " type ".');
 
     var _set = function _set(x, y, z) {
       _this.x = x;
@@ -43007,6 +43018,7 @@ var Light = function (_WHSObject) {
     // Polyfill for 3D.
 
     var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Light).call(this, {
+
       light: {
         color: 0xffffff,
         skyColor: 0xffffff,
@@ -43060,23 +43072,18 @@ var Light = function (_WHSObject) {
         z: 0,
         set: _set
       }
+
     }));
 
-    if (params instanceof THREE.Light) {
-      (0, _get3.default)(Object.getPrototypeOf(Light.prototype), 'setParams', _this).call(_this, {
-        pos: { x: params.position.x, y: params.position.y, z: params.position.z },
-        rot: { x: params.rotation.x, y: params.rotation.y, z: params.rotation.z },
-        target: { x: params.target.x, y: params.target.y, z: params.target.z }
-      });
-    } else (0, _get3.default)(Object.getPrototypeOf(Light.prototype), 'setParams', _this).call(_this, params);
+    (0, _get3.default)(Object.getPrototypeOf(Light.prototype), 'setParams', _this).call(_this, params);
 
     var scope = Object.assign(_this, {
       _type: type,
+
       _light: _this.__params.light,
       _shadowmap: _this.__params.shadowmap
     });
 
-    if (params instanceof THREE.Light) _this.setNative(params);
     if (_defaults.defaults.debug) console.debug('@WHS.Light: Light ' + scope._type + ' found.', scope);
 
     return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
@@ -43333,26 +43340,6 @@ var Light = function (_WHSObject) {
 }(_Object.WHSObject);
 
 exports.Light = Light;
-
-/***/ },
-/* 12 */
-/***/ function(module, exports) {
-
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
-if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __webpack_require__(148)
-  , defined = __webpack_require__(33);
-module.exports = function(it){
-  return IObject(defined(it));
-};
 
 /***/ },
 /* 14 */
@@ -43640,7 +43627,7 @@ exports.WHSObject = WHSObject;
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-var global    = __webpack_require__(12)
+var global    = __webpack_require__(11)
   , core      = __webpack_require__(10)
   , ctx       = __webpack_require__(53)
   , hide      = __webpack_require__(20)
@@ -43721,7 +43708,7 @@ module.exports = __webpack_require__(15) ? function(object, key, value){
 
 var store      = __webpack_require__(42)('wks')
   , uid        = __webpack_require__(31)
-  , Symbol     = __webpack_require__(12).Symbol
+  , Symbol     = __webpack_require__(11).Symbol
   , USE_SYMBOL = typeof Symbol == 'function';
 
 var $exports = module.exports = function(name){
@@ -44345,7 +44332,7 @@ module.exports = Object.create || function create(O, Properties){
 
 var pIE            = __webpack_require__(39)
   , createDesc     = __webpack_require__(30)
-  , toIObject      = __webpack_require__(13)
+  , toIObject      = __webpack_require__(12)
   , toPrimitive    = __webpack_require__(44)
   , has            = __webpack_require__(16)
   , IE8_DOM_DEFINE = __webpack_require__(55)
@@ -44392,7 +44379,7 @@ module.exports = function(key){
 /* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(12)
+var global = __webpack_require__(11)
   , SHARED = '__core-js_shared__'
   , store  = global[SHARED] || (global[SHARED] = {});
 module.exports = function(key){
@@ -44431,7 +44418,7 @@ module.exports = function(it, S){
 /* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
-var global         = __webpack_require__(12)
+var global         = __webpack_require__(11)
   , core           = __webpack_require__(10)
   , LIBRARY        = __webpack_require__(36)
   , wksExt         = __webpack_require__(46)
@@ -44676,10 +44663,6 @@ var _Camera = __webpack_require__(22);
 
 var _Object = __webpack_require__(18);
 
-var _Shape = __webpack_require__(7);
-
-var _Light = __webpack_require__(11);
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -44721,13 +44704,6 @@ var World = function (_WHSObject) {
         z: 0
       },
 
-      init: {
-        scene: true,
-        camera: true,
-        renderer: true,
-        helpers: true
-      },
-
       camera: {
         aspect: 75,
         near: 1,
@@ -44745,7 +44721,20 @@ var World = function (_WHSObject) {
       height: window.innerHeight, // Container(height).
 
       physics: {
-        fixedTimeStep: 1 / 60
+        fixedTimeStep: 1 / 60,
+
+        quatNormalizeSkip: 0,
+        quatNormalizeFast: false,
+
+        solver: {
+          iterations: 20,
+          tolerance: 0
+        },
+
+        defMaterial: {
+          contactEquationStiffness: 1e8,
+          contactEquationRegularizationTime: 3
+        }
       },
 
       fog: {
@@ -44770,17 +44759,15 @@ var World = function (_WHSObject) {
 
     (0, _get3.default)(Object.getPrototypeOf(World.prototype), 'setParams', _this).call(_this, params);
 
-    var initParams = _this.getParams().init;
-
     // INIT.
     _this._initDOM();
-    if (initParams.scene) _this._initScene();
+    _this._initScene();
 
     if (!((typeof process === 'undefined' ? 'undefined' : (0, _typeof3.default)(process)) === 'object' && Object.prototype.toString.call(process) === '[object process]')) _this._initStats();
 
-    if (initParams.scene && initParams.camera) _this._initCamera();
-    if (initParams.scene && initParams.renderer) _this._initRenderer();
-    if (initParams.scene && initParams.helpers) _this._initHelpers();
+    _this._initCamera();
+    _this._initRenderer();
+    _this._initHelpers();
 
     // NOTE: ==================== Autoresize. ======================
     var scope = _this;
@@ -45075,20 +45062,7 @@ var World = function (_WHSObject) {
   }, {
     key: 'setScene',
     value: function setScene(scene) {
-      var import_three = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
-
       this.scene = scene;
-
-      if (import_three) {
-        this.children = [];
-        var scch = scene.children;
-
-        for (var i = 0, max = scch.length; i < max; i++) {
-          var obj3D = scch[i];
-          if (obj3D instanceof THREE.Light) new _Light.Light(obj3D).addTo(this);else new _Shape.Shape(obj3D).addTo(this);
-        }
-      }
-
       return this.scene;
     }
   }, {
@@ -45243,7 +45217,7 @@ module.exports = function(fn, that, length){
 /***/ function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(25)
-  , document = __webpack_require__(12).document
+  , document = __webpack_require__(11).document
   // in old IE typeof document.createElement is 'object'
   , is = isObject(document) && isObject(document.createElement);
 module.exports = function(it){
@@ -45375,7 +45349,7 @@ module.exports = Object.getPrototypeOf || function(O){
 /***/ function(module, exports, __webpack_require__) {
 
 var has          = __webpack_require__(16)
-  , toIObject    = __webpack_require__(13)
+  , toIObject    = __webpack_require__(12)
   , arrayIndexOf = __webpack_require__(145)(false)
   , IE_PROTO     = __webpack_require__(41)('IE_PROTO');
 
@@ -45516,7 +45490,7 @@ Object.keys(_Curve).forEach(function (key) {
   });
 });
 
-var _Light = __webpack_require__(11);
+var _Light = __webpack_require__(13);
 
 Object.keys(_Light).forEach(function (key) {
   if (key === "default") return;
@@ -47432,7 +47406,7 @@ var _three = __webpack_require__(3);
 
 var THREE = _interopRequireWildcard(_three);
 
-var _Light2 = __webpack_require__(11);
+var _Light2 = __webpack_require__(13);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -47508,7 +47482,7 @@ var _three = __webpack_require__(3);
 
 var THREE = _interopRequireWildcard(_three);
 
-var _Light2 = __webpack_require__(11);
+var _Light2 = __webpack_require__(13);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -47589,7 +47563,7 @@ var _three = __webpack_require__(3);
 
 var THREE = _interopRequireWildcard(_three);
 
-var _Light2 = __webpack_require__(11);
+var _Light2 = __webpack_require__(13);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -47670,7 +47644,7 @@ var _three = __webpack_require__(3);
 
 var THREE = _interopRequireWildcard(_three);
 
-var _Light2 = __webpack_require__(11);
+var _Light2 = __webpack_require__(13);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -47747,7 +47721,7 @@ var _three = __webpack_require__(3);
 
 var THREE = _interopRequireWildcard(_three);
 
-var _Light2 = __webpack_require__(11);
+var _Light2 = __webpack_require__(13);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -47828,7 +47802,7 @@ var _three = __webpack_require__(3);
 
 var THREE = _interopRequireWildcard(_three);
 
-var _Light2 = __webpack_require__(11);
+var _Light2 = __webpack_require__(13);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51089,7 +51063,7 @@ Object.keys(_scene).forEach(function (key) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.BoxMesh = undefined;
 
@@ -51110,29 +51084,29 @@ var _mesh = __webpack_require__(9);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var BoxMesh = exports.BoxMesh = function (_Mesh) {
-    (0, _inherits3.default)(BoxMesh, _Mesh);
+  (0, _inherits3.default)(BoxMesh, _Mesh);
 
-    function BoxMesh(geometry, material) {
-        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-        (0, _classCallCheck3.default)(this, BoxMesh);
+  function BoxMesh(geometry, material) {
+    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+    (0, _classCallCheck3.default)(this, BoxMesh);
 
-        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(BoxMesh).call(this, geometry, material, params.mass));
+    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(BoxMesh).call(this, geometry, material, params.mass));
 
-        if (!geometry.boundingBox) geometry.computeBoundingBox();
+    if (!geometry.boundingBox) geometry.computeBoundingBox();
 
-        var width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-        var height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
-        var depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
+    var width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+    var height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+    var depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
 
-        _this._physijs.type = 'box';
-        _this._physijs.width = width;
-        _this._physijs.height = height;
-        _this._physijs.depth = depth;
-        _this._physijs.mass = typeof params.mass === 'undefined' ? width * height * depth : params.mass;
-        return _this;
-    }
+    _this._physijs.type = 'box';
+    _this._physijs.width = width;
+    _this._physijs.height = height;
+    _this._physijs.depth = depth;
+    _this._physijs.mass = typeof params.mass === 'undefined' ? width * height * depth : params.mass;
+    return _this;
+  }
 
-    return BoxMesh;
+  return BoxMesh;
 }(_mesh.Mesh);
 
 /***/ },
@@ -51677,7 +51651,7 @@ var PlaneMesh = exports.PlaneMesh = function (_Mesh) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.SoftMesh = undefined;
 
@@ -51702,109 +51676,109 @@ var _mesh = __webpack_require__(9);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SoftMesh = exports.SoftMesh = function (_Mesh) {
-    (0, _inherits3.default)(SoftMesh, _Mesh);
+  (0, _inherits3.default)(SoftMesh, _Mesh);
 
-    function SoftMesh(geometry, material) {
-        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-        (0, _classCallCheck3.default)(this, SoftMesh);
+  function SoftMesh(geometry, material) {
+    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+    (0, _classCallCheck3.default)(this, SoftMesh);
 
-        console.log(geometry);
-        var tempGeometry = geometry.clone();
+    console.log(geometry);
+    var tempGeometry = geometry.clone();
 
-        if (!(geometry instanceof THREE.BufferGeometry)) // Converts to BufferGeometry.
-            geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+    if (!(geometry instanceof THREE.BufferGeometry)) // Converts to BufferGeometry.
+      geometry = new THREE.BufferGeometry().fromGeometry(geometry);
 
-        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(SoftMesh).call(this, geometry, material, params.mass));
+    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(SoftMesh).call(this, geometry, material, params.mass));
 
-        tempGeometry.mergeVertices();
-        var idxGeometry = _this.createIndexedBufferGeometryFromGeometry(tempGeometry);
-        if (!tempGeometry.boundingBox) tempGeometry.computeBoundingBox();
-        _this.tempGeometry = tempGeometry;
+    tempGeometry.mergeVertices();
+    var idxGeometry = _this.createIndexedBufferGeometryFromGeometry(tempGeometry);
+    if (!tempGeometry.boundingBox) tempGeometry.computeBoundingBox();
+    _this.tempGeometry = tempGeometry;
 
-        var aVertices = idxGeometry.attributes.position.array;
-        var aIndices = idxGeometry.index.array;
-        var aIdxAssoc = [];
-        var vertices = geometry.attributes.position.array;
+    var aVertices = idxGeometry.attributes.position.array;
+    var aIndices = idxGeometry.index.array;
+    var aIdxAssoc = [];
+    var vertices = geometry.attributes.position.array;
 
-        var numIdxVertices = aVertices.length / 3;
-        var numVertices = vertices.length / 3;
+    var numIdxVertices = aVertices.length / 3;
+    var numVertices = vertices.length / 3;
 
-        for (var i = 0; i < numIdxVertices; i++) {
-            var association = [];
-            aIdxAssoc.push(association);
+    for (var i = 0; i < numIdxVertices; i++) {
+      var association = [];
+      aIdxAssoc.push(association);
 
-            var i3 = i * 3;
+      var i3 = i * 3;
 
-            for (var j = 0; j < numVertices; j++) {
-                var j3 = j * 3;
+      for (var j = 0; j < numVertices; j++) {
+        var j3 = j * 3;
 
-                if (_this.isEqual(aVertices[i3], aVertices[i3 + 1], aVertices[i3 + 2], vertices[j3], vertices[j3 + 1], vertices[j3 + 2])) association.push(j3);
-            }
-        }
-
-        var width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-        var height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
-        var depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
-
-        _this._physijs.type = 'softbody';
-        _this._physijs.aVertices = aVertices;
-        _this._physijs.aIndices = aIndices;
-        _this._physijs.aIdxAssoc = aIdxAssoc;
-
-        var physParams = params.physics;
-
-        _this._physijs.params = {
-            friction: physParams.friction,
-            damping: physParams.damping,
-            pressure: physParams.pressure,
-            margin: physParams.margin
-        };
-
-        _this._physijs.mass = typeof params.mass === 'undefined' ? width * height * depth : params.mass;
-        return _this;
+        if (_this.isEqual(aVertices[i3], aVertices[i3 + 1], aVertices[i3 + 2], vertices[j3], vertices[j3 + 1], vertices[j3 + 2])) association.push(j3);
+      }
     }
 
-    (0, _createClass3.default)(SoftMesh, [{
-        key: 'createIndexedBufferGeometryFromGeometry',
-        value: function createIndexedBufferGeometryFromGeometry(geometry) {
-            var numVertices = geometry.vertices.length;
-            var numFaces = geometry.faces.length;
-            var bufferGeom = new THREE.BufferGeometry();
-            var vertices = new Float32Array(numVertices * 3);
-            var indices = new (numFaces * 3 > 65535 ? Uint32Array : Uint16Array)(numFaces * 3);
+    var width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+    var height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+    var depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
 
-            for (var i = 0; i < numVertices; i++) {
-                var p = geometry.vertices[i];
-                var i3 = i * 3;
+    _this._physijs.type = 'softbody';
+    _this._physijs.aVertices = aVertices;
+    _this._physijs.aIndices = aIndices;
+    _this._physijs.aIdxAssoc = aIdxAssoc;
 
-                vertices[i3] = p.x;
-                vertices[i3 + 1] = p.y;
-                vertices[i3 + 2] = p.z;
-            }
+    var physParams = params.physics;
 
-            for (var _i = 0; _i < numFaces; _i++) {
-                var f = geometry.faces[_i];
-                var _i2 = _i * 3;
+    _this._physijs.params = {
+      friction: physParams.friction,
+      damping: physParams.damping,
+      pressure: physParams.pressure,
+      margin: physParams.margin
+    };
 
-                indices[_i2] = f.a;
-                indices[_i2 + 1] = f.b;
-                indices[_i2 + 2] = f.c;
-            }
+    _this._physijs.mass = typeof params.mass === 'undefined' ? width * height * depth : params.mass;
+    return _this;
+  }
 
-            bufferGeom.setIndex(new THREE.BufferAttribute(indices, 1));
-            bufferGeom.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
+  (0, _createClass3.default)(SoftMesh, [{
+    key: 'createIndexedBufferGeometryFromGeometry',
+    value: function createIndexedBufferGeometryFromGeometry(geometry) {
+      var numVertices = geometry.vertices.length;
+      var numFaces = geometry.faces.length;
+      var bufferGeom = new THREE.BufferGeometry();
+      var vertices = new Float32Array(numVertices * 3);
+      var indices = new (numFaces * 3 > 65535 ? Uint32Array : Uint16Array)(numFaces * 3);
 
-            return bufferGeom;
-        }
-    }, {
-        key: 'isEqual',
-        value: function isEqual(x1, y1, z1, x2, y2, z2) {
-            var delta = 0.000001;
+      for (var i = 0; i < numVertices; i++) {
+        var p = geometry.vertices[i];
+        var i3 = i * 3;
 
-            return Math.abs(x2 - x1) < delta && Math.abs(y2 - y1) < delta && Math.abs(z2 - z1) < delta;
-        }
-    }]);
-    return SoftMesh;
+        vertices[i3] = p.x;
+        vertices[i3 + 1] = p.y;
+        vertices[i3 + 2] = p.z;
+      }
+
+      for (var _i = 0; _i < numFaces; _i++) {
+        var f = geometry.faces[_i];
+        var _i2 = _i * 3;
+
+        indices[_i2] = f.a;
+        indices[_i2 + 1] = f.b;
+        indices[_i2 + 2] = f.c;
+      }
+
+      bufferGeom.setIndex(new THREE.BufferAttribute(indices, 1));
+      bufferGeom.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
+
+      return bufferGeom;
+    }
+  }, {
+    key: 'isEqual',
+    value: function isEqual(x1, y1, z1, x2, y2, z2) {
+      var delta = 0.000001;
+
+      return Math.abs(x2 - x1) < delta && Math.abs(y2 - y1) < delta && Math.abs(z2 - z1) < delta;
+    }
+  }]);
+  return SoftMesh;
 }(_mesh.Mesh);
 
 /***/ },
@@ -53702,7 +53676,7 @@ module.exports = function(){ /* empty */ };
 
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = __webpack_require__(13)
+var toIObject = __webpack_require__(12)
   , toLength  = __webpack_require__(159)
   , toIndex   = __webpack_require__(158);
 module.exports = function(IS_INCLUDES){
@@ -53746,7 +53720,7 @@ module.exports = function(it){
 /* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(12).document && document.documentElement;
+module.exports = __webpack_require__(11).document && document.documentElement;
 
 /***/ },
 /* 148 */
@@ -53800,7 +53774,7 @@ module.exports = function(done, value){
 /***/ function(module, exports, __webpack_require__) {
 
 var getKeys   = __webpack_require__(29)
-  , toIObject = __webpack_require__(13);
+  , toIObject = __webpack_require__(12);
 module.exports = function(object, el){
   var O      = toIObject(object)
     , keys   = getKeys(O)
@@ -53891,7 +53865,7 @@ module.exports = __webpack_require__(15) ? Object.defineProperties : function de
 /***/ function(module, exports, __webpack_require__) {
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var toIObject = __webpack_require__(13)
+var toIObject = __webpack_require__(12)
   , gOPN      = __webpack_require__(57).f
   , toString  = {}.toString;
 
@@ -53995,7 +53969,7 @@ module.exports = function(it){
 var addToUnscopables = __webpack_require__(144)
   , step             = __webpack_require__(151)
   , Iterators        = __webpack_require__(35)
-  , toIObject        = __webpack_require__(13);
+  , toIObject        = __webpack_require__(12);
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
@@ -54047,7 +54021,7 @@ $export($export.S + $export.F * !__webpack_require__(15), 'Object', {definePrope
 /***/ function(module, exports, __webpack_require__) {
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-var toIObject                 = __webpack_require__(13)
+var toIObject                 = __webpack_require__(12)
   , $getOwnPropertyDescriptor = __webpack_require__(38).f;
 
 __webpack_require__(61)('getOwnPropertyDescriptor', function(){
@@ -54114,7 +54088,7 @@ __webpack_require__(56)(String, 'String', function(iterated){
 "use strict";
 'use strict';
 // ECMAScript 6 symbols shim
-var global         = __webpack_require__(12)
+var global         = __webpack_require__(11)
   , has            = __webpack_require__(16)
   , DESCRIPTORS    = __webpack_require__(15)
   , $export        = __webpack_require__(19)
@@ -54131,7 +54105,7 @@ var global         = __webpack_require__(12)
   , enumKeys       = __webpack_require__(146)
   , isArray        = __webpack_require__(149)
   , anObject       = __webpack_require__(23)
-  , toIObject      = __webpack_require__(13)
+  , toIObject      = __webpack_require__(12)
   , toPrimitive    = __webpack_require__(44)
   , createDesc     = __webpack_require__(30)
   , _create        = __webpack_require__(37)
@@ -54365,7 +54339,7 @@ __webpack_require__(45)('observable');
 /***/ function(module, exports, __webpack_require__) {
 
 __webpack_require__(160);
-var global        = __webpack_require__(12)
+var global        = __webpack_require__(11)
   , hide          = __webpack_require__(20)
   , Iterators     = __webpack_require__(35)
   , TO_STRING_TAG = __webpack_require__(21)('toStringTag');
