@@ -26,7 +26,8 @@ class WHSObject {
       {
         __whsobject: true,
         __releaseTime: new Date().getTime(),
-        __params: {}
+        __params: {},
+        __defaults: defaults
       },
     new Events());
 
@@ -46,21 +47,13 @@ class WHSObject {
     return this.__params;
   }
 
-  add(children) {
-    const _scope = this;
+  setNative(native) {
+    this.native = native;
+    return this.native;
+  }
 
-    if (children.addTo)
-      return children.addTo(this);
-    else if (children instanceof Object) {
-      return new Promise((resolve) => {
-        children.parent = _scope;
-
-        _scope.getNative().add(children.getNative());
-        _scope.children.push(_scope);
-
-        resolve();
-      });
-    }
+  getNative() {
+    return this.native;
   }
 }
 
