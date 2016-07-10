@@ -4,6 +4,8 @@ import * as Physijs from '../physics/index.js';
 
 import {PerspectiveCamera} from '../cameras/PerspectiveCamera';
 import {Camera} from './Camera';
+import {Shape} from './Shape';
+import {Light} from './Light';
 import {WHSObject} from './Object';
 
 class World extends WHSObject {
@@ -75,18 +77,20 @@ class World extends WHSObject {
 
     super.setParams(params);
 
+    const initParams = this.getParams().init;
+
     // INIT.
     this._initDOM();
-    this._initScene();
+    if (initParams.scene) this._initScene();
 
     if (!(
       typeof process === 'object'
       && Object.prototype.toString.call(process) === '[object process]'
       )) this._initStats();
 
-    this._initCamera();
-    this._initRenderer();
-    this._initHelpers();
+    if (initParams.scene && initParams.camera) this._initCamera();
+    if (initParams.scene && initParams.renderer) this._initRenderer();
+    if (initParams.scene && initParams.helpers) this._initHelpers();
 
     // NOTE: ==================== Autoresize. ======================
     const scope = this;
@@ -142,7 +146,7 @@ class World extends WHSObject {
       || params.fog.type === 'expodential')
       scene.fog = new THREE.FogExp2(params.fog.hex, params.fog.density);
 
-    this.setScene(scene);
+    this.setScene(scene, false);
 
     // Array for processing.
     this.children = [];
@@ -382,8 +386,29 @@ class World extends WHSObject {
     );
   }
 
-  setScene(scene) {
+  setScene(scene, import_three = true) {
     this.scene = scene;
+
+    if (import_three) {
+      this.children = [];
+
+      const moveChildren = (object) => {
+        for (let i = 0, max = object.children.length; i < max; i++) {
+          const obj3D = object.children[i];
+          let WHSobj;
+
+          if (obj3D instanceof THREE.Light) WHSobj = new Light(obj3D);
+          else WHSobj = new Shape(obj3D);
+
+          WHSobj.addTo(this);
+
+          if (obj3D.children.length) moveChildren(obj3D, WHSobj);
+        }
+      }
+
+      moveChildren(scene, this);
+    }
+
     return this.scene;
   }
 
