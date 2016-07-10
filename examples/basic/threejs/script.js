@@ -1,7 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var GAME = new WHS.World({
+window.GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
   autoresize: true,
 
@@ -33,6 +33,12 @@ var obj2 = new THREE.Mesh(new THREE.SphereGeometry(3, 32, 32), new THREE.MeshBas
 obj2.position.set(12, 6, 0);
 
 scene.add(obj2);
+
+var obj3 = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), new THREE.MeshBasicMaterial({ color: 0x0000ff }));
+obj3.position.set(0, 0, 3);
+
+// Nested object.
+obj2.add(obj3);
 
 GAME.setScene(scene, true);
 GAME._initCamera();

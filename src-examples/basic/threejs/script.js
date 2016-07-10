@@ -1,4 +1,4 @@
-const GAME = new WHS.World({
+window.GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
   autoresize: true,
 
@@ -30,6 +30,12 @@ const obj2 = new THREE.Mesh(new THREE.SphereGeometry(3, 32, 32), new THREE.MeshB
 obj2.position.set(12, 6, 0);
 
 scene.add(obj2);
+
+const obj3 = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), new THREE.MeshBasicMaterial({color: 0x0000ff}));
+obj3.position.set(0, 0, 3);
+
+// Nested object.
+obj2.add(obj3);
 
 GAME.setScene(scene, true);
 GAME._initCamera();
