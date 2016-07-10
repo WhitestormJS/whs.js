@@ -28,19 +28,23 @@ class Camera extends WHSObject {
         bottom: window.innerHeight / -2,
         cubeResolution: 128
       },
+
       helper: false,
+
       pos: {
         x: 0,
         y: 0,
         z: 0,
         set: _set
       },
+
       rot: {
         x: 0,
         y: 0,
         z: 0,
         set: _set
       },
+
       target: {
         x: 0,
         y: 0,
@@ -155,15 +159,6 @@ class Camera extends WHSObject {
     this._type = source._type;
 
     return this;
-  }
-
-  setNative(native) {
-    this.native = native;
-    return this.native;
-  }
-
-  getNative() {
-    return this.native;
   }
 
   get position() {
