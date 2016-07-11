@@ -45,7 +45,9 @@ class Ring extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.RingGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.RingBufferGeometry : THREE.RingGeometry;
+
+    return new GConstruct(
       params.geometry.innerRadius,
       params.geometry.outerRadius,
       params.geometry.thetaSegments,

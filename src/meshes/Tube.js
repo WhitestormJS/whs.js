@@ -57,7 +57,9 @@ class Tube extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.TubeGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.TubeBufferGeometry : THREE.TubeGeometry;
+
+    return new GConstruct(
       params.geometry.path,
       params.geometry.segments,
       params.geometry.radius,

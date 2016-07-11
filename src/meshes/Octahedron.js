@@ -36,7 +36,9 @@ class Octahedron extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.OctahedronGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.OctahedronBufferGeometry : THREE.OctahedronGeometry;
+
+    return new GConstruct(
       params.geometry.radius,
       params.geometry.detail
     );

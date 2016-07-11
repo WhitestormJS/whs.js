@@ -37,7 +37,9 @@ class Parametric extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.ParametricGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.ParametricBufferGeometry : THREE.ParametricGeometry;
+
+    return new GConstruct(
       params.geometry.func,
       params.geometry.slices,
       params.geometry.stacks

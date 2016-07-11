@@ -38,7 +38,9 @@ class Cylinder extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.CylinderGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.CylinderBufferGeometry : THREE.CylinderGeometry;
+
+    return new GConstruct(
       params.geometry.radiusTop,
       params.geometry.radiusBottom,
       params.geometry.height,
