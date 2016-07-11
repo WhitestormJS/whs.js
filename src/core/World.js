@@ -68,6 +68,7 @@ class World extends WHSObject {
 
       init: {
         scene: true,
+        stats: true,
         camera: true,
         helpers: true,
         renderer: true
@@ -89,11 +90,7 @@ class World extends WHSObject {
     // INIT.
     this._initDOM();
     if (initParams.scene) this._initScene();
-
-    if (!(
-      typeof process === 'object'
-      && Object.prototype.toString.call(process) === '[object process]'
-      )) this._initStats();
+    if (initParams.scene && initParams.stats) this._initStats();
 
     if (initParams.scene && initParams.camera) this._initCamera();
     if (initParams.scene && initParams.renderer) this._initRenderer();
