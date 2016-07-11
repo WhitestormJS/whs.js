@@ -5,7 +5,7 @@ class Group extends Shape {
   constructor() {
     super({}, 'group');
 
-    super.setNative(new Object3D());
+    super.setNative(new THREE.Object3D());
     super.wrap();
   }
 }
