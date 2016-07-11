@@ -66,6 +66,13 @@ class World extends WHSObject {
         far: 1000
       },
 
+      init: {
+        scene: true,
+        camera: true,
+        helpers: true,
+        renderer: true
+      },
+
       background: {
         color: 0x000000,
         opacity: 1
