@@ -34,6 +34,10 @@ WhitestormJS will be built, and written to `build/whitestorm.js`, and `build/whi
 
 ## CLI
 
+### gulp 
+
+Builds examples `gulp examples:build` and sources `gulp src:build`
+
 ### gulp src:build
 
 This command builds all sources for `node.js` and `browser` environment.
