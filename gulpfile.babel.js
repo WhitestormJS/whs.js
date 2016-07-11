@@ -44,7 +44,7 @@ process.env.BABEL_ENV = 'node';
 gulp.task('default', ['examples:build', 'src:build']);
 
 gulp.task('src:build', (callback) => {
-  runSequence('clean', 'src:build:node', 'src:build:browser', callback);
+  runSequence('src:clean', 'src:build:node', 'src:build:browser', callback);
 });
 
 // ===== BUILD:  node.js =====
