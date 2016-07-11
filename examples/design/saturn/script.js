@@ -87,6 +87,7 @@ new WHS.DirectionalLight({
 
 var s1 = new WHS.Dodecahedron({
   geometry: {
+    buffer: true,
     radius: 10
   },
 
@@ -101,6 +102,7 @@ var s1 = new WHS.Dodecahedron({
 
 var s2 = new WHS.Box({
   geometry: {
+    buffer: true,
     width: 10,
     height: 10,
     depth: 10
@@ -117,6 +119,7 @@ var s2 = new WHS.Box({
 
 var s3 = new WHS.Cylinder({
   geometry: {
+    buffer: true,
     radiusTop: 0,
     radiusBottom: 10,
     height: 10
@@ -133,6 +136,7 @@ var s3 = new WHS.Cylinder({
 
 var s4 = new WHS.Sphere({
   geometry: {
+    buffer: true,
     radius: 10
   },
 

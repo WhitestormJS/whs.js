@@ -36,7 +36,9 @@ class Dodecahedron extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.DodecahedronGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.DodecahedronBufferGeometry : THREE.DodecahedronGeometry;
+
+    return new GConstruct(
       params.geometry.radius,
       params.geometry.detail
     );

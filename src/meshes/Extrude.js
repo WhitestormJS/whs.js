@@ -36,7 +36,9 @@ class Extrude extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.ExtrudeGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.ExtrudeBufferGeometry : THREE.ExtrudeGeometry;
+
+    return new GConstruct(
       params.geometry.shapes,
       params.geometry.options
     );

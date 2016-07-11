@@ -32,7 +32,9 @@ class Shape2D extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.ShapeGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.ShapeBufferGeometry : THREE.ShapeGeometry;
+
+    return new GConstruct(
       params.geometry.shapes
     );
   }

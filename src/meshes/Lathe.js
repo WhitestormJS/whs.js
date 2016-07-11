@@ -35,7 +35,9 @@ class Lathe extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.LatheGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.LatheBufferGeometry : THREE.LatheGeometry;
+
+    return new GConstruct(
       params.geometry.points
     );
   }
