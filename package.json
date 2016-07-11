@@ -69,6 +69,7 @@
     "gulp-swig": "^0.8.0",
     "gulp-util": "^3.0.7",
     "gulp-xo": "^0.11.0",
+    "happypack": "^2.1.1",
     "inline-worker": "^1.1.0",
     "karma": "^1.0.0",
     "karma-benchmark-reporter": "^0.1.1",

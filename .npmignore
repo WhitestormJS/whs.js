@@ -2,3 +2,4 @@ src-examples/
 examples_bak/
 examples/
 src/
+.happypack/
