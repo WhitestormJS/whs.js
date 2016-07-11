@@ -48,12 +48,12 @@ class WHSObject {
   }
 
   setNative(native) {
-    this.native = native;
+    this._native = native;
     return this.native;
   }
 
   getNative() {
-    return this.native;
+    return this._native;
   }
 
   add(children) {
