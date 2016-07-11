@@ -39,6 +39,8 @@ class Torus extends Shape {
   }
 
   buildGeometry(params = {}) {
+    const GConstruct = params.buffer && !params.softbody ? THREE.TorusBufferGeometry : THREE.TorusGeometry;
+
     return new THREE.TorusGeometry(
       params.geometry.radius,
       params.geometry.tube,

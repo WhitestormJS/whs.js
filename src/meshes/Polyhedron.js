@@ -56,7 +56,9 @@ class Polyhedron extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.PolyhedronGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.PolyhedronBufferGeometry : THREE.PolyhedronGeometry;
+
+    return new GConstruct(
       params.geometry.verticesOfCube,
       params.geometry.indicesOfFaces,
       params.geometry.radius,

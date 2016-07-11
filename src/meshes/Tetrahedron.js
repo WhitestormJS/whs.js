@@ -36,7 +36,9 @@ class Tetrahedron extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.TetrahedronGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.TetrahedronBufferGeometry : THREE.TetrahedronGeometry;
+
+    return new GConstruct(
       params.geometry.radius,
       params.geometry.detail
     );

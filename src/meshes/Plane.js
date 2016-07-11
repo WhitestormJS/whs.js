@@ -38,7 +38,9 @@ class Plane extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.PlaneGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
+
+    return new GConstruct(
       params.geometry.width,
       params.geometry.height,
       params.geometry.wSegments,

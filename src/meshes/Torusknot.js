@@ -41,7 +41,9 @@ class Torusknot extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.TorusKnotGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.TorusKnotBufferGeometry : THREE.TorusKnotGeometry;
+
+    return new GConstruct(
       params.geometry.radius,
       params.geometry.tube,
       params.geometry.radialSegments,

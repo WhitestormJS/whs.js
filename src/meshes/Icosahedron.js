@@ -36,7 +36,9 @@ class Icosahedron extends Shape {
   }
 
   buildGeometry(params = {}) {
-    return new THREE.IcosahedronGeometry(
+    const GConstruct = params.buffer && !params.softbody ? THREE.IcosahedronBufferGeometry : THREE.IcosahedronGeometry;
+
+    return new GConstruct(
       params.geometry.radius,
       params.geometry.detail
     );
