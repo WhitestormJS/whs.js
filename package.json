@@ -4,13 +4,12 @@
   "description": "Framework for developing 3D web apps with physics.",
   "main": "lib/index.js",
   "scripts": {
-    "build": "gulp build",
+    "build": "gulp src:build",
     "dev": "gulp dev",
-    "test": "karma start './test/karma.conf.js'",
-    "babel": "gulp babel",
-    "webpack": "gulp webpack",
-    "lint": "gulp lint",
-    "clean": "gulp clean"
+    "test": "gulp src:karma",
+    "build:node": "gulp src:build:node",
+    "build:browser": "gulp src:build:browser",
+    "lint": "gulp src:lint"
   },
   "repository": {
     "type": "git",

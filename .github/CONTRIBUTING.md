@@ -28,9 +28,48 @@ After that, clone the repository anywhere you'd like (`git clone https://github.
 
 Open the new directory (`./WhitestormJS/` by default) using whatever terminal emulator you'd like.
 
-You can build WhitestormJS with the following command: `gulp build`
+You can build WhitestormJS with the following command: `gulp`
 
 WhitestormJS will be built, and written to `build/whitestorm.js`, and `build/whitestorm.min.js`.
+
+## CLI
+
+### gulp src:build
+
+This command builds all sources for `node.js` and `browser` environment.
+
+#### gulp src:build:node
+
+This command builds all sources only for `node.js` environment.
+
+#### gulp src:build:browser
+
+This command builds all sources only for `node.js` environment.
+
+### gulp dev
+
+This command runs development mode in which you can make changes as to sources as to examples and all your changes will be done immediately.
+After running command you should see all examples by `localhost:8080`.
+
+### gulp examples:watch
+
+Watches all your changes in `src-examples` folder.
+
+### gulp examples:build
+
+Deletes existing `examples` folder and makes a new one by compiling `src-examples`.
+
+### gulp src:test
+
+Runs karma and performance tests.
+
+### gulp src:clean
+
+Deletes `lib` folder. (Only used by other commands.)
+
+### gulp examples:clean
+
+Deletes `examples` folder. (Only used by other commands.)
 
 ----
 
