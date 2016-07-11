@@ -123,6 +123,10 @@ const loadMaterial = (material = {}) => {
       scope._material = new THREE.MeshPhongMaterial(params);
       break;
 
+    case 'standard':
+      scope._material = new THREE.MeshStandardMaterial(params);
+      break;
+
     case 'pointcloud':
       scope._material = new THREE.PointCloudMaterial(params);
       break;

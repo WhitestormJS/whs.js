@@ -1,4 +1,5 @@
 .DS_Store
 node_modules
+.happypack
 npm-debug.log
 .idea

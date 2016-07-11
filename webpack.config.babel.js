@@ -1,5 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
+import HappyPack from 'happypack';
 
 process.env.BABEL_ENV = 'browser';
 
@@ -37,7 +38,8 @@ export function config({production}) {
         {
           test: /\.js$/,
           exclude: /node_modules/,
-          loader: 'babel'
+          loader: 'babel',
+          happy: { id: 'js' }
         }
       ]
     },
@@ -52,9 +54,12 @@ export function config({production}) {
         }),
         new webpack.ProvidePlugin({
           THREE: 'three'
-        })
+        }),
+        new HappyPack({id: 'js', threads: 4})
       ]
-      : []
+      : [
+        new HappyPack({id: 'js', threads: 4})
+      ]
   };
 }
 

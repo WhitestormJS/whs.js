@@ -1,10 +1,9 @@
-const radiusMin = 100,
-  radiusMax = 200,
-  particleCount = 400,
-  particleMinRadius = 1,
-  particleMaxRadius = 4,
-  planetSize = 50, // Radius.
-  particles = [];
+const radiusMin = 110, // Min radius of the asteroid belt.
+  radiusMax = 220, // Max radius of the asteroid belt.
+  particleCount = 400, // Ammount of asteroids.
+  particleMinRadius = 0.1, // Min of asteroid radius.
+  particleMaxRadius = 4, // Max of asteroid radius.
+  planetSize = 50; // Radius of planet.
 
 const colors = {
   green: 0x8fc999,
@@ -35,7 +34,11 @@ const GAME = new WHS.World({
   }
 });
 
-window.planet = new WHS.Tetrahedron({
+const space = new WHS.Group();
+space.addTo(GAME);
+space.rotation.z = Math.PI / 12;
+
+const planet = new WHS.Tetrahedron({
   geometry: {
     radius: planetSize,
     detail: 2
@@ -46,11 +49,13 @@ window.planet = new WHS.Tetrahedron({
   material: {
     color: 0xee5624,
     shading: THREE.FlatShading,
-    kind: 'phong'
+    roughness: 0.9,
+    emissive: 0x270000,
+    kind: 'standard'
   }
 });
 
-GAME.add(planet);
+planet.addTo(space);
 
 // LIGHTS.
 new WHS.AmbientLight({
@@ -68,6 +73,9 @@ new WHS.DirectionalLight({
   },
 
   shadowmap: {
+    width: 2048,
+    height: 2048,
+
     left: -800,
     right: 800,
     top: 800,
@@ -77,7 +85,8 @@ new WHS.DirectionalLight({
 
   pos: {
     x: 300,
-    z: 300
+    z: 300,
+    y: 100
   }
 }).addTo(GAME);
 
@@ -92,7 +101,9 @@ const s1 = new WHS.Dodecahedron({
 
   material: {
     shading: THREE.FlatShading,
-    kind: 'phong'
+    emissive: 0x270000,
+    roughness: 0.9,
+    kind: 'standard'
   }
 });
 
@@ -109,7 +120,9 @@ const s2 = new WHS.Box({
 
   material: {
     shading: THREE.FlatShading,
-    kind: 'phong'
+    roughness: 0.9,
+    emissive: 0x270000,
+    kind: 'standard'
   }
 });
 
@@ -126,7 +139,9 @@ const s3 = new WHS.Cylinder({
 
   material: {
     shading: THREE.FlatShading,
-    kind: 'phong'
+    roughness: 0.9,
+    emissive: 0x270000,
+    kind: 'standard'
   }
 });
 
@@ -141,9 +156,14 @@ const s4 = new WHS.Sphere({
 
   material: {
     shading: THREE.FlatShading,
-    kind: 'phong'
+    roughness: 0.9,
+    emissive: 0x270000,
+    kind: 'standard'
   }
 });
+
+const asteroids = new WHS.Group();
+asteroids.addTo(space);
 
 // Materials.
 const mat = [
@@ -167,9 +187,6 @@ for (let i = 0; i < particleCount; i++) {
 
   particle.setMaterial(mat[Math.floor(4 * Math.random())]); // Set custom THREE.Material to mesh.
 
-  // Overwrite shadows.
-  particle.wrap('no-transforms');
-
   // Particle data.
   particle.data = {
     distance: radiusMin + Math.random() * (radiusMax - radiusMin),
@@ -179,17 +196,17 @@ for (let i = 0; i < particleCount; i++) {
   // Set position & rotation.
   particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
   particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
-  particle.position.y = -20 * Math.random() + 4;
+  particle.position.y = -10 * Math.random() + 4;
 
   particle.rotation.set(Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random(), Math.PI * 2 * Math.random());
 
-  GAME.add(particle);
-  particles.push(particle);
+  particle.addTo(asteroids);
 }
 
 // Animating rotating shapes around planet.
+const particles = asteroids.children;
 const animation = new WHS.Loop(() => {
-  for (let i = 0; i < particles.length; i++) {
+  for (let i = 0, max = particles.length; i < max; i++) {
     const particle = particles[i];
 
     particle.data.angle += 0.02 * particle.data.distance / radiusMax;
