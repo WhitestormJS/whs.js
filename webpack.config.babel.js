@@ -55,10 +55,10 @@ export function config({production}) {
         new webpack.ProvidePlugin({
           THREE: 'three'
         }),
-        new HappyPack({id: 'js', threads: 4})
+        new HappyPack({loaders: ['babel', 'string-replace'], threads: 4})
       ]
       : [
-        new HappyPack({id: 'js', threads: 4})
+        new HappyPack({loaders: ['babel', 'string-replace'], threads: 4})
       ]
   };
 }
@@ -73,7 +73,7 @@ export function light_config({production}) {
     query: {
       multiple: [
         {
-          search: 'physics/physi.js\';',
+          search: 'physics/index.js\';',
           replace: 'physics/nophysi.js\';'
         },
         {
