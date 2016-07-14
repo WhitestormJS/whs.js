@@ -8,7 +8,8 @@ const GAME = new WHS.World({
   helpers: {
     grid: {
       size: 100,
-      step: 3
+      step: 100,
+      color1: 0xff0000
     },
     axis: {
       size: 100

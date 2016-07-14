@@ -294,7 +294,9 @@ class World extends WHSObject {
           : 10,
           params.helpers.grid.step
           ? params.helpers.grid.step
-          : 1
+          : 1,
+          params.helpers.grid.color1,
+          params.helpers.grid.color2
         )
       );
     }
