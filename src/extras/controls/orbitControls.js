@@ -15,8 +15,8 @@ export function orbitControls(object) {
         : new THREE.Vector3(0, 0, 0);
 
       controls.target = target;
-    } else if (typeof object === 'object')
-      controls.target.copy(target);
+    } else if (object instanceof THREE.Vector3)
+      controls.target.copy(object);
 
     return controls;
   };
