@@ -33,7 +33,7 @@
   "homepage": "https://github.com/WhitestormJS/whitestorm.js#readme",
   "dependencies": {
     "stats.js": "^0.16.0",
-    "three": "^0.76.1",
+    "three": "^0.79.0",
     "webworkify-webpack": "^1.1.0",
     "whs-ammo": "^0.0.6"
   },
