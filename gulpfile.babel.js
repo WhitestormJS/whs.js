@@ -73,7 +73,7 @@ gulp.task('src:build:browser', (callback) => {
 });
 
 // ======== DEV MODE ========
-gulp.task('dev', ['examples:watch'], () => {
+gulp.task('dev', ['examples:build', 'examples:watch'], () => {
   const server = new WebpackDevServer(webpackCompiler, {
     contentBase: examplesDest,
     publicPath: '/build/',
