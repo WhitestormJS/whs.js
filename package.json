@@ -35,7 +35,7 @@
     "stats.js": "^0.16.0",
     "three": "^0.76.1",
     "webworkify-webpack": "^1.1.0",
-    "whs-ammo": "^0.0.2"
+    "whs-ammo": "^0.0.6"
   },
   "devDependencies": {
     "babel-loader": "^6.2.4",
@@ -91,7 +91,7 @@
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.2.0",
-    "webworkify-webpack": "^0.0.1",
+    "webworkify-webpack": "1.1.2",
     "whs-terrain": "0.0.8",
     "xo": "^0.15.1"
   },
