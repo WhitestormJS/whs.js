@@ -17,8 +17,8 @@ class Loop {
     this.enabled = false;
   }
 
-  execute(time) {
-    return this.func(this.clock, time);
+  execute() {
+    return this.func(this.clock);
   }
 }
 

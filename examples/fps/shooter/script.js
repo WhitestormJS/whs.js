@@ -2253,7 +2253,7 @@ var GAME = new WHS.World({
   }
 });
 
-window.terrain = new _whsTerrain2.default({
+var terrain = new _whsTerrain2.default({
   geometry: {
     map: '../../_assets/terrain/default_terrain.png',
     depth: 100,
@@ -2271,7 +2271,8 @@ window.terrain = new _whsTerrain2.default({
     z: 0
   }
 });
-window.terrain.addTo(GAME, 'wait');
+
+terrain.addTo(GAME, 'wait');
 
 // NOTE: Default light.
 new WHS.AmbientLight({
