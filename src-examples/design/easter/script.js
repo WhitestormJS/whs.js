@@ -167,6 +167,7 @@ let egg2, egg3, egg4, egg5, egg6, egg7, egg8, egg9;
 
 egg.addTo(GAME, 'wait').then((object) => {
   egg2 = object.clone();
+  console.log(egg2);
   egg2.M_({map: new WHS.texture('{{ assets }}/textures/easter/egg2.jpg')});
 
   egg2.addTo(GAME, 'wait').then((obj) => {

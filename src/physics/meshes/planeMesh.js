@@ -1,7 +1,9 @@
 import {Mesh} from '../core/mesh';
 
 export class PlaneMesh extends Mesh {
-  constructor(geometry, material, mass) {
+  constructor(geometry, material, params = {}) {
+    const physParams = params.physics;
+    const mass = physParams.mass || params.mass;
     super(geometry, material, mass);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
@@ -11,6 +13,14 @@ export class PlaneMesh extends Mesh {
 
     this._physijs.type = 'plane';
     this._physijs.normal = geometry.faces[0].normal.clone();
-    this._physijs.mass = (typeof mass === 'undefined') ? width * height : mass;
+
+    this._physijs.mass = mass;
+
+    this._physijs.params = {
+      friction: physParams.friction,
+      restitution: physParams.restitution,
+      damping: physParams.damping,
+      margin: physParams.margin
+    };
   }
 }

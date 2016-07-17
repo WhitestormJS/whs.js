@@ -44825,6 +44825,13 @@ var WHS =
 	      if (this.world) this.world.execute('setCcdSweptSphereRadius', { id: this._physijs.id, radius: radius });
 	    }
 	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      return new this.constructor(this.geometry, this.material, params).copy(this);
+	    }
+	  }, {
 	    key: 'mass',
 	    get: function get() {
 	      return this._physijs.mass;
@@ -45923,6 +45930,7 @@ var WHS =
 	      _softbody_report_size += body.get_m_nodes().size();
 	      _num_softbody_objects++;
 	    } else {
+	      var _physParams = description.params;
 	      var shape = createShape(description);
 	
 	      if (!shape) return;
@@ -45979,10 +45987,10 @@ var WHS =
 	      motionState = new _whsAmmo2.default.btDefaultMotionState(_transform); // #TODO: btDefaultMotionState supports center of mass offset as second argument - implement
 	      var rbInfo = new _whsAmmo2.default.btRigidBodyConstructionInfo(description.mass, motionState, shape, _vec3_1);
 	
-	      if (description.materialId !== undefined) {
-	        rbInfo.set_m_friction(_materials[description.materialId].friction);
-	        rbInfo.set_m_restitution(_materials[description.materialId].restitution);
-	      }
+	      rbInfo.set_m_friction(_physParams.friction);
+	      rbInfo.set_m_restitution(_physParams.restitution);
+	      rbInfo.set_m_linearDamping(_physParams.damping);
+	      rbInfo.set_m_angularDamping(_physParams.damping);
 	
 	      body = new _whsAmmo2.default.btRigidBody(rbInfo);
 	      _whsAmmo2.default.destroy(rbInfo);
@@ -48974,7 +48982,10 @@ var WHS =
 	        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 	        (0, _classCallCheck3.default)(this, BoxMesh);
 	
-	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(BoxMesh).call(this, geometry, material, params.mass));
+	        var physParams = params.physics;
+	        var mass = physParams.mass || params.mass;
+	
+	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(BoxMesh).call(this, geometry, material, mass));
 	
 	        if (!geometry.boundingBox) geometry.computeBoundingBox();
 	
@@ -48986,7 +48997,14 @@ var WHS =
 	        _this._physijs.width = width;
 	        _this._physijs.height = height;
 	        _this._physijs.depth = depth;
-	        _this._physijs.mass = typeof params.mass === 'undefined' ? width * height * depth : params.mass;
+	        _this._physijs.mass = mass;
+	
+	        _this._physijs.params = {
+	            friction: physParams.friction,
+	            restitution: physParams.restitution,
+	            damping: physParams.damping,
+	            margin: physParams.margin
+	        };
 	        return _this;
 	    }
 	
@@ -49023,8 +49041,12 @@ var WHS =
 	var CapsuleMesh = exports.CapsuleMesh = function (_Mesh) {
 	    (0, _inherits3.default)(CapsuleMesh, _Mesh);
 	
-	    function CapsuleMesh(geometry, material, mass) {
+	    function CapsuleMesh(geometry, material) {
+	        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 	        (0, _classCallCheck3.default)(this, CapsuleMesh);
+	
+	        var physParams = params.physics;
+	        var mass = physParams.mass || params.mass;
 	
 	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(CapsuleMesh).call(this, geometry, material, mass));
 	
@@ -49037,7 +49059,14 @@ var WHS =
 	        _this._physijs.type = 'capsule';
 	        _this._physijs.radius = Math.max(width / 2, depth / 2);
 	        _this._physijs.height = height;
-	        _this._physijs.mass = typeof mass === 'undefined' ? width * height * depth : mass;
+	        _this._physijs.mass = mass;
+	
+	        _this._physijs.params = {
+	            friction: physParams.friction,
+	            restitution: physParams.restitution,
+	            damping: physParams.damping,
+	            margin: physParams.margin
+	        };
 	        return _this;
 	    }
 	
@@ -49074,17 +49103,22 @@ var WHS =
 	var ConcaveMesh = exports.ConcaveMesh = function (_Mesh) {
 	    (0, _inherits3.default)(ConcaveMesh, _Mesh);
 	
-	    function ConcaveMesh(geom, material, mass, cGeometry, cScale) {
+	    function ConcaveMesh(geom, material) {
+	        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	        var cGeometry = arguments[3];
 	        (0, _classCallCheck3.default)(this, ConcaveMesh);
 	
 	        var geometry = cGeometry ? cGeometry : geom,
 	            data = new Float32Array(geometry.faces.length * 9);
 	
+	        var physParams = params.physics;
+	        var mass = physParams.mass || params.mass;
+	
 	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(ConcaveMesh).call(this, geom, material, mass));
 	
 	        if (!geometry.boundingBox) geometry.computeBoundingBox();
 	
-	        cScale = cScale || { x: 1, y: 1, z: 1 };
+	        var cScale = params.scale || { x: 1, y: 1, z: 1 };
 	        cScale.x = cScale.x || 1;
 	        cScale.y = cScale.y || 1;
 	        cScale.z = cScale.z || 1;
@@ -49113,7 +49147,14 @@ var WHS =
 	
 	        _this._physijs.type = 'concave';
 	        _this._physijs.data = data;
-	        _this._physijs.mass = typeof mass === 'undefined' ? width * height * depth : mass;
+	        _this._physijs.mass = mass;
+	
+	        _this._physijs.params = {
+	            friction: physParams.friction,
+	            restitution: physParams.restitution,
+	            damping: physParams.damping,
+	            margin: physParams.margin
+	        };
 	        return _this;
 	    }
 	
@@ -49150,8 +49191,12 @@ var WHS =
 	var ConeMesh = exports.ConeMesh = function (_Mesh) {
 	    (0, _inherits3.default)(ConeMesh, _Mesh);
 	
-	    function ConeMesh(geometry, material, mass) {
+	    function ConeMesh(geometry, material) {
+	        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 	        (0, _classCallCheck3.default)(this, ConeMesh);
+	
+	        var physParams = params.physics;
+	        var mass = physParams.mass || params.mass;
 	
 	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(ConeMesh).call(this, geometry, material, mass));
 	
@@ -49163,7 +49208,14 @@ var WHS =
 	        _this._physijs.type = 'cone';
 	        _this._physijs.radius = width / 2;
 	        _this._physijs.height = height;
-	        _this._physijs.mass = typeof mass === 'undefined' ? width * height : mass;
+	        _this._physijs.mass = mass;
+	
+	        _this._physijs.params = {
+	            friction: physParams.friction,
+	            restitution: physParams.restitution,
+	            damping: physParams.damping,
+	            margin: physParams.margin
+	        };
 	        return _this;
 	    }
 	
@@ -49200,8 +49252,12 @@ var WHS =
 	var ConvexMesh = exports.ConvexMesh = function (_Mesh) {
 	    (0, _inherits3.default)(ConvexMesh, _Mesh);
 	
-	    function ConvexMesh(geometry, material, mass) {
+	    function ConvexMesh(geometry, material) {
+	        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 	        (0, _classCallCheck3.default)(this, ConvexMesh);
+	
+	        var physParams = params.physics;
+	        var mass = physParams.mass || params.mass;
 	
 	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(ConvexMesh).call(this, geometry, material, mass));
 	
@@ -49221,7 +49277,14 @@ var WHS =
 	
 	        _this._physijs.type = 'convex';
 	        _this._physijs.data = data;
-	        _this._physijs.mass = typeof mass === 'undefined' ? width * height * depth : mass;
+	        _this._physijs.mass = mass;
+	
+	        _this._physijs.params = {
+	            friction: physParams.friction,
+	            restitution: physParams.restitution,
+	            damping: physParams.damping,
+	            margin: physParams.margin
+	        };
 	        return _this;
 	    }
 	
@@ -49258,8 +49321,12 @@ var WHS =
 	var CylinderMesh = exports.CylinderMesh = function (_Mesh) {
 	    (0, _inherits3.default)(CylinderMesh, _Mesh);
 	
-	    function CylinderMesh(geometry, material, mass) {
+	    function CylinderMesh(geometry, material) {
+	        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 	        (0, _classCallCheck3.default)(this, CylinderMesh);
+	
+	        var physParams = params.physics;
+	        var mass = physParams.mass || params.mass;
 	
 	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(CylinderMesh).call(this, geometry, material, mass));
 	
@@ -49273,7 +49340,14 @@ var WHS =
 	        _this._physijs.width = width;
 	        _this._physijs.height = height;
 	        _this._physijs.depth = depth;
-	        _this._physijs.mass = typeof mass === 'undefined' ? width * height * depth : mass;
+	        _this._physijs.mass = mass;
+	
+	        _this._physijs.params = {
+	            friction: physParams.friction,
+	            restitution: physParams.restitution,
+	            damping: physParams.damping,
+	            margin: physParams.margin
+	        };
 	        return _this;
 	    }
 	
@@ -49287,7 +49361,7 @@ var WHS =
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.HeightfieldMesh = undefined;
 	
@@ -49308,36 +49382,52 @@ var WHS =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var HeightfieldMesh = exports.HeightfieldMesh = function (_Mesh) {
-	  (0, _inherits3.default)(HeightfieldMesh, _Mesh);
+	    (0, _inherits3.default)(HeightfieldMesh, _Mesh);
 	
-	  function HeightfieldMesh(geometry, material, mass, xdiv, ydiv) {
-	    (0, _classCallCheck3.default)(this, HeightfieldMesh);
+	    function HeightfieldMesh(geometry, material) {
+	        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	        var xdiv = arguments[3];
+	        var ydiv = arguments[4];
+	        (0, _classCallCheck3.default)(this, HeightfieldMesh);
 	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(HeightfieldMesh).call(this, geometry, material, mass));
+	        console.log(params);
+	        var physParams = params.physics;
+	        var mass = physParams.mass || params.mass;
 	
-	    _this._physijs.type = 'heightfield';
-	    _this._physijs.xsize = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-	    _this._physijs.ysize = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
-	    _this._physijs.xpts = typeof xdiv === 'undefined' ? Math.sqrt(geometry.vertices.length) : xdiv + 1;
-	    _this._physijs.ypts = typeof ydiv === 'undefined' ? Math.sqrt(geometry.vertices.length) : ydiv + 1;
-	    // note - this assumes our plane geometry is square, unless we pass in specific xdiv and ydiv
-	    _this._physijs.absMaxHeight = Math.max(geometry.boundingBox.max.z, Math.abs(geometry.boundingBox.min.z));
+	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(HeightfieldMesh).call(this, geometry, material, mass));
 	
-	    var size = geometry.vertices.length;
+	        _this._physijs.type = 'heightfield';
+	        _this._physijs.xsize = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+	        _this._physijs.ysize = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+	        _this._physijs.xpts = typeof xdiv === 'undefined' ? Math.sqrt(geometry.vertices.length) : xdiv + 1;
+	        _this._physijs.ypts = typeof ydiv === 'undefined' ? Math.sqrt(geometry.vertices.length) : ydiv + 1;
+	        // note - this assumes our plane geometry is square, unless we pass in specific xdiv and ydiv
+	        _this._physijs.absMaxHeight = Math.max(geometry.boundingBox.max.z, Math.abs(geometry.boundingBox.min.z));
 	
-	    var points = new Float32Array(size),
-	        xpts = _this._physijs.xpts,
-	        ypts = _this._physijs.ypts;
+	        var size = geometry.vertices.length;
 	
-	    while (size--) {
-	      points[size] = geometry.vertices[size % xpts + (ypts - Math.round(size / xpts - size % xpts / xpts) - 1) * ypts].z;
+	        var points = new Float32Array(size),
+	            xpts = _this._physijs.xpts,
+	            ypts = _this._physijs.ypts;
+	
+	        while (size--) {
+	            points[size] = geometry.vertices[size % xpts + (ypts - Math.round(size / xpts - size % xpts / xpts) - 1) * ypts].z;
+	        }
+	
+	        _this._physijs.points = points;
+	
+	        _this._physijs.params = {
+	            friction: physParams.friction,
+	            restitution: physParams.restitution,
+	            damping: physParams.damping,
+	            margin: physParams.margin
+	        };
+	
+	        _this._physijs.mass = mass;
+	        return _this;
 	    }
 	
-	    _this._physijs.points = points;
-	    return _this;
-	  }
-	
-	  return HeightfieldMesh;
+	    return HeightfieldMesh;
 	}(_mesh.Mesh);
 
 /***/ },
@@ -49370,8 +49460,12 @@ var WHS =
 	var PlaneMesh = exports.PlaneMesh = function (_Mesh) {
 	    (0, _inherits3.default)(PlaneMesh, _Mesh);
 	
-	    function PlaneMesh(geometry, material, mass) {
+	    function PlaneMesh(geometry, material) {
+	        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 	        (0, _classCallCheck3.default)(this, PlaneMesh);
+	
+	        var physParams = params.physics;
+	        var mass = physParams.mass || params.mass;
 	
 	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(PlaneMesh).call(this, geometry, material, mass));
 	
@@ -49382,7 +49476,15 @@ var WHS =
 	
 	        _this._physijs.type = 'plane';
 	        _this._physijs.normal = geometry.faces[0].normal.clone();
-	        _this._physijs.mass = typeof mass === 'undefined' ? width * height : mass;
+	
+	        _this._physijs.mass = mass;
+	
+	        _this._physijs.params = {
+	            friction: physParams.friction,
+	            restitution: physParams.restitution,
+	            damping: physParams.damping,
+	            margin: physParams.margin
+	        };
 	        return _this;
 	    }
 	
@@ -49396,7 +49498,7 @@ var WHS =
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.SphereMesh = undefined;
 	
@@ -49417,23 +49519,33 @@ var WHS =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var SphereMesh = exports.SphereMesh = function (_Mesh) {
-	  (0, _inherits3.default)(SphereMesh, _Mesh);
+	    (0, _inherits3.default)(SphereMesh, _Mesh);
 	
-	  function SphereMesh(geometry, material) {
-	    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-	    (0, _classCallCheck3.default)(this, SphereMesh);
+	    function SphereMesh(geometry, material) {
+	        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	        (0, _classCallCheck3.default)(this, SphereMesh);
 	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(SphereMesh).call(this, geometry, material, params.mass));
+	        var physParams = params.physics;
+	        var mass = physParams.mass || params.mass;
 	
-	    if (!geometry.boundingSphere) geometry.computeBoundingSphere();
+	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(SphereMesh).call(this, geometry, material, mass));
 	
-	    _this._physijs.type = 'sphere';
-	    _this._physijs.radius = geometry.boundingSphere.radius;
-	    _this._physijs.mass = typeof params.mass === 'undefined' ? 4 / 3 * Math.PI * Math.pow(_this._physijs.radius, 3) : params.mass;
-	    return _this;
-	  }
+	        if (!geometry.boundingSphere) geometry.computeBoundingSphere();
+	        _this._physijs.type = 'sphere';
+	        _this._physijs.radius = geometry.boundingSphere.radius;
 	
-	  return SphereMesh;
+	        _this._physijs.params = {
+	            friction: physParams.friction,
+	            restitution: physParams.restitution,
+	            damping: physParams.damping,
+	            margin: physParams.margin
+	        };
+	
+	        _this._physijs.mass = mass;
+	        return _this;
+	    }
+	
+	    return SphereMesh;
 	}(_mesh.Mesh);
 
 /***/ },
@@ -49474,13 +49586,14 @@ var WHS =
 	        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 	        (0, _classCallCheck3.default)(this, SoftMesh);
 	
-	        console.log(geometry);
+	        var physParams = params.physics;
+	        var mass = physParams.mass || params.mass;
 	        var tempGeometry = geometry.clone();
 	
 	        if (!(geometry instanceof THREE.BufferGeometry)) // Converts to BufferGeometry.
 	            geometry = new THREE.BufferGeometry().fromGeometry(geometry);
 	
-	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(SoftMesh).call(this, geometry, material, params.mass));
+	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(SoftMesh).call(this, geometry, material, mass));
 	
 	        tempGeometry.mergeVertices();
 	        var idxGeometry = _this.createIndexedBufferGeometryFromGeometry(tempGeometry);
@@ -49517,8 +49630,6 @@ var WHS =
 	        _this._physijs.aIndices = aIndices;
 	        _this._physijs.aIdxAssoc = aIdxAssoc;
 	
-	        var physParams = params.physics;
-	
 	        _this._physijs.params = {
 	            friction: physParams.friction,
 	            damping: physParams.damping,
@@ -49526,7 +49637,7 @@ var WHS =
 	            margin: physParams.margin
 	        };
 	
-	        _this._physijs.mass = typeof params.mass === 'undefined' ? width * height * depth : params.mass;
+	        _this._physijs.mass = mass;
 	        return _this;
 	    }
 	
@@ -50441,6 +50552,14 @@ var WHS =
 	      _this.z = z;
 	    };
 	
+	    var physicsDefaults =  true ? {
+	      restitution: 0.3,
+	      friction: 0.8,
+	      damping: 0,
+	      pressure: 100,
+	      margin: 0
+	    } : false;
+	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Shape).call(this, {
 	      mass: 10,
 	      build: true,
@@ -50491,8 +50610,7 @@ var WHS =
 	        duration: 1
 	      },
 	
-	      physics: !!'physics'
-	
+	      physics: physicsDefaults
 	    }));
 	
 	    if (params instanceof THREE.Object3D) {
@@ -50837,7 +50955,7 @@ var WHS =
 	    value: function copy(source) {
 	      var sourceNative = source.getNative();
 	
-	      if (source.getParams().softbody) this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));else this.setNative(sourceNative.clone());
+	      if (source.getParams().softbody) this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));else this.setNative(sourceNative.clone(source.getParams()));
 	
 	      this.wrap();
 	
@@ -54702,12 +54820,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? Physijs.CylinderMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Cylinder.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Cylinder.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.CylinderMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });
@@ -54839,12 +54959,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Dodecahedron.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Dodecahedron.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });
@@ -54960,12 +55082,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? _index2.default.ConvexMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Extrude.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Extrude.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = _index2.default.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index2.default.ConcaveMesh;else if (this.physics) Mesh = _index2.default.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });
@@ -55081,12 +55205,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? _index2.default.ConvexMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Icosahedron.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Icosahedron.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = _index2.default.SoftMesh;else if (this.physics) Mesh = _index2.default.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });
@@ -55201,12 +55327,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Lathe.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Lathe.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });
@@ -55336,7 +55464,7 @@ var WHS =
 	              data.computeFaceNormals();
 	              data.computeVertexNormals();
 	
-	              _this2.setNative(new Mesh(data, material, params.mass, data2, params.scale));
+	              _this2.setNative(new Mesh(data, material, _this2.getParams(), data2));
 	
 	              resolve();
 	            });
@@ -55355,7 +55483,9 @@ var WHS =
 	            data.computeFaceNormals();
 	            data.computeVertexNormals();
 	
-	            _this2.setNative(new Mesh(data, material, params.mass));
+	            console.log(_this2.getParams());
+	
+	            _this2.setNative(new Mesh(data, material, _this2.getParams()));
 	
 	            resolve();
 	          }
@@ -55449,9 +55579,9 @@ var WHS =
 	  (0, _createClass3.default)(Morph, [{
 	    key: 'build',
 	    value: function build() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	      var _this2 = this;
 	
-	      var _scope = this;
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
 	      var promise = new Promise(function (resolve) {
 	        _loaders.JSONLoader.load(params.geometry.path, function (data, materials) {
@@ -55475,7 +55605,7 @@ var WHS =
 	
 	          mesh.mixer.clipAction(data.animations[0]).setDuration(params.morph.duration).play();
 	
-	          _scope.setNative(mesh);
+	          _this2.setNative(mesh);
 	
 	          resolve();
 	        });
@@ -55570,12 +55700,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Octahedron.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Octahedron.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });
@@ -55693,12 +55825,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Parametric.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Parametric.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });
@@ -55824,12 +55958,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? Physijs.PlaneMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Plane.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Plane.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.PlaneMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });
@@ -55955,12 +56091,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Polyhedron.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Polyhedron.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });
@@ -56098,13 +56236,14 @@ var WHS =
 	  (0, _createClass3.default)(Ring, [{
 	    key: 'build',
 	    value: function build() {
+	      var _this2 = this;
+	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Ring.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Ring.prototype), '_initMaterial', this).call(this, params.material);
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), material));
+	        _this2.setNative(new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), material));
 	
 	        resolve();
 	      });
@@ -56247,11 +56386,10 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Shape2D.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Shape2D.prototype), '_initMaterial', this).call(this, params.material);
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new THREE.Mesh(_this2.buildGeometry(params), material));
+	        _this2.setNative(new THREE.Mesh(_this2.buildGeometry(params), material));
 	
 	        resolve();
 	      });
@@ -56495,12 +56633,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Tetrahedron.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Tetrahedron.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });
@@ -56621,17 +56761,21 @@ var WHS =
 	  (0, _createClass3.default)(Text, [{
 	    key: 'build',
 	    value: function build() {
+	      var _this2 = this;
+	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? _index2.default.ConcaveMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Text.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Text.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = _index2.default.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index2.default.ConcaveMesh;else if (this.physics) Mesh = _index2.default.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      var promise = new Promise(function (resolve) {
 	        _api.FontLoader.load(params.geometry.parameters.font, function (font) {
 	          params.geometry.parameters.font = font;
 	
-	          _scope.setNative(new Mesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), material, params.mass));
+	          _this2.setNative(new Mesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), material, _this2.getParams()));
 	
 	          resolve();
 	        });
@@ -56730,12 +56874,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Torus.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Torus.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });
@@ -56880,12 +57026,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Torusknot.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Torusknot.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });
@@ -57044,12 +57192,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var _scope = this,
-	          Mesh = this.physics ? _index2.default.ConvexMesh : THREE.Mesh,
-	          material = (0, _get3.default)(Object.getPrototypeOf(Tube.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _get3.default)(Object.getPrototypeOf(Tube.prototype), '_initMaterial', this).call(this, params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.getParams().softbody) Mesh = _index2.default.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index2.default.ConcaveMesh;else if (this.physics) Mesh = _index2.default.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
-	        _scope.setNative(new Mesh(_this2.buildGeometry(params), material, params.mass));
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 	
 	        resolve();
 	      });

@@ -113,4 +113,8 @@ export class Mesh extends THREE.Mesh {
   setCcdSweptSphereRadius(radius) {
     if (this.world) this.world.execute('setCcdSweptSphereRadius', {id: this._physijs.id, radius});
   }
+
+  clone(params = {}) {
+    return new this.constructor(this.geometry, this.material, params).copy(this);
+  }
 }

@@ -21,6 +21,14 @@ class Shape extends WHSObject {
       this.z = z;
     };
 
+    const physicsDefaults = !!'physics' ? {
+      restitution: 0.3,
+      friction: 0.8,
+      damping: 0,
+      pressure: 100,
+      margin: 0
+    } : false;
+
     super({
       mass: 10,
       build: true,
@@ -71,8 +79,7 @@ class Shape extends WHSObject {
         duration: 1
       },
 
-      physics: !!'physics'
-
+      physics: physicsDefaults
     });
 
     if (params instanceof THREE.Object3D) {
@@ -466,9 +473,10 @@ class Shape extends WHSObject {
   copy(source) {
     const sourceNative = source.getNative();
 
+
     if (source.getParams().softbody)
       this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));
-    else this.setNative(sourceNative.clone());
+    else this.setNative(sourceNative.clone(source.getParams()));
 
     this.wrap();
 
