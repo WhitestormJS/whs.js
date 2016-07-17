@@ -29,22 +29,27 @@ class Text extends Shape {
   }
 
   build(params = {}) {
-    const _scope = this,
-      Mesh = this.physics ? Physijs.ConcaveMesh : THREE.Mesh,
-      material = super._initMaterial(params.material);
+    const material = super._initMaterial(params.material);
+
+    let Mesh;
+
+    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
+    else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;
+    else if (this.physics) Mesh = Physijs.ConvexMesh;
+    else Mesh = THREE.Mesh;
 
     const promise = new Promise((resolve) => {
       FontLoader.load(params.geometry.parameters.font, font => {
         params.geometry.parameters.font = font;
 
-        _scope.setNative(new Mesh(
+        this.setNative(new Mesh(
           new THREE.TextGeometry(
             params.geometry.text,
             params.geometry.parameters
           ),
 
           material,
-          params.mass
+          this.getParams()
         ));
 
         resolve();

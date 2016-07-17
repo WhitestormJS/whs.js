@@ -2075,7 +2075,9 @@ var Terrain = function (_Shape) {
           geom.computeFaceNormals();
           geom.computeTangents();
 
-          _this2.setNative(new Physijs.HeightfieldMesh(geom, Physijs.createMaterial(material, 1.0, 0.8), params.mass));
+          console.log(_this2.getParams());
+
+          _this2.setNative(new Physijs.HeightfieldMesh(geom, material, _this2.getParams()));
 
           _this2.getNative().updateMatrix();
           resolve();
@@ -2430,7 +2432,6 @@ var box = new WHS.Box({
   },
 
   mass: 1,
-  onlyvis: false,
 
   material: {
     kind: 'lambert',
@@ -2486,6 +2487,11 @@ var person = new WHS.Sphere({
   },
 
   mass: 10,
+
+  physics: {
+    friction: 1,
+    restitution: 0
+  },
 
   material: {
     color: 0xffffff,

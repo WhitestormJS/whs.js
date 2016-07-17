@@ -251,7 +251,6 @@ const box = new WHS.Box({
   },
 
   mass: 1,
-  onlyvis: false,
 
   material: {
     kind: 'lambert',
@@ -307,6 +306,11 @@ const person = new WHS.Sphere({
   },
 
   mass: 10,
+
+  physics: {
+    friction: 1,
+    restitution: 0
+  },
 
   material: {
     color: 0xffffff,

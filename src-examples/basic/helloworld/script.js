@@ -21,7 +21,6 @@ new WHS.Sphere({
   },
 
   mass: 10,
-  onlyvis: false,
 
   material: {
     color: 0xffffff,

@@ -1,7 +1,9 @@
 import {Mesh} from '../core/mesh';
 
 export class ConeMesh extends Mesh {
-  constructor(geometry, material, mass) {
+  constructor(geometry, material, params = {}) {
+    const physParams = params.physics;
+    const mass = physParams.mass || params.mass;
     super(geometry, material, mass);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
@@ -12,6 +14,13 @@ export class ConeMesh extends Mesh {
     this._physijs.type = 'cone';
     this._physijs.radius = width / 2;
     this._physijs.height = height;
-    this._physijs.mass = (typeof mass === 'undefined') ? width * height : mass;
+    this._physijs.mass = mass;
+
+    this._physijs.params = {
+      friction: physParams.friction,
+      restitution: physParams.restitution,
+      damping: physParams.damping,
+      margin: physParams.margin
+    };
   }
 }

@@ -1,7 +1,9 @@
 import {Mesh} from '../core/mesh';
 
 export class CapsuleMesh extends Mesh {
-  constructor(geometry, material, mass) {
+  constructor(geometry, material, params = {}) {
+    const physParams = params.physics;
+    const mass = physParams.mass || params.mass;
     super(geometry, material, mass);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
@@ -13,6 +15,13 @@ export class CapsuleMesh extends Mesh {
     this._physijs.type = 'capsule';
     this._physijs.radius = Math.max(width / 2, depth / 2);
     this._physijs.height = height;
-    this._physijs.mass = (typeof mass === 'undefined') ? width * height * depth : mass;
+    this._physijs.mass = mass;
+
+    this._physijs.params = {
+      friction: physParams.friction,
+      restitution: physParams.restitution,
+      damping: physParams.damping,
+      margin: physParams.margin
+    };
   }
 }

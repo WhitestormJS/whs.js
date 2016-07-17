@@ -20,8 +20,6 @@ class Morph extends Shape {
   }
 
   build(params = {}) {
-    const _scope = this;
-
     const promise = new Promise((resolve) => {
       JSONLoader.load(params.geometry.path, (data, materials) => {
         let material;
@@ -51,7 +49,7 @@ class Morph extends Shape {
           .setDuration(params.morph.duration)
           .play();
 
-        _scope.setNative(mesh);
+        this.setNative(mesh);
 
         resolve();
       });

@@ -1,7 +1,9 @@
 import {Mesh} from '../core/mesh';
 
 export class ConvexMesh extends Mesh {
-  constructor(geometry, material, mass) {
+  constructor(geometry, material, params = {}) {
+    const physParams = params.physics;
+    const mass = physParams.mass || params.mass;
     super(geometry, material, mass);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
@@ -20,6 +22,13 @@ export class ConvexMesh extends Mesh {
 
     this._physijs.type = 'convex';
     this._physijs.data = data;
-    this._physijs.mass = (typeof mass === 'undefined') ? width * height * depth : mass;
+    this._physijs.mass = mass;
+
+    this._physijs.params = {
+      friction: physParams.friction,
+      restitution: physParams.restitution,
+      damping: physParams.damping,
+      margin: physParams.margin
+    };
   }
 }

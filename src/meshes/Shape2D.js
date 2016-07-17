@@ -18,11 +18,10 @@ class Shape2D extends Shape {
   }
 
   build(params = {}) {
-    const _scope = this,
-      material = super._initMaterial(params.material);
+    const material = super._initMaterial(params.material);
 
     return new Promise((resolve) => {
-      _scope.setNative(new THREE.Mesh(
+      this.setNative(new THREE.Mesh(
         this.buildGeometry(params),
         material
       ));

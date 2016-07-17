@@ -1,7 +1,10 @@
 import {Mesh} from '../core/mesh';
 
 export class HeightfieldMesh extends Mesh {
-  constructor(geometry, material, mass, xdiv, ydiv) {
+  constructor(geometry, material, params = {}, xdiv, ydiv) {
+    console.log(params);
+    const physParams = params.physics;
+    const mass = physParams.mass || params.mass;
     super(geometry, material, mass);
 
     this._physijs.type = 'heightfield';
@@ -26,5 +29,14 @@ export class HeightfieldMesh extends Mesh {
     }
 
     this._physijs.points = points;
+
+    this._physijs.params = {
+      friction: physParams.friction,
+      restitution: physParams.restitution,
+      damping: physParams.damping,
+      margin: physParams.margin
+    };
+
+    this._physijs.mass = mass;
   }
 }

@@ -305,11 +305,14 @@ const person = new WHS.Sphere({
 
   mass: 10,
 
+  physics: {
+    friction: 1,
+    restitution: 0
+  },
+
   material: {
     color: 0xffffff,
-    kind: 'lambert',
-    rest: 0,
-    fri: 1
+    kind: 'lambert'
   },
 
   pos: {

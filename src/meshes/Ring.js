@@ -23,11 +23,10 @@ class Ring extends Shape {
   }
 
   build(params = {}) {
-    const _scope = this,
-      material = super._initMaterial(params.material);
+    const material = super._initMaterial(params.material);
 
     return new Promise((resolve) => {
-      _scope.setNative(new THREE.Mesh(
+      this.setNative(new THREE.Mesh(
         new THREE.RingGeometry(
           params.geometry.innerRadius,
           params.geometry.outerRadius,
