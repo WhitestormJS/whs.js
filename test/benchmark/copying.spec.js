@@ -1,3 +1,5 @@
+'use strict';
+
 define(['whslight'], function (WHS) {
   suite('Cloning objects', () => {
     const cloningAmmount = 400;

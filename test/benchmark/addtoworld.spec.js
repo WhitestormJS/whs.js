@@ -1,3 +1,5 @@
+'use strict';
+
 define(["whslight"], function(WHS) {
   suite("Add to world", () => {
     const objectAmount = 100;
