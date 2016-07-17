@@ -1,1 +1,0 @@
-{"version":3,"sources":["scenes/index.js"],"names":[],"mappings":";;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;;AACA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA","file":"index.js","sourcesContent":["export * from './Group';\r\nexport * from './Skybox';\r\n"]}

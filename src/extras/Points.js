@@ -21,30 +21,10 @@ class Points extends WHSObject {
 
     super.setParams(params);
 
-    const geometry = params.geometry.buffer ? new THREE.BufferGeometry() : new THREE.Geometry();
     const _verts = params.geometry.points;
 
-    const _geom_dircect = params.geometry instanceof THREE.Geometry 
-      || params.geometry instanceof THREE.BufferGeometry;
-
-    if (!_geom_dircect && !params.geometry.buffer) {
-      geometry.vertices = _verts;
-    } else if (!_geom_dircect && params.geometry.direct) {
-      geometry.addAttribute('position', new THREE.BufferAttribute(_verts, 3));
-    } else if(!_geom_dircect) {
-      const vertices = new Float32Array(_verts.length * 3);
-
-      for (let i = 0, max = _verts.length; i < max; i++) {
-        vertices[i * 3] = _verts[0].x;
-        vertices[i * 3 + 1] = _verts[0].y;
-        vertices[i * 3 + 2] = _verts[0].z;
-      }
-
-      geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
-    }
-
     const points = new THREE.Points(
-      _geom_dircect ? params.geometry : geometry,
+      params.geometry,
       loadMaterial(params.material)._material
     );
 

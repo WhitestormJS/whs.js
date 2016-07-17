@@ -7,7 +7,6 @@ export * from './extensions/index';
 export * from './extras/index';
 export * from './lights/index';
 export * from './meshes/index';
-export * from './scenes/index';
 
 if (typeof window !== 'undefined') {
   window.THREE = THREE;
