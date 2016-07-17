@@ -338,7 +338,7 @@ class World extends WHSObject {
         _scope._composer.toScreen();
       } else if (_scope.render) renderer.render(scene, cameraNative);
 
-      _scope._execLoops(time);
+      _scope._execLoops();
 
       // End helper.
       if (_scope._stats) _scope._stats.end();
@@ -354,10 +354,10 @@ class World extends WHSObject {
    *
    * @params {number} time - The time value that will be passed to loops.
    */
-  _execLoops(time) {
+  _execLoops() {
     for (let i = 0; i < this.loops.length; i++) {
       const e = this.loops[i];
-      if (e.enabled) e.execute(e.clock, time);
+      if (e.enabled) e.execute(e.clock);
     }
   }
 

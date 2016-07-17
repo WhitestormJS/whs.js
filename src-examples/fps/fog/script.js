@@ -1,5 +1,4 @@
 import Terrain from 'whs-terrain';
-import defaultTerrainMap from './_assets/terrain/default_terrain';
 
 const GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
@@ -31,10 +30,9 @@ const GAME = new WHS.World({
     far: 100
   }
 });
-
-window.terrain = new Terrain({
+const terrain = new Terrain({
   geometry: {
-    map: defaultTerrainMap,
+    map: '{{ assets }}/terrain/default_terrain.png',
     depth: 100,
     width: 256,
     height: 256
@@ -58,7 +56,8 @@ window.terrain = new Terrain({
     z: 0
   }
 });
-window.terrain.addTo(GAME, 'wait');
+
+terrain.addTo(GAME, 'wait');
 
 // NOTE: Default light.
 new WHS.AmbientLight({
