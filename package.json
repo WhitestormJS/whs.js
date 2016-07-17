@@ -1,6 +1,6 @@
 {
   "name": "whitestormjs",
-  "version": "0.9.2",
+  "version": "0.9.5",
   "description": "Framework for developing 3D web apps with physics.",
   "main": "lib/index.js",
   "scripts": {
@@ -92,7 +92,7 @@
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.2.0",
     "webworkify-webpack": "1.1.2",
-    "whs-terrain": "0.0.8",
+    "whs-terrain": "0.0.10",
     "xo": "^0.15.1"
   },
   "xo": {

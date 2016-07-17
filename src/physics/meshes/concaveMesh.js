@@ -1,15 +1,17 @@
 import {Mesh} from '../core/mesh';
 
 export class ConcaveMesh extends Mesh {
-  constructor(geom, material, mass, cGeometry, cScale) {
+  constructor(geom, material, params = {}, cGeometry) {
     const geometry = cGeometry ? cGeometry : geom,
       data = new Float32Array(geometry.faces.length * 9);
 
+    const physParams = params.physics;
+    const mass = physParams.mass || params.mass;
     super(geom, material, mass);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
 
-    cScale = cScale || {x: 1, y: 1, z: 1};
+    const cScale = params.scale || {x: 1, y: 1, z: 1};
     cScale.x = cScale.x || 1;
     cScale.y = cScale.y || 1;
     cScale.z = cScale.z || 1;
@@ -38,6 +40,13 @@ export class ConcaveMesh extends Mesh {
 
     this._physijs.type = 'concave';
     this._physijs.data = data;
-    this._physijs.mass = (typeof mass === 'undefined') ? width * height * depth : mass;
+    this._physijs.mass = mass;
+
+    this._physijs.params = {
+      friction: physParams.friction,
+      restitution: physParams.restitution,
+      damping: physParams.damping,
+      margin: physParams.margin
+    };
   }
 }

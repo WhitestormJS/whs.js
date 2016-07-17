@@ -28,7 +28,9 @@ new WHS.Model({
   mass: 100,
   
   physics: {
-    type: 'concave'
+    type: 'concave',
+    friction: 1,
+    restitution: 0
   },
 
   material: {
@@ -36,9 +38,7 @@ new WHS.Model({
     map: WHS.texture('{{ assets }}/textures/teapot.jpg', {repeat: {x: 2, y: 2}}),
     kind: 'phong',
     side: THREE.DoubleSide,
-    useCustomMaterial: true,
-    rest: 0,
-    fri: 1
+    useCustomMaterial: true
   },
 
   pos: {

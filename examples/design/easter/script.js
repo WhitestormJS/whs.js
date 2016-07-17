@@ -177,6 +177,7 @@ var egg2 = void 0,
 
 egg.addTo(GAME, 'wait').then(function (object) {
   egg2 = object.clone();
+  console.log(egg2);
   egg2.M_({ map: new WHS.texture('../../_assets/textures/easter/egg2.jpg') });
 
   egg2.addTo(GAME, 'wait').then(function (obj) {

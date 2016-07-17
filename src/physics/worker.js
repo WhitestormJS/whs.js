@@ -396,6 +396,7 @@ module.exports = function (self) {
       _softbody_report_size += body.get_m_nodes().size();
       _num_softbody_objects++;
     } else {
+      const physParams = description.params;
       let shape = createShape(description);
 
       if (!shape) return;
@@ -452,12 +453,14 @@ module.exports = function (self) {
       motionState = new Ammo.btDefaultMotionState(_transform); // #TODO: btDefaultMotionState supports center of mass offset as second argument - implement
       const rbInfo = new Ammo.btRigidBodyConstructionInfo(description.mass, motionState, shape, _vec3_1);
 
-      if (description.materialId !== undefined) {
-        rbInfo.set_m_friction(_materials[description.materialId].friction);
-        rbInfo.set_m_restitution(_materials[description.materialId].restitution);
-      }
+      rbInfo.set_m_friction(physParams.friction);
+      rbInfo.set_m_restitution(physParams.restitution);
+      rbInfo.set_m_linearDamping(physParams.damping);
+      rbInfo.set_m_angularDamping(physParams.damping);
+
 
       body = new Ammo.btRigidBody(rbInfo);
+      Ammo.castObject(body, Ammo.btCollisionObject).getCollisionShape().setMargin(physParams.margin ? physParams.margin : 0.1);
       Ammo.destroy(rbInfo);
 
       if (typeof description.collision_flags !== 'undefined') body.setCollisionFlags(description.collision_flags);

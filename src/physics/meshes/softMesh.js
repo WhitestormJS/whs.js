@@ -2,13 +2,14 @@ import {Mesh} from '../core/mesh';
 
 export class SoftMesh extends Mesh {
   constructor(geometry, material, params = {}) {
-    console.log(geometry);
+    const physParams = params.physics;
+    const mass = physParams.mass || params.mass;
     const tempGeometry = geometry.clone();
 
     if (!(geometry instanceof THREE.BufferGeometry)) // Converts to BufferGeometry.
       geometry = new THREE.BufferGeometry().fromGeometry(geometry);
 
-    super(geometry, material, params.mass);
+    super(geometry, material, mass);
 
     tempGeometry.mergeVertices();
     const idxGeometry = this.createIndexedBufferGeometryFromGeometry(tempGeometry);
@@ -46,16 +47,15 @@ export class SoftMesh extends Mesh {
     this._physijs.aIndices = aIndices;
     this._physijs.aIdxAssoc = aIdxAssoc;
 
-    const physParams = params.physics;
 
     this._physijs.params = {
       friction: physParams.friction,
       damping: physParams.damping,
       pressure: physParams.pressure,
-      margin: physParams.margin
+      margin: physParams.margin,
     };
 
-    this._physijs.mass = (typeof params.mass === 'undefined') ? width * height * depth : params.mass;
+    this._physijs.mass = mass;
   }
 
   createIndexedBufferGeometryFromGeometry(geometry) {

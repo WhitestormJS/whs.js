@@ -2,7 +2,9 @@ import {Mesh} from '../core/mesh';
 
 export class BoxMesh extends Mesh {
   constructor(geometry, material, params = {}) {
-    super(geometry, material, params.mass);
+    const physParams = params.physics;
+    const mass = physParams.mass || params.mass;
+    super(geometry, material, mass);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
 
@@ -14,6 +16,13 @@ export class BoxMesh extends Mesh {
     this._physijs.width = width;
     this._physijs.height = height;
     this._physijs.depth = depth;
-    this._physijs.mass = (typeof params.mass === 'undefined') ? width * height * depth : params.mass;
+    this._physijs.mass = mass;
+
+    this._physijs.params = {
+      friction: physParams.friction,
+      restitution: physParams.restitution,
+      damping: physParams.damping,
+      margin: physParams.margin
+    };
   }
 }

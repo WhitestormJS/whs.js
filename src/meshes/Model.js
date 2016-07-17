@@ -51,9 +51,8 @@ class Model extends Shape {
             this.setNative(new Mesh(
               data,
               material,
-              params.mass,
-              data2,
-              params.scale
+              this.getParams(),
+              data2
             ));
 
             resolve();
@@ -77,10 +76,12 @@ class Model extends Shape {
           data.computeFaceNormals();
           data.computeVertexNormals();
 
+          console.log(this.getParams());
+
           this.setNative(new Mesh(
             data,
             material,
-            params.mass
+            this.getParams()
           ));
 
           resolve();

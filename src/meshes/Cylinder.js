@@ -22,15 +22,19 @@ class Cylinder extends Shape {
   }
 
   build(params = {}) {
-    const _scope = this,
-      Mesh = this.physics ? Physijs.CylinderMesh : THREE.Mesh,
-      material = super._initMaterial(params.material);
+    const material = super._initMaterial(params.material);
+
+    let Mesh;
+
+    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
+    else if (this.physics) Mesh = Physijs.CylinderMesh;
+    else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
-      _scope.setNative(new Mesh(
+      this.setNative(new Mesh(
         this.buildGeometry(params),
         material,
-        params.mass
+        this.getParams()
       ));
 
       resolve();

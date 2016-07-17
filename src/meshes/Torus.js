@@ -23,15 +23,20 @@ class Torus extends Shape {
   }
 
   build(params = {}) {
-    const _scope = this,
-      Mesh = this.physics ? Physijs.ConvexMesh : THREE.Mesh,
-      material = super._initMaterial(params.material);
+    const material = super._initMaterial(params.material);
+
+    let Mesh;
+
+    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
+    else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;
+    else if (this.physics) Mesh = Physijs.ConvexMesh;
+    else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
-      _scope.setNative(new Mesh(
+      this.setNative(new Mesh(
         this.buildGeometry(params),
         material,
-        params.mass
+        this.getParams()
       ));
 
       resolve();
