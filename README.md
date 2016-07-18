@@ -133,6 +133,8 @@ world.start(); // Start animations and physics simulation.
 
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-yeliex-blue.svg)](https://github.com/yeliex)
 
+[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-electron0zero-blue.svg)](https://github.com/electron0zero)
+
 <br>
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://alexbuzin.me/)   <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Лицензия Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a>
