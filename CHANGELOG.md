@@ -1,7 +1,32 @@
 ## Changelog
 
 ##### Before contibuting here see [rules](https://github.com/WhitestormJS/whitestorm.js/blob/master/CONTRIBUTING.md#-adding-changes-to-changelogmd)
-**current**
+
+**r10**
+
+- Added variations (light version + regular version).
+- `WHS.Curve` - wraps three.js curves functionality.
+- Rewritten core:
+   - Switched to *webpack + gulp* structure.
+   - PhysiJS split to make it modular.
+   - Testing system.
+   - Benchmark.
+- Improved PhysiJS
+   - Modular feature + tree-shaking.
+   - Performance Improvement: Typed Arrays. (ConcaveMesh, ConvexMesh, HighfieldMesh)
+   - Performance Improvement: Variable caching.
+   - Performance Improvement: Block-scoped variables.
+   - Performance Improvement: Strict equals.
+   - Fixed code style.
+   - Added SoftBody feature. (SoftMesh)
+   - ES6 style.
+- `retreive()` removed. (no scence)
+- `Fog` and `FogExp` moved to `WHS.World` class as scene configuration.
+- [Plugin workflow](https://github.com/WhitestormJS/whs-plugin.js) repository created.
+- SoftBody fixed
+- Playground added
+
+**r9-alpha**
 - #75: Helpers
    - PointLight and SpotLight helpers.
    - Box and Bounding box helpers. 
