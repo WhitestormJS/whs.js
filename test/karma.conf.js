@@ -11,6 +11,7 @@ module.exports = (config) => {
       'test/test-main.js',
       {pattern: 'build/whitestorm.js', included: false},
       {pattern: 'build/whitestorm.light.js', included: false},
+      {pattern: 'test/lib/*.js', included: false},
       {pattern: 'test/**/*.spec.js', included: false}
     ],
 
