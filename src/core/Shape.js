@@ -448,9 +448,7 @@ class Shape extends WHSObject {
    * Initialize shape's material object.
    */
   _initMaterial(params = {}) {
-    return this.getParams().physics
-      ? loadMaterial(params)._materialP
-      : loadMaterial(params)._material;
+    return loadMaterial(params);
   }
 
   /**
@@ -658,6 +656,8 @@ class Shape extends WHSObject {
     return this._native.material;
   }
 
+  /* Physics */
+
   setAngularVelocity(...args) {
     return this.getNative().setAngularVelocity(...args);
   }
@@ -666,9 +666,61 @@ class Shape extends WHSObject {
     return this.getNative().setLinearVelocity(...args);
   }
 
+  applyCentralImpulse(...args) {
+    return this.getNative().applyCentralImpulse(...args);
+  }
+
+  applyImpulse(...args) {
+    return this.getNative().applyImpulse(...args);
+  }
+
+  applyTorque(...args) {
+    return this.getNative().applyTorque(...args);
+  }
+
+  applyCentralForce(...args) {
+    return this.getNative().applyCentralForce(...args);
+  }
+
+  applyForce(...args) {
+    return this.getNative().applyForce(...args);
+  }
+
+  getAngularVelocity(...args) {
+    return this.getNative().getAngularVelocity(...args);
+  }
+
+  getLinearVelocity(...args) {
+    return this.getNative().getLinearVelocity(...args);
+  }
+
+  setAngularFactor(...args) {
+    return this.getNative().setAngularFactor(...args);
+  }
+
+  setLinearFactor(...args) {
+    return this.getNative().setLinearFactor(...args);
+  }
+
+  setDamping(...args) {
+    return this.getNative().setDamping(...args);
+  }
+
+  setCcdMotionThreshold(...args) {
+    return this.getNative().setCcdMotionThreshold(...args);
+  }
+
+  setCcdSweptSphereRadius(...args) {
+    return this.getNative().setCcdSweptSphereRadius(...args);
+  }
+
+  /* Three.js */
+
   raycast(...args) {
     return this.getNative().lookAt(...args);
   }
+
+  /* API */
 
   follow(curve, time = 1000, loop) {
     const gEnd = time;
