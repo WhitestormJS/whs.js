@@ -25,7 +25,7 @@ class Points extends WHSObject {
 
     const points = new THREE.Points(
       params.geometry,
-      loadMaterial(params.material)._material
+      loadMaterial(params.material)
     );
 
     this.setNative(points);
