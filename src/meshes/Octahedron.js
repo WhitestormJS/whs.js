@@ -29,7 +29,7 @@ class Octahedron extends Shape {
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
-      _scope.setNative(new Mesh(
+      this.setNative(new Mesh(
         this.buildGeometry(params),
         material,
         this.getParams()
