@@ -20,6 +20,11 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "src",
+    "src-examples",
+    "examples",
+    "lib",
+    "media"
   ]
 }
