@@ -1,20 +1,18 @@
-'use strict';
+define(['whslight', 'table'], function(WHS, Table) {
+  let total = 0;
 
-define(["whslight"], function(WHS) {
   suite("Add to world", () => {
     const objectAmount = 100;
 
     benchmark("add object", () => {
       for (let i = 0; i < objectAmount; i++) {
         this.sphere.addTo(this.GAME);
-        this.totalObjects++;
+        total++;
         return this.sphere;
       }
     });
   }, {
     onStart: () => {
-      this.totalObjects = 0;
-
       this.GAME = new WHS.World({
         gravity: {
           x: 0,
@@ -39,22 +37,25 @@ define(["whslight"], function(WHS) {
 
       this.perfTime = performance.now();
     },
-    teardown: () => {
+    onComplete: () => {
       const t = performance.now() - perfTime;
-      this.additional = [
-        {
-          field: "Objects added",
-          value: window.totalObjects
-        },
-        {
-          field: " :: Time",
-          value: t + "ms"
-        },
-        {
-          field: " :: Average time per object",
-          value: t / window.totalObjects + "ms"
-        }
-      ];
+
+      var options = {
+        skinny: true,
+        intersectionCharacter: "x",
+        columns: [
+          {field: "obj", name: "Objects added"},
+          {field: "time",  name: "Time (ms)"},
+          {field: "tpo",  name: "Time per object (ms)"},
+          {field: "test", name: "Test name"}
+        ],
+      };
+       
+      var table = asciitable(options, [
+        {obj: total, time: t, tpo: t / total, test: "Adding objects"}
+      ]);
+       
+      console.log('\n' + table);
     }
   });
 });

@@ -1,6 +1,6 @@
-'use strict';
+define(['whslight', 'table'], function (WHS) {
+  let total = 0;
 
-define(['whslight'], function (WHS) {
   suite('Cloning objects', () => {
     const cloningAmmount = 400;
 
@@ -8,15 +8,13 @@ define(['whslight'], function (WHS) {
       for (let i = 0; i < cloningAmmount; i++) {
         const obj = this.sphere.clone();
         obj.addTo(this.GAME);
-        this.clonedObjects++;
+        total++;
 
         return obj;
       }
     });
   }, {
     onStart: () => {
-      this.clonedObjects = 0;
-
       this.GAME = new WHS.World({
         gravity: {
           x: 0,
@@ -41,22 +39,25 @@ define(['whslight'], function (WHS) {
 
       this.perfTime = performance.now();
     },
-    teardown: () => {
+    onComplete: () => {
       const t = performance.now() - perfTime;
-      this.additional = [
-        {
-          field: 'Objects cloned',
-          value: window.clonedObjects
-        },
-        {
-          field: ' :: Time',
-          value: t + 'ms.'
-        },
-        {
-          field: ' :: Time per object',
-          value: t / window.clonedObjects + 'ms.'
-        }
-      ];
+
+      var options = {
+        skinny: true,
+        intersectionCharacter: "x",
+        columns: [
+          {field: "obj", name: "Objects cloned"},
+          {field: "time",  name: "Time (ms)"},
+          {field: "tpo",  name: "Time per object (ms)"},
+          {field: "test", name: "Test name"}
+        ],
+      };
+       
+      var table = asciitable(options, [
+        {obj: total, time: t, tpo: t / total, test: "Copying"}
+      ]);
+       
+      console.log('\n' + table);
     }
   });
 });
