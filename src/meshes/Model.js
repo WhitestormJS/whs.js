@@ -10,7 +10,8 @@ class Model extends Shape {
 
     extend(params.geometry, {
       path: '',
-      physics: ''
+      physics: '',
+      loader: JSONLoader
     });
 
     if (params.build) {
@@ -27,9 +28,12 @@ class Model extends Shape {
     else Mesh = THREE.Mesh
 
     const promise = new Promise((resolve) => {
-      JSONLoader.load(params.geometry.path, (data, materials) => {
-        if (params.geometry.physics) {
-          JSONLoader.load(params.geometry.physics, data2 => {
+      const pGeometry = params.geometry;
+      const Loader = pGeometry.loader
+
+      Loader.load(pGeometry.path, (data, materials) => {
+        if (pGeometry.physics) {
+          Loader.load(pGeometry.physics, data2 => {
             let material;
 
             if (params.material.useVertexColors) {

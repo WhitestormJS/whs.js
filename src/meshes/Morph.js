@@ -10,7 +10,8 @@ class Morph extends Shape {
     super(params, 'morph');
 
     extend(params.geometry, {
-      path: ''
+      path: '',
+      loader: JSONLoader
     });
 
     if (params.build) {
@@ -21,7 +22,9 @@ class Morph extends Shape {
 
   build(params = {}) {
     const promise = new Promise((resolve) => {
-      JSONLoader.load(params.geometry.path, (data, materials) => {
+      const Loader = params.geometry.loader;
+
+      Loader.load(params.geometry.path, (data, materials) => {
         let material;
         if (params.material.useVertexColors) {
           material = loadMaterial(
