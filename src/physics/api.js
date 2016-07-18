@@ -26,22 +26,6 @@ const getEulerXYZFromQuaternion = (x, y, z, w) => {
   );
 };
 
-const createMaterial = (material, friction, restitution) => {
-  let physijs_material = function () {
-  };
-
-  physijs_material.prototype = material;
-  physijs_material = new physijs_material();
-
-  physijs_material._physijs = {
-    id: material.id,
-    friction: friction === undefined ? 0.8 : friction,
-    restitution: restitution === undefined ? 0.2 : restitution
-  };
-
-  return physijs_material;
-}
-
 const getQuatertionFromEuler = (x, y, z) => {
   const c1 = Math.cos(y);
   const s1 = Math.sin(y);
@@ -119,7 +103,6 @@ export {
   convertWorldPositionToObject,
   getObjectId,
   addObjectChildren,
-  createMaterial,
 
   MESSAGE_TYPES,
   REPORT_ITEMSIZE,

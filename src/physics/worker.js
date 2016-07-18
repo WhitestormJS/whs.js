@@ -44,7 +44,6 @@ module.exports = function (self) {
     _objects = [],
     _vehicles = [],
     _constraints = [],
-    _materials = [],
     _objects_ammo = {},
     _object_shapes = {},
 
@@ -326,14 +325,6 @@ module.exports = function (self) {
     transferableMessage({cmd: 'worldReady'});
   };
 
-  public_functions.registerMaterial = (description) => {
-    _materials[description.id] = description;
-  };
-
-  public_functions.unRegisterMaterial = (description) => {
-    delete _materials[description.id];
-  };
-
   public_functions.setFixedTimeStep = (description) => {
     fixedTimeStep = description;
   };
@@ -391,7 +382,7 @@ module.exports = function (self) {
 
       body.transform(_transform);
 
-      body.setTotalMass(description.mass, false);
+      body.setMass(description.mass, true);
       world.addSoftBody(body, 1, -1);
       _softbody_report_size += body.get_m_nodes().size();
       _num_softbody_objects++;
