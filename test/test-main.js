@@ -18,7 +18,8 @@ require.config({
 
   paths: {
     whs: 'build/whitestorm',
-    whslight: 'build/whitestorm.light'
+    whslight: 'build/whitestorm.light',
+    table: 'test/lib/table'
   },
 
   shim: {
