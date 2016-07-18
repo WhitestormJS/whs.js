@@ -32,11 +32,9 @@ class Morph extends Shape {
               morphTargets: true,
               vertexColors: THREE.FaceColors
             })
-          )._material;
+          );
         } else if (!materials || params.material.useCustomMaterial) {
-          material = loadMaterial(
-            params.material
-          )._material;
+          material = loadMaterial(params.material);
         } else material = new THREE.MultiMaterial(materials);
 
         data.computeFaceNormals();

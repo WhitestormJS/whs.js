@@ -59,26 +59,11 @@ const loadMaterial = (material = {}) => {
   if (typeof material.kind !== 'string')
     console.error('Type of material is undefined or not a string. @loadMaterial');
 
-  const _restitution = !isNaN(parseFloat(material.restitution)) ?
-    material.restitution : !isNaN(parseFloat(material.rest)) ?
-    material.rest : 0.3;
-
-  const _friction = !isNaN(parseFloat(material.friction)) ?
-    material.friction : !isNaN(parseFloat(material.fri)) ?
-    material.fri : 0.8;
-
-  let materialThree, materialPhysi;
+  let materialThree;
 
   const params = Object.assign({}, material);
 
   delete params.kind;
-
-  delete params.friction;
-  delete params.fri;
-
-  delete params.restitution;
-  delete params.rest;
-
   delete params.useCustomMaterial;
   delete params.useVertexColors;
 
@@ -150,18 +135,7 @@ const loadMaterial = (material = {}) => {
     default:
   }
 
-  if (!!'physics') {
-    materialPhysi = Physijs.createMaterial(
-      materialThree,
-      _friction,
-      _restitution
-    );
-  }
-
-  return {
-    _material: materialThree,
-    _materialP: materialPhysi
-  };
+  return materialThree;
 };
 
 export {
