@@ -1,6 +1,6 @@
 {
   "name": "whitestormjs",
-  "version": "r8",
+  "version": "r10",
   "homepage": "https://github.com/WhitestormJS/whitestorm.js",
   "repository" : {
       "type": "git",
