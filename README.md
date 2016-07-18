@@ -104,7 +104,6 @@ world.start(); // Start animations and physics simulation.
 
 #### :rocket: PERFORMANCE:
  * [Performance / Sticks](http://192.241.128.187/current/examples/performance/sticks/)  (Collisions performance of 320 basic box objects.)
- * [Performance / Softbodies](http://192.241.128.187/current/examples/performance/softbodies/)  (Collisions performance of 10 softbodies.)
 
 ----
 
