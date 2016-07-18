@@ -5,6 +5,8 @@ import HappyPack from 'happypack';
 process.env.BABEL_ENV = 'browser';
 
 export function config({production}) {
+  console.log(production ? 'Production mode' : 'Development mode');
+
   return {
     devtool: production ? 'hidden-source-map' : 'source-map',
     entry: './src/index.js',
@@ -51,9 +53,6 @@ export function config({production}) {
           compress: {
             warnings: false
           }
-        }),
-        new webpack.ProvidePlugin({
-          THREE: 'three'
         }),
         new HappyPack({loaders: ['babel', 'string-replace'], threads: 4})
       ]

@@ -44,7 +44,7 @@ process.env.BABEL_ENV = 'node';
 gulp.task('default', ['examples:build', 'src:build']);
 
 gulp.task('src:build', (callback) => {
-  runSequence('src:clean', 'src:build:node', 'src:build:browser', callback);
+  runSequence('src:clean', 'build:clean', 'src:build:node', 'src:build:browser', callback);
 });
 
 // ===== BUILD:  node.js =====
@@ -246,6 +246,10 @@ gulp.task('src:clean', (callback) => {
 
 gulp.task('examples:clean', (callback) => {
   del(examplesDest).then(() => callback());
+});
+
+gulp.task('build:clean', (callback) => {
+  del(['./build/*.js', './build/*.map']).then(() => callback());
 });
 
 // ===== ERRORS =====
