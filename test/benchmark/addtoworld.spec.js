@@ -1,5 +1,7 @@
 define(['whslight', 'table'], function(WHS, Table) {
   let total = 0;
+  let perfTime, cycleID = 1;
+  let tableContent = [];
 
   suite("Add to world", () => {
     const objectAmount = 100;
@@ -35,15 +37,26 @@ define(['whslight', 'table'], function(WHS, Table) {
         }
       });
 
-      this.perfTime = performance.now();
+      perfTime = performance.now();
     },
-    onComplete: () => {
+    onCycle: () => {
       const t = performance.now() - perfTime;
 
-      var options = {
+      if (total > 0) {
+        tableContent.push({cycle: cycleID, obj: total, time: t, tpo: t / total, test: "Adding objects"});
+
+        // RESET
+        total = 0;
+        perfTime = performance.now();
+        cycleID++;
+      }
+    },
+    onComplete: () => {
+      const options = {
         skinny: true,
         intersectionCharacter: "x",
         columns: [
+          {field: "cycle", name: "#"},
           {field: "obj", name: "Objects added"},
           {field: "time",  name: "Time (ms)"},
           {field: "tpo",  name: "Time per object (ms)"},
@@ -51,11 +64,7 @@ define(['whslight', 'table'], function(WHS, Table) {
         ],
       };
        
-      var table = asciitable(options, [
-        {obj: total, time: t, tpo: t / total, test: "Adding objects"}
-      ]);
-       
-      console.log('\n' + table);
+      console.log('\n' + asciitable(options, tableContent));
     }
   });
 });
