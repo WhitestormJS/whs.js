@@ -1,6 +1,6 @@
 
 
-<p align="center"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/logo/big-inverse-cropped.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/logo/big.png"></p>
 
 <p align="center">
     <a href="https://travis-ci.org/WhitestormJS/whitestorm.js" align="center"><img src="https://travis-ci.org/WhitestormJS/whitestorm.js.svg"></a>&nbsp;&nbsp;
