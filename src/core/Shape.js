@@ -74,11 +74,6 @@ class Shape extends WHSObject {
         set: _set
       },
 
-      morph: {
-        speed: 1,
-        duration: 1
-      },
-
       physics: physicsDefaults
     });
 

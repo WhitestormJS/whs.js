@@ -1,5 +1,7 @@
 define(['whslight', 'table'], function (WHS) {
   let total = 0;
+  let perfTime, cycleID = 1;
+  let tableContent = [];
 
   suite('Cloning objects', () => {
     const cloningAmmount = 400;
@@ -37,15 +39,26 @@ define(['whslight', 'table'], function (WHS) {
         }
       });
 
-      this.perfTime = performance.now();
+      perfTime = performance.now();
     },
-    onComplete: () => {
+    onCycle: () => {
       const t = performance.now() - perfTime;
 
-      var options = {
+      if (total > 0) {
+        tableContent.push({cycle: cycleID, obj: total, time: t, tpo: t / total, test: "Cloning objects"});
+
+        // RESET
+        total = 0;
+        perfTime = performance.now();
+        cycleID++;
+      }
+    },
+    onComplete: () => {
+      const options = {
         skinny: true,
         intersectionCharacter: "x",
         columns: [
+          {field: "cycle", name: "#"},
           {field: "obj", name: "Objects cloned"},
           {field: "time",  name: "Time (ms)"},
           {field: "tpo",  name: "Time per object (ms)"},
@@ -53,11 +66,7 @@ define(['whslight', 'table'], function (WHS) {
         ],
       };
        
-      var table = asciitable(options, [
-        {obj: total, time: t, tpo: t / total, test: "Copying"}
-      ]);
-       
-      console.log('\n' + table);
+      console.log('\n' + asciitable(options, tableContent));
     }
   });
 });

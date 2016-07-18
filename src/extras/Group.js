@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {Shape} from '../core/Shape';
+import {WHSObject} from '../core/Object';
 
 class Group extends Shape {
   constructor(...objects) {
@@ -9,7 +10,10 @@ class Group extends Shape {
     super.wrap();
 
     for (let i = 0; i < objects.length; i++) {
-    	objects[i].addTo(this);
+    	const obj = objects[i];
+
+    	if (obj instanceof WHSObject) obj.addTo(this);
+    	else if (obj instanceof THREE.Object3D) this.getNative().add(obj);
     }
   }
 }
