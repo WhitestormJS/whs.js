@@ -34,6 +34,15 @@
 <a href="http://192.241.128.187/current/examples/fps/shooter/" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/splash.png"></a>
 
 ## INSTALLATION &#10540; USAGE
+
+#### NODE
+
+```bash
+npm install whitestormjs
+```
+
+#### BROWSER
+
 Include a script tag linking the [WhitestormJS](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js) library in your `head` or after your `body`:
 
 ```html
