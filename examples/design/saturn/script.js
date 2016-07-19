@@ -42,7 +42,7 @@ var GAME = new WHS.World({
   }
 });
 
-var space = new WHS.Group();
+window.space = new WHS.Group();
 space.addTo(GAME);
 space.rotation.z = Math.PI / 12;
 
