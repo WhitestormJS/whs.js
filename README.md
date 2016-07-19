@@ -30,6 +30,9 @@
 
 * **Softbodies** - WhitestormJS is the only engine (except native ammo.js) that supports softbodies.
 
+## PLAYGROUND :rocket:
+<a href="http://ow.ly/J4Tw302obGz"><img src="http://i.imgur.com/6EdMjm1.gif"></a>
+
 ## GAME EXAMPLE :video_game:
 <a href="http://192.241.128.187/current/examples/fps/shooter/" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/splash.png"></a>
 
