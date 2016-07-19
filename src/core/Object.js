@@ -72,6 +72,29 @@ class WHSObject {
       });
     }
   }
+
+  /**
+   * Remove this shape from world.
+   *
+   * @return {WHS.Shape} - this.
+   */
+  remove(source) {
+    this.getNative().remove(source.getNative());
+
+    this.children.splice(this.children.indexOf(source), 1);
+    source.parent = null;
+
+    source.emit('remove');
+
+    if (WHS.debug) {
+      console.debug(
+        `@WHS.Shape: Shape ${source._type} was removed from world`,
+        [source]
+      );
+    }
+
+    return this;
+  }
 }
 
 export {
