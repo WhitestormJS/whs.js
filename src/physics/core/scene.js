@@ -136,7 +136,7 @@ export class Scene extends THREE.Scene {
       const offset = 2 + index * REPORT_ITEMSIZE;
       const object = this._objects[data[offset]];
 
-      if (object === undefined) continue;
+      if (object === null) continue;
 
       if (object.__dirtyPosition === false) {
         object.position.set(
@@ -182,6 +182,9 @@ export class Scene extends THREE.Scene {
     while (index--) {
       const size = data[offset + 1];
       const object = this._objects[data[offset]];
+
+      if (object === null) continue;
+
       const association = object._physijs.aIdxAssoc;
       const attributes = object.geometry.attributes;
 
@@ -236,7 +239,7 @@ export class Scene extends THREE.Scene {
       const offset = 1 + i * VEHICLEREPORT_ITEMSIZE;
       vehicle = this._vehicles[data[offset]];
 
-      if (vehicle === undefined) continue;
+      if (vehicle === null) continue;
 
       wheel = vehicle.wheels[data[offset + 1]];
 
@@ -318,6 +321,7 @@ export class Scene extends THREE.Scene {
     for (const id1 in this._objects) {
       if (!this._objects.hasOwnProperty(id1)) continue;
       const object = this._objects[id1];
+      if (object === null) continue;
 
       // If object touches anything, ...
       if (collisions[id1]) {
@@ -562,7 +566,7 @@ export class Scene extends THREE.Scene {
 
       const object = this._objects[object_id];
 
-      if (object.__dirtyPosition || object.__dirtyRotation) {
+      if (object !== null && (object.__dirtyPosition || object.__dirtyRotation)) {
         const update = {id: object._physijs.id};
 
         if (object.__dirtyPosition) {

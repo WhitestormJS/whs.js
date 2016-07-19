@@ -494,7 +494,7 @@ module.exports = function (self) {
     _vehicles[description.id] = vehicle;
   };
   public_functions.removeVehicle = (description) => {
-    delete _vehicles[description.id];
+    _vehicles[description.id] = null;
   };
 
   public_functions.addWheel = (description) => {
