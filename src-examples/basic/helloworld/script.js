@@ -1,4 +1,4 @@
-const GAME = new WHS.World({
+window.GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
   autoresize: true,
 
@@ -15,7 +15,7 @@ const GAME = new WHS.World({
   }
 });
 
-new WHS.Sphere({
+window.sphere = new WHS.Sphere({
   geometry: {
     radius: 3
   },
@@ -32,7 +32,9 @@ new WHS.Sphere({
     y: 100,
     z: 0
   }
-}).addTo(GAME);
+});
+
+window.sphere.addTo(GAME);
 
 new WHS.Plane({
   geometry: {
