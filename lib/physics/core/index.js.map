@@ -1,0 +1,1 @@
+{"version":3,"sources":["physics/core/index.js"],"names":[],"mappings":";;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;;;AACA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA","file":"index.js","sourcesContent":["export * from './mesh';\r\nexport * from './scene';\r\n"]}

@@ -26,7 +26,7 @@ class Plane extends Shape {
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
+    if (this.physics && this.getParams().softbody) Mesh = Physijs.ClothMesh;
     else if (this.physics) Mesh = Physijs.PlaneMesh;
     else Mesh = THREE.Mesh;
 
@@ -42,14 +42,18 @@ class Plane extends Shape {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
+    const GConstruct = params.buffer || params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
 
-    return new GConstruct(
+    const geometry = new GConstruct(
       params.geometry.width,
       params.geometry.height,
       params.geometry.wSegments,
       params.geometry.hSegments
     );
+
+    if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+
+    return geometry;
   }
 
   set G_width(val) {

@@ -26,7 +26,8 @@ class Shape extends WHSObject {
       friction: 0.8,
       damping: 0,
       pressure: 100,
-      margin: 0
+      margin: 0,
+      stiffness: 0.9
     } : false;
 
     super({
@@ -34,6 +35,11 @@ class Shape extends WHSObject {
       build: true,
       softbody: false,
       geometry: {},
+
+      shadow: {
+        cast: true,
+        receive: true
+      },
 
       material: {
         kind: 'basic'
@@ -132,8 +138,8 @@ class Shape extends WHSObject {
           if (!_native) reject();
 
           if (tags.indexOf('no-shadows') < 0) {
-            _native.castShadow = true;
-            _native.receiveShadow = true;
+            _native.castShadow = _params.shadow.cast;
+            _native.receiveShadow = _params.shadow.receive;
           }
 
           if (tags.indexOf('no-transforms') < 0) {
@@ -245,8 +251,8 @@ class Shape extends WHSObject {
         if (!_native) reject();
 
         if (tags.indexOf('no-shadows') < 0) {
-          _native.castShadow = true;
-          _native.receiveShadow = true;
+          _native.castShadow = _params.shadow.cast;
+          _native.receiveShadow = _params.shadow.receive;
         }
 
         if (tags.indexOf('no-transforms') < 0) {
@@ -390,7 +396,7 @@ class Shape extends WHSObject {
 
           resolve(this);
 
-          _native.addEventListener('collide', () => {
+          _native.addEventListener('collision', () => {
             this.emit('collide');
           });
 
@@ -430,7 +436,7 @@ class Shape extends WHSObject {
 
         resolve(this);
 
-        _native.addEventListener('collide', () => {
+        _native.addEventListener('collision', () => {
           this.emit('collide');
         });
 
@@ -625,8 +631,8 @@ class Shape extends WHSObject {
 
   proccessSoftbodyGeometry(geometry) {
     geometry.rotateX(this.__params.rot.x);
-    geometry.rotateY(this.__params.rot.x);
-    geometry.rotateZ(this.__params.rot.x);
+    geometry.rotateY(this.__params.rot.y);
+    geometry.rotateZ(this.__params.rot.z);
 
     geometry.scale(
       this.__params.scale.x,

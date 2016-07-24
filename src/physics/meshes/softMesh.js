@@ -13,7 +13,6 @@ export class SoftMesh extends Mesh {
 
     tempGeometry.mergeVertices();
     const idxGeometry = this.createIndexedBufferGeometryFromGeometry(tempGeometry);
-    if (!tempGeometry.boundingBox) tempGeometry.computeBoundingBox();
     this.tempGeometry = tempGeometry;
 
     const aVertices = idxGeometry.attributes.position.array;
@@ -38,11 +37,7 @@ export class SoftMesh extends Mesh {
       }
     }
 
-    const width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-    const height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
-    const depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
-
-    this._physijs.type = 'softbody';
+    this._physijs.type = 'softTrimesh';
     this._physijs.aVertices = aVertices;
     this._physijs.aIndices = aIndices;
     this._physijs.aIdxAssoc = aIdxAssoc;
@@ -53,6 +48,7 @@ export class SoftMesh extends Mesh {
       damping: physParams.damping,
       pressure: physParams.pressure,
       margin: physParams.margin,
+      stiffness: physParams.stiffness
     };
 
     this._physijs.mass = mass;
