@@ -63,6 +63,10 @@ const world = new WHS.World({
         x: 0,
         y: -100,
         z: 0
+    },
+    
+    camera: {
+      z: 50 // Move camera.
     }
 });
 
