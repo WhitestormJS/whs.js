@@ -193,30 +193,54 @@ export class Scene extends THREE.Scene {
 
       const offsetVert = offset + 2;
 
-      for (let i = 0; i < size; i++) {
-        const x = data[offsetVert + i * 6];
-        const y = data[offsetVert + i * 6 + 1];
-        const z = data[offsetVert + i * 6 + 2];
+      if (object._physijs.type === "softTrimesh") {
+        for (let i = 0; i < size; i++) {
+          const offs = offsetVert + i * 6;
 
-        const nx = data[offsetVert + i * 6 + 3];
-        const ny = data[offsetVert + i * 6 + 4];
-        const nz = data[offsetVert + i * 6 + 5];
+          const x = data[offs];
+          const y = data[offs + 1];
+          const z = data[offs + 2];
 
-        const assocVertex = association[i];
+          const nx = data[offs + 3];
+          const ny = data[offs + 4];
+          const nz = data[offs + 5];
 
-        for (let k = 0, kl = assocVertex.length; k < kl; k++) {
-          let indexVertex = assocVertex[k];
+          const assocVertex = association[i];
 
-          volumePositions[indexVertex] = x;
-          volumeNormals[indexVertex] = nx;
-          indexVertex++;
+          for (let k = 0, kl = assocVertex.length; k < kl; k++) {
+            let indexVertex = assocVertex[k];
 
-          volumePositions[indexVertex] = y;
-          volumeNormals[indexVertex] = ny;
-          indexVertex++;
+            volumePositions[indexVertex] = x;
+            volumeNormals[indexVertex] = nx;
+            indexVertex++;
 
-          volumePositions[indexVertex] = z;
-          volumeNormals[indexVertex] = nz;
+            volumePositions[indexVertex] = y;
+            volumeNormals[indexVertex] = ny;
+            indexVertex++;
+
+            volumePositions[indexVertex] = z;
+            volumeNormals[indexVertex] = nz;
+          }
+        }
+      } else if (object._physijs.type === "softClothMesh") {
+        for (let i = 0; i < size; i++) {
+          const offs = offsetVert + i * 6;
+
+          const x = data[offs];
+          const y = data[offs + 1];
+          const z = data[offs + 2];
+
+          const nx = data[offs + 3];
+          const ny = data[offs + 4];
+          const nz = data[offs + 5];
+
+          volumePositions[i * 3] = x;
+          volumePositions[i * 3 + 1] = y;
+          volumePositions[i * 3 + 2] = z;
+
+          volumeNormals[i * 3] = nx;
+          volumeNormals[i * 3 + 1] = ny;
+          volumeNormals[i * 3 + 2] = nz;
         }
       }
 

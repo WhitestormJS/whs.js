@@ -41,6 +41,7 @@ class Light extends WHSObject {
         cast: true,
 
         bias: 0,
+        radius: 1,
 
         width: 1024,
         height: 1024,
@@ -186,28 +187,27 @@ class Light extends WHSObject {
    * Set shadow properties for light.
    */
   wrapShadow() {
-    const _scope = this;
-
     return new Promise((resolve, reject) => {
-      try {
-        _scope.getNative().shadow.mapSize.width = this._shadowmap.width;
-        _scope.getNative().shadow.mapSize.height = this._shadowmap.height;
-        _scope.getNative().shadow.bias = this._shadowmap.bias;
+      const _native = this.getNative(),
+        _shadow = this._shadowmap;
 
-        _scope.getNative().shadow.camera.near = this._shadowmap.near;
-        _scope.getNative().shadow.camera.far = this._shadowmap.far;
-        _scope.getNative().shadow.camera.fov = this._shadowmap.fov;
+      _native.shadow.mapSize.width = _shadow.width;
+      _native.shadow.mapSize.height = _shadow.height;
+      _native.shadow.bias = _shadow.bias;
+      _native.shadow.radius = _shadow.radius;
 
-        _scope.getNative().shadow.camera.left = this._shadowmap.left;
-        _scope.getNative().shadow.camera.right = this._shadowmap.right;
-        _scope.getNative().shadow.camera.top = this._shadowmap.top;
-        _scope.getNative().shadow.camera.bottom = this._shadowmap.bottom;
-      } catch (err) {
-        console.error(err.message);
-        reject();
-      } finally {
-        resolve(_scope);
-      }
+      const _shadowCamera = _native.shadow.camera;
+
+      _shadowCamera.near = _shadow.near;
+      _shadowCamera.far = _shadow.far;
+      _shadowCamera.fov = _shadow.fov;
+
+      _shadowCamera.left = _shadow.left;
+      _shadowCamera.right = _shadow.right;
+      _shadowCamera.top = _shadow.top;
+      _shadowCamera.bottom = _shadow.bottom;
+
+      resolve(this);
     });
   }
 

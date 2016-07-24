@@ -214,20 +214,21 @@ module.exports = function (self) {
         break;
       }
       case 'heightfield': {
-        const ptr = Ammo._malloc(4 * description.xpts * description.ypts);
+        const points = description.points,
+          xpts = description.xpts,
+          ypts = description.ypts,
+          ptr = Ammo._malloc(4 * xpts * ypts);
 
-        for (let i = 0, p = 0, p2 = 0; i < description.xpts; i++) {
-          for (let j = 0; j < description.ypts; j++) {
-            Ammo.HEAPF32[ptr + p2 >> 2] = description.points[p];
-
-            p++;
+        for (let p = 0, p2 = ptr; p < xpts; p++) {
+          for (let j = 0; j < ypts; j++) {
+            Ammo.HEAPF32[p2 >> 2] = points[p];
             p2 += 4;
           }
         }
 
         shape = new Ammo.btHeightfieldTerrainShape(
-          description.xpts,
-          description.ypts,
+          xpts,
+          ypts,
           ptr,
           1,
           -description.absMaxHeight,
@@ -251,6 +252,48 @@ module.exports = function (self) {
     }
 
     return shape;
+  };
+
+  const createSoftBody = (description) => {
+    let body;
+
+    switch (description.type) {
+      case 'softTrimesh': {
+        if (!description.aVertices.length) return false;
+
+        body = softBodyHelpers.CreateFromTriMesh(
+          world.getWorldInfo(),
+          description.aVertices,
+          description.aIndices,
+          description.aIndices.length / 3,
+          true
+        );
+
+        break;
+      }
+      case 'softClothMesh': {
+        const cr = description.corners;
+
+        body = softBodyHelpers.CreatePatch(
+          world.getWorldInfo(),
+          new Ammo.btVector3(cr[0], cr[1], cr[2]),
+          new Ammo.btVector3(cr[3], cr[4], cr[5]),
+          new Ammo.btVector3(cr[6], cr[7], cr[8]),
+          new Ammo.btVector3(cr[9], cr[10], cr[11]),
+          description.segments[0],
+          description.segments[1],
+          0,
+          true
+        );
+
+        break;
+      }
+      default:
+        // Not recognized
+        return;
+    }
+
+    return body;
   };
 
   public_functions.init = (params = {}) => {
@@ -339,16 +382,8 @@ module.exports = function (self) {
   public_functions.addObject = (description) => {
     let body, motionState;
 
-    if (description.type === 'softbody') {
-      if (!description.aVertices.length) return false;
-
-      body = softBodyHelpers.CreateFromTriMesh(
-        world.getWorldInfo(),
-        description.aVertices,
-        description.aIndices,
-        description.aIndices.length / 3,
-        true
-      );
+    if (description.type.indexOf('soft') !== -1) {
+      body = createSoftBody(description);
 
       const sbConfig = body.get_m_cfg(),
         physParams = description.params;
@@ -356,9 +391,9 @@ module.exports = function (self) {
       sbConfig.set_viterations(40);
       sbConfig.set_piterations(40);
       sbConfig.set_collisions(0x11);
-      sbConfig.set_kDF(physParams.friction ? physParams.friction : 0.1);
-      sbConfig.set_kDP(physParams.damping ? physParams.damping : 0.01);
-      sbConfig.set_kPR(physParams.pressure ? physParams.pressure : 0);
+      sbConfig.set_kDF(physParams.friction);
+      sbConfig.set_kDP(physParams.damping);
+      if (description.type !== 'softClothMesh')sbConfig.set_kPR(physParams.pressure ? physParams.pressure : 0);
 
       body.get_m_materials().at(0).set_m_kLST(physParams.stiffness ? physParams.stiffness : 0.9);
       body.get_m_materials().at(0).set_m_kAST(physParams.stiffness ? physParams.stiffness : 0.9);
@@ -382,7 +417,7 @@ module.exports = function (self) {
 
       body.transform(_transform);
 
-      body.setMass(description.mass, true);
+      body.setTotalMass(description.mass, false);
       world.addSoftBody(body, 1, -1);
       _softbody_report_size += body.get_m_nodes().size();
       _num_softbody_objects++;
@@ -1311,6 +1346,8 @@ module.exports = function (self) {
             softreport[offsetVert + i * 6 + 4] = normal.y();
             softreport[offsetVert + i * 6 + 5] = normal.z();
           }
+
+          console.log(softreport);
 
           offset += size * 6 + 2;
         }
