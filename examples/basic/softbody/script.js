@@ -69,7 +69,9 @@ new WHS.Sphere({ // Rigidbody (green).
   },
 
   pos: {
-    y: 50
+    y: 50,
+    x: -1,
+    z: 1
   }
 }).addTo(GAME);
 

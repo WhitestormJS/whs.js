@@ -29,13 +29,18 @@ const GAME = new WHS.World({
 
 const terrain = new Terrain({
   geometry: {
-    map: '{{ assets }}/terrain/default_terrain.png',
+    map: '{{ assets }}/terrain/large_terrain.png',
     depth: 100,
-    width: 256,
-    height: 256
+    width: 512,
+    height: 512
   },
 
   mass: 0,
+
+  physics: {
+    friction: 1,
+    restitution: 0
+  },
 
   material: ['default',
     [
