@@ -1,7 +1,10 @@
 import {convertWorldPositionToObject, getObjectId} from '../api';
 
 export class PointConstraint {
-  constructor(objecta, objectb, position) {
+  constructor(obja, objb, position) {
+    const objecta = obja.getNative();
+    let objectb = obja.getNative();
+
     if (position === undefined) {
       position = objectb;
       objectb = undefined;

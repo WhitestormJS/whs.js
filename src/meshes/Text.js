@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/index.js';
+import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
 import {extend, loadMaterial, FontLoader} from '../extras/api';
@@ -29,13 +29,13 @@ class Text extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
-    else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;
-    else if (this.physics) Mesh = Physijs.ConvexMesh;
+    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    else if (this.physics && this.physics.type === 'concave') Mesh = ConcaveMesh;
+    else if (this.physics) Mesh = ConvexMesh;
     else Mesh = THREE.Mesh;
 
     const promise = new Promise((resolve) => {

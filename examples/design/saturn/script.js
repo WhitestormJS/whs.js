@@ -22,7 +22,7 @@ var colors = {
 
 var GAME = new WHS.World({
   stats: false,
-  autoresize: true,
+  autoresize: "window",
 
   gravity: {
     x: 0,

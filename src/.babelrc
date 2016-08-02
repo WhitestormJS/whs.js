@@ -1,11 +1,4 @@
 {
-    "presets": [
-      "stage-1"
-    ],
-    "plugins": [
-        ["transform-runtime", { "polyfill": false }],
-        "add-module-exports"
-    ],
     "env": {
         "node": {
             "presets": [

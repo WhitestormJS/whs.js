@@ -1,15 +1,15 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/index.js';
+import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Tube extends Shape {
   constructor(params = {}) {
     super(params, 'tube');
 
     extend(params.geometry, {
-      path: options.geometryOptions.path ? new this.CustomSinCurve(100) : false,
+      path: false,
       segments: 20,
       radius: 2,
       radiusSegments: 8,
@@ -23,13 +23,13 @@ class Tube extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
-    else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;
-    else if (this.physics) Mesh = Physijs.ConvexMesh;
+    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    else if (this.physics && this.physics.type === 'concave') Mesh = ConcaveMesh;
+    else if (this.physics) Mesh = ConvexMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
@@ -43,74 +43,60 @@ class Tube extends Shape {
     });
   }
 
-  get CustomSinCurve() {
-    return THREE.Curve.create(
-
-      (scale) => { // custom curve constructor
-        this.scale = scale || 1;
-      },
-
-      (t) => { // getPoint: t is between 0-1
-        const tx = t * 3 - 1.5,
-          ty = Math.sin(2 * Math.PI * t),
-          tz = 0;
-
-        return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
-      }
-
-    );
-  }
-
   buildGeometry(params = {}) {
     const GConstruct = params.buffer && !params.softbody ? THREE.TubeBufferGeometry : THREE.TubeGeometry;
 
-    return new GConstruct(
+    const geometry = new GConstruct(
       params.geometry.path,
       params.geometry.segments,
       params.geometry.radius,
       params.geometry.radiusSegments,
       params.geometry.closed
     );
+
+    if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+
+    return geometry;
   }
 
   set G_path(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {path: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {path: val}}));
   }
 
   get G_path() {
-    return this.native.geometry.parameters.path;
+    return this._native.geometry.parameters.path;
   }
 
   set G_segments(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {segments: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {segments: val}}));
   }
 
   get G_segments() {
-    return this.native.geometry.parameters.segments;
+    return this._native.geometry.parameters.segments;
   }
 
   set G_radius(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
   }
 
   get G_radius() {
-    return this.native.geometry.parameters.radius;
+    return this._native.geometry.parameters.radius;
   }
 
   set G_radiusSegments(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusSegments: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusSegments: val}}));
   }
 
   get G_radiusSegments() {
-    return this.native.geometry.parameters.radiusSegments;
+    return this._native.geometry.parameters.radiusSegments;
   }
 
   set G_closed(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {closed: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {closed: val}}));
   }
 
   get G_closed() {
-    return this.native.geometry.parameters.closed;
+    return this._native.geometry.parameters.closed;
   }
 
   clone() {

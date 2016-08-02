@@ -27,7 +27,9 @@ class Shape extends WHSObject {
       damping: 0,
       pressure: 100,
       margin: 0,
-      stiffness: 0.9
+      klst: 0.9,
+      kvst: 0.9,
+      klst: 0.9
     } : false;
 
     super({
@@ -451,13 +453,6 @@ class Shape extends WHSObject {
   }
 
   /**
-   * Initialize shape's material object.
-   */
-  _initMaterial(params = {}) {
-    return loadMaterial(params);
-  }
-
-  /**
    * Clone shape.
    */
   clone() {
@@ -472,10 +467,11 @@ class Shape extends WHSObject {
   copy(source) {
     const sourceNative = source.getNative();
 
-
     if (source.getParams().softbody)
       this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));
     else this.setNative(sourceNative.clone(source.getParams()));
+
+    this.setParams(source.getParams());
 
     this.wrap();
 
@@ -615,7 +611,7 @@ class Shape extends WHSObject {
   }
 
   M_(params = {}) {
-    this.getNative().material = this._initMaterial(
+    this.getNative().material = loadMaterial(
       this.updateParams({material: params}).material
     );
   }
@@ -720,6 +716,10 @@ class Shape extends WHSObject {
     return this.getNative().setCcdSweptSphereRadius(...args);
   }
 
+  appendAnchor(world, object, node, influence, collisionBetweenLinkedBodies = true) {
+    return this.getNative().appendAnchor(world.getScene(), object.getNative(), node, influence, collisionBetweenLinkedBodies);
+  }
+
   /* Three.js */
 
   raycast(...args) {
@@ -767,6 +767,15 @@ class Shape extends WHSObject {
         this.getWorld().removeLoop(animation);
       }, time);
     }
+  }
+
+  /* VISIBILITY */
+  show() {
+    this.getNative().visible = true;
+  }
+
+  hide() {
+    this.getNative().visible = false;
   }
 }
 

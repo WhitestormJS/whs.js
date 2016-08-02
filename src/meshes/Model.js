@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as Physijs from '../physics/index.js';
+import {ConvexMesh, ConcaveMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
 import {extend, loadMaterial, JSONLoader} from '../extras/api';
@@ -23,8 +23,8 @@ class Model extends Shape {
   build(params = {}) {
     let Mesh;
 
-    if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;
-    else if (this.physics) Mesh = Physijs.ConvexMesh;
+    if (this.physics && this.physics.type === 'concave') Mesh = ConcaveMesh;
+    else if (this.physics) Mesh = ConvexMesh;
     else Mesh = THREE.Mesh
 
     const promise = new Promise((resolve) => {

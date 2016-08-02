@@ -3,7 +3,7 @@
 
 var GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
-  autoresize: true,
+  autoresize: "window",
   softbody: true,
 
   gravity: {
@@ -42,7 +42,7 @@ new WHS.Sphere({ // Softbody (blue).
   softbody: true,
 
   physics: {
-    pressure: 50000
+    pressure: 500000
   },
 
   material: {
@@ -51,7 +51,7 @@ new WHS.Sphere({ // Softbody (blue).
   },
 
   pos: {
-    y: 12
+    y: 24
   }
 }).addTo(GAME);
 
@@ -62,16 +62,16 @@ new WHS.Sphere({ // Rigidbody (green).
     heightSegments: 16
   },
 
-  mass: 10,
+  mass: 20,
 
   material: {
     color: 0x00ff00
   },
 
   pos: {
-    y: 50,
-    x: -1,
-    z: 1
+    y: 70,
+    x: -0.5,
+    z: 0.5
   }
 }).addTo(GAME);
 

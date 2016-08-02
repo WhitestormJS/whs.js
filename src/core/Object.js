@@ -36,6 +36,7 @@ class WHSObject {
 
   setParams(params = {}) {
     this.__params = extend(params, this.__defaults);
+    return this.__params;
   }
 
   updateParams(params = {}) {

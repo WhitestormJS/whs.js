@@ -56,9 +56,6 @@ const texture = (url, repeat = {}) => {
 };
 
 const loadMaterial = (material = {}) => {
-  if (typeof material.kind !== 'string')
-    console.error('Type of material is undefined or not a string. @loadMaterial');
-
   let materialThree;
 
   const params = Object.assign({}, material);
@@ -133,6 +130,8 @@ const loadMaterial = (material = {}) => {
       break;
 
     default:
+      materialThree = new THREE.MeshBasicMaterial(params);
+      break;
   }
 
   return materialThree;

@@ -140,7 +140,7 @@ class Camera extends WHSObject {
    * Clone camera.
    */
   clone() {
-    return new Shape(this.__params, this._type).copy(this);
+    return new Camera(this.__params, this._type).copy(this);
   }
 
   /**
@@ -149,7 +149,8 @@ class Camera extends WHSObject {
    * @param {WHS.Camera} source - Source object, that will be applied to this.
    */
   copy(source) {
-    this.mesh = source.mesh.clone();
+    this.setNative(source.getNative().clone());
+    this.setParams(source.getParams());
 
     this.wrap();
 
