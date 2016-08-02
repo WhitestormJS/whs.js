@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 import {Shape} from '../core/Shape';
-import {extend} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Shape2D extends Shape {
   constructor(params = {}) {
@@ -18,7 +18,7 @@ class Shape2D extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     return new Promise((resolve) => {
       this.setNative(new THREE.Mesh(
@@ -39,11 +39,11 @@ class Shape2D extends Shape {
   }
 
   set G_shapes(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {shapes: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {shapes: val}}));
   }
 
   get G_shapes() {
-    return this.native.geometry.parameters.shapes;
+    return this._native.geometry.parameters.shapes;
   }
 
   clone() {

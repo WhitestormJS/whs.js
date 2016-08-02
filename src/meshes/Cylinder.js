@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import * as Physijs from '../physics/index.js';
+import {CylinderMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Cylinder extends Shape {
   constructor(params = {}) {
@@ -12,7 +12,11 @@ class Cylinder extends Shape {
       radiusTop: 0,
       radiusBottom: 1,
       height: 1,
-      radiusSegments: 32
+      radiusSegments: 32,
+      heightSegments: 1,
+      openEnded: false,
+      thetaStart: 0,
+      thetaLength: Math.PI * 2
     });
 
     if (params.build) {
@@ -22,12 +26,12 @@ class Cylinder extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
-    else if (this.physics) Mesh = Physijs.CylinderMesh;
+    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    else if (this.physics) Mesh = CylinderMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
@@ -44,44 +48,52 @@ class Cylinder extends Shape {
   buildGeometry(params = {}) {
     const GConstruct = params.buffer && !params.softbody ? THREE.CylinderBufferGeometry : THREE.CylinderGeometry;
 
-    return new GConstruct(
+    const geometry = new GConstruct(
       params.geometry.radiusTop,
       params.geometry.radiusBottom,
       params.geometry.height,
-      params.geometry.radiusSegments
+      params.geometry.radiusSegments,
+      params.geometry.heightSegments,
+      params.geometry.openEnded,
+      params.geometry.thetaStart,
+      params.geometry.thetaLength
     );
+
+    if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+
+    return geometry;
   }
 
   set G_radiusTop(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusTop: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusTop: val}}));
   }
 
   get G_radiusTop() {
-    return this.native.geometry.parameters.radiusTop;
+    return this._native.geometry.parameters.radiusTop;
   }
 
   set G_radiusBottom(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusBottom: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusBottom: val}}));
   }
 
   get G_radiusBottom() {
-    return this.native.geometry.parameters.radiusBottom;
+    return this._native.geometry.parameters.radiusBottom;
   }
 
   set G_height(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {height: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {height: val}}));
   }
 
   get G_height() {
-    return this.native.geometry.parameters.height;
+    return this._native.geometry.parameters.height;
   }
 
   set G_radiusSegments(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusSegments: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusSegments: val}}));
   }
 
   get G_radiusSegments() {
-    return this.native.geometry.parameters.radiusSegments;
+    return this._native.geometry.parameters.radiusSegments;
   }
 
   clone() {

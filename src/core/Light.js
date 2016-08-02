@@ -101,50 +101,45 @@ class Light extends WHSObject {
    * additionally.
    */
   wrap(...tags) {
-    const _scope = this;
-
     return new Promise((resolve, reject) => {
-      try {
-        if (tags.indexOf('no-shadows') < 0) {
-          _scope.getNative().castShadow = this._shadowmap.cast;
-        }
+      const _native = this.getNative();
 
-        if (tags.indexOf('no-transforms') < 0) {
-          _scope.position.set(
-            _scope.__params.pos.x,
-            _scope.__params.pos.y,
-            _scope.__params.pos.z
-          );
-
-          _scope.rotation.set(
-            _scope.__params.rot.x,
-            _scope.__params.rot.y,
-            _scope.__params.rot.z
-          );
-
-          if (_scope.getNative().target) {
-            _scope.target.set(
-              _scope.__params.target.x,
-              _scope.__params.target.y,
-              _scope.__params.target.z
-            );
-          }
-        }
-
-        tags.forEach(tag => {
-          _scope[tag] = true;
-        });
-
-        if (defaults.debug)
-          console.debug(`@WHS.Light: Light ${_scope._type} + ' is ready.`, _scope);
-
-        _scope.emit('ready');
-
-        resolve(_scope);
-      } catch (err) {
-        console.error(err.message);
-        reject();
+      if (tags.indexOf('no-shadows') < 0) {
+        _native.castShadow = this._shadowmap.cast;
       }
+
+      if (tags.indexOf('no-transforms') < 0) {
+        this.position.set(
+          this.__params.pos.x,
+          this.__params.pos.y,
+          this.__params.pos.z
+        );
+
+        this.rotation.set(
+          this.__params.rot.x,
+          this.__params.rot.y,
+          this.__params.rot.z
+        );
+
+        if (_native.target) {
+          this.target.set(
+            this.__params.target.x,
+            this.__params.target.y,
+            this.__params.target.z
+          );
+        }
+      }
+
+      tags.forEach(tag => {
+        this[tag] = true;
+      });
+
+      if (defaults.debug)
+        console.debug(`@WHS.Light: Light ${this._type} + ' is ready.`, this);
+
+      this.emit('ready');
+
+      resolve(this);
     });
   }
 
@@ -157,29 +152,23 @@ class Light extends WHSObject {
   addTo(parent) {
     this.parent = parent;
 
-    const _helper = this.helper,
-      _scope = this;
-
     return new Promise((resolve, reject) => {
-      try {
-        _scope.parent.getScene().add(_scope.getNative());
-        _scope.parent.children.push(_scope);
+      const _native = this.getNative();
 
-        if (_helper) _scope.parent.getScene().add(_helper);
-      } catch (err) {
-        console.error(err.message);
-        reject();
-      } finally {
-        if (defaults.debug) {
-          console.debug(
-            `@WHS.Camera: Camera ${_scope._type} was added to world.`,
-            [_scope, _scope.parent]
-          );
-        }
+      parent.getScene().add(_native);
+      parent.children.push(this);
 
-        resolve(_scope);
-        _scope.emit('ready');
+      if (this.helper) this.parent.getScene().add(this.helper);
+      if (_native.target) this.parent.getScene().add(_native.target);
+      if (defaults.debug) {
+        console.debug(
+          `@WHS.Camera: Camera ${this._type} was added to world.`,
+          [this, this.parent]
+        );
       }
+
+      resolve(this);
+      this.emit('ready');
     });
   }
 
@@ -224,8 +213,9 @@ class Light extends WHSObject {
    * @param {WHS.Light} source - Source object, that will be applied to this.
    */
   copy(source) {
-    this.light = source.getNative().clone();
+    this.setNative(source.getNative().clone());
     if (source.helper) this.helper = source.helper.clone();
+    this.setParams(source.getParams());
 
     this.wrap();
 
@@ -323,6 +313,15 @@ class Light extends WHSObject {
         animation.stop();
       }, time);
     }
+  }
+
+  /* VISIBILITY */
+  show() {
+    this.getNative().visible = true;
+  }
+
+  hide() {
+    this.getNative().visible = false;
   }
 }
 

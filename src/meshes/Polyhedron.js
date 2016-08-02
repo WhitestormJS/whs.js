@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import * as Physijs from '../physics/index.js';
+import {ConvexMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Polyhedron extends Shape {
   constructor(params = {}) {
@@ -22,12 +22,12 @@ class Polyhedron extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
-    else if (this.physics) Mesh = Physijs.ConvexMesh;
+    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    else if (this.physics) Mesh = ConvexMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
@@ -71,35 +71,35 @@ class Polyhedron extends Shape {
   }
 
   set G_verticesOfCube(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {verticesOfCube: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {verticesOfCube: val}}));
   }
 
   get G_verticesOfCube() {
-    return this.native.geometry.parameters.verticesOfCube;
+    return this._native.geometry.parameters.verticesOfCube;
   }
 
   set G_indicesOfFaces(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {indicesOfFaces: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {indicesOfFaces: val}}));
   }
 
   get G_indicesOfFaces() {
-    return this.native.geometry.parameters.indicesOfFaces;
+    return this._native.geometry.parameters.indicesOfFaces;
   }
 
   set G_radius(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
   }
 
   get G_radius() {
-    return this.native.geometry.parameters.radius;
+    return this._native.geometry.parameters.radius;
   }
 
   set G_detail(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {detail: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {detail: val}}));
   }
 
   get G_detail() {
-    return this.native.geometry.parameters.detail;
+    return this._native.geometry.parameters.detail;
   }
 
   clone() {

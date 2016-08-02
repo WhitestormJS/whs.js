@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import * as Physijs from '../physics/index.js';
+import {BoxMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Box extends Shape {
   constructor(params = {}) {
@@ -21,12 +21,12 @@ class Box extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
-    else if (this.physics) Mesh = Physijs.BoxMesh;
+    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    else if (this.physics) Mesh = BoxMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
@@ -55,27 +55,27 @@ class Box extends Shape {
   }
 
   set G_width(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {width: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {width: val}}));
   }
 
   get G_width() {
-    return this.native.geometry.parameters.width;
+    return this._native.geometry.parameters.width;
   }
 
   set G_height(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {height: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {height: val}}));
   }
 
   get G_height() {
-    return this.native.geometry.parameters.height;
+    return this._native.geometry.parameters.height;
   }
 
   set G_depth(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {depth: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {depth: val}}));
   }
 
   get G_depth() {
-    return this.native.geometry.parameters.depth;
+    return this._native.geometry.parameters.depth;
   }
 
   clone() {

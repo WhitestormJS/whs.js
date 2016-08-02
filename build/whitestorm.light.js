@@ -54,7 +54,7 @@ var WHS =
 	var _index = __webpack_require__(1);
 	
 	Object.keys(_index).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -66,7 +66,7 @@ var WHS =
 	var _index2 = __webpack_require__(105);
 	
 	Object.keys(_index2).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -78,7 +78,7 @@ var WHS =
 	var _index3 = __webpack_require__(110);
 	
 	Object.keys(_index3).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -90,7 +90,7 @@ var WHS =
 	var _index4 = __webpack_require__(111);
 	
 	Object.keys(_index4).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -102,7 +102,7 @@ var WHS =
 	var _index5 = __webpack_require__(119);
 	
 	Object.keys(_index5).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -114,7 +114,7 @@ var WHS =
 	var _index6 = __webpack_require__(126);
 	
 	Object.keys(_index6).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -155,7 +155,7 @@ var WHS =
 	var _CubeCamera = __webpack_require__(2);
 	
 	Object.keys(_CubeCamera).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -167,7 +167,7 @@ var WHS =
 	var _OrtographicCamera = __webpack_require__(103);
 	
 	Object.keys(_OrtographicCamera).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -179,7 +179,7 @@ var WHS =
 	var _PerspectiveCamera = __webpack_require__(104);
 	
 	Object.keys(_PerspectiveCamera).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -43814,7 +43814,7 @@ var WHS =
 	  }, {
 	    key: 'clone',
 	    value: function clone() {
-	      return new Shape(this.__params, this._type).copy(this);
+	      return new Camera(this.__params, this._type).copy(this);
 	    }
 	
 	    /**
@@ -43826,7 +43826,8 @@ var WHS =
 	  }, {
 	    key: 'copy',
 	    value: function copy(source) {
-	      this.mesh = source.mesh.clone();
+	      this.setNative(source.getNative().clone());
+	      this.setParams(source.getParams());
 	
 	      this.wrap();
 	
@@ -44052,6 +44053,7 @@ var WHS =
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
 	      this.__params = (0, _api.extend)(params, this.__defaults);
+	      return this.__params;
 	    }
 	  }, {
 	    key: 'updateParams',
@@ -44249,8 +44251,6 @@ var WHS =
 	var loadMaterial = function loadMaterial() {
 	  var material = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	  if (typeof material.kind !== 'string') console.error('Type of material is undefined or not a string. @loadMaterial');
-	
 	  var materialThree = void 0;
 	
 	  var params = Object.assign({}, material);
@@ -44325,6 +44325,8 @@ var WHS =
 	      break;
 	
 	    default:
+	      materialThree = new THREE.MeshBasicMaterial(params);
+	      break;
 	  }
 	
 	  return materialThree;
@@ -44889,7 +44891,7 @@ var WHS =
 	var _Camera = __webpack_require__(94);
 	
 	Object.keys(_Camera).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -44901,7 +44903,7 @@ var WHS =
 	var _Light = __webpack_require__(106);
 	
 	Object.keys(_Light).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -44913,7 +44915,7 @@ var WHS =
 	var _Object = __webpack_require__(97);
 	
 	Object.keys(_Object).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -44925,7 +44927,7 @@ var WHS =
 	var _Shape = __webpack_require__(107);
 	
 	Object.keys(_Shape).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -44937,7 +44939,7 @@ var WHS =
 	var _World = __webpack_require__(108);
 	
 	Object.keys(_World).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -45102,37 +45104,32 @@ var WHS =
 	        tags[_key] = arguments[_key];
 	      }
 	
-	      var _scope = this;
-	
 	      return new Promise(function (resolve, reject) {
-	        try {
-	          if (tags.indexOf('no-shadows') < 0) {
-	            _scope.getNative().castShadow = _this2._shadowmap.cast;
-	          }
+	        var _native = _this2.getNative();
 	
-	          if (tags.indexOf('no-transforms') < 0) {
-	            _scope.position.set(_scope.__params.pos.x, _scope.__params.pos.y, _scope.__params.pos.z);
-	
-	            _scope.rotation.set(_scope.__params.rot.x, _scope.__params.rot.y, _scope.__params.rot.z);
-	
-	            if (_scope.getNative().target) {
-	              _scope.target.set(_scope.__params.target.x, _scope.__params.target.y, _scope.__params.target.z);
-	            }
-	          }
-	
-	          tags.forEach(function (tag) {
-	            _scope[tag] = true;
-	          });
-	
-	          if (_defaults.defaults.debug) console.debug('@WHS.Light: Light ' + _scope._type + ' + \' is ready.', _scope);
-	
-	          _scope.emit('ready');
-	
-	          resolve(_scope);
-	        } catch (err) {
-	          console.error(err.message);
-	          reject();
+	        if (tags.indexOf('no-shadows') < 0) {
+	          _native.castShadow = _this2._shadowmap.cast;
 	        }
+	
+	        if (tags.indexOf('no-transforms') < 0) {
+	          _this2.position.set(_this2.__params.pos.x, _this2.__params.pos.y, _this2.__params.pos.z);
+	
+	          _this2.rotation.set(_this2.__params.rot.x, _this2.__params.rot.y, _this2.__params.rot.z);
+	
+	          if (_native.target) {
+	            _this2.target.set(_this2.__params.target.x, _this2.__params.target.y, _this2.__params.target.z);
+	          }
+	        }
+	
+	        tags.forEach(function (tag) {
+	          _this2[tag] = true;
+	        });
+	
+	        if (_defaults.defaults.debug) console.debug('@WHS.Light: Light ' + _this2._type + ' + \' is ready.', _this2);
+	
+	        _this2.emit('ready');
+	
+	        resolve(_this2);
 	      });
 	    }
 	
@@ -45146,28 +45143,24 @@ var WHS =
 	  }, {
 	    key: 'addTo',
 	    value: function addTo(parent) {
+	      var _this3 = this;
+	
 	      this.parent = parent;
 	
-	      var _helper = this.helper,
-	          _scope = this;
-	
 	      return new Promise(function (resolve, reject) {
-	        try {
-	          _scope.parent.getScene().add(_scope.getNative());
-	          _scope.parent.children.push(_scope);
+	        var _native = _this3.getNative();
 	
-	          if (_helper) _scope.parent.getScene().add(_helper);
-	        } catch (err) {
-	          console.error(err.message);
-	          reject();
-	        } finally {
-	          if (_defaults.defaults.debug) {
-	            console.debug('@WHS.Camera: Camera ' + _scope._type + ' was added to world.', [_scope, _scope.parent]);
-	          }
+	        parent.getScene().add(_native);
+	        parent.children.push(_this3);
 	
-	          resolve(_scope);
-	          _scope.emit('ready');
+	        if (_this3.helper) _this3.parent.getScene().add(_this3.helper);
+	        if (_native.target) _this3.parent.getScene().add(_native.target);
+	        if (_defaults.defaults.debug) {
+	          console.debug('@WHS.Camera: Camera ' + _this3._type + ' was added to world.', [_this3, _this3.parent]);
 	        }
+	
+	        resolve(_this3);
+	        _this3.emit('ready');
 	      });
 	    }
 	
@@ -45178,11 +45171,11 @@ var WHS =
 	  }, {
 	    key: 'wrapShadow',
 	    value: function wrapShadow() {
-	      var _this3 = this;
+	      var _this4 = this;
 	
 	      return new Promise(function (resolve, reject) {
-	        var _native = _this3.getNative(),
-	            _shadow = _this3._shadowmap;
+	        var _native = _this4.getNative(),
+	            _shadow = _this4._shadowmap;
 	
 	        _native.shadow.mapSize.width = _shadow.width;
 	        _native.shadow.mapSize.height = _shadow.height;
@@ -45200,7 +45193,7 @@ var WHS =
 	        _shadowCamera.top = _shadow.top;
 	        _shadowCamera.bottom = _shadow.bottom;
 	
-	        resolve(_this3);
+	        resolve(_this4);
 	      });
 	    }
 	
@@ -45223,8 +45216,9 @@ var WHS =
 	  }, {
 	    key: 'copy',
 	    value: function copy(source) {
-	      this.light = source.getNative().clone();
+	      this.setNative(source.getNative().clone());
 	      if (source.helper) this.helper = source.helper.clone();
+	      this.setParams(source.getParams());
 	
 	      this.wrap();
 	
@@ -45296,6 +45290,19 @@ var WHS =
 	          animation.stop();
 	        }, time);
 	      }
+	    }
+	
+	    /* VISIBILITY */
+	
+	  }, {
+	    key: 'show',
+	    value: function show() {
+	      this.getNative().visible = true;
+	    }
+	  }, {
+	    key: 'hide',
+	    value: function hide() {
+	      this.getNative().visible = false;
 	    }
 	  }, {
 	    key: 'position',
@@ -45406,7 +45413,8 @@ var WHS =
 	      friction: 0.8,
 	      damping: 0,
 	      pressure: 100,
-	      margin: 0
+	      margin: 0,
+	      stiffness: 0.9
 	    } : false;
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Shape).call(this, {
@@ -45772,18 +45780,6 @@ var WHS =
 	    }
 	
 	    /**
-	     * Initialize shape's material object.
-	     */
-	
-	  }, {
-	    key: '_initMaterial',
-	    value: function _initMaterial() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      return (0, _api.loadMaterial)(params);
-	    }
-	
-	    /**
 	     * Clone shape.
 	     */
 	
@@ -45805,6 +45801,8 @@ var WHS =
 	      var sourceNative = source.getNative();
 	
 	      if (source.getParams().softbody) this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));else this.setNative(sourceNative.clone(source.getParams()));
+	
+	      this.setParams(source.getParams());
 	
 	      this.wrap();
 	
@@ -45851,14 +45849,14 @@ var WHS =
 	    value: function M_() {
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      this.getNative().material = this._initMaterial(this.updateParams({ material: params }).material);
+	      this.getNative().material = (0, _api.loadMaterial)(this.updateParams({ material: params }).material);
 	    }
 	  }, {
 	    key: 'proccessSoftbodyGeometry',
 	    value: function proccessSoftbodyGeometry(geometry) {
 	      geometry.rotateX(this.__params.rot.x);
-	      geometry.rotateY(this.__params.rot.x);
-	      geometry.rotateZ(this.__params.rot.x);
+	      geometry.rotateY(this.__params.rot.y);
+	      geometry.rotateZ(this.__params.rot.z);
 	
 	      geometry.scale(this.__params.scale.x, this.__params.scale.y, this.__params.scale.z);
 	
@@ -45983,6 +45981,13 @@ var WHS =
 	
 	      return (_getNative14 = this.getNative()).setCcdSweptSphereRadius.apply(_getNative14, arguments);
 	    }
+	  }, {
+	    key: 'appendAnchor',
+	    value: function appendAnchor(world, object, node, influence) {
+	      var collisionBetweenLinkedBodies = arguments.length <= 4 || arguments[4] === undefined ? true : arguments[4];
+	
+	      return this.getNative().appendAnchor(world.getScene(), object.getNative(), node, influence, collisionBetweenLinkedBodies);
+	    }
 	
 	    /* Three.js */
 	
@@ -46042,6 +46047,19 @@ var WHS =
 	          _this4.getWorld().removeLoop(animation);
 	        }, time);
 	      }
+	    }
+	
+	    /* VISIBILITY */
+	
+	  }, {
+	    key: 'show',
+	    value: function show() {
+	      this.getNative().visible = true;
+	    }
+	  }, {
+	    key: 'hide',
+	    value: function hide() {
+	      this.getNative().visible = false;
 	    }
 	  }, {
 	    key: 'position',
@@ -46315,9 +46333,13 @@ var WHS =
 	    // NOTE: ==================== Autoresize. ======================
 	    var scope = _this;
 	
-	    if (_this.getParams().autoresize) {
+	    if (params.autoresize === "window") {
 	      window.addEventListener('resize', function () {
-	        scope.setSize(window.innerWidth, window.innerHeight);
+	        scope.setSize(Number(window.innerWidth * params.rWidth).toFixed(), Number(window.innerHeight * params.rHeight).toFixed());
+	      });
+	    } else if (_this.getParams().autoresize) {
+	      window.addEventListener('resize', function () {
+	        scope.setSize(Number(params.container.offsetWidth * params.rWidth).toFixed(), Number(params.container.offsetHeight * params.rHeight).toFixed());
 	      });
 	    }
 	
@@ -46334,8 +46356,6 @@ var WHS =
 	  (0, _createClass3.default)(World, [{
 	    key: '_initScene',
 	    value: function _initScene() {
-	      var _this2 = this;
-	
 	      var params = this.getParams(),
 	          scene = false ? new Physijs.Scene({
 	        fixedTimeStep: params.physics.fixedTimeStep
@@ -46349,11 +46369,6 @@ var WHS =
 	        scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
 	
 	        this.simulate = true;
-	        scene.addEventListener('update', function () {
-	          if (_this2.simulate) scene.simulate(undefined, 1);
-	        });
-	
-	        scene.simulate();
 	      } else this.simulate = false;
 	
 	      if (params.fog.type === 'regular') scene.fog = new THREE.Fog(params.fog.hex, params.fog.near, params.fog.far);else if (params.fog.type === 'exp' || params.fog.type === 'expodential') scene.fog = new THREE.FogExp2(params.fog.hex, params.fog.density);
@@ -46528,6 +46543,8 @@ var WHS =
 	        _scope._process(clock.getDelta());
 	        if (_scope.controls) _scope._updateControls();
 	
+	        if (_scope.simulate) scene.simulate(clock.getDelta());
+	
 	        // Effects rendering.
 	        if (_scope._composer && _scope.render) {
 	          _scope._composer.reset();
@@ -46605,7 +46622,7 @@ var WHS =
 	  }, {
 	    key: 'setScene',
 	    value: function setScene(scene) {
-	      var _this3 = this;
+	      var _this2 = this;
 	
 	      var import_three = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 	
@@ -46613,7 +46630,7 @@ var WHS =
 	
 	      if (import_three) {
 	        (function () {
-	          _this3.children = [];
+	          _this2.children = [];
 	
 	          var moveChildren = function moveChildren(object) {
 	            for (var i = 0, max = object.children.length; i < max; i++) {
@@ -46622,13 +46639,13 @@ var WHS =
 	
 	              if (obj3D instanceof THREE.Light) WHSobj = new _Light.Light(obj3D);else WHSobj = new _Shape.Shape(obj3D);
 	
-	              WHSobj.addTo(_this3);
+	              WHSobj.addTo(_this2);
 	
 	              if (obj3D.children.length) moveChildren(obj3D, WHSobj);
 	            }
 	          };
 	
-	          moveChildren(scene, _this3);
+	          moveChildren(scene, _this2);
 	        })();
 	      }
 	
@@ -46731,7 +46748,7 @@ var WHS =
 	var _Loop = __webpack_require__(95);
 	
 	Object.keys(_Loop).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46753,7 +46770,7 @@ var WHS =
 	var _firstPersonControls = __webpack_require__(112);
 	
 	Object.keys(_firstPersonControls).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46765,7 +46782,7 @@ var WHS =
 	var _orbitControls = __webpack_require__(113);
 	
 	Object.keys(_orbitControls).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46777,7 +46794,7 @@ var WHS =
 	var _api = __webpack_require__(99);
 	
 	Object.keys(_api).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46789,7 +46806,7 @@ var WHS =
 	var _Curve = __webpack_require__(115);
 	
 	Object.keys(_Curve).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46801,7 +46818,7 @@ var WHS =
 	var _Points = __webpack_require__(116);
 	
 	Object.keys(_Points).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46813,7 +46830,7 @@ var WHS =
 	var _Group = __webpack_require__(117);
 	
 	Object.keys(_Group).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46825,7 +46842,7 @@ var WHS =
 	var _Skybox = __webpack_require__(118);
 	
 	Object.keys(_Skybox).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -48776,7 +48793,7 @@ var WHS =
 	var _AmbientLight = __webpack_require__(120);
 	
 	Object.keys(_AmbientLight).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -48788,7 +48805,7 @@ var WHS =
 	var _DirectionalLight = __webpack_require__(121);
 	
 	Object.keys(_DirectionalLight).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -48800,7 +48817,7 @@ var WHS =
 	var _HemisphereLight = __webpack_require__(122);
 	
 	Object.keys(_HemisphereLight).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -48812,7 +48829,7 @@ var WHS =
 	var _NormalLight = __webpack_require__(123);
 	
 	Object.keys(_NormalLight).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -48824,7 +48841,7 @@ var WHS =
 	var _PointLight = __webpack_require__(124);
 	
 	Object.keys(_PointLight).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -48836,7 +48853,7 @@ var WHS =
 	var _SpotLight = __webpack_require__(125);
 	
 	Object.keys(_SpotLight).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49327,7 +49344,7 @@ var WHS =
 	var _Box = __webpack_require__(127);
 	
 	Object.keys(_Box).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49339,7 +49356,7 @@ var WHS =
 	var _Cylinder = __webpack_require__(128);
 	
 	Object.keys(_Cylinder).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49351,7 +49368,7 @@ var WHS =
 	var _Dodecahedron = __webpack_require__(129);
 	
 	Object.keys(_Dodecahedron).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49363,7 +49380,7 @@ var WHS =
 	var _Extrude = __webpack_require__(130);
 	
 	Object.keys(_Extrude).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49375,7 +49392,7 @@ var WHS =
 	var _Icosahedron = __webpack_require__(131);
 	
 	Object.keys(_Icosahedron).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49387,7 +49404,7 @@ var WHS =
 	var _Lathe = __webpack_require__(132);
 	
 	Object.keys(_Lathe).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49399,7 +49416,7 @@ var WHS =
 	var _Model = __webpack_require__(133);
 	
 	Object.keys(_Model).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49411,7 +49428,7 @@ var WHS =
 	var _Morph = __webpack_require__(134);
 	
 	Object.keys(_Morph).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49423,7 +49440,7 @@ var WHS =
 	var _Octahedron = __webpack_require__(135);
 	
 	Object.keys(_Octahedron).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49435,7 +49452,7 @@ var WHS =
 	var _Parametric = __webpack_require__(136);
 	
 	Object.keys(_Parametric).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49447,7 +49464,7 @@ var WHS =
 	var _Plane = __webpack_require__(137);
 	
 	Object.keys(_Plane).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49459,7 +49476,7 @@ var WHS =
 	var _Polyhedron = __webpack_require__(138);
 	
 	Object.keys(_Polyhedron).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49471,7 +49488,7 @@ var WHS =
 	var _Ring = __webpack_require__(139);
 	
 	Object.keys(_Ring).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49483,7 +49500,7 @@ var WHS =
 	var _Shape2D = __webpack_require__(140);
 	
 	Object.keys(_Shape2D).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49495,7 +49512,7 @@ var WHS =
 	var _Sphere = __webpack_require__(141);
 	
 	Object.keys(_Sphere).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49507,7 +49524,7 @@ var WHS =
 	var _Tetrahedron = __webpack_require__(142);
 	
 	Object.keys(_Tetrahedron).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49519,7 +49536,7 @@ var WHS =
 	var _Text = __webpack_require__(143);
 	
 	Object.keys(_Text).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49531,7 +49548,7 @@ var WHS =
 	var _Torus = __webpack_require__(144);
 	
 	Object.keys(_Torus).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49543,7 +49560,7 @@ var WHS =
 	var _Torusknot = __webpack_require__(145);
 	
 	Object.keys(_Torusknot).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49555,7 +49572,7 @@ var WHS =
 	var _Tube = __webpack_require__(146);
 	
 	Object.keys(_Tube).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49601,8 +49618,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -49640,11 +49655,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Box.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.BoxMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.BoxMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -49673,26 +49688,26 @@ var WHS =
 	  }, {
 	    key: 'G_width',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { width: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { width: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.width;
+	      return this._native.geometry.parameters.width;
 	    }
 	  }, {
 	    key: 'G_height',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.height;
+	      return this._native.geometry.parameters.height;
 	    }
 	  }, {
 	    key: 'G_depth',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { depth: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { depth: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.depth;
+	      return this._native.geometry.parameters.depth;
 	    }
 	  }]);
 	  return Box;
@@ -49737,8 +49752,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -49760,7 +49773,11 @@ var WHS =
 	      radiusTop: 0,
 	      radiusBottom: 1,
 	      height: 1,
-	      radiusSegments: 32
+	      radiusSegments: 32,
+	      heightSegments: 1,
+	      openEnded: false,
+	      thetaStart: 0,
+	      thetaLength: Math.PI * 2
 	    });
 	
 	    if (params.build) {
@@ -49777,11 +49794,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Cylinder.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.CylinderMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.CylinderMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -49796,7 +49813,11 @@ var WHS =
 	
 	      var GConstruct = params.buffer && !params.softbody ? THREE.CylinderBufferGeometry : THREE.CylinderGeometry;
 	
-	      return new GConstruct(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments);
+	      var geometry = new GConstruct(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments, params.geometry.heightSegments, params.geometry.openEnded, params.geometry.thetaStart, params.geometry.thetaLength);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
 	    }
 	  }, {
 	    key: 'clone',
@@ -49806,34 +49827,34 @@ var WHS =
 	  }, {
 	    key: 'G_radiusTop',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusTop: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusTop: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radiusTop;
+	      return this._native.geometry.parameters.radiusTop;
 	    }
 	  }, {
 	    key: 'G_radiusBottom',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusBottom: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusBottom: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radiusBottom;
+	      return this._native.geometry.parameters.radiusBottom;
 	    }
 	  }, {
 	    key: 'G_height',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.height;
+	      return this._native.geometry.parameters.height;
 	    }
 	  }, {
 	    key: 'G_radiusSegments',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusSegments: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusSegments: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radiusSegments;
+	      return this._native.geometry.parameters.radiusSegments;
 	    }
 	  }]);
 	  return Cylinder;
@@ -49878,8 +49899,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -49916,11 +49935,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Dodecahedron.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -49945,18 +49964,18 @@ var WHS =
 	  }, {
 	    key: 'G_radius',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radius;
+	      return this._native.geometry.parameters.radius;
 	    }
 	  }, {
 	    key: 'G_detail',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.detail;
+	      return this._native.geometry.parameters.detail;
 	    }
 	  }]);
 	  return Dodecahedron;
@@ -50001,8 +50020,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var _nophysi2 = _interopRequireDefault(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50039,11 +50056,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Extrude.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi2.default.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi2.default.ConcaveMesh;else if (this.physics) Mesh = _nophysi2.default.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50068,18 +50085,18 @@ var WHS =
 	  }, {
 	    key: 'G_shapes',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { shapes: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { shapes: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.shapes;
+	      return this._native.geometry.parameters.shapes;
 	    }
 	  }, {
 	    key: 'G_options',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { options: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { options: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.options;
+	      return this._native.geometry.parameters.options;
 	    }
 	  }]);
 	  return Extrude;
@@ -50124,8 +50141,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var _nophysi2 = _interopRequireDefault(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50162,11 +50177,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Icosahedron.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi2.default.SoftMesh;else if (this.physics) Mesh = _nophysi2.default.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50191,18 +50206,18 @@ var WHS =
 	  }, {
 	    key: 'G_radius',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radius;
+	      return this._native.geometry.parameters.radius;
 	    }
 	  }, {
 	    key: 'G_detail',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.detail;
+	      return this._native.geometry.parameters.detail;
 	    }
 	  }]);
 	  return Icosahedron;
@@ -50247,8 +50262,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50284,11 +50297,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Lathe.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50313,10 +50326,10 @@ var WHS =
 	  }, {
 	    key: 'G_points',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { points: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { points: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.points;
+	      return this._native.geometry.parameters.points;
 	    }
 	  }]);
 	  return Lathe;
@@ -50361,8 +50374,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50402,7 +50413,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      var promise = new Promise(function (resolve) {
 	        var pGeometry = params.geometry;
@@ -50626,8 +50637,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50664,11 +50673,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Octahedron.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50693,18 +50702,18 @@ var WHS =
 	  }, {
 	    key: 'G_radius',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radius;
+	      return this._native.geometry.parameters.radius;
 	    }
 	  }, {
 	    key: 'G_detail',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.detail;
+	      return this._native.geometry.parameters.detail;
 	    }
 	  }]);
 	  return Octahedron;
@@ -50749,8 +50758,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50789,11 +50796,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Parametric.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50818,26 +50825,26 @@ var WHS =
 	  }, {
 	    key: 'G_func',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { func: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { func: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.func;
+	      return this._native.geometry.parameters.func;
 	    }
 	  }, {
 	    key: 'G_slices',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { slices: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { slices: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.slices;
+	      return this._native.geometry.parameters.slices;
 	    }
 	  }, {
 	    key: 'G_stacks',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { stacks: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { stacks: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.stacks;
+	      return this._native.geometry.parameters.stacks;
 	    }
 	  }]);
 	  return Parametric;
@@ -50882,8 +50889,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50922,11 +50927,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Plane.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.PlaneMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.ClothMesh;else if (this.physics) Mesh = _nophysi.PlaneMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50939,9 +50944,13 @@ var WHS =
 	    value: function buildGeometry() {
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
+	      var GConstruct = params.buffer || params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
 	
-	      return new GConstruct(params.geometry.width, params.geometry.height, params.geometry.wSegments, params.geometry.hSegments);
+	      var geometry = new GConstruct(params.geometry.width, params.geometry.height, params.geometry.wSegments, params.geometry.hSegments);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
 	    }
 	  }, {
 	    key: 'clone',
@@ -50951,26 +50960,26 @@ var WHS =
 	  }, {
 	    key: 'G_width',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { width: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { width: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.width;
+	      return this._native.geometry.parameters.width;
 	    }
 	  }, {
 	    key: 'G_height',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.height;
+	      return this._native.geometry.parameters.height;
 	    }
 	  }, {
 	    key: 'G_segments',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { segments: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { segments: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.segments;
+	      return this._native.geometry.parameters.segments;
 	    }
 	  }]);
 	  return Plane;
@@ -51015,8 +51024,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -51055,11 +51062,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Polyhedron.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -51094,34 +51101,34 @@ var WHS =
 	  }, {
 	    key: 'G_verticesOfCube',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { verticesOfCube: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { verticesOfCube: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.verticesOfCube;
+	      return this._native.geometry.parameters.verticesOfCube;
 	    }
 	  }, {
 	    key: 'G_indicesOfFaces',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { indicesOfFaces: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { indicesOfFaces: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.indicesOfFaces;
+	      return this._native.geometry.parameters.indicesOfFaces;
 	    }
 	  }, {
 	    key: 'G_radius',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radius;
+	      return this._native.geometry.parameters.radius;
 	    }
 	  }, {
 	    key: 'G_detail',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.detail;
+	      return this._native.geometry.parameters.detail;
 	    }
 	  }]);
 	  return Polyhedron;
@@ -51204,7 +51211,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Ring.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), material));
@@ -51229,50 +51236,50 @@ var WHS =
 	  }, {
 	    key: 'G_innerRadius',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { innerRadius: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { innerRadius: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.innerRadius;
+	      return this._native.geometry.parameters.innerRadius;
 	    }
 	  }, {
 	    key: 'G_outerRadius',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { outerRadius: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { outerRadius: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.outerRadius;
+	      return this._native.geometry.parameters.outerRadius;
 	    }
 	  }, {
 	    key: 'G_thetaSegments',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { thetaSegments: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { thetaSegments: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.thetaSegments;
+	      return this._native.geometry.parameters.thetaSegments;
 	    }
 	  }, {
 	    key: 'G_phiSegments',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { phiSegments: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { phiSegments: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.phiSegments;
+	      return this._native.geometry.parameters.phiSegments;
 	    }
 	  }, {
 	    key: 'G_thetaStart',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { thetaStart: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { thetaStart: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.thetaStart;
+	      return this._native.geometry.parameters.thetaStart;
 	    }
 	  }, {
 	    key: 'G_thetaLength',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { thetaLength: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { thetaLength: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.thetaLength;
+	      return this._native.geometry.parameters.thetaLength;
 	    }
 	  }]);
 	  return Ring;
@@ -51350,7 +51357,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Shape2D.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new THREE.Mesh(_this2.buildGeometry(params), material));
@@ -51375,10 +51382,10 @@ var WHS =
 	  }, {
 	    key: 'G_shapes',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { shapes: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { shapes: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.shapes;
+	      return this._native.geometry.parameters.shapes;
 	    }
 	  }]);
 	  return Shape2D;
@@ -51423,8 +51430,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -51462,11 +51467,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Sphere.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.SphereMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.SphereMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -51495,26 +51500,26 @@ var WHS =
 	  }, {
 	    key: 'G_radius',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radius;
+	      return this._native.geometry.parameters.radius;
 	    }
 	  }, {
 	    key: 'G_widthSegments',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { widthSegments: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { widthSegments: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.widthSegments;
+	      return this._native.geometry.parameters.widthSegments;
 	    }
 	  }, {
 	    key: 'G_heightSegments',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { widthSegments: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { widthSegments: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.widthSegments;
+	      return this._native.geometry.parameters.widthSegments;
 	    }
 	  }]);
 	  return Sphere;
@@ -51559,8 +51564,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -51597,11 +51600,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Tetrahedron.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -51626,18 +51629,18 @@ var WHS =
 	  }, {
 	    key: 'G_radius',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radius;
+	      return this._native.geometry.parameters.radius;
 	    }
 	  }, {
 	    key: 'G_detail',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.detail;
+	      return this._native.geometry.parameters.detail;
 	    }
 	  }]);
 	  return Tetrahedron;
@@ -51681,8 +51684,6 @@ var WHS =
 	var THREE = _interopRequireWildcard(_three);
 	
 	var _nophysi = __webpack_require__(100);
-	
-	var _nophysi2 = _interopRequireDefault(_nophysi);
 	
 	var _Shape2 = __webpack_require__(107);
 	
@@ -51729,11 +51730,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Text.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi2.default.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi2.default.ConcaveMesh;else if (this.physics) Mesh = _nophysi2.default.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      var promise = new Promise(function (resolve) {
 	        _api.FontLoader.load(params.geometry.parameters.font, function (font) {
@@ -51797,8 +51798,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -51838,11 +51837,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Torus.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -51867,42 +51866,42 @@ var WHS =
 	  }, {
 	    key: 'G_radius',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radius;
+	      return this._native.geometry.parameters.radius;
 	    }
 	  }, {
 	    key: 'G_tube',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { tube: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tube: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.tube;
+	      return this._native.geometry.parameters.tube;
 	    }
 	  }, {
 	    key: 'G_radialSegments',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radialSegments: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radialSegments: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radialSegments;
+	      return this._native.geometry.parameters.radialSegments;
 	    }
 	  }, {
 	    key: 'G_tubularSegments',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { tubularSegments: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tubularSegments: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.tubularSegments;
+	      return this._native.geometry.parameters.tubularSegments;
 	    }
 	  }, {
 	    key: 'G_arc',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { arc: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { arc: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.arc;
+	      return this._native.geometry.parameters.arc;
 	    }
 	  }]);
 	  return Torus;
@@ -51947,8 +51946,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -51990,11 +51987,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Torusknot.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -52019,58 +52016,58 @@ var WHS =
 	  }, {
 	    key: 'G_radius',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radius;
+	      return this._native.geometry.parameters.radius;
 	    }
 	  }, {
 	    key: 'G_tube',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { tube: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tube: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.tube;
+	      return this._native.geometry.parameters.tube;
 	    }
 	  }, {
 	    key: 'G_radialSegments',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radialSegments: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radialSegments: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radialSegments;
+	      return this._native.geometry.parameters.radialSegments;
 	    }
 	  }, {
 	    key: 'G_tubularSegments',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { tubularSegments: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tubularSegments: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.tubularSegments;
+	      return this._native.geometry.parameters.tubularSegments;
 	    }
 	  }, {
 	    key: 'G_p',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { p: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { p: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.p;
+	      return this._native.geometry.parameters.p;
 	    }
 	  }, {
 	    key: 'G_q',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { q: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { q: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.q;
+	      return this._native.geometry.parameters.q;
 	    }
 	  }, {
 	    key: 'G_heightScale',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { heightScale: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { heightScale: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.heightScale;
+	      return this._native.geometry.parameters.heightScale;
 	    }
 	  }]);
 	  return Torusknot;
@@ -52115,8 +52112,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var _nophysi2 = _interopRequireDefault(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -52135,7 +52130,7 @@ var WHS =
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Tube).call(this, params, 'tube'));
 	
 	    (0, _api.extend)(params.geometry, {
-	      path: options.geometryOptions.path ? new _this.CustomSinCurve(100) : false,
+	      path: false,
 	      segments: 20,
 	      radius: 2,
 	      radiusSegments: 8,
@@ -52156,11 +52151,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _get3.default)(Object.getPrototypeOf(Tube.prototype), '_initMaterial', this).call(this, params.material);
+	      var material = (0, _api.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi2.default.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi2.default.ConcaveMesh;else if (this.physics) Mesh = _nophysi2.default.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -52175,7 +52170,11 @@ var WHS =
 	
 	      var GConstruct = params.buffer && !params.softbody ? THREE.TubeBufferGeometry : THREE.TubeGeometry;
 	
-	      return new GConstruct(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed);
+	      var geometry = new GConstruct(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
 	    }
 	  }, {
 	    key: 'clone',
@@ -52183,61 +52182,44 @@ var WHS =
 	      return new Tube({ build: false }).copy(this);
 	    }
 	  }, {
-	    key: 'CustomSinCurve',
-	    get: function get() {
-	      var _this3 = this;
-	
-	      return THREE.Curve.create(function (scale) {
-	        // custom curve constructor
-	        _this3.scale = scale || 1;
-	      }, function (t) {
-	        // getPoint: t is between 0-1
-	        var tx = t * 3 - 1.5,
-	            ty = Math.sin(2 * Math.PI * t),
-	            tz = 0;
-	
-	        return new THREE.Vector3(tx, ty, tz).multiplyScalar(_this3.scale);
-	      });
-	    }
-	  }, {
 	    key: 'G_path',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { path: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { path: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.path;
+	      return this._native.geometry.parameters.path;
 	    }
 	  }, {
 	    key: 'G_segments',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { segments: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { segments: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.segments;
+	      return this._native.geometry.parameters.segments;
 	    }
 	  }, {
 	    key: 'G_radius',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radius;
+	      return this._native.geometry.parameters.radius;
 	    }
 	  }, {
 	    key: 'G_radiusSegments',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusSegments: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusSegments: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.radiusSegments;
+	      return this._native.geometry.parameters.radiusSegments;
 	    }
 	  }, {
 	    key: 'G_closed',
 	    set: function set(val) {
-	      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { closed: val } }));
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { closed: val } }));
 	    },
 	    get: function get() {
-	      return this.native.geometry.parameters.closed;
+	      return this._native.geometry.parameters.closed;
 	    }
 	  }]);
 	  return Tube;
