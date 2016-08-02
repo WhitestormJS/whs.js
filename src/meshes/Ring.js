@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 import {Shape} from '../core/Shape';
-import {extend} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Ring extends Shape {
   constructor(params = {}) {
@@ -23,7 +23,7 @@ class Ring extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     return new Promise((resolve) => {
       this.setNative(new THREE.Mesh(
@@ -57,51 +57,51 @@ class Ring extends Shape {
   }
 
   set G_innerRadius(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {innerRadius: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {innerRadius: val}}));
   }
 
   get G_innerRadius() {
-    return this.native.geometry.parameters.innerRadius;
+    return this._native.geometry.parameters.innerRadius;
   }
 
   set G_outerRadius(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {outerRadius: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {outerRadius: val}}));
   }
 
   get G_outerRadius() {
-    return this.native.geometry.parameters.outerRadius;
+    return this._native.geometry.parameters.outerRadius;
   }
 
   set G_thetaSegments(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {thetaSegments: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {thetaSegments: val}}));
   }
 
   get G_thetaSegments() {
-    return this.native.geometry.parameters.thetaSegments;
+    return this._native.geometry.parameters.thetaSegments;
   }
 
   set G_phiSegments(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {phiSegments: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {phiSegments: val}}));
   }
 
   get G_phiSegments() {
-    return this.native.geometry.parameters.phiSegments;
+    return this._native.geometry.parameters.phiSegments;
   }
 
   set G_thetaStart(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {thetaStart: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {thetaStart: val}}));
   }
 
   get G_thetaStart() {
-    return this.native.geometry.parameters.thetaStart;
+    return this._native.geometry.parameters.thetaStart;
   }
 
   set G_thetaLength(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {thetaLength: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {thetaLength: val}}));
   }
 
   get G_thetaLength() {
-    return this.native.geometry.parameters.thetaLength;
+    return this._native.geometry.parameters.thetaLength;
   }
 
   clone() {

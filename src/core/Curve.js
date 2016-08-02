@@ -106,6 +106,15 @@ class Curve extends WHSObject {
 
     return this;
   }
+  
+  /* VISIBILITY */
+  show() {
+    this.getNative().visible = true;
+  }
+
+  hide() {
+    this.getNative().visible = false;
+  }
 }
 
 export {

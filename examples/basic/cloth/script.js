@@ -3,7 +3,7 @@
 
 var GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
-  autoresize: true,
+  autoresize: "window",
   softbody: true,
 
   gravity: {
@@ -22,16 +22,12 @@ var GAME = new WHS.World({
     type: THREE.PCFSoftShadowMap
   },
 
-  physics: {
-    fixedTimeStep: 1 / 120
-  },
-
   background: {
     color: 0xaaaaaa
   }
 });
 
-window.cloth = new WHS.Plane({ // Softbody (blue).
+var cloth = new WHS.Plane({ // Softbody (blue).
   geometry: {
     width: 160,
     height: 60,

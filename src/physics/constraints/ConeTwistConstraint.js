@@ -1,7 +1,10 @@
 import {convertWorldPositionToObject, getObjectId} from '../api';
 
 export class ConeTwistConstraint {
-  constructor(objecta, objectb, position) {
+  constructor(obja, objb, position) {
+    const objecta = obja.getNative();
+    const objectb = obja.getNative();
+
     if (position === undefined) console.error('Both objects must be defined in a ConeTwistConstraint.');
     this.type = 'conetwist';
     this.appliedImpulse = 0;

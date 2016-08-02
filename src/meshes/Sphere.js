@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import * as Physijs from '../physics/index.js';
+import {SphereMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Sphere extends Shape {
   constructor(params = {}) {
@@ -21,12 +21,12 @@ class Sphere extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
-    else if (this.physics) Mesh = Physijs.SphereMesh;
+    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    else if (this.physics) Mesh = SphereMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
@@ -56,27 +56,27 @@ class Sphere extends Shape {
   }
 
   set G_radius(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
   }
 
   get G_radius() {
-    return this.native.geometry.parameters.radius;
+    return this._native.geometry.parameters.radius;
   }
 
   set G_widthSegments(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {widthSegments: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {widthSegments: val}}));
   }
 
   get G_widthSegments() {
-    return this.native.geometry.parameters.widthSegments;
+    return this._native.geometry.parameters.widthSegments;
   }
 
   set G_heightSegments(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {widthSegments: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {widthSegments: val}}));
   }
 
   get G_heightSegments() {
-    return this.native.geometry.parameters.widthSegments;
+    return this._native.geometry.parameters.widthSegments;
   }
 
   clone() {

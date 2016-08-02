@@ -3,11 +3,11 @@
 
 var GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
-  autoresize: true,
+  autoresize: "window",
 
   gravity: {
     x: 0,
-    y: -1000,
+    y: -200,
     z: 0
   },
 
@@ -18,11 +18,7 @@ var GAME = new WHS.World({
   },
 
   shadowmap: {
-    type: THREE.PCFSoftShadowMap
-  },
-
-  physics: {
-    fixedTimeStep: 1 / 120
+    type: THREE.PCFShadowMap
   },
 
   background: {
@@ -44,9 +40,12 @@ var stick = new WHS.Box({
     map: WHS.texture('../../_assets/textures/retina_wood.jpg'),
     specularMap: WHS.texture('../../_assets/textures/SpecularMap.png'),
     normalMap: WHS.texture('../../_assets/textures/NormalMap.png'),
-    shininess: 0,
-    friction: 0,
-    restitution: 0
+    shininess: 0
+  },
+
+  physics: {
+    restitution: 0,
+    friction: 0.5
   },
 
   pos: {
@@ -59,8 +58,8 @@ stick2.position.set(0, 4, 20);
 
 var height = 10; // BASE: 6, 0, 2, 2.
 var delta = 0;
-var cols = 3,
-    rows = 3;
+var cols = 4,
+    rows = 4;
 
 var objects = 0;
 
@@ -113,8 +112,8 @@ new WHS.Sphere({
     y: 12
   }
 }).addTo(GAME).then(function (sphere) {
-  var mx = 1000,
-      mz = 500;
+  var mx = 600,
+      mz = 100;
 
   sphere.setAngularVelocity({ x: mx, y: 0, z: mz });
   sphere.setLinearVelocity({ x: mx, y: 0, z: mz });
@@ -123,7 +122,7 @@ new WHS.Sphere({
 new WHS.Box({
   geometry: {
     width: 2500,
-    height: 1,
+    height: 5,
     depth: 2500
   },
 
@@ -135,9 +134,13 @@ new WHS.Box({
     kind: 'phong'
   },
 
+  physics: {
+    margin: 3
+  },
+
   pos: {
     x: 0,
-    y: 0,
+    y: -3,
     z: 0
   }
 }).addTo(GAME);

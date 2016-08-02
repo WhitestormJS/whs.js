@@ -99,9 +99,19 @@ class World extends WHSObject {
     // NOTE: ==================== Autoresize. ======================
     const scope = this;
 
-    if (this.getParams().autoresize) {
+    if (params.autoresize === "window") {
       window.addEventListener('resize', () => {
-        scope.setSize(window.innerWidth, window.innerHeight);
+        scope.setSize(
+          Number(window.innerWidth * params.rWidth).toFixed(),
+          Number(window.innerHeight * params.rHeight).toFixed()
+        );
+      });
+    } else if (this.getParams().autoresize) {
+      window.addEventListener('resize', () => {
+        scope.setSize(
+          Number(params.container.offsetWidth * params.rWidth).toFixed(),
+          Number(params.container.offsetHeight * params.rHeight).toFixed()
+        );
       });
     }
 
@@ -137,11 +147,6 @@ class World extends WHSObject {
       );
 
       this.simulate = true;
-      scene.addEventListener('update', () => {
-        if (this.simulate) scene.simulate(undefined, 1);
-      });
-
-      scene.simulate();
     } else this.simulate = false;
 
     if (params.fog.type === 'regular')
@@ -329,6 +334,8 @@ class World extends WHSObject {
 
       _scope._process(clock.getDelta());
       if (_scope.controls) _scope._updateControls();
+
+      if (_scope.simulate) scene.simulate(clock.getDelta(), 1);
 
       // Effects rendering.
       if (_scope._composer && _scope.render) {

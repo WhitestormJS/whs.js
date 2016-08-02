@@ -2,7 +2,7 @@
 'use strict';
 
 window.GAME = new WHS.World({
-  autoresize: true,
+  autoresize: "window",
 
   gravity: {
     x: 0,
