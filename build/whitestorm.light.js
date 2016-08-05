@@ -75,7 +75,7 @@ var WHS =
 	  });
 	});
 	
-	var _index3 = __webpack_require__(110);
+	var _index3 = __webpack_require__(111);
 	
 	Object.keys(_index3).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -87,7 +87,7 @@ var WHS =
 	  });
 	});
 	
-	var _index4 = __webpack_require__(111);
+	var _index4 = __webpack_require__(112);
 	
 	Object.keys(_index4).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -99,7 +99,7 @@ var WHS =
 	  });
 	});
 	
-	var _index5 = __webpack_require__(119);
+	var _index5 = __webpack_require__(120);
 	
 	Object.keys(_index5).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -111,7 +111,7 @@ var WHS =
 	  });
 	});
 	
-	var _index6 = __webpack_require__(126);
+	var _index6 = __webpack_require__(127);
 	
 	Object.keys(_index6).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -44180,10 +44180,11 @@ var WHS =
 	        for (var _iterator2 = Object.getOwnPropertyNames(extension)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	          var prop = _step2.value;
 	          // Do not traverse the prototype chain.
-	          if (object[prop] !== undefined && object[prop].toString() === '[object Object]' && extension[prop].toString() === '[object Object]')
+	          if (object[prop] !== undefined && object[prop].toString() === '[object Object]' && extension[prop].toString() === '[object Object]') {
 	
 	            // Goes deep only if object[prop] and extension[prop] are both objects !
-	            extend(object[prop], extension[prop]);else object[prop] = object[prop] === 0 ? 0 : object[prop];
+	            if (extension[prop].uuid) object[prop] = extension[prop];else extend(object[prop], extension[prop]);
+	          } else object[prop] = object[prop] === 0 ? 0 : object[prop];
 	          if (typeof object[prop] === 'undefined') object[prop] = extension[prop]; // Add values that do not already exist.
 	        }
 	      } catch (err) {
@@ -44936,7 +44937,7 @@ var WHS =
 	  });
 	});
 	
-	var _World = __webpack_require__(108);
+	var _World = __webpack_require__(109);
 	
 	Object.keys(_World).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -45345,6 +45346,10 @@ var WHS =
 	});
 	exports.Shape = undefined;
 	
+	var _defineProperty2 = __webpack_require__(108);
+	
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+	
 	var _classCallCheck2 = __webpack_require__(3);
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -45375,7 +45380,7 @@ var WHS =
 	
 	var _defaults = __webpack_require__(96);
 	
-	var _World = __webpack_require__(108);
+	var _World = __webpack_require__(109);
 	
 	var _Object = __webpack_require__(97);
 	
@@ -45408,14 +45413,15 @@ var WHS =
 	      _this.z = z;
 	    };
 	
-	    var physicsDefaults = false ? {
+	    var physicsDefaults = false ? (0, _defineProperty3.default)({
 	      restitution: 0.3,
 	      friction: 0.8,
 	      damping: 0,
 	      pressure: 100,
 	      margin: 0,
-	      stiffness: 0.9
-	    } : false;
+	      klst: 0.9,
+	      kvst: 0.9
+	    }, 'klst', 0.9) : false;
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Shape).call(this, {
 	      mass: 10,
@@ -46181,6 +46187,35 @@ var WHS =
 /* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
+	exports.__esModule = true;
+	
+	var _defineProperty = __webpack_require__(5);
+	
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (obj, key, value) {
+	  if (key in obj) {
+	    (0, _defineProperty2.default)(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+	
+	  return obj;
+	};
+
+/***/ },
+/* 109 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -46212,7 +46247,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _stats = __webpack_require__(109);
+	var _stats = __webpack_require__(110);
 	
 	var _stats2 = _interopRequireDefault(_stats);
 	
@@ -46331,21 +46366,24 @@ var WHS =
 	    if (initParams.scene && initParams.helpers) _this._initHelpers();
 	
 	    // NOTE: ==================== Autoresize. ======================
-	    var scope = _this;
 	
 	    if (params.autoresize === "window") {
 	      window.addEventListener('resize', function () {
-	        scope.setSize(Number(window.innerWidth * params.rWidth).toFixed(), Number(window.innerHeight * params.rHeight).toFixed());
+	        _this.setSize(Number(window.innerWidth * params.rWidth).toFixed(), Number(window.innerHeight * params.rHeight).toFixed());
+	
+	        _this.emit('resize');
 	      });
 	    } else if (_this.getParams().autoresize) {
 	      window.addEventListener('resize', function () {
-	        scope.setSize(Number(params.container.offsetWidth * params.rWidth).toFixed(), Number(params.container.offsetHeight * params.rHeight).toFixed());
+	        _this.setSize(Number(params.container.offsetWidth * params.rWidth).toFixed(), Number(params.container.offsetHeight * params.rHeight).toFixed());
+	
+	        _this.emit('resize');
 	      });
 	    }
 	
-	    scope.loops = [];
+	    _this.loops = [];
 	
-	    return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
+	    return _ret = _this, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
 	
 	  /**
@@ -46543,7 +46581,7 @@ var WHS =
 	        _scope._process(clock.getDelta());
 	        if (_scope.controls) _scope._updateControls();
 	
-	        if (_scope.simulate) scene.simulate(clock.getDelta());
+	        if (_scope.simulate) scene.simulate(clock.getDelta(), 1);
 	
 	        // Effects rendering.
 	        if (_scope._composer && _scope.render) {
@@ -46725,7 +46763,7 @@ var WHS =
 	exports.World = World;
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports) {
 
 	// stats.js - http://github.com/mrdoob/stats.js
@@ -46736,7 +46774,7 @@ var WHS =
 
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46758,7 +46796,7 @@ var WHS =
 	});
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46767,7 +46805,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _firstPersonControls = __webpack_require__(112);
+	var _firstPersonControls = __webpack_require__(113);
 	
 	Object.keys(_firstPersonControls).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -46779,7 +46817,7 @@ var WHS =
 	  });
 	});
 	
-	var _orbitControls = __webpack_require__(113);
+	var _orbitControls = __webpack_require__(114);
 	
 	Object.keys(_orbitControls).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -46803,7 +46841,7 @@ var WHS =
 	  });
 	});
 	
-	var _Curve = __webpack_require__(115);
+	var _Curve = __webpack_require__(116);
 	
 	Object.keys(_Curve).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -46815,7 +46853,7 @@ var WHS =
 	  });
 	});
 	
-	var _Points = __webpack_require__(116);
+	var _Points = __webpack_require__(117);
 	
 	Object.keys(_Points).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -46827,7 +46865,7 @@ var WHS =
 	  });
 	});
 	
-	var _Group = __webpack_require__(117);
+	var _Group = __webpack_require__(118);
 	
 	Object.keys(_Group).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -46839,7 +46877,7 @@ var WHS =
 	  });
 	});
 	
-	var _Skybox = __webpack_require__(118);
+	var _Skybox = __webpack_require__(119);
 	
 	Object.keys(_Skybox).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -46852,7 +46890,7 @@ var WHS =
 	});
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47118,7 +47156,7 @@ var WHS =
 	}
 
 /***/ },
-/* 113 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47132,7 +47170,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _threeOrbitControls = __webpack_require__(114);
+	var _threeOrbitControls = __webpack_require__(115);
 	
 	var _threeOrbitControls2 = _interopRequireDefault(_threeOrbitControls);
 	
@@ -47157,7 +47195,7 @@ var WHS =
 	}
 
 /***/ },
-/* 114 */
+/* 115 */
 /***/ function(module, exports) {
 
 	module.exports = function(THREE) {
@@ -48282,7 +48320,7 @@ var WHS =
 
 
 /***/ },
-/* 115 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48444,7 +48482,7 @@ var WHS =
 	exports.Curve = Curve;
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48608,7 +48646,7 @@ var WHS =
 	exports.Points = Points;
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48675,7 +48713,7 @@ var WHS =
 	exports.Group = Group;
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48781,7 +48819,7 @@ var WHS =
 	exports.Skybox = Skybox;
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48790,7 +48828,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _AmbientLight = __webpack_require__(120);
+	var _AmbientLight = __webpack_require__(121);
 	
 	Object.keys(_AmbientLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -48802,7 +48840,7 @@ var WHS =
 	  });
 	});
 	
-	var _DirectionalLight = __webpack_require__(121);
+	var _DirectionalLight = __webpack_require__(122);
 	
 	Object.keys(_DirectionalLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -48814,7 +48852,7 @@ var WHS =
 	  });
 	});
 	
-	var _HemisphereLight = __webpack_require__(122);
+	var _HemisphereLight = __webpack_require__(123);
 	
 	Object.keys(_HemisphereLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -48826,7 +48864,7 @@ var WHS =
 	  });
 	});
 	
-	var _NormalLight = __webpack_require__(123);
+	var _NormalLight = __webpack_require__(124);
 	
 	Object.keys(_NormalLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -48838,7 +48876,7 @@ var WHS =
 	  });
 	});
 	
-	var _PointLight = __webpack_require__(124);
+	var _PointLight = __webpack_require__(125);
 	
 	Object.keys(_PointLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -48850,7 +48888,7 @@ var WHS =
 	  });
 	});
 	
-	var _SpotLight = __webpack_require__(125);
+	var _SpotLight = __webpack_require__(126);
 	
 	Object.keys(_SpotLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -48863,7 +48901,7 @@ var WHS =
 	});
 
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48938,7 +48976,7 @@ var WHS =
 	exports.AmbientLight = AmbientLight;
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49018,7 +49056,7 @@ var WHS =
 	exports.DirectionalLight = DirectionalLight;
 
 /***/ },
-/* 122 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49098,7 +49136,7 @@ var WHS =
 	exports.HemisphereLight = HemisphereLight;
 
 /***/ },
-/* 123 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49174,7 +49212,7 @@ var WHS =
 	exports.NormalLight = NormalLight;
 
 /***/ },
-/* 124 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49254,7 +49292,7 @@ var WHS =
 	exports.PointLight = PointLight;
 
 /***/ },
-/* 125 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49332,7 +49370,7 @@ var WHS =
 	exports.SpotLight = SpotLight;
 
 /***/ },
-/* 126 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49341,7 +49379,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _Box = __webpack_require__(127);
+	var _Box = __webpack_require__(128);
 	
 	Object.keys(_Box).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49353,7 +49391,7 @@ var WHS =
 	  });
 	});
 	
-	var _Cylinder = __webpack_require__(128);
+	var _Cylinder = __webpack_require__(129);
 	
 	Object.keys(_Cylinder).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49365,7 +49403,7 @@ var WHS =
 	  });
 	});
 	
-	var _Dodecahedron = __webpack_require__(129);
+	var _Dodecahedron = __webpack_require__(130);
 	
 	Object.keys(_Dodecahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49377,7 +49415,7 @@ var WHS =
 	  });
 	});
 	
-	var _Extrude = __webpack_require__(130);
+	var _Extrude = __webpack_require__(131);
 	
 	Object.keys(_Extrude).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49389,7 +49427,7 @@ var WHS =
 	  });
 	});
 	
-	var _Icosahedron = __webpack_require__(131);
+	var _Icosahedron = __webpack_require__(132);
 	
 	Object.keys(_Icosahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49401,7 +49439,7 @@ var WHS =
 	  });
 	});
 	
-	var _Lathe = __webpack_require__(132);
+	var _Lathe = __webpack_require__(133);
 	
 	Object.keys(_Lathe).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49413,7 +49451,7 @@ var WHS =
 	  });
 	});
 	
-	var _Model = __webpack_require__(133);
+	var _Model = __webpack_require__(134);
 	
 	Object.keys(_Model).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49425,7 +49463,7 @@ var WHS =
 	  });
 	});
 	
-	var _Morph = __webpack_require__(134);
+	var _Morph = __webpack_require__(135);
 	
 	Object.keys(_Morph).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49437,7 +49475,7 @@ var WHS =
 	  });
 	});
 	
-	var _Octahedron = __webpack_require__(135);
+	var _Octahedron = __webpack_require__(136);
 	
 	Object.keys(_Octahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49449,7 +49487,7 @@ var WHS =
 	  });
 	});
 	
-	var _Parametric = __webpack_require__(136);
+	var _Parametric = __webpack_require__(137);
 	
 	Object.keys(_Parametric).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49461,7 +49499,7 @@ var WHS =
 	  });
 	});
 	
-	var _Plane = __webpack_require__(137);
+	var _Plane = __webpack_require__(138);
 	
 	Object.keys(_Plane).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49473,7 +49511,7 @@ var WHS =
 	  });
 	});
 	
-	var _Polyhedron = __webpack_require__(138);
+	var _Polyhedron = __webpack_require__(139);
 	
 	Object.keys(_Polyhedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49485,7 +49523,7 @@ var WHS =
 	  });
 	});
 	
-	var _Ring = __webpack_require__(139);
+	var _Ring = __webpack_require__(140);
 	
 	Object.keys(_Ring).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49497,7 +49535,7 @@ var WHS =
 	  });
 	});
 	
-	var _Shape2D = __webpack_require__(140);
+	var _Shape2D = __webpack_require__(141);
 	
 	Object.keys(_Shape2D).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49509,7 +49547,7 @@ var WHS =
 	  });
 	});
 	
-	var _Sphere = __webpack_require__(141);
+	var _Sphere = __webpack_require__(142);
 	
 	Object.keys(_Sphere).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49521,7 +49559,7 @@ var WHS =
 	  });
 	});
 	
-	var _Tetrahedron = __webpack_require__(142);
+	var _Tetrahedron = __webpack_require__(143);
 	
 	Object.keys(_Tetrahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49533,7 +49571,7 @@ var WHS =
 	  });
 	});
 	
-	var _Text = __webpack_require__(143);
+	var _Text = __webpack_require__(144);
 	
 	Object.keys(_Text).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49545,7 +49583,7 @@ var WHS =
 	  });
 	});
 	
-	var _Torus = __webpack_require__(144);
+	var _Torus = __webpack_require__(145);
 	
 	Object.keys(_Torus).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49557,7 +49595,7 @@ var WHS =
 	  });
 	});
 	
-	var _Torusknot = __webpack_require__(145);
+	var _Torusknot = __webpack_require__(146);
 	
 	Object.keys(_Torusknot).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49569,7 +49607,7 @@ var WHS =
 	  });
 	});
 	
-	var _Tube = __webpack_require__(146);
+	var _Tube = __webpack_require__(147);
 	
 	Object.keys(_Tube).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -49582,7 +49620,7 @@ var WHS =
 	});
 
 /***/ },
-/* 127 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49716,7 +49754,7 @@ var WHS =
 	exports.Box = Box;
 
 /***/ },
-/* 128 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49863,7 +49901,7 @@ var WHS =
 	exports.Cylinder = Cylinder;
 
 /***/ },
-/* 129 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49984,7 +50022,7 @@ var WHS =
 	exports.Dodecahedron = Dodecahedron;
 
 /***/ },
-/* 130 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50105,7 +50143,7 @@ var WHS =
 	exports.Extrude = Extrude;
 
 /***/ },
-/* 131 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50201,7 +50239,7 @@ var WHS =
 	  }, {
 	    key: 'clone',
 	    value: function clone() {
-	      return new Icosahderon({ build: false }).copy(this);
+	      return new Icosahedron({ build: false }).copy(this);
 	    }
 	  }, {
 	    key: 'G_radius',
@@ -50226,7 +50264,7 @@ var WHS =
 	exports.Icosahedron = Icosahedron;
 
 /***/ },
-/* 132 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50338,7 +50376,7 @@ var WHS =
 	exports.Lathe = Lathe;
 
 /***/ },
-/* 133 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50480,7 +50518,7 @@ var WHS =
 	exports.Model = Model;
 
 /***/ },
-/* 134 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50601,7 +50639,7 @@ var WHS =
 	exports.Morph = Morph;
 
 /***/ },
-/* 135 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50722,7 +50760,7 @@ var WHS =
 	exports.Octahedron = Octahedron;
 
 /***/ },
-/* 136 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50853,7 +50891,7 @@ var WHS =
 	exports.Parametric = Parametric;
 
 /***/ },
-/* 137 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50988,7 +51026,7 @@ var WHS =
 	exports.Plane = Plane;
 
 /***/ },
-/* 138 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51137,7 +51175,7 @@ var WHS =
 	exports.Polyhedron = Polyhedron;
 
 /***/ },
-/* 139 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51288,7 +51326,7 @@ var WHS =
 	exports.Ring = Ring;
 
 /***/ },
-/* 140 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51394,7 +51432,7 @@ var WHS =
 	exports.Shape2D = Shape2D;
 
 /***/ },
-/* 141 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51528,7 +51566,7 @@ var WHS =
 	exports.Sphere = Sphere;
 
 /***/ },
-/* 142 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51649,7 +51687,7 @@ var WHS =
 	exports.Tetrahedron = Tetrahedron;
 
 /***/ },
-/* 143 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51762,7 +51800,7 @@ var WHS =
 	exports.Text = Text;
 
 /***/ },
-/* 144 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51910,7 +51948,7 @@ var WHS =
 	exports.Torus = Torus;
 
 /***/ },
-/* 145 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52076,7 +52114,7 @@ var WHS =
 	exports.Torusknot = Torusknot;
 
 /***/ },
-/* 146 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

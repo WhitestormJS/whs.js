@@ -75,7 +75,7 @@ var WHS =
 	  });
 	});
 	
-	var _index3 = __webpack_require__(145);
+	var _index3 = __webpack_require__(146);
 	
 	Object.keys(_index3).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -87,7 +87,7 @@ var WHS =
 	  });
 	});
 	
-	var _index4 = __webpack_require__(146);
+	var _index4 = __webpack_require__(147);
 	
 	Object.keys(_index4).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -99,7 +99,7 @@ var WHS =
 	  });
 	});
 	
-	var _index5 = __webpack_require__(154);
+	var _index5 = __webpack_require__(155);
 	
 	Object.keys(_index5).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -111,7 +111,7 @@ var WHS =
 	  });
 	});
 	
-	var _index6 = __webpack_require__(161);
+	var _index6 = __webpack_require__(162);
 	
 	Object.keys(_index6).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -44180,10 +44180,11 @@ var WHS =
 	        for (var _iterator2 = Object.getOwnPropertyNames(extension)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	          var prop = _step2.value;
 	          // Do not traverse the prototype chain.
-	          if (object[prop] !== undefined && object[prop].toString() === '[object Object]' && extension[prop].toString() === '[object Object]')
+	          if (object[prop] !== undefined && object[prop].toString() === '[object Object]' && extension[prop].toString() === '[object Object]') {
 	
 	            // Goes deep only if object[prop] and extension[prop] are both objects !
-	            extend(object[prop], extension[prop]);else object[prop] = object[prop] === 0 ? 0 : object[prop];
+	            if (extension[prop].uuid) object[prop] = extension[prop];else extend(object[prop], extension[prop]);
+	          } else object[prop] = object[prop] === 0 ? 0 : object[prop];
 	          if (typeof object[prop] === 'undefined') object[prop] = extension[prop]; // Add values that do not already exist.
 	        }
 	      } catch (err) {
@@ -45017,10 +45018,14 @@ var WHS =
 	
 	        if (object.__dirtyPosition === false) {
 	          object.position.set(data[offset + 1], data[offset + 2], data[offset + 3]);
+	
+	          object.__dirtyPosition = false;
 	        }
 	
 	        if (object.__dirtyRotation === false) {
 	          object.quaternion.set(data[offset + 4], data[offset + 5], data[offset + 6], data[offset + 7]);
+	
+	          object.__dirtyRotation = false;
 	        }
 	
 	        object._physijs.linearVelocity.set(data[offset + 8], data[offset + 9], data[offset + 10]);
@@ -45585,6 +45590,7 @@ var WHS =
 	  var _object = void 0,
 	      _vector = void 0,
 	      _transform = void 0,
+	      _transform_pos = void 0,
 	      _softbody_enabled = false,
 	      last_simulation_duration = 0,
 	      _num_objects = 0,
@@ -45673,7 +45679,6 @@ var WHS =
 	            _vec3_1.setY(description.normal.y);
 	            _vec3_1.setZ(description.normal.z);
 	            shape = new _whsAmmo2.default.btStaticPlaneShape(_vec3_1, 0);
-	            shape.setMargin(description.params.margin);
 	            setShapeCache(cache_key, shape);
 	          }
 	
@@ -45688,7 +45693,6 @@ var WHS =
 	            _vec3_1.setY(description.height / 2);
 	            _vec3_1.setZ(description.depth / 2);
 	            shape = new _whsAmmo2.default.btBoxShape(_vec3_1);
-	            shape.setMargin(description.params.margin);
 	            setShapeCache(_cache_key, shape);
 	          }
 	
@@ -45700,7 +45704,6 @@ var WHS =
 	
 	          if ((shape = getShapeFromCache(_cache_key2)) === null) {
 	            shape = new _whsAmmo2.default.btSphereShape(description.radius);
-	            shape.setMargin(description.params.margin);
 	            setShapeCache(_cache_key2, shape);
 	          }
 	
@@ -45715,7 +45718,6 @@ var WHS =
 	            _vec3_1.setY(description.height / 2);
 	            _vec3_1.setZ(description.depth / 2);
 	            shape = new _whsAmmo2.default.btCylinderShape(_vec3_1);
-	            shape.setMargin(description.params.margin);
 	            setShapeCache(_cache_key3, shape);
 	          }
 	
@@ -45728,7 +45730,6 @@ var WHS =
 	          if ((shape = getShapeFromCache(_cache_key4)) === null) {
 	            // In Bullet, capsule height excludes the end spheres
 	            shape = new _whsAmmo2.default.btCapsuleShape(description.radius, description.height - 2 * description.radius);
-	            shape.setMargin(description.params.margin);
 	            setShapeCache(_cache_key4, shape);
 	          }
 	
@@ -45740,7 +45741,6 @@ var WHS =
 	
 	          if ((shape = getShapeFromCache(_cache_key5)) === null) {
 	            shape = new _whsAmmo2.default.btConeShape(description.radius, description.height);
-	            shape.setMargin(description.params.margin);
 	            setShapeCache(_cache_key5, shape);
 	          }
 	
@@ -45770,8 +45770,6 @@ var WHS =
 	
 	          shape = new _whsAmmo2.default.btBvhTriangleMeshShape(triangle_mesh, true, true);
 	
-	          shape.setMargin(description.params.margin);
-	
 	          _noncached_shapes[description.id] = shape;
 	
 	          break;
@@ -45788,8 +45786,6 @@ var WHS =
 	
 	            shape.addPoint(_vec3_1);
 	          }
-	
-	          shape.setMargin(description.params.margin);
 	
 	          _noncached_shapes[description.id] = shape;
 	
@@ -45816,7 +45812,6 @@ var WHS =
 	          _vec3_1.setZ(1);
 	
 	          shape.setLocalScaling(_vec3_1);
-	          shape.setMargin(description.params.margin);
 	
 	          _noncached_shapes[description.id] = shape;
 	          break;
@@ -45861,6 +45856,7 @@ var WHS =
 	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
 	    _transform = new _whsAmmo2.default.btTransform();
+	    _transform_pos = new _whsAmmo2.default.btTransform();
 	    _vec3_1 = new _whsAmmo2.default.btVector3(0, 0, 0);
 	    _vec3_2 = new _whsAmmo2.default.btVector3(0, 0, 0);
 	    _vec3_3 = new _whsAmmo2.default.btVector3(0, 0, 0);
@@ -45949,8 +45945,10 @@ var WHS =
 	      var sbConfig = body.get_m_cfg(),
 	          physParams = description.params;
 	
-	      sbConfig.set_viterations(40);
-	      sbConfig.set_piterations(40);
+	      if (physParams.viterations) sbConfig.set_viterations(physParams.viterations);
+	      if (physParams.piterations) sbConfig.set_piterations(physParams.piterations);
+	      if (physParams.diterations) sbConfig.set_diterations(physParams.diterations);
+	      if (physParams.citerations) sbConfig.set_citerations(physParams.citerations);
 	      sbConfig.set_collisions(0x11);
 	      sbConfig.set_kDF(physParams.friction);
 	      sbConfig.set_kDP(physParams.damping);
@@ -45960,11 +45958,12 @@ var WHS =
 	      if (physParams.anchorHardness) sbConfig.set_kAHR(physParams.anchorHardness);
 	      if (physParams.rigidHardness) sbConfig.set_kCHR(physParams.rigidHardness);
 	
-	      body.get_m_materials().at(0).set_m_kLST(physParams.stiffness ? physParams.stiffness : 0.9);
-	      body.get_m_materials().at(0).set_m_kAST(physParams.stiffness ? physParams.stiffness : 0.9);
+	      if (physParams.klst) body.get_m_materials().at(0).set_m_kLST(physParams.klst);
+	      if (physParams.kast) body.get_m_materials().at(0).set_m_kAST(physParams.kast);
+	      if (physParams.kvst) body.get_m_materials().at(0).set_m_kVST(physParams.kvst);
 	
 	      _whsAmmo2.default.castObject(body, _whsAmmo2.default.btCollisionObject).getCollisionShape().setMargin(physParams.margin ? physParams.margin : 0.1);
-	      body.setActivationState(4);
+	      body.setActivationState(physParams.state || 4);
 	      body.type = 0; // SoftBody.
 	
 	      _transform.setIdentity();
@@ -46027,6 +46026,7 @@ var WHS =
 	      _vec3_1.setY(0);
 	      _vec3_1.setZ(0);
 	      shape.calculateLocalInertia(description.mass, _vec3_1);
+	      if (_physParams.margin) shape.setMargin(_physParams.margin);
 	
 	      _transform.setIdentity();
 	
@@ -46050,6 +46050,7 @@ var WHS =
 	      rbInfo.set_m_angularDamping(_physParams.damping);
 	
 	      body = new _whsAmmo2.default.btRigidBody(rbInfo);
+	      body.setActivationState(_physParams.state || 4);
 	      _whsAmmo2.default.destroy(rbInfo);
 	
 	      if (typeof description.collision_flags !== 'undefined') body.setCollisionFlags(description.collision_flags);
@@ -46058,6 +46059,8 @@ var WHS =
 	      body.type = 1; // RigidBody.
 	      _num_rigidbody_objects++;
 	    }
+	
+	    body.activate();
 	
 	    body.id = description.id;
 	    _objects[body.id] = body;
@@ -46142,11 +46145,14 @@ var WHS =
 	    if (_objects[details.id].type === 0) {
 	      _num_softbody_objects--;
 	      _softbody_report_size -= _objects[details.id].get_m_nodes().size();
-	    } else if (_objects[details.id].type === 1) _num_rigidbody_objects--;
+	      world.removeSoftBody(_objects[details.id]);
+	    } else if (_objects[details.id].type === 1) {
+	      _num_rigidbody_objects--;
+	      world.removeRigidBody(_objects[details.id]);
+	      _whsAmmo2.default.destroy(_motion_states[details.id]);
+	    }
 	
-	    world.removeRigidBody(_objects[details.id]);
 	    _whsAmmo2.default.destroy(_objects[details.id]);
-	    _whsAmmo2.default.destroy(_motion_states[details.id]);
 	    if (_compound_shapes[details.id]) _whsAmmo2.default.destroy(_compound_shapes[details.id]);
 	    if (_noncached_shapes[details.id]) _whsAmmo2.default.destroy(_noncached_shapes[details.id]);
 	
@@ -46534,17 +46540,10 @@ var WHS =
 	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
 	    if (world) {
-	      if (params.timeStep && params.timeStep < fixedTimeStep) params.timeStep = fixedTimeStep;else if (!params.timeStep && last_simulation_time) {
-	        params.timeStep = 0;
-	
-	        while (params.timeStep + last_simulation_duration <= fixedTimeStep) {
-	          params.timeStep = (Date.now() - last_simulation_time) / 1000;
-	        } // time since last simulation
-	      } else if (!params.timeStep) params.timeStep = fixedTimeStep; // handle first frame
+	      if (params.timeStep && params.timeStep < fixedTimeStep) params.timeStep = fixedTimeStep;
 	
 	      params.maxSubSteps = params.maxSubSteps || Math.ceil(params.timeStep / fixedTimeStep); // If maxSubSteps is not defined, keep the simulation fully up to date
 	
-	      last_simulation_duration = Date.now();
 	      world.stepSimulation(params.timeStep, params.maxSubSteps, fixedTimeStep);
 	
 	      if (_vehicles.length > 0) reportVehicles();
@@ -46552,9 +46551,6 @@ var WHS =
 	      if (_constraints.length > 0) reportConstraints();
 	      reportWorld();
 	      if (_softbody_enabled) reportWorld_softbodies();
-	
-	      last_simulation_duration = (Date.now() - last_simulation_duration) / 1000;
-	      last_simulation_time = Date.now();
 	    }
 	  };
 	
@@ -46768,6 +46764,8 @@ var WHS =
 	          // #TODO: we can't use center of mass transform when center of mass can change,
 	          //        but getMotionState().getWorldTransform() screws up on objects that have been moved
 	          // object.getMotionState().getWorldTransform( transform );
+	          // object.getMotionState().getWorldTransform(_transform);
+	
 	          var transform = object.getCenterOfMassTransform();
 	          var origin = transform.getOrigin();
 	          var rotation = transform.getRotation();
@@ -49333,28 +49331,35 @@ var WHS =
 	var ConvexMesh = exports.ConvexMesh = function (_Mesh) {
 	    (0, _inherits3.default)(ConvexMesh, _Mesh);
 	
-	    function ConvexMesh(geometry, material) {
+	    function ConvexMesh(geom, material) {
 	        var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	        var cGeometry = arguments[3];
 	        (0, _classCallCheck3.default)(this, ConvexMesh);
 	
 	        var physParams = params.physics;
 	        var mass = physParams.mass || params.mass;
 	
-	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(ConvexMesh).call(this, geometry, material, mass));
+	        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(ConvexMesh).call(this, geom, material, mass));
 	
-	        if (!geometry.boundingBox) geometry.computeBoundingBox();
+	        if (!geom.boundingBox) geom.computeBoundingBox();
 	
-	        var data = new Float32Array(geometry.vertices.length * 3);
+	        var geometry = cGeometry ? cGeometry : geom,
+	            data = new Float32Array(geometry.vertices.length * 3);
+	
+	        var cScale = params.scale || { x: 1, y: 1, z: 1 };
+	        cScale.x = cScale.x || 1;
+	        cScale.y = cScale.y || 1;
+	        cScale.z = cScale.z || 1;
 	
 	        for (var i = 0; i < geometry.vertices.length; i++) {
-	            data[i * 3] = geometry.vertices[i].x;
-	            data[i * 3 + 1] = geometry.vertices[i].y;
-	            data[i * 3 + 2] = geometry.vertices[i].z;
+	            data[i * 3] = geometry.vertices[i].x * cScale.x;
+	            data[i * 3 + 1] = geometry.vertices[i].y * cScale.y;
+	            data[i * 3 + 2] = geometry.vertices[i].z * cScale.z;
 	        }
 	
-	        var width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-	        var height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
-	        var depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
+	        var width = geom.boundingBox.max.x - geom.boundingBox.min.x;
+	        var height = geom.boundingBox.max.y - geom.boundingBox.min.y;
+	        var depth = geom.boundingBox.max.z - geom.boundingBox.min.z;
 	
 	        _this._physijs.type = 'convex';
 	        _this._physijs.data = data;
@@ -49718,7 +49723,9 @@ var WHS =
 	            damping: physParams.damping,
 	            pressure: physParams.pressure,
 	            margin: physParams.margin,
-	            stiffness: physParams.stiffness,
+	            klst: physParams.klst,
+	            kast: physParams.kast,
+	            kvst: physParams.kvst,
 	            drag: physParams.drag,
 	            lift: physParams.lift,
 	            anchorHardness: physParams.anchorHardness,
@@ -50635,7 +50642,7 @@ var WHS =
 	  });
 	});
 	
-	var _World = __webpack_require__(144);
+	var _World = __webpack_require__(145);
 	
 	Object.keys(_World).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -51044,6 +51051,10 @@ var WHS =
 	});
 	exports.Shape = undefined;
 	
+	var _defineProperty2 = __webpack_require__(144);
+	
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+	
 	var _classCallCheck2 = __webpack_require__(3);
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -51074,7 +51085,7 @@ var WHS =
 	
 	var _defaults = __webpack_require__(96);
 	
-	var _World = __webpack_require__(144);
+	var _World = __webpack_require__(145);
 	
 	var _Object = __webpack_require__(97);
 	
@@ -51107,14 +51118,15 @@ var WHS =
 	      _this.z = z;
 	    };
 	
-	    var physicsDefaults =  true ? {
+	    var physicsDefaults =  true ? (0, _defineProperty3.default)({
 	      restitution: 0.3,
 	      friction: 0.8,
 	      damping: 0,
 	      pressure: 100,
 	      margin: 0,
-	      stiffness: 0.9
-	    } : false;
+	      klst: 0.9,
+	      kvst: 0.9
+	    }, 'klst', 0.9) : false;
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Shape).call(this, {
 	      mass: 10,
@@ -51880,6 +51892,35 @@ var WHS =
 /* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
+	exports.__esModule = true;
+	
+	var _defineProperty = __webpack_require__(5);
+	
+	var _defineProperty2 = _interopRequireDefault(_defineProperty);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (obj, key, value) {
+	  if (key in obj) {
+	    (0, _defineProperty2.default)(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+	
+	  return obj;
+	};
+
+/***/ },
+/* 145 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -52030,21 +52071,24 @@ var WHS =
 	    if (initParams.scene && initParams.helpers) _this._initHelpers();
 	
 	    // NOTE: ==================== Autoresize. ======================
-	    var scope = _this;
 	
 	    if (params.autoresize === "window") {
 	      window.addEventListener('resize', function () {
-	        scope.setSize(Number(window.innerWidth * params.rWidth).toFixed(), Number(window.innerHeight * params.rHeight).toFixed());
+	        _this.setSize(Number(window.innerWidth * params.rWidth).toFixed(), Number(window.innerHeight * params.rHeight).toFixed());
+	
+	        _this.emit('resize');
 	      });
 	    } else if (_this.getParams().autoresize) {
 	      window.addEventListener('resize', function () {
-	        scope.setSize(Number(params.container.offsetWidth * params.rWidth).toFixed(), Number(params.container.offsetHeight * params.rHeight).toFixed());
+	        _this.setSize(Number(params.container.offsetWidth * params.rWidth).toFixed(), Number(params.container.offsetHeight * params.rHeight).toFixed());
+	
+	        _this.emit('resize');
 	      });
 	    }
 	
-	    scope.loops = [];
+	    _this.loops = [];
 	
-	    return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
+	    return _ret = _this, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
 	
 	  /**
@@ -52242,7 +52286,7 @@ var WHS =
 	        _scope._process(clock.getDelta());
 	        if (_scope.controls) _scope._updateControls();
 	
-	        if (_scope.simulate) scene.simulate(clock.getDelta());
+	        if (_scope.simulate) scene.simulate(clock.getDelta(), 1);
 	
 	        // Effects rendering.
 	        if (_scope._composer && _scope.render) {
@@ -52424,7 +52468,7 @@ var WHS =
 	exports.World = World;
 
 /***/ },
-/* 145 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52446,7 +52490,7 @@ var WHS =
 	});
 
 /***/ },
-/* 146 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52455,7 +52499,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _firstPersonControls = __webpack_require__(147);
+	var _firstPersonControls = __webpack_require__(148);
 	
 	Object.keys(_firstPersonControls).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52467,7 +52511,7 @@ var WHS =
 	  });
 	});
 	
-	var _orbitControls = __webpack_require__(148);
+	var _orbitControls = __webpack_require__(149);
 	
 	Object.keys(_orbitControls).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52491,7 +52535,7 @@ var WHS =
 	  });
 	});
 	
-	var _Curve = __webpack_require__(150);
+	var _Curve = __webpack_require__(151);
 	
 	Object.keys(_Curve).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52503,7 +52547,7 @@ var WHS =
 	  });
 	});
 	
-	var _Points = __webpack_require__(151);
+	var _Points = __webpack_require__(152);
 	
 	Object.keys(_Points).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52515,7 +52559,7 @@ var WHS =
 	  });
 	});
 	
-	var _Group = __webpack_require__(152);
+	var _Group = __webpack_require__(153);
 	
 	Object.keys(_Group).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52527,7 +52571,7 @@ var WHS =
 	  });
 	});
 	
-	var _Skybox = __webpack_require__(153);
+	var _Skybox = __webpack_require__(154);
 	
 	Object.keys(_Skybox).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52540,7 +52584,7 @@ var WHS =
 	});
 
 /***/ },
-/* 147 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52806,7 +52850,7 @@ var WHS =
 	}
 
 /***/ },
-/* 148 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52820,7 +52864,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _threeOrbitControls = __webpack_require__(149);
+	var _threeOrbitControls = __webpack_require__(150);
 	
 	var _threeOrbitControls2 = _interopRequireDefault(_threeOrbitControls);
 	
@@ -52845,7 +52889,7 @@ var WHS =
 	}
 
 /***/ },
-/* 149 */
+/* 150 */
 /***/ function(module, exports) {
 
 	module.exports = function(THREE) {
@@ -53970,7 +54014,7 @@ var WHS =
 
 
 /***/ },
-/* 150 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54132,7 +54176,7 @@ var WHS =
 	exports.Curve = Curve;
 
 /***/ },
-/* 151 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54296,7 +54340,7 @@ var WHS =
 	exports.Points = Points;
 
 /***/ },
-/* 152 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54363,7 +54407,7 @@ var WHS =
 	exports.Group = Group;
 
 /***/ },
-/* 153 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54469,7 +54513,7 @@ var WHS =
 	exports.Skybox = Skybox;
 
 /***/ },
-/* 154 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54478,7 +54522,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _AmbientLight = __webpack_require__(155);
+	var _AmbientLight = __webpack_require__(156);
 	
 	Object.keys(_AmbientLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54490,7 +54534,7 @@ var WHS =
 	  });
 	});
 	
-	var _DirectionalLight = __webpack_require__(156);
+	var _DirectionalLight = __webpack_require__(157);
 	
 	Object.keys(_DirectionalLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54502,7 +54546,7 @@ var WHS =
 	  });
 	});
 	
-	var _HemisphereLight = __webpack_require__(157);
+	var _HemisphereLight = __webpack_require__(158);
 	
 	Object.keys(_HemisphereLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54514,7 +54558,7 @@ var WHS =
 	  });
 	});
 	
-	var _NormalLight = __webpack_require__(158);
+	var _NormalLight = __webpack_require__(159);
 	
 	Object.keys(_NormalLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54526,7 +54570,7 @@ var WHS =
 	  });
 	});
 	
-	var _PointLight = __webpack_require__(159);
+	var _PointLight = __webpack_require__(160);
 	
 	Object.keys(_PointLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54538,7 +54582,7 @@ var WHS =
 	  });
 	});
 	
-	var _SpotLight = __webpack_require__(160);
+	var _SpotLight = __webpack_require__(161);
 	
 	Object.keys(_SpotLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54551,7 +54595,7 @@ var WHS =
 	});
 
 /***/ },
-/* 155 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54626,7 +54670,7 @@ var WHS =
 	exports.AmbientLight = AmbientLight;
 
 /***/ },
-/* 156 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54706,7 +54750,7 @@ var WHS =
 	exports.DirectionalLight = DirectionalLight;
 
 /***/ },
-/* 157 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54786,7 +54830,7 @@ var WHS =
 	exports.HemisphereLight = HemisphereLight;
 
 /***/ },
-/* 158 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54862,7 +54906,7 @@ var WHS =
 	exports.NormalLight = NormalLight;
 
 /***/ },
-/* 159 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54942,7 +54986,7 @@ var WHS =
 	exports.PointLight = PointLight;
 
 /***/ },
-/* 160 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55020,7 +55064,7 @@ var WHS =
 	exports.SpotLight = SpotLight;
 
 /***/ },
-/* 161 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55029,7 +55073,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _Box = __webpack_require__(162);
+	var _Box = __webpack_require__(163);
 	
 	Object.keys(_Box).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55041,7 +55085,7 @@ var WHS =
 	  });
 	});
 	
-	var _Cylinder = __webpack_require__(163);
+	var _Cylinder = __webpack_require__(164);
 	
 	Object.keys(_Cylinder).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55053,7 +55097,7 @@ var WHS =
 	  });
 	});
 	
-	var _Dodecahedron = __webpack_require__(164);
+	var _Dodecahedron = __webpack_require__(165);
 	
 	Object.keys(_Dodecahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55065,7 +55109,7 @@ var WHS =
 	  });
 	});
 	
-	var _Extrude = __webpack_require__(165);
+	var _Extrude = __webpack_require__(166);
 	
 	Object.keys(_Extrude).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55077,7 +55121,7 @@ var WHS =
 	  });
 	});
 	
-	var _Icosahedron = __webpack_require__(166);
+	var _Icosahedron = __webpack_require__(167);
 	
 	Object.keys(_Icosahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55089,7 +55133,7 @@ var WHS =
 	  });
 	});
 	
-	var _Lathe = __webpack_require__(167);
+	var _Lathe = __webpack_require__(168);
 	
 	Object.keys(_Lathe).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55101,7 +55145,7 @@ var WHS =
 	  });
 	});
 	
-	var _Model = __webpack_require__(168);
+	var _Model = __webpack_require__(169);
 	
 	Object.keys(_Model).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55113,7 +55157,7 @@ var WHS =
 	  });
 	});
 	
-	var _Morph = __webpack_require__(169);
+	var _Morph = __webpack_require__(170);
 	
 	Object.keys(_Morph).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55125,7 +55169,7 @@ var WHS =
 	  });
 	});
 	
-	var _Octahedron = __webpack_require__(170);
+	var _Octahedron = __webpack_require__(171);
 	
 	Object.keys(_Octahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55137,7 +55181,7 @@ var WHS =
 	  });
 	});
 	
-	var _Parametric = __webpack_require__(171);
+	var _Parametric = __webpack_require__(172);
 	
 	Object.keys(_Parametric).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55149,7 +55193,7 @@ var WHS =
 	  });
 	});
 	
-	var _Plane = __webpack_require__(172);
+	var _Plane = __webpack_require__(173);
 	
 	Object.keys(_Plane).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55161,7 +55205,7 @@ var WHS =
 	  });
 	});
 	
-	var _Polyhedron = __webpack_require__(173);
+	var _Polyhedron = __webpack_require__(174);
 	
 	Object.keys(_Polyhedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55173,7 +55217,7 @@ var WHS =
 	  });
 	});
 	
-	var _Ring = __webpack_require__(174);
+	var _Ring = __webpack_require__(175);
 	
 	Object.keys(_Ring).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55185,7 +55229,7 @@ var WHS =
 	  });
 	});
 	
-	var _Shape2D = __webpack_require__(175);
+	var _Shape2D = __webpack_require__(176);
 	
 	Object.keys(_Shape2D).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55197,7 +55241,7 @@ var WHS =
 	  });
 	});
 	
-	var _Sphere = __webpack_require__(176);
+	var _Sphere = __webpack_require__(177);
 	
 	Object.keys(_Sphere).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55209,7 +55253,7 @@ var WHS =
 	  });
 	});
 	
-	var _Tetrahedron = __webpack_require__(177);
+	var _Tetrahedron = __webpack_require__(178);
 	
 	Object.keys(_Tetrahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55221,7 +55265,7 @@ var WHS =
 	  });
 	});
 	
-	var _Text = __webpack_require__(178);
+	var _Text = __webpack_require__(179);
 	
 	Object.keys(_Text).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55233,7 +55277,7 @@ var WHS =
 	  });
 	});
 	
-	var _Torus = __webpack_require__(179);
+	var _Torus = __webpack_require__(180);
 	
 	Object.keys(_Torus).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55245,7 +55289,7 @@ var WHS =
 	  });
 	});
 	
-	var _Torusknot = __webpack_require__(180);
+	var _Torusknot = __webpack_require__(181);
 	
 	Object.keys(_Torusknot).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55257,7 +55301,7 @@ var WHS =
 	  });
 	});
 	
-	var _Tube = __webpack_require__(181);
+	var _Tube = __webpack_require__(182);
 	
 	Object.keys(_Tube).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -55270,7 +55314,7 @@ var WHS =
 	});
 
 /***/ },
-/* 162 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55404,7 +55448,7 @@ var WHS =
 	exports.Box = Box;
 
 /***/ },
-/* 163 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55551,7 +55595,7 @@ var WHS =
 	exports.Cylinder = Cylinder;
 
 /***/ },
-/* 164 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55672,7 +55716,7 @@ var WHS =
 	exports.Dodecahedron = Dodecahedron;
 
 /***/ },
-/* 165 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55793,7 +55837,7 @@ var WHS =
 	exports.Extrude = Extrude;
 
 /***/ },
-/* 166 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -55889,7 +55933,7 @@ var WHS =
 	  }, {
 	    key: 'clone',
 	    value: function clone() {
-	      return new Icosahderon({ build: false }).copy(this);
+	      return new Icosahedron({ build: false }).copy(this);
 	    }
 	  }, {
 	    key: 'G_radius',
@@ -55914,7 +55958,7 @@ var WHS =
 	exports.Icosahedron = Icosahedron;
 
 /***/ },
-/* 167 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56026,7 +56070,7 @@ var WHS =
 	exports.Lathe = Lathe;
 
 /***/ },
-/* 168 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56168,7 +56212,7 @@ var WHS =
 	exports.Model = Model;
 
 /***/ },
-/* 169 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56289,7 +56333,7 @@ var WHS =
 	exports.Morph = Morph;
 
 /***/ },
-/* 170 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56410,7 +56454,7 @@ var WHS =
 	exports.Octahedron = Octahedron;
 
 /***/ },
-/* 171 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56541,7 +56585,7 @@ var WHS =
 	exports.Parametric = Parametric;
 
 /***/ },
-/* 172 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56676,7 +56720,7 @@ var WHS =
 	exports.Plane = Plane;
 
 /***/ },
-/* 173 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56825,7 +56869,7 @@ var WHS =
 	exports.Polyhedron = Polyhedron;
 
 /***/ },
-/* 174 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56976,7 +57020,7 @@ var WHS =
 	exports.Ring = Ring;
 
 /***/ },
-/* 175 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57082,7 +57126,7 @@ var WHS =
 	exports.Shape2D = Shape2D;
 
 /***/ },
-/* 176 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57216,7 +57260,7 @@ var WHS =
 	exports.Sphere = Sphere;
 
 /***/ },
-/* 177 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57337,7 +57381,7 @@ var WHS =
 	exports.Tetrahedron = Tetrahedron;
 
 /***/ },
-/* 178 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57450,7 +57494,7 @@ var WHS =
 	exports.Text = Text;
 
 /***/ },
-/* 179 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57598,7 +57642,7 @@ var WHS =
 	exports.Torus = Torus;
 
 /***/ },
-/* 180 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57764,7 +57808,7 @@ var WHS =
 	exports.Torusknot = Torusknot;
 
 /***/ },
-/* 181 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
