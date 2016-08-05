@@ -1287,9 +1287,11 @@ module.exports = function (self) {
           // #TODO: we can't use center of mass transform when center of mass can change,
           //        but getMotionState().getWorldTransform() screws up on objects that have been moved
           // object.getMotionState().getWorldTransform( transform );
-          object.getMotionState().getWorldTransform(_transform);
-          const origin = _transform.getOrigin();
-          const rotation = _transform.getRotation();
+          // object.getMotionState().getWorldTransform(_transform);
+
+          const transform = object.getCenterOfMassTransform();
+          const origin = transform.getOrigin();
+          const rotation = transform.getRotation();
 
           // add values to report
           const offset = 2 + (i++) * WORLDREPORT_ITEMSIZE;

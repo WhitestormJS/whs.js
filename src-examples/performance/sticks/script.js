@@ -4,7 +4,7 @@ const GAME = new WHS.World({
 
   gravity: {
     x: 0,
-    y: -200,
+    y: -9.8,
     z: 0
   },
 
@@ -30,7 +30,7 @@ const stick = new WHS.Box({
     depth: 8
   },
 
-  mass: 75,
+  mass: 10,
 
   material: {
     kind: 'phong',
@@ -90,7 +90,7 @@ for (let k = 0; k < rows; k++) {
 
 document.querySelector('.object_count').innerText = `${objects} objects`;
 
-new WHS.Sphere({
+window.sphere = new WHS.Sphere({
   geometry: {
     radius: 12,
     widthSegments: 32,
@@ -108,15 +108,17 @@ new WHS.Sphere({
     x: -100,
     y: 12
   }
-}).addTo(GAME).then((sphere) => {
+});
+
+window.sphere.addTo(GAME).then((sphere) => {
   const mx = 600,
-    mz = 100;
+    mz = 200;
 
   sphere.setAngularVelocity({x: mx, y: 0, z: mz});
   sphere.setLinearVelocity({x: mx, y: 0, z: mz});
 });
 
-new WHS.Box({
+window.ground = new WHS.Box({
   geometry: {
     width: 2500,
     height: 5,
@@ -140,7 +142,8 @@ new WHS.Box({
     y: -3,
     z: 0
   }
-}).addTo(GAME);
+});
+window.ground.addTo(GAME);
 
 const light = new WHS.DirectionalLight({
   light: {

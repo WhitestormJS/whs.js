@@ -97,27 +97,30 @@ class World extends WHSObject {
     if (initParams.scene && initParams.helpers) this._initHelpers();
 
     // NOTE: ==================== Autoresize. ======================
-    const scope = this;
 
     if (params.autoresize === "window") {
       window.addEventListener('resize', () => {
-        scope.setSize(
+        this.setSize(
           Number(window.innerWidth * params.rWidth).toFixed(),
           Number(window.innerHeight * params.rHeight).toFixed()
         );
+
+        this.emit('resize');
       });
     } else if (this.getParams().autoresize) {
       window.addEventListener('resize', () => {
-        scope.setSize(
+        this.setSize(
           Number(params.container.offsetWidth * params.rWidth).toFixed(),
           Number(params.container.offsetHeight * params.rHeight).toFixed()
         );
+
+        this.emit('resize');
       });
     }
 
-    scope.loops = [];
+    this.loops = [];
 
-    return scope;
+    return this;
   }
 
   /**

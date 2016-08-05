@@ -11,7 +11,6 @@ export class SphereMesh extends Mesh {
     this._physijs.type = 'sphere';
     this._physijs.radius = geometry.boundingSphere.radius;
 
-
     this._physijs.params = {
       friction: physParams.friction,
       restitution: physParams.restitution,
