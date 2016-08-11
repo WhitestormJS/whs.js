@@ -54,7 +54,8 @@ class World extends WHSObject {
       height: window.innerHeight, // Container(height).
 
       physics: {
-        fixedTimeStep: 1 / 60
+        fixedTimeStep: 1 / 60,
+        broadphase: {type: 'dynamic'}
       },
 
       fog: {
@@ -131,7 +132,8 @@ class World extends WHSObject {
       scene = !!'physics'
       ? new Physijs.Scene(
         {
-          fixedTimeStep: params.physics.fixedTimeStep
+          fixedTimeStep: params.physics.fixedTimeStep,
+          broadphase: params.physics.broadphase
         },
         {
           stats: params.stats,

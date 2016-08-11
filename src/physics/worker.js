@@ -1,4 +1,5 @@
 import Ammo from 'whs-ammo';
+import {extend} from '../extras/api';
 
 module.exports = function (self) {
   'use strict';
@@ -337,10 +338,24 @@ module.exports = function (self) {
     let broadphase;
 
     if (!params.broadphase) params.broadphase = {type: 'dynamic'};
+    if (params.broadphase.type === 'sweepprune') {
+      extend(params.broadphase, {
+        aabbmin: {
+          x: -50,
+          y: -50,
+          z: -50
+        },
+
+        aabbmax: {
+          x: 50,
+          y: 50,
+          z: 50
+        },
+      });
+    }
 
     switch (params.broadphase.type) {
       case 'sweepprune':
-
         _vec3_1.setX(params.broadphase.aabbmin.x);
         _vec3_1.setY(params.broadphase.aabbmin.y);
         _vec3_1.setZ(params.broadphase.aabbmin.z);
@@ -355,7 +370,6 @@ module.exports = function (self) {
         );
 
         break;
-
       case 'dynamic':
       default:
         broadphase = new Ammo.btDbvtBroadphase();
