@@ -56867,7 +56867,7 @@ var WHS =
 	          skyGeometry = new THREE.CubeGeometry(params.radius, params.radius, params.radius);
 	
 	          for (var i = 0; i < 6; i++) {
-	            matArray.push(new MeshBasicMaterial({
+	            matArray.push(new THREE.MeshBasicMaterial({
 	              map: (0, _api.texture)(params.path + directions[i] + params.imgSuffix, false),
 	              side: THREE.BackSide,
 	              fog: params.fog
