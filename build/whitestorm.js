@@ -53980,15 +53980,15 @@ var WHS =
 	    if (params.broadphase.type === 'sweepprune') {
 	      (0, _api.extend)(params.broadphase, {
 	        aabbmin: {
-	          x: -1,
-	          y: -1,
-	          z: -1
+	          x: -50,
+	          y: -50,
+	          z: -50
 	        },
 	
 	        aabbmax: {
-	          x: 1,
-	          y: 1,
-	          z: 1
+	          x: 50,
+	          y: 50,
+	          z: 50
 	        }
 	      });
 	    }
@@ -57837,9 +57837,14 @@ var WHS =
 	        _this._physijs.params = {
 	            friction: physParams.friction,
 	            damping: physParams.damping,
-	            pressure: physParams.pressure,
 	            margin: physParams.margin,
-	            stiffness: physParams.stiffness
+	            klst: physParams.klst,
+	            kast: physParams.kast,
+	            kvst: physParams.kvst,
+	            drag: physParams.drag,
+	            lift: physParams.lift,
+	            anchorHardness: physParams.anchorHardness,
+	            rigidHardness: physParams.rigidHardness
 	        };
 	
 	        _this._physijs.mass = mass;
@@ -62451,7 +62456,7 @@ var WHS =
 	          skyGeometry = new THREE.CubeGeometry(params.radius, params.radius, params.radius);
 	
 	          for (var i = 0; i < 6; i++) {
-	            matArray.push(new MeshBasicMaterial({
+	            matArray.push(new THREE.MeshBasicMaterial({
 	              map: (0, _api.texture)(params.path + directions[i] + params.imgSuffix, false),
 	              side: THREE.BackSide,
 	              fog: params.fog

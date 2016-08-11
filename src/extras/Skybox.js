@@ -25,7 +25,7 @@ class Skybox extends Shape {
         skyGeometry = new THREE.CubeGeometry(params.radius, params.radius, params.radius);
 
         for (let i = 0; i < 6; i++) {
-          matArray.push(new MeshBasicMaterial({
+          matArray.push(new THREE.MeshBasicMaterial({
             map: texture(params.path + directions[i] + params.imgSuffix, false),
             side: THREE.BackSide,
             fog: params.fog
