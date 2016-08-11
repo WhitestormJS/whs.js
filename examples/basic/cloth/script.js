@@ -27,7 +27,7 @@ var GAME = new WHS.World({
   }
 });
 
-var cloth = new WHS.Plane({ // Softbody (blue).
+window.cloth = new WHS.Plane({ // Softbody (blue).
   geometry: {
     width: 160,
     height: 60,
@@ -57,7 +57,7 @@ var cloth = new WHS.Plane({ // Softbody (blue).
   }
 });
 
-cloth.addTo(GAME);
+window.cloth.addTo(GAME);
 
 new WHS.Box({ // Rigidbody (green).
   geometry: {

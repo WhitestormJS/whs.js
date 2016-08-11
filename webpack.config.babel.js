@@ -9,7 +9,7 @@ export function config({production}) {
 
   return {
     devtool: production ? 'hidden-source-map' : 'source-map',
-    entry: './src/index.js',
+    entry: ['babel-polyfill', './src/index.js'],
     target: 'web',
     output: {
       path: path.join(__dirname, 'build'),
