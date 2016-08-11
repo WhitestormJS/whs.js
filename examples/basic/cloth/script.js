@@ -31,8 +31,8 @@ window.cloth = new WHS.Plane({ // Softbody (blue).
   geometry: {
     width: 160,
     height: 60,
-    wSegments: 20,
-    hSegments: 15
+    wSegments: 40,
+    hSegments: 30
   },
 
   mass: 10,
@@ -45,7 +45,7 @@ window.cloth = new WHS.Plane({ // Softbody (blue).
   },
 
   physics: {
-    margin: 2
+    margin: 6
   },
 
   pos: {
