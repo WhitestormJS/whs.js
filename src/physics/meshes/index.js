@@ -9,3 +9,4 @@ export * from './planeMesh';
 export * from './sphereMesh';
 export * from './softMesh';
 export * from './clothMesh';
+export * from './ropeMesh';

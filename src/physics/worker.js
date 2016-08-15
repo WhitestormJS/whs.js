@@ -292,6 +292,19 @@ module.exports = function (self) {
 
         break;
       }
+      case 'softRopeMesh': {
+        const data = description.data;
+
+        body = softBodyHelpers.CreateRope(
+          world.getWorldInfo(),
+          new Ammo.btVector3(data[0], data[1], data[2]),
+          new Ammo.btVector3(data[3], data[4], data[5]),
+          data[6] - 1,
+          0
+        );
+
+        break;
+      }
       default:
         // Not recognized
         return;
@@ -436,6 +449,7 @@ module.exports = function (self) {
       Ammo.castObject(body, Ammo.btCollisionObject).getCollisionShape().setMargin(physParams.margin ? physParams.margin : 0.1);
       body.setActivationState(physParams.state || 4);
       body.type = 0; // SoftBody.
+      if (description.type === 'softRopeMesh') body.rope = true;
 
       _transform.setIdentity();
 
@@ -1365,18 +1379,32 @@ module.exports = function (self) {
 
           const offsetVert = offset + 2;
 
-          for (let i = 0; i < size; i++) {
-            const node = object.get_m_nodes().at(i);
-            const vert = node.get_m_x();
-            const normal = node.get_m_n();
+          if (object.rope === true) {
+            for (let i = 0; i < size; i++) {
+              const node = object.get_m_nodes().at(i);
+              const vert = node.get_m_x();
+              const off = offsetVert + i * 3;
 
-            softreport[offsetVert + i * 6] = vert.x();
-            softreport[offsetVert + i * 6 + 1] = vert.y();
-            softreport[offsetVert + i * 6 + 2] = vert.z();
+              softreport[off] = vert.x();
+              softreport[off + 1] = vert.y();
+              softreport[off + 2] = vert.z();
+            }
+          } 
+          else {
+            for (let i = 0; i < size; i++) {
+              const node = object.get_m_nodes().at(i);
+              const vert = node.get_m_x();
+              const normal = node.get_m_n();
+              const off = offsetVert + i * 6;
 
-            softreport[offsetVert + i * 6 + 3] = normal.x();
-            softreport[offsetVert + i * 6 + 4] = normal.y();
-            softreport[offsetVert + i * 6 + 5] = normal.z();
+              softreport[off] = vert.x();
+              softreport[off + 1] = vert.y();
+              softreport[off + 2] = vert.z();
+
+              softreport[off + 3] = normal.x();
+              softreport[off + 4] = normal.y();
+              softreport[off + 5] = normal.z();
+            }
           }
 
           offset += size * 6 + 2;
