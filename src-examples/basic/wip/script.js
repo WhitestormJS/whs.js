@@ -4,7 +4,7 @@ const GAME = new WHS.World({
 
   gravity: {
     x: 0,
-    y: -100,
+    y: -9.8,
     z: 0
   },
 
@@ -78,7 +78,7 @@ const sphere = new WHS.Sphere({
     heightSegments: 32
   },
 
-  mass: 10,
+  mass: 3,
 
   material: {
     color: 0xffffff,
@@ -89,7 +89,7 @@ const sphere = new WHS.Sphere({
 
   pos: {
     x: -20,
-    y: 20,
+    y: 10,
     z: 0
   }
 });
@@ -113,7 +113,7 @@ for (let i = 0; i < 5; i++) {
       viterations: 10
     },
 
-    mass: 10,
+    mass: 1,
 
     softbody: true
   });
@@ -123,6 +123,51 @@ for (let i = 0; i < 5; i++) {
   rope.appendAnchor(GAME, toptube, 50, 1);
   rope.appendAnchor(GAME, sc, 0, 1);
 }
+
+const sphereStart = new WHS.Sphere({
+  geometry: {
+    radius: 3,
+    widthSegments: 32,
+    heightSegments: 32
+  },
+
+  mass: 3,
+
+  material: {
+    color: 0xffffff,
+    kind: 'basic',
+    envMap: envMap,
+    refractionRatio: 0.95
+  },
+
+  pos: {
+    x: 25,
+    y: 15,
+    z: 0
+  }
+});
+
+sphereStart.addTo(GAME);
+
+const rope1 = new WHS.Line({
+  geometry: {
+    curve: new THREE.LineCurve3(sphereStart.position.clone(), new THREE.Vector3(10, 30, 0))
+  },
+
+  physics: {
+    piterations: 10,
+    viterations: 10
+  },
+
+  mass: 1,
+
+  softbody: true
+});
+
+rope1.addTo(GAME);
+
+rope1.appendAnchor(GAME, toptube, 50, 1);
+rope1.appendAnchor(GAME, sphereStart, 0, 1);
 
 new WHS.Plane({
   geometry: {
@@ -172,3 +217,9 @@ new WHS.AmbientLight({
 GAME.setControls(WHS.orbitControls());
 
 GAME.start();
+
+// Check mouse.
+
+window.addEventListener('mousemove', e => {
+  sphereStart.setLinearVelocity({x: e.movementX, y: 0, z: 0});
+});
