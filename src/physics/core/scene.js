@@ -193,11 +193,12 @@ export class Scene extends THREE.Scene {
       const attributes = object.geometry.attributes;
 
       const volumePositions = attributes.position.array;
-      const volumeNormals = attributes.normal.array;
 
       const offsetVert = offset + 2;
 
       if (object._physijs.type === "softTrimesh") {
+        const volumeNormals = attributes.normal.array;
+
         for (let i = 0; i < size; i++) {
           const offs = offsetVert + i * 6;
 
@@ -226,7 +227,24 @@ export class Scene extends THREE.Scene {
             volumeNormals[indexVertex] = nz;
           }
         }
+
+        attributes.normal.needsUpdate = true;
+      }
+      else if (object._physijs.type === "softRopeMesh") {
+        for (let i = 0; i < size; i++) {
+          const offs = offsetVert + i * 3;
+
+          const x = data[offs];
+          const y = data[offs + 1];
+          const z = data[offs + 2];
+
+          volumePositions[i * 3] = x;
+          volumePositions[i * 3 + 1] = y;
+          volumePositions[i * 3 + 2] = z;
+        }
       } else {
+        const volumeNormals = attributes.normal.array;
+
         for (let i = 0; i < size; i++) {
           const offs = offsetVert + i * 6;
 
@@ -246,10 +264,11 @@ export class Scene extends THREE.Scene {
           volumeNormals[i * 3 + 1] = ny;
           volumeNormals[i * 3 + 2] = nz;
         }
+
+        attributes.normal.needsUpdate = true;
       }
 
       attributes.position.needsUpdate = true;
-      attributes.normal.needsUpdate = true;
 
       offset += 2 + size * 6;
     }

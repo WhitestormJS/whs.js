@@ -53,6 +53,10 @@ export class SoftMesh extends Mesh {
       kvst: physParams.kvst,
       drag: physParams.drag,
       lift: physParams.lift,
+      piterations: physParams.piterations,
+      viterations: physParams.viterations,
+      diterations: physParams.diterations,
+      citerations: physParams.citerations,
       anchorHardness: physParams.anchorHardness,
       rigidHardness: physParams.rigidHardness,
     };
