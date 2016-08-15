@@ -1,10 +1,8 @@
 import * as THREE from 'three';
-import TOBJLoader from 'three-obj-loader';
-TOBJLoader(THREE);
 
 // Models.
 const JSONLoader = new THREE.JSONLoader();
-const OBJLoader = new THREE.OBJLoader();
+// const OBJLoader = new THREE.OBJLoader();
 // const BabylonLoader = new THREE.BabylonLoader();
 const BufferGeometryLoader = new THREE.BufferGeometryLoader();
 // const ColladaLoader = new THREE.ColladaLoader();
@@ -26,7 +24,7 @@ const MaterialLoader = new THREE.MaterialLoader();
 
 export {
   JSONLoader,
-  OBJLoader,
+  // OBJLoader,
   // BabylonLoader,
   BufferGeometryLoader,
   // ColladaLoader,
