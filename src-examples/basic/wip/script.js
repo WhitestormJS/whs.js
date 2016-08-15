@@ -1,5 +1,6 @@
-window.GAME = new WHS.World({
+const GAME = new WHS.World({
   autoresize: true,
+  softbody: true,
 
   gravity: {
     x: 0,
@@ -24,6 +25,48 @@ window.GAME = new WHS.World({
     alpha: true
   }
 });
+
+const tubeMaterial = new THREE.MeshStandardMaterial({
+  color: 0xffffff,
+  metalness: 1,
+  emissive: 0x333333,
+  roughness: 0.4
+});
+
+// TOP.
+const toptube = new WHS.Tube({
+  geometry: {
+    path: new THREE.LineCurve3(new THREE.Vector3(-30, 30, 0), new THREE.Vector3(30, 30, 0)),
+    radius: 1,
+  },
+
+  mass: 0,
+  material: tubeMaterial
+});
+
+toptube.addTo(GAME);
+
+// LEFT.
+new WHS.Tube({
+  geometry: {
+    path: new THREE.LineCurve3(new THREE.Vector3(-29.5, 30.5, 0), new THREE.Vector3(-40, 0, 0)),
+    radius: 1,
+  },
+
+  mass: 0,
+  material: tubeMaterial
+}).addTo(GAME);
+
+// RIGHT.
+new WHS.Tube({
+  geometry: {
+    path: new THREE.LineCurve3(new THREE.Vector3(29.5, 30.5, 0), new THREE.Vector3(40, 0, 0)),
+    radius: 1,
+  },
+
+  mass: 0,
+  material: tubeMaterial
+}).addTo(GAME);
 
 const envMap = WHS.texture('{{ assets }}/background.jpg');
 envMap.mapping = THREE.SphericalReflectionMapping;
@@ -51,12 +94,34 @@ const sphere = new WHS.Sphere({
   }
 });
 
-sphere.addTo(GAME);
-
 for (let i = 0; i < 5; i++) {
   const sc = sphere.clone();
   sc.position.x = -20 + i * 6;
   sc.addTo(GAME);
+
+  const v1 = sc.position.clone();
+  const v2 = sc.position.clone();
+  v2.y = 30;
+
+  const rope = new WHS.Line({
+    geometry: {
+      curve: new THREE.LineCurve3(v1, v2)
+    },
+
+    physics: {
+      piterations: 10,
+      viterations: 10
+    },
+
+    mass: 10,
+
+    softbody: true
+  });
+
+  rope.addTo(GAME);
+
+  rope.appendAnchor(GAME, toptube, 50, 1);
+  rope.appendAnchor(GAME, sc, 0, 1);
 }
 
 new WHS.Plane({
@@ -85,10 +150,11 @@ new WHS.Plane({
   }
 }).addTo(GAME);
 
-new WHS.PointLight({
+new WHS.SpotLight({
   light: {
     intensity: 6,
-    distance: 100
+    distance: 100,
+    angle: 90
   },
 
   pos: {
@@ -98,7 +164,7 @@ new WHS.PointLight({
 
 new WHS.AmbientLight({
   light: {
-    intensity: 10,
+    intensity: 0.6,
     color: 0xffffff
   }
 }).addTo(GAME);
