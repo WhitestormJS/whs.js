@@ -41,12 +41,7 @@ var sphere = new WHS.Icosahedron({ // Softbody.
 
     klst: 0.6,
     kast: 0.6,
-    margin: 0.05,
-
-    viterations: 10,
-    piterations: 10,
-    citerations: 4,
-    diterations: 0
+    margin: 0.05
   },
 
   material: {
@@ -87,7 +82,7 @@ new WHS.Box({
 
   pos: {
     x: 0,
-    y: 0,
+    y: -5,
     z: 0
   }
 }).addTo(GAME);
