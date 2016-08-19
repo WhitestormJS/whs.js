@@ -1,28 +1,29 @@
+// UTILS
 import path from 'path';
-import gulp from 'gulp';
-import loadPlugins from 'gulp-load-plugins';
 import runSequence from 'run-sequence';
 import del from 'del';
+
+// GULP
+import gulp from 'gulp';
+import loadPlugins from 'gulp-load-plugins';
+
+// WEBPACK & KARMA
+import karma from 'karma';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import swig from 'gulp-swig';
-import gbrowser from 'gulp-browser-basedir';
-import plumber from 'gulp-plumber';
-import benchmark from 'gulp-benchmark';
-import karma from 'karma';
 
 import {config, light_config} from './webpack.config.babel.js';
 
-// ========= SETTINGS =========
+// SETTINGS
 const 
-  frameworkSrc = 'src/framework/**/*',
-  frameworkDest = 'lib',
+  frameworkSrc = './src/framework',
+  frameworkDest = './build',
 
-  examplesDev = 'src/examples',
+  examplesDev = './src/examples',
   examplesSrc = `${examplesDev}/**/*`,
-  examplesDest = 'examples',
+  examplesDest = './examples',
 
-  swigOpts = {
+  swigParameters = {
     defaults: {
       cache: false,
 
@@ -32,34 +33,31 @@ const
     }
   };
 
+const $ = loadPlugins({
+  rename: {
+    'gulp-browser-basedir': 'gbrowser'
+  }
+});
+
+// COMPILERS
 const isProduction = process.env.NODE_ENV === 'production';
 
-const $ = loadPlugins();
-const webpackCompiler = webpack(config({production: isProduction}));
-const webpackCompilerLight = webpack(light_config({production: isProduction}));
+const webpackConfiguration = config({
+  isProduction,
+  frameworkSrc,
+  frameworkDest
+});
 
-// ==== ENVIRONMENT  SETUP ====
+const webpackCompiler = webpack(webpackConfiguration[0]);
+const webpackCompilerLight = webpack(webpackConfiguration[1]);
+
+// ENVIRONMENT  SETUP
 process.env.BABEL_ENV = 'node';
 
 gulp.task('default', ['examples:build', 'src:build']);
 
-gulp.task('src:build', (callback) => {
-  runSequence('src:clean', 'build:clean', 'src:build:node', 'src:build:browser', callback);
-});
-
-// ===== BUILD:  node.js =====
-gulp.task('src:build:node', () => {
-  return gulp.src(frameworkSrc)
-    .pipe($.cached('babel', {optimizeMemory: true}))
-    .pipe($.if(!isProduction, $.sourcemaps.init()))
-    .pipe($.babel())
-    .on('error', makeBuildErrorHandler('babel'))
-    .pipe($.if(!isProduction, $.sourcemaps.write('.')))
-    .pipe(gulp.dest(dest));
-});
-
-// ===== BUILD: browser =====
-gulp.task('src:build:browser', (callback) => {
+// BUILD: browser 
+gulp.task('src:build', ['build:clean'], (callback) => {
   webpackCompiler.run((error, stats) => {
     if (error) throw new $.util.PluginError('webpack', error);
     $.util.log('[webpack]', stats.toString({colors: true}));
@@ -72,11 +70,11 @@ gulp.task('src:build:browser', (callback) => {
   });
 });
 
-// ======== DEV MODE ========
+// DEV MODE
 gulp.task('dev', ['examples:build', 'examples:watch'], () => {
   const server = new WebpackDevServer(webpackCompiler, {
     contentBase: examplesDest,
-    publicPath: '/build/',
+    publicPath: frameworkDest,
 
     stats: {colors: true}
   });
@@ -84,7 +82,7 @@ gulp.task('dev', ['examples:build', 'examples:watch'], () => {
   server.listen(8080, 'localhost', () => {});
 });
 
-// ==== EXAMPLES:  WATCH ====
+// EXAMPLES: WATCH
 gulp.task('examples:watch', () => {
   const watcher = gulp.watch(examplesSrc, (obj) => {
     if (obj.type === 'changed') {
@@ -96,9 +94,9 @@ gulp.task('examples:watch', () => {
           obj.path,
           `!${examplesDev}/_assets/**/*.js`
         ])
-          .pipe(plumber())
-          .pipe(swig(Object.assign({}, swigOpts, {ext: '.js'})))
-          .pipe(gbrowser.browserify({basedir: path.resolve(examplesDev)}, {
+          .pipe($.plumber())
+          .pipe($.swig(Object.assign({}, swigParameters, {ext: '.js'})))
+          .pipe($.gbrowser.browserify({basedir: path.resolve(examplesDev)}, {
             transform: 'babelify',
             options: {presets: ['es2015']}
           }))
@@ -120,8 +118,8 @@ gulp.task('examples:watch', () => {
           gulp.src([
             `${examplesDev}/**/*.html`
           ])
-            .pipe(plumber())
-            .pipe(swig(swigOpts))
+            .pipe($.plumber())
+            .pipe($.swig(swigParameters))
             .pipe(
               gulp.dest(
                 path.join(
@@ -134,8 +132,8 @@ gulp.task('examples:watch', () => {
           console.log(`Swig LAYOUT: ${filePath}`);
         } else {
           gulp.src(filePath)
-            .pipe(plumber())
-            .pipe(swig(swigOpts))
+            .pipe($.plumber())
+            .pipe($.swig(swigParameters))
             .pipe(
               gulp.dest(
                 path.join(
@@ -158,7 +156,7 @@ gulp.task('examples:watch', () => {
           `!${examplesDev}/**/script.js`,
           `${examplesDev}/_assets/**/*.js`
         ])
-          .pipe(plumber())
+          .pipe($.plumber())
           .pipe(
             gulp.dest(
               path.join(
@@ -186,7 +184,7 @@ gulp.task('examples:watch', () => {
   });
 });
 
-// ==== EXAMPLES:  BUILD ====
+// EXAMPLES: BUILD 
 gulp.task('examples:build', ['examples:clean'], () => {
   gulp.src([
     `${examplesDev}/**/*`,
@@ -195,7 +193,7 @@ gulp.task('examples:build', ['examples:clean'], () => {
     `!${examplesDev}/**/script.js`,
     `${examplesDev}/_assets/**/*.js`
   ])
-    .pipe(plumber())
+    .pipe($.plumber())
     .pipe(gulp.dest(examplesDest));
 
   gulp.src([
@@ -203,21 +201,21 @@ gulp.task('examples:build', ['examples:clean'], () => {
     `!${examplesDev}/**/*.html`,
     `!${examplesDev}/_assets/**/*.js`
   ])
-    .pipe(plumber())
-    .pipe(swig(Object.assign({}, swigOpts, {ext: '.js'})))
-    .pipe(gbrowser.browserify({basedir: path.resolve(examplesDev)}, {
+    .pipe($.plumber())
+    .pipe($.swig(Object.assign({}, swigParameters, {ext: '.js'})))
+    .pipe($.gbrowser.browserify({basedir: path.resolve(examplesDev)}, {
       transform: 'babelify',
       options: {presets: ['es2015']}
     }))
     .pipe(gulp.dest(examplesDest));
 
   gulp.src(`${examplesDev}/**/*.html`)
-    .pipe(plumber())
-    .pipe(swig(swigOpts))
+    .pipe($.plumber())
+    .pipe($.swig(swigParameters))
     .pipe(gulp.dest(examplesDest));
 });
 
-// ====== TEST ======
+// TEST
 gulp.task('src:test', done => {
   new karma.Server({
     configFile: `${__dirname}/test/karma.conf.js`
@@ -226,29 +224,24 @@ gulp.task('src:test', done => {
   }).start();
 });
 
-// ====== LINT ======
+// LINT
 gulp.task('src:lint', () => {
-  gulp.src(src)
+  gulp.src(`${frameworkSrc}/**/*`)
     .pipe($.cached('lint', {optimizeMemory: true}))
     .pipe($.xo())
     .on('error', makeBuildErrorHandler('lint'));
 });
 
-
-// ==== CLEANING ====
-gulp.task('src:clean', (callback) => {
-  del(dest).then(() => callback());
-});
-
+// CLEANING
 gulp.task('examples:clean', (callback) => {
   del(examplesDest).then(() => callback());
 });
 
 gulp.task('build:clean', (callback) => {
-  del(['./build/*.js', './build/*.map']).then(() => callback());
+  del([`${frameworkDest}/*.js`, `${frameworkDest}/*.map`]).then(() => callback());
 });
 
-// ===== ERRORS =====
+// ERRORS 
 function makeBuildErrorHandler(taskName) {
   return function ({name, message, codeFrame}) {
     $.util.log(`[${taskName}]`, `${$.util.colors.red(name)} ${message}${codeFrame ? `\n${codeFrame}` : ''}`);

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Worker from 'inline-worker';
+import Worker from 'webworkify-webpack';
 import Stats from 'stats.js';
 import {Eventable} from '../eventable';
 import {
@@ -20,7 +20,7 @@ export class Scene extends THREE.Scene {
     Object.assign(this, new Eventable());
     Eventable.make(Scene);
 
-    this._worker = new Worker(require('../worker.js'));
+    this._worker = Worker(require('../worker.js'));
     this._worker.transferableMessage = this._worker.webkitPostMessage || this._worker.postMessage;
     this._materials_ref_counts = {};
     this._objects = {};
