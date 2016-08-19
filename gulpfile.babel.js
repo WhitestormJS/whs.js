@@ -13,30 +13,30 @@ import karma from 'karma';
 
 import {config, light_config} from './webpack.config.babel.js';
 
-const isProduction = process.env.NODE_ENV === 'production';
-
-const $ = loadPlugins();
-const webpackCompiler = webpack(config({production: isProduction}));
-const lightWebpackCompiler = webpack(light_config({production: isProduction}));
-
 // ========= SETTINGS =========
-const src = 'src/framework/**/*',
-  dest = 'lib',
+const 
+  frameworkSrc = 'src/framework/**/*',
+  frameworkDest = 'lib',
+
   examplesDev = 'src/examples',
-  examplesSources = `${examplesDev}/**/*`,
+  examplesSrc = `${examplesDev}/**/*`,
   examplesDest = 'examples',
+
   swigOpts = {
     defaults: {
       cache: false,
 
       locals: {
-        assets: '../../_assets',
-        libs: '../../_libs'
+        assets: '../../_assets'
       }
     }
-  },
-  testFile = 'test/benchmark/benchmark.js',
-  KarmaServer = karma.Server;
+  };
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+const $ = loadPlugins();
+const webpackCompiler = webpack(config({production: isProduction}));
+const webpackCompilerLight = webpack(light_config({production: isProduction}));
 
 // ==== ENVIRONMENT  SETUP ====
 process.env.BABEL_ENV = 'node';
@@ -49,7 +49,7 @@ gulp.task('src:build', (callback) => {
 
 // ===== BUILD:  node.js =====
 gulp.task('src:build:node', () => {
-  return gulp.src(src)
+  return gulp.src(frameworkSrc)
     .pipe($.cached('babel', {optimizeMemory: true}))
     .pipe($.if(!isProduction, $.sourcemaps.init()))
     .pipe($.babel())
@@ -64,7 +64,7 @@ gulp.task('src:build:browser', (callback) => {
     if (error) throw new $.util.PluginError('webpack', error);
     $.util.log('[webpack]', stats.toString({colors: true}));
 
-    lightWebpackCompiler.run((error, stats) => {
+    webpackCompilerLight.run((error, stats) => {
       if (error) throw new $.util.PluginError('webpack', error);
       $.util.log('[webpack]', stats.toString({colors: true}));
       callback();
@@ -86,7 +86,7 @@ gulp.task('dev', ['examples:build', 'examples:watch'], () => {
 
 // ==== EXAMPLES:  WATCH ====
 gulp.task('examples:watch', () => {
-  const watcher = gulp.watch(examplesSources, (obj) => {
+  const watcher = gulp.watch(examplesSrc, (obj) => {
     if (obj.type === 'changed') {
       if (path.extname(obj.path) === '.js') {
         console.log('.js change detected.');
@@ -94,7 +94,6 @@ gulp.task('examples:watch', () => {
 
         gulp.src([
           obj.path,
-          `!${examplesDev}/_libs/**/*`,
           `!${examplesDev}/_assets/**/*.js`
         ])
           .pipe(plumber())
@@ -157,7 +156,6 @@ gulp.task('examples:watch', () => {
           `!${examplesDev}/**/*.html`,
           `!${examplesDev}/!(_libs)/*.js`,
           `!${examplesDev}/**/script.js`,
-          `${examplesDev}/_libs/**/*`,
           `${examplesDev}/_assets/**/*.js`
         ])
           .pipe(plumber())
@@ -195,7 +193,6 @@ gulp.task('examples:build', ['examples:clean'], () => {
     `!${examplesDev}/**/*.html`,
     `!${examplesDev}/!(_libs)/*.js`,
     `!${examplesDev}/**/script.js`,
-    `${examplesDev}/_libs/**/*`,
     `${examplesDev}/_assets/**/*.js`
   ])
     .pipe(plumber())
@@ -204,7 +201,6 @@ gulp.task('examples:build', ['examples:clean'], () => {
   gulp.src([
     `${examplesDev}/**/*.js`,
     `!${examplesDev}/**/*.html`,
-    `!${examplesDev}/_libs/*.js`,
     `!${examplesDev}/_assets/**/*.js`
   ])
     .pipe(plumber())
@@ -222,8 +218,8 @@ gulp.task('examples:build', ['examples:clean'], () => {
 });
 
 // ====== TEST ======
-gulp.task('src:test', (done) => {
-  new KarmaServer({
+gulp.task('src:test', done => {
+  new karma.Server({
     configFile: `${__dirname}/test/karma.conf.js`
   }, () => {
     done();
