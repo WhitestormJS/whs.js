@@ -20,9 +20,9 @@ const webpackCompiler = webpack(config({production: isProduction}));
 const lightWebpackCompiler = webpack(light_config({production: isProduction}));
 
 // ========= SETTINGS =========
-const src = 'src/**/*',
+const src = 'src/framework/**/*',
   dest = 'lib',
-  examplesDev = 'src-examples',
+  examplesDev = 'src/examples',
   examplesSources = `${examplesDev}/**/*`,
   examplesDest = 'examples',
   swigOpts = {
