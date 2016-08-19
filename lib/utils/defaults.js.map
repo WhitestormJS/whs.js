@@ -1,1 +1,0 @@
-{"version":3,"sources":["utils/defaults.js"],"names":[],"mappings":";;;;;AAAA,IAAM,WAAW;AACf,SAAO;AADQ,CAAjB;;QAKE,Q,GAAA,Q","file":"defaults.js","sourcesContent":["const defaults = {\r\n  debug: false\r\n};\r\n\r\nexport {\r\n  defaults\r\n};\r\n"]}
