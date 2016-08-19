@@ -4,38 +4,20 @@ import HappyPack from 'happypack';
 
 process.env.BABEL_ENV = 'browser';
 
-export function config({production}) {
-  console.log(production ? 'Production mode' : 'Development mode');
+export function config({isProduction, frameworkSrc, frameworkDest}) {
+  console.log(isProduction ? 'Production mode' : 'Development mode');
 
-  return {
-    devtool: production ? 'hidden-source-map' : 'source-map',
-    entry: ['babel-polyfill', './src/framework/index.js'],
+  const config = {
+    devtool: isProduction ? 'hidden-source-map' : 'source-map',
+    entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
     target: 'web',
     output: {
-      path: path.join(__dirname, 'build'),
+      path: path.join(__dirname, frameworkDest),
       filename: 'whitestorm.js',
       library: 'WHS',
       libraryTarget: 'var'
     },
     module: {
-      preLoaders: [
-        {
-          test: /scene\.js$/,
-          loader: 'string-replace',
-          query: {
-            multiple: [
-              {
-                search: 'from \'inline-worker\';',
-                replace: 'from \'webworkify-webpack\';'
-              },
-              {
-                search: 'new Worker(require(\'../worker.js\'));',
-                replace: 'Worker(require(\'../worker.js\'));'
-              }
-            ]
-          }
-        }
-      ],
       loaders: [
         {
           test: /\.js$/,
@@ -45,7 +27,7 @@ export function config({production}) {
         }
       ]
     },
-    plugins: production
+    plugins: isProduction
       ? [
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
@@ -60,13 +42,11 @@ export function config({production}) {
         new HappyPack({loaders: ['babel', 'string-replace'], threads: 4})
       ]
   };
-}
 
-export function light_config({production}) {
-  const conf = config({production});
-  conf.output.filename = 'whitestorm.light.js';
+  const lightConfig = Object.create(config);
 
-  conf.module.preLoaders.push({
+  lightConfig.output.filename = 'whitestorm.light.js';
+  lightConfig.module.preLoaders = [{
     test: /\.js$/,
     loader: 'string-replace',
     query: {
@@ -82,7 +62,7 @@ export function light_config({production}) {
         }
       ]
     }
-  });
+  }];
 
-  return conf;
+  return [config, lightConfig];
 }
