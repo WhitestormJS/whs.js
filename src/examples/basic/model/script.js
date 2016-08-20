@@ -21,8 +21,8 @@ const GAME = new WHS.World({
 
 window.teapot = new WHS.Model({
   geometry: {
-    path: '{{ assets }}/models/utah-teapot-large.json',
-    physics: '{{ assets }}/models/utah-teapot-light.json'
+    path: '{{ assets }}/models/teapot/utah-teapot-large.json',
+    physics: '{{ assets }}/models/teapot/utah-teapot-light.json'
   },
 
   mass: 100,
