@@ -68,7 +68,7 @@ new WHS.Tube({
   material: tubeMaterial
 }).addTo(GAME);
 
-const envMap = WHS.texture('{{ assets }}/background.jpg');
+const envMap = WHS.texture('img/background.jpg');
 envMap.mapping = THREE.SphericalReflectionMapping;
 
 const sphere = new WHS.Sphere({
