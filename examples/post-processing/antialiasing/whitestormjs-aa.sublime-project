@@ -1,0 +1,20 @@
+{
+	"folders": [{
+		"name": "Project",
+		"path": "../../../../",
+		"folder_exclude_patterns": ["node_modules", ".github", ".happypack"],
+		"file_exclude_patterns": ["*.sublime-workspace"]
+	},{
+		"name": "build-example",
+		"path": "../../../../examples/post-processing/antialiasing/"
+	},{
+		"name": "build-whitestorm.js",
+		"path": "../../../../Build/"
+	},{
+		"name": "example",
+		"path": "./"
+	},{
+		"name": "whitestorm.js",
+		"path": "../../../framework"
+	}]
+}
