@@ -74,7 +74,7 @@ gulp.task('src:build', ['build:clean'], (callback) => {
 gulp.task('dev', ['examples:build', 'examples:watch'], () => {
   const server = new WebpackDevServer(webpackCompiler, {
     contentBase: examplesDest,
-    publicPath: frameworkDest,
+    publicPath: '/build/',
 
     stats: {colors: true}
   });
