@@ -12,7 +12,7 @@ import karma from 'karma';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-import {config, light_config} from './webpack.config.babel.js';
+import {config} from './webpack.config.babel.js';
 
 // SETTINGS
 const 

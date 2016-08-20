@@ -57,8 +57,8 @@ new WHS.Box({
 
 var egg = new WHS.Model({
   geometry: {
-    path: '../../_assets/models/egg_light.json',
-    physics: '../../_assets/models/egg_low.json'
+    path: '../../_assets/models/easter/egg_light.json',
+    physics: '../../_assets/models/easter/egg_low.json'
   },
 
   mass: 10,
@@ -89,8 +89,8 @@ var egg = new WHS.Model({
 
 var rabbit = new WHS.Model({
   geometry: {
-    path: '../../_assets/models/rabbit3.json',
-    physics: '../../_assets/models/rabbit3_low.json'
+    path: '../../_assets/models/easter/rabbit.json',
+    physics: '../../_assets/models/easter/rabbit_low.json'
   },
 
   material: {
