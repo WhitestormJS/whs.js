@@ -389,7 +389,7 @@ class World extends WHSObject {
    */
   _process(delta) {
     for (let i = 0; i < this.children.length; i++)
-      if (this.children[i]._type === 'morph') this.children[i].getNative().mixer.update(delta);
+      if (this.children[i].type === 'morph') this.children[i].getNative().mixer.update(delta);
   }
 
   /**
@@ -488,7 +488,7 @@ class World extends WHSObject {
 
     if (WHS.debug) {
       console.debug(
-        `@WHS.Shape: Shape ${source._type} was removed from world`,
+        `@WHS.Shape: Shape ${source.type} was removed from world`,
         [source]
       );
     }
