@@ -8,7 +8,6 @@ class SpotLight extends Light {
     this.build(params);
 
     super.wrap();
-    super.wrapShadow();
   }
 
   build(params = {}) {
