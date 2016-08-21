@@ -120,6 +120,7 @@ class World extends WHSObject {
     }
 
     this.loops = [];
+    this.type = 'world';
 
     return this;
   }
