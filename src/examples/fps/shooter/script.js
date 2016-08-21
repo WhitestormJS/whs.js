@@ -11,15 +11,11 @@ const GAME = new WHS.World({
   },
 
   camera: {
-    far: 10000
+    far: 1000
   },
 
   shadowmap: {
     type: THREE.PCFShadowMap
-  },
-
-  physics: {
-    fixedTimeStep: 1 / 120
   },
 
   background: {
@@ -300,7 +296,8 @@ const person = new WHS.Sphere({
 
   physics: {
     friction: 1,
-    restitution: 0
+    restitution: 0,
+    damping: 0
   },
 
   material: {
@@ -332,7 +329,7 @@ GAME.add(person).then(() => {
 
 GAME.setControls(
   WHS.firstPersonControls(person, {
-    speed: 5
+    speed: 3
   })
 );
 
