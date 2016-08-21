@@ -24,3 +24,4 @@ script: gulp src:test
 branches:
   only:
     - master
+    - dev
