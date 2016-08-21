@@ -20,7 +20,7 @@ before_script:
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-script: gulp src:test
+script: gulp test:unit
 branches:
   only:
     - master
