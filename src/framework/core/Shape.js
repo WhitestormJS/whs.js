@@ -467,19 +467,21 @@ class Shape extends WHSObject {
   copy(source) {
     const sourceNative = source.getNative();
 
-    if (source.getParams().softbody)
-      this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));
-    else this.setNative(sourceNative.clone(source.getParams()));
+    if (sourceNative) {
+      if (source.getParams().softbody)
+        this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));
+      else this.setNative(sourceNative.clone(source.getParams()));
 
-    this.setParams(source.getParams());
+      this.getNative().mass = source.getNative().mass;
 
-    this.wrap();
+      this.setParams(source.getParams());
 
-    this.position.copy(source.position);
-    this.rotation.copy(source.rotation);
-    this.quaternion.copy(source.quaternion);
+      this.wrap();
 
-    this.getNative().mass = source.getNative().mass;
+      this.position.copy(source.position);
+      this.rotation.copy(source.rotation);
+      this.quaternion.copy(source.quaternion);
+    } else this.setParams(source.getParams());
 
     return this;
   }
@@ -545,7 +547,7 @@ class Shape extends WHSObject {
 
     native.__dirtyPosition = true;
 
-    return pos.copy(vector3);
+    pos.copy(vector3);
   }
 
   get quaternion() {
@@ -568,8 +570,6 @@ class Shape extends WHSObject {
         native.__dirtyRotation = true;
       }
     });
-
-    return quat;
   }
 
   get rotation() {
@@ -589,8 +589,6 @@ class Shape extends WHSObject {
         native.__dirtyRotation = true;
       }
     });
-
-    return rot;
   }
 
   get scale() {
@@ -598,7 +596,7 @@ class Shape extends WHSObject {
   }
 
   set scale(vector3) {
-    this.getNative().scale = vector3;
+    this.getNative().scale.copy(vector3);
     return this.getNative().scale;
   }
 
@@ -611,9 +609,17 @@ class Shape extends WHSObject {
   }
 
   M_(params = {}) {
-    this.getNative().material = loadMaterial(
-      this.updateParams({material: params}).material
-    );
+    if (this.getParams().material.kind !== params.kind)
+      this.getNative().material = loadMaterial(
+        this.updateParams({material: params}).material
+      );
+    else {
+      this.updateParams({material: params});
+
+      for (key in params) {
+        this.getNative().material[key] = params[key];
+      }
+    }
   }
 
   set M_color(val) {
