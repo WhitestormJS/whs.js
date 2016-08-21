@@ -9,6 +9,7 @@
     "test": "gulp test",
     "test:unit": "gulp test:unit",
     "test:benchmark": "gulp test:benchmark",
+    "ci-test": "./node_modules/.bin/karma start ./test/karma.unit.conf.js",
     "lint": "gulp src:lint"
   },
   "repository": {
