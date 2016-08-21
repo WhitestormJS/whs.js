@@ -215,10 +215,20 @@ gulp.task('examples:build', ['examples:clean'], () => {
     .pipe(gulp.dest(examplesDest));
 });
 
-// TEST
-gulp.task('src:test', done => {
+// TESTING
+gulp.task('test', ['test:benchmark', 'test:unit']);
+
+gulp.task('test:benchmark', done => {
   new karma.Server({
-    configFile: `${__dirname}/test/karma.conf.js`
+    configFile: `${__dirname}/test/karma.benchmark.conf.js`
+  }, () => {
+    done();
+  }).start();
+});
+
+gulp.task('test:unit', done => {
+  new karma.Server({
+    configFile: `${__dirname}/test/karma.unit.conf.js`
   }, () => {
     done();
   }).start();

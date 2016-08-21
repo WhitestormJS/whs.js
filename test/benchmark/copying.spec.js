@@ -1,4 +1,4 @@
-define(['whslight', 'table'], function (WHS) {
+define(['whs', 'table'], function (WHS) {
   let total = 0;
   let perfTime, cycleID = 1;
   let tableContent = [];

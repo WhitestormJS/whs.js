@@ -59500,17 +59500,19 @@ var WHS =
 	    value: function copy(source) {
 	      var sourceNative = source.getNative();
 	
-	      if (source.getParams().softbody) this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));else this.setNative(sourceNative.clone(source.getParams()));
+	      if (sourceNative) {
+	        if (source.getParams().softbody) this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));else this.setNative(sourceNative.clone(source.getParams()));
 	
-	      this.setParams(source.getParams());
+	        this.getNative().mass = source.getNative().mass;
 	
-	      this.wrap();
+	        this.setParams(source.getParams());
 	
-	      this.position.copy(source.position);
-	      this.rotation.copy(source.rotation);
-	      this.quaternion.copy(source.quaternion);
+	        this.wrap();
 	
-	      this.getNative().mass = source.getNative().mass;
+	        this.position.copy(source.position);
+	        this.rotation.copy(source.rotation);
+	        this.quaternion.copy(source.quaternion);
+	      } else this.setParams(source.getParams());
 	
 	      return this;
 	    }
@@ -59549,7 +59551,13 @@ var WHS =
 	    value: function M_() {
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      this.getNative().material = (0, _api.loadMaterial)(this.updateParams({ material: params }).material);
+	      if (this.getParams().material.kind !== params.kind) this.getNative().material = (0, _api.loadMaterial)(this.updateParams({ material: params }).material);else {
+	        this.updateParams({ material: params });
+	
+	        for (key in params) {
+	          this.getNative().material[key] = params[key];
+	        }
+	      }
 	    }
 	  }, {
 	    key: 'proccessSoftbodyGeometry',
@@ -59802,7 +59810,7 @@ var WHS =
 	
 	      native.__dirtyPosition = true;
 	
-	      return pos.copy(vector3);
+	      pos.copy(vector3);
 	    }
 	  }, {
 	    key: 'quaternion',
@@ -59827,8 +59835,6 @@ var WHS =
 	          native.__dirtyRotation = true;
 	        }
 	      });
-	
-	      return quat;
 	    }
 	  }, {
 	    key: 'rotation',
@@ -59850,8 +59856,6 @@ var WHS =
 	          native.__dirtyRotation = true;
 	        }
 	      });
-	
-	      return rot;
 	    }
 	  }, {
 	    key: 'scale',
@@ -59859,7 +59863,7 @@ var WHS =
 	      return this.getNative().scale;
 	    },
 	    set: function set(vector3) {
-	      this.getNative().scale = vector3;
+	      this.getNative().scale.copy(vector3);
 	      return this.getNative().scale;
 	    }
 	  }, {
