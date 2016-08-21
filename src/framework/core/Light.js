@@ -212,14 +212,17 @@ class Light extends WHSObject {
    * @param {WHS.Light} source - Source object, that will be applied to this.
    */
   copy(source) {
-    this.setNative(source.getNative().clone());
-    if (source.helper) this.helper = source.helper.clone();
-    this.setParams(source.getParams());
+    if (source.getNative()) {
+      this.setNative(source.getNative().clone());
+      if (source.helper) this.helper = source.helper.clone();
+      this.setParams(source.getParams());
 
-    this.wrap();
+      this.wrap();
 
-    this.position = source.position.clone();
-    this.rotation = source.rotation.clone();
+      this.position = source.position.clone();
+      this.rotation = source.rotation.clone();
+      if (source.target) this.target = source.target.clone();
+    } else this.setParams(source.getParams());
 
     this.type = source.type;
 
@@ -255,6 +258,14 @@ class Light extends WHSObject {
 
   set rotation(euler) {
     return this.getNative().rotation.copy(euler);
+  }
+
+  get quaternion() {
+    return this.getNative().quaternion;
+  }
+
+  set quaternion(euler) {
+    return this.getNative().quaternion.copy(euler);
   }
 
   get target() {
