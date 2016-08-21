@@ -53902,26 +53902,27 @@ var WHS =
 	        }
 	      case 'heightfield':
 	        {
-	          var points = description.points,
-	              xpts = description.xpts,
+	          var xpts = description.xpts,
 	              ypts = description.ypts,
+	              points = description.points,
 	              ptr = _whsAmmo2.default._malloc(4 * xpts * ypts);
 	
-	          for (var p = 0, p2 = ptr; p < xpts; p++) {
+	          for (var _i2 = 0, p = 0, p2 = 0; _i2 < xpts; _i2++) {
 	            for (var j = 0; j < ypts; j++) {
-	              _whsAmmo2.default.HEAPF32[p2 >> 2] = points[p];
+	              _whsAmmo2.default.HEAPF32[ptr + p2 >> 2] = points[p];
+	
+	              p++;
 	              p2 += 4;
 	            }
 	          }
 	
-	          shape = new _whsAmmo2.default.btHeightfieldTerrainShape(xpts, ypts, ptr, 1, -description.absMaxHeight, description.absMaxHeight, 2, 'PHY_FLOAT', false);
+	          shape = new _whsAmmo2.default.btHeightfieldTerrainShape(description.xpts, description.ypts, ptr, 1, -description.absMaxHeight, description.absMaxHeight, 2, 'PHY_FLOAT', false);
 	
 	          _vec3_1.setX(description.xsize / (description.xpts - 1));
 	          _vec3_1.setY(description.ysize / (description.ypts - 1));
 	          _vec3_1.setZ(1);
 	
 	          shape.setLocalScaling(_vec3_1);
-	
 	          _noncached_shapes[description.id] = shape;
 	          break;
 	        }
@@ -54967,11 +54968,11 @@ var WHS =
 	              softreport[off + 2] = vert.z();
 	            }
 	          } else {
-	            for (var _i2 = 0; _i2 < size; _i2++) {
-	              var _node = object.get_m_nodes().at(_i2);
+	            for (var _i3 = 0; _i3 < size; _i3++) {
+	              var _node = object.get_m_nodes().at(_i3);
 	              var _vert = _node.get_m_x();
 	              var normal = _node.get_m_n();
-	              var _off = offsetVert + _i2 * 6;
+	              var _off = offsetVert + _i3 * 6;
 	
 	              softreport[_off] = _vert.x();
 	              softreport[_off + 1] = _vert.y();
@@ -58619,7 +58620,7 @@ var WHS =
 	  });
 	});
 	
-	var _Shape = __webpack_require__(442);
+	var _Shape = __webpack_require__(443);
 	
 	Object.keys(_Shape).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -58631,7 +58632,7 @@ var WHS =
 	  });
 	});
 	
-	var _World = __webpack_require__(444);
+	var _World = __webpack_require__(442);
 	
 	Object.keys(_World).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -58680,7 +58681,7 @@ var WHS =
 	
 	var _Loop = __webpack_require__(394);
 	
-	var _defaults = __webpack_require__(395);
+	var _World = __webpack_require__(442);
 	
 	var _Object = __webpack_require__(396);
 	
@@ -58768,18 +58769,19 @@ var WHS =
 	      }
 	    }));
 	
-	    (0, _get3.default)(Object.getPrototypeOf(Light.prototype), 'setParams', _this).call(_this, params);
+	    if (params instanceof THREE.Light) {
+	      (0, _get3.default)(Object.getPrototypeOf(Light.prototype), 'setParams', _this).call(_this, {
+	        pos: { x: params.position.x, y: params.position.y, z: params.position.z },
+	        rot: { x: params.rotation.x, y: params.rotation.y, z: params.rotation.z }
+	      });
+	    } else (0, _get3.default)(Object.getPrototypeOf(Light.prototype), 'setParams', _this).call(_this, params);
 	
-	    var scope = Object.assign(_this, {
-	      _type: type,
+	    _this.type = type;
 	
-	      _light: _this.__params.light,
-	      _shadowmap: _this.__params.shadowmap
-	    });
+	    if (params instanceof THREE.Light) _this.setNative(params);
+	    if (WHS.debug) console.debug('@WHS.Light: Light ' + scope.type + ' found.', _this);
 	
-	    if (_defaults.defaults.debug) console.debug('@WHS.Light: Light ' + scope._type + ' found.', scope);
-	
-	    return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
+	    return _ret = _this, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
 	
 	  /**
@@ -58800,27 +58802,26 @@ var WHS =
 	      }
 	
 	      return new Promise(function (resolve, reject) {
-	        var _native = _this2.getNative();
+	        var _native = _this2.getNative(),
+	            _params = _this2.getParams();
 	
 	        if (tags.indexOf('no-shadows') < 0) {
-	          _native.castShadow = _this2._shadowmap.cast;
+	          _this2.wrapShadow();
 	        }
 	
 	        if (tags.indexOf('no-transforms') < 0) {
-	          _this2.position.set(_this2.__params.pos.x, _this2.__params.pos.y, _this2.__params.pos.z);
+	          _this2.position.set(_params.pos.x, _params.pos.y, _params.pos.z);
 	
-	          _this2.rotation.set(_this2.__params.rot.x, _this2.__params.rot.y, _this2.__params.rot.z);
+	          _this2.rotation.set(_params.rot.x, _params.rot.y, _params.rot.z);
 	
-	          if (_native.target) {
-	            _this2.target.set(_this2.__params.target.x, _this2.__params.target.y, _this2.__params.target.z);
-	          }
+	          if (_this2.target) _this2.target = _params.target;
 	        }
 	
 	        tags.forEach(function (tag) {
 	          _this2[tag] = true;
 	        });
 	
-	        if (_defaults.defaults.debug) console.debug('@WHS.Light: Light ' + _this2._type + ' + \' is ready.', _this2);
+	        if (WHS.debug) console.debug('@WHS.Light: Light ' + _this2.type + ' + \' is ready.', _this2);
 	
 	        _this2.emit('ready');
 	
@@ -58843,15 +58844,18 @@ var WHS =
 	      this.parent = parent;
 	
 	      return new Promise(function (resolve, reject) {
-	        var _native = _this3.getNative();
+	        var _native = _this3.getNative(),
+	            _parent = _this3.parent;
 	
-	        parent.getScene().add(_native);
+	        var parentNative = _parent instanceof _World.World ? _parent.getScene() : _parent.getNative();
+	
+	        parentNative.add(_native);
 	        parent.children.push(_this3);
 	
-	        if (_this3.helper) _this3.parent.getScene().add(_this3.helper);
-	        if (_native.target) _this3.parent.getScene().add(_native.target);
-	        if (_defaults.defaults.debug) {
-	          console.debug('@WHS.Camera: Camera ' + _this3._type + ' was added to world.', [_this3, _this3.parent]);
+	        if (_this3.helper) parentNative.add(_this3.helper);
+	        if (_native.target) parentNative.add(_native.target);
+	        if (WHS.debug) {
+	          console.debug('@WHS.Camera: Camera ' + _this3.type + ' was added to world.', [_this3, _this3.parent]);
 	        }
 	
 	        resolve(_this3);
@@ -58870,8 +58874,9 @@ var WHS =
 	
 	      return new Promise(function (resolve, reject) {
 	        var _native = _this4.getNative(),
-	            _shadow = _this4._shadowmap;
+	            _shadow = _this4.getParams().shadowmap;
 	
+	        _native.castShadow = _shadow.cast;
 	        _native.shadow.mapSize.width = _shadow.width;
 	        _native.shadow.mapSize.height = _shadow.height;
 	        _native.shadow.bias = _shadow.bias;
@@ -58899,7 +58904,7 @@ var WHS =
 	  }, {
 	    key: 'clone',
 	    value: function clone() {
-	      return new Light(this.__params, this._type).copy(this);
+	      return new Light(this.__params, this.type).copy(this);
 	    }
 	
 	    /**
@@ -58911,36 +58916,37 @@ var WHS =
 	  }, {
 	    key: 'copy',
 	    value: function copy(source) {
-	      this.setNative(source.getNative().clone());
-	      if (source.helper) this.helper = source.helper.clone();
-	      this.setParams(source.getParams());
+	      if (source.getNative()) {
+	        this.setNative(source.getNative().clone());
+	        if (source.helper) this.helper = source.helper.clone();
+	        this.setParams(source.getParams());
 	
-	      this.wrap();
+	        this.wrap();
 	
-	      this.position = source.position.clone();
-	      this.rotation = source.rotation.clone();
+	        this.position = source.position.clone();
+	        this.rotation = source.rotation.clone();
+	        if (source.target) this.target = source.target.clone();
+	      } else this.setParams(source.getParams());
 	
-	      this._type = source._type;
+	      this.type = source.type;
 	
 	      return this;
 	    }
-	
-	    /**
-	     * Remove this light from world.
-	     */
-	
 	  }, {
-	    key: 'remove',
-	    value: function remove() {
-	      this.parent.getScene().remove(this.getNative());
-	      if (source.helper) this.parent.getScene().remove(this.helper);
+	    key: 'getParent',
+	    value: function getParent() {
+	      return this.parent;
+	    }
+	  }, {
+	    key: 'getWorld',
+	    value: function getWorld() {
+	      var p = this.parent;
 	
-	      this.parent.children.splice(this.parent.children.indexOf(this), 1);
-	      this.parent = null;
+	      while (!(p instanceof _World.World)) {
+	        if (p) p = p.parent;else return false;
+	      }
 	
-	      this.emit('remove');
-	
-	      return this;
+	      return p;
 	    }
 	  }, {
 	    key: 'follow',
@@ -59016,12 +59022,20 @@ var WHS =
 	      return this.getNative().rotation.copy(euler);
 	    }
 	  }, {
+	    key: 'quaternion',
+	    get: function get() {
+	      return this.getNative().quaternion;
+	    },
+	    set: function set(euler) {
+	      return this.getNative().quaternion.copy(euler);
+	    }
+	  }, {
 	    key: 'target',
 	    get: function get() {
-	      return this.getNative().target.position;
+	      return this.getNative().target;
 	    },
 	    set: function set(vector3) {
-	      return this.getNative().target.position.copy(vector3);
+	      if (vector3 instanceof THREE.Object3D) this.getNative().target.copy(_params.target);else this.getNative().target.position.copy(vector3);
 	    }
 	  }]);
 	  return Light;
@@ -59038,9 +59052,562 @@ var WHS =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.World = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(302);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(303);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(322);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(376);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(384);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _three = __webpack_require__(392);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _stats = __webpack_require__(406);
+	
+	var _stats2 = _interopRequireDefault(_stats);
+	
+	var _index = __webpack_require__(399);
+	
+	var Physijs = _interopRequireWildcard(_index);
+	
+	var _PerspectiveCamera = __webpack_require__(439);
+	
+	var _Camera = __webpack_require__(393);
+	
+	var _Shape = __webpack_require__(443);
+	
+	var _Light = __webpack_require__(441);
+	
+	var _Object = __webpack_require__(396);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var World = function (_WHSObject) {
+	  (0, _inherits3.default)(World, _WHSObject);
+	
+	  /**
+	   * Create a 3D world and define defaults.
+	   *
+	   * @param {object} params - The scene settings object.
+	   * @return {World} A 3D world whs object.
+	   */
+	
+	  function World() {
+	    var _ret;
+	
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, World);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(World).call(this, {
+	      stats: false,
+	      autoresize: false,
+	      softbody: false,
+	
+	      shadowmap: {
+	        enabled: true,
+	        type: THREE.PCFSoftShadowMap
+	      },
+	
+	      helpers: {
+	        grid: false,
+	        axis: false
+	      },
+	
+	      gravity: {
+	        x: 0,
+	        y: 0,
+	        z: 0
+	      },
+	
+	      camera: {
+	        aspect: 75,
+	        near: 1,
+	        far: 1000,
+	
+	        x: 0,
+	        y: 0,
+	        z: 0
+	      },
+	
+	      rWidth: 1, // Resolution(width).
+	      rHeight: 1, // Resolution(height).
+	
+	      width: window.innerWidth, // Container(width).
+	      height: window.innerHeight, // Container(height).
+	
+	      physics: {
+	        fixedTimeStep: 1 / 60,
+	        broadphase: { type: 'dynamic' }
+	      },
+	
+	      fog: {
+	        type: false,
+	
+	        density: 0.00025,
+	        hex: 0x000000,
+	        near: 1,
+	        far: 1000
+	      },
+	
+	      init: {
+	        scene: true,
+	        stats: true,
+	        camera: true,
+	        helpers: true,
+	        renderer: true
+	      },
+	
+	      background: {
+	        color: 0x000000,
+	        opacity: 1
+	      },
+	
+	      renderer: {},
+	      container: document.body
+	    }));
+	
+	    (0, _get3.default)(Object.getPrototypeOf(World.prototype), 'setParams', _this).call(_this, params);
+	
+	    var initParams = _this.getParams().init;
+	
+	    // INIT.
+	    _this._initDOM();
+	    if (initParams.scene) _this._initScene();
+	    if (initParams.scene && initParams.stats) _this._initStats();
+	
+	    if (initParams.scene && initParams.camera) _this._initCamera();
+	    if (initParams.scene && initParams.renderer) _this._initRenderer();
+	    if (initParams.scene && initParams.helpers) _this._initHelpers();
+	
+	    // NOTE: ==================== Autoresize. ======================
+	
+	    if (params.autoresize === "window") {
+	      window.addEventListener('resize', function () {
+	        _this.setSize(Number(window.innerWidth * params.rWidth).toFixed(), Number(window.innerHeight * params.rHeight).toFixed());
+	
+	        _this.emit('resize');
+	      });
+	    } else if (_this.getParams().autoresize) {
+	      window.addEventListener('resize', function () {
+	        _this.setSize(Number(params.container.offsetWidth * params.rWidth).toFixed(), Number(params.container.offsetHeight * params.rHeight).toFixed());
+	
+	        _this.emit('resize');
+	      });
+	    }
+	
+	    _this.loops = [];
+	    _this.type = 'world';
+	
+	    return _ret = _this, (0, _possibleConstructorReturn3.default)(_this, _ret);
+	  }
+	
+	  /**
+	   * Initialize THREE.js scene object.
+	   */
+	
+	
+	  (0, _createClass3.default)(World, [{
+	    key: '_initScene',
+	    value: function _initScene() {
+	      var params = this.getParams(),
+	          scene =  true ? new Physijs.Scene({
+	        fixedTimeStep: params.physics.fixedTimeStep,
+	        broadphase: params.physics.broadphase
+	      }, {
+	        stats: params.stats,
+	        world: this,
+	        softbody: params.softbody
+	      }) : new THREE.Scene();
+	
+	      if (true) {
+	        scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
+	
+	        this.simulate = true;
+	      } else this.simulate = false;
+	
+	      if (params.fog.type === 'regular') scene.fog = new THREE.Fog(params.fog.hex, params.fog.near, params.fog.far);else if (params.fog.type === 'exp' || params.fog.type === 'expodential') scene.fog = new THREE.FogExp2(params.fog.hex, params.fog.density);
+	
+	      this.setScene(scene, false);
+	
+	      // Array for processing.
+	      this.children = [];
+	    }
+	  }, {
+	    key: 'addLoop',
+	    value: function addLoop(loop) {
+	      this.loops.push(loop); // TODO: Process loops on start
+	      // like: this.loops.forEach((elem) => elem.start());
+	    }
+	  }, {
+	    key: 'removeLoop',
+	    value: function removeLoop(loop) {
+	      this.loops.filter(function (l) {
+	        return l !== loop;
+	      });
+	    }
+	
+	    /**
+	     * Initialize DOM structure for whitestorm.
+	     */
+	
+	  }, {
+	    key: '_initDOM',
+	    value: function _initDOM() {
+	      var params = this.getParams();
+	
+	      params.container.style.margin = 0;
+	      params.container.style.padding = 0;
+	      params.container.style.position = 'relative';
+	      params.container.style.overflow = 'hidden';
+	
+	      this._dom = document.createElement('div');
+	      this._dom.className = 'whs';
+	
+	      params.container.appendChild(this._dom);
+	
+	      return this._dom;
+	    }
+	
+	    /**
+	     * Inititialize stats plugin.
+	     */
+	
+	  }, {
+	    key: '_initStats',
+	    value: function _initStats() {
+	      var params = this.getParams();
+	
+	      if (params.stats) {
+	        this._stats = new _stats2.default();
+	
+	        if (params.stats === 'fps') this._stats.setMode(0);else if (params.stats === 'ms') this._stats.setMode(1);else if (params.stats === 'mb') this._stats.setMode(1);else {
+	          this._stats.setMode(0);
+	          console.warn([this._stats], 'Please, apply stats mode [fps, ms, mb] .');
+	        }
+	
+	        this._stats.domElement.style.position = 'absolute';
+	        this._stats.domElement.style.left = '0px';
+	        this._stats.domElement.style.bottom = '0px';
+	
+	        this._dom.appendChild(this._stats.domElement);
+	      }
+	    }
+	
+	    /**
+	     * Create a camera and add it to scene.
+	     */
+	
+	  }, {
+	    key: '_initCamera',
+	    value: function _initCamera() {
+	      var params = this.getParams();
+	
+	      this.setCamera(new _PerspectiveCamera.PerspectiveCamera({
+	        camera: {
+	          fov: params.camera.aspect,
+	          aspect: params.width / params.height,
+	          near: params.camera.near,
+	          far: params.camera.far
+	        },
+	
+	        pos: {
+	          x: params.camera.x,
+	          y: params.camera.y,
+	          z: params.camera.z
+	        }
+	      }));
+	
+	      this.getCamera().addTo(this);
+	    }
+	
+	    /**
+	     * Create a renderer and apply it's options.
+	     */
+	
+	  }, {
+	    key: '_initRenderer',
+	    value: function _initRenderer() {
+	      this.render = true;
+	
+	      // Renderer.
+	      this.setRenderer(new THREE.WebGLRenderer(this.getParams().renderer));
+	
+	      var renderer = this.getRenderer();
+	      renderer.setClearColor(this.getParams().background.color, this.getParams().background.opacity);
+	
+	      // Shadowmap.
+	      renderer.shadowMap.enabled = this.getParams().shadowmap.enabled;
+	      renderer.shadowMap.type = this.getParams().shadowmap.type;
+	      renderer.shadowMap.cascade = true;
+	
+	      renderer.setSize(Number(this.getParams().width * this.getParams().rWidth).toFixed(), Number(this.getParams().height * this.getParams().rHeight).toFixed());
+	
+	      renderer.render(this.getScene(), this.getCamera().getNative());
+	
+	      this._dom.appendChild(renderer.domElement);
+	
+	      renderer.domElement.style.width = '100%';
+	      renderer.domElement.style.height = '100%';
+	    }
+	
+	    /**
+	     * Add helpers to scene.
+	     */
+	
+	  }, {
+	    key: '_initHelpers',
+	    value: function _initHelpers() {
+	      var params = this.getParams(),
+	          scene = this.getScene();
+	
+	      if (params.helpers.axis) {
+	        scene.add(new THREE.AxisHelper(params.helpers.axis.size ? params.helpers.axis.size : 5));
+	      }
+	
+	      if (params.helpers.grid) {
+	        scene.add(new THREE.GridHelper(params.helpers.grid.size ? params.helpers.grid.size : 10, params.helpers.grid.step ? params.helpers.grid.step : 1, params.helpers.grid.color1, params.helpers.grid.color2));
+	      }
+	    }
+	
+	    /**
+	     * Start animation.
+	     */
+	
+	  }, {
+	    key: 'start',
+	    value: function start() {
+	      var clock = new THREE.Clock(),
+	          _scope = this,
+	          scene = _scope.getScene(),
+	          cameraNative = _scope.getCamera().getNative(),
+	          renderer = _scope.getRenderer();
+	
+	      window.requestAnimFrame = function () {
+	        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
+	          window.setTimeout(callback, 1000 / 60);
+	        };
+	      }();
+	
+	      function reDraw(time) {
+	        window.requestAnimFrame(reDraw);
+	
+	        // Init stats.
+	        if (_scope._stats) _scope._stats.begin();
+	
+	        _scope._process(clock.getDelta());
+	        if (_scope.controls) _scope._updateControls();
+	
+	        if (_scope.simulate) scene.simulate(clock.getDelta(), 1);
+	
+	        // Effects rendering.
+	        if (_scope._composer && _scope.render) {
+	          _scope._composer.reset();
+	          _scope._composer.render(scene, cameraNative);
+	          _scope._composer.pass(_scope._composer.stack);
+	          _scope._composer.toScreen();
+	        } else if (_scope.render) renderer.render(scene, cameraNative);
+	
+	        _scope._execLoops();
+	
+	        // End helper.
+	        if (_scope._stats) _scope._stats.end();
+	      }
+	
+	      this._update = reDraw;
+	
+	      _scope._update();
+	    }
+	
+	    /**
+	     * Execute all loops with a specific time.
+	     *
+	     * @params {number} time - The time value that will be passed to loops.
+	     */
+	
+	  }, {
+	    key: '_execLoops',
+	    value: function _execLoops() {
+	      for (var i = 0; i < this.loops.length; i++) {
+	        var e = this.loops[i];
+	        if (e.enabled) e.execute(e.clock);
+	      }
+	    }
+	
+	    /**
+	     * Update controls time values.
+	     */
+	
+	  }, {
+	    key: '_updateControls',
+	    value: function _updateControls() {
+	      this.controls.update(Date.now() - this.time);
+	      this.time = Date.now();
+	    }
+	
+	    /**
+	     * Update morphs animations.
+	     *
+	     * @params {THREE.Clock} clock - The clock object, which.
+	     */
+	
+	  }, {
+	    key: '_process',
+	    value: function _process(delta) {
+	      for (var i = 0; i < this.children.length; i++) {
+	        if (this.children[i].type === 'morph') this.children[i].getNative().mixer.update(delta);
+	      }
+	    }
+	
+	    /**
+	     * This functon will scene properties when it's called.
+	     */
+	
+	  }, {
+	    key: 'setSize',
+	    value: function setSize() {
+	      var width = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
+	      var height = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+	
+	      this.getCamera().getNative().aspect = width / height;
+	      this.getCamera().getNative().updateProjectionMatrix();
+	
+	      this.getRenderer().setSize(Number(width * this.getParams().rWidth).toFixed(), Number(height * this.getParams().rHeight).toFixed());
+	    }
+	  }, {
+	    key: 'setScene',
+	    value: function setScene(scene) {
+	      var _this2 = this;
+	
+	      var import_three = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+	
+	      this.scene = scene;
+	
+	      if (import_three) {
+	        (function () {
+	          _this2.children = [];
+	
+	          var moveChildren = function moveChildren(object) {
+	            for (var i = 0, max = object.children.length; i < max; i++) {
+	              var obj3D = object.children[i];
+	              var WHSobj = void 0;
+	
+	              if (obj3D instanceof THREE.Light) WHSobj = new _Light.Light(obj3D);else WHSobj = new _Shape.Shape(obj3D);
+	
+	              WHSobj.addTo(_this2);
+	
+	              if (obj3D.children.length) moveChildren(obj3D, WHSobj);
+	            }
+	          };
+	
+	          moveChildren(scene, _this2);
+	        })();
+	      }
+	
+	      return this.scene;
+	    }
+	  }, {
+	    key: 'getScene',
+	    value: function getScene() {
+	      return this.scene;
+	    }
+	  }, {
+	    key: 'setRenderer',
+	    value: function setRenderer(renderer) {
+	      this.renderer = renderer;
+	      return this.renderer;
+	    }
+	  }, {
+	    key: 'getRenderer',
+	    value: function getRenderer() {
+	      return this.renderer;
+	    }
+	  }, {
+	    key: 'setControls',
+	    value: function setControls(controls) {
+	      var recieved = controls(this);
+	
+	      this.controls = recieved instanceof Array ? recieved[0] : recieved;
+	
+	      if (recieved instanceof Array && typeof recieved[1] === 'function') recieved[1](this);
+	
+	      return this.controls;
+	    }
+	
+	    /**
+	     * Set a camera for rendering world.
+	     *
+	     * @params {WHS.Camera} camera - The camera to be rendered.
+	     */
+	
+	  }, {
+	    key: 'setCamera',
+	    value: function setCamera(camera) {
+	      if (camera instanceof _Camera.Camera) this.camera = camera;else console.error('@WHS.World: camera in not an instance of WHS.Camera.');
+	    }
+	  }, {
+	    key: 'getCamera',
+	    value: function getCamera() {
+	      return this.camera;
+	    }
+	
+	    /**
+	     * Remove this shape from world.
+	     *
+	     * @return {WHS.Shape} - this.
+	     */
+	
+	  }, {
+	    key: 'remove',
+	    value: function remove(source) {
+	      this.getScene().remove(source.getNative());
+	
+	      this.children.splice(this.children.indexOf(source), 1);
+	      source.parent = null;
+	
+	      source.emit('remove');
+	
+	      if (WHS.debug) {
+	        console.debug('@WHS.Shape: Shape ' + source.type + ' was removed from world', [source]);
+	      }
+	
+	      return this;
+	    }
+	  }]);
+	  return World;
+	}(_Object.WHSObject);
+	
+	exports.World = World;
+
+/***/ },
+/* 443 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	exports.Shape = undefined;
 	
-	var _defineProperty2 = __webpack_require__(443);
+	var _defineProperty2 = __webpack_require__(444);
 	
 	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 	
@@ -59072,9 +59639,7 @@ var WHS =
 	
 	var _Loop = __webpack_require__(394);
 	
-	var _defaults = __webpack_require__(395);
-	
-	var _World = __webpack_require__(444);
+	var _World = __webpack_require__(442);
 	
 	var _Object = __webpack_require__(396);
 	
@@ -59170,7 +59735,7 @@ var WHS =
 	      physics: physicsDefaults
 	    }));
 	
-	    if (params instanceof THREE.Object3D) {
+	    if (params instanceof THREE.Mesh) {
 	      (0, _get3.default)(Object.getPrototypeOf(Shape.prototype), 'setParams', _this).call(_this, {
 	        pos: { x: params.position.x, y: params.position.y, z: params.position.z },
 	        rot: { x: params.rotation.x, y: params.rotation.y, z: params.rotation.z },
@@ -59181,7 +59746,7 @@ var WHS =
 	    } else (0, _get3.default)(Object.getPrototypeOf(Shape.prototype), 'setParams', _this).call(_this, params);
 	
 	    var scope = Object.assign(_this, {
-	      _type: type,
+	      type: type,
 	      __c_rot: false,
 	
 	      _wait: [],
@@ -59196,8 +59761,8 @@ var WHS =
 	      physics: params.physics
 	    });
 	
-	    if (params instanceof THREE.Object3D) _this.setNative(params);
-	    if (_defaults.defaults.debug) console.debug('@WHS.Shape: Shape ' + scope._type + ' found.', scope);
+	    if (params instanceof THREE.Mesh) _this.setNative(params);
+	    if (WHS.debug) console.debug('@WHS.Shape: Shape ' + scope.type + ' found.', scope);
 	
 	    return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
@@ -59303,7 +59868,7 @@ var WHS =
 	
 	            resolve(_this2);
 	
-	            if (WHS.debug) console.debug('@WHS.Shape: Shape ' + _this2._type + ' is ready.', _this2);
+	            if (WHS.debug) console.debug('@WHS.Shape: Shape ' + _this2.type + ' is ready.', _this2);
 	          });
 	        });
 	      } else {
@@ -59384,7 +59949,7 @@ var WHS =
 	
 	          resolve(_this2);
 	
-	          if (WHS.debug) console.debug('@WHS.Shape: Shape ' + _this2._type + ' is ready.', _this2);
+	          if (WHS.debug) console.debug('@WHS.Shape: Shape ' + _this2.type + ' is ready.', _this2);
 	        });
 	      }
 	    }
@@ -59437,7 +60002,7 @@ var WHS =
 	            });
 	
 	            if (WHS.debug) {
-	              console.debug('@WHS.Shape: Shape ' + _this3._type + ' was added to world.', [_this3, _parent]);
+	              console.debug('@WHS.Shape: Shape ' + _this3.type + ' was added to world.', [_this3, _parent]);
 	            }
 	          });
 	        });
@@ -59473,7 +60038,7 @@ var WHS =
 	          });
 	
 	          if (WHS.debug) {
-	            console.debug('@WHS.Shape: Shape ' + _this3._type + ' was added to world.', [_this3, _parent]);
+	            console.debug('@WHS.Shape: Shape ' + _this3.type + ' was added to world.', [_this3, _parent]);
 	          }
 	        });
 	      }
@@ -59486,7 +60051,7 @@ var WHS =
 	  }, {
 	    key: 'clone',
 	    value: function clone() {
-	      return new WHS.Shape(this.getParams(), this._type).copy(this);
+	      return new WHS.Shape(this.getParams(), this.type).copy(this);
 	    }
 	
 	    /**
@@ -59521,11 +60086,6 @@ var WHS =
 	    value: function getParent() {
 	      return this.parent;
 	    }
-	
-	    /**
-	     * @return {WHS.World} - World object.
-	     */
-	
 	  }, {
 	    key: 'getWorld',
 	    value: function getWorld() {
@@ -59882,7 +60442,7 @@ var WHS =
 	exports.Shape = Shape;
 
 /***/ },
-/* 443 */
+/* 444 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59909,558 +60469,6 @@ var WHS =
 	
 	  return obj;
 	};
-
-/***/ },
-/* 444 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.World = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(302);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(303);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(322);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(376);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(384);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _three = __webpack_require__(392);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _stats = __webpack_require__(406);
-	
-	var _stats2 = _interopRequireDefault(_stats);
-	
-	var _index = __webpack_require__(399);
-	
-	var Physijs = _interopRequireWildcard(_index);
-	
-	var _PerspectiveCamera = __webpack_require__(439);
-	
-	var _Camera = __webpack_require__(393);
-	
-	var _Shape = __webpack_require__(442);
-	
-	var _Light = __webpack_require__(441);
-	
-	var _Object = __webpack_require__(396);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var World = function (_WHSObject) {
-	  (0, _inherits3.default)(World, _WHSObject);
-	
-	  /**
-	   * Create a 3D world and define defaults.
-	   *
-	   * @param {object} params - The scene settings object.
-	   * @return {World} A 3D world whs object.
-	   */
-	
-	  function World() {
-	    var _ret;
-	
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, World);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(World).call(this, {
-	      stats: false,
-	      autoresize: false,
-	      softbody: false,
-	
-	      shadowmap: {
-	        enabled: true,
-	        type: THREE.PCFSoftShadowMap
-	      },
-	
-	      helpers: {
-	        grid: false,
-	        axis: false
-	      },
-	
-	      gravity: {
-	        x: 0,
-	        y: 0,
-	        z: 0
-	      },
-	
-	      camera: {
-	        aspect: 75,
-	        near: 1,
-	        far: 1000,
-	
-	        x: 0,
-	        y: 0,
-	        z: 0
-	      },
-	
-	      rWidth: 1, // Resolution(width).
-	      rHeight: 1, // Resolution(height).
-	
-	      width: window.innerWidth, // Container(width).
-	      height: window.innerHeight, // Container(height).
-	
-	      physics: {
-	        fixedTimeStep: 1 / 60,
-	        broadphase: { type: 'dynamic' }
-	      },
-	
-	      fog: {
-	        type: false,
-	
-	        density: 0.00025,
-	        hex: 0x000000,
-	        near: 1,
-	        far: 1000
-	      },
-	
-	      init: {
-	        scene: true,
-	        stats: true,
-	        camera: true,
-	        helpers: true,
-	        renderer: true
-	      },
-	
-	      background: {
-	        color: 0x000000,
-	        opacity: 1
-	      },
-	
-	      renderer: {},
-	      container: document.body
-	    }));
-	
-	    (0, _get3.default)(Object.getPrototypeOf(World.prototype), 'setParams', _this).call(_this, params);
-	
-	    var initParams = _this.getParams().init;
-	
-	    // INIT.
-	    _this._initDOM();
-	    if (initParams.scene) _this._initScene();
-	    if (initParams.scene && initParams.stats) _this._initStats();
-	
-	    if (initParams.scene && initParams.camera) _this._initCamera();
-	    if (initParams.scene && initParams.renderer) _this._initRenderer();
-	    if (initParams.scene && initParams.helpers) _this._initHelpers();
-	
-	    // NOTE: ==================== Autoresize. ======================
-	
-	    if (params.autoresize === "window") {
-	      window.addEventListener('resize', function () {
-	        _this.setSize(Number(window.innerWidth * params.rWidth).toFixed(), Number(window.innerHeight * params.rHeight).toFixed());
-	
-	        _this.emit('resize');
-	      });
-	    } else if (_this.getParams().autoresize) {
-	      window.addEventListener('resize', function () {
-	        _this.setSize(Number(params.container.offsetWidth * params.rWidth).toFixed(), Number(params.container.offsetHeight * params.rHeight).toFixed());
-	
-	        _this.emit('resize');
-	      });
-	    }
-	
-	    _this.loops = [];
-	
-	    return _ret = _this, (0, _possibleConstructorReturn3.default)(_this, _ret);
-	  }
-	
-	  /**
-	   * Initialize THREE.js scene object.
-	   */
-	
-	
-	  (0, _createClass3.default)(World, [{
-	    key: '_initScene',
-	    value: function _initScene() {
-	      var params = this.getParams(),
-	          scene =  true ? new Physijs.Scene({
-	        fixedTimeStep: params.physics.fixedTimeStep,
-	        broadphase: params.physics.broadphase
-	      }, {
-	        stats: params.stats,
-	        world: this,
-	        softbody: params.softbody
-	      }) : new THREE.Scene();
-	
-	      if (true) {
-	        scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
-	
-	        this.simulate = true;
-	      } else this.simulate = false;
-	
-	      if (params.fog.type === 'regular') scene.fog = new THREE.Fog(params.fog.hex, params.fog.near, params.fog.far);else if (params.fog.type === 'exp' || params.fog.type === 'expodential') scene.fog = new THREE.FogExp2(params.fog.hex, params.fog.density);
-	
-	      this.setScene(scene, false);
-	
-	      // Array for processing.
-	      this.children = [];
-	    }
-	  }, {
-	    key: 'addLoop',
-	    value: function addLoop(loop) {
-	      this.loops.push(loop); // TODO: Process loops on start
-	      // like: this.loops.forEach((elem) => elem.start());
-	    }
-	  }, {
-	    key: 'removeLoop',
-	    value: function removeLoop(loop) {
-	      this.loops.filter(function (l) {
-	        return l !== loop;
-	      });
-	    }
-	
-	    /**
-	     * Initialize DOM structure for whitestorm.
-	     */
-	
-	  }, {
-	    key: '_initDOM',
-	    value: function _initDOM() {
-	      var params = this.getParams();
-	
-	      params.container.style.margin = 0;
-	      params.container.style.padding = 0;
-	      params.container.style.position = 'relative';
-	      params.container.style.overflow = 'hidden';
-	
-	      this._dom = document.createElement('div');
-	      this._dom.className = 'whs';
-	
-	      params.container.appendChild(this._dom);
-	
-	      return this._dom;
-	    }
-	
-	    /**
-	     * Inititialize stats plugin.
-	     */
-	
-	  }, {
-	    key: '_initStats',
-	    value: function _initStats() {
-	      var params = this.getParams();
-	
-	      if (params.stats) {
-	        this._stats = new _stats2.default();
-	
-	        if (params.stats === 'fps') this._stats.setMode(0);else if (params.stats === 'ms') this._stats.setMode(1);else if (params.stats === 'mb') this._stats.setMode(1);else {
-	          this._stats.setMode(0);
-	          console.warn([this._stats], 'Please, apply stats mode [fps, ms, mb] .');
-	        }
-	
-	        this._stats.domElement.style.position = 'absolute';
-	        this._stats.domElement.style.left = '0px';
-	        this._stats.domElement.style.bottom = '0px';
-	
-	        this._dom.appendChild(this._stats.domElement);
-	      }
-	    }
-	
-	    /**
-	     * Create a camera and add it to scene.
-	     */
-	
-	  }, {
-	    key: '_initCamera',
-	    value: function _initCamera() {
-	      var params = this.getParams();
-	
-	      this.setCamera(new _PerspectiveCamera.PerspectiveCamera({
-	        camera: {
-	          fov: params.camera.aspect,
-	          aspect: params.width / params.height,
-	          near: params.camera.near,
-	          far: params.camera.far
-	        },
-	
-	        pos: {
-	          x: params.camera.x,
-	          y: params.camera.y,
-	          z: params.camera.z
-	        }
-	      }));
-	
-	      this.getCamera().addTo(this);
-	    }
-	
-	    /**
-	     * Create a renderer and apply it's options.
-	     */
-	
-	  }, {
-	    key: '_initRenderer',
-	    value: function _initRenderer() {
-	      this.render = true;
-	
-	      // Renderer.
-	      this.setRenderer(new THREE.WebGLRenderer(this.getParams().renderer));
-	
-	      var renderer = this.getRenderer();
-	      renderer.setClearColor(this.getParams().background.color, this.getParams().background.opacity);
-	
-	      // Shadowmap.
-	      renderer.shadowMap.enabled = this.getParams().shadowmap.enabled;
-	      renderer.shadowMap.type = this.getParams().shadowmap.type;
-	      renderer.shadowMap.cascade = true;
-	
-	      renderer.setSize(Number(this.getParams().width * this.getParams().rWidth).toFixed(), Number(this.getParams().height * this.getParams().rHeight).toFixed());
-	
-	      renderer.render(this.getScene(), this.getCamera().getNative());
-	
-	      this._dom.appendChild(renderer.domElement);
-	
-	      renderer.domElement.style.width = '100%';
-	      renderer.domElement.style.height = '100%';
-	    }
-	
-	    /**
-	     * Add helpers to scene.
-	     */
-	
-	  }, {
-	    key: '_initHelpers',
-	    value: function _initHelpers() {
-	      var params = this.getParams(),
-	          scene = this.getScene();
-	
-	      if (params.helpers.axis) {
-	        scene.add(new THREE.AxisHelper(params.helpers.axis.size ? params.helpers.axis.size : 5));
-	      }
-	
-	      if (params.helpers.grid) {
-	        scene.add(new THREE.GridHelper(params.helpers.grid.size ? params.helpers.grid.size : 10, params.helpers.grid.step ? params.helpers.grid.step : 1, params.helpers.grid.color1, params.helpers.grid.color2));
-	      }
-	    }
-	
-	    /**
-	     * Start animation.
-	     */
-	
-	  }, {
-	    key: 'start',
-	    value: function start() {
-	      var clock = new THREE.Clock(),
-	          _scope = this,
-	          scene = _scope.getScene(),
-	          cameraNative = _scope.getCamera().getNative(),
-	          renderer = _scope.getRenderer();
-	
-	      window.requestAnimFrame = function () {
-	        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
-	          window.setTimeout(callback, 1000 / 60);
-	        };
-	      }();
-	
-	      function reDraw(time) {
-	        window.requestAnimFrame(reDraw);
-	
-	        // Init stats.
-	        if (_scope._stats) _scope._stats.begin();
-	
-	        _scope._process(clock.getDelta());
-	        if (_scope.controls) _scope._updateControls();
-	
-	        if (_scope.simulate) scene.simulate(clock.getDelta(), 1);
-	
-	        // Effects rendering.
-	        if (_scope._composer && _scope.render) {
-	          _scope._composer.reset();
-	          _scope._composer.render(scene, cameraNative);
-	          _scope._composer.pass(_scope._composer.stack);
-	          _scope._composer.toScreen();
-	        } else if (_scope.render) renderer.render(scene, cameraNative);
-	
-	        _scope._execLoops();
-	
-	        // End helper.
-	        if (_scope._stats) _scope._stats.end();
-	      }
-	
-	      this._update = reDraw;
-	
-	      _scope._update();
-	    }
-	
-	    /**
-	     * Execute all loops with a specific time.
-	     *
-	     * @params {number} time - The time value that will be passed to loops.
-	     */
-	
-	  }, {
-	    key: '_execLoops',
-	    value: function _execLoops() {
-	      for (var i = 0; i < this.loops.length; i++) {
-	        var e = this.loops[i];
-	        if (e.enabled) e.execute(e.clock);
-	      }
-	    }
-	
-	    /**
-	     * Update controls time values.
-	     */
-	
-	  }, {
-	    key: '_updateControls',
-	    value: function _updateControls() {
-	      this.controls.update(Date.now() - this.time);
-	      this.time = Date.now();
-	    }
-	
-	    /**
-	     * Update morphs animations.
-	     *
-	     * @params {THREE.Clock} clock - The clock object, which.
-	     */
-	
-	  }, {
-	    key: '_process',
-	    value: function _process(delta) {
-	      for (var i = 0; i < this.children.length; i++) {
-	        if (this.children[i]._type === 'morph') this.children[i].getNative().mixer.update(delta);
-	      }
-	    }
-	
-	    /**
-	     * This functon will scene properties when it's called.
-	     */
-	
-	  }, {
-	    key: 'setSize',
-	    value: function setSize() {
-	      var width = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
-	      var height = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
-	
-	      this.getCamera().getNative().aspect = width / height;
-	      this.getCamera().getNative().updateProjectionMatrix();
-	
-	      this.getRenderer().setSize(Number(width * this.getParams().rWidth).toFixed(), Number(height * this.getParams().rHeight).toFixed());
-	    }
-	  }, {
-	    key: 'setScene',
-	    value: function setScene(scene) {
-	      var _this2 = this;
-	
-	      var import_three = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
-	
-	      this.scene = scene;
-	
-	      if (import_three) {
-	        (function () {
-	          _this2.children = [];
-	
-	          var moveChildren = function moveChildren(object) {
-	            for (var i = 0, max = object.children.length; i < max; i++) {
-	              var obj3D = object.children[i];
-	              var WHSobj = void 0;
-	
-	              if (obj3D instanceof THREE.Light) WHSobj = new _Light.Light(obj3D);else WHSobj = new _Shape.Shape(obj3D);
-	
-	              WHSobj.addTo(_this2);
-	
-	              if (obj3D.children.length) moveChildren(obj3D, WHSobj);
-	            }
-	          };
-	
-	          moveChildren(scene, _this2);
-	        })();
-	      }
-	
-	      return this.scene;
-	    }
-	  }, {
-	    key: 'getScene',
-	    value: function getScene() {
-	      return this.scene;
-	    }
-	  }, {
-	    key: 'setRenderer',
-	    value: function setRenderer(renderer) {
-	      this.renderer = renderer;
-	      return this.renderer;
-	    }
-	  }, {
-	    key: 'getRenderer',
-	    value: function getRenderer() {
-	      return this.renderer;
-	    }
-	  }, {
-	    key: 'setControls',
-	    value: function setControls(controls) {
-	      var recieved = controls(this);
-	
-	      this.controls = recieved instanceof Array ? recieved[0] : recieved;
-	
-	      if (recieved instanceof Array && typeof recieved[1] === 'function') recieved[1](this);
-	
-	      return this.controls;
-	    }
-	
-	    /**
-	     * Set a camera for rendering world.
-	     *
-	     * @params {WHS.Camera} camera - The camera to be rendered.
-	     */
-	
-	  }, {
-	    key: 'setCamera',
-	    value: function setCamera(camera) {
-	      if (camera instanceof _Camera.Camera) this.camera = camera;else console.error('@WHS.World: camera in not an instance of WHS.Camera.');
-	    }
-	  }, {
-	    key: 'getCamera',
-	    value: function getCamera() {
-	      return this.camera;
-	    }
-	
-	    /**
-	     * Remove this shape from world.
-	     *
-	     * @return {WHS.Shape} - this.
-	     */
-	
-	  }, {
-	    key: 'remove',
-	    value: function remove(source) {
-	      this.getScene().remove(source.getNative());
-	
-	      this.children.splice(this.children.indexOf(source), 1);
-	      source.parent = null;
-	
-	      source.emit('remove');
-	
-	      if (WHS.debug) {
-	        console.debug('@WHS.Shape: Shape ' + source._type + ' was removed from world', [source]);
-	      }
-	
-	      return this;
-	    }
-	  }]);
-	  return World;
-	}(_Object.WHSObject);
-	
-	exports.World = World;
 
 /***/ },
 /* 445 */
@@ -62047,7 +62055,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -62317,7 +62325,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _Object = __webpack_require__(396);
 	
@@ -62386,7 +62394,7 @@ var WHS =
 	
 	var _api = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -62669,7 +62677,6 @@ var WHS =
 	    _this.build(params);
 	
 	    (0, _get3.default)(Object.getPrototypeOf(DirectionalLight.prototype), 'wrap', _this).call(_this);
-	    (0, _get3.default)(Object.getPrototypeOf(DirectionalLight.prototype), 'wrapShadow', _this).call(_this);
 	    return _this;
 	  }
 	
@@ -62749,7 +62756,6 @@ var WHS =
 	    _this.build(params);
 	
 	    (0, _get3.default)(Object.getPrototypeOf(HemisphereLight.prototype), 'wrap', _this).call(_this);
-	    (0, _get3.default)(Object.getPrototypeOf(HemisphereLight.prototype), 'wrapShadow', _this).call(_this);
 	    return _this;
 	  }
 	
@@ -62829,7 +62835,6 @@ var WHS =
 	    _this.build(params);
 	
 	    (0, _get3.default)(Object.getPrototypeOf(NormalLight.prototype), 'wrap', _this).call(_this);
-	    (0, _get3.default)(Object.getPrototypeOf(NormalLight.prototype), 'wrapShadow', _this).call(_this);
 	    return _this;
 	  }
 	
@@ -62905,7 +62910,6 @@ var WHS =
 	    _this.build(params);
 	
 	    (0, _get3.default)(Object.getPrototypeOf(PointLight.prototype), 'wrap', _this).call(_this);
-	    (0, _get3.default)(Object.getPrototypeOf(PointLight.prototype), 'wrapShadow', _this).call(_this);
 	    return _this;
 	  }
 	
@@ -62985,7 +62989,6 @@ var WHS =
 	    _this.build(params);
 	
 	    (0, _get3.default)(Object.getPrototypeOf(SpotLight.prototype), 'wrap', _this).call(_this);
-	    (0, _get3.default)(Object.getPrototypeOf(SpotLight.prototype), 'wrapShadow', _this).call(_this);
 	    return _this;
 	  }
 	
@@ -63297,7 +63300,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -63431,7 +63434,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -63578,7 +63581,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -63699,7 +63702,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -63820,7 +63823,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -63941,7 +63944,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -64053,7 +64056,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -64197,7 +64200,7 @@ var WHS =
 	
 	var Physijs = _interopRequireWildcard(_index);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -64316,7 +64319,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -64437,7 +64440,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -64568,7 +64571,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -64703,7 +64706,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -64850,7 +64853,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -65001,7 +65004,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -65109,7 +65112,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -65243,7 +65246,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -65364,7 +65367,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -65477,7 +65480,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -65625,7 +65628,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
@@ -65791,7 +65794,7 @@ var WHS =
 	
 	var _index = __webpack_require__(399);
 	
-	var _Shape2 = __webpack_require__(442);
+	var _Shape2 = __webpack_require__(443);
 	
 	var _api = __webpack_require__(398);
 	
