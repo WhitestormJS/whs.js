@@ -17,13 +17,9 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
     "test",
-    "tests",
     "src",
-    "src-examples",
     "examples",
-    "lib",
     "media"
   ]
 }
