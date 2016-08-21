@@ -6,9 +6,9 @@
   "scripts": {
     "build": "gulp src:build",
     "dev": "gulp dev",
-    "test": "gulp src:karma",
-    "build:node": "gulp src:build:node",
-    "build:browser": "gulp src:build:browser",
+    "test": "gulp test",
+    "test:unit": "gulp test:unit",
+    "test:benchmark": "gulp test:benchmark",
     "lint": "gulp src:lint"
   },
   "repository": {

@@ -18,6 +18,10 @@ define(['whs', 'table'], function (WHS) {
   }, {
     onStart: () => {
       this.GAME = new WHS.World({
+        init: {
+          renderer: false
+        },
+        
         gravity: {
           x: 0,
           y: -100,
