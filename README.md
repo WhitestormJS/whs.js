@@ -3,11 +3,12 @@
 <p align="center"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/logo/big.png"></p>
 
 <p align="center">
-    <a href="https://travis-ci.org/WhitestormJS/whitestorm.js" align="center"><img src="https://travis-ci.org/WhitestormJS/whitestorm.js.svg"></a>&nbsp;&nbsp;
-    <a href="https://www.npmjs.com/package/whitestormjs"><img src="http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg"></a>&nbsp;&nbsp;          
-    <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg"></a>&nbsp;&nbsp;
-    <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>&nbsp;&nbsp;
-    <a href="https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge" alt="Join the chat at https://gitter.im/WhitestormJS/whitestorm.js"><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
+    <a href="https://travis-ci.org/WhitestormJS/whitestorm.js" align="center"><img src="http://wsbadge.herokuapp.com/travis/WhitestormJS/whitestorm.js.svg?style=flat-square"></a>&nbsp;&nbsp;
+    <a href="https://www.npmjs.com/package/whitestormjs"><img src="http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg?style=flat-square"></a>&nbsp;&nbsp;          
+    <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg?style=flat-square"></a>&nbsp;&nbsp;
+    <a href="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/LICENSE" alt="License"><img src="http://wsbadge.herokuapp.com/github/license/WhitestormJS/whitestorm.js.svg?style=flat-square"></a>&nbsp;&nbsp;
+    <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg?style=flat-square"></a>
+
 
     <p align="center"><i><b>Framework for developing 3D web apps with physics.</b></i></p>
 </p>
@@ -62,6 +63,10 @@ const world = new WHS.World({
         x: 0,
         y: -100,
         z: 0
+    },
+    
+    camera: {
+      z: 50 // Move camera.
     }
 });
 
