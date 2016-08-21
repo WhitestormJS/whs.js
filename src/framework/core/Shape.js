@@ -2,7 +2,6 @@ import * as THREE from 'three';
 
 import {loadMaterial, extend} from '../extras/api';
 import {Loop} from '../extensions/Loop';
-import {defaults} from '../utils/defaults';
 import {World} from './World';
 import {WHSObject} from './Object';
 
@@ -85,7 +84,7 @@ class Shape extends WHSObject {
       physics: physicsDefaults
     });
 
-    if (params instanceof THREE.Object3D) {
+    if (params instanceof THREE.Mesh) {
       super.setParams({
         pos: {x: params.position.x, y: params.position.y, z: params.position.z},
         rot: {x: params.rotation.x, y: params.rotation.y, z: params.rotation.z},
@@ -97,7 +96,7 @@ class Shape extends WHSObject {
 
     const scope = Object.assign(this,
       {
-        _type: type,
+        type: type,
         __c_rot: false,
 
         _wait: [],
@@ -113,8 +112,8 @@ class Shape extends WHSObject {
       }
     );
 
-    if (params instanceof THREE.Object3D) this.setNative(params);
-    if (defaults.debug) console.debug(`@WHS.Shape: Shape ${scope._type} found.`, scope);
+    if (params instanceof THREE.Mesh) this.setNative(params);
+    if (WHS.debug) console.debug(`@WHS.Shape: Shape ${scope.type} found.`, scope);
 
     return scope;
   }
@@ -241,7 +240,7 @@ class Shape extends WHSObject {
 
           resolve(this);
 
-          if (WHS.debug) console.debug(`@WHS.Shape: Shape ${this._type} is ready.`, this);
+          if (WHS.debug) console.debug(`@WHS.Shape: Shape ${this.type} is ready.`, this);
         });
       });
     } else {
@@ -354,7 +353,7 @@ class Shape extends WHSObject {
 
         resolve(this);
 
-        if (WHS.debug) console.debug(`@WHS.Shape: Shape ${this._type} is ready.`, this);
+        if (WHS.debug) console.debug(`@WHS.Shape: Shape ${this.type} is ready.`, this);
       });
     }
   }
@@ -404,7 +403,7 @@ class Shape extends WHSObject {
 
           if (WHS.debug) {
             console.debug(
-              `@WHS.Shape: Shape ${this._type} was added to world.`,
+              `@WHS.Shape: Shape ${this.type} was added to world.`,
               [this, _parent]
             );
           }
@@ -444,7 +443,7 @@ class Shape extends WHSObject {
 
         if (WHS.debug) {
           console.debug(
-            `@WHS.Shape: Shape ${this._type} was added to world.`,
+            `@WHS.Shape: Shape ${this.type} was added to world.`,
             [this, _parent]
           );
         }
@@ -456,7 +455,7 @@ class Shape extends WHSObject {
    * Clone shape.
    */
   clone() {
-    return new WHS.Shape(this.getParams(), this._type).copy(this);
+    return new WHS.Shape(this.getParams(), this.type).copy(this);
   }
 
   /**
@@ -490,9 +489,6 @@ class Shape extends WHSObject {
     return this.parent;
   }
 
-  /**
-   * @return {WHS.World} - World object.
-   */
   getWorld() {
     let p = this.parent;
 

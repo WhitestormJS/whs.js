@@ -392,7 +392,8 @@ var Terrain = function (_Shape) {
       width: 1,
       height: 1,
       depth: 1,
-      map: false
+      map: false,
+      normalMap: false
     });
 
     _this.build(params);
@@ -411,14 +412,14 @@ var Terrain = function (_Shape) {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
       var promise = new _promise2.default(function (resolve) {
+        var rx = params.geometry.width,
+            ry = params.geometry.height;
+
         var canvas = document.createElement('canvas');
-        canvas.setAttribute('width', params.geometry.width);
-        canvas.setAttribute('height', params.geometry.height);
+        canvas.setAttribute('width', rx);
+        canvas.setAttribute('height', ry);
 
         var textures = typeof params.material[0] === 'string' ? (0, _persets.loadPerset)((0, _persets.persets)()[params.material[0]], params.material[1]) : params.material;
-
-        var rx = 256,
-            ry = 256;
 
         var pars = {
           minFilter: THREE.LinearFilter,
@@ -450,8 +451,8 @@ var Terrain = function (_Shape) {
           uniformsTerrain.uDisplacementScale.value = 100;
           uniformsTerrain.uRepeatOverlay.value.set(6, 6);
 
-          for (var _i = 0; _i < textures.length; _i++) {
-            uniformsTerrain['textureBound' + _i] = { type: 't', value: textures[_i].texture };
+          for (var i = 0; i < textures.length; i++) {
+            uniformsTerrain['textureBound' + i] = { type: 't', value: textures[i].texture };
           }var material = new THREE.ShaderMaterial({
             uniforms: uniformsTerrain,
             vertexShader: terrainShader.vertexShader,
@@ -462,22 +463,21 @@ var Terrain = function (_Shape) {
             shading: THREE.SmoothShading
           });
 
-          var geom = new THREE.PlaneGeometry(256, 256, 255, 255);
+          var geom = new THREE.PlaneBufferGeometry(rx, ry, rx - 1, ry - 1);
           geom.verticesNeedUpdate = true;
 
-          var index = 0,
-              i = 0;
+          var index = 0;
 
           var ctx = canvas.getContext('2d');
           ctx.drawImage(texture.image, 0, 0);
 
-          var imgdata = ctx.getImageData(0, 0, 256, 256).data;
+          var imgdata = ctx.getImageData(0, 0, rx, ry).data;
+          var verts = geom.attributes.position.array;
+          var depth = params.geometry.depth;
 
-          for (var x = 0; x <= 255; x++) {
-            for (var y = 255; y >= 0; y--) {
-              geom.vertices[index].z = imgdata[i] / 255 * 100;
-
-              i += 4;
+          for (var x = 0; x < rx; x++) {
+            for (var y = ry - 1; y >= 0; y--) {
+              verts[index * 3 + 2] = imgdata[index * 4] / 255 * depth;
               index++;
             }
           }
@@ -485,8 +485,6 @@ var Terrain = function (_Shape) {
           geom.computeVertexNormals();
           geom.computeFaceNormals();
           geom.computeTangents();
-
-          console.log(_this2.getParams());
 
           _this2.setNative(new Physijs.HeightfieldMesh(geom, material, _this2.getParams()));
 
