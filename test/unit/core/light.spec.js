@@ -15,7 +15,7 @@ define(['whs'], function(WHS) {
             light[name][dims.charAt(i)] = 3;
         });
 
-        it('=== Values are equals ===', () => light.position === light.getNative().position);
+        it('=== Values are equal ===', () => light.position === light.getNative().position);
       });
     }
 
