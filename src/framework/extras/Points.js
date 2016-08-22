@@ -2,9 +2,9 @@ import * as THREE from 'three';
 
 import {loadMaterial} from './api';
 import {defaults} from '../utils/defaults';
-import {WHSObject} from '../core/Object';
+import {CoreObject} from '../core/CoreObject';
 
-class Points extends WHSObject {
+class Points extends CoreObject {
   /**
    * Create points.
    *

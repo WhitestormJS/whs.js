@@ -6,9 +6,9 @@ import {PerspectiveCamera} from '../cameras/PerspectiveCamera';
 import {Camera} from './Camera';
 import {Shape} from './Shape';
 import {Light} from './Light';
-import {WHSObject} from './Object';
+import {CoreObject} from './CoreObject';
 
-class World extends WHSObject {
+class World extends CoreObject {
   /**
    * Create a 3D world and define defaults.
    *
