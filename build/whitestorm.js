@@ -51754,14 +51754,14 @@ var WHS =
 	
 	var _defaults = __webpack_require__(395);
 	
-	var _Object = __webpack_require__(396);
+	var _CoreObject2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Camera = function (_WHSObject) {
-	  (0, _inherits3.default)(Camera, _WHSObject);
+	var Camera = function (_CoreObject) {
+	  (0, _inherits3.default)(Camera, _CoreObject);
 	
 	  function Camera(params, type) {
 	    var _ret;
@@ -51995,7 +51995,7 @@ var WHS =
 	    }
 	  }]);
 	  return Camera;
-	}(_Object.WHSObject);
+	}(_CoreObject2.CoreObject);
 	
 	exports.Camera = Camera;
 
@@ -52082,7 +52082,7 @@ var WHS =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.WHSObject = undefined;
+	exports.CoreObject = undefined;
 	
 	var _classCallCheck2 = __webpack_require__(302);
 	
@@ -52100,7 +52100,7 @@ var WHS =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var WHSObject = function () {
+	var CoreObject = function () {
 	  /**
 	   * Constructing WHS.Shape object.
 	   *
@@ -52109,10 +52109,10 @@ var WHS =
 	   * @return {WHS.Object}
 	   */
 	
-	  function WHSObject() {
+	  function CoreObject() {
 	    var defaults = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	    var structurable = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
-	    (0, _classCallCheck3.default)(this, WHSObject);
+	    (0, _classCallCheck3.default)(this, CoreObject);
 	
 	    var scope = structurable ? Object.assign(this, {
 	      __whsobject: true,
@@ -52132,7 +52132,7 @@ var WHS =
 	    return scope;
 	  }
 	
-	  (0, _createClass3.default)(WHSObject, [{
+	  (0, _createClass3.default)(CoreObject, [{
 	    key: 'setParams',
 	    value: function setParams() {
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -52204,10 +52204,10 @@ var WHS =
 	      return this;
 	    }
 	  }]);
-	  return WHSObject;
+	  return CoreObject;
 	}();
 	
-	exports.WHSObject = WHSObject;
+	exports.CoreObject = CoreObject;
 
 /***/ },
 /* 397 */
@@ -58608,14 +58608,14 @@ var WHS =
 	  });
 	});
 	
-	var _Object = __webpack_require__(396);
+	var _CoreObject = __webpack_require__(396);
 	
-	Object.keys(_Object).forEach(function (key) {
+	Object.keys(_CoreObject).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
-	      return _Object[key];
+	      return _CoreObject[key];
 	    }
 	  });
 	});
@@ -58683,14 +58683,14 @@ var WHS =
 	
 	var _World = __webpack_require__(442);
 	
-	var _Object = __webpack_require__(396);
+	var _CoreObject2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Light = function (_WHSObject) {
-	  (0, _inherits3.default)(Light, _WHSObject);
+	var Light = function (_CoreObject) {
+	  (0, _inherits3.default)(Light, _CoreObject);
 	
 	  function Light(params) {
 	    var _ret;
@@ -59031,7 +59031,7 @@ var WHS =
 	    }
 	  }]);
 	  return Light;
-	}(_Object.WHSObject);
+	}(_CoreObject2.CoreObject);
 	
 	exports.Light = Light;
 
@@ -59086,14 +59086,14 @@ var WHS =
 	
 	var _Light = __webpack_require__(441);
 	
-	var _Object = __webpack_require__(396);
+	var _CoreObject2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var World = function (_WHSObject) {
-	  (0, _inherits3.default)(World, _WHSObject);
+	var World = function (_CoreObject) {
+	  (0, _inherits3.default)(World, _CoreObject);
 	
 	  /**
 	   * Create a 3D world and define defaults.
@@ -59584,7 +59584,7 @@ var WHS =
 	    }
 	  }]);
 	  return World;
-	}(_Object.WHSObject);
+	}(_CoreObject2.CoreObject);
 	
 	exports.World = World;
 
@@ -59633,14 +59633,14 @@ var WHS =
 	
 	var _World = __webpack_require__(442);
 	
-	var _Object = __webpack_require__(396);
+	var _CoreObject2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Shape = function (_WHSObject) {
-	  (0, _inherits3.default)(Shape, _WHSObject);
+	var Shape = function (_CoreObject) {
+	  (0, _inherits3.default)(Shape, _CoreObject);
 	
 	  function Shape() {
 	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -60421,7 +60421,7 @@ var WHS =
 	    }
 	  }]);
 	  return Shape;
-	}(_Object.WHSObject);
+	}(_CoreObject2.CoreObject);
 	
 	exports.Shape = Shape;
 
@@ -62153,14 +62153,14 @@ var WHS =
 	
 	var _defaults = __webpack_require__(395);
 	
-	var _Object = __webpack_require__(396);
+	var _CoreObject2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Points = function (_WHSObject) {
-	  (0, _inherits3.default)(Points, _WHSObject);
+	var Points = function (_CoreObject) {
+	  (0, _inherits3.default)(Points, _CoreObject);
 	
 	  /**
 	   * Create points.
@@ -62274,7 +62274,7 @@ var WHS =
 	    }
 	  }]);
 	  return Points;
-	}(_Object.WHSObject);
+	}(_CoreObject2.CoreObject);
 	
 	exports.Points = Points;
 
@@ -62311,7 +62311,7 @@ var WHS =
 	
 	var _Shape2 = __webpack_require__(443);
 	
-	var _Object = __webpack_require__(396);
+	var _CoreObject = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -62335,7 +62335,7 @@ var WHS =
 	    for (var i = 0; i < objects.length; i++) {
 	      var obj = objects[i];
 	
-	      if (obj instanceof _Object.WHSObject) obj.addTo(_this);else if (obj instanceof THREE.Object3D) _this.getNative().add(obj);
+	      if (obj instanceof _CoreObject.CoreObject) obj.addTo(_this);else if (obj instanceof THREE.Object3D) _this.getNative().add(obj);
 	    }
 	    return _this;
 	  }

@@ -3,9 +3,9 @@ import * as THREE from 'three';
 import {loadMaterial, extend} from '../extras/api';
 import {Loop} from '../extensions/Loop';
 import {World} from './World';
-import {WHSObject} from './Object';
+import {CoreObject} from './CoreObject';
 
-class Shape extends WHSObject {
+class Shape extends CoreObject {
   constructor(params = {}, type = 'mesh') {
     const _set = (x, y, z) => {
       this.x = x;
