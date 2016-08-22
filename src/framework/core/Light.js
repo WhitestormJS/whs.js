@@ -5,17 +5,7 @@ import {World} from './World';
 import {WHSObject} from './Object';
 
 class Light extends WHSObject {
-  /**
-   * Constructing WHS.Light object.
-   *
-   * @param {Object} params - Inputed parameters.
-   * @param {String} type - Light type.
-   * @return {WHS.Light}
-   */
-  constructor(params, type) {
-    if (!type)
-      console.error('@constructor: Please specify " type ".');
-
+  constructor(params, type = 'light') {
     const _set = (x, y, z) => {
       this.x = x;
       this.y = y;
@@ -274,7 +264,7 @@ class Light extends WHSObject {
 
   set target(vector3) {
     if (vector3 instanceof THREE.Object3D)
-      this.getNative().target.copy(_params.target);
+      this.getNative().target.copy(vector3); // THREE.Object3D in this case.
     else this.getNative().target.position.copy(vector3);
   }
 
