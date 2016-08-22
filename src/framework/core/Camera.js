@@ -2,9 +2,9 @@ import * as THREE from 'three';
 
 import {Loop} from '../extensions/Loop';
 import {defaults} from '../utils/defaults';
-import {WHSObject} from './Object';
+import {CoreObject} from './CoreObject';
 
-class Camera extends WHSObject {
+class Camera extends CoreObject {
   constructor(params, type) {
     if (!type) console.error('@constructor: Please specify " type ".');
 
