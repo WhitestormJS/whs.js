@@ -6,13 +6,6 @@ import {World} from './World';
 import {WHSObject} from './Object';
 
 class Shape extends WHSObject {
-  /**
-   * Constructing WHS.Shape object.
-   *
-   * @param {Object} params - Inputed parameters.
-   * @param {String} type - Shape type.
-   * @return {WHS.Shape}
-   */
   constructor(params = {}, type = 'mesh') {
     const _set = (x, y, z) => {
       this.x = x;

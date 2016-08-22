@@ -52759,20 +52759,11 @@ var WHS =
 	var Light = function (_WHSObject) {
 	  (0, _inherits3.default)(Light, _WHSObject);
 	
-	  /**
-	   * Constructing WHS.Light object.
-	   *
-	   * @param {Object} params - Inputed parameters.
-	   * @param {String} type - Light type.
-	   * @return {WHS.Light}
-	   */
-	
-	  function Light(params, type) {
+	  function Light(params) {
 	    var _ret;
 	
+	    var type = arguments.length <= 1 || arguments[1] === undefined ? 'light' : arguments[1];
 	    (0, _classCallCheck3.default)(this, Light);
-	
-	    if (!type) console.error('@constructor: Please specify " type ".');
 	
 	    var _set = function _set(x, y, z) {
 	      _this.x = x;
@@ -53102,7 +53093,8 @@ var WHS =
 	      return this.getNative().target;
 	    },
 	    set: function set(vector3) {
-	      if (vector3 instanceof THREE.Object3D) this.getNative().target.copy(_params.target);else this.getNative().target.position.copy(vector3);
+	      if (vector3 instanceof THREE.Object3D) this.getNative().target.copy(vector3); // THREE.Object3D in this case.
+	      else this.getNative().target.position.copy(vector3);
 	    }
 	  }]);
 	  return Light;
@@ -53727,14 +53719,6 @@ var WHS =
 	
 	var Shape = function (_WHSObject) {
 	  (0, _inherits3.default)(Shape, _WHSObject);
-	
-	  /**
-	   * Constructing WHS.Shape object.
-	   *
-	   * @param {Object} params - Inputed parameters.
-	   * @param {String} type - Shape type.
-	   * @return {WHS.Shape}
-	   */
 	
 	  function Shape() {
 	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
