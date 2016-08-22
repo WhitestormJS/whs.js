@@ -1,11 +1,10 @@
 import * as THREE from 'three';
 
 import {Loop} from '../extensions/Loop';
-import {defaults} from '../utils/defaults';
 import {CoreObject} from './CoreObject';
 
 class Camera extends CoreObject {
-  constructor(params, type) {
+  constructor(params, type = 'camera') {
     if (!type) console.error('@constructor: Please specify " type ".');
 
     const _set = (x, y, z) => {
@@ -53,56 +52,57 @@ class Camera extends CoreObject {
       }
     });
 
-    super.setParams(params);
+    if (params instanceof THREE.Camera) {
+      super.setParams({
+        pos: {x: params.position.x, y: params.position.y, z: params.position.z},
+        rot: {x: params.rotation.x, y: params.rotation.y, z: params.rotation.z}
+      });
+    } else super.setParams(params);
 
     const scope = Object.assign(this, {
-      _type: type,
+      type: type,
       helper: false
     });
 
-    if (defaults.debug)
-      console.debug(`@WHS.Camera: Camera ${scope._type} found.`, scope);
+    if (params instanceof THREE.Camera) this.setNative(params);
+
+    if (WHS.debug)
+      console.debug(`@WHS.Camera: Camera ${scope.type} found.`, scope);
 
     return scope;
   }
 
   wrap(...tags) {
     return new Promise((resolve, reject) => {
-      try {
-        this.position.set(
-          this.__params.pos.x,
-          this.__params.pos.y,
-          this.__params.pos.z
-        );
+      const _native = this.getNative(),
+        _params = this.getParams();
 
-        this.rotation.set(
-          this.__params.rot.x,
-          this.__params.rot.y,
-          this.__params.rot.z
-        );
+      this.position.set(
+        _params.pos.x,
+        _params.pos.y,
+        _params.pos.z
+      );
 
-        if (this.__params.useTarget) this.lookAt(this.__params.target);
+      this.rotation.set(
+        _params.rot.x,
+        _params.rot.y,
+        _params.rot.z
+      );
 
-        if (this.__params.helper) {
-          this.helper = new THREE.CameraHelper(
-            this.getNative()
-          );
-        }
+      if (_params.useTarget) this.lookAt(_params.target);
 
-        tags.forEach(tag => {
-          this[tag] = true;
-        });
+      if (_params.helper) this.helper = new THREE.CameraHelper(_native);
 
-        if (defaults.debug)
-          console.debug(`@WHS.Camera: Camera ${this._type} is ready.`, this);
+      tags.forEach(tag => {
+        this[tag] = true;
+      });
 
-        this.emit('ready');
+      if (WHS.debug)
+        console.debug(`@WHS.Camera: Camera ${this.type} is ready.`, this);
 
-        resolve(this);
-      } catch (err) {
-        console.error(err.message);
-        reject();
-      }
+      this.emit('ready');
+
+      resolve(this);
     });
   }
 
@@ -122,9 +122,9 @@ class Camera extends CoreObject {
         console.error(err.message);
         reject();
       } finally {
-        if (defaults.debug) {
+        if (WHS.debug) {
           console.debug(
-            `@WHS.Camera: Camera ${_scope._type} was added to world.`,
+            `@WHS.Camera: Camera ${_scope.type} was added to world.`,
             [_scope, _scope.parent]
           );
         }
@@ -140,7 +140,7 @@ class Camera extends CoreObject {
    * Clone camera.
    */
   clone() {
-    return new Camera(this.__params, this._type).copy(this);
+    return new Camera(this.getParams(), this.type).copy(this);
   }
 
   /**
@@ -149,17 +149,23 @@ class Camera extends CoreObject {
    * @param {WHS.Camera} source - Source object, that will be applied to this.
    */
   copy(source) {
-    this.setNative(source.getNative().clone());
-    this.setParams(source.getParams());
+    if (source.getNative()) {
+      this.setNative(source.getNative().clone());
+      this.setParams(source.getParams());
 
-    this.wrap();
+      this.wrap();
 
-    this.position = source.position.clone();
-    this.rotation = source.rotation.clone();
-
-    this._type = source._type;
+      this.position = source.position.clone();
+      this.rotation = source.rotation.clone();
+    } else this.setParams(source.getParams());
+    
+    this.type = source.type;
 
     return this;
+  }
+
+  getParent() {
+    return this.parent;
   }
 
   get position() {
@@ -176,6 +182,14 @@ class Camera extends CoreObject {
 
   set rotation(euler) {
     return this.getNative().rotation.copy(euler);
+  }
+
+  get quaternion() {
+    return this.getNative().quaternion;
+  }
+
+  set quaternion(euler) {
+    return this.getNative().quaternion.copy(euler);
   }
 
   follow(curve, time = 1000, loop, lookAt) {
