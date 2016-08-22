@@ -193,7 +193,7 @@ class Light extends CoreObject {
    * Clone light.
    */
   clone() {
-    return new Light(this.__params, this.type).copy(this);
+    return new Light(this.getParams(), this.type).copy(this);
   }
 
   /**

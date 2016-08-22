@@ -8148,7 +8148,7 @@ var WHS =
 	  });
 	});
 	
-	var _index2 = __webpack_require__(403);
+	var _index2 = __webpack_require__(402);
 	
 	Object.keys(_index2).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8160,7 +8160,7 @@ var WHS =
 	  });
 	});
 	
-	var _index3 = __webpack_require__(409);
+	var _index3 = __webpack_require__(408);
 	
 	Object.keys(_index3).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8172,7 +8172,7 @@ var WHS =
 	  });
 	});
 	
-	var _index4 = __webpack_require__(410);
+	var _index4 = __webpack_require__(409);
 	
 	Object.keys(_index4).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8212,7 +8212,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
 	var Physijs = _interopRequireWildcard(_nophysi);
 	
@@ -8249,7 +8249,7 @@ var WHS =
 	  });
 	});
 	
-	var _OrtographicCamera = __webpack_require__(401);
+	var _OrtographicCamera = __webpack_require__(400);
 	
 	Object.keys(_OrtographicCamera).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8261,7 +8261,7 @@ var WHS =
 	  });
 	});
 	
-	var _PerspectiveCamera = __webpack_require__(402);
+	var _PerspectiveCamera = __webpack_require__(401);
 	
 	Object.keys(_PerspectiveCamera).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -51752,9 +51752,7 @@ var WHS =
 	
 	var _Loop = __webpack_require__(394);
 	
-	var _defaults = __webpack_require__(395);
-	
-	var _CoreObject2 = __webpack_require__(396);
+	var _CoreObject2 = __webpack_require__(395);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -51763,9 +51761,10 @@ var WHS =
 	var Camera = function (_CoreObject) {
 	  (0, _inherits3.default)(Camera, _CoreObject);
 	
-	  function Camera(params, type) {
+	  function Camera(params) {
 	    var _ret;
 	
+	    var type = arguments.length <= 1 || arguments[1] === undefined ? 'camera' : arguments[1];
 	    (0, _classCallCheck3.default)(this, Camera);
 	
 	    if (!type) console.error('@constructor: Please specify " type ".');
@@ -51815,14 +51814,21 @@ var WHS =
 	      }
 	    }));
 	
-	    (0, _get3.default)(Object.getPrototypeOf(Camera.prototype), 'setParams', _this).call(_this, params);
+	    if (params instanceof THREE.Camera) {
+	      (0, _get3.default)(Object.getPrototypeOf(Camera.prototype), 'setParams', _this).call(_this, {
+	        pos: { x: params.position.x, y: params.position.y, z: params.position.z },
+	        rot: { x: params.rotation.x, y: params.rotation.y, z: params.rotation.z }
+	      });
+	    } else (0, _get3.default)(Object.getPrototypeOf(Camera.prototype), 'setParams', _this).call(_this, params);
 	
 	    var scope = Object.assign(_this, {
-	      _type: type,
+	      type: type,
 	      helper: false
 	    });
 	
-	    if (_defaults.defaults.debug) console.debug('@WHS.Camera: Camera ' + scope._type + ' found.', scope);
+	    if (params instanceof THREE.Camera) _this.setNative(params);
+	
+	    if (WHS.debug) console.debug('@WHS.Camera: Camera ' + scope.type + ' found.', scope);
 	
 	    return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
@@ -51837,30 +51843,26 @@ var WHS =
 	      }
 	
 	      return new Promise(function (resolve, reject) {
-	        try {
-	          _this2.position.set(_this2.__params.pos.x, _this2.__params.pos.y, _this2.__params.pos.z);
+	        var _native = _this2.getNative(),
+	            _params = _this2.getParams();
 	
-	          _this2.rotation.set(_this2.__params.rot.x, _this2.__params.rot.y, _this2.__params.rot.z);
+	        _this2.position.set(_params.pos.x, _params.pos.y, _params.pos.z);
 	
-	          if (_this2.__params.useTarget) _this2.lookAt(_this2.__params.target);
+	        _this2.rotation.set(_params.rot.x, _params.rot.y, _params.rot.z);
 	
-	          if (_this2.__params.helper) {
-	            _this2.helper = new THREE.CameraHelper(_this2.getNative());
-	          }
+	        if (_params.useTarget) _this2.lookAt(_params.target);
 	
-	          tags.forEach(function (tag) {
-	            _this2[tag] = true;
-	          });
+	        if (_params.helper) _this2.helper = new THREE.CameraHelper(_native);
 	
-	          if (_defaults.defaults.debug) console.debug('@WHS.Camera: Camera ' + _this2._type + ' is ready.', _this2);
+	        tags.forEach(function (tag) {
+	          _this2[tag] = true;
+	        });
 	
-	          _this2.emit('ready');
+	        if (WHS.debug) console.debug('@WHS.Camera: Camera ' + _this2.type + ' is ready.', _this2);
 	
-	          resolve(_this2);
-	        } catch (err) {
-	          console.error(err.message);
-	          reject();
-	        }
+	        _this2.emit('ready');
+	
+	        resolve(_this2);
 	      });
 	    }
 	  }, {
@@ -51881,8 +51883,8 @@ var WHS =
 	          console.error(err.message);
 	          reject();
 	        } finally {
-	          if (_defaults.defaults.debug) {
-	            console.debug('@WHS.Camera: Camera ' + _scope._type + ' was added to world.', [_scope, _scope.parent]);
+	          if (WHS.debug) {
+	            console.debug('@WHS.Camera: Camera ' + _scope.type + ' was added to world.', [_scope, _scope.parent]);
 	          }
 	
 	          resolve(_scope);
@@ -51899,7 +51901,7 @@ var WHS =
 	  }, {
 	    key: 'clone',
 	    value: function clone() {
-	      return new Camera(this.__params, this._type).copy(this);
+	      return new Camera(this.getParams(), this.type).copy(this);
 	    }
 	
 	    /**
@@ -51911,17 +51913,24 @@ var WHS =
 	  }, {
 	    key: 'copy',
 	    value: function copy(source) {
-	      this.setNative(source.getNative().clone());
-	      this.setParams(source.getParams());
+	      if (source.getNative()) {
+	        this.setNative(source.getNative().clone());
+	        this.setParams(source.getParams());
 	
-	      this.wrap();
+	        this.wrap();
 	
-	      this.position = source.position.clone();
-	      this.rotation = source.rotation.clone();
+	        this.position = source.position.clone();
+	        this.rotation = source.rotation.clone();
+	      } else this.setParams(source.getParams());
 	
-	      this._type = source._type;
+	      this.type = source.type;
 	
 	      return this;
+	    }
+	  }, {
+	    key: 'getParent',
+	    value: function getParent() {
+	      return this.parent;
 	    }
 	  }, {
 	    key: 'follow',
@@ -51993,6 +52002,14 @@ var WHS =
 	    set: function set(euler) {
 	      return this.getNative().rotation.copy(euler);
 	    }
+	  }, {
+	    key: 'quaternion',
+	    get: function get() {
+	      return this.getNative().quaternion;
+	    },
+	    set: function set(euler) {
+	      return this.getNative().quaternion.copy(euler);
+	    }
 	  }]);
 	  return Camera;
 	}(_CoreObject2.CoreObject);
@@ -52060,21 +52077,6 @@ var WHS =
 
 /***/ },
 /* 395 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var defaults = {
-	  debug: false
-	};
-	
-	exports.defaults = defaults;
-
-/***/ },
-/* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52092,11 +52094,11 @@ var WHS =
 	
 	var _createClass3 = _interopRequireDefault(_createClass2);
 	
-	var _minivents = __webpack_require__(397);
+	var _minivents = __webpack_require__(396);
 	
 	var _minivents2 = _interopRequireDefault(_minivents);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -52210,13 +52212,13 @@ var WHS =
 	exports.CoreObject = CoreObject;
 
 /***/ },
-/* 397 */
+/* 396 */
 /***/ function(module, exports) {
 
 	module.exports=function(n){var t={},e=[];n=n||this,n.on=function(n,e,l){(t[n]=t[n]||[]).push([e,l])},n.off=function(n,l){n||(t={});for(var o=t[n]||e,i=o.length=l?o.length:0;i--;)l==o[i][0]&&o.splice(i,1)},n.emit=function(n){for(var l,o=t[n]||e,i=o.length>0?o.slice(0,o.length):o,c=0;l=i[c++];)l[0].apply(l[1],e.slice.call(arguments,1))}};
 
 /***/ },
-/* 398 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52230,11 +52232,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
 	var Physijs = _interopRequireWildcard(_nophysi);
 	
-	var _loaders = __webpack_require__(400);
+	var _loaders = __webpack_require__(399);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -52430,7 +52432,7 @@ var WHS =
 	exports.loadMaterial = loadMaterial;
 
 /***/ },
-/* 399 */
+/* 398 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -52446,7 +52448,7 @@ var WHS =
 	module.exports = exports["default"];
 
 /***/ },
-/* 400 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52494,7 +52496,7 @@ var WHS =
 	exports.MaterialLoader = MaterialLoader;
 
 /***/ },
-/* 401 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52568,7 +52570,7 @@ var WHS =
 	exports.OrtographicCamera = OrtographicCamera;
 
 /***/ },
-/* 402 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52642,7 +52644,7 @@ var WHS =
 	exports.PerspectiveCamera = PerspectiveCamera;
 
 /***/ },
-/* 403 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52663,7 +52665,7 @@ var WHS =
 	  });
 	});
 	
-	var _Light = __webpack_require__(404);
+	var _Light = __webpack_require__(403);
 	
 	Object.keys(_Light).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52675,7 +52677,7 @@ var WHS =
 	  });
 	});
 	
-	var _CoreObject = __webpack_require__(396);
+	var _CoreObject = __webpack_require__(395);
 	
 	Object.keys(_CoreObject).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52687,7 +52689,7 @@ var WHS =
 	  });
 	});
 	
-	var _Shape = __webpack_require__(407);
+	var _Shape = __webpack_require__(406);
 	
 	Object.keys(_Shape).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52699,7 +52701,7 @@ var WHS =
 	  });
 	});
 	
-	var _World = __webpack_require__(405);
+	var _World = __webpack_require__(404);
 	
 	Object.keys(_World).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52712,7 +52714,7 @@ var WHS =
 	});
 
 /***/ },
-/* 404 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52748,9 +52750,9 @@ var WHS =
 	
 	var _Loop = __webpack_require__(394);
 	
-	var _World = __webpack_require__(405);
+	var _World = __webpack_require__(404);
 	
-	var _CoreObject2 = __webpack_require__(396);
+	var _CoreObject2 = __webpack_require__(395);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -52962,7 +52964,7 @@ var WHS =
 	  }, {
 	    key: 'clone',
 	    value: function clone() {
-	      return new Light(this.__params, this.type).copy(this);
+	      return new Light(this.getParams(), this.type).copy(this);
 	    }
 	
 	    /**
@@ -53103,7 +53105,7 @@ var WHS =
 	exports.Light = Light;
 
 /***/ },
-/* 405 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53137,23 +53139,23 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _stats = __webpack_require__(406);
+	var _stats = __webpack_require__(405);
 	
 	var _stats2 = _interopRequireDefault(_stats);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
 	var Physijs = _interopRequireWildcard(_nophysi);
 	
-	var _PerspectiveCamera = __webpack_require__(402);
+	var _PerspectiveCamera = __webpack_require__(401);
 	
 	var _Camera = __webpack_require__(393);
 	
-	var _Shape = __webpack_require__(407);
+	var _Shape = __webpack_require__(406);
 	
-	var _Light = __webpack_require__(404);
+	var _Light = __webpack_require__(403);
 	
-	var _CoreObject2 = __webpack_require__(396);
+	var _CoreObject2 = __webpack_require__(395);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -53656,7 +53658,7 @@ var WHS =
 	exports.World = World;
 
 /***/ },
-/* 406 */
+/* 405 */
 /***/ function(module, exports) {
 
 	// stats.js - http://github.com/mrdoob/stats.js
@@ -53667,7 +53669,7 @@ var WHS =
 
 
 /***/ },
-/* 407 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53677,7 +53679,7 @@ var WHS =
 	});
 	exports.Shape = undefined;
 	
-	var _defineProperty2 = __webpack_require__(408);
+	var _defineProperty2 = __webpack_require__(407);
 	
 	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 	
@@ -53705,13 +53707,13 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	var _Loop = __webpack_require__(394);
 	
-	var _World = __webpack_require__(405);
+	var _World = __webpack_require__(404);
 	
-	var _CoreObject2 = __webpack_require__(396);
+	var _CoreObject2 = __webpack_require__(395);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -54504,7 +54506,7 @@ var WHS =
 	exports.Shape = Shape;
 
 /***/ },
-/* 408 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54533,7 +54535,7 @@ var WHS =
 	};
 
 /***/ },
-/* 409 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54555,7 +54557,7 @@ var WHS =
 	});
 
 /***/ },
-/* 410 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54564,7 +54566,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _firstPersonControls = __webpack_require__(411);
+	var _firstPersonControls = __webpack_require__(410);
 	
 	Object.keys(_firstPersonControls).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54576,7 +54578,7 @@ var WHS =
 	  });
 	});
 	
-	var _orbitControls = __webpack_require__(412);
+	var _orbitControls = __webpack_require__(411);
 	
 	Object.keys(_orbitControls).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54588,7 +54590,7 @@ var WHS =
 	  });
 	});
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	Object.keys(_api).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54600,7 +54602,7 @@ var WHS =
 	  });
 	});
 	
-	var _Line = __webpack_require__(414);
+	var _Line = __webpack_require__(413);
 	
 	Object.keys(_Line).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54612,7 +54614,7 @@ var WHS =
 	  });
 	});
 	
-	var _Points = __webpack_require__(415);
+	var _Points = __webpack_require__(414);
 	
 	Object.keys(_Points).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54649,7 +54651,7 @@ var WHS =
 	});
 
 /***/ },
-/* 411 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54663,7 +54665,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -54915,7 +54917,7 @@ var WHS =
 	}
 
 /***/ },
-/* 412 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54929,7 +54931,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _threeOrbitControls = __webpack_require__(413);
+	var _threeOrbitControls = __webpack_require__(412);
 	
 	var _threeOrbitControls2 = _interopRequireDefault(_threeOrbitControls);
 	
@@ -54954,7 +54956,7 @@ var WHS =
 	}
 
 /***/ },
-/* 413 */
+/* 412 */
 /***/ function(module, exports) {
 
 	module.exports = function(THREE) {
@@ -56079,7 +56081,7 @@ var WHS =
 
 
 /***/ },
-/* 414 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56113,11 +56115,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56193,7 +56195,7 @@ var WHS =
 	exports.Line = Line;
 
 /***/ },
-/* 415 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56227,11 +56229,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
-	var _defaults = __webpack_require__(395);
+	var _defaults = __webpack_require__(415);
 	
-	var _CoreObject2 = __webpack_require__(396);
+	var _CoreObject2 = __webpack_require__(395);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56357,6 +56359,21 @@ var WHS =
 	exports.Points = Points;
 
 /***/ },
+/* 415 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var defaults = {
+	  debug: false
+	};
+	
+	exports.defaults = defaults;
+
+/***/ },
 /* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -56387,9 +56404,9 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _CoreObject = __webpack_require__(396);
+	var _CoreObject = __webpack_require__(395);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56454,9 +56471,9 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56646,7 +56663,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(404);
+	var _Light2 = __webpack_require__(403);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56721,7 +56738,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(404);
+	var _Light2 = __webpack_require__(403);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56800,7 +56817,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(404);
+	var _Light2 = __webpack_require__(403);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56879,7 +56896,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(404);
+	var _Light2 = __webpack_require__(403);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56954,7 +56971,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(404);
+	var _Light2 = __webpack_require__(403);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57033,7 +57050,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(404);
+	var _Light2 = __webpack_require__(403);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57360,11 +57377,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57494,11 +57511,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57641,11 +57658,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57762,11 +57779,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57883,11 +57900,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58004,11 +58021,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58116,11 +58133,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58258,15 +58275,15 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
 	var Physijs = _interopRequireWildcard(_nophysi);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
-	var _loaders = __webpack_require__(400);
+	var _loaders = __webpack_require__(399);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58379,11 +58396,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58500,11 +58517,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58631,11 +58648,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58766,11 +58783,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58915,9 +58932,9 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59066,9 +59083,9 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59172,11 +59189,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59306,11 +59323,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59427,11 +59444,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59540,11 +59557,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59688,11 +59705,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59854,11 +59871,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(399);
+	var _nophysi = __webpack_require__(398);
 	
-	var _Shape2 = __webpack_require__(407);
+	var _Shape2 = __webpack_require__(406);
 	
-	var _api = __webpack_require__(398);
+	var _api = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
