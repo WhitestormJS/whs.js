@@ -21,6 +21,12 @@ define(['whs'], function(WHS) {
         });
       });
 
+      it('#updateParams', () => {
+        object.setParams({
+          default5: 6
+        });
+      });
+
       expected = {
         default1: 1,
         default2: 2,
@@ -30,7 +36,7 @@ define(['whs'], function(WHS) {
           value: 4
         },
 
-        default5: 5
+        default5: 6
       };
 
       it('#getParams', () => {
