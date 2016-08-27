@@ -12,7 +12,10 @@ module.exports = (config) => {
       {pattern: 'build/whitestorm.js', included: false},
       {pattern: 'node_modules/three/build/three.js', included: false},
       {pattern: 'test/lib/*.js', included: false},
-      {pattern: 'test/unit/**/*.spec.js', included: false}
+      {pattern: 'test/unit/**/*.spec.js', included: false},
+
+      // Assets
+      {pattern: 'test/_assets/**/*', included: false}
     ],
 
     // list of files to exclude
