@@ -19,7 +19,7 @@ require.config({
   paths: {
     whs: 'build/whitestorm',
     table: 'test/lib/table',
-    THREE: 'node_modules/three/build/three.js'
+    THREE: 'node_modules/three/build/three'
   },
 
   shim: {
