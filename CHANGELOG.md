@@ -2,8 +2,21 @@
 
 ##### Before contibuting here see [rules](https://github.com/WhitestormJS/whitestorm.js/blob/master/CONTRIBUTING.md#-adding-changes-to-changelogmd)
 
-**r10**
+**current**
+- *Bug fixes*
+- Loop
+   - Added shorthand for `.addLoop()` and `.removeLoop()`
+- World
+   - `.addLoop()` and `.removeLoop()` now return Promises.
 
+
+----
+
+### Changlog refactored.
+
+----
+
+**r10**
 - Added variations (light version + regular version).
 - `WHS.Curve` - wraps three.js curves functionality.
 - Rewritten core:

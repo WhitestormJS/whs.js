@@ -1,15 +1,9 @@
 import * as THREE from 'three';
 
 import {loadMaterial} from './api';
-import {defaults} from '../utils/defaults';
 import {CoreObject} from '../core/CoreObject';
 
 class Points extends CoreObject {
-  /**
-   * Create points.
-   *
-   * Todo
-   */
   constructor(params) {
     super({
       geometry: false,
@@ -37,9 +31,6 @@ class Points extends CoreObject {
     return scope;
   }
 
-    /**
-     * Add curve to scene.
-     */
   addTo(parent) {
     const _scope = this;
     _scope.parent = parent;
@@ -52,7 +43,7 @@ class Points extends CoreObject {
         console.error(err.message);
         reject();
       } finally {
-        if (defaults.debug) {
+        if (WHS.debug) {
           console.debug(
             `@WHS.Curve: Curve ${_scope._type} was added to world.`,
             [_scope, _scope.parent]
@@ -64,18 +55,10 @@ class Points extends CoreObject {
     });
   }
 
-  /**
-   * Clone curve.
-   */
   clone() {
     return new Points(this.__params).copy(this);
   }
 
-  /**
-   * Copy curve.
-   *
-   * @param {WHS.Points} source - Source object, that will be applied to this.
-   */
   copy(source) {
     this.setNative(source.getNative().clone());
 
@@ -84,11 +67,6 @@ class Points extends CoreObject {
     return this;
   }
 
-  /**
-   * Remove this curve from world.
-   *
-   * @return {WHS.Points} - this.
-   */
   remove() {
     this.parent.getScene().remove(this.getNative());
 
@@ -97,7 +75,7 @@ class Points extends CoreObject {
 
     this.emit('remove');
 
-    if (defaults.debug) {
+    if (WHS.debug) {
       console.debug(
         `@WHS.Points: Curve ${this._type} was removed from world`,
         [_scope]

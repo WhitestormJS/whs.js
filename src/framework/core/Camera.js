@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import {Loop} from '../extensions/Loop';
+import {Loop} from '../utils/Loop';
 import {CoreObject} from './CoreObject';
 
 class Camera extends CoreObject {
@@ -158,7 +158,7 @@ class Camera extends CoreObject {
       this.position = source.position.clone();
       this.rotation = source.rotation.clone();
     } else this.setParams(source.getParams());
-    
+
     this.type = source.type;
 
     return this;
