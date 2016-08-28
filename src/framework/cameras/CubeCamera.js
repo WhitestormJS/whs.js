@@ -10,7 +10,7 @@ class CubeCamera extends Camera {
   }
 
   build(params = {}) {
-    return new Promse((resolve) => {
+    return new Promise((resolve) => {
       this.setNative(new THREE.CubeCamera(
         params.camera.near,
         params.camera.far,

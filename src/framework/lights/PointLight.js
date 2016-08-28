@@ -6,7 +6,6 @@ class PointLight extends Light {
     super(params, 'pointlight');
 
     this.build(params);
-
     super.wrap();
   }
 

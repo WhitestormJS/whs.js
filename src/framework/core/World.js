@@ -168,12 +168,17 @@ class World extends CoreObject {
   }
 
   addLoop(loop) {
-    this.loops.push(loop); // TODO: Process loops on start
-    // like: this.loops.forEach((elem) => elem.start());
+    return new Promise((resolve) => {
+      this.loops.push(loop);
+      resolve(loop);
+    });
   }
 
   removeLoop(loop) {
-    this.loops.filter((l) => l !== loop);
+    return new Promise((resolve) => {
+      this.loops.filter((l) => l !== loop);
+      resolve(loop);
+    });
   }
 
   /**

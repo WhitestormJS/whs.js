@@ -8172,7 +8172,7 @@ var WHS =
 	  });
 	});
 	
-	var _index4 = __webpack_require__(445);
+	var _index4 = __webpack_require__(452);
 	
 	Object.keys(_index4).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8184,7 +8184,7 @@ var WHS =
 	  });
 	});
 	
-	var _index5 = __webpack_require__(454);
+	var _index5 = __webpack_require__(458);
 	
 	Object.keys(_index5).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8196,14 +8196,38 @@ var WHS =
 	  });
 	});
 	
-	var _index6 = __webpack_require__(461);
+	var _Loop = __webpack_require__(394);
 	
-	Object.keys(_index6).forEach(function (key) {
+	Object.keys(_Loop).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
-	      return _index6[key];
+	      return _Loop[key];
+	    }
+	  });
+	});
+	
+	var _List = __webpack_require__(479);
+	
+	Object.keys(_List).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _List[key];
+	    }
+	  });
+	});
+	
+	var _deprecation = __webpack_require__(480);
+	
+	Object.keys(_deprecation).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _deprecation[key];
 	    }
 	  });
 	});
@@ -8212,9 +8236,9 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _index7 = __webpack_require__(398);
+	var _index6 = __webpack_require__(398);
 	
-	var Physijs = _interopRequireWildcard(_index7);
+	var Physijs = _interopRequireWildcard(_index6);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -8225,6 +8249,11 @@ var WHS =
 	  global.THREE = THREE;
 	  global.Physijs = Physijs;
 	}
+	
+	// DEPRECATION
+	
+	
+	// UTILS
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
@@ -8335,7 +8364,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      return new Promse(function (resolve) {
+	      return new Promise(function (resolve) {
 	        _this2.setNative(new THREE.CubeCamera(params.camera.near, params.camera.far, params.camera.cubeResolution));
 	
 	        resolve();
@@ -52054,15 +52083,19 @@ var WHS =
 	
 	  (0, _createClass3.default)(Loop, [{
 	    key: 'start',
-	    value: function start() {
+	    value: function start(world) {
+	      if (world) world.addLoop(this);
+	
 	      this.clock.start();
 	      this.enabled = true;
 	    }
 	  }, {
 	    key: 'stop',
-	    value: function stop() {
+	    value: function stop(world) {
 	      this.clock.stop();
 	      this.enabled = false;
+	
+	      if (world) world.removeLoop(this);
 	    }
 	  }, {
 	    key: 'execute',
@@ -59247,14 +59280,23 @@ var WHS =
 	  }, {
 	    key: 'addLoop',
 	    value: function addLoop(loop) {
-	      this.loops.push(loop); // TODO: Process loops on start
-	      // like: this.loops.forEach((elem) => elem.start());
+	      var _this2 = this;
+	
+	      return new Promise(function (resolve) {
+	        _this2.loops.push(loop);
+	        resolve(loop);
+	      });
 	    }
 	  }, {
 	    key: 'removeLoop',
 	    value: function removeLoop(loop) {
-	      this.loops.filter(function (l) {
-	        return l !== loop;
+	      var _this3 = this;
+	
+	      return new Promise(function (resolve) {
+	        _this3.loops.filter(function (l) {
+	          return l !== loop;
+	        });
+	        resolve(loop);
 	      });
 	    }
 	
@@ -59488,7 +59530,7 @@ var WHS =
 	  }, {
 	    key: 'setScene',
 	    value: function setScene(scene) {
-	      var _this2 = this;
+	      var _this4 = this;
 	
 	      var import_three = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 	
@@ -59496,7 +59538,7 @@ var WHS =
 	
 	      if (import_three) {
 	        (function () {
-	          _this2.children = [];
+	          _this4.children = [];
 	
 	          var moveChildren = function moveChildren(object) {
 	            for (var i = 0, max = object.children.length; i < max; i++) {
@@ -59505,13 +59547,13 @@ var WHS =
 	
 	              if (obj3D instanceof THREE.Light) WHSobj = new _Light.Light(obj3D);else WHSobj = new _Shape.Shape(obj3D);
 	
-	              WHSobj.addTo(_this2);
+	              WHSobj.addTo(_this4);
 	
 	              if (obj3D.children.length) moveChildren(obj3D, WHSobj);
 	            }
 	          };
 	
-	          moveChildren(scene, _this2);
+	          moveChildren(scene, _this4);
 	        })();
 	      }
 	
@@ -60466,29 +60508,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _Loop = __webpack_require__(394);
-	
-	Object.keys(_Loop).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Loop[key];
-	    }
-	  });
-	});
-
-/***/ },
-/* 445 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _firstPersonControls = __webpack_require__(446);
+	var _firstPersonControls = __webpack_require__(445);
 	
 	Object.keys(_firstPersonControls).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -60500,7 +60520,7 @@ var WHS =
 	  });
 	});
 	
-	var _orbitControls = __webpack_require__(447);
+	var _orbitControls = __webpack_require__(446);
 	
 	Object.keys(_orbitControls).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -60524,7 +60544,7 @@ var WHS =
 	  });
 	});
 	
-	var _Line = __webpack_require__(449);
+	var _Line = __webpack_require__(448);
 	
 	Object.keys(_Line).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -60536,7 +60556,7 @@ var WHS =
 	  });
 	});
 	
-	var _Points = __webpack_require__(450);
+	var _Points = __webpack_require__(449);
 	
 	Object.keys(_Points).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -60548,7 +60568,7 @@ var WHS =
 	  });
 	});
 	
-	var _Group = __webpack_require__(452);
+	var _Group = __webpack_require__(450);
 	
 	Object.keys(_Group).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -60560,7 +60580,7 @@ var WHS =
 	  });
 	});
 	
-	var _Skybox = __webpack_require__(453);
+	var _Skybox = __webpack_require__(451);
 	
 	Object.keys(_Skybox).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -60573,7 +60593,7 @@ var WHS =
 	});
 
 /***/ },
-/* 446 */
+/* 445 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60839,7 +60859,7 @@ var WHS =
 	}
 
 /***/ },
-/* 447 */
+/* 446 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60853,7 +60873,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _threeOrbitControls = __webpack_require__(448);
+	var _threeOrbitControls = __webpack_require__(447);
 	
 	var _threeOrbitControls2 = _interopRequireDefault(_threeOrbitControls);
 	
@@ -60878,7 +60898,7 @@ var WHS =
 	}
 
 /***/ },
-/* 448 */
+/* 447 */
 /***/ function(module, exports) {
 
 	module.exports = function(THREE) {
@@ -62003,7 +62023,7 @@ var WHS =
 
 
 /***/ },
-/* 449 */
+/* 448 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62117,7 +62137,7 @@ var WHS =
 	exports.Line = Line;
 
 /***/ },
-/* 450 */
+/* 449 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62153,8 +62173,6 @@ var WHS =
 	
 	var _api = __webpack_require__(397);
 	
-	var _defaults = __webpack_require__(451);
-	
 	var _CoreObject2 = __webpack_require__(395);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -62163,12 +62181,6 @@ var WHS =
 	
 	var Points = function (_CoreObject) {
 	  (0, _inherits3.default)(Points, _CoreObject);
-	
-	  /**
-	   * Create points.
-	   *
-	   * Todo
-	   */
 	
 	  function Points(params) {
 	    var _ret;
@@ -62198,11 +62210,6 @@ var WHS =
 	    return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
 	
-	  /**
-	   * Add curve to scene.
-	   */
-	
-	
 	  (0, _createClass3.default)(Points, [{
 	    key: 'addTo',
 	    value: function addTo(parent) {
@@ -62217,7 +62224,7 @@ var WHS =
 	          console.error(err.message);
 	          reject();
 	        } finally {
-	          if (_defaults.defaults.debug) {
+	          if (WHS.debug) {
 	            console.debug('@WHS.Curve: Curve ' + _scope._type + ' was added to world.', [_scope, _scope.parent]);
 	          }
 	
@@ -62225,23 +62232,11 @@ var WHS =
 	        }
 	      });
 	    }
-	
-	    /**
-	     * Clone curve.
-	     */
-	
 	  }, {
 	    key: 'clone',
 	    value: function clone() {
 	      return new Points(this.__params).copy(this);
 	    }
-	
-	    /**
-	     * Copy curve.
-	     *
-	     * @param {WHS.Points} source - Source object, that will be applied to this.
-	     */
-	
 	  }, {
 	    key: 'copy',
 	    value: function copy(source) {
@@ -62251,13 +62246,6 @@ var WHS =
 	
 	      return this;
 	    }
-	
-	    /**
-	     * Remove this curve from world.
-	     *
-	     * @return {WHS.Points} - this.
-	     */
-	
 	  }, {
 	    key: 'remove',
 	    value: function remove() {
@@ -62268,7 +62256,7 @@ var WHS =
 	
 	      this.emit('remove');
 	
-	      if (_defaults.defaults.debug) {
+	      if (WHS.debug) {
 	        console.debug('@WHS.Points: Curve ' + this._type + ' was removed from world', [_scope]);
 	      }
 	
@@ -62281,22 +62269,7 @@ var WHS =
 	exports.Points = Points;
 
 /***/ },
-/* 451 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var defaults = {
-	  debug: false
-	};
-	
-	exports.defaults = defaults;
-
-/***/ },
-/* 452 */
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62363,7 +62336,7 @@ var WHS =
 	exports.Group = Group;
 
 /***/ },
-/* 453 */
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62469,7 +62442,7 @@ var WHS =
 	exports.Skybox = Skybox;
 
 /***/ },
-/* 454 */
+/* 452 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62478,7 +62451,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _AmbientLight = __webpack_require__(455);
+	var _AmbientLight = __webpack_require__(453);
 	
 	Object.keys(_AmbientLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -62490,7 +62463,7 @@ var WHS =
 	  });
 	});
 	
-	var _DirectionalLight = __webpack_require__(456);
+	var _DirectionalLight = __webpack_require__(454);
 	
 	Object.keys(_DirectionalLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -62502,7 +62475,7 @@ var WHS =
 	  });
 	});
 	
-	var _HemisphereLight = __webpack_require__(457);
+	var _HemisphereLight = __webpack_require__(455);
 	
 	Object.keys(_HemisphereLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -62514,19 +62487,7 @@ var WHS =
 	  });
 	});
 	
-	var _NormalLight = __webpack_require__(458);
-	
-	Object.keys(_NormalLight).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _NormalLight[key];
-	    }
-	  });
-	});
-	
-	var _PointLight = __webpack_require__(459);
+	var _PointLight = __webpack_require__(456);
 	
 	Object.keys(_PointLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -62538,7 +62499,7 @@ var WHS =
 	  });
 	});
 	
-	var _SpotLight = __webpack_require__(460);
+	var _SpotLight = __webpack_require__(457);
 	
 	Object.keys(_SpotLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -62551,7 +62512,7 @@ var WHS =
 	});
 
 /***/ },
-/* 455 */
+/* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62601,7 +62562,6 @@ var WHS =
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(AmbientLight).call(this, params, 'ambientlight'));
 	
 	    _this.build(params);
-	
 	    (0, _get3.default)(Object.getPrototypeOf(AmbientLight.prototype), 'wrap', _this).call(_this, 'no-shadows');
 	    return _this;
 	  }
@@ -62626,7 +62586,7 @@ var WHS =
 	exports.AmbientLight = AmbientLight;
 
 /***/ },
-/* 456 */
+/* 454 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62676,7 +62636,6 @@ var WHS =
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(DirectionalLight).call(this, params, 'directionallight'));
 	
 	    _this.build(params);
-	
 	    (0, _get3.default)(Object.getPrototypeOf(DirectionalLight.prototype), 'wrap', _this).call(_this);
 	    return _this;
 	  }
@@ -62705,7 +62664,7 @@ var WHS =
 	exports.DirectionalLight = DirectionalLight;
 
 /***/ },
-/* 457 */
+/* 455 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62784,82 +62743,7 @@ var WHS =
 	exports.HemisphereLight = HemisphereLight;
 
 /***/ },
-/* 458 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.NormalLight = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(302);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(303);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(322);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(376);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(384);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _three = __webpack_require__(392);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _Light2 = __webpack_require__(440);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var NormalLight = function (_Light) {
-	  (0, _inherits3.default)(NormalLight, _Light);
-	
-	  function NormalLight() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, NormalLight);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(NormalLight).call(this, params, 'normallight'));
-	
-	    _this.build(params);
-	
-	    (0, _get3.default)(Object.getPrototypeOf(NormalLight.prototype), 'wrap', _this).call(_this);
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(NormalLight, [{
-	    key: 'build',
-	    value: function build() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var _scope = this;
-	
-	      return new Promise(function (resolve) {
-	        _scope.setNative(new THREE.Light(params.light.color));
-	
-	        resolve();
-	      });
-	    }
-	  }]);
-	  return NormalLight;
-	}(_Light2.Light);
-	
-	exports.NormalLight = NormalLight;
-
-/***/ },
-/* 459 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62909,7 +62793,6 @@ var WHS =
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(PointLight).call(this, params, 'pointlight'));
 	
 	    _this.build(params);
-	
 	    (0, _get3.default)(Object.getPrototypeOf(PointLight.prototype), 'wrap', _this).call(_this);
 	    return _this;
 	  }
@@ -62938,7 +62821,7 @@ var WHS =
 	exports.PointLight = PointLight;
 
 /***/ },
-/* 460 */
+/* 457 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62988,7 +62871,6 @@ var WHS =
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(SpotLight).call(this, params, 'spotlight'));
 	
 	    _this.build(params);
-	
 	    (0, _get3.default)(Object.getPrototypeOf(SpotLight.prototype), 'wrap', _this).call(_this);
 	    return _this;
 	  }
@@ -63015,7 +62897,7 @@ var WHS =
 	exports.SpotLight = SpotLight;
 
 /***/ },
-/* 461 */
+/* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63024,7 +62906,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _Box = __webpack_require__(462);
+	var _Box = __webpack_require__(459);
 	
 	Object.keys(_Box).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63036,7 +62918,7 @@ var WHS =
 	  });
 	});
 	
-	var _Cylinder = __webpack_require__(463);
+	var _Cylinder = __webpack_require__(460);
 	
 	Object.keys(_Cylinder).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63048,7 +62930,7 @@ var WHS =
 	  });
 	});
 	
-	var _Dodecahedron = __webpack_require__(464);
+	var _Dodecahedron = __webpack_require__(461);
 	
 	Object.keys(_Dodecahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63060,7 +62942,7 @@ var WHS =
 	  });
 	});
 	
-	var _Extrude = __webpack_require__(465);
+	var _Extrude = __webpack_require__(462);
 	
 	Object.keys(_Extrude).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63072,7 +62954,7 @@ var WHS =
 	  });
 	});
 	
-	var _Icosahedron = __webpack_require__(466);
+	var _Icosahedron = __webpack_require__(463);
 	
 	Object.keys(_Icosahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63084,7 +62966,7 @@ var WHS =
 	  });
 	});
 	
-	var _Lathe = __webpack_require__(467);
+	var _Lathe = __webpack_require__(464);
 	
 	Object.keys(_Lathe).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63096,7 +62978,7 @@ var WHS =
 	  });
 	});
 	
-	var _Model = __webpack_require__(468);
+	var _Model = __webpack_require__(465);
 	
 	Object.keys(_Model).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63108,7 +62990,7 @@ var WHS =
 	  });
 	});
 	
-	var _Morph = __webpack_require__(469);
+	var _Morph = __webpack_require__(466);
 	
 	Object.keys(_Morph).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63120,7 +63002,7 @@ var WHS =
 	  });
 	});
 	
-	var _Octahedron = __webpack_require__(470);
+	var _Octahedron = __webpack_require__(467);
 	
 	Object.keys(_Octahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63132,7 +63014,7 @@ var WHS =
 	  });
 	});
 	
-	var _Parametric = __webpack_require__(471);
+	var _Parametric = __webpack_require__(468);
 	
 	Object.keys(_Parametric).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63144,7 +63026,7 @@ var WHS =
 	  });
 	});
 	
-	var _Plane = __webpack_require__(472);
+	var _Plane = __webpack_require__(469);
 	
 	Object.keys(_Plane).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63156,7 +63038,7 @@ var WHS =
 	  });
 	});
 	
-	var _Polyhedron = __webpack_require__(473);
+	var _Polyhedron = __webpack_require__(470);
 	
 	Object.keys(_Polyhedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63168,7 +63050,7 @@ var WHS =
 	  });
 	});
 	
-	var _Ring = __webpack_require__(474);
+	var _Ring = __webpack_require__(471);
 	
 	Object.keys(_Ring).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63180,7 +63062,7 @@ var WHS =
 	  });
 	});
 	
-	var _Shape2D = __webpack_require__(475);
+	var _Shape2D = __webpack_require__(472);
 	
 	Object.keys(_Shape2D).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63192,7 +63074,7 @@ var WHS =
 	  });
 	});
 	
-	var _Sphere = __webpack_require__(476);
+	var _Sphere = __webpack_require__(473);
 	
 	Object.keys(_Sphere).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63204,7 +63086,7 @@ var WHS =
 	  });
 	});
 	
-	var _Tetrahedron = __webpack_require__(477);
+	var _Tetrahedron = __webpack_require__(474);
 	
 	Object.keys(_Tetrahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63216,7 +63098,7 @@ var WHS =
 	  });
 	});
 	
-	var _Text = __webpack_require__(478);
+	var _Text = __webpack_require__(475);
 	
 	Object.keys(_Text).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63228,7 +63110,7 @@ var WHS =
 	  });
 	});
 	
-	var _Torus = __webpack_require__(479);
+	var _Torus = __webpack_require__(476);
 	
 	Object.keys(_Torus).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63240,7 +63122,7 @@ var WHS =
 	  });
 	});
 	
-	var _Torusknot = __webpack_require__(480);
+	var _Torusknot = __webpack_require__(477);
 	
 	Object.keys(_Torusknot).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63252,7 +63134,7 @@ var WHS =
 	  });
 	});
 	
-	var _Tube = __webpack_require__(481);
+	var _Tube = __webpack_require__(478);
 	
 	Object.keys(_Tube).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -63265,7 +63147,7 @@ var WHS =
 	});
 
 /***/ },
-/* 462 */
+/* 459 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63399,7 +63281,7 @@ var WHS =
 	exports.Box = Box;
 
 /***/ },
-/* 463 */
+/* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63546,7 +63428,7 @@ var WHS =
 	exports.Cylinder = Cylinder;
 
 /***/ },
-/* 464 */
+/* 461 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63667,7 +63549,7 @@ var WHS =
 	exports.Dodecahedron = Dodecahedron;
 
 /***/ },
-/* 465 */
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63788,7 +63670,7 @@ var WHS =
 	exports.Extrude = Extrude;
 
 /***/ },
-/* 466 */
+/* 463 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63909,7 +63791,7 @@ var WHS =
 	exports.Icosahedron = Icosahedron;
 
 /***/ },
-/* 467 */
+/* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64021,7 +63903,7 @@ var WHS =
 	exports.Lathe = Lathe;
 
 /***/ },
-/* 468 */
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64163,7 +64045,7 @@ var WHS =
 	exports.Model = Model;
 
 /***/ },
-/* 469 */
+/* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64284,7 +64166,7 @@ var WHS =
 	exports.Morph = Morph;
 
 /***/ },
-/* 470 */
+/* 467 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64405,7 +64287,7 @@ var WHS =
 	exports.Octahedron = Octahedron;
 
 /***/ },
-/* 471 */
+/* 468 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64536,7 +64418,7 @@ var WHS =
 	exports.Parametric = Parametric;
 
 /***/ },
-/* 472 */
+/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64671,7 +64553,7 @@ var WHS =
 	exports.Plane = Plane;
 
 /***/ },
-/* 473 */
+/* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64820,7 +64702,7 @@ var WHS =
 	exports.Polyhedron = Polyhedron;
 
 /***/ },
-/* 474 */
+/* 471 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -64971,7 +64853,7 @@ var WHS =
 	exports.Ring = Ring;
 
 /***/ },
-/* 475 */
+/* 472 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65077,7 +64959,7 @@ var WHS =
 	exports.Shape2D = Shape2D;
 
 /***/ },
-/* 476 */
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65211,7 +65093,7 @@ var WHS =
 	exports.Sphere = Sphere;
 
 /***/ },
-/* 477 */
+/* 474 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65332,7 +65214,7 @@ var WHS =
 	exports.Tetrahedron = Tetrahedron;
 
 /***/ },
-/* 478 */
+/* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65445,7 +65327,7 @@ var WHS =
 	exports.Text = Text;
 
 /***/ },
-/* 479 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65593,7 +65475,7 @@ var WHS =
 	exports.Torus = Torus;
 
 /***/ },
-/* 480 */
+/* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65759,7 +65641,7 @@ var WHS =
 	exports.Torusknot = Torusknot;
 
 /***/ },
-/* 481 */
+/* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -65909,6 +65791,58 @@ var WHS =
 	}(_Shape2.Shape);
 	
 	exports.Tube = Tube;
+
+/***/ },
+/* 479 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.List = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(302);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(303);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var List = function () {
+	  function List(queue) {
+	    (0, _classCallCheck3.default)(this, List);
+	
+	    this._queue = Array.isArray(queue) ? queue.slice() : [];
+	  }
+	
+	  (0, _createClass3.default)(List, [{
+	    key: "add",
+	    value: function add(element) {
+	      this._queue.push(element);
+	    }
+	  }, {
+	    key: "remove",
+	    value: function remove(element) {
+	      this._queue = this._queue.filter(function (item) {
+	        return item !== element;
+	      });
+	    }
+	  }]);
+	  return List;
+	}();
+	
+	exports.List = List;
+
+/***/ },
+/* 480 */
+/***/ function(module, exports) {
+
+	"use strict";
 
 /***/ }
 /******/ ]);
