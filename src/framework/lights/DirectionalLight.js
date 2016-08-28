@@ -6,7 +6,6 @@ class DirectionalLight extends Light {
     super(params, 'directionallight');
 
     this.build(params);
-
     super.wrap();
   }
 

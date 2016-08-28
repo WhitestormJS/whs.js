@@ -6,7 +6,6 @@ class AmbientLight extends Light {
     super(params, 'ambientlight');
 
     this.build(params);
-
     super.wrap('no-shadows');
   }
 

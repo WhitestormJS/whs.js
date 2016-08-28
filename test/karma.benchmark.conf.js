@@ -8,7 +8,7 @@ module.exports = (config) => {
 
     // list of files / patterns to load in the browser
     files: [
-      'test/test-main.js',
+      'test/test-main.benchmark.js',
       {pattern: 'build/whitestorm.js', included: false},
       {pattern: 'build/whitestorm.light.js', included: false},
       {pattern: 'test/lib/*.js', included: false},
