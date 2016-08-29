@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial} from '../extras/api';
+import {extend, loadMaterial} from '../utils/index';
 
 class Icosahedron extends Shape {
   constructor(params = {}) {
