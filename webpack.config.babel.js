@@ -39,7 +39,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
       path: path.join(__dirname, frameworkDest),
       filename: 'whitestorm.js',
       library: 'WHS',
-      libraryTarget: 'var'
+      libraryTarget: 'umd'
     },
     module: {
       loaders: loadersSection
@@ -53,7 +53,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
       path: path.join(__dirname, frameworkDest),
       filename: 'whitestorm.light.js',
       library: 'WHS',
-      libraryTarget: 'var'
+      libraryTarget: 'umd'
     },
     externals: {
       '../physics/index.js': 'var false',

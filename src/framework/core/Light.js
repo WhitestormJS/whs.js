@@ -78,7 +78,6 @@ class Light extends CoreObject {
     this.type = type;
 
     if (params instanceof THREE.Light) this.setNative(params);
-    if (WHS.debug) console.debug(`@WHS.Light: Light ${scope.type} found.`, this);
 
     return this;
   }
@@ -118,21 +117,12 @@ class Light extends CoreObject {
         this[tag] = true;
       });
 
-      if (WHS.debug)
-        console.debug(`@WHS.Light: Light ${this.type} + ' is ready.`, this);
-
       this.emit('ready');
 
       resolve(this);
     });
   }
 
-  /**
-   * Add light to WHS.World object.
-   *
-   * @param {WHS.World} root - World, were this light will be.
-   * @param {...String} tags - Tags for compiling.
-   */
   addTo(parent) {
     this.parent = parent;
 
@@ -148,12 +138,6 @@ class Light extends CoreObject {
 
       if (this.helper) parentNative.add(this.helper);
       if (_native.target) parentNative.add(_native.target);
-      if (WHS.debug) {
-        console.debug(
-          `@WHS.Camera: Camera ${this.type} was added to world.`,
-          [this, this.parent]
-        );
-      }
 
       resolve(this);
       this.emit('ready');
@@ -189,18 +173,10 @@ class Light extends CoreObject {
     });
   }
 
-  /**
-   * Clone light.
-   */
   clone() {
     return new Light(this.getParams(), this.type).copy(this);
   }
 
-  /**
-   * Copy light.
-   *
-   * @param {WHS.Light} source - Source object, that will be applied to this.
-   */
   copy(source) {
     if (source.getNative()) {
       this.setNative(source.getNative().clone());
