@@ -8148,7 +8148,7 @@ var WHS =
 	  });
 	});
 	
-	var _index2 = __webpack_require__(402);
+	var _index2 = __webpack_require__(401);
 	
 	Object.keys(_index2).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8172,7 +8172,7 @@ var WHS =
 	  });
 	});
 	
-	var _index4 = __webpack_require__(416);
+	var _index4 = __webpack_require__(413);
 	
 	Object.keys(_index4).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8184,7 +8184,7 @@ var WHS =
 	  });
 	});
 	
-	var _index5 = __webpack_require__(422);
+	var _index5 = __webpack_require__(419);
 	
 	Object.keys(_index5).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8208,7 +8208,7 @@ var WHS =
 	  });
 	});
 	
-	var _List = __webpack_require__(443);
+	var _List = __webpack_require__(441);
 	
 	Object.keys(_List).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8220,7 +8220,7 @@ var WHS =
 	  });
 	});
 	
-	var _deprecation = __webpack_require__(444);
+	var _deprecation = __webpack_require__(442);
 	
 	Object.keys(_deprecation).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8236,7 +8236,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var Physijs = _interopRequireWildcard(_nophysi);
 	
@@ -8278,7 +8278,7 @@ var WHS =
 	  });
 	});
 	
-	var _OrtographicCamera = __webpack_require__(400);
+	var _OrtographicCamera = __webpack_require__(399);
 	
 	Object.keys(_OrtographicCamera).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8290,7 +8290,7 @@ var WHS =
 	  });
 	});
 	
-	var _PerspectiveCamera = __webpack_require__(401);
+	var _PerspectiveCamera = __webpack_require__(400);
 	
 	Object.keys(_PerspectiveCamera).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52265,11 +52265,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
-	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
-	var _loaders = __webpack_require__(399);
+	var _loaders = __webpack_require__(398);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -52466,22 +52462,6 @@ var WHS =
 
 /***/ },
 /* 398 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	exports.default = function () {
-	  return {};
-	};
-	
-	module.exports = exports["default"];
-
-/***/ },
-/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52529,7 +52509,7 @@ var WHS =
 	exports.MaterialLoader = MaterialLoader;
 
 /***/ },
-/* 400 */
+/* 399 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52603,7 +52583,7 @@ var WHS =
 	exports.OrtographicCamera = OrtographicCamera;
 
 /***/ },
-/* 401 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52677,7 +52657,7 @@ var WHS =
 	exports.PerspectiveCamera = PerspectiveCamera;
 
 /***/ },
-/* 402 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52698,7 +52678,7 @@ var WHS =
 	  });
 	});
 	
-	var _Light = __webpack_require__(403);
+	var _Light = __webpack_require__(402);
 	
 	Object.keys(_Light).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52734,7 +52714,7 @@ var WHS =
 	  });
 	});
 	
-	var _World = __webpack_require__(404);
+	var _World = __webpack_require__(403);
 	
 	Object.keys(_World).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52747,7 +52727,7 @@ var WHS =
 	});
 
 /***/ },
-/* 403 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52783,7 +52763,7 @@ var WHS =
 	
 	var _Loop = __webpack_require__(394);
 	
-	var _World = __webpack_require__(404);
+	var _World = __webpack_require__(403);
 	
 	var _CoreObject2 = __webpack_require__(395);
 	
@@ -53138,7 +53118,7 @@ var WHS =
 	exports.Light = Light;
 
 /***/ },
-/* 404 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53172,21 +53152,21 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _stats = __webpack_require__(405);
+	var _stats = __webpack_require__(404);
 	
 	var _stats2 = _interopRequireDefault(_stats);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var Physijs = _interopRequireWildcard(_nophysi);
 	
-	var _PerspectiveCamera = __webpack_require__(401);
+	var _PerspectiveCamera = __webpack_require__(400);
 	
 	var _Camera = __webpack_require__(393);
 	
 	var _Shape = __webpack_require__(406);
 	
-	var _Light = __webpack_require__(403);
+	var _Light = __webpack_require__(402);
 	
 	var _CoreObject2 = __webpack_require__(395);
 	
@@ -53700,7 +53680,7 @@ var WHS =
 	exports.World = World;
 
 /***/ },
-/* 405 */
+/* 404 */
 /***/ function(module, exports) {
 
 	// stats.js - http://github.com/mrdoob/stats.js
@@ -53709,6 +53689,22 @@ var WHS =
 	Stats.Panel=function(h,k,l){var c=Infinity,g=0,e=Math.round,a=e(window.devicePixelRatio||1),r=80*a,f=48*a,t=3*a,u=2*a,d=3*a,m=15*a,n=74*a,p=30*a,q=document.createElement("canvas");q.width=r;q.height=f;q.style.cssText="width:80px;height:48px";var b=q.getContext("2d");b.font="bold "+9*a+"px Helvetica,Arial,sans-serif";b.textBaseline="top";b.fillStyle=l;b.fillRect(0,0,r,f);b.fillStyle=k;b.fillText(h,t,u);b.fillRect(d,m,n,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d,m,n,p);return{dom:q,update:function(f,
 	v){c=Math.min(c,f);g=Math.max(g,f);b.fillStyle=l;b.globalAlpha=1;b.fillRect(0,0,r,m);b.fillStyle=k;b.fillText(e(f)+" "+h+" ("+e(c)+"-"+e(g)+")",t,u);b.drawImage(q,d+a,m,n-a,p,d,m,n-a,p);b.fillRect(d+n-a,m,a,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d+n-a,m,a,e((1-f/v)*p))}}};"object"===typeof module&&(module.exports=Stats);
 
+
+/***/ },
+/* 405 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function () {
+	  return {};
+	};
+	
+	module.exports = exports["default"];
 
 /***/ },
 /* 406 */
@@ -53753,7 +53749,7 @@ var WHS =
 	
 	var _Loop = __webpack_require__(394);
 	
-	var _World = __webpack_require__(404);
+	var _World = __webpack_require__(403);
 	
 	var _CoreObject2 = __webpack_require__(395);
 	
@@ -53841,7 +53837,7 @@ var WHS =
 	      physics: physicsDefaults
 	    }));
 	
-	    if (params instanceof THREE.Mesh) {
+	    if (params instanceof THREE.Object3D) {
 	      (0, _get3.default)(Object.getPrototypeOf(Shape.prototype), 'setParams', _this).call(_this, {
 	        pos: { x: params.position.x, y: params.position.y, z: params.position.z },
 	        rot: { x: params.rotation.x, y: params.rotation.y, z: params.rotation.z },
@@ -53867,7 +53863,7 @@ var WHS =
 	      physics: params.physics
 	    });
 	
-	    if (params instanceof THREE.Mesh) _this.setNative(params);
+	    if (params instanceof THREE.Object3D) _this.setNative(params);
 	    if (WHS.debug) console.debug('@WHS.Shape: Shape ' + scope.type + ' found.', scope);
 	
 	    return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
@@ -54622,31 +54618,7 @@ var WHS =
 	  });
 	});
 	
-	var _Line = __webpack_require__(412);
-	
-	Object.keys(_Line).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Line[key];
-	    }
-	  });
-	});
-	
-	var _Points = __webpack_require__(413);
-	
-	Object.keys(_Points).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Points[key];
-	    }
-	  });
-	});
-	
-	var _Group = __webpack_require__(414);
+	var _Group = __webpack_require__(412);
 	
 	Object.keys(_Group).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54654,18 +54626,6 @@ var WHS =
 	    enumerable: true,
 	    get: function get() {
 	      return _Group[key];
-	    }
-	  });
-	});
-	
-	var _Skybox = __webpack_require__(415);
-	
-	Object.keys(_Skybox).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Skybox[key];
 	    }
 	  });
 	});
@@ -56109,252 +56069,6 @@ var WHS =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.Line = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(302);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(303);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(322);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(376);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(384);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _three = __webpack_require__(392);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _api = __webpack_require__(397);
-	
-	var _nophysi = __webpack_require__(398);
-	
-	var _Shape2 = __webpack_require__(406);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Line = function (_Shape) {
-	  (0, _inherits3.default)(Line, _Shape);
-	
-	  function Line(params) {
-	    (0, _classCallCheck3.default)(this, Line);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Line).call(this, params, 'line'));
-	
-	    (0, _api.extend)(params.geometry, {
-	      curve: false,
-	      points: 50
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Object.getPrototypeOf(Line.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Line, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _api.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics) Mesh = _nophysi.RopeMesh;else Mesh = THREE.Line;
-	
-	      return new Promise(function (resolve) {
-	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var geometry = params.buffer || params.physics ? new THREE.BufferGeometry() : new THREE.Geometry();
-	
-	      if (params.buffer || params.physics) {
-	        var pp = params.geometry.curve.getPoints(params.geometry.points);
-	        var verts = new Float32Array(pp.length * 3);
-	
-	        for (var i = 0, max = pp.length; i < max; i++) {
-	          verts[i * 3] = pp[i].x;
-	          verts[i * 3 + 1] = pp[i].y;
-	          verts[i * 3 + 2] = pp[i].z;
-	        }
-	
-	        geometry.addAttribute('position', new THREE.BufferAttribute(verts, 3));
-	      } else geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
-	
-	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
-	
-	      return geometry;
-	    }
-	  }]);
-	  return Line;
-	}(_Shape2.Shape);
-	
-	exports.Line = Line;
-
-/***/ },
-/* 413 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Points = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(302);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(303);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(322);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(376);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(384);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _three = __webpack_require__(392);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _api = __webpack_require__(397);
-	
-	var _CoreObject2 = __webpack_require__(395);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Points = function (_CoreObject) {
-	  (0, _inherits3.default)(Points, _CoreObject);
-	
-	  function Points(params) {
-	    var _ret;
-	
-	    (0, _classCallCheck3.default)(this, Points);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Points).call(this, {
-	      geometry: false,
-	
-	      material: {
-	        kind: 'points'
-	      }
-	    }));
-	
-	    (0, _get3.default)(Object.getPrototypeOf(Points.prototype), 'setParams', _this).call(_this, params);
-	
-	    var _verts = params.geometry.points;
-	
-	    var points = new THREE.Points(params.geometry, (0, _api.loadMaterial)(params.material));
-	
-	    _this.setNative(points);
-	
-	    var scope = Object.assign(_this, {
-	      _type: 'points'
-	    });
-	
-	    return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
-	  }
-	
-	  (0, _createClass3.default)(Points, [{
-	    key: 'addTo',
-	    value: function addTo(parent) {
-	      var _scope = this;
-	      _scope.parent = parent;
-	
-	      return new Promise(function (resolve, reject) {
-	        try {
-	          _scope.parent.getScene().add(_scope.getNative());
-	          _scope.parent.children.push(_scope);
-	        } catch (err) {
-	          console.error(err.message);
-	          reject();
-	        } finally {
-	          if (WHS.debug) {
-	            console.debug('@WHS.Curve: Curve ' + _scope._type + ' was added to world.', [_scope, _scope.parent]);
-	          }
-	
-	          resolve(_scope);
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Points(this.__params).copy(this);
-	    }
-	  }, {
-	    key: 'copy',
-	    value: function copy(source) {
-	      this.setNative(source.getNative().clone());
-	
-	      this._type = source._type;
-	
-	      return this;
-	    }
-	  }, {
-	    key: 'remove',
-	    value: function remove() {
-	      this.parent.getScene().remove(this.getNative());
-	
-	      this.parent.children.splice(this.parent.children.indexOf(this), 1);
-	      this.parent = null;
-	
-	      this.emit('remove');
-	
-	      if (WHS.debug) {
-	        console.debug('@WHS.Points: Curve ' + this._type + ' was removed from world', [_scope]);
-	      }
-	
-	      return this;
-	    }
-	  }]);
-	  return Points;
-	}(_CoreObject2.CoreObject);
-	
-	exports.Points = Points;
-
-/***/ },
-/* 414 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 	exports.Group = undefined;
 	
 	var _classCallCheck2 = __webpack_require__(302);
@@ -56414,113 +56128,7 @@ var WHS =
 	exports.Group = Group;
 
 /***/ },
-/* 415 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Skybox = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(302);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(322);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(376);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(384);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _three = __webpack_require__(392);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _api = __webpack_require__(397);
-	
-	var _Shape2 = __webpack_require__(406);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Skybox = function (_Shape) {
-	  (0, _inherits3.default)(Skybox, _Shape);
-	
-	  function Skybox() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Skybox);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Skybox).call(this, params, 'skybox'));
-	
-	    (0, _api.extend)(params, {
-	      skyType: 'box',
-	      imgSuffix: '.png',
-	      radius: 10,
-	      fog: true,
-	      path: ''
-	    });
-	
-	    var skyGeometry = void 0,
-	        skyMat = void 0;
-	
-	    switch (params.skyType) {
-	      case 'box':
-	        {
-	          var directions = ['xpos', 'xneg', 'ypos', 'yneg', 'zpos', 'zneg'],
-	              matArray = [];
-	
-	          skyGeometry = new THREE.CubeGeometry(params.radius, params.radius, params.radius);
-	
-	          for (var i = 0; i < 6; i++) {
-	            matArray.push(new THREE.MeshBasicMaterial({
-	              map: (0, _api.texture)(params.path + directions[i] + params.imgSuffix, false),
-	              side: THREE.BackSide,
-	              fog: params.fog
-	            }));
-	          }
-	
-	          skyMat = new THREE.MeshFaceMaterial(matArray);
-	
-	          break;
-	        }
-	      case 'sphere':
-	        {
-	          skyGeometry = new THREE.SphereGeometry(params.radius / 2, 60, 40);
-	          skyMat = new THREE.MeshBasicMaterial({
-	            map: (0, _api.texture)(params.path + params.imgSuffix, false),
-	            side: THREE.BackSide,
-	            fog: params.fog
-	          });
-	
-	          break;
-	        }
-	      default:
-	    }
-	
-	    var mesh = new THREE.Mesh(skyGeometry, skyMat);
-	    mesh.renderDepth = 1000.0;
-	
-	    (0, _get3.default)(Object.getPrototypeOf(Skybox.prototype), 'setNative', _this).call(_this, mesh);
-	    (0, _get3.default)(Object.getPrototypeOf(Skybox.prototype), 'wrap', _this).call(_this);
-	    return _this;
-	  }
-	
-	  return Skybox;
-	}(_Shape2.Shape);
-	
-	exports.Skybox = Skybox;
-
-/***/ },
-/* 416 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56529,7 +56137,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _AmbientLight = __webpack_require__(417);
+	var _AmbientLight = __webpack_require__(414);
 	
 	Object.keys(_AmbientLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56541,7 +56149,7 @@ var WHS =
 	  });
 	});
 	
-	var _DirectionalLight = __webpack_require__(418);
+	var _DirectionalLight = __webpack_require__(415);
 	
 	Object.keys(_DirectionalLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56553,7 +56161,7 @@ var WHS =
 	  });
 	});
 	
-	var _HemisphereLight = __webpack_require__(419);
+	var _HemisphereLight = __webpack_require__(416);
 	
 	Object.keys(_HemisphereLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56565,7 +56173,7 @@ var WHS =
 	  });
 	});
 	
-	var _PointLight = __webpack_require__(420);
+	var _PointLight = __webpack_require__(417);
 	
 	Object.keys(_PointLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56577,7 +56185,7 @@ var WHS =
 	  });
 	});
 	
-	var _SpotLight = __webpack_require__(421);
+	var _SpotLight = __webpack_require__(418);
 	
 	Object.keys(_SpotLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56590,7 +56198,7 @@ var WHS =
 	});
 
 /***/ },
-/* 417 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56624,7 +56232,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(403);
+	var _Light2 = __webpack_require__(402);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56664,7 +56272,7 @@ var WHS =
 	exports.AmbientLight = AmbientLight;
 
 /***/ },
-/* 418 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56698,7 +56306,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(403);
+	var _Light2 = __webpack_require__(402);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56742,7 +56350,7 @@ var WHS =
 	exports.DirectionalLight = DirectionalLight;
 
 /***/ },
-/* 419 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56776,7 +56384,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(403);
+	var _Light2 = __webpack_require__(402);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56821,7 +56429,7 @@ var WHS =
 	exports.HemisphereLight = HemisphereLight;
 
 /***/ },
-/* 420 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56855,7 +56463,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(403);
+	var _Light2 = __webpack_require__(402);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56899,7 +56507,7 @@ var WHS =
 	exports.PointLight = PointLight;
 
 /***/ },
-/* 421 */
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56933,7 +56541,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(403);
+	var _Light2 = __webpack_require__(402);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56975,7 +56583,7 @@ var WHS =
 	exports.SpotLight = SpotLight;
 
 /***/ },
-/* 422 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56984,7 +56592,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _Box = __webpack_require__(423);
+	var _Box = __webpack_require__(420);
 	
 	Object.keys(_Box).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56996,7 +56604,7 @@ var WHS =
 	  });
 	});
 	
-	var _Cylinder = __webpack_require__(424);
+	var _Cylinder = __webpack_require__(421);
 	
 	Object.keys(_Cylinder).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57008,7 +56616,7 @@ var WHS =
 	  });
 	});
 	
-	var _Dodecahedron = __webpack_require__(425);
+	var _Dodecahedron = __webpack_require__(422);
 	
 	Object.keys(_Dodecahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57020,7 +56628,7 @@ var WHS =
 	  });
 	});
 	
-	var _Extrude = __webpack_require__(426);
+	var _Extrude = __webpack_require__(423);
 	
 	Object.keys(_Extrude).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57032,7 +56640,7 @@ var WHS =
 	  });
 	});
 	
-	var _Icosahedron = __webpack_require__(427);
+	var _Icosahedron = __webpack_require__(424);
 	
 	Object.keys(_Icosahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57044,7 +56652,7 @@ var WHS =
 	  });
 	});
 	
-	var _Lathe = __webpack_require__(428);
+	var _Lathe = __webpack_require__(425);
 	
 	Object.keys(_Lathe).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57056,7 +56664,19 @@ var WHS =
 	  });
 	});
 	
-	var _Model = __webpack_require__(429);
+	var _Line = __webpack_require__(426);
+	
+	Object.keys(_Line).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Line[key];
+	    }
+	  });
+	});
+	
+	var _Model = __webpack_require__(427);
 	
 	Object.keys(_Model).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57068,7 +56688,7 @@ var WHS =
 	  });
 	});
 	
-	var _Morph = __webpack_require__(430);
+	var _Morph = __webpack_require__(428);
 	
 	Object.keys(_Morph).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57080,7 +56700,7 @@ var WHS =
 	  });
 	});
 	
-	var _Octahedron = __webpack_require__(431);
+	var _Octahedron = __webpack_require__(429);
 	
 	Object.keys(_Octahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57092,7 +56712,7 @@ var WHS =
 	  });
 	});
 	
-	var _Parametric = __webpack_require__(432);
+	var _Parametric = __webpack_require__(430);
 	
 	Object.keys(_Parametric).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57104,7 +56724,7 @@ var WHS =
 	  });
 	});
 	
-	var _Plane = __webpack_require__(433);
+	var _Plane = __webpack_require__(431);
 	
 	Object.keys(_Plane).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57116,7 +56736,7 @@ var WHS =
 	  });
 	});
 	
-	var _Polyhedron = __webpack_require__(434);
+	var _Polyhedron = __webpack_require__(432);
 	
 	Object.keys(_Polyhedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57128,7 +56748,7 @@ var WHS =
 	  });
 	});
 	
-	var _Ring = __webpack_require__(435);
+	var _Ring = __webpack_require__(433);
 	
 	Object.keys(_Ring).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57140,7 +56760,7 @@ var WHS =
 	  });
 	});
 	
-	var _Shape2D = __webpack_require__(436);
+	var _Shape2D = __webpack_require__(434);
 	
 	Object.keys(_Shape2D).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57152,7 +56772,7 @@ var WHS =
 	  });
 	});
 	
-	var _Sphere = __webpack_require__(437);
+	var _Sphere = __webpack_require__(435);
 	
 	Object.keys(_Sphere).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57164,7 +56784,7 @@ var WHS =
 	  });
 	});
 	
-	var _Tetrahedron = __webpack_require__(438);
+	var _Tetrahedron = __webpack_require__(436);
 	
 	Object.keys(_Tetrahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57176,7 +56796,7 @@ var WHS =
 	  });
 	});
 	
-	var _Text = __webpack_require__(439);
+	var _Text = __webpack_require__(437);
 	
 	Object.keys(_Text).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57188,7 +56808,7 @@ var WHS =
 	  });
 	});
 	
-	var _Torus = __webpack_require__(440);
+	var _Torus = __webpack_require__(438);
 	
 	Object.keys(_Torus).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57200,7 +56820,7 @@ var WHS =
 	  });
 	});
 	
-	var _Torusknot = __webpack_require__(441);
+	var _Torusknot = __webpack_require__(439);
 	
 	Object.keys(_Torusknot).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57212,7 +56832,7 @@ var WHS =
 	  });
 	});
 	
-	var _Tube = __webpack_require__(442);
+	var _Tube = __webpack_require__(440);
 	
 	Object.keys(_Tube).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -57225,7 +56845,7 @@ var WHS =
 	});
 
 /***/ },
-/* 423 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57259,7 +56879,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -57359,7 +56979,7 @@ var WHS =
 	exports.Box = Box;
 
 /***/ },
-/* 424 */
+/* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57393,7 +57013,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -57506,7 +57126,7 @@ var WHS =
 	exports.Cylinder = Cylinder;
 
 /***/ },
-/* 425 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57540,7 +57160,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -57627,7 +57247,7 @@ var WHS =
 	exports.Dodecahedron = Dodecahedron;
 
 /***/ },
-/* 426 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57661,7 +57281,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -57748,7 +57368,7 @@ var WHS =
 	exports.Extrude = Extrude;
 
 /***/ },
-/* 427 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57782,7 +57402,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -57869,7 +57489,7 @@ var WHS =
 	exports.Icosahedron = Icosahedron;
 
 /***/ },
-/* 428 */
+/* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57903,7 +57523,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -57981,7 +57601,121 @@ var WHS =
 	exports.Lathe = Lathe;
 
 /***/ },
-/* 429 */
+/* 426 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Line = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(302);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(303);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(322);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(376);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(384);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _three = __webpack_require__(392);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _api = __webpack_require__(397);
+	
+	var _nophysi = __webpack_require__(405);
+	
+	var _Shape2 = __webpack_require__(406);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Line = function (_Shape) {
+	  (0, _inherits3.default)(Line, _Shape);
+	
+	  function Line(params) {
+	    (0, _classCallCheck3.default)(this, Line);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Line).call(this, params, 'line'));
+	
+	    (0, _api.extend)(params.geometry, {
+	      curve: false,
+	      points: 50
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Object.getPrototypeOf(Line.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Line, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _api.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics) Mesh = _nophysi.RopeMesh;else Mesh = THREE.Line;
+	
+	      return new Promise(function (resolve) {
+	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var geometry = params.buffer || params.physics ? new THREE.BufferGeometry() : new THREE.Geometry();
+	
+	      if (params.buffer || params.physics) {
+	        var pp = params.geometry.curve.getPoints(params.geometry.points);
+	        var verts = new Float32Array(pp.length * 3);
+	
+	        for (var i = 0, max = pp.length; i < max; i++) {
+	          verts[i * 3] = pp[i].x;
+	          verts[i * 3 + 1] = pp[i].y;
+	          verts[i * 3 + 2] = pp[i].z;
+	        }
+	
+	        geometry.addAttribute('position', new THREE.BufferAttribute(verts, 3));
+	      } else geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
+	    }
+	  }]);
+	  return Line;
+	}(_Shape2.Shape);
+	
+	exports.Line = Line;
+
+/***/ },
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58015,7 +57749,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -58123,7 +57857,7 @@ var WHS =
 	exports.Model = Model;
 
 /***/ },
-/* 430 */
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58157,7 +57891,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var Physijs = _interopRequireWildcard(_nophysi);
 	
@@ -58165,7 +57899,7 @@ var WHS =
 	
 	var _api = __webpack_require__(397);
 	
-	var _loaders = __webpack_require__(399);
+	var _loaders = __webpack_require__(398);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58244,7 +57978,7 @@ var WHS =
 	exports.Morph = Morph;
 
 /***/ },
-/* 431 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58278,7 +58012,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -58365,7 +58099,7 @@ var WHS =
 	exports.Octahedron = Octahedron;
 
 /***/ },
-/* 432 */
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58399,7 +58133,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -58496,7 +58230,7 @@ var WHS =
 	exports.Parametric = Parametric;
 
 /***/ },
-/* 433 */
+/* 431 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58530,7 +58264,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -58631,7 +58365,7 @@ var WHS =
 	exports.Plane = Plane;
 
 /***/ },
-/* 434 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58665,7 +58399,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -58780,7 +58514,7 @@ var WHS =
 	exports.Polyhedron = Polyhedron;
 
 /***/ },
-/* 435 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58931,7 +58665,7 @@ var WHS =
 	exports.Ring = Ring;
 
 /***/ },
-/* 436 */
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59037,7 +58771,7 @@ var WHS =
 	exports.Shape2D = Shape2D;
 
 /***/ },
-/* 437 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59071,7 +58805,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -59171,7 +58905,7 @@ var WHS =
 	exports.Sphere = Sphere;
 
 /***/ },
-/* 438 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59205,7 +58939,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -59292,7 +59026,7 @@ var WHS =
 	exports.Tetrahedron = Tetrahedron;
 
 /***/ },
-/* 439 */
+/* 437 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59326,7 +59060,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -59405,7 +59139,7 @@ var WHS =
 	exports.Text = Text;
 
 /***/ },
-/* 440 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59439,7 +59173,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -59553,7 +59287,7 @@ var WHS =
 	exports.Torus = Torus;
 
 /***/ },
-/* 441 */
+/* 439 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59587,7 +59321,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -59719,7 +59453,7 @@ var WHS =
 	exports.Torusknot = Torusknot;
 
 /***/ },
-/* 442 */
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59753,7 +59487,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(398);
+	var _nophysi = __webpack_require__(405);
 	
 	var _Shape2 = __webpack_require__(406);
 	
@@ -59871,7 +59605,7 @@ var WHS =
 	exports.Tube = Tube;
 
 /***/ },
-/* 443 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -59917,10 +59651,150 @@ var WHS =
 	exports.List = List;
 
 /***/ },
+/* 442 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _Skybox = __webpack_require__(443);
+	
+	Object.keys(_Skybox).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Skybox[key];
+	    }
+	  });
+	});
+
+/***/ },
+/* 443 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Skybox = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(302);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(322);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(376);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(384);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _dec, _class;
+	
+	var _three = __webpack_require__(392);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _api = __webpack_require__(397);
+	
+	var _Shape2 = __webpack_require__(406);
+	
+	var _decorators = __webpack_require__(444);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Skybox = (_dec = (0, _decorators.deprecate)('0.0.11'), _dec(_class = function (_Shape) {
+	  (0, _inherits3.default)(Skybox, _Shape);
+	
+	  function Skybox() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Skybox);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Skybox).call(this, params, 'skybox'));
+	
+	    (0, _api.extend)(params, {
+	      skyType: 'box',
+	      imgSuffix: '.png',
+	      radius: 10,
+	      fog: true,
+	      path: ''
+	    });
+	
+	    var skyGeometry = void 0,
+	        skyMat = void 0;
+	
+	    switch (params.skyType) {
+	      case 'box':
+	        {
+	          var directions = ['xpos', 'xneg', 'ypos', 'yneg', 'zpos', 'zneg'],
+	              matArray = [];
+	
+	          skyGeometry = new THREE.CubeGeometry(params.radius, params.radius, params.radius);
+	
+	          for (var i = 0; i < 6; i++) {
+	            matArray.push(new THREE.MeshBasicMaterial({
+	              map: (0, _api.texture)(params.path + directions[i] + params.imgSuffix, false),
+	              side: THREE.BackSide,
+	              fog: params.fog
+	            }));
+	          }
+	
+	          skyMat = new THREE.MeshFaceMaterial(matArray);
+	
+	          break;
+	        }
+	      case 'sphere':
+	        {
+	          skyGeometry = new THREE.SphereGeometry(params.radius / 2, 60, 40);
+	          skyMat = new THREE.MeshBasicMaterial({
+	            map: (0, _api.texture)(params.path + params.imgSuffix, false),
+	            side: THREE.BackSide,
+	            fog: params.fog
+	          });
+	
+	          break;
+	        }
+	      default:
+	    }
+	
+	    var mesh = new THREE.Mesh(skyGeometry, skyMat);
+	    mesh.renderDepth = 1000.0;
+	
+	    (0, _get3.default)(Object.getPrototypeOf(Skybox.prototype), 'setNative', _this).call(_this, mesh);
+	    (0, _get3.default)(Object.getPrototypeOf(Skybox.prototype), 'wrap', _this).call(_this);
+	    return _this;
+	  }
+	
+	  return Skybox;
+	}(_Shape2.Shape)) || _class);
+	exports.Skybox = Skybox;
+
+/***/ },
 /* 444 */
 /***/ function(module, exports) {
 
 	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var deprecate = exports.deprecate = function deprecate(version) {
+	  return function (target, name, description) {
+	    console.warn("Class WHS." + target.name + " is deprecated since v" + version);
+	  };
+	};
 
 /***/ }
 /******/ ]);
