@@ -1,61 +1,6 @@
 import * as THREE from 'three';
 
-import {JSONLoader, TextureLoader, FontLoader} from '../utils/loaders';
-
-const extend = (object, ...extensions) => { // $.extend alternative, ... is the spread operator.
-  for (const extension of extensions) {
-    // console.log(extension);
-    // console.log(typeof extension);
-
-    if (!extension)
-      continue; // Ignore null and undefined objects and paramaters.
-
-    for (const prop of Object.getOwnPropertyNames(extension)) { // Do not traverse the prototype chain.
-      if (object[prop] !== undefined
-        && object[prop].toString() === '[object Object]'
-        && extension[prop].toString() === '[object Object]') {
-
-        // Goes deep only if object[prop] and extension[prop] are both objects !
-        if (extension[prop].uuid) object[prop] = extension[prop];
-        else extend(object[prop], extension[prop]);
-
-      } else
-        object[prop] = (object[prop] === 0) ? 0 : object[prop];
-      if (typeof object[prop] === 'undefined') object[prop] = extension[prop]; // Add values that do not already exist.
-    }
-  }
-
-  return object;
-};
-
-const texture = (url, repeat = {}) => {
-  const texture = TextureLoader.load(url);
-
-  if (repeat) {
-    const opt = extend(repeat, {
-      offset: {
-        x: 0,
-        y: 0
-      },
-      repeat: {
-        x: 1,
-        y: 1
-      }
-    });
-
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
-    texture.offset.set(opt.offset.x, opt.offset.y);
-    texture.repeat.set(opt.repeat.x, opt.repeat.y);
-
-    texture.magFilter = THREE.NearestFilter;
-    texture.minFilter = THREE.LinearMipMapLinearFilter;
-  }
-
-  return texture;
-};
-
-const loadMaterial = (material = {}) => {
+export const loadMaterial = (material = {}) => {
   if (material instanceof THREE.Material) {
     return material;
   }
@@ -140,13 +85,4 @@ const loadMaterial = (material = {}) => {
 
     return materialThree;
   }
-};
-
-export {
-  FontLoader,
-  JSONLoader,
-  TextureLoader,
-  texture,
-  extend,
-  loadMaterial
 };

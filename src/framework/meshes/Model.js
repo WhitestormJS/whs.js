@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial, JSONLoader} from '../extras/api';
+import {extend, loadMaterial, JSONLoader} from '../utils/index';
 
 class Model extends Shape {
   constructor(params = {}) {

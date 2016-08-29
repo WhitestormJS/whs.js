@@ -1,5 +1,5 @@
 import Ammo from 'whs-ammo';
-import {extend} from '../extras/api';
+import {extend} from '../utils/index';
 
 module.exports = function (self) {
   'use strict';
