@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import {Loop} from '../utils/Loop';
+import {Loop} from '../extras/Loop';
 import {World} from './World';
 import {CoreObject} from './CoreObject';
 

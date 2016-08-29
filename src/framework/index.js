@@ -6,10 +6,7 @@ export * from './core/index';
 export * from './extras/index';
 export * from './lights/index';
 export * from './meshes/index';
-
-// UTILS
-export * from './utils/Loop';
-export * from './utils/List';
+export * from './utils/index';
 
 // DEPRECATION
 export * from './deprecation';

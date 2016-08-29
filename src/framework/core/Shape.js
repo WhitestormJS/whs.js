@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
-import {loadMaterial, extend} from '../extras/api';
-import {Loop} from '../utils/Loop';
+import {loadMaterial, extend} from '../utils/index';
+import {Loop} from '../extras/Loop';
 import {World} from './World';
 import {CoreObject} from './CoreObject';
 

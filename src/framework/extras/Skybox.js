@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import {extend, texture} from '../extras/api';
+import {extend, texture} from '../utils/index';
 import {Shape} from '../core/Shape';
 import {deprecate} from '../utils/decorators';
 

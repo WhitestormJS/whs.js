@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial, FontLoader} from '../extras/api';
+import {extend, loadMaterial, FontLoader} from '../utils/index';
 
 class Text extends Shape {
   constructor(params = {}) {

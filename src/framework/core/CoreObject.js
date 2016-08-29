@@ -1,5 +1,5 @@
 import Events from 'minivents';
-import {extend} from '../extras/api';
+import {extend} from '../utils/index';
 
 class CoreObject {
   /**

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial} from '../extras/api';
+import {extend, loadMaterial} from '../utils/index';
 
 class Shape2D extends Shape {
   constructor(params = {}) {

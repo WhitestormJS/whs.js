@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import {loadMaterial, extend} from '../extras/api';
+import {loadMaterial, extend} from '../utils/index';
 import {RopeMesh} from '../physics/index.js';
 import {Shape} from '../core/Shape';
 

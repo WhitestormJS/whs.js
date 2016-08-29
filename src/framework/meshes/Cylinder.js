@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {CylinderMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial} from '../extras/api';
+import {extend, loadMaterial} from '../utils/index';
 
 class Cylinder extends Shape {
   constructor(params = {}) {

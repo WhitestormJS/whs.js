@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {BoxMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial} from '../extras/api';
+import {extend, loadMaterial} from '../utils/index';
 
 class Box extends Shape {
   constructor(params = {}) {

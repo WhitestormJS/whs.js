@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import {Loop} from '../utils/Loop';
+import {Loop} from '../extras/Loop';
 import {CoreObject} from './CoreObject';
 
 class Camera extends CoreObject {

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {extend} from '../api';
+import {extend} from '../../utils/index';
 
 const PI_2 = Math.PI / 2;
 
