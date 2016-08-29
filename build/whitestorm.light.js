@@ -8256,9 +8256,9 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index7 = __webpack_require__(408);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
+	var Physijs = _interopRequireWildcard(_index7);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -53255,9 +53255,9 @@ var WHS =
 	
 	var _stats2 = _interopRequireDefault(_stats);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
+	var Physijs = _interopRequireWildcard(_index);
 	
 	var _PerspectiveCamera = __webpack_require__(403);
 	
@@ -53400,7 +53400,7 @@ var WHS =
 	    key: '_initScene',
 	    value: function _initScene() {
 	      var params = this.getParams(),
-	          scene = false ? new Physijs.Scene({
+	          scene =  true ? new Physijs.Scene({
 	        fixedTimeStep: params.physics.fixedTimeStep,
 	        broadphase: params.physics.broadphase
 	      }, {
@@ -53409,7 +53409,7 @@ var WHS =
 	        softbody: params.softbody
 	      }) : new THREE.Scene();
 	
-	      if (false) {
+	      if (true) {
 	        scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
 	
 	        this.simulate = true;
@@ -53792,17 +53792,7 @@ var WHS =
 /* 408 */
 /***/ function(module, exports) {
 
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	exports.default = function () {
-	  return {};
-	};
-	
-	module.exports = exports["default"];
+	module.exports = false;
 
 /***/ },
 /* 409 */
@@ -53872,7 +53862,7 @@ var WHS =
 	      _this.z = z;
 	    };
 	
-	    var physicsDefaults = false ? (0, _defineProperty3.default)({
+	    var physicsDefaults =  true ? (0, _defineProperty3.default)({
 	      restitution: 0.3,
 	      friction: 0.8,
 	      damping: 0,
@@ -57035,11 +57025,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57054,7 +57044,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Box.__proto__ || Object.getPrototypeOf(Box)).call(this, params, 'box'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      width: 1,
 	      height: 1,
 	      depth: 1
@@ -57074,11 +57064,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.BoxMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.BoxMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -57169,11 +57159,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57188,7 +57178,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Cylinder.__proto__ || Object.getPrototypeOf(Cylinder)).call(this, params, 'cylinder'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      radiusTop: 0,
 	      radiusBottom: 1,
 	      height: 1,
@@ -57213,11 +57203,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.CylinderMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.CylinderMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -57316,11 +57306,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57335,7 +57325,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Dodecahedron.__proto__ || Object.getPrototypeOf(Dodecahedron)).call(this, params, 'dodecahedron'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      radius: 1,
 	      detail: 0
 	    });
@@ -57354,11 +57344,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -57437,11 +57427,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57456,7 +57446,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Extrude.__proto__ || Object.getPrototypeOf(Extrude)).call(this, params, 'extrude'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      shapes: [],
 	      options: {}
 	    });
@@ -57475,11 +57465,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -57558,11 +57548,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57577,7 +57567,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Icosahedron.__proto__ || Object.getPrototypeOf(Icosahedron)).call(this, params, 'icosahedron'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      radius: 1,
 	      detail: 0
 	    });
@@ -57596,11 +57586,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -57679,11 +57669,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57698,7 +57688,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Lathe.__proto__ || Object.getPrototypeOf(Lathe)).call(this, params, 'lathe'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      points: []
 	    });
 	
@@ -57716,11 +57706,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -57793,7 +57783,7 @@ var WHS =
 	
 	var _index = __webpack_require__(396);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index2 = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
@@ -57832,7 +57822,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics) Mesh = _nophysi.RopeMesh;else Mesh = THREE.Line;
+	      if (this.physics) Mesh = _index2.RopeMesh;else Mesh = THREE.Line;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -57905,11 +57895,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57924,10 +57914,10 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Model.__proto__ || Object.getPrototypeOf(Model)).call(this, params, 'model'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      path: '',
 	      physics: '',
-	      loader: _index.JSONLoader
+	      loader: _index2.JSONLoader
 	    });
 	
 	    if (params.build) {
@@ -57946,7 +57936,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      var promise = new Promise(function (resolve) {
 	        var pGeometry = params.geometry;
@@ -57958,12 +57948,12 @@ var WHS =
 	              var material = void 0;
 	
 	              if (params.material.useVertexColors) {
-	                material = (0, _index.loadMaterial)((0, _index.extend)(params.material, {
+	                material = (0, _index2.loadMaterial)((0, _index2.extend)(params.material, {
 	                  morphTargets: true,
 	                  vertexColors: THREE.FaceColors
 	                }));
 	              } else if (!materials || params.material.useCustomMaterial) {
-	                material = (0, _index.loadMaterial)(params.material);
+	                material = (0, _index2.loadMaterial)(params.material);
 	              } else material = new THREE.MultiMaterial(materials);
 	
 	              data.computeFaceNormals();
@@ -57977,12 +57967,12 @@ var WHS =
 	            var material = void 0;
 	
 	            if (params.material.useVertexColors) {
-	              material = (0, _index.loadMaterial)((0, _index.extend)(params.material, {
+	              material = (0, _index2.loadMaterial)((0, _index2.extend)(params.material, {
 	                morphTargets: true,
 	                vertexColors: THREE.FaceColors
 	              }));
 	            } else if (!materials || params.material.useCustomMaterial) {
-	              material = (0, _index.loadMaterial)(params.material);
+	              material = (0, _index2.loadMaterial)(params.material);
 	            } else material = new THREE.MultiMaterial(materials);
 	
 	            data.computeFaceNormals();
@@ -58047,13 +58037,13 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
+	var Physijs = _interopRequireWildcard(_index);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	var _loaders = __webpack_require__(399);
 	
@@ -58070,7 +58060,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Morph.__proto__ || Object.getPrototypeOf(Morph)).call(this, params, 'morph'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      path: '',
 	      loader: _loaders.JSONLoader
 	    });
@@ -58095,12 +58085,12 @@ var WHS =
 	        Loader.load(params.geometry.path, function (data, materials) {
 	          var material = void 0;
 	          if (params.material.useVertexColors) {
-	            material = (0, _index.loadMaterial)((0, _index.extend)(params.material, {
+	            material = (0, _index2.loadMaterial)((0, _index2.extend)(params.material, {
 	              morphTargets: true,
 	              vertexColors: THREE.FaceColors
 	            }));
 	          } else if (!materials || params.material.useCustomMaterial) {
-	            material = (0, _index.loadMaterial)(params.material);
+	            material = (0, _index2.loadMaterial)(params.material);
 	          } else material = new THREE.MultiMaterial(materials);
 	
 	          data.computeFaceNormals();
@@ -58168,11 +58158,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58187,7 +58177,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Octahedron.__proto__ || Object.getPrototypeOf(Octahedron)).call(this, params, 'octahedron'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      radius: 1,
 	      detail: 0
 	    });
@@ -58206,11 +58196,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -58289,11 +58279,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58308,7 +58298,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Parametric.__proto__ || Object.getPrototypeOf(Parametric)).call(this, params, 'parametric'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      func: function func() {},
 	
 	      slices: 10,
@@ -58329,11 +58319,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -58420,11 +58410,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58439,7 +58429,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Plane.__proto__ || Object.getPrototypeOf(Plane)).call(this, params, 'plane'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      width: 10,
 	      height: 10,
 	      wSegments: 32,
@@ -58460,11 +58450,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.ClothMesh;else if (this.physics) Mesh = _nophysi.PlaneMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.ClothMesh;else if (this.physics) Mesh = _index.PlaneMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -58555,11 +58545,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58574,7 +58564,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Polyhedron.__proto__ || Object.getPrototypeOf(Polyhedron)).call(this, params, 'polyhedron'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      verticesOfCube: _this.verticesOfCube,
 	      indicesOfFaces: _this.indicesOfFaces,
 	      radius: 6,
@@ -58595,11 +58585,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -58961,11 +58951,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58980,7 +58970,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Sphere.__proto__ || Object.getPrototypeOf(Sphere)).call(this, params, 'sphere'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      radius: 1,
 	      widthSegments: 8,
 	      heightSegments: 6
@@ -59000,11 +58990,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.SphereMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.SphereMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -59095,11 +59085,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59114,7 +59104,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Tetrahedron.__proto__ || Object.getPrototypeOf(Tetrahedron)).call(this, params, 'tetrahedron'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      radius: 1,
 	      detail: 0
 	    });
@@ -59133,11 +59123,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -59216,11 +59206,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59235,7 +59225,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Text.__proto__ || Object.getPrototypeOf(Text)).call(this, params, 'text'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      text: 'Hello World!',
 	
 	      parameters: {
@@ -59263,14 +59253,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      var promise = new Promise(function (resolve) {
-	        _index.FontLoader.load(params.geometry.parameters.font, function (font) {
+	        _index2.FontLoader.load(params.geometry.parameters.font, function (font) {
 	          params.geometry.parameters.font = font;
 	
 	          _this2.setNative(new Mesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), material, _this2.getParams()));
@@ -59329,11 +59319,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59348,7 +59338,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Torus.__proto__ || Object.getPrototypeOf(Torus)).call(this, params, 'torus'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      radius: 100,
 	      tube: 40,
 	      radialSegments: 8,
@@ -59370,11 +59360,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -59477,11 +59467,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59496,7 +59486,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Torusknot.__proto__ || Object.getPrototypeOf(Torusknot)).call(this, params, 'Torusknot'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      radius: 100,
 	      tube: 40,
 	      radialSegments: 64,
@@ -59519,11 +59509,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -59642,11 +59632,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(408);
+	var _index = __webpack_require__(408);
 	
 	var _Shape2 = __webpack_require__(409);
 	
-	var _index = __webpack_require__(396);
+	var _index2 = __webpack_require__(396);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59661,7 +59651,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Tube.__proto__ || Object.getPrototypeOf(Tube)).call(this, params, 'tube'));
 	
-	    (0, _index.extend)(params.geometry, {
+	    (0, _index2.extend)(params.geometry, {
 	      path: false,
 	      segments: 20,
 	      radius: 2,
@@ -59683,11 +59673,11 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _index.loadMaterial)(params.material);
+	      var material = (0, _index2.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
