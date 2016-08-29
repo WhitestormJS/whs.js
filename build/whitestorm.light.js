@@ -59495,8 +59495,7 @@ var WHS =
 	      radialSegments: 64,
 	      tubularSegments: 8,
 	      p: 2,
-	      q: 3,
-	      heightScale: 1
+	      q: 3
 	    });
 	
 	    if (params.build) {
@@ -59532,7 +59531,7 @@ var WHS =
 	
 	      var GConstruct = params.buffer && !params.softbody ? THREE.TorusKnotBufferGeometry : THREE.TorusKnotGeometry;
 	
-	      return new GConstruct(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.p, params.geometry.q, params.geometry.heightScale);
+	      return new GConstruct(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.p, params.geometry.q);
 	    }
 	  }, {
 	    key: 'clone',
