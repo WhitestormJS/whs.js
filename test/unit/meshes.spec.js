@@ -85,6 +85,23 @@ define(['whs'], function(WHS) {
           }
         });
       });
+
+      it('Line (rope)', () => {
+        new WHS.Line({
+          geometry: {
+            curve: new THREE.LineCurve3(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 5, 0))
+          },
+
+          physics: {
+            piterations: 10,
+            viterations: 10
+          },
+
+          mass: 1,
+
+          softbody: true
+        });
+      });
     });
   });
 });

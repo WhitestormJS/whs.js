@@ -8148,7 +8148,7 @@ var WHS =
 	  });
 	});
 	
-	var _index2 = __webpack_require__(401);
+	var _index2 = __webpack_require__(405);
 	
 	Object.keys(_index2).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8160,7 +8160,7 @@ var WHS =
 	  });
 	});
 	
-	var _index3 = __webpack_require__(408);
+	var _index3 = __webpack_require__(412);
 	
 	Object.keys(_index3).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8172,7 +8172,7 @@ var WHS =
 	  });
 	});
 	
-	var _index4 = __webpack_require__(413);
+	var _index4 = __webpack_require__(418);
 	
 	Object.keys(_index4).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8184,7 +8184,7 @@ var WHS =
 	  });
 	});
 	
-	var _index5 = __webpack_require__(419);
+	var _index5 = __webpack_require__(424);
 	
 	Object.keys(_index5).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8196,31 +8196,19 @@ var WHS =
 	  });
 	});
 	
-	var _Loop = __webpack_require__(394);
+	var _index6 = __webpack_require__(397);
 	
-	Object.keys(_Loop).forEach(function (key) {
+	Object.keys(_index6).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
-	      return _Loop[key];
+	      return _index6[key];
 	    }
 	  });
 	});
 	
-	var _List = __webpack_require__(441);
-	
-	Object.keys(_List).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _List[key];
-	    }
-	  });
-	});
-	
-	var _deprecation = __webpack_require__(442);
+	var _deprecation = __webpack_require__(446);
 	
 	Object.keys(_deprecation).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8236,7 +8224,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
 	var Physijs = _interopRequireWildcard(_nophysi);
 	
@@ -8251,9 +8239,6 @@ var WHS =
 	}
 	
 	// DEPRECATION
-	
-	
-	// UTILS
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
@@ -8278,7 +8263,7 @@ var WHS =
 	  });
 	});
 	
-	var _OrtographicCamera = __webpack_require__(399);
+	var _OrtographicCamera = __webpack_require__(403);
 	
 	Object.keys(_OrtographicCamera).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8290,7 +8275,7 @@ var WHS =
 	  });
 	});
 	
-	var _PerspectiveCamera = __webpack_require__(400);
+	var _PerspectiveCamera = __webpack_require__(404);
 	
 	Object.keys(_PerspectiveCamera).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52131,7 +52116,7 @@ var WHS =
 	
 	var _minivents2 = _interopRequireDefault(_minivents);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -52172,7 +52157,7 @@ var WHS =
 	    value: function setParams() {
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      this.__params = (0, _api.extend)(params, this.__defaults);
+	      this.__params = (0, _index.extend)(params, this.__defaults);
 	      return this.__params;
 	    }
 	  }, {
@@ -52180,7 +52165,7 @@ var WHS =
 	    value: function updateParams() {
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      this.__params = (0, _api.extend)(params, this.__params);
+	      this.__params = (0, _index.extend)(params, this.__params);
 	      return this.__params;
 	    }
 	  }, {
@@ -52259,17 +52244,92 @@ var WHS =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.loadMaterial = exports.extend = exports.texture = exports.TextureLoader = exports.JSONLoader = exports.FontLoader = undefined;
 	
-	var _three = __webpack_require__(392);
+	var _decorators = __webpack_require__(398);
 	
-	var THREE = _interopRequireWildcard(_three);
+	Object.keys(_decorators).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _decorators[key];
+	    }
+	  });
+	});
 	
-	var _loaders = __webpack_require__(398);
+	var _extend = __webpack_require__(399);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	Object.keys(_extend).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _extend[key];
+	    }
+	  });
+	});
 	
-	var extend = function extend(object) {
+	var _loaders = __webpack_require__(400);
+	
+	Object.keys(_loaders).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _loaders[key];
+	    }
+	  });
+	});
+	
+	var _loadMaterial = __webpack_require__(401);
+	
+	Object.keys(_loadMaterial).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _loadMaterial[key];
+	    }
+	  });
+	});
+	
+	var _texture = __webpack_require__(402);
+	
+	Object.keys(_texture).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _texture[key];
+	    }
+	  });
+	});
+
+/***/ },
+/* 398 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var deprecate = exports.deprecate = function deprecate(version) {
+	  return function (target, name, description) {
+	    console.warn("Class WHS." + target.name + " is deprecated since v" + version);
+	  };
+	};
+
+/***/ },
+/* 399 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var extend = exports.extend = function extend(object) {
 	  for (var _len = arguments.length, extensions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
 	    extensions[_key - 1] = arguments[_key];
 	  }
@@ -52335,37 +52395,73 @@ var WHS =
 	
 	  return object;
 	};
+
+/***/ },
+/* 400 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	
-	var texture = function texture(url) {
-	  var repeat = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.MaterialLoader = exports.ImageLoader = exports.AudioLoader = exports.XHRLoader = exports.FontLoader = exports.TextureLoader = exports.ObjectLoader = exports.BufferGeometryLoader = exports.JSONLoader = undefined;
 	
-	  var texture = _loaders.TextureLoader.load(url);
+	var _three = __webpack_require__(392);
 	
-	  if (repeat) {
-	    var opt = extend(repeat, {
-	      offset: {
-	        x: 0,
-	        y: 0
-	      },
-	      repeat: {
-	        x: 1,
-	        y: 1
-	      }
-	    });
+	var THREE = _interopRequireWildcard(_three);
 	
-	    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
-	    texture.offset.set(opt.offset.x, opt.offset.y);
-	    texture.repeat.set(opt.repeat.x, opt.repeat.y);
+	// Models.
+	var JSONLoader = new THREE.JSONLoader();
+	// const OBJLoader = new THREE.OBJLoader();
+	// const BabylonLoader = new THREE.BabylonLoader();
+	var BufferGeometryLoader = new THREE.BufferGeometryLoader();
+	// const ColladaLoader = new THREE.ColladaLoader();
+	// const glTFLoader = new THREE.glTFLoader();
+	var ObjectLoader = new THREE.ObjectLoader();
+	// const PDBLoader = new THREE.PDBLoader();
+	// const SVGLoader = new THREE.SVGLoader();
+	// const TGALoader = new THREE.TGALoader();
 	
-	    texture.magFilter = THREE.NearestFilter;
-	    texture.minFilter = THREE.LinearMipMapLinearFilter;
-	  }
+	// Other.
+	var TextureLoader = new THREE.TextureLoader();
+	var FontLoader = new THREE.FontLoader();
+	var XHRLoader = new THREE.XHRLoader();
+	var AudioLoader = new THREE.AudioLoader();
+	var ImageLoader = new THREE.ImageLoader();
+	var MaterialLoader = new THREE.MaterialLoader();
+	// const MTLLoader = new THREE.MTLLoader();
 	
-	  return texture;
-	};
+	exports.JSONLoader = JSONLoader;
+	exports.BufferGeometryLoader = BufferGeometryLoader;
+	exports.ObjectLoader = ObjectLoader;
+	exports.TextureLoader = TextureLoader;
+	exports.FontLoader = FontLoader;
+	exports.XHRLoader = XHRLoader;
+	exports.AudioLoader = AudioLoader;
+	exports.ImageLoader = ImageLoader;
+	exports.MaterialLoader = MaterialLoader;
+
+/***/ },
+/* 401 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	
-	var loadMaterial = function loadMaterial() {
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.loadMaterial = undefined;
+	
+	var _three = __webpack_require__(392);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	var loadMaterial = exports.loadMaterial = function loadMaterial() {
 	  var material = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
 	  if (material instanceof THREE.Material) {
@@ -52452,16 +52548,9 @@ var WHS =
 	    return materialThree;
 	  }
 	};
-	
-	exports.FontLoader = _loaders.FontLoader;
-	exports.JSONLoader = _loaders.JSONLoader;
-	exports.TextureLoader = _loaders.TextureLoader;
-	exports.texture = texture;
-	exports.extend = extend;
-	exports.loadMaterial = loadMaterial;
 
 /***/ },
-/* 398 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52469,47 +52558,49 @@ var WHS =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.MaterialLoader = exports.ImageLoader = exports.AudioLoader = exports.XHRLoader = exports.FontLoader = exports.TextureLoader = exports.ObjectLoader = exports.BufferGeometryLoader = exports.JSONLoader = undefined;
+	exports.texture = undefined;
 	
 	var _three = __webpack_require__(392);
 	
 	var THREE = _interopRequireWildcard(_three);
 	
+	var _loaders = __webpack_require__(400);
+	
+	var _extend = __webpack_require__(399);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
-	// Models.
-	var JSONLoader = new THREE.JSONLoader();
-	// const OBJLoader = new THREE.OBJLoader();
-	// const BabylonLoader = new THREE.BabylonLoader();
-	var BufferGeometryLoader = new THREE.BufferGeometryLoader();
-	// const ColladaLoader = new THREE.ColladaLoader();
-	// const glTFLoader = new THREE.glTFLoader();
-	var ObjectLoader = new THREE.ObjectLoader();
-	// const PDBLoader = new THREE.PDBLoader();
-	// const SVGLoader = new THREE.SVGLoader();
-	// const TGALoader = new THREE.TGALoader();
+	var texture = exports.texture = function texture(url) {
+	  var repeat = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	
-	// Other.
-	var TextureLoader = new THREE.TextureLoader();
-	var FontLoader = new THREE.FontLoader();
-	var XHRLoader = new THREE.XHRLoader();
-	var AudioLoader = new THREE.AudioLoader();
-	var ImageLoader = new THREE.ImageLoader();
-	var MaterialLoader = new THREE.MaterialLoader();
-	// const MTLLoader = new THREE.MTLLoader();
+	  var texture = _loaders.TextureLoader.load(url);
 	
-	exports.JSONLoader = JSONLoader;
-	exports.BufferGeometryLoader = BufferGeometryLoader;
-	exports.ObjectLoader = ObjectLoader;
-	exports.TextureLoader = TextureLoader;
-	exports.FontLoader = FontLoader;
-	exports.XHRLoader = XHRLoader;
-	exports.AudioLoader = AudioLoader;
-	exports.ImageLoader = ImageLoader;
-	exports.MaterialLoader = MaterialLoader;
+	  if (repeat) {
+	    var opt = (0, _extend.extend)(repeat, {
+	      offset: {
+	        x: 0,
+	        y: 0
+	      },
+	      repeat: {
+	        x: 1,
+	        y: 1
+	      }
+	    });
+	
+	    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+	
+	    texture.offset.set(opt.offset.x, opt.offset.y);
+	    texture.repeat.set(opt.repeat.x, opt.repeat.y);
+	
+	    texture.magFilter = THREE.NearestFilter;
+	    texture.minFilter = THREE.LinearMipMapLinearFilter;
+	  }
+	
+	  return texture;
+	};
 
 /***/ },
-/* 399 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52583,7 +52674,7 @@ var WHS =
 	exports.OrtographicCamera = OrtographicCamera;
 
 /***/ },
-/* 400 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52657,7 +52748,7 @@ var WHS =
 	exports.PerspectiveCamera = PerspectiveCamera;
 
 /***/ },
-/* 401 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52678,7 +52769,7 @@ var WHS =
 	  });
 	});
 	
-	var _Light = __webpack_require__(402);
+	var _Light = __webpack_require__(406);
 	
 	Object.keys(_Light).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52702,7 +52793,7 @@ var WHS =
 	  });
 	});
 	
-	var _Shape = __webpack_require__(406);
+	var _Shape = __webpack_require__(410);
 	
 	Object.keys(_Shape).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52714,7 +52805,7 @@ var WHS =
 	  });
 	});
 	
-	var _World = __webpack_require__(403);
+	var _World = __webpack_require__(407);
 	
 	Object.keys(_World).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52727,7 +52818,7 @@ var WHS =
 	});
 
 /***/ },
-/* 402 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52763,7 +52854,7 @@ var WHS =
 	
 	var _Loop = __webpack_require__(394);
 	
-	var _World = __webpack_require__(403);
+	var _World = __webpack_require__(407);
 	
 	var _CoreObject2 = __webpack_require__(395);
 	
@@ -53118,7 +53209,7 @@ var WHS =
 	exports.Light = Light;
 
 /***/ },
-/* 403 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53152,21 +53243,21 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _stats = __webpack_require__(404);
+	var _stats = __webpack_require__(408);
 	
 	var _stats2 = _interopRequireDefault(_stats);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
 	var Physijs = _interopRequireWildcard(_nophysi);
 	
-	var _PerspectiveCamera = __webpack_require__(400);
+	var _PerspectiveCamera = __webpack_require__(404);
 	
 	var _Camera = __webpack_require__(393);
 	
-	var _Shape = __webpack_require__(406);
+	var _Shape = __webpack_require__(410);
 	
-	var _Light = __webpack_require__(402);
+	var _Light = __webpack_require__(406);
 	
 	var _CoreObject2 = __webpack_require__(395);
 	
@@ -53680,7 +53771,7 @@ var WHS =
 	exports.World = World;
 
 /***/ },
-/* 404 */
+/* 408 */
 /***/ function(module, exports) {
 
 	// stats.js - http://github.com/mrdoob/stats.js
@@ -53691,7 +53782,7 @@ var WHS =
 
 
 /***/ },
-/* 405 */
+/* 409 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -53707,7 +53798,7 @@ var WHS =
 	module.exports = exports["default"];
 
 /***/ },
-/* 406 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53717,7 +53808,7 @@ var WHS =
 	});
 	exports.Shape = undefined;
 	
-	var _defineProperty2 = __webpack_require__(407);
+	var _defineProperty2 = __webpack_require__(411);
 	
 	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 	
@@ -53745,11 +53836,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	var _Loop = __webpack_require__(394);
 	
-	var _World = __webpack_require__(403);
+	var _World = __webpack_require__(407);
 	
 	var _CoreObject2 = __webpack_require__(395);
 	
@@ -53926,7 +54017,7 @@ var WHS =
 	
 	            // Bounding box helper.
 	            if (_params_helpers.boundingBox) {
-	              (0, _api.extend)(_params_helpers.boundingBox, {
+	              (0, _index.extend)(_params_helpers.boundingBox, {
 	                color: 0xffffff
 	              });
 	
@@ -53935,7 +54026,7 @@ var WHS =
 	
 	            // Edges helper.
 	            if (_params_helpers.edges) {
-	              (0, _api.extend)(_params_helpers.edges, {
+	              (0, _index.extend)(_params_helpers.edges, {
 	                color: 0xffffff
 	              });
 	
@@ -53946,7 +54037,7 @@ var WHS =
 	            if (_params_helpers.faceNormals) {
 	              var _params_helpers_faceNormals = _params_helpers.faceNormals;
 	
-	              (0, _api.extend)(_params_helpers_faceNormals, {
+	              (0, _index.extend)(_params_helpers_faceNormals, {
 	                size: 2,
 	                color: 0xffffff,
 	                linewidth: 1
@@ -53959,7 +54050,7 @@ var WHS =
 	            if (_params_helpers.vertexNormals) {
 	              var _params_helpers_vertexNormals = _params_helpers.vertexNormals;
 	
-	              (0, _api.extend)(_params_helpers_vertexNormals, {
+	              (0, _index.extend)(_params_helpers_vertexNormals, {
 	                size: 2,
 	                color: 0xffffff,
 	                linewidth: 1
@@ -54007,7 +54098,7 @@ var WHS =
 	
 	          // Bounding box helper.
 	          if (_params_helpers.boundingBox) {
-	            (0, _api.extend)(_params_helpers.boundingBox, {
+	            (0, _index.extend)(_params_helpers.boundingBox, {
 	              color: 0xffffff
 	            });
 	
@@ -54016,7 +54107,7 @@ var WHS =
 	
 	          // Edges helper.
 	          if (_params_helpers.edges) {
-	            (0, _api.extend)(_params_helpers.edges, {
+	            (0, _index.extend)(_params_helpers.edges, {
 	              color: 0xffffff
 	            });
 	
@@ -54027,7 +54118,7 @@ var WHS =
 	          if (_params_helpers.faceNormals) {
 	            var _params_helpers_faceNormals = _params_helpers.faceNormals;
 	
-	            (0, _api.extend)(_params_helpers_faceNormals, {
+	            (0, _index.extend)(_params_helpers_faceNormals, {
 	              size: 2,
 	              color: 0xffffff,
 	              linewidth: 1
@@ -54040,7 +54131,7 @@ var WHS =
 	          if (_params_helpers.vertexNormals) {
 	            var _params_helpers_vertexNormals = _params_helpers.vertexNormals;
 	
-	            (0, _api.extend)(_params_helpers_vertexNormals, {
+	            (0, _index.extend)(_params_helpers_vertexNormals, {
 	              size: 2,
 	              color: 0xffffff,
 	              linewidth: 1
@@ -54213,7 +54304,7 @@ var WHS =
 	    value: function M_() {
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      if (this.getParams().material.kind !== params.kind) this.getNative().material = (0, _api.loadMaterial)(this.updateParams({ material: params }).material);else {
+	      if (this.getParams().material.kind !== params.kind) this.getNative().material = (0, _index.loadMaterial)(this.updateParams({ material: params }).material);else {
 	        this.updateParams({ material: params });
 	
 	        for (key in params) {
@@ -54544,7 +54635,7 @@ var WHS =
 	exports.Shape = Shape;
 
 /***/ },
-/* 407 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54573,7 +54664,7 @@ var WHS =
 	};
 
 /***/ },
-/* 408 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54582,7 +54673,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _firstPersonControls = __webpack_require__(409);
+	var _firstPersonControls = __webpack_require__(413);
 	
 	Object.keys(_firstPersonControls).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54594,7 +54685,7 @@ var WHS =
 	  });
 	});
 	
-	var _orbitControls = __webpack_require__(410);
+	var _orbitControls = __webpack_require__(414);
 	
 	Object.keys(_orbitControls).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54606,19 +54697,7 @@ var WHS =
 	  });
 	});
 	
-	var _api = __webpack_require__(397);
-	
-	Object.keys(_api).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _api[key];
-	    }
-	  });
-	});
-	
-	var _Group = __webpack_require__(412);
+	var _Group = __webpack_require__(416);
 	
 	Object.keys(_Group).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -54629,9 +54708,33 @@ var WHS =
 	    }
 	  });
 	});
+	
+	var _Loop = __webpack_require__(394);
+	
+	Object.keys(_Loop).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Loop[key];
+	    }
+	  });
+	});
+	
+	var _List = __webpack_require__(417);
+	
+	Object.keys(_List).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _List[key];
+	    }
+	  });
+	});
 
 /***/ },
-/* 409 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54645,7 +54748,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -54655,7 +54758,7 @@ var WHS =
 	  var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	
 	  return function (world) {
-	    var target = (0, _api.extend)(params, {
+	    var target = (0, _index.extend)(params, {
 	      block: document.getElementById('blocker'),
 	      speed: 1,
 	      ypos: 1
@@ -54897,7 +55000,7 @@ var WHS =
 	}
 
 /***/ },
-/* 410 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54911,7 +55014,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _threeOrbitControls = __webpack_require__(411);
+	var _threeOrbitControls = __webpack_require__(415);
 	
 	var _threeOrbitControls2 = _interopRequireDefault(_threeOrbitControls);
 	
@@ -54936,7 +55039,7 @@ var WHS =
 	}
 
 /***/ },
-/* 411 */
+/* 415 */
 /***/ function(module, exports) {
 
 	module.exports = function(THREE) {
@@ -56061,7 +56164,7 @@ var WHS =
 
 
 /***/ },
-/* 412 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56091,7 +56194,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
 	var _CoreObject = __webpack_require__(395);
 	
@@ -56128,7 +56231,53 @@ var WHS =
 	exports.Group = Group;
 
 /***/ },
-/* 413 */
+/* 417 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.List = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(302);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(303);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var List = function () {
+	  function List(queue) {
+	    (0, _classCallCheck3.default)(this, List);
+	
+	    this._queue = Array.isArray(queue) ? queue.slice() : [];
+	  }
+	
+	  (0, _createClass3.default)(List, [{
+	    key: "add",
+	    value: function add(element) {
+	      this._queue.push(element);
+	    }
+	  }, {
+	    key: "remove",
+	    value: function remove(element) {
+	      this._queue = this._queue.filter(function (item) {
+	        return item !== element;
+	      });
+	    }
+	  }]);
+	  return List;
+	}();
+	
+	exports.List = List;
+
+/***/ },
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56137,7 +56286,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _AmbientLight = __webpack_require__(414);
+	var _AmbientLight = __webpack_require__(419);
 	
 	Object.keys(_AmbientLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56149,7 +56298,7 @@ var WHS =
 	  });
 	});
 	
-	var _DirectionalLight = __webpack_require__(415);
+	var _DirectionalLight = __webpack_require__(420);
 	
 	Object.keys(_DirectionalLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56161,7 +56310,7 @@ var WHS =
 	  });
 	});
 	
-	var _HemisphereLight = __webpack_require__(416);
+	var _HemisphereLight = __webpack_require__(421);
 	
 	Object.keys(_HemisphereLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56173,7 +56322,7 @@ var WHS =
 	  });
 	});
 	
-	var _PointLight = __webpack_require__(417);
+	var _PointLight = __webpack_require__(422);
 	
 	Object.keys(_PointLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56185,7 +56334,7 @@ var WHS =
 	  });
 	});
 	
-	var _SpotLight = __webpack_require__(418);
+	var _SpotLight = __webpack_require__(423);
 	
 	Object.keys(_SpotLight).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56198,7 +56347,7 @@ var WHS =
 	});
 
 /***/ },
-/* 414 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56232,7 +56381,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(402);
+	var _Light2 = __webpack_require__(406);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56272,7 +56421,7 @@ var WHS =
 	exports.AmbientLight = AmbientLight;
 
 /***/ },
-/* 415 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56306,7 +56455,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(402);
+	var _Light2 = __webpack_require__(406);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56350,7 +56499,7 @@ var WHS =
 	exports.DirectionalLight = DirectionalLight;
 
 /***/ },
-/* 416 */
+/* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56384,7 +56533,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(402);
+	var _Light2 = __webpack_require__(406);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56429,7 +56578,7 @@ var WHS =
 	exports.HemisphereLight = HemisphereLight;
 
 /***/ },
-/* 417 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56463,7 +56612,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(402);
+	var _Light2 = __webpack_require__(406);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56507,7 +56656,7 @@ var WHS =
 	exports.PointLight = PointLight;
 
 /***/ },
-/* 418 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56541,7 +56690,7 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Light2 = __webpack_require__(402);
+	var _Light2 = __webpack_require__(406);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56583,7 +56732,7 @@ var WHS =
 	exports.SpotLight = SpotLight;
 
 /***/ },
-/* 419 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56592,7 +56741,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _Box = __webpack_require__(420);
+	var _Box = __webpack_require__(425);
 	
 	Object.keys(_Box).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56604,7 +56753,7 @@ var WHS =
 	  });
 	});
 	
-	var _Cylinder = __webpack_require__(421);
+	var _Cylinder = __webpack_require__(426);
 	
 	Object.keys(_Cylinder).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56616,7 +56765,7 @@ var WHS =
 	  });
 	});
 	
-	var _Dodecahedron = __webpack_require__(422);
+	var _Dodecahedron = __webpack_require__(427);
 	
 	Object.keys(_Dodecahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56628,7 +56777,7 @@ var WHS =
 	  });
 	});
 	
-	var _Extrude = __webpack_require__(423);
+	var _Extrude = __webpack_require__(428);
 	
 	Object.keys(_Extrude).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56640,7 +56789,7 @@ var WHS =
 	  });
 	});
 	
-	var _Icosahedron = __webpack_require__(424);
+	var _Icosahedron = __webpack_require__(429);
 	
 	Object.keys(_Icosahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56652,7 +56801,7 @@ var WHS =
 	  });
 	});
 	
-	var _Lathe = __webpack_require__(425);
+	var _Lathe = __webpack_require__(430);
 	
 	Object.keys(_Lathe).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56664,7 +56813,7 @@ var WHS =
 	  });
 	});
 	
-	var _Line = __webpack_require__(426);
+	var _Line = __webpack_require__(431);
 	
 	Object.keys(_Line).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56676,7 +56825,7 @@ var WHS =
 	  });
 	});
 	
-	var _Model = __webpack_require__(427);
+	var _Model = __webpack_require__(432);
 	
 	Object.keys(_Model).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56688,7 +56837,7 @@ var WHS =
 	  });
 	});
 	
-	var _Morph = __webpack_require__(428);
+	var _Morph = __webpack_require__(433);
 	
 	Object.keys(_Morph).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56700,7 +56849,7 @@ var WHS =
 	  });
 	});
 	
-	var _Octahedron = __webpack_require__(429);
+	var _Octahedron = __webpack_require__(434);
 	
 	Object.keys(_Octahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56712,7 +56861,7 @@ var WHS =
 	  });
 	});
 	
-	var _Parametric = __webpack_require__(430);
+	var _Parametric = __webpack_require__(435);
 	
 	Object.keys(_Parametric).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56724,7 +56873,7 @@ var WHS =
 	  });
 	});
 	
-	var _Plane = __webpack_require__(431);
+	var _Plane = __webpack_require__(436);
 	
 	Object.keys(_Plane).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56736,7 +56885,7 @@ var WHS =
 	  });
 	});
 	
-	var _Polyhedron = __webpack_require__(432);
+	var _Polyhedron = __webpack_require__(437);
 	
 	Object.keys(_Polyhedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56748,7 +56897,7 @@ var WHS =
 	  });
 	});
 	
-	var _Ring = __webpack_require__(433);
+	var _Ring = __webpack_require__(438);
 	
 	Object.keys(_Ring).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56760,7 +56909,7 @@ var WHS =
 	  });
 	});
 	
-	var _Shape2D = __webpack_require__(434);
+	var _Shape2D = __webpack_require__(439);
 	
 	Object.keys(_Shape2D).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56772,7 +56921,7 @@ var WHS =
 	  });
 	});
 	
-	var _Sphere = __webpack_require__(435);
+	var _Sphere = __webpack_require__(440);
 	
 	Object.keys(_Sphere).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56784,7 +56933,7 @@ var WHS =
 	  });
 	});
 	
-	var _Tetrahedron = __webpack_require__(436);
+	var _Tetrahedron = __webpack_require__(441);
 	
 	Object.keys(_Tetrahedron).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56796,7 +56945,7 @@ var WHS =
 	  });
 	});
 	
-	var _Text = __webpack_require__(437);
+	var _Text = __webpack_require__(442);
 	
 	Object.keys(_Text).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56808,7 +56957,7 @@ var WHS =
 	  });
 	});
 	
-	var _Torus = __webpack_require__(438);
+	var _Torus = __webpack_require__(443);
 	
 	Object.keys(_Torus).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56820,7 +56969,7 @@ var WHS =
 	  });
 	});
 	
-	var _Torusknot = __webpack_require__(439);
+	var _Torusknot = __webpack_require__(444);
 	
 	Object.keys(_Torusknot).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56832,7 +56981,7 @@ var WHS =
 	  });
 	});
 	
-	var _Tube = __webpack_require__(440);
+	var _Tube = __webpack_require__(445);
 	
 	Object.keys(_Tube).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -56845,7 +56994,7 @@ var WHS =
 	});
 
 /***/ },
-/* 420 */
+/* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56879,11 +57028,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -56898,7 +57047,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Box).call(this, params, 'box'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      width: 1,
 	      height: 1,
 	      depth: 1
@@ -56918,7 +57067,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -56979,7 +57128,7 @@ var WHS =
 	exports.Box = Box;
 
 /***/ },
-/* 421 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57013,11 +57162,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57032,7 +57181,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Cylinder).call(this, params, 'cylinder'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      radiusTop: 0,
 	      radiusBottom: 1,
 	      height: 1,
@@ -57057,7 +57206,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -57126,7 +57275,7 @@ var WHS =
 	exports.Cylinder = Cylinder;
 
 /***/ },
-/* 422 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57160,11 +57309,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57179,7 +57328,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Dodecahedron).call(this, params, 'dodecahedron'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      radius: 1,
 	      detail: 0
 	    });
@@ -57198,7 +57347,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -57247,7 +57396,7 @@ var WHS =
 	exports.Dodecahedron = Dodecahedron;
 
 /***/ },
-/* 423 */
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57281,11 +57430,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57300,7 +57449,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Extrude).call(this, params, 'extrude'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      shapes: [],
 	      options: {}
 	    });
@@ -57319,7 +57468,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -57368,7 +57517,7 @@ var WHS =
 	exports.Extrude = Extrude;
 
 /***/ },
-/* 424 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57402,11 +57551,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57421,7 +57570,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Icosahedron).call(this, params, 'icosahedron'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      radius: 1,
 	      detail: 0
 	    });
@@ -57440,7 +57589,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -57489,7 +57638,7 @@ var WHS =
 	exports.Icosahedron = Icosahedron;
 
 /***/ },
-/* 425 */
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57523,11 +57672,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57542,7 +57691,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Lathe).call(this, params, 'lathe'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      points: []
 	    });
 	
@@ -57560,7 +57709,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -57601,7 +57750,7 @@ var WHS =
 	exports.Lathe = Lathe;
 
 /***/ },
-/* 426 */
+/* 431 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57635,11 +57784,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57653,7 +57802,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Line).call(this, params, 'line'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      curve: false,
 	      points: 50
 	    });
@@ -57672,7 +57821,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -57715,7 +57864,7 @@ var WHS =
 	exports.Line = Line;
 
 /***/ },
-/* 427 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57749,11 +57898,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57768,10 +57917,10 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Model).call(this, params, 'model'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      path: '',
 	      physics: '',
-	      loader: _api.JSONLoader
+	      loader: _index.JSONLoader
 	    });
 	
 	    if (params.build) {
@@ -57802,12 +57951,12 @@ var WHS =
 	              var material = void 0;
 	
 	              if (params.material.useVertexColors) {
-	                material = (0, _api.loadMaterial)((0, _api.extend)(params.material, {
+	                material = (0, _index.loadMaterial)((0, _index.extend)(params.material, {
 	                  morphTargets: true,
 	                  vertexColors: THREE.FaceColors
 	                }));
 	              } else if (!materials || params.material.useCustomMaterial) {
-	                material = (0, _api.loadMaterial)(params.material);
+	                material = (0, _index.loadMaterial)(params.material);
 	              } else material = new THREE.MultiMaterial(materials);
 	
 	              data.computeFaceNormals();
@@ -57821,12 +57970,12 @@ var WHS =
 	            var material = void 0;
 	
 	            if (params.material.useVertexColors) {
-	              material = (0, _api.loadMaterial)((0, _api.extend)(params.material, {
+	              material = (0, _index.loadMaterial)((0, _index.extend)(params.material, {
 	                morphTargets: true,
 	                vertexColors: THREE.FaceColors
 	              }));
 	            } else if (!materials || params.material.useCustomMaterial) {
-	              material = (0, _api.loadMaterial)(params.material);
+	              material = (0, _index.loadMaterial)(params.material);
 	            } else material = new THREE.MultiMaterial(materials);
 	
 	            data.computeFaceNormals();
@@ -57857,7 +58006,7 @@ var WHS =
 	exports.Model = Model;
 
 /***/ },
-/* 428 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -57891,15 +58040,15 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
 	var Physijs = _interopRequireWildcard(_nophysi);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
-	var _loaders = __webpack_require__(398);
+	var _loaders = __webpack_require__(400);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -57914,7 +58063,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Morph).call(this, params, 'morph'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      path: '',
 	      loader: _loaders.JSONLoader
 	    });
@@ -57939,12 +58088,12 @@ var WHS =
 	        Loader.load(params.geometry.path, function (data, materials) {
 	          var material = void 0;
 	          if (params.material.useVertexColors) {
-	            material = (0, _api.loadMaterial)((0, _api.extend)(params.material, {
+	            material = (0, _index.loadMaterial)((0, _index.extend)(params.material, {
 	              morphTargets: true,
 	              vertexColors: THREE.FaceColors
 	            }));
 	          } else if (!materials || params.material.useCustomMaterial) {
-	            material = (0, _api.loadMaterial)(params.material);
+	            material = (0, _index.loadMaterial)(params.material);
 	          } else material = new THREE.MultiMaterial(materials);
 	
 	          data.computeFaceNormals();
@@ -57978,7 +58127,7 @@ var WHS =
 	exports.Morph = Morph;
 
 /***/ },
-/* 429 */
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58012,11 +58161,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58031,7 +58180,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Octahedron).call(this, params, 'octahedron'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      radius: 1,
 	      detail: 0
 	    });
@@ -58050,7 +58199,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -58099,7 +58248,7 @@ var WHS =
 	exports.Octahedron = Octahedron;
 
 /***/ },
-/* 430 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58133,11 +58282,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58152,7 +58301,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Parametric).call(this, params, 'parametric'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      func: function func() {},
 	
 	      slices: 10,
@@ -58173,7 +58322,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -58230,7 +58379,7 @@ var WHS =
 	exports.Parametric = Parametric;
 
 /***/ },
-/* 431 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58264,11 +58413,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58283,7 +58432,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Plane).call(this, params, 'plane'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      width: 10,
 	      height: 10,
 	      wSegments: 32,
@@ -58304,7 +58453,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -58365,7 +58514,7 @@ var WHS =
 	exports.Plane = Plane;
 
 /***/ },
-/* 432 */
+/* 437 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58399,11 +58548,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58418,7 +58567,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Polyhedron).call(this, params, 'polyhedron'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      verticesOfCube: _this.verticesOfCube,
 	      indicesOfFaces: _this.indicesOfFaces,
 	      radius: 6,
@@ -58439,7 +58588,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -58514,7 +58663,7 @@ var WHS =
 	exports.Polyhedron = Polyhedron;
 
 /***/ },
-/* 433 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58548,9 +58697,9 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58565,7 +58714,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Ring).call(this, params, 'ring'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      innerRadius: 0,
 	      outerRadius: 50,
 	      thetaSegments: 8,
@@ -58588,7 +58737,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), material));
@@ -58665,7 +58814,7 @@ var WHS =
 	exports.Ring = Ring;
 
 /***/ },
-/* 434 */
+/* 439 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58699,9 +58848,9 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58716,7 +58865,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Shape2D).call(this, params, 'shape2D'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      shapes: []
 	    });
 	
@@ -58734,7 +58883,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new THREE.Mesh(_this2.buildGeometry(params), material));
@@ -58771,7 +58920,7 @@ var WHS =
 	exports.Shape2D = Shape2D;
 
 /***/ },
-/* 435 */
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58805,11 +58954,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58824,7 +58973,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Sphere).call(this, params, 'sphere'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      radius: 1,
 	      widthSegments: 8,
 	      heightSegments: 6
@@ -58844,7 +58993,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -58905,7 +59054,7 @@ var WHS =
 	exports.Sphere = Sphere;
 
 /***/ },
-/* 436 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58939,11 +59088,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -58958,7 +59107,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Tetrahedron).call(this, params, 'tetrahedron'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      radius: 1,
 	      detail: 0
 	    });
@@ -58977,7 +59126,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -59026,7 +59175,7 @@ var WHS =
 	exports.Tetrahedron = Tetrahedron;
 
 /***/ },
-/* 437 */
+/* 442 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59060,11 +59209,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59079,7 +59228,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Text).call(this, params, 'text'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      text: 'Hello World!',
 	
 	      parameters: {
@@ -59107,14 +59256,14 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
 	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      var promise = new Promise(function (resolve) {
-	        _api.FontLoader.load(params.geometry.parameters.font, function (font) {
+	        _index.FontLoader.load(params.geometry.parameters.font, function (font) {
 	          params.geometry.parameters.font = font;
 	
 	          _this2.setNative(new Mesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), material, _this2.getParams()));
@@ -59139,7 +59288,7 @@ var WHS =
 	exports.Text = Text;
 
 /***/ },
-/* 438 */
+/* 443 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59173,11 +59322,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59192,7 +59341,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Torus).call(this, params, 'torus'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      radius: 100,
 	      tube: 40,
 	      radialSegments: 8,
@@ -59214,7 +59363,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -59287,7 +59436,7 @@ var WHS =
 	exports.Torus = Torus;
 
 /***/ },
-/* 439 */
+/* 444 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59321,11 +59470,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59340,7 +59489,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Torusknot).call(this, params, 'Torusknot'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      radius: 100,
 	      tube: 40,
 	      radialSegments: 64,
@@ -59364,7 +59513,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -59453,7 +59602,7 @@ var WHS =
 	exports.Torusknot = Torusknot;
 
 /***/ },
-/* 440 */
+/* 445 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59487,11 +59636,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _nophysi = __webpack_require__(405);
+	var _nophysi = __webpack_require__(409);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59506,7 +59655,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Tube).call(this, params, 'tube'));
 	
-	    (0, _api.extend)(params.geometry, {
+	    (0, _index.extend)(params.geometry, {
 	      path: false,
 	      segments: 20,
 	      radius: 2,
@@ -59528,7 +59677,7 @@ var WHS =
 	
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var material = (0, _api.loadMaterial)(params.material);
+	      var material = (0, _index.loadMaterial)(params.material);
 	
 	      var Mesh = void 0;
 	
@@ -59605,53 +59754,7 @@ var WHS =
 	exports.Tube = Tube;
 
 /***/ },
-/* 441 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.List = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(302);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(303);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var List = function () {
-	  function List(queue) {
-	    (0, _classCallCheck3.default)(this, List);
-	
-	    this._queue = Array.isArray(queue) ? queue.slice() : [];
-	  }
-	
-	  (0, _createClass3.default)(List, [{
-	    key: "add",
-	    value: function add(element) {
-	      this._queue.push(element);
-	    }
-	  }, {
-	    key: "remove",
-	    value: function remove(element) {
-	      this._queue = this._queue.filter(function (item) {
-	        return item !== element;
-	      });
-	    }
-	  }]);
-	  return List;
-	}();
-	
-	exports.List = List;
-
-/***/ },
-/* 442 */
+/* 446 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59660,7 +59763,7 @@ var WHS =
 	  value: true
 	});
 	
-	var _Skybox = __webpack_require__(443);
+	var _Skybox = __webpack_require__(447);
 	
 	Object.keys(_Skybox).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -59673,7 +59776,7 @@ var WHS =
 	});
 
 /***/ },
-/* 443 */
+/* 447 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -59705,11 +59808,11 @@ var WHS =
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _api = __webpack_require__(397);
+	var _index = __webpack_require__(397);
 	
-	var _Shape2 = __webpack_require__(406);
+	var _Shape2 = __webpack_require__(410);
 	
-	var _decorators = __webpack_require__(444);
+	var _decorators = __webpack_require__(398);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -59724,7 +59827,7 @@ var WHS =
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Skybox).call(this, params, 'skybox'));
 	
-	    (0, _api.extend)(params, {
+	    (0, _index.extend)(params, {
 	      skyType: 'box',
 	      imgSuffix: '.png',
 	      radius: 10,
@@ -59745,7 +59848,7 @@ var WHS =
 	
 	          for (var i = 0; i < 6; i++) {
 	            matArray.push(new THREE.MeshBasicMaterial({
-	              map: (0, _api.texture)(params.path + directions[i] + params.imgSuffix, false),
+	              map: (0, _index.texture)(params.path + directions[i] + params.imgSuffix, false),
 	              side: THREE.BackSide,
 	              fog: params.fog
 	            }));
@@ -59759,7 +59862,7 @@ var WHS =
 	        {
 	          skyGeometry = new THREE.SphereGeometry(params.radius / 2, 60, 40);
 	          skyMat = new THREE.MeshBasicMaterial({
-	            map: (0, _api.texture)(params.path + params.imgSuffix, false),
+	            map: (0, _index.texture)(params.path + params.imgSuffix, false),
 	            side: THREE.BackSide,
 	            fog: params.fog
 	          });
@@ -59780,21 +59883,6 @@ var WHS =
 	  return Skybox;
 	}(_Shape2.Shape)) || _class);
 	exports.Skybox = Skybox;
-
-/***/ },
-/* 444 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var deprecate = exports.deprecate = function deprecate(version) {
-	  return function (target, name, description) {
-	    console.warn("Class WHS." + target.name + " is deprecated since v" + version);
-	  };
-	};
 
 /***/ }
 /******/ ]);
