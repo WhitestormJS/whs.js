@@ -1,6 +1,5 @@
 // UTILS
 import path from 'path';
-import runSequence from 'run-sequence';
 import del from 'del';
 
 // GULP
@@ -15,7 +14,7 @@ import WebpackDevServer from 'webpack-dev-server';
 import {config} from './webpack.config.babel.js';
 
 // SETTINGS
-const 
+const
   frameworkSrc = './src/framework',
   frameworkDest = './build',
 
@@ -56,7 +55,7 @@ process.env.BABEL_ENV = 'node';
 
 gulp.task('default', ['examples:build', 'src:build']);
 
-// BUILD: browser 
+// BUILD: browser
 gulp.task('src:build', ['build:clean'], (callback) => {
   webpackCompiler.run((error, stats) => {
     if (error) throw new $.util.PluginError('webpack', error);
@@ -184,7 +183,7 @@ gulp.task('examples:watch', () => {
   });
 });
 
-// EXAMPLES: BUILD 
+// EXAMPLES: BUILD
 gulp.task('examples:build', ['examples:clean'], () => {
   gulp.src([
     `${examplesDev}/**/*`,
@@ -251,7 +250,7 @@ gulp.task('build:clean', (callback) => {
   del([`${frameworkDest}/*.js`, `${frameworkDest}/*.map`]).then(() => callback());
 });
 
-// ERRORS 
+// ERRORS
 function makeBuildErrorHandler(taskName) {
   return function ({name, message, codeFrame}) {
     $.util.log(`[${taskName}]`, `${$.util.colors.red(name)} ${message}${codeFrame ? `\n${codeFrame}` : ''}`);

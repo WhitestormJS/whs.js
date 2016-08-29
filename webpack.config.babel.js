@@ -25,10 +25,10 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
         warnings: false
       }
     }),
-    new HappyPack({loaders: ['babel', 'string-replace'], threads: 4})
+    new HappyPack({loaders: ['babel'], threads: 4})
   ]
   : [
-    new HappyPack({loaders: ['babel', 'string-replace'], threads: 4})
+    new HappyPack({loaders: ['babel'], threads: 4})
   ];
 
   return [{ // PHYSICS VERSION
@@ -55,24 +55,11 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
       library: 'WHS',
       libraryTarget: 'var'
     },
+    externals: {
+      '../physics/index.js': 'var false',
+      './physics/index.js': 'var false'
+    },
     module: {
-      preLoaders: [{
-        test: /\.js$/,
-        loader: 'string-replace',
-        query: {
-          multiple: [
-            {
-              search: 'physics/index.js\';',
-              replace: 'physics/nophysi.js\';'
-            },
-            {
-              search: '!!\'physics\'',
-              replace: 'false',
-              flags: 'g'
-            }
-          ]
-        }
-      }],
       loaders: loadersSection
     },
     plugins: pluginsSection
