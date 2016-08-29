@@ -1,5 +1,14 @@
-var WHS =
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("false"));
+	else if(typeof define === 'function' && define.amd)
+		define(["false"], factory);
+	else if(typeof exports === 'object')
+		exports["WHS"] = factory(require("false"));
+	else
+		root["WHS"] = factory(root["false"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_408__) {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -51850,8 +51859,6 @@ var WHS =
 	
 	    if (params instanceof THREE.Camera) _this.setNative(params);
 	
-	    if (WHS.debug) console.debug('@WHS.Camera: Camera ' + scope.type + ' found.', scope);
-	
 	    return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
 	
@@ -51880,8 +51887,6 @@ var WHS =
 	          _this2[tag] = true;
 	        });
 	
-	        if (WHS.debug) console.debug('@WHS.Camera: Camera ' + _this2.type + ' is ready.', _this2);
-	
 	        _this2.emit('ready');
 	
 	        resolve(_this2);
@@ -51905,33 +51910,16 @@ var WHS =
 	          console.error(err.message);
 	          reject();
 	        } finally {
-	          if (WHS.debug) {
-	            console.debug('@WHS.Camera: Camera ' + _scope.type + ' was added to world.', [_scope, _scope.parent]);
-	          }
-	
 	          resolve(_scope);
-	
 	          _scope.emit('ready');
 	        }
 	      });
 	    }
-	
-	    /**
-	     * Clone camera.
-	     */
-	
 	  }, {
 	    key: 'clone',
 	    value: function clone() {
 	      return new Camera(this.getParams(), this.type).copy(this);
 	    }
-	
-	    /**
-	     * Copy camera.
-	     *
-	     * @param {WHS.Camera} source - Source object, that will be applied to this.
-	     */
-	
 	  }, {
 	    key: 'copy',
 	    value: function copy(source) {
@@ -52129,13 +52117,6 @@ var WHS =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var CoreObject = function () {
-	  /**
-	   * Constructing WHS.Shape object.
-	   *
-	   * @param {Boolean} structurable - true if object has parents and children.
-	   * @param {String} type - Shape type.
-	   * @return {WHS.Object}
-	   */
 	  function CoreObject() {
 	    var defaults = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	    var structurable = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
@@ -52207,13 +52188,6 @@ var WHS =
 	        });
 	      }
 	    }
-	
-	    /**
-	     * Remove this shape from world.
-	     *
-	     * @return {WHS.Shape} - this.
-	     */
-	
 	  }, {
 	    key: 'remove',
 	    value: function remove(source) {
@@ -52221,12 +52195,7 @@ var WHS =
 	
 	      this.children.splice(this.children.indexOf(source), 1);
 	      source.parent = null;
-	
 	      source.emit('remove');
-	
-	      if (WHS.debug) {
-	        console.debug('@WHS.Shape: Shape ' + source._type + ' was removed from world', [source]);
-	      }
 	
 	      return this;
 	    }
@@ -52951,7 +52920,6 @@ var WHS =
 	    _this.type = type;
 	
 	    if (params instanceof THREE.Light) _this.setNative(params);
-	    if (WHS.debug) console.debug('@WHS.Light: Light ' + scope.type + ' found.', _this);
 	
 	    return _ret = _this, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
@@ -52993,21 +52961,11 @@ var WHS =
 	          _this2[tag] = true;
 	        });
 	
-	        if (WHS.debug) console.debug('@WHS.Light: Light ' + _this2.type + ' + \' is ready.', _this2);
-	
 	        _this2.emit('ready');
 	
 	        resolve(_this2);
 	      });
 	    }
-	
-	    /**
-	     * Add light to WHS.World object.
-	     *
-	     * @param {WHS.World} root - World, were this light will be.
-	     * @param {...String} tags - Tags for compiling.
-	     */
-	
 	  }, {
 	    key: 'addTo',
 	    value: function addTo(parent) {
@@ -53026,9 +52984,6 @@ var WHS =
 	
 	        if (_this3.helper) parentNative.add(_this3.helper);
 	        if (_native.target) parentNative.add(_native.target);
-	        if (WHS.debug) {
-	          console.debug('@WHS.Camera: Camera ' + _this3.type + ' was added to world.', [_this3, _this3.parent]);
-	        }
 	
 	        resolve(_this3);
 	        _this3.emit('ready');
@@ -53068,23 +53023,11 @@ var WHS =
 	        resolve(_this4);
 	      });
 	    }
-	
-	    /**
-	     * Clone light.
-	     */
-	
 	  }, {
 	    key: 'clone',
 	    value: function clone() {
 	      return new Light(this.getParams(), this.type).copy(this);
 	    }
-	
-	    /**
-	     * Copy light.
-	     *
-	     * @param {WHS.Light} source - Source object, that will be applied to this.
-	     */
-	
 	  }, {
 	    key: 'copy',
 	    value: function copy(source) {
@@ -53276,12 +53219,6 @@ var WHS =
 	var World = function (_CoreObject) {
 	  (0, _inherits3.default)(World, _CoreObject);
 	
-	  /**
-	   * Create a 3D world and define defaults.
-	   *
-	   * @param {object} params - The scene settings object.
-	   * @return {World} A 3D world whs object.
-	   */
 	  function World() {
 	    var _ret;
 	
@@ -53731,13 +53668,6 @@ var WHS =
 	
 	      return this.controls;
 	    }
-	
-	    /**
-	     * Set a camera for rendering world.
-	     *
-	     * @params {WHS.Camera} camera - The camera to be rendered.
-	     */
-	
 	  }, {
 	    key: 'setCamera',
 	    value: function setCamera(camera) {
@@ -53748,13 +53678,6 @@ var WHS =
 	    value: function getCamera() {
 	      return this.camera;
 	    }
-	
-	    /**
-	     * Remove this shape from world.
-	     *
-	     * @return {WHS.Shape} - this.
-	     */
-	
 	  }, {
 	    key: 'remove',
 	    value: function remove(source) {
@@ -53764,10 +53687,6 @@ var WHS =
 	      source.parent = null;
 	
 	      source.emit('remove');
-	
-	      if (WHS.debug) {
-	        console.debug('@WHS.Shape: Shape ' + source.type + ' was removed from world', [source]);
-	      }
 	
 	      return this;
 	    }
@@ -53952,7 +53871,6 @@ var WHS =
 	    });
 	
 	    if (params instanceof THREE.Object3D) _this.setNative(params);
-	    if (WHS.debug) console.debug('@WHS.Shape: Shape ' + scope.type + ' found.', scope);
 	
 	    return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
@@ -53962,14 +53880,6 @@ var WHS =
 	    value: function wait(promise) {
 	      this._wait.push(promise);
 	    }
-	
-	    /**
-	     * Applying shadow & position & rotation.
-	     *
-	     * @param {...String} tags - Tags that defines what to do with shape
-	     * additionally.
-	     */
-	
 	  }, {
 	    key: 'wrap',
 	    value: function wrap() {
@@ -54057,8 +53967,6 @@ var WHS =
 	            }
 	
 	            resolve(_this2);
-	
-	            if (WHS.debug) console.debug('@WHS.Shape: Shape ' + _this2.type + ' is ready.', _this2);
 	          });
 	        });
 	      } else {
@@ -54138,19 +54046,9 @@ var WHS =
 	          }
 	
 	          resolve(_this2);
-	
-	          if (WHS.debug) console.debug('@WHS.Shape: Shape ' + _this2.type + ' is ready.', _this2);
 	        });
 	      }
 	    }
-	
-	    /**
-	     * Add shape to WHS.World object.
-	     *
-	     * @param {WHS.World} parent - World, were this shape will be.
-	     * @param {...String} tags - Tags for compiling.
-	     */
-	
 	  }, {
 	    key: 'addTo',
 	    value: function addTo(parent) {
@@ -54190,10 +54088,6 @@ var WHS =
 	            _native.addEventListener('collision', function () {
 	              _this3.emit('collide');
 	            });
-	
-	            if (WHS.debug) {
-	              console.debug('@WHS.Shape: Shape ' + _this3.type + ' was added to world.', [_this3, _parent]);
-	            }
 	          });
 	        });
 	      } else {
@@ -54226,30 +54120,14 @@ var WHS =
 	          _native.addEventListener('collision', function () {
 	            _this3.emit('collide');
 	          });
-	
-	          if (WHS.debug) {
-	            console.debug('@WHS.Shape: Shape ' + _this3.type + ' was added to world.', [_this3, _parent]);
-	          }
 	        });
 	      }
 	    }
-	
-	    /**
-	     * Clone shape.
-	     */
-	
 	  }, {
 	    key: 'clone',
 	    value: function clone() {
-	      return new WHS.Shape(this.getParams(), this.type).copy(this);
+	      return new Shape(this.getParams(), this.type).copy(this);
 	    }
-	
-	    /**
-	     * Copy shape.
-	     *
-	     * @param {WHS.Shape} source - Source object, that will be applied to this.
-	     */
-	
 	  }, {
 	    key: 'copy',
 	    value: function copy(source) {
@@ -59881,5 +59759,7 @@ var WHS =
 	exports.Skybox = Skybox;
 
 /***/ }
-/******/ ]);
+/******/ ])
+});
+;
 //# sourceMappingURL=whitestorm.light.js.map
