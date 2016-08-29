@@ -22,24 +22,41 @@ define(['whs'], function(WHS) {
       });
     });
 
-    context('Line (rope)', () => {
-      const rope = new WHS.Line({
-        geometry: {
-          curve: new THREE.LineCurve3(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 5, 0))
-        },
-
-        physics: {
-          piterations: 10,
-          viterations: 10
-        },
-
-        mass: 1,
-
-        softbody: true
+    context('Loop', () => {
+      const loop = new WHS.Loop((clock) => {
+        clock.getElapsedTime();
       });
 
-      it('#addTo', () => {
-        rope.addTo(world);
+      it('#addLoop', () => {
+        world.addLoop(loop);
+      });
+
+      it('#removeLoop', () => {
+        world.removeLoop(loop);
+      });
+
+      it('#start (with shorthand)', () => {
+        loop.start(world);
+      });
+
+      it('#stop (with shorthand)', () => {
+        loop.stop(world);
+      });
+
+      it('#execute', () => {
+        loop.execute();
+      });
+    });
+
+    context('List', () => {
+      const list = new WHS.List([1, 2, 3]);
+
+      it('#add', () => {
+        list.add(4);
+      });
+
+      it('#remove', () => {
+        list.remove(2);
       });
     });
   });
