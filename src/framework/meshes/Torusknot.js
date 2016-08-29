@@ -14,8 +14,7 @@ class Torusknot extends Shape {
       radialSegments: 64,
       tubularSegments: 8,
       p: 2,
-      q: 3,
-      heightScale: 1
+      q: 3
     });
 
     if (params.build) {
@@ -54,8 +53,7 @@ class Torusknot extends Shape {
       params.geometry.radialSegments,
       params.geometry.tubularSegments,
       params.geometry.p,
-      params.geometry.q,
-      params.geometry.heightScale
+      params.geometry.q
     );
   }
 
