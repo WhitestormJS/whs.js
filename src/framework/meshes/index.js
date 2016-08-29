@@ -4,6 +4,7 @@ export * from './Dodecahedron';
 export * from './Extrude';
 export * from './Icosahedron';
 export * from './Lathe';
+export * from './Line';
 export * from './Model';
 export * from './Morph';
 export * from './Octahedron';

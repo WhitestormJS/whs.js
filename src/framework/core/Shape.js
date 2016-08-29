@@ -77,7 +77,7 @@ class Shape extends CoreObject {
       physics: physicsDefaults
     });
 
-    if (params instanceof THREE.Mesh) {
+    if (params instanceof THREE.Object3D) {
       super.setParams({
         pos: {x: params.position.x, y: params.position.y, z: params.position.z},
         rot: {x: params.rotation.x, y: params.rotation.y, z: params.rotation.z},
@@ -105,7 +105,7 @@ class Shape extends CoreObject {
       }
     );
 
-    if (params instanceof THREE.Mesh) this.setNative(params);
+    if (params instanceof THREE.Object3D) this.setNative(params);
     if (WHS.debug) console.debug(`@WHS.Shape: Shape ${scope.type} found.`, scope);
 
     return scope;

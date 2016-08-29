@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import * as Physijs from '../physics/index.js';
 
 import {JSONLoader, TextureLoader, FontLoader} from '../utils/loaders';
 
