@@ -124,7 +124,7 @@ world.start(); // Start animations and physics simulation.
 
 ----
 
-#### :chart_with_upwards_trend: [Changelog](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md) | :book: [Documentation](http://whitestormjs.xyz/) | :video_game: [Playground](http://whitestormjs.xyz/playground/)
+#### :chart_with_upwards_trend: [Changelog](https://github.com/WhitestormJS/whitestorm.js/blob/master/.github/CHANGELOG.md) | :book: [Documentation](http://whitestormjs.xyz/) | :video_game: [Playground](http://whitestormjs.xyz/playground/)
 
 ----
 
