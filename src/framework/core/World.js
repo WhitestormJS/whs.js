@@ -9,12 +9,6 @@ import {Light} from './Light';
 import {CoreObject} from './CoreObject';
 
 class World extends CoreObject {
-  /**
-   * Create a 3D world and define defaults.
-   *
-   * @param {object} params - The scene settings object.
-   * @return {World} A 3D world whs object.
-   */
   constructor(params = {}) {
     super({
       stats: false,
@@ -462,11 +456,6 @@ class World extends CoreObject {
     return this.controls;
   }
 
-  /**
-   * Set a camera for rendering world.
-   *
-   * @params {WHS.Camera} camera - The camera to be rendered.
-   */
   setCamera(camera) {
     if (camera instanceof Camera)
       this.camera = camera;
@@ -478,11 +467,6 @@ class World extends CoreObject {
     return this.camera;
   }
 
-  /**
-   * Remove this shape from world.
-   *
-   * @return {WHS.Shape} - this.
-   */
   remove(source) {
     this.getScene().remove(source.getNative());
 
@@ -490,13 +474,6 @@ class World extends CoreObject {
     source.parent = null;
 
     source.emit('remove');
-
-    if (WHS.debug) {
-      console.debug(
-        `@WHS.Shape: Shape ${source.type} was removed from world`,
-        [source]
-      );
-    }
 
     return this;
   }

@@ -106,7 +106,6 @@ class Shape extends CoreObject {
     );
 
     if (params instanceof THREE.Object3D) this.setNative(params);
-    if (WHS.debug) console.debug(`@WHS.Shape: Shape ${scope.type} found.`, scope);
 
     return scope;
   }
@@ -115,12 +114,6 @@ class Shape extends CoreObject {
     this._wait.push(promise);
   }
 
-  /**
-   * Applying shadow & position & rotation.
-   *
-   * @param {...String} tags - Tags that defines what to do with shape
-   * additionally.
-   */
   wrap(...tags) {
     if (this._wait.length) {
       return new Promise((resolve, reject) => {
@@ -232,8 +225,6 @@ class Shape extends CoreObject {
           }
 
           resolve(this);
-
-          if (WHS.debug) console.debug(`@WHS.Shape: Shape ${this.type} is ready.`, this);
         });
       });
     } else {
@@ -345,18 +336,10 @@ class Shape extends CoreObject {
         }
 
         resolve(this);
-
-        if (WHS.debug) console.debug(`@WHS.Shape: Shape ${this.type} is ready.`, this);
       });
     }
   }
 
-  /**
-   * Add shape to WHS.World object.
-   *
-   * @param {WHS.World} parent - World, were this shape will be.
-   * @param {...String} tags - Tags for compiling.
-   */
   addTo(parent) {
     const _helpers = this.helpers;
     this.parent = parent;
@@ -393,13 +376,6 @@ class Shape extends CoreObject {
           _native.addEventListener('collision', () => {
             this.emit('collide');
           });
-
-          if (WHS.debug) {
-            console.debug(
-              `@WHS.Shape: Shape ${this.type} was added to world.`,
-              [this, _parent]
-            );
-          }
         });
       });
     } else {
@@ -433,29 +409,14 @@ class Shape extends CoreObject {
         _native.addEventListener('collision', () => {
           this.emit('collide');
         });
-
-        if (WHS.debug) {
-          console.debug(
-            `@WHS.Shape: Shape ${this.type} was added to world.`,
-            [this, _parent]
-          );
-        }
       });
     }
   }
 
-  /**
-   * Clone shape.
-   */
   clone() {
-    return new WHS.Shape(this.getParams(), this.type).copy(this);
+    return new Shape(this.getParams(), this.type).copy(this);
   }
 
-  /**
-   * Copy shape.
-   *
-   * @param {WHS.Shape} source - Source object, that will be applied to this.
-   */
   copy(source) {
     const sourceNative = source.getNative();
 
