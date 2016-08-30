@@ -32,7 +32,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
   ];
 
   return [{ // PHYSICS VERSION
-    devtool: isProduction ? 'hidden-source-map' : 'source-map',
+    devtool: isProduction ? false : 'source-map',
     entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
     target: 'web',
     output: {
@@ -46,7 +46,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     },
     plugins: pluginsSection
   }, { // LIGHT VERSION
-    devtool: isProduction ? 'hidden-source-map' : 'source-map',
+    devtool: isProduction ? false : 'source-map',
     entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
     target: 'web',
     output: {
