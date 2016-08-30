@@ -16,14 +16,29 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     }
   ];
 
-  const pluginsSection = isProduction
+  const pluginsSectionPhysics = isProduction
+  ? [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      mangle: false,
+      compress: false,
+      minimize: true
+    }),
+    new HappyPack({loaders: ['babel'], threads: 4})
+  ]
+  : [
+    new HappyPack({loaders: ['babel'], threads: 4})
+  ];
+
+  const pluginsSectionLight = isProduction
   ? [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       mangle: false,
       compress: {
         warnings: false
-      }
+      },
+      minimize: true
     }),
     new HappyPack({loaders: ['babel'], threads: 4})
   ]
@@ -32,7 +47,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
   ];
 
   return [{ // PHYSICS VERSION
-    devtool: isProduction ? false : 'source-map',
+    devtool: isProduction ? 'hidden-source-map' : 'source-map',
     entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
     target: 'web',
     output: {
@@ -44,9 +59,9 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     module: {
       loaders: loadersSection
     },
-    plugins: pluginsSection
+    plugins: pluginsSectionPhysics
   }, { // LIGHT VERSION
-    devtool: isProduction ? false : 'source-map',
+    devtool: isProduction ? 'hidden-source-map' : 'source-map',
     entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
     target: 'web',
     output: {
@@ -62,6 +77,6 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     module: {
       loaders: loadersSection
     },
-    plugins: pluginsSection
+    plugins: pluginsSectionLight
   }];
 }
