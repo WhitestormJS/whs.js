@@ -414,9 +414,9 @@ module.exports = function (self) {
   public_functions.appendAnchor = (description) => {
     _objects[description.obj]
       .appendAnchor(
-        description.node, 
-        _objects[description.obj2], 
-        description.collisionBetweenLinkedBodies, 
+        description.node,
+        _objects[description.obj2],
+        description.collisionBetweenLinkedBodies,
         description.influence
       );
   }
@@ -1390,7 +1390,7 @@ module.exports = function (self) {
               softreport[off + 1] = vert.y();
               softreport[off + 2] = vert.z();
             }
-          } 
+          }
           else {
             for (let i = 0; i < size; i++) {
               const node = object.get_m_nodes().at(i);
