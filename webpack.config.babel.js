@@ -57,6 +57,24 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
       libraryTarget: 'umd'
     },
     module: {
+      preLoaders: [
+        {
+          test: /scene\.js$/,
+          loader: 'string-replace',
+          query: {
+            multiple: [
+              {
+                search: 'from \'inline-worker\';',
+                replace: 'from \'webworkify-webpack\';'
+              },
+              {
+                search: 'new Worker(require(\'../worker.js\'));',
+                replace: 'Worker(require(\'../worker.js\'));'
+              }
+            ]
+          }
+        }
+      ],
       loaders: loadersSection
     },
     plugins: pluginsSectionPhysics

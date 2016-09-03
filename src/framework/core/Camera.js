@@ -4,7 +4,7 @@ import {Loop} from '../extras/Loop';
 import {CoreObject} from './CoreObject';
 
 class Camera extends CoreObject {
-  constructor(params, type = 'camera') {
+  constructor(params, type = 'camera', localWindow = window) {
     if (!type) console.error('@constructor: Please specify " type ".');
 
     const _set = (x, y, z) => {
@@ -18,13 +18,13 @@ class Camera extends CoreObject {
     super({
       camera: {
         fov: 45,
-        aspect: window.innerWidth / window.innerHeight,
+        aspect: localWindow.innerWidth / localWindow.innerHeight,
         near: 1,
         far: 1000,
-        left: window.innerWidth / -2,
-        right: window.innerWidth / 2,
-        top: window.innerHeight / 2,
-        bottom: window.innerHeight / -2,
+        left: localWindow.innerWidth / -2,
+        right: localWindow.innerWidth / 2,
+        top: localWindow.innerHeight / 2,
+        bottom: localWindow.innerHeight / -2,
         cubeResolution: 128
       },
 

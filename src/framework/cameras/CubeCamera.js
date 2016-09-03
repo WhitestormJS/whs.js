@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {Camera} from '../core/Camera';
 
 class CubeCamera extends Camera {
-  constructor(params = {}) {
+  constructor(params = {}, localWindow = window) {
     super(params, 'cubecamera');
 
     this.build(params);
