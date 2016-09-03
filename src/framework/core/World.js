@@ -9,7 +9,7 @@ import {Light} from './Light';
 import {CoreObject} from './CoreObject';
 
 class World extends CoreObject {
-  constructor(params = {}) {
+  constructor(params = {}, localWindow = window) {
     super({
       stats: false,
       autoresize: false,
@@ -44,8 +44,8 @@ class World extends CoreObject {
       rWidth: 1, // Resolution(width).
       rHeight: 1, // Resolution(height).
 
-      width: window.innerWidth, // Container(width).
-      height: window.innerHeight, // Container(height).
+      width: localWindow.innerWidth, // Container(width).
+      height: localWindow.innerHeight, // Container(height).
 
       physics: {
         fixedTimeStep: 1 / 60,
@@ -75,38 +75,39 @@ class World extends CoreObject {
       },
 
       renderer: {},
-      container: document.body
+      container: localWindow.document.body
     });
 
     super.setParams(params);
 
-    const initParams = this.getParams().init;
+    const _params = this.getParams();
+    const initParams = _params.init;
 
     // INIT.
-    this._initDOM();
+    this._initDOM(localWindow);
     if (initParams.scene) this._initScene();
     if (initParams.scene && initParams.stats) this._initStats();
 
-    if (initParams.scene && initParams.camera) this._initCamera();
+    if (initParams.scene && initParams.camera) this._initCamera(localWindow);
     if (initParams.scene && initParams.renderer) this._initRenderer();
     if (initParams.scene && initParams.helpers) this._initHelpers();
 
     // NOTE: ==================== Autoresize. ======================
 
-    if (params.autoresize === "window") {
-      window.addEventListener('resize', () => {
+    if (_params.autoresize === "window") {
+      localWindow.addEventListener('resize', () => {
         this.setSize(
-          Number(window.innerWidth * params.rWidth).toFixed(),
-          Number(window.innerHeight * params.rHeight).toFixed()
+          Number(localWindow.innerWidth * _params.rWidth).toFixed(),
+          Number(localWindow.innerHeight * _params.rHeight).toFixed()
         );
 
         this.emit('resize');
       });
-    } else if (this.getParams().autoresize) {
-      window.addEventListener('resize', () => {
+    } else if (_params.autoresize) {
+      localWindow.addEventListener('resize', () => {
         this.setSize(
-          Number(params.container.offsetWidth * params.rWidth).toFixed(),
-          Number(params.container.offsetHeight * params.rHeight).toFixed()
+          Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
+          Number(_params.container.offsetHeight * _params.rHeight).toFixed()
         );
 
         this.emit('resize');
@@ -178,7 +179,7 @@ class World extends CoreObject {
   /**
    * Initialize DOM structure for whitestorm.
    */
-  _initDOM() {
+  _initDOM(localWindow = window) {
     const params = this.getParams();
 
     params.container.style.margin = 0;
@@ -186,7 +187,7 @@ class World extends CoreObject {
     params.container.style.position = 'relative';
     params.container.style.overflow = 'hidden';
 
-    this._dom = document.createElement('div');
+    this._dom = localWindow.document.createElement('div');
     this._dom.className = 'whs';
 
     params.container.appendChild(this._dom);
@@ -228,7 +229,7 @@ class World extends CoreObject {
   /**
    * Create a camera and add it to scene.
    */
-  _initCamera() {
+  _initCamera(localWindow = window) {
     const params = this.getParams();
 
     this.setCamera(new PerspectiveCamera({
@@ -244,7 +245,7 @@ class World extends CoreObject {
         y: params.camera.y,
         z: params.camera.z
       }
-    }));
+    }, localWindow));
 
     this.getCamera().addTo(this);
   }
@@ -315,24 +316,24 @@ class World extends CoreObject {
   /**
    * Start animation.
    */
-  start() {
+  start(localWindow = window) {
     const clock = new THREE.Clock(),
       _scope = this,
       scene = _scope.getScene(),
       cameraNative = _scope.getCamera().getNative(),
       renderer = _scope.getRenderer();
 
-    window.requestAnimFrame = (() => {
-      return window.requestAnimationFrame
-        || window.webkitRequestAnimationFrame
-        || window.mozRequestAnimationFrame
+    localWindow.requestAnimFrame = (() => {
+      return localWindow.requestAnimationFrame
+        || localWindow.webkitRequestAnimationFrame
+        || localWindow.mozRequestAnimationFrame
         || function (callback) {
-          window.setTimeout(callback, 1000 / 60);
+          localWindow.setTimeout(callback, 1000 / 60);
         };
     })();
 
     function reDraw(time) {
-      window.requestAnimFrame(reDraw);
+      localWindow.requestAnimFrame(reDraw);
 
       // Init stats.
       if (_scope._stats) _scope._stats.begin();

@@ -53,10 +53,11 @@ const webpackCompilerLight = webpack(webpackConfiguration[1]);
 // ENVIRONMENT  SETUP
 process.env.BABEL_ENV = 'node';
 
-gulp.task('default', ['examples:build', 'src:build']);
+gulp.task('default', ['examples:build', 'src:build:browser', 'src:build:node']);
+gulp.task('src:build', ['src:build:browser', 'src:build:node']);
 
 // BUILD: browser
-gulp.task('src:build', ['build:clean'], (callback) => {
+gulp.task('src:build:browser', ['build:clean'], (callback) => {
   webpackCompiler.run((error, stats) => {
     if (error) throw new $.util.PluginError('webpack', error);
     $.util.log('[webpack]', stats.toString({colors: true}));
@@ -69,6 +70,16 @@ gulp.task('src:build', ['build:clean'], (callback) => {
   });
 });
 
+gulp.task('src:build:node', (callback) => {
+  gulp.src(`${frameworkSrc}/**/*`)
+    .pipe($.cached('babel', {optimizeMemory: true}))
+    .pipe($.if(!isProduction, $.sourcemaps.init()))
+    .pipe($.babel())
+    .on('error', makeBuildErrorHandler('babel'))
+    .pipe($.if(!isProduction, $.sourcemaps.write('.')))
+    .pipe(gulp.dest('./lib/'));
+
+});
 // DEV MODE
 gulp.task('dev', ['examples:build', 'examples:watch'], () => {
   const server = new WebpackDevServer(webpackCompiler, {
