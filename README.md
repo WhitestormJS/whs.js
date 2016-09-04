@@ -106,6 +106,9 @@ world.start(); // Start animations and physics simulation.
  * [Basic / Extending API](http://192.241.128.187/current/examples/basic/extending/)  (Extending api example.)
  * [Basic / Softbody](http://192.241.128.187/current/examples/basic/softbody/)  (Basic softbody implementation.)
  * [Basic / Three.js](http://192.241.128.187/current/examples/basic/threejs/)  (Importing three.js scene to whitestormjs core.)
+ * [Basic / Cloth](http://192.241.128.187/current/examples/basic/cloth/)  (Example of softbody cloth.)
+ * [Basic / Cloth 2](http://192.241.128.187/current/examples/basic/cloth2/)  (Example of softbody cloth 2.)
+ * [Basic / Cloth 3](http://192.241.128.187/current/examples/basic/cloth3/)  (Example of softbody cloth 3.)
 
 #### :gem: DESIGN:
  * [Design / Saturn](http://192.241.128.187/current/examples/design/saturn/)  (Saturn planet example from: http://codepen.io/Yakudoo/pen/qbygaJ)
@@ -121,6 +124,7 @@ world.start(); // Start animations and physics simulation.
 
 #### :rocket: PERFORMANCE:
  * [Performance / Sticks](http://192.241.128.187/current/examples/performance/sticks/)  (Collisions performance of 320 basic box objects.)
+ * [Performance / Softbodies](http://192.241.128.187/current/examples/performance/softbodies/)  (Collisions performance of 30 softbody icosahedron objects.)
 
 ----
 

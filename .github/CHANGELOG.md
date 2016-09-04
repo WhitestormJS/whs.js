@@ -2,12 +2,47 @@
 
 ##### Before contibuting here see [rules](https://github.com/WhitestormJS/whitestorm.js/blob/master/CONTRIBUTING.md#-adding-changes-to-changelogmd)
 
-**current**
+**r11**
 - *Bug fixes*
+   - 
+- `DOFConstraint` added.
 - Loop
    - Added shorthand for `.addLoop()` and `.removeLoop()`
+- List
+   - Added `.get()` method.
 - World
    - `.addLoop()` and `.removeLoop()` now return Promises.
+   - Added proper `.remove()` function.
+- CoreObject
+   - `Object` renamed to `CoreObject`
+   - Added proper `.remove()` function.
+- Lights
+   - Fixed `target` option. Now works with Object3D and Vector3(both).
+- STRUCTURE
+   - Added modularity
+   - Optimized for webpack usage.
+   - Webpack build transformed to UMD.
+   - `src` now consist of `examples` and `framework`
+   - Fixed `_assets` folder.
+   - Removed unused `_lib/` folder
+   - Removed `_temp` folder.
+- OPTIMIZATION
+    - Removed unused dependencies in package.json
+- EXAMPLES
+   - Fixed `performance/softbodies` example.
+   - Added `basic/cloth` example.
+   - Added `basic/cloth2` example.
+   - Added `basic/cloth3` example.
+- TESTS.
+   - Added unit tests:
+   - `core/`
+   - `meshes/`
+   - `cameras/`
+   - `utils/`
+   - `extras/`
+   - `lights/`
+   - Fixed Travis CI.
+- Three.js version updated to r80.
 
 
 ----
@@ -113,7 +148,7 @@
 - *WHS.Cube -> WHS.Box*
 - Removed `stone_wall.html` example.
  
-**v0.0.7**
+**r7**
 - Fixed #16 "object.assign() chrome bug."
 - Base rewrite(fix). part 4
 - Added the following effects to `addWagner`:
@@ -165,7 +200,7 @@
 - Jquery removed from engine.
 - Add warning in case of PointerLock API incompatibility.
 
-**v0.0.6**
+**r6**
 - Made `WHS.API.construct.build` parameters optional.
 - Fixed [basic model example](http://192.241.128.187/current/examples/basic_model.html).
 - Added *api.loadMaterial* function.
@@ -187,7 +222,7 @@
   - `highPassPass`
 - Removed unusable libs.
 
-**v0.0.6-alpha**
+**r6-alpha**
 - Added Coggle.
 - *WHS.init(THREE, CANNON, params) -> WHS.init(params)*
 - Fixed *api.Wrap* error in *addGround*.
@@ -210,7 +245,7 @@ Issues:
 
 -- Cannon.js heightmap is not smooth yet.
 
-**v0.0.5**
+**r5**
 - Basic_material example fixed.
 - `addModel()` for adding an object from JSON file.
 - basic_material *example*
@@ -220,7 +255,7 @@ Issues:
 - *src/libs/Wagner.base.js -> libs/Wagner.base.js*
 - CSF. Line-wrap, blocks.
 
-**v0.0.4**
+**r4**
 - Shader terrain material added.
 - Shadows fixed.
 - Lambert material issue fixed.
