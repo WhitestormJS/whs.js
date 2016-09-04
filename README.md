@@ -35,7 +35,7 @@
 <a href="http://ow.ly/J4Tw302obGz"><img src="http://i.imgur.com/6EdMjm1.gif"></a>
 
 ## GAME EXAMPLE :video_game:
-<a href="http://192.241.128.187/current/examples/fps/shooter/" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/splash.png"></a>
+<a href="http://whitestormjs.xyz/StreetBasketballGame/" target="_blank"><img src="https://camo.githubusercontent.com/e11edd02f96c306bf5b929c65d75f552d072d61c/687474703a2f2f692e696d6775722e636f6d2f51445a636141532e706e67"></a>
 
 ## INSTALLATION &#10540; USAGE
 
@@ -116,8 +116,8 @@ world.start(); // Start animations and physics simulation.
  * [Design / Points](http://192.241.128.187/current/examples/design/points/)  (Using WHS.Points to make a point cloud shaped in cube.)
 
 #### :snowboarder: FIRST-PERSON:
- * [FPS / Shooter](http://192.241.128.187/current/examples/fps/shooter/)  (First person example with Wagner effects and terrain. + fog)
- * [FPS / Fog](http://192.241.128.187/current/examples/fps/fog/)  (First person game with animated objects)
+ * [FPS / Shooter](http://192.241.128.187/current/examples/fps/shooter/)  (First person example with Wagner effects and terrain. + fog) [TODO]
+ * [FPS / Fog](http://192.241.128.187/current/examples/fps/fog/)  (First person game with animated objects) [TODO]
 
 #### :bowling: PHYSICS:
  * [Physics / Dominos](http://192.241.128.187/current/examples/physics/domino/)  (Physics example with dominos.)
