@@ -73,10 +73,8 @@ gulp.task('src:build:browser', ['build:clean'], (callback) => {
 gulp.task('src:build:node', (callback) => {
   gulp.src(`${frameworkSrc}/**/*`)
     .pipe($.cached('babel', {optimizeMemory: true}))
-    .pipe($.if(!isProduction, $.sourcemaps.init()))
     .pipe($.babel())
     .on('error', makeBuildErrorHandler('babel'))
-    .pipe($.if(!isProduction, $.sourcemaps.write('.')))
     .pipe(gulp.dest('./lib/'));
 
 });
@@ -258,7 +256,7 @@ gulp.task('examples:clean', (callback) => {
 });
 
 gulp.task('build:clean', (callback) => {
-  del([`${frameworkDest}/*.js`, `${frameworkDest}/*.map`]).then(() => callback());
+  del([`${frameworkDest}/*.js`, `${frameworkDest}/*.map`, './lib/**/*.js', './lib/**/*.map']).then(() => callback());
 });
 
 // ERRORS

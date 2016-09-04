@@ -21,7 +21,10 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       mangle: false,
-      compress: false,
+      compress: {
+        hoist_funs: false, // Turn this off to prevent errors with Ammo.js
+        warnings: false
+      },
       minimize: true
     }),
     new HappyPack({loaders: ['babel'], threads: 4}),
@@ -49,7 +52,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
   ];
 
   return [{ // PHYSICS VERSION
-    devtool: isProduction ? 'hidden-source-map' : 'source-map',
+    devtool: isProduction ? false : 'source-map',
     entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
     target: 'web',
     output: {
@@ -63,7 +66,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     },
     plugins: pluginsSectionPhysics
   }, { // LIGHT VERSION
-    devtool: isProduction ? 'hidden-source-map' : 'source-map',
+    devtool: isProduction ? false : 'source-map',
     entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
     target: 'web',
     output: {
