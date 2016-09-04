@@ -24,10 +24,12 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
       compress: false,
       minimize: true
     }),
-    new HappyPack({loaders: ['babel'], threads: 4})
+    new HappyPack({loaders: ['babel'], threads: 4}),
+    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack')
   ]
   : [
-    new HappyPack({loaders: ['babel'], threads: 4})
+    new HappyPack({loaders: ['babel'], threads: 4}),
+    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack')
   ];
 
   const pluginsSectionLight = isProduction
@@ -57,24 +59,6 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
       libraryTarget: 'umd'
     },
     module: {
-      preLoaders: [
-        {
-          test: /scene\.js$/,
-          loader: 'string-replace',
-          query: {
-            multiple: [
-              {
-                search: 'from \'inline-worker\';',
-                replace: 'from \'webworkify-webpack\';'
-              },
-              {
-                search: 'new Worker(require(\'../worker.js\'));',
-                replace: 'Worker(require(\'../worker.js\'));'
-              }
-            ]
-          }
-        }
-      ],
       loaders: loadersSection
     },
     plugins: pluginsSectionPhysics

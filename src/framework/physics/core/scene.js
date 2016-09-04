@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import Worker from 'inline-worker';
 import Stats from 'stats.js';
+import {Vehicle} from '../vehicle/vehicle';
 import {Eventable} from '../eventable';
 import {
   addObjectChildren,
@@ -518,7 +519,7 @@ export class Scene extends THREE.Scene {
     if (object._physijs) {
       object.world = this;
 
-      if (object instanceof Physijs.Vehicle) {
+      if (object instanceof Vehicle) {
         this.add(object.mesh);
         this._vehicles[object._physijs.id] = object;
         this.execute('addVehicle', object._physijs);
@@ -569,7 +570,7 @@ export class Scene extends THREE.Scene {
   }
 
   remove(object) {
-    if (object instanceof Physijs.Vehicle) {
+    if (object instanceof Vehicle) {
       this.execute('removeVehicle', {id: object._physijs.id});
       while (object.wheels.length) this.remove(object.wheels.pop());
 

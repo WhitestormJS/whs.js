@@ -10,6 +10,8 @@ import {CoreObject} from './CoreObject';
 
 class World extends CoreObject {
   constructor(params = {}, localWindow = window) {
+    console.log(Physijs);
+
     super({
       stats: false,
       autoresize: false,
@@ -125,7 +127,7 @@ class World extends CoreObject {
    */
   _initScene() {
     const params = this.getParams(),
-      scene = !!'physics'
+      scene = Physijs.default !== false
       ? new Physijs.Scene(
         {
           fixedTimeStep: params.physics.fixedTimeStep,
@@ -138,7 +140,7 @@ class World extends CoreObject {
         }
       ) : new THREE.Scene();
 
-    if (!!'physics') {
+    if (Physijs.default !== false) {
       scene.setGravity(
         new THREE.Vector3(
           params.gravity.x,
