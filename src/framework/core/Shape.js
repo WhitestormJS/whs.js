@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as Physijs from '../physics/index.js';
 
 import {loadMaterial, extend} from '../utils/index';
 import {Loop} from '../extras/Loop';
@@ -13,7 +14,7 @@ class Shape extends CoreObject {
       this.z = z;
     };
 
-    const physicsDefaults = !!'physics' ? {
+    const physicsDefaults = Physijs.default !== false ? {
       restitution: 0.3,
       friction: 0.8,
       damping: 0,

@@ -8374,6 +8374,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  function CubeCamera() {
 	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var localWindow = arguments.length <= 1 || arguments[1] === undefined ? window : arguments[1];
 	    (0, _classCallCheck3.default)(this, CubeCamera);
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (CubeCamera.__proto__ || Object.getPrototypeOf(CubeCamera)).call(this, params, 'cubecamera'));
@@ -51793,9 +51794,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  (0, _inherits3.default)(Camera, _CoreObject);
 	
 	  function Camera(params) {
+	    var type = arguments.length <= 1 || arguments[1] === undefined ? 'camera' : arguments[1];
+	
 	    var _ret;
 	
-	    var type = arguments.length <= 1 || arguments[1] === undefined ? 'camera' : arguments[1];
+	    var localWindow = arguments.length <= 2 || arguments[2] === undefined ? window : arguments[2];
 	    (0, _classCallCheck3.default)(this, Camera);
 	
 	    if (!type) console.error('@constructor: Please specify " type ".');
@@ -51811,13 +51814,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (Camera.__proto__ || Object.getPrototypeOf(Camera)).call(this, {
 	      camera: {
 	        fov: 45,
-	        aspect: window.innerWidth / window.innerHeight,
+	        aspect: localWindow.innerWidth / localWindow.innerHeight,
 	        near: 1,
 	        far: 1000,
-	        left: window.innerWidth / -2,
-	        right: window.innerWidth / 2,
-	        top: window.innerHeight / 2,
-	        bottom: window.innerHeight / -2,
+	        left: localWindow.innerWidth / -2,
+	        right: localWindow.innerWidth / 2,
+	        top: localWindow.innerHeight / 2,
+	        bottom: localWindow.innerHeight / -2,
 	        cubeResolution: 128
 	      },
 	
@@ -52622,6 +52625,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  function OrtographicCamera() {
 	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var localWindow = arguments.length <= 1 || arguments[1] === undefined ? window : arguments[1];
 	    (0, _classCallCheck3.default)(this, OrtographicCamera);
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (OrtographicCamera.__proto__ || Object.getPrototypeOf(OrtographicCamera)).call(this, params, 'ortographiccamera'));
@@ -52696,9 +52700,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  function PerspectiveCamera() {
 	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var localWindow = arguments.length <= 1 || arguments[1] === undefined ? window : arguments[1];
 	    (0, _classCallCheck3.default)(this, PerspectiveCamera);
 	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (PerspectiveCamera.__proto__ || Object.getPrototypeOf(PerspectiveCamera)).call(this, params, 'perspectivecamera'));
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (PerspectiveCamera.__proto__ || Object.getPrototypeOf(PerspectiveCamera)).call(this, params, 'perspectivecamera', localWindow));
 	
 	    _this.build(params);
 	    (0, _get3.default)(PerspectiveCamera.prototype.__proto__ || Object.getPrototypeOf(PerspectiveCamera.prototype), 'wrap', _this).call(_this);
@@ -53220,10 +53225,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  (0, _inherits3.default)(World, _CoreObject);
 	
 	  function World() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
 	    var _ret;
 	
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var localWindow = arguments.length <= 1 || arguments[1] === undefined ? window : arguments[1];
 	    (0, _classCallCheck3.default)(this, World);
+	
+	    console.log(Physijs);
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (World.__proto__ || Object.getPrototypeOf(World)).call(this, {
 	      stats: false,
@@ -53259,8 +53268,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      rWidth: 1, // Resolution(width).
 	      rHeight: 1, // Resolution(height).
 	
-	      width: window.innerWidth, // Container(width).
-	      height: window.innerHeight, // Container(height).
+	      width: localWindow.innerWidth, // Container(width).
+	      height: localWindow.innerHeight, // Container(height).
 	
 	      physics: {
 	        fixedTimeStep: 1 / 60,
@@ -53290,33 +53299,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	      },
 	
 	      renderer: {},
-	      container: document.body
+	      container: localWindow.document.body
 	    }));
 	
 	    (0, _get3.default)(World.prototype.__proto__ || Object.getPrototypeOf(World.prototype), 'setParams', _this).call(_this, params);
 	
-	    var initParams = _this.getParams().init;
+	    var _params = _this.getParams();
+	    var initParams = _params.init;
 	
 	    // INIT.
-	    _this._initDOM();
+	    _this._initDOM(localWindow);
 	    if (initParams.scene) _this._initScene();
 	    if (initParams.scene && initParams.stats) _this._initStats();
 	
-	    if (initParams.scene && initParams.camera) _this._initCamera();
+	    if (initParams.scene && initParams.camera) _this._initCamera(localWindow);
 	    if (initParams.scene && initParams.renderer) _this._initRenderer();
 	    if (initParams.scene && initParams.helpers) _this._initHelpers();
 	
 	    // NOTE: ==================== Autoresize. ======================
 	
-	    if (params.autoresize === "window") {
-	      window.addEventListener('resize', function () {
-	        _this.setSize(Number(window.innerWidth * params.rWidth).toFixed(), Number(window.innerHeight * params.rHeight).toFixed());
+	    if (_params.autoresize === "window") {
+	      localWindow.addEventListener('resize', function () {
+	        _this.setSize(Number(localWindow.innerWidth * _params.rWidth).toFixed(), Number(localWindow.innerHeight * _params.rHeight).toFixed());
 	
 	        _this.emit('resize');
 	      });
-	    } else if (_this.getParams().autoresize) {
-	      window.addEventListener('resize', function () {
-	        _this.setSize(Number(params.container.offsetWidth * params.rWidth).toFixed(), Number(params.container.offsetHeight * params.rHeight).toFixed());
+	    } else if (_params.autoresize) {
+	      localWindow.addEventListener('resize', function () {
+	        _this.setSize(Number(_params.container.offsetWidth * _params.rWidth).toFixed(), Number(_params.container.offsetHeight * _params.rHeight).toFixed());
 	
 	        _this.emit('resize');
 	      });
@@ -53337,7 +53347,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_initScene',
 	    value: function _initScene() {
 	      var params = this.getParams(),
-	          scene =  true ? new Physijs.Scene({
+	          scene = Physijs.default !== false ? new Physijs.Scene({
 	        fixedTimeStep: params.physics.fixedTimeStep,
 	        broadphase: params.physics.broadphase
 	      }, {
@@ -53346,7 +53356,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        softbody: params.softbody
 	      }) : new THREE.Scene();
 	
-	      if (true) {
+	      if (Physijs.default !== false) {
 	        scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
 	
 	        this.simulate = true;
@@ -53389,6 +53399,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_initDOM',
 	    value: function _initDOM() {
+	      var localWindow = arguments.length <= 0 || arguments[0] === undefined ? window : arguments[0];
+	
 	      var params = this.getParams();
 	
 	      params.container.style.margin = 0;
@@ -53396,7 +53408,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      params.container.style.position = 'relative';
 	      params.container.style.overflow = 'hidden';
 	
-	      this._dom = document.createElement('div');
+	      this._dom = localWindow.document.createElement('div');
 	      this._dom.className = 'whs';
 	
 	      params.container.appendChild(this._dom);
@@ -53436,6 +53448,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '_initCamera',
 	    value: function _initCamera() {
+	      var localWindow = arguments.length <= 0 || arguments[0] === undefined ? window : arguments[0];
+	
 	      var params = this.getParams();
 	
 	      this.setCamera(new _PerspectiveCamera.PerspectiveCamera({
@@ -53451,7 +53465,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          y: params.camera.y,
 	          z: params.camera.z
 	        }
-	      }));
+	      }, localWindow));
 	
 	      this.getCamera().addTo(this);
 	    }
@@ -53512,20 +53526,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'start',
 	    value: function start() {
+	      var localWindow = arguments.length <= 0 || arguments[0] === undefined ? window : arguments[0];
+	
 	      var clock = new THREE.Clock(),
 	          _scope = this,
 	          scene = _scope.getScene(),
 	          cameraNative = _scope.getCamera().getNative(),
 	          renderer = _scope.getRenderer();
 	
-	      window.requestAnimFrame = function () {
-	        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
-	          window.setTimeout(callback, 1000 / 60);
+	      localWindow.requestAnimFrame = function () {
+	        return localWindow.requestAnimationFrame || localWindow.webkitRequestAnimationFrame || localWindow.mozRequestAnimationFrame || function (callback) {
+	          localWindow.setTimeout(callback, 1000 / 60);
 	        };
 	      }();
 	
 	      function reDraw(time) {
-	        window.requestAnimFrame(reDraw);
+	        localWindow.requestAnimFrame(reDraw);
 	
 	        // Init stats.
 	        if (_scope._stats) _scope._stats.begin();
@@ -53752,7 +53768,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _index = __webpack_require__(396);
+	var _index = __webpack_require__(408);
+	
+	var Physijs = _interopRequireWildcard(_index);
+	
+	var _index2 = __webpack_require__(396);
 	
 	var _Loop = __webpack_require__(393);
 	
@@ -53781,7 +53801,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _this.z = z;
 	    };
 	
-	    var physicsDefaults =  true ? (0, _defineProperty3.default)({
+	    var physicsDefaults = Physijs.default !== false ? (0, _defineProperty3.default)({
 	      restitution: 0.3,
 	      friction: 0.8,
 	      damping: 0,
@@ -53924,7 +53944,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            // Bounding box helper.
 	            if (_params_helpers.boundingBox) {
-	              (0, _index.extend)(_params_helpers.boundingBox, {
+	              (0, _index2.extend)(_params_helpers.boundingBox, {
 	                color: 0xffffff
 	              });
 	
@@ -53933,7 +53953,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            // Edges helper.
 	            if (_params_helpers.edges) {
-	              (0, _index.extend)(_params_helpers.edges, {
+	              (0, _index2.extend)(_params_helpers.edges, {
 	                color: 0xffffff
 	              });
 	
@@ -53944,7 +53964,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (_params_helpers.faceNormals) {
 	              var _params_helpers_faceNormals = _params_helpers.faceNormals;
 	
-	              (0, _index.extend)(_params_helpers_faceNormals, {
+	              (0, _index2.extend)(_params_helpers_faceNormals, {
 	                size: 2,
 	                color: 0xffffff,
 	                linewidth: 1
@@ -53957,7 +53977,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (_params_helpers.vertexNormals) {
 	              var _params_helpers_vertexNormals = _params_helpers.vertexNormals;
 	
-	              (0, _index.extend)(_params_helpers_vertexNormals, {
+	              (0, _index2.extend)(_params_helpers_vertexNormals, {
 	                size: 2,
 	                color: 0xffffff,
 	                linewidth: 1
@@ -54003,7 +54023,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	          // Bounding box helper.
 	          if (_params_helpers.boundingBox) {
-	            (0, _index.extend)(_params_helpers.boundingBox, {
+	            (0, _index2.extend)(_params_helpers.boundingBox, {
 	              color: 0xffffff
 	            });
 	
@@ -54012,7 +54032,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	          // Edges helper.
 	          if (_params_helpers.edges) {
-	            (0, _index.extend)(_params_helpers.edges, {
+	            (0, _index2.extend)(_params_helpers.edges, {
 	              color: 0xffffff
 	            });
 	
@@ -54023,7 +54043,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          if (_params_helpers.faceNormals) {
 	            var _params_helpers_faceNormals = _params_helpers.faceNormals;
 	
-	            (0, _index.extend)(_params_helpers_faceNormals, {
+	            (0, _index2.extend)(_params_helpers_faceNormals, {
 	              size: 2,
 	              color: 0xffffff,
 	              linewidth: 1
@@ -54036,7 +54056,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          if (_params_helpers.vertexNormals) {
 	            var _params_helpers_vertexNormals = _params_helpers.vertexNormals;
 	
-	            (0, _index.extend)(_params_helpers_vertexNormals, {
+	            (0, _index2.extend)(_params_helpers_vertexNormals, {
 	              size: 2,
 	              color: 0xffffff,
 	              linewidth: 1
@@ -54179,7 +54199,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function M_() {
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      if (this.getParams().material.kind !== params.kind) this.getNative().material = (0, _index.loadMaterial)(this.updateParams({ material: params }).material);else {
+	      if (this.getParams().material.kind !== params.kind) this.getNative().material = (0, _index2.loadMaterial)(this.updateParams({ material: params }).material);else {
 	        this.updateParams({ material: params });
 	
 	        for (key in params) {

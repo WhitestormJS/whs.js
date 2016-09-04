@@ -1,6 +1,6 @@
 {
   "name": "whitestormjs",
-  "version": "0.11.0-dev.1",
+  "version": "0.11.0-dev.3",
   "description": "Framework for developing 3D web apps with physics.",
   "main": "lib/index.js",
   "scripts": {
@@ -82,7 +82,6 @@
     "path": "^0.12.7",
     "requirejs": "^2.2.0",
     "stats.js": "^0.16.0",
-    "string-replace-loader": "^1.0.3",
     "swig": "^1.4.2",
     "uglify-loader": "^1.3.0",
     "webpack": "^1.13.1",
