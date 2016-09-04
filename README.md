@@ -35,7 +35,9 @@
 <a href="http://ow.ly/J4Tw302obGz"><img src="http://i.imgur.com/6EdMjm1.gif"></a>
 
 ## GAME EXAMPLE :video_game:
+<p align="center">
 <a href="http://whitestormjs.xyz/StreetBasketballGame/" target="_blank"><img src="https://camo.githubusercontent.com/e11edd02f96c306bf5b929c65d75f552d072d61c/687474703a2f2f692e696d6775722e636f6d2f51445a636141532e706e67"></a>
+</p>
 
 ## INSTALLATION &#10540; USAGE
 
