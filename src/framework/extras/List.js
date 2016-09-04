@@ -1,16 +1,20 @@
 class List {
   constructor(queue) {
-    this._queue = Array.isArray(queue) ? queue.slice() : [];
+    this._array = Array.isArray(queue) ? queue.slice() : [];
   }
 
   add(element) {
-    this._queue.push(element);
+    this._array.push(element);
   }
 
   remove(element) {
-    this._queue = this._queue.filter((item) => {
+    this._array = this._array.filter((item) => {
       return item !== element;
     });
+  }
+
+  get() {
+    return this._array;
   }
 }
 

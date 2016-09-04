@@ -22,7 +22,7 @@ var GAME = new WHS.World({
   }
 });
 
-window.teapot = new WHS.Model({
+var teapot = new WHS.Model({
   geometry: {
     path: '../../_assets/models/teapot/utah-teapot-large.json',
     physics: '../../_assets/models/teapot/utah-teapot-light.json'
@@ -31,7 +31,7 @@ window.teapot = new WHS.Model({
   mass: 100,
 
   physics: {
-    type: 'convex',
+    type: 'concave',
     friction: 1,
     restitution: 0
   },
@@ -57,7 +57,7 @@ window.teapot = new WHS.Model({
   }
 });
 
-window.teapot.addTo(GAME, 'wait');
+teapot.addTo(GAME);
 
 new WHS.Sphere({
   geometry: {

@@ -56150,20 +56150,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function List(queue) {
 	    (0, _classCallCheck3.default)(this, List);
 	
-	    this._queue = Array.isArray(queue) ? queue.slice() : [];
+	    this._array = Array.isArray(queue) ? queue.slice() : [];
 	  }
 	
 	  (0, _createClass3.default)(List, [{
 	    key: "add",
 	    value: function add(element) {
-	      this._queue.push(element);
+	      this._array.push(element);
 	    }
 	  }, {
 	    key: "remove",
 	    value: function remove(element) {
-	      this._queue = this._queue.filter(function (item) {
+	      this._array = this._array.filter(function (item) {
 	        return item !== element;
 	      });
+	    }
+	  }, {
+	    key: "get",
+	    value: function get() {
+	      return this._array;
 	    }
 	  }]);
 	  return List;
