@@ -91,7 +91,7 @@ const sphere = new WHS.Sphere({ // Create sphere object.
   }
 });
 
-sphere.addTo(GAME);
+sphere.addTo(world);
 sphere.getNative(); // Returns THREE.Mesh of this object.
 
 world.start(); // Start animations and physics simulation.
