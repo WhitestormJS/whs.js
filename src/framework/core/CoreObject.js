@@ -24,6 +24,9 @@ class CoreObject {
       },
     new Events());
 
+    // For decorators behavior.
+    if (this.onRun) this.onRun();
+
     return scope;
   }
 
