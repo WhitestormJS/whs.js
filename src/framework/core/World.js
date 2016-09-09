@@ -10,8 +10,6 @@ import {CoreObject} from './CoreObject';
 
 class World extends CoreObject {
   constructor(params = {}, localWindow = window) {
-    console.log(Physijs);
-
     super({
       stats: false,
       autoresize: false,
