@@ -121,7 +121,7 @@ var GlitchPass = function (_WHS$Pass) {
   function GlitchPass(name, dt_size) {
     _classCallCheck(this, GlitchPass);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(GlitchPass).call(this, name));
+    var _this = _possibleConstructorReturn(this, (GlitchPass.__proto__ || Object.getPrototypeOf(GlitchPass)).call(this, name));
 
     if (DigitalGlitchShader === undefined) console.error("THREE.GlitchPass relies on DigitalGlitchShader");
 
@@ -238,14 +238,8 @@ var Game = function () {
 
       this.postProcessor.createRenderPass();
 
-      // this.postProcessor.createPass(composer => {
-      //   let pass = new SMAAPass('SMAA', 1024, 1024);//window.innerWidth, window.innerHeight);
-      //   pass.renderToScreen = true;
-      //   composer.addPass(pass);
-      // });
-
       this.postProcessor.createPass(function (composer) {
-        var pass = new GlitchPass('Glitch'); //window.innerWidth, window.innerHeight);
+        var pass = new GlitchPass('Glitch');
         pass.renderToScreen = true;
         composer.addPass(pass);
       });

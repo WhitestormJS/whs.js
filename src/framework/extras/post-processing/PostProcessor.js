@@ -87,7 +87,7 @@ class PostProcessor extends CoreObject {
    * @return {[type]}             [description]
    */
   createPass(passCreator) {
-    if (_.isFunction(passCreator)) {
+    if (typeof passCreator === 'function') {
       return passCreator(this.composer);
     }
   }
