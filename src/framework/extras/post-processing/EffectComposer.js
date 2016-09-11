@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import * as THREE from 'three';
 
 import { CopyShader } from './shader/CopyShader.js';
@@ -16,7 +15,9 @@ export class EffectComposer {
         format: THREE.RGBAFormat,
         stencilBuffer: false
       };
+
       let size = renderer.getSize();
+
       renderTarget = new THREE.WebGLRenderTarget(size.width, size.height, parameters);
     }
 
@@ -26,9 +27,8 @@ export class EffectComposer {
     this.readBuffer = this.renderTarget2;
     this.passes = [];
 
-    if (CopyShader === undefined) {
-      console.error("EffectComposer relies on CopyShader");
-    }
+    if (CopyShader === undefined) console.error('EffectComposer relies on CopyShader"');
+
     this.copyPass = new ShaderPass(CopyShader);
   }
 
@@ -45,12 +45,12 @@ export class EffectComposer {
   }
 
   getPass(name) {
-    return _.find(this.passes, { name: name });
+    return this.passes.filter(v => v.name === name)[0];
   }
 
   getPassIndex(passIndicator) {
-    let passName = _.isString(passIndicator) ? passIndicator : pass.name;
-    return _.findIndex(this.passes, p => { p.name === passName; });
+    let passName = typeof passIndicator === 'string' ? passIndicator : passIndicator.name;
+    return this.passes.indexOf(this.getPass(passName));
   }
 
   addPassAfter(previousPassIndicator, pass) {
