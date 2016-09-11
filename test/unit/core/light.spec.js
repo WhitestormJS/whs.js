@@ -15,7 +15,7 @@ define(['whs'], function(WHS) {
             light[name][dims.charAt(i)] = 3;
         });
 
-        it('=== Values are equal ===', () => light.position === light.getNative().position);
+        it('=== Values are equal ===', () => light.position === light.native.position);
       });
     }
 
@@ -25,8 +25,8 @@ define(['whs'], function(WHS) {
       // it('#wrap() - \'no-shadows\'', () => light.wrap('no-shadows'));
       // it('#wrap() - \'no-transforms\'', () => light.wrap('no-transforms'));
       it('#addTo()', () => light.addTo(world));
-      it('#clone()', () => light.clone());
-      it('#copy()', () => light.copy(new WHS.Light()));
+      it('#clone()', () => light.clone);
+      it('#copy()', () => light.copy = new WHS.Light());
       it('#getWorld()', () => light.getWorld());
       it('#getParent()', () => light.getParent());
 
