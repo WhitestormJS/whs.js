@@ -1,43 +1,46 @@
 import * as THREE from 'three';
 
-import { WHSObject } from '../../core/Object.js';
+import {extend} from '../../utils/index';
+import { CoreObject } from '../../core/CoreObject.js';
 import { EffectComposer } from './EffectComposer.js';
 import { RenderPass } from './pass/RenderPass.js';
 
-class PostProcessor extends WHSObject {
-  constructor(params = {}, world = undefined) {
-    super({
-      autoresize: true,
+class PostProcessor extends CoreObject {
+  static defaults = {
+    autoresize: true,
 
-      rWidth: 1, // Resolution(width).
-      rHeight: 1, // Resolution(height).
+    rWidth: 1, // Resolution(width).
+    rHeight: 1, // Resolution(height).
 
-      width: window.innerWidth, // Container(width).
-      height: window.innerHeight, // Container(height).
+    renderTarget: {
+      toScreen: true
+    }
+  };
 
-      native: {},
-      renderTarget: {
-        toScreen: true
-      }
-    });
+  constructor(params = {}, localWindow = window) {
+    super();
 
-    super.setParams(params);
+    PostProcessor.defaults.width = localWindow.innerWidth;
+    PostProcessor.defaults.height = localWindow.innerHeight;
 
-    if (params.autoresize === "window") {
+    this.params = extend(params, PostProcessor.defaults);
+    const _params = this.params;
+
+    if (_params.autoresize === "window") {
       window.addEventListener('resize', () => {
         this.setSize(
-          Number(window.innerWidth * params.rWidth).toFixed(),
-          Number(window.innerHeight * params.rHeight).toFixed()
+          Number(window.innerWidth * _params.rWidth).toFixed(),
+          Number(window.innerHeight * _params.rHeight).toFixed()
         );
 
         this.emit('resize');
       });
-    } else if (this.getParams().autoresize) {
+    } else if (_params.autoresize) {
       window.addEventListener('resize', () => {
         this.setSize(
           //FIXME: cf setContainerConfig()
-          // Number(this.world.getParams().container.offsetWidth * params.rWidth).toFixed(),
-          // Number(this.world.getParams().container.offsetHeight * params.rHeight).toFixed()
+          // Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
+          // Number(_params.container.offsetHeight * _params.rHeight).toFixed()
         );
 
         this.emit('resize');
@@ -54,7 +57,7 @@ class PostProcessor extends WHSObject {
    * @return {[type]} [description]
    */
   _initTargetRenderer() {
-    let params = this.getParams();
+    let params = this.params;
     let width = Number(window.innerWidth * params.rWidth).toFixed();
     let height = Number(window.innerHeight * params.rHeight).toFixed();
     this.setRenderTarget(new THREE.WebGLRenderTarget(width, height, params.renderTarget));
@@ -105,7 +108,7 @@ class PostProcessor extends WHSObject {
   createRenderPass(renderToScreen = false) {
     if (this.scene && this.camera && this.composer) {
       this.createPass(composer => {
-        let pass = new RenderPass('renderscene', this.scene, this.camera.getNative());
+        let pass = new RenderPass('renderscene', this.scene, this.camera.native);
         pass.renderToScreen = renderToScreen;
         composer.addPass(pass);
       });
