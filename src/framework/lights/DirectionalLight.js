@@ -10,17 +10,15 @@ class DirectionalLight extends Light {
   }
 
   build(params = {}) {
-    const _scope = this;
-
     return new Promise((resolve) => {
-      _scope.setNative(new THREE.DirectionalLight(
+      this.native = new THREE.DirectionalLight(
         params.light.color,
         params.light.intensity
-      ));
+      );
 
       if (params.helper) {
-        _scope.helper = new THREE.DirectionalLightHelper(
-          _scope.light,
+        this.helper = new THREE.DirectionalLightHelper(
+          this.native,
           params.helper.size ? params.helper.size : 0
         );
       }

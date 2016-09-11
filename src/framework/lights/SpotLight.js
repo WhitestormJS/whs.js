@@ -10,20 +10,18 @@ class SpotLight extends Light {
   }
 
   build(params = {}) {
-    const _scope = this;
-
     return new Promise((resolve) => {
-      _scope.setNative(new THREE.SpotLight(
+      this.native = new THREE.SpotLight(
         params.light.color,
         params.light.intensity,
         params.light.distance,
         params.light.angle,
         params.light.exponent,
         params.light.decay
-      ));
+      );
 
       if (params.helper)
-        _scope.helper = new THREE.SpotLightHelper(_scope.light);
+        this.helper = new THREE.SpotLightHelper(this.native);
 
       resolve();
     });
