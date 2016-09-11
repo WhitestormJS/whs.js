@@ -167,16 +167,16 @@ class Light extends CoreObject {
 
   copy(source) {
     if (source.native) {
-      this.setNative(source.native.clone());
+      this.native = source.native.clone();
       if (source.helper) this.helper = source.helper.clone();
-      this.setParams(source.params);
+      this.params = source.params;
 
       this.wrap();
 
       this.position = source.position.clone();
       this.rotation = source.rotation.clone();
       if (source.target) this.target = source.target.clone();
-    } else this.setParams(source.params);
+    } else this.params = source.params;
 
     this.type = source.type;
 
