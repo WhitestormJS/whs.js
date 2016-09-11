@@ -15,7 +15,7 @@ define(['whs'], function(WHS) {
             camera[name][dims.charAt(i)] = 3;
         });
 
-        it('=== Values are equal ===', () => camera.position === camera.getNative().position);
+        it('=== Values are equal ===', () => camera.position === camera.native().position);
       });
     }
 
@@ -24,7 +24,7 @@ define(['whs'], function(WHS) {
       it('#addTo()', () => camera.addTo(world));
       it('#clone()', () => camera.clone());
       it('#copy()', () => camera.copy(new WHS.Light()));
-      it('#getParent()', () => camera.getParent());
+      it('#getParent()', () => camera.parent());
 
       describeAttribute(camera, 'position', 'xyz', THREE.Vector3);
       describeAttribute(camera, 'rotation', 'xyz', THREE.Euler);

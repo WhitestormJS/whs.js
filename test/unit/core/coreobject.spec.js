@@ -16,15 +16,15 @@ define(['whs'], function(WHS) {
       });
 
       it('#setParams', () => {
-        object.setParams({
+        object.params = {
           default5: 5
-        });
+        }
       });
 
       it('#updateParams', () => {
-        object.setParams({
+        object.params = {
           default5: 6
-        });
+        };
       });
 
       expected = {
@@ -40,7 +40,7 @@ define(['whs'], function(WHS) {
       };
 
       it('#getParams', () => {
-        result = object.getParams();
+        result = object.params();
       });
 
       it('=== Values are equal ===', () => result === expected);
