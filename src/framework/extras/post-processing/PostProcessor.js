@@ -96,7 +96,7 @@ class PostProcessor extends CoreObject {
    * @return {WHS.Pass} The found WHS.Pass, otherwise undefined.
    */
   getPass(name) {
-    return this.composer.getPass(name);
+    return this.composer ? this.composer.getPass(name) : undefined;
   }
 
   /**
@@ -126,7 +126,7 @@ class PostProcessor extends CoreObject {
    * @param  {String} name : The unique name of the pass
    */
   removePass(name) {
-    this.composer.removePass(name);
+    if (this.composer) this.composer.removePass(name);
   }
 
   /**
@@ -153,7 +153,7 @@ class PostProcessor extends CoreObject {
    * @param  {Number} delta : The delta time between two frames.
    */
   render(delta) {
-    this.composer.render(delta);
+    if (this.composer) this.composer.render(delta);
   }
 
   /**
