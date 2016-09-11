@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import {extend} from '../../utils/index';
+import { extend } from '../../utils/index';
 import { CoreObject } from '../../core/CoreObject.js';
 import { EffectComposer } from './EffectComposer.js';
 import { RenderPass } from './pass/RenderPass.js';
@@ -17,7 +17,7 @@ class PostProcessor extends CoreObject {
     }
   };
 
-  constructor(params = {}, localWindow = window) {
+  constructor(params = {}, world, localWindow = window) {
     super();
 
     PostProcessor.defaults.width = localWindow.innerWidth;
@@ -49,27 +49,27 @@ class PostProcessor extends CoreObject {
 
     this._initTargetRenderer();
 
+    if (world) world.postProcessor = this;
+
     return this;
   }
 
   /**
-   * [_initTargetRenderer description]
-   * @return {[type]} [description]
+   * Building a WebGLRenderTarget to render to.
    */
   _initTargetRenderer() {
     let params = this.params;
     let width = Number(window.innerWidth * params.rWidth).toFixed();
     let height = Number(window.innerHeight * params.rHeight).toFixed();
-    this.setRenderTarget(new THREE.WebGLRenderTarget(width, height, params.renderTarget));
+    this.renderTarget = new THREE.WebGLRenderTarget(width, height, params.renderTarget);
   }
 
   /**
-   * [_initComposer description]
-   * @return {[type]} [description]
+   * Building an EffectComposer to chain passes.
    */
   _initComposer() {
-    let _renderer = this.getRenderer();
-    let _renderTarget = this.getRenderTarget();
+    let _renderer = this.renderer;
+    let _renderTarget = this.renderTarget;
 
     if (!_renderer || !_renderTarget) {
       //FIXME: throw or something here
@@ -77,14 +77,14 @@ class PostProcessor extends CoreObject {
     }
 
     if (!this.composer) {
-      this.setComposer(new EffectComposer(_renderer, _renderTarget));
+      this.composer = new EffectComposer(_renderer, _renderTarget);
     }
   }
 
   /**
-   * [createPass description]
-   * @param  {[type]} passCreator [description]
-   * @return {[type]}             [description]
+   * Create and add a WHS.Pass to the post processing pipeline.
+   * @param  {Function} passCreator : A function that must return a WHS.Pass instance. It can be used to configurate the pass.
+   * @return {WHS.Pass} The created WHS.Pass
    */
   createPass(passCreator) {
     if (typeof passCreator === 'function') {
@@ -94,16 +94,16 @@ class PostProcessor extends CoreObject {
 
   /**
    * [getPass description]
-   * @param  {[type]} name [description]
-   * @return {[type]}      [description]
+   * @param  {String} name : The unique name of the pass.
+   * @return {WHS.Pass} The found WHS.Pass, otherwise undefined.
    */
   getPass(name) {
     return this.composer.getPass(name);
   }
 
   /**
-   * [createRenderPass description]
-   * @return {[type]} [description]
+   * A helper to create a render pass (WHS.RenderPass) that will draw your geometry in the PostProcessor first pass.
+   * @param  {Boolean} renderToScreen : Should the renderpass be rendered directly to screen
    */
   createRenderPass(renderToScreen = false) {
     if (this.scene && this.camera && this.composer) {
@@ -116,25 +116,24 @@ class PostProcessor extends CoreObject {
   }
 
   /**
-   * [getRenderPass description]
-   * @return {[type]} [description]
+   * A helper to get the render pass of this PostProcessor.
+   * @return {WHS.RenderPass} The render pass found, otherwise undefined.
    */
   getRenderPass() {
     return this.getPass('renderscene');
   }
 
   /**
-   * [removePass description]
-   * @param  {[type]} name [description]
-   * @return {[type]}      [description]
+   * Remove a pass from the PostProcessor
+   * @param  {String} name : The unique name of the pass
    */
   removePass(name) {
     this.composer.removePass(name);
   }
 
   /**
-   * [getRenderPass description]
-   * @return {[type]} [description]
+   * Used by the WHS.World instance associated with this PostProcessor to set the container.
+   * @param {DOM} container : The Dom container element.
    */
   setContainerConfig(container) {
     this.container = container;
@@ -142,8 +141,9 @@ class PostProcessor extends CoreObject {
   }
 
   /**
-   * [getRenderPass description]
-   * @return {[type]} [description]
+   * Set the Scene and camera used by the renderTarget in this PostProcessor.
+   * @param {THREE.Scene} scene : The scenagraph containing the geometry.
+   * @param {THREE.Camera} camera : The camera used for the rendering point of view.
    */
   setRenderScene(scene, camera) {
     this.scene = scene;
@@ -151,65 +151,62 @@ class PostProcessor extends CoreObject {
   }
 
   /**
-   * [render description]
-   * @return {[type]} [description]
+   * Rendering the PostProcessor and all its passes.
+   * @param  {Number} delta : The delta time between two frames.
    */
   render(delta) {
     this.composer.render(delta);
   }
 
   /**
-   * [setRenderer description]
-   * @param {[type]} renderer [description]
+   * Set the renderer to use.
+   * @param {THREE.WebGLRenderer} renderer : The renderer instance.
    */
-  setRenderer(renderer) {
-    this.renderer = renderer;
+  set renderer(renderer) {
+    this._renderer = renderer;
     this._initComposer();
   }
 
   /**
-   * [getRenderer description]
-   * @param  {[type]} renderer [description]
-   * @return {[type]}          [description]
+   * Get the renderer used by this PostProcessor to render.
+   * @return {THREE.WebGLRenderer} The WebGLRenderer.
    */
-  getRenderer(renderer) {
-    return this.renderer;
+  get renderer() {
+    return this._renderer;
   }
 
   /**
-   * [setRenderTarget description]
-   * @param {[type]} renderTarget [description]
+   * Set renderTarget, this will rebuild the internal EffectComposer.
+   * @param  {THREE.WebGLRenderTarget} renderTarget : The WebGLRenderTarget to use.
    */
-  setRenderTarget(renderTarget) {
-    this.renderTarget = renderTarget;
+  set renderTarget(renderTarget) {
+    this._renderTarget = renderTarget;
     this._initComposer();
   }
 
   /**
-   * [getRenderTarget description]
-   * @return {[type]} [description]
+   * Get renderTarget used by this PostProcessor to render to.
+   * @return {THREE.WebGLRenderTarget} The WebGLRenderTarget.
    */
-  getRenderTarget() {
-    return this.renderTarget;
+  get renderTarget() {
+    return this._renderTarget;
   }
 
   /**
-   * [setComposer description]
-   * @param {[type]} composer [description]
+   * Set composer, by default PostProcessor instanciate its own instance of EffectComposer.
+   * @param  {EffectComposer} composer : The composer instance to use.
    */
-  setComposer(composer) {
-    this.composer = composer;
+  set composer(composer) {
+    this._composer = composer;
   }
 
   /**
-   * [getComposer description]
-   * @return {[type]} [description]
+   * Get composer attribute
+   * @return {EffectCompost} The EffectComposer managed by this PostProcessor.
    */
-  getComposer() {
-    return this.composer;
+  get composer() {
+    return this._composer;
   }
-
-
 
 }
 
