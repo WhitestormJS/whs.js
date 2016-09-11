@@ -1,6 +1,6 @@
 define(['whs'], function(WHS) {
   describe('EffectComposer', () => {
-    const world = new WHS.World({ init: { renderer: true } });
+    const world = new WHS.World({ init: { renderer: false } });
 
     function describeAttribute(composer, name, dims, Value) {
       describe('.' + name, done => {

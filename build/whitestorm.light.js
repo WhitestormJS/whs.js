@@ -56302,7 +56302,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getPass',
 	    value: function getPass(name) {
-	      return this.composer.getPass(name);
+	      return this.composer ? this.composer.getPass(name) : undefined;
 	    }
 	
 	    /**
@@ -56345,7 +56345,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'removePass',
 	    value: function removePass(name) {
-	      this.composer.removePass(name);
+	      if (this.composer) this.composer.removePass(name);
 	    }
 	
 	    /**
@@ -56381,7 +56381,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'render',
 	    value: function render(delta) {
-	      this.composer.render(delta);
+	      if (this.composer) this.composer.render(delta);
 	    }
 	
 	    /**
@@ -56553,7 +56553,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'addPass',
 	    value: function addPass(pass) {
 	      if (!pass) return;
-	      var size = this.renderer.getSize();
+	      var size = this.renderer ? this.renderer.getSize() : { width: 0, height: 0 };
 	      pass.setSize(size.width, size.height);
 	      this.passes.push(pass);
 	    }

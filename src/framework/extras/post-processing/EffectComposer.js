@@ -52,7 +52,7 @@ export class EffectComposer {
    */
   addPass(pass) {
     if (!pass) return;
-    let size = this.renderer.getSize();
+    let size = this.renderer ? this.renderer.getSize() : { width: 0, height: 0 };
     pass.setSize(size.width, size.height);
     this.passes.push(pass);
   }
