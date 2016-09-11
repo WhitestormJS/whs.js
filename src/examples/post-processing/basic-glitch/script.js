@@ -268,8 +268,7 @@ class Game {
   }
 
   createPostProcessing() {
-    this.postProcessor = new WHS.PostProcessor(this.options.postProcessor);
-    this.world.setPostProcessor(this.postProcessor);
+    this.postProcessor = new WHS.PostProcessor(this.options.postProcessor, this.world);
 
     this.postProcessor.createRenderPass();
 
