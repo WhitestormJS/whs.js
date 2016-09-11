@@ -345,16 +345,23 @@ class World extends CoreObject {
     _scope._update();
   }
 
-  setPostProcessor(postProcessor) {
-    this.postProcessor = postProcessor;
-    this.postProcessor.setContainerConfig(this.params.container);
-    this.postProcessor.setRenderer(this.renderer);
-    this.postProcessor.setRenderScene(this.scene, this.camera);
-    return this.postProcessor;
+  /**
+   * Set a PostProcessor that will use this world renderer, scene and camera to draw post processing effects.
+   * @param  {WHS.PostProcessor} postProcessor : The post processor instance to set.
+   */
+  set postProcessor(postProcessor) {
+    this._postProcessor = postProcessor;
+    this._postProcessor.setContainerConfig(this.params.container);
+    this._postProcessor.setRenderScene(this.scene, this.camera);
+    this._postProcessor.renderer = this.renderer;
   }
 
-  getPostProcessor() {
-    return this.postProcessor;
+  /**
+   * Get the PostProcessor associated with this World instance, otherwise undefined.
+   * @return {WHS.PostProcessor} The PostProcessor.
+   */
+  get postProcessor() {
+    return this._postProcessor;
   }
 
   /**
