@@ -60,7 +60,7 @@ class Camera extends CoreObject {
       this.params = extend({
         pos: {x: params.position.x, y: params.position.y, z: params.position.z},
         rot: {x: params.rotation.x, y: params.rotation.y, z: params.rotation.z}
-      }, World.defaults);
+      }, Camera.defaults);
     } else this.params = extend(params, Camera.defaults);
 
     if (params instanceof THREE.Camera) this.native = params;
