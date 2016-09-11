@@ -15,7 +15,7 @@ define(['whs'], function(WHS) {
             shape[name][dims.charAt(i)] = 3;
         });
 
-        it('=== Values are equal ===', () => shape.position === shape.getNative().position);
+        it('=== Values are equal ===', () => shape.position === shape.native.position);
       });
     }
 
