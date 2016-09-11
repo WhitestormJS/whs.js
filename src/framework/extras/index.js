@@ -5,3 +5,4 @@ export * from './Line';
 export * from './Points';
 export * from './Group';
 export * from './Skybox';
+export * from './post-processing/index.js';

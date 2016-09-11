@@ -284,7 +284,7 @@ class World extends WHSObject {
    */
   _initHelpers() {
     const params = this.getParams(),
-      scene = this.getScene();
+    scene = this.getScene();
 
     if (params.helpers.axis) {
       scene.add(
@@ -343,11 +343,8 @@ class World extends WHSObject {
       if (_scope.simulate) scene.simulate(clock.getDelta(), 1);
 
       // Effects rendering.
-      if (_scope._composer && _scope.render) {
-        _scope._composer.reset();
-        _scope._composer.render(scene, cameraNative);
-        _scope._composer.pass(_scope._composer.stack);
-        _scope._composer.toScreen();
+      if (_scope.postProcessor && _scope.render) {
+        _scope.postProcessor.render(time);
       } else if (_scope.render) renderer.render(scene, cameraNative);
 
       _scope._execLoops();
@@ -359,6 +356,18 @@ class World extends WHSObject {
     this._update = reDraw;
 
     _scope._update();
+  }
+
+  setPostProcessor(postProcessor) {
+    this.postProcessor = postProcessor;
+    this.postProcessor.setContainerConfig(this.getParams().container);
+    this.postProcessor.setRenderer(this.getRenderer());
+    this.postProcessor.setRenderScene(this.getScene(), this.getCamera());
+    return this.postProcessor;
+  }
+
+  getPostProcessor() {
+    return this.postProcessor;
   }
 
   /**
@@ -402,6 +411,14 @@ class World extends WHSObject {
       Number(width * this.getParams().rWidth).toFixed(),
       Number(height * this.getParams().rHeight).toFixed()
     );
+
+    let renderTarget = this.getRenderTarget();
+    if (renderTarget !== undefined) {
+      renderTarget.setSize(
+        Number(width * this.getParams().rWidth).toFixed(),
+        Number(height * this.getParams().rHeight).toFixed()
+      );
+    }
   }
 
   setScene(scene, import_three = true) {
