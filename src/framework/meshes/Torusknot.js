@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial} from '../extras/api';
+import {extend, loadMaterial} from '../utils/index';
 
 class Torusknot extends Shape {
   constructor(params = {}) {
@@ -14,8 +14,7 @@ class Torusknot extends Shape {
       radialSegments: 64,
       tubularSegments: 8,
       p: 2,
-      q: 3,
-      heightScale: 1
+      q: 3
     });
 
     if (params.build) {
@@ -29,17 +28,17 @@ class Torusknot extends Shape {
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    if (this.physics && this.params.softbody) Mesh = SoftMesh;
     else if (this.physics && this.physics.type === 'concave') Mesh = ConcaveMesh;
     else if (this.physics) Mesh = ConvexMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
-      this.setNative(new Mesh(
+      this.native = new Mesh(
         this.buildGeometry(params),
         material,
-        this.getParams()
-      ));
+        this.params
+      );
 
       resolve();
     });
@@ -54,8 +53,7 @@ class Torusknot extends Shape {
       params.geometry.radialSegments,
       params.geometry.tubularSegments,
       params.geometry.p,
-      params.geometry.q,
-      params.geometry.heightScale
+      params.geometry.q
     );
   }
 
@@ -116,7 +114,7 @@ class Torusknot extends Shape {
   }
 
   clone() {
-    return new Torusknot(this.getParams(), this._type).copy(this);
+    return new Torusknot(this.params, this._type).copy(this);
   }
 }
 

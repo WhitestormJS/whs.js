@@ -1,7 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-window.GAME = new WHS.World({
+var GAME = new WHS.World({
   autoresize: "window",
 
   gravity: {
@@ -48,15 +48,7 @@ var geom = new THREE.BufferGeometry();
 geom.addAttribute('position', new THREE.BufferAttribute(data, 3));
 geom.addAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-window.points = new WHS.Points({
-  geometry: geom,
-
-  material: {
-    kind: 'points',
-    vertexColors: THREE.VertexColors,
-    size: 0.1
-  }
-});
+var points = new WHS.Shape(new THREE.Points(geom, new THREE.PointsMaterial({ vertexColors: THREE.VertexColors, size: 0.1 })));
 
 points.addTo(GAME);
 

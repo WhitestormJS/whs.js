@@ -29,7 +29,7 @@ var GAME = new WHS.World({
   }
 });
 
-GAME.getCamera().lookAt(new THREE.Vector3(0, 0, 0));
+GAME.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 // Start rendering.
 GAME.start();
@@ -267,9 +267,9 @@ egg.addTo(GAME, 'wait').then(function (object) {
 });
 
 document.body.addEventListener('mousemove', function (e) {
-  GAME.getCamera().position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
-  GAME.getCamera().position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
-  GAME.getCamera().lookAt(new THREE.Vector3(-4, 0, 0));
+  GAME.camera.position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
+  GAME.camera.position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
+  GAME.camera.lookAt(new THREE.Vector3(-4, 0, 0));
 });
 
 document.body.addEventListener('click', function () {

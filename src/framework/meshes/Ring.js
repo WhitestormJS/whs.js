@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial} from '../extras/api';
+import {extend, loadMaterial} from '../utils/index';
 
 class Ring extends Shape {
   constructor(params = {}) {
@@ -26,7 +26,7 @@ class Ring extends Shape {
     const material = loadMaterial(params.material);
 
     return new Promise((resolve) => {
-      this.setNative(new THREE.Mesh(
+      this.native = new THREE.Mesh(
         new THREE.RingGeometry(
           params.geometry.innerRadius,
           params.geometry.outerRadius,
@@ -37,7 +37,7 @@ class Ring extends Shape {
         ),
 
         material
-      ));
+      );
 
       resolve();
     });
