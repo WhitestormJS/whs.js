@@ -122,11 +122,11 @@ class Camera extends CoreObject {
       this.native = source.native.clone();
       this.params = Object.create(source.params);
 
-      this.wrap();
+      this.wrap();``
 
       this.position = source.position.clone();
       this.rotation = source.rotation.clone();
-    } else this.setParams(source.params);
+    } else this.params = source.params;
 
     this.type = source.type;
 
