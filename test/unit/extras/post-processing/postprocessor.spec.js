@@ -1,6 +1,6 @@
 define(['whs'], function(WHS) {
   describe('PostProcessor', () => {
-    const world = new WHS.World({init: {renderer: true}});
+    const world = new WHS.World({init: {renderer: false}});
 
     function describeAttribute(postprocessor, name, dims, Value) {
       describe('.' + name, done => {
