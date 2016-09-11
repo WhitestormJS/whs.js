@@ -13,6 +13,10 @@ class PostProcessor extends CoreObject {
     rHeight: 1, // Resolution(height).
 
     renderTarget: {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      format: THREE.RGBAFormat,
+      stencilBuffer: false,
       toScreen: true
     }
   };
@@ -54,9 +58,6 @@ class PostProcessor extends CoreObject {
     return this;
   }
 
-  /**
-   * Building a WebGLRenderTarget to render to.
-   */
   _initTargetRenderer() {
     let params = this.params;
     let width = Number(window.innerWidth * params.rWidth).toFixed();
@@ -64,9 +65,6 @@ class PostProcessor extends CoreObject {
     this.renderTarget = new THREE.WebGLRenderTarget(width, height, params.renderTarget);
   }
 
-  /**
-   * Building an EffectComposer to chain passes.
-   */
   _initComposer() {
     let _renderer = this.renderer;
     let _renderTarget = this.renderTarget;
