@@ -330,11 +330,8 @@ class World extends CoreObject {
       if (_scope.simulate) scene.simulate(clock.getDelta(), 1);
 
       // Effects rendering.
-      if (_scope._composer && _scope.render) {
-        _scope._composer.reset();
-        _scope._composer.render(scene, cameraNative);
-        _scope._composer.pass(_scope._composer.stack);
-        _scope._composer.toScreen();
+      if (_scope.postProcessor && _scope.render) {
+        _scope.postProcessor.render(time);
       } else if (_scope.render) renderer.render(scene, cameraNative);
 
       _scope._execLoops();
@@ -346,6 +343,18 @@ class World extends CoreObject {
     this._update = reDraw;
 
     _scope._update();
+  }
+
+  setPostProcessor(postProcessor) {
+    this.postProcessor = postProcessor;
+    this.postProcessor.setContainerConfig(this.params.container);
+    this.postProcessor.setRenderer(this.renderer);
+    this.postProcessor.setRenderScene(this.scene, this.camera);
+    return this.postProcessor;
+  }
+
+  getPostProcessor() {
+    return this.postProcessor;
   }
 
   /**
@@ -389,6 +398,14 @@ class World extends CoreObject {
       Number(width * this.params.rWidth).toFixed(),
       Number(height * this.params.rHeight).toFixed()
     );
+
+    let renderTarget = this.getRenderTarget();
+    if (renderTarget !== undefined) {
+      renderTarget.setSize(
+        Number(width * this.params.rWidth).toFixed(),
+        Number(height * this.params.rHeight).toFixed()
+      );
+    }
   }
 
   importScene(scene, import_three = true) {
