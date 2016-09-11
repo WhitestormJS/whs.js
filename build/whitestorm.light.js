@@ -56255,11 +56255,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _ret = _this, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
 	
-	  /**
-	   * Building a WebGLRenderTarget to render to.
-	   */
-	
-	
 	  (0, _createClass3.default)(PostProcessor, [{
 	    key: '_initTargetRenderer',
 	    value: function _initTargetRenderer() {
@@ -56268,11 +56263,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var height = Number(window.innerHeight * params.rHeight).toFixed();
 	      this.renderTarget = new THREE.WebGLRenderTarget(width, height, params.renderTarget);
 	    }
-	
-	    /**
-	     * Building an EffectComposer to chain passes.
-	     */
-	
 	  }, {
 	    key: '_initComposer',
 	    value: function _initComposer() {
@@ -56464,6 +56454,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  rHeight: 1, // Resolution(height).
 	
 	  renderTarget: {
+	    minFilter: THREE.LinearFilter,
+	    magFilter: THREE.LinearFilter,
+	    format: THREE.RGBAFormat,
+	    stencilBuffer: false,
 	    toScreen: true
 	  }
 	}, _temp);
@@ -56503,6 +56497,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var EffectComposer = exports.EffectComposer = function () {
+	  /**
+	   * EffecComposer handle a set of Passes and render them in a RenderTarget through a Renderer
+	   * @param  {THREE.WebGLRenderer} renderer : The renderer that will be used to render objects
+	   * @param  {THREE.WebGLRenderTarget} renderTarget : The renderTarget used to draw buffers and compose them
+	   */
 	  function EffectComposer(renderer, renderTarget) {
 	    (0, _classCallCheck3.default)(this, EffectComposer);
 	
@@ -56532,6 +56531,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.copyPass = new _ShaderPass.ShaderPass(_CopyShader.CopyShader);
 	  }
 	
+	  /**
+	   * Swap drawing buffers
+	   */
+	
+	
 	  (0, _createClass3.default)(EffectComposer, [{
 	    key: 'swapBuffers',
 	    value: function swapBuffers() {
@@ -56539,13 +56543,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.readBuffer = this.writeBuffer;
 	      this.writeBuffer = tmp;
 	    }
+	
+	    /**
+	     * Add a WHS.Pass to the composer, after all existing passes.
+	     * @param {WHS.Pass} pass : The pass to be added
+	     */
+	
 	  }, {
 	    key: 'addPass',
 	    value: function addPass(pass) {
+	      if (!pass) return;
 	      var size = this.renderer.getSize();
 	      pass.setSize(size.width, size.height);
 	      this.passes.push(pass);
 	    }
+	
+	    /**
+	     * Get the pass of the same unique name, otherwise undefined.
+	     * @param  {String} name : the unique name of the pass to find.
+	     * @return {WHS.Pass} The found Pass or undefined.
+	     */
+	
 	  }, {
 	    key: 'getPass',
 	    value: function getPass(name) {
@@ -56553,24 +56571,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return v.name === name;
 	      })[0];
 	    }
+	
+	    /**
+	     * Get the pass index in the internal passes array.
+	     * @param  {String|WHS.Pass} passIndicator : The pass name or the pass instance.
+	     * @return {Number} The pass index or -1.
+	     */
+	
 	  }, {
 	    key: 'getPassIndex',
 	    value: function getPassIndex(passIndicator) {
 	      var passName = typeof passIndicator === 'string' ? passIndicator : passIndicator.name;
 	      return this.passes.indexOf(this.getPass(passName));
 	    }
+	
+	    /**
+	     * Add a pass after another one. Add the pass in first position if previous is not found.
+	     * @param {String|WHS.Pass} previousPassIndicator : The previous pass name or the previous pass instance.
+	     */
+	
 	  }, {
 	    key: 'addPassAfter',
 	    value: function addPassAfter(previousPassIndicator, pass) {
+	      if (!pass) return;
 	      var index = this.getPassIndex(previousPassIndicator);
 	      index = index < 0 ? 0 : index + 1;
 	      this.insertPass(pass, index);
 	    }
+	
+	    /**
+	     * Add a pass at the specified index.
+	     * @param  {WHS.Pass} pass : The pass instance to insert
+	     * @param  {Number} index : The index.
+	     */
+	
 	  }, {
 	    key: 'insertPass',
 	    value: function insertPass(pass, index) {
-	      this.passes.splice(index, 0, pass);
+	      if (pass) {
+	        this.passes.splice(index, 0, pass);
+	      }
 	    }
+	
+	    /**
+	     * Remove a pass from this composer.
+	     * @param  {String|WHS.Pass} passIndicator : The pass name or the pass instance.
+	     */
+	
 	  }, {
 	    key: 'removePass',
 	    value: function removePass(passIndicator) {
@@ -56579,6 +56626,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.passes.splice(index, 1);
 	      }
 	    }
+	
+	    /**
+	     * Render the EffectComposer, and all its passes.
+	     * @param  {Number} delta : The delta time since the last frame.
+	     */
+	
 	  }, {
 	    key: 'render',
 	    value: function render(delta) {
@@ -56615,6 +56668,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	      }
 	    }
+	
+	    /**
+	     * Set another renderTarget.
+	     * @param  {THREE.WebGLRenderTarget} renderTarget : The new renderTarget to use.
+	     */
+	
 	  }, {
 	    key: 'reset',
 	    value: function reset(renderTarget) {
@@ -56633,6 +56692,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.writeBuffer = this.renderTarget1;
 	      this.readBuffer = this.renderTarget2;
 	    }
+	
+	    /**
+	     * Resize the renderTarget and all the EffectComposer passes.
+	     * @param {Number} width : The width in pixels
+	     * @param {Number} height : The height in pixels
+	     */
+	
 	  }, {
 	    key: 'setSize',
 	    value: function setSize(width, height) {
@@ -56811,21 +56877,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.renderToScreen = false;
 	  }
 	
+	  /**
+	   * Resize a pass.
+	   * @param {Number} width : in pixels.
+	   * @param {Number} height : in pixels.
+	   */
+	
+	
 	  (0, _createClass3.default)(Pass, [{
 	    key: "setSize",
 	    value: function setSize(width, height) {}
+	
+	    /**
+	     * Render a pass
+	     * @param  {THREE.WebGLRenderer} renderer : The renderer used to render the pass objects.
+	     * @param  {THREE.WebGLRenderTarget.Buffer} writeBuffer : The write buffer used to do buffer swapping.
+	     * @param  {THREE.WebGLRenderTarget.Buffer} readBuffer  : The read buffer used to do buffer swapping.
+	     * @param  {Number} delta : The delta time since the previous frame.
+	     * @param  {Boolean} maskActive : Flag indicating the Composer that this pass use masking.
+	     */
+	
 	  }, {
 	    key: "render",
 	    value: function render(renderer, writeBuffer, readBuffer, delta, maskActive) {
 	      console.error("Pass: .render() must be implemented in derived pass.");
 	    }
+	
+	    /**
+	     * Get the name of the pass
+	     * @return {String} Unique name
+	     */
+	
 	  }, {
 	    key: "name",
 	    get: function get() {
 	      return this.uniqName;
-	    },
-	    set: function set(name) {
-	      this.uniqName = name;
 	    }
 	  }]);
 	  return Pass;
