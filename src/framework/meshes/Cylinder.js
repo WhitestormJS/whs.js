@@ -30,16 +30,16 @@ class Cylinder extends Shape {
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    if (this.physics && this.params.softbody) Mesh = SoftMesh;
     else if (this.physics) Mesh = CylinderMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
-      this.setNative(new Mesh(
+      this.native = new Mesh(
         this.buildGeometry(params),
         material,
-        this.getParams()
-      ));
+        this.params
+      );
 
       resolve();
     });

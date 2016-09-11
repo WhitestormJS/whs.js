@@ -5,110 +5,106 @@ import {loadMaterial, extend} from '../utils/index';
 import {Loop} from '../extras/Loop';
 import {World} from './World';
 import {CoreObject} from './CoreObject';
+import {deprecate} from '../utils/decorators';
+
+const _set = (x, y, z) => {
+  this.x = x;
+  this.y = y;
+  this.z = z;
+};
+
+const physicsDefaults = Physijs.default !== false ? {
+  restitution: 0.3,
+  friction: 0.8,
+  damping: 0,
+  pressure: 100,
+  margin: 0,
+  klst: 0.9,
+  kvst: 0.9,
+  klst: 0.9
+} : false;
 
 class Shape extends CoreObject {
+  static defaults = {
+    mass: 10,
+    build: true,
+    softbody: false,
+    geometry: {},
+
+    shadow: {
+      cast: true,
+      receive: true
+    },
+
+    material: {
+      kind: 'basic'
+    },
+
+    helpers: {
+      box: false,
+      boundingBox: false,
+      edges: false,
+      faceNormals: false
+    },
+
+    pos: {
+      x: 0,
+      y: 0,
+      z: 0,
+      set: _set
+    },
+
+    rot: {
+      x: 0,
+      y: 0,
+      z: 0,
+      set: _set
+    },
+
+    scale: {
+      x: 1,
+      y: 1,
+      z: 1,
+      set: _set
+    },
+
+    target: {
+      x: 0,
+      y: 0,
+      z: 0,
+      set: _set
+    },
+
+    physics: physicsDefaults
+  };
+
+  __c_rot = false;
+  _wait = [];
+
+  helpers = {
+    box: null,
+    boundingBox: null,
+    edges: null,
+    faceNormals: null
+  };
+
   constructor(params = {}, type = 'mesh') {
-    const _set = (x, y, z) => {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-    };
-
-    const physicsDefaults = Physijs.default !== false ? {
-      restitution: 0.3,
-      friction: 0.8,
-      damping: 0,
-      pressure: 100,
-      margin: 0,
-      klst: 0.9,
-      kvst: 0.9,
-      klst: 0.9
-    } : false;
-
-    super({
-      mass: 10,
-      build: true,
-      softbody: false,
-      geometry: {},
-
-      shadow: {
-        cast: true,
-        receive: true
-      },
-
-      material: {
-        kind: 'basic'
-      },
-
-      helpers: {
-        box: false,
-        boundingBox: false,
-        edges: false,
-        faceNormals: false
-      },
-
-      pos: {
-        x: 0,
-        y: 0,
-        z: 0,
-        set: _set
-      },
-
-      rot: {
-        x: 0,
-        y: 0,
-        z: 0,
-        set: _set
-      },
-
-      scale: {
-        x: 1,
-        y: 1,
-        z: 1,
-        set: _set
-      },
-
-      target: {
-        x: 0,
-        y: 0,
-        z: 0,
-        set: _set
-      },
-
-      physics: physicsDefaults
-    });
+    super();
 
     if (params instanceof THREE.Object3D) {
-      super.setParams({
+      this.params = extend({
         pos: {x: params.position.x, y: params.position.y, z: params.position.z},
         rot: {x: params.rotation.x, y: params.rotation.y, z: params.rotation.z},
         scale: {x: params.scale.x, y: params.scale.y, z: params.scale.z},
         mass: params.mass,
         physics: Boolean(params._physijs)
-      });
-    } else super.setParams(params);
+      }, Shape.defaults);
+    } else this.params = extend(params, Shape.defaults);
 
-    const scope = Object.assign(this,
-      {
-        type: type,
-        __c_rot: false,
+    if (params instanceof THREE.Object3D) this.native = params;
 
-        _wait: [],
-
-        helpers: {
-          box: false,
-          boundingBox: false,
-          edges: false,
-          faceNormals: false
-        },
-
-        physics: params.physics
-      }
-    );
-
-    if (params instanceof THREE.Object3D) this.setNative(params);
-
-    return scope;
+    this.type = type;
+    this.physics = Physijs.default !== false;
   }
 
   wait(promise) {
@@ -119,8 +115,8 @@ class Shape extends CoreObject {
     if (this._wait.length) {
       return new Promise((resolve, reject) => {
         Promise.all(this._wait).then(() => {
-          const _native = this.getNative(),
-            _params = this.getParams(),
+          const _native = this.native,
+            _params = this.params,
             _params_helpers = _params.helpers;
 
           if (!_native) reject();
@@ -230,8 +226,8 @@ class Shape extends CoreObject {
       });
     } else {
       return new Promise((resolve, reject) => {
-        const _native = this.getNative(),
-          _params = this.getParams(),
+        const _native = this.native,
+          _params = this.params,
           _params_helpers = _params.helpers;
 
         if (!_native) reject();
@@ -348,15 +344,15 @@ class Shape extends CoreObject {
     if (this._wait.length) {
       return new Promise((resolve, reject) => {
         Promise.all(this._wait).then(() => {
-          const _native = this.getNative(),
-            _params = this.getParams(),
+          const _native = this.native,
+            _params = this.params,
             _params_helpers = _params.helpers,
             _parent = this.parent;
 
           if (!_native) reject();
 
-          const parentNative = _parent instanceof World ? _parent.getScene()
-            : _parent.getNative();
+          const parentNative = _parent instanceof World ? _parent.scene
+            : _parent.native;
 
           parentNative.add(_native);
           this.parent.children.push(this);
@@ -381,15 +377,15 @@ class Shape extends CoreObject {
       });
     } else {
       return new Promise((resolve, reject) => {
-        const _native = this.getNative(),
-          _params = this.getParams(),
+        const _native = this.native,
+          _params = this.params,
           _params_helpers = _params.helpers,
           _parent = this.parent;
 
         if (!_native) reject();
 
-        const parentNative = _parent instanceof World ? _parent.getScene()
-          : _parent.getNative();
+        const parentNative = _parent instanceof World ? _parent.scene
+          : _parent.native;
 
         parentNative.add(_native);
         this.parent.children.push(this);
@@ -415,27 +411,27 @@ class Shape extends CoreObject {
   }
 
   clone() {
-    return new Shape(this.getParams(), this.type).copy(this);
+    return new Shape(this.params, this.type).copy(this);
   }
 
   copy(source) {
-    const sourceNative = source.getNative();
+    const sourceNative = source.native;
 
     if (sourceNative) {
-      if (source.getParams().softbody)
-        this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));
-      else this.setNative(sourceNative.clone(source.getParams()));
+      if (source.params.softbody)
+        this.native = new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.params);
+      else this.native = sourceNative.clone(source.params);
 
-      this.getNative().mass = source.getNative().mass;
+      this.native.mass = sourceNative.mass;
 
-      this.setParams(source.getParams());
+      this.params = source.params;
 
       this.wrap();
 
       this.position.copy(source.position);
       this.rotation.copy(source.rotation);
       this.quaternion.copy(source.quaternion);
-    } else this.setParams(source.getParams());
+    } else this.params = source.params;
 
     return this;
   }
@@ -456,12 +452,12 @@ class Shape extends CoreObject {
   }
 
   get position() {
-    return this.getNative().position;
+    return this.native.position;
   }
 
   set position(vector3) {
-    const pos = this.getNative().position,
-      native = this.getNative();
+    const pos = this._native.position,
+      native = this._native;
 
     Object.defineProperties(pos, {
       x: {
@@ -503,12 +499,12 @@ class Shape extends CoreObject {
 
   get quaternion() {
     this.__c_rot = true;
-    return this.getNative().quaternion;
+    return this.native.quaternion;
   }
 
   set quaternion(quaternion) {
-    const quat = this.getNative().quaternion,
-      native = this.getNative();
+    const quat = this._native.quaternion,
+      native = this._native;
 
     quat.copy(quaternion);
 
@@ -525,12 +521,12 @@ class Shape extends CoreObject {
 
   get rotation() {
     this.__c_rot = true;
-    return this.getNative().rotation;
+    return this._native.rotation;
   }
 
   set rotation(euler) {
-    const rot = this.getNative().rotation,
-      native = this.getNative();
+    const rot = this._native.rotation,
+      native = this._native;
 
     rot.copy(euler);
 
@@ -543,148 +539,166 @@ class Shape extends CoreObject {
   }
 
   get scale() {
-    return this.getNative().scale;
+    return this.native.scale;
   }
 
   set scale(vector3) {
-    this.getNative().scale.copy(vector3);
-    return this.getNative().scale;
+    this.native.scale.copy(vector3);
+    return this.native.scale;
   }
 
   G_(params = {}) {
     if (this.buildGeometry) {
-      this.getNative().geometry = this.buildGeometry(
+      this.native.geometry = this.buildGeometry(
         this.updateParams({geometry: params})
       );
     }
   }
 
   M_(params = {}) {
-    if (this.getParams().material.kind !== params.kind)
-      this.getNative().material = loadMaterial(
+    if (this.params.material.kind !== params.kind)
+      this.native.material = loadMaterial(
         this.updateParams({material: params}).material
       );
     else {
       this.updateParams({material: params});
 
       for (key in params) {
-        this.getNative().material[key] = params[key];
+        this.native.material[key] = params[key];
       }
     }
   }
 
   set M_color(val) {
     this.updateParams({material: {color: val}});
-    this.getNative().material.color = new THREE.Color(val);
+    this.native.material.color = new THREE.Color(val);
   }
 
   get M_color() {
-    return this.getNative().material.color;
+    return this.native.material.color;
+  }
+
+  get material() {
+    return this.native.material;
+  }
+
+  set material(material) {
+    this.native.material = material;
+  }
+
+  get geometry() {
+    return this.native.geometry;
+  }
+
+  set geometry(geometry) {
+    this.native.geometry = geometry;
   }
 
   proccessSoftbodyGeometry(geometry) {
-    geometry.rotateX(this.__params.rot.x);
-    geometry.rotateY(this.__params.rot.y);
-    geometry.rotateZ(this.__params.rot.z);
+    const _params = this.params;
+
+    geometry.rotateX(_params.rot.x);
+    geometry.rotateY(_params.rot.y);
+    geometry.rotateZ(_params.rot.z);
 
     geometry.scale(
-      this.__params.scale.x,
-      this.__params.scale.y,
-      this.__params.scale.z
+      _params.scale.x,
+      _params.scale.y,
+      _params.scale.z
     );
 
     geometry.translate(
-      this.__params.pos.x,
-      this.__params.pos.y,
-      this.__params.pos.z
+      _params.pos.x,
+      _params.pos.y,
+      _params.pos.z
     );
   }
 
   /* Access private data */
-
-  setNative(native) {
-    this._native = native;
-
-    this.position = native.position.clone();
-    this.quaternion = native.quaternion.clone();
-    this.rotation = native.rotation.clone();
+  get native() {
+    return this._native;
   }
 
-  setMaterial(material) {
-    this._native.material = material;
-    return this._native.material;
+  set native(mesh) {
+    this._native = mesh;
+
+    if (mesh instanceof THREE.Object3D) {
+      this.position = mesh.position.clone();
+      this.quaternion = mesh.quaternion.clone();
+      this.rotation = mesh.rotation.clone();
+    }
   }
 
   /* Physics */
 
   setAngularVelocity(...args) {
-    return this.getNative().setAngularVelocity(...args);
+    return this.native.setAngularVelocity(...args);
   }
 
   setLinearVelocity(...args) {
-    return this.getNative().setLinearVelocity(...args);
+    return this.native.setLinearVelocity(...args);
   }
 
   applyCentralImpulse(...args) {
-    return this.getNative().applyCentralImpulse(...args);
+    return this.native.applyCentralImpulse(...args);
   }
 
   applyImpulse(...args) {
-    return this.getNative().applyImpulse(...args);
+    return this.native.applyImpulse(...args);
   }
 
   applyTorque(...args) {
-    return this.getNative().applyTorque(...args);
+    return this.native.applyTorque(...args);
   }
 
   applyCentralForce(...args) {
-    return this.getNative().applyCentralForce(...args);
+    return this.native.applyCentralForce(...args);
   }
 
   applyForce(...args) {
-    return this.getNative().applyForce(...args);
+    return this.native.applyForce(...args);
   }
 
   getAngularVelocity(...args) {
-    return this.getNative().getAngularVelocity(...args);
+    return this.native.getAngularVelocity(...args);
   }
 
   getLinearVelocity(...args) {
-    return this.getNative().getLinearVelocity(...args);
+    return this.native.getLinearVelocity(...args);
   }
 
   setAngularFactor(...args) {
-    return this.getNative().setAngularFactor(...args);
+    return this.native.setAngularFactor(...args);
   }
 
   setLinearFactor(...args) {
-    return this.getNative().setLinearFactor(...args);
+    return this.native.setLinearFactor(...args);
   }
 
   setDamping(...args) {
-    return this.getNative().setDamping(...args);
+    return this.native.setDamping(...args);
   }
 
   setCcdMotionThreshold(...args) {
-    return this.getNative().setCcdMotionThreshold(...args);
+    return this.native.setCcdMotionThreshold(...args);
   }
 
   setCcdSweptSphereRadius(...args) {
-    return this.getNative().setCcdSweptSphereRadius(...args);
+    return this.native.setCcdSweptSphereRadius(...args);
   }
 
   appendAnchor(world, object, node, influence, collisionBetweenLinkedBodies = true) {
-    return this.getNative().appendAnchor(world.getScene(), object.getNative(), node, influence, collisionBetweenLinkedBodies);
+    return this.native.appendAnchor(world.scene, object.native, node, influence, collisionBetweenLinkedBodies);
   }
 
   /* Three.js */
 
   raycast(...args) {
-    return this.getNative().lookAt(...args);
+    return this.native.lookAt(...args);
   }
 
   /* API */
-
+  @deprecate('0.0.11')
   follow(curve, time = 1000, loop) {
     const gEnd = time;
 
@@ -694,7 +708,7 @@ class Shape extends CoreObject {
         vec2 = curve.getPoint((u + 0.01) % 1);
 
       this.position.set(vec1.x, vec1.y, vec1.z);
-      this.getNative().lookAt(vec2);
+      this.native.lookAt(vec2);
     });
 
     this.getWorld().addLoop(animation);
@@ -711,7 +725,7 @@ class Shape extends CoreObject {
             vec2 = curve.getPoint((u + 0.01) % 1);
 
           this.position.set(vec1.x, vec1.y, vec1.z);
-          this.getNative().lookAt(vec2);
+          this.native.lookAt(vec2);
         });
 
         this.getWorld().addLoop(animation);
@@ -728,11 +742,11 @@ class Shape extends CoreObject {
 
   /* VISIBILITY */
   show() {
-    this.getNative().visible = true;
+    this.native.visible = true;
   }
 
   hide() {
-    this.getNative().visible = false;
+    this.native.visible = false;
   }
 }
 

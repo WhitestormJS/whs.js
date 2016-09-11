@@ -1,78 +1,76 @@
 import * as THREE from 'three';
 
+import {extend} from '../utils/index';
 import {Loop} from '../extras/Loop';
 import {CoreObject} from './CoreObject';
+import {deprecate} from '../utils/decorators';
+
+const _set = (x, y, z) => {
+  this.x = x;
+  this.y = y;
+  this.z = z;
+};
 
 class Camera extends CoreObject {
-  constructor(params, type = 'camera', localWindow = window) {
-    if (!type) console.error('@constructor: Please specify " type ".');
+  static defaults = {
+    helper: false,
 
-    const _set = (x, y, z) => {
-      this.x = x;
-      this.y = y;
-      this.z = z;
+    pos: {
+      x: 0,
+      y: 0,
+      z: 0,
+      set: _set
+    },
+
+    rot: {
+      x: 0,
+      y: 0,
+      z: 0,
+      set: _set
+    },
+
+    target: {
+      x: 0,
+      y: 0,
+      z: 0,
+      set: _set
+    }
+  };
+
+  helper = null;
+
+  constructor(params, type = 'camera', localWindow = window) {
+    super();
+
+    Camera.defaults.camera = {
+      fov: 45,
+      aspect: localWindow.innerWidth / localWindow.innerHeight,
+      near: 1,
+      far: 1000,
+      left: localWindow.innerWidth / -2,
+      right: localWindow.innerWidth / 2,
+      top: localWindow.innerHeight / 2,
+      bottom: localWindow.innerHeight / -2,
+      cubeResolution: 128
     };
 
     params.useTarget = Boolean(params.target);
 
-    super({
-      camera: {
-        fov: 45,
-        aspect: localWindow.innerWidth / localWindow.innerHeight,
-        near: 1,
-        far: 1000,
-        left: localWindow.innerWidth / -2,
-        right: localWindow.innerWidth / 2,
-        top: localWindow.innerHeight / 2,
-        bottom: localWindow.innerHeight / -2,
-        cubeResolution: 128
-      },
-
-      helper: false,
-
-      pos: {
-        x: 0,
-        y: 0,
-        z: 0,
-        set: _set
-      },
-
-      rot: {
-        x: 0,
-        y: 0,
-        z: 0,
-        set: _set
-      },
-
-      target: {
-        x: 0,
-        y: 0,
-        z: 0,
-        set: _set
-      }
-    });
-
     if (params instanceof THREE.Camera) {
-      super.setParams({
+      this.params = extend({
         pos: {x: params.position.x, y: params.position.y, z: params.position.z},
         rot: {x: params.rotation.x, y: params.rotation.y, z: params.rotation.z}
-      });
-    } else super.setParams(params);
+      }, World.defaults);
+    } else this.params = extend(params, Camera.defaults);
 
-    const scope = Object.assign(this, {
-      type: type,
-      helper: false
-    });
-
-    if (params instanceof THREE.Camera) this.setNative(params);
-
-    return scope;
+    if (params instanceof THREE.Camera) this.native = params;
+    this.type = type;
   }
 
   wrap(...tags) {
     return new Promise((resolve, reject) => {
-      const _native = this.getNative(),
-        _params = this.getParams();
+      const _native = this.native,
+        _params = this.params;
 
       this.position.set(
         _params.pos.x,
@@ -87,7 +85,6 @@ class Camera extends CoreObject {
       );
 
       if (_params.useTarget) this.lookAt(_params.target);
-
       if (_params.helper) this.helper = new THREE.CameraHelper(_native);
 
       tags.forEach(tag => {
@@ -104,72 +101,63 @@ class Camera extends CoreObject {
     this.parent = parent;
 
     const _helper = this.helper,
-      _scope = this;
+      _scene = this.parent.scene;
 
     return new Promise((resolve, reject) => {
-      try {
-        _scope.parent.getScene().add(_scope.getNative());
-        _scope.parent.children.push(_scope);
+      _scene.add(this.native);
+      this.parent.children.push(this);
 
-        if (_helper) _scope.parent.getScene().add(_helper);
-      } catch (err) {
-        console.error(err.message);
-        reject();
-      } finally {
-        resolve(_scope);
-        _scope.emit('ready');
-      }
+      if (_helper) _scene.add(_helper);
+
+      resolve(this);
     });
   }
 
   clone() {
-    return new Camera(this.getParams(), this.type).copy(this);
+    return new Camera(this.params, this.type).copy(this);
   }
 
   copy(source) {
-    if (source.getNative()) {
-      this.setNative(source.getNative().clone());
-      this.setParams(source.getParams());
+    if (source.native) {
+      this.native = source.native.clone();
+      this.params = Object.create(source.params);
 
       this.wrap();
 
       this.position = source.position.clone();
       this.rotation = source.rotation.clone();
-    } else this.setParams(source.getParams());
+    } else this.setParams(source.params);
 
     this.type = source.type;
 
     return this;
   }
 
-  getParent() {
-    return this.parent;
-  }
-
   get position() {
-    return this.getNative().position;
+    return this.native.position;
   }
 
   set position(vector3) {
-    return this.getNative().position.copy(vector3);
+    return this.native.position.copy(vector3);
   }
 
   get rotation() {
-    return this.getNative().rotation;
+    return this.native.rotation;
   }
 
   set rotation(euler) {
-    return this.getNative().rotation.copy(euler);
+    return this.native.rotation.copy(euler);
   }
 
   get quaternion() {
-    return this.getNative().quaternion;
+    return this.native.quaternion;
   }
 
   set quaternion(euler) {
-    return this.getNative().quaternion.copy(euler);
+    return this.native.quaternion.copy(euler);
   }
 
+  @deprecate('0.0.11')
   follow(curve, time = 1000, loop, lookAt) {
     const _scope = this,
       gEnd = time;
@@ -220,11 +208,11 @@ class Camera extends CoreObject {
   }
 
   lookAt(vector3) {
-    return this.getNative().lookAt(vector3);
+    return this.native.lookAt(vector3);
   }
 
   getWorldDirection(vector3) {
-    return this.getNative().getWorldDirection(vector3);
+    return this.native.getWorldDirection(vector3);
   }
 }
 

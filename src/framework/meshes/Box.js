@@ -25,16 +25,16 @@ class Box extends Shape {
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    if (this.physics && this.params.softbody) Mesh = SoftMesh;
     else if (this.physics) Mesh = BoxMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
-      this.setNative(new Mesh(
+      this.native = new Mesh(
         this.buildGeometry(params),
         material,
-        this.getParams()
-      ));
+        this.params
+      );
 
       resolve();
     });
@@ -79,7 +79,7 @@ class Box extends Shape {
   }
 
   clone() {
-    return this.getParams().softbody ? new Box(this.getParams()) : new Box({build: false}).copy(this);
+    return this.params.softbody ? new Box(this.params) : new Box({build: false}).copy(this);
   }
 }
 

@@ -25,17 +25,17 @@ class Sphere extends Shape {
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    if (this.physics && this.params.softbody) Mesh = SoftMesh;
     else if (this.physics) Mesh = SphereMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
-      this.setNative(new Mesh(
+      this.native = new Mesh(
         this.buildGeometry(params),
 
         material,
-        this.getParams()
-      ));
+        this.params
+      );
 
       resolve();
     });
@@ -80,7 +80,7 @@ class Sphere extends Shape {
   }
 
   clone() {
-    return this.getParams().softbody ? new Sphere(this.getParams()) : new Sphere({build: false}).copy(this);
+    return this.params.softbody ? new Sphere(this.params) : new Sphere({build: false}).copy(this);
   }
 }
 

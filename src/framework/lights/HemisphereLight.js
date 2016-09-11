@@ -11,18 +11,16 @@ class HemisphereLight extends Light {
   }
 
   build(params = {}) {
-    const _scope = this;
-
     return new Promise((resolve) => {
-      _scope.setNative(new THREE.HemisphereLight(
+      this.native = new THREE.HemisphereLight(
         params.light.skyColor,
         params.light.groundColor,
         params.light.intensity
-      ));
+      );
 
       if (params.helper) {
-        _scope.helper = new THREE.HemisphereLightHelper(
-          _scope.light,
+        this.helper = new THREE.HemisphereLightHelper(
+          this.native,
           params.helper.size ? params.helper.size : 0
         );
       }

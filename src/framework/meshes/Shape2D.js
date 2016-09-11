@@ -21,10 +21,10 @@ class Shape2D extends Shape {
     const material = loadMaterial(params.material);
 
     return new Promise((resolve) => {
-      this.setNative(new THREE.Mesh(
+      this.native = new THREE.Mesh(
         this.buildGeometry(params),
         material
-      ));
+      );
 
       resolve();
     });

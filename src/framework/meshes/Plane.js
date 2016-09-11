@@ -26,16 +26,16 @@ class Plane extends Shape {
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = ClothMesh;
+    if (this.physics && this.params.softbody) Mesh = ClothMesh;
     else if (this.physics) Mesh = PlaneMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
-      this.setNative(new Mesh(
+      this.native = new Mesh(
         this.buildGeometry(params),
         material,
-        this.getParams()
-      ));
+        this.params
+      );
 
       resolve();
     });

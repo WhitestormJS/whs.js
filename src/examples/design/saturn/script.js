@@ -182,10 +182,10 @@ for (let i = 0; i < particleCount; i++) {
     height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
     width: radius,
     depth: radius,
-    radius
+    radius: radius
   });
 
-  particle.setMaterial(mat[Math.floor(4 * Math.random())]); // Set custom THREE.Material to mesh.
+  particle.material = mat[Math.floor(4 * Math.random())]; // Set custom THREE.Material to mesh.
 
   // Particle data.
   particle.data = {

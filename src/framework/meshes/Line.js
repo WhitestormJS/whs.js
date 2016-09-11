@@ -28,11 +28,11 @@ class Line extends Shape {
     else Mesh = THREE.Line;
 
     return new Promise((resolve) => {
-      this.setNative(new Mesh(
+      this.native = new Mesh(
         this.buildGeometry(params),
         material,
-        this.getParams()
-      ));
+        this.params
+      );
 
       resolve();
     });
