@@ -347,9 +347,9 @@ class World extends CoreObject {
 
   setPostProcessor(postProcessor) {
     this.postProcessor = postProcessor;
-    this.postProcessor.setContainerConfig(this.getParams().container);
-    this.postProcessor.setRenderer(this.getRenderer());
-    this.postProcessor.setRenderScene(this.getScene(), this.getCamera());
+    this.postProcessor.setContainerConfig(this.params.container);
+    this.postProcessor.setRenderer(this.renderer);
+    this.postProcessor.setRenderScene(this.scene, this.camera);
     return this.postProcessor;
   }
 
@@ -402,8 +402,8 @@ class World extends CoreObject {
     let renderTarget = this.getRenderTarget();
     if (renderTarget !== undefined) {
       renderTarget.setSize(
-        Number(width * this.getParams().rWidth).toFixed(),
-        Number(height * this.getParams().rHeight).toFixed()
+        Number(width * this.params.rWidth).toFixed(),
+        Number(height * this.params.rHeight).toFixed()
       );
     }
   }
