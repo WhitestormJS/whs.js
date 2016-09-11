@@ -273,14 +273,8 @@ class Game {
 
     this.postProcessor.createRenderPass();
 
-    // this.postProcessor.createPass(composer => {
-    //   let pass = new SMAAPass('SMAA', 1024, 1024);//window.innerWidth, window.innerHeight);
-    //   pass.renderToScreen = true;
-    //   composer.addPass(pass);
-    // });
-
     this.postProcessor.createPass(composer => {
-      let pass = new GlitchPass('Glitch'); //window.innerWidth, window.innerHeight);
+      let pass = new GlitchPass('Glitch');
       pass.renderToScreen = true;
       composer.addPass(pass);
     });
