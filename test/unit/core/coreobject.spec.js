@@ -40,7 +40,7 @@ define(['whs'], function(WHS) {
       };
 
       it('#getParams', () => {
-        result = object.params();
+        result = object.params;
       });
 
       it('=== Values are equal ===', () => result === expected);
