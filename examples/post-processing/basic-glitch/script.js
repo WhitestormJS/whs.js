@@ -233,8 +233,7 @@ var Game = function () {
   _createClass(Game, [{
     key: "createPostProcessing",
     value: function createPostProcessing() {
-      this.postProcessor = new WHS.PostProcessor(this.options.postProcessor);
-      this.world.setPostProcessor(this.postProcessor);
+      this.postProcessor = new WHS.PostProcessor(this.options.postProcessor, this.world);
 
       this.postProcessor.createRenderPass();
 
