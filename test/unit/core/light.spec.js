@@ -26,7 +26,7 @@ define(['whs'], function(WHS) {
       // it('#wrap() - \'no-transforms\'', () => light.wrap('no-transforms'));
       it('#addTo()', () => light.addTo(world));
       it('#clone()', () => light.clone);
-      it('#copy()', () => light.copy = new WHS.Light());
+      it('#copy()', () => light.copy(new WHS.Light()));
       it('#getWorld()', () => light.getWorld());
       it('#getParent()', () => light.getParent());
 
