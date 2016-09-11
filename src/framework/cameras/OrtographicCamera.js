@@ -11,14 +11,14 @@ class OrtographicCamera extends Camera {
 
   build(params = {}) {
     return new Promise((resolve) => {
-      this.setNative(new THREE.OrtographicCamera(
+      this.native = new THREE.OrtographicCamera(
         params.camera.left,
         params.camera.right,
         params.camera.top,
         params.camera.bottom,
         params.camera.near,
         params.camera.far
-      ));
+      );
 
       resolve();
     });

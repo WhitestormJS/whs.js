@@ -50,7 +50,7 @@ class Morph extends Shape {
           .setDuration(params.morph.duration)
           .play();
 
-        this.setNative(mesh);
+        this.native = mesh;
 
         resolve();
       });

@@ -1,69 +1,33 @@
 import Events from 'minivents';
 import {extend} from '../utils/index';
 
-class CoreObject {
-  constructor(defaults = {}, structurable = true) {
-    const scope = structurable
-    ? Object.assign(this,
-      {
-        __whsobject: true,
-        __releaseTime: new Date().getTime(),
-        __params: {},
-        __defaults: defaults,
+class CoreObject extends Events {
+  parent = null;
+  params = {};
+  children = [];
+  static defaults = {};
 
-        parent: null,
-        children: []
-      },
-    new Events())
-    : Object.assign(this,
-      {
-        __whsobject: true,
-        __releaseTime: new Date().getTime(),
-        __params: {},
-        __defaults: defaults
-      },
-    new Events());
+  constructor() {
+    super();
 
     // For decorators behavior.
     if (this.onRun) this.onRun();
-
-    return scope;
-  }
-
-  setParams(params = {}) {
-    this.__params = extend(params, this.__defaults);
-    return this.__params;
   }
 
   updateParams(params = {}) {
-    this.__params = extend(params, this.__params);
-    return this.__params;
-  }
-
-  getParams() {
-    return this.__params;
-  }
-
-  setNative(native) {
-    this._native = native;
-    return this.native;
-  }
-
-  getNative() {
-    return this._native;
+    this.params = extend(params, this.params);
+    return this.params;
   }
 
   add(children) {
-    const _scope = this;
-
     if (children.addTo)
       return children.addTo(this);
     else if (children instanceof Object) {
       return new Promise((resolve) => {
-        children.parent = _scope;
+        children.parent = this;
 
-        _scope.getNative().add(children.getNative());
-        _scope.children.push(_scope);
+        this.native.add(children.native);
+        this.children.push(this);
 
         resolve();
       });
@@ -71,7 +35,7 @@ class CoreObject {
   }
 
   remove(source) {
-    this.getNative().remove(source.getNative());
+    this.native.remove(source.native);
 
     this.children.splice(this.children.indexOf(source), 1);
     source.parent = null;

@@ -13,10 +13,10 @@ class AmbientLight extends Light {
     const _scope = this;
 
     return new Promise((resolve) => {
-      _scope.setNative(new THREE.AmbientLight(
+      _scope.native = new THREE.AmbientLight(
         params.light.color,
         params.light.intensity
-      ));
+      );
 
       resolve();
     });

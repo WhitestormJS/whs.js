@@ -40,7 +40,7 @@ obj3.position.set(0, 0, 3);
 // Nested object.
 obj2.add(obj3);
 
-GAME.setScene(scene, true);
+GAME.importScene(scene, true);
 GAME._initCamera();
 GAME._initRenderer();
 GAME._initHelpers();
