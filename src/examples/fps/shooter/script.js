@@ -11,15 +11,11 @@ const GAME = new WHS.World({
   },
 
   camera: {
-    far: 10000
+    far: 1000
   },
 
   shadowmap: {
     type: THREE.PCFShadowMap
-  },
-
-  physics: {
-    fixedTimeStep: 1 / 120
   },
 
   background: {
@@ -29,10 +25,10 @@ const GAME = new WHS.World({
 
 const terrain = new Terrain({
   geometry: {
-    map: '{{ assets }}/terrain/large_terrain.png',
+    map: '{{ assets }}/terrain/default_terrain.png',
     depth: 100,
-    width: 512,
-    height: 512
+    width: 256,
+    height: 256
   },
 
   mass: 0,
@@ -66,18 +62,6 @@ new WHS.AmbientLight({
   light: {
     color: 0xffffff,
     intensity: 0.2
-  },
-
-  pos: {
-    x: 160, // 100,
-    y: 120, // 30,
-    z: 160 // 100
-  },
-
-  target: {
-    x: 0,
-    y: 10,
-    z: 0
   }
 }).addTo(GAME);
 
@@ -312,7 +296,8 @@ const person = new WHS.Sphere({
 
   physics: {
     friction: 1,
-    restitution: 0
+    restitution: 0,
+    damping: 0
   },
 
   material: {
@@ -344,7 +329,7 @@ GAME.add(person).then(() => {
 
 GAME.setControls(
   WHS.firstPersonControls(person, {
-    speed: 5
+    speed: 3
   })
 );
 

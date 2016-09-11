@@ -1,6 +1,5 @@
 // UTILS
 import path from 'path';
-import runSequence from 'run-sequence';
 import del from 'del';
 
 // GULP
@@ -15,7 +14,7 @@ import WebpackDevServer from 'webpack-dev-server';
 import {config} from './webpack.config.babel.js';
 
 // SETTINGS
-const 
+const
   frameworkSrc = './src/framework',
   frameworkDest = './build',
 
@@ -54,10 +53,11 @@ const webpackCompilerLight = webpack(webpackConfiguration[1]);
 // ENVIRONMENT  SETUP
 process.env.BABEL_ENV = 'node';
 
-gulp.task('default', ['examples:build', 'src:build']);
+gulp.task('default', ['examples:build', 'src:build:browser', 'src:build:node']);
+gulp.task('src:build', ['src:build:browser', 'src:build:node']);
 
-// BUILD: browser 
-gulp.task('src:build', ['build:clean'], (callback) => {
+// BUILD: browser
+gulp.task('src:build:browser', ['build:clean'], (callback) => {
   webpackCompiler.run((error, stats) => {
     if (error) throw new $.util.PluginError('webpack', error);
     $.util.log('[webpack]', stats.toString({colors: true}));
@@ -70,6 +70,14 @@ gulp.task('src:build', ['build:clean'], (callback) => {
   });
 });
 
+gulp.task('src:build:node', (callback) => {
+  gulp.src(`${frameworkSrc}/**/*`)
+    .pipe($.cached('babel', {optimizeMemory: true}))
+    .pipe($.babel())
+    .on('error', makeBuildErrorHandler('babel'))
+    .pipe(gulp.dest('./lib/'));
+
+});
 // DEV MODE
 gulp.task('dev', ['examples:build', 'examples:watch'], () => {
   const server = new WebpackDevServer(webpackCompiler, {
@@ -184,7 +192,7 @@ gulp.task('examples:watch', () => {
   });
 });
 
-// EXAMPLES: BUILD 
+// EXAMPLES: BUILD
 gulp.task('examples:build', ['examples:clean'], () => {
   gulp.src([
     `${examplesDev}/**/*`,
@@ -215,10 +223,20 @@ gulp.task('examples:build', ['examples:clean'], () => {
     .pipe(gulp.dest(examplesDest));
 });
 
-// TEST
-gulp.task('src:test', done => {
+// TESTING
+gulp.task('test', ['test:benchmark', 'test:unit']);
+
+gulp.task('test:benchmark', done => {
   new karma.Server({
-    configFile: `${__dirname}/test/karma.conf.js`
+    configFile: `${__dirname}/test/karma.benchmark.conf.js`
+  }, () => {
+    done();
+  }).start();
+});
+
+gulp.task('test:unit', done => {
+  new karma.Server({
+    configFile: `${__dirname}/test/karma.unit.conf.js`
   }, () => {
     done();
   }).start();
@@ -238,10 +256,10 @@ gulp.task('examples:clean', (callback) => {
 });
 
 gulp.task('build:clean', (callback) => {
-  del([`${frameworkDest}/*.js`, `${frameworkDest}/*.map`]).then(() => callback());
+  del([`${frameworkDest}/*.js`, `${frameworkDest}/*.map`, './lib/**/*.js', './lib/**/*.map']).then(() => callback());
 });
 
-// ERRORS 
+// ERRORS
 function makeBuildErrorHandler(taskName) {
   return function ({name, message, codeFrame}) {
     $.util.log(`[${taskName}]`, `${$.util.colors.red(name)} ${message}${codeFrame ? `\n${codeFrame}` : ''}`);

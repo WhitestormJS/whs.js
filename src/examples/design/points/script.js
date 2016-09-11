@@ -1,4 +1,4 @@
-window.GAME = new WHS.World({
+const GAME = new WHS.World({
   autoresize: "window",
 
   gravity: {
@@ -45,15 +45,9 @@ const geom = new THREE.BufferGeometry();
 geom.addAttribute('position', new THREE.BufferAttribute(data, 3));
 geom.addAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-window.points = new WHS.Points({
-  geometry: geom,
-
-  material: {
-    kind: 'points',
-    vertexColors: THREE.VertexColors,
-    size: 0.1
-  }
-});
+const points = new WHS.Shape(
+  new THREE.Points(geom, new THREE.PointsMaterial({vertexColors: THREE.VertexColors, size: 0.1}))
+);
 
 points.addTo(GAME);
 

@@ -1,174 +1,134 @@
 import * as THREE from 'three';
 
-import {Loop} from '../extensions/Loop';
-import {defaults} from '../utils/defaults';
-import {WHSObject} from './Object';
+import {extend} from '../utils/index';
+import {Loop} from '../extras/Loop';
+import {World} from './World';
+import {CoreObject} from './CoreObject';
+import {deprecate} from '../utils/decorators';
 
-class Light extends WHSObject {
-  /**
-   * Constructing WHS.Light object.
-   *
-   * @param {Object} params - Inputed parameters.
-   * @param {String} type - Light type.
-   * @return {WHS.Light}
-   */
-  constructor(params, type) {
-    if (!type)
-      console.error('@constructor: Please specify " type ".');
+const _set = (x, y, z) => {
+  this.x = x;
+  this.y = y;
+  this.z = z;
+};
 
-    const _set = (x, y, z) => {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-    };
+class Light extends CoreObject {
+  static defaults = {
+    light: {
+      color: 0xffffff,
+      skyColor: 0xffffff,
+      groundColor: 0xffffff,
 
-    super({
-      light: {
-        color: 0xffffff,
-        skyColor: 0xffffff,
-        groundColor: 0xffffff,
+      intensity: 1,
+      distance: 100,
+      angle: Math.PI / 3,
+      exponent: 0,
+      decay: 1
+    },
 
-        intensity: 1,
-        distance: 100,
-        angle: Math.PI / 3,
-        exponent: 0,
-        decay: 1
-      },
+    helper: false,
 
-      helper: false,
+    shadowmap: {
+      cast: true,
 
-      shadowmap: {
-        cast: true,
+      bias: 0,
+      radius: 1,
 
-        bias: 0,
-        radius: 1,
+      width: 1024,
+      height: 1024,
 
-        width: 1024,
-        height: 1024,
+      near: true,
+      far: 400,
+      fov: 60,
 
-        near: true,
-        far: 400,
-        fov: 60,
+      top: 200,
+      bottom: -200,
+      left: -200,
+      right: 200
+    },
 
-        top: 200,
-        bottom: -200,
-        left: -200,
-        right: 200
-      },
+    pos: {
+      x: 0,
+      y: 0,
+      z: 0,
+      set: _set
+    },
 
-      pos: {
-        x: 0,
-        y: 0,
-        z: 0,
-        set: _set
-      },
+    rot: {
+      x: 0,
+      y: 0,
+      z: 0,
+      set: _set
+    },
 
-      rot: {
-        x: 0,
-        y: 0,
-        z: 0,
-        set: _set
-      },
+    target: {
+      x: 0,
+      y: 0,
+      z: 0,
+      set: _set
+    }
+  };
 
-      target: {
-        x: 0,
-        y: 0,
-        z: 0,
-        set: _set
-      }
-    });
+  helper = null;
 
-    super.setParams(params);
+  constructor(params = {}, type = 'light') {
+    super();
 
-    const scope = Object.assign(this,
-      {
-        _type: type,
+    if (params instanceof THREE.Light) {
+      this.params = extend({
+        pos: {x: params.position.x, y: params.position.y, z: params.position.z},
+        rot: {x: params.rotation.x, y: params.rotation.y, z: params.rotation.z}
+      }, Light.defaults);
+    } else this.params = extend(params, Light.defaults);
 
-        _light: this.__params.light,
-        _shadowmap: this.__params.shadowmap
-      });
-
-    if (defaults.debug)
-      console.debug(`@WHS.Light: Light ${scope._type} found.`, scope);
-
-    return scope;
+    if (params instanceof THREE.Light) this.native = params;
+    this.type = type;
   }
 
-  /**
-   * Applying shadow & position & rotation.
-   *
-   * @param {...String} tags - Tags that defines what to do with light
-   * additionally.
-   */
   wrap(...tags) {
     return new Promise((resolve, reject) => {
-      const _native = this.getNative();
+      const _native = this.native,
+        _params = this.params;
 
-      if (tags.indexOf('no-shadows') < 0) {
-        _native.castShadow = this._shadowmap.cast;
-      }
+      if (tags.indexOf('no-shadows') < 0) this.wrapShadow();
 
       if (tags.indexOf('no-transforms') < 0) {
         this.position.set(
-          this.__params.pos.x,
-          this.__params.pos.y,
-          this.__params.pos.z
+          _params.pos.x,
+          _params.pos.y,
+          _params.pos.z
         );
 
         this.rotation.set(
-          this.__params.rot.x,
-          this.__params.rot.y,
-          this.__params.rot.z
+          _params.rot.x,
+          _params.rot.y,
+          _params.rot.z
         );
 
-        if (_native.target) {
-          this.target.set(
-            this.__params.target.x,
-            this.__params.target.y,
-            this.__params.target.z
-          );
-        }
+        if (this.target) this.target = _params.target;
       }
-
-      tags.forEach(tag => {
-        this[tag] = true;
-      });
-
-      if (defaults.debug)
-        console.debug(`@WHS.Light: Light ${this._type} + ' is ready.`, this);
-
-      this.emit('ready');
 
       resolve(this);
     });
   }
 
-  /**
-   * Add light to WHS.World object.
-   *
-   * @param {WHS.World} root - World, were this light will be.
-   * @param {...String} tags - Tags for compiling.
-   */
   addTo(parent) {
     this.parent = parent;
 
     return new Promise((resolve, reject) => {
-      const _native = this.getNative();
+      const _native = this.native,
+        _parent = this.parent;
 
-      parent.getScene().add(_native);
+      const parentNative = _parent instanceof World ? _parent.scene
+        : _parent.native;
+
+      parentNative.add(_native);
       parent.children.push(this);
 
-      if (this.helper) this.parent.getScene().add(this.helper);
-      if (_native.target) this.parent.getScene().add(_native.target);
-      if (defaults.debug) {
-        console.debug(
-          `@WHS.Camera: Camera ${this._type} was added to world.`,
-          [this, this.parent]
-        );
-      }
+      if (this.helper) parentNative.add(this.helper);
+      if (_native.target) parentNative.add(_native.target);
 
       resolve(this);
-      this.emit('ready');
     });
   }
 
@@ -177,9 +137,10 @@ class Light extends WHSObject {
    */
   wrapShadow() {
     return new Promise((resolve, reject) => {
-      const _native = this.getNative(),
-        _shadow = this._shadowmap;
+      const _native = this.native,
+        _shadow = this.params.shadowmap;
 
+      _native.castShadow = _shadow.cast;
       _native.shadow.mapSize.width = _shadow.width;
       _native.shadow.mapSize.height = _shadow.height;
       _native.shadow.bias = _shadow.bias;
@@ -200,72 +161,78 @@ class Light extends WHSObject {
     });
   }
 
-  /**
-   * Clone light.
-   */
   clone() {
-    return new Light(this.__params, this._type).copy(this);
+    return new Light(this.params, this.type).copy(this);
   }
 
-  /**
-   * Copy light.
-   *
-   * @param {WHS.Light} source - Source object, that will be applied to this.
-   */
   copy(source) {
-    this.setNative(source.getNative().clone());
-    if (source.helper) this.helper = source.helper.clone();
-    this.setParams(source.getParams());
+    if (source.native) {
+      this.native = source.native.clone();
+      if (source.helper) this.helper = source.helper.clone();
+      this.params = source.params;
 
-    this.wrap();
+      this.wrap();
 
-    this.position = source.position.clone();
-    this.rotation = source.rotation.clone();
+      this.position = source.position.clone();
+      this.rotation = source.rotation.clone();
+      if (source.target) this.target = source.target.clone();
+    } else this.params = source.params;
 
-    this._type = source._type;
+    this.type = source.type;
 
     return this;
   }
 
-  /**
-   * Remove this light from world.
-   */
-  remove() {
-    this.parent.getScene().remove(this.getNative());
-    if (source.helper) this.parent.getScene().remove(this.helper);
+  getParent() {
+    return this.parent;
+  }
 
-    this.parent.children.splice(this.parent.children.indexOf(this), 1);
-    this.parent = null;
+  getWorld() {
+    let p = this.parent;
 
-    this.emit('remove');
+    while (!(p instanceof World)) {
+      if (p) p = p.parent;
+      else return false;
+    }
 
-    return this;
+    return p;
   }
 
   get position() {
-    return this.getNative().position;
+    return this.native.position;
   }
 
   set position(vector3) {
-    return this.getNative().position.copy(vector3);
+    return this.native.position.copy(vector3);
   }
 
   get rotation() {
-    return this.getNative().rotation;
+    return this.native.rotation;
   }
 
   set rotation(euler) {
-    return this.getNative().rotation.copy(euler);
+    return this.native.rotation.copy(euler);
+  }
+
+  get quaternion() {
+    return this.native.quaternion;
+  }
+
+  set quaternion(euler) {
+    return this.native.quaternion.copy(euler);
   }
 
   get target() {
-    return this.getNative().target.position;
+    return this.native.target;
   }
 
   set target(vector3) {
-    return this.getNative().target.position.copy(vector3);
+    if (vector3 instanceof THREE.Object3D)
+      this.native.target.copy(vector3); // THREE.Object3D in this case.
+    else this.native.target.position.copy(vector3);
   }
 
+  @deprecate('0.0.11')
   follow(curve, time = 1000, loop, lookAt) {
     const _scope = this,
       gEnd = time;
@@ -317,11 +284,11 @@ class Light extends WHSObject {
 
   /* VISIBILITY */
   show() {
-    this.getNative().visible = true;
+    this.native.visible = true;
   }
 
   hide() {
-    this.getNative().visible = false;
+    this.native.visible = false;
   }
 }
 

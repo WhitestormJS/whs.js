@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial} from '../extras/api';
+import {extend, loadMaterial} from '../utils/index';
 
 class Polyhedron extends Shape {
   constructor(params = {}) {
@@ -26,16 +26,16 @@ class Polyhedron extends Shape {
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    if (this.physics && this.params.softbody) Mesh = SoftMesh;
     else if (this.physics) Mesh = ConvexMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
-      this.setNative(new Mesh(
+      this.native = new Mesh(
         this.buildGeometry(params),
         material,
-        this.getParams()
-      ));
+        this.params
+      );
 
       resolve();
     });

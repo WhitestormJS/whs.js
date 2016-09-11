@@ -1,108 +1,99 @@
 import * as THREE from 'three';
 
-import {Loop} from '../extensions/Loop';
-import {defaults} from '../utils/defaults';
-import {WHSObject} from './Object';
+import {extend} from '../utils/index';
+import {Loop} from '../extras/Loop';
+import {CoreObject} from './CoreObject';
+import {deprecate} from '../utils/decorators';
 
-class Camera extends WHSObject {
-  constructor(params, type) {
-    if (!type) console.error('@constructor: Please specify " type ".');
+const _set = (x, y, z) => {
+  this.x = x;
+  this.y = y;
+  this.z = z;
+};
 
-    const _set = (x, y, z) => {
-      this.x = x;
-      this.y = y;
-      this.z = z;
+class Camera extends CoreObject {
+  static defaults = {
+    helper: false,
+
+    pos: {
+      x: 0,
+      y: 0,
+      z: 0,
+      set: _set
+    },
+
+    rot: {
+      x: 0,
+      y: 0,
+      z: 0,
+      set: _set
+    },
+
+    target: {
+      x: 0,
+      y: 0,
+      z: 0,
+      set: _set
+    }
+  };
+
+  helper = null;
+
+  constructor(params, type = 'camera', localWindow = window) {
+    super();
+
+    Camera.defaults.camera = {
+      fov: 45,
+      aspect: localWindow.innerWidth / localWindow.innerHeight,
+      near: 1,
+      far: 1000,
+      left: localWindow.innerWidth / -2,
+      right: localWindow.innerWidth / 2,
+      top: localWindow.innerHeight / 2,
+      bottom: localWindow.innerHeight / -2,
+      cubeResolution: 128
     };
 
     params.useTarget = Boolean(params.target);
 
-    super({
-      camera: {
-        fov: 45,
-        aspect: window.innerWidth / window.innerHeight,
-        near: 1,
-        far: 1000,
-        left: window.innerWidth / -2,
-        right: window.innerWidth / 2,
-        top: window.innerHeight / 2,
-        bottom: window.innerHeight / -2,
-        cubeResolution: 128
-      },
+    if (params instanceof THREE.Camera) {
+      this.params = extend({
+        pos: {x: params.position.x, y: params.position.y, z: params.position.z},
+        rot: {x: params.rotation.x, y: params.rotation.y, z: params.rotation.z}
+      }, Camera.defaults);
+    } else this.params = extend(params, Camera.defaults);
 
-      helper: false,
-
-      pos: {
-        x: 0,
-        y: 0,
-        z: 0,
-        set: _set
-      },
-
-      rot: {
-        x: 0,
-        y: 0,
-        z: 0,
-        set: _set
-      },
-
-      target: {
-        x: 0,
-        y: 0,
-        z: 0,
-        set: _set
-      }
-    });
-
-    super.setParams(params);
-
-    const scope = Object.assign(this, {
-      _type: type,
-      helper: false
-    });
-
-    if (defaults.debug)
-      console.debug(`@WHS.Camera: Camera ${scope._type} found.`, scope);
-
-    return scope;
+    if (params instanceof THREE.Camera) this.native = params;
+    this.type = type;
   }
 
   wrap(...tags) {
     return new Promise((resolve, reject) => {
-      try {
-        this.position.set(
-          this.__params.pos.x,
-          this.__params.pos.y,
-          this.__params.pos.z
-        );
+      const _native = this.native,
+        _params = this.params;
 
-        this.rotation.set(
-          this.__params.rot.x,
-          this.__params.rot.y,
-          this.__params.rot.z
-        );
+      this.position.set(
+        _params.pos.x,
+        _params.pos.y,
+        _params.pos.z
+      );
 
-        if (this.__params.useTarget) this.lookAt(this.__params.target);
+      this.rotation.set(
+        _params.rot.x,
+        _params.rot.y,
+        _params.rot.z
+      );
 
-        if (this.__params.helper) {
-          this.helper = new THREE.CameraHelper(
-            this.getNative()
-          );
-        }
+      if (_params.useTarget) this.lookAt(_params.target);
+      if (_params.helper) this.helper = new THREE.CameraHelper(_native);
 
-        tags.forEach(tag => {
-          this[tag] = true;
-        });
+      tags.forEach(tag => {
+        this[tag] = true;
+      });
 
-        if (defaults.debug)
-          console.debug(`@WHS.Camera: Camera ${this._type} is ready.`, this);
+      this.emit('ready');
 
-        this.emit('ready');
-
-        resolve(this);
-      } catch (err) {
-        console.error(err.message);
-        reject();
-      }
+      resolve(this);
     });
   }
 
@@ -110,74 +101,63 @@ class Camera extends WHSObject {
     this.parent = parent;
 
     const _helper = this.helper,
-      _scope = this;
+      _scene = this.parent.scene;
 
     return new Promise((resolve, reject) => {
-      try {
-        _scope.parent.getScene().add(_scope.getNative());
-        _scope.parent.children.push(_scope);
+      _scene.add(this.native);
+      this.parent.children.push(this);
 
-        if (_helper) _scope.parent.getScene().add(_helper);
-      } catch (err) {
-        console.error(err.message);
-        reject();
-      } finally {
-        if (defaults.debug) {
-          console.debug(
-            `@WHS.Camera: Camera ${_scope._type} was added to world.`,
-            [_scope, _scope.parent]
-          );
-        }
+      if (_helper) _scene.add(_helper);
 
-        resolve(_scope);
-
-        _scope.emit('ready');
-      }
+      resolve(this);
     });
   }
 
-  /**
-   * Clone camera.
-   */
   clone() {
-    return new Camera(this.__params, this._type).copy(this);
+    return new Camera(this.params, this.type).copy(this);
   }
 
-  /**
-   * Copy camera.
-   *
-   * @param {WHS.Camera} source - Source object, that will be applied to this.
-   */
   copy(source) {
-    this.setNative(source.getNative().clone());
-    this.setParams(source.getParams());
+    if (source.native) {
+      this.native = source.native.clone();
+      this.params = Object.create(source.params);
 
-    this.wrap();
+      this.wrap();``
 
-    this.position = source.position.clone();
-    this.rotation = source.rotation.clone();
+      this.position = source.position.clone();
+      this.rotation = source.rotation.clone();
+    } else this.params = source.params;
 
-    this._type = source._type;
+    this.type = source.type;
 
     return this;
   }
 
   get position() {
-    return this.getNative().position;
+    return this.native.position;
   }
 
   set position(vector3) {
-    return this.getNative().position.copy(vector3);
+    return this.native.position.copy(vector3);
   }
 
   get rotation() {
-    return this.getNative().rotation;
+    return this.native.rotation;
   }
 
   set rotation(euler) {
-    return this.getNative().rotation.copy(euler);
+    return this.native.rotation.copy(euler);
   }
 
+  get quaternion() {
+    return this.native.quaternion;
+  }
+
+  set quaternion(euler) {
+    return this.native.quaternion.copy(euler);
+  }
+
+  @deprecate('0.0.11')
   follow(curve, time = 1000, loop, lookAt) {
     const _scope = this,
       gEnd = time;
@@ -228,11 +208,11 @@ class Camera extends WHSObject {
   }
 
   lookAt(vector3) {
-    return this.getNative().lookAt(vector3);
+    return this.native.lookAt(vector3);
   }
 
   getWorldDirection(vector3) {
-    return this.getNative().getWorldDirection(vector3);
+    return this.native.getWorldDirection(vector3);
   }
 }
 

@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial, FontLoader} from '../extras/api';
+import {extend, loadMaterial, FontLoader} from '../utils/index';
 
 class Text extends Shape {
   constructor(params = {}) {
@@ -33,7 +33,7 @@ class Text extends Shape {
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    if (this.physics && this.params.softbody) Mesh = SoftMesh;
     else if (this.physics && this.physics.type === 'concave') Mesh = ConcaveMesh;
     else if (this.physics) Mesh = ConvexMesh;
     else Mesh = THREE.Mesh;
@@ -42,15 +42,15 @@ class Text extends Shape {
       FontLoader.load(params.geometry.parameters.font, font => {
         params.geometry.parameters.font = font;
 
-        this.setNative(new Mesh(
+        this.native = new Mesh(
           new THREE.TextGeometry(
             params.geometry.text,
             params.geometry.parameters
           ),
 
           material,
-          this.getParams()
-        ));
+          this.params
+        );
 
         resolve();
       });

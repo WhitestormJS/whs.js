@@ -16,11 +16,9 @@ addons:
 before_script:
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
   - npm install
+  - gulp src:build
   - export CHROME_BIN=/usr/bin/google-chrome
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-script: gulp src:test
-branches:
-  only:
-    - master
+script: npm run ci-test

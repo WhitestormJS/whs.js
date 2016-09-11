@@ -1,5 +1,5 @@
 import Ammo from 'whs-ammo';
-import {extend} from '../extras/api';
+import {extend} from '../utils/index';
 
 module.exports = function (self) {
   'use strict';
@@ -217,21 +217,23 @@ module.exports = function (self) {
         break;
       }
       case 'heightfield': {
-        const points = description.points,
-          xpts = description.xpts,
+        const xpts = description.xpts,
           ypts = description.ypts,
+          points = description.points,
           ptr = Ammo._malloc(4 * xpts * ypts);
 
-        for (let p = 0, p2 = ptr; p < xpts; p++) {
+        for (let i = 0, p = 0, p2 = 0; i < xpts; i++) {
           for (let j = 0; j < ypts; j++) {
-            Ammo.HEAPF32[p2 >> 2] = points[p];
+            Ammo.HEAPF32[ptr + p2 >> 2] = points[p];
+
+            p++;
             p2 += 4;
           }
         }
 
         shape = new Ammo.btHeightfieldTerrainShape(
-          xpts,
-          ypts,
+          description.xpts,
+          description.ypts,
           ptr,
           1,
           -description.absMaxHeight,
@@ -246,7 +248,6 @@ module.exports = function (self) {
         _vec3_1.setZ(1);
 
         shape.setLocalScaling(_vec3_1);
-
         _noncached_shapes[description.id] = shape;
         break;
       }
@@ -413,9 +414,9 @@ module.exports = function (self) {
   public_functions.appendAnchor = (description) => {
     _objects[description.obj]
       .appendAnchor(
-        description.node, 
-        _objects[description.obj2], 
-        description.collisionBetweenLinkedBodies, 
+        description.node,
+        _objects[description.obj2],
+        description.collisionBetweenLinkedBodies,
         description.influence
       );
   }
@@ -1389,7 +1390,7 @@ module.exports = function (self) {
               softreport[off + 1] = vert.y();
               softreport[off + 2] = vert.z();
             }
-          } 
+          }
           else {
             for (let i = 0; i < size; i++) {
               const node = object.get_m_nodes().at(i);

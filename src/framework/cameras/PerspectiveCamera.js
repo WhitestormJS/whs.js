@@ -2,8 +2,8 @@ import * as THREE from 'three';
 import {Camera} from '../core/Camera';
 
 class PerspectiveCamera extends Camera {
-  constructor(params = {}) {
-    super(params, 'perspectivecamera');
+  constructor(params = {}, localWindow = window) {
+    super(params, 'perspectivecamera', localWindow);
 
     this.build(params);
     super.wrap();
@@ -11,12 +11,12 @@ class PerspectiveCamera extends Camera {
 
   build(params = {}) {
     return new Promise((resolve) => {
-      this.setNative(new THREE.PerspectiveCamera(
+      this.native = new THREE.PerspectiveCamera(
         params.camera.fov,
         params.camera.aspect,
         params.camera.near,
         params.camera.far
-      ));
+      );
 
       resolve();
     });

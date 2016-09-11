@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial} from '../extras/api';
+import {extend, loadMaterial} from '../utils/index';
 
 class Shape2D extends Shape {
   constructor(params = {}) {
@@ -21,10 +21,10 @@ class Shape2D extends Shape {
     const material = loadMaterial(params.material);
 
     return new Promise((resolve) => {
-      this.setNative(new THREE.Mesh(
+      this.native = new THREE.Mesh(
         this.buildGeometry(params),
         material
-      ));
+      );
 
       resolve();
     });

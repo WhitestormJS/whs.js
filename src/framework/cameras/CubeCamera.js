@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {Camera} from '../core/Camera';
 
 class CubeCamera extends Camera {
-  constructor(params = {}) {
+  constructor(params = {}, localWindow = window) {
     super(params, 'cubecamera');
 
     this.build(params);
@@ -10,12 +10,12 @@ class CubeCamera extends Camera {
   }
 
   build(params = {}) {
-    return new Promse((resolve) => {
-      this.setNative(new THREE.CubeCamera(
+    return new Promise((resolve) => {
+      this.native = new THREE.CubeCamera(
         params.camera.near,
         params.camera.far,
         params.camera.cubeResolution
-      ));
+      );
 
       resolve();
     });

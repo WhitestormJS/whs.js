@@ -2,134 +2,131 @@ import * as THREE from 'three';
 import Stats from 'stats.js';
 import * as Physijs from '../physics/index.js';
 
+import {extend} from '../utils/index';
 import {PerspectiveCamera} from '../cameras/PerspectiveCamera';
 import {Camera} from './Camera';
 import {Shape} from './Shape';
 import {Light} from './Light';
-import {WHSObject} from './Object';
+import {CoreObject} from './CoreObject';
 
-class World extends WHSObject {
-  /**
-   * Create a 3D world and define defaults.
-   *
-   * @param {object} params - The scene settings object.
-   * @return {World} A 3D world whs object.
-   */
-  constructor(params = {}) {
-    super({
-      stats: false,
-      autoresize: false,
-      softbody: false,
+class World extends CoreObject {
+  static defaults = {
+    stats: false,
+    autoresize: false,
+    softbody: false,
 
-      shadowmap: {
-        enabled: true,
-        type: THREE.PCFSoftShadowMap
-      },
+    shadowmap: {
+      enabled: true,
+      type: THREE.PCFSoftShadowMap
+    },
 
-      helpers: {
-        grid: false,
-        axis: false
-      },
+    helpers: {
+      grid: false,
+      axis: false
+    },
 
-      gravity: {
-        x: 0,
-        y: 0,
-        z: 0
-      },
+    gravity: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
 
-      camera: {
-        aspect: 75,
-        near: 1,
-        far: 1000,
+    camera: {
+      aspect: 75,
+      near: 1,
+      far: 1000,
 
-        x: 0,
-        y: 0,
-        z: 0
-      },
+      x: 0,
+      y: 0,
+      z: 0
+    },
 
-      rWidth: 1, // Resolution(width).
-      rHeight: 1, // Resolution(height).
+    rWidth: 1, // Resolution(width).
+    rHeight: 1, // Resolution(height).
 
-      width: window.innerWidth, // Container(width).
-      height: window.innerHeight, // Container(height).
+    physics: {
+      fixedTimeStep: 1 / 60,
+      broadphase: {type: 'dynamic'}
+    },
 
-      physics: {
-        fixedTimeStep: 1 / 60,
-        broadphase: {type: 'dynamic'}
-      },
+    fog: {
+      type: false,
 
-      fog: {
-        type: false,
+      density: 0.00025,
+      hex: 0x000000,
+      near: 1,
+      far: 1000
+    },
 
-        density: 0.00025,
-        hex: 0x000000,
-        near: 1,
-        far: 1000
-      },
+    init: {
+      scene: true,
+      stats: true,
+      camera: true,
+      helpers: true,
+      renderer: true
+    },
 
-      init: {
-        scene: true,
-        stats: true,
-        camera: true,
-        helpers: true,
-        renderer: true
-      },
+    background: {
+      color: 0x000000,
+      opacity: 1
+    },
 
-      background: {
-        color: 0x000000,
-        opacity: 1
-      },
+    renderer: {},
+  };
 
-      renderer: {},
-      container: document.body
-    });
 
-    super.setParams(params);
+  render = false;
+  simulate = false;
+  loops = [];
+  type = 'world';
 
-    const initParams = this.getParams().init;
+  constructor(params = {}, localWindow = window) {
+    super();
+
+    World.defaults.width = localWindow.innerWidth;
+    World.defaults.height = localWindow.innerHeight;
+    World.defaults.container = localWindow.document.body;
+
+    this.params = extend(params, World.defaults);
+
+    const _params = this.params,
+      _initParams = _params.init;
 
     // INIT.
-    this._initDOM();
-    if (initParams.scene) this._initScene();
-    if (initParams.scene && initParams.stats) this._initStats();
+    this._initDOM(localWindow);
+    if (_initParams.scene) this._initScene();
+    if (_initParams.scene && _initParams.stats) this._initStats();
 
-    if (initParams.scene && initParams.camera) this._initCamera();
-    if (initParams.scene && initParams.renderer) this._initRenderer();
-    if (initParams.scene && initParams.helpers) this._initHelpers();
+    if (_initParams.scene && _initParams.camera) this._initCamera(localWindow);
+    if (_initParams.scene && _initParams.renderer) this._initRenderer();
+    if (_initParams.scene && _initParams.helpers) this._initHelpers();
 
     // NOTE: ==================== Autoresize. ======================
 
-    if (params.autoresize === "window") {
-      window.addEventListener('resize', () => {
+    if (_params.autoresize === "window") {
+      localWindow.addEventListener('resize', () => {
         this.setSize(
-          Number(window.innerWidth * params.rWidth).toFixed(),
-          Number(window.innerHeight * params.rHeight).toFixed()
+          Number(localWindow.innerWidth * _params.rWidth).toFixed(),
+          Number(localWindow.innerHeight * _params.rHeight).toFixed()
         );
 
         this.emit('resize');
       });
-    } else if (this.getParams().autoresize) {
-      window.addEventListener('resize', () => {
+    } else if (_params.autoresize) {
+      localWindow.addEventListener('resize', () => {
         this.setSize(
-          Number(params.container.offsetWidth * params.rWidth).toFixed(),
-          Number(params.container.offsetHeight * params.rHeight).toFixed()
+          Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
+          Number(_params.container.offsetHeight * _params.rHeight).toFixed()
         );
 
         this.emit('resize');
       });
     }
-
-    this.loops = [];
-
-    return this;
   }
 
-  /**
-   * Initialize THREE.js scene object.
-   */
   _initScene() {
-    const params = this.getParams(),
-      scene = !!'physics'
+    const params = this.params,
+      scene = Physijs.default !== false
       ? new Physijs.Scene(
         {
           fixedTimeStep: params.physics.fixedTimeStep,
@@ -142,7 +139,7 @@ class World extends WHSObject {
         }
       ) : new THREE.Scene();
 
-    if (!!'physics') {
+    if (Physijs.default !== false) {
       scene.setGravity(
         new THREE.Vector3(
           params.gravity.x,
@@ -152,7 +149,7 @@ class World extends WHSObject {
       );
 
       this.simulate = true;
-    } else this.simulate = false;
+    }
 
     if (params.fog.type === 'regular')
       scene.fog = new THREE.Fog(params.fog.hex, params.fog.near, params.fog.far);
@@ -160,33 +157,35 @@ class World extends WHSObject {
       || params.fog.type === 'expodential')
       scene.fog = new THREE.FogExp2(params.fog.hex, params.fog.density);
 
-    this.setScene(scene, false);
+    this.importScene(scene, false);
 
     // Array for processing.
     this.children = [];
   }
 
   addLoop(loop) {
-    this.loops.push(loop); // TODO: Process loops on start
-    // like: this.loops.forEach((elem) => elem.start());
+    return new Promise((resolve) => {
+      this.loops.push(loop);
+      resolve(loop);
+    });
   }
 
   removeLoop(loop) {
-    this.loops.filter((l) => l !== loop);
+    return new Promise((resolve) => {
+      this.loops.filter((l) => l !== loop);
+      resolve(loop);
+    });
   }
 
-  /**
-   * Initialize DOM structure for whitestorm.
-   */
-  _initDOM() {
-    const params = this.getParams();
+  _initDOM(localWindow = window) {
+    const params = this.params;
 
     params.container.style.margin = 0;
     params.container.style.padding = 0;
     params.container.style.position = 'relative';
     params.container.style.overflow = 'hidden';
 
-    this._dom = document.createElement('div');
+    this._dom = localWindow.document.createElement('div');
     this._dom.className = 'whs';
 
     params.container.appendChild(this._dom);
@@ -194,119 +193,107 @@ class World extends WHSObject {
     return this._dom;
   }
 
-  /**
-   * Inititialize stats plugin.
-   */
   _initStats() {
-    const params = this.getParams();
+    const params = this.params;
 
     if (params.stats) {
-      this._stats = new Stats();
+      this.stats = new Stats();
 
       if (params.stats === 'fps')
-        this._stats.setMode(0);
+        this.stats.setMode(0);
 
       else if (params.stats === 'ms')
-        this._stats.setMode(1);
+        this.stats.setMode(1);
 
       else if (params.stats === 'mb')
-        this._stats.setMode(1);
+        this.stats.setMode(1);
 
       else {
-        this._stats.setMode(0);
-        console.warn([this._stats], 'Please, apply stats mode [fps, ms, mb] .');
+        this.stats.setMode(0);
+        console.warn([this.stats], 'Please, apply stats mode [fps, ms, mb] .');
       }
 
-      this._stats.domElement.style.position = 'absolute';
-      this._stats.domElement.style.left = '0px';
-      this._stats.domElement.style.bottom = '0px';
+      this.stats.domElement.style.position = 'absolute';
+      this.stats.domElement.style.left = '0px';
+      this.stats.domElement.style.bottom = '0px';
 
-      this._dom.appendChild(this._stats.domElement);
+      this._dom.appendChild(this.stats.domElement);
     }
   }
 
-  /**
-   * Create a camera and add it to scene.
-   */
-  _initCamera() {
-    const params = this.getParams();
+  _initCamera(localWindow = window) {
+    const _params = this.params;
 
-    this.setCamera(new PerspectiveCamera({
+    this.camera = new PerspectiveCamera({
       camera: {
-        fov: params.camera.aspect,
-        aspect: params.width / params.height,
-        near: params.camera.near,
-        far: params.camera.far
+        fov: _params.camera.aspect,
+        aspect: _params.width / _params.height,
+        near: _params.camera.near,
+        far: _params.camera.far
       },
 
       pos: {
-        x: params.camera.x,
-        y: params.camera.y,
-        z: params.camera.z
+        x: _params.camera.x,
+        y: _params.camera.y,
+        z: _params.camera.z
       }
-    }));
+    }, localWindow);
 
-    this.getCamera().addTo(this);
+    this.camera.addTo(this);
   }
 
-  /**
-   * Create a renderer and apply it's options.
-   */
   _initRenderer() {
     this.render = true;
 
     // Renderer.
-    this.setRenderer(new THREE.WebGLRenderer(this.getParams().renderer));
+    this.renderer = new THREE.WebGLRenderer(this.params.renderer);
 
-    const renderer = this.getRenderer();
-    renderer.setClearColor(this.getParams().background.color, this.getParams().background.opacity);
+    const _renderer = this.renderer;
+    _renderer.setClearColor(this.params.background.color, this.params.background.opacity);
 
     // Shadowmap.
-    renderer.shadowMap.enabled = this.getParams().shadowmap.enabled;
-    renderer.shadowMap.type = this.getParams().shadowmap.type;
-    renderer.shadowMap.cascade = true;
+    _renderer.shadowMap.enabled = this.params.shadowmap.enabled;
+    _renderer.shadowMap.type = this.params.shadowmap.type;
+    _renderer.shadowMap.cascade = true;
 
-    renderer.setSize(
-      Number(this.getParams().width * this.getParams().rWidth).toFixed(),
-      Number(this.getParams().height * this.getParams().rHeight).toFixed()
+    _renderer.setSize(
+      Number(this.params.width * this.params.rWidth).toFixed(),
+      Number(this.params.height * this.params.rHeight).toFixed()
     );
 
-    renderer.render(this.getScene(), this.getCamera().getNative());
+    _renderer.render(this.scene, this.camera.native);
 
-    this._dom.appendChild(renderer.domElement);
+    this._dom.appendChild(_renderer.domElement);
 
-    renderer.domElement.style.width = '100%';
-    renderer.domElement.style.height = '100%';
+    _renderer.domElement.style.width = '100%';
+    _renderer.domElement.style.height = '100%';
   }
 
-  /**
-   * Add helpers to scene.
-   */
   _initHelpers() {
-    const params = this.getParams(),
-    scene = this.getScene();
+    const _params = this.params,
+      _scene = this.scene;
 
-    if (params.helpers.axis) {
-      scene.add(
+    if (_params.helpers.axis) {
+      _scene.add(
         new THREE.AxisHelper(
-          params.helpers.axis.size
-          ? params.helpers.axis.size
+          _params.helpers.axis.size
+          ? _params.helpers.axis.size
           : 5
         )
       );
     }
 
-    if (params.helpers.grid) {
-      scene.add(
+    if (_params.helpers.grid) {
+      _scene.add(
         new THREE.GridHelper(
-          params.helpers.grid.size
-          ? params.helpers.grid.size
+          _params.helpers.grid.size
+          ? _params.helpers.grid.size
           : 10,
-          params.helpers.grid.step
-          ? params.helpers.grid.step
+          _params.helpers.grid.step
+          ? _params.helpers.grid.step
           : 1,
-          params.helpers.grid.color1,
-          params.helpers.grid.color2
+          _params.helpers.grid.color1,
+          _params.helpers.grid.color2
         )
       );
     }
@@ -315,27 +302,27 @@ class World extends WHSObject {
   /**
    * Start animation.
    */
-  start() {
+  start(localWindow = window) {
     const clock = new THREE.Clock(),
       _scope = this,
-      scene = _scope.getScene(),
-      cameraNative = _scope.getCamera().getNative(),
-      renderer = _scope.getRenderer();
+      scene = _scope.scene,
+      cameraNative = _scope.camera.native,
+      renderer = _scope.renderer;
 
-    window.requestAnimFrame = (() => {
-      return window.requestAnimationFrame
-        || window.webkitRequestAnimationFrame
-        || window.mozRequestAnimationFrame
+    localWindow.requestAnimFrame = (() => {
+      return localWindow.requestAnimationFrame
+        || localWindow.webkitRequestAnimationFrame
+        || localWindow.mozRequestAnimationFrame
         || function (callback) {
-          window.setTimeout(callback, 1000 / 60);
+          localWindow.setTimeout(callback, 1000 / 60);
         };
     })();
 
     function reDraw(time) {
-      window.requestAnimFrame(reDraw);
+      localWindow.requestAnimFrame(reDraw);
 
       // Init stats.
-      if (_scope._stats) _scope._stats.begin();
+      if (_scope.stats) _scope.stats.begin();
 
       _scope._process(clock.getDelta());
       if (_scope.controls) _scope._updateControls();
@@ -350,7 +337,7 @@ class World extends WHSObject {
       _scope._execLoops();
 
       // End helper.
-      if (_scope._stats) _scope._stats.end();
+      if (_scope.stats) _scope.stats.end();
     }
 
     this._update = reDraw;
@@ -397,19 +384,19 @@ class World extends WHSObject {
    */
   _process(delta) {
     for (let i = 0; i < this.children.length; i++)
-      if (this.children[i]._type === 'morph') this.children[i].getNative().mixer.update(delta);
+      if (this.children[i].type === 'morph') this.children[i].native.mixer.update(delta);
   }
 
   /**
    * This functon will scene properties when it's called.
    */
   setSize(width = 1, height = 1) {
-    this.getCamera().getNative().aspect = width / height;
-    this.getCamera().getNative().updateProjectionMatrix();
+    this.camera.native.aspect = width / height;
+    this.camera.native.updateProjectionMatrix();
 
-    this.getRenderer().setSize(
-      Number(width * this.getParams().rWidth).toFixed(),
-      Number(height * this.getParams().rHeight).toFixed()
+    this.renderer.setSize(
+      Number(width * this.params.rWidth).toFixed(),
+      Number(height * this.params.rHeight).toFixed()
     );
 
     let renderTarget = this.getRenderTarget();
@@ -421,7 +408,7 @@ class World extends WHSObject {
     }
   }
 
-  setScene(scene, import_three = true) {
+  importScene(scene, import_three = true) {
     this.scene = scene;
 
     if (import_three) {
@@ -447,19 +434,6 @@ class World extends WHSObject {
     return this.scene;
   }
 
-  getScene() {
-    return this.scene;
-  }
-
-  setRenderer(renderer) {
-    this.renderer = renderer;
-    return this.renderer;
-  }
-
-  getRenderer() {
-    return this.renderer;
-  }
-
   setControls(controls) {
     const recieved = controls(this);
 
@@ -473,41 +447,13 @@ class World extends WHSObject {
     return this.controls;
   }
 
-  /**
-   * Set a camera for rendering world.
-   *
-   * @params {WHS.Camera} camera - The camera to be rendered.
-   */
-  setCamera(camera) {
-    if (camera instanceof Camera)
-      this.camera = camera;
-    else
-      console.error('@WHS.World: camera in not an instance of WHS.Camera.');
-  }
-
-  getCamera() {
-    return this.camera;
-  }
-
-  /**
-   * Remove this shape from world.
-   *
-   * @return {WHS.Shape} - this.
-   */
   remove(source) {
-    this.getScene().remove(source.getNative());
+    this.scene.remove(source.native);
 
     this.children.splice(this.children.indexOf(source), 1);
     source.parent = null;
 
     source.emit('remove');
-
-    if (WHS.debug) {
-      console.debug(
-        `@WHS.Shape: Shape ${source._type} was removed from world`,
-        [source]
-      );
-    }
 
     return this;
   }
