@@ -15,17 +15,30 @@ export class Pass {
     this.renderToScreen = false;
   }
 
+  /**
+   * Resize a pass.
+   * @param {Number} width : in pixels.
+   * @param {Number} height : in pixels.
+   */
   setSize(width, height) {}
 
+  /**
+   * Render a pass
+   * @param  {THREE.WebGLRenderer} renderer : The renderer used to render the pass objects.
+   * @param  {THREE.WebGLRenderTarget.Buffer} writeBuffer : The write buffer used to do buffer swapping.
+   * @param  {THREE.WebGLRenderTarget.Buffer} readBuffer  : The read buffer used to do buffer swapping.
+   * @param  {Number} delta : The delta time since the previous frame.
+   * @param  {Boolean} maskActive : Flag indicating the Composer that this pass use masking.
+   */
   render(renderer, writeBuffer, readBuffer, delta, maskActive) {
     console.error("Pass: .render() must be implemented in derived pass.");
   }
 
+  /**
+   * Get the name of the pass
+   * @return {String} Unique name
+   */
   get name() {
     return this.uniqName;
-  }
-
-  set name(name) {
-    this.uniqName = name;
   }
 }
