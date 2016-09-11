@@ -6,8 +6,8 @@ const ThreeOrbitControls = getOrbitControls(THREE);
 export function orbitControls(object) {
   return function (world) {
     const controls = new ThreeOrbitControls(
-      world.getCamera().getNative(),
-      world.getRenderer().domElement
+      world.camera.native,
+      world.renderer.domElement
     );
 
     if (object && object.__whsobject) {

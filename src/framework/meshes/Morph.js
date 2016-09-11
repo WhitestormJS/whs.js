@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import * as Physijs from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial} from '../extras/api';
+import {extend, loadMaterial} from '../utils/index';
 import {JSONLoader} from '../utils/loaders';
 
 class Morph extends Shape {
@@ -50,7 +50,7 @@ class Morph extends Shape {
           .setDuration(params.morph.duration)
           .play();
 
-        this.setNative(mesh);
+        this.native = mesh;
 
         resolve();
       });

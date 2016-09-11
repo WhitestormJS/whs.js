@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 
-import {extend, texture} from '../extras/api';
+import {extend, texture} from '../utils/index';
 import {Shape} from '../core/Shape';
+import {deprecate} from '../utils/decorators';
 
+@deprecate('0.0.11')
 class Skybox extends Shape {
   constructor(params = {}) {
     super(params, 'skybox');

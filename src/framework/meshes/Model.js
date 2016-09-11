@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend, loadMaterial, JSONLoader} from '../extras/api';
+import {extend, loadMaterial, JSONLoader} from '../utils/index';
 
 class Model extends Shape {
   constructor(params = {}) {
@@ -23,7 +23,7 @@ class Model extends Shape {
   build(params = {}) {
     let Mesh;
 
-    if (this.physics && this.physics.type === 'concave') Mesh = ConcaveMesh;
+    if (this.physics && params.physics.type === 'concave') Mesh = ConcaveMesh;
     else if (this.physics) Mesh = ConvexMesh;
     else Mesh = THREE.Mesh
 
@@ -50,12 +50,12 @@ class Model extends Shape {
             data.computeFaceNormals();
             data.computeVertexNormals();
 
-            this.setNative(new Mesh(
+            this.native = new Mesh(
               data,
               material,
-              this.getParams(),
+              this.params,
               data2
-            ));
+            );
 
             resolve();
           });
@@ -76,13 +76,13 @@ class Model extends Shape {
           data.computeFaceNormals();
           data.computeVertexNormals();
 
-          console.log(this.getParams());
+          console.log(this.params);
 
-          this.setNative(new Mesh(
+          this.native = new Mesh(
             data,
             material,
-            this.getParams()
-          ));
+            this.params
+          );
 
           resolve();
         }

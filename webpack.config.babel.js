@@ -16,65 +16,72 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     }
   ];
 
-  const pluginsSection = isProduction
+  const pluginsSectionPhysics = isProduction
+  ? [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      mangle: false,
+      compress: {
+        hoist_funs: false, // Turn this off to prevent errors with Ammo.js
+        warnings: false
+      },
+      minimize: true
+    }),
+    new HappyPack({loaders: ['babel'], threads: 4}),
+    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack')
+  ]
+  : [
+    new HappyPack({loaders: ['babel'], threads: 4}),
+    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack')
+  ];
+
+  const pluginsSectionLight = isProduction
   ? [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       mangle: false,
       compress: {
         warnings: false
-      }
+      },
+      minimize: true
     }),
-    new HappyPack({loaders: ['babel', 'string-replace'], threads: 4})
+    new HappyPack({loaders: ['babel'], threads: 4})
   ]
   : [
-    new HappyPack({loaders: ['babel', 'string-replace'], threads: 4})
+    new HappyPack({loaders: ['babel'], threads: 4})
   ];
 
   return [{ // PHYSICS VERSION
-    devtool: isProduction ? 'hidden-source-map' : 'source-map',
+    devtool: isProduction ? false : 'source-map',
     entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
     target: 'web',
     output: {
       path: path.join(__dirname, frameworkDest),
       filename: 'whitestorm.js',
       library: 'WHS',
-      libraryTarget: 'var'
+      libraryTarget: 'umd'
     },
     module: {
       loaders: loadersSection
     },
-    plugins: pluginsSection
+    plugins: pluginsSectionPhysics
   }, { // LIGHT VERSION
-    devtool: isProduction ? 'hidden-source-map' : 'source-map',
+    devtool: isProduction ? false : 'source-map',
     entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
     target: 'web',
     output: {
       path: path.join(__dirname, frameworkDest),
       filename: 'whitestorm.light.js',
       library: 'WHS',
-      libraryTarget: 'var'
+      libraryTarget: 'umd'
+    },
+    externals: {
+      '../physics/index.js': 'var false',
+      './physics/index.js': 'var false'
     },
     module: {
-      preLoaders: [{
-        test: /\.js$/,
-        loader: 'string-replace',
-        query: {
-          multiple: [
-            {
-              search: 'physics/index.js\';',
-              replace: 'physics/nophysi.js\';'
-            },
-            {
-              search: '!!\'physics\'',
-              replace: 'false',
-              flags: 'g'
-            }
-          ]
-        }
-      }],
       loaders: loadersSection
     },
-    plugins: pluginsSection
+    plugins: pluginsSectionLight
   }];
 }

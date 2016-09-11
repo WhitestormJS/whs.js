@@ -1,4 +1,4 @@
-define(['whslight', 'table'], function(WHS, Table) {
+define(['whs', 'table'], function(WHS, Table) {
   let total = 0;
   let perfTime, cycleID = 1;
   let tableContent = [];
@@ -16,6 +16,10 @@ define(['whslight', 'table'], function(WHS, Table) {
   }, {
     onStart: () => {
       this.GAME = new WHS.World({
+        init: {
+          renderer: false
+        },
+
         gravity: {
           x: 0,
           y: -100,

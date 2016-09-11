@@ -6,7 +6,9 @@
             ],
             "plugins": [
                 ["transform-runtime", { "polyfill": false }],
-                "add-module-exports"
+                "add-module-exports",
+                "transform-decorators-legacy",
+				"transform-class-properties"
             ]
         },
         "browser": {

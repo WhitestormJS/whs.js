@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {extend} from '../api';
+import {extend} from '../../utils/index';
 
 const PI_2 = Math.PI / 2;
 
@@ -22,7 +22,7 @@ export function firstPersonControls(object, params = {}) {
       const player = mesh,
         pitchObject = new THREE.Object3D();
 
-      pitchObject.add(camera.getNative());
+      pitchObject.add(camera.native);
 
       const yawObject = new THREE.Object3D();
 
@@ -178,7 +178,7 @@ export function firstPersonControls(object, params = {}) {
 
         yawObject.position.copy(player.position);
       };
-    })(world.getCamera(), object.getNative(), target);
+    })(world.camera, object.native, target);
 
     if ('pointerLockElement' in document
         || 'mozPointerLockElement' in document
@@ -240,7 +240,7 @@ export function firstPersonControls(object, params = {}) {
     } else console.warn('Your browser does not support the PointerLock WHS.API.');
 
     function callback(world) {
-      world.getScene().add(world.controls.getObject());
+      world.scene.add(world.controls.getObject());
     }
 
     return [controls, callback];
