@@ -1,6 +1,6 @@
 define(['whs'], function(WHS) {
   describe('PostProcessor', () => {
-    const world = new WHS.World({init: {renderer: false}});
+    const world = new WHS.World({init: {renderer: true}});
 
     function describeAttribute(postprocessor, name, dims, Value) {
       describe('.' + name, done => {
@@ -14,24 +14,22 @@ define(['whs'], function(WHS) {
           for (let i = 0; i < dims.length; i++)
             postprocessor[name][dims.charAt(i)] = 3;
         });
-
-        //it('=== Values are equal ===', () => postprocessor.position === postprocessor.native.position);
       });
     }
 
     function testAPI(postprocessor) {
-      it('#createPass()', () => postprocessor.createPass(() => {return new Pass();}));
+      it('#createPass()', () => postprocessor.createPass(() => {return new WHS.Pass();}));
       it('#getPass()', () => postprocessor.getPass('name'));
       it('#createRenderPass()', () => postprocessor.createRenderPass(false));
       it('#getRenderPass()', () => postprocessor.getRenderPass());
-      it('#removePass()', () => postprocessor.removePass());
+      it('#removePass()', () => postprocessor.removePass('name'));
       it('#setContainerConfig()', () => postprocessor.setContainerConfig(world.container));
       it('#setRenderScene()', () => postprocessor.setRenderScene(new THREE.Scene(), new THREE.PerspectiveCamera()));
       it('#render()', () => postprocessor.render(0));
     }
 
     context('Should wrap EffectComposer and Pass', () => {
-      const postprocessor = new WHS.PostProcessor();
+      const postprocessor = new WHS.PostProcessor({}, world);
 
       testAPI(postprocessor);
     });
