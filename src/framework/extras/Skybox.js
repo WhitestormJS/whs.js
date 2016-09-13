@@ -54,7 +54,7 @@ class Skybox extends Shape {
     const mesh = new THREE.Mesh(skyGeometry, skyMat);
     mesh.renderDepth = 1000.0;
 
-    super.setNative(mesh);
+    super.native = mesh;
     super.wrap();
   }
 }
