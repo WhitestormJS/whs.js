@@ -224,7 +224,7 @@ new WHS.Skybox({
   path: '{{ assets }}/textures/skybox/skymap',
   imgSuffix: '.png',
   skyType: 'sphere',
-  radius: GAME.getCamera().__params.camera.far,
+  radius: GAME.camera.params.camera.far,
   rot: {y: Math.PI / 180 * -90},
   pos: {y: -200}
 }).addTo(GAME);
