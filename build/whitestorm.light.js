@@ -53569,11 +53569,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.camera.native.updateProjectionMatrix();
 	
 	      this.renderer.setSize(Number(width * this.params.rWidth).toFixed(), Number(height * this.params.rHeight).toFixed());
-	
-	      var renderTarget = this.getRenderTarget();
-	      if (renderTarget !== undefined) {
-	        renderTarget.setSize(Number(width * this.params.rWidth).toFixed(), Number(height * this.params.rHeight).toFixed());
-	      }
 	    }
 	  }, {
 	    key: 'importScene',
@@ -56242,7 +56237,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	    } else if (_params.autoresize) {
 	      window.addEventListener('resize', function () {
-	        _this.setSize();
+	        //FIXME: cf setContainerConfig()
+	        //this.setSize(
+	        // Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
+	        // Number(_params.container.offsetHeight * _params.rHeight).toFixed()
+	        //);
 	
 	        _this.emit('resize');
 	      });
@@ -61085,6 +61084,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _get3 = _interopRequireDefault(_get2);
 	
+	var _set2 = __webpack_require__(428);
+	
+	var _set3 = _interopRequireDefault(_set2);
+	
 	var _dec, _class;
 	
 	var _three = __webpack_require__(391);
@@ -61158,7 +61161,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var mesh = new THREE.Mesh(skyGeometry, skyMat);
 	    mesh.renderDepth = 1000.0;
 	
-	    (0, _get3.default)(Skybox.prototype.__proto__ || Object.getPrototypeOf(Skybox.prototype), 'setNative', _this).call(_this, mesh);
+	    (0, _set3.default)(Skybox.prototype.__proto__ || Object.getPrototypeOf(Skybox.prototype), 'native', mesh, _this);
 	    (0, _get3.default)(Skybox.prototype.__proto__ || Object.getPrototypeOf(Skybox.prototype), 'wrap', _this).call(_this);
 	    return _this;
 	  }
