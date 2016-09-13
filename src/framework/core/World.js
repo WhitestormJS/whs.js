@@ -405,14 +405,6 @@ class World extends CoreObject {
       Number(width * this.params.rWidth).toFixed(),
       Number(height * this.params.rHeight).toFixed()
     );
-
-    let renderTarget = this.getRenderTarget();
-    if (renderTarget !== undefined) {
-      renderTarget.setSize(
-        Number(width * this.params.rWidth).toFixed(),
-        Number(height * this.params.rHeight).toFixed()
-      );
-    }
   }
 
   importScene(scene, import_three = true) {

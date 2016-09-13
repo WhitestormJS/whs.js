@@ -41,11 +41,11 @@ class PostProcessor extends CoreObject {
       });
     } else if (_params.autoresize) {
       window.addEventListener('resize', () => {
-        this.setSize(
-          //FIXME: cf setContainerConfig()
+        //FIXME: cf setContainerConfig()
+        //this.setSize(
           // Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
           // Number(_params.container.offsetHeight * _params.rHeight).toFixed()
-        );
+        //);
 
         this.emit('resize');
       });
