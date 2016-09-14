@@ -136,18 +136,13 @@ world.start(); // Start animations and physics simulation.
 
 ## [Contributors](https://github.com/WhitestormJS/whitestorm.js/graphs/contributors):
 [![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-red.svg)](https://github.com/sasha240100)
-
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-jackdalton-blue.svg)](https://github.com/jackdalton)
-
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-Noctisdark-blue.svg)](https://github.com/noctisdark)
-
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-bdirl-blue.svg)](https://github.com/bdirl)
-
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-preco21-blue.svg)](https://github.com/preco21)
-
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-yeliex-blue.svg)](https://github.com/yeliex)
-
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-electron0zero-blue.svg)](https://github.com/electron0zero)
+[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-typedef42-blue.svg)](https://github.com/typedef42)
 
 <br>
 
