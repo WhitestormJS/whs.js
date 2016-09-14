@@ -7985,40 +7985,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 	
-	function defaultSetTimout() {
-	    throw new Error('setTimeout has not been defined');
-	}
-	function defaultClearTimeout () {
-	    throw new Error('clearTimeout has not been defined');
-	}
 	(function () {
 	    try {
-	        if (typeof setTimeout === 'function') {
-	            cachedSetTimeout = setTimeout;
-	        } else {
-	            cachedSetTimeout = defaultSetTimout;
-	        }
+	        cachedSetTimeout = setTimeout;
 	    } catch (e) {
-	        cachedSetTimeout = defaultSetTimout;
+	        cachedSetTimeout = function () {
+	            throw new Error('setTimeout is not defined');
+	        }
 	    }
 	    try {
-	        if (typeof clearTimeout === 'function') {
-	            cachedClearTimeout = clearTimeout;
-	        } else {
-	            cachedClearTimeout = defaultClearTimeout;
-	        }
+	        cachedClearTimeout = clearTimeout;
 	    } catch (e) {
-	        cachedClearTimeout = defaultClearTimeout;
+	        cachedClearTimeout = function () {
+	            throw new Error('clearTimeout is not defined');
+	        }
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
-	        return setTimeout(fun, 0);
-	    }
-	    // if setTimeout wasn't available but was latter defined
-	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -8039,11 +8024,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
-	        return clearTimeout(marker);
-	    }
-	    // if clearTimeout wasn't available but was latter defined
-	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -63371,7 +63351,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.TexturePass = undefined;
 	
@@ -63404,61 +63384,61 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var TexturePass = exports.TexturePass = function (_Pass) {
-	    (0, _inherits3.default)(TexturePass, _Pass);
+	  (0, _inherits3.default)(TexturePass, _Pass);
 	
-	    function TexturePass(name, map, opacity) {
-	        (0, _classCallCheck3.default)(this, TexturePass);
+	  function TexturePass(name, map, opacity) {
+	    (0, _classCallCheck3.default)(this, TexturePass);
 	
-	        var _this = (0, _possibleConstructorReturn3.default)(this, (TexturePass.__proto__ || Object.getPrototypeOf(TexturePass)).call(this, name));
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (TexturePass.__proto__ || Object.getPrototypeOf(TexturePass)).call(this, name));
 	
-	        if (_CopyShader.CopyShader === undefined) {
-	            console.error("TexturePass relies on CopyShader");
-	        }
-	
-	        var shader = _CopyShader.CopyShader;
-	
-	        _this.map = map;
-	        _this.opacity = opacity !== undefined ? opacity : 1.0;
-	
-	        _this.uniforms = THREE.UniformsUtils.clone(shader.uniforms);
-	
-	        _this.material = new THREE.ShaderMaterial({
-	            uniforms: _this.uniforms,
-	            vertexShader: shader.vertexShader,
-	            fragmentShader: shader.fragmentShader,
-	            depthTest: false,
-	            depthWrite: false
-	        });
-	
-	        _this.needsSwap = false;
-	
-	        _this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-	        _this.scene = new THREE.Scene();
-	
-	        _this.quad = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), null);
-	        _this.scene.add(_this.quad);
-	
-	        return _this;
+	    if (_CopyShader.CopyShader === undefined) {
+	      console.error("TexturePass relies on CopyShader");
 	    }
 	
-	    (0, _createClass3.default)(TexturePass, [{
-	        key: 'render',
-	        value: function render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+	    var shader = _CopyShader.CopyShader;
 	
-	            var oldAutoClear = renderer.autoClear;
-	            renderer.autoClear = false;
+	    _this.map = map;
+	    _this.opacity = opacity !== undefined ? opacity : 1.0;
 	
-	            this.quad.material = this.material;
+	    _this.uniforms = THREE.UniformsUtils.clone(shader.uniforms);
 	
-	            this.uniforms["opacity"].value = this.opacity;
-	            this.uniforms["tDiffuse"].value = this.map;
-	            this.material.transparent = this.opacity < 1.0;
+	    _this.material = new THREE.ShaderMaterial({
+	      uniforms: _this.uniforms,
+	      vertexShader: shader.vertexShader,
+	      fragmentShader: shader.fragmentShader,
+	      depthTest: false,
+	      depthWrite: false
+	    });
 	
-	            renderer.render(this.scene, this.camera, this.renderToScreen ? null : readBuffer, this.clear);
-	            renderer.autoClear = oldAutoClear;
-	        }
-	    }]);
-	    return TexturePass;
+	    _this.needsSwap = false;
+	
+	    _this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+	    _this.scene = new THREE.Scene();
+	
+	    _this.quad = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), null);
+	    _this.scene.add(_this.quad);
+	
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(TexturePass, [{
+	    key: 'render',
+	    value: function render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+	
+	      var oldAutoClear = renderer.autoClear;
+	      renderer.autoClear = false;
+	
+	      this.quad.material = this.material;
+	
+	      this.uniforms["opacity"].value = this.opacity;
+	      this.uniforms["tDiffuse"].value = this.map;
+	      this.material.transparent = this.opacity < 1.0;
+	
+	      renderer.render(this.scene, this.camera, this.renderToScreen ? null : readBuffer, this.clear);
+	      renderer.autoClear = oldAutoClear;
+	    }
+	  }]);
+	  return TexturePass;
 	}(_Pass2.Pass); /**
 	                 * @author alteredq / http://alteredqualia.com/
 	                 * @author yannis torres / es6 migration
