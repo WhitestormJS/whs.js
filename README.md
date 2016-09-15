@@ -10,26 +10,13 @@
     <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg?style=flat-square"></a>
 
 
-    <p align="center"><i><b>Framework for developing 3D web apps with physics.</b></i></p>
+    <p align="center"><i><b>Framework for developing 3D web apps. <a href="https://github.com/WhitestormJS/whitestorm.js/blob/master/build/whitestorm.js">Physics version</a> | <a href="https://github.com/WhitestormJS/whitestorm.js/blob/master/build/whitestorm.light.js">Light version</a>(no physics engine).</b></i></p>
+    <p align="center"><b>*</b>Made by people who want to create <b>awesome</b> browser games</p>
 </p>
 
 <br>
 
 ------
-
-## FEATURES
-
-* **Simple shape crafting** — We use a JSON-like structure for creating objects from inputted data and adding them to your 3D world.
-
-* **Physics with WebWorkers** — We use the [Physi.js](https://github.com/chandlerprall/Physijs/blob/master/physi.js) library for calculating physics of 3D shapes with **WebWorkers technology** that allows for rendering and calculating physics in multiple threads.
-
-* **Plugin system** — Our framework supports *plugins & components* made by other users. You need to include them after whitestorm.js and follow provided instructions.
-
-* **Automatization of rendering** — Our framework does rendering automatically and doesn't need a to be called. Functionality like the `resize` function can be called automatically by setting additional parameters such as `autoresize: true`.
-
-* **ES6 Features** - Our framework is written using the latest features of ECMAScript 6 and ECMAScript 7 (beta) features and compiled with [Babel](https://babeljs.io/).
-
-* **Softbodies** - WhitestormJS is the only engine (except native ammo.js) that supports softbodies.
 
 ## PLAYGROUND :rocket:
 <a href="http://ow.ly/J4Tw302obGz"><img src="http://i.imgur.com/6EdMjm1.gif"></a>
@@ -45,6 +32,12 @@
 
 ```bash
 npm install whitestormjs
+```
+
+#### BOWER
+
+```bash
+bower install whitestormjs
 ```
 
 #### BROWSER
@@ -96,6 +89,25 @@ sphere.getNative(); // Returns THREE.Mesh of this object.
 
 world.start(); // Start animations and physics simulation.
 ```
+
+#### WEBPACK
+
+See [WhitestormJS/test-whitestorm-webpack](https://github.com/WhitestormJS/test-whitestorm-webpack) for more details.
+
+## FEATURES
+
+* **Simple shape crafting** — We use a JSON-like structure for creating objects from inputted data and adding them to your 3D world.
+
+* **Physics with WebWorkers** — We use the [Physi.js](https://github.com/chandlerprall/Physijs/blob/master/physi.js) library for calculating physics of 3D shapes with **WebWorkers technology** that allows for rendering and calculating physics in multiple threads.
+
+* **Plugin system** — Our framework supports *plugins & components* made by other users. You need to include them after whitestorm.js and follow provided instructions.
+
+* **Automatization of rendering** — Our framework does rendering automatically and doesn't need a to be called. Functionality like the `resize` function can be called automatically by setting additional parameters such as `autoresize: true`.
+
+* **ES6 Features** - Our framework is written using the latest features of ECMAScript 6 and ECMAScript 7 (beta) features and compiled with [Babel](https://babeljs.io/).
+
+* **Softbodies** - WhitestormJS is the only engine (except native ammo.js) that supports softbodies.
+
 
 <br>
 
