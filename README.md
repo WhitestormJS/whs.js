@@ -10,7 +10,7 @@
     <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg?style=flat-square"></a>
 
 
-    <p align="center"><i><b>Framework for developing 3D web apps. <a href="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/cece6dacfbbc7ee158ca86b782521da65c44c6e7/build/whitestorm.js">Physics version</a>[2.86 Mb] | <a href="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/dev/build/whitestorm.light.js">Light version</a>[1.00 Mb](no physics engine).</b></i></p>
+    <p align="center"><i><b>Framework for developing 3D web apps. <a href="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/cece6dacfbbc7ee158ca86b782521da65c44c6e7/build/whitestorm.js">Physics version</a><sup>[2.86 Mb]</sup> | <a href="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/dev/build/whitestorm.light.js">Light version</a><sup>[1.00 Mb]</sup>(no physics engine).</b></i></p>
     <p align="center"><b>*</b>Made by people who want to create <b>awesome</b> browser games</p>
 </p>
 
