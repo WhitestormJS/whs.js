@@ -87,7 +87,7 @@
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1",
     "webworkify-webpack": "1.1.2",
-    "whs-terrain": "0.0.10",
+    "whs-component-terrain": "0.0.2",
     "xo": "^0.15.1"
   },
   "xo": {

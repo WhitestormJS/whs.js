@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import HappyPack from 'happypack';
+import OptimizeJSPlugin from 'webpack-optimizejs-plugin';
 
 process.env.BABEL_ENV = 'browser';
 
@@ -43,10 +44,12 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
       },
       minimize: true
     }),
-    new HappyPack({loaders: ['babel'], threads: 4})
+    new HappyPack({loaders: ['babel'], threads: 4}),
+    new OptimizeJSPlugin()
   ]
   : [
-    new HappyPack({loaders: ['babel'], threads: 4})
+    new HappyPack({loaders: ['babel'], threads: 4}),
+    new OptimizeJSPlugin()
   ];
 
   return [{ // PHYSICS VERSION
