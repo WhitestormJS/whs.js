@@ -1,4 +1,4 @@
-import Terrain from 'whs-terrain';
+import Terrain from 'whs-component-terrain';
 
 const GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
