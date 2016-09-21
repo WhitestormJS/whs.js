@@ -3,18 +3,20 @@
  * @author yannis torres / es6 migration
  */
 
-import { Pass } from './Pass.js';
+import {Pass} from './Pass.js';
 
 export class ClearPass extends Pass {
   constructor(name, clearColor, clearAlpha) {
     super(name);
 
     this.needsSwap = false;
-    this.clearColor = (clearColor !== undefined) ? clearColor : 0x000000;
-    this.clearAlpha = (clearAlpha !== undefined) ? clearAlpha : 0;
+    this.clearColor = (clearColor === undefined) ? 0x000000 : clearColor;
+    this.clearAlpha = (clearAlpha === undefined) ? 0 : clearAlpha;
   }
 
-  render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+  render(renderer, writeBuffer, readBuffer) {
+    // REMARK: "maskActive" and "delta" never used. Removed.
+    // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
 
     let oldClearColor, oldClearAlpha;
 
@@ -27,8 +29,6 @@ export class ClearPass extends Pass {
     renderer.setRenderTarget(this.renderToScreen ? null : readBuffer);
     renderer.clear();
 
-    if (this.clearColor) {
-      renderer.setClearColor(oldClearColor, oldClearAlpha);
-    }
+    if (this.clearColor) renderer.setClearColor(oldClearColor, oldClearAlpha);
   }
 }
