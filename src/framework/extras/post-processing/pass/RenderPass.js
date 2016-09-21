@@ -3,11 +3,10 @@
  * @author yannis torres / es6 migration
  */
 
-import { Pass } from './Pass.js';
+import {Pass} from './Pass.js';
 
 export class RenderPass extends Pass {
   constructor(name, scene, camera, overrideMaterial, clearColor, clearAlpha) {
-
     super(name);
 
     this.scene = scene;
@@ -16,15 +15,18 @@ export class RenderPass extends Pass {
     this.overrideMaterial = overrideMaterial;
 
     this.clearColor = clearColor;
-    this.clearAlpha = (clearAlpha !== undefined) ? clearAlpha : 0;
+    this.clearAlpha = (clearAlpha === undefined) ? 0 : clearAlpha;
 
     this.clear = true;
     this.needsSwap = false;
   }
 
-  render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+  render(renderer, writeBuffer, readBuffer) {
+    // REMARK: "maskActive" and "delta" never used. Removed.
+    // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+
     let oldClearColor, oldClearAlpha;
-    let oldAutoClear = renderer.autoClear;
+    const oldAutoClear = renderer.autoClear;
 
     renderer.autoClear = false;
     this.scene.overrideMaterial = this.overrideMaterial;
@@ -37,9 +39,7 @@ export class RenderPass extends Pass {
 
     renderer.render(this.scene, this.camera, this.renderToScreen ? null : readBuffer, this.clear);
 
-    if (this.clearColor) {
-      renderer.setClearColor(oldClearColor, oldClearAlpha);
-    }
+    if (this.clearColor) renderer.setClearColor(oldClearColor, oldClearAlpha);
 
     this.scene.overrideMaterial = null;
     renderer.autoClear = oldAutoClear;

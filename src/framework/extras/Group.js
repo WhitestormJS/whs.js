@@ -10,10 +10,10 @@ class Group extends Shape {
     super.wrap();
 
     for (let i = 0; i < objects.length; i++) {
-    	const obj = objects[i];
+      const obj = objects[i];
 
-    	if (obj instanceof CoreObject) obj.addTo(this);
-    	else if (obj instanceof THREE.Object3D) this.native.add(obj);
+      if (obj instanceof CoreObject) obj.addTo(this);
+      else if (obj instanceof THREE.Object3D) this.native.add(obj);
     }
   }
 }

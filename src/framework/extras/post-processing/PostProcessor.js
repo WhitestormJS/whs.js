@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 
-import { extend } from '../../utils/index';
-import { CoreObject } from '../../core/CoreObject.js';
-import { EffectComposer } from './EffectComposer.js';
-import { RenderPass } from './pass/RenderPass.js';
+import {extend} from '../../utils/index';
+import {CoreObject} from '../../core/CoreObject.js';
+import {EffectComposer} from './EffectComposer.js';
+import {RenderPass} from './pass/RenderPass.js';
 
 class PostProcessor extends CoreObject {
   static defaults = {
@@ -30,7 +30,7 @@ class PostProcessor extends CoreObject {
     this.params = extend(params, PostProcessor.defaults);
     const _params = this.params;
 
-    if (_params.autoresize === "window") {
+    if (_params.autoresize === 'window') {
       window.addEventListener('resize', () => {
         this.setSize(
           Number(window.innerWidth * _params.rWidth).toFixed(),
@@ -41,11 +41,11 @@ class PostProcessor extends CoreObject {
       });
     } else if (_params.autoresize) {
       window.addEventListener('resize', () => {
-        //FIXME: cf setContainerConfig()
-        //this.setSize(
-          // Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
-          // Number(_params.container.offsetHeight * _params.rHeight).toFixed()
-        //);
+        // TODO: cf setContainerConfig()
+        // this.setSize(
+          //  Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
+          //  Number(_params.container.offsetHeight * _params.rHeight).toFixed()
+        // );
 
         this.emit('resize');
       });
@@ -59,24 +59,21 @@ class PostProcessor extends CoreObject {
   }
 
   _initTargetRenderer() {
-    let params = this.params;
-    let width = Number(window.innerWidth * params.rWidth).toFixed();
-    let height = Number(window.innerHeight * params.rHeight).toFixed();
+    const params = this.params;
+    const width = Number(window.innerWidth * params.rWidth).toFixed();
+    const height = Number(window.innerHeight * params.rHeight).toFixed();
     this.renderTarget = new THREE.WebGLRenderTarget(width, height, params.renderTarget);
   }
 
   _initComposer() {
-    let _renderer = this.renderer;
-    let _renderTarget = this.renderTarget;
+    const _renderer = this.renderer;
+    const _renderTarget = this.renderTarget;
 
-    if (!_renderer || !_renderTarget) {
-      //FIXME: throw or something here
-      return;
-    }
+    // TODO: throw or something here
+    if (!_renderer || !_renderTarget) return;
 
-    if (!this.composer) {
+    if (!this.composer)
       this.composer = new EffectComposer(_renderer, _renderTarget);
-    }
   }
 
   /**
@@ -85,9 +82,7 @@ class PostProcessor extends CoreObject {
    * @return {WHS.Pass} The created WHS.Pass
    */
   createPass(passCreator) {
-    if (typeof passCreator === 'function') {
-      return passCreator(this.composer);
-    }
+    if (typeof passCreator === 'function') return passCreator(this.composer);
   }
 
   /**
@@ -106,7 +101,7 @@ class PostProcessor extends CoreObject {
   createRenderPass(renderToScreen = false) {
     if (this.scene && this.camera && this.composer) {
       this.createPass(composer => {
-        let pass = new RenderPass('renderscene', this.scene, this.camera.native);
+        const pass = new RenderPass('renderscene', this.scene, this.camera.native);
         pass.renderToScreen = renderToScreen;
         composer.addPass(pass);
       });
@@ -135,7 +130,7 @@ class PostProcessor extends CoreObject {
    */
   setContainerConfig(container) {
     this.container = container;
-    //FIXME: handle autoresize container offset
+    // TODO: handle autoresize container offset
   }
 
   /**

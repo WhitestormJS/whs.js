@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
-import { CopyShader } from './shader/CopyShader.js';
-import { ShaderPass } from './pass/ShaderPass.js';
-import { MaskPass, ClearMaskPass } from './pass/MaskPass.js';
+import {CopyShader} from './shader/CopyShader.js';
+import {ShaderPass} from './pass/ShaderPass.js';
+import {MaskPass, ClearMaskPass} from './pass/MaskPass.js';
 
 export class EffectComposer {
   /**
@@ -14,14 +14,14 @@ export class EffectComposer {
     this.renderer = renderer;
 
     if (renderTarget === undefined) {
-      let parameters = {
+      const parameters = {
         minFilter: THREE.LinearFilter,
         magFilter: THREE.LinearFilter,
         format: THREE.RGBAFormat,
         stencilBuffer: false
       };
 
-      let size = renderer.getSize();
+      const size = renderer.getSize();
 
       renderTarget = new THREE.WebGLRenderTarget(size.width, size.height, parameters);
     }
@@ -41,7 +41,7 @@ export class EffectComposer {
    * Swap drawing buffers
    */
   swapBuffers() {
-    let tmp = this.readBuffer;
+    const tmp = this.readBuffer;
     this.readBuffer = this.writeBuffer;
     this.writeBuffer = tmp;
   }
@@ -52,7 +52,7 @@ export class EffectComposer {
    */
   addPass(pass) {
     if (!pass) return;
-    let size = this.renderer ? this.renderer.getSize() : { width: 0, height: 0 };
+    const size = this.renderer ? this.renderer.getSize() : {width: 0, height: 0};
     pass.setSize(size.width, size.height);
     this.passes.push(pass);
   }
@@ -72,7 +72,7 @@ export class EffectComposer {
    * @return {Number} The pass index or -1.
    */
   getPassIndex(passIndicator) {
-    let passName = typeof passIndicator === 'string' ? passIndicator : passIndicator.name;
+    const passName = typeof passIndicator === 'string' ? passIndicator : passIndicator.name;
     return this.passes.indexOf(this.getPass(passName));
   }
 
@@ -93,9 +93,7 @@ export class EffectComposer {
    * @param  {Number} index : The index.
    */
   insertPass(pass, index) {
-    if (pass) {
-      this.passes.splice(index, 0, pass);
-    }
+    if (pass) this.passes.splice(index, 0, pass);
   }
 
   /**
@@ -103,10 +101,8 @@ export class EffectComposer {
    * @param  {String|WHS.Pass} passIndicator : The pass name or the pass instance.
    */
   removePass(passIndicator) {
-    let index = this.getPassIndex(passIndicator);
-    if (index > -1) {
-      this.passes.splice(index, 1);
-    }
+    const index = this.getPassIndex(passIndicator);
+    if (index > -1) this.passes.splice(index, 1);
   }
 
   /**
@@ -114,21 +110,22 @@ export class EffectComposer {
    * @param  {Number} delta : The delta time since the last frame.
    */
   render(delta) {
+    const il = this.passes.length;
+
     let maskActive = false;
-    let pass, i, il = this.passes.length;
+    let pass, i;
 
     for (i = 0; i < il; i++) {
       pass = this.passes[i];
 
-      if (pass.enabled === false) {
-        continue;
-      }
+      if (pass.enabled === false) continue;
 
       pass.render(this.renderer, this.writeBuffer, this.readBuffer, delta, maskActive);
 
       if (pass.needsSwap) {
         if (maskActive) {
-          let context = this.renderer.context;
+          const context = this.renderer.context;
+
           context.stencilFunc(context.NOTEQUAL, 1, 0xffffffff);
           this.copyPass.render(this.renderer, this.writeBuffer, this.readBuffer, delta);
           context.stencilFunc(context.EQUAL, 1, 0xffffffff);
@@ -137,11 +134,8 @@ export class EffectComposer {
       }
 
       if (MaskPass !== undefined) {
-        if (pass instanceof MaskPass) {
-          maskActive = true;
-        } else if (pass instanceof ClearMaskPass) {
-          maskActive = false;
-        }
+        if (pass instanceof MaskPass) maskActive = true;
+        else if (pass instanceof ClearMaskPass) maskActive = false;
       }
     }
   }
@@ -152,7 +146,7 @@ export class EffectComposer {
    */
   reset(renderTarget) {
     if (renderTarget === undefined) {
-      let size = this.renderer.getSize();
+      const size = this.renderer.getSize();
 
       renderTarget = this.renderTarget1.clone();
       renderTarget.setSize(size.width, size.height);
@@ -176,8 +170,6 @@ export class EffectComposer {
     this.renderTarget1.setSize(width, height);
     this.renderTarget2.setSize(width, height);
 
-    for (let i = 0; i < this.passes.length; i++) {
-      this.passes[i].setSize(width, height);
-    }
+    for (let i = 0; i < this.passes.length; i++) this.passes[i].setSize(width, height);
   }
 }
