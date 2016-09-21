@@ -4,7 +4,6 @@ import * as Physijs from '../physics/index.js';
 
 import {extend} from '../utils/index';
 import {PerspectiveCamera} from '../cameras/PerspectiveCamera';
-import {Camera} from './Camera';
 import {Shape} from './Shape';
 import {Light} from './Light';
 import {CoreObject} from './CoreObject';
@@ -16,7 +15,7 @@ class World extends CoreObject {
     softbody: false,
 
     shadowmap: {
-      enabled: trueMaterial Theme,
+      enabled: true,
       type: THREE.PCFSoftShadowMap
     },
 

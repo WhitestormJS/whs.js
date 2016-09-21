@@ -11,14 +11,13 @@ export function firstPersonControls(object, params = {}) {
       ypos: 1
     });
 
-    let controls = new (function (camera, mesh, params) {
+    const controls = new (function (camera, mesh, params) {
       const velocityFactor = 1;
       let runVelocity = 0.25;
 
       mesh.setAngularFactor({x: 0, y: 0, z: 0});
 
       /* Init */
-      let scope = this;
       const player = mesh,
         pitchObject = new THREE.Object3D();
 
@@ -43,8 +42,8 @@ export function firstPersonControls(object, params = {}) {
           canJump = true;
       });
 
-      function onMouseMove(event) {
-        if (scope.enabled === false) return;
+      const onMouseMove = event => {
+        if (this.enabled === false) return;
 
         const movementX = typeof event.movementX === 'number'
           ? event.movementX : typeof event.mozMovementX === 'number'
@@ -59,9 +58,9 @@ export function firstPersonControls(object, params = {}) {
         pitchObject.rotation.x -= movementY * 0.002;
 
         pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
-      }
+      };
 
-      function onKeyDown(event) {
+      const onKeyDown = event => {
         switch (event.keyCode) {
           case 38: // up
           case 87: // w
@@ -84,9 +83,7 @@ export function firstPersonControls(object, params = {}) {
             break;
 
           case 32: // space
-            if (canJump === true) {
-              player.applyCentralImpulse({x: 0, y: 300, z: 0});
-            }
+            if (canJump === true) player.applyCentralImpulse({x: 0, y: 300, z: 0});
             canJump = false;
             break;
 
@@ -96,9 +93,9 @@ export function firstPersonControls(object, params = {}) {
 
           default:
         }
-      }
+      };
 
-      function onKeyUp(event) {
+      const onKeyUp = event => {
         switch (event.keyCode) {
           case 38: // up
           case 87: // w
@@ -126,19 +123,16 @@ export function firstPersonControls(object, params = {}) {
 
           default:
         }
-      }
+      };
 
       document.body.addEventListener('mousemove', onMouseMove, false);
       document.body.addEventListener('keydown', onKeyDown, false);
       document.body.addEventListener('keyup', onKeyUp, false);
 
       this.enabled = false;
+      this.getObject = () => yawObject;
 
-      this.getObject = () => {
-        return yawObject;
-      };
-
-      this.getDirection = (targetVec) => {
+      this.getDirection = targetVec => {
         targetVec.set(0, 0, -1);
         quat.multiplyVector3(targetVec);
       };
@@ -148,8 +142,8 @@ export function firstPersonControls(object, params = {}) {
       const inputVelocity = new THREE.Vector3(),
         euler = new THREE.Euler();
 
-      this.update = (delta) => {
-        if (scope.enabled === false) return;
+      this.update = delta => {
+        if (this.enabled === false) return;
 
         delta = delta || 0.5;
         delta = Math.min(delta, 0.5);
@@ -239,10 +233,11 @@ export function firstPersonControls(object, params = {}) {
       });
     } else console.warn('Your browser does not support the PointerLock WHS.API.');
 
-    function callback(world) {
-      world.scene.add(world.controls.getObject());
-    }
-
-    return [controls, callback];
+    return [
+      controls,
+      function callback(world) {
+        world.scene.add(world.controls.getObject());
+      }
+    ];
   };
 }

@@ -3,7 +3,7 @@
  * @author yannis torres / es6 migration
  */
 
-import { Pass } from './Pass.js';
+import {Pass} from './Pass.js';
 
 export class MaskPass extends Pass {
 
@@ -18,9 +18,12 @@ export class MaskPass extends Pass {
     this.inverse = false;
   }
 
-  render(renderer, writeBuffer, readBuffer, delta, maskActive) {
-    let context = renderer.context;
-    let state = renderer.state;
+  render(renderer, writeBuffer, readBuffer) {
+    // REMARK: "maskActive" and "delta" never used. Removed.
+    // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+
+    const context = renderer.context;
+    const state = renderer.state;
 
     // don't update color or depth
     state.buffers.color.setMask(false);
@@ -31,15 +34,8 @@ export class MaskPass extends Pass {
     state.buffers.depth.setLocked(true);
 
     // set up stencil
-    let writeValue, clearValue;
-
-    if (this.inverse) {
-      writeValue = 0;
-      clearValue = 1;
-    } else {
-      writeValue = 1;
-      clearValue = 0;
-    }
+    const writeValue = this.inverse ? 0 : 1;
+    const clearValue = this.inverse ? 1 : 0;
 
     state.buffers.stencil.setTest(true);
     state.buffers.stencil.setOp(context.REPLACE, context.REPLACE, context.REPLACE);
@@ -62,11 +58,14 @@ export class MaskPass extends Pass {
 
 export class ClearMaskPass extends Pass {
   constructor(name) {
-    super(name)
+    super(name);
     this.needsSwap = false;
   }
 
-  render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+  render(renderer) {
+    // REMARK: "writeBuffer", "readBuffer", "maskActive" and "delta" never used. Removed.
+    // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+
     renderer.state.buffers.stencil.setTest(false);
   }
 }
