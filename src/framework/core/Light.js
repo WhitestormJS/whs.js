@@ -2,9 +2,9 @@ import * as THREE from 'three';
 
 import {extend} from '../utils/index';
 import {Loop} from '../extras/Loop';
+import {deprecate} from '../utils/decorators';
 import {World} from './World';
 import {CoreObject} from './CoreObject';
-import {deprecate} from '../utils/decorators';
 
 const _set = (x, y, z) => {
   this.x = x;
@@ -86,9 +86,8 @@ class Light extends CoreObject {
   }
 
   wrap(...tags) {
-    return new Promise((resolve, reject) => {
-      const _native = this.native,
-        _params = this.params;
+    return new Promise(resolve => {
+      const _params = this.params;
 
       if (tags.indexOf('no-shadows') < 0) this.wrapShadow();
 
@@ -115,7 +114,7 @@ class Light extends CoreObject {
   addTo(parent) {
     this.parent = parent;
 
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       const _native = this.native,
         _parent = this.parent;
 
@@ -136,7 +135,7 @@ class Light extends CoreObject {
    * Set shadow properties for light.
    */
   wrapShadow() {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       const _native = this.native,
         _shadow = this.params.shadowmap;
 

@@ -2,8 +2,8 @@ import * as THREE from 'three';
 
 import {extend} from '../utils/index';
 import {Loop} from '../extras/Loop';
-import {CoreObject} from './CoreObject';
 import {deprecate} from '../utils/decorators';
+import {CoreObject} from './CoreObject';
 
 const _set = (x, y, z) => {
   this.x = x;
