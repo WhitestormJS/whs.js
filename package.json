@@ -73,6 +73,7 @@
     "happypack": "^2.1.1",
     "jsdom": "^9.4.5",
     "karma": "^1.0.0",
+    "karma-benchmark": "^0.6.0",
     "karma-benchmark-reporter": "^0.1.1",
     "karma-chrome-launcher": "^1.0.1",
     "karma-mocha": "^1.1.1",
@@ -112,6 +113,7 @@
       "no-undef": 0,
       "no-new": 0,
       "camelcase": 0,
+      "linebreak-style": 0,
       "new-cap": [
         1,
         {
