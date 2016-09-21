@@ -16,7 +16,7 @@ class World extends CoreObject {
     softbody: false,
 
     shadowmap: {
-      enabled: true,
+      enabled: trueMaterial Theme,
       type: THREE.PCFSoftShadowMap
     },
 
@@ -71,9 +71,8 @@ class World extends CoreObject {
       opacity: 1
     },
 
-    renderer: {},
+    renderer: {}
   };
-
 
   render = false;
   simulate = false;
@@ -425,7 +424,7 @@ class World extends CoreObject {
 
           if (obj3D.children.length) moveChildren(obj3D, WHSobj);
         }
-      }
+      };
 
       moveChildren(scene, this);
     }

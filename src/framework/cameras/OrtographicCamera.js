@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {Camera} from '../core/Camera';
 
 class OrtographicCamera extends Camera {
-  constructor(params = {}, localWindow = window) {
+  constructor(params = {}) {
     super(params, 'ortographiccamera');
 
     this.build(params);
