@@ -1,6 +1,9 @@
-import Terrain from 'whs-component-terrain';
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
 
-const GAME = new WHS.World({
+// TODO: import Terrain from 'whs-component-terrain';
+
+var GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
   autoresize: "window",
 
@@ -23,7 +26,7 @@ const GAME = new WHS.World({
   }
 });
 
-const terrain = new Terrain({
+var terrain = new Terrain({
   geometry: {
     map: '../../_assets/terrain/default_terrain.png',
     depth: 100,
@@ -38,15 +41,7 @@ const terrain = new Terrain({
     restitution: 0
   },
 
-  material: ['default',
-    [
-      WHS.texture('../../_assets/textures/terrain/dirt-512.jpg', {}),
-      WHS.texture('../../_assets/textures/terrain/sand-512.jpg', {}),
-      WHS.texture('../../_assets/textures/terrain/grass-512.jpg', {}),
-      WHS.texture('../../_assets/textures/terrain/rock-512.jpg', {}),
-      WHS.texture('../../_assets/textures/terrain/snow-512.jpg', {})
-    ]
-  ],
+  material: ['default', [WHS.texture('../../_assets/textures/terrain/dirt-512.jpg', {}), WHS.texture('../../_assets/textures/terrain/sand-512.jpg', {}), WHS.texture('../../_assets/textures/terrain/grass-512.jpg', {}), WHS.texture('../../_assets/textures/terrain/rock-512.jpg', {}), WHS.texture('../../_assets/textures/terrain/snow-512.jpg', {})]],
 
   pos: {
     x: 0,
@@ -93,7 +88,7 @@ new WHS.SpotLight({
   }
 }).addTo(GAME);
 
-const parrot = new WHS.Morph({
+var parrot = new WHS.Morph({
 
   geometry: {
     width: 2,
@@ -126,27 +121,14 @@ const parrot = new WHS.Morph({
 
 });
 
-const parrotPath = [
-  new THREE.CubicBezierCurve3(
-      new THREE.Vector3(-100, 100, 50),
-      new THREE.Vector3(-200, 120, -50),
-      new THREE.Vector3(200, 120, -50),
-      new THREE.Vector3(100, 100, 50)
-    ),
-  new THREE.CubicBezierCurve3(
-      new THREE.Vector3(100, 100, 50),
-      new THREE.Vector3(-200, 80, 150),
-      new THREE.Vector3(200, 60, 150),
-      new THREE.Vector3(-100, 100, 50)
-    )
-];
+var parrotPath = [new THREE.CubicBezierCurve3(new THREE.Vector3(-100, 100, 50), new THREE.Vector3(-200, 120, -50), new THREE.Vector3(200, 120, -50), new THREE.Vector3(100, 100, 50)), new THREE.CubicBezierCurve3(new THREE.Vector3(100, 100, 50), new THREE.Vector3(-200, 80, 150), new THREE.Vector3(200, 60, 150), new THREE.Vector3(-100, 100, 50))];
 
-const parrotgoes = new THREE.CurvePath();
+var parrotgoes = new THREE.CurvePath();
 
 parrotgoes.add(parrotPath[0]);
 parrotgoes.add(parrotPath[1]);
 
-const flamingo = new WHS.Morph({
+var flamingo = new WHS.Morph({
   geometry: {
     width: 2,
     height: 2,
@@ -177,47 +159,21 @@ const flamingo = new WHS.Morph({
   }
 });
 
-const flamingoPath = [
-  new THREE.CubicBezierCurve3(
-      new THREE.Vector3(-100, 100, 50),
-      new THREE.Vector3(-100, 160, 300),
-      new THREE.Vector3(200, 180, 30),
-      new THREE.Vector3(100, 140, 80)
-    ),
-  new THREE.CubicBezierCurve3(
-      new THREE.Vector3(100, 140, 80),
-      new THREE.Vector3(200, 80, 150),
-      new THREE.Vector3(-200, 60, -100),
-      new THREE.Vector3(200, 100, 350)
-    ),
-  new THREE.CubicBezierCurve3(
-      new THREE.Vector3(200, 100, 350),
-      new THREE.Vector3(200, 80, 150),
-      new THREE.Vector3(-200, 60, -100),
-      new THREE.Vector3(-100, 100, 50)
-    )
-];
+var flamingoPath = [new THREE.CubicBezierCurve3(new THREE.Vector3(-100, 100, 50), new THREE.Vector3(-100, 160, 300), new THREE.Vector3(200, 180, 30), new THREE.Vector3(100, 140, 80)), new THREE.CubicBezierCurve3(new THREE.Vector3(100, 140, 80), new THREE.Vector3(200, 80, 150), new THREE.Vector3(-200, 60, -100), new THREE.Vector3(200, 100, 350)), new THREE.CubicBezierCurve3(new THREE.Vector3(200, 100, 350), new THREE.Vector3(200, 80, 150), new THREE.Vector3(-200, 60, -100), new THREE.Vector3(-100, 100, 50))];
 
-const flamingogoes = new THREE.CurvePath();
+var flamingogoes = new THREE.CurvePath();
 
 flamingogoes.add(flamingoPath[0]);
 flamingogoes.add(flamingoPath[1]);
 flamingogoes.add(flamingoPath[2]);
 
-flamingo.addTo(GAME, 'wait').then((obj) => {
-  obj.follow(
-    parrotgoes, // flamingogoes
-    26000,
-    true
-  );
+flamingo.addTo(GAME, 'wait').then(function (obj) {
+  obj.follow(parrotgoes, // flamingogoes
+  26000, true);
 });
 
-parrot.addTo(GAME, 'wait').then((obj) => {
-  obj.follow(
-    flamingogoes,
-    20000,
-    true
-  );
+parrot.addTo(GAME, 'wait').then(function (obj) {
+  obj.follow(flamingogoes, 20000, true);
 });
 
 new WHS.Skybox({
@@ -225,11 +181,11 @@ new WHS.Skybox({
   imgSuffix: '.png',
   skyType: 'sphere',
   radius: GAME.camera.params.camera.far,
-  rot: {y: Math.PI / 180 * -90},
-  pos: {y: -200}
+  rot: { y: Math.PI / 180 * -90 },
+  pos: { y: -200 }
 }).addTo(GAME);
 
-const box = new WHS.Box({
+var box = new WHS.Box({
   geometry: {
     width: 2,
     height: 2,
@@ -251,8 +207,8 @@ const box = new WHS.Box({
   }
 });
 
-GAME.add(box).then(() => {
-  const checker1 = new WHS.Loop(() => {
+GAME.add(box).then(function () {
+  var checker1 = new WHS.Loop(function () {
     if (box.position.y < -200) {
       box.position.set(50, 70, 60);
 
@@ -287,7 +243,7 @@ new WHS.Box({
   }
 }).addTo(GAME);
 
-const person = new WHS.Sphere({
+var person = new WHS.Sphere({
   geometry: {
     radius: 2
   },
@@ -312,8 +268,8 @@ const person = new WHS.Sphere({
   }
 });
 
-GAME.add(person).then(() => {
-  const checker2 = new WHS.Loop(() => {
+GAME.add(person).then(function () {
+  var checker2 = new WHS.Loop(function () {
     if (person.position.y < -200) {
       person.position.set(0, 100, 0);
 
@@ -327,10 +283,10 @@ GAME.add(person).then(() => {
   checker2.start();
 });
 
-GAME.setControls(
-  WHS.firstPersonControls(person, {
-    speed: 3
-  })
-);
+GAME.setControls(WHS.firstPersonControls(person, {
+  speed: 3
+}));
 
 GAME.start();
+
+},{}]},{},[1]);
