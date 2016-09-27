@@ -27,7 +27,7 @@ window.sphere = new WHS.Sphere({
     kind: 'basic'
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 100,
     z: 0
@@ -49,13 +49,13 @@ new WHS.Plane({
     kind: 'basic'
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 0,
     z: 0
   },
 
-  rot: {
+  rotation: {
     x: -Math.PI / 2
   }
 }).addTo(GAME);

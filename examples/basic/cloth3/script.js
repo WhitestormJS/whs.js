@@ -40,7 +40,7 @@ var arm = new WHS.Box({ // Rigidbody (green).
     color: 0x00ff00
   },
 
-  pos: {
+  position: {
     y: 130,
     z: 30
   }
@@ -85,7 +85,7 @@ new WHS.Box({ // Rigidbody (green).
     color: 0x00ff00
   },
 
-  pos: {
+  position: {
     y: 36
   }
 }).addTo(GAME);
@@ -104,7 +104,7 @@ new WHS.Box({
     kind: 'phong'
   },
 
-  pos: {
+  position: {
     x: 0,
     y: -20,
     z: 0
@@ -117,7 +117,7 @@ new WHS.DirectionalLight({
     intensity: 1
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 10,
     z: 30

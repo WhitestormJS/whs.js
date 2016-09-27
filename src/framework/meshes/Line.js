@@ -2,11 +2,17 @@ import * as THREE from 'three';
 
 import {loadMaterial, extend} from '../utils/index';
 import {RopeMesh} from '../physics/index.js';
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 
-class Line extends Shape {
+@SoftbodyComponent
+@PhysicsComponent
+@MeshComponent
+class Line extends Component {
   constructor(params) {
-    super(params, 'line');
+    super(params, Line.defaults);
 
     extend(params.geometry, {
       curve: false,

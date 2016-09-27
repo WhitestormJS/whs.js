@@ -1,9 +1,9 @@
-WHS.Shape.prototype.changeColor = function () {
+WHS.Component.prototype.changeColor = function (world) {
   const object = this,
     color = new THREE.Color();
 
   const animation = new WHS.Loop(() => {
-    object.M_color = color;
+    object.material.color = color;
 
     if (color.r <= 1)
       color.r += 0.01;
@@ -12,13 +12,12 @@ WHS.Shape.prototype.changeColor = function () {
     if (color.b >= 0)
       color.b -= 0.01;
     if (color.r >= 1) {
-      object.getWorld().removeLoop(animation);
-      animation.stop();
+      animation.stop(world);
 
-      object.M_color.setRGB(1, 0, 0);
+      object.material.color.setRGB(1, 0, 0);
 
       const animation2 = new WHS.Loop(() => {
-        object.M_color = color;
+        object.material.color = color;
         if (color.r >= 0)
           color.r -= 0.01;
         if (color.g <= 1)
@@ -26,12 +25,11 @@ WHS.Shape.prototype.changeColor = function () {
         if (color.b >= 0)
           color.b -= 0.01;
         if (color.r <= 0 && color.g >= 1) {
-          object.getWorld().removeLoop(animation2);
-          animation2.stop();
+          animation2.stop(world);
 
-          object.M_color.setRGB(1, 0, 0);
+          object.material.color.setRGB(1, 0, 0);
           const animation3 = new WHS.Loop(() => {
-            object.M_color = color;
+            object.material.color = color;
             if (color.r >= 0)
               color.r -= 0.01;
             if (color.g >= 0)
@@ -39,28 +37,22 @@ WHS.Shape.prototype.changeColor = function () {
             if (color.b <= 1)
               color.b += 0.01;
             if (color.g <= 0 && color.b >= 1) {
-              object.getWorld().removeLoop(animation3);
-              animation3.stop();
+              animation3.stop(world);
 
-              object.M_color.setRGB(0, 0, 1);
-
-              object.getWorld().addLoop(animation);
-              animation.start();
+              object.material.color.setRGB(0, 0, 1);
+              animation.start(world);
             }
           });
 
-          object.getWorld().addLoop(animation3);
-          animation3.start();
+          animation3.start(world);
         }
       });
 
-      object.getWorld().addLoop(animation2);
-      animation2.start();
+      animation2.start(world);
     }
   });
 
-  object.getWorld().addLoop(animation);
-  animation.start();
+  animation.start(world);
 };
 
 const GAME = new WHS.World({
@@ -97,7 +89,7 @@ const torus = new WHS.Torus({
     kind: 'phong'
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 10,
     z: 0
@@ -106,7 +98,7 @@ const torus = new WHS.Torus({
 
 GAME.add(torus);
 
-torus.changeColor();
+torus.changeColor(GAME);
 
 new WHS.Box({
 
@@ -123,7 +115,7 @@ new WHS.Box({
     kind: 'phong'
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 0,
     z: 0
@@ -134,7 +126,7 @@ new WHS.DirectionalLight({
   color: 0xffffff, // 0x00ff00,
   intensity: 2,
 
-  pos: {
+  position: {
     x: 0,
     y: 10,
     z: 30

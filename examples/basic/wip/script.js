@@ -90,7 +90,7 @@ var sphere = new WHS.Sphere({
     refractionRatio: 0.95
   },
 
-  pos: {
+  position: {
     x: -20,
     y: 10,
     z: 0
@@ -143,7 +143,7 @@ var sphereStart = new WHS.Sphere({
     refractionRatio: 0.95
   },
 
-  pos: {
+  position: {
     x: 25,
     y: 15,
     z: 0
@@ -187,13 +187,13 @@ new WHS.Plane({
     opacity: 0
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 0,
     z: 0
   },
 
-  rot: {
+  rotation: {
     x: -Math.PI / 2
   }
 }).addTo(GAME);
@@ -205,7 +205,7 @@ new WHS.SpotLight({
     angle: 90
   },
 
-  pos: {
+  position: {
     y: 50
   }
 }).addTo(GAME);

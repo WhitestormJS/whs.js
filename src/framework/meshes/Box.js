@@ -1,12 +1,18 @@
 import * as THREE from 'three';
 import {BoxMesh, SoftMesh} from '../physics/index.js';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 import {extend, loadMaterial} from '../utils/index';
 
-class Box extends Shape {
+@SoftbodyComponent
+@PhysicsComponent
+@MeshComponent
+class Box extends Component {
   constructor(params = {}) {
-    super(params, 'box');
+    super(params, Box.defaults);
 
     extend(params.geometry, {
       width: 1,

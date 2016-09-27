@@ -1,12 +1,18 @@
 import * as THREE from 'three';
 import {SphereMesh, SoftMesh} from '../physics/index.js';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 import {extend, loadMaterial} from '../utils/index';
 
-class Sphere extends Shape {
+@SoftbodyComponent
+@PhysicsComponent
+@MeshComponent
+class Sphere extends Component {
   constructor(params = {}) {
-    super(params, 'sphere');
+    super(params, Sphere.defaults);
 
     extend(params.geometry, {
       radius: 1,

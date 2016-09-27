@@ -53,7 +53,7 @@ const stick = new WHS.Box({
     state: 4
   },
 
-  pos: {
+  position: {
     y: 0.5
   }
 });
@@ -112,7 +112,7 @@ window.sphere = new WHS.Sphere({
     kind: 'phong'
   },
 
-  pos: {
+  position: {
     x: -20,
     y: 1
   }
@@ -145,7 +145,7 @@ window.ground = new WHS.Box({
     margin: 1
   },
 
-  pos: {
+  position: {
     x: 0,
     y: -3,
     z: 0
@@ -167,7 +167,7 @@ const light = new WHS.DirectionalLight({
     right: 40
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 100,
     z: 300

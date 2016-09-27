@@ -1,12 +1,18 @@
 import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 import {extend, loadMaterial} from '../utils/index';
 
-class Torusknot extends Shape {
+@SoftbodyComponent
+@PhysicsComponent
+@MeshComponent
+class Torusknot extends Component {
   constructor(params = {}) {
-    super(params, 'Torusknot');
+    super(params, Torusknot.defaults);
 
     extend(params.geometry, {
       radius: 100,

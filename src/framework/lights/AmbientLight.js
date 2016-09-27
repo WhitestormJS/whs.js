@@ -1,9 +1,11 @@
 import * as THREE from 'three';
-import {Light} from '../core/Light';
+import {Component} from '../core/Component';
+import LightComponent from '../core/LightComponent';
 
-class AmbientLight extends Light {
+@LightComponent
+class AmbientLight extends Component {
   constructor(params = {}) {
-    super(params, 'ambientlight');
+    super(params, AmbientLight.defaults);
 
     this.build(params);
     super.wrap('no-shadows');

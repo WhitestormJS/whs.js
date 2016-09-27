@@ -1,12 +1,18 @@
 import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 import {extend, loadMaterial} from '../utils/index';
 
-class Extrude extends Shape {
+@SoftbodyComponent
+@PhysicsComponent
+@MeshComponent
+class Extrude extends Component {
   constructor(params = {}) {
-    super(params, 'extrude');
+    super(params, Extrude.defaults);
 
     extend(params.geometry, {
       shapes: [],

@@ -12,7 +12,7 @@ export * from './Parametric';
 export * from './Plane';
 export * from './Polyhedron';
 export * from './Ring';
-export * from './Shape2D';
+export * from './Shape';
 export * from './Sphere';
 export * from './Tetrahedron';
 export * from './Text';

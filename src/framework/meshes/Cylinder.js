@@ -1,12 +1,18 @@
 import * as THREE from 'three';
 import {CylinderMesh, SoftMesh} from '../physics/index.js';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 import {extend, loadMaterial} from '../utils/index';
 
-class Cylinder extends Shape {
+@SoftbodyComponent
+@PhysicsComponent
+@MeshComponent
+class Cylinder extends Component {
   constructor(params = {}) {
-    super(params, 'cylinder');
+    super(params, Cylinder.defaults);
 
     extend(params.geometry, {
       radiusTop: 0,

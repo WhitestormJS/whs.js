@@ -1,9 +1,11 @@
 import * as THREE from 'three';
-import {Light} from '../core/Light';
+import {Component} from '../core/Component';
+import LightComponent from '../core/LightComponent';
 
-class DirectionalLight extends Light {
+@LightComponent
+class DirectionalLight extends Component {
   constructor(params = {}) {
-    super(params, 'directionallight');
+    super(params, DirectionalLight.defaults);
 
     this.build(params);
     super.wrap();

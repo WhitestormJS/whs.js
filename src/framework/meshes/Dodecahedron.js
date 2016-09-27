@@ -1,12 +1,18 @@
 import * as THREE from 'three';
 import {ConvexMesh, SoftMesh} from '../physics/index.js';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 import {extend, loadMaterial} from '../utils/index';
 
-class Dodecahedron extends Shape {
+@SoftbodyComponent
+@PhysicsComponent
+@MeshComponent
+class Dodecahedron extends Component {
   constructor(params = {}) {
-    super(params, 'dodecahedron');
+    super(params, Dodecahedron.defaults);
 
     extend(params.geometry, {
       radius: 1,

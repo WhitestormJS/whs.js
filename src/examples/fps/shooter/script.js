@@ -48,7 +48,7 @@ const terrain = new Terrain({
     ]
   ],
 
-  pos: {
+  position: {
     x: 0,
     y: 0,
     z: 0
@@ -80,7 +80,7 @@ new WHS.SpotLight({
     fov: 90
   },
 
-  pos: {
+  position: {
     x: 160, // 100,
     y: 120, // 30,
     z: 160 // 100
@@ -107,7 +107,7 @@ const parrot = new WHS.Morph({
     kind: 'lambert'
   },
 
-  pos: {
+  position: {
     x: 70,
     y: 72,
     z: 70
@@ -159,7 +159,7 @@ const flamingo = new WHS.Morph({
     kind: 'lambert'
   },
 
-  pos: {
+  position: {
     x: 70,
     y: 72,
     z: 70
@@ -225,8 +225,8 @@ new WHS.Skybox({
   imgSuffix: '.png',
   skyType: 'sphere',
   radius: GAME.camera.params.camera.far,
-  rot: {y: Math.PI / 180 * -90},
-  pos: {y: -200}
+  rotation: {y: Math.PI / 180 * -90},
+  position: {y: -200}
 }).addTo(GAME);
 
 const box = new WHS.Box({
@@ -244,7 +244,7 @@ const box = new WHS.Box({
     map: WHS.texture('{{ assets }}/textures/box.jpg')
   },
 
-  pos: {
+  position: {
     x: 50,
     y: 70,
     z: 60
@@ -280,7 +280,7 @@ new WHS.Box({
     map: WHS.texture('{{ assets }}/textures/box.jpg')
   },
 
-  pos: {
+  position: {
     x: 30,
     y: 50,
     z: 0
@@ -305,7 +305,7 @@ const person = new WHS.Sphere({
     kind: 'lambert'
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 100,
     z: 0

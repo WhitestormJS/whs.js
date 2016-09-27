@@ -50,18 +50,18 @@ var sphere = new WHS.Icosahedron({ // Softbody.
     kind: 'phong'
   },
 
-  pos: {
+  position: {
     y: 5
   }
 });
 
-sphere.getNative().frustumCulled = false;
+sphere.native.frustumCulled = false;
 
 sphere.addTo(GAME).then(function () {
   for (var i = 0; i < 30; i++) {
     let newSphere = sphere.clone();
     newSphere.position.y = 4 * (i + 1);
-    newSphere.getNative().frustumCulled = false;
+    newSphere.native.frustumCulled = false;
     newSphere.addTo(GAME);
   }
 });
@@ -80,7 +80,7 @@ new WHS.Box({
     kind: 'phong'
   },
 
-  pos: {
+  position: {
     x: 0,
     y: -5,
     z: 0
@@ -93,7 +93,7 @@ new WHS.DirectionalLight({
     intensity: 1
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 10,
     z: 30

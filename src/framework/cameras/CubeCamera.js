@@ -1,9 +1,11 @@
 import * as THREE from 'three';
-import {Camera} from '../core/Camera';
+import {Component} from '../core/Component';
+import CameraComponent from '../core/CameraComponent';
 
-class CubeCamera extends Camera {
+@CameraComponent
+class CubeCamera extends Component {
   constructor(params = {}) {
-    super(params, 'cubecamera');
+    super(params, CubeCamera.defaults);
 
     this.build(params);
     super.wrap();
