@@ -1,12 +1,18 @@
 import * as THREE from 'three';
 import {ConvexMesh, SoftMesh} from '../physics/index.js';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 import {extend, loadMaterial} from '../utils/index';
 
-class Polyhedron extends Shape {
+@SoftbodyComponent
+@PhysicsComponent
+@MeshComponent
+class Polyhedron extends Component {
   constructor(params = {}) {
-    super(params, 'polyhedron');
+    super(params, Polyhedron.defaults);
 
     extend(params.geometry, {
       verticesOfCube: this.verticesOfCube,

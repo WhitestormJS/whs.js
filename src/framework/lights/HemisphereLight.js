@@ -1,9 +1,11 @@
 import * as THREE from 'three';
-import {Light} from '../core/Light';
+import {Component} from '../core/Component';
+import LightComponent from '../core/LightComponent';
 
-class HemisphereLight extends Light {
+@LightComponent
+class HemisphereLight extends Component {
   constructor(params = {}) {
-    super(params, 'hemispherelight');
+    super(params, HemisphereLight.defaults);
 
     this.build(params);
 

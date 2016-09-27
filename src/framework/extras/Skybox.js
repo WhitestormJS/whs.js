@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 
 import {extend, texture} from '../utils/index';
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
 import {deprecate} from '../utils/decorators';
 
 @deprecate('0.0.11')
-class Skybox extends Shape {
+class Skybox extends Component {
   constructor(params = {}) {
     super(params, 'skybox');
 

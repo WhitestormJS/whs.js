@@ -1,11 +1,13 @@
 import * as THREE from 'three';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
 import {extend, loadMaterial} from '../utils/index';
 
-class Ring extends Shape {
+@MeshComponent
+class Ring extends Component {
   constructor(params = {}) {
-    super(params, 'ring');
+    super(params, Ring.defaults);
 
     extend(params.geometry, {
       innerRadius: 0,

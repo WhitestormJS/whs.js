@@ -1,13 +1,17 @@
 import * as THREE from 'three';
 import * as Physijs from '../physics/index.js';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 import {extend, loadMaterial} from '../utils/index';
 import {JSONLoader} from '../utils/loaders';
 
-class Morph extends Shape {
+@MeshComponent
+class Morph extends Component {
   constructor(params = {}) {
-    super(params, 'morph');
+    super(params, Morph.defaults);
 
     extend(params.geometry, {
       path: '',

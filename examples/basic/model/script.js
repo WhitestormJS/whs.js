@@ -44,10 +44,8 @@ var teapot = new WHS.Model({
     useCustomMaterial: true
   },
 
-  pos: {
-    x: 0,
-    y: 100,
-    z: 0
+  position: {
+    y: 100
   },
 
   scale: {
@@ -71,7 +69,7 @@ new WHS.Sphere({
     color: 0x00ff00
   },
 
-  pos: {
+  position: {
     x: 10, // 45
     y: 250,
     z: 0.769
@@ -93,7 +91,7 @@ new WHS.Box({
     kind: 'phong'
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 0,
     z: 0
@@ -104,7 +102,7 @@ new WHS.DirectionalLight({
   color: 0xffffff, // 0x00ff00,
   intensity: 2,
 
-  pos: {
+  position: {
     x: 0,
     y: 10,
     z: 30

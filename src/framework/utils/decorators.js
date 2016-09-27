@@ -1,3 +1,5 @@
+import {$wrap} from './ComponentUtils';
+
 export const deprecate = (version) => {
   return function (target, name, descriptor) {
     if (descriptor && typeof descriptor.value === 'function') {
@@ -11,9 +13,9 @@ export const deprecate = (version) => {
         }
       };
     } else {
-      target.prototype.onRun = function() {
+      $wrap(target).onCallConstructor(() => {
         console.warn(`Class WHS.${target.name} is deprecated since v${version}`, [target]);
-      }
+      });
     }
   };
 };

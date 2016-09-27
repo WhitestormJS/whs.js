@@ -1,12 +1,18 @@
 import * as THREE from 'three';
 import {ConvexMesh, SoftMesh} from '../physics/index.js';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
 import {extend, loadMaterial} from '../utils/index';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 
-class Icosahedron extends Shape {
+@SoftbodyComponent
+@PhysicsComponent
+@MeshComponent
+class Icosahedron extends Component {
   constructor(params = {}) {
-    super(params, 'icosahedron');
+    super(params, Icosahedron.defaults);
 
     extend(params.geometry, {
       radius: 1,

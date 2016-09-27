@@ -50,10 +50,10 @@ new WHS.Sphere({ // Softbody (blue).
     kind: 'phong'
   },
 
-  pos: {
+  position: {
     y: 4
   }
-}).addTo(GAME).then(obj => { obj.getNative().frustumCulled = false });
+}).addTo(GAME).then(obj => { obj.native.frustumCulled = false });
 
 new WHS.Sphere({ // Rigidbody (green).
   geometry: {
@@ -68,7 +68,7 @@ new WHS.Sphere({ // Rigidbody (green).
     color: 0x00ff00
   },
 
-  pos: {
+  position: {
     y: 30,
     x: -0.5, 
     z: 0.5
@@ -89,7 +89,7 @@ new WHS.Box({
     kind: 'phong'
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 0,
     z: 0
@@ -102,7 +102,7 @@ new WHS.DirectionalLight({
     intensity: 1
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 10,
     z: 30

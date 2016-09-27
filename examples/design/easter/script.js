@@ -48,7 +48,7 @@ new WHS.Box({
     color: 0xffffff
   },
 
-  pos: {
+  position: {
     x: 0,
     y: -1,
     z: 0
@@ -76,12 +76,12 @@ var egg = new WHS.Model({
     z: 1
   },
 
-  pos: {
+  position: {
     y: 0,
     x: -10
   },
 
-  rot: {
+  rotation: {
     x: Math.PI / 2,
     y: Math.PI / 8
   }
@@ -109,12 +109,12 @@ var rabbit = new WHS.Model({
     z: 0.5
   },
 
-  pos: {
+  position: {
     y: 5,
     x: -3
   },
 
-  rot: {
+  rotation: {
     x: Math.PI / 2
   }
 });
@@ -146,7 +146,7 @@ new WHS.SpotLight({
     fov: 10
   },
 
-  pos: {
+  position: {
     z: 20,
     x: 20,
     y: 20

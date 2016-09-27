@@ -1,12 +1,18 @@
 import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 import {extend, loadMaterial, FontLoader} from '../utils/index';
 
-class Text extends Shape {
+@SoftbodyComponent
+@PhysicsComponent
+@MeshComponent
+class Text extends Component {
   constructor(params = {}) {
-    super(params, 'text');
+    super(params, Text.defaults);
 
     extend(params.geometry, {
       text: 'Hello World!',

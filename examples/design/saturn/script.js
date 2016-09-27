@@ -91,7 +91,7 @@ new WHS.DirectionalLight({
     far: 800
   },
 
-  pos: {
+  position: {
     x: 300,
     z: 300,
     y: 100
@@ -182,6 +182,7 @@ for (var i = 0; i < particleCount; i++) {
 
   particle.G_({
     radiusBottom: radius,
+    radiusTop: 0,
     height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
     width: radius,
     depth: radius,
