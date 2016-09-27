@@ -1,12 +1,18 @@
 import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
 import {extend, loadMaterial} from '../utils/index';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 
-class Lathe extends Shape {
+@SoftbodyComponent
+@PhysicsComponent
+@MeshComponent
+class Lathe extends Component {
   constructor(params = {}) {
-    super(params, 'lathe');
+    super(params, Lathe.defaults);
 
     extend(params.geometry, {
       points: []

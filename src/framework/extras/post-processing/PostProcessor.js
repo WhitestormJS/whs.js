@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 
 import {extend} from '../../utils/index';
-import {CoreObject} from '../../core/CoreObject.js';
+import {Component} from '../../core/Component.js';
 import {EffectComposer} from './EffectComposer.js';
 import {RenderPass} from './pass/RenderPass.js';
 
-class PostProcessor extends CoreObject {
+class PostProcessor extends Component {
   static defaults = {
     autoresize: true,
 

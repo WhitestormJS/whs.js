@@ -1,11 +1,13 @@
 import * as THREE from 'three';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
 import {extend, loadMaterial} from '../utils/index';
 
-class Shape2D extends Shape {
+@MeshComponent
+class Shape extends Component {
   constructor(params = {}) {
-    super(params, 'shape2D');
+    super(params, Shape.defaults);
 
     extend(params.geometry, {
       shapes: []
@@ -31,7 +33,7 @@ class Shape2D extends Shape {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? THREE.ShapeBufferGeometry : THREE.ShapeGeometry;
+    const GConstruct = params.buffer && !params.softbody ? THREE.ComponentBufferGeometry : THREE.ComponentGeometry;
 
     return new GConstruct(
       params.geometry.shapes
@@ -47,10 +49,10 @@ class Shape2D extends Shape {
   }
 
   clone() {
-    return new Shape2D({build: false}).copy(this);
+    return new Shape({build: false}).copy(this);
   }
 }
 
 export {
-  Shape2D
+  Shape
 };

@@ -63,13 +63,13 @@ new WHS.Plane({
     kind: 'basic'
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 0,
     z: 0
   },
 
-  rot: {
+  rotation: {
     x: -Math.PI / 2
   }
 }).addTo(GAME);

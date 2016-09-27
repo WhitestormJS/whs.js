@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import * as Physijs from './physics/index.js';
 
-export * from './cameras/index';
 export * from './core/index';
 export * from './extras/index';
 export * from './lights/index';
+export * from './cameras/index';
 export * from './meshes/index';
 export * from './utils/index';
 

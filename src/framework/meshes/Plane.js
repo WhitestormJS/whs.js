@@ -1,12 +1,18 @@
 import * as THREE from 'three';
 import {PlaneMesh, ClothMesh} from '../physics/index.js';
 
-import {Shape} from '../core/Shape';
+import {Component} from '../core/Component';
+import MeshComponent from '../core/MeshComponent';
+import PhysicsComponent from '../core/PhysicsComponent';
+import SoftbodyComponent from '../core/SoftbodyComponent';
 import {extend, loadMaterial} from '../utils/index';
 
-class Plane extends Shape {
+@SoftbodyComponent
+@PhysicsComponent
+@MeshComponent
+class Plane extends Component {
   constructor(params = {}) {
-    super(params, 'plane');
+    super(params, Plane.defaults);
 
     extend(params.geometry, {
       width: 10,

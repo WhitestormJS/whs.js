@@ -46,14 +46,14 @@ new WHS.Sphere({
     rest: 0
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 100,
     z: 0
   }
 }).addTo(GAME);
 
-var tramplin = new WHS.Box({
+window.tramplin = new WHS.Box({
   geometry: {
     height: 2,
     width: 20,
@@ -68,13 +68,13 @@ var tramplin = new WHS.Box({
     rest: 0
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 4,
     z: 0
   },
 
-  rot: {
+  rotation: {
     z: -Math.PI / 6
   }
 });
@@ -83,6 +83,7 @@ tramplin.addTo(GAME);
 
 var tramplin2 = tramplin.clone();
 tramplin2.position.y = 44;
+console.log(tramplin.position);
 tramplin2.addTo(GAME);
 
 var tramplin3 = tramplin.clone();
@@ -106,7 +107,7 @@ var domino = new WHS.Box({
     fri: 1
   },
 
-  pos: {
+  position: {
     x: 20,
     y: 4,
     z: 0
@@ -136,7 +137,7 @@ new WHS.Box({
     fri: 1
   },
 
-  pos: {
+  position: {
     x: 0,
     y: -0.5,
     z: 0
@@ -149,7 +150,7 @@ new WHS.PointLight({
     distance: 200
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 10,
     z: 30

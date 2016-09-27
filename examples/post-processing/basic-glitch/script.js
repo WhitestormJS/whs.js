@@ -43,7 +43,7 @@ var conf = {
       kind: 'basic'
     },
 
-    pos: {
+    position: {
       x: 0,
       y: 50,
       z: 0
@@ -62,13 +62,13 @@ var conf = {
       kind: "basic"
     },
 
-    pos: {
+    position: {
       x: 0,
       y: 0,
       z: 0
     },
 
-    rot: {
+    rotation: {
       x: -Math.PI / 2
     }
   },

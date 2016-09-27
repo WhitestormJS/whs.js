@@ -48,11 +48,11 @@ window.cloth = new WHS.Plane({ // Softbody (blue).
     margin: 6
   },
 
-  pos: {
+  position: {
     y: 100
   },
 
-  rot: {
+  rotation: {
     x: Math.PI / 4
   }
 });
@@ -72,7 +72,7 @@ new WHS.Box({ // Rigidbody (green).
     color: 0x00ff00
   },
 
-  pos: {
+  position: {
     y: 56
   }
 }).addTo(GAME);
@@ -91,7 +91,7 @@ new WHS.Box({
     kind: 'phong'
   },
 
-  pos: {
+  position: {
     x: 0,
     y: -20,
     z: 0
@@ -104,7 +104,7 @@ new WHS.DirectionalLight({
     intensity: 1
   },
 
-  pos: {
+  position: {
     x: 0,
     y: 10,
     z: 30
