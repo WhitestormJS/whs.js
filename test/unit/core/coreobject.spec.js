@@ -5,7 +5,7 @@ define(['whs'], function(WHS) {
     context('Working with default values', () => {
       let result, expected;
 
-      const object = new WHS.CoreObject({
+      const object = new WHS.Component({
         default1: 1,
         default2: 2,
         default3: 3,

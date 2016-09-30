@@ -7985,25 +7985,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 	
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -8024,6 +8039,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -62144,7 +62164,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	/**
 	 * @author alteredq / http://alteredqualia.com/
@@ -62153,14 +62173,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	
 	var CopyShader = {
-	  uniforms: {
-	    tDiffuse: { value: null },
-	    opacity: { value: 1.0 }
-	  },
+	    uniforms: {
+	        tDiffuse: { value: null },
+	        opacity: { value: 1.0 }
+	    },
 	
-	  vertexShader: "\n    varying vec2 vUv;\n\n    void main() {\n\n      vUv = uv;\n      gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n    }\n",
+	    vertexShader: "\n    varying vec2 vUv;\n\n    void main() {\n\n      vUv = uv;\n      gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n    }\n",
 	
-	  fragmentShader: "\n    uniform float opacity;\n\n    uniform sampler2D tDiffuse;\n\n    varying vec2 vUv;\n\n    void main() {\n\n      vec4 texel = texture2D( tDiffuse, vUv );\n      gl_FragColor = opacity * texel;\n\n    }\n"
+	    fragmentShader: "\n    uniform float opacity;\n\n    uniform sampler2D tDiffuse;\n\n    varying vec2 vUv;\n\n    void main() {\n\n      vec4 texel = texture2D( tDiffuse, vUv );\n      gl_FragColor = opacity * texel;\n\n    }\n"
 	};
 	
 	exports.CopyShader = CopyShader;
@@ -62341,7 +62361,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.ClearMaskPass = exports.MaskPass = undefined;
 	
@@ -62366,89 +62386,89 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var MaskPass = exports.MaskPass = function (_Pass) {
-	  (0, _inherits3.default)(MaskPass, _Pass);
+	    (0, _inherits3.default)(MaskPass, _Pass);
 	
-	  function MaskPass(name, scene, camera) {
-	    (0, _classCallCheck3.default)(this, MaskPass);
+	    function MaskPass(name, scene, camera) {
+	        (0, _classCallCheck3.default)(this, MaskPass);
 	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (MaskPass.__proto__ || Object.getPrototypeOf(MaskPass)).call(this, name));
+	        var _this = (0, _possibleConstructorReturn3.default)(this, (MaskPass.__proto__ || Object.getPrototypeOf(MaskPass)).call(this, name));
 	
-	    _this.scene = scene;
-	    _this.camera = camera;
+	        _this.scene = scene;
+	        _this.camera = camera;
 	
-	    _this.clear = true;
-	    _this.needsSwap = false;
-	    _this.inverse = false;
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(MaskPass, [{
-	    key: 'render',
-	    value: function render(renderer, writeBuffer, readBuffer) {
-	      // REMARK: "maskActive" and "delta" never used. Removed.
-	      // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
-	
-	      var context = renderer.context;
-	      var state = renderer.state;
-	
-	      // don't update color or depth
-	      state.buffers.color.setMask(false);
-	      state.buffers.depth.setMask(false);
-	
-	      // lock buffers
-	      state.buffers.color.setLocked(true);
-	      state.buffers.depth.setLocked(true);
-	
-	      // set up stencil
-	      var writeValue = this.inverse ? 0 : 1;
-	      var clearValue = this.inverse ? 1 : 0;
-	
-	      state.buffers.stencil.setTest(true);
-	      state.buffers.stencil.setOp(context.REPLACE, context.REPLACE, context.REPLACE);
-	      state.buffers.stencil.setFunc(context.ALWAYS, writeValue, 0xffffffff);
-	      state.buffers.stencil.setClear(clearValue);
-	
-	      // draw into the stencil buffer
-	      renderer.render(this.scene, this.camera, readBuffer, this.clear);
-	      renderer.render(this.scene, this.camera, writeBuffer, this.clear);
-	
-	      // unlock color and depth buffer for subsequent rendering
-	      state.buffers.color.setLocked(false);
-	      state.buffers.depth.setLocked(false);
-	
-	      // only render where stencil is set to 1
-	      state.buffers.stencil.setFunc(context.EQUAL, 1, 0xffffffff); // draw if == 1
-	      state.buffers.stencil.setOp(context.KEEP, context.KEEP, context.KEEP);
+	        _this.clear = true;
+	        _this.needsSwap = false;
+	        _this.inverse = false;
+	        return _this;
 	    }
-	  }]);
-	  return MaskPass;
+	
+	    (0, _createClass3.default)(MaskPass, [{
+	        key: 'render',
+	        value: function render(renderer, writeBuffer, readBuffer) {
+	            // REMARK: "maskActive" and "delta" never used. Removed.
+	            // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+	
+	            var context = renderer.context;
+	            var state = renderer.state;
+	
+	            // don't update color or depth
+	            state.buffers.color.setMask(false);
+	            state.buffers.depth.setMask(false);
+	
+	            // lock buffers
+	            state.buffers.color.setLocked(true);
+	            state.buffers.depth.setLocked(true);
+	
+	            // set up stencil
+	            var writeValue = this.inverse ? 0 : 1;
+	            var clearValue = this.inverse ? 1 : 0;
+	
+	            state.buffers.stencil.setTest(true);
+	            state.buffers.stencil.setOp(context.REPLACE, context.REPLACE, context.REPLACE);
+	            state.buffers.stencil.setFunc(context.ALWAYS, writeValue, 0xffffffff);
+	            state.buffers.stencil.setClear(clearValue);
+	
+	            // draw into the stencil buffer
+	            renderer.render(this.scene, this.camera, readBuffer, this.clear);
+	            renderer.render(this.scene, this.camera, writeBuffer, this.clear);
+	
+	            // unlock color and depth buffer for subsequent rendering
+	            state.buffers.color.setLocked(false);
+	            state.buffers.depth.setLocked(false);
+	
+	            // only render where stencil is set to 1
+	            state.buffers.stencil.setFunc(context.EQUAL, 1, 0xffffffff); // draw if == 1
+	            state.buffers.stencil.setOp(context.KEEP, context.KEEP, context.KEEP);
+	        }
+	    }]);
+	    return MaskPass;
 	}(_Pass3.Pass); /**
 	                 * @author alteredq / http://alteredqualia.com/
 	                 * @author yannis torres / es6 migration
 	                 */
 	
 	var ClearMaskPass = exports.ClearMaskPass = function (_Pass2) {
-	  (0, _inherits3.default)(ClearMaskPass, _Pass2);
+	    (0, _inherits3.default)(ClearMaskPass, _Pass2);
 	
-	  function ClearMaskPass(name) {
-	    (0, _classCallCheck3.default)(this, ClearMaskPass);
+	    function ClearMaskPass(name) {
+	        (0, _classCallCheck3.default)(this, ClearMaskPass);
 	
-	    var _this2 = (0, _possibleConstructorReturn3.default)(this, (ClearMaskPass.__proto__ || Object.getPrototypeOf(ClearMaskPass)).call(this, name));
+	        var _this2 = (0, _possibleConstructorReturn3.default)(this, (ClearMaskPass.__proto__ || Object.getPrototypeOf(ClearMaskPass)).call(this, name));
 	
-	    _this2.needsSwap = false;
-	    return _this2;
-	  }
-	
-	  (0, _createClass3.default)(ClearMaskPass, [{
-	    key: 'render',
-	    value: function render(renderer) {
-	      // REMARK: "writeBuffer", "readBuffer", "maskActive" and "delta" never used. Removed.
-	      // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
-	
-	      renderer.state.buffers.stencil.setTest(false);
+	        _this2.needsSwap = false;
+	        return _this2;
 	    }
-	  }]);
-	  return ClearMaskPass;
+	
+	    (0, _createClass3.default)(ClearMaskPass, [{
+	        key: 'render',
+	        value: function render(renderer) {
+	            // REMARK: "writeBuffer", "readBuffer", "maskActive" and "delta" never used. Removed.
+	            // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+	
+	            renderer.state.buffers.stencil.setTest(false);
+	        }
+	    }]);
+	    return ClearMaskPass;
 	}(_Pass3.Pass);
 
 /***/ },
@@ -62458,7 +62478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.RenderPass = undefined;
 	
@@ -62483,54 +62503,54 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var RenderPass = exports.RenderPass = function (_Pass) {
-	  (0, _inherits3.default)(RenderPass, _Pass);
+	    (0, _inherits3.default)(RenderPass, _Pass);
 	
-	  function RenderPass(name, scene, camera, overrideMaterial, clearColor, clearAlpha) {
-	    (0, _classCallCheck3.default)(this, RenderPass);
+	    function RenderPass(name, scene, camera, overrideMaterial, clearColor, clearAlpha) {
+	        (0, _classCallCheck3.default)(this, RenderPass);
 	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (RenderPass.__proto__ || Object.getPrototypeOf(RenderPass)).call(this, name));
+	        var _this = (0, _possibleConstructorReturn3.default)(this, (RenderPass.__proto__ || Object.getPrototypeOf(RenderPass)).call(this, name));
 	
-	    _this.scene = scene;
-	    _this.camera = camera;
+	        _this.scene = scene;
+	        _this.camera = camera;
 	
-	    _this.overrideMaterial = overrideMaterial;
+	        _this.overrideMaterial = overrideMaterial;
 	
-	    _this.clearColor = clearColor;
-	    _this.clearAlpha = clearAlpha === undefined ? 0 : clearAlpha;
+	        _this.clearColor = clearColor;
+	        _this.clearAlpha = clearAlpha === undefined ? 0 : clearAlpha;
 	
-	    _this.clear = true;
-	    _this.needsSwap = false;
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(RenderPass, [{
-	    key: 'render',
-	    value: function render(renderer, writeBuffer, readBuffer) {
-	      // REMARK: "maskActive" and "delta" never used. Removed.
-	      // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
-	
-	      var oldClearColor = void 0,
-	          oldClearAlpha = void 0;
-	      var oldAutoClear = renderer.autoClear;
-	
-	      renderer.autoClear = false;
-	      this.scene.overrideMaterial = this.overrideMaterial;
-	
-	      if (this.clearColor) {
-	        oldClearColor = renderer.getClearColor().getHex();
-	        oldClearAlpha = renderer.getClearAlpha();
-	        renderer.setClearColor(this.clearColor, this.clearAlpha);
-	      }
-	
-	      renderer.render(this.scene, this.camera, this.renderToScreen ? null : readBuffer, this.clear);
-	
-	      if (this.clearColor) renderer.setClearColor(oldClearColor, oldClearAlpha);
-	
-	      this.scene.overrideMaterial = null;
-	      renderer.autoClear = oldAutoClear;
+	        _this.clear = true;
+	        _this.needsSwap = false;
+	        return _this;
 	    }
-	  }]);
-	  return RenderPass;
+	
+	    (0, _createClass3.default)(RenderPass, [{
+	        key: 'render',
+	        value: function render(renderer, writeBuffer, readBuffer) {
+	            // REMARK: "maskActive" and "delta" never used. Removed.
+	            // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+	
+	            var oldClearColor = void 0,
+	                oldClearAlpha = void 0;
+	            var oldAutoClear = renderer.autoClear;
+	
+	            renderer.autoClear = false;
+	            this.scene.overrideMaterial = this.overrideMaterial;
+	
+	            if (this.clearColor) {
+	                oldClearColor = renderer.getClearColor().getHex();
+	                oldClearAlpha = renderer.getClearAlpha();
+	                renderer.setClearColor(this.clearColor, this.clearAlpha);
+	            }
+	
+	            renderer.render(this.scene, this.camera, this.renderToScreen ? null : readBuffer, this.clear);
+	
+	            if (this.clearColor) renderer.setClearColor(oldClearColor, oldClearAlpha);
+	
+	            this.scene.overrideMaterial = null;
+	            renderer.autoClear = oldAutoClear;
+	        }
+	    }]);
+	    return RenderPass;
 	}(_Pass2.Pass); /**
 	                 * @author alteredq / http://alteredqualia.com/
 	                 * @author yannis torres / es6 migration
@@ -62697,7 +62717,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.TexturePass = undefined;
 	
@@ -62730,60 +62750,60 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var TexturePass = exports.TexturePass = function (_Pass) {
-	  (0, _inherits3.default)(TexturePass, _Pass);
+	    (0, _inherits3.default)(TexturePass, _Pass);
 	
-	  function TexturePass(name, map, opacity) {
-	    (0, _classCallCheck3.default)(this, TexturePass);
+	    function TexturePass(name, map, opacity) {
+	        (0, _classCallCheck3.default)(this, TexturePass);
 	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (TexturePass.__proto__ || Object.getPrototypeOf(TexturePass)).call(this, name));
+	        var _this = (0, _possibleConstructorReturn3.default)(this, (TexturePass.__proto__ || Object.getPrototypeOf(TexturePass)).call(this, name));
 	
-	    if (_CopyShader.CopyShader === undefined) console.error('TexturePass relies on CopyShader');
+	        if (_CopyShader.CopyShader === undefined) console.error('TexturePass relies on CopyShader');
 	
-	    var shader = _CopyShader.CopyShader;
+	        var shader = _CopyShader.CopyShader;
 	
-	    _this.map = map;
-	    _this.opacity = opacity === undefined ? 1.0 : opacity;
+	        _this.map = map;
+	        _this.opacity = opacity === undefined ? 1.0 : opacity;
 	
-	    _this.uniforms = THREE.UniformsUtils.clone(shader.uniforms);
+	        _this.uniforms = THREE.UniformsUtils.clone(shader.uniforms);
 	
-	    _this.material = new THREE.ShaderMaterial({
-	      uniforms: _this.uniforms,
-	      vertexShader: shader.vertexShader,
-	      fragmentShader: shader.fragmentShader,
-	      depthTest: false,
-	      depthWrite: false
-	    });
+	        _this.material = new THREE.ShaderMaterial({
+	            uniforms: _this.uniforms,
+	            vertexShader: shader.vertexShader,
+	            fragmentShader: shader.fragmentShader,
+	            depthTest: false,
+	            depthWrite: false
+	        });
 	
-	    _this.needsSwap = false;
+	        _this.needsSwap = false;
 	
-	    _this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-	    _this.scene = new THREE.Scene();
+	        _this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+	        _this.scene = new THREE.Scene();
 	
-	    _this.quad = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), null);
-	    _this.scene.add(_this.quad);
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(TexturePass, [{
-	    key: 'render',
-	    value: function render(renderer, writeBuffer, readBuffer) {
-	      // REMARK: "maskActive" and "delta" never used. Removed.
-	      // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
-	
-	      var oldAutoClear = renderer.autoClear;
-	      renderer.autoClear = false;
-	
-	      this.quad.material = this.material;
-	
-	      this.uniforms.opacity.value = this.opacity;
-	      this.uniforms.tDiffuse.value = this.map;
-	      this.material.transparent = this.opacity < 1.0;
-	
-	      renderer.render(this.scene, this.camera, this.renderToScreen ? null : readBuffer, this.clear);
-	      renderer.autoClear = oldAutoClear;
+	        _this.quad = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), null);
+	        _this.scene.add(_this.quad);
+	        return _this;
 	    }
-	  }]);
-	  return TexturePass;
+	
+	    (0, _createClass3.default)(TexturePass, [{
+	        key: 'render',
+	        value: function render(renderer, writeBuffer, readBuffer) {
+	            // REMARK: "maskActive" and "delta" never used. Removed.
+	            // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+	
+	            var oldAutoClear = renderer.autoClear;
+	            renderer.autoClear = false;
+	
+	            this.quad.material = this.material;
+	
+	            this.uniforms.opacity.value = this.opacity;
+	            this.uniforms.tDiffuse.value = this.map;
+	            this.material.transparent = this.opacity < 1.0;
+	
+	            renderer.render(this.scene, this.camera, this.renderToScreen ? null : readBuffer, this.clear);
+	            renderer.autoClear = oldAutoClear;
+	        }
+	    }]);
+	    return TexturePass;
 	}(_Pass2.Pass); /**
 	                 * @author alteredq / http://alteredqualia.com/
 	                 * @author yannis torres / es6 migration
