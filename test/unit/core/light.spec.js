@@ -37,7 +37,7 @@ define(['whs'], function(WHS) {
 
     context('Should wrap three.js lights', () => {
       const lightMesh = new THREE.Light();
-      const light = new WHS.Light(lightMesh);
+      const light = new WHS.PointLight(lightMesh);
 
       it('#wrap() - \'no-shadows\'', () => light.wrap('no-shadows'));
 
