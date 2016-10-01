@@ -3,9 +3,9 @@ import * as THREE from 'three';
 import {loadMaterial, extend} from '../../utils/index';
 import {RopeMesh} from '../../physics/index.js';
 import {Component} from '../../core/Component';
-import MeshComponent from '../../core/MeshComponent';
-import PhysicsComponent from '../../core/PhysicsComponent';
-import SoftbodyComponent from '../../core/SoftbodyComponent';
+import {MeshComponent} from '../../core/MeshComponent';
+import {PhysicsComponent} from '../../core/PhysicsComponent';
+import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 
 @SoftbodyComponent
 @PhysicsComponent

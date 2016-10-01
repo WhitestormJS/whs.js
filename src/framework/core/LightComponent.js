@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {$wrap, $define} from '../utils/ComponentUtils';
 
-export default function LightComponent(target) {
+function LightComponent(target) {
   Object.assign(target.defaults, {
     light: {
       color: 0xffffff,
@@ -161,3 +161,7 @@ export default function LightComponent(target) {
     }
   });
 }
+
+export {
+  LightComponent
+};

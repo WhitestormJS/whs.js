@@ -2,9 +2,9 @@ import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh} from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
-import MeshComponent from '../../core/MeshComponent';
-import PhysicsComponent from '../../core/PhysicsComponent';
-import SoftbodyComponent from '../../core/SoftbodyComponent';
+import {MeshComponent} from '../../core/MeshComponent';
+import {PhysicsComponent} from '../../core/PhysicsComponent';
+import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 import {extend, loadMaterial, JSONLoader} from '../../utils/index';
 
 @SoftbodyComponent

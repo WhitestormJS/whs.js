@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {Component} from '../../core/Component';
-import LightComponent from '../../core/LightComponent';
+import {LightComponent} from '../../core/LightComponent';
 
 @LightComponent
 class AmbientLight extends Component {
