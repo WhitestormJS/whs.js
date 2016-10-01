@@ -1,6 +1,6 @@
 import {$wrap} from '../utils/ComponentUtils';
 
-export default function SoftbodyComponent(target) {
+function SoftbodyComponent(target) {
   Object.assign(target.defaults, {
     softbody: false
   });
@@ -85,3 +85,7 @@ export default function SoftbodyComponent(target) {
     }
   });
 }
+
+export {
+  SoftbodyComponent
+};

@@ -13,7 +13,7 @@ const physicsDefaults = Physijs.default !== false ? {
   klst: 0.9
 } : false;
 
-export default function PhysicsComponent(target) {
+function PhysicsComponent(target) {
   Object.assign(target.defaults, {
     mass: 10,
     physics: physicsDefaults
@@ -222,3 +222,7 @@ export default function PhysicsComponent(target) {
     });
   });
 }
+
+export {
+  PhysicsComponent
+};
