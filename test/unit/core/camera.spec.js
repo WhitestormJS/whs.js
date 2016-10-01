@@ -32,7 +32,7 @@ define(['whs'], function(WHS) {
     }
 
     context('Should wrap three.js cameras', () => {
-      const camera = new WHS.Camera(new THREE.Camera());
+      const camera = new WHS.PerspectiveCamera(new THREE.Camera());
 
       testAPI(camera);
     });

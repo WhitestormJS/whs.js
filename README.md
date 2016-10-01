@@ -48,7 +48,14 @@ Include a script tag linking the [WhitestormJS](https://cdn.jsdelivr.net/whitest
 <script src="{path_to_lib}/whitestorm.js"></script>
 ```
 
-After adding these libraries, you can configure your app:
+After adding the library, you can configure your app.
+
+#### WEBPACK
+
+See [WhitestormJS/test-whitestorm-webpack](https://github.com/WhitestormJS/test-whitestorm-webpack) for more details.
+
+## DEVELOPING AN APP/GAME
+
 ```javascript
 const world = new WHS.World({
     stats: "fps", // fps, ms, mb or false if not need.
@@ -65,7 +72,7 @@ const world = new WHS.World({
     }
 });
 
-const sphere = new WHS.Sphere({ // Create sphere object.
+const sphere = new WHS.Sphere({ // Create sphere comonent.
   geometry: {
     radius: 3
   },
@@ -90,9 +97,58 @@ sphere.getNative(); // Returns THREE.Mesh of this object.
 world.start(); // Start animations and physics simulation.
 ```
 
-#### WEBPACK
+## DEVELOPING A COMPONENT
 
-See [WhitestormJS/test-whitestorm-webpack](https://github.com/WhitestormJS/test-whitestorm-webpack) for more details.
+```javascript
+import * as THREE from 'three';
+
+// Basic component class.
+import {Component} from 'whitestormjs/core/Component';
+// Decorator for THREE.Mesh for component class.
+import MeshComponent from 'whitestormjs/core/MeshComponent';
+// Some utils that should help.
+import {extend, loadMaterial} from 'whitestormjs/utils/index';
+
+@MeshComponent
+class BasicSphere extends Component {
+  constructor(params = {}) {
+    super(params, BasicSphere.defaults);
+
+    extend(params, {
+      myParameter: 10 // Default for myParameter. (Sphere radius)
+    });
+
+    if (params.build) { // params.build is "true" by default. (@MeshComponent)
+      this.build(params);
+      // Apply position & rotation, scale ...
+      super.wrap();
+    }
+  }
+
+  build(params = {}) {
+    // Load THREE.Material from properties.
+    const material = loadMaterial(params.material);
+
+    return new Promise((resolve) => {
+      this.native = new THREE.Mesh(
+        new THREE.SphereGeometry(params.myParameter, 16, 16),
+        material
+      );
+
+      resolve();
+    });
+  }
+
+  clone() {
+    return new Sphere({build: false}).copy(this);
+  }
+}
+
+export {
+  BasicSphere
+};
+
+```
 
 ## FEATURES
 
