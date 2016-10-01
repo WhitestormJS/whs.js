@@ -3,9 +3,9 @@ import {ConvexMesh, SoftMesh} from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
 import {extend, loadMaterial} from '../../utils/index';
-import MeshComponent from '../../core/MeshComponent';
-import PhysicsComponent from '../../core/PhysicsComponent';
-import SoftbodyComponent from '../../core/SoftbodyComponent';
+import {MeshComponent} from '../../core/MeshComponent';
+import {PhysicsComponent} from '../../core/PhysicsComponent';
+import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 
 @SoftbodyComponent
 @PhysicsComponent

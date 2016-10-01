@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {$wrap, $define} from '../utils/ComponentUtils';
 
-export default function CameraComponent(target) {
+function CameraComponent(target) {
   Object.assign(target.defaults, {
     camera: {
       fov: 45,
@@ -120,3 +120,7 @@ export default function CameraComponent(target) {
     if (_params.helper) scope.helper = new THREE.CameraHelper(_native);
   });
 }
+
+export {
+  CameraComponent
+};

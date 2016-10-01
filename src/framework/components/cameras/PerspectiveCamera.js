@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {Component} from '../../core/Component';
-import CameraComponent from '../../core/CameraComponent';
+import {CameraComponent} from '../../core/CameraComponent';
 
 @CameraComponent
 class PerspectiveCamera extends Component {

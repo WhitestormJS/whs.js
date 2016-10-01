@@ -8221,7 +8221,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _index3 = __webpack_require__(467);
+	var _index3 = __webpack_require__(453);
 	
 	Object.keys(_index3).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8233,7 +8233,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _index4 = __webpack_require__(473);
+	var _index4 = __webpack_require__(456);
 	
 	Object.keys(_index4).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8245,7 +8245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _index5 = __webpack_require__(476);
+	var _index5 = __webpack_require__(478);
 	
 	Object.keys(_index5).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -52356,7 +52356,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = MeshComponent;
+	exports.MeshComponent = undefined;
 	
 	var _three = __webpack_require__(383);
 	
@@ -52595,7 +52595,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 	}
-	module.exports = exports['default'];
+	
+	exports.MeshComponent = MeshComponent;
 
 /***/ },
 /* 393 */
@@ -52606,7 +52607,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = LightComponent;
+	exports.LightComponent = undefined;
 	
 	var _three = __webpack_require__(383);
 	
@@ -52771,7 +52772,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 	}
-	module.exports = exports['default'];
+	
+	exports.LightComponent = LightComponent;
 
 /***/ },
 /* 394 */
@@ -52782,7 +52784,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = CameraComponent;
+	exports.CameraComponent = undefined;
 	
 	var _three = __webpack_require__(383);
 	
@@ -52902,7 +52904,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (_params.helper) scope.helper = new THREE.CameraHelper(_native);
 	  });
 	}
-	module.exports = exports['default'];
+	
+	exports.CameraComponent = CameraComponent;
 
 /***/ },
 /* 395 */
@@ -52913,12 +52916,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.PhysicsComponent = undefined;
 	
 	var _defineProperty2 = __webpack_require__(396);
 	
 	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-	
-	exports.default = PhysicsComponent;
 	
 	var _three = __webpack_require__(383);
 	
@@ -53169,7 +53171,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  });
 	}
-	module.exports = exports['default'];
+	
+	exports.PhysicsComponent = PhysicsComponent;
 
 /***/ },
 /* 396 */
@@ -59317,7 +59320,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = SoftbodyComponent;
+	exports.SoftbodyComponent = undefined;
 	
 	var _ComponentUtils = __webpack_require__(387);
 	
@@ -59382,7 +59385,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 	}
-	module.exports = exports['default'];
+	
+	exports.SoftbodyComponent = SoftbodyComponent;
 
 /***/ },
 /* 437 */
@@ -59907,13 +59911,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _CameraComponent = __webpack_require__(394);
 	
-	var _CameraComponent2 = _interopRequireDefault(_CameraComponent);
-	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var PerspectiveCamera = (0, _CameraComponent2.default)(_class = function (_Component) {
+	var PerspectiveCamera = (0, _CameraComponent.CameraComponent)(_class = function (_Component) {
 	  (0, _inherits3.default)(PerspectiveCamera, _Component);
 	
 	  function PerspectiveCamera() {
@@ -60071,7 +60073,3865 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
-	var _firstPersonControls = __webpack_require__(448);
+	var _AmbientLight = __webpack_require__(448);
+	
+	Object.keys(_AmbientLight).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _AmbientLight[key];
+	    }
+	  });
+	});
+	
+	var _DirectionalLight = __webpack_require__(449);
+	
+	Object.keys(_DirectionalLight).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _DirectionalLight[key];
+	    }
+	  });
+	});
+	
+	var _HemisphereLight = __webpack_require__(450);
+	
+	Object.keys(_HemisphereLight).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _HemisphereLight[key];
+	    }
+	  });
+	});
+	
+	var _PointLight = __webpack_require__(451);
+	
+	Object.keys(_PointLight).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _PointLight[key];
+	    }
+	  });
+	});
+	
+	var _SpotLight = __webpack_require__(452);
+	
+	Object.keys(_SpotLight).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _SpotLight[key];
+	    }
+	  });
+	});
+
+/***/ },
+/* 448 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.AmbientLight = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _LightComponent = __webpack_require__(393);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var AmbientLight = (0, _LightComponent.LightComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(AmbientLight, _Component);
+	
+	  function AmbientLight() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, AmbientLight);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (AmbientLight.__proto__ || Object.getPrototypeOf(AmbientLight)).call(this, params, AmbientLight.defaults));
+	
+	    _this.build(params);
+	    (0, _get3.default)(AmbientLight.prototype.__proto__ || Object.getPrototypeOf(AmbientLight.prototype), 'wrap', _this).call(_this, 'no-shadows');
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(AmbientLight, [{
+	    key: 'build',
+	    value: function build() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var _scope = this;
+	
+	      return new Promise(function (resolve) {
+	        _scope.native = new THREE.AmbientLight(params.light.color, params.light.intensity);
+	
+	        resolve();
+	      });
+	    }
+	  }]);
+	  return AmbientLight;
+	}(_Component2.Component)) || _class;
+	
+	exports.AmbientLight = AmbientLight;
+
+/***/ },
+/* 449 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.DirectionalLight = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _LightComponent = __webpack_require__(393);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var DirectionalLight = (0, _LightComponent.LightComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(DirectionalLight, _Component);
+	
+	  function DirectionalLight() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, DirectionalLight);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (DirectionalLight.__proto__ || Object.getPrototypeOf(DirectionalLight)).call(this, params, DirectionalLight.defaults));
+	
+	    _this.build(params);
+	    (0, _get3.default)(DirectionalLight.prototype.__proto__ || Object.getPrototypeOf(DirectionalLight.prototype), 'wrap', _this).call(_this);
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(DirectionalLight, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new THREE.DirectionalLight(params.light.color, params.light.intensity);
+	
+	        if (params.helper) {
+	          _this2.helper = new THREE.DirectionalLightHelper(_this2.native, params.helper.size ? params.helper.size : 0);
+	        }
+	
+	        resolve();
+	      });
+	    }
+	  }]);
+	  return DirectionalLight;
+	}(_Component2.Component)) || _class;
+	
+	exports.DirectionalLight = DirectionalLight;
+
+/***/ },
+/* 450 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.HemisphereLight = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _LightComponent = __webpack_require__(393);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var HemisphereLight = (0, _LightComponent.LightComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(HemisphereLight, _Component);
+	
+	  function HemisphereLight() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, HemisphereLight);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (HemisphereLight.__proto__ || Object.getPrototypeOf(HemisphereLight)).call(this, params, HemisphereLight.defaults));
+	
+	    _this.build(params);
+	
+	    (0, _get3.default)(HemisphereLight.prototype.__proto__ || Object.getPrototypeOf(HemisphereLight.prototype), 'wrap', _this).call(_this);
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(HemisphereLight, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new THREE.HemisphereLight(params.light.skyColor, params.light.groundColor, params.light.intensity);
+	
+	        if (params.helper) {
+	          _this2.helper = new THREE.HemisphereLightHelper(_this2.native, params.helper.size ? params.helper.size : 0);
+	        }
+	
+	        resolve();
+	      });
+	    }
+	  }]);
+	  return HemisphereLight;
+	}(_Component2.Component)) || _class;
+	
+	exports.HemisphereLight = HemisphereLight;
+
+/***/ },
+/* 451 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.PointLight = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _LightComponent = __webpack_require__(393);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var PointLight = (0, _LightComponent.LightComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(PointLight, _Component);
+	
+	  function PointLight() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, PointLight);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (PointLight.__proto__ || Object.getPrototypeOf(PointLight)).call(this, params, PointLight.defaults));
+	
+	    _this.build(params);
+	    (0, _get3.default)(PointLight.prototype.__proto__ || Object.getPrototypeOf(PointLight.prototype), 'wrap', _this).call(_this);
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(PointLight, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance, params.light.decay);
+	
+	        if (params.helper) {
+	          _this2.helper = new THREE.PointLightHelper(_this2.native, params.helper.size ? params.helper.size : 0);
+	        }
+	
+	        resolve();
+	      });
+	    }
+	  }]);
+	  return PointLight;
+	}(_Component2.Component)) || _class;
+	
+	exports.PointLight = PointLight;
+
+/***/ },
+/* 452 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.SpotLight = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _LightComponent = __webpack_require__(393);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var SpotLight = (0, _LightComponent.LightComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(SpotLight, _Component);
+	
+	  function SpotLight() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, SpotLight);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (SpotLight.__proto__ || Object.getPrototypeOf(SpotLight)).call(this, params, SpotLight.defaults));
+	
+	    _this.build(params);
+	    (0, _get3.default)(SpotLight.prototype.__proto__ || Object.getPrototypeOf(SpotLight.prototype), 'wrap', _this).call(_this);
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(SpotLight, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle, params.light.exponent, params.light.decay);
+	
+	        if (params.helper) _this2.helper = new THREE.SpotLightHelper(_this2.native);
+	
+	        resolve();
+	      });
+	    }
+	  }]);
+	  return SpotLight;
+	}(_Component2.Component)) || _class;
+	
+	exports.SpotLight = SpotLight;
+
+/***/ },
+/* 453 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _CubeCamera = __webpack_require__(454);
+	
+	Object.keys(_CubeCamera).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _CubeCamera[key];
+	    }
+	  });
+	});
+	
+	var _OrtographicCamera = __webpack_require__(455);
+	
+	Object.keys(_OrtographicCamera).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _OrtographicCamera[key];
+	    }
+	  });
+	});
+	
+	var _PerspectiveCamera = __webpack_require__(438);
+	
+	Object.keys(_PerspectiveCamera).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _PerspectiveCamera[key];
+	    }
+	  });
+	});
+
+/***/ },
+/* 454 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.CubeCamera = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _CameraComponent = __webpack_require__(394);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var CubeCamera = (0, _CameraComponent.CameraComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(CubeCamera, _Component);
+	
+	  function CubeCamera() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, CubeCamera);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (CubeCamera.__proto__ || Object.getPrototypeOf(CubeCamera)).call(this, params, CubeCamera.defaults));
+	
+	    _this.build(params);
+	    (0, _get3.default)(CubeCamera.prototype.__proto__ || Object.getPrototypeOf(CubeCamera.prototype), 'wrap', _this).call(_this);
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(CubeCamera, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new THREE.CubeCamera(params.camera.near, params.camera.far, params.camera.cubeResolution);
+	
+	        resolve();
+	      });
+	    }
+	  }]);
+	  return CubeCamera;
+	}(_Component2.Component)) || _class;
+	
+	exports.CubeCamera = CubeCamera;
+
+/***/ },
+/* 455 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.OrtographicCamera = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _CameraComponent = __webpack_require__(394);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var OrtographicCamera = (0, _CameraComponent.CameraComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(OrtographicCamera, _Component);
+	
+	  function OrtographicCamera() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, OrtographicCamera);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (OrtographicCamera.__proto__ || Object.getPrototypeOf(OrtographicCamera)).call(this, params, OrtographicCamera.defaults));
+	
+	    _this.build(params);
+	    (0, _get3.default)(OrtographicCamera.prototype.__proto__ || Object.getPrototypeOf(OrtographicCamera.prototype), 'wrap', _this).call(_this);
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(OrtographicCamera, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new THREE.OrtographicCamera(params.camera.left, params.camera.right, params.camera.top, params.camera.bottom, params.camera.near, params.camera.far);
+	
+	        resolve();
+	      });
+	    }
+	  }]);
+	  return OrtographicCamera;
+	}(_Component2.Component)) || _class;
+	
+	exports.OrtographicCamera = OrtographicCamera;
+
+/***/ },
+/* 456 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _Box = __webpack_require__(457);
+	
+	Object.keys(_Box).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Box[key];
+	    }
+	  });
+	});
+	
+	var _Cylinder = __webpack_require__(458);
+	
+	Object.keys(_Cylinder).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Cylinder[key];
+	    }
+	  });
+	});
+	
+	var _Dodecahedron = __webpack_require__(459);
+	
+	Object.keys(_Dodecahedron).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Dodecahedron[key];
+	    }
+	  });
+	});
+	
+	var _Extrude = __webpack_require__(460);
+	
+	Object.keys(_Extrude).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Extrude[key];
+	    }
+	  });
+	});
+	
+	var _Icosahedron = __webpack_require__(461);
+	
+	Object.keys(_Icosahedron).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Icosahedron[key];
+	    }
+	  });
+	});
+	
+	var _Lathe = __webpack_require__(462);
+	
+	Object.keys(_Lathe).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Lathe[key];
+	    }
+	  });
+	});
+	
+	var _Line = __webpack_require__(463);
+	
+	Object.keys(_Line).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Line[key];
+	    }
+	  });
+	});
+	
+	var _Model = __webpack_require__(464);
+	
+	Object.keys(_Model).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Model[key];
+	    }
+	  });
+	});
+	
+	var _Morph = __webpack_require__(465);
+	
+	Object.keys(_Morph).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Morph[key];
+	    }
+	  });
+	});
+	
+	var _Octahedron = __webpack_require__(466);
+	
+	Object.keys(_Octahedron).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Octahedron[key];
+	    }
+	  });
+	});
+	
+	var _Parametric = __webpack_require__(467);
+	
+	Object.keys(_Parametric).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Parametric[key];
+	    }
+	  });
+	});
+	
+	var _Plane = __webpack_require__(468);
+	
+	Object.keys(_Plane).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Plane[key];
+	    }
+	  });
+	});
+	
+	var _Polyhedron = __webpack_require__(469);
+	
+	Object.keys(_Polyhedron).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Polyhedron[key];
+	    }
+	  });
+	});
+	
+	var _Ring = __webpack_require__(470);
+	
+	Object.keys(_Ring).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Ring[key];
+	    }
+	  });
+	});
+	
+	var _Shape = __webpack_require__(471);
+	
+	Object.keys(_Shape).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Shape[key];
+	    }
+	  });
+	});
+	
+	var _Sphere = __webpack_require__(472);
+	
+	Object.keys(_Sphere).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Sphere[key];
+	    }
+	  });
+	});
+	
+	var _Tetrahedron = __webpack_require__(473);
+	
+	Object.keys(_Tetrahedron).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Tetrahedron[key];
+	    }
+	  });
+	});
+	
+	var _Text = __webpack_require__(474);
+	
+	Object.keys(_Text).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Text[key];
+	    }
+	  });
+	});
+	
+	var _Torus = __webpack_require__(475);
+	
+	Object.keys(_Torus).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Torus[key];
+	    }
+	  });
+	});
+	
+	var _Torusknot = __webpack_require__(476);
+	
+	Object.keys(_Torusknot).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Torusknot[key];
+	    }
+	  });
+	});
+	
+	var _Tube = __webpack_require__(477);
+	
+	Object.keys(_Tube).forEach(function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Tube[key];
+	    }
+	  });
+	});
+
+/***/ },
+/* 457 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Box = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Box = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Box, _Component);
+	
+	  function Box() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Box);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Box.__proto__ || Object.getPrototypeOf(Box)).call(this, params, Box.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      width: 1,
+	      height: 1,
+	      depth: 1
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Box.prototype.__proto__ || Object.getPrototypeOf(Box.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Box, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.BoxMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.BoxBufferGeometry : THREE.BoxGeometry;
+	
+	      var geometry = new GConstruct(params.geometry.width, params.geometry.height, params.geometry.depth);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return this.params.softbody ? new Box(this.params) : new Box({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_width',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { width: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.width;
+	    }
+	  }, {
+	    key: 'G_height',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.height;
+	    }
+	  }, {
+	    key: 'G_depth',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { depth: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.depth;
+	    }
+	  }]);
+	  return Box;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Box = Box;
+
+/***/ },
+/* 458 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Cylinder = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Cylinder = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Cylinder, _Component);
+	
+	  function Cylinder() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Cylinder);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Cylinder.__proto__ || Object.getPrototypeOf(Cylinder)).call(this, params, Cylinder.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      radiusTop: 0,
+	      radiusBottom: 1,
+	      height: 1,
+	      radiusSegments: 32,
+	      heightSegments: 1,
+	      openEnded: false,
+	      thetaStart: 0,
+	      thetaLength: Math.PI * 2
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Cylinder.prototype.__proto__ || Object.getPrototypeOf(Cylinder.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Cylinder, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.CylinderMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.CylinderBufferGeometry : THREE.CylinderGeometry;
+	
+	      var geometry = new GConstruct(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments, params.geometry.heightSegments, params.geometry.openEnded, params.geometry.thetaStart, params.geometry.thetaLength);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Cylinder({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_radiusTop',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusTop: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radiusTop;
+	    }
+	  }, {
+	    key: 'G_radiusBottom',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusBottom: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radiusBottom;
+	    }
+	  }, {
+	    key: 'G_height',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.height;
+	    }
+	  }, {
+	    key: 'G_radiusSegments',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusSegments: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radiusSegments;
+	    }
+	  }]);
+	  return Cylinder;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Cylinder = Cylinder;
+
+/***/ },
+/* 459 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Dodecahedron = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Dodecahedron = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Dodecahedron, _Component);
+	
+	  function Dodecahedron() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Dodecahedron);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Dodecahedron.__proto__ || Object.getPrototypeOf(Dodecahedron)).call(this, params, Dodecahedron.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      radius: 1,
+	      detail: 0
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Dodecahedron.prototype.__proto__ || Object.getPrototypeOf(Dodecahedron.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Dodecahedron, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.DodecahedronBufferGeometry : THREE.DodecahedronGeometry;
+	
+	      return new GConstruct(params.geometry.radius, params.geometry.detail);
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Dodecahedron({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_radius',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radius;
+	    }
+	  }, {
+	    key: 'G_detail',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.detail;
+	    }
+	  }]);
+	  return Dodecahedron;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Dodecahedron = Dodecahedron;
+
+/***/ },
+/* 460 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Extrude = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Extrude = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Extrude, _Component);
+	
+	  function Extrude() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Extrude);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Extrude.__proto__ || Object.getPrototypeOf(Extrude)).call(this, params, Extrude.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      shapes: [],
+	      options: {}
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Extrude.prototype.__proto__ || Object.getPrototypeOf(Extrude.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Extrude, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.ExtrudeBufferGeometry : THREE.ExtrudeGeometry;
+	
+	      return new GConstruct(params.geometry.shapes, params.geometry.options);
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Extrude({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_shapes',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { shapes: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.shapes;
+	    }
+	  }, {
+	    key: 'G_options',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { options: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.options;
+	    }
+	  }]);
+	  return Extrude;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Extrude = Extrude;
+
+/***/ },
+/* 461 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Icosahedron = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _index2 = __webpack_require__(385);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Icosahedron = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Icosahedron, _Component);
+	
+	  function Icosahedron() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Icosahedron);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Icosahedron.__proto__ || Object.getPrototypeOf(Icosahedron)).call(this, params, Icosahedron.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      radius: 1,
+	      detail: 0
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Icosahedron.prototype.__proto__ || Object.getPrototypeOf(Icosahedron.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Icosahedron, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.IcosahedronBufferGeometry : THREE.IcosahedronGeometry;
+	
+	      return new GConstruct(params.geometry.radius, params.geometry.detail);
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Icosahedron({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_radius',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radius;
+	    }
+	  }, {
+	    key: 'G_detail',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.detail;
+	    }
+	  }]);
+	  return Icosahedron;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Icosahedron = Icosahedron;
+
+/***/ },
+/* 462 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Lathe = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _index2 = __webpack_require__(385);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Lathe = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Lathe, _Component);
+	
+	  function Lathe() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Lathe);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Lathe.__proto__ || Object.getPrototypeOf(Lathe)).call(this, params, Lathe.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      points: []
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Lathe.prototype.__proto__ || Object.getPrototypeOf(Lathe.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Lathe, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.LatheBufferGeometry : THREE.LatheGeometry;
+	
+	      return new GConstruct(params.geometry.points);
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Lathe({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_points',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { points: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.points;
+	    }
+	  }]);
+	  return Lathe;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Lathe = Lathe;
+
+/***/ },
+/* 463 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Line = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(385);
+	
+	var _index2 = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Line = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Line, _Component);
+	
+	  function Line(params) {
+	    (0, _classCallCheck3.default)(this, Line);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Line.__proto__ || Object.getPrototypeOf(Line)).call(this, params, Line.defaults));
+	
+	    (0, _index.extend)(params.geometry, {
+	      curve: false,
+	      points: 50
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Line.prototype.__proto__ || Object.getPrototypeOf(Line.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Line, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics) Mesh = _index2.RopeMesh;else Mesh = THREE.Line;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var geometry = params.buffer || params.physics ? new THREE.BufferGeometry() : new THREE.Geometry();
+	
+	      if (params.buffer || params.physics) {
+	        var pp = params.geometry.curve.getPoints(params.geometry.points);
+	        var verts = new Float32Array(pp.length * 3);
+	
+	        for (var i = 0, max = pp.length; i < max; i++) {
+	          verts[i * 3] = pp[i].x;
+	          verts[i * 3 + 1] = pp[i].y;
+	          verts[i * 3 + 2] = pp[i].z;
+	        }
+	
+	        geometry.addAttribute('position', new THREE.BufferAttribute(verts, 3));
+	      } else geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
+	    }
+	  }]);
+	  return Line;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Line = Line;
+
+/***/ },
+/* 464 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Model = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Model = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Model, _Component);
+	
+	  function Model() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Model);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Model.__proto__ || Object.getPrototypeOf(Model)).call(this, params, Model.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      path: '',
+	      physics: '',
+	      loader: _index2.JSONLoader
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Model.prototype.__proto__ || Object.getPrototypeOf(Model.prototype), 'wrap', _this).call(_this, 'wait');
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Model, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && params.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      var promise = new Promise(function (resolve) {
+	        var pGeometry = params.geometry;
+	        var Loader = pGeometry.loader;
+	
+	        Loader.load(pGeometry.path, function (data, materials) {
+	          if (pGeometry.physics) {
+	            Loader.load(pGeometry.physics, function (data2) {
+	              var material = void 0;
+	
+	              if (params.material.useVertexColors) {
+	                material = (0, _index2.loadMaterial)((0, _index2.extend)(params.material, {
+	                  morphTargets: true,
+	                  vertexColors: THREE.FaceColors
+	                }));
+	              } else if (!materials || params.material.useCustomMaterial) {
+	                material = (0, _index2.loadMaterial)(params.material);
+	              } else material = new THREE.MultiMaterial(materials);
+	
+	              data.computeFaceNormals();
+	              data.computeVertexNormals();
+	
+	              _this2.native = new Mesh(data, material, _this2.params, data2);
+	
+	              resolve();
+	            });
+	          } else {
+	            var material = void 0;
+	
+	            if (params.material.useVertexColors) {
+	              material = (0, _index2.loadMaterial)((0, _index2.extend)(params.material, {
+	                morphTargets: true,
+	                vertexColors: THREE.FaceColors
+	              }));
+	            } else if (!materials || params.material.useCustomMaterial) {
+	              material = (0, _index2.loadMaterial)(params.material);
+	            } else material = new THREE.MultiMaterial(materials);
+	
+	            data.computeFaceNormals();
+	            data.computeVertexNormals();
+	
+	            console.log(_this2.params);
+	
+	            _this2.native = new Mesh(data, material, _this2.params);
+	
+	            resolve();
+	          }
+	        });
+	      });
+	
+	      (0, _get3.default)(Model.prototype.__proto__ || Object.getPrototypeOf(Model.prototype), 'wait', this).call(this, promise);
+	
+	      return promise;
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Model({ build: false }).copy(this);
+	    }
+	  }]);
+	  return Model;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Model = Model;
+
+/***/ },
+/* 465 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Morph = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var Physijs = _interopRequireWildcard(_index);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	var _loaders = __webpack_require__(389);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Morph = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Morph, _Component);
+	
+	  function Morph() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Morph);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Morph.__proto__ || Object.getPrototypeOf(Morph)).call(this, params, Morph.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      path: '',
+	      loader: _loaders.JSONLoader
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Morph.prototype.__proto__ || Object.getPrototypeOf(Morph.prototype), 'wrap', _this).call(_this, 'wait');
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Morph, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var promise = new Promise(function (resolve) {
+	        var Loader = params.geometry.loader;
+	
+	        Loader.load(params.geometry.path, function (data, materials) {
+	          var material = void 0;
+	          if (params.material.useVertexColors) {
+	            material = (0, _index2.loadMaterial)((0, _index2.extend)(params.material, {
+	              morphTargets: true,
+	              vertexColors: THREE.FaceColors
+	            }));
+	          } else if (!materials || params.material.useCustomMaterial) {
+	            material = (0, _index2.loadMaterial)(params.material);
+	          } else material = new THREE.MultiMaterial(materials);
+	
+	          data.computeFaceNormals();
+	          data.computeVertexNormals();
+	
+	          // Visualization.
+	          var mesh = new THREE.Mesh(data, material);
+	          mesh.speed = params.morph.speed;
+	          mesh.mixer = new THREE.AnimationMixer(mesh);
+	
+	          mesh.mixer.clipAction(data.animations[0]).setDuration(params.morph.duration).play();
+	
+	          _this2.native = mesh;
+	
+	          resolve();
+	        });
+	      });
+	
+	      (0, _get3.default)(Morph.prototype.__proto__ || Object.getPrototypeOf(Morph.prototype), 'wait', this).call(this, promise);
+	      return promise;
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Morph({ build: false }).copy(this);
+	    }
+	  }]);
+	  return Morph;
+	}(_Component2.Component)) || _class;
+	
+	exports.Morph = Morph;
+
+/***/ },
+/* 466 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Octahedron = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Octahedron = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Octahedron, _Component);
+	
+	  function Octahedron() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Octahedron);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Octahedron.__proto__ || Object.getPrototypeOf(Octahedron)).call(this, params, Octahedron.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      radius: 1,
+	      detail: 0
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Octahedron.prototype.__proto__ || Object.getPrototypeOf(Octahedron.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Octahedron, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.OctahedronBufferGeometry : THREE.OctahedronGeometry;
+	
+	      return new GConstruct(params.geometry.radius, params.geometry.detail);
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Octahedron({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_radius',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radius;
+	    }
+	  }, {
+	    key: 'G_detail',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.detail;
+	    }
+	  }]);
+	  return Octahedron;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Octahedron = Octahedron;
+
+/***/ },
+/* 467 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Parametric = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Parametric = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Parametric, _Component);
+	
+	  function Parametric() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Parametric);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Parametric.__proto__ || Object.getPrototypeOf(Parametric)).call(this, params, Parametric.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      func: function func() {},
+	
+	      slices: 10,
+	      stacks: 10
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Parametric.prototype.__proto__ || Object.getPrototypeOf(Parametric.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Parametric, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.ParametricBufferGeometry : THREE.ParametricGeometry;
+	
+	      return new GConstruct(params.geometry.func, params.geometry.slices, params.geometry.stacks);
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Parametric({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_func',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { func: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.func;
+	    }
+	  }, {
+	    key: 'G_slices',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { slices: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.slices;
+	    }
+	  }, {
+	    key: 'G_stacks',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { stacks: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.stacks;
+	    }
+	  }]);
+	  return Parametric;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Parametric = Parametric;
+
+/***/ },
+/* 468 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Plane = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Plane = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Plane, _Component);
+	
+	  function Plane() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Plane);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Plane.__proto__ || Object.getPrototypeOf(Plane)).call(this, params, Plane.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      width: 10,
+	      height: 10,
+	      wSegments: 32,
+	      hSegments: 32
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Plane.prototype.__proto__ || Object.getPrototypeOf(Plane.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Plane, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.ClothMesh;else if (this.physics) Mesh = _index.PlaneMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer || params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
+	
+	      var geometry = new GConstruct(params.geometry.width, params.geometry.height, params.geometry.wSegments, params.geometry.hSegments);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Plane({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_width',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { width: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.width;
+	    }
+	  }, {
+	    key: 'G_height',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.height;
+	    }
+	  }, {
+	    key: 'G_segments',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { segments: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.segments;
+	    }
+	  }]);
+	  return Plane;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Plane = Plane;
+
+/***/ },
+/* 469 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Polyhedron = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Polyhedron = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Polyhedron, _Component);
+	
+	  function Polyhedron() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Polyhedron);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Polyhedron.__proto__ || Object.getPrototypeOf(Polyhedron)).call(this, params, Polyhedron.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      verticesOfCube: _this.verticesOfCube,
+	      indicesOfFaces: _this.indicesOfFaces,
+	      radius: 6,
+	      detail: 2
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Polyhedron.prototype.__proto__ || Object.getPrototypeOf(Polyhedron.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Polyhedron, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.PolyhedronBufferGeometry : THREE.PolyhedronGeometry;
+	
+	      return new GConstruct(params.geometry.verticesOfCube, params.geometry.indicesOfFaces, params.geometry.radius, params.geometry.detail);
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Polyhedron({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'verticesOfCube',
+	    get: function get() {
+	      return [-1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1];
+	    }
+	  }, {
+	    key: 'indicesOfFaces',
+	    get: function get() {
+	      return [2, 1, 0, 0, 3, 2, 0, 4, 7, 7, 3, 0, 0, 1, 5, 5, 4, 0, 1, 2, 6, 6, 5, 1, 2, 3, 7, 7, 6, 2, 4, 5, 6, 6, 7, 4];
+	    }
+	  }, {
+	    key: 'G_verticesOfCube',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { verticesOfCube: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.verticesOfCube;
+	    }
+	  }, {
+	    key: 'G_indicesOfFaces',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { indicesOfFaces: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.indicesOfFaces;
+	    }
+	  }, {
+	    key: 'G_radius',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radius;
+	    }
+	  }, {
+	    key: 'G_detail',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.detail;
+	    }
+	  }]);
+	  return Polyhedron;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Polyhedron = Polyhedron;
+
+/***/ },
+/* 470 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Ring = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _index = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Ring = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Ring, _Component);
+	
+	  function Ring() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Ring);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Ring.__proto__ || Object.getPrototypeOf(Ring)).call(this, params, Ring.defaults));
+	
+	    (0, _index.extend)(params.geometry, {
+	      innerRadius: 0,
+	      outerRadius: 50,
+	      thetaSegments: 8,
+	      phiSegments: 8,
+	      thetaStart: 0,
+	      thetaLength: Math.PI * 2
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Ring.prototype.__proto__ || Object.getPrototypeOf(Ring.prototype), 'wrap', _this).call(_this, 'onlyvis');
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Ring, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index.loadMaterial)(params.material);
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), material);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.RingBufferGeometry : THREE.RingGeometry;
+	
+	      return new GConstruct(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength);
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Ring({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_innerRadius',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { innerRadius: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.innerRadius;
+	    }
+	  }, {
+	    key: 'G_outerRadius',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { outerRadius: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.outerRadius;
+	    }
+	  }, {
+	    key: 'G_thetaSegments',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { thetaSegments: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.thetaSegments;
+	    }
+	  }, {
+	    key: 'G_phiSegments',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { phiSegments: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.phiSegments;
+	    }
+	  }, {
+	    key: 'G_thetaStart',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { thetaStart: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.thetaStart;
+	    }
+	  }, {
+	    key: 'G_thetaLength',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { thetaLength: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.thetaLength;
+	    }
+	  }]);
+	  return Ring;
+	}(_Component2.Component)) || _class;
+	
+	exports.Ring = Ring;
+
+/***/ },
+/* 471 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Shape = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _index = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Shape = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Shape, _Component);
+	
+	  function Shape() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Shape);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Shape.__proto__ || Object.getPrototypeOf(Shape)).call(this, params, Shape.defaults));
+	
+	    (0, _index.extend)(params.geometry, {
+	      shapes: []
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Shape.prototype.__proto__ || Object.getPrototypeOf(Shape.prototype), 'wrap', _this).call(_this, 'onlyvis');
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Shape, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index.loadMaterial)(params.material);
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new THREE.Mesh(_this2.buildGeometry(params), material);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.ComponentBufferGeometry : THREE.ComponentGeometry;
+	
+	      return new GConstruct(params.geometry.shapes);
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Shape({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_shapes',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { shapes: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.shapes;
+	    }
+	  }]);
+	  return Shape;
+	}(_Component2.Component)) || _class;
+	
+	exports.Shape = Shape;
+
+/***/ },
+/* 472 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Sphere = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Sphere = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Sphere, _Component);
+	
+	  function Sphere() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Sphere);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Sphere.__proto__ || Object.getPrototypeOf(Sphere)).call(this, params, Sphere.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      radius: 1,
+	      widthSegments: 8,
+	      heightSegments: 6
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Sphere.prototype.__proto__ || Object.getPrototypeOf(Sphere.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Sphere, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.SphereMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.SphereBufferGeometry : THREE.SphereGeometry;
+	
+	      var geometry = new GConstruct(params.geometry.radius, params.geometry.widthSegments, params.geometry.heightSegments);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return this.params.softbody ? new Sphere(this.params) : new Sphere({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_radius',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radius;
+	    }
+	  }, {
+	    key: 'G_widthSegments',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { widthSegments: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.widthSegments;
+	    }
+	  }, {
+	    key: 'G_heightSegments',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { widthSegments: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.widthSegments;
+	    }
+	  }]);
+	  return Sphere;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Sphere = Sphere;
+
+/***/ },
+/* 473 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Tetrahedron = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Tetrahedron = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Tetrahedron, _Component);
+	
+	  function Tetrahedron() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Tetrahedron);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Tetrahedron.__proto__ || Object.getPrototypeOf(Tetrahedron)).call(this, params, Tetrahedron.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      radius: 1,
+	      detail: 0
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Tetrahedron.prototype.__proto__ || Object.getPrototypeOf(Tetrahedron.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Tetrahedron, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.TetrahedronBufferGeometry : THREE.TetrahedronGeometry;
+	
+	      return new GConstruct(params.geometry.radius, params.geometry.detail);
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Tetrahedron({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_radius',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radius;
+	    }
+	  }, {
+	    key: 'G_detail',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.detail;
+	    }
+	  }]);
+	  return Tetrahedron;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Tetrahedron = Tetrahedron;
+
+/***/ },
+/* 474 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Text = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Text = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Text, _Component);
+	
+	  function Text() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Text);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Text.__proto__ || Object.getPrototypeOf(Text)).call(this, params, Text.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      text: 'Hello World!',
+	
+	      parameters: {
+	        size: 12,
+	        height: 50,
+	        curveSegments: 12,
+	        font: new THREE.Font(),
+	        bevelEnabled: false,
+	        bevelThickness: 10,
+	        bevelSize: 8
+	      }
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Text.prototype.__proto__ || Object.getPrototypeOf(Text.prototype), 'wrap', _this).call(_this, 'wait');
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Text, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      var promise = new Promise(function (resolve) {
+	        _index2.FontLoader.load(params.geometry.parameters.font, function (font) {
+	          params.geometry.parameters.font = font;
+	
+	          _this2.native = new Mesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), material, _this2.params);
+	
+	          resolve();
+	        });
+	      });
+	
+	      (0, _get3.default)(Text.prototype.__proto__ || Object.getPrototypeOf(Text.prototype), 'wait', this).call(this, promise);
+	
+	      return promise;
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Text({ build: false }).copy(this);
+	    }
+	  }]);
+	  return Text;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Text = Text;
+
+/***/ },
+/* 475 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Torus = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Torus = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Torus, _Component);
+	
+	  function Torus() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Torus);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Torus.__proto__ || Object.getPrototypeOf(Torus)).call(this, params, Torus.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      radius: 100,
+	      tube: 40,
+	      radialSegments: 8,
+	      tubularSegments: 6,
+	      arc: Math.PI * 2
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Torus.prototype.__proto__ || Object.getPrototypeOf(Torus.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Torus, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.TorusBufferGeometry : THREE.TorusGeometry;
+	
+	      return new THREE.TorusGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.arc);
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Torus({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_radius',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radius;
+	    }
+	  }, {
+	    key: 'G_tube',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tube: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.tube;
+	    }
+	  }, {
+	    key: 'G_radialSegments',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radialSegments: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radialSegments;
+	    }
+	  }, {
+	    key: 'G_tubularSegments',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tubularSegments: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.tubularSegments;
+	    }
+	  }, {
+	    key: 'G_arc',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { arc: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.arc;
+	    }
+	  }]);
+	  return Torus;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Torus = Torus;
+
+/***/ },
+/* 476 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Torusknot = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Torusknot = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Torusknot, _Component);
+	
+	  function Torusknot() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Torusknot);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Torusknot.__proto__ || Object.getPrototypeOf(Torusknot)).call(this, params, Torusknot.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      radius: 100,
+	      tube: 40,
+	      radialSegments: 64,
+	      tubularSegments: 8,
+	      p: 2,
+	      q: 3
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Torusknot.prototype.__proto__ || Object.getPrototypeOf(Torusknot.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Torusknot, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.TorusKnotBufferGeometry : THREE.TorusKnotGeometry;
+	
+	      return new GConstruct(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.p, params.geometry.q);
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Torusknot(this.params, this._type).copy(this);
+	    }
+	  }, {
+	    key: 'G_radius',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radius;
+	    }
+	  }, {
+	    key: 'G_tube',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tube: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.tube;
+	    }
+	  }, {
+	    key: 'G_radialSegments',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radialSegments: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radialSegments;
+	    }
+	  }, {
+	    key: 'G_tubularSegments',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tubularSegments: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.tubularSegments;
+	    }
+	  }, {
+	    key: 'G_p',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { p: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.p;
+	    }
+	  }, {
+	    key: 'G_q',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { q: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.q;
+	    }
+	  }, {
+	    key: 'G_heightScale',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { heightScale: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.heightScale;
+	    }
+	  }]);
+	  return Torusknot;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Torusknot = Torusknot;
+
+/***/ },
+/* 477 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Tube = undefined;
+	
+	var _classCallCheck2 = __webpack_require__(301);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(302);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(321);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(375);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _get2 = __webpack_require__(439);
+	
+	var _get3 = _interopRequireDefault(_get2);
+	
+	var _class;
+	
+	var _three = __webpack_require__(383);
+	
+	var THREE = _interopRequireWildcard(_three);
+	
+	var _index = __webpack_require__(397);
+	
+	var _Component2 = __webpack_require__(300);
+	
+	var _MeshComponent = __webpack_require__(392);
+	
+	var _PhysicsComponent = __webpack_require__(395);
+	
+	var _SoftbodyComponent = __webpack_require__(436);
+	
+	var _index2 = __webpack_require__(385);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Tube = (0, _SoftbodyComponent.SoftbodyComponent)(_class = (0, _PhysicsComponent.PhysicsComponent)(_class = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
+	  (0, _inherits3.default)(Tube, _Component);
+	
+	  function Tube() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    (0, _classCallCheck3.default)(this, Tube);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (Tube.__proto__ || Object.getPrototypeOf(Tube)).call(this, params, Tube.defaults));
+	
+	    (0, _index2.extend)(params.geometry, {
+	      path: false,
+	      segments: 20,
+	      radius: 2,
+	      radiusSegments: 8,
+	      closed: false
+	    });
+	
+	    if (params.build) {
+	      _this.build(params);
+	      (0, _get3.default)(Tube.prototype.__proto__ || Object.getPrototypeOf(Tube.prototype), 'wrap', _this).call(_this);
+	    }
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Tube, [{
+	    key: 'build',
+	    value: function build() {
+	      var _this2 = this;
+	
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var material = (0, _index2.loadMaterial)(params.material);
+	
+	      var Mesh = void 0;
+	
+	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
+	
+	      return new Promise(function (resolve) {
+	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
+	
+	        resolve();
+	      });
+	    }
+	  }, {
+	    key: 'buildGeometry',
+	    value: function buildGeometry() {
+	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	      var GConstruct = params.buffer && !params.softbody ? THREE.TubeBufferGeometry : THREE.TubeGeometry;
+	
+	      var geometry = new GConstruct(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
+	    }
+	  }, {
+	    key: 'clone',
+	    value: function clone() {
+	      return new Tube({ build: false }).copy(this);
+	    }
+	  }, {
+	    key: 'G_path',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { path: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.path;
+	    }
+	  }, {
+	    key: 'G_segments',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { segments: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.segments;
+	    }
+	  }, {
+	    key: 'G_radius',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radius;
+	    }
+	  }, {
+	    key: 'G_radiusSegments',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusSegments: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.radiusSegments;
+	    }
+	  }, {
+	    key: 'G_closed',
+	    set: function set(val) {
+	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { closed: val } }));
+	    },
+	    get: function get() {
+	      return this._native.geometry.parameters.closed;
+	    }
+	  }]);
+	  return Tube;
+	}(_Component2.Component)) || _class) || _class) || _class;
+	
+	exports.Tube = Tube;
+
+/***/ },
+/* 478 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _firstPersonControls = __webpack_require__(479);
 	
 	Object.keys(_firstPersonControls).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -60083,7 +63943,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _orbitControls = __webpack_require__(449);
+	var _orbitControls = __webpack_require__(480);
 	
 	Object.keys(_orbitControls).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -60095,7 +63955,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _index = __webpack_require__(451);
+	var _index = __webpack_require__(482);
 	
 	Object.keys(_index).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -60107,7 +63967,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _Group = __webpack_require__(463);
+	var _Group = __webpack_require__(494);
 	
 	Object.keys(_Group).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -60119,7 +63979,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _Loop = __webpack_require__(465);
+	var _Loop = __webpack_require__(496);
 	
 	Object.keys(_Loop).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -60131,7 +63991,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _List = __webpack_require__(466);
+	var _List = __webpack_require__(497);
 	
 	Object.keys(_List).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -60144,7 +64004,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 448 */
+/* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60406,7 +64266,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 449 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -60420,7 +64280,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _threeOrbitControls = __webpack_require__(450);
+	var _threeOrbitControls = __webpack_require__(481);
 	
 	var _threeOrbitControls2 = _interopRequireDefault(_threeOrbitControls);
 	
@@ -60441,7 +64301,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 450 */
+/* 481 */
 /***/ function(module, exports) {
 
 	module.exports = function(THREE) {
@@ -61566,7 +65426,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 451 */
+/* 482 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61575,7 +65435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
-	var _PostProcessor = __webpack_require__(452);
+	var _PostProcessor = __webpack_require__(483);
 	
 	Object.keys(_PostProcessor).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -61587,7 +65447,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _EffectComposer = __webpack_require__(453);
+	var _EffectComposer = __webpack_require__(484);
 	
 	Object.keys(_EffectComposer).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -61599,7 +65459,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _index = __webpack_require__(459);
+	var _index = __webpack_require__(490);
 	
 	Object.keys(_index).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -61611,7 +65471,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _index2 = __webpack_require__(462);
+	var _index2 = __webpack_require__(493);
 	
 	Object.keys(_index2).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -61624,7 +65484,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 452 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61660,9 +65520,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _Component2 = __webpack_require__(300);
 	
-	var _EffectComposer = __webpack_require__(453);
+	var _EffectComposer = __webpack_require__(484);
 	
-	var _RenderPass = __webpack_require__(458);
+	var _RenderPass = __webpack_require__(489);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -61916,7 +65776,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.PostProcessor = PostProcessor;
 
 /***/ },
-/* 453 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -61938,11 +65798,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _CopyShader = __webpack_require__(454);
+	var _CopyShader = __webpack_require__(485);
 	
-	var _ShaderPass = __webpack_require__(455);
+	var _ShaderPass = __webpack_require__(486);
 	
-	var _MaskPass = __webpack_require__(457);
+	var _MaskPass = __webpack_require__(488);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -62158,7 +66018,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 
 /***/ },
-/* 454 */
+/* 485 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -62186,7 +66046,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.CopyShader = CopyShader;
 
 /***/ },
-/* 455 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62216,7 +66076,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _Pass2 = __webpack_require__(456);
+	var _Pass2 = __webpack_require__(487);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -62275,7 +66135,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(_Pass2.Pass);
 
 /***/ },
-/* 456 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -62355,7 +66215,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 
 /***/ },
-/* 457 */
+/* 488 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62381,7 +66241,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
-	var _Pass3 = __webpack_require__(456);
+	var _Pass3 = __webpack_require__(487);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -62472,7 +66332,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(_Pass3.Pass);
 
 /***/ },
-/* 458 */
+/* 489 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62498,7 +66358,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
-	var _Pass2 = __webpack_require__(456);
+	var _Pass2 = __webpack_require__(487);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -62557,7 +66417,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                 */
 
 /***/ },
-/* 459 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62566,7 +66426,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
-	var _ClearPass = __webpack_require__(460);
+	var _ClearPass = __webpack_require__(491);
 	
 	Object.keys(_ClearPass).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -62578,7 +66438,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _MaskPass = __webpack_require__(457);
+	var _MaskPass = __webpack_require__(488);
 	
 	Object.keys(_MaskPass).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -62590,7 +66450,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _Pass = __webpack_require__(456);
+	var _Pass = __webpack_require__(487);
 	
 	Object.keys(_Pass).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -62602,7 +66462,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _RenderPass = __webpack_require__(458);
+	var _RenderPass = __webpack_require__(489);
 	
 	Object.keys(_RenderPass).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -62614,7 +66474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _ShaderPass = __webpack_require__(455);
+	var _ShaderPass = __webpack_require__(486);
 	
 	Object.keys(_ShaderPass).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -62626,7 +66486,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 	
-	var _TexturePass = __webpack_require__(461);
+	var _TexturePass = __webpack_require__(492);
 	
 	Object.keys(_TexturePass).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -62639,7 +66499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 460 */
+/* 491 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62665,7 +66525,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
-	var _Pass2 = __webpack_require__(456);
+	var _Pass2 = __webpack_require__(487);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -62711,7 +66571,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                 */
 
 /***/ },
-/* 461 */
+/* 492 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62741,9 +66601,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var THREE = _interopRequireWildcard(_three);
 	
-	var _CopyShader = __webpack_require__(454);
+	var _CopyShader = __webpack_require__(485);
 	
-	var _Pass2 = __webpack_require__(456);
+	var _Pass2 = __webpack_require__(487);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -62810,7 +66670,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                 */
 
 /***/ },
-/* 462 */
+/* 493 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62819,7 +66679,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
-	var _CopyShader = __webpack_require__(454);
+	var _CopyShader = __webpack_require__(485);
 	
 	Object.keys(_CopyShader).forEach(function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -62832,7 +66692,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 /***/ },
-/* 463 */
+/* 494 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -62858,7 +66718,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _get3 = _interopRequireDefault(_get2);
 	
-	var _set2 = __webpack_require__(464);
+	var _set2 = __webpack_require__(495);
 	
 	var _set3 = _interopRequireDefault(_set2);
 	
@@ -62872,13 +66732,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _MeshComponent = __webpack_require__(392);
 	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Group = (0, _MeshComponent2.default)(_class = function (_Component) {
+	var Group = (0, _MeshComponent.MeshComponent)(_class = function (_Component) {
 	  (0, _inherits3.default)(Group, _Component);
 	
 	  function Group() {
@@ -62907,7 +66765,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.Group = Group;
 
 /***/ },
-/* 464 */
+/* 495 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -62947,7 +66805,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 465 */
+/* 496 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -63010,7 +66868,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.Loop = Loop;
 
 /***/ },
-/* 466 */
+/* 497 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -63059,3996 +66917,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 	
 	exports.List = List;
-
-/***/ },
-/* 467 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _AmbientLight = __webpack_require__(468);
-	
-	Object.keys(_AmbientLight).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _AmbientLight[key];
-	    }
-	  });
-	});
-	
-	var _DirectionalLight = __webpack_require__(469);
-	
-	Object.keys(_DirectionalLight).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _DirectionalLight[key];
-	    }
-	  });
-	});
-	
-	var _HemisphereLight = __webpack_require__(470);
-	
-	Object.keys(_HemisphereLight).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _HemisphereLight[key];
-	    }
-	  });
-	});
-	
-	var _PointLight = __webpack_require__(471);
-	
-	Object.keys(_PointLight).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _PointLight[key];
-	    }
-	  });
-	});
-	
-	var _SpotLight = __webpack_require__(472);
-	
-	Object.keys(_SpotLight).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _SpotLight[key];
-	    }
-	  });
-	});
-
-/***/ },
-/* 468 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.AmbientLight = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _LightComponent = __webpack_require__(393);
-	
-	var _LightComponent2 = _interopRequireDefault(_LightComponent);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var AmbientLight = (0, _LightComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(AmbientLight, _Component);
-	
-	  function AmbientLight() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, AmbientLight);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (AmbientLight.__proto__ || Object.getPrototypeOf(AmbientLight)).call(this, params, AmbientLight.defaults));
-	
-	    _this.build(params);
-	    (0, _get3.default)(AmbientLight.prototype.__proto__ || Object.getPrototypeOf(AmbientLight.prototype), 'wrap', _this).call(_this, 'no-shadows');
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(AmbientLight, [{
-	    key: 'build',
-	    value: function build() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var _scope = this;
-	
-	      return new Promise(function (resolve) {
-	        _scope.native = new THREE.AmbientLight(params.light.color, params.light.intensity);
-	
-	        resolve();
-	      });
-	    }
-	  }]);
-	  return AmbientLight;
-	}(_Component2.Component)) || _class;
-	
-	exports.AmbientLight = AmbientLight;
-
-/***/ },
-/* 469 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.DirectionalLight = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _LightComponent = __webpack_require__(393);
-	
-	var _LightComponent2 = _interopRequireDefault(_LightComponent);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var DirectionalLight = (0, _LightComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(DirectionalLight, _Component);
-	
-	  function DirectionalLight() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, DirectionalLight);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (DirectionalLight.__proto__ || Object.getPrototypeOf(DirectionalLight)).call(this, params, DirectionalLight.defaults));
-	
-	    _this.build(params);
-	    (0, _get3.default)(DirectionalLight.prototype.__proto__ || Object.getPrototypeOf(DirectionalLight.prototype), 'wrap', _this).call(_this);
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(DirectionalLight, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new THREE.DirectionalLight(params.light.color, params.light.intensity);
-	
-	        if (params.helper) {
-	          _this2.helper = new THREE.DirectionalLightHelper(_this2.native, params.helper.size ? params.helper.size : 0);
-	        }
-	
-	        resolve();
-	      });
-	    }
-	  }]);
-	  return DirectionalLight;
-	}(_Component2.Component)) || _class;
-	
-	exports.DirectionalLight = DirectionalLight;
-
-/***/ },
-/* 470 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.HemisphereLight = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _LightComponent = __webpack_require__(393);
-	
-	var _LightComponent2 = _interopRequireDefault(_LightComponent);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var HemisphereLight = (0, _LightComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(HemisphereLight, _Component);
-	
-	  function HemisphereLight() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, HemisphereLight);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (HemisphereLight.__proto__ || Object.getPrototypeOf(HemisphereLight)).call(this, params, HemisphereLight.defaults));
-	
-	    _this.build(params);
-	
-	    (0, _get3.default)(HemisphereLight.prototype.__proto__ || Object.getPrototypeOf(HemisphereLight.prototype), 'wrap', _this).call(_this);
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(HemisphereLight, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new THREE.HemisphereLight(params.light.skyColor, params.light.groundColor, params.light.intensity);
-	
-	        if (params.helper) {
-	          _this2.helper = new THREE.HemisphereLightHelper(_this2.native, params.helper.size ? params.helper.size : 0);
-	        }
-	
-	        resolve();
-	      });
-	    }
-	  }]);
-	  return HemisphereLight;
-	}(_Component2.Component)) || _class;
-	
-	exports.HemisphereLight = HemisphereLight;
-
-/***/ },
-/* 471 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.PointLight = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _LightComponent = __webpack_require__(393);
-	
-	var _LightComponent2 = _interopRequireDefault(_LightComponent);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var PointLight = (0, _LightComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(PointLight, _Component);
-	
-	  function PointLight() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, PointLight);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (PointLight.__proto__ || Object.getPrototypeOf(PointLight)).call(this, params, PointLight.defaults));
-	
-	    _this.build(params);
-	    (0, _get3.default)(PointLight.prototype.__proto__ || Object.getPrototypeOf(PointLight.prototype), 'wrap', _this).call(_this);
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(PointLight, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new THREE.PointLight(params.light.color, params.light.intensity, params.light.distance, params.light.decay);
-	
-	        if (params.helper) {
-	          _this2.helper = new THREE.PointLightHelper(_this2.native, params.helper.size ? params.helper.size : 0);
-	        }
-	
-	        resolve();
-	      });
-	    }
-	  }]);
-	  return PointLight;
-	}(_Component2.Component)) || _class;
-	
-	exports.PointLight = PointLight;
-
-/***/ },
-/* 472 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.SpotLight = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _LightComponent = __webpack_require__(393);
-	
-	var _LightComponent2 = _interopRequireDefault(_LightComponent);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var SpotLight = (0, _LightComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(SpotLight, _Component);
-	
-	  function SpotLight() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, SpotLight);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (SpotLight.__proto__ || Object.getPrototypeOf(SpotLight)).call(this, params, SpotLight.defaults));
-	
-	    _this.build(params);
-	    (0, _get3.default)(SpotLight.prototype.__proto__ || Object.getPrototypeOf(SpotLight.prototype), 'wrap', _this).call(_this);
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(SpotLight, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new THREE.SpotLight(params.light.color, params.light.intensity, params.light.distance, params.light.angle, params.light.exponent, params.light.decay);
-	
-	        if (params.helper) _this2.helper = new THREE.SpotLightHelper(_this2.native);
-	
-	        resolve();
-	      });
-	    }
-	  }]);
-	  return SpotLight;
-	}(_Component2.Component)) || _class;
-	
-	exports.SpotLight = SpotLight;
-
-/***/ },
-/* 473 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _CubeCamera = __webpack_require__(474);
-	
-	Object.keys(_CubeCamera).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _CubeCamera[key];
-	    }
-	  });
-	});
-	
-	var _OrtographicCamera = __webpack_require__(475);
-	
-	Object.keys(_OrtographicCamera).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _OrtographicCamera[key];
-	    }
-	  });
-	});
-	
-	var _PerspectiveCamera = __webpack_require__(438);
-	
-	Object.keys(_PerspectiveCamera).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _PerspectiveCamera[key];
-	    }
-	  });
-	});
-
-/***/ },
-/* 474 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.CubeCamera = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _CameraComponent = __webpack_require__(394);
-	
-	var _CameraComponent2 = _interopRequireDefault(_CameraComponent);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var CubeCamera = (0, _CameraComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(CubeCamera, _Component);
-	
-	  function CubeCamera() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, CubeCamera);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (CubeCamera.__proto__ || Object.getPrototypeOf(CubeCamera)).call(this, params, CubeCamera.defaults));
-	
-	    _this.build(params);
-	    (0, _get3.default)(CubeCamera.prototype.__proto__ || Object.getPrototypeOf(CubeCamera.prototype), 'wrap', _this).call(_this);
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(CubeCamera, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new THREE.CubeCamera(params.camera.near, params.camera.far, params.camera.cubeResolution);
-	
-	        resolve();
-	      });
-	    }
-	  }]);
-	  return CubeCamera;
-	}(_Component2.Component)) || _class;
-	
-	exports.CubeCamera = CubeCamera;
-
-/***/ },
-/* 475 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.OrtographicCamera = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _CameraComponent = __webpack_require__(394);
-	
-	var _CameraComponent2 = _interopRequireDefault(_CameraComponent);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var OrtographicCamera = (0, _CameraComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(OrtographicCamera, _Component);
-	
-	  function OrtographicCamera() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, OrtographicCamera);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (OrtographicCamera.__proto__ || Object.getPrototypeOf(OrtographicCamera)).call(this, params, OrtographicCamera.defaults));
-	
-	    _this.build(params);
-	    (0, _get3.default)(OrtographicCamera.prototype.__proto__ || Object.getPrototypeOf(OrtographicCamera.prototype), 'wrap', _this).call(_this);
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(OrtographicCamera, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new THREE.OrtographicCamera(params.camera.left, params.camera.right, params.camera.top, params.camera.bottom, params.camera.near, params.camera.far);
-	
-	        resolve();
-	      });
-	    }
-	  }]);
-	  return OrtographicCamera;
-	}(_Component2.Component)) || _class;
-	
-	exports.OrtographicCamera = OrtographicCamera;
-
-/***/ },
-/* 476 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _Box = __webpack_require__(477);
-	
-	Object.keys(_Box).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Box[key];
-	    }
-	  });
-	});
-	
-	var _Cylinder = __webpack_require__(478);
-	
-	Object.keys(_Cylinder).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Cylinder[key];
-	    }
-	  });
-	});
-	
-	var _Dodecahedron = __webpack_require__(479);
-	
-	Object.keys(_Dodecahedron).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Dodecahedron[key];
-	    }
-	  });
-	});
-	
-	var _Extrude = __webpack_require__(480);
-	
-	Object.keys(_Extrude).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Extrude[key];
-	    }
-	  });
-	});
-	
-	var _Icosahedron = __webpack_require__(481);
-	
-	Object.keys(_Icosahedron).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Icosahedron[key];
-	    }
-	  });
-	});
-	
-	var _Lathe = __webpack_require__(482);
-	
-	Object.keys(_Lathe).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Lathe[key];
-	    }
-	  });
-	});
-	
-	var _Line = __webpack_require__(483);
-	
-	Object.keys(_Line).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Line[key];
-	    }
-	  });
-	});
-	
-	var _Model = __webpack_require__(484);
-	
-	Object.keys(_Model).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Model[key];
-	    }
-	  });
-	});
-	
-	var _Morph = __webpack_require__(485);
-	
-	Object.keys(_Morph).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Morph[key];
-	    }
-	  });
-	});
-	
-	var _Octahedron = __webpack_require__(486);
-	
-	Object.keys(_Octahedron).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Octahedron[key];
-	    }
-	  });
-	});
-	
-	var _Parametric = __webpack_require__(487);
-	
-	Object.keys(_Parametric).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Parametric[key];
-	    }
-	  });
-	});
-	
-	var _Plane = __webpack_require__(488);
-	
-	Object.keys(_Plane).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Plane[key];
-	    }
-	  });
-	});
-	
-	var _Polyhedron = __webpack_require__(489);
-	
-	Object.keys(_Polyhedron).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Polyhedron[key];
-	    }
-	  });
-	});
-	
-	var _Ring = __webpack_require__(490);
-	
-	Object.keys(_Ring).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Ring[key];
-	    }
-	  });
-	});
-	
-	var _Shape = __webpack_require__(491);
-	
-	Object.keys(_Shape).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Shape[key];
-	    }
-	  });
-	});
-	
-	var _Sphere = __webpack_require__(492);
-	
-	Object.keys(_Sphere).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Sphere[key];
-	    }
-	  });
-	});
-	
-	var _Tetrahedron = __webpack_require__(493);
-	
-	Object.keys(_Tetrahedron).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Tetrahedron[key];
-	    }
-	  });
-	});
-	
-	var _Text = __webpack_require__(494);
-	
-	Object.keys(_Text).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Text[key];
-	    }
-	  });
-	});
-	
-	var _Torus = __webpack_require__(495);
-	
-	Object.keys(_Torus).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Torus[key];
-	    }
-	  });
-	});
-	
-	var _Torusknot = __webpack_require__(496);
-	
-	Object.keys(_Torusknot).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Torusknot[key];
-	    }
-	  });
-	});
-	
-	var _Tube = __webpack_require__(497);
-	
-	Object.keys(_Tube).forEach(function (key) {
-	  if (key === "default" || key === "__esModule") return;
-	  Object.defineProperty(exports, key, {
-	    enumerable: true,
-	    get: function get() {
-	      return _Tube[key];
-	    }
-	  });
-	});
-
-/***/ },
-/* 477 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Box = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Box = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Box, _Component);
-	
-	  function Box() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Box);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Box.__proto__ || Object.getPrototypeOf(Box)).call(this, params, Box.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      width: 1,
-	      height: 1,
-	      depth: 1
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Box.prototype.__proto__ || Object.getPrototypeOf(Box.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Box, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.BoxMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.BoxBufferGeometry : THREE.BoxGeometry;
-	
-	      var geometry = new GConstruct(params.geometry.width, params.geometry.height, params.geometry.depth);
-	
-	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
-	
-	      return geometry;
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return this.params.softbody ? new Box(this.params) : new Box({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_width',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { width: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.width;
-	    }
-	  }, {
-	    key: 'G_height',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.height;
-	    }
-	  }, {
-	    key: 'G_depth',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { depth: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.depth;
-	    }
-	  }]);
-	  return Box;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Box = Box;
-
-/***/ },
-/* 478 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Cylinder = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Cylinder = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Cylinder, _Component);
-	
-	  function Cylinder() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Cylinder);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Cylinder.__proto__ || Object.getPrototypeOf(Cylinder)).call(this, params, Cylinder.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      radiusTop: 0,
-	      radiusBottom: 1,
-	      height: 1,
-	      radiusSegments: 32,
-	      heightSegments: 1,
-	      openEnded: false,
-	      thetaStart: 0,
-	      thetaLength: Math.PI * 2
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Cylinder.prototype.__proto__ || Object.getPrototypeOf(Cylinder.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Cylinder, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.CylinderMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.CylinderBufferGeometry : THREE.CylinderGeometry;
-	
-	      var geometry = new GConstruct(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments, params.geometry.heightSegments, params.geometry.openEnded, params.geometry.thetaStart, params.geometry.thetaLength);
-	
-	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
-	
-	      return geometry;
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Cylinder({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_radiusTop',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusTop: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radiusTop;
-	    }
-	  }, {
-	    key: 'G_radiusBottom',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusBottom: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radiusBottom;
-	    }
-	  }, {
-	    key: 'G_height',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.height;
-	    }
-	  }, {
-	    key: 'G_radiusSegments',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusSegments: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radiusSegments;
-	    }
-	  }]);
-	  return Cylinder;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Cylinder = Cylinder;
-
-/***/ },
-/* 479 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Dodecahedron = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Dodecahedron = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Dodecahedron, _Component);
-	
-	  function Dodecahedron() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Dodecahedron);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Dodecahedron.__proto__ || Object.getPrototypeOf(Dodecahedron)).call(this, params, Dodecahedron.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      radius: 1,
-	      detail: 0
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Dodecahedron.prototype.__proto__ || Object.getPrototypeOf(Dodecahedron.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Dodecahedron, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.DodecahedronBufferGeometry : THREE.DodecahedronGeometry;
-	
-	      return new GConstruct(params.geometry.radius, params.geometry.detail);
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Dodecahedron({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_radius',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radius;
-	    }
-	  }, {
-	    key: 'G_detail',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.detail;
-	    }
-	  }]);
-	  return Dodecahedron;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Dodecahedron = Dodecahedron;
-
-/***/ },
-/* 480 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Extrude = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Extrude = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Extrude, _Component);
-	
-	  function Extrude() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Extrude);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Extrude.__proto__ || Object.getPrototypeOf(Extrude)).call(this, params, Extrude.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      shapes: [],
-	      options: {}
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Extrude.prototype.__proto__ || Object.getPrototypeOf(Extrude.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Extrude, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.ExtrudeBufferGeometry : THREE.ExtrudeGeometry;
-	
-	      return new GConstruct(params.geometry.shapes, params.geometry.options);
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Extrude({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_shapes',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { shapes: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.shapes;
-	    }
-	  }, {
-	    key: 'G_options',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { options: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.options;
-	    }
-	  }]);
-	  return Extrude;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Extrude = Extrude;
-
-/***/ },
-/* 481 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Icosahedron = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _index2 = __webpack_require__(385);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Icosahedron = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Icosahedron, _Component);
-	
-	  function Icosahedron() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Icosahedron);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Icosahedron.__proto__ || Object.getPrototypeOf(Icosahedron)).call(this, params, Icosahedron.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      radius: 1,
-	      detail: 0
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Icosahedron.prototype.__proto__ || Object.getPrototypeOf(Icosahedron.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Icosahedron, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.IcosahedronBufferGeometry : THREE.IcosahedronGeometry;
-	
-	      return new GConstruct(params.geometry.radius, params.geometry.detail);
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Icosahedron({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_radius',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radius;
-	    }
-	  }, {
-	    key: 'G_detail',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.detail;
-	    }
-	  }]);
-	  return Icosahedron;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Icosahedron = Icosahedron;
-
-/***/ },
-/* 482 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Lathe = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _index2 = __webpack_require__(385);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Lathe = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Lathe, _Component);
-	
-	  function Lathe() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Lathe);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Lathe.__proto__ || Object.getPrototypeOf(Lathe)).call(this, params, Lathe.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      points: []
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Lathe.prototype.__proto__ || Object.getPrototypeOf(Lathe.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Lathe, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.LatheBufferGeometry : THREE.LatheGeometry;
-	
-	      return new GConstruct(params.geometry.points);
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Lathe({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_points',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { points: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.points;
-	    }
-	  }]);
-	  return Lathe;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Lathe = Lathe;
-
-/***/ },
-/* 483 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Line = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(385);
-	
-	var _index2 = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Line = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Line, _Component);
-	
-	  function Line(params) {
-	    (0, _classCallCheck3.default)(this, Line);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Line.__proto__ || Object.getPrototypeOf(Line)).call(this, params, Line.defaults));
-	
-	    (0, _index.extend)(params.geometry, {
-	      curve: false,
-	      points: 50
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Line.prototype.__proto__ || Object.getPrototypeOf(Line.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Line, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics) Mesh = _index2.RopeMesh;else Mesh = THREE.Line;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var geometry = params.buffer || params.physics ? new THREE.BufferGeometry() : new THREE.Geometry();
-	
-	      if (params.buffer || params.physics) {
-	        var pp = params.geometry.curve.getPoints(params.geometry.points);
-	        var verts = new Float32Array(pp.length * 3);
-	
-	        for (var i = 0, max = pp.length; i < max; i++) {
-	          verts[i * 3] = pp[i].x;
-	          verts[i * 3 + 1] = pp[i].y;
-	          verts[i * 3 + 2] = pp[i].z;
-	        }
-	
-	        geometry.addAttribute('position', new THREE.BufferAttribute(verts, 3));
-	      } else geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
-	
-	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
-	
-	      return geometry;
-	    }
-	  }]);
-	  return Line;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Line = Line;
-
-/***/ },
-/* 484 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Model = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Model = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Model, _Component);
-	
-	  function Model() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Model);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Model.__proto__ || Object.getPrototypeOf(Model)).call(this, params, Model.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      path: '',
-	      physics: '',
-	      loader: _index2.JSONLoader
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Model.prototype.__proto__ || Object.getPrototypeOf(Model.prototype), 'wrap', _this).call(_this, 'wait');
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Model, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && params.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      var promise = new Promise(function (resolve) {
-	        var pGeometry = params.geometry;
-	        var Loader = pGeometry.loader;
-	
-	        Loader.load(pGeometry.path, function (data, materials) {
-	          if (pGeometry.physics) {
-	            Loader.load(pGeometry.physics, function (data2) {
-	              var material = void 0;
-	
-	              if (params.material.useVertexColors) {
-	                material = (0, _index2.loadMaterial)((0, _index2.extend)(params.material, {
-	                  morphTargets: true,
-	                  vertexColors: THREE.FaceColors
-	                }));
-	              } else if (!materials || params.material.useCustomMaterial) {
-	                material = (0, _index2.loadMaterial)(params.material);
-	              } else material = new THREE.MultiMaterial(materials);
-	
-	              data.computeFaceNormals();
-	              data.computeVertexNormals();
-	
-	              _this2.native = new Mesh(data, material, _this2.params, data2);
-	
-	              resolve();
-	            });
-	          } else {
-	            var material = void 0;
-	
-	            if (params.material.useVertexColors) {
-	              material = (0, _index2.loadMaterial)((0, _index2.extend)(params.material, {
-	                morphTargets: true,
-	                vertexColors: THREE.FaceColors
-	              }));
-	            } else if (!materials || params.material.useCustomMaterial) {
-	              material = (0, _index2.loadMaterial)(params.material);
-	            } else material = new THREE.MultiMaterial(materials);
-	
-	            data.computeFaceNormals();
-	            data.computeVertexNormals();
-	
-	            console.log(_this2.params);
-	
-	            _this2.native = new Mesh(data, material, _this2.params);
-	
-	            resolve();
-	          }
-	        });
-	      });
-	
-	      (0, _get3.default)(Model.prototype.__proto__ || Object.getPrototypeOf(Model.prototype), 'wait', this).call(this, promise);
-	
-	      return promise;
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Model({ build: false }).copy(this);
-	    }
-	  }]);
-	  return Model;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Model = Model;
-
-/***/ },
-/* 485 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Morph = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var Physijs = _interopRequireWildcard(_index);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	var _loaders = __webpack_require__(389);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Morph = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Morph, _Component);
-	
-	  function Morph() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Morph);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Morph.__proto__ || Object.getPrototypeOf(Morph)).call(this, params, Morph.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      path: '',
-	      loader: _loaders.JSONLoader
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Morph.prototype.__proto__ || Object.getPrototypeOf(Morph.prototype), 'wrap', _this).call(_this, 'wait');
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Morph, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var promise = new Promise(function (resolve) {
-	        var Loader = params.geometry.loader;
-	
-	        Loader.load(params.geometry.path, function (data, materials) {
-	          var material = void 0;
-	          if (params.material.useVertexColors) {
-	            material = (0, _index2.loadMaterial)((0, _index2.extend)(params.material, {
-	              morphTargets: true,
-	              vertexColors: THREE.FaceColors
-	            }));
-	          } else if (!materials || params.material.useCustomMaterial) {
-	            material = (0, _index2.loadMaterial)(params.material);
-	          } else material = new THREE.MultiMaterial(materials);
-	
-	          data.computeFaceNormals();
-	          data.computeVertexNormals();
-	
-	          // Visualization.
-	          var mesh = new THREE.Mesh(data, material);
-	          mesh.speed = params.morph.speed;
-	          mesh.mixer = new THREE.AnimationMixer(mesh);
-	
-	          mesh.mixer.clipAction(data.animations[0]).setDuration(params.morph.duration).play();
-	
-	          _this2.native = mesh;
-	
-	          resolve();
-	        });
-	      });
-	
-	      (0, _get3.default)(Morph.prototype.__proto__ || Object.getPrototypeOf(Morph.prototype), 'wait', this).call(this, promise);
-	      return promise;
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Morph({ build: false }).copy(this);
-	    }
-	  }]);
-	  return Morph;
-	}(_Component2.Component)) || _class;
-	
-	exports.Morph = Morph;
-
-/***/ },
-/* 486 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Octahedron = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Octahedron = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Octahedron, _Component);
-	
-	  function Octahedron() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Octahedron);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Octahedron.__proto__ || Object.getPrototypeOf(Octahedron)).call(this, params, Octahedron.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      radius: 1,
-	      detail: 0
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Octahedron.prototype.__proto__ || Object.getPrototypeOf(Octahedron.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Octahedron, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.OctahedronBufferGeometry : THREE.OctahedronGeometry;
-	
-	      return new GConstruct(params.geometry.radius, params.geometry.detail);
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Octahedron({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_radius',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radius;
-	    }
-	  }, {
-	    key: 'G_detail',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.detail;
-	    }
-	  }]);
-	  return Octahedron;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Octahedron = Octahedron;
-
-/***/ },
-/* 487 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Parametric = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Parametric = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Parametric, _Component);
-	
-	  function Parametric() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Parametric);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Parametric.__proto__ || Object.getPrototypeOf(Parametric)).call(this, params, Parametric.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      func: function func() {},
-	
-	      slices: 10,
-	      stacks: 10
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Parametric.prototype.__proto__ || Object.getPrototypeOf(Parametric.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Parametric, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.ParametricBufferGeometry : THREE.ParametricGeometry;
-	
-	      return new GConstruct(params.geometry.func, params.geometry.slices, params.geometry.stacks);
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Parametric({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_func',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { func: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.func;
-	    }
-	  }, {
-	    key: 'G_slices',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { slices: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.slices;
-	    }
-	  }, {
-	    key: 'G_stacks',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { stacks: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.stacks;
-	    }
-	  }]);
-	  return Parametric;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Parametric = Parametric;
-
-/***/ },
-/* 488 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Plane = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Plane = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Plane, _Component);
-	
-	  function Plane() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Plane);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Plane.__proto__ || Object.getPrototypeOf(Plane)).call(this, params, Plane.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      width: 10,
-	      height: 10,
-	      wSegments: 32,
-	      hSegments: 32
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Plane.prototype.__proto__ || Object.getPrototypeOf(Plane.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Plane, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.ClothMesh;else if (this.physics) Mesh = _index.PlaneMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer || params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
-	
-	      var geometry = new GConstruct(params.geometry.width, params.geometry.height, params.geometry.wSegments, params.geometry.hSegments);
-	
-	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
-	
-	      return geometry;
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Plane({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_width',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { width: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.width;
-	    }
-	  }, {
-	    key: 'G_height',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.height;
-	    }
-	  }, {
-	    key: 'G_segments',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { segments: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.segments;
-	    }
-	  }]);
-	  return Plane;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Plane = Plane;
-
-/***/ },
-/* 489 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Polyhedron = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Polyhedron = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Polyhedron, _Component);
-	
-	  function Polyhedron() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Polyhedron);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Polyhedron.__proto__ || Object.getPrototypeOf(Polyhedron)).call(this, params, Polyhedron.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      verticesOfCube: _this.verticesOfCube,
-	      indicesOfFaces: _this.indicesOfFaces,
-	      radius: 6,
-	      detail: 2
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Polyhedron.prototype.__proto__ || Object.getPrototypeOf(Polyhedron.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Polyhedron, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.PolyhedronBufferGeometry : THREE.PolyhedronGeometry;
-	
-	      return new GConstruct(params.geometry.verticesOfCube, params.geometry.indicesOfFaces, params.geometry.radius, params.geometry.detail);
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Polyhedron({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'verticesOfCube',
-	    get: function get() {
-	      return [-1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1];
-	    }
-	  }, {
-	    key: 'indicesOfFaces',
-	    get: function get() {
-	      return [2, 1, 0, 0, 3, 2, 0, 4, 7, 7, 3, 0, 0, 1, 5, 5, 4, 0, 1, 2, 6, 6, 5, 1, 2, 3, 7, 7, 6, 2, 4, 5, 6, 6, 7, 4];
-	    }
-	  }, {
-	    key: 'G_verticesOfCube',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { verticesOfCube: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.verticesOfCube;
-	    }
-	  }, {
-	    key: 'G_indicesOfFaces',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { indicesOfFaces: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.indicesOfFaces;
-	    }
-	  }, {
-	    key: 'G_radius',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radius;
-	    }
-	  }, {
-	    key: 'G_detail',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.detail;
-	    }
-	  }]);
-	  return Polyhedron;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Polyhedron = Polyhedron;
-
-/***/ },
-/* 490 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Ring = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _index = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Ring = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Ring, _Component);
-	
-	  function Ring() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Ring);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Ring.__proto__ || Object.getPrototypeOf(Ring)).call(this, params, Ring.defaults));
-	
-	    (0, _index.extend)(params.geometry, {
-	      innerRadius: 0,
-	      outerRadius: 50,
-	      thetaSegments: 8,
-	      phiSegments: 8,
-	      thetaStart: 0,
-	      thetaLength: Math.PI * 2
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Ring.prototype.__proto__ || Object.getPrototypeOf(Ring.prototype), 'wrap', _this).call(_this, 'onlyvis');
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Ring, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index.loadMaterial)(params.material);
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new THREE.Mesh(new THREE.RingGeometry(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength), material);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.RingBufferGeometry : THREE.RingGeometry;
-	
-	      return new GConstruct(params.geometry.innerRadius, params.geometry.outerRadius, params.geometry.thetaSegments, params.geometry.phiSegments, params.geometry.thetaStart, params.geometry.thetaLength);
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Ring({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_innerRadius',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { innerRadius: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.innerRadius;
-	    }
-	  }, {
-	    key: 'G_outerRadius',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { outerRadius: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.outerRadius;
-	    }
-	  }, {
-	    key: 'G_thetaSegments',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { thetaSegments: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.thetaSegments;
-	    }
-	  }, {
-	    key: 'G_phiSegments',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { phiSegments: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.phiSegments;
-	    }
-	  }, {
-	    key: 'G_thetaStart',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { thetaStart: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.thetaStart;
-	    }
-	  }, {
-	    key: 'G_thetaLength',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { thetaLength: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.thetaLength;
-	    }
-	  }]);
-	  return Ring;
-	}(_Component2.Component)) || _class;
-	
-	exports.Ring = Ring;
-
-/***/ },
-/* 491 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Shape = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _index = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Shape = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Shape, _Component);
-	
-	  function Shape() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Shape);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Shape.__proto__ || Object.getPrototypeOf(Shape)).call(this, params, Shape.defaults));
-	
-	    (0, _index.extend)(params.geometry, {
-	      shapes: []
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Shape.prototype.__proto__ || Object.getPrototypeOf(Shape.prototype), 'wrap', _this).call(_this, 'onlyvis');
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Shape, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index.loadMaterial)(params.material);
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new THREE.Mesh(_this2.buildGeometry(params), material);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.ComponentBufferGeometry : THREE.ComponentGeometry;
-	
-	      return new GConstruct(params.geometry.shapes);
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Shape({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_shapes',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { shapes: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.shapes;
-	    }
-	  }]);
-	  return Shape;
-	}(_Component2.Component)) || _class;
-	
-	exports.Shape = Shape;
-
-/***/ },
-/* 492 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Sphere = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Sphere = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Sphere, _Component);
-	
-	  function Sphere() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Sphere);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Sphere.__proto__ || Object.getPrototypeOf(Sphere)).call(this, params, Sphere.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      radius: 1,
-	      widthSegments: 8,
-	      heightSegments: 6
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Sphere.prototype.__proto__ || Object.getPrototypeOf(Sphere.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Sphere, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.SphereMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.SphereBufferGeometry : THREE.SphereGeometry;
-	
-	      var geometry = new GConstruct(params.geometry.radius, params.geometry.widthSegments, params.geometry.heightSegments);
-	
-	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
-	
-	      return geometry;
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return this.params.softbody ? new Sphere(this.params) : new Sphere({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_radius',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radius;
-	    }
-	  }, {
-	    key: 'G_widthSegments',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { widthSegments: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.widthSegments;
-	    }
-	  }, {
-	    key: 'G_heightSegments',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { widthSegments: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.widthSegments;
-	    }
-	  }]);
-	  return Sphere;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Sphere = Sphere;
-
-/***/ },
-/* 493 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Tetrahedron = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Tetrahedron = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Tetrahedron, _Component);
-	
-	  function Tetrahedron() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Tetrahedron);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Tetrahedron.__proto__ || Object.getPrototypeOf(Tetrahedron)).call(this, params, Tetrahedron.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      radius: 1,
-	      detail: 0
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Tetrahedron.prototype.__proto__ || Object.getPrototypeOf(Tetrahedron.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Tetrahedron, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.TetrahedronBufferGeometry : THREE.TetrahedronGeometry;
-	
-	      return new GConstruct(params.geometry.radius, params.geometry.detail);
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Tetrahedron({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_radius',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radius;
-	    }
-	  }, {
-	    key: 'G_detail',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.detail;
-	    }
-	  }]);
-	  return Tetrahedron;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Tetrahedron = Tetrahedron;
-
-/***/ },
-/* 494 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Text = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Text = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Text, _Component);
-	
-	  function Text() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Text);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Text.__proto__ || Object.getPrototypeOf(Text)).call(this, params, Text.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      text: 'Hello World!',
-	
-	      parameters: {
-	        size: 12,
-	        height: 50,
-	        curveSegments: 12,
-	        font: new THREE.Font(),
-	        bevelEnabled: false,
-	        bevelThickness: 10,
-	        bevelSize: 8
-	      }
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Text.prototype.__proto__ || Object.getPrototypeOf(Text.prototype), 'wrap', _this).call(_this, 'wait');
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Text, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      var promise = new Promise(function (resolve) {
-	        _index2.FontLoader.load(params.geometry.parameters.font, function (font) {
-	          params.geometry.parameters.font = font;
-	
-	          _this2.native = new Mesh(new THREE.TextGeometry(params.geometry.text, params.geometry.parameters), material, _this2.params);
-	
-	          resolve();
-	        });
-	      });
-	
-	      (0, _get3.default)(Text.prototype.__proto__ || Object.getPrototypeOf(Text.prototype), 'wait', this).call(this, promise);
-	
-	      return promise;
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Text({ build: false }).copy(this);
-	    }
-	  }]);
-	  return Text;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Text = Text;
-
-/***/ },
-/* 495 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Torus = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Torus = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Torus, _Component);
-	
-	  function Torus() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Torus);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Torus.__proto__ || Object.getPrototypeOf(Torus)).call(this, params, Torus.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      radius: 100,
-	      tube: 40,
-	      radialSegments: 8,
-	      tubularSegments: 6,
-	      arc: Math.PI * 2
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Torus.prototype.__proto__ || Object.getPrototypeOf(Torus.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Torus, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.TorusBufferGeometry : THREE.TorusGeometry;
-	
-	      return new THREE.TorusGeometry(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.arc);
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Torus({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_radius',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radius;
-	    }
-	  }, {
-	    key: 'G_tube',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tube: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.tube;
-	    }
-	  }, {
-	    key: 'G_radialSegments',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radialSegments: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radialSegments;
-	    }
-	  }, {
-	    key: 'G_tubularSegments',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tubularSegments: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.tubularSegments;
-	    }
-	  }, {
-	    key: 'G_arc',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { arc: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.arc;
-	    }
-	  }]);
-	  return Torus;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Torus = Torus;
-
-/***/ },
-/* 496 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Torusknot = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Torusknot = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Torusknot, _Component);
-	
-	  function Torusknot() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Torusknot);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Torusknot.__proto__ || Object.getPrototypeOf(Torusknot)).call(this, params, Torusknot.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      radius: 100,
-	      tube: 40,
-	      radialSegments: 64,
-	      tubularSegments: 8,
-	      p: 2,
-	      q: 3
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Torusknot.prototype.__proto__ || Object.getPrototypeOf(Torusknot.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Torusknot, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.TorusKnotBufferGeometry : THREE.TorusKnotGeometry;
-	
-	      return new GConstruct(params.geometry.radius, params.geometry.tube, params.geometry.radialSegments, params.geometry.tubularSegments, params.geometry.p, params.geometry.q);
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Torusknot(this.params, this._type).copy(this);
-	    }
-	  }, {
-	    key: 'G_radius',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radius;
-	    }
-	  }, {
-	    key: 'G_tube',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tube: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.tube;
-	    }
-	  }, {
-	    key: 'G_radialSegments',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radialSegments: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radialSegments;
-	    }
-	  }, {
-	    key: 'G_tubularSegments',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tubularSegments: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.tubularSegments;
-	    }
-	  }, {
-	    key: 'G_p',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { p: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.p;
-	    }
-	  }, {
-	    key: 'G_q',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { q: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.q;
-	    }
-	  }, {
-	    key: 'G_heightScale',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { heightScale: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.heightScale;
-	    }
-	  }]);
-	  return Torusknot;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Torusknot = Torusknot;
-
-/***/ },
-/* 497 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Tube = undefined;
-	
-	var _classCallCheck2 = __webpack_require__(301);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(302);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(321);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(375);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _get2 = __webpack_require__(439);
-	
-	var _get3 = _interopRequireDefault(_get2);
-	
-	var _class;
-	
-	var _three = __webpack_require__(383);
-	
-	var THREE = _interopRequireWildcard(_three);
-	
-	var _index = __webpack_require__(397);
-	
-	var _Component2 = __webpack_require__(300);
-	
-	var _MeshComponent = __webpack_require__(392);
-	
-	var _MeshComponent2 = _interopRequireDefault(_MeshComponent);
-	
-	var _PhysicsComponent = __webpack_require__(395);
-	
-	var _PhysicsComponent2 = _interopRequireDefault(_PhysicsComponent);
-	
-	var _SoftbodyComponent = __webpack_require__(436);
-	
-	var _SoftbodyComponent2 = _interopRequireDefault(_SoftbodyComponent);
-	
-	var _index2 = __webpack_require__(385);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Tube = (0, _SoftbodyComponent2.default)(_class = (0, _PhysicsComponent2.default)(_class = (0, _MeshComponent2.default)(_class = function (_Component) {
-	  (0, _inherits3.default)(Tube, _Component);
-	
-	  function Tube() {
-	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    (0, _classCallCheck3.default)(this, Tube);
-	
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (Tube.__proto__ || Object.getPrototypeOf(Tube)).call(this, params, Tube.defaults));
-	
-	    (0, _index2.extend)(params.geometry, {
-	      path: false,
-	      segments: 20,
-	      radius: 2,
-	      radiusSegments: 8,
-	      closed: false
-	    });
-	
-	    if (params.build) {
-	      _this.build(params);
-	      (0, _get3.default)(Tube.prototype.__proto__ || Object.getPrototypeOf(Tube.prototype), 'wrap', _this).call(_this);
-	    }
-	    return _this;
-	  }
-	
-	  (0, _createClass3.default)(Tube, [{
-	    key: 'build',
-	    value: function build() {
-	      var _this2 = this;
-	
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var material = (0, _index2.loadMaterial)(params.material);
-	
-	      var Mesh = void 0;
-	
-	      if (this.physics && this.params.softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
-	
-	      return new Promise(function (resolve) {
-	        _this2.native = new Mesh(_this2.buildGeometry(params), material, _this2.params);
-	
-	        resolve();
-	      });
-	    }
-	  }, {
-	    key: 'buildGeometry',
-	    value: function buildGeometry() {
-	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.TubeBufferGeometry : THREE.TubeGeometry;
-	
-	      var geometry = new GConstruct(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed);
-	
-	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
-	
-	      return geometry;
-	    }
-	  }, {
-	    key: 'clone',
-	    value: function clone() {
-	      return new Tube({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'G_path',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { path: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.path;
-	    }
-	  }, {
-	    key: 'G_segments',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { segments: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.segments;
-	    }
-	  }, {
-	    key: 'G_radius',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radius;
-	    }
-	  }, {
-	    key: 'G_radiusSegments',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusSegments: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.radiusSegments;
-	    }
-	  }, {
-	    key: 'G_closed',
-	    set: function set(val) {
-	      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { closed: val } }));
-	    },
-	    get: function get() {
-	      return this._native.geometry.parameters.closed;
-	    }
-	  }]);
-	  return Tube;
-	}(_Component2.Component)) || _class) || _class) || _class;
-	
-	exports.Tube = Tube;
 
 /***/ },
 /* 498 */

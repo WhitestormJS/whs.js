@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 import {Component} from '../../core/Component';
-import MeshComponent from '../../core/MeshComponent';
+import {MeshComponent} from '../../core/MeshComponent';
 import {extend, loadMaterial} from '../../utils/index';
 
 @MeshComponent

@@ -3,7 +3,7 @@ import {$wrap, $define} from '../utils/ComponentUtils';
 
 import {loadMaterial, extend} from '../utils/index';
 
-export default function MeshComponent(target) {
+function MeshComponent(target) {
   Object.assign(target.defaults, {
     build: true,
     geometry: {},
@@ -261,3 +261,7 @@ export default function MeshComponent(target) {
     }
   });
 }
+
+export {
+  MeshComponent
+};
