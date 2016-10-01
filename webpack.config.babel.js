@@ -76,10 +76,12 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
       library: 'WHS',
       libraryTarget: 'umd'
     },
-    externals: {
-      '../physics/index.js': 'var false',
-      './physics/index.js': 'var false'
-    },
+    externals: [
+      function(ctx, req, cb) {
+        if (/.*\/physics.*/g.test(req)) return cb(null, 'var false');
+        cb();
+      }
+    ],
     module: {
       loaders: loadersSection
     },
