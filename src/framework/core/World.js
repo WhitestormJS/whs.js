@@ -3,7 +3,7 @@ import * as Physijs from '../physics/index.js';
 import Stats from 'stats.js';
 
 import {extend} from '../utils/index';
-import {PerspectiveCamera} from '../cameras/PerspectiveCamera';
+import {PerspectiveCamera} from '../components/cameras/PerspectiveCamera';
 import {Component} from './Component';
 
 class World extends Component {
