@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import * as Physijs from '../physics/index.js';
-import Stats from 'stats.js';
 
 import {extend} from '../utils/index';
 import {PerspectiveCamera} from '../components/cameras/PerspectiveCamera';
+import {BasicRendering} from '../components/rendering/basic/BasicRendering';
 import {Component} from './Component';
 
 class World extends Component {
@@ -11,11 +11,6 @@ class World extends Component {
     stats: false,
     autoresize: false,
     softbody: false,
-
-    shadowmap: {
-      enabled: true,
-      type: THREE.PCFSoftShadowMap
-    },
 
     helpers: {
       grid: false,
@@ -26,6 +21,20 @@ class World extends Component {
       x: 0,
       y: 0,
       z: 0
+    },
+
+    rendering: {
+      shadowmap: {
+        enabled: true,
+        type: THREE.PCFSoftShadowMap
+      },
+
+      background: {
+        color: 0x000000,
+        opacity: 1
+      },
+
+      renderer: {}
     },
 
     camera: {
@@ -60,18 +69,11 @@ class World extends Component {
       stats: true,
       camera: true,
       helpers: true,
-      renderer: true
-    },
-
-    background: {
-      color: 0x000000,
-      opacity: 1
-    },
-
-    renderer: {}
+      rendering: true
+    }
   };
 
-  render = false;
+  // render = false;
   simulate = false;
   loops = [];
   type = 'world';
@@ -91,10 +93,11 @@ class World extends Component {
     // INIT.
     this._initDOM(window);
     if (_initParams.scene) this._initScene();
-    if (_initParams.scene && _initParams.stats) this._initStats();
+    // if (_initParams.scene && _initParams.stats) this._initStats();
 
     if (_initParams.scene && _initParams.camera) this._initCamera(window);
-    if (_initParams.scene && _initParams.renderer) this._initRenderer();
+    if (_initParams.scene && _initParams.rendering) this._initRendering();
+    // if (_initParams.scene && _initParams.renderer) this._initRenderer();
     if (_initParams.scene && _initParams.helpers) this._initHelpers();
 
     // NOTE: ==================== Autoresize. ======================
@@ -189,33 +192,33 @@ class World extends Component {
     return this._dom;
   }
 
-  _initStats() {
-    const params = this.params;
+  // _initStats() {
+  //   const params = this.params;
 
-    if (params.stats) {
-      this.stats = new Stats();
+  //   if (params.stats) {
+  //     this.stats = new Stats();
 
-      if (params.stats === 'fps')
-        this.stats.setMode(0);
+  //     if (params.stats === 'fps')
+  //       this.stats.setMode(0);
 
-      else if (params.stats === 'ms')
-        this.stats.setMode(1);
+  //     else if (params.stats === 'ms')
+  //       this.stats.setMode(1);
 
-      else if (params.stats === 'mb')
-        this.stats.setMode(1);
+  //     else if (params.stats === 'mb')
+  //       this.stats.setMode(1);
 
-      else {
-        this.stats.setMode(0);
-        console.warn([this.stats], 'Please, apply stats mode [fps, ms, mb] .');
-      }
+  //     else {
+  //       this.stats.setMode(0);
+  //       console.warn([this.stats], 'Please, apply stats mode [fps, ms, mb] .');
+  //     }
 
-      this.stats.domElement.style.position = 'absolute';
-      this.stats.domElement.style.left = '0px';
-      this.stats.domElement.style.bottom = '0px';
+  //     this.stats.domElement.style.position = 'absolute';
+  //     this.stats.domElement.style.left = '0px';
+  //     this.stats.domElement.style.bottom = '0px';
 
-      this._dom.appendChild(this.stats.domElement);
-    }
-  }
+  //     this._dom.appendChild(this.stats.domElement);
+  //   }
+  // }
 
   _initCamera() {
     const _params = this.params;
@@ -238,32 +241,60 @@ class World extends Component {
     this.camera.addTo(this);
   }
 
-  _initRenderer() {
-    this.render = true;
+  _initRendering() {
+    const _params = this.params;
 
-    // Renderer.
-    this.renderer = new THREE.WebGLRenderer(this.params.renderer);
+    this.renderingPlugin = new BasicRendering({
+      rWidth: _params.rWidth,
+      rHeight: _params.rHeight,
+      width: _params.width,
+      height: _params.height,
 
-    const _renderer = this.renderer;
-    _renderer.setClearColor(this.params.background.color, this.params.background.opacity);
+      stats: _params.stats,
+      init: {
+        stats: _params.init.stats
+      },
 
-    // Shadowmap.
-    _renderer.shadowMap.enabled = this.params.shadowmap.enabled;
-    _renderer.shadowMap.type = this.params.shadowmap.type;
-    _renderer.shadowMap.cascade = true;
+      background: {
+        color: _params.rendering.background.color,
+        opacity: _params.rendering.background.opacity
+      },
 
-    _renderer.setSize(
-      Number(this.params.width * this.params.rWidth).toFixed(),
-      Number(this.params.height * this.params.rHeight).toFixed()
-    );
+      shadowmap: {
+        enabled: _params.rendering.shadowmap.enabled,
+        type: _params.rendering.shadowmap.type
+      },
 
-    _renderer.render(this.scene, this.camera.native);
-
-    this._dom.appendChild(_renderer.domElement);
-
-    _renderer.domElement.style.width = '100%';
-    _renderer.domElement.style.height = '100%';
+      renderer: _params.rendering.renderer
+    }, this);
   }
+
+  // _initRenderer() {
+  //   this.render = true;
+
+  //   // Renderer.
+  //   this.renderer = new THREE.WebGLRenderer(this.params.renderer);
+
+  //   const _renderer = this.renderer;
+  //   _renderer.setClearColor(this.params.background.color, this.params.background.opacity);
+
+  //   // Shadowmap.
+  //   _renderer.shadowMap.enabled = this.params.shadowmap.enabled;
+  //   _renderer.shadowMap.type = this.params.shadowmap.type;
+  //   _renderer.shadowMap.cascade = true;
+
+  //   _renderer.setSize(
+  //     Number(this.params.width * this.params.rWidth).toFixed(),
+  //     Number(this.params.height * this.params.rHeight).toFixed()
+  //   );
+
+  //   _renderer.render(this.scene, this.camera.native);
+
+  //   this._dom.appendChild(_renderer.domElement);
+
+  //   _renderer.domElement.style.width = '100%';
+  //   _renderer.domElement.style.height = '100%';
+  // }
 
   _initHelpers() {
     const _params = this.params,
@@ -299,46 +330,62 @@ class World extends Component {
    * Start animation.
    */
   start() {
-    const clock = new THREE.Clock(),
-      _scope = this,
-      scene = _scope.scene,
-      cameraNative = _scope.camera.native,
-      renderer = _scope.renderer;
-
-    window.requestAnimFrame = (() => {
-      return window.requestAnimationFrame
-        || window.webkitRequestAnimationFrame
-        || window.mozRequestAnimationFrame
-        || function (callback) {
-          window.setTimeout(callback, 1000 / 60);
-        };
-    })();
-
-    function reDraw(time) {
-      window.requestAnimFrame(reDraw);
-
-      // Init stats.
-      if (_scope.stats) _scope.stats.begin();
-
-      _scope._process(clock.getDelta());
-      if (_scope.controls) _scope._updateControls();
-
-      if (_scope.simulate) scene.simulate(clock.getDelta(), 1);
-
-      // Effects rendering.
-      if (_scope.postProcessor && _scope.render) {
-        _scope.postProcessor.render(time);
-      } else if (_scope.render) renderer.render(scene, cameraNative);
-
-      _scope._execLoops();
-
-      // End helper.
-      if (_scope.stats) _scope.stats.end();
+    if (this.renderingPlugin) {
+      this.renderingPlugin.start(this.onStartRendering.bind(this), this.onFinishRendering.bind(this));
     }
 
-    this._update = reDraw;
+    // const clock = new THREE.Clock(),
+    //   _scope = this,
+    //   scene = _scope.scene,
+    //   cameraNative = _scope.camera.native,
+    //   renderer = _scope.renderer;
 
-    _scope._update();
+    // window.requestAnimFrame = (() => {
+    //   return window.requestAnimationFrame
+    //     || window.webkitRequestAnimationFrame
+    //     || window.mozRequestAnimationFrame
+    //     || function (callback) {
+    //       window.setTimeout(callback, 1000 / 60);
+    //     };
+    // })();
+
+    // function reDraw(time) {
+    //   window.requestAnimFrame(reDraw);
+
+    //   // Init stats.
+    //   if (_scope.stats) _scope.stats.begin();
+
+    //   _scope._process(clock.getDelta());
+    //   if (_scope.controls) _scope._updateControls();
+
+    //   if (_scope.simulate) scene.simulate(clock.getDelta(), 1);
+
+    //   // Effects rendering.
+    //   if (_scope.postProcessor && _scope.render) {
+    //     _scope.postProcessor.render(time);
+    //   } else if (_scope.render) renderer.render(scene, cameraNative);
+
+    //   _scope._execLoops();
+
+    //   // End helper.
+    //   if (_scope.stats) _scope.stats.end();
+    // }
+
+    // this._update = reDraw;
+
+    // _scope._update();
+  }
+
+  onStartRendering(delta) {
+    this._process(delta);
+
+    if (this.controls) this._updateControls();
+
+    if (this.simulate) this.scene.simulate(delta, 1);
+  }
+
+  onFinishRendering(delta) {
+    this._execLoops();
   }
 
   /**
@@ -358,6 +405,10 @@ class World extends Component {
    */
   get postProcessor() {
     return this._postProcessor;
+  }
+
+  get renderer() {
+    if (this.renderingPlugin) return this.renderingPlugin.renderer;
   }
 
   /**
@@ -397,10 +448,12 @@ class World extends Component {
     this.camera.native.aspect = width / height;
     this.camera.native.updateProjectionMatrix();
 
-    this.renderer.setSize(
-      Number(width * this.params.rWidth).toFixed(),
-      Number(height * this.params.rHeight).toFixed()
-    );
+    if (this.renderingPlugin) {
+      this.renderingPlugin.setSize(
+        Number(width * this.params.rWidth).toFixed(),
+        Number(height * this.params.rHeight).toFixed()
+      );
+    }
   }
 
   importScene(scene, import_three = true) {
