@@ -39,7 +39,7 @@ obj2.add(obj3);
 
 GAME.importScene(scene, true);
 GAME._initCamera();
-GAME._initRenderer();
+GAME._initRendering();
 GAME._initHelpers();
 
 const sphere = new WHS.Shape(

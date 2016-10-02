@@ -17,12 +17,14 @@ const GAME = new WHS.World({
     aspect: 45
   },
 
-  shadowmap: {
-    type: THREE.PCFSoftShadowMap
-  },
+  rendering: {
+    shadowmap: {
+      type: THREE.PCFSoftShadowMap
+    },
 
-  background: {
-    color: 0xffffff
+    background: {
+      color: 0xffffff
+    }
   }
 });
 
@@ -168,7 +170,7 @@ let egg2, egg3, egg4, egg5, egg6, egg7, egg8, egg9;
 egg.addTo(GAME, 'wait').then((object) => {
   egg2 = object.clone();
   console.log(egg2);
-  egg2.M_({map: new WHS.texture('{{ assets }}/textures/easter/egg2.jpg')});
+  egg2.M_({ map: new WHS.texture('{{ assets }}/textures/easter/egg2.jpg') });
 
   egg2.addTo(GAME, 'wait').then((obj) => {
     obj.wrap('no-transforms');
@@ -179,7 +181,7 @@ egg.addTo(GAME, 'wait').then((object) => {
   });
 
   egg3 = object.clone();
-  egg3.M_({map: new WHS.texture('{{ assets }}/textures/easter/egg3.jpg')});
+  egg3.M_({ map: new WHS.texture('{{ assets }}/textures/easter/egg3.jpg') });
 
   egg3.addTo(GAME, 'wait').then((obj) => {
     obj.wrap('no-transforms');
@@ -190,7 +192,7 @@ egg.addTo(GAME, 'wait').then((object) => {
   });
 
   egg4 = object.clone();
-  egg4.M_({map: new WHS.texture('{{ assets }}/textures/easter/egg4.jpg')});
+  egg4.M_({ map: new WHS.texture('{{ assets }}/textures/easter/egg4.jpg') });
 
   egg4.addTo(GAME, 'wait').then((obj) => {
     obj.wrap('no-transforms');
@@ -201,7 +203,7 @@ egg.addTo(GAME, 'wait').then((object) => {
   });
 
   egg5 = object.clone();
-  egg5.M_({map: new WHS.texture('{{ assets }}/textures/easter/egg1.jpg')});
+  egg5.M_({ map: new WHS.texture('{{ assets }}/textures/easter/egg1.jpg') });
 
   egg5.addTo(GAME, 'wait').then((obj) => {
     obj.wrap('no-transforms');
@@ -212,7 +214,7 @@ egg.addTo(GAME, 'wait').then((object) => {
   });
 
   egg6 = object.clone();
-  egg6.M_({map: new WHS.texture('{{ assets }}/textures/easter/egg2.jpg')});
+  egg6.M_({ map: new WHS.texture('{{ assets }}/textures/easter/egg2.jpg') });
 
   egg6.addTo(GAME, 'wait').then((obj) => {
     obj.wrap('no-transforms');
@@ -223,7 +225,7 @@ egg.addTo(GAME, 'wait').then((object) => {
   });
 
   egg7 = object.clone();
-  egg7.M_({map: new WHS.texture('{{ assets }}/textures/easter/egg3.jpg')});
+  egg7.M_({ map: new WHS.texture('{{ assets }}/textures/easter/egg3.jpg') });
 
   egg7.addTo(GAME, 'wait').then((obj) => {
     obj.wrap('no-transforms');
@@ -234,7 +236,7 @@ egg.addTo(GAME, 'wait').then((object) => {
   });
 
   egg8 = object.clone();
-  egg8.M_({map: new WHS.texture('{{ assets }}/textures/easter/egg4.jpg')});
+  egg8.M_({ map: new WHS.texture('{{ assets }}/textures/easter/egg4.jpg') });
 
   egg8.addTo(GAME, 'wait').then((obj) => {
     obj.wrap('no-transforms');
@@ -245,7 +247,7 @@ egg.addTo(GAME, 'wait').then((object) => {
   });
 
   egg9 = object.clone();
-  egg9.M_({map: new WHS.texture('{{ assets }}/textures/easter/egg1.jpg')});
+  egg9.M_({ map: new WHS.texture('{{ assets }}/textures/easter/egg1.jpg') });
 
   egg9.addTo(GAME, 'wait').then((obj) => {
     obj.wrap('no-transforms');
