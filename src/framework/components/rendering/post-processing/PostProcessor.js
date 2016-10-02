@@ -24,6 +24,8 @@ class PostProcessor extends Component {
   constructor(params = {}, world, localWindow = window) {
     super();
 
+    this.parentWorld = world;
+
     PostProcessor.defaults.width = localWindow.innerWidth;
     PostProcessor.defaults.height = localWindow.innerHeight;
 
@@ -52,8 +54,6 @@ class PostProcessor extends Component {
     }
 
     this._initTargetRenderer();
-
-    if (world) world.postProcessor = this;
 
     return this;
   }

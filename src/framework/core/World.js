@@ -244,7 +244,7 @@ class World extends Component {
   _initRendering() {
     const _params = this.params;
 
-    this.renderingPlugin = new BasicRendering({
+    this._renderingPlugin = new BasicRendering({
       rWidth: _params.rWidth,
       rHeight: _params.rHeight,
       width: _params.width,
@@ -330,8 +330,8 @@ class World extends Component {
    * Start animation.
    */
   start() {
-    if (this.renderingPlugin) {
-      this.renderingPlugin.start(this.onStartRendering.bind(this), this.onFinishRendering.bind(this));
+    if (this._renderingPlugin) {
+      this._renderingPlugin.start(this.onStartRendering.bind(this), this.onFinishRendering.bind(this));
     }
 
     // const clock = new THREE.Clock(),
@@ -388,27 +388,35 @@ class World extends Component {
     this._execLoops();
   }
 
+  set renderingPlugin(renderingPlugin) {
+    this._renderingPlugin = renderingPlugin;
+  }
+
+  get renderingPlugin() {
+    return this._renderingPlugin;
+  }
+
   /**
    * Set a PostProcessor that will use this world renderer, scene and camera to draw post processing effects.
    * @param  {WHS.PostProcessor} postProcessor : The post processor instance to set.
    */
-  set postProcessor(postProcessor) {
-    this._postProcessor = postProcessor;
-    this._postProcessor.setContainerConfig(this.params.container);
-    this._postProcessor.setRenderScene(this.scene, this.camera);
-    this._postProcessor.renderer = this.renderer;
-  }
+  // set postProcessor(postProcessor) {
+  //   this._postProcessor = postProcessor;
+  //   this._postProcessor.setContainerConfig(this.params.container);
+  //   this._postProcessor.setRenderScene(this.scene, this.camera);
+  //   this._postProcessor.renderer = this.renderer;
+  // }
 
   /**
    * Get the PostProcessor associated with this World instance, otherwise undefined.
    * @return {WHS.PostProcessor} The PostProcessor.
    */
-  get postProcessor() {
-    return this._postProcessor;
-  }
+  // get postProcessor() {
+  //   return this._postProcessor;
+  // }
 
   get renderer() {
-    if (this.renderingPlugin) return this.renderingPlugin.renderer;
+    if (this._renderingPlugin) return this._renderingPlugin.renderer;
   }
 
   /**
@@ -448,8 +456,8 @@ class World extends Component {
     this.camera.native.aspect = width / height;
     this.camera.native.updateProjectionMatrix();
 
-    if (this.renderingPlugin) {
-      this.renderingPlugin.setSize(
+    if (this._renderingPlugin) {
+      this._renderingPlugin.setSize(
         Number(width * this.params.rWidth).toFixed(),
         Number(height * this.params.rHeight).toFixed()
       );
