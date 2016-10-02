@@ -42,7 +42,7 @@ obj2.add(obj3);
 
 GAME.importScene(scene, true);
 GAME._initCamera();
-GAME._initRenderer();
+GAME._initRendering();
 GAME._initHelpers();
 
 var sphere = new WHS.Shape(new THREE.Mesh(new THREE.SphereGeometry(3, 32, 32), new THREE.MeshBasicMaterial({ color: 0xffffff })));

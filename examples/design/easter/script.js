@@ -20,12 +20,14 @@ var GAME = new WHS.World({
     aspect: 45
   },
 
-  shadowmap: {
-    type: THREE.PCFSoftShadowMap
-  },
+  rendering: {
+    shadowmap: {
+      type: THREE.PCFSoftShadowMap
+    },
 
-  background: {
-    color: 0xffffff
+    background: {
+      color: 0xffffff
+    }
   }
 });
 

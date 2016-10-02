@@ -20,8 +20,10 @@ var GAME = new WHS.World({
     aspect: 45
   },
 
-  background: {
-    color: 0xffffff
+  rendering: {
+    background: {
+      color: 0xffffff
+    }
   }
 });
 

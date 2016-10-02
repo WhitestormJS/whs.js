@@ -37,8 +37,10 @@ var GAME = new WHS.World({
     y: 100
   },
 
-  background: {
-    color: 0x2a3340
+  rendering: {
+    background: {
+      color: 0x2a3340
+    }
   }
 });
 
