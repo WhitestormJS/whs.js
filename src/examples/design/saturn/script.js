@@ -29,8 +29,10 @@ const GAME = new WHS.World({
     y: 100
   },
 
-  background: {
-    color: 0x2a3340
+  rendering: {
+    background: {
+      color: 0x2a3340
+    }
   }
 });
 
@@ -167,10 +169,10 @@ asteroids.addTo(space);
 
 // Materials.
 const mat = [
-  new THREE.MeshPhongMaterial({color: colors.green, shading: THREE.FlatShading}),
-  new THREE.MeshPhongMaterial({color: colors.blue, shading: THREE.FlatShading}),
-  new THREE.MeshPhongMaterial({color: colors.orange, shading: THREE.FlatShading}),
-  new THREE.MeshPhongMaterial({color: colors.yellow, shading: THREE.FlatShading})
+  new THREE.MeshPhongMaterial({ color: colors.green, shading: THREE.FlatShading }),
+  new THREE.MeshPhongMaterial({ color: colors.blue, shading: THREE.FlatShading }),
+  new THREE.MeshPhongMaterial({ color: colors.orange, shading: THREE.FlatShading }),
+  new THREE.MeshPhongMaterial({ color: colors.yellow, shading: THREE.FlatShading })
 ];
 
 for (let i = 0; i < particleCount; i++) {

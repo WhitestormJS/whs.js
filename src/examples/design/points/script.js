@@ -17,8 +17,10 @@ const GAME = new WHS.World({
     aspect: 45
   },
 
-  background: {
-    color: 0xffffff
+  rendering: {
+    background: {
+      color: 0xffffff
+    }
   }
 });
 
@@ -55,5 +57,3 @@ GAME.setControls(WHS.orbitControls(new THREE.Vector3(50, 50, 50)));
 
 // Start rendering.
 GAME.start();
-
-
