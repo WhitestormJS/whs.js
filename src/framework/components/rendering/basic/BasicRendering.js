@@ -19,12 +19,7 @@ class BasicRendering extends RenderingPlugin {
     _renderer.shadowMap.type = this.params.shadowmap.type;
     _renderer.shadowMap.cascade = true;
 
-    _renderer.setSize(
-      Number(this.params.width * this.params.rWidth).toFixed(),
-      Number(this.params.height * this.params.rHeight).toFixed()
-    );
-
-    // _renderer.render(this.scene, this.camera.native);
+    this.setSize(this.params.width, this.params.height);
 
     this.parentWorld._dom.appendChild(_renderer.domElement);
 
@@ -37,6 +32,10 @@ class BasicRendering extends RenderingPlugin {
     const _cameraNative = this.parentWorld.camera.native;
 
     this.renderer.render(_scene, _cameraNative);
+  }
+
+  setSize(width, height) {
+    if (this.renderer) this.renderer.setSize(width, height);
   }
 }
 
