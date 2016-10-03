@@ -110,6 +110,8 @@ class World extends Component {
       });
     } else if (_params.autoresize) {
       window.addEventListener('resize', () => {
+        // FIXME: Am I crazy or offsetHeight is increasing even when we downsize the window ?
+        // console.log('height offset : ', _params.container.offsetHeight);
         this.setSize(
           Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
           Number(_params.container.offsetHeight * _params.rHeight).toFixed()
@@ -212,12 +214,12 @@ class World extends Component {
 
   _initRendering() {
     const _params = this.params;
+    const computedWidth = Number(_params.width * _params.rWidth).toFixed();
+    const computedHeight = Number(_params.height * _params.rHeight).toFixed();
 
     this._renderingPlugin = new BasicRendering({
-      rWidth: _params.rWidth,
-      rHeight: _params.rHeight,
-      width: _params.width,
-      height: _params.height,
+      width: computedWidth,
+      height: computedHeight,
 
       stats: _params.stats,
       init: {
@@ -376,10 +378,7 @@ class World extends Component {
     this.camera.native.updateProjectionMatrix();
 
     if (this._renderingPlugin) {
-      this._renderingPlugin.setSize(
-        Number(width * this.params.rWidth).toFixed(),
-        Number(height * this.params.rHeight).toFixed()
-      );
+      this._renderingPlugin.setSize(width, height);
     }
   }
 
