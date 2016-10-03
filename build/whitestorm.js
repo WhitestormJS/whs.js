@@ -8532,9 +8532,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      return new Promise(function (resolve, reject) {
 	        var _add = function _add() {
-	          var _native = _this3.native,
-	              _params = _this3.params,
-	              _parent = _this3.parent;
+	          var _native = _this3.native;
+	          var _params = _this3.params;
+	          var _parent = _this3.parent;
 	
 	          if (!_native) reject();
 	
@@ -8543,8 +8543,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	          parentNative.add(_native);
 	          _parent.children.push(_this3);
 	
-	          for (var key in _params.helpers) {
-	            if (_params.helpers[key]) parentNative.add(_helpers[key]);
+	          if (_params) {
+	            // don't if _params is false
+	            for (var key in _params.helpers) {
+	              if (_params.helpers[key]) parentNative.add(_helpers[key]);
+	            }
 	          }
 	
 	          _this3.callAddTo(_this3);
@@ -52917,8 +52920,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	
 	  (0, _ComponentUtils.$wrap)(target).onCallWrap(function (scope) {
-	    var _native = scope.native,
-	        _params = scope.params;
+	    var _native = scope.native;
+	    var _params = scope.params;
 	
 	    scope.position.set(_params.position.x, _params.position.y, _params.position.z);
 	
@@ -52927,6 +52930,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (_params.useTarget) scope.lookAt(_params.target);
 	    if (_params.helper) scope.helper = new THREE.CameraHelper(_native);
 	  });
+	  // console.log('Target :', target);
+	  return target;
 	}
 	
 	exports.CameraComponent = CameraComponent;

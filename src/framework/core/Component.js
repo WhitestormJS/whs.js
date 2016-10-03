@@ -47,9 +47,9 @@ class Component extends Events {
 
     return new Promise((resolve, reject) => {
       const _add = () => {
-        const _native = this.native,
-          _params = this.params,
-          _parent = this.parent;
+        const _native = this.native;
+        const _params = this.params;
+        const _parent = this.parent;
 
         if (!_native) reject();
 
@@ -58,9 +58,10 @@ class Component extends Events {
         parentNative.add(_native);
         _parent.children.push(this);
 
+        if (_params) {  // don't if _params is false
         for (let key in _params.helpers) {
           if (_params.helpers[key]) parentNative.add(_helpers[key]);
-        }
+        }}
 
         this.callAddTo(this);
         resolve(this);

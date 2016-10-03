@@ -33,9 +33,11 @@ define(['whs'], function(WHS) {
 
     context('Should wrap three.js cameras', () => {
       //FIXME
-      // const camera = WHS.CameraComponent(new WHS.Component(new THREE.Camera()));
-
-      // testAPI(camera);
+      // let mid = function () {
+      // new WHS.Component(new THREE.Camera());
+      // };
+      // mid = WHS.CameraComponent(mid);
+      // testAPI(mid);
     });
   });
 });

@@ -101,8 +101,8 @@ function CameraComponent(target) {
   });
 
   $wrap(target).onCallWrap((scope, ...tags) => {
-    const _native = scope.native,
-      _params = scope.params;
+    const _native = scope.native;
+    const _params = scope.params;
 
     scope.position.set(
       _params.position.x,
@@ -119,6 +119,8 @@ function CameraComponent(target) {
     if (_params.useTarget) scope.lookAt(_params.target);
     if (_params.helper) scope.helper = new THREE.CameraHelper(_native);
   });
+  // console.log('Target :', target);
+  return target;
 }
 
 export {
