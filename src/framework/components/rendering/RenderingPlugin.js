@@ -53,6 +53,10 @@ class RenderingPlugin extends Component {
     throw new Error('renderPlugin method has to be re-implemented in each rendering plugin (or else your plugin won\'t do anything!)');
   }
 
+  setSize(width, height) {
+    throw new Error('setSize method has to be re-implemented in each rendering plugin (or else your plugin won\'t resize!)');
+  }
+
   start(onStartRendering, onFinishRendering) {
     this.clock = new THREE.Clock();
 
