@@ -209,6 +209,7 @@ export {
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-bdirl-blue.svg)](https://github.com/bdirl)
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-preco21-blue.svg)](https://github.com/preco21)
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-yeliex-blue.svg)](https://github.com/yeliex)
+[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-t4r0-blue.svg)](https://github.com/t4r0)
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-electron0zero-blue.svg)](https://github.com/electron0zero)
 [![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-typedef42-blue.svg)](https://github.com/typedef42)
 
