@@ -1,6 +1,6 @@
 define(['whs'], function(WHS) {
   describe('Cameras', () => {
-    const world = new WHS.World({init: {renderer: false}});
+    const world = new WHS.World({init: {rendering: false}});
 
     context('Non-automatic tests.', () => {
       it('PerspectiveCamera', () => {

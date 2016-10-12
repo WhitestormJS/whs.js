@@ -1,6 +1,6 @@
 define(['whs'], function(WHS) {
   describe('Light', () => {
-    const world = new WHS.World({init: {renderer: false}});
+    const world = new WHS.World({init: {rendering: false}});
 
     function describeAttribute(light, name, dims, Value) {
       describe('.' + name, done => {

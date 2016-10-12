@@ -2,7 +2,7 @@ define(['whs'], function(WHS) {
   const path_assets = '/base/test/_assets/';
 
   describe('Utils', () => {
-    const world = new WHS.World({init: {renderer: false}});
+    const world = new WHS.World({init: {rendering: false}});
 
     context('#extend()', () => {
       it('Basic', () => {
