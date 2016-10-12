@@ -1,6 +1,6 @@
 define(['whs'], function(WHS) {
   describe('Extras', () => {
-    const world = new WHS.World({init: {renderer: false}});
+    const world = new WHS.World({init: {rendering: false}});
 
     context('Group', () => {
       const group = new WHS.Group();

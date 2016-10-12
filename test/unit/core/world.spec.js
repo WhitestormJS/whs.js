@@ -2,7 +2,7 @@ define(['whs'], function(WHS) {
   describe('World', () => {
   	// WHS.Work class works properly.
     it('Basic world', () => {
-    	new WHS.World({init: {renderer: false}});
+    	new WHS.World({init: {rendering: false}});
     });
 
     // It's custom settings also works.
