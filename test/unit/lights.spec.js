@@ -8,7 +8,7 @@ define(['whs'], function(WHS) {
   ];
 
   describe('Meshes', () => {
-    const world = new WHS.World({init: {renderer: false}});
+    const world = new WHS.World({init: {rendering: false}});
 
     context('Automatic mesh test. (Used only for meshes that don\'t rely on specific files', () => {
       for (let i = 0, max = lights.length; i < max; i++) {

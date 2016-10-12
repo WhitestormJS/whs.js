@@ -1,6 +1,6 @@
 define(['whs'], function(WHS) {
   describe('Shape', () => {
-    const world = new WHS.World({init: {renderer: false}});
+    const world = new WHS.World({init: {rendering: false}});
 
     context('Working with default values', () => {
       let result, expected;
