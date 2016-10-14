@@ -7985,40 +7985,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 	
-	function defaultSetTimout() {
-	    throw new Error('setTimeout has not been defined');
-	}
-	function defaultClearTimeout () {
-	    throw new Error('clearTimeout has not been defined');
-	}
 	(function () {
 	    try {
-	        if (typeof setTimeout === 'function') {
-	            cachedSetTimeout = setTimeout;
-	        } else {
-	            cachedSetTimeout = defaultSetTimout;
-	        }
+	        cachedSetTimeout = setTimeout;
 	    } catch (e) {
-	        cachedSetTimeout = defaultSetTimout;
+	        cachedSetTimeout = function () {
+	            throw new Error('setTimeout is not defined');
+	        }
 	    }
 	    try {
-	        if (typeof clearTimeout === 'function') {
-	            cachedClearTimeout = clearTimeout;
-	        } else {
-	            cachedClearTimeout = defaultClearTimeout;
-	        }
+	        cachedClearTimeout = clearTimeout;
 	    } catch (e) {
-	        cachedClearTimeout = defaultClearTimeout;
+	        cachedClearTimeout = function () {
+	            throw new Error('clearTimeout is not defined');
+	        }
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
-	        return setTimeout(fun, 0);
-	    }
-	    // if setTimeout wasn't available but was latter defined
-	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -8039,11 +8024,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
-	        return clearTimeout(marker);
-	    }
-	    // if clearTimeout wasn't available but was latter defined
-	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -8475,6 +8455,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    _this._wait = [];
 	    _this.children = [];
+	    _this.params = {};
 	
 	
 	    if (obj instanceof THREE.Object3D) _this.native = obj;else _this.params = (0, _index.extend)(obj, defaults);
@@ -8543,11 +8524,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          parentNative.add(_native);
 	          _parent.children.push(_this3);
 	
-	          if (_params) {
-	            // don't if _params is false
-	            for (var key in _params.helpers) {
-	              if (_params.helpers[key]) parentNative.add(_helpers[key]);
-	            }
+	          if (typeof _params.helpers === 'undefined') _params.helpers = {};
+	
+	          for (var key in _params.helpers) {
+	            if (_params.helpers[key]) parentNative.add(_helpers[key]);
 	          }
 	
 	          _this3.callAddTo(_this3);
@@ -52043,19 +52023,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	exports.$wrap = $wrap;
+	exports.$extend = $extend;
 	exports.$define = $define;
+	exports.$defaults = $defaults;
 	function $wrap(target) {
+	  var _proto = target.prototype || target.__proto__;
+	
 	  return {
 	    onCallConstructor: function onCallConstructor(callback) {
-	      target.prototype.callConstructor = function (old) {
+	      _proto.callConstructor = function (old) {
 	        return function (scope) {
 	          old(scope);
 	          callback(scope);
 	        };
-	      }(target.prototype.callConstructor);
+	      }(_proto.callConstructor);
 	    },
 	    onCallWrap: function onCallWrap(callback) {
-	      target.prototype.callWrap = function (old) {
+	      _proto.callWrap = function (old) {
 	        return function (scope) {
 	          for (var _len = arguments.length, tags = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
 	            tags[_key - 1] = arguments[_key];
@@ -52064,34 +52048,46 @@ return /******/ (function(modules) { // webpackBootstrap
 	          old.apply(undefined, [scope].concat(tags));
 	          callback.apply(undefined, [scope].concat(tags));
 	        };
-	      }(target.prototype.callWrap);
+	      }(_proto.callWrap);
 	    },
 	    onCallAddTo: function onCallAddTo(callback) {
-	      target.prototype.callAddTo = function (old) {
+	      _proto.callAddTo = function (old) {
 	        return function (scope) {
 	          old(scope);
 	          callback(scope);
 	        };
-	      }(target.prototype.callAddTo);
+	      }(_proto.callAddTo);
 	    },
 	    onCallCopy: function onCallCopy(callback) {
-	      target.prototype.callCopy = function (old) {
+	      _proto.callCopy = function (old) {
 	        return function (scope) {
 	          old(scope);
 	          callback(scope);
 	        };
-	      }(target.prototype.callCopy);
+	      }(_proto.callCopy);
 	    }
 	  };
+	}
+	
+	function $extend(target, obj) {
+	  var _proto = target.prototype || target.__proto__;
+	  Object.assign(_proto, obj);
 	}
 	
 	function $define(target, obj) {
 	  for (var key in obj) {
 	    var value = obj[key];
+	    var _proto = target.prototype || target.__proto__;
+	
 	    value.configurable = true;
 	
-	    Object.defineProperty(target.prototype, key, value);
+	    Object.defineProperty(_proto, key, value);
 	  }
+	}
+	
+	function $defaults(target, obj) {
+	  var defs = target.defaults || {};
+	  target.defaults = Object.assign(defs, obj);
 	}
 
 /***/ },
@@ -52396,7 +52392,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function MeshComponent(target) {
-	  Object.assign(target.defaults, {
+	  (0, _ComponentUtils.$defaults)(target, {
 	    build: true,
 	    geometry: {},
 	
@@ -52488,7 +52484,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 	
-	  Object.assign(target.prototype, {
+	  (0, _ComponentUtils.$extend)(target, {
 	    G_: function G_() {
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
@@ -52556,6 +52552,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      edges: null,
 	      faceNormals: null
 	    };
+	
+	    if (scope.native instanceof THREE.Object3D) scope.params = scope.defaults;
 	  });
 	
 	  (0, _ComponentUtils.$wrap)(target).onCallWrap(function (scope) {
@@ -52621,6 +52619,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(_native, _params_helpers_vertexNormals.size, _params_helpers_vertexNormals.color, _params_helpers_vertexNormals.linewidth);
 	    }
 	  });
+	
+	  return target;
 	}
 	
 	exports.MeshComponent = MeshComponent;
@@ -52645,7 +52645,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function LightComponent(target) {
-	  Object.assign(target.defaults, {
+	  (0, _ComponentUtils.$defaults)(target, {
 	    light: {
 	      color: 0xffffff,
 	      skyColor: 0xffffff,
@@ -52730,7 +52730,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 	
-	  Object.assign(target.prototype, {
+	  (0, _ComponentUtils.$extend)(target, {
 	    wrapShadow: function wrapShadow() {
 	      var _this = this;
 	
@@ -52758,6 +52758,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        resolve(_this);
 	      });
 	    },
+	    wrapTransforms: function wrapTransforms() {
+	      var _params = this.params;
+	
+	      this.position.set(_params.position.x, _params.position.y, _params.position.z);
+	
+	      this.rotation.set(_params.rotation.x, _params.rotation.y, _params.rotation.z);
+	
+	      if (this.target) this.target = _params.target;
+	    },
 	    copy: function copy(source) {
 	      if (source.native) {
 	        this.native = source.native.clone();
@@ -52779,6 +52788,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  (0, _ComponentUtils.$wrap)(target).onCallConstructor(function (scope) {
 	    scope.helper = null;
+	    if (scope.native instanceof THREE.Object3D) scope.params = scope.defaults;
 	  });
 	
 	  (0, _ComponentUtils.$wrap)(target).onCallWrap(function (scope) {
@@ -52786,18 +52796,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      tags[_key - 1] = arguments[_key];
 	    }
 	
-	    var _params = scope.params;
-	
 	    if (tags.indexOf('no-shadows') < 0) scope.wrapShadow();
-	
-	    if (tags.indexOf('no-transforms') < 0) {
-	      scope.position.set(_params.position.x, _params.position.y, _params.position.z);
-	
-	      scope.rotation.set(_params.rotation.x, _params.rotation.y, _params.rotation.z);
-	
-	      if (scope.target) scope.target = _params.target;
-	    }
 	  });
+	
+	  return target;
 	}
 	
 	exports.LightComponent = LightComponent;
@@ -52822,7 +52824,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function CameraComponent(target) {
-	  Object.assign(target.defaults, {
+	  (0, _ComponentUtils.$defaults)(target, {
 	    camera: {
 	      fov: 45,
 	      aspect: window.innerWidth / window.innerHeight,
@@ -52888,7 +52890,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 	
-	  Object.assign(target.prototype, {
+	  (0, _ComponentUtils.$extend)(target, {
 	    /* Three.js */
 	
 	    lookAt: function lookAt() {
@@ -52917,6 +52919,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  (0, _ComponentUtils.$wrap)(target).onCallConstructor(function (scope) {
 	    scope.helper = null;
+	    if (scope.native instanceof THREE.Object3D) scope.params = scope.defaults;
 	  });
 	
 	  (0, _ComponentUtils.$wrap)(target).onCallWrap(function (scope) {
@@ -52976,7 +52979,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}, 'klst', 0.9) : false;
 	
 	function PhysicsComponent(target) {
-	  Object.assign(target.defaults, {
+	  (0, _ComponentUtils.$defaults)(target, {
 	    mass: 10,
 	    physics: physicsDefaults
 	  });
@@ -53093,7 +53096,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }, true);
 	
-	  Object.assign(target.prototype, {
+	  (0, _ComponentUtils.$extend)(target, {
 	    setAngularVelocity: function setAngularVelocity() {
 	      var _native;
 	
@@ -53199,6 +53202,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      scope.emit('collide');
 	    });
 	  });
+	
+	  return target;
 	}
 	
 	exports.PhysicsComponent = PhysicsComponent;
@@ -59354,11 +59359,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _ComponentUtils = __webpack_require__(387);
 	
 	function SoftbodyComponent(target) {
-	  Object.assign(target.defaults, {
+	  (0, _ComponentUtils.$defaults)(target, {
 	    softbody: false
 	  });
 	
-	  Object.assign(target.prototype, {
+	  (0, _ComponentUtils.$extend)(target, {
 	    proccessSoftbodyGeometry: function proccessSoftbodyGeometry(geometry) {
 	      var _params = this.params;
 	
@@ -59413,6 +59418,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      scope.native.rotation.set(0, 0, 0);
 	    }
 	  });
+	
+	  return target;
 	}
 	
 	exports.SoftbodyComponent = SoftbodyComponent;
@@ -59437,7 +59444,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function RenderingComponent(target) {
-	  Object.assign(target.defaults, {
+	  (0, _ComponentUtils.$defaults)(target, {
 	    background: {
 	      color: 0x000000,
 	      opacity: 1
@@ -59451,9 +59458,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    renderer: {}
 	  });
 	
-	  (0, _ComponentUtils.$define)(target, {});
+	  (0, _ComponentUtils.$define)(target, {
+	    // TODO
+	  });
 	
-	  Object.assign(target.prototype, {});
+	  (0, _ComponentUtils.$extend)(target, {});
 	
 	  (0, _ComponentUtils.$wrap)(target).onCallConstructor(function (scope) {
 	    scope.helper = null;
@@ -59463,6 +59472,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _native = scope.native,
 	        _params = scope.params;
 	  });
+	
+	  return target;
 	}
 	
 	exports.RenderingComponent = RenderingComponent;
@@ -59557,6 +59568,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	    } else if (_params.autoresize) {
 	      window.addEventListener('resize', function () {
+	        // FIXME: Am I crazy or offsetHeight is increasing even when we downsize the window ?
+	        // console.log('height offset : ', _params.container.offsetHeight);
 	        _this.setSize(Number(_params.container.offsetWidth * _params.rWidth).toFixed(), Number(_params.container.offsetHeight * _params.rHeight).toFixed());
 	
 	        _this.emit('resize');
@@ -59656,12 +59669,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: '_initRendering',
 	    value: function _initRendering() {
 	      var _params = this.params;
+	      var computedWidth = Number(_params.width * _params.rWidth).toFixed();
+	      var computedHeight = Number(_params.height * _params.rHeight).toFixed();
 	
 	      this._renderingPlugin = new _BasicRendering.BasicRendering({
-	        rWidth: _params.rWidth,
-	        rHeight: _params.rHeight,
-	        width: _params.width,
-	        height: _params.height,
+	        width: computedWidth,
+	        height: computedHeight,
 	
 	        stats: _params.stats,
 	        init: {
@@ -59792,7 +59805,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.camera.native.updateProjectionMatrix();
 	
 	      if (this._renderingPlugin) {
-	        this._renderingPlugin.setSize(Number(width * this.params.rWidth).toFixed(), Number(height * this.params.rHeight).toFixed());
+	        this._renderingPlugin.setSize(width, height);
 	      }
 	    }
 	  }, {
@@ -60206,9 +60219,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _renderer.shadowMap.type = this.params.shadowmap.type;
 	      _renderer.shadowMap.cascade = true;
 	
-	      _renderer.setSize(Number(this.params.width * this.params.rWidth).toFixed(), Number(this.params.height * this.params.rHeight).toFixed());
-	
-	      // _renderer.render(this.scene, this.camera.native);
+	      this.setSize(this.params.width, this.params.height);
 	
 	      this.parentWorld._dom.appendChild(_renderer.domElement);
 	
@@ -60222,6 +60233,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _cameraNative = this.parentWorld.camera.native;
 	
 	      this.renderer.render(_scene, _cameraNative);
+	    }
+	  }, {
+	    key: 'setSize',
+	    value: function setSize(width, height) {
+	      if (this.renderer) this.renderer.setSize(width, height);
 	    }
 	  }]);
 	  return BasicRendering;
@@ -60328,6 +60344,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'renderPlugin',
 	    value: function renderPlugin(delta) {
 	      throw new Error('renderPlugin method has to be re-implemented in each rendering plugin (or else your plugin won\'t do anything!)');
+	    }
+	  }, {
+	    key: 'setSize',
+	    value: function setSize(width, height) {
+	      throw new Error('setSize method has to be re-implemented in each rendering plugin (or else your plugin won\'t resize!)');
 	    }
 	  }, {
 	    key: 'start',

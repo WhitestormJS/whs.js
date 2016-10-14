@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import {$wrap, $define} from '../utils/ComponentUtils';
+import {$wrap, $define, $extend, $defaults} from '../utils/ComponentUtils';
 
 function LightComponent(target) {
-  Object.assign(target.defaults, {
+  $defaults(target, {
     light: {
       color: 0xffffff,
       skyColor: 0xffffff,
@@ -88,8 +88,7 @@ function LightComponent(target) {
     }
   })
 
-
-  Object.assign(target.prototype, {
+  $extend(target, {
     wrapShadow() {
       return new Promise(resolve => {
         const _native = this.native,
@@ -116,6 +115,24 @@ function LightComponent(target) {
       });
     },
 
+    wrapTransforms() {
+      const _params = this.params;
+
+      this.position.set(
+        _params.position.x,
+        _params.position.y,
+        _params.position.z
+      );
+
+      this.rotation.set(
+        _params.rotation.x,
+        _params.rotation.y,
+        _params.rotation.z
+      );
+
+      if (this.target) this.target = _params.target;
+    },
+
     copy(source) {
       if (source.native) {
         this.native = source.native.clone();
@@ -137,29 +154,14 @@ function LightComponent(target) {
 
   $wrap(target).onCallConstructor(scope => {
     scope.helper = null;
+    if (scope.native instanceof THREE.Object3D) scope.params = scope.defaults;
   });
 
   $wrap(target).onCallWrap((scope, ...tags) => {
-    const _params = scope.params;
-
     if (tags.indexOf('no-shadows') < 0) scope.wrapShadow();
-
-    if (tags.indexOf('no-transforms') < 0) {
-      scope.position.set(
-        _params.position.x,
-        _params.position.y,
-        _params.position.z
-      );
-
-      scope.rotation.set(
-        _params.rotation.x,
-        _params.rotation.y,
-        _params.rotation.z
-      );
-
-      if (scope.target) scope.target = _params.target;
-    }
   });
+
+  return target;
 }
 
 export {

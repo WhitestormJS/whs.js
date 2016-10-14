@@ -14,7 +14,7 @@ define(['whs'], function(WHS) {
     'Plane',
     'Polyhedron',
     'Ring',
-    'Shape2D',
+    'Shape',
     'Sphere',
     'Tetrahedron',
     // 'Text',

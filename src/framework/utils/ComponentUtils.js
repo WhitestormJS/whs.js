@@ -1,49 +1,62 @@
 export function $wrap(target) {
+  const _proto = target.prototype || target.__proto__;
+
   return {
     onCallConstructor(callback) {
-      target.prototype.callConstructor = (function(old) {
+      _proto.callConstructor = (function(old) {
         return function(scope) {
           old(scope);
           callback(scope);
         }
-      })(target.prototype.callConstructor);
+      })(_proto.callConstructor);
     },
 
     onCallWrap(callback) {
-      target.prototype.callWrap = (function(old) {
+      _proto.callWrap = (function(old) {
         return function(scope, ...tags) {
           old(scope, ...tags);
           callback(scope, ...tags);
         }
-      })(target.prototype.callWrap);
+      })(_proto.callWrap);
     },
 
     onCallAddTo(callback) {
-      target.prototype.callAddTo = (function(old) {
+      _proto.callAddTo = (function(old) {
         return function(scope) {
           old(scope);
           callback(scope);
         }
-      })(target.prototype.callAddTo);
+      })(_proto.callAddTo);
     },
 
     onCallCopy(callback) {
-      target.prototype.callCopy = (function(old) {
+      _proto.callCopy = (function(old) {
         return function(scope) {
           old(scope);
           callback(scope);
         }
-      })(target.prototype.callCopy);
+      })(_proto.callCopy);
     }
   };
+}
 
+export function $extend(target, obj) {
+  const _proto = target.prototype || target.__proto__;
+  Object.assign(_proto, obj);
 }
 
 export function $define(target, obj) {
   for (let key in obj) {
     const value = obj[key];
+    const _proto = target.prototype || target.__proto__;
+
     value.configurable = true;
 
-    Object.defineProperty(target.prototype, key, value);
+    Object.defineProperty(_proto, key, value);
   }
+}
+
+export function $defaults(target, obj) {
+  const defs = target.defaults || {};
+  target.defaults = Object.assign(defs, obj);
 }

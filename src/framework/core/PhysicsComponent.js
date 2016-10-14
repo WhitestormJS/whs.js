@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import * as Physijs from '../physics/index.js';
-import {$wrap, $define} from '../utils/ComponentUtils';
+import {$wrap, $defaults, $extend, $define} from '../utils/ComponentUtils';
 
 const physicsDefaults = Physijs.default !== false ? {
   restitution: 0.3,
@@ -14,7 +14,7 @@ const physicsDefaults = Physijs.default !== false ? {
 } : false;
 
 function PhysicsComponent(target) {
-  Object.assign(target.defaults, {
+  $defaults(target, {
     mass: 10,
     physics: physicsDefaults
   });
@@ -130,7 +130,7 @@ function PhysicsComponent(target) {
     }
   }, true);
 
-  Object.assign(target.prototype, {
+  $extend(target, {
     setAngularVelocity(...args) {
       return this.native.setAngularVelocity(...args);
     },
@@ -221,6 +221,8 @@ function PhysicsComponent(target) {
       scope.emit('collide');
     });
   });
+
+  return target;
 }
 
 export {
