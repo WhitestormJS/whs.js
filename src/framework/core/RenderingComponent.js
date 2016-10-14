@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import {$wrap, $define} from '../utils/ComponentUtils';
+import {$wrap, $defaults, $extend, $define} from '../utils/ComponentUtils';
 
 function RenderingComponent(target) {
-  Object.assign(target.defaults, {
+  $defaults(target, {
     background: {
       color: 0x000000,
       opacity: 1
@@ -17,10 +17,10 @@ function RenderingComponent(target) {
   });
 
   $define(target, {
-
+    // TODO
   });
 
-  Object.assign(target.prototype, {
+  $extend(target, {
 
   });
 
@@ -32,6 +32,8 @@ function RenderingComponent(target) {
     const _native = scope.native,
       _params = scope.params;
   });
+
+  return target;
 }
 
 export {

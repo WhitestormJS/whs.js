@@ -23,7 +23,7 @@ define(['whs'], function(WHS) {
       it('#wrap()', () => camera.wrap());
       it('#addTo()', () => camera.addTo(world));
       it('#clone()', () => camera.clone());
-      it('#copy()', () => camera.copy(new WHS.Light()));
+      it('#copy()', () => camera.copy(new WHS.Component()));
       it('#getParent()', () => camera.parent);
 
       describeAttribute(camera, 'position', 'xyz', THREE.Vector3);

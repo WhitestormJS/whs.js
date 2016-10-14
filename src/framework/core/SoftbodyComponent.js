@@ -1,11 +1,11 @@
-import {$wrap} from '../utils/ComponentUtils';
+import {$wrap, $defaults, $extend} from '../utils/ComponentUtils';
 
 function SoftbodyComponent(target) {
-  Object.assign(target.defaults, {
+  $defaults(target, {
     softbody: false
   });
 
-  Object.assign(target.prototype, {
+  $extend(target, {
     proccessSoftbodyGeometry(geometry) {
       const _params = this.params;
 
@@ -84,6 +84,8 @@ function SoftbodyComponent(target) {
       scope.native.rotation.set(0, 0, 0);
     }
   });
+
+  return target;
 }
 
 export {

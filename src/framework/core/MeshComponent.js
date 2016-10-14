@@ -1,10 +1,10 @@
 import * as THREE from 'three';
-import {$wrap, $define} from '../utils/ComponentUtils';
+import {$wrap, $defaults, $extend, $define} from '../utils/ComponentUtils';
 
 import {loadMaterial, extend} from '../utils/index';
 
 function MeshComponent(target) {
-  Object.assign(target.defaults, {
+  $defaults(target, {
     build: true,
     geometry: {},
 
@@ -97,7 +97,7 @@ function MeshComponent(target) {
   })
 
 
-  Object.assign(target.prototype, {
+  $extend(target, {
     G_(params = {}) {
       if (this.buildGeometry) {
         this.native.geometry = this.buildGeometry(
@@ -179,6 +179,8 @@ function MeshComponent(target) {
       edges: null,
       faceNormals: null
     };
+
+    if (scope.native instanceof THREE.Object3D) scope.params = scope.defaults;
   });
 
   $wrap(target).onCallWrap((scope, ...tags) => {
@@ -260,6 +262,8 @@ function MeshComponent(target) {
       );
     }
   });
+
+  return target;
 }
 
 export {

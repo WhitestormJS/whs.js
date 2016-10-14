@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import {$wrap, $define} from '../utils/ComponentUtils';
+import {$wrap, $defaults, $extend, $define} from '../utils/ComponentUtils';
 
 function CameraComponent(target) {
-  Object.assign(target.defaults, {
+  $defaults(target, {
     camera: {
       fov: 45,
       aspect: window.innerWidth / window.innerHeight,
@@ -70,7 +70,7 @@ function CameraComponent(target) {
   })
 
 
-  Object.assign(target.prototype, {
+  $extend(target, {
     /* Three.js */
 
     lookAt(...args) {
@@ -98,6 +98,7 @@ function CameraComponent(target) {
 
   $wrap(target).onCallConstructor(scope => {
     scope.helper = null;
+    if (scope.native instanceof THREE.Object3D) scope.params = scope.defaults;
   });
 
   $wrap(target).onCallWrap((scope, ...tags) => {
