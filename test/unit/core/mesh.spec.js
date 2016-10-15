@@ -31,8 +31,6 @@ define(['whs'], function(WHS) {
       describeAttribute(mesh, 'scale', 'xyz', THREE.Vector3);
 
       it('API: M_', () => {
-        mesh.M_({ color: 0xffffff });
-        mesh.M_color = 0xffffff;
         mesh.M_({ kind: 'phong', color: 0xffffff });
       });
 

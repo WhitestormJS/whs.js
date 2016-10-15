@@ -59,4 +59,5 @@ export function $define(target, obj) {
 export function $defaults(target, obj) {
   const defs = target.defaults || {};
   target.defaults = Object.assign(defs, obj);
+  target.params = Object.assign(defs, obj);
 }
