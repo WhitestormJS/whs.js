@@ -52088,6 +52088,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function $defaults(target, obj) {
 	  var defs = target.defaults || {};
 	  target.defaults = Object.assign(defs, obj);
+	  target.params = Object.assign(defs, obj);
 	}
 
 /***/ },
@@ -52517,7 +52518,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      if (sourceNative) {
 	        this.native = sourceNative.clone(source.params);
-	        this.params = Object.create(source.params);
+	        this.params = Object.assign({}, source.params);
 
 	        this.wrap('no-transforms');
 
@@ -52760,17 +52761,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    wrapTransforms: function wrapTransforms() {
 	      var _params = this.params;
-
-	      this.position.set(_params.position.x, _params.position.y, _params.position.z);
-
-	      this.rotation.set(_params.rotation.x, _params.rotation.y, _params.rotation.z);
+	      /*
+	            this.position.set(
+	              _params.position.x,
+	              _params.position.y,
+	              _params.position.z
+	            );
+	      
+	            this.rotation.set(
+	              _params.rotation.x,
+	              _params.rotation.y,
+	              _params.rotation.z
+	            );*/
 
 	      if (this.target) this.target = _params.target;
 	    },
 	    copy: function copy(source) {
 	      if (source.native) {
 	        this.native = source.native.clone();
-	        this.params = Object.create(source.params);
+	        this.params = Object.assign({}, source.params);
 
 	        if (source.helper) this.helper = source.helper.clone();
 	        if (source.target) this.target = source.target.clone();
@@ -52901,7 +52910,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    copy: function copy(source) {
 	      if (source.native) {
 	        this.native = source.native.clone();
-	        this.params = Object.create(source.params);
+	        this.params = Object.assign({}, source.params);
 
 	        if (source.helper) this.helper = source.helper.clone();
 	        if (source.target) this.target = source.target.clone();
@@ -53178,7 +53187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (sourceNative) {
 	        this.native = sourceNative.clone(source.params);
 	        this.native.mass = sourceNative.mass;
-	        this.params = Object.create(source.params);
+	        this.params = Object.assign({}, source.params);
 
 	        this.wrap('no-transforms');
 
@@ -53280,7 +53289,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (source.params.softbody) this.native = new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.params);else this.native = sourceNative.clone(source.params);
 
 	        this.native.mass = sourceNative.mass;
-	        this.params = Object.create(source.params);
+	        this.params = Object.assign({}, source.params);
 
 	        this.wrap('no-transforms');
 

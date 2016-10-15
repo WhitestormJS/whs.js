@@ -45,10 +45,16 @@ GAME._initCamera();
 GAME._initRendering();
 GAME._initHelpers();
 
-var sphere = new WHS.Shape(new THREE.Mesh(new THREE.SphereGeometry(3, 32, 32), new THREE.MeshBasicMaterial({ color: 0xffffff })));
+var sphere = WHS.MeshComponent(new WHS.Component(new THREE.Mesh(new THREE.SphereGeometry(3, 32, 32), new THREE.MeshBasicMaterial({ color: 0xffffff }))));
 
 sphere.addTo(GAME);
 sphere.position.y = 3;
+
+var light = WHS.LightComponent(new WHS.Component(new THREE.PointLight()));
+
+light.wrap();
+
+light.addTo(GAME);
 
 new WHS.Plane({
   geometry: {

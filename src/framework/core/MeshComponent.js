@@ -3,108 +3,54 @@ import {$wrap, $defaults, $extend, $define} from '../utils/ComponentUtils';
 
 import {loadMaterial, extend} from '../utils/index';
 
-function MeshComponent(target) {
-  $defaults(target, {
-    build: true,
-    geometry: {},
+function MeshComponent(targetComponent) {
+  const resultComponent = class MeshComponentEnhance extends targetComponent {
+    static defautls = extend(targetComponent.defaults, {
+      build: true,
+      geometry: {},
 
-    shadow: {
-      cast: true,
-      receive: true
-    },
-
-    material: {
-      kind: 'basic'
-    },
-
-    helpers: {
-      box: false,
-      boundingBox: false,
-      edges: false,
-      faceNormals: false
-    },
-
-    position: {x: 0, y: 0, z: 0},
-    rotation: {x: 0, y: 0, z: 0},
-    scale: {x: 1, y: 1, z: 1},
-    target: {x: 0, y: 0, z: 0}
-  });
-
-  $define(target, {
-    position: {
-      get: function() {
-        return this.native.position;
+      shadow: {
+        cast: true,
+        receive: true
       },
 
-      set: function(vector3) {
-        this.native.position.copy(vector3);
-        return this.native.position;
-      }
-    },
-
-    quaternion: {
-      get: function() {
-        return this.native.quaternion;
+      material: {
+        kind: 'basic'
       },
 
-      set: function(quaternion) {
-        this.native.quaternion.copy(quaternion);
-        return this.native.quaternion;
-      }
-    },
-
-    rotation: {
-      get: function() {
-        return this._native.rotation;
+      helpers: {
+        box: false,
+        boundingBox: false,
+        edges: false,
+        faceNormals: false
       },
 
-      set: function(euler) {
-        this.native.rotation.copy(euler);
-        return this.native.rotation;
-      }
-    },
+      position: {x: 0, y: 0, z: 0},
+      rotation: {x: 0, y: 0, z: 0},
+      scale: {x: 1, y: 1, z: 1},
+      target: {x: 0, y: 0, z: 0}
+    });
 
-    scale: {
-      get: function() {
-        return this.native.scale;
-      },
+    constructor(...props) {
+      super(...props);
 
-      set: function(vector3) {
-        this.native.scale.copy(vector3);
-        return this.native.scale;
-      }
-    },
+      this.helpers = {
+        box: null,
+        boundingBox: null,
+        edges: null,
+        faceNormals: null
+      };
 
-    material: {
-      get: function() {
-        return this.native.material;
-      },
-
-      set: function(material) {
-        this.native.material = material;
-      }
-    },
-
-    geometry: {
-      get: function() {
-        return this.native.geometry;
-      },
-
-      set: function(geometry) {
-        this.native.geometry = geometry;
-      }
+      if (this.native instanceof THREE.Object3D) this.params = MeshComponentEnhance.defaults;
     }
-  })
 
-
-  $extend(target, {
     G_(params = {}) {
       if (this.buildGeometry) {
         this.native.geometry = this.buildGeometry(
           this.updateParams({geometry: params})
         );
       }
-    },
+    }
 
     M_(params = {}) {
       if (this.params.material.kind !== params.kind)
@@ -118,20 +64,20 @@ function MeshComponent(target) {
           this.native.material[key] = params[key];
         }
       }
-    },
+    }
 
     /* Three.js */
 
     raycast(...args) {
       return this.native.raycast(...args);
-    },
+    }
 
     copy(source) {
       const sourceNative = source.native;
 
       if (sourceNative) {
         this.native = sourceNative.clone(source.params);
-        this.params = Object.create(source.params);
+        this.params = Object.assign({}, source.params);
 
         this.wrap('no-transforms');
 
@@ -143,7 +89,7 @@ function MeshComponent(target) {
       this.callCopy(this);
 
       return this;
-    },
+    }
 
     wrapTransforms() {
       const _params = this.params;
@@ -170,20 +116,61 @@ function MeshComponent(target) {
         scale.z
       );
     }
-  });
 
-  $wrap(target).onCallConstructor(scope => {
-    scope.helpers = {
-      box: null,
-      boundingBox: null,
-      edges: null,
-      faceNormals: null
-    };
+    get position() {
+      return this.native.position;
+    }
 
-    if (scope.native instanceof THREE.Object3D) scope.params = scope.defaults;
-  });
+    set position(vector3) {
+      this.native.position.copy(vector3);
+      return this.native.position;
+    }
 
-  $wrap(target).onCallWrap((scope, ...tags) => {
+    get quaternion() {
+      return this.native.quaternion;
+    }
+
+    set quaternion(quaternion) {
+      this.native.quaternion.copy(quaternion);
+      return this.native.quaternion;
+    }
+
+    get rotation() {
+      return this._native.rotation;
+    }
+
+    set rotation(euler) {
+      this.native.rotation.copy(euler);
+      return this.native.rotation;
+    }
+
+    get scale() {
+      return this.native.scale;
+    }
+
+    set scale(vector3) {
+      this.native.scale.copy(vector3);
+      return this.native.scale;
+    }
+
+    get material() {
+      return this.native.material;
+    }
+
+    set material(material) {
+      this.native.material = material;
+    }
+
+    get geometry() {
+      return this.native.geometry;
+    }
+
+    set geometry(geometry) {
+      this.native.geometry = geometry;
+    }
+  }
+
+  $wrap(resultComponent).onCallWrap((scope, ...tags) => {
     const _native = scope.native,
       _params = scope.params,
       _params_helpers = _params.helpers;
@@ -263,7 +250,7 @@ function MeshComponent(target) {
     }
   });
 
-  return target;
+  return resultComponent;
 }
 
 export {
