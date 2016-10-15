@@ -80,7 +80,7 @@ function CameraComponent(target) {
     copy(source) {
       if (source.native) {
         this.native = source.native.clone();
-        this.params = Object.create(source.params);
+        this.params = Object.assign({}, source.params);
 
         if (source.helper) this.helper = source.helper.clone();
         if (source.target) this.target = source.target.clone();

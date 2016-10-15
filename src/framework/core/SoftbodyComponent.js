@@ -1,11 +1,13 @@
 import {$wrap, $defaults, $extend} from '../utils/ComponentUtils';
 
-function SoftbodyComponent(target) {
-  $defaults(target, {
-    softbody: false
-  });
+import {extend} from '../utils/index';
 
-  $extend(target, {
+function SoftbodyComponent(targetComponent) {
+  const resultComponent = class SoftbodyComponentEnhance extends targetComponent {
+    static defautls = extend(targetComponent.defaults, {
+      softbody: false
+    });
+
     proccessSoftbodyGeometry(geometry) {
       const _params = this.params;
 
@@ -24,7 +26,7 @@ function SoftbodyComponent(target) {
         _params.position.y,
         _params.position.z
       );
-    },
+    }
 
     copy(source) {
       const sourceNative = source.native;
@@ -35,7 +37,7 @@ function SoftbodyComponent(target) {
         else this.native = sourceNative.clone(source.params);
 
         this.native.mass = sourceNative.mass;
-        this.params = Object.create(source.params);
+        this.params = Object.assign({}, source.params);
 
         this.wrap('no-transforms');
 
@@ -47,7 +49,7 @@ function SoftbodyComponent(target) {
       this.callCopy(this);
 
       return this;
-    },
+    }
 
     wrapTransforms() {
       const _params = this.params;
@@ -76,16 +78,16 @@ function SoftbodyComponent(target) {
         );
       }
     }
-  });
+  }
 
-  $wrap(target).onCallAddTo(scope => {
+  $wrap(resultComponent).onCallAddTo(scope => {
     if (scope.params.softbody) {
       scope.native.position.set(0, 0, 0);
       scope.native.rotation.set(0, 0, 0);
     }
   });
 
-  return target;
+  return resultComponent;
 }
 
 export {
