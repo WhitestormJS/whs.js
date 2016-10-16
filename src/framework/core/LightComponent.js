@@ -43,7 +43,7 @@ function LightComponent(targetComponent) {
       rotation: {x: 0, y: 0, z: 0},
       target: {x: 0, y: 0, z: 0}
     });
-    
+
     wrapShadow() {
       return new Promise(resolve => {
         const _native = this.native,
@@ -105,38 +105,38 @@ function LightComponent(targetComponent) {
 
       return this;
     }
-    
+
     get position() {
       return this.native.position;
     }
-    
+
     set position(vector3) {
       this.native.position.copy(vector3);
       return this.native.position;
     }
-    
+
     get quaternion() {
       return this.native.quaternion;
     }
-    
+
     set quaternion(quaternion) {
       this.native.quaternion.copy(quaternion);
       return this.native.quaternion;
     }
-    
+
     get rotation() {
       return this._native.rotation;
     }
-    
+
     set rotation(euler) {
       this.native.rotation.copy(euler);
       return this.native.rotation;
     }
-    
+
     get target() {
       return this.native.target;
     }
-    
+
     set target(vector3) {
       if (vector3 instanceof THREE.Object3D)
         this.native.target.copy(vector3); // THREE.Object3D in this case.
@@ -144,12 +144,12 @@ function LightComponent(targetComponent) {
     }
   };
 
-  $wrap(target).onCallConstructor(scope => {
+  $wrap(targetComponent).onCallConstructor(scope => {
     scope.helper = null;
     if (scope.native instanceof THREE.Object3D) scope.params = scope.defaults;
   });
 
-  $wrap(target).onCallWrap((scope, ...tags) => {
+  $wrap(targetComponent).onCallWrap((scope, ...tags) => {
     if (tags.indexOf('no-shadows') < 0) scope.wrapShadow();
   });
 
