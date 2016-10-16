@@ -31,6 +31,8 @@ function MeshComponent(targetComponent) {
       target: {x: 0, y: 0, z: 0}
     });
 
+    _decorators = [...this._decorators, MeshComponentEnhance];
+
     constructor(...props) {
       super(...props);
 
@@ -167,6 +169,10 @@ function MeshComponent(targetComponent) {
 
     set geometry(geometry) {
       this.native.geometry = geometry;
+    }
+
+    clone() {
+      return new resultComponent({build: false}).copy(this);
     }
   }
 

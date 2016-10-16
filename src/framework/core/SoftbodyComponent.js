@@ -78,6 +78,10 @@ function SoftbodyComponent(targetComponent) {
         );
       }
     }
+
+    clone() {
+      return this.params.softbody ? new resultComponent(this.params) : new resultComponent({build: false}).copy(this);
+    }
   }
 
   $wrap(resultComponent).onCallAddTo(scope => {
