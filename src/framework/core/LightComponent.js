@@ -72,7 +72,7 @@ function LightComponent(targetComponent) {
 
     wrapTransforms() {
       const _params = this.params;
-      /*
+
       this.position.set(
         _params.position.x,
         _params.position.y,
@@ -83,7 +83,7 @@ function LightComponent(targetComponent) {
         _params.rotation.x,
         _params.rotation.y,
         _params.rotation.z
-      );*/
+      );
 
       if (this.target) this.target = _params.target;
     }
