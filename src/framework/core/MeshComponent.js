@@ -5,7 +5,7 @@ import {loadMaterial, extend} from '../utils/index';
 
 function MeshComponent(targetComponent) {
   const resultComponent = class MeshComponentEnhance extends targetComponent {
-    static defautls = extend(targetComponent.defaults, {
+    static defaults = extend(targetComponent.defaults, {
       build: true,
       geometry: {},
 
