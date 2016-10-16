@@ -62,6 +62,7 @@ var stick = new WHS.Box({
 });
 
 var stick2 = stick.clone();
+console.log(stick2);
 stick2.position.set(0, 4, 20);
 
 var height = 10; // BASE: 6, 0, 2, 2.
