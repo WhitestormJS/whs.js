@@ -65,6 +65,7 @@
     "gulp-browser-basedir": "^1.0.1",
     "gulp-browserify": "^0.5.1",
     "gulp-cached": "^1.1.0",
+    "gulp-cli": "^1.2.2",
     "gulp-load-plugins": "^1.2.2",
     "gulp-plumber": "^1.1.0",
     "gulp-swig": "^0.8.0",
