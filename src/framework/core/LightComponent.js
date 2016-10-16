@@ -142,6 +142,10 @@ function LightComponent(targetComponent) {
         this.native.target.copy(vector3); // THREE.Object3D in this case.
       else this.native.target.position.copy(vector3);
     }
+
+    clone() {
+      return new resultComponent({build: false}).copy(this);
+    }
   };
 
   $wrap(targetComponent).onCallConstructor(scope => {

@@ -90,6 +90,10 @@ function CameraComponent(targetComponent) {
 
       return this;
     }
+
+    clone() {
+      return new resultComponent({build: false}).copy(this);
+    }
   }
 
   $wrap(resultComponent).onCallWrap((scope, ...tags) => {
