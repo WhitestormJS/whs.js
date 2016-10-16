@@ -1,94 +1,49 @@
 import * as THREE from 'three';
 import {$wrap, $define, $extend, $defaults} from '../utils/ComponentUtils';
 
-function LightComponent(target) {
-  $defaults(target, {
-    light: {
-      color: 0xffffff,
-      skyColor: 0xffffff,
-      groundColor: 0xffffff,
+import {loadMaterial, extend} from '../utils/index';
 
-      intensity: 1,
-      distance: 100,
-      angle: Math.PI / 3,
-      exponent: 0,
-      decay: 1
-    },
+function LightComponent(targetComponent) {
+  const resultComponent = class LightComponentEnhance extends targetComponent {
+    static defaults = extend(targetComponent.defaults, {
+      light: {
+        color: 0xffffff,
+        skyColor: 0xffffff,
+        groundColor: 0xffffff,
 
-    helper: false,
-
-    shadowmap: {
-      cast: true,
-
-      bias: 0,
-      radius: 1,
-
-      width: 1024,
-      height: 1024,
-
-      near: true,
-      far: 400,
-      fov: 60,
-
-      top: 200,
-      bottom: -200,
-      left: -200,
-      right: 200
-    },
-
-    position: {x: 0, y: 0, z: 0},
-    rotation: {x: 0, y: 0, z: 0},
-    target: {x: 0, y: 0, z: 0}
-  });
-
-  $define(target, {
-    position: {
-      get: function() {
-        return this.native.position;
+        intensity: 1,
+        distance: 100,
+        angle: Math.PI / 3,
+        exponent: 0,
+        decay: 1
       },
 
-      set: function(vector3) {
-        this.native.position.copy(vector3);
-        return this.native.position;
-      }
-    },
+      helper: false,
 
-    quaternion: {
-      get: function() {
-        return this.native.quaternion;
+      shadowmap: {
+        cast: true,
+
+        bias: 0,
+        radius: 1,
+
+        width: 1024,
+        height: 1024,
+
+        near: true,
+        far: 400,
+        fov: 60,
+
+        top: 200,
+        bottom: -200,
+        left: -200,
+        right: 200
       },
 
-      set: function(quaternion) {
-        this.native.quaternion.copy(quaternion);
-        return this.native.quaternion;
-      }
-    },
-
-    rotation: {
-      get: function() {
-        return this._native.rotation;
-      },
-
-      set: function(euler) {
-        this.native.rotation.copy(euler);
-        return this.native.rotation;
-      }
-    },
-
-    target: {
-      get: function() {
-        return this.native.target;
-      },
-
-      set: function(vector3) {
-        if (vector3 instanceof THREE.Object3D)
-          this.native.target.copy(vector3); // THREE.Object3D in this case.
-        else this.native.target.position.copy(vector3);
-      }
-    }
-  })
-
-  $extend(target, {
+      position: {x: 0, y: 0, z: 0},
+      rotation: {x: 0, y: 0, z: 0},
+      target: {x: 0, y: 0, z: 0}
+    });
+    
     wrapShadow() {
       return new Promise(resolve => {
         const _native = this.native,
@@ -117,7 +72,7 @@ function LightComponent(target) {
 
     wrapTransforms() {
       const _params = this.params;
-/*
+      /*
       this.position.set(
         _params.position.x,
         _params.position.y,
@@ -150,7 +105,44 @@ function LightComponent(target) {
 
       return this;
     }
-  });
+    
+    get position() {
+      return this.native.position;
+    }
+    
+    set position(vector3) {
+      this.native.position.copy(vector3);
+      return this.native.position;
+    }
+    
+    get quaternion() {
+      return this.native.quaternion;
+    }
+    
+    set quaternion(quaternion) {
+      this.native.quaternion.copy(quaternion);
+      return this.native.quaternion;
+    }
+    
+    get rotation() {
+      return this._native.rotation;
+    }
+    
+    set rotation(euler) {
+      this.native.rotation.copy(euler);
+      return this.native.rotation;
+    }
+    
+    get target() {
+      return this.native.target;
+    }
+    
+    set target(vector3) {
+      if (vector3 instanceof THREE.Object3D)
+        this.native.target.copy(vector3); // THREE.Object3D in this case.
+      else this.native.target.position.copy(vector3);
+    }
+  };
 
   $wrap(target).onCallConstructor(scope => {
     scope.helper = null;
@@ -161,7 +153,7 @@ function LightComponent(target) {
     if (tags.indexOf('no-shadows') < 0) scope.wrapShadow();
   });
 
-  return target;
+  return resultComponent;
 }
 
 export {
