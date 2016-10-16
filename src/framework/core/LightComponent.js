@@ -68,7 +68,7 @@ function LightComponent(targetComponent) {
 
         resolve(this);
       });
-    },
+    }
 
     wrapTransforms() {
       const _params = this.params;
@@ -86,7 +86,7 @@ function LightComponent(targetComponent) {
       );*/
 
       if (this.target) this.target = _params.target;
-    },
+    }
 
     copy(source) {
       if (source.native) {
