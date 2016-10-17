@@ -11,6 +11,7 @@ export class SoftMesh extends Mesh {
 
     super(geometry, material, mass);
 
+    // console.log(tempGeometry.mergeVertices);
     tempGeometry.mergeVertices();
     const idxGeometry = this.createIndexedBufferGeometryFromGeometry(tempGeometry);
     this.tempGeometry = tempGeometry;

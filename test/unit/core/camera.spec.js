@@ -32,12 +32,7 @@ define(['whs'], function(WHS) {
     }
 
     context('Should wrap three.js cameras', () => {
-      //FIXME
-      // let mid = function () {
-      // new WHS.Component(new THREE.Camera());
-      // };
-      // mid = WHS.CameraComponent(mid);
-      // testAPI(mid);
+      testAPI(new WHS.Element(new THREE.Camera(), [WHS.CameraComponent]));
     });
   });
 });

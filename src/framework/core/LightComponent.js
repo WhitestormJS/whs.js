@@ -91,7 +91,7 @@ function LightComponent(targetComponent) {
     copy(source) {
       if (source.native) {
         this.native = source.native.clone();
-        this.params = Object.assign({}, source.params);
+        this.params = {...source.params};
 
         if (source.helper) this.helper = source.helper.clone();
         if (source.target) this.target = source.target.clone();
@@ -150,7 +150,6 @@ function LightComponent(targetComponent) {
 
   $wrap(targetComponent).onCallConstructor(scope => {
     scope.helper = null;
-    if (scope.native instanceof THREE.Object3D) scope.params = scope.defaults;
   });
 
   $wrap(targetComponent).onCallWrap((scope, ...tags) => {

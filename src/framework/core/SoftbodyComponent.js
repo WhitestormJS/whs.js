@@ -37,7 +37,7 @@ function SoftbodyComponent(targetComponent) {
         else this.native = sourceNative.clone(source.params);
 
         this.native.mass = sourceNative.mass;
-        this.params = Object.assign({}, source.params);
+        this.params = {...source.params};
 
         this.wrap('no-transforms');
 

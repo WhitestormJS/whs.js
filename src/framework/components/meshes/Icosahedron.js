@@ -19,6 +19,7 @@ class Icosahedron extends Component {
       detail: 0
     });
 
+
     if (params.build) {
       this.build(params);
       super.wrap();

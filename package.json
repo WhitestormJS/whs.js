@@ -1,14 +1,15 @@
 {
   "name": "whitestormjs",
-  "version": "0.12.0-dev.1",
+  "version": "0.12.0-dev.2",
   "description": "Framework for developing 3D web apps with physics.",
   "main": "lib/index.js",
   "scripts": {
-    "build": "gulp src:build",
-    "dev": "gulp dev",
+    "preversion": "set NODE_ENV=production & gulp build & npm test",
+    "postversion": "set NODE_ENV=development",
     "test": "gulp test",
-    "test:unit": "gulp test:unit",
-    "test:benchmark": "gulp test:benchmark",
+    "start": "npm run dev",
+    "build": "gulp build",
+    "dev": "gulp dev",
     "ci-test": "./node_modules/.bin/karma start ./test/karma.unit.conf.js",
     "lint": "gulp src:lint"
   },
@@ -17,14 +18,16 @@
     "url": "git+https://github.com/WhitestormJS/whitestorm.js.git"
   },
   "keywords": [
+    "whitestorm.js",
     "three.js",
-    "cannon.js",
     "webgl",
-    "wagner",
+    "ammo.js",
     "api",
     "3d",
     "web",
-    "javascript"
+    "javascript",
+    "webpack",
+    "gulpjs"
   ],
   "author": "Alexander Buzin",
   "license": "CC",

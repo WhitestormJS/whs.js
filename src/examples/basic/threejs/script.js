@@ -42,16 +42,18 @@ GAME._initCamera();
 GAME._initRendering();
 GAME._initHelpers();
 
-const sphere = WHS.MeshComponent(new WHS.Component(
-  new THREE.Mesh(new THREE.SphereGeometry(3, 32, 32), new THREE.MeshBasicMaterial({color: 0xffffff}))
-));
+const sphere = new WHS.Element(
+  new THREE.Mesh(new THREE.SphereGeometry(3, 32, 32), new THREE.MeshBasicMaterial({color: 0xffffff})),
+  [WHS.MeshComponent]
+);
 
 sphere.addTo(GAME);
 sphere.position.y = 3;
 
-const light = WHS.LightComponent(new WHS.Component(
-  new THREE.PointLight()
-));
+const light = new WHS.Element(
+  new THREE.PointLight(),
+  [WHS.LightComponent]
+);
 
 light.wrap();
 
