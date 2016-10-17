@@ -35,7 +35,7 @@ define(['whs'], function(WHS) {
 
     context('Should wrap three.js lights', () => {
       const lightThree = new THREE.Light();
-      const light = WHS.LightComponent(new WHS.Component(lightThree));
+      const light = new WHS.Element(lightThree, [WHS.LightComponent]);
 
       it('#wrap()', () => light.wrap());
 

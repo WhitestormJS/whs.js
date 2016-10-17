@@ -27,11 +27,11 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
       },
       minimize: true
     }),
-    new HappyPack({loaders: ['babel'], threads: 4}),
+    new HappyPack({id: 'js', threads: 4}),
     new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack')
   ]
   : [
-    new HappyPack({loaders: ['babel'], threads: 4}),
+    new HappyPack({id: 'js', threads: 4}),
     new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack')
   ];
 

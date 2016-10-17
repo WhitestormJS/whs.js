@@ -40,8 +40,6 @@ function MeshComponent(targetComponent) {
         edges: null,
         faceNormals: null
       };
-
-      if (this.native instanceof THREE.Object3D) this.params = MeshComponentEnhance.defaults;
     }
 
     G_(params = {}) {
@@ -53,14 +51,14 @@ function MeshComponent(targetComponent) {
     }
 
     M_(params = {}) {
-      if (this.params.material.kind !== params.kind)
+      if (this.params.material && this.params.material.kind !== params.kind)
         this.native.material = loadMaterial(
           this.updateParams({material: params}).material
         );
       else {
         this.updateParams({material: params});
 
-        for (key in params) {
+        for (let key in params) {
           this.native.material[key] = params[key];
         }
       }
@@ -77,7 +75,7 @@ function MeshComponent(targetComponent) {
 
       if (sourceNative) {
         this.native = sourceNative.clone(source.params);
-        this.params = Object.assign({}, source.params);
+        this.params = {...source.params};
 
         this.wrap('no-transforms');
 
