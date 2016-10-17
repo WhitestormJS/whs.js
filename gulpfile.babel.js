@@ -53,7 +53,9 @@ const webpackCompilerLight = webpack(webpackConfiguration[1]);
 // ENVIRONMENT  SETUP
 process.env.BABEL_ENV = 'node';
 
-gulp.task('default', ['examples:build', 'src:build:browser', 'src:build:node']);
+// ALIAS
+gulp.task('default', ['build']);
+gulp.task('build', ['src:build', 'examples:build']);
 gulp.task('src:build', ['src:build:browser', 'src:build:node']);
 
 // BUILD: browser
