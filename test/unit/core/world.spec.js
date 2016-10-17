@@ -6,70 +6,68 @@ define(['whs'], function(WHS) {
     });
 
     // It's custom settings also works.
-    it('World with custom settings', () => {
-    	new WHS.World({
-    		init: {
-    			renderer: false
-    		},
-    		
-    		stats: 'fps',
-	      autoresize: true,
-	      softbody: true,
+    it('World with custom settings', () => new WHS.World({
+        init: {
+          renderer: false
+        },
 
-	      shadowmap: {
-	        enabled: false
-	      },
+        stats: 'fps',
+        autoresize: true,
+        softbody: true,
 
-	      helpers: {
-	        grid: true,
-	        axis: true
-	      },
+        shadowmap: {
+          enabled: false
+        },
 
-	      gravity: {
-	        x: 10,
-	        y: 20,
-	        z: 30
-	      },
+        helpers: {
+          grid: true,
+          axis: true
+        },
 
-	      camera: {
-	        aspect: 80,
-	        near: 2,
-	        far: 40,
+        gravity: {
+          x: 10,
+          y: 20,
+          z: 30
+        },
 
-	        x: 5,
-	        y: 3,
-	        z: 8
-	      },
+        camera: {
+          aspect: 80,
+          near: 2,
+          far: 40,
 
-	      rWidth: 2,
-	      rHeight: 2,
+          x: 5,
+          y: 3,
+          z: 8
+        },
 
-	      width: window.innerWidth * 2,
-	      height: window.innerHeight * 2,
+        rWidth: 2,
+        rHeight: 2,
 
-	      physics: {
-	        fixedTimeStep: 1 / 120,
-	        broadphase: {type: 'sweepprune'}
-	      },
+        width: window.innerWidth * 2,
+        height: window.innerHeight * 2,
 
-	      fog: {
-	        type: 'regular',
+        physics: {
+          fixedTimeStep: 1 / 120,
+          broadphase: {type: 'sweepprune'}
+        },
 
-	        density: 0.0025,
-	        hex: 0xff0000,
-	        near: 2,
-	        far: 500
-	      },
+        fog: {
+          type: 'regular',
 
-	      background: {
-	        color: 0x00ff00,
-	        opacity: 0.5
-	      },
+          density: 0.0025,
+          hex: 0xff0000,
+          near: 2,
+          far: 500
+        },
 
-	      renderer: {
-	      	alpha: true
-	      }
-    	});
-    });
+        background: {
+          color: 0x00ff00,
+          opacity: 0.5
+        },
+
+        renderer: {
+          alpha: true
+        }
+      }));
   });
 });

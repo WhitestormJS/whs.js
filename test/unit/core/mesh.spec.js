@@ -42,7 +42,7 @@ define(['whs'], function(WHS) {
 
     context('Should wrap three.js meshes', () => {
       const meshThree = new THREE.Mesh(new THREE.Geometry(), new THREE.Material());
-      const mesh = WHS.MeshComponent(new WHS.Component(meshThree));
+      const mesh = new WHS.Element(meshThree, [WHS.MeshComponent]);
 
       testAPI(mesh);
     });

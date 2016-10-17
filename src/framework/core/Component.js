@@ -114,7 +114,7 @@ class Component extends Events {
 
     if (sourceNative) {
       this.native = sourceNative.clone(source.params);
-      this.params = Object.create(source.params);
+      this.params = {...source.params};
       this.wrap();
     } else this.params = source.params;
 
