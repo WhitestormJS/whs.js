@@ -6,7 +6,6 @@ import {extend} from '../utils/index';
 class Component extends Events {
   static defaults = {};
   _wait = [];
-  _decorators = [];
   children = [];
   params = {};
 
@@ -107,15 +106,7 @@ class Component extends Events {
   }
 
   clone() {
-    const _decorators = this._decorators;
-    let newComponent = new Component(this.params).copy(this);
-
-    for (let i = 0, max = _decorators.length; i < max; i++) {
-      console.log(_decorators[i]);
-      newComponent = _decorators[i](newComponent);
-    }
-
-    return newComponent;
+    return new Component(this.params).copy(this);
   }
 
   copy(source) {
