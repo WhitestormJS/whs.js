@@ -6,7 +6,7 @@
   "scripts": {
     "preversion": "set NODE_ENV=production & gulp build & npm test",
     "postversion": "set NODE_ENV=development",
-    "test": "gulp test",
+    "test": "gulp test:unit",
     "start": "npm run dev",
     "build": "gulp build",
     "dev": "gulp dev",
