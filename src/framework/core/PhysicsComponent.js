@@ -204,7 +204,7 @@ function PhysicsComponent(targetComponent) {
   }
 
   $wrap(resultComponent).onCallConstructor(scope => {
-    scope.physics = Physijs.default !== false;
+    scope.physics = scope.params.physics !== undefined ? scope.params.physics : Physijs.default !== false;
     scope.__c_rot = false;
   })
 
