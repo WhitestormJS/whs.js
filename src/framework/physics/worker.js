@@ -927,7 +927,7 @@ module.exports = function (self) {
         transforma.setOrigin(_vec3_1);
 
         let rotation = transforma.getRotation();
-        rotation.setEuler(details.axis.x, details.axis.y, details.axis.z);
+        rotation.setEulerZYX(details.axis.x, details.axis.y, details.axis.z);
         transforma.setRotation(rotation);
 
         if (details.objectb) {
@@ -940,7 +940,7 @@ module.exports = function (self) {
           transformb.setOrigin(_vec3_2);
 
           rotation = transformb.getRotation();
-          rotation.setEuler(details.axis.x, details.axis.y, details.axis.z);
+          rotation.setEulerZYX(details.axis.z, details.axis.x, details.axis.y);
           transformb.setRotation(rotation);
 
           constraint = new Ammo.btSliderConstraint(

@@ -17,6 +17,12 @@ var GAME = new WHS.World({
     far: 10000,
     y: 10,
     z: 100
+  },
+
+  rendering: {
+    background: {
+      color: 0xcccccc
+    }
   }
 });
 
@@ -28,15 +34,15 @@ var halfMat = {
 
 var box = new WHS.Box({
   geometry: {
-    width: 30,
+    width: 2,
     height: 2,
-    depth: 2
+    depth: 20
   },
 
   mass: 0,
 
   material: _extends({
-    color: 0xffffff
+    color: 0xffff00
   }, halfMat),
 
   position: {
@@ -46,12 +52,12 @@ var box = new WHS.Box({
 
 var box2 = new WHS.Box({
   geometry: {
-    width: 30,
-    height: 1,
+    width: 2,
+    height: 2,
     depth: 20
   },
 
-  mass: 10,
+  mass: 1,
 
   material: _extends({
     color: 0x0000ff
@@ -62,22 +68,22 @@ var box2 = new WHS.Box({
   },
 
   position: {
-    y: 38,
-    z: 12
+    y: 40,
+    z: 10
   }
 });
 
 var pointer = new WHS.Sphere({ material: { color: 0x00ff00 } });
-pointer.position.set(0, 60, -8);
+pointer.position.set(0, 43, -8);
 pointer.addTo(GAME);
+pointer.applyCentralImpulse(new THREE.Vector3(0, 0, 1000));
 
 box.addTo(GAME);
 box2.addTo(GAME);
 
-var constraint = new WHS.HingeConstraint(box2, box, new THREE.Vector3(0, 38, 1), new THREE.Vector3(1, 0, 0));
+var constraint = new WHS.SliderConstraint(box2, box, new THREE.Vector3(0, box2.position.y, 0), new THREE.Vector3(0, 0, 1));
 
 GAME.scene.addConstraint(constraint);
-constraint.enableAngularMotor(10, 20);
 
 new WHS.Plane({
   geometry: {
