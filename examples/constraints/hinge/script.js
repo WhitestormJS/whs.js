@@ -18,7 +18,7 @@ var GAME = new WHS.World({
   }
 });
 
-var sphere = new WHS.Box({
+var box = new WHS.Box({
   geometry: {
     width: 30,
     height: 2,
@@ -39,7 +39,7 @@ var sphere = new WHS.Box({
   }
 });
 
-var sphere2 = new WHS.Box({
+var box2 = new WHS.Box({
   geometry: {
     width: 30,
     height: 1,
@@ -69,10 +69,10 @@ var pointer = new WHS.Sphere({ material: { color: 0x00ff00 } });
 pointer.position.set(0, 60, -8);
 pointer.addTo(GAME);
 
-sphere.addTo(GAME);
-sphere2.addTo(GAME);
+box.addTo(GAME);
+box2.addTo(GAME);
 
-var constraint = new WHS.HingeConstraint(sphere2, sphere, new THREE.Vector3(0, 38, 1), new THREE.Vector3(1, 0, 0));
+var constraint = new WHS.HingeConstraint(box2, box, new THREE.Vector3(0, 38, 1), new THREE.Vector3(1, 0, 0));
 
 GAME.scene.addConstraint(constraint);
 constraint.enableAngularMotor(10, 20);

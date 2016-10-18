@@ -15,7 +15,7 @@ const GAME = new WHS.World({
   }
 });
 
-const sphere = new WHS.Box({
+const box = new WHS.Box({
   geometry: {
     width: 30,
     height: 2,
@@ -36,7 +36,7 @@ const sphere = new WHS.Box({
   }
 });
 
-const sphere2 = new WHS.Box({
+const box2 = new WHS.Box({
   geometry: {
     width: 30,
     height: 1,
@@ -67,10 +67,10 @@ pointer.position.set(0, 60, -8);
 pointer.addTo(GAME);
 
 
-sphere.addTo(GAME);
-sphere2.addTo(GAME);
+box.addTo(GAME);
+box2.addTo(GAME);
 
-const constraint = new WHS.HingeConstraint(sphere2, sphere,
+const constraint = new WHS.HingeConstraint(box2, box,
   new THREE.Vector3(0, 38, 1),
   new THREE.Vector3(1, 0, 0)
 )
