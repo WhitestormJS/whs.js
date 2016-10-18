@@ -8,7 +8,7 @@ define(['whs'], function(WHS) {
     // It's custom settings also works.
     it('World with custom settings', () => new WHS.World({
         init: {
-          renderer: false
+          rendering: false
         },
 
         stats: 'fps',
