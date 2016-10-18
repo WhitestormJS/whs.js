@@ -74,7 +74,7 @@ pointer.addTo(GAME);
 box.addTo(GAME);
 box2.addTo(GAME);
 
-var constraint = new WHS.HingeConstraint(box2, box, new THREE.Vector3(0, 38, 1), new THREE.Vector3(1, 0, 0));
+var constraint = new WHS.DOFConstraint(box2, box, new THREE.Vector3(0, 38, 1));
 
 GAME.scene.addConstraint(constraint);
 constraint.enableAngularMotor(10, 20);

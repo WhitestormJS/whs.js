@@ -17,6 +17,12 @@ var GAME = new WHS.World({
     far: 10000,
     y: 10,
     z: 100
+  },
+
+  rendering: {
+    background: {
+      color: 0xcccccc
+    }
   }
 });
 
@@ -28,8 +34,8 @@ var halfMat = {
 
 var box = new WHS.Box({
   geometry: {
-    width: 30,
-    height: 2,
+    width: 2,
+    height: 20,
     depth: 2
   },
 
@@ -46,8 +52,8 @@ var box = new WHS.Box({
 
 var box2 = new WHS.Box({
   geometry: {
-    width: 30,
-    height: 1,
+    width: 2,
+    height: 2,
     depth: 20
   },
 
@@ -62,22 +68,21 @@ var box2 = new WHS.Box({
   },
 
   position: {
-    y: 38,
-    z: 12
+    y: 28,
+    z: 10
   }
 });
 
 var pointer = new WHS.Sphere({ material: { color: 0x00ff00 } });
-pointer.position.set(0, 60, -8);
+pointer.position.set(0.5, 60, -8);
 pointer.addTo(GAME);
 
 box.addTo(GAME);
 box2.addTo(GAME);
 
-var constraint = new WHS.HingeConstraint(box2, box, new THREE.Vector3(0, 38, 1), new THREE.Vector3(1, 0, 0));
+var constraint = new WHS.PointConstraint(box2, box, new THREE.Vector3(0, box2.position.y, 1));
 
 GAME.scene.addConstraint(constraint);
-constraint.enableAngularMotor(10, 20);
 
 new WHS.Plane({
   geometry: {

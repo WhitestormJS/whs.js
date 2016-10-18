@@ -2,8 +2,8 @@ import {convertWorldPositionToObject, getObjectId} from '../api';
 
 export class DOFConstraint {
   constructor(obja, objb, position) {
-    const objecta = obja.getNative();
-    let objectb = obja.getNative();
+    const objecta = obja;
+    let objectb = objb;
 
     if ( position === undefined ) {
       position = objectb;
