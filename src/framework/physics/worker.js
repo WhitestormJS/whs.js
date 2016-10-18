@@ -891,6 +891,7 @@ module.exports = function (self) {
             _vec3_1,
             _vec3_2
           );
+
         } else {
           _vec3_1.setX(details.positiona.x);
           _vec3_1.setY(details.positiona.y);
@@ -957,6 +958,9 @@ module.exports = function (self) {
           );
         }
 
+        constraint.ta = transforma;
+        constraint.tb = transformb;
+
         Ammo.destroy(transforma);
         if (transformb !== undefined) Ammo.destroy(transformb);
 
@@ -996,6 +1000,9 @@ module.exports = function (self) {
         );
 
         constraint.setLimit(Math.PI, 0, Math.PI);
+
+        constraint.ta = transforma;
+        constraint.tb = transformb;
 
         Ammo.destroy(transforma);
         Ammo.destroy(transformb);
@@ -1047,6 +1054,9 @@ module.exports = function (self) {
           );
         }
 
+        constraint.ta = transforma;
+        constraint.tb = transformb;
+
         Ammo.destroy(transforma);
         if (transformb !== undefined) Ammo.destroy(transformb);
 
@@ -1060,9 +1070,6 @@ module.exports = function (self) {
 
     constraint.a = _objects[details.objecta];
     constraint.b = _objects[details.objectb];
-
-    constraint.ta = transforma;
-    constraint.tb = transformb;
 
     constraint.enableFeedback();
     _constraints[details.id] = constraint;
