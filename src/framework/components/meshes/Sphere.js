@@ -26,7 +26,7 @@ class Sphere extends Component {
     }
   }
 
-  build(params = {}) {
+  build(params = this.params) {
     const material = loadMaterial(params.material);
 
     let Mesh;

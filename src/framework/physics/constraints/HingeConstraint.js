@@ -2,8 +2,8 @@ import {convertWorldPositionToObject, getObjectId} from '../api';
 
 export class HingeConstraint {
   constructor(obja, objb, position, axis) {
-    const objecta = obja.getNative();
-    let objectb = obja.getNative();
+    const objecta = obja;
+    let objectb = objb;
 
     if (axis === undefined) {
       axis = position;
