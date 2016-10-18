@@ -1,5 +1,11 @@
 {
-    "presets": [
-        "es2015"
-    ]
+  "presets": [
+      "es2015"
+  ],
+  "plugins": [
+      "add-module-exports",
+      "transform-decorators-legacy",
+      "transform-class-properties",
+      "transform-object-rest-spread"
+  ]
 }
