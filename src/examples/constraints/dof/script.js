@@ -68,13 +68,11 @@ const pointer = new WHS.Sphere({material: {color: 0x00ff00}});
 pointer.position.set(0, 60, -8);
 pointer.addTo(GAME);
 
-
 box.addTo(GAME);
 box2.addTo(GAME);
 
-const constraint = new WHS.HingeConstraint(box2, box,
-  new THREE.Vector3(0, 38, 1),
-  new THREE.Vector3(1, 0, 0)
+const constraint = new WHS.DOFConstraint(box2, box,
+  new THREE.Vector3(0, 38, 1)
 )
 
 GAME.scene.addConstraint(constraint);
