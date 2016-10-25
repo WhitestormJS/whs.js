@@ -5,24 +5,27 @@ import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
-import {extend, loadMaterial, JSONLoader} from '../../utils/index';
+import {loadMaterial, JSONLoader} from '../../utils/index';
 
 @SoftbodyComponent
 @PhysicsComponent
 @MeshComponent
 class Model extends Component {
-  constructor(params = {}) {
-    super(params, Model.defaults);
-
-    extend(params.geometry, {
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
       path: '',
       physics: '',
       loader: JSONLoader
-    });
+    }
+  }
+
+  constructor(params = {}) {
+    super(params, Model.defaults);
 
     if (params.build) {
       this.build(params);
-      super.wrap('wait');
+      super.wrap();
     }
   }
 

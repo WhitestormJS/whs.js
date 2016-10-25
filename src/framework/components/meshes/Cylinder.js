@@ -5,16 +5,15 @@ import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
-import {extend, loadMaterial} from '../../utils/index';
+import {loadMaterial} from '../../utils/index';
 
 @SoftbodyComponent
 @PhysicsComponent
 @MeshComponent
 class Cylinder extends Component {
-  constructor(params = {}) {
-    super(params, Cylinder.defaults);
-
-    extend(params.geometry, {
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
       radiusTop: 0,
       radiusBottom: 1,
       height: 1,
@@ -23,7 +22,11 @@ class Cylinder extends Component {
       openEnded: false,
       thetaStart: 0,
       thetaLength: Math.PI * 2
-    });
+    }
+  }
+
+  constructor(params = {}) {
+    super(params, Cylinder.defaults);
 
     if (params.build) {
       this.build(params);

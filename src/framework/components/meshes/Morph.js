@@ -5,22 +5,25 @@ import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
-import {extend, loadMaterial} from '../../utils/index';
+import {loadMaterial} from '../../utils/index';
 import {JSONLoader} from '../../utils/loaders';
 
 @MeshComponent
 class Morph extends Component {
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
+      path: '',
+      loader: JSONLoader
+    }
+  }
+
   constructor(params = {}) {
     super(params, Morph.defaults);
 
-    extend(params.geometry, {
-      path: '',
-      loader: JSONLoader
-    });
-
     if (params.build) {
       this.build(params);
-      super.wrap('wait');
+      super.wrap();
     }
   }
 

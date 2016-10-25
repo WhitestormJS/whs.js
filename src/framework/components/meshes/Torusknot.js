@@ -5,23 +5,26 @@ import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
-import {extend, loadMaterial} from '../../utils/index';
+import {loadMaterial} from '../../utils/index';
 
 @SoftbodyComponent
 @PhysicsComponent
 @MeshComponent
 class Torusknot extends Component {
-  constructor(params = {}) {
-    super(params, Torusknot.defaults);
-
-    extend(params.geometry, {
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
       radius: 100,
       tube: 40,
       radialSegments: 64,
       tubularSegments: 8,
       p: 2,
       q: 3
-    });
+    }
+  }
+
+  constructor(params = {}) {
+    super(params, Torusknot.defaults);
 
     if (params.build) {
       this.build(params);

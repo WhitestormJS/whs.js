@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
-import {extend, loadMaterial} from '../../utils/index';
+import {loadMaterial} from '../../utils/index';
 import {MeshComponent} from '../../core/MeshComponent';
 import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
@@ -11,12 +11,15 @@ import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 @PhysicsComponent
 @MeshComponent
 class Lathe extends Component {
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
+      points: []
+    }
+  }
+
   constructor(params = {}) {
     super(params, Lathe.defaults);
-
-    extend(params.geometry, {
-      points: []
-    });
 
     if (params.build) {
       this.build(params);

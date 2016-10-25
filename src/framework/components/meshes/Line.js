@@ -11,13 +11,16 @@ import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 @PhysicsComponent
 @MeshComponent
 class Line extends Component {
-  constructor(params) {
-    super(params, Line.defaults);
-
-    extend(params.geometry, {
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
       curve: false,
       points: 50
-    });
+    }
+  }
+
+  constructor(params) {
+    super(params, Line.defaults);
 
     if (params.build) {
       this.build(params);

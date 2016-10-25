@@ -2,23 +2,25 @@ import * as THREE from 'three';
 import {ConvexMesh, SoftMesh} from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
-import {extend, loadMaterial} from '../../utils/index';
 import {MeshComponent} from '../../core/MeshComponent';
 import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
+import {loadMaterial} from '../../utils/index';
 
 @SoftbodyComponent
 @PhysicsComponent
 @MeshComponent
 class Icosahedron extends Component {
-  constructor(params = {}) {
-    super(params, Icosahedron.defaults);
-
-    extend(params.geometry, {
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
       radius: 1,
       detail: 0
-    });
+    }
+  }
 
+  constructor(params = {}) {
+    super(params, Icosahedron.defaults);
 
     if (params.build) {
       this.build(params);

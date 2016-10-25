@@ -5,20 +5,23 @@ import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
-import {extend, loadMaterial} from '../../utils/index';
+import {loadMaterial} from '../../utils/index';
 
 @SoftbodyComponent
 @PhysicsComponent
 @MeshComponent
 class Sphere extends Component {
-  constructor(params = {}) {
-    super(params, Sphere.defaults);
-
-    extend(params.geometry, {
+  static defaults = {
+    ...Component.defaults,
+    geometry: {
       radius: 1,
       widthSegments: 8,
       heightSegments: 6
-    });
+    }
+  };
+
+  constructor(params = {}) {
+    super(params, Sphere.defaults);
 
     if (params.build) {
       this.build(params);
