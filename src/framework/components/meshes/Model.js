@@ -21,7 +21,7 @@ class Model extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Model.defaults);
+    super(params, Model.defaults, Model.instructions);
 
     if (params.build) {
       this.build(params);

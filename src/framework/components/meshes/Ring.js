@@ -19,7 +19,7 @@ class Ring extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Ring.defaults);
+    super(params, Ring.defaults, Ring.instructions);
 
     if (params.build) {
       this.build(params);

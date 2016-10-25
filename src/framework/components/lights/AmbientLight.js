@@ -5,7 +5,7 @@ import {LightComponent} from '../../core/LightComponent';
 @LightComponent
 class AmbientLight extends Component {
   constructor(params = {}) {
-    super(params, AmbientLight.defaults);
+    super(params, AmbientLight.defaults, AmbientLight.instructions);
 
     this.build(params);
     super.wrap('no-shadows');

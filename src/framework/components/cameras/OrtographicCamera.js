@@ -5,7 +5,7 @@ import {CameraComponent} from '../../core/CameraComponent';
 @CameraComponent
 class OrtographicCamera extends Component {
   constructor(params = {}) {
-    super(params, OrtographicCamera.defaults);
+    super(params, OrtographicCamera.defaults, OrtographicCamera.instructions);
 
     this.build(params);
     super.wrap();

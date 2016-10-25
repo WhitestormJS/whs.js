@@ -20,7 +20,7 @@ class Tetrahedron extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Tetrahedron.defaults);
+    super(params, Tetrahedron.defaults, Tetrahedron.instructions);
 
     if (params.build) {
       this.build(params);

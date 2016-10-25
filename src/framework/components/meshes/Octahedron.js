@@ -20,7 +20,7 @@ class Octahedron extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Octahedron.defaults);
+    super(params, Octahedron.defaults, Octahedron.instructions);
 
     if (params.build) {
       this.build(params);

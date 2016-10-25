@@ -29,7 +29,7 @@ class PostProcessor extends Component {
     PostProcessor.defaults.width = localWindow.innerWidth;
     PostProcessor.defaults.height = localWindow.innerHeight;
 
-    this.params = extend(params, PostProcessor.defaults);
+    this.params = extend(params, PostProcessor.defaults, PostProcessor.instructions);
     const _params = this.params;
 
     if (_params.autoresize === 'window') {

@@ -40,7 +40,7 @@ class Polyhedron extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Polyhedron.defaults);
+    super(params, Polyhedron.defaults, Polyhedron.instructions);
 
     if (params.build) {
       this.build(params);

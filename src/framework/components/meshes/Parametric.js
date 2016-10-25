@@ -21,7 +21,7 @@ class Parametric extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Parametric.defaults);
+    super(params, Parametric.defaults, Parametric.instructions);
 
     if (params.build) {
       this.build(params);

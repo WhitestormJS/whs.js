@@ -23,7 +23,7 @@ class Torus extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Torus.defaults);
+    super(params, Torus.defaults, Torus.instructions);
 
     if (params.build) {
       this.build(params);

@@ -20,7 +20,7 @@ class Line extends Component {
   }
 
   constructor(params) {
-    super(params, Line.defaults);
+    super(params, Line.defaults, Line.instructions);
 
     if (params.build) {
       this.build(params);
