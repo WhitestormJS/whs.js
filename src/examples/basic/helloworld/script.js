@@ -27,12 +27,10 @@ const sphere = new WHS.Sphere({
     kind: 'basic'
   },
 
-  position: {
-    x: 0,
-    y: 100,
-    z: 0
-  }
+  position: [0, 100, 0]
 });
+
+console.log(WHS.Sphere.instructions);
 
 sphere.addTo(GAME);
 

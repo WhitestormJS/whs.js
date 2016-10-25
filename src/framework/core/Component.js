@@ -1,19 +1,20 @@
 import * as THREE from 'three';
 import Events from 'minivents';
 
-import {extend} from '../utils/index';
+import {extend, transformData} from '../utils/index';
 
 class Component extends Events {
   static defaults = {};
+  static instructions = {};
   _wait = [];
   children = [];
   params = {};
 
-  constructor(obj = {}, defaults) {
+  constructor(obj = {}, defaults = {}, instructions = {}) {
     super();
 
     if (obj instanceof THREE.Object3D) this.native = obj;
-    else this.params = extend(obj, defaults);
+    else this.params = transformData(extend(obj, defaults), instructions);
 
     this.callConstructor(this);
   }

@@ -5,7 +5,8 @@ import {loadMaterial, extend} from '../utils/index';
 
 function MeshComponent(targetComponent) {
   const resultComponent = class MeshComponentEnhance extends targetComponent {
-    static defaults = extend(targetComponent.defaults, {
+    static defaults = (() => targetComponent.defaults = {
+      ...targetComponent.defaults,
       build: true,
       geometry: {},
 
@@ -29,7 +30,15 @@ function MeshComponent(targetComponent) {
       rotation: {x: 0, y: 0, z: 0},
       scale: {x: 1, y: 1, z: 1},
       target: {x: 0, y: 0, z: 0}
-    });
+    })();
+
+    static instructions = (() => targetComponent.instructions = {
+      ...targetComponent.instructions,
+      position: ['x', 'y', 'z'],
+      rotation: ['x', 'y', 'z'],
+      scale: ['x', 'y', 'z'],
+      target: ['x', 'y', 'z']
+    })();
 
     constructor(...props) {
       super(...props);
