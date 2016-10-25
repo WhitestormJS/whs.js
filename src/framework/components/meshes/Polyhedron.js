@@ -5,21 +5,42 @@ import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
-import {extend, loadMaterial} from '../../utils/index';
+import {loadMaterial} from '../../utils/index';
+
+const [verticesOfCube, indicesOfFaces] = [
+  [
+    -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
+    -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1
+  ],
+  [
+    2, 1, 0, 0, 3, 2,
+    0, 4, 7, 7, 3, 0,
+    0, 1, 5, 5, 4, 0,
+    1, 2, 6, 6, 5, 1,
+    2, 3, 7, 7, 6, 2,
+    4, 5, 6, 6, 7, 4
+  ]
+];
 
 @SoftbodyComponent
 @PhysicsComponent
 @MeshComponent
 class Polyhedron extends Component {
-  constructor(params = {}) {
-    super(params, Polyhedron.defaults);
+  static verticesOfCube = verticesOfCube;
+  static indicesOfFaces = indicesOfFaces;
 
-    extend(params.geometry, {
-      verticesOfCube: this.verticesOfCube,
-      indicesOfFaces: this.indicesOfFaces,
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
+      verticesOfCube: verticesOfCube,
+      indicesOfFaces: indicesOfFaces,
       radius: 6,
       detail: 2
-    });
+    }
+  }
+
+  constructor(params = {}) {
+    super(params, Polyhedron.defaults);
 
     if (params.build) {
       this.build(params);
@@ -45,24 +66,6 @@ class Polyhedron extends Component {
 
       resolve();
     });
-  }
-
-  get verticesOfCube() {
-    return [
-      -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
-      -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1
-    ];
-  }
-
-  get indicesOfFaces() {
-    return [
-      2, 1, 0, 0, 3, 2,
-      0, 4, 7, 7, 3, 0,
-      0, 1, 5, 5, 4, 0,
-      1, 2, 6, 6, 5, 1,
-      2, 3, 7, 7, 6, 2,
-      4, 5, 6, 6, 7, 4
-    ];
   }
 
   buildGeometry(params = {}) {

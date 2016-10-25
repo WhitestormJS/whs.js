@@ -2,20 +2,23 @@ import * as THREE from 'three';
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {extend, loadMaterial} from '../../utils/index';
+import {loadMaterial} from '../../utils/index';
 
 @MeshComponent
 class Shape extends Component {
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
+      shapes: []
+    }
+  }
+
   constructor(params = {}) {
     super(params, Shape.defaults);
 
-    extend(params.geometry, {
-      shapes: []
-    });
-
     if (params.build) {
       this.build(params);
-      super.wrap('onlyvis');
+      super.wrap();
     }
   }
 

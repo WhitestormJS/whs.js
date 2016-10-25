@@ -5,22 +5,25 @@ import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
-import {extend, loadMaterial} from '../../utils/index';
+import {loadMaterial} from '../../utils/index';
 
 @SoftbodyComponent
 @PhysicsComponent
 @MeshComponent
 class Tube extends Component {
-  constructor(params = {}) {
-    super(params, Tube.defaults);
-
-    extend(params.geometry, {
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
       path: false,
       segments: 20,
       radius: 2,
       radiusSegments: 8,
       closed: false
-    });
+    }
+  }
+
+  constructor(params = {}) {
+    super(params, Tube.defaults);
 
     if (params.build) {
       this.build(params);

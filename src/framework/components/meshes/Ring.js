@@ -2,25 +2,28 @@ import * as THREE from 'three';
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {extend, loadMaterial} from '../../utils/index';
+import {loadMaterial} from '../../utils/index';
 
 @MeshComponent
 class Ring extends Component {
-  constructor(params = {}) {
-    super(params, Ring.defaults);
-
-    extend(params.geometry, {
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
       innerRadius: 0,
       outerRadius: 50,
       thetaSegments: 8,
       phiSegments: 8,
       thetaStart: 0,
       thetaLength: Math.PI * 2
-    });
+    }
+  }
+
+  constructor(params = {}) {
+    super(params, Ring.defaults);
 
     if (params.build) {
       this.build(params);
-      super.wrap('onlyvis');
+      super.wrap();
     }
   }
 
