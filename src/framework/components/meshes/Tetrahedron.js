@@ -5,19 +5,22 @@ import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
-import {extend, loadMaterial} from '../../utils/index';
+import {loadMaterial} from '../../utils/index';
 
 @SoftbodyComponent
 @PhysicsComponent
 @MeshComponent
 class Tetrahedron extends Component {
-  constructor(params = {}) {
-    super(params, Tetrahedron.defaults);
-
-    extend(params.geometry, {
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
       radius: 1,
       detail: 0
-    });
+    }
+  }
+
+  constructor(params = {}) {
+    super(params, Tetrahedron.defaults);
 
     if (params.build) {
       this.build(params);

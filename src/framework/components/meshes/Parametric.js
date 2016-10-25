@@ -5,20 +5,23 @@ import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
-import {extend, loadMaterial} from '../../utils/index';
+import {loadMaterial} from '../../utils/index';
 
 @SoftbodyComponent
 @PhysicsComponent
 @MeshComponent
 class Parametric extends Component {
-  constructor(params = {}) {
-    super(params, Parametric.defaults);
-
-    extend(params.geometry, {
+  static defautls = {
+    ...Component.defaults,
+    geometry: {
       func() {},
       slices: 10,
       stacks: 10
-    });
+    }
+  }
+
+  constructor(params = {}) {
+    super(params, Parametric.defaults);
 
     if (params.build) {
       this.build(params);
