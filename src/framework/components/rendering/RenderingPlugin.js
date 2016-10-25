@@ -7,7 +7,7 @@ import { RenderingComponent } from '../../core/RenderingComponent';
 @RenderingComponent
 class RenderingPlugin extends Component {
   constructor(params = {}, world) {
-    super(params, RenderingPlugin.defaults);
+    super(params, RenderingPlugin.defaults, RenderingPlugin.instructions);
 
     this.parentWorld = world;
 

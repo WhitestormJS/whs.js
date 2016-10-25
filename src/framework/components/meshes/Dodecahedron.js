@@ -20,7 +20,7 @@ class Dodecahedron extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Dodecahedron.defaults);
+    super(params, Dodecahedron.defaults, Dodecahedron.instructions);
 
     if (params.build) {
       this.build(params);

@@ -5,7 +5,7 @@ import {LightComponent} from '../../core/LightComponent';
 @LightComponent
 class DirectionalLight extends Component {
   constructor(params = {}) {
-    super(params, DirectionalLight.defaults);
+    super(params, DirectionalLight.defaults, DirectionalLight.instructions);
 
     this.build(params);
     super.wrap();

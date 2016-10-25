@@ -29,7 +29,7 @@ class Text extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Text.defaults);
+    super(params, Text.defaults, Text.instructions);
 
     if (params.build) {
       this.build(params);

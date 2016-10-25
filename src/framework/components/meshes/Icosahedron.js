@@ -20,7 +20,7 @@ class Icosahedron extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Icosahedron.defaults);
+    super(params, Icosahedron.defaults, Icosahedron.instructions);
 
     if (params.build) {
       this.build(params);

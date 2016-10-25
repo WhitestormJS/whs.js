@@ -23,7 +23,7 @@ class Tube extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Tube.defaults);
+    super(params, Tube.defaults, Tube.instructions);
 
     if (params.build) {
       this.build(params);
