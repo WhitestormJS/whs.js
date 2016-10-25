@@ -4,9 +4,12 @@ import {extend} from '../utils/index';
 
 function SoftbodyComponent(targetComponent) {
   const resultComponent = class SoftbodyComponentEnhance extends targetComponent {
-    static defautls = extend(targetComponent.defaults, {
-      softbody: false
-    });
+    static defautls = (() => Object.assign(
+      targetComponent.defaults,
+      {
+        softbody: false
+      }
+    ))();
 
     proccessSoftbodyGeometry(geometry) {
       const _params = this.params;
