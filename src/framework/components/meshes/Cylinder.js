@@ -26,7 +26,7 @@ class Cylinder extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Cylinder.defaults);
+    super(params, Cylinder.defaults, Cylinder.instructions);
 
     if (params.build) {
       this.build(params);

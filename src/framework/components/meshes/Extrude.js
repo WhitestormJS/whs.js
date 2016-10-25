@@ -20,7 +20,7 @@ class Extrude extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Extrude.defaults);
+    super(params, Extrude.defaults, Extrude.instructions);
 
     if (params.build) {
       this.build(params);

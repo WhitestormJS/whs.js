@@ -21,7 +21,7 @@ class Box extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Box.defaults);
+    super(params, Box.defaults, Box.instructions);
 
     if (params.build) {
       this.build(params);

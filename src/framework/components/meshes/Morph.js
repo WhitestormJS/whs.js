@@ -19,7 +19,7 @@ class Morph extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Morph.defaults);
+    super(params, Morph.defaults, Morph.instructions);
 
     if (params.build) {
       this.build(params);

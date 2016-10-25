@@ -24,7 +24,7 @@ class Torusknot extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Torusknot.defaults);
+    super(params, Torusknot.defaults, Torusknot.instructions);
 
     if (params.build) {
       this.build(params);

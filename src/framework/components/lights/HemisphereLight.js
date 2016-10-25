@@ -5,7 +5,7 @@ import {LightComponent} from '../../core/LightComponent';
 @LightComponent
 class HemisphereLight extends Component {
   constructor(params = {}) {
-    super(params, HemisphereLight.defaults);
+    super(params, HemisphereLight.defaults, HemisphereLight.instructions);
 
     this.build(params);
 

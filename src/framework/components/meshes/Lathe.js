@@ -19,7 +19,7 @@ class Lathe extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Lathe.defaults);
+    super(params, Lathe.defaults, Lathe.instructions);
 
     if (params.build) {
       this.build(params);

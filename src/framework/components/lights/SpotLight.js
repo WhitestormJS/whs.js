@@ -5,7 +5,7 @@ import {LightComponent} from '../../core/LightComponent';
 @LightComponent
 class SpotLight extends Component {
   constructor(params = {}) {
-    super(params, SpotLight.defaults);
+    super(params, SpotLight.defaults, SpotLight.instructions);
 
     this.build(params);
     super.wrap();

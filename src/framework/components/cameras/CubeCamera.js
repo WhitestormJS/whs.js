@@ -5,7 +5,7 @@ import {CameraComponent} from '../../core/CameraComponent';
 @CameraComponent
 class CubeCamera extends Component {
   constructor(params = {}) {
-    super(params, CubeCamera.defaults);
+    super(params, CubeCamera.defaults, CubeCamera.instructions);
 
     this.build(params);
     super.wrap();

@@ -5,7 +5,7 @@ import {LightComponent} from '../../core/LightComponent';
 @LightComponent
 class PointLight extends Component {
   constructor(params = {}) {
-    super(params, PointLight.defaults);
+    super(params, PointLight.defaults, PointLight.instructions);
 
     this.build(params);
     super.wrap();

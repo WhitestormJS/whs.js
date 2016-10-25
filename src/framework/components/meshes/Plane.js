@@ -22,7 +22,7 @@ class Plane extends Component {
   }
 
   constructor(params = {}) {
-    super(params, Plane.defaults);
+    super(params, Plane.defaults, Plane.instructions);
 
     if (params.build) {
       this.build(params);
