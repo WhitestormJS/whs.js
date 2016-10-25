@@ -21,7 +21,7 @@ class Sphere extends Component {
   };
 
   constructor(params = {}) {
-    super(params, Sphere.defaults);
+    super(params, Sphere.defaults, Sphere.instructions);
 
     if (params.build) {
       this.build(params);

@@ -17,10 +17,13 @@ const physicsDefaults = Physijs.default !== false ? {
 
 function PhysicsComponent(targetComponent) {
   const resultComponent = class PhysicsComponentEnhance extends targetComponent {
-    static defautls = extend(targetComponent.defaults, {
-      mass: 10,
-      physics: physicsDefaults
-    });
+    static defautls = (() => Object.assign(
+      targetComponent.defaults,
+      {
+        mass: 10,
+        physics: physicsDefaults
+      }
+    ))();
 
     setAngularVelocity(...args) {
       return this.native.setAngularVelocity(...args);
