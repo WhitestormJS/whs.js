@@ -14,7 +14,7 @@ class RenderingPlugin extends Component {
     this.build(params);
     super.wrap();
 
-    if (params.init.stats) this._initStats();
+    if (params.init && params.init.stats) this._initStats();
   }
 
   _initStats() {
