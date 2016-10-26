@@ -1,2 +1,2 @@
 export * from './basic/BasicRendering';
-//export * from './post-processing';
+export * from './post-processing';
