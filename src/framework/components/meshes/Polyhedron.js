@@ -29,7 +29,7 @@ class Polyhedron extends Component {
   static verticesOfCube = verticesOfCube;
   static indicesOfFaces = indicesOfFaces;
 
-  static defautls = {
+  static defaults = {
     ...Component.defaults,
     geometry: {
       verticesOfCube: verticesOfCube,

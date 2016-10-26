@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+
 import {CylinderMesh, SoftMesh} from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
@@ -11,7 +12,7 @@ import {loadMaterial} from '../../utils/index';
 @PhysicsComponent
 @MeshComponent
 class Cylinder extends Component {
-  static defautls = {
+  static defaults = {
     ...Component.defaults,
     geometry: {
       radiusTop: 0,
