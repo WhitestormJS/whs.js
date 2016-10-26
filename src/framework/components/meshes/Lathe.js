@@ -11,7 +11,7 @@ import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 @PhysicsComponent
 @MeshComponent
 class Lathe extends Component {
-  static defautls = {
+  static defaults = {
     ...Component.defaults,
     geometry: {
       points: []

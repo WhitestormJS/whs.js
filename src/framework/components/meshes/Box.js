@@ -11,7 +11,7 @@ import {loadMaterial} from '../../utils/index';
 @PhysicsComponent
 @MeshComponent
 class Box extends Component {
-  static defautls = {
+  static defaults = {
     ...Component.defaults,
     geometry: {
       width: 1,
