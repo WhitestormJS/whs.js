@@ -66,16 +66,16 @@ teapot.addTo(GAME).then(() => {
 
 UTILS.addBoxPlane(GAME, 500);
 
-new WHS.PointLight({
+new WHS.SpotLight({
   light: {
     color: 0xffffff, // 0x00ff00,
     intensity: 1,
-    distance: 300
+    distance: 300,
+    angle: 180
   },
 
   shadowmap: {
-    fov: 90,
-    bias: -0.001
+    fov: 90
   },
 
   position: {
