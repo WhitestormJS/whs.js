@@ -10,7 +10,7 @@ import {JSONLoader} from '../../utils/loaders';
 
 @MeshComponent
 class Morph extends Component {
-  static defautls = {
+  static defaults = {
     ...Component.defaults,
     geometry: {
       path: '',

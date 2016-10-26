@@ -11,7 +11,7 @@ import {loadMaterial, FontLoader} from '../../utils/index';
 @PhysicsComponent
 @MeshComponent
 class Text extends Component {
-  static defautls = {
+  static defaults = {
     ...Component.defaults,
     geometry: {
       text: 'Hello World!',

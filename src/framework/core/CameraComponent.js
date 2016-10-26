@@ -5,9 +5,7 @@ import {extend} from '../utils/index';
 
 function CameraComponent(targetComponent) {
   const resultComponent = class CameraComponentEnhance extends targetComponent {
-    static defautls = (() => targetComponent.defaults = {
-      ...targetComponent.defaults,
-
+    static defautls = extend(targetComponent.defaults, {
       camera: {
         fov: 45,
         aspect: window.innerWidth / window.innerHeight,
@@ -25,7 +23,7 @@ function CameraComponent(targetComponent) {
       position: {x: 0, y: 0, z: 0},
       rotation: {x: 0, y: 0, z: 0},
       target: {x: 0, y: 0, z: 0}
-    })();
+    });
 
     static instructions = (() => targetComponent.instructions = {
       ...targetComponent.instructions,

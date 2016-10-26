@@ -11,7 +11,7 @@ import {loadMaterial} from '../../utils/index';
 @PhysicsComponent
 @MeshComponent
 class Torus extends Component {
-  static defautls = {
+  static defaults = {
     ...Component.defaults,
     geometry: {
       radius: 100,

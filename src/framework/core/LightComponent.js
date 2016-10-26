@@ -5,9 +5,7 @@ import {loadMaterial, extend} from '../utils/index';
 
 function LightComponent(targetComponent) {
   const resultComponent = class LightComponentEnhance extends targetComponent {
-    static defaults = (() => targetComponent.defaults = {
-      ...targetComponent.defaults,
-
+    static defaults = extend(targetComponent.defaults, {
       light: {
         color: 0xffffff,
         skyColor: 0xffffff,
@@ -44,7 +42,7 @@ function LightComponent(targetComponent) {
       position: {x: 0, y: 0, z: 0},
       rotation: {x: 0, y: 0, z: 0},
       target: {x: 0, y: 0, z: 0}
-    })();
+    });
 
     static instructions = (() => targetComponent.instructions = {
       ...targetComponent.instructions,

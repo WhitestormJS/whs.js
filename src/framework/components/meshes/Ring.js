@@ -6,7 +6,7 @@ import {loadMaterial} from '../../utils/index';
 
 @MeshComponent
 class Ring extends Component {
-  static defautls = {
+  static defaults = {
     ...Component.defaults,
     geometry: {
       innerRadius: 0,

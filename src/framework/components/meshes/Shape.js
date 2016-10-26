@@ -6,7 +6,7 @@ import {loadMaterial} from '../../utils/index';
 
 @MeshComponent
 class Shape extends Component {
-  static defautls = {
+  static defaults = {
     ...Component.defaults,
     geometry: {
       shapes: []
