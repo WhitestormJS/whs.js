@@ -1,16 +1,22 @@
 import * as THREE from 'three';
 import {extend} from '../../utils/index';
+import {Component} from '../../core/Component';
 
 const PI_2 = Math.PI / 2;
 
-export function firstPersonControls(object, params = {}) {
-  return function (world) {
-    const target = extend(params, {
-      block: document.getElementById('blocker'),
-      speed: 1,
-      ypos: 1
-    });
+export class FirstPersonControls extends Component {
+  static defuults = {
+    block: document.getElementById('blocker'),
+    speed: 1,
+    ypos: 1
+  };
 
+  constructor(object, params = {}) {
+    super(params, FirstPersonControls.defaults);
+    this.object = object;
+  }
+
+  integrate(world) {
     const controls = new (function (camera, mesh, params) {
       const velocityFactor = 1;
       let runVelocity = 0.25;
@@ -172,7 +178,7 @@ export function firstPersonControls(object, params = {}) {
 
         yawObject.position.copy(player.position);
       };
-    })(world.camera, object.native, target);
+    })(world.camera, this.object.native, this.params);
 
     if ('pointerLockElement' in document
         || 'mozPointerLockElement' in document
@@ -184,10 +190,10 @@ export function firstPersonControls(object, params = {}) {
           || document.mozPointerLockElement === element
           || document.webkitPointerLockElement === element) {
           controls.enabled = true;
-          target.block.style.display = 'none';
+          this.params.block.style.display = 'none';
         } else {
           controls.enabled = false;
-          target.block.style.display = 'block';
+          this.params.block.style.display = 'block';
         }
       };
 
@@ -203,7 +209,7 @@ export function firstPersonControls(object, params = {}) {
       document.addEventListener('mozpointerlockerror', world.pointerlockerror, false);
       document.addEventListener('webkitpointerlockerror', world.pointerlockerror, false);
 
-      target.block.addEventListener('click', () => {
+      this.params.block.addEventListener('click', () => {
         element.requestPointerLock = element.requestPointerLock
           || element.mozRequestPointerLock
           || element.webkitRequestPointerLock;
@@ -239,5 +245,5 @@ export function firstPersonControls(object, params = {}) {
         world.scene.add(world.controls.getObject());
       }
     ];
-  };
+  }
 }
