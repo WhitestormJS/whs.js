@@ -3,8 +3,12 @@ import * as THREE from 'three';
 import { RenderingPlugin } from '../RenderingPlugin';
 
 class BasicRendering extends RenderingPlugin {
-  constructor(params = {}, world) {
-    super(params, world);
+  constructor(params = {}) {
+    super(params);
+    return (world) => {
+      this.parentWorld = world;
+      return this;
+    }
   }
 
   build(params = {}) {
@@ -20,11 +24,6 @@ class BasicRendering extends RenderingPlugin {
     _renderer.shadowMap.cascade = true;
 
     this.setSize(this.params.width, this.params.height);
-
-    this.parentWorld._dom.appendChild(_renderer.domElement);
-
-    _renderer.domElement.style.width = '100%';
-    _renderer.domElement.style.height = '100%';
   }
 
   renderPlugin(delta) {
@@ -37,6 +36,11 @@ class BasicRendering extends RenderingPlugin {
   setSize(width, height) {
     if (this.renderer) this.renderer.setSize(width, height);
   }
+
+  // static creator(params) {
+  //   return (params) => {
+  //     return new BasicRendering(params); }
+  // }
 }
 
 export {
