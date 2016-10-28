@@ -42,6 +42,7 @@ world.setControls(WHS.orbitControls());
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.addAmbient = addAmbient;
 exports.addBasicLights = addBasicLights;
 exports.addPlane = addPlane;
 exports.addBoxPlane = addBoxPlane;
@@ -81,6 +82,14 @@ var $colors = exports.$colors = {
   mesh: 0xF2F2F2
 };
 
+function addAmbient(world, intensity) {
+  new WHS.AmbientLight({
+    light: {
+      intensity: intensity
+    }
+  }).addTo(world);
+}
+
 function addBasicLights(world) {
   var intensity = arguments.length <= 1 || arguments[1] === undefined ? 0.5 : arguments[1];
   var position = arguments.length <= 2 || arguments[2] === undefined ? [0, 10, 10] : arguments[2];
@@ -97,11 +106,7 @@ function addBasicLights(world) {
     position: [0, 10, 10]
   }).addTo(world);
 
-  new WHS.AmbientLight({
-    light: {
-      intensity: 1 - intensity
-    }
-  }).addTo(world);
+  addAmbient(world, 1 - intensity);
 }
 
 function addPlane(world) {

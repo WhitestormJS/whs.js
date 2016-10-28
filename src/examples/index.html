@@ -22,171 +22,126 @@
     <link rel="shortcut icon" type="image/x-icon" href="http://whitestormjs.xyz/favicon.ico" />
     <link rel="apple-touch-icon-precomposed" href="http://whitestormjs.xyz/favicon.ico" sizes="57x57" />
     <meta name="msapplication-square150x150logo" content="../development/art/logo/Icon-72@2.png" />
-    <style>
-    @import url(https://fonts.googleapis.com/css?family=Nunito|Abel);
-    @import url(https://fonts.googleapis.com/css?family=Inconsolata);
-
-    body {
-      margin: 0;
-      padding: 0;
-      background: #fff;
-    }
-
-    #showcase {
-      position: absolute;
-      display: flex;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      z-index: 1;
-      flex-wrap: wrap;
-    }
-
-    .item {
-      transition: all 0.3s ease-in-out;
-
-      width: 25%;
-      padding-bottom: 11%;
-      background-size: 120%;
-      background-position: center center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .item:hover {
-      transition: all 0.3s ease-in-out;
-
-      background-position: 30%;
-    }
-
-    .item.placeholder {
-      background-color: #65737e;
-      width: calc(25% - 2px);
-      border: 1px solid #4f5b66;
-    }
-
-    .item .splash {
-      transition: all 0.3s ease-in;
-
-      position: absolute;
-      transform: translateX(20px);
-      width: 100%;
-      height: 100%;
-      background: rgba(255,255,255,0.8);
-      opacity: 0;
-    }
-
-    .item:hover .splash {
-      transition: all 0.3s ease-in;
-
-      transform: translateX(0);
-      opacity: 1;
-    }
-
-    .item .splash h4 {
-      padding: 10px;
-      margin: 0;
-      font-family: 'Nunito';
-      color: black;
-    }
-
-    .item .splash h4 span {
-      color: #00f1ff;
-      text-shadow: 0px 0px 1px black;
-    }
-
-    .item .splash h4 span.type {
-      color: #08ffb1;
-    }
-    </style>
   </head>
+  <style type="text/css">
+    @import url('https://fonts.googleapis.com/css?family=Cabin|Fjalla+One|Montserrat|Oxygen');
+
+    html, body {
+      position: relative;
+      height: 100%;
+      margin:0;
+      padding: 0;
+      overflow: hidden;
+      background: #262C38;
+    }
+
+    div.sidebar {
+      width: 300px;
+      float: left;
+      position: relative;
+      height: 100%;
+      overflow: auto;
+    }
+
+    .sidebar h1 {
+      font-family: 'Montserrat', sans-serif;
+      color: white;
+      text-align: center;
+    }
+
+    ul {
+      color: white;
+      list-style: none;
+    }
+
+    li.h {
+      color: white;
+      text-decoration: none;
+      font-family: 'Oxygen', sans-serif;
+      font-size: 14pt;
+      font-weight: bold;
+      line-height: 2;
+      padding-top: 15px;
+    }
+
+    li a {
+      color: white;
+      text-decoration: none;
+      font-family: 'Oxygen', sans-serif;
+    }
+
+    li a:hover {
+      text-decoration: underline;
+    }
+
+    iframe {
+      width: calc(100% - 300px);
+      float: right;
+      height: 100%;
+      border: none;
+    }
+
+    a.source {
+      position: fixed;
+      bottom: 50px;
+      right: 50px;
+      color: white;
+      border: 2px solid white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-family: 'Oxygen', sans-serif;
+      transition: all 0.1s linear;
+    }
+
+    a.source:hover {
+      background: #fff;
+      color: #078BDA;
+    }
+  </style>
   <body>
-    <section>
-      <div id="showcase">
-        <div class="item" style="background-image: url('./basic/helloworld/screenshot.png');">
-          <a href="./basic/helloworld/"><div class="splash">
-            <h4>Hello world <span>- example</span><span class="type"> - basic</span></h4>
-          </div></a>
-        </div>
-        <div class="item" style="background-image: url('./basic/model/screenshot.png');">
-          <a href="./basic/model/"><div class="splash">
-            <h4>Model <span>- example</span><span class="type"> - basic</span></h4>
-          </div></a>
-        </div>
-        <div class="item" style="background-image: url('./basic/extending/screenshot.png');">
-          <a href="./basic/extending/"><div class="splash">
-            <h4>Extending API <span>- example</span><span class="type"> - basic</span></h4>
-          </div></a>
-        </div>
-        <div class="item" style="background-image: url('./basic/debugging/screenshot.png');">
-          <a href="./basic/debugging/"><div class="splash">
-            <h4>Debugging <span>- example</span><span class="type"> - basic</span></h4>
-          </div></a>
-        </div>
-        <div class="item" style="background-image: url('./basic/softbody/screenshot.png');">
-          <a href="./basic/softbody/"><div class="splash">
-            <h4>Softbody <span>- example</span><span class="type"> - basic</span></h4>
-          </div></a>
-        </div>
-        <div class="item" style="background-image: url('./basic/threejs/screenshot.png');">
-          <a href="./basic/threejs/"><div class="splash">
-            <h4>Three.js <span>- example</span><span class="type"> - basic</span></h4>
-          </div></a>
-        </div>
+  <div class="sidebar">
+    <h1>Examples</h1>
 
-        <div class="item" style="background-image: url('./design/easter/screenshot.png');">
-          <a href="./design/easter/"><div class="splash">
-            <h4>Easter <span>- example</span><span class="type"> - design</span></h4>
-          </div></a>
-        </div>
-        <div class="item" style="background-image: url('./design/saturn/screenshot.png');">
-          <a href="./design/saturn/"><div class="splash">
-            <h4>Saturn planet <span>- example</span><span class="type"> - design</span></h4>
-          </div></a>
-        </div>
-        <div class="item" style="background-image: url('./design/points/screenshot.png');">
-          <a href="./design/points/"><div class="splash">
-            <h4>Cube from particles <span>- example</span><span class="type"> - design</span></h4>
-          </div></a>
-        </div>
-        <div class="item" style="background-image: url('./fps/shooter/screenshot.png');">
-          <a href="./fps/shooter/"><div class="splash">
-            <h4>Shooter <span>- example</span><span class="type"> - fps</span></h4>
-          </div></a>
-        </div>
-        <div class="item" style="background-image: url('./fps/fog/screenshot.png');">
-          <a href="./fps/fog/"><div class="splash">
-            <h4>Fog <span>- example</span><span class="type"> - fps</span></h4>
-          </div></a>
-        </div>
+    <ul>
+      <li class="h">Basic</li>
+      <li><a href="#basic/helloworld">basic / helloworld</a></li>
+      <li><a href="#basic/model">basic / model</a></li>
+      <li><a href="#basic/extending">basic / extending</a></li>
+      <li><a href="#basic/debugging">basic / debugging</a></li>
+      <li><a href="#basic/threejs">basic / threejs</a></li>
+      <li><a href="#basic/softbody">basic / softbody</a></li>
+      <li><a href="#basic/cloth">basic / cloth</a></li>
+      <li><a href="#basic/cloth2">basic / cloth2</a></li>
+      <li><a href="#basic/cloth3">basic / cloth3</a></li>
+      <li><a href="#basic/wip">basic / wip</a></li>
+      <li class="h">Design</li>
+      <li><a href="#design/easter">design / easter</a></li>
+      <li><a href="#design/points">design / points</a></li>
+      <li><a href="#design/saturn">design / saturn</a></li>
+      <li class="h">FPS</li>
+      <li><a href="#fps/shooter">fps / shooter</a></li>
+      <li class="h">Performance</li>
+      <li><a href="#performance/sticks">performance / sticks</a></li>
+      <li><a href="#performance/softbodies">performance / softbodies</a></li>
+    </ul>
+  </div>
 
-        <div class="item" style="background-image: url('./physics/domino/screenshot.png');">
-          <a href="./physics/domino/"><div class="splash">
-            <h4>Dominoes <span>- example</span><span class="type"> - physics</span></h4>
-          </div></a>
-        </div>
-        <div class="item" style="background-image: url('./performance/sticks/screenshot.png');">
-          <a href="./performance/sticks/"><div class="splash">
-            <h4>Sticks <span>- example</span><span class="type"> - performance</span></h4>
-          </div></a>
-        </div>
+  <a class="source" href="/" target="_blank">Source code</a>
 
-        <div class="item" style="background-image: url('./post-processing/basic-glitch/screenshot.png');">
-          <a href="./post-processing/basic-glitch/"><div class="splash">
-            <h4>Post Processing - Basic <span>- example</span><span class="type"> - Glitch</span></h4>
-          </div></a>
-        </div>
-        <div class="item placeholder">
-          <a href="#"><div class="splash">
-            <h4>Placeholder <span>- example</span><span class="type"> - basic</span></h4>
-          </div></a>
-        </div>
-        <div class="item placeholder">
-          <a href="#"><div class="splash">
-            <h4>Placeholder <span>- example</span><span class="type"> - basic</span></h4>
-          </div></a>
-        </div>
-      </div>
-    </section>
+  <script type="text/javascript">
+    var iframe = document.createElement('iframe');
+    var link = window.location.hash ? '/' + window.location.hash.substring(1, window.location.hash.length) : 'basic/helloworld';
+
+    iframe.src = link;
+    document.querySelector('a.source').href = 'https://github.com/WhitestormJS/whitestorm.js/tree/dev/src/examples/' + link + '/script.js';
+
+    document.body.appendChild(iframe);
+    document.querySelectorAll('a').forEach(e => {
+      e.addEventListener('click', () => {
+        window.location.reload();
+      });
+    });
+  </script>
   </body>
 </html>
