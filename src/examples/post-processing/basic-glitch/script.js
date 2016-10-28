@@ -288,7 +288,7 @@ class Game {
   createPostProcessing() {
     const computedWidth = Number(this.world.params.width * this.world.params.rWidth).toFixed();
     const computedHeight = Number(this.world.params.height * this.world.params.rHeight).toFixed();
-    let renderingPluginParams = {
+    const renderingPluginParams = {
       width: computedWidth,
       height: computedHeight,
 
@@ -312,12 +312,12 @@ class Game {
     this.postProcessor = new WHS.PostProcessor(renderingPluginParams, this.world);
     this.world.renderingPlugin = this.postProcessor;
 
-    this.postProcessor.createRenderPass();
-    this.postProcessor.createPass(composer => {
-      let pass = new GlitchPass('Glitch');
-      pass.renderToScreen = true;
-      composer.addPass(pass);
-    });
+    // this.postProcessor.createRenderPass();
+    // this.postProcessor.createPass(composer => {
+    //   const pass = new GlitchPass('Glitch');
+    //   pass.renderToScreen = true;
+    //   composer.addPass(pass);
+    // });
   }
 
   createGeometry() {
