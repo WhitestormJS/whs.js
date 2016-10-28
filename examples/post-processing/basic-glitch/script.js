@@ -99,33 +99,23 @@ var conf = {
 // Glitch Pass
 // -----------------------------------------------------------------------------
 var DigitalGlitchShader = {
-
   uniforms: {
-
-    "tDiffuse": { value: null }, //diffuse texture
-    "tDisp": { value: null }, //displacement texture for digital glitch squares
-    "byp": { value: 0 }, //apply the glitch ?
-    "amount": { value: 0.08 },
-    "angle": { value: 0.02 },
-    "seed": { value: 0.02 },
-    "seed_x": { value: 0.02 }, //-1,1
-    "seed_y": { value: 0.02 }, //-1,1
-    "distortion_x": { value: 0.5 },
-    "distortion_y": { value: 0.6 },
-    "col_s": { value: 0.05 }
+    tDiffuse: { value: null }, //diffuse texture
+    tDisp: { value: null }, //displacement texture for digital glitch squares
+    byp: { value: 0 }, //apply the glitch ?
+    amount: { value: 0.08 },
+    angle: { value: 0.02 },
+    seed: { value: 0.02 },
+    seed_x: { value: 0.02 }, //-1,1
+    seed_y: { value: 0.02 }, //-1,1
+    distortion_x: { value: 0.5 },
+    distortion_y: { value: 0.6 },
+    col_s: { value: 0.05 }
   },
 
-  vertexShader: ["varying vec2 vUv;", "void main() {", "vUv = uv;", "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );", "}"].join("\n"),
+  vertexShader: "\n    varying vec2 vUv;\n\n    void main() {\n      vUv = uv;\n      gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n    }\n  ",
 
-  fragmentShader: ["uniform int byp;", //should we apply the glitch ?
-
-  "uniform sampler2D tDiffuse;", "uniform sampler2D tDisp;", "uniform float amount;", "uniform float angle;", "uniform float seed;", "uniform float seed_x;", "uniform float seed_y;", "uniform float distortion_x;", "uniform float distortion_y;", "uniform float col_s;", "varying vec2 vUv;", "float rand(vec2 co){", "return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);", "}", "void main() {", "if(byp<1) {", "vec2 p = vUv;", "float xs = floor(gl_FragCoord.x / 0.5);", "float ys = floor(gl_FragCoord.y / 0.5);",
-  //based on staffantans glitch shader for unity https://github.com/staffantan/unityglitch
-  "vec4 normal = texture2D (tDisp, p*seed*seed);", "if(p.y<distortion_x+col_s && p.y>distortion_x-col_s*seed) {", "if(seed_x>0.){", "p.y = 1. - (p.y + distortion_y);", "}", "else {", "p.y = distortion_y;", "}", "}", "if(p.x<distortion_y+col_s && p.x>distortion_y-col_s*seed) {", "if(seed_y>0.){", "p.x=distortion_x;", "}", "else {", "p.x = 1. - (p.x + distortion_x);", "}", "}", "p.x+=normal.x*seed_x*(seed/5.);", "p.y+=normal.y*seed_y*(seed/5.);",
-  //base from RGB shift shader
-  "vec2 offset = amount * vec2( cos(angle), sin(angle));", "vec4 cr = texture2D(tDiffuse, p + offset);", "vec4 cga = texture2D(tDiffuse, p);", "vec4 cb = texture2D(tDiffuse, p - offset);", "gl_FragColor = vec4(cr.r, cga.g, cb.b, cga.a);",
-  //add noise
-  "vec4 snow = 200.*amount*vec4(rand(vec2(xs * seed,ys * seed*50.))*0.2);", "gl_FragColor = gl_FragColor+ snow;", "}", "else {", "gl_FragColor=texture2D (tDiffuse, vUv);", "}", "}"].join("\n")
+  fragmentShader: "\n    uniform int byp; //should we apply the glitch ?\n\n    uniform sampler2D tDiffuse;\n    uniform sampler2D tDisp;\n\n    uniform float amount;\n    uniform float angle;\n    uniform float seed;\n    uniform float seed_x;\n    uniform float seed_y;\n    uniform float distortion_x;\n    uniform float distortion_y;\n    uniform float col_s;\n\n    varying vec2 vUv;\n\n\n    float rand(vec2 co){\n      return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);\n    }\n\n    void main() {\n      if(byp<1) {\n        vec2 p = vUv;\n        float xs = floor(gl_FragCoord.x / 0.5);\n        float ys = floor(gl_FragCoord.y / 0.5);\n        //based on staffantans glitch shader for unity https://github.com/staffantan/unityglitch\n        vec4 normal = texture2D (tDisp, p*seed*seed);\n\n        if(p.y<distortion_x+col_s && p.y>distortion_x-col_s*seed) {\n          if(seed_x>0.){\n            p.y = 1. - (p.y + distortion_y);\n          }\n          else {\n            p.y = distortion_y;\n          }\n        }\n\n        if(p.x<distortion_y+col_s && p.x>distortion_y-col_s*seed) {\n          if(seed_y>0.){\n            p.x=distortion_x;\n          }\n          else {\n            p.x = 1. - (p.x + distortion_x);\n          }\n        }\n\n        p.x+=normal.x*seed_x*(seed/5.);\n        p.y+=normal.y*seed_y*(seed/5.);\n\n        //base from RGB shift shader\n\n        vec2 offset = amount * vec2( cos(angle), sin(angle));\n        vec4 cr = texture2D(tDiffuse, p + offset);\n        vec4 cga = texture2D(tDiffuse, p);\n        vec4 cb = texture2D(tDiffuse, p - offset);\n        gl_FragColor = vec4(cr.r, cga.g, cb.b, cga.a);\n\n        //add noise\n        vec4 snow = 200.*amount*vec4(rand(vec2(xs * seed,ys * seed*50.))*0.2);\n        gl_FragColor = gl_FragColor+ snow;\n      }\n      else {\n        gl_FragColor = texture2D (tDiffuse, vUv);\n      }\n    }\n  "
 };
 
 var GlitchPass = function (_WHS$Pass) {
