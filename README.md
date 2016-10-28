@@ -168,7 +168,7 @@ export {
 
 <br>
 
-## [Examples](http://192.241.128.187/current/examples/):
+## [Examples](https://whs-dev.surge.sh/examples/):
 
 #### :space_invader: BASIC:
  * [Basic / Hello world](http://192.241.128.187/current/examples/basic/helloworld/)  (Basic "Hello world!" example.)
