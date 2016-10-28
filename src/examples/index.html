@@ -131,9 +131,11 @@
 
   <script type="text/javascript">
     var iframe = document.createElement('iframe');
+    var isLocal = window.location.hostname.indexOf('surge.sh') <= 0;
+    var rootPath = isLocal ? '' : '/examples';
     var link = window.location.hash ? '/' + window.location.hash.substring(1, window.location.hash.length) : 'basic/helloworld';
 
-    iframe.src = link;
+    iframe.src = rootPath + link;
     document.querySelector('a.source').href = 'https://github.com/WhitestormJS/whitestorm.js/tree/dev/src/examples/' + link + '/script.js';
 
     document.body.appendChild(iframe);
