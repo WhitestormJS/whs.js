@@ -217,7 +217,7 @@ class World extends Component {
     const computedWidth = Number(_params.width * _params.rWidth).toFixed();
     const computedHeight = Number(_params.height * _params.rHeight).toFixed();
 
-    this._renderingPlugin = new BasicRendering({
+    this.renderingPlugin = new BasicRendering({
       width: computedWidth,
       height: computedHeight,
 
@@ -237,7 +237,7 @@ class World extends Component {
       },
 
       renderer: _params.rendering.renderer
-    }, this);
+    });
   }
 
   _initHelpers() {
@@ -301,8 +301,8 @@ class World extends Component {
    * Set the current rendering plugin for this World.
    * @param  {RenderingPlugin} renderingPlugin : The RenderingPlugin instance.
    */
-  set renderingPlugin(renderingPlugin) {
-    this._renderingPlugin = renderingPlugin;
+  set renderingPlugin(plugin) {
+    this._renderingPlugin = plugin(this);
   }
 
   /**
@@ -312,25 +312,6 @@ class World extends Component {
   get renderingPlugin() {
     return this._renderingPlugin;
   }
-
-  /**
-   * Set a PostProcessor that will use this world renderer, scene and camera to draw post processing effects.
-   * @param  {WHS.PostProcessor} postProcessor : The post processor instance to set.
-   */
-  // set postProcessor(postProcessor) {
-  //   this._postProcessor = postProcessor;
-  //   this._postProcessor.setContainerConfig(this.params.container);
-  //   this._postProcessor.setRenderScene(this.scene, this.camera);
-  //   this._postProcessor.renderer = this.renderer;
-  // }
-
-  /**
-   * Get the PostProcessor associated with this World instance, otherwise undefined.
-   * @return {WHS.PostProcessor} The PostProcessor.
-   */
-  // get postProcessor() {
-  //   return this._postProcessor;
-  // }
 
   /**
    * Retrieve the renderer used by the active rendering plugin.
