@@ -7985,25 +7985,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -8024,6 +8039,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -70869,7 +70889,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var computedWidth = Number(_params.width * _params.rWidth).toFixed();
 	      var computedHeight = Number(_params.height * _params.rHeight).toFixed();
 
-	      this._renderingPlugin = new _BasicRendering.BasicRendering({
+	      this.renderingPlugin = new _BasicRendering.BasicRendering({
 	        width: computedWidth,
 	        height: computedHeight,
 
@@ -70889,7 +70909,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 
 	        renderer: _params.rendering.renderer
-	      }, this);
+	      });
 	    }
 	  }, {
 	    key: '_initHelpers',
@@ -71039,7 +71059,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'setControls',
 	    value: function setControls(controls) {
-	      var recieved = controls(this);
+	      var recieved = controls.integrate(this);
 
 	      this.controls = recieved instanceof Array ? recieved[0] : recieved;
 
@@ -71049,8 +71069,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }, {
 	    key: 'renderingPlugin',
-	    set: function set(renderingPlugin) {
-	      this._renderingPlugin = renderingPlugin;
+	    set: function set(plugin) {
+	      this._renderingPlugin = plugin(this);
 	    }
 
 	    /**
@@ -71061,25 +71081,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    get: function get() {
 	      return this._renderingPlugin;
 	    }
-
-	    /**
-	     * Set a PostProcessor that will use this world renderer, scene and camera to draw post processing effects.
-	     * @param  {WHS.PostProcessor} postProcessor : The post processor instance to set.
-	     */
-	    // set postProcessor(postProcessor) {
-	    //   this._postProcessor = postProcessor;
-	    //   this._postProcessor.setContainerConfig(this.params.container);
-	    //   this._postProcessor.setRenderScene(this.scene, this.camera);
-	    //   this._postProcessor.renderer = this.renderer;
-	    // }
-
-	    /**
-	     * Get the PostProcessor associated with this World instance, otherwise undefined.
-	     * @return {WHS.PostProcessor} The PostProcessor.
-	     */
-	    // get postProcessor() {
-	    //   return this._postProcessor;
-	    // }
 
 	    /**
 	     * Retrieve the renderer used by the active rendering plugin.
@@ -71394,10 +71395,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  (0, _inherits3.default)(BasicRendering, _RenderingPlugin);
 
 	  function BasicRendering() {
+	    var _ret;
+
 	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    var world = arguments[1];
 	    (0, _classCallCheck3.default)(this, BasicRendering);
-	    return (0, _possibleConstructorReturn3.default)(this, (BasicRendering.__proto__ || Object.getPrototypeOf(BasicRendering)).call(this, params, world));
+
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (BasicRendering.__proto__ || Object.getPrototypeOf(BasicRendering)).call(this, params));
+
+	    return _ret = function _ret(world) {
+	      _this.parentWorld = world;
+	      return _this;
+	    }, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
 
 	  (0, _createClass3.default)(BasicRendering, [{
@@ -71417,11 +71425,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _renderer.shadowMap.cascade = true;
 
 	      this.setSize(this.params.width, this.params.height);
-
-	      this.parentWorld._dom.appendChild(_renderer.domElement);
-
-	      _renderer.domElement.style.width = '100%';
-	      _renderer.domElement.style.height = '100%';
 	    }
 	  }, {
 	    key: 'renderPlugin',
@@ -71436,6 +71439,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function setSize(width, height) {
 	      if (this.renderer) this.renderer.setSize(width, height);
 	    }
+
+	    // static creator(params) {
+	    //   return (params) => {
+	    //     return new BasicRendering(params); }
+	    // }
+
 	  }]);
 	  return BasicRendering;
 	})(_RenderingPlugin2.RenderingPlugin);
@@ -71496,21 +71505,28 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function RenderingPlugin() {
 	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    var world = arguments[1];
 	    (0, _classCallCheck3.default)(this, RenderingPlugin);
 
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (RenderingPlugin.__proto__ || Object.getPrototypeOf(RenderingPlugin)).call(this, params, RenderingPlugin.defaults, RenderingPlugin.instructions));
 
-	    _this.parentWorld = world;
-
 	    _this.build(params);
 	    (0, _get3.default)(RenderingPlugin.prototype.__proto__ || Object.getPrototypeOf(RenderingPlugin.prototype), 'wrap', _this).call(_this);
-
-	    if (params.init && params.init.stats) _this._initStats();
 	    return _this;
 	  }
 
 	  (0, _createClass3.default)(RenderingPlugin, [{
+	    key: '_attachToCanvas',
+	    value: function _attachToCanvas() {
+	      if (this._parentWorld) {}
+	      // TODO: detach from dom
+
+
+	      // attach to new parent world dom
+	      this._parentWorld._dom.appendChild(this.renderer.domElement);
+	      this.renderer.domElement.style.width = '100%';
+	      this.renderer.domElement.style.height = '100%';
+	    }
+	  }, {
 	    key: '_initStats',
 	    value: function _initStats() {
 	      var params = this.params;
@@ -71527,7 +71543,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.stats.domElement.style.left = '0px';
 	        this.stats.domElement.style.bottom = '0px';
 
-	        this.parentWorld._dom.appendChild(this.stats.domElement);
+	        this._parentWorld._dom.appendChild(this.stats.domElement);
 	      }
 	    }
 	  }, {
@@ -71537,6 +71553,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      throw new Error('Build method has to be re-implemented in each rendering plugin (use it to initialize your rendering plugin!)');
 	    }
+	  }, {
+	    key: 'onParentWorldChanged',
+	    value: function onParentWorldChanged() {}
 	  }, {
 	    key: 'renderPlugin',
 	    value: function renderPlugin(delta) {
@@ -71574,12 +71593,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      if (this.onStartRendering) this.onStartRendering(delta);
 
-	      this.renderPlugin();
+	      this.renderPlugin(delta);
 
 	      if (this.onFinishRendering) this.onFinishRendering(delta);
 
 	      // End helper.
 	      if (this.stats) this.stats.end();
+	    }
+	  }, {
+	    key: 'parentWorld',
+	    get: function get() {
+	      return this._parentWorld;
+	    },
+	    set: function set(world) {
+	      var params = this.params;
+
+	      this._parentWorld = world;
+	      this._attachToCanvas();
+
+	      if (params.init && params.init.stats) this._initStats();
+
+	      this.onParentWorldChanged();
 	    }
 	  }]);
 	  return RenderingPlugin;
@@ -75675,74 +75709,47 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function PostProcessor() {
 	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	    var world = arguments[1];
-	    var localWindow = arguments.length <= 2 || arguments[2] === undefined ? window : arguments[2];
-	    (0, _classCallCheck3.default)(this, PostProcessor);
 
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (PostProcessor.__proto__ || Object.getPrototypeOf(PostProcessor)).call(this, params, world));
+	    var _ret;
+
+	    var localWindow = arguments.length <= 1 || arguments[1] === undefined ? window : arguments[1];
+	    (0, _classCallCheck3.default)(this, PostProcessor);
 
 	    PostProcessor.defaults.width = localWindow.innerWidth;
 	    PostProcessor.defaults.height = localWindow.innerHeight;
+	    var _params = (0, _index.extend)(params, PostProcessor.defaults);
 
-	    _this.params = (0, _index.extend)(params, PostProcessor.defaults, PostProcessor.instructions);
-	    var _params = _this.params;
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (PostProcessor.__proto__ || Object.getPrototypeOf(PostProcessor)).call(this, _params));
 
-	    if (_params.autoresize === 'window') {
-	      window.addEventListener('resize', (function () {
-	        _this.setSize(Number(window.innerWidth * _params.rWidth).toFixed(), Number(window.innerHeight * _params.rHeight).toFixed());
-
-	        _this.emit('resize');
-	      }));
-	    } else if (_params.autoresize) {
-	      window.addEventListener('resize', (function () {
-	        // TODO: cf setContainerConfig()
-	        // this.setSize(
-	        //  Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
-	        //  Number(_params.container.offsetHeight * _params.rHeight).toFixed()
-	        // );
-
-	        _this.emit('resize');
-	      }));
-	    }
-	    return _this;
+	    return _ret = function _ret(world) {
+	      _this.parentWorld = world;
+	      return _this;
+	    }, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
 
 	  (0, _createClass3.default)(PostProcessor, [{
 	    key: 'build',
 	    value: function build() {
-	      var params = this.params;
+	      var _params = this.params;
 
-	      var width = Number(window.innerWidth * params.rWidth).toFixed();
-	      var height = Number(window.innerHeight * params.rHeight).toFixed();
+	      var width = Number(window.innerWidth * _params.rWidth).toFixed();
+	      var height = Number(window.innerHeight * _params.rHeight).toFixed();
 
 	      // Renderer.
-	      this.renderer = new THREE.WebGLRenderer(this.params.renderer);
+	      this.renderer = new THREE.WebGLRenderer(_params.renderer);
 
 	      var _renderer = this.renderer;
-	      _renderer.setClearColor(this.params.background.color, this.params.background.opacity);
+	      _renderer.setClearColor(_params.background.color, _params.background.opacity);
 
 	      // Shadowmap.
-	      _renderer.shadowMap.enabled = this.params.shadowmap.enabled;
-	      _renderer.shadowMap.type = this.params.shadowmap.type;
+	      _renderer.shadowMap.enabled = _params.shadowmap.enabled;
+	      _renderer.shadowMap.type = _params.shadowmap.type;
 	      _renderer.shadowMap.cascade = true;
 
-	      this.setSize(this.params.width, this.params.height);
-
-	      this.parentWorld._dom.appendChild(_renderer.domElement);
-
-	      _renderer.domElement.style.width = '100%';
-	      _renderer.domElement.style.height = '100%';
+	      this.setSize(_params.width, _params.height);
 
 	      // RenderTarget
-	      this.renderTarget = new THREE.WebGLRenderTarget(width, height, params.renderTarget);
-
-	      // Scene and camera
-	      this.setRenderScene(this.parentWorld.scene, this.parentWorld.camera);
-
-	      // EffectComposer
-	      if (this.parentWorld) {
-	        this._initComposer();
-	      }
+	      this.renderTarget = new THREE.WebGLRenderTarget(width, height, _params.renderTarget);
 	    }
 	  }, {
 	    key: '_initComposer',
@@ -75754,6 +75761,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!_renderer || !_renderTarget) return;
 
 	      if (!this.composer) this.composer = new _EffectComposer.EffectComposer(_renderer, _renderTarget);
+	    }
+	  }, {
+	    key: 'onParentWorldChanged',
+	    value: function onParentWorldChanged() {
+	      // Scene and camera
+	      this.setRenderScene(this.parentWorld.scene, this.parentWorld.camera);
+
+	      // EffectComposer
+	      if (this.parentWorld) {
+	        this._initComposer();
+	      } else {
+	        this.composer = undefined;
+	      }
 	    }
 
 	    /**
@@ -75788,13 +75808,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'createRenderPass',
 	    value: function createRenderPass() {
-	      var _this2 = this;
-
 	      var renderToScreen = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
 
-	      if (this.scene && this.camera && this.composer) {
+	      var world = this.parentWorld;
+
+	      if (world.scene && world.camera && this.composer) {
 	        this.createPass((function (composer) {
-	          var pass = new _RenderPass.RenderPass('renderscene', _this2.scene, _this2.camera.native);
+	          var pass = new _RenderPass.RenderPass('renderscene', world.scene, world.camera.native);
 	          pass.renderToScreen = renderToScreen;
 	          composer.addPass(pass);
 	        }));
@@ -75850,7 +75870,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'setSize',
 	    value: function setSize(width, height) {
-	      if (this.renderer) this.renderer.setSize(width, height);
+	      if (this.renderer) {
+	        this.renderer.setSize(width, height);
+	        var _composer = this.composer;
+	        if (_composer) _composer.setSize(width, height);
+	      }
 	    }
 
 	    /**
@@ -76869,26 +76893,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _firstPersonControls = __webpack_require__(469);
+	var _FirstPersonControls = __webpack_require__(469);
 
-	Object.keys(_firstPersonControls).forEach((function (key) {
+	Object.keys(_FirstPersonControls).forEach((function (key) {
 	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
-	      return _firstPersonControls[key];
+	      return _FirstPersonControls[key];
 	    }
 	  });
 	}));
 
-	var _orbitControls = __webpack_require__(470);
+	var _OrbitControls = __webpack_require__(470);
 
-	Object.keys(_orbitControls).forEach((function (key) {
+	Object.keys(_OrbitControls).forEach((function (key) {
 	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
-	      return _orbitControls[key];
+	      return _OrbitControls[key];
 	    }
 	  });
 	}));
@@ -76938,7 +76962,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.firstPersonControls = firstPersonControls;
+	exports.FirstPersonControls = undefined;
+
+	var _classCallCheck2 = __webpack_require__(301);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(387);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(302);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(371);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _class, _temp;
 
 	var _three = __webpack_require__(391);
 
@@ -76946,250 +76988,268 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _index = __webpack_require__(393);
 
+	var _Component2 = __webpack_require__(381);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var PI_2 = Math.PI / 2;
 
-	function firstPersonControls(object) {
-	  var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	var FirstPersonControls = exports.FirstPersonControls = (_temp = _class = (function (_Component) {
+	  (0, _inherits3.default)(FirstPersonControls, _Component);
 
-	  return function (world) {
-	    var target = (0, _index.extend)(params, {
-	      block: document.getElementById('blocker'),
-	      speed: 1,
-	      ypos: 1
-	    });
+	  function FirstPersonControls(object) {
+	    var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    (0, _classCallCheck3.default)(this, FirstPersonControls);
 
-	    var controls = new function (camera, mesh, params) {
-	      var _this = this;
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (FirstPersonControls.__proto__ || Object.getPrototypeOf(FirstPersonControls)).call(this, params, FirstPersonControls.defaults));
 
-	      var velocityFactor = 1;
-	      var runVelocity = 0.25;
+	    _this.object = object;
+	    return _this;
+	  }
 
-	      mesh.setAngularFactor({ x: 0, y: 0, z: 0 });
+	  (0, _createClass3.default)(FirstPersonControls, [{
+	    key: 'integrate',
+	    value: function integrate(world) {
+	      var _this3 = this;
 
-	      /* Init */
-	      var player = mesh,
-	          pitchObject = new THREE.Object3D();
+	      var controls = new function (camera, mesh, params) {
+	        var _this2 = this;
 
-	      pitchObject.add(camera.native);
+	        var velocityFactor = 1;
+	        var runVelocity = 0.25;
 
-	      var yawObject = new THREE.Object3D();
+	        mesh.setAngularFactor({ x: 0, y: 0, z: 0 });
 
-	      yawObject.position.y = params.ypos; // eyes are 2 meters above the ground
-	      yawObject.add(pitchObject);
+	        /* Init */
+	        var player = mesh,
+	            pitchObject = new THREE.Object3D();
 
-	      var quat = new THREE.Quaternion();
+	        pitchObject.add(camera.native);
 
-	      var canJump = false,
+	        var yawObject = new THREE.Object3D();
 
-	      // Moves.
-	      moveForward = false,
-	          moveBackward = false,
-	          moveLeft = false,
-	          moveRight = false;
+	        yawObject.position.y = params.ypos; // eyes are 2 meters above the ground
+	        yawObject.add(pitchObject);
 
-	      player.addEventListener('collision', (function (otherObject, v, r, contactNormal) {
-	        if (contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
-	          canJump = true;
-	      }));
+	        var quat = new THREE.Quaternion();
 
-	      var onMouseMove = function onMouseMove(event) {
-	        if (_this.enabled === false) return;
+	        var canJump = false,
 
-	        var movementX = typeof event.movementX === 'number' ? event.movementX : typeof event.mozMovementX === 'number' ? event.mozMovementX : typeof event.getMovementX === 'function' ? event.getMovementX() : 0;
-	        var movementY = typeof event.movementY === 'number' ? event.movementY : typeof event.mozMovementY === 'number' ? event.mozMovementY : typeof event.getMovementY === 'function' ? event.getMovementY() : 0;
-
-	        yawObject.rotation.y -= movementX * 0.002;
-	        pitchObject.rotation.x -= movementY * 0.002;
-
-	        pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
-	      };
-
-	      var onKeyDown = function onKeyDown(event) {
-	        switch (event.keyCode) {
-	          case 38: // up
-	          case 87:
-	            // w
-	            moveForward = true;
-	            break;
-
-	          case 37: // left
-	          case 65:
-	            // a
-	            moveLeft = true;
-	            break;
-
-	          case 40: // down
-	          case 83:
-	            // s
-	            moveBackward = true;
-	            break;
-
-	          case 39: // right
-	          case 68:
-	            // d
-	            moveRight = true;
-	            break;
-
-	          case 32:
-	            // space
-	            if (canJump === true) player.applyCentralImpulse({ x: 0, y: 300, z: 0 });
-	            canJump = false;
-	            break;
-
-	          case 16:
-	            // shift
-	            runVelocity = 0.5;
-	            break;
-
-	          default:
-	        }
-	      };
-
-	      var onKeyUp = function onKeyUp(event) {
-	        switch (event.keyCode) {
-	          case 38: // up
-	          case 87:
-	            // w
-	            moveForward = false;
-	            break;
-
-	          case 37: // left
-	          case 65:
-	            // a
-	            moveLeft = false;
-	            break;
-
-	          case 40: // down
-	          case 83:
-	            // a
-	            moveBackward = false;
-	            break;
-
-	          case 39: // right
-	          case 68:
-	            // d
+	        // Moves.
+	        moveForward = false,
+	            moveBackward = false,
+	            moveLeft = false,
 	            moveRight = false;
-	            break;
 
-	          case 16:
-	            // shift
-	            runVelocity = 0.25;
-	            break;
+	        player.addEventListener('collision', (function (otherObject, v, r, contactNormal) {
+	          if (contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
+	            canJump = true;
+	        }));
 
-	          default:
-	        }
-	      };
+	        var onMouseMove = function onMouseMove(event) {
+	          if (_this2.enabled === false) return;
 
-	      document.body.addEventListener('mousemove', onMouseMove, false);
-	      document.body.addEventListener('keydown', onKeyDown, false);
-	      document.body.addEventListener('keyup', onKeyUp, false);
+	          var movementX = typeof event.movementX === 'number' ? event.movementX : typeof event.mozMovementX === 'number' ? event.mozMovementX : typeof event.getMovementX === 'function' ? event.getMovementX() : 0;
+	          var movementY = typeof event.movementY === 'number' ? event.movementY : typeof event.mozMovementY === 'number' ? event.mozMovementY : typeof event.getMovementY === 'function' ? event.getMovementY() : 0;
 
-	      this.enabled = false;
-	      this.getObject = function () {
-	        return yawObject;
-	      };
+	          yawObject.rotation.y -= movementX * 0.002;
+	          pitchObject.rotation.x -= movementY * 0.002;
 
-	      this.getDirection = function (targetVec) {
-	        targetVec.set(0, 0, -1);
-	        quat.multiplyVector3(targetVec);
-	      };
+	          pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
+	        };
 
-	      // Moves the camera to the Cannon.js object position
-	      // and adds velocity to the object if the run key is down.
-	      var inputVelocity = new THREE.Vector3(),
-	          euler = new THREE.Euler();
+	        var onKeyDown = function onKeyDown(event) {
+	          switch (event.keyCode) {
+	            case 38: // up
+	            case 87:
+	              // w
+	              moveForward = true;
+	              break;
 
-	      this.update = function (delta) {
-	        if (_this.enabled === false) return;
+	            case 37: // left
+	            case 65:
+	              // a
+	              moveLeft = true;
+	              break;
 
-	        delta = delta || 0.5;
-	        delta = Math.min(delta, 0.5);
+	            case 40: // down
+	            case 83:
+	              // s
+	              moveBackward = true;
+	              break;
 
-	        inputVelocity.set(0, 0, 0);
+	            case 39: // right
+	            case 68:
+	              // d
+	              moveRight = true;
+	              break;
 
-	        var speed = velocityFactor * delta * params.speed * runVelocity;
+	            case 32:
+	              // space
+	              if (canJump === true) player.applyCentralImpulse({ x: 0, y: 300, z: 0 });
+	              canJump = false;
+	              break;
 
-	        if (moveForward) inputVelocity.z = -speed;
-	        if (moveBackward) inputVelocity.z = speed;
-	        if (moveLeft) inputVelocity.x = -speed;
-	        if (moveRight) inputVelocity.x = speed;
+	            case 16:
+	              // shift
+	              runVelocity = 0.5;
+	              break;
 
-	        // Convert velocity to world coordinates
-	        euler.x = pitchObject.rotation.x;
-	        euler.y = yawObject.rotation.y;
-	        euler.order = 'XYZ';
-
-	        quat.setFromEuler(euler);
-
-	        inputVelocity.applyQuaternion(quat);
-
-	        player.applyCentralImpulse({ x: inputVelocity.x * 10, y: 0, z: inputVelocity.z * 10 });
-	        player.setAngularVelocity({ x: inputVelocity.z * 10, y: 0, z: -inputVelocity.x * 10 });
-	        player.setAngularFactor({ x: 0, y: 0, z: 0 });
-
-	        yawObject.position.copy(player.position);
-	      };
-	    }(world.camera, object.native, target);
-
-	    if ('pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document) {
-	      (function () {
-	        var element = document.body;
-
-	        world.pointerlockchange = function () {
-	          if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
-	            controls.enabled = true;
-	            target.block.style.display = 'none';
-	          } else {
-	            controls.enabled = false;
-	            target.block.style.display = 'block';
+	            default:
 	          }
 	        };
 
-	        document.addEventListener('pointerlockchange', world.pointerlockchange, false);
-	        document.addEventListener('mozpointerlockchange', world.pointerlockchange, false);
-	        document.addEventListener('webkitpointerlockchange', world.pointerlockchange, false);
+	        var onKeyUp = function onKeyUp(event) {
+	          switch (event.keyCode) {
+	            case 38: // up
+	            case 87:
+	              // w
+	              moveForward = false;
+	              break;
 
-	        world.pointerlockerror = function () {
-	          console.warn('Pointer lock error.');
+	            case 37: // left
+	            case 65:
+	              // a
+	              moveLeft = false;
+	              break;
+
+	            case 40: // down
+	            case 83:
+	              // a
+	              moveBackward = false;
+	              break;
+
+	            case 39: // right
+	            case 68:
+	              // d
+	              moveRight = false;
+	              break;
+
+	            case 16:
+	              // shift
+	              runVelocity = 0.25;
+	              break;
+
+	            default:
+	          }
 	        };
 
-	        document.addEventListener('pointerlockerror', world.pointerlockerror, false);
-	        document.addEventListener('mozpointerlockerror', world.pointerlockerror, false);
-	        document.addEventListener('webkitpointerlockerror', world.pointerlockerror, false);
+	        document.body.addEventListener('mousemove', onMouseMove, false);
+	        document.body.addEventListener('keydown', onKeyDown, false);
+	        document.body.addEventListener('keyup', onKeyUp, false);
 
-	        target.block.addEventListener('click', (function () {
-	          element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+	        this.enabled = false;
+	        this.getObject = function () {
+	          return yawObject;
+	        };
 
-	          element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+	        this.getDirection = function (targetVec) {
+	          targetVec.set(0, 0, -1);
+	          quat.multiplyVector3(targetVec);
+	        };
 
-	          if (/Firefox/i.test(navigator.userAgent)) {
-	            (function () {
-	              var fullscreenchange = function fullscreenchange() {
-	                if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
-	                  document.removeEventListener('fullscreenchange', fullscreenchange);
-	                  document.removeEventListener('mozfullscreenchange', fullscreenchange);
+	        // Moves the camera to the Cannon.js object position
+	        // and adds velocity to the object if the run key is down.
+	        var inputVelocity = new THREE.Vector3(),
+	            euler = new THREE.Euler();
 
-	                  element.requestPointerLock();
-	                }
-	              };
+	        this.update = function (delta) {
+	          if (_this2.enabled === false) return;
 
-	              document.addEventListener('fullscreenchange', fullscreenchange, false);
-	              document.addEventListener('mozfullscreenchange', fullscreenchange, false);
+	          delta = delta || 0.5;
+	          delta = Math.min(delta, 0.5);
 
-	              element.requestFullscreen();
-	            })();
-	          } else element.requestPointerLock();
-	        }));
-	      })();
-	    } else console.warn('Your browser does not support the PointerLock WHS.API.');
+	          inputVelocity.set(0, 0, 0);
 
-	    return [controls, function callback(world) {
-	      world.scene.add(world.controls.getObject());
-	    }];
-	  };
-	}
+	          var speed = velocityFactor * delta * params.speed * runVelocity;
+
+	          if (moveForward) inputVelocity.z = -speed;
+	          if (moveBackward) inputVelocity.z = speed;
+	          if (moveLeft) inputVelocity.x = -speed;
+	          if (moveRight) inputVelocity.x = speed;
+
+	          // Convert velocity to world coordinates
+	          euler.x = pitchObject.rotation.x;
+	          euler.y = yawObject.rotation.y;
+	          euler.order = 'XYZ';
+
+	          quat.setFromEuler(euler);
+
+	          inputVelocity.applyQuaternion(quat);
+
+	          player.applyCentralImpulse({ x: inputVelocity.x * 10, y: 0, z: inputVelocity.z * 10 });
+	          player.setAngularVelocity({ x: inputVelocity.z * 10, y: 0, z: -inputVelocity.x * 10 });
+	          player.setAngularFactor({ x: 0, y: 0, z: 0 });
+
+	          yawObject.position.copy(player.position);
+	        };
+	      }(world.camera, this.object.native, this.params);
+
+	      if ('pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document) {
+	        (function () {
+	          var element = document.body;
+
+	          world.pointerlockchange = function () {
+	            if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
+	              controls.enabled = true;
+	              this.params.block.style.display = 'none';
+	            } else {
+	              controls.enabled = false;
+	              this.params.block.style.display = 'block';
+	            }
+	          };
+
+	          document.addEventListener('pointerlockchange', world.pointerlockchange, false);
+	          document.addEventListener('mozpointerlockchange', world.pointerlockchange, false);
+	          document.addEventListener('webkitpointerlockchange', world.pointerlockchange, false);
+
+	          world.pointerlockerror = function () {
+	            console.warn('Pointer lock error.');
+	          };
+
+	          document.addEventListener('pointerlockerror', world.pointerlockerror, false);
+	          document.addEventListener('mozpointerlockerror', world.pointerlockerror, false);
+	          document.addEventListener('webkitpointerlockerror', world.pointerlockerror, false);
+
+	          _this3.params.block.addEventListener('click', (function () {
+	            element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+
+	            element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+
+	            if (/Firefox/i.test(navigator.userAgent)) {
+	              (function () {
+	                var fullscreenchange = function fullscreenchange() {
+	                  if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
+	                    document.removeEventListener('fullscreenchange', fullscreenchange);
+	                    document.removeEventListener('mozfullscreenchange', fullscreenchange);
+
+	                    element.requestPointerLock();
+	                  }
+	                };
+
+	                document.addEventListener('fullscreenchange', fullscreenchange, false);
+	                document.addEventListener('mozfullscreenchange', fullscreenchange, false);
+
+	                element.requestFullscreen();
+	              })();
+	            } else element.requestPointerLock();
+	          }));
+	        })();
+	      } else console.warn('Your browser does not support the PointerLock WHS.API.');
+
+	      return [controls, function callback(world) {
+	        world.scene.add(world.controls.getObject());
+	      }];
+	    }
+	  }]);
+	  return FirstPersonControls;
+	})(_Component2.Component), _class.defuults = {
+	  block: document.getElementById('blocker'),
+	  speed: 1,
+	  ypos: 1
+	}, _temp);
 
 /***/ },
 /* 470 */
@@ -77200,7 +77260,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.orbitControls = orbitControls;
+	exports.OrbitControls = undefined;
+
+	var _classCallCheck2 = __webpack_require__(301);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(387);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(302);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(371);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
 
 	var _three = __webpack_require__(391);
 
@@ -77210,21 +77286,38 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _threeOrbitControls2 = _interopRequireDefault(_threeOrbitControls);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _Component2 = __webpack_require__(381);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	var ThreeOrbitControls = (0, _threeOrbitControls2.default)(THREE);
 
-	function orbitControls(target) {
-	  return function (world) {
-	    var controls = new ThreeOrbitControls(world.camera.native, world.renderer.domElement);
+	var OrbitControls = exports.OrbitControls = (function (_Component) {
+	  (0, _inherits3.default)(OrbitControls, _Component);
 
-	    if (target) controls.target.copy(target instanceof THREE.Vector3 ? target : target.position);
+	  function OrbitControls(target) {
+	    (0, _classCallCheck3.default)(this, OrbitControls);
 
-	    return controls;
-	  };
-	}
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (OrbitControls.__proto__ || Object.getPrototypeOf(OrbitControls)).call(this));
+
+	    _this.target = target;
+	    return _this;
+	  }
+
+	  (0, _createClass3.default)(OrbitControls, [{
+	    key: 'integrate',
+	    value: function integrate(world) {
+	      var controls = new ThreeOrbitControls(world.camera.native, world.renderer.domElement);
+
+	      if (this.target) controls.target.copy(this.target instanceof THREE.Vector3 ? this.target : this.target.position);
+
+	      return controls;
+	    }
+	  }]);
+	  return OrbitControls;
+	})(_Component2.Component);
 
 /***/ },
 /* 471 */
