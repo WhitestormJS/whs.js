@@ -9,6 +9,7 @@
     "test": "gulp test:unit",
     "start": "npm run dev",
     "build": "gulp build",
+    "deploy": "surge --project ./ --domain whs-$TRAVIS_BRANCH.surge.sh",
     "dev": "gulp dev",
     "ci-test": "./node_modules/.bin/karma start ./test/karma.unit.conf.js",
     "lint": "gulp src:lint"
@@ -87,6 +88,7 @@
     "path": "^0.12.7",
     "requirejs": "^2.2.0",
     "stats.js": "^0.16.0",
+    "surge": "^0.18.0",
     "swig": "^1.4.2",
     "uglify-loader": "^1.3.0",
     "webpack": "^1.13.1",

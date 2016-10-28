@@ -21,4 +21,6 @@ before_script:
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-script: npm run ci-test
+script:
+  - npm run ci-test
+  - npm run deploy
