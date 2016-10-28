@@ -34,7 +34,7 @@ UTILS.addPlane(world);
 UTILS.addBasicLights(world);
 
 world.start(); // Start animations and physics simulation.
-world.setControls(WHS.orbitControls());
+world.setControls(new WHS.OrbitControls());
 
 },{"./globals":2}],2:[function(require,module,exports){
 "use strict";
