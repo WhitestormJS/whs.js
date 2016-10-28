@@ -21,34 +21,16 @@ class PostProcessor extends RenderingPlugin {
     }
   };
 
-  constructor(params = {}, world, localWindow = window) {
-    super(params, world);
-
+  constructor(params = {}, localWindow = window) {
     PostProcessor.defaults.width = localWindow.innerWidth;
     PostProcessor.defaults.height = localWindow.innerHeight;
+    const _params = extend(params, PostProcessor.defaults);
 
-    this.params = extend(params, PostProcessor.defaults);
-    const _params = this.params;
+    super(_params);
 
-    if (_params.autoresize === 'window') {
-      window.addEventListener('resize', () => {
-        this.setSize(
-          Number(window.innerWidth * _params.rWidth).toFixed(),
-          Number(window.innerHeight * _params.rHeight).toFixed()
-        );
-
-        this.emit('resize');
-      });
-    } else if (_params.autoresize) {
-      window.addEventListener('resize', () => {
-        // TODO: cf setContainerConfig()
-        // this.setSize(
-        //  Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
-        //  Number(_params.container.offsetHeight * _params.rHeight).toFixed()
-        // );
-
-        this.emit('resize');
-      });
+    return (world) => {
+      this.parentWorld = world;
+      return this;
     }
   }
 
@@ -71,19 +53,8 @@ class PostProcessor extends RenderingPlugin {
 
     this.setSize(_params.width, _params.height);
 
-    this.parentWorld._dom.appendChild(_renderer.domElement);
-
-    _renderer.domElement.style.width = '100%';
-    _renderer.domElement.style.height = '100%';
-
     // RenderTarget
     this.renderTarget = new THREE.WebGLRenderTarget(width, height, _params.renderTarget);
-
-    // Scene and camera
-    this.setRenderScene(this.parentWorld.scene, this.parentWorld.camera);
-
-    // EffectComposer
-    if (this.parentWorld) { this._initComposer(); }
   }
 
   _initComposer() {
@@ -95,6 +66,19 @@ class PostProcessor extends RenderingPlugin {
 
     if (!this.composer)
       this.composer = new EffectComposer(_renderer, _renderTarget);
+  }
+
+  onParentWorldChanged() {
+    // Scene and camera
+    this.setRenderScene(this.parentWorld.scene, this.parentWorld.camera);
+
+    // EffectComposer
+    if (this.parentWorld){
+      this._initComposer();
+    }
+    else {
+      this.composer = undefined;
+    }
   }
 
   /**
@@ -122,7 +106,7 @@ class PostProcessor extends RenderingPlugin {
   createRenderPass(renderToScreen = false) {
     const world = this.parentWorld;
 
-    if (world.scene && world.camera && world.composer) {
+    if (world.scene && world.camera && this.composer) {
       this.createPass(composer => {
         const pass = new RenderPass('renderscene', world.scene, world.camera.native);
         pass.renderToScreen = renderToScreen;
@@ -167,7 +151,11 @@ class PostProcessor extends RenderingPlugin {
   }
 
   setSize(width, height) {
-    if (this.renderer) this.renderer.setSize(width, height);
+    if (this.renderer) {
+      this.renderer.setSize(width, height);
+      const _composer = this.composer;
+      if (_composer) _composer.setSize(width, height);
+    }
   }
 
   /**
