@@ -1,8 +1,12 @@
+import * as UTILS from './globals';
+
 // -----------------------------------------------------------------------------
 // Configuration
 // -----------------------------------------------------------------------------
 const conf = {
   world: {
+    autoresize: true,
+
     gravity: {
       x: 0,
       y: -100,
@@ -13,7 +17,26 @@ const conf = {
       far: 10000,
       y: 10,
       z: 30
+    },
+
+    init: {
+      rendering: false
+    },
+
+    rendering: {
+      background: {
+        color: 0x162129
+      },
+
+      renderer: {
+        antialias: true
+      }
+    },
+
+    shadowmap: {
+      type: THREE.PCFSoftShadowMap
     }
+
   },
 
   sphere: {
@@ -26,7 +49,7 @@ const conf = {
     mass: 10,
 
     material: {
-      color: 0xffffff,
+      color: 0xF2F2F2,
       kind: 'basic'
     },
 
@@ -46,8 +69,8 @@ const conf = {
     mass: 0,
 
     material: {
-      color: 0xff0000,
-      kind: "basic"
+      color: 0x447F8B,
+      kind: 'basic'
     },
 
     position: {
@@ -58,28 +81,6 @@ const conf = {
 
     rotation: {
       x: -Math.PI / 2
-    }
-  },
-
-  rendering: {
-    renderTarget: {
-      minFilter: THREE.LinearFilter,
-      magFilter: THREE.LinearFilter,
-      format: THREE.RGBAFormat,
-      stencilBuffer: false
-    },
-
-    background: {
-      color: 0xffffff
-    }
-  },
-
-  postProcessor: {
-    renderTarget: {
-      minFilter: THREE.LinearFilter,
-      magFilter: THREE.LinearFilter,
-      format: THREE.RGBAFormat,
-      stencilBuffer: false
     }
   }
 };
@@ -103,8 +104,7 @@ const DigitalGlitchShader = {
     col_s: { value: 0.05 }
   },
 
-  vertexShader:
-  `
+  vertexShader: `
     varying vec2 vUv;
 
     void main() {
@@ -113,8 +113,7 @@ const DigitalGlitchShader = {
     }
   `,
 
-  fragmentShader:
-  `
+  fragmentShader: `
     uniform int byp; //should we apply the glitch ?
 
     uniform sampler2D tDiffuse;
@@ -288,6 +287,7 @@ class Game {
   createPostProcessing() {
     const computedWidth = Number(this.world.params.width * this.world.params.rWidth).toFixed();
     const computedHeight = Number(this.world.params.height * this.world.params.rHeight).toFixed();
+
     const renderingPluginParams = {
       width: computedWidth,
       height: computedHeight,
@@ -298,26 +298,19 @@ class Game {
       },
 
       background: {
-        color: 0xffffff
-      },
-
-      renderer: {
-        minFilter: THREE.LinearFilter,
-        magFilter: THREE.LinearFilter,
-        format: THREE.RGBAFormat,
-        stencilBuffer: false
+        color: 0x162129
       }
     };
 
-    this.postProcessor = new WHS.PostProcessor(renderingPluginParams, this.world);
-    this.world.renderingPlugin = this.postProcessor;
+    this.world.renderingPlugin = new WHS.PostProcessor(renderingPluginParams);
+    this.postProcessor = this.world.renderingPlugin;
 
-    // this.postProcessor.createRenderPass();
-    // this.postProcessor.createPass(composer => {
-    //   const pass = new GlitchPass('Glitch');
-    //   pass.renderToScreen = true;
-    //   composer.addPass(pass);
-    // });
+    this.postProcessor.createRenderPass(false);
+    this.postProcessor.createPass(composer => {
+      const pass = new GlitchPass('Glitch');
+      pass.renderToScreen = true;
+      composer.addPass(pass);
+    });
   }
 
   createGeometry() {
@@ -330,6 +323,7 @@ class Game {
 
   start() {
     this.world.start();
+    this.world.setControls(new WHS.OrbitControls());
   }
 }
 
