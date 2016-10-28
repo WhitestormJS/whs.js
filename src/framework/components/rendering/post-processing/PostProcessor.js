@@ -27,7 +27,7 @@ class PostProcessor extends RenderingPlugin {
     PostProcessor.defaults.width = localWindow.innerWidth;
     PostProcessor.defaults.height = localWindow.innerHeight;
 
-    this.params = extend(params, PostProcessor.defaults, PostProcessor.instructions);
+    this.params = extend(params, PostProcessor.defaults);
     const _params = this.params;
 
     if (_params.autoresize === 'window') {
