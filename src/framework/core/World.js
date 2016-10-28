@@ -407,7 +407,7 @@ class World extends Component {
   }
 
   setControls(controls) {
-    const recieved = controls(this);
+    const recieved = controls.integrate(this);
 
     this.controls = recieved instanceof Array ? recieved[0] : recieved;
 
