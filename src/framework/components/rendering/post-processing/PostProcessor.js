@@ -120,9 +120,11 @@ class PostProcessor extends RenderingPlugin {
    * @param  {Boolean} renderToScreen : Should the renderpass be rendered directly to screen
    */
   createRenderPass(renderToScreen = false) {
-    if (this.scene && this.camera && this.composer) {
+    const world = this.parentWorld;
+
+    if (world.scene && world.camera && world.composer) {
       this.createPass(composer => {
-        const pass = new RenderPass('renderscene', this.scene, this.camera.native);
+        const pass = new RenderPass('renderscene', world.scene, world.camera.native);
         pass.renderToScreen = renderToScreen;
         composer.addPass(pass);
       });
