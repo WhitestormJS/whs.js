@@ -24,7 +24,7 @@
 
 ## GAME EXAMPLE :video_game:
 <p align="center">
-<a href="http://whitestormjs.xyz/StreetBasketballGame/" target="_blank"><img src="https://camo.githubusercontent.com/e11edd02f96c306bf5b929c65d75f552d072d61c/687474703a2f2f692e696d6775722e636f6d2f51445a636141532e706e67"></a>
+<a href="http://whsjs.io/StreetBasketballGame/" target="_blank"><img src="https://camo.githubusercontent.com/e11edd02f96c306bf5b929c65d75f552d072d61c/687474703a2f2f692e696d6775722e636f6d2f51445a636141532e706e67"></a>
 </p>
 
 ## INSTALLATION &#10540; USAGE
@@ -199,7 +199,7 @@ export {
 
 ----
 
-#### :chart_with_upwards_trend: [Changelog](https://github.com/WhitestormJS/whitestorm.js/blob/master/.github/CHANGELOG.md) | :book: [Documentation](http://whitestormjs.xyz/) | :video_game: [Playground](http://whitestormjs.xyz/playground/)
+#### :chart_with_upwards_trend: [Changelog](https://github.com/WhitestormJS/whitestorm.js/blob/master/.github/CHANGELOG.md) | :book: [Documentation](http://whsjs.io/) | :video_game: [Playground](http://whsjs.io/playground/)
 
 ----
 

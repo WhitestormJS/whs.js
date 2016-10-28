@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 
-import {extend} from '../../utils/index';
-import {Component} from '../../core/Component.js';
-import {EffectComposer} from './EffectComposer.js';
-import {RenderPass} from './pass/RenderPass.js';
+import { extend } from '../../../utils/index';
+import { RenderingPlugin } from '../RenderingPlugin';
+import { EffectComposer } from './EffectComposer.js';
+import { RenderPass } from './pass/RenderPass.js';
 
-class PostProcessor extends Component {
+class PostProcessor extends RenderingPlugin {
   static defaults = {
     autoresize: true,
 
@@ -22,9 +22,7 @@ class PostProcessor extends Component {
   };
 
   constructor(params = {}, world, localWindow = window) {
-    super();
-
-    this.parentWorld = world;
+    super(params, world);
 
     PostProcessor.defaults.width = localWindow.innerWidth;
     PostProcessor.defaults.height = localWindow.innerHeight;
@@ -45,24 +43,47 @@ class PostProcessor extends Component {
       window.addEventListener('resize', () => {
         // TODO: cf setContainerConfig()
         // this.setSize(
-          //  Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
-          //  Number(_params.container.offsetHeight * _params.rHeight).toFixed()
+        //  Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
+        //  Number(_params.container.offsetHeight * _params.rHeight).toFixed()
         // );
 
         this.emit('resize');
       });
     }
-
-    this._initTargetRenderer();
-
-    return this;
   }
 
-  _initTargetRenderer() {
+  build() {
     const params = this.params;
+
     const width = Number(window.innerWidth * params.rWidth).toFixed();
     const height = Number(window.innerHeight * params.rHeight).toFixed();
+
+    // Renderer.
+    this.renderer = new THREE.WebGLRenderer(this.params.renderer);
+
+    const _renderer = this.renderer;
+    _renderer.setClearColor(this.params.background.color, this.params.background.opacity);
+
+    // Shadowmap.
+    _renderer.shadowMap.enabled = this.params.shadowmap.enabled;
+    _renderer.shadowMap.type = this.params.shadowmap.type;
+    _renderer.shadowMap.cascade = true;
+
+    this.setSize(this.params.width, this.params.height);
+
+    this.parentWorld._dom.appendChild(_renderer.domElement);
+
+    _renderer.domElement.style.width = '100%';
+    _renderer.domElement.style.height = '100%';
+
+    // RenderTarget
     this.renderTarget = new THREE.WebGLRenderTarget(width, height, params.renderTarget);
+
+    // Scene and camera
+    this.setRenderScene(this.parentWorld.scene, this.parentWorld.camera);
+
+    // EffectComposer
+    if (this.parentWorld) { this._initComposer(); }
   }
 
   _initComposer() {
@@ -143,11 +164,15 @@ class PostProcessor extends Component {
     this.camera = camera;
   }
 
+  setSize(width, height) {
+    if (this.renderer) this.renderer.setSize(width, height);
+  }
+
   /**
    * Rendering the PostProcessor and all its passes.
    * @param  {Number} delta : The delta time between two frames.
    */
-  render(delta) {
+  renderPlugin(delta) {
     if (this.composer) this.composer.render(delta);
   }
 

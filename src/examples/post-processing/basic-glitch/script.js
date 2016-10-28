@@ -3,9 +3,6 @@
 // -----------------------------------------------------------------------------
 const conf = {
   world: {
-    stats: "fps",
-    autoresize: true,
-
     gravity: {
       x: 0,
       y: -100,
@@ -18,6 +15,7 @@ const conf = {
       z: 30
     }
   },
+
   sphere: {
     geometry: {
       radius: 5,
@@ -38,6 +36,7 @@ const conf = {
       z: 0
     }
   },
+
   plane: {
     geometry: {
       width: 250,
@@ -61,6 +60,20 @@ const conf = {
       x: -Math.PI / 2
     }
   },
+
+  rendering: {
+    renderTarget: {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      format: THREE.RGBAFormat,
+      stencilBuffer: false
+    },
+
+    background: {
+      color: 0xffffff
+    }
+  },
+
   postProcessor: {
     renderTarget: {
       minFilter: THREE.LinearFilter,
@@ -268,10 +281,33 @@ class Game {
   }
 
   createPostProcessing() {
-    this.postProcessor = new WHS.PostProcessor(this.options.postProcessor, this.world);
+    const computedWidth = Number(this.world.params.width * this.world.params.rWidth).toFixed();
+    const computedHeight = Number(this.world.params.height * this.world.params.rHeight).toFixed();
+    let renderingPluginParams = {
+      width: computedWidth,
+      height: computedHeight,
+
+      stats: this.world.params.stats,
+      init: {
+        stats: this.world.params.init.stats
+      },
+
+      background: {
+        color: 0xffffff
+      },
+
+      renderer: {
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter,
+        format: THREE.RGBAFormat,
+        stencilBuffer: false
+      }
+    };
+
+    this.postProcessor = new WHS.PostProcessor(renderingPluginParams, this.world);
+    this.world.renderingPlugin = this.postProcessor;
 
     this.postProcessor.createRenderPass();
-
     this.postProcessor.createPass(composer => {
       let pass = new GlitchPass('Glitch');
       pass.renderToScreen = true;
