@@ -9,7 +9,7 @@
     "test": "gulp test:unit",
     "start": "npm run dev",
     "build": "gulp build",
-    "deploy": "surge --project ./ --domain whs-$TRAVIS_BRANCH.surge.sh",
+    "deploy": "surge --project ./examples/ --domain whs-$TRAVIS_BRANCH.surge.sh",
     "dev": "gulp dev",
     "ci-test": "./node_modules/.bin/karma start ./test/karma.unit.conf.js",
     "lint": "gulp src:lint"
