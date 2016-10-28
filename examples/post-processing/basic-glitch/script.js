@@ -262,12 +262,12 @@ var Game = function () {
       this.postProcessor = new WHS.PostProcessor(renderingPluginParams, this.world);
       this.world.renderingPlugin = this.postProcessor;
 
-      this.postProcessor.createRenderPass();
-      this.postProcessor.createPass(function (composer) {
-        var pass = new GlitchPass('Glitch');
-        pass.renderToScreen = true;
-        composer.addPass(pass);
-      });
+      // this.postProcessor.createRenderPass();
+      // this.postProcessor.createPass(composer => {
+      //   const pass = new GlitchPass('Glitch');
+      //   pass.renderToScreen = true;
+      //   composer.addPass(pass);
+      // });
     }
   }, {
     key: "createGeometry",

@@ -53,23 +53,23 @@ class PostProcessor extends RenderingPlugin {
   }
 
   build() {
-    const params = this.params;
+    const _params = this.params;
 
-    const width = Number(window.innerWidth * params.rWidth).toFixed();
-    const height = Number(window.innerHeight * params.rHeight).toFixed();
+    const width = Number(window.innerWidth * _params.rWidth).toFixed();
+    const height = Number(window.innerHeight * _params.rHeight).toFixed();
 
     // Renderer.
-    this.renderer = new THREE.WebGLRenderer(this.params.renderer);
+    this.renderer = new THREE.WebGLRenderer(_params.renderer);
 
     const _renderer = this.renderer;
-    _renderer.setClearColor(this.params.background.color, this.params.background.opacity);
+    _renderer.setClearColor(_params.background.color, _params.background.opacity);
 
     // Shadowmap.
-    _renderer.shadowMap.enabled = this.params.shadowmap.enabled;
-    _renderer.shadowMap.type = this.params.shadowmap.type;
+    _renderer.shadowMap.enabled = _params.shadowmap.enabled;
+    _renderer.shadowMap.type = _params.shadowmap.type;
     _renderer.shadowMap.cascade = true;
 
-    this.setSize(this.params.width, this.params.height);
+    this.setSize(_params.width, _params.height);
 
     this.parentWorld._dom.appendChild(_renderer.domElement);
 
@@ -77,7 +77,7 @@ class PostProcessor extends RenderingPlugin {
     _renderer.domElement.style.height = '100%';
 
     // RenderTarget
-    this.renderTarget = new THREE.WebGLRenderTarget(width, height, params.renderTarget);
+    this.renderTarget = new THREE.WebGLRenderTarget(width, height, _params.renderTarget);
 
     // Scene and camera
     this.setRenderScene(this.parentWorld.scene, this.parentWorld.camera);
