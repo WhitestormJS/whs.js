@@ -14,9 +14,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // -----------------------------------------------------------------------------
 var conf = {
   world: {
-    stats: "fps",
-    autoresize: true,
-
     gravity: {
       x: 0,
       y: -100,
@@ -29,6 +26,7 @@ var conf = {
       z: 30
     }
   },
+
   sphere: {
     geometry: {
       radius: 5,
@@ -49,6 +47,7 @@ var conf = {
       z: 0
     }
   },
+
   plane: {
     geometry: {
       width: 250,
@@ -72,6 +71,20 @@ var conf = {
       x: -Math.PI / 2
     }
   },
+
+  rendering: {
+    renderTarget: {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      format: THREE.RGBAFormat,
+      stencilBuffer: false
+    },
+
+    background: {
+      color: 0xffffff
+    }
+  },
+
   postProcessor: {
     renderTarget: {
       minFilter: THREE.LinearFilter,
@@ -233,10 +246,33 @@ var Game = function () {
   _createClass(Game, [{
     key: "createPostProcessing",
     value: function createPostProcessing() {
-      this.postProcessor = new WHS.PostProcessor(this.options.postProcessor, this.world);
+      var computedWidth = Number(this.world.params.width * this.world.params.rWidth).toFixed();
+      var computedHeight = Number(this.world.params.height * this.world.params.rHeight).toFixed();
+      var renderingPluginParams = {
+        width: computedWidth,
+        height: computedHeight,
+
+        stats: this.world.params.stats,
+        init: {
+          stats: this.world.params.init.stats
+        },
+
+        background: {
+          color: 0xffffff
+        },
+
+        renderer: {
+          minFilter: THREE.LinearFilter,
+          magFilter: THREE.LinearFilter,
+          format: THREE.RGBAFormat,
+          stencilBuffer: false
+        }
+      };
+
+      this.postProcessor = new WHS.PostProcessor(renderingPluginParams, this.world);
+      this.world.renderingPlugin = this.postProcessor;
 
       this.postProcessor.createRenderPass();
-
       this.postProcessor.createPass(function (composer) {
         var pass = new GlitchPass('Glitch');
         pass.renderToScreen = true;

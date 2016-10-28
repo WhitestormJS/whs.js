@@ -8249,7 +8249,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}));
 
-	var _index7 = __webpack_require__(456);
+	var _index7 = __webpack_require__(468);
 
 	Object.keys(_index7).forEach((function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -8273,7 +8273,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}));
 
-	var _deprecation = __webpack_require__(464);
+	var _deprecation = __webpack_require__(476);
 
 	Object.keys(_deprecation).forEach((function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -71506,7 +71506,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _this.build(params);
 	    (0, _get3.default)(RenderingPlugin.prototype.__proto__ || Object.getPrototypeOf(RenderingPlugin.prototype), 'wrap', _this).call(_this);
 
-	    if (params.init.stats) _this._initStats();
+	    if (params.init && params.init.stats) _this._initStats();
 	    return _this;
 	  }
 
@@ -75555,6 +75555,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}));
 
+	var _postProcessing = __webpack_require__(456);
+
+	Object.keys(_postProcessing).forEach((function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _postProcessing[key];
+	    }
+	  });
+	}));
+
 /***/ },
 /* 456 */
 /***/ function(module, exports, __webpack_require__) {
@@ -75565,7 +75577,1299 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _firstPersonControls = __webpack_require__(457);
+	var _PostProcessor = __webpack_require__(457);
+
+	Object.keys(_PostProcessor).forEach((function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _PostProcessor[key];
+	    }
+	  });
+	}));
+
+	var _EffectComposer = __webpack_require__(458);
+
+	Object.keys(_EffectComposer).forEach((function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _EffectComposer[key];
+	    }
+	  });
+	}));
+
+	var _index = __webpack_require__(464);
+
+	Object.keys(_index).forEach((function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _index[key];
+	    }
+	  });
+	}));
+
+	var _index2 = __webpack_require__(467);
+
+	Object.keys(_index2).forEach((function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _index2[key];
+	    }
+	  });
+	}));
+
+/***/ },
+/* 457 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.PostProcessor = undefined;
+
+	var _classCallCheck2 = __webpack_require__(301);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(387);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(302);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(371);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _class, _temp;
+
+	var _three = __webpack_require__(391);
+
+	var THREE = _interopRequireWildcard(_three);
+
+	var _index = __webpack_require__(393);
+
+	var _RenderingPlugin2 = __webpack_require__(422);
+
+	var _EffectComposer = __webpack_require__(458);
+
+	var _RenderPass = __webpack_require__(463);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var PostProcessor = (_temp = _class = (function (_RenderingPlugin) {
+	  (0, _inherits3.default)(PostProcessor, _RenderingPlugin);
+
+	  function PostProcessor() {
+	    var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var world = arguments[1];
+	    var localWindow = arguments.length <= 2 || arguments[2] === undefined ? window : arguments[2];
+	    (0, _classCallCheck3.default)(this, PostProcessor);
+
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (PostProcessor.__proto__ || Object.getPrototypeOf(PostProcessor)).call(this, params, world));
+
+	    PostProcessor.defaults.width = localWindow.innerWidth;
+	    PostProcessor.defaults.height = localWindow.innerHeight;
+
+	    _this.params = (0, _index.extend)(params, PostProcessor.defaults, PostProcessor.instructions);
+	    var _params = _this.params;
+
+	    if (_params.autoresize === 'window') {
+	      window.addEventListener('resize', (function () {
+	        _this.setSize(Number(window.innerWidth * _params.rWidth).toFixed(), Number(window.innerHeight * _params.rHeight).toFixed());
+
+	        _this.emit('resize');
+	      }));
+	    } else if (_params.autoresize) {
+	      window.addEventListener('resize', (function () {
+	        // TODO: cf setContainerConfig()
+	        // this.setSize(
+	        //  Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
+	        //  Number(_params.container.offsetHeight * _params.rHeight).toFixed()
+	        // );
+
+	        _this.emit('resize');
+	      }));
+	    }
+	    return _this;
+	  }
+
+	  (0, _createClass3.default)(PostProcessor, [{
+	    key: 'build',
+	    value: function build() {
+	      var params = this.params;
+
+	      var width = Number(window.innerWidth * params.rWidth).toFixed();
+	      var height = Number(window.innerHeight * params.rHeight).toFixed();
+
+	      // Renderer.
+	      this.renderer = new THREE.WebGLRenderer(this.params.renderer);
+
+	      var _renderer = this.renderer;
+	      _renderer.setClearColor(this.params.background.color, this.params.background.opacity);
+
+	      // Shadowmap.
+	      _renderer.shadowMap.enabled = this.params.shadowmap.enabled;
+	      _renderer.shadowMap.type = this.params.shadowmap.type;
+	      _renderer.shadowMap.cascade = true;
+
+	      this.setSize(this.params.width, this.params.height);
+
+	      this.parentWorld._dom.appendChild(_renderer.domElement);
+
+	      _renderer.domElement.style.width = '100%';
+	      _renderer.domElement.style.height = '100%';
+
+	      // RenderTarget
+	      this.renderTarget = new THREE.WebGLRenderTarget(width, height, params.renderTarget);
+
+	      // Scene and camera
+	      this.setRenderScene(this.parentWorld.scene, this.parentWorld.camera);
+
+	      // EffectComposer
+	      if (this.parentWorld) {
+	        this._initComposer();
+	      }
+	    }
+	  }, {
+	    key: '_initComposer',
+	    value: function _initComposer() {
+	      var _renderer = this.renderer;
+	      var _renderTarget = this.renderTarget;
+
+	      // TODO: throw or something here
+	      if (!_renderer || !_renderTarget) return;
+
+	      if (!this.composer) this.composer = new _EffectComposer.EffectComposer(_renderer, _renderTarget);
+	    }
+
+	    /**
+	     * Create and add a WHS.Pass to the post processing pipeline.
+	     * @param  {Function} passCreator : A function that must return a WHS.Pass instance. It can be used to configurate the pass.
+	     * @return {WHS.Pass} The created WHS.Pass
+	     */
+
+	  }, {
+	    key: 'createPass',
+	    value: function createPass(passCreator) {
+	      if (typeof passCreator === 'function') return passCreator(this.composer);
+	    }
+
+	    /**
+	     * [getPass description]
+	     * @param  {String} name : The unique name of the pass.
+	     * @return {WHS.Pass} The found WHS.Pass, otherwise undefined.
+	     */
+
+	  }, {
+	    key: 'getPass',
+	    value: function getPass(name) {
+	      return this.composer ? this.composer.getPass(name) : undefined;
+	    }
+
+	    /**
+	     * A helper to create a render pass (WHS.RenderPass) that will draw your geometry in the PostProcessor first pass.
+	     * @param  {Boolean} renderToScreen : Should the renderpass be rendered directly to screen
+	     */
+
+	  }, {
+	    key: 'createRenderPass',
+	    value: function createRenderPass() {
+	      var _this2 = this;
+
+	      var renderToScreen = arguments.length <= 0 || arguments[0] === undefined ? false : arguments[0];
+
+	      if (this.scene && this.camera && this.composer) {
+	        this.createPass((function (composer) {
+	          var pass = new _RenderPass.RenderPass('renderscene', _this2.scene, _this2.camera.native);
+	          pass.renderToScreen = renderToScreen;
+	          composer.addPass(pass);
+	        }));
+	      }
+	    }
+
+	    /**
+	     * A helper to get the render pass of this PostProcessor.
+	     * @return {WHS.RenderPass} The render pass found, otherwise undefined.
+	     */
+
+	  }, {
+	    key: 'getRenderPass',
+	    value: function getRenderPass() {
+	      return this.getPass('renderscene');
+	    }
+
+	    /**
+	     * Remove a pass from the PostProcessor
+	     * @param  {String} name : The unique name of the pass
+	     */
+
+	  }, {
+	    key: 'removePass',
+	    value: function removePass(name) {
+	      if (this.composer) this.composer.removePass(name);
+	    }
+
+	    /**
+	     * Used by the WHS.World instance associated with this PostProcessor to set the container.
+	     * @param {DOM} container : The Dom container element.
+	     */
+
+	  }, {
+	    key: 'setContainerConfig',
+	    value: function setContainerConfig(container) {
+	      this.container = container;
+	      // TODO: handle autoresize container offset
+	    }
+
+	    /**
+	     * Set the Scene and camera used by the renderTarget in this PostProcessor.
+	     * @param {THREE.Scene} scene : The scenagraph containing the geometry.
+	     * @param {THREE.Camera} camera : The camera used for the rendering point of view.
+	     */
+
+	  }, {
+	    key: 'setRenderScene',
+	    value: function setRenderScene(scene, camera) {
+	      this.scene = scene;
+	      this.camera = camera;
+	    }
+	  }, {
+	    key: 'setSize',
+	    value: function setSize(width, height) {
+	      if (this.renderer) this.renderer.setSize(width, height);
+	    }
+
+	    /**
+	     * Rendering the PostProcessor and all its passes.
+	     * @param  {Number} delta : The delta time between two frames.
+	     */
+
+	  }, {
+	    key: 'renderPlugin',
+	    value: function renderPlugin(delta) {
+	      if (this.composer) this.composer.render(delta);
+	    }
+
+	    /**
+	     * Set the renderer to use.
+	     * @param {THREE.WebGLRenderer} renderer : The renderer instance.
+	     */
+
+	  }, {
+	    key: 'renderer',
+	    set: function set(renderer) {
+	      this._renderer = renderer;
+	      this._initComposer();
+	    }
+
+	    /**
+	     * Get the renderer used by this PostProcessor to render.
+	     * @return {THREE.WebGLRenderer} The WebGLRenderer.
+	     */
+	    ,
+	    get: function get() {
+	      return this._renderer;
+	    }
+
+	    /**
+	     * Set renderTarget, this will rebuild the internal EffectComposer.
+	     * @param  {THREE.WebGLRenderTarget} renderTarget : The WebGLRenderTarget to use.
+	     */
+
+	  }, {
+	    key: 'renderTarget',
+	    set: function set(renderTarget) {
+	      this._renderTarget = renderTarget;
+	      this._initComposer();
+	    }
+
+	    /**
+	     * Get renderTarget used by this PostProcessor to render to.
+	     * @return {THREE.WebGLRenderTarget} The WebGLRenderTarget.
+	     */
+	    ,
+	    get: function get() {
+	      return this._renderTarget;
+	    }
+
+	    /**
+	     * Set composer, by default PostProcessor instanciate its own instance of EffectComposer.
+	     * @param  {EffectComposer} composer : The composer instance to use.
+	     */
+
+	  }, {
+	    key: 'composer',
+	    set: function set(composer) {
+	      this._composer = composer;
+	    }
+
+	    /**
+	     * Get composer attribute
+	     * @return {EffectCompost} The EffectComposer managed by this PostProcessor.
+	     */
+	    ,
+	    get: function get() {
+	      return this._composer;
+	    }
+	  }]);
+	  return PostProcessor;
+	})(_RenderingPlugin2.RenderingPlugin), _class.defaults = {
+	  autoresize: true,
+
+	  rWidth: 1, // Resolution(width).
+	  rHeight: 1, // Resolution(height).
+
+	  renderTarget: {
+	    minFilter: THREE.LinearFilter,
+	    magFilter: THREE.LinearFilter,
+	    format: THREE.RGBAFormat,
+	    stencilBuffer: false,
+	    toScreen: true
+	  }
+	}, _temp);
+	exports.PostProcessor = PostProcessor;
+
+/***/ },
+/* 458 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.EffectComposer = undefined;
+
+	var _classCallCheck2 = __webpack_require__(301);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(387);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _three = __webpack_require__(391);
+
+	var THREE = _interopRequireWildcard(_three);
+
+	var _CopyShader = __webpack_require__(459);
+
+	var _ShaderPass = __webpack_require__(460);
+
+	var _MaskPass = __webpack_require__(462);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var EffectComposer = exports.EffectComposer = (function () {
+	  /**
+	   * EffecComposer handle a set of Passes and render them in a RenderTarget through a Renderer
+	   * @param  {THREE.WebGLRenderer} renderer : The renderer that will be used to render objects
+	   * @param  {THREE.WebGLRenderTarget} renderTarget : The renderTarget used to draw buffers and compose them
+	   */
+	  function EffectComposer(renderer, renderTarget) {
+	    (0, _classCallCheck3.default)(this, EffectComposer);
+
+	    this.renderer = renderer;
+
+	    if (renderTarget === undefined) {
+	      var parameters = {
+	        minFilter: THREE.LinearFilter,
+	        magFilter: THREE.LinearFilter,
+	        format: THREE.RGBAFormat,
+	        stencilBuffer: false
+	      };
+
+	      var size = renderer.getSize();
+
+	      renderTarget = new THREE.WebGLRenderTarget(size.width, size.height, parameters);
+	    }
+
+	    this.renderTarget1 = renderTarget;
+	    this.renderTarget2 = renderTarget.clone();
+	    this.writeBuffer = this.renderTarget1;
+	    this.readBuffer = this.renderTarget2;
+	    this.passes = [];
+
+	    if (_CopyShader.CopyShader === undefined) console.error('EffectComposer relies on CopyShader"');
+
+	    this.copyPass = new _ShaderPass.ShaderPass(_CopyShader.CopyShader);
+	  }
+
+	  /**
+	   * Swap drawing buffers
+	   */
+
+
+	  (0, _createClass3.default)(EffectComposer, [{
+	    key: 'swapBuffers',
+	    value: function swapBuffers() {
+	      var tmp = this.readBuffer;
+	      this.readBuffer = this.writeBuffer;
+	      this.writeBuffer = tmp;
+	    }
+
+	    /**
+	     * Add a WHS.Pass to the composer, after all existing passes.
+	     * @param {WHS.Pass} pass : The pass to be added
+	     */
+
+	  }, {
+	    key: 'addPass',
+	    value: function addPass(pass) {
+	      if (!pass) return;
+	      var size = this.renderer ? this.renderer.getSize() : { width: 0, height: 0 };
+	      pass.setSize(size.width, size.height);
+	      this.passes.push(pass);
+	    }
+
+	    /**
+	     * Get the pass of the same unique name, otherwise undefined.
+	     * @param  {String} name : the unique name of the pass to find.
+	     * @return {WHS.Pass} The found Pass or undefined.
+	     */
+
+	  }, {
+	    key: 'getPass',
+	    value: function getPass(name) {
+	      return this.passes.filter((function (v) {
+	        return v.name === name;
+	      }))[0];
+	    }
+
+	    /**
+	     * Get the pass index in the internal passes array.
+	     * @param  {String|WHS.Pass} passIndicator : The pass name or the pass instance.
+	     * @return {Number} The pass index or -1.
+	     */
+
+	  }, {
+	    key: 'getPassIndex',
+	    value: function getPassIndex(passIndicator) {
+	      var passName = typeof passIndicator === 'string' ? passIndicator : passIndicator.name;
+	      return this.passes.indexOf(this.getPass(passName));
+	    }
+
+	    /**
+	     * Add a pass after another one. Add the pass in first position if previous is not found.
+	     * @param {String|WHS.Pass} previousPassIndicator : The previous pass name or the previous pass instance.
+	     */
+
+	  }, {
+	    key: 'addPassAfter',
+	    value: function addPassAfter(previousPassIndicator, pass) {
+	      if (!pass) return;
+	      var index = this.getPassIndex(previousPassIndicator);
+	      index = index < 0 ? 0 : index + 1;
+	      this.insertPass(pass, index);
+	    }
+
+	    /**
+	     * Add a pass at the specified index.
+	     * @param  {WHS.Pass} pass : The pass instance to insert
+	     * @param  {Number} index : The index.
+	     */
+
+	  }, {
+	    key: 'insertPass',
+	    value: function insertPass(pass, index) {
+	      if (pass) this.passes.splice(index, 0, pass);
+	    }
+
+	    /**
+	     * Remove a pass from this composer.
+	     * @param  {String|WHS.Pass} passIndicator : The pass name or the pass instance.
+	     */
+
+	  }, {
+	    key: 'removePass',
+	    value: function removePass(passIndicator) {
+	      var index = this.getPassIndex(passIndicator);
+	      if (index > -1) this.passes.splice(index, 1);
+	    }
+
+	    /**
+	     * Render the EffectComposer, and all its passes.
+	     * @param  {Number} delta : The delta time since the last frame.
+	     */
+
+	  }, {
+	    key: 'render',
+	    value: function render(delta) {
+	      var il = this.passes.length;
+
+	      var maskActive = false;
+	      var pass = void 0,
+	          i = void 0;
+
+	      for (i = 0; i < il; i++) {
+	        pass = this.passes[i];
+
+	        if (pass.enabled === false) continue;
+
+	        pass.render(this.renderer, this.writeBuffer, this.readBuffer, delta, maskActive);
+
+	        if (pass.needsSwap) {
+	          if (maskActive) {
+	            var context = this.renderer.context;
+
+	            context.stencilFunc(context.NOTEQUAL, 1, 0xffffffff);
+	            this.copyPass.render(this.renderer, this.writeBuffer, this.readBuffer, delta);
+	            context.stencilFunc(context.EQUAL, 1, 0xffffffff);
+	          }
+	          this.swapBuffers();
+	        }
+
+	        if (_MaskPass.MaskPass !== undefined) {
+	          if (pass instanceof _MaskPass.MaskPass) maskActive = true;else if (pass instanceof _MaskPass.ClearMaskPass) maskActive = false;
+	        }
+	      }
+	    }
+
+	    /**
+	     * Set another renderTarget.
+	     * @param  {THREE.WebGLRenderTarget} renderTarget : The new renderTarget to use.
+	     */
+
+	  }, {
+	    key: 'reset',
+	    value: function reset(renderTarget) {
+	      if (renderTarget === undefined) {
+	        var size = this.renderer.getSize();
+
+	        renderTarget = this.renderTarget1.clone();
+	        renderTarget.setSize(size.width, size.height);
+	      }
+
+	      this.renderTarget1.dispose();
+	      this.renderTarget2.dispose();
+	      this.renderTarget1 = renderTarget;
+	      this.renderTarget2 = renderTarget.clone();
+
+	      this.writeBuffer = this.renderTarget1;
+	      this.readBuffer = this.renderTarget2;
+	    }
+
+	    /**
+	     * Resize the renderTarget and all the EffectComposer passes.
+	     * @param {Number} width : The width in pixels
+	     * @param {Number} height : The height in pixels
+	     */
+
+	  }, {
+	    key: 'setSize',
+	    value: function setSize(width, height) {
+	      this.renderTarget1.setSize(width, height);
+	      this.renderTarget2.setSize(width, height);
+
+	      for (var i = 0; i < this.passes.length; i++) {
+	        this.passes[i].setSize(width, height);
+	      }
+	    }
+	  }]);
+	  return EffectComposer;
+	})();
+
+/***/ },
+/* 459 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	/**
+	 * @author alteredq / http://alteredqualia.com/
+	 *
+	 * Full-screen textured quad shader
+	 */
+
+	var CopyShader = {
+	    uniforms: {
+	        tDiffuse: { value: null },
+	        opacity: { value: 1.0 }
+	    },
+
+	    vertexShader: "\n    varying vec2 vUv;\n\n    void main() {\n\n      vUv = uv;\n      gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n    }\n",
+
+	    fragmentShader: "\n    uniform float opacity;\n\n    uniform sampler2D tDiffuse;\n\n    varying vec2 vUv;\n\n    void main() {\n\n      vec4 texel = texture2D( tDiffuse, vUv );\n      gl_FragColor = opacity * texel;\n\n    }\n"
+	};
+
+	exports.CopyShader = CopyShader;
+
+/***/ },
+/* 460 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.ShaderPass = undefined;
+
+	var _classCallCheck2 = __webpack_require__(301);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(387);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(302);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(371);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _three = __webpack_require__(391);
+
+	var THREE = _interopRequireWildcard(_three);
+
+	var _Pass2 = __webpack_require__(461);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * @author alteredq / http://alteredqualia.com/
+	 * @author yannis torres / es6 migration
+	 */
+
+	var ShaderPass = exports.ShaderPass = (function (_Pass) {
+	  (0, _inherits3.default)(ShaderPass, _Pass);
+
+	  function ShaderPass(name, shader, textureID) {
+	    (0, _classCallCheck3.default)(this, ShaderPass);
+
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (ShaderPass.__proto__ || Object.getPrototypeOf(ShaderPass)).call(this, name));
+
+	    _this.textureID = textureID === undefined ? 'tDiffuse' : textureID;
+
+	    if (shader instanceof THREE.ShaderMaterial) {
+	      _this.uniforms = shader.uniforms;
+	      _this.material = shader;
+	    } else if (shader) {
+	      _this.uniforms = THREE.UniformsUtils.clone(shader.uniforms);
+	      _this.material = new THREE.ShaderMaterial({
+	        defines: shader.defines || {},
+	        uniforms: _this.uniforms,
+	        vertexShader: shader.vertexShader,
+	        fragmentShader: shader.fragmentShader
+	      });
+	    }
+
+	    _this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+	    _this.scene = new THREE.Scene();
+
+	    _this.quad = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), null);
+	    _this.scene.add(_this.quad);
+	    return _this;
+	  }
+
+	  (0, _createClass3.default)(ShaderPass, [{
+	    key: 'render',
+	    value: function render(renderer, writeBuffer, readBuffer) {
+	      // REMARK: "maskActive" and "delta" never used. Removed.
+	      // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+
+	      if (this.uniforms[this.textureID]) this.uniforms[this.textureID].value = readBuffer.texture;
+
+	      this.quad.material = this.material;
+
+	      if (this.renderToScreen) renderer.render(this.scene, this.camera);else renderer.render(this.scene, this.camera, writeBuffer, this.clear);
+	    }
+	  }]);
+	  return ShaderPass;
+	})(_Pass2.Pass);
+
+/***/ },
+/* 461 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Pass = undefined;
+
+	var _classCallCheck2 = __webpack_require__(301);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(387);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Pass = exports.Pass = (function () {
+	  function Pass(name) {
+	    (0, _classCallCheck3.default)(this, Pass);
+
+	    this.uniqName = name === undefined ? 'pass_' + ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1) : name;
+
+	    // if set to true, the pass is processed by the composer
+	    this.enabled = true;
+
+	    // if set to true, the pass indicates to swap read and write buffer after rendering
+	    this.needsSwap = true;
+
+	    // if set to true, the pass clears its buffer before rendering
+	    this.clear = false;
+
+	    // if set to true, the result of the pass is rendered to screen
+	    this.renderToScreen = false;
+	  }
+
+	  /**
+	   * Resize a pass.
+	   * @param {Number} width : in pixels.
+	   * @param {Number} height : in pixels.
+	   */
+
+
+	  (0, _createClass3.default)(Pass, [{
+	    key: "setSize",
+	    value: function setSize(width, height) {}
+
+	    /**
+	     * Render a pass
+	     * @param  {THREE.WebGLRenderer} renderer : The renderer used to render the pass objects.
+	     * @param  {THREE.WebGLRenderTarget.Buffer} writeBuffer : The write buffer used to do buffer swapping.
+	     * @param  {THREE.WebGLRenderTarget.Buffer} readBuffer  : The read buffer used to do buffer swapping.
+	     * @param  {Number} delta : The delta time since the previous frame.
+	     * @param  {Boolean} maskActive : Flag indicating the Composer that this pass use masking.
+	     */
+
+	  }, {
+	    key: "render",
+	    value: function render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+	      console.error("Pass: .render() must be implemented in derived pass.");
+	    }
+
+	    /**
+	     * Get the name of the pass
+	     * @return {String} Unique name
+	     */
+
+	  }, {
+	    key: "name",
+	    get: function get() {
+	      return this.uniqName;
+	    }
+	  }]);
+	  return Pass;
+	})();
+
+/***/ },
+/* 462 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.ClearMaskPass = exports.MaskPass = undefined;
+
+	var _classCallCheck2 = __webpack_require__(301);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(387);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(302);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(371);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _Pass3 = __webpack_require__(461);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var MaskPass = exports.MaskPass = (function (_Pass) {
+	    (0, _inherits3.default)(MaskPass, _Pass);
+
+	    function MaskPass(name, scene, camera) {
+	        (0, _classCallCheck3.default)(this, MaskPass);
+
+	        var _this = (0, _possibleConstructorReturn3.default)(this, (MaskPass.__proto__ || Object.getPrototypeOf(MaskPass)).call(this, name));
+
+	        _this.scene = scene;
+	        _this.camera = camera;
+
+	        _this.clear = true;
+	        _this.needsSwap = false;
+	        _this.inverse = false;
+	        return _this;
+	    }
+
+	    (0, _createClass3.default)(MaskPass, [{
+	        key: 'render',
+	        value: function render(renderer, writeBuffer, readBuffer) {
+	            // REMARK: "maskActive" and "delta" never used. Removed.
+	            // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+
+	            var context = renderer.context;
+	            var state = renderer.state;
+
+	            // don't update color or depth
+	            state.buffers.color.setMask(false);
+	            state.buffers.depth.setMask(false);
+
+	            // lock buffers
+	            state.buffers.color.setLocked(true);
+	            state.buffers.depth.setLocked(true);
+
+	            // set up stencil
+	            var writeValue = this.inverse ? 0 : 1;
+	            var clearValue = this.inverse ? 1 : 0;
+
+	            state.buffers.stencil.setTest(true);
+	            state.buffers.stencil.setOp(context.REPLACE, context.REPLACE, context.REPLACE);
+	            state.buffers.stencil.setFunc(context.ALWAYS, writeValue, 0xffffffff);
+	            state.buffers.stencil.setClear(clearValue);
+
+	            // draw into the stencil buffer
+	            renderer.render(this.scene, this.camera, readBuffer, this.clear);
+	            renderer.render(this.scene, this.camera, writeBuffer, this.clear);
+
+	            // unlock color and depth buffer for subsequent rendering
+	            state.buffers.color.setLocked(false);
+	            state.buffers.depth.setLocked(false);
+
+	            // only render where stencil is set to 1
+	            state.buffers.stencil.setFunc(context.EQUAL, 1, 0xffffffff); // draw if == 1
+	            state.buffers.stencil.setOp(context.KEEP, context.KEEP, context.KEEP);
+	        }
+	    }]);
+	    return MaskPass;
+	})(_Pass3.Pass); /**
+	                 * @author alteredq / http://alteredqualia.com/
+	                 * @author yannis torres / es6 migration
+	                 */
+
+	var ClearMaskPass = exports.ClearMaskPass = (function (_Pass2) {
+	    (0, _inherits3.default)(ClearMaskPass, _Pass2);
+
+	    function ClearMaskPass(name) {
+	        (0, _classCallCheck3.default)(this, ClearMaskPass);
+
+	        var _this2 = (0, _possibleConstructorReturn3.default)(this, (ClearMaskPass.__proto__ || Object.getPrototypeOf(ClearMaskPass)).call(this, name));
+
+	        _this2.needsSwap = false;
+	        return _this2;
+	    }
+
+	    (0, _createClass3.default)(ClearMaskPass, [{
+	        key: 'render',
+	        value: function render(renderer) {
+	            // REMARK: "writeBuffer", "readBuffer", "maskActive" and "delta" never used. Removed.
+	            // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+
+	            renderer.state.buffers.stencil.setTest(false);
+	        }
+	    }]);
+	    return ClearMaskPass;
+	})(_Pass3.Pass);
+
+/***/ },
+/* 463 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.RenderPass = undefined;
+
+	var _classCallCheck2 = __webpack_require__(301);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(387);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(302);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(371);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _Pass2 = __webpack_require__(461);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var RenderPass = exports.RenderPass = (function (_Pass) {
+	    (0, _inherits3.default)(RenderPass, _Pass);
+
+	    function RenderPass(name, scene, camera, overrideMaterial, clearColor, clearAlpha) {
+	        (0, _classCallCheck3.default)(this, RenderPass);
+
+	        var _this = (0, _possibleConstructorReturn3.default)(this, (RenderPass.__proto__ || Object.getPrototypeOf(RenderPass)).call(this, name));
+
+	        _this.scene = scene;
+	        _this.camera = camera;
+
+	        _this.overrideMaterial = overrideMaterial;
+
+	        _this.clearColor = clearColor;
+	        _this.clearAlpha = clearAlpha === undefined ? 0 : clearAlpha;
+
+	        _this.clear = true;
+	        _this.needsSwap = false;
+	        return _this;
+	    }
+
+	    (0, _createClass3.default)(RenderPass, [{
+	        key: 'render',
+	        value: function render(renderer, writeBuffer, readBuffer) {
+	            // REMARK: "maskActive" and "delta" never used. Removed.
+	            // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+
+	            var oldClearColor = void 0,
+	                oldClearAlpha = void 0;
+	            var oldAutoClear = renderer.autoClear;
+
+	            renderer.autoClear = false;
+	            this.scene.overrideMaterial = this.overrideMaterial;
+
+	            if (this.clearColor) {
+	                oldClearColor = renderer.getClearColor().getHex();
+	                oldClearAlpha = renderer.getClearAlpha();
+	                renderer.setClearColor(this.clearColor, this.clearAlpha);
+	            }
+
+	            renderer.render(this.scene, this.camera, this.renderToScreen ? null : readBuffer, this.clear);
+
+	            if (this.clearColor) renderer.setClearColor(oldClearColor, oldClearAlpha);
+
+	            this.scene.overrideMaterial = null;
+	            renderer.autoClear = oldAutoClear;
+	        }
+	    }]);
+	    return RenderPass;
+	})(_Pass2.Pass); /**
+	                 * @author alteredq / http://alteredqualia.com/
+	                 * @author yannis torres / es6 migration
+	                 */
+
+/***/ },
+/* 464 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _ClearPass = __webpack_require__(465);
+
+	Object.keys(_ClearPass).forEach((function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _ClearPass[key];
+	    }
+	  });
+	}));
+
+	var _MaskPass = __webpack_require__(462);
+
+	Object.keys(_MaskPass).forEach((function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _MaskPass[key];
+	    }
+	  });
+	}));
+
+	var _Pass = __webpack_require__(461);
+
+	Object.keys(_Pass).forEach((function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _Pass[key];
+	    }
+	  });
+	}));
+
+	var _RenderPass = __webpack_require__(463);
+
+	Object.keys(_RenderPass).forEach((function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _RenderPass[key];
+	    }
+	  });
+	}));
+
+	var _ShaderPass = __webpack_require__(460);
+
+	Object.keys(_ShaderPass).forEach((function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _ShaderPass[key];
+	    }
+	  });
+	}));
+
+	var _TexturePass = __webpack_require__(466);
+
+	Object.keys(_TexturePass).forEach((function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _TexturePass[key];
+	    }
+	  });
+	}));
+
+/***/ },
+/* 465 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.ClearPass = undefined;
+
+	var _classCallCheck2 = __webpack_require__(301);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(387);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(302);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(371);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _Pass2 = __webpack_require__(461);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ClearPass = exports.ClearPass = (function (_Pass) {
+	  (0, _inherits3.default)(ClearPass, _Pass);
+
+	  function ClearPass(name, clearColor, clearAlpha) {
+	    (0, _classCallCheck3.default)(this, ClearPass);
+
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (ClearPass.__proto__ || Object.getPrototypeOf(ClearPass)).call(this, name));
+
+	    _this.needsSwap = false;
+	    _this.clearColor = clearColor === undefined ? 0x000000 : clearColor;
+	    _this.clearAlpha = clearAlpha === undefined ? 0 : clearAlpha;
+	    return _this;
+	  }
+
+	  (0, _createClass3.default)(ClearPass, [{
+	    key: 'render',
+	    value: function render(renderer, writeBuffer, readBuffer) {
+	      // REMARK: "maskActive" and "delta" never used. Removed.
+	      // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+
+	      var oldClearColor = void 0,
+	          oldClearAlpha = void 0;
+
+	      if (this.clearColor) {
+	        oldClearColor = renderer.getClearColor().getHex();
+	        oldClearAlpha = renderer.getClearAlpha();
+	        renderer.setClearColor(this.clearColor, this.clearAlpha);
+	      }
+
+	      renderer.setRenderTarget(this.renderToScreen ? null : readBuffer);
+	      renderer.clear();
+
+	      if (this.clearColor) renderer.setClearColor(oldClearColor, oldClearAlpha);
+	    }
+	  }]);
+	  return ClearPass;
+	})(_Pass2.Pass); /**
+	                 * @author mrdoob / http://mrdoob.com/
+	                 * @author yannis torres / es6 migration
+	                 */
+
+/***/ },
+/* 466 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.TexturePass = undefined;
+
+	var _classCallCheck2 = __webpack_require__(301);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(387);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(302);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(371);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _three = __webpack_require__(391);
+
+	var THREE = _interopRequireWildcard(_three);
+
+	var _CopyShader = __webpack_require__(459);
+
+	var _Pass2 = __webpack_require__(461);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var TexturePass = exports.TexturePass = (function (_Pass) {
+	    (0, _inherits3.default)(TexturePass, _Pass);
+
+	    function TexturePass(name, map, opacity) {
+	        (0, _classCallCheck3.default)(this, TexturePass);
+
+	        var _this = (0, _possibleConstructorReturn3.default)(this, (TexturePass.__proto__ || Object.getPrototypeOf(TexturePass)).call(this, name));
+
+	        if (_CopyShader.CopyShader === undefined) console.error('TexturePass relies on CopyShader');
+
+	        var shader = _CopyShader.CopyShader;
+
+	        _this.map = map;
+	        _this.opacity = opacity === undefined ? 1.0 : opacity;
+
+	        _this.uniforms = THREE.UniformsUtils.clone(shader.uniforms);
+
+	        _this.material = new THREE.ShaderMaterial({
+	            uniforms: _this.uniforms,
+	            vertexShader: shader.vertexShader,
+	            fragmentShader: shader.fragmentShader,
+	            depthTest: false,
+	            depthWrite: false
+	        });
+
+	        _this.needsSwap = false;
+
+	        _this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+	        _this.scene = new THREE.Scene();
+
+	        _this.quad = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), null);
+	        _this.scene.add(_this.quad);
+	        return _this;
+	    }
+
+	    (0, _createClass3.default)(TexturePass, [{
+	        key: 'render',
+	        value: function render(renderer, writeBuffer, readBuffer) {
+	            // REMARK: "maskActive" and "delta" never used. Removed.
+	            // render(renderer, writeBuffer, readBuffer, delta, maskActive) {
+
+	            var oldAutoClear = renderer.autoClear;
+	            renderer.autoClear = false;
+
+	            this.quad.material = this.material;
+
+	            this.uniforms.opacity.value = this.opacity;
+	            this.uniforms.tDiffuse.value = this.map;
+	            this.material.transparent = this.opacity < 1.0;
+
+	            renderer.render(this.scene, this.camera, this.renderToScreen ? null : readBuffer, this.clear);
+	            renderer.autoClear = oldAutoClear;
+	        }
+	    }]);
+	    return TexturePass;
+	})(_Pass2.Pass); /**
+	                 * @author alteredq / http://alteredqualia.com/
+	                 * @author yannis torres / es6 migration
+	                 */
+
+/***/ },
+/* 467 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _CopyShader = __webpack_require__(459);
+
+	Object.keys(_CopyShader).forEach((function (key) {
+	  if (key === "default" || key === "__esModule") return;
+	  Object.defineProperty(exports, key, {
+	    enumerable: true,
+	    get: function get() {
+	      return _CopyShader[key];
+	    }
+	  });
+	}));
+
+/***/ },
+/* 468 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _firstPersonControls = __webpack_require__(469);
 
 	Object.keys(_firstPersonControls).forEach((function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -75577,7 +76881,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}));
 
-	var _orbitControls = __webpack_require__(458);
+	var _orbitControls = __webpack_require__(470);
 
 	Object.keys(_orbitControls).forEach((function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -75589,7 +76893,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}));
 
-	var _Group = __webpack_require__(460);
+	var _Group = __webpack_require__(472);
 
 	Object.keys(_Group).forEach((function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -75601,7 +76905,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}));
 
-	var _Loop = __webpack_require__(462);
+	var _Loop = __webpack_require__(474);
 
 	Object.keys(_Loop).forEach((function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -75613,7 +76917,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	}));
 
-	var _List = __webpack_require__(463);
+	var _List = __webpack_require__(475);
 
 	Object.keys(_List).forEach((function (key) {
 	  if (key === "default" || key === "__esModule") return;
@@ -75626,7 +76930,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}));
 
 /***/ },
-/* 457 */
+/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75888,7 +77192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 458 */
+/* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75902,7 +77206,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var THREE = _interopRequireWildcard(_three);
 
-	var _threeOrbitControls = __webpack_require__(459);
+	var _threeOrbitControls = __webpack_require__(471);
 
 	var _threeOrbitControls2 = _interopRequireDefault(_threeOrbitControls);
 
@@ -75923,7 +77227,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 459 */
+/* 471 */
 /***/ function(module, exports) {
 
 	module.exports = function(THREE) {
@@ -77048,7 +78352,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 460 */
+/* 472 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77074,7 +78378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _get3 = _interopRequireDefault(_get2);
 
-	var _set2 = __webpack_require__(461);
+	var _set2 = __webpack_require__(473);
 
 	var _set3 = _interopRequireDefault(_set2);
 
@@ -77121,7 +78425,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.Group = Group;
 
 /***/ },
-/* 461 */
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -77161,7 +78465,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 462 */
+/* 474 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77224,7 +78528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.Loop = Loop;
 
 /***/ },
-/* 463 */
+/* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -77275,7 +78579,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.List = List;
 
 /***/ },
-/* 464 */
+/* 476 */
 /***/ function(module, exports) {
 
 	"use strict";
