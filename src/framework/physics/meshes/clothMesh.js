@@ -23,7 +23,7 @@ export class ClothMesh extends Mesh {
     this._physijs.corners = [
       verts[idx01 * 3], verts[idx01 * 3 + 1], verts[idx01 * 3 + 2], //   ╗
       verts[idx00 * 3], verts[idx00 * 3 + 1], verts[idx00 * 3 + 2], // ╔
-      verts[idx11 * 3], verts[idx11 * 3 + 1], verts[idx11 * 3 + 2], //       ╝ 
+      verts[idx11 * 3], verts[idx11 * 3 + 1], verts[idx11 * 3 + 2], //       ╝
       verts[idx10 * 3], verts[idx10 * 3 + 1], verts[idx10 * 3 + 2], //     ╚
     ];
 

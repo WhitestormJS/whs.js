@@ -1,52 +1,45 @@
-const GAME = new WHS.World({
-  stats: 'fps', // fps, ms, mb
-  autoresize: "window",
-  softbody: true,
+import * as UTILS from './globals';
 
-  gravity: {
-    x: 0,
-    y: -9.8,
-    z: 0
-  },
+const world = new WHS.World({
+  ...UTILS.$world,
+  softbody: true,
 
   camera: {
     far: 10000,
-    y: 100,
-    z: 300
+    y: 60,
+    z: 120
   },
 
-  shadowmap: {
-    type: THREE.PCFSoftShadowMap
+  gravity: {
+    y: -9.8,
   },
-
-  background: {
-    color: 0xaaaaaa
-  }
 });
 
-window.cloth = new WHS.Plane({ // Softbody (blue).
+const cloth = new WHS.Plane({ // Softbody (blue).
   geometry: {
-    width: 160,
-    height: 60,
+    width: 60,
+    height: 20,
     wSegments: 40,
     hSegments: 30
   },
 
-  mass: 10,
+  mass: 1,
   softbody: true,
 
   material: {
-    color: 0x0000ff,
+    color: UTILS.$colors.softbody,
     kind: 'phong',
     side: THREE.DoubleSide
   },
 
   physics: {
-    margin: 6
+    margin: 1,
+    damping: 0.03,
+    piterations: 12
   },
 
   position: {
-    y: 100
+    y: 50
   },
 
   rotation: {
@@ -54,72 +47,29 @@ window.cloth = new WHS.Plane({ // Softbody (blue).
   }
 });
 
-window.cloth.addTo(GAME);
+cloth.addTo(world);
 
 new WHS.Box({ // Rigidbody (green).
   geometry: {
-    width: 12,
-    height: 12,
-    depth: 12
+    width: 3,
+    height: 3,
+    depth: 3
   },
 
   mass: 0,
 
   material: {
-    color: 0x00ff00
-  },
-
-  position: {
-    y: 56
-  }
-}).addTo(GAME);
-
-new WHS.Box({
-  geometry: {
-    width: 2500,
-    height: 1,
-    depth: 2500
-  },
-
-  mass: 0,
-
-  material: {
-    color: 0xff0000,
+    color: UTILS.$colors.mesh,
     kind: 'phong'
   },
 
   position: {
-    x: 0,
-    y: -20,
-    z: 0
+    y: 36
   }
-}).addTo(GAME);
+}).addTo(world);
 
-new WHS.DirectionalLight({
-  light: {
-    color: 0xffffff, // 0x00ff00,
-    intensity: 1
-  },
+UTILS.addBoxPlane(world, 250);
+UTILS.addBasicLights(world, 0.5, [60, 60, 20], 400);
 
-  position: {
-    x: 0,
-    y: 10,
-    z: 30
-  },
-
-  target: {
-    x: 0,
-    y: 0,
-    z: 0
-  }
-}).addTo(GAME);
-
-new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.5
-  }
-}).addTo(GAME);
-
-GAME.setControls(new WHS.OrbitControls());
-GAME.start();
+world.setControls(new WHS.OrbitControls());
+world.start();
