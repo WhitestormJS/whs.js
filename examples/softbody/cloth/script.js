@@ -27,9 +27,41 @@ var GAME = new WHS.World({
   }
 });
 
-var arm = new WHS.Box({ // Rigidbody (green).
+window.cloth = new WHS.Plane({ // Softbody (blue).
   geometry: {
     width: 160,
+    height: 60,
+    wSegments: 40,
+    hSegments: 30
+  },
+
+  mass: 10,
+  softbody: true,
+
+  material: {
+    color: 0x0000ff,
+    kind: 'phong',
+    side: THREE.DoubleSide
+  },
+
+  physics: {
+    margin: 6
+  },
+
+  position: {
+    y: 100
+  },
+
+  rotation: {
+    x: Math.PI / 4
+  }
+});
+
+window.cloth.addTo(GAME);
+
+new WHS.Box({ // Rigidbody (green).
+  geometry: {
+    width: 12,
     height: 12,
     depth: 12
   },
@@ -41,52 +73,7 @@ var arm = new WHS.Box({ // Rigidbody (green).
   },
 
   position: {
-    y: 130,
-    z: 30
-  }
-});
-
-arm.addTo(GAME);
-
-var cloth = new WHS.Tube({ // Softbody (blue).
-  geometry: {
-    path: new THREE.LineCurve3(new THREE.Vector3(0, 90, 0), new THREE.Vector3(0, 70, 0)),
-    segments: 20,
-    radius: 12,
-    radiusSegments: 8,
-    closed: false
-  },
-
-  mass: 10,
-  softbody: true,
-
-  material: {
-    color: 0x0000ff,
-    kind: 'phong',
-    side: THREE.DoubleSide
-  }
-});
-
-cloth.addTo(GAME);
-
-cloth.appendAnchor(GAME, arm, 0, 1, false);
-cloth.appendAnchor(GAME, arm, 20, 1, false);
-
-new WHS.Box({ // Rigidbody (green).
-  geometry: {
-    width: 72,
-    height: 72,
-    depth: 72
-  },
-
-  mass: 10,
-
-  material: {
-    color: 0x00ff00
-  },
-
-  position: {
-    y: 36
+    y: 56
   }
 }).addTo(GAME);
 
@@ -137,7 +124,7 @@ new WHS.AmbientLight({
   }
 }).addTo(GAME);
 
-GAME.setControls(WHS.orbitControls());
+GAME.setControls(new WHS.OrbitControls());
 GAME.start();
 
 },{}]},{},[1]);

@@ -1,4 +1,7 @@
-const GAME = new WHS.World({
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+var GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
   autoresize: "window",
   softbody: true,
@@ -24,12 +27,33 @@ const GAME = new WHS.World({
   }
 });
 
-window.cloth = new WHS.Plane({ // Softbody (blue).
+var arm = new WHS.Box({ // Rigidbody (green).
   geometry: {
     width: 160,
-    height: 60,
-    wSegments: 40,
-    hSegments: 30
+    height: 12,
+    depth: 12
+  },
+
+  mass: 0,
+
+  material: {
+    color: 0x00ff00
+  },
+
+  position: {
+    y: 130,
+    z: 30
+  }
+});
+
+arm.addTo(GAME);
+
+var cloth = new WHS.Plane({ // Softbody (blue).
+  geometry: {
+    width: 160,
+    height: 80,
+    wSegments: 20,
+    hSegments: 15
   },
 
   mass: 10,
@@ -42,11 +66,11 @@ window.cloth = new WHS.Plane({ // Softbody (blue).
   },
 
   physics: {
-    margin: 6
+    margin: 2
   },
 
   position: {
-    y: 100
+    y: 90
   },
 
   rotation: {
@@ -54,23 +78,26 @@ window.cloth = new WHS.Plane({ // Softbody (blue).
   }
 });
 
-window.cloth.addTo(GAME);
+cloth.addTo(GAME);
+
+cloth.appendAnchor(GAME, arm, 0, 1, false);
+cloth.appendAnchor(GAME, arm, 20, 1, false);
 
 new WHS.Box({ // Rigidbody (green).
   geometry: {
-    width: 12,
-    height: 12,
-    depth: 12
+    width: 72,
+    height: 72,
+    depth: 72
   },
 
-  mass: 0,
+  mass: 10,
 
   material: {
     color: 0x00ff00
   },
 
   position: {
-    y: 56
+    y: 36
   }
 }).addTo(GAME);
 
@@ -121,5 +148,7 @@ new WHS.AmbientLight({
   }
 }).addTo(GAME);
 
-GAME.setControls(WHS.orbitControls());
+GAME.setControls(new WHS.OrbitControls());
 GAME.start();
+
+},{}]},{},[1]);

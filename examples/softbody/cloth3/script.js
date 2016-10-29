@@ -48,12 +48,13 @@ var arm = new WHS.Box({ // Rigidbody (green).
 
 arm.addTo(GAME);
 
-var cloth = new WHS.Plane({ // Softbody (blue).
+var cloth = new WHS.Tube({ // Softbody (blue).
   geometry: {
-    width: 160,
-    height: 80,
-    wSegments: 20,
-    hSegments: 15
+    path: new THREE.LineCurve3(new THREE.Vector3(0, 90, 0), new THREE.Vector3(0, 70, 0)),
+    segments: 20,
+    radius: 12,
+    radiusSegments: 8,
+    closed: false
   },
 
   mass: 10,
@@ -63,18 +64,6 @@ var cloth = new WHS.Plane({ // Softbody (blue).
     color: 0x0000ff,
     kind: 'phong',
     side: THREE.DoubleSide
-  },
-
-  physics: {
-    margin: 2
-  },
-
-  position: {
-    y: 90
-  },
-
-  rotation: {
-    x: Math.PI / 4
   }
 });
 
@@ -148,7 +137,7 @@ new WHS.AmbientLight({
   }
 }).addTo(GAME);
 
-GAME.setControls(WHS.orbitControls());
+GAME.setControls(new WHS.OrbitControls());
 GAME.start();
 
 },{}]},{},[1]);

@@ -42,17 +42,18 @@ export function addAmbient(world, intensity) {
   }).addTo(world);
 }
 
-export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10]) {
+export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], distance = 100) {
   new WHS.PointLight({
     light: {
-      intensity
+      intensity,
+      distance
     },
 
     shadowmap: {
       fov: 90
     },
 
-    position: [0, 10, 10]
+    position
   }).addTo(world);
 
   addAmbient(world, 1 - intensity);
