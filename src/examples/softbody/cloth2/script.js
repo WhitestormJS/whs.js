@@ -27,7 +27,7 @@ const GAME = new WHS.World({
 const arm = new WHS.Box({ // Rigidbody (green).
   geometry: {
     width: 160,
-    height: 12, 
+    height: 12,
     depth: 12
   },
 
@@ -83,7 +83,7 @@ cloth.appendAnchor(GAME, arm, 20, 1, false);
 new WHS.Box({ // Rigidbody (green).
   geometry: {
     width: 72,
-    height: 72, 
+    height: 72,
     depth: 72
   },
 
@@ -145,5 +145,5 @@ new WHS.AmbientLight({
   }
 }).addTo(GAME);
 
-GAME.setControls(WHS.orbitControls());
+GAME.setControls(new WHS.OrbitControls());
 GAME.start();

@@ -9,7 +9,7 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var GAME = new WHS.World(_extends({}, UTILS.$world, {
+var world = new WHS.World(_extends({}, UTILS.$world, {
 
   camera: {
     far: 10000,
@@ -68,11 +68,11 @@ var ball = new WHS.Sphere({
   position: [10, 250, -1.969]
 });
 
-teapot.addTo(GAME).then(function () {
-  ball.addTo(GAME);
+teapot.addTo(world).then(function () {
+  ball.addTo(world);
 });
 
-UTILS.addBoxPlane(GAME, 500);
+UTILS.addBoxPlane(world, 500);
 
 new WHS.SpotLight({
   light: {
@@ -91,12 +91,12 @@ new WHS.SpotLight({
     y: 150,
     z: 50
   }
-}).addTo(GAME);
+}).addTo(world);
 
-UTILS.addAmbient(GAME, 0.3);
+UTILS.addAmbient(world, 0.3);
 
-GAME.setControls(WHS.orbitControls());
-GAME.start();
+world.setControls(new WHS.OrbitControls());
+world.start();
 
 },{"./globals":2}],2:[function(require,module,exports){
 "use strict";

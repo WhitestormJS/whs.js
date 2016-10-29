@@ -1,6 +1,6 @@
 import * as UTILS from './globals';
 
-const GAME = new WHS.World({
+const world = new WHS.World({
   ...UTILS.$world,
 
   camera: {
@@ -60,11 +60,11 @@ const ball = new WHS.Sphere({
   position: [10, 250, -1.969]
 });
 
-teapot.addTo(GAME).then(() => {
-  ball.addTo(GAME);
+teapot.addTo(world).then(() => {
+  ball.addTo(world);
 });
 
-UTILS.addBoxPlane(GAME, 500);
+UTILS.addBoxPlane(world, 500);
 
 new WHS.SpotLight({
   light: {
@@ -83,9 +83,9 @@ new WHS.SpotLight({
     y: 150,
     z: 50
   }
-}).addTo(GAME);
+}).addTo(world);
 
-UTILS.addAmbient(GAME, 0.3);
+UTILS.addAmbient(world, 0.3);
 
-GAME.setControls(WHS.orbitControls());
-GAME.start();
+world.setControls(new WHS.OrbitControls());
+world.start();

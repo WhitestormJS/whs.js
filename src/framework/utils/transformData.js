@@ -17,3 +17,27 @@ export const transformData = (object, instructions) => {
 
   return object;
 };
+
+export const instruct = (object, instruction) => {
+  const tempObject = new Object();
+
+  for (let i = 0, max = instruction.length; i < max; i++) {
+    const guide = instruction[i];
+
+    tempObject[guide] = object[i];
+  }
+
+  return tempObject;
+};
+
+export const toArray = (object, instruction) => {
+  const tempArray = new Array();
+
+  for (let i = 0, max = instruction.length; i < max; i++) {
+    const guide = instruction[i];
+
+    tempArray[i] = object[guide];
+  }
+
+  return tempArray;
+};

@@ -55,17 +55,19 @@ function addAmbient(world, intensity) {
 function addBasicLights(world) {
   var intensity = arguments.length <= 1 || arguments[1] === undefined ? 0.5 : arguments[1];
   var position = arguments.length <= 2 || arguments[2] === undefined ? [0, 10, 10] : arguments[2];
+  var distance = arguments.length <= 3 || arguments[3] === undefined ? 100 : arguments[3];
 
   new WHS.PointLight({
     light: {
-      intensity: intensity
+      intensity: intensity,
+      distance: distance
     },
 
     shadowmap: {
       fov: 90
     },
 
-    position: [0, 10, 10]
+    position: position
   }).addTo(world);
 
   addAmbient(world, 1 - intensity);
