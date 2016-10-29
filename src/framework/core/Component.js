@@ -1,12 +1,20 @@
 import * as THREE from 'three';
 import Events from 'minivents';
 
-import {extend, transformData} from '../utils/index';
+import {extend, transformData, toArray} from '../utils/index';
+
+const getWorld = (parent) => {
+  let world = parent;
+  while (!world.scene) world = world.parent;
+  return world;
+}
 
 class Component extends Events {
   static defaults = {};
   static instructions = {};
+  static helpers = {};
   _wait = [];
+  _helpers = [];
   children = [];
   params = {};
 
@@ -20,7 +28,8 @@ class Component extends Events {
   }
 
   wait(promise) {
-    this._wait.push(promise);
+    if (promise) this._wait.push(promise);
+    return Promise.all(this._wait);
   }
 
   callConstructor() {}
@@ -44,7 +53,6 @@ class Component extends Events {
   wrapTransforms() {}
 
   addTo(parent) {
-    const _helpers = this.helpers;
     this.parent = parent;
 
     return new Promise((resolve, reject) => {
@@ -63,8 +71,8 @@ class Component extends Events {
         if (typeof _params.helpers === 'undefined')
           _params.helpers = {};
 
-        for (let key in _params.helpers) {
-          if (_params.helpers[key]) parentNative.add(_helpers[key]);
+        for (let key in this._helpers) {
+          if (this._helpers) parentNative.add(this._helpers[key]);
         }
 
         this.callAddTo(this);
@@ -94,6 +102,17 @@ class Component extends Events {
         resolve();
       });
     }
+  }
+
+  addHelper(name, params = {}, helpers = Component.helpers) {
+    const helper = helpers[name];
+    const data = helper[1] ? toArray(
+      extend(params, helper[1]),
+      helper[2]
+    ) : [];
+
+    this._helpers[name] = new helper[0](this.native, ...data);
+    if (this.parent) getWorld(this.parent).scene.add(this._helpers[name]);
   }
 
   remove(source) {

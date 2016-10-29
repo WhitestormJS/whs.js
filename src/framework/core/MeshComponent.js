@@ -39,15 +39,28 @@ function MeshComponent(targetComponent) {
       target: ['x', 'y', 'z']
     })();
 
-    constructor(...props) {
-      super(...props);
+    static helpers = {
+      'box': [THREE.BoxHelper],
 
-      this.helpers = {
-        box: null,
-        boundingBox: null,
-        edges: null,
-        faceNormals: null
-      };
+      'boundingBox': [THREE.BoundingBoxHelper, {
+        color: 0xffffff
+      }, ['color']],
+
+      'edges': [THREE.EdgesHelper, {
+        color: 0xffffff
+      }, ['color']],
+
+      'faceNormals': [THREE.FaceNormalsHelper, {
+        size: 2,
+        color: 0xffffff,
+        linewidth: 1
+      }, ['size', 'color', 'linewidth']],
+
+      'vertexNormals': [THREE.VertexNormalsHelper, {
+        size: 2,
+        color: 0xffffff,
+        linewidth: 1
+      }, ['size', 'color', 'linewidth']]
     }
 
     G_(params = {}) {
@@ -178,86 +191,34 @@ function MeshComponent(targetComponent) {
     clone() {
       return new resultComponent({build: false}).copy(this);
     }
+
+    addHelper(name, params = {}, helpers = resultComponent.helpers) {
+      super.addHelper(name, params, helpers);
+    }
   }
 
   $wrap(resultComponent).onCallWrap((scope, ...tags) => {
     const _native = scope.native,
       _params = scope.params,
-      _params_helpers = _params.helpers;
+      _helpers = _params.helpers;
+
+    scope.helpers = {
+      box: null,
+      boundingBox: null,
+      edges: null,
+      faceNormals: null
+    };
 
     if (tags.indexOf('no-shadows') < 0) {
       _native.castShadow = _params.shadow.cast;
       _native.receiveShadow = _params.shadow.receive;
     }
 
-    // Box helper.
-    if (_params_helpers.box) {
-      scope.helpers.box = new THREE.BoxHelper(
-        _native
-      );
-    }
-
-    // Bounding box helper.
-    if (_params_helpers.boundingBox) {
-      extend(_params_helpers.boundingBox, {
-        color: 0xffffff
-      });
-
-      scope.helpers.boundingBox = new THREE.BoundingBoxHelper(
-        _native,
-        _params_helpers.boundingBox.color
-        ? _params_helpers.boundingBox.color
-        : 0xffffff
-      );
-    }
-
-    // Edges helper.
-    if (_params_helpers.edges) {
-      extend(_params_helpers.edges, {
-        color: 0xffffff
-      });
-
-      scope.helpers.edges = new THREE.EdgesHelper(
-        _native,
-        _params_helpers.edges.color
-      );
-    }
-
-    // faceNormals helper.
-    if (_params_helpers.faceNormals) {
-      const _params_helpers_faceNormals = _params_helpers.faceNormals;
-
-      extend(_params_helpers_faceNormals, {
-        size: 2,
-        color: 0xffffff,
-        linewidth: 1
-      });
-
-      scope.helpers.faceNormals = new THREE.FaceNormalsHelper(
-        _native,
-        _params_helpers_faceNormals.size,
-        _params_helpers_faceNormals.color,
-        _params_helpers_faceNormals.linewidth
-      );
-    }
-
-    // vertexNormals helper.
-    if (_params_helpers.vertexNormals) {
-      const _params_helpers_vertexNormals = _params_helpers.vertexNormals;
-
-      extend(_params_helpers_vertexNormals, {
-        size: 2,
-        color: 0xffffff,
-        linewidth: 1
-      });
-
-      scope.helpers.vertexNormals = new THREE.VertexNormalsHelper(
-        _native,
-        _params_helpers_vertexNormals.size,
-        _params_helpers_vertexNormals.color,
-        _params_helpers_vertexNormals.linewidth
-      );
-    }
+    if (_helpers.box) scope.addHelper('box');
+    if (_helpers.boundingBox) scope.addHelper('boundingBox', _helpers.boundingBox);
+    if (_helpers.edges) scope.addHelper('edges', _helpers.edges);
+    if (_helpers.faceNormals) scope.addHelper('faceNormals', _helpers.faceNormals);
+    if (_helpers.vertexNormals) scope.addHelper('vertexNormals', _helpers.vertexNormals);
   });
 
   return resultComponent;

@@ -1,7 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
-
-var GAME = new WHS.World({
+const GAME = new WHS.World({
   stats: 'fps', // fps, ms, mb
   autoresize: "window",
   softbody: true,
@@ -27,41 +24,9 @@ var GAME = new WHS.World({
   }
 });
 
-window.cloth = new WHS.Plane({ // Softbody (blue).
+const arm = new WHS.Box({ // Rigidbody (green).
   geometry: {
     width: 160,
-    height: 60,
-    wSegments: 40,
-    hSegments: 30
-  },
-
-  mass: 10,
-  softbody: true,
-
-  material: {
-    color: 0x0000ff,
-    kind: 'phong',
-    side: THREE.DoubleSide
-  },
-
-  physics: {
-    margin: 6
-  },
-
-  position: {
-    y: 100
-  },
-
-  rotation: {
-    x: Math.PI / 4
-  }
-});
-
-window.cloth.addTo(GAME);
-
-new WHS.Box({ // Rigidbody (green).
-  geometry: {
-    width: 12,
     height: 12,
     depth: 12
   },
@@ -73,7 +38,52 @@ new WHS.Box({ // Rigidbody (green).
   },
 
   position: {
-    y: 56
+    y: 130,
+    z: 30
+  }
+});
+
+arm.addTo(GAME);
+
+const cloth = new WHS.Tube({ // Softbody (blue).
+  geometry: {
+    path: new THREE.LineCurve3(new THREE.Vector3(0, 90, 0), new THREE.Vector3(0, 70, 0)),
+    segments: 20,
+    radius: 12,
+    radiusSegments: 8,
+    closed: false
+  },
+
+  mass: 10,
+  softbody: true,
+
+  material: {
+    color: 0x0000ff,
+    kind: 'phong',
+    side: THREE.DoubleSide
+  }
+});
+
+cloth.addTo(GAME);
+
+cloth.appendAnchor(GAME, arm, 0, 1, false);
+cloth.appendAnchor(GAME, arm, 20, 1, false);
+
+new WHS.Box({ // Rigidbody (green).
+  geometry: {
+    width: 72,
+    height: 72,
+    depth: 72
+  },
+
+  mass: 10,
+
+  material: {
+    color: 0x00ff00
+  },
+
+  position: {
+    y: 36
   }
 }).addTo(GAME);
 
@@ -124,7 +134,5 @@ new WHS.AmbientLight({
   }
 }).addTo(GAME);
 
-GAME.setControls(WHS.orbitControls());
+GAME.setControls(new WHS.OrbitControls());
 GAME.start();
-
-},{}]},{},[1]);

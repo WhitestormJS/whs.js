@@ -1,4 +1,7 @@
-const GAME = new WHS.World({
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+var GAME = new WHS.World({
   autoresize: true,
   softbody: true,
 
@@ -26,7 +29,7 @@ const GAME = new WHS.World({
   }
 });
 
-const tubeMaterial = new THREE.MeshStandardMaterial({
+var tubeMaterial = new THREE.MeshStandardMaterial({
   color: 0xffffff,
   metalness: 1,
   emissive: 0x333333,
@@ -34,10 +37,10 @@ const tubeMaterial = new THREE.MeshStandardMaterial({
 });
 
 // TOP.
-const toptube = new WHS.Tube({
+var toptube = new WHS.Tube({
   geometry: {
     path: new THREE.LineCurve3(new THREE.Vector3(-30, 30, 0), new THREE.Vector3(30, 30, 0)),
-    radius: 1,
+    radius: 1
   },
 
   mass: 0,
@@ -50,7 +53,7 @@ toptube.addTo(GAME);
 new WHS.Tube({
   geometry: {
     path: new THREE.LineCurve3(new THREE.Vector3(-29.5, 30.5, 0), new THREE.Vector3(-40, 0, 0)),
-    radius: 1,
+    radius: 1
   },
 
   mass: 0,
@@ -61,17 +64,17 @@ new WHS.Tube({
 new WHS.Tube({
   geometry: {
     path: new THREE.LineCurve3(new THREE.Vector3(29.5, 30.5, 0), new THREE.Vector3(40, 0, 0)),
-    radius: 1,
+    radius: 1
   },
 
   mass: 0,
   material: tubeMaterial
 }).addTo(GAME);
 
-const envMap = WHS.texture('img/background.jpg');
+var envMap = WHS.texture('img/background.jpg');
 envMap.mapping = THREE.SphericalReflectionMapping;
 
-const sphere = new WHS.Sphere({
+var sphere = new WHS.Sphere({
   geometry: {
     radius: 3,
     widthSegments: 32,
@@ -94,16 +97,16 @@ const sphere = new WHS.Sphere({
   }
 });
 
-for (let i = 0; i < 5; i++) {
-  const sc = sphere.clone();
+for (var i = 0; i < 5; i++) {
+  var sc = sphere.clone();
   sc.position.x = -20 + i * 6;
   sc.addTo(GAME);
 
-  const v1 = sc.position.clone();
-  const v2 = sc.position.clone();
+  var v1 = sc.position.clone();
+  var v2 = sc.position.clone();
   v2.y = 30;
 
-  const rope = new WHS.Line({
+  var rope = new WHS.Line({
     geometry: {
       curve: new THREE.LineCurve3(v1, v2)
     },
@@ -124,7 +127,7 @@ for (let i = 0; i < 5; i++) {
   rope.appendAnchor(GAME, sc, 0, 1);
 }
 
-const sphereStart = new WHS.Sphere({
+var sphereStart = new WHS.Sphere({
   geometry: {
     radius: 3,
     widthSegments: 32,
@@ -149,7 +152,7 @@ const sphereStart = new WHS.Sphere({
 
 sphereStart.addTo(GAME);
 
-const rope1 = new WHS.Line({
+var rope1 = new WHS.Line({
   geometry: {
     curve: new THREE.LineCurve3(sphereStart.position.clone(), new THREE.Vector3(10, 30, 0))
   },
@@ -214,12 +217,14 @@ new WHS.AmbientLight({
   }
 }).addTo(GAME);
 
-GAME.setControls(WHS.orbitControls());
+GAME.setControls(new WHS.OrbitControls());
 
 GAME.start();
 
 // Check mouse.
 
-window.addEventListener('mousemove', e => {
-  sphereStart.setLinearVelocity({x: e.movementX, y: 0, z: 0});
+window.addEventListener('mousemove', function (e) {
+  sphereStart.setLinearVelocity({ x: e.movementX, y: 0, z: 0 });
 });
+
+},{}]},{},[1]);
