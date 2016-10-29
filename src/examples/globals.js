@@ -31,7 +31,8 @@ export const $world = {
 export const $colors = {
   bg: 0x162129,
   plane: 0x447F8B,
-  mesh: 0xF2F2F2
+  mesh: 0xF2F2F2,
+  softbody: 0x434B7F
 };
 
 export function addAmbient(world, intensity) {
@@ -60,7 +61,7 @@ export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], d
 }
 
 export function addPlane(world, size = 100) {
-  new WHS.Plane({
+  return new WHS.Plane({
     geometry: {
       width: size,
       height: size
@@ -80,7 +81,7 @@ export function addPlane(world, size = 100) {
 }
 
 export function addBoxPlane(world, size = 100) {
-  new WHS.Box({
+  return new WHS.Box({
     geometry: {
       width: size,
       height: 1,

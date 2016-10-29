@@ -41,7 +41,8 @@ var $world = exports.$world = {
 var $colors = exports.$colors = {
   bg: 0x162129,
   plane: 0x447F8B,
-  mesh: 0xF2F2F2
+  mesh: 0xF2F2F2,
+  softbody: 0x434B7F
 };
 
 function addAmbient(world, intensity) {
@@ -76,7 +77,7 @@ function addBasicLights(world) {
 function addPlane(world) {
   var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
 
-  new WHS.Plane({
+  return new WHS.Plane({
     geometry: {
       width: size,
       height: size
@@ -98,7 +99,7 @@ function addPlane(world) {
 function addBoxPlane(world) {
   var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
 
-  new WHS.Box({
+  return new WHS.Box({
     geometry: {
       width: size,
       height: 1,
