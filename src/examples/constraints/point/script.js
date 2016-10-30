@@ -1,28 +1,17 @@
-const GAME = new WHS.World({
-  stats: 'fps', // fps, ms, mb
-  autoresize: true,
+import * as UTILS from './globals';
 
-  gravity: {
-    x: 0,
-    y: -100,
-    z: 0
-  },
+const world = new WHS.World({
+  ...UTILS.$world,
 
   camera: {
     far: 10000,
-    y: 10,
-    z: 100
-  },
-
-  rendering:{
-    background: {
-      color: 0xcccccc
-    }
+    y: 40,
+    z: 70
   }
 });
 
 const halfMat = {
-  kind: 'basic',
+  kind: 'phong',
   transparent: true,
   opacity: 0.5
 };
@@ -37,7 +26,7 @@ const box = new WHS.Box({
   mass: 0,
 
   material: {
-    color: 0xffffff,
+    color: UTILS.$colors.mesh,
     ...halfMat
   },
 
@@ -56,7 +45,7 @@ const box2 = new WHS.Box({
   mass: 10,
 
   material: {
-    color: 0x0000ff,
+    color: UTILS.$colors.softbody,
     ...halfMat
   },
 
@@ -70,42 +59,21 @@ const box2 = new WHS.Box({
   }
 });
 
-const pointer = new WHS.Sphere({material: {color: 0x00ff00}});
+const pointer = new WHS.Sphere({material: {color: UTILS.$colors.mesh}});
 pointer.position.set(0.5, 60, -8);
-pointer.addTo(GAME);
+pointer.addTo(world);
 
-box.addTo(GAME);
-box2.addTo(GAME);
+box.addTo(world);
+box2.addTo(world);
 
 const constraint = new WHS.PointConstraint(box2, box,
   new THREE.Vector3(0, box2.position.y, 1)
 );
 
-GAME.scene.addConstraint(constraint);
+world.scene.addConstraint(constraint);
 
-new WHS.Plane({
-  geometry: {
-    width: 250,
-    height: 250
-  },
+UTILS.addPlane(world, 250);
+UTILS.addBasicLights(world);
 
-  mass: 0,
-
-  material: {
-    color: 0xff0000,
-    kind: 'basic'
-  },
-
-  position: {
-    x: 0,
-    y: 0,
-    z: 0
-  },
-
-  rotation: {
-    x: -Math.PI / 2
-  }
-}).addTo(GAME);
-
-GAME.start();
-GAME.setControls(WHS.orbitControls());
+world.start();
+world.setControls(new WHS.OrbitControls());

@@ -20,6 +20,10 @@ const world = new WHS.World({
   rendering: {
     background: {
       color: 0xffffff
+    },
+
+    renderer: {
+      antialias: true
     }
   }
 });

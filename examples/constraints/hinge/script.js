@@ -3,25 +3,23 @@
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var GAME = new WHS.World({
-  stats: 'fps', // fps, ms, mb
-  autoresize: true,
+var _globals = require('./globals');
 
-  gravity: {
-    x: 0,
-    y: -100,
-    z: 0
-  },
+var UTILS = _interopRequireWildcard(_globals);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var world = new WHS.World(_extends({}, UTILS.$world, {
 
   camera: {
     far: 10000,
-    y: 10,
-    z: 100
+    y: 40,
+    z: 70
   }
-});
+}));
 
 var halfMat = {
-  kind: 'basic',
+  kind: 'phong',
   transparent: true,
   opacity: 0.5
 };
@@ -36,7 +34,7 @@ var box = new WHS.Box({
   mass: 0,
 
   material: _extends({
-    color: 0xffffff
+    color: UTILS.$colors.mesh
   }, halfMat),
 
   position: {
@@ -54,7 +52,7 @@ var box2 = new WHS.Box({
   mass: 10,
 
   material: _extends({
-    color: 0x0000ff
+    color: UTILS.$colors.softbody
   }, halfMat),
 
   physics: {
@@ -69,41 +67,137 @@ var box2 = new WHS.Box({
 
 var pointer = new WHS.Sphere({ material: { color: 0x00ff00 } });
 pointer.position.set(0, 60, -8);
-pointer.addTo(GAME);
+pointer.addTo(world);
 
-box.addTo(GAME);
-box2.addTo(GAME);
+box.addTo(world);
+box2.addTo(world);
 
 var constraint = new WHS.HingeConstraint(box2, box, new THREE.Vector3(0, 38, 1), new THREE.Vector3(1, 0, 0));
 
-GAME.scene.addConstraint(constraint);
+world.scene.addConstraint(constraint);
 constraint.enableAngularMotor(10, 20);
 
-new WHS.Plane({
-  geometry: {
-    width: 250,
-    height: 250
-  },
+UTILS.addPlane(world, 250);
+UTILS.addBasicLights(world);
 
-  mass: 0,
+world.setControls(new WHS.OrbitControls());
+world.start();
 
-  material: {
-    color: 0xff0000,
-    kind: 'basic'
-  },
+},{"./globals":2}],2:[function(require,module,exports){
+"use strict";
 
-  position: {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addAmbient = addAmbient;
+exports.addBasicLights = addBasicLights;
+exports.addPlane = addPlane;
+exports.addBoxPlane = addBoxPlane;
+var $world = exports.$world = {
+  stats: "fps", // fps, ms, mb or false if not need.
+  autoresize: "window",
+
+  gravity: { // Physic gravity.
     x: 0,
-    y: 0,
+    y: -100,
     z: 0
   },
 
-  rotation: {
-    x: -Math.PI / 2
-  }
-}).addTo(GAME);
+  camera: {
+    z: 50, // Move camera.
+    y: 10
+  },
 
-GAME.start();
-GAME.setControls(WHS.orbitControls());
+  rendering: {
+    background: {
+      color: 0x162129
+    },
+
+    renderer: {
+      antialias: true
+    }
+  },
+
+  shadowmap: {
+    type: THREE.PCFSoftShadowMap
+  }
+};
+
+var $colors = exports.$colors = {
+  bg: 0x162129,
+  plane: 0x447F8B,
+  mesh: 0xF2F2F2,
+  softbody: 0x434B7F
+};
+
+function addAmbient(world, intensity) {
+  new WHS.AmbientLight({
+    light: {
+      intensity: intensity
+    }
+  }).addTo(world);
+}
+
+function addBasicLights(world) {
+  var intensity = arguments.length <= 1 || arguments[1] === undefined ? 0.5 : arguments[1];
+  var position = arguments.length <= 2 || arguments[2] === undefined ? [0, 10, 10] : arguments[2];
+  var distance = arguments.length <= 3 || arguments[3] === undefined ? 100 : arguments[3];
+
+  new WHS.PointLight({
+    light: {
+      intensity: intensity,
+      distance: distance
+    },
+
+    shadowmap: {
+      fov: 90
+    },
+
+    position: position
+  }).addTo(world);
+
+  addAmbient(world, 1 - intensity);
+}
+
+function addPlane(world) {
+  var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
+
+  return new WHS.Plane({
+    geometry: {
+      width: size,
+      height: size
+    },
+
+    mass: 0,
+
+    material: {
+      color: 0x447F8B,
+      kind: 'phong'
+    },
+
+    rotation: {
+      x: -Math.PI / 2
+    }
+  }).addTo(world);
+}
+
+function addBoxPlane(world) {
+  var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
+
+  return new WHS.Box({
+    geometry: {
+      width: size,
+      height: 1,
+      depth: size
+    },
+
+    mass: 0,
+
+    material: {
+      color: 0x447F8B,
+      kind: 'phong'
+    }
+  }).addTo(world);
+}
 
 },{}]},{},[1]);
