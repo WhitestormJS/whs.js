@@ -152,11 +152,13 @@
     document.querySelector('a.source').href = 'https://github.com/WhitestormJS/whitestorm.js/tree/dev/src/examples/' + link + '/script.js';
 
     document.body.appendChild(iframe);
-    document.querySelectorAll('a').forEach(e => {
-      e.addEventListener('click', () => {
+    var links = document.querySelectorAll('a');
+
+    for (var i = 0, max = links.length; i < max; i++) {
+      links[i].addEventListener('click', () => {
         window.location.reload();
       });
-    });
+    }
   </script>
   </body>
 </html>
