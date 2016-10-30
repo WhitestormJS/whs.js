@@ -1,54 +1,46 @@
-const GAME = new WHS.World({
-  stats: 'fps', // fps, ms, mb
-  autoresize: "window",
+import * as UTILS from './globals';
+
+const world = new WHS.World({
+  ...UTILS.$world,
   softbody: true,
 
   gravity: {
-    x: 0,
     y: -9.8,
-    z: 0
   },
 
   camera: {
     far: 10000,
-    y: 100,
-    z: 300
-  },
-
-  shadowmap: {
-    type: THREE.PCFSoftShadowMap
-  },
-
-  background: {
-    color: 0xaaaaaa
+    y: 30,
+    z: 90
   }
 });
 
 const arm = new WHS.Box({ // Rigidbody (green).
   geometry: {
-    width: 160,
-    height: 12,
-    depth: 12
+    width: 80,
+    height: 6,
+    depth: 6
   },
 
   mass: 0,
 
   material: {
-    color: 0x00ff00
+    color: UTILS.$colors.mesh,
+    kind: 'phong'
   },
 
   position: {
-    y: 130,
-    z: 30
+    y: 50,
+    z: 10
   }
 });
 
-arm.addTo(GAME);
+arm.addTo(world);
 
 const cloth = new WHS.Plane({ // Softbody (blue).
   geometry: {
-    width: 160,
-    height: 80,
+    width: 80,
+    height: 40,
     wSegments: 20,
     hSegments: 15
   },
@@ -57,17 +49,19 @@ const cloth = new WHS.Plane({ // Softbody (blue).
   softbody: true,
 
   material: {
-    color: 0x0000ff,
+    color: UTILS.$colors.softbody,
     kind: 'phong',
     side: THREE.DoubleSide
   },
 
   physics: {
-    margin: 2
+    margin: 1,
+    // damping: 0.03,
+    piterations: 12
   },
 
   position: {
-    y: 90
+    y: 30
   },
 
   rotation: {
@@ -75,75 +69,32 @@ const cloth = new WHS.Plane({ // Softbody (blue).
   }
 });
 
-cloth.addTo(GAME);
+cloth.addTo(world);
 
-cloth.appendAnchor(GAME, arm, 0, 1, false);
-cloth.appendAnchor(GAME, arm, 20, 1, false);
+cloth.appendAnchor(world, arm, 0, 1, false);
+cloth.appendAnchor(world, arm, 20, 1, false);
 
 new WHS.Box({ // Rigidbody (green).
   geometry: {
-    width: 72,
-    height: 72,
-    depth: 72
+    width: 10,
+    height: 10,
+    depth: 10
   },
 
   mass: 10,
 
   material: {
-    color: 0x00ff00
-  },
-
-  position: {
-    y: 36
-  }
-}).addTo(GAME);
-
-new WHS.Box({
-  geometry: {
-    width: 2500,
-    height: 1,
-    depth: 2500
-  },
-
-  mass: 0,
-
-  material: {
-    color: 0xff0000,
+    color: UTILS.$colors.mesh,
     kind: 'phong'
   },
 
   position: {
-    x: 0,
-    y: -20,
-    z: 0
+    y: 18
   }
-}).addTo(GAME);
+}).addTo(world);
 
-new WHS.DirectionalLight({
-  light: {
-    color: 0xffffff, // 0x00ff00,
-    intensity: 1
-  },
+UTILS.addBoxPlane(world, 250);
+UTILS.addBasicLights(world);
 
-  position: {
-    x: 0,
-    y: 10,
-    z: 30
-  },
-
-  target: {
-    x: 0,
-    y: 0,
-    z: 0
-  }
-}).addTo(GAME);
-
-new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.5
-  }
-}).addTo(GAME);
-
-GAME.setControls(new WHS.OrbitControls());
-GAME.start();
+world.setControls(new WHS.OrbitControls());
+world.start();

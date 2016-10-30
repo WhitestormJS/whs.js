@@ -42,7 +42,7 @@ var cloth = new WHS.Plane({ // Softbody (blue).
 
   physics: {
     margin: 1,
-    damping: 0.03,
+    damping: 0.02,
     piterations: 12
   },
 
