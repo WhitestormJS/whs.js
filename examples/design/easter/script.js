@@ -25,6 +25,10 @@ var GAME = new WHS.World({
       type: THREE.PCFSoftShadowMap
     },
 
+    renderer: {
+      antialias: true
+    },
+
     background: {
       color: 0xffffff
     }
