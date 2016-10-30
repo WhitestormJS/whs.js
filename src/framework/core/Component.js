@@ -3,7 +3,7 @@ import Events from 'minivents';
 
 import {extend, transformData, toArray} from '../utils/index';
 
-const getWorld = (parent) => {
+export const getWorld = (parent) => {
   let world = parent;
   while (!world.scene) world = world.parent;
   return world;

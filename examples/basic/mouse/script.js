@@ -9,102 +9,53 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var world = new WHS.World(_extends({}, UTILS.$world, {
-  softbody: true,
+var world = new WHS.World(_extends({}, UTILS.$world));
 
-  gravity: {
-    y: -9.8
+var sphere = new WHS.Sphere({ // Create sphere comonent.
+  geometry: {
+    radius: 3,
+    widthSegments: 32,
+    heightSegments: 32
   },
 
-  camera: {
-    far: 10000,
-    y: 30,
-    z: 90
-  }
-}));
+  mass: 10, // Mass of physics object.
+
+  material: {
+    color: UTILS.$colors.mesh,
+    kind: 'lambert'
+  },
+
+  position: [0, 100, 0]
+});
+
+sphere.addTo(world);
 
 var mouse = new WHS.VirtualMouse(world);
+mouse.track(sphere);
 
-var arm = new WHS.Box({ // Rigidbody (green).
-  geometry: {
-    width: 80,
-    height: 6,
-    depth: 6
-  },
-
-  mass: 0,
-
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'phong'
-  },
-
-  position: {
-    y: 50,
-    z: 10
-  }
+sphere.on('mouseover', function () {
+  sphere.material.color.set(0xffff00);
+  console.log('mouseover');
 });
 
-arm.addTo(world);
-
-var cloth = new WHS.Tube({ // Softbody (blue).
-  geometry: {
-    path: new THREE.LineCurve3(new THREE.Vector3(0, 30, 0), new THREE.Vector3(0, 10, 0)),
-    segments: 20,
-    radius: 12,
-    radiusSegments: 16,
-    closed: false
-  },
-
-  mass: 1,
-  softbody: true,
-
-  physics: {
-    margin: 1,
-    damping: 0.03,
-    piterations: 12
-  },
-
-  material: {
-    color: UTILS.$colors.softbody,
-    kind: 'phong',
-    side: THREE.DoubleSide
-  }
+sphere.on('mousemove', function () {
+  console.log('mousemove');
 });
 
-cloth.addTo(world);
-
-cloth.appendAnchor(world, arm, 0, 1, false);
-cloth.appendAnchor(world, arm, 40, 1, false);
-
-new WHS.Box({ // Rigidbody (green).
-  geometry: {
-    width: 10,
-    height: 10,
-    depth: 10
-  },
-
-  mass: 10,
-
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'phong'
-  },
-
-  position: {
-    y: 18
-  }
-}).addTo(world).then(function (box) {
-  mouse.on('move', function () {
-    box.setLinearVelocity(mouse.project().sub(box.position));
-  });
+sphere.on('mouseout', function () {
+  sphere.material.color.set(UTILS.$colors.mesh);
+  console.log('mouseout');
 });
 
-UTILS.addBoxPlane(world, 250);
+sphere.on('click', function () {
+  alert('click!');
+});
+
+UTILS.addPlane(world);
 UTILS.addBasicLights(world);
 
+world.start(); // Start animations and physics simulation.
 world.setControls(new WHS.OrbitControls());
-world.start();
 
 },{"./globals":2}],2:[function(require,module,exports){
 "use strict";

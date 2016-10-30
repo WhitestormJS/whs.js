@@ -12,22 +12,29 @@ function SoftbodyComponent(targetComponent) {
 
     proccessSoftbodyGeometry(geometry) {
       const _params = this.params;
+      const matrix = new THREE.Matrix4();
 
-      geometry.rotateX(_params.rotation.x);
-      geometry.rotateY(_params.rotation.y);
-      geometry.rotateZ(_params.rotation.z);
-
-      geometry.scale(
-        _params.scale.x,
-        _params.scale.y,
-        _params.scale.z
+      matrix.compose(
+        new THREE.Vector3(
+          _params.position.x,
+          _params.position.y,
+          _params.position.z
+        ),
+        new THREE.Quaternion().setFromEuler(
+            new THREE.Euler(
+            _params.rotation.x,
+            _params.rotation.y,
+            _params.rotation.z
+          )
+        ),
+        new THREE.Vector3(
+          _params.scale.x,
+          _params.scale.y,
+          _params.scale.z
+        )
       );
 
-      geometry.translate(
-        _params.position.x,
-        _params.position.y,
-        _params.position.z
-      );
+      geometry.applyMatrix(matrix);
     }
 
     copy(source) {
