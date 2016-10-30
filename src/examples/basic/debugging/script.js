@@ -23,7 +23,9 @@ const world = new WHS.World({
 
 const sphere = new WHS.Sphere({
   geometry: {
-    radius: 2
+    radius: 2,
+    widthSegments: 16,
+    heightSegments: 16
   },
 
   mass: 0,
@@ -52,11 +54,20 @@ sphere.wait().then(() => {
   vertexNormalsHelper.addTo(world);
   vertexNormalsHelper.addHelper('vertexNormals', {color: 0x00ff00, size: 0.5});
 
-  const boundingBoxHelper = sphere.clone();
+  window.boundingBoxHelper = sphere.clone();
+  boundingBoxHelper.params.physics = WHS.physicsDefaults;
+  boundingBoxHelper.wrap();
+  boundingBoxHelper.build();
+
+  boundingBoxHelper.position.y = 10;
   boundingBoxHelper.position.z = 10;
+  boundingBoxHelper.native.mass = 10;
   boundingBoxHelper.addTo(world);
   boundingBoxHelper.addHelper('boundingBox', {color: 0x00ffff});
-  boundingBoxHelper._helpers.boundingBox.update();
+
+  new WHS.Loop(() =>
+    boundingBoxHelper.updateHelper('boundingBox')
+  ).start(world);
 });
 
 UTILS.addPlane(world, 250);

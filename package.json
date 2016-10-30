@@ -40,7 +40,7 @@
     "inline-worker": "^1.1.0",
     "minivents": "^2.0.2",
     "stats.js": "^0.16.0",
-    "three": "^0.81.0",
+    "three": "^0.82.1",
     "three-orbit-controls": "^72.0.0",
     "webworkify-webpack": "^1.1.0",
     "whs-ammo": "^0.0.6"
