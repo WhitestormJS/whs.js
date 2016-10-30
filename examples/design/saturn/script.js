@@ -20,7 +20,7 @@ var colors = {
   yellow: 0xfaff70
 };
 
-var GAME = new WHS.World({
+var world = new WHS.World({
   stats: false,
   autoresize: "window",
 
@@ -44,8 +44,8 @@ var GAME = new WHS.World({
   }
 });
 
-window.space = new WHS.Group();
-space.addTo(GAME);
+var space = new WHS.Group();
+space.addTo(world);
 space.rotation.z = Math.PI / 12;
 
 var planet = new WHS.Tetrahedron({
@@ -73,7 +73,7 @@ new WHS.AmbientLight({
     color: 0x663344,
     intensity: 2
   }
-}).addTo(GAME);
+}).addTo(world);
 
 new WHS.DirectionalLight({
   light: {
@@ -98,7 +98,7 @@ new WHS.DirectionalLight({
     z: 300,
     y: 100
   }
-}).addTo(GAME);
+}).addTo(world);
 
 var s1 = new WHS.Dodecahedron({
   geometry: {
@@ -227,12 +227,12 @@ var animation = new WHS.Loop(function () {
   planet.rotation.y += 0.005;
 });
 
-GAME.addLoop(animation);
-GAME.setControls(WHS.orbitControls());
+world.addLoop(animation);
+world.setControls(new WHS.OrbitControls());
 
 animation.start();
 
 // Start rendering.
-GAME.start();
+world.start();
 
 },{}]},{},[1]);

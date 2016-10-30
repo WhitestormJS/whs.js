@@ -12,7 +12,7 @@ const colors = {
   yellow: 0xfaff70
 };
 
-const GAME = new WHS.World({
+const world = new WHS.World({
   stats: false,
   autoresize: "window",
 
@@ -36,8 +36,8 @@ const GAME = new WHS.World({
   }
 });
 
-window.space = new WHS.Group();
-space.addTo(GAME);
+const space = new WHS.Group();
+space.addTo(world);
 space.rotation.z = Math.PI / 12;
 
 const planet = new WHS.Tetrahedron({
@@ -65,7 +65,7 @@ new WHS.AmbientLight({
     color: 0x663344,
     intensity: 2
   }
-}).addTo(GAME);
+}).addTo(world);
 
 new WHS.DirectionalLight({
   light: {
@@ -90,7 +90,7 @@ new WHS.DirectionalLight({
     z: 300,
     y: 100
   }
-}).addTo(GAME);
+}).addTo(world);
 
 const s1 = new WHS.Dodecahedron({
   geometry: {
@@ -224,10 +224,10 @@ const animation = new WHS.Loop(() => {
   planet.rotation.y += 0.005;
 });
 
-GAME.addLoop(animation);
-GAME.setControls(WHS.orbitControls());
+world.addLoop(animation);
+world.setControls(new WHS.OrbitControls());
 
 animation.start();
 
 // Start rendering.
-GAME.start();
+world.start();
