@@ -1,6 +1,7 @@
-const GAME = new WHS.World({
-  stats: 'fps', // fps, ms, mb
-  autoresize: "window",
+import * as UTILS from './globals';
+
+const world = new WHS.World({
+  ...UTILS.$world,
 
   gravity: {
     x: 0,
@@ -10,8 +11,8 @@ const GAME = new WHS.World({
 
   camera: {
     far: 1000,
-    y: 10,
-    z: 30
+    y: 30,
+    z: 90
   },
 
   shadowmap: {
@@ -20,13 +21,6 @@ const GAME = new WHS.World({
 
   physics: {
     broadphase: {type: 'sweepprune'}
-  },
-
-  rHeight: 1.5,
-  rWidth: 1.5,
-
-  background: {
-    color: 0xaaaaaa
   }
 });
 
@@ -41,16 +35,19 @@ const stick = new WHS.Box({
 
   material: {
     kind: 'phong',
-    map: WHS.texture('{{ assets }}/textures/retina_wood.jpg'),
-    specularMap: WHS.texture('{{ assets }}/textures/SpecularMap.png'),
-    normalMap: WHS.texture('{{ assets }}/textures/NormalMap.png'),
-    shininess: 0
+    color: UTILS.$colors.mesh
   },
 
   physics: {
     restitution: 0,
     friction: 0.5,
-    state: 4
+    state: 4,
+
+  },
+
+  shadow: {
+    cast: false,
+    receive: false
   },
 
   position: {
@@ -91,15 +88,15 @@ for (let k = 0; k < rows; k++) {
 
       objects += 2;
 
-      newStick.addTo(GAME);
-      newStick2.addTo(GAME);
+      newStick.addTo(world);
+      newStick2.addTo(world);
     }
   }
 }
 
 document.querySelector('.object_count').innerText = `${objects} objects`;
 
-window.sphere = new WHS.Sphere({
+const sphere = new WHS.Sphere({
   geometry: {
     radius: 1,
     widthSegments: 32,
@@ -109,7 +106,7 @@ window.sphere = new WHS.Sphere({
   mass: 100,
 
   material: {
-    color: 0x000ff,
+    color: UTILS.$colors.mesh,
     kind: 'phong'
   },
 
@@ -119,7 +116,7 @@ window.sphere = new WHS.Sphere({
   }
 });
 
-window.sphere.addTo(GAME).then((sphere) => {
+sphere.addTo(world).then((sphere) => {
   const mx = 60,
     mz = 40;
 
@@ -127,64 +124,8 @@ window.sphere.addTo(GAME).then((sphere) => {
   sphere.setLinearVelocity({x: mx, y: 0, z: mz});
 });
 
-window.ground = new WHS.Box({
-  geometry: {
-    width: 250,
-    height: 5,
-    depth: 250
-  },
+UTILS.addBoxPlane(world, 250).then(o => o.position.y = -1);
+UTILS.addBasicLights(world, 0.5, [100, 100, 100], 200);
 
-  mass: 0,
-
-  material: {
-    map: WHS.texture('{{ assets }}/textures/metal.png', {repeat:{x:20, y:20}}),
-    normalMap: WHS.texture('{{ assets }}/textures/NormalMap_metal.png', {repeat:{x:20, y:20}}),
-    kind: 'phong'
-  },
-
-  physics: {
-    margin: 1
-  },
-
-  position: {
-    x: 0,
-    y: -3,
-    z: 0
-  }
-});
-window.ground.addTo(GAME);
-
-const light = new WHS.DirectionalLight({
-  light: {
-    color: 0xffffff, // 0x00ff00,
-    intensity: 1,
-    distance: 400
-  },
-
-  shadowmap: {
-    far: 250,
-
-    left: -40,
-    right: 40
-  },
-
-  position: {
-    x: 0,
-    y: 100,
-    z: 300
-  }
-});
-
-light.addTo(GAME);
-
-console.log(light);
-
-new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.2
-  }
-}).addTo(GAME);
-
-GAME.setControls(WHS.orbitControls());
-GAME.start();
+world.setControls(new WHS.OrbitControls());
+world.start();
