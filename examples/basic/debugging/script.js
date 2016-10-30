@@ -31,7 +31,9 @@ var world = new WHS.World(_extends({}, UTILS.$world, {
 
 var sphere = new WHS.Sphere({
   geometry: {
-    radius: 2
+    radius: 2,
+    widthSegments: 16,
+    heightSegments: 16
   },
 
   mass: 0,
@@ -60,11 +62,20 @@ sphere.wait().then(function () {
   vertexNormalsHelper.addTo(world);
   vertexNormalsHelper.addHelper('vertexNormals', { color: 0x00ff00, size: 0.5 });
 
-  var boundingBoxHelper = sphere.clone();
+  window.boundingBoxHelper = sphere.clone();
+  boundingBoxHelper.params.physics = WHS.physicsDefaults;
+  boundingBoxHelper.wrap();
+  boundingBoxHelper.build();
+
+  boundingBoxHelper.position.y = 10;
   boundingBoxHelper.position.z = 10;
+  boundingBoxHelper.native.mass = 10;
   boundingBoxHelper.addTo(world);
   boundingBoxHelper.addHelper('boundingBox', { color: 0x00ffff });
-  boundingBoxHelper._helpers.boundingBox.update();
+
+  new WHS.Loop(function () {
+    return boundingBoxHelper.updateHelper('boundingBox');
+  }).start(world);
 });
 
 UTILS.addPlane(world, 250);
@@ -116,7 +127,8 @@ var $world = exports.$world = {
 var $colors = exports.$colors = {
   bg: 0x162129,
   plane: 0x447F8B,
-  mesh: 0xF2F2F2
+  mesh: 0xF2F2F2,
+  softbody: 0x434B7F
 };
 
 function addAmbient(world, intensity) {
@@ -151,7 +163,7 @@ function addBasicLights(world) {
 function addPlane(world) {
   var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
 
-  new WHS.Plane({
+  return new WHS.Plane({
     geometry: {
       width: size,
       height: size
@@ -173,7 +185,7 @@ function addPlane(world) {
 function addBoxPlane(world) {
   var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
 
-  new WHS.Box({
+  return new WHS.Box({
     geometry: {
       width: size,
       height: 1,

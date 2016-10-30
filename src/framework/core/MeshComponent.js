@@ -195,6 +195,10 @@ function MeshComponent(targetComponent) {
     addHelper(name, params = {}, helpers = resultComponent.helpers) {
       super.addHelper(name, params, helpers);
     }
+
+    updateHelper(name) {
+      this._helpers[name].update();
+    }
   }
 
   $wrap(resultComponent).onCallWrap((scope, ...tags) => {
