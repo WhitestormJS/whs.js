@@ -12,79 +12,52 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var world = new WHS.World(_extends({}, UTILS.$world, {
   softbody: true,
 
-  gravity: {
-    y: -9.8
+  shadowmap: {
+    type: THREE.PCFSoftShadowMap
   },
 
-  camera: {
-    far: 10000,
-    y: 30,
-    z: 90
+  physics: {
+    fixedTimeStep: 1 / 120
   }
 }));
 
-var mouse = new WHS.VirtualMouse(world);
-
-var arm = new WHS.Box({ // Rigidbody (green).
+new WHS.Sphere({ // Softbody (blue).
   geometry: {
-    width: 80,
-    height: 6,
-    depth: 6
+    radius: 4,
+    widthSegments: 16,
+    heightSegments: 16
   },
 
-  mass: 0,
-
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'phong'
-  },
-
-  position: {
-    y: 50,
-    z: 10
-  }
-});
-
-arm.addTo(world);
-
-var cloth = new WHS.Tube({ // Softbody (blue).
-  geometry: {
-    path: new THREE.LineCurve3(new THREE.Vector3(0, 30, 0), new THREE.Vector3(0, 10, 0)),
-    segments: 20,
-    radius: 12,
-    radiusSegments: 16,
-    closed: false
-  },
-
-  mass: 1,
+  mass: 15,
   softbody: true,
 
   physics: {
-    margin: 1,
-    damping: 0.03,
-    piterations: 12
+    pressure: 2000,
+
+    piteration: 40,
+    viteration: 40
   },
 
   material: {
     color: UTILS.$colors.softbody,
-    kind: 'phong',
-    side: THREE.DoubleSide
-  }
-});
-
-cloth.addTo(world);
-
-cloth.appendAnchor(world, arm, 0, 1, false);
-cloth.appendAnchor(world, arm, 40, 1, false);
-
-new WHS.Box({ // Rigidbody (green).
-  geometry: {
-    width: 10,
-    height: 10,
-    depth: 10
+    kind: 'phong'
   },
 
-  mass: 10,
+  position: {
+    y: 4
+  }
+}).addTo(world).then(function (obj) {
+  obj.native.frustumCulled = false;
+});
+
+new WHS.Sphere({ // Rigidbody (green).
+  geometry: {
+    radius: 1,
+    widthSegments: 16,
+    heightSegments: 16
+  },
+
+  mass: 2,
 
   material: {
     color: UTILS.$colors.mesh,
@@ -92,15 +65,13 @@ new WHS.Box({ // Rigidbody (green).
   },
 
   position: {
-    y: 18
+    y: 30,
+    x: -0.5,
+    z: 0.5
   }
-}).addTo(world).then(function (box) {
-  mouse.on('move', function () {
-    box.setLinearVelocity(mouse.project().sub(box.position));
-  });
-});
+}).addTo(world);
 
-UTILS.addBoxPlane(world, 250);
+UTILS.addBoxPlane(world, 2500);
 UTILS.addBasicLights(world);
 
 world.setControls(new WHS.OrbitControls());

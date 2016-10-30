@@ -1,85 +1,191 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-window.GAME = new WHS.World({
-  stats: 'fps', // fps, ms, mb
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _globals = require('./globals');
+
+var UTILS = _interopRequireWildcard(_globals);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var world = new WHS.World(_extends({}, UTILS.$world, {
+
+  camera: {
+    far: 10000,
+    y: 2,
+    z: 12
+  },
+
+  init: {
+    scene: false
+  }
+}));
+
+var scene = new THREE.Scene();
+var material = new THREE.MeshPhongMaterial({ color: UTILS.$colors.mesh });
+var materialNested = material.clone();
+materialNested.color.set(0x0000ff);
+var materialWHS = material.clone();
+materialWHS.color.set(0xffffff);
+materialWHS.map = new WHS.texture('../../_assets/textures/earth.jpg');
+
+var mesh1 = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), material);
+
+mesh1.position.set(2, 2, 0);
+
+scene.add(mesh1);
+
+var mesh2 = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), material);
+
+mesh2.position.set(4, 2, 0);
+
+scene.add(mesh2);
+
+var mesh3 = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), materialNested);
+
+mesh3.position.set(0, 0, 1);
+
+// Nested object.
+mesh2.add(mesh3);
+
+world.importScene(scene, true);
+world._initCamera();
+world._initRendering();
+world._initHelpers();
+
+var sphere = new WHS.Element(new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), materialWHS), [WHS.MeshComponent]);
+
+sphere.addTo(world);
+sphere.position.y = 2;
+
+var light = new WHS.Element(new THREE.PointLight(), [WHS.LightComponent]);
+
+light.wrap();
+
+light.addTo(world);
+
+UTILS.addPlane(world);
+UTILS.addBasicLights(world);
+
+world.setControls(new WHS.OrbitControls());
+world.start();
+
+},{"./globals":2}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addAmbient = addAmbient;
+exports.addBasicLights = addBasicLights;
+exports.addPlane = addPlane;
+exports.addBoxPlane = addBoxPlane;
+var $world = exports.$world = {
+  stats: "fps", // fps, ms, mb or false if not need.
   autoresize: "window",
 
-  gravity: {
+  gravity: { // Physic gravity.
     x: 0,
     y: -100,
     z: 0
   },
 
   camera: {
-    far: 10000,
-    y: 10,
-    z: 30
+    z: 50, // Move camera.
+    y: 10
   },
 
-  init: {
-    scene: false
+  rendering: {
+    background: {
+      color: 0x162129
+    },
+
+    renderer: {
+      antialias: true
+    }
+  },
+
+  shadowmap: {
+    type: THREE.PCFSoftShadowMap
   }
-});
+};
 
-var scene = new THREE.Scene();
+var $colors = exports.$colors = {
+  bg: 0x162129,
+  plane: 0x447F8B,
+  mesh: 0xF2F2F2,
+  softbody: 0x434B7F
+};
 
-var obj1 = new THREE.Mesh(new THREE.SphereGeometry(3, 32, 32), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-obj1.position.set(6, 6, 0);
+function addAmbient(world, intensity) {
+  new WHS.AmbientLight({
+    light: {
+      intensity: intensity
+    }
+  }).addTo(world);
+}
 
-scene.add(obj1);
+function addBasicLights(world) {
+  var intensity = arguments.length <= 1 || arguments[1] === undefined ? 0.5 : arguments[1];
+  var position = arguments.length <= 2 || arguments[2] === undefined ? [0, 10, 10] : arguments[2];
+  var distance = arguments.length <= 3 || arguments[3] === undefined ? 100 : arguments[3];
 
-var obj2 = new THREE.Mesh(new THREE.SphereGeometry(3, 32, 32), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-obj2.position.set(12, 6, 0);
+  new WHS.PointLight({
+    light: {
+      intensity: intensity,
+      distance: distance
+    },
 
-scene.add(obj2);
+    shadowmap: {
+      fov: 90
+    },
 
-var obj3 = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), new THREE.MeshBasicMaterial({ color: 0x0000ff }));
-obj3.position.set(0, 0, 3);
+    position: position
+  }).addTo(world);
 
-// Nested object.
-obj2.add(obj3);
+  addAmbient(world, 1 - intensity);
+}
 
-GAME.importScene(scene, true);
-GAME._initCamera();
-GAME._initRendering();
-GAME._initHelpers();
+function addPlane(world) {
+  var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
 
-var sphere = new WHS.Element(new THREE.Mesh(new THREE.SphereGeometry(3, 32, 32), new THREE.MeshBasicMaterial({ color: 0xffffff })), [WHS.MeshComponent]);
+  return new WHS.Plane({
+    geometry: {
+      width: size,
+      height: size
+    },
 
-sphere.addTo(GAME);
-sphere.position.y = 3;
+    mass: 0,
 
-var light = new WHS.Element(new THREE.PointLight(), [WHS.LightComponent]);
+    material: {
+      color: 0x447F8B,
+      kind: 'phong'
+    },
 
-light.wrap();
+    rotation: {
+      x: -Math.PI / 2
+    }
+  }).addTo(world);
+}
 
-light.addTo(GAME);
+function addBoxPlane(world) {
+  var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
 
-new WHS.Plane({
-  geometry: {
-    width: 250,
-    height: 250
-  },
+  return new WHS.Box({
+    geometry: {
+      width: size,
+      height: 1,
+      depth: size
+    },
 
-  mass: 0,
+    mass: 0,
 
-  material: {
-    color: 0xff0000,
-    kind: 'basic'
-  },
-
-  position: {
-    x: 0,
-    y: 0,
-    z: 0
-  },
-
-  rotation: {
-    x: -Math.PI / 2
-  }
-}).addTo(GAME);
-
-GAME.start();
+    material: {
+      color: 0x447F8B,
+      kind: 'phong'
+    }
+  }).addTo(world);
+}
 
 },{}]},{},[1]);
