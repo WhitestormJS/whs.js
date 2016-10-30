@@ -141,7 +141,8 @@ var $world = exports.$world = {
 var $colors = exports.$colors = {
   bg: 0x162129,
   plane: 0x447F8B,
-  mesh: 0xF2F2F2
+  mesh: 0xF2F2F2,
+  softbody: 0x434B7F
 };
 
 function addAmbient(world, intensity) {
@@ -155,17 +156,19 @@ function addAmbient(world, intensity) {
 function addBasicLights(world) {
   var intensity = arguments.length <= 1 || arguments[1] === undefined ? 0.5 : arguments[1];
   var position = arguments.length <= 2 || arguments[2] === undefined ? [0, 10, 10] : arguments[2];
+  var distance = arguments.length <= 3 || arguments[3] === undefined ? 100 : arguments[3];
 
   new WHS.PointLight({
     light: {
-      intensity: intensity
+      intensity: intensity,
+      distance: distance
     },
 
     shadowmap: {
       fov: 90
     },
 
-    position: [0, 10, 10]
+    position: position
   }).addTo(world);
 
   addAmbient(world, 1 - intensity);
@@ -174,7 +177,7 @@ function addBasicLights(world) {
 function addPlane(world) {
   var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
 
-  new WHS.Plane({
+  return new WHS.Plane({
     geometry: {
       width: size,
       height: size
@@ -196,7 +199,7 @@ function addPlane(world) {
 function addBoxPlane(world) {
   var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
 
-  new WHS.Box({
+  return new WHS.Box({
     geometry: {
       width: size,
       height: 1,

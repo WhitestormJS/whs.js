@@ -220,5 +220,6 @@ function PhysicsComponent(targetComponent) {
 }
 
 export {
-  PhysicsComponent
+  PhysicsComponent,
+  physicsDefaults
 };
