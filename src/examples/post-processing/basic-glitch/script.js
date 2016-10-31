@@ -5,13 +5,7 @@ import * as UTILS from './globals';
 // -----------------------------------------------------------------------------
 const conf = {
   world: {
-    autoresize: true,
-
-    gravity: {
-      x: 0,
-      y: -100,
-      z: 0
-    },
+    ...UTILS.$world,
 
     camera: {
       far: 10000,
@@ -21,27 +15,12 @@ const conf = {
 
     init: {
       rendering: false
-    },
-
-    rendering: {
-      background: {
-        color: 0x162129
-      },
-
-      renderer: {
-        antialias: true
-      }
-    },
-
-    shadowmap: {
-      type: THREE.PCFSoftShadowMap
     }
-
   },
 
   sphere: {
     geometry: {
-      radius: 5,
+      radius: 3,
       widthSegments: 16,
       heightSegments: 16
     },
@@ -49,38 +28,14 @@ const conf = {
     mass: 10,
 
     material: {
-      color: 0xF2F2F2,
-      kind: 'basic'
+      color: UTILS.$colors.mesh,
+      kind: 'phong'
     },
 
     position: {
       x: 0,
       y: 50,
       z: 0
-    }
-  },
-
-  plane: {
-    geometry: {
-      width: 250,
-      height: 250
-    },
-
-    mass: 0,
-
-    material: {
-      color: 0x447F8B,
-      kind: 'basic'
-    },
-
-    position: {
-      x: 0,
-      y: 0,
-      z: 0
-    },
-
-    rotation: {
-      x: -Math.PI / 2
     }
   }
 };
@@ -280,6 +235,9 @@ class Game {
 
     this.world = new WHS.World(options.world);
 
+    UTILS.addPlane(this.world, 250);
+    UTILS.addBasicLights(this.world);
+
     this.createPostProcessing();
     this.createGeometry();
   }
@@ -295,6 +253,10 @@ class Game {
       stats: this.world.params.stats,
       init: {
         stats: this.world.params.init.stats
+      },
+
+      renderer: {
+        antialias: true
       },
 
       background: {
@@ -314,9 +276,6 @@ class Game {
   }
 
   createGeometry() {
-    this.plane = new WHS.Plane(this.options.plane);
-    this.plane.addTo(this.world);
-
     this.sphere = new WHS.Sphere(this.options.sphere);
     this.sphere.addTo(this.world);
   }

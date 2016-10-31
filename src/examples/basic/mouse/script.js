@@ -42,7 +42,7 @@ sphere.on('mouseout', () => {
 
 sphere.on('click', () => {
   alert('click!');
-})
+});
 
 UTILS.addPlane(world);
 UTILS.addBasicLights(world);
