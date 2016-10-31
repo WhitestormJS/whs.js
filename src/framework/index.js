@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as Physijs from './physics/index.js';
 
-export * from './alias/index';
+export * from './physics/alias/index';
 export * from './core/index';
 export * from './components/lights/index';
 export * from './components/cameras/index';
