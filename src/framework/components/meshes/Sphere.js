@@ -20,6 +20,11 @@ class Sphere extends Component {
     }
   };
 
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['radius', 'widthSegments', 'heightSegments']
+  };
+
   constructor(params = {}) {
     super(params, Sphere.defaults, Sphere.instructions);
 

@@ -16,7 +16,12 @@ class Lathe extends Component {
     geometry: {
       points: []
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['points']
+  };
 
   constructor(params = {}) {
     super(params, Lathe.defaults, Lathe.instructions);
