@@ -364,10 +364,10 @@ class World extends Component {
     }
   }
 
-  importScene(scene, import_three = true) {
+  importScene(scene, nested = true) {
     this.scene = scene;
 
-    if (import_three) {
+    if (nested) {
       this.children = [];
 
       const moveChildren = (object) => {
