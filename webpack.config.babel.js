@@ -6,6 +6,8 @@ import OptimizeJSPlugin from 'webpack-optimizejs-plugin';
 process.env.BABEL_ENV = 'browser';
 
 export function config({isProduction, frameworkSrc, frameworkDest}) {
+  if (process.env.CI) isProduction = true;
+  console.log([process.env.CI, process.env.TRAVIS, process.env.CONTINUOUS_INTEGRATION]);
   console.log(isProduction ? 'Production mode' : 'Development mode');
 
   const loadersSection = [
