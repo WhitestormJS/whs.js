@@ -17,7 +17,12 @@ class Icosahedron extends Component {
       radius: 1,
       detail: 0
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['radius', 'detail']
+  };
 
   constructor(params = {}) {
     super(params, Icosahedron.defaults, Icosahedron.instructions);

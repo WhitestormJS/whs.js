@@ -99,7 +99,7 @@ class World extends Component {
 
     // NOTE: ==================== Autoresize. ======================
 
-    if (_params.autoresize === "window") {
+    if (_params.autoresize === 'window') {
       window.addEventListener('resize', () => {
         this.setSize(
           Number(window.innerWidth * _params.rWidth).toFixed(),
@@ -146,6 +146,7 @@ class World extends Component {
         )
       );
 
+      scene.simulate();
       this.simulate = true;
     }
 

@@ -16,7 +16,19 @@ class Ring extends Component {
       thetaStart: 0,
       thetaLength: Math.PI * 2
     }
-  }
+  };
+
+  static defaults = {
+    ...Component.defaults,
+    geometry: [
+      'innerRadius',
+      'outerRadius',
+      'thetaSegments',
+      'phiSegments',
+      'thetaStart',
+      'thetaLength'
+    ]
+  };
 
   constructor(params = {}) {
     super(params, Ring.defaults, Ring.instructions);

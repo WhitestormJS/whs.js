@@ -17,7 +17,12 @@ class Extrude extends Component {
       shapes: [],
       options: {}
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['shapes', 'options']
+  };
 
   constructor(params = {}) {
     super(params, Extrude.defaults, Extrude.instructions);

@@ -18,7 +18,12 @@ class Box extends Component {
       height: 1,
       depth: 1
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['width', 'height', 'depth']
+  };
 
   constructor(params = {}) {
     super(params, Box.defaults, Box.instructions);

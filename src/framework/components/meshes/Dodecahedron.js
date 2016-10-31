@@ -17,7 +17,12 @@ class Dodecahedron extends Component {
       radius: 1,
       detail: 0
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['radius', 'detail']
+  };
 
   constructor(params = {}) {
     super(params, Dodecahedron.defaults, Dodecahedron.instructions);

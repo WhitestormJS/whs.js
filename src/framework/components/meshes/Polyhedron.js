@@ -37,7 +37,12 @@ class Polyhedron extends Component {
       radius: 6,
       detail: 2
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['verticesOfCube', 'indicesOfFaces', 'radius', 'detail']
+  };
 
   constructor(params = {}) {
     super(params, Polyhedron.defaults, Polyhedron.instructions);

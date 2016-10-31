@@ -26,6 +26,11 @@ class Text extends Component {
         bevelSize: 8
       }
     }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['text', 'parameters']
   }
 
   constructor(params = {}) {

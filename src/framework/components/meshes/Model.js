@@ -18,7 +18,12 @@ class Model extends Component {
       physics: '',
       loader: JSONLoader
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['path', 'physics', 'loader']
+  };
 
   constructor(params = {}) {
     super(params, Model.defaults, Model.instructions);
