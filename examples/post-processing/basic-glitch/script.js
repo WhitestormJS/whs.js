@@ -3,6 +3,8 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _globals = require('./globals');
 
 var UTILS = _interopRequireWildcard(_globals);
@@ -19,14 +21,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // Configuration
 // -----------------------------------------------------------------------------
 var conf = {
-  world: {
-    autoresize: true,
-
-    gravity: {
-      x: 0,
-      y: -100,
-      z: 0
-    },
+  world: _extends({}, UTILS.$world, {
 
     camera: {
       far: 10000,
@@ -36,27 +31,12 @@ var conf = {
 
     init: {
       rendering: false
-    },
-
-    rendering: {
-      background: {
-        color: 0x162129
-      },
-
-      renderer: {
-        antialias: true
-      }
-    },
-
-    shadowmap: {
-      type: THREE.PCFSoftShadowMap
     }
-
-  },
+  }),
 
   sphere: {
     geometry: {
-      radius: 5,
+      radius: 3,
       widthSegments: 16,
       heightSegments: 16
     },
@@ -64,38 +44,14 @@ var conf = {
     mass: 10,
 
     material: {
-      color: 0xF2F2F2,
-      kind: 'basic'
+      color: UTILS.$colors.mesh,
+      kind: 'phong'
     },
 
     position: {
       x: 0,
       y: 50,
       z: 0
-    }
-  },
-
-  plane: {
-    geometry: {
-      width: 250,
-      height: 250
-    },
-
-    mass: 0,
-
-    material: {
-      color: 0x447F8B,
-      kind: 'basic'
-    },
-
-    position: {
-      x: 0,
-      y: 0,
-      z: 0
-    },
-
-    rotation: {
-      x: -Math.PI / 2
     }
   }
 };
@@ -234,6 +190,9 @@ var Game = function () {
 
     this.world = new WHS.World(options.world);
 
+    UTILS.addPlane(this.world, 250);
+    UTILS.addBasicLights(this.world);
+
     this.createPostProcessing();
     this.createGeometry();
   }
@@ -251,6 +210,10 @@ var Game = function () {
         stats: this.world.params.stats,
         init: {
           stats: this.world.params.init.stats
+        },
+
+        renderer: {
+          antialias: true
         },
 
         background: {
@@ -271,9 +234,6 @@ var Game = function () {
   }, {
     key: 'createGeometry',
     value: function createGeometry() {
-      this.plane = new WHS.Plane(this.options.plane);
-      this.plane.addTo(this.world);
-
       this.sphere = new WHS.Sphere(this.options.sphere);
       this.sphere.addTo(this.world);
     }
