@@ -15,8 +15,19 @@ class Morph extends Component {
     geometry: {
       path: '',
       loader: JSONLoader
+    },
+
+    morph: {
+      duration: 1,
+      speed: 100
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['path', 'loader'],
+    morph: ['duration', 'speed']
+  };
 
   constructor(params = {}) {
     super(params, Morph.defaults, Morph.instructions);

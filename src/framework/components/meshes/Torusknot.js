@@ -21,7 +21,19 @@ class Torusknot extends Component {
       p: 2,
       q: 3
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: [
+      'radius',
+      'tube',
+      'radialSegments',
+      'tubularSegments',
+      'p',
+      'q'
+    ]
+  };
 
   constructor(params = {}) {
     super(params, Torusknot.defaults, Torusknot.instructions);

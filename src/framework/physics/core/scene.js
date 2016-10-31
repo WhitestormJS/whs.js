@@ -18,11 +18,18 @@ export class Scene extends THREE.Scene {
   constructor(params = {}, init = {}) {
     super();
 
-    Object.assign(this, new Eventable());
-    Eventable.make(Scene);
-
     this._worker = new Worker(require('../worker.js'));
     this._worker.transferableMessage = this._worker.webkitPostMessage || this._worker.postMessage;
+
+    params.fixedTimeStep = params.fixedTimeStep || 1 / 60;
+    params.rateLimit = params.rateLimit || true;
+
+    params.whs = {
+      softbody: init.softbody
+    };
+
+    this.execute('init', params);
+
     this._materials_ref_counts = {};
     this._objects = {};
     this._vehicles = {};
@@ -108,12 +115,8 @@ export class Scene extends THREE.Scene {
       }
     };
 
-    params.fixedTimeStep = params.fixedTimeStep || 1 / 60;
-    params.rateLimit = params.rateLimit || true;
-
-    params.whs = {
-      softbody: init.softbody
-    };
+    Object.assign(this, new Eventable());
+    Eventable.make(Scene);
 
     this._stats = init.stats ? new Stats() : false;
     this._world = init.world || false;
@@ -126,8 +129,6 @@ export class Scene extends THREE.Scene {
 
       this._world._dom.appendChild(this._stats.domElement);
     }
-
-    this.execute('init', params);
   }
 
   _updateScene(data) {

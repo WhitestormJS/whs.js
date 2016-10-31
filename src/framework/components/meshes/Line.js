@@ -17,7 +17,12 @@ class Line extends Component {
       curve: false,
       points: 50
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['curve', 'points']
+  };
 
   constructor(params) {
     super(params, Line.defaults, Line.instructions);

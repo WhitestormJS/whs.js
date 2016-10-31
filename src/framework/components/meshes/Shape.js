@@ -11,7 +11,12 @@ class Shape extends Component {
     geometry: {
       shapes: []
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['shapes']
+  };
 
   constructor(params = {}) {
     super(params, Shape.defaults, Shape.instructions);

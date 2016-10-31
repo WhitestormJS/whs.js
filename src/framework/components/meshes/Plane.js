@@ -19,7 +19,12 @@ class Plane extends Component {
       wSegments: 32,
       hSegments: 32
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: ['width', 'height', 'wSegments', 'hSegments']
+  };
 
   constructor(params = {}) {
     super(params, Plane.defaults, Plane.instructions);

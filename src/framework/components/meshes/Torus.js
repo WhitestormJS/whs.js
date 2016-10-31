@@ -20,7 +20,18 @@ class Torus extends Component {
       tubularSegments: 6,
       arc: Math.PI * 2
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: [
+      'radius',
+      'tube',
+      'radialSegments',
+      'tubularSegments',
+      'arc'
+    ]
+  };
 
   constructor(params = {}) {
     super(params, Torus.defaults, Torus.instructions);

@@ -24,7 +24,21 @@ class Cylinder extends Component {
       thetaStart: 0,
       thetaLength: Math.PI * 2
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: [
+      'radiusTop',
+      'radiusBottom',
+      'height',
+      'radiusSegments',
+      'heightSegments',
+      'openEnded',
+      'thetaStart',
+      'thetaLength'
+    ]
+  };
 
   constructor(params = {}) {
     super(params, Cylinder.defaults, Cylinder.instructions);

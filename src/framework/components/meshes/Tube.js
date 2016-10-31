@@ -20,7 +20,18 @@ class Tube extends Component {
       radiusSegments: 8,
       closed: false
     }
-  }
+  };
+
+  static instructions = {
+    ...Component.instructions,
+    geometry: [
+      'path',
+      'segments',
+      'radius',
+      'radiusSegments',
+      'closed'
+    ]
+  };
 
   constructor(params = {}) {
     super(params, Tube.defaults, Tube.instructions);
