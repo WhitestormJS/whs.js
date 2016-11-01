@@ -1,4 +1,8 @@
-import * as THREE from 'three';
+import {
+  Mesh,
+  CylinderBufferGeometry,
+  CylinderGeometry
+} from 'three';
 
 import {CylinderMesh, SoftMesh} from '../../physics/index.js';
 
@@ -52,14 +56,14 @@ class Cylinder extends Component {
   build(params = {}) {
     const material = loadMaterial(params.material);
 
-    let Mesh;
+    let MeshNative;
 
-    if (this.physics && this.params.softbody) Mesh = SoftMesh;
-    else if (this.physics) Mesh = CylinderMesh;
-    else Mesh = THREE.Mesh;
+    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
+    else if (this.physics) MeshNative = CylinderMesh;
+    else MeshNative = Mesh;
 
     return new Promise((resolve) => {
-      this.native = new Mesh(
+      this.native = new MeshNative(
         this.buildGeometry(params),
         material,
         this.params
@@ -70,7 +74,7 @@ class Cylinder extends Component {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? THREE.CylinderBufferGeometry : THREE.CylinderGeometry;
+    const GConstruct = params.buffer && !params.softbody ? CylinderBufferGeometry : CylinderGeometry;
 
     const geometry = new GConstruct(
       params.geometry.radiusTop,

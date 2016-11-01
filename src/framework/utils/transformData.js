@@ -3,7 +3,7 @@ import _ from 'lodash';
 export const transformData = (object, instructions) => {
   for (let key in instructions) {
     if (_.isArray(object[key])) {
-      const tempObject = new Object();
+      const tempObject = {};
 
       for (let i = 0, max = instructions[key].length; i < max; i++) {
         const guide = instructions[key][i];
@@ -19,7 +19,7 @@ export const transformData = (object, instructions) => {
 };
 
 export const instruct = (object, instruction) => {
-  const tempObject = new Object();
+  const tempObject = {};
 
   for (let i = 0, max = instruction.length; i < max; i++) {
     const guide = instruction[i];
@@ -31,7 +31,7 @@ export const instruct = (object, instruction) => {
 };
 
 export const toArray = (object, instruction) => {
-  const tempArray = new Array();
+  const tempArray = [];
 
   for (let i = 0, max = instruction.length; i < max; i++) {
     const guide = instruction[i];

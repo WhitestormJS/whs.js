@@ -1,4 +1,9 @@
-import * as THREE from 'three';
+import {
+  Mesh,
+  MultiMaterial,
+  FaceColors
+} from 'three';
+
 import {ConvexMesh, ConcaveMesh} from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
@@ -35,11 +40,11 @@ class Model extends Component {
   }
 
   build(params = {}) {
-    let Mesh;
+    let MeshNative;
 
-    if (this.physics && params.physics.type === 'concave') Mesh = ConcaveMesh;
-    else if (this.physics) Mesh = ConvexMesh;
-    else Mesh = THREE.Mesh
+    if (this.physics && params.physics.type === 'concave') MeshNative = ConcaveMesh;
+    else if (this.physics) MeshNative = ConvexMesh;
+    else MeshNative = Mesh;
 
     const promise = new Promise((resolve) => {
       const pGeometry = params.geometry;
@@ -54,17 +59,17 @@ class Model extends Component {
               material = loadMaterial(
                 extend(params.material, {
                   morphTargets: true,
-                  vertexColors: THREE.FaceColors
+                  vertexColors: FaceColors
                 })
               );
             } else if (!materials || params.material.useCustomMaterial) {
               material = loadMaterial(params.material);
-            } else material = new THREE.MultiMaterial(materials);
+            } else material = new MultiMaterial(materials);
 
             data.computeFaceNormals();
             data.computeVertexNormals();
 
-            this.native = new Mesh(
+            this.native = new MeshNative(
               data,
               material,
               this.params,
@@ -80,19 +85,19 @@ class Model extends Component {
             material = loadMaterial(
               extend(params.material, {
                 morphTargets: true,
-                vertexColors: THREE.FaceColors
+                vertexColors: FaceColors
               })
             );
           } else if (!materials || params.material.useCustomMaterial) {
             material = loadMaterial(params.material);
-          } else material = new THREE.MultiMaterial(materials);
+          } else material = new MultiMaterial(materials);
 
           data.computeFaceNormals();
           data.computeVertexNormals();
 
           console.log(this.params);
 
-          this.native = new Mesh(
+          this.native = new MeshNative(
             data,
             material,
             this.params

@@ -1,4 +1,10 @@
-import * as THREE from 'three';
+import {
+  FaceColors,
+  MultiMaterial,
+  Mesh,
+  AnimationMixer
+} from 'three';
+
 import * as Physijs from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
@@ -48,20 +54,20 @@ class Morph extends Component {
           material = loadMaterial(
             extend(params.material, {
               morphTargets: true,
-              vertexColors: THREE.FaceColors
+              vertexColors: FaceColors
             })
           );
         } else if (!materials || params.material.useCustomMaterial) {
           material = loadMaterial(params.material);
-        } else material = new THREE.MultiMaterial(materials);
+        } else material = new MultiMaterial(materials);
 
         data.computeFaceNormals();
         data.computeVertexNormals();
 
         // Visualization.
-        const mesh = new THREE.Mesh(data, material);
+        const mesh = new MeshNative(data, material);
         mesh.speed = params.morph.speed;
-        mesh.mixer = new THREE.AnimationMixer(mesh);
+        mesh.mixer = new AnimationMixer(mesh);
 
         mesh.mixer
           .clipAction(data.animations[0])

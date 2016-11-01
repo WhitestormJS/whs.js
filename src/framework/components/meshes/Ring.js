@@ -1,4 +1,8 @@
-import * as THREE from 'three';
+import {
+  Mesh,
+  RingGeometry,
+  RingBufferGeometry
+} from 'three';
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
@@ -43,8 +47,8 @@ class Ring extends Component {
     const material = loadMaterial(params.material);
 
     return new Promise((resolve) => {
-      this.native = new THREE.Mesh(
-        new THREE.RingGeometry(
+      this.native = new Mesh(
+        new RingGeometry(
           params.geometry.innerRadius,
           params.geometry.outerRadius,
           params.geometry.thetaSegments,
@@ -61,7 +65,7 @@ class Ring extends Component {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? THREE.RingBufferGeometry : THREE.RingGeometry;
+    const GConstruct = params.buffer && !params.softbody ? RingBufferGeometry : RingGeometry;
 
     return new GConstruct(
       params.geometry.innerRadius,

@@ -1,10 +1,14 @@
-import * as THREE from 'three';
+import {
+  Quaternion,
+  Object3D
+} from 'three';
+
 import * as Physijs from '../physics/index.js';
-import {$wrap, $defaults, $extend, $define} from '../utils/ComponentUtils';
+import {$wrap} from '../utils/ComponentUtils';
 
 import {extend} from '../utils/index';
 
-const physicsDefaults = Physijs.default !== false ? {
+const physicsDefaults = Physijs.default === false ? false : {
   restitution: 0.3,
   friction: 0.8,
   damping: 0,
@@ -12,8 +16,8 @@ const physicsDefaults = Physijs.default !== false ? {
   margin: 0,
   klst: 0.9,
   kvst: 0.9,
-  klst: 0.9
-} : false;
+  kast: 0.9
+};
 
 function PhysicsComponent(targetComponent) {
   const resultComponent = class PhysicsComponentEnhance extends targetComponent {
@@ -90,7 +94,7 @@ function PhysicsComponent(targetComponent) {
       if (sourceNative) {
         this.native = sourceNative.clone(source.params);
         this.native.mass = sourceNative.mass;
-        this.params = { ...source.params };
+        this.params = {...source.params};
 
         this.wrap('no-transforms');
 
@@ -184,7 +188,7 @@ function PhysicsComponent(targetComponent) {
 
       rot.onChange(() => {
         if (this.__c_rot) {
-          this.quaternion.copy(new THREE.Quaternion().setFromEuler(rot));
+          this.quaternion.copy(new Quaternion().setFromEuler(rot));
           native.__dirtyRotation = true;
         }
       });
@@ -197,7 +201,7 @@ function PhysicsComponent(targetComponent) {
     set native(mesh) {
       this._native = mesh;
 
-      if (mesh instanceof THREE.Object3D) {
+      if (mesh instanceof Object3D) {
         this.position = mesh.position.clone();
         this.quaternion = mesh.quaternion.clone();
         this.rotation = mesh.rotation.clone();

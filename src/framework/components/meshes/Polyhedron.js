@@ -1,4 +1,9 @@
-import * as THREE from 'three';
+import {
+  Mesh,
+  PolyhedronBufferGeometry,
+  PolyhedronGeometry
+} from 'three';
+
 import {ConvexMesh, SoftMesh} from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
@@ -56,14 +61,14 @@ class Polyhedron extends Component {
   build(params = {}) {
     const material = loadMaterial(params.material);
 
-    let Mesh;
+    let MeshNative;
 
-    if (this.physics && this.params.softbody) Mesh = SoftMesh;
-    else if (this.physics) Mesh = ConvexMesh;
-    else Mesh = THREE.Mesh;
+    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
+    else if (this.physics) MeshNative = ConvexMesh;
+    else MeshNative = Mesh;
 
     return new Promise((resolve) => {
-      this.native = new Mesh(
+      this.native = new MeshNative(
         this.buildGeometry(params),
         material,
         this.params
@@ -74,7 +79,7 @@ class Polyhedron extends Component {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? THREE.PolyhedronBufferGeometry : THREE.PolyhedronGeometry;
+    const GConstruct = params.buffer && !params.softbody ? PolyhedronBufferGeometry : PolyhedronGeometry;
 
     return new GConstruct(
       params.geometry.verticesOfCube,

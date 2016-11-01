@@ -1,23 +1,21 @@
-import * as THREE from 'three';
 import {Component} from './Component';
 
 export class Element {
   constructor(native, decorators = [], params = {}) {
-    const wrapComponentClass = (() => {
-      class component extends Component {
+    const Constructor = (() => {
+      let result = class component extends Component {
         constructor() {
           super(params, component.defaults);
         }
       };
 
-      for (let i = 0, max = decorators.length; i < max; i++) {
-        component = decorators[i](component);
-      }
+      for (let i = 0, max = decorators.length; i < max; i++)
+        result = decorators[i](result);
 
-      return component;
+      return result;
     })();
 
-    const element = new wrapComponentClass();
+    const element = new Constructor();
     element.native = native;
 
     return element;

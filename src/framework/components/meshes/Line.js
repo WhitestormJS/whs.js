@@ -1,6 +1,11 @@
-import * as THREE from 'three';
+import {
+  Line as LineNative,
+  BufferGeometry,
+  Geometry,
+  BufferAttribute
+} from 'three';
 
-import {loadMaterial, extend} from '../../utils/index';
+import {loadMaterial} from '../../utils/index';
 import {RopeMesh} from '../../physics/index.js';
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
@@ -36,13 +41,13 @@ class Line extends Component {
   build(params = {}) {
     const material = loadMaterial(params.material);
 
-    let Mesh;
+    let Native;
 
-    if (this.physics) Mesh = RopeMesh;
-    else Mesh = THREE.Line;
+    if (this.physics) Native = RopeMesh;
+    else Native = LineNative;
 
     return new Promise((resolve) => {
-      this.native = new Mesh(
+      this.native = new Native(
         this.buildGeometry(params),
         material,
         this.params
@@ -53,7 +58,7 @@ class Line extends Component {
   }
 
   buildGeometry(params = {}) {
-    const geometry = params.buffer || params.physics ? new THREE.BufferGeometry() : new THREE.Geometry();
+    const geometry = params.buffer || params.physics ? new BufferGeometry() : new Geometry();
 
     if (params.buffer || params.physics) {
       const pp = params.geometry.curve.getPoints(params.geometry.points);
@@ -65,7 +70,7 @@ class Line extends Component {
         verts[i * 3 + 2] = pp[i].z;
       }
 
-      geometry.addAttribute('position', new THREE.BufferAttribute(verts, 3));
+      geometry.addAttribute('position', new BufferAttribute(verts, 3));
     } else geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
 
     if (params.softbody) this.proccessSoftbodyGeometry(geometry);

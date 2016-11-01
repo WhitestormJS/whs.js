@@ -1,5 +1,10 @@
-import * as THREE from 'three';
-import {extend} from '../../utils/index';
+import {
+  Object3D,
+  Quaternion,
+  Vector3,
+  Euler
+} from 'three';
+
 import {Component} from '../../core/Component';
 
 const PI_2 = Math.PI / 2;
@@ -25,16 +30,16 @@ export class FirstPersonControls extends Component {
 
       /* Init */
       const player = mesh,
-        pitchObject = new THREE.Object3D();
+        pitchObject = new Object3D();
 
       pitchObject.add(camera.native);
 
-      const yawObject = new THREE.Object3D();
+      const yawObject = new Object3D();
 
       yawObject.position.y = params.ypos; // eyes are 2 meters above the ground
       yawObject.add(pitchObject);
 
-      const quat = new THREE.Quaternion();
+      const quat = new Quaternion();
 
       let canJump = false,
         // Moves.
@@ -145,8 +150,8 @@ export class FirstPersonControls extends Component {
 
       // Moves the camera to the Cannon.js object position
       // and adds velocity to the object if the run key is down.
-      const inputVelocity = new THREE.Vector3(),
-        euler = new THREE.Euler();
+      const inputVelocity = new Vector3(),
+        euler = new Euler();
 
       this.update = delta => {
         if (this.enabled === false) return;
