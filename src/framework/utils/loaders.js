@@ -1,26 +1,36 @@
-import * as THREE from 'three';
+import {
+  JSONLoader as JSONLoaderNative,
+  BufferGeometryLoader as BufferGeometryLoaderNative,
+  ObjectLoader as ObjectLoaderNative,
+  TextureLoader as TextureLoaderNative,
+  FontLoader as FontLoaderNative,
+  XHRLoader as XHRLoaderNative,
+  AudioLoader as AudioLoaderNative,
+  ImageLoader as ImageLoaderNative,
+  MaterialLoader as MaterialLoaderNative
+} as from 'three';
 
 // Models.
-const JSONLoader = new THREE.JSONLoader();
-// const OBJLoader = new THREE.OBJLoader();
-// const BabylonLoader = new THREE.BabylonLoader();
-const BufferGeometryLoader = new THREE.BufferGeometryLoader();
-// const ColladaLoader = new THREE.ColladaLoader();
-// const glTFLoader = new THREE.glTFLoader();
-const ObjectLoader = new THREE.ObjectLoader();
-// const PDBLoader = new THREE.PDBLoader();
-// const SVGLoader = new THREE.SVGLoader();
-// const TGALoader = new THREE.TGALoader();
+const JSONLoader = new JSONLoaderNative();
+// const OBJLoader = new OBJLoaderNative();
+// const BabylonLoader = new BabylonLoaderNative();
+const BufferGeometryLoader = new BufferGeometryLoaderNative();
+// const ColladaLoader = new ColladaLoaderNative();
+// const glTFLoader = new glTFLoaderNative();
+const ObjectLoader = new ObjectLoaderNative();
+// const PDBLoader = new PDBLoaderNative();
+// const SVGLoader = new SVGLoaderNative();
+// const TGALoader = new TGALoaderNative();
 
 
 // Other.
-const TextureLoader = new THREE.TextureLoader();
-const FontLoader = new THREE.FontLoader();
-const XHRLoader = new THREE.XHRLoader();
-const AudioLoader = new THREE.AudioLoader();
-const ImageLoader = new THREE.ImageLoader();
-const MaterialLoader = new THREE.MaterialLoader();
-// const MTLLoader = new THREE.MTLLoader();
+const TextureLoader = new TextureLoaderNative();
+const FontLoader = new FontLoaderNative();
+const XHRLoader = new XHRLoaderNative();
+const AudioLoader = new AudioLoaderNative();
+const ImageLoader = new ImageLoaderNative();
+const MaterialLoader = new MaterialLoaderNative();
+// const MTLLoader = new MTLLoaderNative();
 
 export {
   JSONLoader,

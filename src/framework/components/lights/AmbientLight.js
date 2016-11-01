@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import {AmbientLight as AmbientLightNative} from 'three';
 import {Component} from '../../core/Component';
 import {LightComponent} from '../../core/LightComponent';
 
@@ -15,7 +15,7 @@ class AmbientLight extends Component {
     const _scope = this;
 
     return new Promise((resolve) => {
-      _scope.native = new THREE.AmbientLight(
+      _scope.native = new AmbientLightNative(
         params.light.color,
         params.light.intensity
       );

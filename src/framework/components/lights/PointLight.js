@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import {PointLight as PointLightNative, PointLightHelper} from 'three';
 import {Component} from '../../core/Component';
 import {LightComponent} from '../../core/LightComponent';
 
@@ -13,7 +13,7 @@ class PointLight extends Component {
 
   build(params = {}) {
     return new Promise((resolve) => {
-      this.native = new THREE.PointLight(
+      this.native = new PointLightNative(
         params.light.color,
         params.light.intensity,
         params.light.distance,
@@ -21,7 +21,7 @@ class PointLight extends Component {
       );
 
       if (params.helper) {
-        this.helper = new THREE.PointLightHelper(
+        this.helper = new PointLightHelper(
           this.native,
           params.helper.size ? params.helper.size : 0
         );

@@ -1,4 +1,8 @@
-import * as THREE from 'three';
+import {
+  Mesh,
+  BoxBufferGeometry,
+  BoxGeometry
+} from 'three';
 import {BoxMesh, SoftMesh} from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
@@ -37,14 +41,14 @@ class Box extends Component {
   build(params = {}) {
     const material = loadMaterial(params.material);
 
-    let Mesh;
+    let MeshNative;
 
-    if (this.physics && this.params.softbody) Mesh = SoftMesh;
-    else if (this.physics) Mesh = BoxMesh;
-    else Mesh = THREE.Mesh;
+    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
+    else if (this.physics) MeshNative = BoxMesh;
+    else MeshNative = Mesh;
 
     return new Promise((resolve) => {
-      this.native = new Mesh(
+      this.native = new MeshNative(
         this.buildGeometry(params),
         material,
         this.params
@@ -55,7 +59,7 @@ class Box extends Component {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? THREE.BoxBufferGeometry : THREE.BoxGeometry;
+    const GConstruct = params.buffer && !params.softbody ? BoxBufferGeometry : BoxGeometry;
 
     const geometry = new GConstruct(
       params.geometry.width,

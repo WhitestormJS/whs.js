@@ -1,4 +1,8 @@
-import * as THREE from 'three';
+import {
+  Mesh,
+  TorusBufferGeometry,
+  TorusGeometry
+} from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
@@ -45,15 +49,15 @@ class Torus extends Component {
   build(params = {}) {
     const material = loadMaterial(params.material);
 
-    let Mesh;
+    let MeshNative;
 
-    if (this.physics && this.params.softbody) Mesh = SoftMesh;
-    else if (this.physics && this.physics.type === 'concave') Mesh = ConcaveMesh;
-    else if (this.physics) Mesh = ConvexMesh;
-    else Mesh = THREE.Mesh;
+    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
+    else if (this.physics && this.physics.type === 'concave') MeshNative = ConcaveMesh;
+    else if (this.physics) MeshNative = ConvexMesh;
+    else MeshNative = Mesh;
 
     return new Promise((resolve) => {
-      this.native = new Mesh(
+      this.native = new MeshNative(
         this.buildGeometry(params),
         material,
         this.params
@@ -64,9 +68,9 @@ class Torus extends Component {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? THREE.TorusBufferGeometry : THREE.TorusGeometry;
+    const GConstruct = params.buffer && !params.softbody ? TorusBufferGeometry : TorusGeometry;
 
-    return new THREE.TorusGeometry(
+    return new TorusGeometry(
       params.geometry.radius,
       params.geometry.tube,
       params.geometry.radialSegments,

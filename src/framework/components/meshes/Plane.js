@@ -1,4 +1,9 @@
-import * as THREE from 'three';
+import {
+  Mesh,
+  PlaneBufferGeometry,
+  PlaneGeometry
+} from 'three';
+
 import {PlaneMesh, ClothMesh} from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
@@ -38,14 +43,14 @@ class Plane extends Component {
   build(params = {}) {
     const material = loadMaterial(params.material);
 
-    let Mesh;
+    let MeshNative;
 
-    if (this.physics && this.params.softbody) Mesh = ClothMesh;
-    else if (this.physics) Mesh = PlaneMesh;
-    else Mesh = THREE.Mesh;
+    if (this.physics && this.params.softbody) MeshNative = ClothMesh;
+    else if (this.physics) MeshNative = PlaneMesh;
+    else MeshNative = Mesh;
 
     return new Promise((resolve) => {
-      this.native = new Mesh(
+      this.native = new MeshNative(
         this.buildGeometry(params),
         material,
         this.params
@@ -56,7 +61,7 @@ class Plane extends Component {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer || params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
+    const GConstruct = params.buffer || params.softbody ? PlaneBufferGeometry : PlaneGeometry;
 
     const geometry = new GConstruct(
       params.geometry.width,

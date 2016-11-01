@@ -1,4 +1,9 @@
-import * as THREE from 'three';
+import {
+  Mesh,
+  SphereBufferGeometry,
+  SphereGeometry
+} from 'three';
+
 import {SphereMesh, SoftMesh} from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
@@ -37,14 +42,14 @@ class Sphere extends Component {
   build(params = this.params) {
     const material = loadMaterial(params.material);
 
-    let Mesh;
+    let MeshNative;
 
-    if (this.physics && this.params.softbody) Mesh = SoftMesh;
-    else if (this.physics) Mesh = SphereMesh;
-    else Mesh = THREE.Mesh;
+    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
+    else if (this.physics) MeshNative = SphereMesh;
+    else MeshNative = Mesh;
 
     return new Promise((resolve) => {
-      this.native = new Mesh(
+      this.native = new MeshNative(
         this.buildGeometry(params),
 
         material,
@@ -56,7 +61,7 @@ class Sphere extends Component {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? THREE.SphereBufferGeometry : THREE.SphereGeometry;
+    const GConstruct = params.buffer && !params.softbody ? SphereBufferGeometry : SphereGeometry;
 
     const geometry = new GConstruct(
       params.geometry.radius,

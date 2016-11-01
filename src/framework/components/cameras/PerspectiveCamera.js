@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import {PerspectiveCamera as PerspectiveCameraNative} from 'three';
 import {Component} from '../../core/Component';
 import {CameraComponent} from '../../core/CameraComponent';
 
@@ -13,7 +13,7 @@ class PerspectiveCamera extends Component {
 
   build(params = {}) {
     return new Promise((resolve) => {
-      this.native = new THREE.PerspectiveCamera(
+      this.native = new PerspectiveCameraNative(
         params.camera.fov,
         params.camera.aspect,
         params.camera.near,

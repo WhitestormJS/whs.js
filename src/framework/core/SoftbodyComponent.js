@@ -1,5 +1,4 @@
-import {$wrap, $defaults, $extend} from '../utils/ComponentUtils';
-
+import {$wrap} from '../utils/ComponentUtils';
 import {extend} from '../utils/index';
 
 function SoftbodyComponent(targetComponent) {

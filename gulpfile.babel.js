@@ -72,7 +72,7 @@ gulp.task('src:build:browser', ['build:clean'], (callback) => {
   });
 });
 
-gulp.task('src:build:node', (callback) => {
+gulp.task('src:build:node', () => {
   gulp.src(`${frameworkSrc}/**/*`)
     .pipe($.cached('babel', {optimizeMemory: true}))
     .pipe($.babel())

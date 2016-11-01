@@ -1,4 +1,9 @@
-import * as THREE from 'three';
+import {
+  Font,
+  Mesh,
+  TextGeometry
+} from 'three';
+
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../../physics/index.js';
 
 import {Component} from '../../core/Component';
@@ -20,7 +25,7 @@ class Text extends Component {
         size: 12,
         height: 50,
         curveSegments: 12,
-        font: new THREE.Font(),
+        font: new Font(),
         bevelEnabled: false,
         bevelThickness: 10,
         bevelSize: 8
@@ -45,19 +50,19 @@ class Text extends Component {
   build(params = {}) {
     const material = loadMaterial(params.material);
 
-    let Mesh;
+    let MeshNative;
 
-    if (this.physics && this.params.softbody) Mesh = SoftMesh;
-    else if (this.physics && this.physics.type === 'concave') Mesh = ConcaveMesh;
-    else if (this.physics) Mesh = ConvexMesh;
-    else Mesh = THREE.Mesh;
+    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
+    else if (this.physics && this.physics.type === 'concave') MeshNative = ConcaveMesh;
+    else if (this.physics) MeshNative = ConvexMesh;
+    else MeshNative = Mesh;
 
     const promise = new Promise((resolve) => {
       FontLoader.load(params.geometry.parameters.font, font => {
         params.geometry.parameters.font = font;
 
-        this.native = new Mesh(
-          new THREE.TextGeometry(
+        this.native = new MeshNative(
+          new TextGeometry(
             params.geometry.text,
             params.geometry.parameters
           ),

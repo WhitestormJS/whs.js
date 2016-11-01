@@ -43,7 +43,6 @@ export class SoftMesh extends Mesh {
     this._physijs.aIndices = aIndices;
     this._physijs.aIdxAssoc = aIdxAssoc;
 
-
     this._physijs.params = {
       friction: physParams.friction,
       damping: physParams.damping,
@@ -59,7 +58,7 @@ export class SoftMesh extends Mesh {
       diterations: physParams.diterations,
       citerations: physParams.citerations,
       anchorHardness: physParams.anchorHardness,
-      rigidHardness: physParams.rigidHardness,
+      rigidHardness: physParams.rigidHardness
     };
 
     this._physijs.mass = mass;

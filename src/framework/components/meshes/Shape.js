@@ -1,4 +1,8 @@
-import * as THREE from 'three';
+import {
+  Mesh,
+  ComponentBufferGeometry,
+  ComponentGeometry
+} from 'three';
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
@@ -31,7 +35,7 @@ class Shape extends Component {
     const material = loadMaterial(params.material);
 
     return new Promise((resolve) => {
-      this.native = new THREE.Mesh(
+      this.native = new Mesh(
         this.buildGeometry(params),
         material
       );
@@ -41,7 +45,7 @@ class Shape extends Component {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? THREE.ComponentBufferGeometry : THREE.ComponentGeometry;
+    const GConstruct = params.buffer && !params.softbody ? ComponentBufferGeometry : ComponentGeometry;
 
     return new GConstruct(
       params.geometry.shapes
