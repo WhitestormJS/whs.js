@@ -1,4 +1,4 @@
-import {from
+import {
   Material,
   MeshBasicMaterial,
   LineBasicMaterial,
@@ -14,14 +14,11 @@ import {from
   RawShaderMaterial,
   ShaderMaterial,
   SpriteCanvasMaterial,
-  SpriteMaterial,
-  MeshBasicMaterial
+  SpriteMaterial
 } from 'three';
 
 export const loadMaterial = (material = {}) => {
-  if (material instanceof Material) {
-    return material;
-  }
+  if (material instanceof Material) return material;
   else {
     let materialThree;
 

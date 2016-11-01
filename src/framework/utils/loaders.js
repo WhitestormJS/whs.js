@@ -8,7 +8,7 @@ import {
   AudioLoader as AudioLoaderNative,
   ImageLoader as ImageLoaderNative,
   MaterialLoader as MaterialLoaderNative
-} as from 'three';
+} from 'three';
 
 // Models.
 const JSONLoader = new JSONLoaderNative();
