@@ -1,9 +1,9 @@
-import * as THREE from 'three';
+import {Clock} from 'three';
 
 class Loop {
   constructor(func) {
     this.func = func;
-    this.clock = new THREE.Clock();
+    this.clock = new Clock();
     this.enabled = false;
   }
 

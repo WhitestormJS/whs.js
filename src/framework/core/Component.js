@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import {Object3D} from 'three';
 import Events from 'minivents';
 
 import {extend, transformData, toArray} from '../utils/index';
@@ -7,7 +7,7 @@ export const getWorld = (parent) => {
   let world = parent;
   while (!world.scene) world = world.parent;
   return world;
-}
+};
 
 class Component extends Events {
   static defaults = {};
@@ -21,7 +21,7 @@ class Component extends Events {
   constructor(obj = {}, defaults = {}, instructions = {}) {
     super();
 
-    if (obj instanceof THREE.Object3D) this.native = obj;
+    if (obj instanceof Object3D) this.native = obj;
     else this.params = transformData(extend(obj, defaults), instructions);
 
     this.callConstructor(this);
@@ -38,13 +38,14 @@ class Component extends Events {
   callCopy() {}
 
   wrap(...tags) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       const _wrap = () => {
         if (tags.indexOf('no-transforms') < 0) this.wrapTransforms();
 
         this.callWrap(this, ...tags);
         resolve(this);
       };
+
       if (this._wait.length > 0) Promise.all(this._wait).then(_wrap);
       else _wrap();
     });
@@ -71,7 +72,7 @@ class Component extends Events {
         if (typeof _params.helpers === 'undefined')
           _params.helpers = {};
 
-        for (let key in this._helpers) {
+        for (const key in this._helpers) {
           if (this._helpers) parentNative.add(this._helpers[key]);
         }
 

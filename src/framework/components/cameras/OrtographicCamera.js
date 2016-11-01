@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import {OrtographicCamera as OrtographicCameraNative} from 'three';
 import {Component} from '../../core/Component';
 import {CameraComponent} from '../../core/CameraComponent';
 
@@ -13,7 +13,7 @@ class OrtographicCamera extends Component {
 
   build(params = {}) {
     return new Promise((resolve) => {
-      this.native = new THREE.OrtographicCamera(
+      this.native = new OrtographicCameraNative(
         params.camera.left,
         params.camera.right,
         params.camera.top,

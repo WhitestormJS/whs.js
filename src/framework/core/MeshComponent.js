@@ -1,5 +1,12 @@
-import * as THREE from 'three';
-import {$wrap, $defaults, $extend, $define} from '../utils/ComponentUtils';
+import {
+  BoxHelper,
+  BoundingBoxHelper,
+  EdgesHelper,
+  FaceNormalsHelper,
+  VertexNormalsHelper
+} from 'three';
+
+import {$wrap} from '../utils/ComponentUtils';
 
 import {loadMaterial, extend} from '../utils/index';
 
@@ -40,23 +47,23 @@ function MeshComponent(targetComponent) {
     })();
 
     static helpers = {
-      'box': [THREE.BoxHelper],
+      box: [BoxHelper],
 
-      'boundingBox': [THREE.BoundingBoxHelper, {
+      boundingBox: [BoundingBoxHelper, {
         color: 0xffffff
       }, ['color']],
 
-      'edges': [THREE.EdgesHelper, {
+      edges: [EdgesHelper, {
         color: 0xffffff
       }, ['color']],
 
-      'faceNormals': [THREE.FaceNormalsHelper, {
+      faceNormals: [FaceNormalsHelper, {
         size: 2,
         color: 0xffffff,
         linewidth: 1
       }, ['size', 'color', 'linewidth']],
 
-      'vertexNormals': [THREE.VertexNormalsHelper, {
+      vertexNormals: [VertexNormalsHelper, {
         size: 2,
         color: 0xffffff,
         linewidth: 1

@@ -1,4 +1,13 @@
-import * as THREE from 'three';
+import {
+  PCFSoftShadowMap,
+  Scene,
+  Vector3,
+  Fog,
+  FogExp2,
+  AxisHelper,
+  GridHelper
+} from 'three';
+
 import * as Physijs from '../physics/index.js';
 
 import {extend} from '../utils/index';
@@ -26,7 +35,7 @@ class World extends Component {
     rendering: {
       shadowmap: {
         enabled: true,
-        type: THREE.PCFSoftShadowMap
+        type: PCFSoftShadowMap
       },
 
       background: {
@@ -135,11 +144,11 @@ class World extends Component {
           world: this,
           softbody: params.softbody
         }
-      ) : new THREE.Scene();
+      ) : new Scene();
 
     if (Physijs.default !== false) {
       scene.setGravity(
-        new THREE.Vector3(
+        new Vector3(
           params.gravity.x,
           params.gravity.y,
           params.gravity.z
@@ -151,10 +160,10 @@ class World extends Component {
     }
 
     if (params.fog.type === 'regular')
-      scene.fog = new THREE.Fog(params.fog.hex, params.fog.near, params.fog.far);
+      scene.fog = new Fog(params.fog.hex, params.fog.near, params.fog.far);
     else if (params.fog.type === 'exp'
       || params.fog.type === 'expodential')
-      scene.fog = new THREE.FogExp2(params.fog.hex, params.fog.density);
+      scene.fog = new FogExp2(params.fog.hex, params.fog.density);
 
     this.importScene(scene, false);
 
@@ -247,7 +256,7 @@ class World extends Component {
 
     if (_params.helpers.axis) {
       _scene.add(
-        new THREE.AxisHelper(
+        new AxisHelper(
           _params.helpers.axis.size
           ? _params.helpers.axis.size
           : 5
@@ -257,7 +266,7 @@ class World extends Component {
 
     if (_params.helpers.grid) {
       _scene.add(
-        new THREE.GridHelper(
+        new GridHelper(
           _params.helpers.grid.size
           ? _params.helpers.grid.size
           : 10,

@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import {Object3D} from 'three';
 import {$wrap, $defaults, $extend, $define} from '../utils/ComponentUtils';
 
 import {extend} from '../utils/index';
@@ -36,7 +36,7 @@ function CameraComponent(targetComponent) {
       super(...props);
 
       this.helper = null;
-      if (this.native instanceof THREE.Object3D) this.params = CameraComponentEnhance.defaults;
+      if (this.native instanceof Object3D) this.params = CameraComponentEnhance.defaults;
     }
 
     get position() {
@@ -71,7 +71,7 @@ function CameraComponent(targetComponent) {
     }
 
     set target(vector3) {
-      if (vector3 instanceof THREE.Object3D)
+      if (vector3 instanceof Object3D)
         this.native.target.copy(vector3); // THREE.Object3D in this case.
       else this.native.target.position.copy(vector3);
     }

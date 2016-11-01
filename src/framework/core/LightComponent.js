@@ -1,7 +1,7 @@
-import * as THREE from 'three';
-import {$wrap, $define, $extend, $defaults} from '../utils/ComponentUtils';
+import {Object3D} from 'three';
+import {$wrap} from '../utils/ComponentUtils';
 
-import {loadMaterial, extend} from '../utils/index';
+import {extend} from '../utils/index';
 
 function LightComponent(targetComponent) {
   const resultComponent = class LightComponentEnhance extends targetComponent {
@@ -145,7 +145,7 @@ function LightComponent(targetComponent) {
     }
 
     set target(vector3) {
-      if (vector3 instanceof THREE.Object3D)
+      if (vector3 instanceof Object3D)
         this.native.target.copy(vector3); // THREE.Object3D in this case.
       else this.native.target.position.copy(vector3);
     }

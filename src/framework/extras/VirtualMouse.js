@@ -1,5 +1,4 @@
 import Events from 'minivents';
-import {getWorld} from '../core/Component';
 
 export class VirtualMouse extends Events {
   mouse = new THREE.Vector2();
@@ -30,10 +29,11 @@ export class VirtualMouse extends Events {
 
     this.on('move', () => {
       if (this.hovers(component)) {
-        if (!isHovered) {
+        if (isHovered) component.emit('mousemove');
+        else {
           component.emit('mouseover');
           isHovered = true;
-        } else component.emit('mousemove');
+        }
       } else if (isHovered) {
         component.emit('mouseout');
         isHovered = false;

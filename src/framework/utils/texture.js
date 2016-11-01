@@ -1,4 +1,8 @@
-import * as THREE from 'three';
+import {
+  RepeatWrapping,
+  NearestFilter,
+  LinearMipMapLinearFilter
+} from 'three';
 
 import {TextureLoader} from './loaders';
 import {extend} from './extend';
@@ -18,13 +22,13 @@ export const texture = (url, repeat = {}) => {
       }
     });
 
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    texture.wrapS = texture.wrapT = RepeatWrapping;
 
     texture.offset.set(opt.offset.x, opt.offset.y);
     texture.repeat.set(opt.repeat.x, opt.repeat.y);
 
-    texture.magFilter = THREE.NearestFilter;
-    texture.minFilter = THREE.LinearMipMapLinearFilter;
+    texture.magFilter = NearestFilter;
+    texture.minFilter = LinearMipMapLinearFilter;
   }
 
   return texture;
