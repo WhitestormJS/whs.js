@@ -9,31 +9,17 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var GAME = new WHS.World({
-  stats: 'fps', // fps, ms, mb
-  autoresize: true,
-
-  gravity: {
-    x: 0,
-    y: -100,
-    z: 0
-  },
+var world = new WHS.World(_extends({}, UTILS.$world, {
 
   camera: {
     far: 10000,
     y: 10,
     z: 100
-  },
-
-  rendering: {
-    background: {
-      color: 0xcccccc
-    }
   }
-});
+}));
 
 var halfMat = {
-  kind: 'basic',
+  kind: 'phong',
   transparent: true,
   opacity: 0.5
 };
@@ -41,14 +27,14 @@ var halfMat = {
 var box = new WHS.Box({
   geometry: {
     width: 2,
-    height: 2,
-    depth: 20
+    height: 30,
+    depth: 2
   },
 
-  mass: 0,
+  mass: 1,
 
   material: _extends({
-    color: 0xffff00
+    color: UTILS.$colors.mesh
   }, halfMat),
 
   position: {
@@ -59,14 +45,14 @@ var box = new WHS.Box({
 var box2 = new WHS.Box({
   geometry: {
     width: 2,
-    height: 2,
-    depth: 20
+    height: 20,
+    depth: 2
   },
 
   mass: 1,
 
   material: _extends({
-    color: 0x0000ff
+    color: UTILS.$colors.mesh
   }, halfMat),
 
   physics: {
@@ -74,49 +60,23 @@ var box2 = new WHS.Box({
   },
 
   position: {
-    y: 40,
+    y: 42,
     z: 10
   }
 });
 
-var pointer = new WHS.Sphere({ material: { color: 0x00ff00 } });
-pointer.position.set(0, 43, -8);
-pointer.addTo(GAME);
-pointer.applyCentralImpulse(new THREE.Vector3(0, 0, 1000));
+box.addTo(world);
+box2.addTo(world);
 
-box.addTo(GAME);
-box2.addTo(GAME);
+var constraint = new WHS.SliderConstraint(box2, box, new THREE.Vector3(0, box2.position.y, 0), new THREE.Vector3(0, 1, 0));
 
-var constraint = new WHS.SliderConstraint(box2, box, new THREE.Vector3(0, box2.position.y, 0), new THREE.Vector3(0, 0, 1));
+world.scene.addConstraint(constraint);
 
-GAME.scene.addConstraint(constraint);
+UTILS.addPlane(world, 250);
+UTILS.addBasicLights(world);
 
-new WHS.Plane({
-  geometry: {
-    width: 250,
-    height: 250
-  },
-
-  mass: 0,
-
-  material: {
-    color: 0xff0000,
-    kind: 'basic'
-  },
-
-  position: {
-    x: 0,
-    y: 0,
-    z: 0
-  },
-
-  rotation: {
-    x: -Math.PI / 2
-  }
-}).addTo(GAME);
-
-GAME.start();
-GAME.setControls(WHS.orbitControls());
+world.start();
+world.setControls(new WHS.OrbitControls());
 
 },{"./globals":2}],2:[function(require,module,exports){
 "use strict";

@@ -1,3 +1,3 @@
 export * from './CubeCamera';
-export * from './OrtographicCamera';
+export * from './OrthographicCamera';
 export * from './PerspectiveCamera';

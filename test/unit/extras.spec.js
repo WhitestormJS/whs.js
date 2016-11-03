@@ -1,4 +1,4 @@
-define(['whs'], function(WHS) {
+define(['whs'], (WHS) => {
   describe('Extras', () => {
     const world = new WHS.World({init: {rendering: false}});
 
@@ -45,18 +45,6 @@ define(['whs'], function(WHS) {
 
       it('#execute', () => {
         loop.execute();
-      });
-    });
-
-    context('List', () => {
-      const list = new WHS.List([1, 2, 3]);
-
-      it('#add', () => {
-        list.add(4);
-      });
-
-      it('#remove', () => {
-        list.remove(2);
       });
     });
   });

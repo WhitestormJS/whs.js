@@ -1,4 +1,4 @@
-define(['whs'], function(WHS) {
+define(['whs'], (WHS) => {
   const lights = [
     'AmbientLight',
     'DirectionalLight',
@@ -10,12 +10,18 @@ define(['whs'], function(WHS) {
   describe('Meshes', () => {
     const world = new WHS.World({init: {rendering: false}});
 
-    context('Automatic mesh test. (Used only for meshes that don\'t rely on specific files', () => {
+    context('Automatic lights test. (Used only for lights that don\'t rely on specific files', () => {
       for (let i = 0, max = lights.length; i < max; i++) {
         const lightName = lights[i];
 
-        it(lightName, () => {
-          new WHS[lightName]();
+        context(lightName, () => {
+          let component;
+
+          it('Create', () => {
+            component = new WHS[lightName]();
+          });
+
+          it('#addTo', () => component.addTo(world));
         });
       }
     });

@@ -1,30 +1,17 @@
 import * as UTILS from './globals';
 
-const GAME = new WHS.World({
-  stats: 'fps', // fps, ms, mb
-  autoresize: true,
-
-  gravity: {
-    x: 0,
-    y: -100,
-    z: 0
-  },
+const world = new WHS.World({
+  ...UTILS.$world,
 
   camera: {
     far: 10000,
     y: 10,
     z: 100
-  },
-
-  rendering:{
-    background: {
-      color: 0xcccccc
-    }
   }
 });
 
 const halfMat = {
-  kind: 'basic',
+  kind: 'phong',
   transparent: true,
   opacity: 0.5
 };
@@ -32,14 +19,14 @@ const halfMat = {
 const box = new WHS.Box({
   geometry: {
     width: 2,
-    height: 2,
-    depth: 20
+    height: 30,
+    depth: 2
   },
 
-  mass: 0,
+  mass: 1,
 
   material: {
-    color: 0xffff00,
+    color: UTILS.$colors.mesh,
     ...halfMat
   },
 
@@ -51,14 +38,14 @@ const box = new WHS.Box({
 const box2 = new WHS.Box({
   geometry: {
     width: 2,
-    height: 2,
-    depth: 20
+    height: 20,
+    depth: 2
   },
 
   mass: 1,
 
   material: {
-    color: 0x0000ff,
+    color: UTILS.$colors.mesh,
     ...halfMat
   },
 
@@ -67,49 +54,23 @@ const box2 = new WHS.Box({
   },
 
   position: {
-    y: 40,
+    y: 42,
     z: 10
   }
 });
 
-const pointer = new WHS.Sphere({material: {color: 0x00ff00}});
-pointer.position.set(0, 43, -8);
-pointer.addTo(GAME);
-pointer.applyCentralImpulse(new THREE.Vector3(0, 0, 1000));
-
-box.addTo(GAME);
-box2.addTo(GAME);
+box.addTo(world);
+box2.addTo(world);
 
 const constraint = new WHS.SliderConstraint(box2, box,
   new THREE.Vector3(0, box2.position.y, 0),
-  new THREE.Vector3(0, 0, 1)
+  new THREE.Vector3(0, 1, 0)
 );
 
-GAME.scene.addConstraint(constraint);
+world.scene.addConstraint(constraint);
 
-new WHS.Plane({
-  geometry: {
-    width: 250,
-    height: 250
-  },
+UTILS.addPlane(world, 250);
+UTILS.addBasicLights(world);
 
-  mass: 0,
-
-  material: {
-    color: 0xff0000,
-    kind: 'basic'
-  },
-
-  position: {
-    x: 0,
-    y: 0,
-    z: 0
-  },
-
-  rotation: {
-    x: -Math.PI / 2
-  }
-}).addTo(GAME);
-
-GAME.start();
-GAME.setControls(WHS.orbitControls());
+world.start();
+world.setControls(new WHS.OrbitControls());

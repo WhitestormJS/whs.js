@@ -1,7 +1,7 @@
 import {
   Mesh,
-  ComponentBufferGeometry,
-  ComponentGeometry
+  ShapeBufferGeometry,
+  ShapeGeometry
 } from 'three';
 
 import {Component} from '../../core/Component';
@@ -45,7 +45,7 @@ class Shape extends Component {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? ComponentBufferGeometry : ComponentGeometry;
+    const GConstruct = params.buffer && !params.softbody ? ShapeBufferGeometry : ShapeGeometry;
 
     return new GConstruct(
       params.geometry.shapes
