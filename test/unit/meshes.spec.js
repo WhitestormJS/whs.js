@@ -1,5 +1,6 @@
-define(['whs'], function(WHS) {
-  const path_assets = '/base/test/_assets/';
+define(['whs'], (WHS) => {
+  const assetsPath = '/base/test/_assets/';
+
   const shapes = [
     'Box',
     'Cylinder',
@@ -28,10 +29,16 @@ define(['whs'], function(WHS) {
 
     context('Automatic mesh test. (Used only for meshes that don\'t rely on specific files', () => {
       for (let i = 0, max = shapes.length; i < max; i++) {
-        const shapeName = shapes[i];
+        const meshName = shapes[i];
 
-        it(shapeName, () => {
-          new WHS[shapeName]();
+        context(meshName, () => {
+          let component;
+
+          it('Create', () => {
+            component = new WHS[meshName]();
+          });
+
+          it('#addTo', () => component.addTo(world));
         });
       }
     });
@@ -40,8 +47,8 @@ define(['whs'], function(WHS) {
       it('Model', () => {
         new WHS.Model({
           geometry: {
-            path: path_assets + 'models/teapot/utah-teapot-large.json',
-            physics: path_assets + 'models/teapot/utah-teapot-light.json'
+            path: `${assetsPath}models/teapot/utah-teapot-large.json`,
+            physics: `${assetsPath}models/teapot/utah-teapot-light.json`
           },
 
           mass: 100,
@@ -51,7 +58,7 @@ define(['whs'], function(WHS) {
             friction: 1,
             restitution: 0
           }
-        });
+        }).addTo(world);
       });
 
       it('Morph', () => {
@@ -60,7 +67,7 @@ define(['whs'], function(WHS) {
             width: 2,
             height: 2,
             depth: 2,
-            path: path_assets + 'models/morph/parrot.js'
+            path: `${assetsPath}models/morph/parrot.js`
           },
 
           material: {
@@ -72,7 +79,7 @@ define(['whs'], function(WHS) {
             duration: 0.4,
             speed: 200
           }
-        });
+        }).addTo(world);
       });
 
       it('Text', () => {
@@ -80,10 +87,10 @@ define(['whs'], function(WHS) {
           geometry: {
             text: 'hello world!',
             parameters: {
-              font: path_assets + 'models/fonts/helvetiker_regular.typeface.js'
+              font: `${assetsPath}models/fonts/helvetiker_regular.typeface.js`
             }
           }
-        });
+        }).addTo(world);
       });
 
       it('Line (rope)', () => {

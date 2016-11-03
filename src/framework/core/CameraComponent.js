@@ -6,18 +6,6 @@ import {extend} from '../utils/index';
 function CameraComponent(targetComponent) {
   const resultComponent = class CameraComponentEnhance extends targetComponent {
     static defautls = extend(targetComponent.defaults, {
-      camera: {
-        fov: 45,
-        aspect: window.innerWidth / window.innerHeight,
-        near: 1,
-        far: 1000,
-        left: window.innerWidth / -2,
-        right: window.innerWidth / 2,
-        top: window.innerHeight / 2,
-        bottom: window.innerHeight / -2,
-        cubeResolution: 128
-      },
-
       helper: false,
 
       position: {x: 0, y: 0, z: 0},

@@ -1,9 +1,9 @@
-define(['whs'], function(WHS) {
+define(['whs'], (WHS) => {
   describe('Camera', () => {
     const world = new WHS.World({init: {rendering: false}});
 
     function describeAttribute(camera, name, dims, Value) {
-      describe('.' + name, done => {
+      describe(`.${name}`, () => {
         it('Method', () => camera[name].set(1, 1, 1));
 
         it('Setter', () => {

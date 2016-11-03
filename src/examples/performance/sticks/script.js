@@ -17,11 +17,11 @@ const world = new WHS.World({
 
   shadowmap: {
     type: THREE.PCFShadowMap
-  },
+  }// ,
 
-  physics: {
-    broadphase: {type: 'sweepprune'}
-  }
+  // physics: {
+  //   broadphase: {type: 'sweepprune'}
+  // }
 });
 
 const stick = new WHS.Box({
@@ -41,8 +41,7 @@ const stick = new WHS.Box({
   physics: {
     restitution: 0,
     friction: 0.5,
-    state: 4,
-
+    state: 4
   },
 
   shadow: {
@@ -56,12 +55,11 @@ const stick = new WHS.Box({
 });
 
 const stick2 = stick.clone();
-console.log(stick2);
 stick2.position.set(0, 4, 20);
 
 const height = 10; // BASE: 6, 0, 2, 2.
 const delta = 0;
-const cols = 8,
+const cols = 4,
   rows = 4;
 
 let objects = 0;
@@ -103,7 +101,7 @@ const sphere = new WHS.Sphere({
     heightSegments: 32
   },
 
-  mass: 100,
+  mass: 10,
 
   material: {
     color: UTILS.$colors.mesh,
@@ -118,13 +116,13 @@ const sphere = new WHS.Sphere({
 
 sphere.addTo(world).then((sphere) => {
   const mx = 60,
-    mz = 40;
+    mz = 20;
 
   sphere.setAngularVelocity({x: mx, y: 0, z: mz});
   sphere.setLinearVelocity({x: mx, y: 0, z: mz});
 });
 
-UTILS.addBoxPlane(world, 250).then(o => o.position.y = -1);
+UTILS.addBoxPlane(world, 250).then(o => {o.position.y = -1});
 UTILS.addBasicLights(world, 0.5, [100, 100, 100], 200);
 
 world.setControls(new WHS.OrbitControls());

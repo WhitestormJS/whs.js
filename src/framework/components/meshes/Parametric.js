@@ -1,7 +1,8 @@
 import {
   Mesh,
   ParametricBufferGeometry,
-  ParametricGeometry
+  ParametricGeometry,
+  ParametricGeometries
 } from 'three';
 
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../../physics/index.js';
@@ -12,6 +13,8 @@ import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 import {loadMaterial} from '../../utils/index';
 
+console.log(ParametricGeometries);
+
 @SoftbodyComponent
 @PhysicsComponent
 @MeshComponent
@@ -19,7 +22,7 @@ class Parametric extends Component {
   static defaults = {
     ...Component.defaults,
     geometry: {
-      func() {},
+      func: (u, v) => new THREE.Vector3(u, v, 0),
       slices: 10,
       stacks: 10
     }
