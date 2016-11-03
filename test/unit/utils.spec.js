@@ -1,19 +1,19 @@
-define(['whs'], function(WHS) {
-  const path_assets = '/base/test/_assets/';
+define(['whs'], (WHS) => {
+  const assetsPath = '/base/test/_assets/';
 
   describe('Utils', () => {
-    const world = new WHS.World({init: {rendering: false}});
-
     context('#extend()', () => {
       it('Basic', () => {
-        const result = WHS.extend({
-          a: 1,
-          b: 2,
-          c: 3
-        },
-        {
-          d: 4
-        });
+        const result = WHS.extend(
+          {
+            a: 1,
+            b: 2,
+            c: 3
+          },
+          {
+            d: 4
+          }
+        );
 
         return result === {
           a: 1,
@@ -24,20 +24,22 @@ define(['whs'], function(WHS) {
       });
 
       it('Deep', () => {
-        const result = WHS.extend({
-          a: 1,
-          b: 2,
-          c: 3,
-          d: {
-            e: 4
+        const result = WHS.extend(
+          {
+            a: 1,
+            b: 2,
+            c: 3,
+            d: {
+              e: 4
+            }
+          },
+          {
+            d: {
+              e: 5,
+              f: 6
+            }
           }
-        },
-        {
-          d: {
-            e: 5,
-            f: 6
-          }
-        });
+        );
 
         return result === {
           a: 1,
@@ -53,11 +55,11 @@ define(['whs'], function(WHS) {
 
     context('#texture()', () => {
       it('create a texture', () => {
-        WHS.texture(path_assets + 'textures/box.jpg');
+        WHS.texture(`${assetsPath}textures/box.jpg`);
       });
 
       it('usage with offset and repeat', () => {
-        WHS.texture(path_assets + 'textures/box.jpg', {
+        WHS.texture(`${assetsPath}textures/box.jpg`, {
           repeat: {
             x: 2,
             y: 3

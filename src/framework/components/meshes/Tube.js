@@ -1,5 +1,7 @@
 import {
   Mesh,
+  LineCurve3,
+  Vector3,
   TubeBufferGeometry,
   TubeGeometry
 } from 'three';
@@ -19,7 +21,7 @@ class Tube extends Component {
   static defaults = {
     ...Component.defaults,
     geometry: {
-      path: false,
+      path: new LineCurve3(new Vector3(0, 0, 0), new Vector3(0, 0, 1)),
       segments: 20,
       radius: 2,
       radiusSegments: 8,

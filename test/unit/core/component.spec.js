@@ -1,4 +1,4 @@
-define(['whs'], function(WHS) {
+define(['whs'], (WHS) => {
   describe('Component', () => {
     const world = new WHS.World({init: {rendering: false}});
 

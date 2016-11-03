@@ -1,9 +1,9 @@
-define(['whs'], function(WHS) {
+define(['whs'], (WHS) => {
   describe('LightComponent', () => {
     const world = new WHS.World({init: {rendering: false}});
 
     function describeAttribute(light, name, dims, Value) {
-      describe('.' + name, done => {
+      describe(`.${name}`, () => {
         it('Method', () => light[name].set(1, 1, 1));
 
         it('Setter', () => {

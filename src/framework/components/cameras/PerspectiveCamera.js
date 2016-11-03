@@ -4,6 +4,17 @@ import {CameraComponent} from '../../core/CameraComponent';
 
 @CameraComponent
 class PerspectiveCamera extends Component {
+  static defaults = {
+    ...Component.defaults,
+
+    camera: {
+      near: 1,
+      far: 1000,
+      fov: 45,
+      aspect: window.innerWidth / window.innerHeight
+    }
+  };
+
   constructor(params = {}) {
     super(params, PerspectiveCamera.defaults, PerspectiveCamera.instructions);
 
