@@ -43,7 +43,7 @@
     "three": "^0.82.1",
     "three-orbit-controls": "^72.0.0",
     "webworkify-webpack": "^1.1.0",
-    "ammonext": "^0.0.2"
+    "ammonext": "^0.0.3"
   },
   "devDependencies": {
     "babel": "^6.5.2",
