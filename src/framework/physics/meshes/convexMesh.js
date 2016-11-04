@@ -4,10 +4,10 @@ export class ConvexMesh extends Mesh {
   constructor(geom, material, params = {}, cGeometry) {
     const physParams = params.physics;
     const mass = physParams.mass || params.mass;
-    super(geom, material, mass);
+    super(geom, material, mass, physParams);
 
     if (!geom.boundingBox) geom.computeBoundingBox();
-    
+
     const geometry = cGeometry ? cGeometry : geom,
       data = new Float32Array(geometry.vertices.length * 3);
 

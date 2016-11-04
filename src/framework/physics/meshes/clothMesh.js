@@ -6,7 +6,7 @@ export class ClothMesh extends Mesh {
       geomParams = geometry.parameters;
 
     const mass = physParams.mass || params.mass;
-    super(geometry, material, mass);
+    super(geometry, material, mass, physParams);
 
     this._physijs.type = 'softClothMesh';
 

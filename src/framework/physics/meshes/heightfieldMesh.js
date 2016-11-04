@@ -4,7 +4,7 @@ export class HeightfieldMesh extends Mesh {
   constructor(geometry, material, params = {}, xdiv, ydiv) {
     const physParams = params.physics;
     const mass = physParams.mass || params.mass;
-    super(geometry, material, mass);
+    super(geometry, material, mass, physParams);
 
     geometry.computeBoundingBox();
 

@@ -1,47 +1,31 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var GAME = new WHS.World({
-  stats: 'fps', // fps, ms, mb
-  autoresize: "window",
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-  helpers: {
-    grid: {
-      size: 100,
-      step: 3
-    },
-    axis: {
-      size: 100
-    }
-  },
+var _globals = require('./globals');
 
-  gravity: {
-    x: 0,
-    y: -100,
-    z: 0
-  },
+var UTILS = _interopRequireWildcard(_globals);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var world = new WHS.World(_extends({}, UTILS.$world, {
 
   camera: {
     far: 10000,
     x: 62,
     y: 30,
-    z: 44
-  },
-
-  background: {
-    color: 0xcccccc
+    z: 130
   }
-});
+}));
 
 new WHS.Sphere({
-  geometry: {
-    radius: 4
-  },
+  geometry: [4, 32, 32],
 
   mass: 5,
 
   material: {
-    color: 0x0000ff,
+    color: UTILS.$colors.mesh,
     kind: 'phong',
     rest: 0
   },
@@ -51,9 +35,9 @@ new WHS.Sphere({
     y: 100,
     z: 0
   }
-}).addTo(GAME);
+}).addTo(world);
 
-window.tramplin = new WHS.Box({
+var tramplin = new WHS.Box({
   geometry: {
     height: 2,
     width: 20,
@@ -63,7 +47,7 @@ window.tramplin = new WHS.Box({
   mass: 0,
 
   material: {
-    color: 0xff0000,
+    color: UTILS.$colors.mesh,
     kind: 'phong',
     rest: 0
   },
@@ -79,17 +63,16 @@ window.tramplin = new WHS.Box({
   }
 });
 
-tramplin.addTo(GAME);
+tramplin.addTo(world);
 
 var tramplin2 = tramplin.clone();
 tramplin2.position.y = 44;
-console.log(tramplin.position);
-tramplin2.addTo(GAME);
+tramplin2.addTo(world);
 
 var tramplin3 = tramplin.clone();
 tramplin3.position.set(24, 24, 0);
 tramplin3.rotation.z = Math.PI / 6;
-tramplin3.addTo(GAME);
+tramplin3.addTo(world);
 
 var domino = new WHS.Box({
   geometry: {
@@ -101,7 +84,7 @@ var domino = new WHS.Box({
   mass: 5,
 
   material: {
-    color: 0x00ff00,
+    color: UTILS.$colors.mesh,
     kind: 'phong',
     rest: 0.5,
     fri: 1
@@ -115,61 +98,135 @@ var domino = new WHS.Box({
 });
 
 var d = domino.clone();
-for (var i = 0; i < 4; i++) {
+for (var i = 0; i < 13; i++) {
   d = d.clone();
   d.position.x += 8;
-  d.addTo(GAME);
+  d.addTo(world);
 }
 
-new WHS.Box({
-  geometry: {
-    width: 250,
-    depth: 250,
-    height: 1
-  },
+UTILS.addBoxPlane(world, 250).then(function (o) {
+  return o.position.y = -0.5;
+});
+UTILS.addBasicLights(world);
 
-  mass: 0,
+world.setControls(new WHS.OrbitControls());
+world.start();
 
-  material: {
-    color: 0xcccccc,
-    kind: 'basic',
-    rest: 0,
-    fri: 1
-  },
+},{"./globals":2}],2:[function(require,module,exports){
+"use strict";
 
-  position: {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addAmbient = addAmbient;
+exports.addBasicLights = addBasicLights;
+exports.addPlane = addPlane;
+exports.addBoxPlane = addBoxPlane;
+var $world = exports.$world = {
+  stats: "fps", // fps, ms, mb or false if not need.
+  autoresize: "window",
+
+  gravity: { // Physic gravity.
     x: 0,
-    y: -0.5,
+    y: -100,
     z: 0
-  }
-}).addTo(GAME);
-
-new WHS.PointLight({
-  light: {
-    intensity: 2,
-    distance: 200
   },
 
-  position: {
-    x: 0,
-    y: 10,
-    z: 30
+  camera: {
+    z: 50, // Move camera.
+    y: 10
   },
 
-  target: {
-    x: 0,
-    y: 0,
-    z: 0
-  }
-}).addTo(GAME);
+  rendering: {
+    background: {
+      color: 0x162129
+    },
 
-new WHS.AmbientLight({
-  light: {
-    intensity: 0.5
-  }
-}).addTo(GAME);
+    renderer: {
+      antialias: true
+    }
+  },
 
-GAME.setControls(WHS.orbitControls());
-GAME.start();
+  shadowmap: {
+    type: THREE.PCFSoftShadowMap
+  }
+};
+
+var $colors = exports.$colors = {
+  bg: 0x162129,
+  plane: 0x447F8B,
+  mesh: 0xF2F2F2,
+  softbody: 0x434B7F
+};
+
+function addAmbient(world, intensity) {
+  new WHS.AmbientLight({
+    light: {
+      intensity: intensity
+    }
+  }).addTo(world);
+}
+
+function addBasicLights(world) {
+  var intensity = arguments.length <= 1 || arguments[1] === undefined ? 0.5 : arguments[1];
+  var position = arguments.length <= 2 || arguments[2] === undefined ? [0, 10, 10] : arguments[2];
+  var distance = arguments.length <= 3 || arguments[3] === undefined ? 100 : arguments[3];
+
+  new WHS.PointLight({
+    light: {
+      intensity: intensity,
+      distance: distance
+    },
+
+    shadowmap: {
+      fov: 90
+    },
+
+    position: position
+  }).addTo(world);
+
+  addAmbient(world, 1 - intensity);
+}
+
+function addPlane(world) {
+  var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
+
+  return new WHS.Plane({
+    geometry: {
+      width: size,
+      height: size
+    },
+
+    mass: 0,
+
+    material: {
+      color: 0x447F8B,
+      kind: 'phong'
+    },
+
+    rotation: {
+      x: -Math.PI / 2
+    }
+  }).addTo(world);
+}
+
+function addBoxPlane(world) {
+  var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
+
+  return new WHS.Box({
+    geometry: {
+      width: size,
+      height: 1,
+      depth: size
+    },
+
+    mass: 0,
+
+    material: {
+      color: 0x447F8B,
+      kind: 'phong'
+    }
+  }).addTo(world);
+}
 
 },{}]},{},[1]);

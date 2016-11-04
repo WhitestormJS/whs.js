@@ -9,7 +9,7 @@ export class SoftMesh extends Mesh {
     if (!(geometry instanceof THREE.BufferGeometry)) // Converts to BufferGeometry.
       geometry = new THREE.BufferGeometry().fromGeometry(geometry);
 
-    super(geometry, material, mass);
+    super(geometry, material, mass, physParams);
 
     // console.log(tempGeometry.mergeVertices);
     tempGeometry.mergeVertices();
