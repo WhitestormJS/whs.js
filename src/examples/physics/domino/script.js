@@ -1,44 +1,23 @@
-const GAME = new WHS.World({
-  stats: 'fps', // fps, ms, mb
-  autoresize: "window",
+import * as UTILS from './globals';
 
-  helpers: {
-    grid: {
-      size: 100,
-      step: 3
-    },
-    axis: {
-      size: 100
-    }
-  },
-
-  gravity: {
-    x: 0,
-    y: -100,
-    z: 0
-  },
+const world = new WHS.World({
+  ...UTILS.$world,
 
   camera: {
     far: 10000,
     x: 62,
     y: 30,
-    z: 44
-  },
-
-  background: {
-    color: 0xcccccc
+    z: 130
   }
 });
 
 new WHS.Sphere({
-  geometry: {
-    radius: 4
-  },
+  geometry: [4, 32, 32],
 
   mass: 5,
 
   material: {
-    color: 0x0000ff,
+    color: UTILS.$colors.mesh,
     kind: 'phong',
     rest: 0
   },
@@ -48,9 +27,9 @@ new WHS.Sphere({
     y: 100,
     z: 0
   }
-}).addTo(GAME);
+}).addTo(world);
 
-window.tramplin = new WHS.Box({
+const tramplin = new WHS.Box({
   geometry: {
     height: 2,
     width: 20,
@@ -60,7 +39,7 @@ window.tramplin = new WHS.Box({
   mass: 0,
 
   material: {
-    color: 0xff0000,
+    color: UTILS.$colors.mesh,
     kind: 'phong',
     rest: 0
   },
@@ -76,17 +55,16 @@ window.tramplin = new WHS.Box({
   }
 });
 
-tramplin.addTo(GAME);
+tramplin.addTo(world);
 
 const tramplin2 = tramplin.clone();
 tramplin2.position.y = 44;
-console.log(tramplin.position);
-tramplin2.addTo(GAME);
+tramplin2.addTo(world);
 
 const tramplin3 = tramplin.clone();
 tramplin3.position.set(24, 24, 0);
 tramplin3.rotation.z = Math.PI / 6;
-tramplin3.addTo(GAME);
+tramplin3.addTo(world);
 
 const domino = new WHS.Box({
   geometry: {
@@ -98,7 +76,7 @@ const domino = new WHS.Box({
   mass: 5,
 
   material: {
-    color: 0x00ff00,
+    color: UTILS.$colors.mesh,
     kind: 'phong',
     rest: 0.5,
     fri: 1
@@ -112,59 +90,14 @@ const domino = new WHS.Box({
 });
 
 let d = domino.clone();
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 13; i++) {
   d = d.clone();
   d.position.x += 8;
-  d.addTo(GAME);
+  d.addTo(world);
 }
 
-new WHS.Box({
-  geometry: {
-    width: 250,
-    depth: 250,
-    height: 1
-  },
+UTILS.addBoxPlane(world, 250).then(o => o.position.y = -0.5);
+UTILS.addBasicLights(world);
 
-  mass: 0,
-
-  material: {
-    color: 0xcccccc,
-    kind: 'basic',
-    rest: 0,
-    fri: 1
-  },
-
-  position: {
-    x: 0,
-    y: -0.5,
-    z: 0
-  }
-}).addTo(GAME);
-
-new WHS.PointLight({
-  light: {
-    intensity: 2,
-    distance: 200
-  },
-
-  position: {
-    x: 0,
-    y: 10,
-    z: 30
-  },
-
-  target: {
-    x: 0,
-    y: 0,
-    z: 0
-  }
-}).addTo(GAME);
-
-new WHS.AmbientLight({
-  light: {
-    intensity: 0.5
-  }
-}).addTo(GAME);
-
-GAME.setControls(WHS.orbitControls());
-GAME.start();
+world.setControls(new WHS.OrbitControls());
+world.start();

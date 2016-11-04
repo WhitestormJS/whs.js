@@ -10,7 +10,7 @@ import {Component} from '../../core/Component';
 const PI_2 = Math.PI / 2;
 
 export class FirstPersonControls extends Component {
-  static defuults = {
+  static defaults = {
     block: document.getElementById('blocker'),
     speed: 1,
     ypos: 1
@@ -27,6 +27,7 @@ export class FirstPersonControls extends Component {
       let runVelocity = 0.25;
 
       mesh.setAngularFactor({x: 0, y: 0, z: 0});
+      camera.position.set(0, 0, 0);
 
       /* Init */
       const player = mesh,
@@ -190,7 +191,7 @@ export class FirstPersonControls extends Component {
         || 'webkitPointerLockElement' in document) {
       const element = document.body;
 
-      world.pointerlockchange = function () {
+      world.pointerlockchange = () => {
         if (document.pointerLockElement === element
           || document.mozPointerLockElement === element
           || document.webkitPointerLockElement === element) {

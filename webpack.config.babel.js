@@ -12,8 +12,22 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
   const loadersSection = [
     {
       test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel'
+      exclude: [
+        /node_modules/,
+        /ammo\.js/
+      ],
+      loader: 'babel',
+      query: {
+        cacheDirectory: true,
+        plugins: [
+          ['transform-runtime', {polyfill: false}],
+          'add-module-exports',
+          'transform-decorators-legacy',
+          'transform-class-properties',
+          'transform-object-rest-spread'
+        ],
+        presets: ['es2015']
+      }
     }
   ];
 
@@ -27,11 +41,11 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
       },
       minimize: true
     }),
-    new HappyPack({loaders: ['babel'], threads: 4}),
+    // new HappyPack({loaders: ['babel'], threads: 4}),
     new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack')
   ]
   : [
-    new HappyPack({loaders: ['babel'], threads: 4}),
+    // new HappyPack({loaders: ['babel'], threads: 4}),
     new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack')
   ];
 
@@ -54,6 +68,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
 
   return [{ // PHYSICS VERSION
     devtool: isProduction ? false : 'source-map',
+    cache: true,
     entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
     target: 'web',
     output: {
@@ -68,6 +83,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     plugins: pluginsSectionPhysics
   }, { // LIGHT VERSION
     devtool: isProduction ? false : 'source-map',
+    cache: true,
     entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
     target: 'web',
     output: {

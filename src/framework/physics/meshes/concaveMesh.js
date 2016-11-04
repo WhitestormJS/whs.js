@@ -7,7 +7,7 @@ export class ConcaveMesh extends Mesh {
 
     const physParams = params.physics;
     const mass = physParams.mass || params.mass;
-    super(geom, material, mass);
+    super(geom, material, mass, physParams);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
 

@@ -3,7 +3,7 @@ import {Eventable} from '../eventable';
 import {getObjectId} from '../api';
 
 export class Mesh extends THREE.Mesh {
-  constructor(geometry, material, mass) {
+  constructor(geometry, material, mass, params = {group: false, mask: false}) {
     if (!geometry) return;
 
     super(geometry, material);
@@ -18,7 +18,9 @@ export class Mesh extends THREE.Mesh {
       mass: mass || 0,
       touches: [],
       linearVelocity: new THREE.Vector3(),
-      angularVelocity: new THREE.Vector3()
+      angularVelocity: new THREE.Vector3(),
+      group: params.group,
+      mask: params.mask
     };
   }
 
