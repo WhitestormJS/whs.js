@@ -541,7 +541,8 @@ module.exports = function (self) {
 
       if (typeof description.collision_flags !== 'undefined') body.setCollisionFlags(description.collision_flags);
 
-      world.addRigidBody(body);
+      if (description.group && description.mask) world.addRigidBody(body, description.group, description.mask);
+      else world.addRigidBody(body);
       body.type = 1; // RigidBody.
       _num_rigidbody_objects++;
     }

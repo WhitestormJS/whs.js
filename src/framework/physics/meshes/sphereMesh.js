@@ -5,7 +5,7 @@ export class SphereMesh extends Mesh {
     const physParams = params.physics;
     const mass = physParams.mass || params.mass;
 
-    super(geometry, material, mass);
+    super(geometry, material, mass, physParams);
 
     if (!geometry.boundingSphere) geometry.computeBoundingSphere();
     this._physijs.type = 'sphere';

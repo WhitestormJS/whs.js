@@ -4,7 +4,7 @@ export class CapsuleMesh extends Mesh {
   constructor(geometry, material, params = {}) {
     const physParams = params.physics;
     const mass = physParams.mass || params.mass;
-    super(geometry, material, mass);
+    super(geometry, material, mass, physParams);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();
 

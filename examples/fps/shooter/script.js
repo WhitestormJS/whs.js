@@ -1,292 +1,174 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-// TODO: import Terrain from 'whs-component-terrain';
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var GAME = new WHS.World({
-  stats: 'fps', // fps, ms, mb
+var _globals = require('./globals');
+
+var UTILS = _interopRequireWildcard(_globals);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var world = new WHS.World(_extends({}, UTILS.$world, {
+
+  camera: {
+    z: 10
+  }
+}));
+
+var sphere = new WHS.Sphere({ // Create sphere comonent.
+  geometry: {
+    radius: 3,
+    widthSegments: 32,
+    heightSegments: 32
+  },
+
+  mass: 2, // Mass of physics object.
+
+  material: {
+    color: UTILS.$colors.mesh,
+    kind: 'lambert'
+  },
+
+  position: [0, 100, 0]
+});
+
+sphere.addTo(world);
+
+var material = new THREE.MeshPhongMaterial({ color: UTILS.$colors.mesh });
+
+for (var i = 0; i < 10; i++) {
+  new WHS.Box({
+    geometry: [10 + Math.random() * 90, 10 + Math.random() * 90, 10 + Math.random() * 90],
+    material: material,
+    position: [Math.random() * 1000 - 500, 100, Math.random() * 1000 - 500]
+  }).addTo(world);
+}
+
+UTILS.addPlane(world, 1000);
+UTILS.addBasicLights(world);
+
+world.start(); // Start animations and physics simulation.
+world.setControls(new WHS.FirstPersonControls(sphere, {
+  speed: 3,
+  ypos: -10
+}));
+
+},{"./globals":2}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.addAmbient = addAmbient;
+exports.addBasicLights = addBasicLights;
+exports.addPlane = addPlane;
+exports.addBoxPlane = addBoxPlane;
+var $world = exports.$world = {
+  stats: "fps", // fps, ms, mb or false if not need.
   autoresize: "window",
 
-  gravity: {
+  gravity: { // Physic gravity.
     x: 0,
     y: -100,
     z: 0
   },
 
   camera: {
-    far: 1000
+    z: 50, // Move camera.
+    y: 10
+  },
+
+  rendering: {
+    background: {
+      color: 0x162129
+    },
+
+    renderer: {
+      antialias: true
+    }
   },
 
   shadowmap: {
-    type: THREE.PCFShadowMap
-  },
-
-  background: {
-    color: 0x70DBFF
+    type: THREE.PCFSoftShadowMap
   }
-});
+};
 
-var terrain = new Terrain({
-  geometry: {
-    map: '../../_assets/terrain/default_terrain.png',
-    depth: 100,
-    width: 256,
-    height: 256
-  },
+var $colors = exports.$colors = {
+  bg: 0x162129,
+  plane: 0x447F8B,
+  mesh: 0xF2F2F2,
+  softbody: 0x434B7F
+};
 
-  mass: 0,
-
-  physics: {
-    friction: 1,
-    restitution: 0
-  },
-
-  material: ['default', [WHS.texture('../../_assets/textures/terrain/dirt-512.jpg', {}), WHS.texture('../../_assets/textures/terrain/sand-512.jpg', {}), WHS.texture('../../_assets/textures/terrain/grass-512.jpg', {}), WHS.texture('../../_assets/textures/terrain/rock-512.jpg', {}), WHS.texture('../../_assets/textures/terrain/snow-512.jpg', {})]],
-
-  position: {
-    x: 0,
-    y: 0,
-    z: 0
-  }
-});
-
-terrain.addTo(GAME, 'wait');
-
-// NOTE: Default light.
-new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.2
-  }
-}).addTo(GAME);
-
-// NOTE: Default light.
-new WHS.SpotLight({
-  light: {
-    color: 0xffffff, // 0x00ff00,
-    intensity: 0.3,
-    distance: 500
-  },
-
-  shadowmap: {
-    width: 2048,
-    height: 2048,
-    top: 0,
-    fov: 90
-  },
-
-  position: {
-    x: 160, // 100,
-    y: 120, // 30,
-    z: 160 // 100
-  },
-
-  target: {
-    x: 0,
-    y: 10,
-    z: 0
-  }
-}).addTo(GAME);
-
-var parrot = new WHS.Morph({
-
-  geometry: {
-    width: 2,
-    height: 2,
-    depth: 2,
-    path: '../../_assets/models/morph/parrot.js'
-  },
-
-  material: {
-    useVertexColors: true,
-    kind: 'lambert'
-  },
-
-  position: {
-    x: 70,
-    y: 72,
-    z: 70
-  },
-
-  scale: {
-    x: 0.1,
-    y: 0.1,
-    z: 0.1
-  },
-
-  morph: {
-    duration: 0.4,
-    speed: 200
-  }
-
-});
-
-var parrotPath = [new THREE.CubicBezierCurve3(new THREE.Vector3(-100, 100, 50), new THREE.Vector3(-200, 120, -50), new THREE.Vector3(200, 120, -50), new THREE.Vector3(100, 100, 50)), new THREE.CubicBezierCurve3(new THREE.Vector3(100, 100, 50), new THREE.Vector3(-200, 80, 150), new THREE.Vector3(200, 60, 150), new THREE.Vector3(-100, 100, 50))];
-
-var parrotgoes = new THREE.CurvePath();
-
-parrotgoes.add(parrotPath[0]);
-parrotgoes.add(parrotPath[1]);
-
-var flamingo = new WHS.Morph({
-  geometry: {
-    width: 2,
-    height: 2,
-    depth: 2,
-    path: '../../_assets/models/morph/flamingo.js'
-  },
-
-  material: {
-    useVertexColors: true,
-    kind: 'lambert'
-  },
-
-  position: {
-    x: 70,
-    y: 72,
-    z: 70
-  },
-
-  scale: {
-    x: 0.1,
-    y: 0.1,
-    z: 0.1
-  },
-
-  morph: {
-    duration: 2,
-    speed: 50
-  }
-});
-
-var flamingoPath = [new THREE.CubicBezierCurve3(new THREE.Vector3(-100, 100, 50), new THREE.Vector3(-100, 160, 300), new THREE.Vector3(200, 180, 30), new THREE.Vector3(100, 140, 80)), new THREE.CubicBezierCurve3(new THREE.Vector3(100, 140, 80), new THREE.Vector3(200, 80, 150), new THREE.Vector3(-200, 60, -100), new THREE.Vector3(200, 100, 350)), new THREE.CubicBezierCurve3(new THREE.Vector3(200, 100, 350), new THREE.Vector3(200, 80, 150), new THREE.Vector3(-200, 60, -100), new THREE.Vector3(-100, 100, 50))];
-
-var flamingogoes = new THREE.CurvePath();
-
-flamingogoes.add(flamingoPath[0]);
-flamingogoes.add(flamingoPath[1]);
-flamingogoes.add(flamingoPath[2]);
-
-flamingo.addTo(GAME, 'wait').then(function (obj) {
-  obj.follow(parrotgoes, // flamingogoes
-  26000, true);
-});
-
-parrot.addTo(GAME, 'wait').then(function (obj) {
-  obj.follow(flamingogoes, 20000, true);
-});
-
-new WHS.Skybox({
-  path: '../../_assets/textures/skybox/skymap',
-  imgSuffix: '.png',
-  skyType: 'sphere',
-  radius: GAME.camera.params.camera.far,
-  rotation: { y: Math.PI / 180 * -90 },
-  position: { y: -200 }
-}).addTo(GAME);
-
-var box = new WHS.Box({
-  geometry: {
-    width: 2,
-    height: 2,
-    depth: 2
-  },
-
-  mass: 1,
-  onlyvis: false,
-
-  material: {
-    kind: 'lambert',
-    map: WHS.texture('../../_assets/textures/box.jpg')
-  },
-
-  position: {
-    x: 50,
-    y: 70,
-    z: 60
-  }
-});
-
-GAME.add(box).then(function () {
-  var checker1 = new WHS.Loop(function () {
-    if (box.position.y < -200) {
-      box.position.set(50, 70, 60);
-
-      box.setAngularVelocity(new THREE.Vector3(0, 0, 0));
-      box.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+function addAmbient(world, intensity) {
+  new WHS.AmbientLight({
+    light: {
+      intensity: intensity
     }
-  });
+  }).addTo(world);
+}
 
-  GAME.addLoop(checker1);
+function addBasicLights(world) {
+  var intensity = arguments.length <= 1 || arguments[1] === undefined ? 0.5 : arguments[1];
+  var position = arguments.length <= 2 || arguments[2] === undefined ? [0, 10, 10] : arguments[2];
+  var distance = arguments.length <= 3 || arguments[3] === undefined ? 100 : arguments[3];
 
-  checker1.start();
-});
+  new WHS.PointLight({
+    light: {
+      intensity: intensity,
+      distance: distance
+    },
 
-new WHS.Box({
-  geometry: {
-    width: 2,
-    height: 2,
-    depth: 2
-  },
+    shadowmap: {
+      fov: 90
+    },
 
-  mass: 1,
+    position: position
+  }).addTo(world);
 
-  material: {
-    kind: 'lambert',
-    map: WHS.texture('../../_assets/textures/box.jpg')
-  },
+  addAmbient(world, 1 - intensity);
+}
 
-  position: {
-    x: 30,
-    y: 50,
-    z: 0
-  }
-}).addTo(GAME);
+function addPlane(world) {
+  var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
 
-var person = new WHS.Sphere({
-  geometry: {
-    radius: 2
-  },
+  return new WHS.Plane({
+    geometry: {
+      width: size,
+      height: size
+    },
 
-  mass: 10,
+    mass: 0,
 
-  physics: {
-    friction: 1,
-    restitution: 0,
-    damping: 0
-  },
+    material: {
+      color: 0x447F8B,
+      kind: 'phong'
+    },
 
-  material: {
-    color: 0xffffff,
-    kind: 'lambert'
-  },
-
-  position: {
-    x: 0,
-    y: 100,
-    z: 0
-  }
-});
-
-GAME.add(person).then(function () {
-  var checker2 = new WHS.Loop(function () {
-    if (person.position.y < -200) {
-      person.position.set(0, 100, 0);
-
-      person.setAngularVelocity(new THREE.Vector3(0, 0, 0));
-      person.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+    rotation: {
+      x: -Math.PI / 2
     }
-  });
+  }).addTo(world);
+}
 
-  GAME.addLoop(checker2);
+function addBoxPlane(world) {
+  var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
 
-  checker2.start();
-});
+  return new WHS.Box({
+    geometry: {
+      width: size,
+      height: 1,
+      depth: size
+    },
 
-GAME.setControls(WHS.firstPersonControls(person, {
-  speed: 3
-}));
+    mass: 0,
 
-GAME.start();
+    material: {
+      color: 0x447F8B,
+      kind: 'phong'
+    }
+  }).addTo(world);
+}
 
 },{}]},{},[1]);

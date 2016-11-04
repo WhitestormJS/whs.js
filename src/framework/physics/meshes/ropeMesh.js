@@ -5,7 +5,7 @@ export class RopeMesh extends Line {
     const physParams = params.physics;
 
     const mass = physParams.mass || params.mass;
-    super(geometry, material, mass);
+    super(geometry, material, mass, physParams);
 
     this._physijs.type = 'softRopeMesh';
 
