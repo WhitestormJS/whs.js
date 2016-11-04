@@ -1,4 +1,4 @@
-import Ammo from 'whs-ammo';
+import Ammo from 'ammonext';
 import {extend} from '../utils/index';
 
 module.exports = function (self) {
