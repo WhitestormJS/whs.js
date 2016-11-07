@@ -1,4 +1,4 @@
-# [![logo](https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/logo/big.png)](https://whsjs.io/)
+# [![logo](https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/dev/media/art/logo/big.png)](https://whsjs.io/)
 
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square)](https://github.com/sindresorhus/xo)
 [![NPM Version](https://img.shields.io/npm/v/whitestormjs.svg?style=flat-square)](https://www.npmjs.com/package/whitestormjs)
