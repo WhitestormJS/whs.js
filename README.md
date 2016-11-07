@@ -12,12 +12,12 @@
 
 * **Simple shape crafting** - We use a JSON-like structure for creating objects from inputted data and adding them to your 3D world.
 * **Physics with WebWorkers** - We use the [Physi.js](https://github.com/chandlerprall/Physijs/blob/master/physi.js) library for calculating physics of 3D shapes with **WebWorkers technology** that allows for rendering and calculating physics in multiple threads.
-* **Plugin system** - Our framework supports *plugins & components* made by other users. You need to include them after whitestorm.js and follow provided instructions.
+* **Plugin system** - Framework supports *plugins & components* made by other users. You need to include them after whitestorm.js and follow provided instructions.
 * **Automatization of rendering** - Our framework does rendering automatically and doesn't need a to be called. Functionality like the `resize` function can be called automatically by setting additional parameters such as `autoresize: true`.
-* **ES6 Features** - Our framework is written using the latest features of ECMAScript 6 and ECMAScript 7 (beta) features and compiled with [Babel](https://babeljs.io/).
+* **ES6 Features** - Framework is written using the latest features of ECMAScript 6 and ECMAScript 7 (beta) features and compiled with [Babel](https://babeljs.io/).
 * **Softbodies** - WhitestormJS is the only engine (except native `ammo.js`) that supports softbodies.
 
-## Install
+## Installation
 
 ```bash
 $ npm install --save whs
@@ -28,10 +28,6 @@ See [WhitestormJS/test-whitestorm-webpack](https://github.com/WhitestormJS/test-
 ## Documentation
 
 Full documentation of guides and APIs are located at [here](http://whsjs.io/).
-
-## Playground!
-
-[![playground](http://i.imgur.com/6EdMjm1.gif)](http://whsjs.io/playground/?example=saturn&dir=demo)
 
 ## Examples
 
@@ -129,6 +125,10 @@ export {
   BasicSphere
 };
 ```
+
+## Playground!
+
+[![playground](http://i.imgur.com/6EdMjm1.gif)](http://whsjs.io/playground/?example=saturn&dir=demo)
 
 ## Showcases
 
