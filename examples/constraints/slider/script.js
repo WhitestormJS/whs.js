@@ -128,9 +128,9 @@ function addAmbient(world, intensity) {
 }
 
 function addBasicLights(world) {
-  var intensity = arguments.length <= 1 || arguments[1] === undefined ? 0.5 : arguments[1];
-  var position = arguments.length <= 2 || arguments[2] === undefined ? [0, 10, 10] : arguments[2];
-  var distance = arguments.length <= 3 || arguments[3] === undefined ? 100 : arguments[3];
+  var intensity = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
+  var position = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 10, 10];
+  var distance = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
 
   addAmbient(world, 1 - intensity);
 
@@ -149,7 +149,7 @@ function addBasicLights(world) {
 }
 
 function addPlane(world) {
-  var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
+  var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
   return new WHS.Plane({
     geometry: {
@@ -171,7 +171,7 @@ function addPlane(world) {
 }
 
 function addBoxPlane(world) {
-  var size = arguments.length <= 1 || arguments[1] === undefined ? 100 : arguments[1];
+  var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
   return new WHS.Box({
     geometry: {
