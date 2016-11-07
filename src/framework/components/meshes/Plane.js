@@ -75,27 +75,27 @@ class Plane extends Component {
     return geometry;
   }
 
-  set G_width(val) {
+  set g_width(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {width: val}}));
   }
 
-  get G_width() {
+  get g_width() {
     return this._native.geometry.parameters.width;
   }
 
-  set G_height(val) {
+  set g_height(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {height: val}}));
   }
 
-  get G_height() {
+  get g_height() {
     return this._native.geometry.parameters.height;
   }
 
-  set G_segments(val) {
+  set g_segments(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {segments: val}}));
   }
 
-  get G_segments() {
+  get g_segments() {
     return this._native.geometry.parameters.segments;
   }
 

@@ -66,11 +66,11 @@ class Lathe extends Component {
     );
   }
 
-  set G_points(val) {
+  set g_points(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {points: val}}));
   }
 
-  get G_points() {
+  get g_points() {
     return this._native.geometry.parameters.points;
   }
 
