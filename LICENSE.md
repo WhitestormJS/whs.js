@@ -1,6 +1,6 @@
 The MIT License
 
-Copyright © 2015-2016 whitestorm.js authors
+Copyright © 2015-2016 Alexander Buzin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
