@@ -2,15 +2,10 @@ export const $world = {
   stats: "fps", // fps, ms, mb or false if not need.
   autoresize: "window",
 
-  gravity: { // Physic gravity.
-    x: 0,
-    y: -100,
-    z: 0
-  },
+  gravity: [0, -100, 0],
 
   camera: {
-    z: 50, // Move camera.
-    y: 10
+    position: [0, 10, 50]
   },
 
   rendering: {
@@ -44,7 +39,9 @@ export function addAmbient(world, intensity) {
 }
 
 export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], distance = 100) {
-  new WHS.PointLight({
+  addAmbient(world, 1 - intensity);
+
+  return new WHS.PointLight({
     light: {
       intensity,
       distance
@@ -56,8 +53,6 @@ export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], d
 
     position
   }).addTo(world);
-
-  addAmbient(world, 1 - intensity);
 }
 
 export function addPlane(world, size = 100) {

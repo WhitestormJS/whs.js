@@ -1,33 +1,26 @@
 import _ from 'lodash';
 
-export const transformData = (object, instructions) => {
-  for (let key in instructions) {
-    if (_.isArray(object[key])) {
-      const tempObject = {};
-
-      for (let i = 0, max = instructions[key].length; i < max; i++) {
-        const guide = instructions[key][i];
-
-        tempObject[guide] = object[key][i];
-      }
-
-      object[key] = tempObject;
-    }
-  }
-
-  return object;
-};
-
-export const instruct = (object, instruction) => {
+export const instruct = (array, instArray) => {
   const tempObject = {};
 
-  for (let i = 0, max = instruction.length; i < max; i++) {
-    const guide = instruction[i];
+  for (let i = 0, max = instArray.length; i < max; i++) {
+    const guide = instArray[i];
 
-    tempObject[guide] = object[i];
+    tempObject[guide] = array[i];
   }
 
   return tempObject;
+};
+
+export const transformData = (object, instructions) => {
+  for (const key in instructions) {
+    if (_.isArray(object[key]))
+      object[key] = instruct(object[key], instructions[key]);
+    else if (_.isObject(object[key]) && !_.isArray(instructions[key]))
+      object[key] = transformData(object[key], instructions[key]);
+  }
+
+  return object;
 };
 
 export const toArray = (object, instruction) => {

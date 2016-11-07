@@ -4,6 +4,10 @@ import {LightComponent} from '../../core/LightComponent';
 
 @LightComponent
 class SpotLight extends Component {
+  static helpers = {
+    default: [SpotLightHelper]
+  };
+
   constructor(params = {}) {
     super(params, SpotLight.defaults, SpotLight.instructions);
 
@@ -21,9 +25,6 @@ class SpotLight extends Component {
         params.light.exponent,
         params.light.decay
       );
-
-      if (params.helper)
-        this.helper = new SpotLightHelper(this.native);
 
       resolve();
     });

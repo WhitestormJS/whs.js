@@ -9,8 +9,7 @@ const conf = {
 
     camera: {
       far: 10000,
-      y: 10,
-      z: 30
+      position: [0, 10, 30]
     },
 
     init: {

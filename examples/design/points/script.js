@@ -13,11 +13,9 @@ var world = new WHS.World({
   camera: {
     far: 2000,
     near: 1,
-    z: 20,
-    x: -8,
-    y: 5,
+    position: [-8, 5, 20],
 
-    aspect: 45
+    fov: 45
   },
 
   rendering: {

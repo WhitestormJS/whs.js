@@ -4,6 +4,12 @@ import {LightComponent} from '../../core/LightComponent';
 
 @LightComponent
 class DirectionalLight extends Component {
+  static helpers = {
+    default: [DirectionalLightHelper, {
+      size: 0
+    }, ['size']]
+  };
+
   constructor(params = {}) {
     super(params, DirectionalLight.defaults, DirectionalLight.instructions);
 
@@ -17,13 +23,6 @@ class DirectionalLight extends Component {
         params.light.color,
         params.light.intensity
       );
-
-      if (params.helper) {
-        this.helper = new DirectionalLightHelper(
-          this.native,
-          params.helper.size ? params.helper.size : 0
-        );
-      }
 
       resolve();
     });

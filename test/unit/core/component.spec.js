@@ -1,9 +1,9 @@
 define(['whs'], (WHS) => {
-  describe('Component', () => {
+  describe('[WHS.Component]', () => {
     const world = new WHS.World({init: {rendering: false}});
 
-    context('Working with default values', () => {
-      let result, expected;
+    describe('Working with default values', () => {
+      let result;
 
       const object = new WHS.Component({
         default1: 1,
@@ -15,19 +15,19 @@ define(['whs'], (WHS) => {
         }
       });
 
-      it('#setParams', () => {
-        object.params = {
-          default5: 5
-        }
+      it('@set .params', () => {
+        object.params = {default5: 5};
       });
 
-      it('#updateParams', () => {
-        object.params = {
+      describe('#updateParams()', () => {
+        object.updateParams({
           default5: 6
-        };
+        });
+
+        it('should updater parameters', () => object.params.default5 === 6);
       });
 
-      expected = {
+      const expected = {
         default1: 1,
         default2: 2,
         default3: 3,
@@ -39,11 +39,18 @@ define(['whs'], (WHS) => {
         default5: 6
       };
 
-      it('#getParams', () => {
+      it('@returns .params', () => {
         result = object.params;
+        return result;
       });
 
-      it('=== Values are equal ===', () => result === expected);
+      it('@equal (result) and (expected) values', () => result === expected);
+
+      describe('#addTo()', () => {
+        it('should not be added to the world if no native', done => {
+          object.addTo(world).catch(() => done());
+        });
+      });
     });
   });
 });

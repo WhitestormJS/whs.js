@@ -4,7 +4,9 @@ const world = new WHS.World({
   ...UTILS.$world,
 
   camera: {
-    z: 10
+    position: {
+      z: 10
+    }
   }
 });
 

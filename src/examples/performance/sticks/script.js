@@ -11,8 +11,7 @@ const world = new WHS.World({
 
   camera: {
     far: 1000,
-    y: 30,
-    z: 90
+    position: [0, 30, 90]
   },
 
   shadowmap: {
