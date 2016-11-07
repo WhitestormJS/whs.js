@@ -89,35 +89,35 @@ class Polyhedron extends Component {
     );
   }
 
-  set G_verticesOfCube(val) {
+  set g_verticesOfCube(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {verticesOfCube: val}}));
   }
 
-  get G_verticesOfCube() {
+  get g_verticesOfCube() {
     return this._native.geometry.parameters.verticesOfCube;
   }
 
-  set G_indicesOfFaces(val) {
+  set g_indicesOfFaces(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {indicesOfFaces: val}}));
   }
 
-  get G_indicesOfFaces() {
+  get g_indicesOfFaces() {
     return this._native.geometry.parameters.indicesOfFaces;
   }
 
-  set G_radius(val) {
+  set g_radius(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
   }
 
-  get G_radius() {
+  get g_radius() {
     return this._native.geometry.parameters.radius;
   }
 
-  set G_detail(val) {
+  set g_detail(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {detail: val}}));
   }
 
-  get G_detail() {
+  get g_detail() {
     return this._native.geometry.parameters.detail;
   }
 

@@ -79,43 +79,43 @@ class Torus extends Component {
     );
   }
 
-  set G_radius(val) {
+  set g_radius(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
   }
 
-  get G_radius() {
+  get g_radius() {
     return this._native.geometry.parameters.radius;
   }
 
-  set G_tube(val) {
+  set g_tube(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {tube: val}}));
   }
 
-  get G_tube() {
+  get g_tube() {
     return this._native.geometry.parameters.tube;
   }
 
-  set G_radialSegments(val) {
+  set g_radialSegments(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radialSegments: val}}));
   }
 
-  get G_radialSegments() {
+  get g_radialSegments() {
     return this._native.geometry.parameters.radialSegments;
   }
 
-  set G_tubularSegments(val) {
+  set g_tubularSegments(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {tubularSegments: val}}));
   }
 
-  get G_tubularSegments() {
+  get g_tubularSegments() {
     return this._native.geometry.parameters.tubularSegments;
   }
 
-  set G_arc(val) {
+  set g_arc(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {arc: val}}));
   }
 
-  get G_arc() {
+  get g_arc() {
     return this._native.geometry.parameters.arc;
   }
 

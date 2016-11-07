@@ -13,6 +13,8 @@ export class VirtualMouse extends Events {
     this.world = world;
     window.addEventListener('mousemove', this.update.bind(this));
     window.addEventListener('click', () => this.emit('click'));
+    window.addEventListener('mousedown', () => this.emit('mousedown'));
+    window.addEventListener('mouseup', () => this.emit('mouseup'));
   }
 
   update(e) {
@@ -42,6 +44,14 @@ export class VirtualMouse extends Events {
 
     this.on('click', () => {
       if (isHovered) component.emit('click');
+    });
+
+    this.on('mousedown', () => {
+      if (isHovered) component.emit('mousedown');
+    });
+
+    this.on('mouseup', () => {
+      if (isHovered) component.emit('mouseup');
     });
   }
 
