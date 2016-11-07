@@ -14,8 +14,7 @@ var world = new WHS.World(_extends({}, UTILS.$world, {
 
   camera: {
     far: 10000,
-    y: 60,
-    z: 120
+    position: [0, 60, 120]
   },
 
   gravity: {

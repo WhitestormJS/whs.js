@@ -68,19 +68,19 @@ class Extrude extends Component {
     );
   }
 
-  set G_shapes(val) {
+  set g_shapes(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {shapes: val}}));
   }
 
-  get G_shapes() {
+  get g_shapes() {
     return this._native.geometry.parameters.shapes;
   }
 
-  set G_options(val) {
+  set g_options(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {options: val}}));
   }
 
-  get G_options() {
+  get g_options() {
     return this._native.geometry.parameters.options;
   }
 

@@ -86,43 +86,43 @@ class Tube extends Component {
     return geometry;
   }
 
-  set G_path(val) {
+  set g_path(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {path: val}}));
   }
 
-  get G_path() {
+  get g_path() {
     return this._native.geometry.parameters.path;
   }
 
-  set G_segments(val) {
+  set g_segments(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {segments: val}}));
   }
 
-  get G_segments() {
+  get g_segments() {
     return this._native.geometry.parameters.segments;
   }
 
-  set G_radius(val) {
+  set g_radius(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
   }
 
-  get G_radius() {
+  get g_radius() {
     return this._native.geometry.parameters.radius;
   }
 
-  set G_radiusSegments(val) {
+  set g_radiusSegments(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusSegments: val}}));
   }
 
-  get G_radiusSegments() {
+  get g_radiusSegments() {
     return this._native.geometry.parameters.radiusSegments;
   }
 
-  set G_closed(val) {
+  set g_closed(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {closed: val}}));
   }
 
-  get G_closed() {
+  get g_closed() {
     return this._native.geometry.parameters.closed;
   }
 

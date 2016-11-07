@@ -68,27 +68,27 @@ class Parametric extends Component {
     );
   }
 
-  set G_func(val) {
+  set g_func(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {func: val}}));
   }
 
-  get G_func() {
+  get g_func() {
     return this._native.geometry.parameters.func;
   }
 
-  set G_slices(val) {
+  set g_slices(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {slices: val}}));
   }
 
-  get G_slices() {
+  get g_slices() {
     return this._native.geometry.parameters.slices;
   }
 
-  set G_stacks(val) {
+  set g_stacks(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {stacks: val}}));
   }
 
-  get G_stacks() {
+  get g_stacks() {
     return this._native.geometry.parameters.stacks;
   }
 
