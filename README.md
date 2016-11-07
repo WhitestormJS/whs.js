@@ -18,34 +18,37 @@
 * **Softbodies** - WhitestormJS is the only engine (except native `ammo.js`) that supports softbodies.
 
 ## Installation
+### NODE
 
 ```bash
 $ npm install --save whs
 ```
 
+### WEBPACK
+
 See [WhitestormJS/test-whitestorm-webpack](https://github.com/WhitestormJS/test-whitestorm-webpack) for more details.
 
 ## Documentation
 
-Full documentation of guides and APIs are located at [here](http://whsjs.io/).
+Full documentation of guides and APIs are located at [here](http://whsjs.io/#/api).
 
-## Examples
+## Usage
 
-### Basic
+### Hello world
+
+Basic white sphere that falls down.
 
 ```javascript
 const world = new WHS.World({
     stats: "fps", // fps, ms, mb or false if not need.
-    autoresize: true,
+    autoresize: "window",
 
-    gravity: { // Physic gravity.
-        x: 0,
-        y: -100,
-        z: 0
-    },
+    gravity: [0, 100, 0], // Physic gravity.
 
     camera: {
-      z: 50 // Move camera.
+      position: {
+        z: 50 // Move camera.
+      }
     }
 });
 
@@ -57,24 +60,20 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
   mass: 10, // Mass of physics object.
 
   material: {
-    color: 0xffffff,
-    kind: 'basic'
+    color: 0xffffff, // White color.
+    kind: 'basic' // THREE.MeshBasicMaterial
   },
 
-  pos: {
-    x: 0,
-    y: 100,
-    z: 0
-  }
+  position: [0, 100, 0]
 });
 
 sphere.addTo(world);
-sphere.getNative(); // Returns THREE.Mesh of this object.
+console.log(sphere.native); // Returns THREE.Mesh of this object.
 
 world.start(); // Start animations and physics simulation.
 ```
 
-### Plugin
+### Making a custom component
 
 ```javascript
 import * as THREE from 'three';
@@ -136,15 +135,24 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 
 ### :space_invader:
 
-* [Basic / Hello world](http://192.241.128.187/current/examples/basic/helloworld/)  (Basic "Hello world!" example.)
-* [Basic / Model](http://192.241.128.187/current/examples/basic/model/)  (Basic model example.)
-* [Basic / Debugging](http://192.241.128.187/current/examples/basic/debugging/)  (Object's debug example.)
-* [Basic / Extending API](http://192.241.128.187/current/examples/basic/extending/)  (Extending api example.)
-* [Basic / Softbody](http://192.241.128.187/current/examples/basic/softbody/)  (Basic softbody implementation.)
-* [Basic / Three.js](http://192.241.128.187/current/examples/basic/threejs/)  (Importing three.js scene to whitestormjs core.)
-* [Basic / Cloth](http://192.241.128.187/current/examples/basic/cloth/)  (Example of softbody cloth.)
-* [Basic / Cloth 2](http://192.241.128.187/current/examples/basic/cloth2/)  (Example of softbody cloth 2.)
-* [Basic / Cloth 3](http://192.241.128.187/current/examples/basic/cloth3/)  (Example of softbody cloth 3.)
+* [Basic / Hello world](https://whs-dev.surge.sh/examples/#basic/helloworld)  (Basic "Hello world!" example.)
+* [Basic / Model](https://whs-dev.surge.sh/examples/#basic/model)  (Basic model example.)
+* [Basic / Debugging](https://whs-dev.surge.sh/examples/#basic/debugging)  (Object's debug example.)
+* [Basic / Extending](https://whs-dev.surge.sh/examples/#basic/extending)  (Extending api example.)
+* [Basic / Softbody](https://whs-dev.surge.sh/examples/#basic/softbody)  (Basic softbody implementation.)
+* [Basic / Three.js](https://whs-dev.surge.sh/examples/#basic/threejs)  (Importing three.js scene to whitestormjs core.)
+
+### :bowling:
+
+* [Softbody / Cloth](https://whs-dev.surge.sh/examples/#basic/cloth)  (Example of softbody cloth.)
+* [Softbody / Cloth 2](https://whs-dev.surge.sh/examples/#basic/cloth2)  (Example of softbody cloth 2.)
+* [Softbody / Cloth 3](https://whs-dev.surge.sh/examples/#basic/cloth3)  (Example of softbody cloth 3.)
+* [Constraints / DOF](https://whs-dev.surge.sh/examples/#constraints/dof)  (DOF Constraint.)
+* [Constraints / Hinge](https://whs-dev.surge.sh/examples/#constraints/hinge)  (Hinge Constraint.)
+* [Constraints / Point](https://whs-dev.surge.sh/examples/#constraints/point)  (Point Constraint.)
+* [Constraints / Slider](https://whs-dev.surge.sh/examples/#constraints/slider)  (Point Slider.)
+* [Physics / Dominos](https://whs-dev.surge.sh/examples/#physics/domino)  (Physics example with dominos.)
+* [Physics / Filtering](https://whs-dev.surge.sh/examples/#physics/filtering)  (Filtering collision groups.)
 
 ### :gem:
 
@@ -154,12 +162,7 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 
 ### :snowboarder:
 
-* [FPS / Shooter](http://192.241.128.187/current/examples/fps/shooter/)  (First person example with Wagner effects and terrain. + fog) [TODO]
-* [FPS / Fog](http://192.241.128.187/current/examples/fps/fog/)  (First person game with animated objects) [TODO]
-
-### :bowling:
-
-* [Physics / Dominos](http://192.241.128.187/current/examples/physics/domino/)  (Physics example with dominos.)
+* [FPS / Shooter](https://whs-dev.surge.sh/examples/#fps/shooter/)  (First person example)
 
 ### :rocket:
 
