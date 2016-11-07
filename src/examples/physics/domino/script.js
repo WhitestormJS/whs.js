@@ -5,9 +5,7 @@ const world = new WHS.World({
 
   camera: {
     far: 10000,
-    x: 62,
-    y: 30,
-    z: 130
+    position: [62, 30, 130]
   }
 });
 
@@ -22,11 +20,7 @@ new WHS.Sphere({
     rest: 0
   },
 
-  position: {
-    x: 0,
-    y: 100,
-    z: 0
-  }
+  position: [0, 100, 0]
 }).addTo(world);
 
 const tramplin = new WHS.Box({

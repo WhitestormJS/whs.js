@@ -13,8 +13,7 @@ var world = new WHS.World(_extends({}, UTILS.$world, {
 
   camera: {
     far: 10000,
-    y: 2,
-    z: 12
+    position: [0, 2, 12]
   },
 
   init: {
@@ -85,15 +84,10 @@ var $world = exports.$world = {
   stats: "fps", // fps, ms, mb or false if not need.
   autoresize: "window",
 
-  gravity: { // Physic gravity.
-    x: 0,
-    y: -100,
-    z: 0
-  },
+  gravity: [0, -100, 0],
 
   camera: {
-    z: 50, // Move camera.
-    y: 10
+    position: [0, 10, 50]
   },
 
   rendering: {
@@ -131,7 +125,9 @@ function addBasicLights(world) {
   var position = arguments.length <= 2 || arguments[2] === undefined ? [0, 10, 10] : arguments[2];
   var distance = arguments.length <= 3 || arguments[3] === undefined ? 100 : arguments[3];
 
-  new WHS.PointLight({
+  addAmbient(world, 1 - intensity);
+
+  return new WHS.PointLight({
     light: {
       intensity: intensity,
       distance: distance
@@ -143,8 +139,6 @@ function addBasicLights(world) {
 
     position: position
   }).addTo(world);
-
-  addAmbient(world, 1 - intensity);
 }
 
 function addPlane(world) {

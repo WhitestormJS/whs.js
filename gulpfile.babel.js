@@ -236,7 +236,7 @@ gulp.task('test:benchmark', done => {
   }).start();
 });
 
-gulp.task('test:unit', ['src:build'], done => {
+gulp.task('test:unit', done => {
   new karma.Server({
     configFile: `${__dirname}/test/karma.unit.conf.js`
   }, () => {

@@ -55,7 +55,7 @@ WHS.Component.prototype.changeColor = function (world) {
   animation.start(world);
 };
 
-const GAME = new WHS.World({
+const world = new WHS.World({
   stats: 'fps', // fps, ms, mb
   autoresize: "window",
 
@@ -67,8 +67,7 @@ const GAME = new WHS.World({
 
   camera: {
     far: 10000,
-    y: 10,
-    z: 30
+    position: [0, 10, 30]
   },
 
   shadowmap: {
@@ -96,9 +95,9 @@ const torus = new WHS.Torus({
   }
 });
 
-GAME.add(torus);
+world.add(torus);
 
-torus.changeColor(GAME);
+torus.changeColor(world);
 
 new WHS.Box({
 
@@ -120,7 +119,7 @@ new WHS.Box({
     y: 0,
     z: 0
   }
-}).addTo(GAME);
+}).addTo(world);
 
 new WHS.DirectionalLight({
   color: 0xffffff, // 0x00ff00,
@@ -137,7 +136,7 @@ new WHS.DirectionalLight({
     y: 0,
     z: 0
   }
-}).addTo(GAME);
+}).addTo(world);
 
-GAME.setControls(WHS.orbitControls());
-GAME.start();
+world.setControls(WHS.orbitControls());
+world.start();

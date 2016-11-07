@@ -1,5 +1,5 @@
 define(['whs'], (WHS) => {
-  describe('World', () => {
+  describe('[WHS.World]', () => {
     // WHS.Work class works properly.
     it('Basic world', () => new WHS.World({init: {rendering: false}}));
 

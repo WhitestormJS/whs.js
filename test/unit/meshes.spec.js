@@ -1,5 +1,6 @@
 define(['whs'], (WHS) => {
   const assetsPath = '/base/test/_assets/';
+  const world = new WHS.World({init: {rendering: false}});
 
   const shapes = [
     'Box',
@@ -24,6 +25,68 @@ define(['whs'], (WHS) => {
     'Tube'
   ];
 
+  function describeAttribute(component, name, dims, Type) {
+    describe(`@test .${name}`, () => {
+      describe('#set()', () => {
+        it('should set new values', () => component[name].set(1, 1, 1));
+      });
+
+      it(`@set .${name}`, () => {
+        component[name] = new Type(...(new Array(dims.length).fill(2)));
+        return component[name];
+      });
+
+      describe('@test properties', () => {
+        for (let i = 0; i < dims.length; i++) {
+          it(`@set .${dims.charAt(i)}`, () => {
+            component[name][dims.charAt(i)] = 3;
+            return component[name][dims.charAt(i)];
+          });
+        }
+      });
+
+      it('@equal (mesh.position) and (mesh.native.position)',
+        () => component.position === component.native.position);
+    });
+  }
+
+  function testAPI(mesh) {
+    describe('#wrap()', () => {
+      it('should wrap component`s params', () => mesh.wrap());
+    });
+
+    describe('#addTo()', () => {
+      it('should add component to the world', () => mesh.addTo(world));
+    });
+
+    describe('#clone()', () => {
+      it('should clone component', () => mesh.clone());
+    });
+
+    describe('#copy()', () => {
+      it('should copy specified component to existing one', () => mesh.copy(new WHS.Component()));
+    });
+
+    describeAttribute(mesh, 'position', 'xyz', THREE.Vector3);
+    describeAttribute(mesh, 'rotation', 'xyz', THREE.Euler);
+    describeAttribute(mesh, 'quaternion', 'xyzw', THREE.Quaternion);
+    describeAttribute(mesh, 'scale', 'xyz', THREE.Vector3);
+
+    // it('API: m_', () => {
+    //   mesh.m_({ kind: 'phong', color: 0xffffff });
+    // });
+
+    describe('#hide()', () => {
+      mesh.hide();
+      it('should make object invisible', () => mesh.native.visible === false);
+    });
+
+    describe('#show()', () => {
+      mesh.show();
+      it('should make object visible', () => mesh.native.visible === false);
+    });
+  }
+
   describe('Meshes', () => {
     const world = new WHS.World({init: {rendering: false}});
 
@@ -32,13 +95,7 @@ define(['whs'], (WHS) => {
         const meshName = shapes[i];
 
         context(meshName, () => {
-          let component;
-
-          it('Create', () => {
-            component = new WHS[meshName]();
-          });
-
-          it('#addTo', () => component.addTo(world));
+          testAPI(new WHS[meshName]());
         });
       }
     });

@@ -78,17 +78,16 @@ function MeshComponent(targetComponent) {
       }
     }
 
-    M_(params = {}) {
-      if (this.params.material && this.params.material.kind !== params.kind)
+    m_(params = {}) {
+      if (this.params.material && this.params.material.kind !== params.kind) {
         this.native.material = loadMaterial(
           this.updateParams({material: params}).material
         );
-      else {
+      } else {
         this.updateParams({material: params});
 
-        for (let key in params) {
+        for (const key in params)
           this.native.material[key] = params[key];
-        }
       }
     }
 
@@ -213,7 +212,7 @@ function MeshComponent(targetComponent) {
       _params = scope.params,
       _helpers = _params.helpers;
 
-    scope.helpers = {
+    scope._helpers = {
       box: null,
       boundingBox: null,
       edges: null,

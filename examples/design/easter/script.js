@@ -1,7 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var GAME = new WHS.World({
+var world = new WHS.World({
   autoresize: "window",
 
   gravity: {
@@ -13,11 +13,8 @@ var GAME = new WHS.World({
   camera: {
     far: 2000,
     near: 1,
-    z: 20,
-    x: -8,
-    y: 5,
-
-    aspect: 45
+    position: [-8, 5, 20],
+    fov: 45
   },
 
   rendering: {
@@ -35,10 +32,10 @@ var GAME = new WHS.World({
   }
 });
 
-GAME.camera.lookAt(new THREE.Vector3(0, 0, 0));
+world.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 // Start rendering.
-GAME.start();
+world.start();
 
 new WHS.Box({
   geometry: {
@@ -59,7 +56,7 @@ new WHS.Box({
     y: -1,
     z: 0
   }
-}).addTo(GAME);
+}).addTo(world);
 
 var egg = new WHS.Model({
   geometry: {
@@ -125,7 +122,7 @@ var rabbit = new WHS.Model({
   }
 });
 
-rabbit.addTo(GAME, 'wait');
+rabbit.addTo(world, 'wait');
 
 new WHS.SpotLight({
   light: {
@@ -163,14 +160,14 @@ new WHS.SpotLight({
     y: 0,
     z: 0
   }
-}).addTo(GAME);
+}).addTo(world);
 
 new WHS.AmbientLight({
   light: {
     intensity: 0.9,
     color: 0xffffff
   }
-}).addTo(GAME);
+}).addTo(world);
 
 var egg2 = void 0,
     egg3 = void 0,
@@ -181,12 +178,12 @@ var egg2 = void 0,
     egg8 = void 0,
     egg9 = void 0;
 
-egg.addTo(GAME, 'wait').then(function (object) {
+egg.addTo(world, 'wait').then(function (object) {
   egg2 = object.clone();
   console.log(egg2);
-  egg2.M_({ map: new WHS.texture('../../_assets/textures/easter/egg2.jpg') });
+  egg2.m_({ map: new WHS.texture('../../_assets/textures/easter/egg2.jpg') });
 
-  egg2.addTo(GAME, 'wait').then(function (obj) {
+  egg2.addTo(world, 'wait').then(function (obj) {
     obj.wrap('no-transforms');
 
     obj.rotation.y = -Math.PI / 8;
@@ -195,9 +192,9 @@ egg.addTo(GAME, 'wait').then(function (object) {
   });
 
   egg3 = object.clone();
-  egg3.M_({ map: new WHS.texture('../../_assets/textures/easter/egg3.jpg') });
+  egg3.m_({ map: new WHS.texture('../../_assets/textures/easter/egg3.jpg') });
 
-  egg3.addTo(GAME, 'wait').then(function (obj) {
+  egg3.addTo(world, 'wait').then(function (obj) {
     obj.wrap('no-transforms');
 
     obj.rotation.y = -Math.PI / 8;
@@ -206,9 +203,9 @@ egg.addTo(GAME, 'wait').then(function (object) {
   });
 
   egg4 = object.clone();
-  egg4.M_({ map: new WHS.texture('../../_assets/textures/easter/egg4.jpg') });
+  egg4.m_({ map: new WHS.texture('../../_assets/textures/easter/egg4.jpg') });
 
-  egg4.addTo(GAME, 'wait').then(function (obj) {
+  egg4.addTo(world, 'wait').then(function (obj) {
     obj.wrap('no-transforms');
 
     obj.rotation.y = -Math.PI / 8;
@@ -217,9 +214,9 @@ egg.addTo(GAME, 'wait').then(function (object) {
   });
 
   egg5 = object.clone();
-  egg5.M_({ map: new WHS.texture('../../_assets/textures/easter/egg1.jpg') });
+  egg5.m_({ map: new WHS.texture('../../_assets/textures/easter/egg1.jpg') });
 
-  egg5.addTo(GAME, 'wait').then(function (obj) {
+  egg5.addTo(world, 'wait').then(function (obj) {
     obj.wrap('no-transforms');
 
     obj.rotation.y = -Math.PI / 8;
@@ -228,9 +225,9 @@ egg.addTo(GAME, 'wait').then(function (object) {
   });
 
   egg6 = object.clone();
-  egg6.M_({ map: new WHS.texture('../../_assets/textures/easter/egg2.jpg') });
+  egg6.m_({ map: new WHS.texture('../../_assets/textures/easter/egg2.jpg') });
 
-  egg6.addTo(GAME, 'wait').then(function (obj) {
+  egg6.addTo(world, 'wait').then(function (obj) {
     obj.wrap('no-transforms');
 
     obj.rotation.y = -Math.PI / 8;
@@ -239,9 +236,9 @@ egg.addTo(GAME, 'wait').then(function (object) {
   });
 
   egg7 = object.clone();
-  egg7.M_({ map: new WHS.texture('../../_assets/textures/easter/egg3.jpg') });
+  egg7.m_({ map: new WHS.texture('../../_assets/textures/easter/egg3.jpg') });
 
-  egg7.addTo(GAME, 'wait').then(function (obj) {
+  egg7.addTo(world, 'wait').then(function (obj) {
     obj.wrap('no-transforms');
 
     obj.rotation.y = -Math.PI / 8;
@@ -250,9 +247,9 @@ egg.addTo(GAME, 'wait').then(function (object) {
   });
 
   egg8 = object.clone();
-  egg8.M_({ map: new WHS.texture('../../_assets/textures/easter/egg4.jpg') });
+  egg8.m_({ map: new WHS.texture('../../_assets/textures/easter/egg4.jpg') });
 
-  egg8.addTo(GAME, 'wait').then(function (obj) {
+  egg8.addTo(world, 'wait').then(function (obj) {
     obj.wrap('no-transforms');
 
     obj.rotation.y = -Math.PI / 8;
@@ -261,9 +258,9 @@ egg.addTo(GAME, 'wait').then(function (object) {
   });
 
   egg9 = object.clone();
-  egg9.M_({ map: new WHS.texture('../../_assets/textures/easter/egg1.jpg') });
+  egg9.m_({ map: new WHS.texture('../../_assets/textures/easter/egg1.jpg') });
 
-  egg9.addTo(GAME, 'wait').then(function (obj) {
+  egg9.addTo(world, 'wait').then(function (obj) {
     obj.wrap('no-transforms');
 
     obj.rotation.y = -Math.PI / 8;
@@ -273,9 +270,9 @@ egg.addTo(GAME, 'wait').then(function (object) {
 });
 
 document.body.addEventListener('mousemove', function (e) {
-  GAME.camera.position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
-  GAME.camera.position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
-  GAME.camera.lookAt(new THREE.Vector3(-4, 0, 0));
+  world.camera.position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
+  world.camera.position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
+  world.camera.lookAt(new THREE.Vector3(-4, 0, 0));
 });
 
 document.body.addEventListener('click', function () {
