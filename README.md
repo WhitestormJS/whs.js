@@ -3,7 +3,8 @@
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square)](https://github.com/sindresorhus/xo)
 [![NPM Version](https://img.shields.io/npm/v/whitestormjs.svg?style=flat-square)](https://www.npmjs.com/package/whitestormjs)
 [![Build Status](https://img.shields.io/travis/WhitestormJS/whitestorm.js.svg?style=flat-square)](https://travis-ci.org/WhitestormJS/whitestorm)
-[![Dependency Status](https://dependencyci.com/github/WhitestormJS/whitestorm.js/badge?style=flat-square)](https://dependencyci.com/github/WhitestormJS/whitestorm.js)[![Slack](https://whslack.herokuapp.com/badge.svg?style=flat-square)](https://whslack.herokuapp.com/)
+[![Dependency Status](https://dependencyci.com/github/WhitestormJS/whitestorm.js/badge?style=flat-square)](https://dependencyci.com/github/WhitestormJS/whitestorm.js)
+[![Slack](https://whslack.herokuapp.com/badge.svg?style=flat-square)](https://whslack.herokuapp.com/)
 
 > Framework for developing 3D web apps
 
