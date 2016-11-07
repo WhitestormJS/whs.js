@@ -5,18 +5,17 @@ const world = new WHS.World({
   softbody: true,
 
   gravity: {
-    y: -9.8,
+    y: -9.8
   },
 
   camera: {
     far: 10000,
     near: 0.01,
-    y: 6,
-    z: 18
+    position: [0, 6, 18]
   }
 });
 
-var sphere = new WHS.Icosahedron({ // Softbody.
+const sphere = new WHS.Icosahedron({ // Softbody.
   geometry: {
     radius: 1,
     detail: 2

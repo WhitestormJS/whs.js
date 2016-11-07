@@ -18,11 +18,16 @@ class Component extends Events {
   children = [];
   params = {};
 
+  static applyDecorator(component, decorator) {
+    component.prototype = decorator(component).prototype;
+    return component;
+  }
+
   constructor(obj = {}, defaults = {}, instructions = {}) {
     super();
 
     if (obj instanceof Object3D) this.native = obj;
-    else this.params = transformData(extend(obj, defaults), instructions);
+    else this.params = extend(transformData(obj, instructions), defaults);
 
     this.callConstructor(this);
   }
@@ -58,23 +63,20 @@ class Component extends Events {
 
     return new Promise((resolve, reject) => {
       const _add = () => {
-        const _native = this.native;
-        const _params = this.params;
-        const _parent = this.parent;
+        const {native, params, parent} = this;
 
-        if (!_native) reject();
+        if (!native) reject();
 
-        const parentNative = _parent.scene ? _parent.scene : _parent.native;
+        const parentNative = 'scene' in parent ? parent.scene : parent.native;
 
-        parentNative.add(_native);
-        _parent.children.push(this);
+        parentNative.add(native);
+        parent.children.push(this);
 
-        if (typeof _params.helpers === 'undefined')
-          _params.helpers = {};
+        if (typeof params.helpers === 'undefined')
+          params.helpers = {};
 
-        for (const key in this._helpers) {
-          if (this._helpers) parentNative.add(this._helpers[key]);
-        }
+        for (const key in this._helpers)
+          if (this._helpers[key]) parentNative.add(this._helpers[key]);
 
         this.callAddTo(this);
         resolve(this);

@@ -4,6 +4,12 @@ import {LightComponent} from '../../core/LightComponent';
 
 @LightComponent
 class PointLight extends Component {
+  static helpers = {
+    default: [PointLightHelper, {
+      size: 0
+    }, ['size']]
+  };
+
   constructor(params = {}) {
     super(params, PointLight.defaults, PointLight.instructions);
 
@@ -19,13 +25,6 @@ class PointLight extends Component {
         params.light.distance,
         params.light.decay
       );
-
-      if (params.helper) {
-        this.helper = new PointLightHelper(
-          this.native,
-          params.helper.size ? params.helper.size : 0
-        );
-      }
 
       resolve();
     });

@@ -150,13 +150,25 @@ function LightComponent(targetComponent) {
       else this.native.target.position.copy(vector3);
     }
 
+    addHelper(name, params = {}, helpers = resultComponent.helpers) {
+      super.addHelper(name, params, helpers);
+    }
+
+    updateHelper(name) {
+      this._helpers[name].update();
+    }
+
     clone() {
       return new resultComponent({build: false}).copy(this);
     }
   };
 
   $wrap(targetComponent).onCallConstructor(scope => {
-    scope.helper = null;
+    scope._helpers = {
+      default: null
+    };
+
+    if (scope.params.helper) scope.addHelper('default', scope.params.helper);
   });
 
   $wrap(targetComponent).onCallWrap((scope, ...tags) => {

@@ -47,17 +47,21 @@ class World extends Component {
     },
 
     camera: {
-      aspect: 75,
+      fov: 75,
       near: 1,
       far: 1000,
 
-      x: 0,
-      y: 0,
-      z: 0
+      position: {
+        x: 0,
+        y: 0,
+        z: 0
+      }
     },
 
-    rWidth: 1, // Resolution(width).
-    rHeight: 1, // Resolution(height).
+    resolution: {
+      width: 1,
+      height: 1
+    },
 
     physics: {
       fixedTimeStep: 1 / 60,
@@ -82,18 +86,32 @@ class World extends Component {
     }
   };
 
+  static instructions = {
+    camera: {
+      position: ['x', 'y', 'z']
+    },
+
+    gravity: ['x', 'y', 'z'],
+
+    init: [
+      'scene',
+      'stats',
+      'camera',
+      'helpers',
+      'rendering'
+    ]
+  };
+
   simulate = false;
   loops = [];
   type = 'world';
 
   constructor(params = {}) {
-    super();
-
     World.defaults.width = window.innerWidth;
     World.defaults.height = window.innerHeight;
     World.defaults.container = window.document.body;
 
-    this.params = extend(params, World.defaults);
+    super(params, World.defaults, World.instructions);
 
     const _params = this.params,
       _initParams = _params.init;
@@ -111,8 +129,8 @@ class World extends Component {
     if (_params.autoresize === 'window') {
       window.addEventListener('resize', () => {
         this.setSize(
-          Number(window.innerWidth * _params.rWidth).toFixed(),
-          Number(window.innerHeight * _params.rHeight).toFixed()
+          Number(window.innerWidth * _params.resolution.width).toFixed(),
+          Number(window.innerHeight * _params.resolution.height).toFixed()
         );
 
         this.emit('resize');
@@ -122,8 +140,8 @@ class World extends Component {
         // FIXME: Am I crazy or offsetHeight is increasing even when we downsize the window ?
         // console.log('height offset : ', _params.container.offsetHeight);
         this.setSize(
-          Number(_params.container.offsetWidth * _params.rWidth).toFixed(),
-          Number(_params.container.offsetHeight * _params.rHeight).toFixed()
+          Number(_params.container.offsetWidth * _params.resolution.width).toFixed(),
+          Number(_params.container.offsetHeight * _params.resolution.height).toFixed()
         );
 
         this.emit('resize');
@@ -206,16 +224,16 @@ class World extends Component {
 
     this.camera = new PerspectiveCamera({
       camera: {
-        fov: _params.camera.aspect,
+        fov: _params.camera.fov,
         aspect: _params.width / _params.height,
         near: _params.camera.near,
         far: _params.camera.far
       },
 
       position: {
-        x: _params.camera.x,
-        y: _params.camera.y,
-        z: _params.camera.z
+        x: _params.camera.position.x,
+        y: _params.camera.position.y,
+        z: _params.camera.position.z
       }
     });
 
@@ -224,8 +242,8 @@ class World extends Component {
 
   _initRendering() {
     const _params = this.params;
-    const computedWidth = Number(_params.width * _params.rWidth).toFixed();
-    const computedHeight = Number(_params.height * _params.rHeight).toFixed();
+    const computedWidth = Number(_params.width * _params.resolution.width).toFixed();
+    const computedHeight = Number(_params.height * _params.resolution.height).toFixed();
 
     this.renderingPlugin = new BasicRendering({
       width: computedWidth,

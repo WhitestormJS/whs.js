@@ -1,51 +1,87 @@
 define(['whs'], (WHS) => {
-  describe('Extras', () => {
+  describe('- Extras -', () => {
     const world = new WHS.World({init: {rendering: false}});
 
-    context('Group', () => {
+    describe('[WHS.Group]', () => {
       const group = new WHS.Group();
 
-      it('#addTo', () => {
-        group.addTo(world);
+      describe('#addTo()', () => {
+        it('should add group to the world [WHS.World]', () => group.addTo(world));
       });
 
-      it('Adding a shape', () => {
-        const shape = new WHS.Shape(new THREE.Mesh());
-        shape.addTo(group);
+      describe('Adding a component', () => {
+        it('should add a mesh [WHS.Element] to the group',
+          () => new WHS.Element(
+            new THREE.Mesh(),
+            [WHS.MeshComponent]
+          ).addTo(group)
+        );
       });
 
-      it('Shapes created at the beginning', () => {
-        const shape = new WHS.Shape(new THREE.Mesh());
-        const shape2 = shape.clone();
+      describe('Shapes created at the beginning', () => {
+        const element1 = new WHS.Element(
+          new THREE.Mesh(),
+          [WHS.MeshComponent]
+        );
 
-        new WHS.Group(shape, shape2);
+        const element2 = element1.clone();
+        it('should add meshes on start', () => new WHS.Group(element1, element2));
       });
     });
 
-    context('Loop', () => {
+    describe('[WHS.Loop]', () => {
       const loop = new WHS.Loop((clock) => {
         clock.getElapsedTime();
       });
 
-      it('#addLoop', () => {
-        world.addLoop(loop);
+      describe('#addLoop()', () => {
+        it('should add loop to the world [WHS.World]', () => world.addLoop(loop));
       });
 
-      it('#removeLoop', () => {
-        world.removeLoop(loop);
+      describe('#removeLoop()', () => {
+        it('should remove loop to the world [WHS.World]', () => world.removeLoop(loop));
       });
 
-      it('#start (with shorthand)', () => {
-        loop.start(world);
+      describe('#start()', () => {
+        it('should start loop', () => loop.start());
+        it('should start loop and add it to the world', () => loop.start(world));
       });
 
-      it('#stop (with shorthand)', () => {
-        loop.stop(world);
+      describe('#stop()', () => {
+        it('should stop loop', () => loop.stop());
+        it('should stop loop and remove it from the world', () => loop.stop(world));
       });
 
-      it('#execute', () => {
-        loop.execute();
+      describe('#execute()', () => {
+        it('should run the function loop contains', () => loop.execute());
       });
+    });
+
+    describe('[WHS.VirtualMouse]', () => {
+      const mouse = new WHS.VirtualMouse(world);
+
+      describe('#track()', () => {
+        it('Should track mouse movement on the component', () => mouse.track(new WHS.Sphere()));
+      });
+
+      describe('#intersection()', () => {
+        it('should return intersection betweeen "mouse ray" and a component',
+          () => mouse.intersection(new WHS.Sphere()));
+      });
+
+      describe('#project()', () => {
+        it('should return a vector[THREE.Vector3] of mouse projected on plane',
+          () => mouse.project());
+      });
+
+      describe('#hovers()', () => {
+        it('should return false when mouse isn`t over the component',
+          () => mouse.hovers(new WHS.Sphere()) === false);
+      });
+
+      it('@returns .ray', () => mouse.ray);
+      it('@returns .x', () => mouse.x);
+      it('@returns .y', () => mouse.y);
     });
   });
 });

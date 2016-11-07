@@ -5,8 +5,7 @@ const world = new WHS.World({
 
   camera: {
     far: 10000,
-    y: 2,
-    z: 12
+    position: [0, 2, 12]
   },
 
   init: {

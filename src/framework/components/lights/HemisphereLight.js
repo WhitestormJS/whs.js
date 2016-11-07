@@ -4,6 +4,12 @@ import {LightComponent} from '../../core/LightComponent';
 
 @LightComponent
 class HemisphereLight extends Component {
+  static helpers = {
+    default: [HemisphereLightHelper, {
+      size: 0
+    }, ['size']]
+  };
+
   constructor(params = {}) {
     super(params, HemisphereLight.defaults, HemisphereLight.instructions);
 
@@ -19,13 +25,6 @@ class HemisphereLight extends Component {
         params.light.groundColor,
         params.light.intensity
       );
-
-      if (params.helper) {
-        this.helper = new HemisphereLightHelper(
-          this.native,
-          params.helper.size ? params.helper.size : 0
-        );
-      }
 
       resolve();
     });

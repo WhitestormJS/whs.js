@@ -16,8 +16,7 @@ const world = new WHS.World({
 
   camera: {
     far: 10000,
-    y: 10,
-    z: 30
+    position: [0, 10, 30]
   }
 });
 
@@ -71,7 +70,9 @@ sphere.wait().then(() => {
 });
 
 UTILS.addPlane(world, 250);
-UTILS.addBasicLights(world, 0.5, [0, 50, 50], 200);
+UTILS.addBasicLights(world, 0.5, [0, 50, 50], 200).then(o => {
+  o.addHelper('default', {size: 1});
+});
 
 world.setControls(new WHS.OrbitControls());
 world.start();

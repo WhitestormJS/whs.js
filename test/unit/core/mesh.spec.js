@@ -1,42 +1,66 @@
 define(['whs'], (WHS) => {
-  describe('MeshComponent', () => {
+  describe('[WHS.MeshComponent]', () => {
     const world = new WHS.World({init: {rendering: false}});
 
-    function describeAttribute(mesh, name, dims, Value) {
-      describe(`.${name}`, () => {
-        it('Method', () => mesh[name].set(1, 1, 1));
-
-        it('Setter', () => {
-          mesh[name] = new Value(...(new Array(dims.length).fill(2)));
+    function describeAttribute(component, name, dims, Type) {
+      describe(`@test .${name}`, () => {
+        describe('#set()', () => {
+          it('should set new values', () => component[name].set(1, 1, 1));
         });
 
-        it('Poperties', () => {
-          for (let i = 0; i < dims.length; i++)
-            mesh[name][dims.charAt(i)] = 3;
+        it(`@set .${name}`, () => {
+          component[name] = new Type(...(new Array(dims.length).fill(2)));
+          return component[name];
         });
 
-        it('=== Values are equal ===', () => mesh.position === mesh.native.position);
+        describe('@test properties', () => {
+          for (let i = 0; i < dims.length; i++) {
+            it(`@set .${dims.charAt(i)}`, () => {
+              component[name][dims.charAt(i)] = 3;
+              return component[name][dims.charAt(i)];
+            });
+          }
+        });
+
+        it('@equal (mesh.position) and (mesh.native.position)',
+          () => component.position === component.native.position);
       });
     }
 
     function testAPI(mesh) {
-      it('#wrap()', () => mesh.wrap());
-      it('#addTo()', () => mesh.addTo(world));
-      it('#clone()', () => mesh.clone());
-      it('#copy()', () => mesh.copy(new WHS.Component()));
+      describe('#wrap()', () => {
+        it('should wrap component`s params', () => mesh.wrap());
+      });
+
+      describe('#addTo()', () => {
+        it('should add component to the world', () => mesh.addTo(world));
+      });
+
+      describe('#clone()', () => {
+        it('should clone component', () => mesh.clone());
+      });
+
+      describe('#copy()', () => {
+        it('should copy specified component to existing one', () => mesh.copy(new WHS.Component()));
+      });
 
       describeAttribute(mesh, 'position', 'xyz', THREE.Vector3);
       describeAttribute(mesh, 'rotation', 'xyz', THREE.Euler);
       describeAttribute(mesh, 'quaternion', 'xyzw', THREE.Quaternion);
       describeAttribute(mesh, 'scale', 'xyz', THREE.Vector3);
 
-      it('API: M_', () => {
-        mesh.M_({ kind: 'phong', color: 0xffffff });
+      // it('API: m_', () => {
+      //   mesh.m_({ kind: 'phong', color: 0xffffff });
+      // });
+
+      describe('#hide()', () => {
+        mesh.hide();
+        it('should make object invisible', () => mesh.native.visible === false);
       });
 
-      it('#hide(), #show()', () => {
-        mesh.hide();
+      describe('#show()', () => {
         mesh.show();
+        it('should make object visible', () => mesh.native.visible === false);
       });
     }
 
@@ -60,11 +84,7 @@ define(['whs'], (WHS) => {
           color: 0xff0000 // Red.
         },
 
-        pos: {
-          x: 2,
-          y: 4,
-          z: 5
-        },
+        pos: [2, 4, 5],
 
         rot: {
           x: Math.PI / 4
