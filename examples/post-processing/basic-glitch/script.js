@@ -194,13 +194,14 @@ var Game = function () {
 
     this.createPostProcessing();
     this.createGeometry();
+    // this.world.setSize(window.innerWidth, window.innerHeight);
   }
 
   _createClass(Game, [{
     key: 'createPostProcessing',
     value: function createPostProcessing() {
-      var computedWidth = Number(this.world.params.width * this.world.params.rWidth).toFixed();
-      var computedHeight = Number(this.world.params.height * this.world.params.rHeight).toFixed();
+      var computedWidth = Number(this.world.params.width * this.world.params.resolution.width).toFixed();
+      var computedHeight = Number(this.world.params.height * this.world.params.resolution.height).toFixed();
 
       var renderingPluginParams = {
         width: computedWidth,
@@ -330,7 +331,7 @@ function addBasicLights(world) {
 
   addAmbient(world, 1 - intensity);
 
-  return new WHS.PointLight({
+  return new WHS.SpotLight({
     light: {
       intensity: intensity,
       distance: distance
@@ -338,6 +339,10 @@ function addBasicLights(world) {
 
     shadowmap: {
       fov: 90
+    },
+
+    target: {
+      x: 50
     },
 
     position: position
