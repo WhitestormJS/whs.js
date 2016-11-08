@@ -21,7 +21,7 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 <a href="https://whs-dev.surge.sh/examples/#softbody/cloth3">
   <img alt="softbody/cloth3" target="_blank" src="http://i.imgur.com/BgHdX56.gif" width="33%" />
 </a>
-<a href="https://whs-dev.surge.sh/examples/#postprocessing/basic-glitch">
+<a href="https://whs-dev.surge.sh/examples/#post-processing/basic-glitch">
   <img alt="postprocessing/basic-glitch" target="_blank" src="http://i.imgur.com/ASUN7tR.gif" width="33%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#softbody/ropes">
