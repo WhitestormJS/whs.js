@@ -17,6 +17,7 @@ before_script:
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
   - npm install
   - npm install -g karma
+  - npm install -g snyk
   - gulp src:build
   - export CHROME_BIN=/usr/bin/google-chrome
 before_install:

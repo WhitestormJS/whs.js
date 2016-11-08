@@ -80,6 +80,7 @@ gulp.task('src:build:node', () => {
     .pipe(gulp.dest('./lib/'));
 
 });
+
 // DEV MODE
 gulp.task('dev', ['examples:build', 'examples:watch'], () => {
   const server = new WebpackDevServer(webpackCompiler, {
