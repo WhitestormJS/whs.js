@@ -13,7 +13,7 @@
 * **Look and feel like simple usage**
 * Minimize 3D scene prototyping
 * **Component based scene graph**
-* Integrated high performance physics with `Worker`
+* Integrated **high performance physics** with `Worker` (Multithreading)
 * Automatization of rendering
 * Enhanced **softbodies**
 * **ES2015+ based**
@@ -45,7 +45,7 @@ const world = new WHS.World({
     stats: "fps", // fps, ms, mb or false if not need.
     autoresize: "window",
 
-    gravity: [0, 100, 0], // Physic gravity.
+    gravity: [0, -100, 0], // Physic gravity.
 
     camera: {
       position: {
@@ -66,7 +66,7 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
     kind: 'basic' // THREE.MeshBasicMaterial
   },
 
-  position: [0, 100, 0]
+  position: [0, 10, 0]
 });
 
 sphere.addTo(world);
