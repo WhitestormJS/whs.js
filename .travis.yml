@@ -16,11 +16,14 @@ addons:
 before_script:
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
   - npm install
+  - npm install -g karma
   - gulp src:build
   - export CHROME_BIN=/usr/bin/google-chrome
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 script:
-  - npm run ci-test
+  - npm test
   - npm run deploy
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
