@@ -24,7 +24,7 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
 sphere.addTo(world);
 
 UTILS.addPlane(world);
-UTILS.addBasicLights(world);
+UTILS.addBasicLights(world).then(o => console.log(o.native));
 
 world.start(); // Start animations and physics simulation.
 world.setControls(new WHS.OrbitControls());
