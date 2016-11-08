@@ -25,7 +25,6 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
 script:
   - npm test
-  - snyk test
   - npm run deploy
 after_success:
   - bash <(curl -s https://codecov.io/bash)
