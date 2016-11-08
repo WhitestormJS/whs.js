@@ -17,6 +17,7 @@ before_script:
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
   - npm install
   - npm install -g karma
+  - npm install -g snyk
   - gulp src:build
   - export CHROME_BIN=/usr/bin/google-chrome
 before_install:
@@ -24,6 +25,7 @@ before_install:
   - "sh -e /etc/init.d/xvfb start"
 script:
   - npm test
+  - snyk test
   - npm run deploy
 after_success:
   - bash <(curl -s https://codecov.io/bash)
