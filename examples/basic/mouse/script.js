@@ -114,7 +114,7 @@ function addBasicLights(world) {
 
   addAmbient(world, 1 - intensity);
 
-  return new WHS.SpotLight({
+  return new WHS.PointLight({
     light: {
       intensity: intensity,
       distance: distance
@@ -122,10 +122,6 @@ function addBasicLights(world) {
 
     shadowmap: {
       fov: 90
-    },
-
-    target: {
-      x: 50
     },
 
     position: position
