@@ -113,6 +113,9 @@ class World extends Component {
 
     super(params, World.defaults, World.instructions);
 
+    if (__VERSION__) console.log(`WhitestormJS Framework v${__VERSION__}`);
+    else console.log(`WhitestormJS Framework v${require('../../../package.json').version}`);
+
     const _params = this.params,
       _initParams = _params.init;
 
