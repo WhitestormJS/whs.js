@@ -6,7 +6,7 @@
   "scripts": {
     "postversion": "set NODE_ENV=production & gulp build",
     "postpublish": "set NODE_ENV=development",
-    "test": "karma start ./test/karma.unit.conf.js",
+    "test": "snyk test && karma start ./test/karma.unit.conf.js",
     "start": "npm run dev",
     "build": "gulp build",
     "deploy": "surge --project ./ --domain whs-$TRAVIS_BRANCH.surge.sh",
