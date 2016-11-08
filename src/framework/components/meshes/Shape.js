@@ -52,11 +52,11 @@ class Shape extends Component {
     );
   }
 
-  set G_shapes(val) {
+  set g_shapes(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {shapes: val}}));
   }
 
-  get G_shapes() {
+  get g_shapes() {
     return this._native.geometry.parameters.shapes;
   }
 

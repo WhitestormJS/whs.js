@@ -1,3 +1,5 @@
+import * as UTILS from './globals';
+
 WHS.Component.prototype.changeColor = function (world) {
   const object = this,
     color = new THREE.Color();
@@ -56,22 +58,11 @@ WHS.Component.prototype.changeColor = function (world) {
 };
 
 const world = new WHS.World({
-  stats: 'fps', // fps, ms, mb
-  autoresize: "window",
-
-  gravity: {
-    x: 0,
-    y: -50,
-    z: 0
-  },
+  ...UTILS.$world,
 
   camera: {
     far: 10000,
     position: [0, 10, 30]
-  },
-
-  shadowmap: {
-    type: THREE.PCFSoftShadowMap
   }
 });
 
@@ -84,7 +75,7 @@ const torus = new WHS.Torus({
   mass: 0,
 
   material: {
-    color: 0xff0000,
+    color: UTILS.$colors.mesh,
     kind: 'phong'
   },
 
@@ -99,44 +90,8 @@ world.add(torus);
 
 torus.changeColor(world);
 
-new WHS.Box({
+UTILS.addBoxPlane(world, 250);
+UTILS.addBasicLights(world);
 
-  geometry: {
-    width: 250,
-    height: 1,
-    depth: 250
-  },
-
-  mass: 0,
-
-  material: {
-    color: 0xff0000,
-    kind: 'phong'
-  },
-
-  position: {
-    x: 0,
-    y: 0,
-    z: 0
-  }
-}).addTo(world);
-
-new WHS.DirectionalLight({
-  color: 0xffffff, // 0x00ff00,
-  intensity: 2,
-
-  position: {
-    x: 0,
-    y: 10,
-    z: 30
-  },
-
-  target: {
-    x: 0,
-    y: 0,
-    z: 0
-  }
-}).addTo(world);
-
-world.setControls(WHS.orbitControls());
+world.setControls(new WHS.OrbitControls());
 world.start();

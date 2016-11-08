@@ -92,35 +92,35 @@ class Cylinder extends Component {
     return geometry;
   }
 
-  set G_radiusTop(val) {
+  set g_radiusTop(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusTop: val}}));
   }
 
-  get G_radiusTop() {
+  get g_radiusTop() {
     return this._native.geometry.parameters.radiusTop;
   }
 
-  set G_radiusBottom(val) {
+  set g_radiusBottom(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusBottom: val}}));
   }
 
-  get G_radiusBottom() {
+  get g_radiusBottom() {
     return this._native.geometry.parameters.radiusBottom;
   }
 
-  set G_height(val) {
+  set g_height(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {height: val}}));
   }
 
-  get G_height() {
+  get g_height() {
     return this._native.geometry.parameters.height;
   }
 
-  set G_radiusSegments(val) {
+  set g_radiusSegments(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusSegments: val}}));
   }
 
-  get G_radiusSegments() {
+  get g_radiusSegments() {
     return this._native.geometry.parameters.radiusSegments;
   }
 

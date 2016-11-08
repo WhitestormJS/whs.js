@@ -67,19 +67,19 @@ class Dodecahedron extends Component {
     );
   }
 
-  set G_radius(val) {
+  set g_radius(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
   }
 
-  get G_radius() {
+  get g_radius() {
     return this._native.geometry.parameters.radius;
   }
 
-  set G_detail(val) {
+  set g_detail(val) {
     this._native.geometry = this.buildGeometry(this.updateParams({geometry: {detail: val}}));
   }
 
-  get G_detail() {
+  get g_detail() {
     return this._native.geometry.parameters.detail;
   }
 
