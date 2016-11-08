@@ -79,7 +79,7 @@ world.start(); // Start animations and physics simulation.
 
 [![playground](http://i.imgur.com/6EdMjm1.gif)](http://whsjs.io/playground/?example=saturn&dir=demo)
 
-## Showcases
+## [Showcases](https://whs-dev.surge.sh/examples/)
 
 You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/).
 
