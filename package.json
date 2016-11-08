@@ -4,8 +4,8 @@
   "description": "Framework for developing 3D web apps with physics.",
   "main": "lib/index.js",
   "scripts": {
-    "preversion": "set NODE_ENV=production & gulp build & npm test",
-    "postversion": "set NODE_ENV=development",
+    "postversion": "set NODE_ENV=production & gulp build",
+    "postpublish": "set NODE_ENV=development",
     "test": "snyk test && karma start ./test/karma.unit.conf.js",
     "start": "npm run dev",
     "build": "gulp build",
