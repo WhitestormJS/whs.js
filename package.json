@@ -62,6 +62,7 @@
     "benchmark": "^2.1.0",
     "browserify": "^13.0.1",
     "browserify-shim": "^3.8.12",
+    "codecov.io": "^0.1.6",
     "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
@@ -81,12 +82,14 @@
     "karma-benchmark": "^0.6.0",
     "karma-benchmark-reporter": "^0.1.1",
     "karma-chrome-launcher": "^1.0.1",
+    "karma-coverage": "^1.1.1",
     "karma-mocha": "^1.1.1",
     "karma-mocha-reporter": "^2.1.0",
     "karma-requirejs": "^1.0.0",
     "mocha": "^3.0.2",
     "path": "^0.12.7",
     "requirejs": "^2.2.0",
+    "snyk": "^1.19.1",
     "stats.js": "^0.16.0",
     "surge": "^0.18.0",
     "swig": "^1.4.2",
@@ -96,8 +99,7 @@
     "webpack-optimizejs-plugin": "0.0.2",
     "webworkify-webpack": "1.1.2",
     "whs-component-terrain": "0.0.2",
-    "xo": "^0.15.1",
-    "snyk": "^1.19.1"
+    "xo": "^0.15.1"
   },
   "xo": {
     "space": 2,
