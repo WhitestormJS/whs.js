@@ -84,22 +84,22 @@ world.start(); // Start animations and physics simulation.
 You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/).
 
 <a href="https://whs-dev.surge.sh/examples/#basic/helloworld">
-  <img src="http://i.imgur.com/IRq5Hp4.gif" width="33%" />
+  <img alt="basic/helloworld" src="http://i.imgur.com/IRq5Hp4.gif" width="33%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#basic/model">
-  <img src="http://i.imgur.com/RmTjjiA.gif" width="33%" />
+  <im alt="basic/model" src="http://i.imgur.com/RmTjjiA.gif" width="33%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#softbody/cloth3">
-  <img src="http://i.imgur.com/BgHdX56.gif" width="33%" />
+  <img alt="softbody/cloth3" src="http://i.imgur.com/BgHdX56.gif" width="33%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#postprocessing/basic-glitch">
-  <img src="http://i.imgur.com/ASUN7tR.gif" width="33%" />
+  <img alt="postprocessing/basic-glitch" src="http://i.imgur.com/ASUN7tR.gif" width="33%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#softbody/ropes">
-  <img src="http://i.imgur.com/wRFKfTM.gif" width="33%" />
+  <img alt="softbody/ropes" src="http://i.imgur.com/wRFKfTM.gif" width="33%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#design/saturn">
-  <img src="http://i.imgur.com/JZ5HryS.gif" width="33%" />
+  <img alt="design/saturn" src="http://i.imgur.com/JZ5HryS.gif" width="33%" />
 </a>
 
 
