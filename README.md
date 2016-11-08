@@ -83,6 +83,26 @@ world.start(); // Start animations and physics simulation.
 
 You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/).
 
+<a href="https://whs-dev.surge.sh/examples/#basic/helloworld">
+  <img src="http://i.imgur.com/IRq5Hp4.gif" width="33%" />
+</a>
+<a href="https://whs-dev.surge.sh/examples/#basic/model">
+  <img src="http://i.imgur.com/RmTjjiA.gif" width="33%" />
+</a>
+<a href="https://whs-dev.surge.sh/examples/#softbody/cloth3">
+  <img src="http://i.imgur.com/BgHdX56.gif" width="33%" />
+</a>
+<a href="https://whs-dev.surge.sh/examples/#postprocessing/basic-glitch">
+  <img src="http://i.imgur.com/ASUN7tR.gif" width="33%" />
+</a>
+<a href="https://whs-dev.surge.sh/examples/#softbody/ropes">
+  <img src="http://i.imgur.com/wRFKfTM.gif" width="33%" />
+</a>
+<a href="https://whs-dev.surge.sh/examples/#design/saturn">
+  <img src="http://i.imgur.com/JZ5HryS.gif" width="33%" />
+</a>
+
+
 ## Contributors
 
 [![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-orange.svg?style=flat-square)](https://github.com/sasha240100)
