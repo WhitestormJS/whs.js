@@ -8,6 +8,8 @@ process.env.BABEL_ENV = 'browser';
 export function config({isProduction, frameworkSrc, frameworkDest}) {
   if (process.env.CI) isProduction = true;
   console.log(isProduction ? 'Production mode' : 'Development mode');
+  const _version = require('./package.json').version;
+  console.log(_version);
 
   const loadersSection = [
     {
@@ -31,6 +33,8 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     }
   ];
 
+  const bannerText = `WhitestormJS Framework v${_version}`;
+
   const pluginsSectionPhysics = isProduction
   ? [
     new webpack.optimize.DedupePlugin(),
@@ -42,11 +46,19 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
       minimize: true
     }),
     new HappyPack({loaders: ['babel'], threads: 4}),
-    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack')
+    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
+    new webpack.DefinePlugin({
+      __VERSION__: JSON.stringify(_version)
+    }),
+    new webpack.BannerPlugin(bannerText)
   ]
   : [
     new HappyPack({loaders: ['babel'], threads: 4}),
-    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack')
+    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
+    new webpack.DefinePlugin({
+      __VERSION__: JSON.stringify(_version)
+    }),
+    new webpack.BannerPlugin(bannerText)
   ];
 
   const pluginsSectionLight = isProduction
@@ -59,11 +71,19 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
       minimize: true
     }),
     new HappyPack({loaders: ['babel'], threads: 4}),
-    new OptimizeJSPlugin()
+    new OptimizeJSPlugin(),
+    new webpack.DefinePlugin({
+      __VERSION__: JSON.stringify(_version)
+    }),
+    new webpack.BannerPlugin(bannerText)
   ]
   : [
     new HappyPack({loaders: ['babel'], threads: 4}),
-    new OptimizeJSPlugin()
+    new OptimizeJSPlugin(),
+    new webpack.DefinePlugin({
+      __VERSION__: JSON.stringify(_version)
+    }),
+    new webpack.BannerPlugin(bannerText)
   ];
 
   return [{ // PHYSICS VERSION
