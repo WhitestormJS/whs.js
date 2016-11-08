@@ -10,11 +10,15 @@
 
 ## Features
 
-* **Simple shape crafting**
-* **Physics with WebWorkers**
-* **Automatization of rendering**
-* **Plugin system**
-* **Softbodies**
+* Look and feel like simple usage
+* Minimize 3D scene prototyping
+* Component based scene graph
+* Integrated high performance physics with `Worker`
+* Automatization of rendering
+* Enhanced softbodies
+* ES2015+ based
+* Integrated [three.js](https://threejs.org/) rendering engine
+* Extension system (plugins)
 
 ## Installation
 ### NODE
