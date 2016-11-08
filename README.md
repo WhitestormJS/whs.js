@@ -8,6 +8,29 @@
 
 > Framework for developing 3D web apps
 
+## [Showcases](https://whs-dev.surge.sh/examples/)
+
+You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/).
+
+<a href="https://whs-dev.surge.sh/examples/#basic/helloworld">
+  <img alt="basic/helloworld" target="_blank" src="http://i.imgur.com/IRq5Hp4.gif" width="33%" />
+</a>
+<a href="https://whs-dev.surge.sh/examples/#basic/model">
+  <img alt="basic/model" target="_blank" src="http://i.imgur.com/RmTjjiA.gif" width="33%" />
+</a>
+<a href="https://whs-dev.surge.sh/examples/#softbody/cloth3">
+  <img alt="softbody/cloth3" target="_blank" src="http://i.imgur.com/BgHdX56.gif" width="33%" />
+</a>
+<a href="https://whs-dev.surge.sh/examples/#postprocessing/basic-glitch">
+  <img alt="postprocessing/basic-glitch" target="_blank" src="http://i.imgur.com/ASUN7tR.gif" width="33%" />
+</a>
+<a href="https://whs-dev.surge.sh/examples/#softbody/ropes">
+  <img alt="softbody/ropes" target="_blank" src="http://i.imgur.com/wRFKfTM.gif" width="33%" />
+</a>
+<a href="https://whs-dev.surge.sh/examples/#design/saturn">
+  <img alt="design/saturn" target="_blank" src="http://i.imgur.com/JZ5HryS.gif" width="33%" />
+</a>
+
 ## Features
 
 * **Look and feel like simple usage**
@@ -78,29 +101,6 @@ world.start(); // Start animations and physics simulation.
 ## Playground!
 
 [![playground](http://i.imgur.com/6EdMjm1.gif)](http://whsjs.io/playground/?example=saturn&dir=demo)
-
-## [Showcases](https://whs-dev.surge.sh/examples/)
-
-You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/).
-
-<a href="https://whs-dev.surge.sh/examples/#basic/helloworld">
-  <img alt="basic/helloworld" target="_blank" src="http://i.imgur.com/IRq5Hp4.gif" width="33%" />
-</a>
-<a href="https://whs-dev.surge.sh/examples/#basic/model">
-  <img alt="basic/model" target="_blank" src="http://i.imgur.com/RmTjjiA.gif" width="33%" />
-</a>
-<a href="https://whs-dev.surge.sh/examples/#softbody/cloth3">
-  <img alt="softbody/cloth3" target="_blank" src="http://i.imgur.com/BgHdX56.gif" width="33%" />
-</a>
-<a href="https://whs-dev.surge.sh/examples/#postprocessing/basic-glitch">
-  <img alt="postprocessing/basic-glitch" target="_blank" src="http://i.imgur.com/ASUN7tR.gif" width="33%" />
-</a>
-<a href="https://whs-dev.surge.sh/examples/#softbody/ropes">
-  <img alt="softbody/ropes" target="_blank" src="http://i.imgur.com/wRFKfTM.gif" width="33%" />
-</a>
-<a href="https://whs-dev.surge.sh/examples/#design/saturn">
-  <img alt="design/saturn" target="_blank" src="http://i.imgur.com/JZ5HryS.gif" width="33%" />
-</a>
 
 
 ## Contributors
