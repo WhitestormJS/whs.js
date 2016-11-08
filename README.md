@@ -17,8 +17,10 @@
 * Automatization of rendering
 * Enhanced softbodies
 * ES2015+ based
-* Integrated [three.js](https://threejs.org/) rendering engine
 * Extension system (plugins)
+* [asm.js](http://asmjs.org/) acceleration
+* [Webpack](webpack.js.org) friendly
+* Integrated [three.js](https://threejs.org/) rendering engine
 
 ## Installation
 ### NODE
