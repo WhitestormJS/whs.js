@@ -40,15 +40,13 @@ function LightComponent(targetComponent) {
       },
 
       position: {x: 0, y: 0, z: 0},
-      rotation: {x: 0, y: 0, z: 0},
-      target: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
     });
 
     static instructions = (() => targetComponent.instructions = {
       ...targetComponent.instructions,
       position: ['x', 'y', 'z'],
-      rotation: ['x', 'y', 'z'],
-      target: ['x', 'y', 'z']
+      rotation: ['x', 'y', 'z']
     })();
 
     wrapShadow() {
@@ -91,8 +89,6 @@ function LightComponent(targetComponent) {
         _params.rotation.y,
         _params.rotation.z
       );
-
-      if (this.target) this.target = _params.target;
     }
 
     copy(source) {

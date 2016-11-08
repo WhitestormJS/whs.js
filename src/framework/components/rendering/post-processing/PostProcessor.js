@@ -9,8 +9,10 @@ class PostProcessor extends RenderingPlugin {
   static defaults = {
     autoresize: true,
 
-    rWidth: 1, // Resolution(width).
-    rHeight: 1, // Resolution(height).
+    resolution: {
+      width: 1,
+      height: 1
+    },
 
     renderTarget: {
       minFilter: THREE.LinearFilter,
@@ -21,9 +23,9 @@ class PostProcessor extends RenderingPlugin {
     }
   };
 
-  constructor(params = {}, localWindow = window) {
-    PostProcessor.defaults.width = localWindow.innerWidth;
-    PostProcessor.defaults.height = localWindow.innerHeight;
+  constructor(params = {}) {
+    PostProcessor.defaults.width = window.innerWidth;
+    PostProcessor.defaults.height = window.innerHeight;
     const _params = extend(params, PostProcessor.defaults);
 
     super(_params);
@@ -37,8 +39,8 @@ class PostProcessor extends RenderingPlugin {
   build() {
     const _params = this.params;
 
-    const width = Number(window.innerWidth * _params.rWidth).toFixed();
-    const height = Number(window.innerHeight * _params.rHeight).toFixed();
+    const width = Number(window.innerWidth * _params.resolution.width).toFixed();
+    const height = Number(window.innerHeight * _params.resolution.height).toFixed();
 
     // Renderer.
     this.renderer = new THREE.WebGLRenderer(_params.renderer);

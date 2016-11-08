@@ -31,7 +31,9 @@ var sphere = new WHS.Sphere({ // Create sphere comonent.
 sphere.addTo(world);
 
 UTILS.addPlane(world);
-UTILS.addBasicLights(world);
+UTILS.addBasicLights(world).then(function (o) {
+  return console.log(o.native);
+});
 
 world.start(); // Start animations and physics simulation.
 world.setControls(new WHS.OrbitControls());
@@ -93,7 +95,7 @@ function addBasicLights(world) {
 
   addAmbient(world, 1 - intensity);
 
-  return new WHS.PointLight({
+  return new WHS.SpotLight({
     light: {
       intensity: intensity,
       distance: distance
@@ -101,6 +103,10 @@ function addBasicLights(world) {
 
     shadowmap: {
       fov: 90
+    },
+
+    target: {
+      x: 50
     },
 
     position: position

@@ -70869,8 +70869,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.position.set(_params.position.x, _params.position.y, _params.position.z);
 
 	        this.rotation.set(_params.rotation.x, _params.rotation.y, _params.rotation.z);
-
-	        if (this.target) this.target = _params.target;
 	      }
 	    }, {
 	      key: 'copy',
@@ -70982,13 +70980,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    position: { x: 0, y: 0, z: 0 },
-	    rotation: { x: 0, y: 0, z: 0 },
-	    target: { x: 0, y: 0, z: 0 }
+	    rotation: { x: 0, y: 0, z: 0 }
 	  }), _class.instructions = (function () {
 	    return targetComponent.instructions = (0, _extends3.default)({}, targetComponent.instructions, {
 	      position: ['x', 'y', 'z'],
-	      rotation: ['x', 'y', 'z'],
-	      target: ['x', 'y', 'z']
+	      rotation: ['x', 'y', 'z']
 	    });
 	  })(), _temp);
 
@@ -76543,15 +76539,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  (0, _inherits3.default)(PostProcessor, _RenderingPlugin);
 
 	  function PostProcessor() {
-	    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
 	    var _ret;
 
-	    var localWindow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : window;
+	    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    (0, _classCallCheck3.default)(this, PostProcessor);
 
-	    PostProcessor.defaults.width = localWindow.innerWidth;
-	    PostProcessor.defaults.height = localWindow.innerHeight;
+	    PostProcessor.defaults.width = window.innerWidth;
+	    PostProcessor.defaults.height = window.innerHeight;
 	    var _params = (0, _index.extend)(params, PostProcessor.defaults);
 
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (PostProcessor.__proto__ || Object.getPrototypeOf(PostProcessor)).call(this, _params));
@@ -76567,8 +76561,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function build() {
 	      var _params = this.params;
 
-	      var width = Number(window.innerWidth * _params.rWidth).toFixed();
-	      var height = Number(window.innerHeight * _params.rHeight).toFixed();
+	      var width = Number(window.innerWidth * _params.resolution.width).toFixed();
+	      var height = Number(window.innerHeight * _params.resolution.height).toFixed();
 
 	      // Renderer.
 	      this.renderer = new THREE.WebGLRenderer(_params.renderer);
@@ -76789,8 +76783,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(_RenderingPlugin2.RenderingPlugin), _class.defaults = {
 	  autoresize: true,
 
-	  rWidth: 1, // Resolution(width).
-	  rHeight: 1, // Resolution(height).
+	  resolution: {
+	    width: 1,
+	    height: 1
+	  },
 
 	  renderTarget: {
 	    minFilter: THREE.LinearFilter,

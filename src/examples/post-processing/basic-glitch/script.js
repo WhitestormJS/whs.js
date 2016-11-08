@@ -239,11 +239,12 @@ class Game {
 
     this.createPostProcessing();
     this.createGeometry();
+    // this.world.setSize(window.innerWidth, window.innerHeight);
   }
 
   createPostProcessing() {
-    const computedWidth = Number(this.world.params.width * this.world.params.rWidth).toFixed();
-    const computedHeight = Number(this.world.params.height * this.world.params.rHeight).toFixed();
+    const computedWidth = Number(this.world.params.width * this.world.params.resolution.width).toFixed();
+    const computedHeight = Number(this.world.params.height * this.world.params.resolution.height).toFixed();
 
     const renderingPluginParams = {
       width: computedWidth,
