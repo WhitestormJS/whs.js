@@ -10,17 +10,18 @@
 
 ## Features
 
-* Look and feel like simple usage
+* **Look and feel like simple usage**
 * Minimize 3D scene prototyping
-* Component based scene graph
+* **Component based scene graph**
 * Integrated high performance physics with `Worker`
 * Automatization of rendering
-* Enhanced softbodies
-* ES2015+ based
+* Enhanced **softbodies**
+* **ES2015+ based**
 * Extension system (plugins)
 * [asm.js](http://asmjs.org/) acceleration
 * [Webpack](webpack.js.org) friendly
-* Integrated [three.js](https://threejs.org/) rendering engine
+* Integrated [Three.js](https://threejs.org/) rendering engine
+* Work with Whitestorm.js and Three.js at the same time
 
 ## Installation
 ### NODE
