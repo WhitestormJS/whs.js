@@ -3,7 +3,7 @@
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square)](https://github.com/sindresorhus/xo)
 [![NPM Version](https://img.shields.io/npm/v/whitestormjs.svg?style=flat-square)](https://www.npmjs.com/package/whitestormjs)
 [![Build Status](https://img.shields.io/travis/WhitestormJS/whitestorm.js.svg?style=flat-square)](https://travis-ci.org/WhitestormJS/whitestorm.js)
-[![Known Vulnerabilities](https://snyk.io/test/npm/whs/badge.svg)](https://snyk.io/test/npm/whs)
+[![Known Vulnerabilities](https://snyk.io/test/npm/whs/badge.svg?style=flat-square)](https://snyk.io/test/npm/whs)
 [![Discord](https://img.shields.io/badge/discord-WhitestormJS-738bd7.svg?style=flat-square)](https://discord.gg/frNetGE)
 
 > Framework for developing 3D web apps
