@@ -70,7 +70,7 @@ function MeshComponent(targetComponent) {
       }, ['size', 'color', 'linewidth']]
     }
 
-    G_(params = {}) {
+    g_(params = {}) {
       if (this.buildGeometry) {
         this.native.geometry = this.buildGeometry(
           this.updateParams({geometry: params})

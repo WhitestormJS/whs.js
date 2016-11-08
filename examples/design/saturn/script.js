@@ -185,7 +185,7 @@ for (var i = 0; i < particleCount; i++) {
   var particle = [s1, s2, s3, s4][Math.ceil(Math.random() * 3)].clone(),
       radius = particleMinRadius + Math.random() * (particleMaxRadius - particleMinRadius);
 
-  particle.G_({
+  particle.g_({
     radiusBottom: radius,
     radiusTop: 0,
     height: particle instanceof WHS.Cylinder ? radius * 2 : radius,

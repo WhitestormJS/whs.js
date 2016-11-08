@@ -1,4 +1,4 @@
-# [![logo](https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/media/art/logo/big.png)](https://whsjs.io/)
+# [![logo](https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/dev/media/art/logo/big.png)](https://whsjs.io/)
 
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square)](https://github.com/sindresorhus/xo)
 [![NPM Version](https://img.shields.io/npm/v/whitestormjs.svg?style=flat-square)](https://www.npmjs.com/package/whitestormjs)
@@ -16,33 +16,44 @@
 * **Plugin system**
 * **Softbodies**
 
-## Install
+## Installation
+### NODE
 
 ```bash
 $ npm install --save whs
 ```
 
+### WEBPACK
+
 See [WhitestormJS/test-whitestorm-webpack](https://github.com/WhitestormJS/test-whitestorm-webpack) for more details.
 
 ## Documentation
 
+<<<<<<< HEAD
 Full documentation of guides and APIs are located at [here](http://whsjs.io/).
 
 ## Usage
+=======
+Full documentation of guides and APIs are located at [here](http://whsjs.io/#/api).
+
+## Usage
+
+### Hello world
+
+Basic white sphere that falls down.
+>>>>>>> origin/dev
 
 ```javascript
 const world = new WHS.World({
     stats: "fps", // fps, ms, mb or false if not need.
-    autoresize: true,
+    autoresize: "window",
 
-    gravity: { // Physic gravity.
-        x: 0,
-        y: -100,
-        z: 0
-    },
+    gravity: [0, 100, 0], // Physic gravity.
 
     camera: {
-      z: 50 // Move camera.
+      position: {
+        z: 50 // Move camera.
+      }
     }
 });
 
@@ -54,22 +65,71 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
   mass: 10, // Mass of physics object.
 
   material: {
-    color: 0xffffff,
-    kind: 'basic'
+    color: 0xffffff, // White color.
+    kind: 'basic' // THREE.MeshBasicMaterial
   },
 
-  pos: {
-    x: 0,
-    y: 100,
-    z: 0
-  }
+  position: [0, 100, 0]
 });
 
 sphere.addTo(world);
-sphere.getNative(); // Returns THREE.Mesh of this object.
+console.log(sphere.native); // Returns THREE.Mesh of this object.
 
 world.start(); // Start animations and physics simulation.
 ```
+
+<<<<<<< HEAD
+## Playground!
+=======
+### Making a custom component
+
+```javascript
+import * as THREE from 'three';
+
+// Basic component class.
+import {Component} from 'whitestormjs/core/Component';
+// Decorator for THREE.Mesh for component class.
+import MeshComponent from 'whitestormjs/core/MeshComponent';
+// Some utils that should help.
+import {extend, loadMaterial} from 'whitestormjs/utils/index';
+
+@MeshComponent
+class BasicSphere extends Component {
+  constructor(params = {}) {
+    super(params, BasicSphere.defaults);
+
+    extend(params, {
+      myParameter: 10 // Default for myParameter. (Sphere radius)
+    });
+
+    if (params.build) { // params.build is "true" by default. (@MeshComponent)
+      this.build(params);
+      // Apply position & rotation, scale ...
+      super.wrap();
+    }
+  }
+
+  build(params = {}) {
+    // Load THREE.Material from properties.
+    const material = loadMaterial(params.material);
+
+    return new Promise((resolve) => {
+      this.native = new THREE.Mesh(
+        new THREE.SphereGeometry(params.myParameter, 16, 16),
+        material
+      );
+
+      resolve();
+    });
+  }
+
+  clone() {
+    return new Sphere({build: false}).copy(this);
+  }
+}
+>>>>>>> origin/dev
+
+[![playground](http://i.imgur.com/6EdMjm1.gif)](http://whsjs.io/playground/?example=saturn&dir=demo)
 
 ## Playground!
 
@@ -79,6 +139,45 @@ world.start(); // Start animations and physics simulation.
 
 You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/).
 
+<<<<<<< HEAD
+=======
+### :space_invader:
+
+* [Basic / Hello world](https://whs-dev.surge.sh/examples/#basic/helloworld)  (Basic "Hello world!" example.)
+* [Basic / Model](https://whs-dev.surge.sh/examples/#basic/model)  (Basic model example.)
+* [Basic / Debugging](https://whs-dev.surge.sh/examples/#basic/debugging)  (Object's debug example.)
+* [Basic / Extending](https://whs-dev.surge.sh/examples/#basic/extending)  (Extending api example.)
+* [Basic / Softbody](https://whs-dev.surge.sh/examples/#basic/softbody)  (Basic softbody implementation.)
+* [Basic / Three.js](https://whs-dev.surge.sh/examples/#basic/threejs)  (Importing three.js scene to whitestormjs core.)
+
+### :bowling:
+
+* [Softbody / Cloth](https://whs-dev.surge.sh/examples/#basic/cloth)  (Example of softbody cloth.)
+* [Softbody / Cloth 2](https://whs-dev.surge.sh/examples/#basic/cloth2)  (Example of softbody cloth 2.)
+* [Softbody / Cloth 3](https://whs-dev.surge.sh/examples/#basic/cloth3)  (Example of softbody cloth 3.)
+* [Constraints / DOF](https://whs-dev.surge.sh/examples/#constraints/dof)  (DOF Constraint.)
+* [Constraints / Hinge](https://whs-dev.surge.sh/examples/#constraints/hinge)  (Hinge Constraint.)
+* [Constraints / Point](https://whs-dev.surge.sh/examples/#constraints/point)  (Point Constraint.)
+* [Constraints / Slider](https://whs-dev.surge.sh/examples/#constraints/slider)  (Point Slider.)
+* [Physics / Dominos](https://whs-dev.surge.sh/examples/#physics/domino)  (Physics example with dominos.)
+* [Physics / Filtering](https://whs-dev.surge.sh/examples/#physics/filtering)  (Filtering collision groups.)
+
+### :gem:
+
+* [Design / Saturn](http://192.241.128.187/current/examples/design/saturn/)  (Saturn planet example from: http://codepen.io/Yakudoo/pen/qbygaJ)
+* [Design / Easter](http://192.241.128.187/current/examples/design/easter/)  (Easter rabbit with easter eggs.)
+* [Design / Points](http://192.241.128.187/current/examples/design/points/)  (Using WHS.Points to make a point cloud shaped in cube.)
+
+### :snowboarder:
+
+* [FPS / Shooter](https://whs-dev.surge.sh/examples/#fps/shooter/)  (First person example)
+
+### :rocket:
+
+* [Performance / Sticks](http://192.241.128.187/current/examples/performance/sticks/)  (Collisions performance of 320 basic box objects.)
+* [Performance / Softbodies](http://192.241.128.187/current/examples/performance/softbodies/)  (Collisions performance of 30 softbody icosahedron objects.)
+
+>>>>>>> origin/dev
 ## Contributors
 
 [![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-orange.svg?style=flat-square)](https://github.com/sasha240100)
