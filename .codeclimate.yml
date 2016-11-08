@@ -1,0 +1,9 @@
+exclude_paths:
+- ".github/"
+- ".happypack"
+- "build/"
+- "examples/"
+- "lib/"
+- "media/"
+- "src/examples/"
+- "test/"
