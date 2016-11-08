@@ -87,7 +87,7 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
   <img alt="basic/helloworld" src="http://i.imgur.com/IRq5Hp4.gif" width="33%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#basic/model">
-  <im alt="basic/model" src="http://i.imgur.com/RmTjjiA.gif" width="33%" />
+  <img alt="basic/model" src="http://i.imgur.com/RmTjjiA.gif" width="33%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#softbody/cloth3">
   <img alt="softbody/cloth3" src="http://i.imgur.com/BgHdX56.gif" width="33%" />
