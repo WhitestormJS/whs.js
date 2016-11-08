@@ -6,12 +6,11 @@
   "scripts": {
     "preversion": "set NODE_ENV=production & gulp build & npm test",
     "postversion": "set NODE_ENV=development",
-    "test": "gulp test:unit",
+    "test": "snyk test && karma start ./test/karma.unit.conf.js",
     "start": "npm run dev",
     "build": "gulp build",
     "deploy": "surge --project ./ --domain whs-$TRAVIS_BRANCH.surge.sh",
     "dev": "gulp dev",
-    "ci-test": "./node_modules/.bin/karma start ./test/karma.unit.conf.js",
     "lint": "gulp src:lint"
   },
   "repository": {
@@ -97,7 +96,8 @@
     "webpack-optimizejs-plugin": "0.0.2",
     "webworkify-webpack": "1.1.2",
     "whs-component-terrain": "0.0.2",
-    "xo": "^0.15.1"
+    "xo": "^0.15.1",
+    "snyk": "^1.19.1"
   },
   "xo": {
     "space": 2,
