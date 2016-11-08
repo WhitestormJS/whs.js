@@ -1,4 +1,4 @@
-/*! WhitestormJS Framework v1.1.0 */
+/*! WhitestormJS Framework v1.1.1 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("false"));
@@ -71728,7 +71728,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _this.type = 'world';
 
 
-	    if (true) console.log('WhitestormJS Framework v' + ("1.1.0"));else console.log('WhitestormJS Framework v' + require('../../../package.json').version);
+	    if (true) console.log('WhitestormJS Framework v' + ("1.1.1"));else console.log('WhitestormJS Framework v' + require('../../../package.json').version);
 
 	    var _params = _this.params,
 	        _initParams = _params.init;
