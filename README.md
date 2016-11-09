@@ -4,7 +4,7 @@
 [![NPM Version](https://img.shields.io/npm/v/whs.svg?style=flat-square)](https://www.npmjs.com/package/whs)
 [![Build Status](https://img.shields.io/travis/WhitestormJS/whitestorm.js.svg?style=flat-square)](https://travis-ci.org/WhitestormJS/whitestorm.js)
 [![Known Vulnerabilities](https://snyk.io/test/npm/whs/badge.svg?style=flat-square)](https://snyk.io/test/npm/whs)
-[![Discord](https://img.shields.io/badge/discord-WhitestormJS-738bd7.svg?style=flat-square)](https://discord.gg/frNetGE)
+[![Discord](https://discordapp.com/api/guilds/238405369859145729/widget.png)](https://discord.gg/frNetGE)
 
 > Framework for developing 3D web apps
 
