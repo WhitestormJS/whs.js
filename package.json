@@ -1,15 +1,14 @@
 {
   "name": "whs",
-  "version": "1.1.2",
+  "version": "1.1.5",
   "description": "Framework for developing 3D web apps with physics.",
   "main": "lib/index.js",
   "scripts": {
-    "postversion": "set NODE_ENV=production & gulp build",
-    "postpublish": "set NODE_ENV=development",
+    "postversion": "gulp build --prod",
     "test": "snyk test && karma start ./test/karma.unit.conf.js",
     "start": "npm run dev",
     "build": "gulp build",
-    "deploy": "surge --project ./ --domain whs-$TRAVIS_BRANCH.surge.sh",
+    "deploy": "surge --project ./ --domain whs-dev.surge.sh",
     "dev": "gulp dev",
     "lint": "gulp src:lint"
   },
@@ -99,7 +98,8 @@
     "webpack-optimizejs-plugin": "0.0.2",
     "webworkify-webpack": "1.1.2",
     "whs-component-terrain": "0.0.2",
-    "xo": "^0.15.1"
+    "xo": "^0.15.1",
+    "yargs": "^6.3.0"
   },
   "xo": {
     "space": 2,
