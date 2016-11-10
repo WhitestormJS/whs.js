@@ -1,6 +1,7 @@
 // UTILS
 import path from 'path';
 import del from 'del';
+import {argv} from 'yargs';
 
 // GULP
 import gulp from 'gulp';
@@ -39,7 +40,7 @@ const $ = loadPlugins({
 });
 
 // COMPILERS
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = argv.prod ? true : process.env.NODE_ENV === 'production';
 
 const webpackConfiguration = config({
   isProduction,
