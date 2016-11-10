@@ -4,7 +4,7 @@
 [![NPM Version](https://img.shields.io/npm/v/whs.svg?style=flat-square)](https://www.npmjs.com/package/whs)
 [![Build Status](https://img.shields.io/travis/WhitestormJS/whitestorm.js.svg?style=flat-square)](https://travis-ci.org/WhitestormJS/whitestorm.js)
 [![Known Vulnerabilities](https://snyk.io/test/npm/whs/badge.svg?style=flat-square)](https://snyk.io/test/npm/whs)
-[![Discord](https://img.shields.io/badge/discord-WhitestormJS-738bd7.svg?style=flat-square)](https://discord.gg/frNetGE)
+[![Discord](https://discordapp.com/api/guilds/238405369859145729/widget.png)](https://discord.gg/frNetGE)
 
 > Framework for developing 3D web apps
 
@@ -21,7 +21,7 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 <a href="https://whs-dev.surge.sh/examples/#softbody/cloth3">
   <img alt="softbody/cloth3" target="_blank" src="http://i.imgur.com/BgHdX56.gif" width="33%" />
 </a>
-<a href="https://whs-dev.surge.sh/examples/#postprocessing/basic-glitch">
+<a href="https://whs-dev.surge.sh/examples/#post-processing/basic-glitch">
   <img alt="postprocessing/basic-glitch" target="_blank" src="http://i.imgur.com/ASUN7tR.gif" width="33%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#softbody/ropes">
