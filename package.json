@@ -26,7 +26,7 @@
     "gulpjs"
   ],
   "author": "Alexander Buzin",
-  "license": "CC",
+  "license": "MIT",
   "homepage": "https://github.com/WhitestormJS/whitestorm.js#readme",
   "dependencies": {
     "inline-worker": "^1.1.0",
