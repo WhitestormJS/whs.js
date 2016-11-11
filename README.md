@@ -6,7 +6,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/npm/whs/badge.svg?style=flat-square)](https://snyk.io/test/npm/whs)
 [![Discord](https://discordapp.com/api/guilds/238405369859145729/widget.png)](https://discord.gg/frNetGE)
 
-> Framework for developing 3D web apps
+> **Framework for developing 3D web apps**
 
 ## [Showcases](https://whs-dev.surge.sh/examples/)
 
@@ -31,19 +31,37 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
   <img alt="design/saturn" target="_blank" src="http://i.imgur.com/JZ5HryS.gif" width="33%" />
 </a>
 
+### Why?
+* 🤔 Because making of even **a basic Three.js application requires at least ~20 lines of code** (see [this tutorial](https://threejs.org/docs/index.html#Manual/Introduction/Creating_a_scene))
+  - **Native three.js:** you will need to setup: _scene, renderer, camera_, make an `animate()` function before making the actual app.
+  - **Whitestorm.js:** all those values are filled with defaults, you just need to define your own values **only if they differs from defauts**.
+  
+* 💣 **Adding physics is hard.**
+  - **Other frameworks:** To make your app run with physics you need to make a second world with same 3d objects and apply their transform (position & rotation) to your rendered scene objects (`THREE.Scene` for example) in every frame.
+  - **Whitestorm.js:** All this can be done **automatically**.
+  
+* 🔌 **Components & plugins**
+  - **Other:** `Unknown yet`.
+  - **Whitestorm.js:** It provides ability to create your own components using framework's tools. (**You can add a component** like `WHS.Box` or `WHS.PointLight` but for creating a _terrain (`WHS.Terrain`) / aquarium (`WHS.Aquarium`) / car (`WHS.Car`) / any other_ with specific merhods and scripts. 
+  - See [Component system in interactive 3D of web](https://medium.com/@_alex_buzin/component-system-in-interactive-3d-of-web-18348eecf270#.lynivy4ut) article for more info.
+  
+-----
+
+
 ## Features
 
-* **Look and feel like simple usage**
+* 💎 **Simple in usage**
 * Minimize 3D scene prototyping
-* **Component based scene graph**
-* Integrated **high performance physics** with `Worker` (Multithreading)
+* 🔌  **Component based scene graph**
+* 💣 Integrated **high performance physics** with `Worker` (Multithreading)
 * Automatization of rendering
 * Enhanced **softbodies**
-* **ES2015+ based**
+* 🆕 **ES2015+ based**
 * Extension system (plugins)
+* Dynamic geometry update
 * [asm.js](http://asmjs.org/) acceleration
 * [Webpack](https://webpack.js.org) friendly
-* Integrated [Three.js](https://threejs.org/) rendering engine
+* ✔️ **Integrated [Three.js](https://threejs.org/) rendering engine**
 * Work with Whitestorm.js and Three.js at the same time
 
 ## Installation
