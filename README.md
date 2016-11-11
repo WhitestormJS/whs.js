@@ -42,7 +42,7 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 * **ES2015+ based**
 * Extension system (plugins)
 * [asm.js](http://asmjs.org/) acceleration
-* [Webpack](webpack.js.org) friendly
+* [Webpack](https://webpack.js.org) friendly
 * Integrated [Three.js](https://threejs.org/) rendering engine
 * Work with Whitestorm.js and Three.js at the same time
 
