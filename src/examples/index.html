@@ -158,7 +158,7 @@
     var links = document.querySelectorAll('a');
 
     for (var i = 0, max = links.length; i < max; i++) {
-      links[i].addEventListener('click', () => {
+      links[i].addEventListener('click', function() {
         window.location.reload();
       });
     }
