@@ -71728,8 +71728,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _this.type = 'world';
 
 
-	    if (true) console.log('WhitestormJS Framework v' + ("1.1.5"));else console.log('WhitestormJS Framework v' + require('../../../package.json').version);
-
 	    var _params = _this.params,
 	        _initParams = _params.init;
 
