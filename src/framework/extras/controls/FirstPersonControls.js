@@ -149,7 +149,7 @@ export class FirstPersonControls extends Component {
         quat.multiplyVector3(targetVec);
       };
 
-      // Moves the camera to the Cannon.js object position
+      // Moves the camera to the Physi.js object position
       // and adds velocity to the object if the run key is down.
       const inputVelocity = new Vector3(),
         euler = new Euler();
