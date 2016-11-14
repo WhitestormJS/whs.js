@@ -118,7 +118,7 @@ world.start(); // Start animations and physics simulation.
 
 ## Playground!
 
-[![playground](http://i.imgur.com/6EdMjm1.gif)](http://whsjs.io/playground/?example=saturn&dir=demo)
+[![playground](http://i.imgur.com/6EdMjm1.gif)](http://whsjs.io/playground/)
 
 
 ## Contributors
