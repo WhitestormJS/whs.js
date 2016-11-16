@@ -102,7 +102,7 @@ function PhysicsComponent(targetComponent) {
         this.rotation.copy(source.rotation);
       } else this.params = source.params;
 
-      execAdditional(this.exec.callCopy, this, sourceNative);
+      this.callCopy(this);
 
       return this;
     }
