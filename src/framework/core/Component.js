@@ -119,7 +119,7 @@ class Component extends Events {
   }
 
   remove(source) {
-    this.native.remove(source.native);
+    this.scene.remove(source.native);
 
     this.children.splice(this.children.indexOf(source), 1);
     source.parent = null;
