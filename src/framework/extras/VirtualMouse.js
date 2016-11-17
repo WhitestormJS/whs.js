@@ -1,10 +1,17 @@
+import {
+  Vector2,
+  Raycaster,
+  Plane,
+  Vector3
+} from 'three';
+
 import Events from 'minivents';
 
 export class VirtualMouse extends Events {
-  mouse = new THREE.Vector2();
-  raycaster = new THREE.Raycaster();
+  mouse = new Vector2();
+  raycaster = new Raycaster();
   world = null;
-  projectionPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+  projectionPlane = new Plane(new Vector3(0, 0, 1), 0);
 
   constructor(world) {
     super();
