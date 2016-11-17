@@ -1,6 +1,6 @@
 {
   "name": "whs",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "Framework for developing 3D web apps with physics.",
   "main": "lib/index.js",
   "scripts": {
