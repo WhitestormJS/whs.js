@@ -33,12 +33,10 @@
     "minivents": "^2.0.2",
     "stats.js": "^0.16.0",
     "three": "^0.82.1",
-    "three-orbit-controls": "^72.0.0",
-    "webworkify-webpack": "^1.1.0",
+    "webworkify-webpack": "^1.1.2",
     "ammonext": "^0.0.3"
   },
   "devDependencies": {
-    "assert": "^1.4.1",
     "babel": "^6.5.2",
     "babel-loader": "^6.2.4",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -89,9 +87,6 @@
     "uglify-loader": "^1.3.0",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1",
-    "webpack-optimizejs-plugin": "0.0.2",
-    "webworkify-webpack": "1.1.2",
-    "whs-component-terrain": "0.0.2",
     "xo": "^0.15.1",
     "yargs": "^6.3.0"
   },

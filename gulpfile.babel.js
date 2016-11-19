@@ -76,7 +76,18 @@ gulp.task('src:build:browser', ['build:clean'], (callback) => {
 gulp.task('src:build:node', () => {
   gulp.src(`${frameworkSrc}/**/*`)
     .pipe($.cached('babel', {optimizeMemory: true}))
-    .pipe($.babel())
+    .pipe($.babel({
+      "presets": [
+        "es2015"
+      ],
+      "plugins": [
+        "transform-runtime",
+        "add-module-exports",
+        "transform-decorators-legacy",
+        "transform-class-properties",
+        "transform-object-rest-spread"
+      ]
+    }))
     .on('error', makeBuildErrorHandler('babel'))
     .pipe(gulp.dest('./lib/'));
 
