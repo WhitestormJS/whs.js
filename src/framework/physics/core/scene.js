@@ -11,6 +11,7 @@ import Worker from 'inline-worker';
 import Stats from 'stats.js';
 import {Vehicle} from '../vehicle/vehicle';
 import {Eventable} from '../eventable';
+
 import {
   addObjectChildren,
   MESSAGE_TYPES,
@@ -442,6 +443,7 @@ export class Scene extends SceneNative {
   }
 
   addConstraint(constraint, show_marker) {
+    constraint.id = this.getObjectId();
     this._constraints[constraint.id] = constraint;
     this.execute('addConstraint', constraint.getDefinition());
 
