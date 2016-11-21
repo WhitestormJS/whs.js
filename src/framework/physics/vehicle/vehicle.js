@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import {Mesh} from 'three';
 import {VehicleTunning} from './tunning';
 
 export class Vehicle {
@@ -19,7 +19,7 @@ export class Vehicle {
   }
 
   addWheel(wheel_geometry, wheel_material, connection_point, wheel_direction, wheel_axle, suspension_rest_length, wheel_radius, is_front_wheel, tuning) {
-    const wheel = new THREE.Mesh(wheel_geometry, wheel_material);
+    const wheel = new Mesh(wheel_geometry, wheel_material);
 
     wheel.castShadow = wheel.receiveShadow = true;
     wheel.position.copy(wheel_direction).multiplyScalar(suspension_rest_length / 100).add(connection_point);

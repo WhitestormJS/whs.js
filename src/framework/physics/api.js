@@ -1,4 +1,8 @@
-import * as THREE from 'three';
+import {
+  Vector3,
+  Matrix4,
+  Quaternion
+} from 'three';
 
 const MESSAGE_TYPES = {
   WORLDREPORT: 0,
@@ -13,13 +17,13 @@ const REPORT_ITEMSIZE = 14,
   VEHICLEREPORT_ITEMSIZE = 9,
   CONSTRAINTREPORT_ITEMSIZE = 6;
 
-const temp1Vector3 = new THREE.Vector3(),
-  temp2Vector3 = new THREE.Vector3(),
-  temp1Matrix4 = new THREE.Matrix4(),
-  temp1Quat = new THREE.Quaternion();
+const temp1Vector3 = new Vector3(),
+  temp2Vector3 = new Vector3(),
+  temp1Matrix4 = new Matrix4(),
+  temp1Quat = new Quaternion();
 
 const getEulerXYZFromQuaternion = (x, y, z, w) => {
-  return new THREE.Vector3(
+  return new Vector3(
     Math.atan2(2 * (x * w - y * z), (w * w - x * x - y * y + z * z)),
     Math.asin(2 * (x * z + y * w)),
     Math.atan2(2 * (z * w - x * y), (w * w + x * x - y * y - z * z))
@@ -90,18 +94,10 @@ const addObjectChildren = function (parent, object) {
   }
 };
 
-const getObjectId = (() => {
-  let _id = 1;
-  return () => {
-    return _id++;
-  };
-})();
-
 export {
   getEulerXYZFromQuaternion,
   getQuatertionFromEuler,
   convertWorldPositionToObject,
-  getObjectId,
   addObjectChildren,
 
   MESSAGE_TYPES,

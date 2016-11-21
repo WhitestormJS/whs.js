@@ -65,11 +65,12 @@ gulp.task('src:build:browser', ['build:clean'], (callback) => {
     if (error) throw new $.util.PluginError('webpack', error);
     $.util.log('[webpack]', stats.toString({colors: true}));
 
-    webpackCompilerLight.run((error, stats) => {
-      if (error) throw new $.util.PluginError('webpack', error);
-      $.util.log('[webpack]', stats.toString({colors: true}));
-      callback();
-    });
+    if (!argv.main)
+      webpackCompilerLight.run((error, stats) => {
+        if (error) throw new $.util.PluginError('webpack', error);
+        $.util.log('[webpack]', stats.toString({colors: true}));
+        callback();
+      });
   });
 });
 
