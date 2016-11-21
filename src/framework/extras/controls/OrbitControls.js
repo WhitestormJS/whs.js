@@ -9,7 +9,6 @@ import {
   Vector3
 } from 'three';
 
-import getOrbitControls from 'three-orbit-controls';
 import {Component} from '../../core/Component';
 
 /**

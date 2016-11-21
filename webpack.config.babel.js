@@ -40,7 +40,8 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         hoist_funs: false, // Turn this off to prevent errors with Ammo.js
-        warnings: false
+        warnings: false,
+        dead_code: true
       },
       minimize: true
     }),
@@ -59,7 +60,8 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-        warnings: false
+        warnings: false,
+        dead_code: true
       },
       minimize: true
     }),
