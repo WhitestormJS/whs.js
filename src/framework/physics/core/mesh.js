@@ -4,7 +4,6 @@ import {
 } from 'three';
 
 import {Eventable} from '../eventable';
-import {getObjectId} from '../api';
 
 export class Mesh extends MeshNative {
   constructor(geometry, material, mass, params = {group: false, mask: false}) {
