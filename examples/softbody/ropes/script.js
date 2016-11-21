@@ -80,7 +80,7 @@ var sphere = new WHS.Sphere({
 
 var sphereHandler = [];
 
-for (var i = 0; i < 5; i++) {
+var _loop = function _loop(i) {
   var sc = sphere.clone();
   sc.position.x = -20 + i * 6;
   sc.material = sc.material.clone();
@@ -106,10 +106,14 @@ for (var i = 0; i < 5; i++) {
     softbody: true
   });
 
-  rope.addTo(world);
+  rope.addTo(world).then(function () {
+    rope.appendAnchor(world, toptube, 50, 1);
+    rope.appendAnchor(world, sc, 0, 1);
+  });
+};
 
-  rope.appendAnchor(world, toptube, 50, 1);
-  rope.appendAnchor(world, sc, 0, 1);
+for (var i = 0; i < 5; i++) {
+  _loop(i);
 }
 
 var sphereStart = new WHS.Sphere({
@@ -206,7 +210,7 @@ world.start();
 // Check mouse.
 var mouse = new WHS.VirtualMouse(world);
 
-var _loop = function _loop(max, _i) {
+var _loop2 = function _loop2(max, _i) {
   var nows = sphereHandler[_i];
   mouse.track(nows);
 
@@ -236,7 +240,7 @@ var _loop = function _loop(max, _i) {
 };
 
 for (var _i = 0, max = sphereHandler.length; _i < max; _i++) {
-  _loop(max, _i);
+  _loop2(max, _i);
 }
 
 },{"./globals":2}],2:[function(require,module,exports){

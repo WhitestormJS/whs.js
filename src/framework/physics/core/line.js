@@ -16,7 +16,6 @@ export class Line extends LineNative {
 
     this._physijs = {
       type: null,
-      id: getObjectId(),
       mass: mass || 0,
       touches: [],
       linearVelocity: new Vector3(),
