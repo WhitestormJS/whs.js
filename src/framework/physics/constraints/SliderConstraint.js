@@ -1,4 +1,3 @@
-import * as THREE from 'three';
 import {convertWorldPositionToObject, getObjectId} from '../api';
 
 export class SliderConstraint {

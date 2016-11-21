@@ -1,4 +1,12 @@
-import * as THREE from 'three';
+import {
+  Scene as SceneNative,
+  Mesh,
+  SphereGeometry,
+  MeshNormalMaterial,
+  BoxGeometry,
+  Vector3
+} from 'three';
+
 import Worker from 'inline-worker';
 import Stats from 'stats.js';
 import {Vehicle} from '../vehicle/vehicle';
@@ -14,7 +22,7 @@ import {
   CONSTRAINTREPORT_ITEMSIZE
 } from '../api';
 
-export class Scene extends THREE.Scene {
+export class Scene extends SceneNative {
   constructor(params = {}, init = {}) {
     super();
 
@@ -35,6 +43,12 @@ export class Scene extends THREE.Scene {
     this._vehicles = {};
     this._constraints = {};
     this._is_simulating = false;
+    this.getObjectId = (() => {
+      let _id = 1;
+      return () => {
+        return _id++;
+      };
+    })();
 
     const ab = new ArrayBuffer(1);
     this._worker.transferableMessage(ab, [ab]);
@@ -436,9 +450,9 @@ export class Scene extends THREE.Scene {
 
       switch (constraint.type) {
         case 'point':
-          marker = new THREE.Mesh(
-            new THREE.SphereGeometry(1.5),
-            new THREE.MeshNormalMaterial()
+          marker = new Mesh(
+            new SphereGeometry(1.5),
+            new MeshNormalMaterial()
           );
 
           marker.position.copy(constraint.positiona);
@@ -446,9 +460,9 @@ export class Scene extends THREE.Scene {
           break;
 
         case 'hinge':
-          marker = new THREE.Mesh(
-            new THREE.SphereGeometry(1.5),
-            new THREE.MeshNormalMaterial()
+          marker = new Mesh(
+            new SphereGeometry(1.5),
+            new MeshNormalMaterial()
           );
 
           marker.position.copy(constraint.positiona);
@@ -456,9 +470,9 @@ export class Scene extends THREE.Scene {
           break;
 
         case 'slider':
-          marker = new THREE.Mesh(
-            new THREE.BoxGeometry(10, 1, 1),
-            new THREE.MeshNormalMaterial()
+          marker = new Mesh(
+            new BoxGeometry(10, 1, 1),
+            new MeshNormalMaterial()
           );
 
           marker.position.copy(constraint.positiona);
@@ -474,9 +488,9 @@ export class Scene extends THREE.Scene {
           break;
 
         case 'conetwist':
-          marker = new THREE.Mesh(
-            new THREE.SphereGeometry(1.5),
-            new THREE.MeshNormalMaterial()
+          marker = new Mesh(
+            new SphereGeometry(1.5),
+            new MeshNormalMaterial()
           );
 
           marker.position.copy(constraint.positiona);
@@ -484,9 +498,9 @@ export class Scene extends THREE.Scene {
           break;
 
         case 'dof':
-          marker = new THREE.Mesh(
-            new THREE.SphereGeometry(1.5),
-            new THREE.MeshNormalMaterial()
+          marker = new Mesh(
+            new SphereGeometry(1.5),
+            new MeshNormalMaterial()
           );
 
           marker.position.copy(constraint.positiona);
@@ -515,10 +529,11 @@ export class Scene extends THREE.Scene {
   }
 
   add(object) {
-    THREE.Mesh.prototype.add.call(this, object);
+    Mesh.prototype.add.call(this, object);
 
     if (object._physijs) {
       object.world = this;
+      object._physijs.id = this.getObjectId();
 
       if (object instanceof Vehicle) {
         this.add(object.mesh);
@@ -559,7 +574,7 @@ export class Scene extends THREE.Scene {
         };
 
         // Check for scaling
-        // var mass_scaling = new THREE.Vector3(1, 1, 1);
+        // var mass_scaling = new Vector3(1, 1, 1);
 
         if (object._physijs.width) object._physijs.width *= object.scale.x;
         if (object._physijs.height) object._physijs.height *= object.scale.y;
@@ -578,7 +593,7 @@ export class Scene extends THREE.Scene {
       this.remove(object.mesh);
       this._vehicles[object._physijs.id] = null;
     } else {
-      THREE.Mesh.prototype.remove.call(this, object);
+      Mesh.prototype.remove.call(this, object);
 
       if (object._physijs) {
         this._objects[object._physijs.id] = null;
