@@ -78,6 +78,7 @@ class World extends Component {
     },
 
     init: {
+      dom: true,
       scene: true,
       stats: true,
       camera: true,
@@ -102,9 +103,24 @@ class World extends Component {
     ]
   };
 
+  plugins = {
+    rendering: null,
+    scene: null,
+    camera: null
+  };
+
+  get $rendering() { return this.plugins.rendering; }
+  set $rendering(plugin) { this.plugins.rendering = plugin(this); }
+
+  get $scene() { return this.plugins.scene; }
+  set $scene(scene) { this.importScene(scene); }
+
+  get $camera() { return this.plugins.camera; }
+  set $camera(camera) { this.plugins.camera = camera; }
+
   simulate = false;
+  render = true;
   loops = [];
-  type = 'world';
 
   constructor(params = {}) {
     World.defaults.width = window.innerWidth;
@@ -117,12 +133,12 @@ class World extends Component {
       _initParams = _params.init;
 
     // INIT.
-    this._initDOM(window);
-    if (_initParams.scene) this._initScene();
+    if (_initParams.dom) this.make$dom(window);
+    if (_initParams.scene) this.make$scene();
 
-    if (_initParams.scene && _initParams.camera) this._initCamera(window);
-    if (_initParams.scene && _initParams.rendering) this._initRendering();
-    if (_initParams.scene && _initParams.helpers) this._initHelpers();
+    if (_initParams.scene && _initParams.camera) this.make$camera(window);
+    if (_initParams.scene && _initParams.rendering) this.make$renderer();
+    if (_initParams.scene && _initParams.helpers) this.make$helpers();
 
     // NOTE: ==================== Autoresize. ======================
 
@@ -149,9 +165,9 @@ class World extends Component {
     }
   }
 
-  _initScene() {
-    const params = this.params,
-      scene = Physijs.default !== false
+  make$scene() {
+    const params = this.params;
+    const scene = Physijs.default !== false
       ? new Physijs.Scene(
         {
           fixedTimeStep: params.physics.fixedTimeStep,
@@ -203,7 +219,7 @@ class World extends Component {
     });
   }
 
-  _initDOM() {
+  make$dom() {
     const params = this.params;
 
     params.container.style.margin = 0;
@@ -219,10 +235,10 @@ class World extends Component {
     return this._dom;
   }
 
-  _initCamera() {
+  make$camera() {
     const _params = this.params;
 
-    this.camera = new PerspectiveCamera({
+    this.$camera = new PerspectiveCamera({
       camera: {
         fov: _params.camera.fov,
         aspect: _params.width / _params.height,
@@ -237,15 +253,15 @@ class World extends Component {
       }
     });
 
-    this.camera.addTo(this);
+    this.$camera.addTo(this);
   }
 
-  _initRendering() {
+  make$renderer() {
     const _params = this.params;
     const computedWidth = Number(_params.width * _params.resolution.width).toFixed();
     const computedHeight = Number(_params.height * _params.resolution.height).toFixed();
 
-    this.renderingPlugin = new BasicRendering({
+    this.$rendering = new BasicRendering({
       width: computedWidth,
       height: computedHeight,
 
@@ -268,9 +284,9 @@ class World extends Component {
     });
   }
 
-  _initHelpers() {
+  make$helpers() {
     const _params = this.params,
-      _scene = this.scene;
+      _scene = this.$scene;
 
     if (_params.helpers.axis) {
       _scene.add(
@@ -302,8 +318,8 @@ class World extends Component {
    * Start animation.
    */
   start() {
-    if (this._renderingPlugin) {
-      this._renderingPlugin.start(this.onStartRendering.bind(this), this.onFinishRendering.bind(this));
+    if (this.$rendering) {
+      this.$rendering.start(this.onStartRendering.bind(this), this.onFinishRendering.bind(this));
     }
   }
 
@@ -314,7 +330,7 @@ class World extends Component {
   onStartRendering(delta) {
     this._process(delta);
     if (this.controls) this._updateControls();
-    if (this.simulate) this.scene.simulate(delta, 1);
+    if (this.simulate) this.$scene.simulate(delta, 1);
   }
 
   /**
@@ -326,27 +342,11 @@ class World extends Component {
   }
 
   /**
-   * Set the current rendering plugin for this World.
-   * @param  {RenderingPlugin} renderingPlugin : The RenderingPlugin instance.
-   */
-  set renderingPlugin(plugin) {
-    this._renderingPlugin = plugin(this);
-  }
-
-  /**
-   * Accesor for the currently used rendering plugin.
-   * @return {RenderingPlugin} The RenderingPlugin instance.
-   */
-  get renderingPlugin() {
-    return this._renderingPlugin;
-  }
-
-  /**
    * Retrieve the renderer used by the active rendering plugin.
    * @return {THREE.WebGLRenderer} The WebGLRenderer used by the current rendering plugin.
    */
   get renderer() {
-    if (this._renderingPlugin) return this._renderingPlugin.renderer;
+    if (this.$rendering) return this.$rendering.renderer;
   }
 
   /**
@@ -383,16 +383,16 @@ class World extends Component {
    * This functon will scene properties when it's called.
    */
   setSize(width = 1, height = 1) {
-    this.camera.native.aspect = width / height;
-    this.camera.native.updateProjectionMatrix();
+    this.$camera.native.aspect = width / height;
+    this.$camera.native.updateProjectionMatrix();
 
-    if (this._renderingPlugin) {
-      this._renderingPlugin.setSize(width, height);
+    if (this.$rendering) {
+      this.$rendering.setSize(width, height);
     }
   }
 
   importScene(scene, nested = true) {
-    this.scene = scene;
+    this.plugins.scene = scene;
 
     if (nested) {
       this.children = [];
@@ -412,7 +412,7 @@ class World extends Component {
       moveChildren(scene, this);
     }
 
-    return this.scene;
+    return this.$scene;
   }
 
   setControls(controls) {

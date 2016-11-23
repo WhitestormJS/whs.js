@@ -5,7 +5,7 @@ import {extend, transformData, toArray} from '../utils/index';
 
 export const getWorld = (parent) => {
   let world = parent;
-  while (!world.scene) world = world.parent;
+  while (!world.$scene) world = world.parent;
   return world;
 };
 
@@ -67,7 +67,7 @@ class Component extends Events {
 
         if (!native) reject();
 
-        const parentNative = 'scene' in parent ? parent.scene : parent.native;
+        const parentNative = '$scene' in parent ? parent.$scene : parent.native;
 
         parentNative.add(native);
         parent.children.push(this);
@@ -115,11 +115,11 @@ class Component extends Events {
     ) : [];
 
     this._helpers[name] = new helper[0](this.native, ...data);
-    if (this.parent) getWorld(this.parent).scene.add(this._helpers[name]);
+    if (this.parent) getWorld(this.parent).$scene.add(this._helpers[name]);
   }
 
   remove(source) {
-    this.scene.remove(source.native);
+    this.$scene.remove(source.native);
 
     this.children.splice(this.children.indexOf(source), 1);
     source.parent = null;

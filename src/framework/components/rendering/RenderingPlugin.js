@@ -13,28 +13,28 @@ class RenderingPlugin extends Component {
     super.wrap();
   }
 
-  get parentWorld() {
-    return this._parentWorld;
+  get world() {
+    return this._world;
   }
 
-  set parentWorld(world) {
+  set world(world) {
     const params = this.params;
 
-    this._parentWorld = world;
+    this._world = world;
     this._attachToCanvas();
 
     if (params.init && params.init.stats) this._initStats();
 
-    this.onParentWorldChanged();
+    this.emit('worldchange');
   }
 
   _attachToCanvas() {
-    if (this._parentWorld) {
+    if (this.world) {
       // TODO: detach from dom
     }
 
     // attach to new parent world dom
-    this._parentWorld._dom.appendChild(this.renderer.domElement);
+    this.world._dom.appendChild(this.renderer.domElement);
     this.renderer.domElement.style.width = '100%';
     this.renderer.domElement.style.height = '100%';
   }
@@ -63,16 +63,12 @@ class RenderingPlugin extends Component {
       this.stats.domElement.style.left = '0px';
       this.stats.domElement.style.bottom = '0px';
 
-      this._parentWorld._dom.appendChild(this.stats.domElement);
+      this.world._dom.appendChild(this.stats.domElement);
     }
   }
 
   build(params = {}) {
      throw new Error('Build method has to be re-implemented in each rendering plugin (use it to initialize your rendering plugin!)');
-  }
-
-  onParentWorldChanged() {
-
   }
 
   renderPlugin(delta) {
@@ -97,7 +93,7 @@ class RenderingPlugin extends Component {
 
     this.onStartRendering = onStartRendering;
     this.onFinishRendering = onFinishRendering;
-    this.render();
+    if (this.world.render) this.render();
   }
 
   render() {
