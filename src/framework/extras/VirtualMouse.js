@@ -27,9 +27,9 @@ export class VirtualMouse extends Events {
   update(e) {
     this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    this.projectionPlane.normal.copy(this.world.camera.native.getWorldDirection());
+    this.projectionPlane.normal.copy(this.world.$camera.native.getWorldDirection());
 
-    this.raycaster.setFromCamera(this.mouse, this.world.camera.native);
+    this.raycaster.setFromCamera(this.mouse, this.world.$camera.native);
     this.emit('move');
   }
 

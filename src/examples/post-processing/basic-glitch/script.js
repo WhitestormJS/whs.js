@@ -12,7 +12,7 @@ const conf = {
       position: [0, 10, 30]
     },
 
-    init: {
+    plugins: {
       rendering: false
     }
   },
@@ -32,9 +32,7 @@ const conf = {
     },
 
     position: {
-      x: 0,
-      y: 50,
-      z: 0
+      y: 50
     }
   }
 };
@@ -252,7 +250,7 @@ class Game {
 
       stats: this.world.params.stats,
       init: {
-        stats: this.world.params.init.stats
+        stats: this.world.params.plugins.stats
       },
 
       renderer: {

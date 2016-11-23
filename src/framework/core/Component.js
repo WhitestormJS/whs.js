@@ -3,9 +3,9 @@ import Events from 'minivents';
 
 import {extend, transformData, toArray} from '../utils/index';
 
-export const getWorld = (parent) => {
-  let world = parent;
-  while (!world.$scene) world = world.parent;
+export const getWorld = (element) => {
+  let world = element;
+  if (!world.$scene) while (!world.$scene) world = world.parent;
   return world;
 };
 
@@ -114,8 +114,8 @@ class Component extends Events {
       helper[2]
     ) : [];
 
-    this._helpers[name] = new helper[0](this.native, ...data);
-    if (this.parent) getWorld(this.parent).$scene.add(this._helpers[name]);
+    this._helpers[name] = this.$scene ? new helper[0](...data) : new helper[0](this.native, ...data);
+    if (this.parent || this.$scene) getWorld(this).$scene.add(this._helpers[name]);
   }
 
   remove(source) {

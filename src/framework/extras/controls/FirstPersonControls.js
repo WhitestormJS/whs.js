@@ -184,7 +184,7 @@ export class FirstPersonControls extends Component {
 
         yawObject.position.copy(player.position);
       };
-    })(world.camera, this.object.native, this.params);
+    })(world.$camera, this.object.native, this.params);
 
     if ('pointerLockElement' in document
         || 'mozPointerLockElement' in document
@@ -248,7 +248,7 @@ export class FirstPersonControls extends Component {
     return [
       controls,
       function callback(world) {
-        world.scene.add(world.controls.getObject());
+        world.$scene.add(world.controls.getObject());
       }
     ];
   }

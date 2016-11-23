@@ -142,7 +142,7 @@ export class Scene extends SceneNative {
       this._stats.domElement.style.left = '0px';
       this._stats.domElement.style.top = '48px';
 
-      this._world._dom.appendChild(this._stats.domElement);
+      this._world.$element.appendChild(this._stats.domElement);
     }
   }
 

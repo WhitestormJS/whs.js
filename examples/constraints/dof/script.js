@@ -73,7 +73,7 @@ box2.addTo(world);
 
 var constraint = new WHS.DOFConstraint(box2, box, new THREE.Vector3(0, 38, 1));
 
-world.scene.addConstraint(constraint);
+world.addConstraint(constraint);
 constraint.enableAngularMotor(10, 20);
 
 UTILS.addPlane(world, 250);
