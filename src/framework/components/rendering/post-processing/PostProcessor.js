@@ -31,7 +31,7 @@ class PostProcessor extends RenderingPlugin {
     super(_params);
 
     return (world) => {
-      this.parentWorld = world;
+      this.world = world;
       return this;
     }
   }
@@ -72,10 +72,10 @@ class PostProcessor extends RenderingPlugin {
 
   onParentWorldChanged() {
     // Scene and camera
-    this.setRenderScene(this.parentWorld.scene, this.parentWorld.camera);
+    this.setRenderScene(this.world.$scene, this.world.$camera);
 
     // EffectComposer
-    if (this.parentWorld){
+    if (this.world){
       this._initComposer();
     }
     else {
@@ -106,11 +106,11 @@ class PostProcessor extends RenderingPlugin {
    * @param  {Boolean} renderToScreen : Should the renderpass be rendered directly to screen
    */
   createRenderPass(renderToScreen = false) {
-    const world = this.parentWorld;
+    const world = this.world;
 
-    if (world.scene && world.camera && this.composer) {
+    if (world.$scene && world.$camera && this.composer) {
       this.createPass(composer => {
-        const pass = new RenderPass('renderscene', world.scene, world.camera.native);
+        const pass = new RenderPass('renderscene', world.$scene, world.$camera.native);
         pass.renderToScreen = renderToScreen;
         composer.addPass(pass);
       });

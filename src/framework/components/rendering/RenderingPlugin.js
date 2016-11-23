@@ -34,7 +34,7 @@ class RenderingPlugin extends Component {
     }
 
     // attach to new parent world dom
-    this.world._dom.appendChild(this.renderer.domElement);
+    this.world.$element.appendChild(this.renderer.domElement);
     this.renderer.domElement.style.width = '100%';
     this.renderer.domElement.style.height = '100%';
   }
@@ -63,7 +63,7 @@ class RenderingPlugin extends Component {
       this.stats.domElement.style.left = '0px';
       this.stats.domElement.style.bottom = '0px';
 
-      this.world._dom.appendChild(this.stats.domElement);
+      this.world.$element.appendChild(this.stats.domElement);
     }
   }
 

@@ -85,7 +85,7 @@ function PhysicsComponent(targetComponent) {
     }
 
     appendAnchor(world, object, node, influence, collisionBetweenLinkedBodies = true) {
-      return this.native.appendAnchor(world.scene, object.native, node, influence, collisionBetweenLinkedBodies);
+      return this.native.appendAnchor(world.$scene, object.native, node, influence, collisionBetweenLinkedBodies);
     }
 
     copy(source) {

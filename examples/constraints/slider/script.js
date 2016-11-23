@@ -69,7 +69,7 @@ box2.addTo(world);
 
 var constraint = new WHS.SliderConstraint(box2, box, new THREE.Vector3(0, box2.position.y, 0), new THREE.Vector3(0, 1, 0));
 
-world.scene.addConstraint(constraint);
+world.addConstraint(constraint);
 
 UTILS.addPlane(world, 250);
 UTILS.addBasicLights(world);
