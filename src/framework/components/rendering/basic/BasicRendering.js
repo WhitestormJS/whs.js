@@ -6,7 +6,7 @@ class BasicRendering extends RenderingPlugin {
   constructor(params = {}) {
     super(params);
     return (world) => {
-      this.parentWorld = world;
+      this.world = world;
       return this;
     }
   }
@@ -27,8 +27,8 @@ class BasicRendering extends RenderingPlugin {
   }
 
   renderPlugin(delta) {
-    const _scene = this.parentWorld.scene;
-    const _cameraNative = this.parentWorld.camera.native;
+    const _scene = this.world.$scene;
+    const _cameraNative = this.world.$camera.native;
 
     this.renderer.render(_scene, _cameraNative);
   }

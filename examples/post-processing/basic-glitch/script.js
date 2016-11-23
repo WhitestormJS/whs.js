@@ -221,8 +221,8 @@ var Game = function () {
         }
       };
 
-      this.world.renderingPlugin = new WHS.PostProcessor(renderingPluginParams);
-      this.postProcessor = this.world.renderingPlugin;
+      this.world.$rendering = new WHS.PostProcessor(renderingPluginParams);
+      this.postProcessor = this.world.$rendering;
 
       this.postProcessor.createRenderPass(false);
       this.postProcessor.createPass(function (composer) {

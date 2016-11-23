@@ -860,7 +860,7 @@ export class OrbitControls extends Component {
 
   integrate(world) {
     const controls = new ThreeOrbitControls(
-      world.camera.native,
+      world.$camera.native,
       world.renderer.domElement
     );
 
