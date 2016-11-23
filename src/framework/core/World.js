@@ -58,6 +58,10 @@ class World extends Component {
       }
     },
 
+    width: window.innerWidth,
+    height: window.innerHeight,
+    container: window.document.body,
+
     resolution: {
       width: 1,
       height: 1
@@ -77,8 +81,8 @@ class World extends Component {
       far: 1000
     },
 
-    init: {
-      dom: true,
+    plugins: {
+      element: true,
       scene: true,
       stats: true,
       camera: true,
@@ -94,7 +98,8 @@ class World extends Component {
 
     gravity: ['x', 'y', 'z'],
 
-    init: [
+    plugins: [
+      'element',
       'scene',
       'stats',
       'camera',
@@ -103,10 +108,32 @@ class World extends Component {
     ]
   };
 
+  static helpers = {
+    axis: [AxisHelper, {
+      size: 5
+    }, ['size']],
+
+    grid: [GridHelper, {
+      size: 10,
+      step: 1,
+      color1: 0xffffff,
+      color2: 0xffffff
+    }, ['size', 'step', 'color1', 'color2']]
+  };
+
+  static pluginDeps = {
+    'camera': ['scene'],
+    'rendering': ['scene'],
+    'helpers': ['scene']
+  }
+
   plugins = {
-    rendering: null,
+    element: null,
     scene: null,
-    camera: null
+    camera: null,
+    rendering: null,
+    helpers: null,
+    stats: null
   };
 
   get $rendering() { return this.plugins.rendering; }
@@ -118,27 +145,32 @@ class World extends Component {
   get $camera() { return this.plugins.camera; }
   set $camera(camera) { this.plugins.camera = camera; }
 
+  get $element() { return this.plugins.element; }
+  set $element(element) { this.plugins.element = element; }
+
   simulate = false;
   render = true;
   loops = [];
 
   constructor(params = {}) {
-    World.defaults.width = window.innerWidth;
-    World.defaults.height = window.innerHeight;
-    World.defaults.container = window.document.body;
-
     super(params, World.defaults, World.instructions);
 
-    const _params = this.params,
-      _initParams = _params.init;
+    const _params = this.params;
 
-    // INIT.
-    if (_initParams.dom) this.make$dom(window);
-    if (_initParams.scene) this.make$scene();
+    for (let plugin in this.plugins) {
+      if (World.pluginDeps[plugin]) {
+        const dependencies = World.pluginDeps[plugin];
+        let skip = false;
 
-    if (_initParams.scene && _initParams.camera) this.make$camera(window);
-    if (_initParams.scene && _initParams.rendering) this.make$renderer();
-    if (_initParams.scene && _initParams.helpers) this.make$helpers();
+        for (let i = 0, max = dependencies.length; i < max; i++)  { // console.log(dependencies[i]);
+          if (!this.params.plugins[dependencies[i]]) skip = true;
+        }
+
+        if (skip) continue;
+      }
+
+      if (this.params.plugins[plugin] && this[`make$${plugin}`]) this[`make$${plugin}`]();
+    }
 
     // NOTE: ==================== Autoresize. ======================
 
@@ -200,39 +232,14 @@ class World extends Component {
       scene.fog = new FogExp2(params.fog.hex, params.fog.density);
 
     this.importScene(scene, false);
-
-    // Array for processing.
-    this.children = [];
   }
 
-  addLoop(loop) {
-    return new Promise((resolve) => {
-      this.loops.push(loop);
-      resolve(loop);
-    });
-  }
+  make$element() {
+    this.$element = window.document.createElement('div');
+    this.$element.className = 'whs';
+    this.params.container.appendChild(this.$element);
 
-  removeLoop(loop) {
-    return new Promise((resolve) => {
-      this.loops.filter((l) => l !== loop);
-      resolve(loop);
-    });
-  }
-
-  make$dom() {
-    const params = this.params;
-
-    params.container.style.margin = 0;
-    params.container.style.padding = 0;
-    params.container.style.position = 'relative';
-    params.container.style.overflow = 'hidden';
-
-    this._dom = window.document.createElement('div');
-    this._dom.className = 'whs';
-
-    params.container.appendChild(this._dom);
-
-    return this._dom;
+    return this.$element;
   }
 
   make$camera() {
@@ -256,7 +263,7 @@ class World extends Component {
     this.$camera.addTo(this);
   }
 
-  make$renderer() {
+  make$rendering() {
     const _params = this.params;
     const computedWidth = Number(_params.width * _params.resolution.width).toFixed();
     const computedHeight = Number(_params.height * _params.resolution.height).toFixed();
@@ -267,7 +274,7 @@ class World extends Component {
 
       stats: _params.stats,
       init: {
-        stats: _params.init.stats
+        stats: _params.plugins.stats
       },
 
       background: {
@@ -285,60 +292,44 @@ class World extends Component {
   }
 
   make$helpers() {
-    const _params = this.params,
-      _scene = this.$scene;
+    const _helpers = this.params.helpers;
 
-    if (_params.helpers.axis) {
-      _scene.add(
-        new AxisHelper(
-          _params.helpers.axis.size
-          ? _params.helpers.axis.size
-          : 5
-        )
-      );
-    }
-
-    if (_params.helpers.grid) {
-      _scene.add(
-        new GridHelper(
-          _params.helpers.grid.size
-          ? _params.helpers.grid.size
-          : 10,
-          _params.helpers.grid.step
-          ? _params.helpers.grid.step
-          : 1,
-          _params.helpers.grid.color1,
-          _params.helpers.grid.color2
-        )
-      );
-    }
+    if (_helpers.axis) this.addHelper('axis', _helpers.axis);
+    if (_helpers.grid) this.addHelper('grid', _helpers.grid);
   }
 
   /**
    * Start animation.
    */
   start() {
-    if (this.$rendering) {
-      this.$rendering.start(this.onStartRendering.bind(this), this.onFinishRendering.bind(this));
-    }
+    if (this.$rendering) this.$rendering.start(this.beforeRender.bind(this), this.afterRender.bind(this));
   }
 
   /**
    * Callback called immediately before Plugin Rendering.
    * @param  {Number} delta : delta time elapsed since the last frame.
    */
-  onStartRendering(delta) {
-    this._process(delta);
-    if (this.controls) this._updateControls();
+  beforeRender(delta) {
+    for (let i = 0; i < this.children.length; i++)
+      if (this.children[i].type === 'morph') this.children[i].native.mixer.update(delta);
+
+    if (this.controls) {
+      this.controls.update(Date.now() - this.time);
+      this.time = Date.now();
+    };
+
     if (this.simulate) this.$scene.simulate(delta, 1);
   }
 
   /**
    * Callback called immediately after the Plugin Rendering.
-   * @param  {Number} delta : delta time elapsed since the last frame (will be equal to onStartRendering delta).
+   * @param  {Number} delta : delta time elapsed since the last frame (will be equal to beforeRender delta).
    */
-  onFinishRendering(delta) {
-    this._execLoops();
+  afterRender(delta) {
+    for (let i = 0; i < this.loops.length; i++) {
+      const e = this.loops[i];
+      if (e.enabled) e.execute(e.clock);
+    }
   }
 
   /**
@@ -349,34 +340,26 @@ class World extends Component {
     if (this.$rendering) return this.$rendering.renderer;
   }
 
-  /**
-   * Execute all loops with a specific time.
-   *
-   * @params {number} time - The time value that will be passed to loops.
-   */
-  _execLoops() {
-    for (let i = 0; i < this.loops.length; i++) {
-      const e = this.loops[i];
-      if (e.enabled) e.execute(e.clock);
-    }
+  addLoop(loop) {
+    return new Promise((resolve) => {
+      this.loops.push(loop);
+      resolve(loop);
+    });
   }
 
-  /**
-   * Update controls time values.
-   */
-  _updateControls() {
-    this.controls.update(Date.now() - this.time);
-    this.time = Date.now();
+  removeLoop(loop) {
+    return new Promise((resolve) => {
+      this.loops.filter((l) => l !== loop);
+      resolve(loop);
+    });
   }
 
-  /**
-   * Update morphs animations.
-   *
-   * @params {THREE.Clock} clock - The clock object, which.
-   */
-  _process(delta) {
-    for (let i = 0; i < this.children.length; i++)
-      if (this.children[i].type === 'morph') this.children[i].native.mixer.update(delta);
+  addHelper(name, params = {}, helpers = World.helpers) {
+    super.addHelper(name, params, helpers);
+  }
+
+  addConstraint(constraint) {
+    this.$scene.addConstraint(constraint);
   }
 
   /**

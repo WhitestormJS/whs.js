@@ -28,7 +28,7 @@ var conf = {
       position: [0, 10, 30]
     },
 
-    init: {
+    plugins: {
       rendering: false
     }
   }),
@@ -48,9 +48,7 @@ var conf = {
     },
 
     position: {
-      x: 0,
-      y: 50,
-      z: 0
+      y: 50
     }
   }
 };
@@ -209,7 +207,7 @@ var Game = function () {
 
         stats: this.world.params.stats,
         init: {
-          stats: this.world.params.init.stats
+          stats: this.world.params.plugins.stats
         },
 
         renderer: {

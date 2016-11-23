@@ -66,7 +66,7 @@ const constraint = new WHS.SliderConstraint(box2, box,
   new THREE.Vector3(0, 1, 0)
 );
 
-world.scene.addConstraint(constraint);
+world.addConstraint(constraint);
 
 UTILS.addPlane(world, 250);
 UTILS.addBasicLights(world);

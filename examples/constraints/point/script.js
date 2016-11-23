@@ -73,7 +73,7 @@ box2.addTo(world);
 
 var constraint = new WHS.PointConstraint(box2, box, new THREE.Vector3(0, box2.position.y, 1));
 
-world.scene.addConstraint(constraint);
+world.addConstraint(constraint);
 
 UTILS.addPlane(world, 250);
 UTILS.addBasicLights(world);

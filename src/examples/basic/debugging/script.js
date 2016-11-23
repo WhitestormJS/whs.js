@@ -9,6 +9,7 @@ const world = new WHS.World({
       step: 100,
       color1: 0xff0000
     },
+
     axis: {
       size: 100
     }
