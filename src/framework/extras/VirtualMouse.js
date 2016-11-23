@@ -11,6 +11,7 @@ export class VirtualMouse extends Events {
   mouse = new Vector2();
   raycaster = new Raycaster();
   world = null;
+  canvas = null;
   projectionPlane = new Plane(new Vector3(0, 0, 1), 0);
 
   constructor(world) {
@@ -18,6 +19,7 @@ export class VirtualMouse extends Events {
 
     world.mouse = this;
     this.world = world;
+    this.canvas = world.$rendering.renderer.domElement;
     window.addEventListener('mousemove', this.update.bind(this));
     window.addEventListener('click', () => this.emit('click'));
     window.addEventListener('mousedown', () => this.emit('mousedown'));
@@ -25,8 +27,11 @@ export class VirtualMouse extends Events {
   }
 
   update(e) {
-    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    var rect = this.canvas.getBoundingClientRect();
+    // this.mouse.x = (e.clientX - rect.left);
+    // this.mouse.y = (e.clientY - rect.top);
+    this.mouse.x = ((e.clientX - rect.left) / window.innerWidth) * 2 - 1;
+    this.mouse.y = -((e.clientY - rect.top) / window.innerHeight) * 2 + 1;
     this.projectionPlane.normal.copy(this.world.$camera.native.getWorldDirection());
 
     this.raycaster.setFromCamera(this.mouse, this.world.$camera.native);
