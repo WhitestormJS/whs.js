@@ -241,28 +241,7 @@ class Game {
   }
 
   createPostProcessing() {
-    const computedWidth = Number(this.world.params.width * this.world.params.resolution.width).toFixed();
-    const computedHeight = Number(this.world.params.height * this.world.params.resolution.height).toFixed();
-
-    const renderingPluginParams = {
-      width: computedWidth,
-      height: computedHeight,
-
-      stats: this.world.params.stats,
-      init: {
-        stats: this.world.params.plugins.stats
-      },
-
-      renderer: {
-        antialias: true
-      },
-
-      background: {
-        color: 0x162129
-      }
-    };
-
-    this.world.$rendering = new WHS.PostProcessor(renderingPluginParams);
+    this.world.$rendering = new WHS.PostProcessor(this.world.params);
     this.postProcessor = this.world.$rendering;
 
     this.postProcessor.createRenderPass(false);

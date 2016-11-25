@@ -198,28 +198,7 @@ var Game = function () {
   _createClass(Game, [{
     key: 'createPostProcessing',
     value: function createPostProcessing() {
-      var computedWidth = Number(this.world.params.width * this.world.params.resolution.width).toFixed();
-      var computedHeight = Number(this.world.params.height * this.world.params.resolution.height).toFixed();
-
-      var renderingPluginParams = {
-        width: computedWidth,
-        height: computedHeight,
-
-        stats: this.world.params.stats,
-        init: {
-          stats: this.world.params.plugins.stats
-        },
-
-        renderer: {
-          antialias: true
-        },
-
-        background: {
-          color: 0x162129
-        }
-      };
-
-      this.world.$rendering = new WHS.PostProcessor(renderingPluginParams);
+      this.world.$rendering = new WHS.PostProcessor(this.world.params);
       this.postProcessor = this.world.$rendering;
 
       this.postProcessor.createRenderPass(false);
