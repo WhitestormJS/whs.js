@@ -268,27 +268,7 @@ class World extends Component {
     const computedWidth = Number(_params.width * _params.resolution.width).toFixed();
     const computedHeight = Number(_params.height * _params.resolution.height).toFixed();
 
-    this.$rendering = new BasicRendering({
-      width: computedWidth,
-      height: computedHeight,
-
-      stats: _params.stats,
-      init: {
-        stats: _params.plugins.stats
-      },
-
-      background: {
-        color: _params.rendering.background.color,
-        opacity: _params.rendering.background.opacity
-      },
-
-      shadowmap: {
-        enabled: _params.rendering.shadowmap.enabled,
-        type: _params.rendering.shadowmap.type
-      },
-
-      renderer: _params.rendering.renderer
-    });
+    this.$rendering = new BasicRendering(this.params);
   }
 
   make$helpers() {
@@ -337,7 +317,7 @@ class World extends Component {
    * @return {THREE.WebGLRenderer} The WebGLRenderer used by the current rendering plugin.
    */
   get renderer() {
-    if (this.$rendering) return this.$rendering.renderer;
+    if (this.$rendering) return this.$rendering.$renderer;
   }
 
   addLoop(loop) {
