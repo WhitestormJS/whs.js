@@ -56,17 +56,6 @@ define(['whs'], (WHS) => {
         hex: 0xff0000,
         near: 2,
         far: 500
-      },
-
-      rendering: {
-        renderer: {
-          alpha: true
-        },
-
-        background: {
-          color: 0x00ff00,
-          opacity: 0.5
-        }
       }
     }));
   });

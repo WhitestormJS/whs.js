@@ -12,7 +12,7 @@ describe('Test Lib folder', () => {
     container: document.body,
     width: 100,
     height: 100,
-    init: {renderer: false}
+    plugins: {rendering: false}
   }, window);
 
   it('Physics works', () => {
