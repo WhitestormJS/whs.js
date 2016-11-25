@@ -1,11 +1,11 @@
 define(['whs'], (WHS) => {
   describe('[WHS.World]', () => {
     // WHS.Work class works properly.
-    it('Basic world', () => new WHS.World({init: {rendering: false}}));
+    it('Basic world', () => new WHS.World({plugins: {rendering: false}}));
 
     // It's custom settings also works.
     it('World with custom settings', () => new WHS.World({
-      init: {
+      plugins: {
         rendering: false
       },
 
@@ -18,8 +18,8 @@ define(['whs'], (WHS) => {
       },
 
       helpers: {
-        grid: true,
-        axis: true
+        grid: {},
+        axis: {}
       },
 
       gravity: {
@@ -33,13 +33,13 @@ define(['whs'], (WHS) => {
         near: 2,
         far: 40,
 
-        x: 5,
-        y: 3,
-        z: 8
+        position: [5, 3, 8]
       },
 
-      rWidth: 2,
-      rHeight: 2,
+      resolution: {
+        width: 2,
+        height: 2
+      },
 
       width: window.innerWidth * 2,
       height: window.innerHeight * 2,
@@ -58,13 +58,15 @@ define(['whs'], (WHS) => {
         far: 500
       },
 
-      background: {
-        color: 0x00ff00,
-        opacity: 0.5
-      },
+      rendering: {
+        renderer: {
+          alpha: true
+        },
 
-      renderer: {
-        alpha: true
+        background: {
+          color: 0x00ff00,
+          opacity: 0.5
+        }
       }
     }));
   });
