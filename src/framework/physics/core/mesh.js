@@ -1,8 +1,11 @@
-import * as THREE from 'three';
-import {Eventable} from '../eventable';
-import {getObjectId} from '../api';
+import {
+  Mesh as MeshNative,
+  Vector3
+} from 'three';
 
-export class Mesh extends THREE.Mesh {
+import {Eventable} from '../eventable';
+
+export class Mesh extends MeshNative {
   constructor(geometry, material, mass, params = {group: false, mask: false}) {
     if (!geometry) return;
 
@@ -14,11 +17,10 @@ export class Mesh extends THREE.Mesh {
 
     this._physijs = {
       type: null,
-      id: getObjectId(),
       mass: mass || 0,
       touches: [],
-      linearVelocity: new THREE.Vector3(),
-      angularVelocity: new THREE.Vector3(),
+      linearVelocity: new Vector3(),
+      angularVelocity: new Vector3(),
       group: params.group,
       mask: params.mask
     };

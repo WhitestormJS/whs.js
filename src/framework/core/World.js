@@ -9,6 +9,7 @@ import {
 } from 'three';
 
 import * as Physijs from '../physics/index.js';
+import {addResizeListener} from 'detect-element-resize';
 
 import {extend} from '../utils/index';
 import {PerspectiveCamera} from '../components/cameras/PerspectiveCamera';
@@ -58,6 +59,10 @@ class World extends Component {
       }
     },
 
+    width: window.innerWidth,
+    height: window.innerHeight,
+    container: window.document.body,
+
     resolution: {
       width: 1,
       height: 1
@@ -77,7 +82,8 @@ class World extends Component {
       far: 1000
     },
 
-    init: {
+    plugins: {
+      element: true,
       scene: true,
       stats: true,
       camera: true,
@@ -93,7 +99,8 @@ class World extends Component {
 
     gravity: ['x', 'y', 'z'],
 
-    init: [
+    plugins: [
+      'element',
       'scene',
       'stats',
       'camera',
@@ -102,59 +109,102 @@ class World extends Component {
     ]
   };
 
+  static helpers = {
+    axis: [AxisHelper, {
+      size: 5
+    }, ['size']],
+
+    grid: [GridHelper, {
+      size: 10,
+      step: 1,
+      color1: 0xffffff,
+      color2: 0xffffff
+    }, ['size', 'step', 'color1', 'color2']]
+  };
+
+  static pluginDeps = {
+    'camera': ['scene'],
+    'rendering': ['scene'],
+    'helpers': ['scene']
+  }
+
+  plugins = {
+    element: null,
+    scene: null,
+    camera: null,
+    rendering: null,
+    helpers: null,
+    stats: null
+  };
+
+  get $rendering() { return this.plugins.rendering; }
+  set $rendering(plugin) { this.plugins.rendering = plugin(this); }
+
+  get $scene() { return this.plugins.scene; }
+  set $scene(scene) { this.importScene(scene); }
+
+  get $camera() { return this.plugins.camera; }
+  set $camera(camera) { this.plugins.camera = camera; }
+
+  get $element() { return this.plugins.element; }
+  set $element(element) { this.plugins.element = element; }
+
   simulate = false;
+  render = true;
   loops = [];
-  type = 'world';
 
   constructor(params = {}) {
-    World.defaults.width = window.innerWidth;
-    World.defaults.height = window.innerHeight;
-    World.defaults.container = window.document.body;
-
     super(params, World.defaults, World.instructions);
 
-    if (__VERSION__) console.log(`WhitestormJS Framework v${__VERSION__}`);
-    else console.log(`WhitestormJS Framework v${require('../../../package.json').version}`);
+    for (let plugin in this.plugins) {
+      if (World.pluginDeps[plugin]) {
+        const dependencies = World.pluginDeps[plugin];
+        let skip = false;
 
-    const _params = this.params,
-      _initParams = _params.init;
+        for (let i = 0, max = dependencies.length; i < max; i++)  { // console.log(dependencies[i]);
+          if (!this.params.plugins[dependencies[i]]) skip = true;
+        }
 
-    // INIT.
-    this._initDOM(window);
-    if (_initParams.scene) this._initScene();
+        if (skip) continue;
+      }
 
-    if (_initParams.scene && _initParams.camera) this._initCamera(window);
-    if (_initParams.scene && _initParams.rendering) this._initRendering();
-    if (_initParams.scene && _initParams.helpers) this._initHelpers();
+      if (this.params.plugins[plugin] && this[`make$${plugin}`]) this[`make$${plugin}`]();
+    }
 
-    // NOTE: ==================== Autoresize. ======================
 
-    if (_params.autoresize === 'window') {
-      window.addEventListener('resize', () => {
-        this.setSize(
-          Number(window.innerWidth * _params.resolution.width).toFixed(),
-          Number(window.innerHeight * _params.resolution.height).toFixed()
-        );
+    if (params.autoresize) {
+      const container = params.container;
 
-        this.emit('resize');
-      });
-    } else if (_params.autoresize) {
-      window.addEventListener('resize', () => {
+      const resizeCallback = () => {
         // FIXME: Am I crazy or offsetHeight is increasing even when we downsize the window ?
-        // console.log('height offset : ', _params.container.offsetHeight);
+        // console.log('height offset : ', params.container.offsetHeight);
+
         this.setSize(
-          Number(_params.container.offsetWidth * _params.resolution.width).toFixed(),
-          Number(_params.container.offsetHeight * _params.resolution.height).toFixed()
+          Number(container.offsetWidth * params.resolution.width).toFixed(),
+          Number(container.offsetHeight * params.resolution.height).toFixed()
         );
 
         this.emit('resize');
-      });
+      }
+
+      if (params.autoresize === 'window') window.addEventListener('resize', resizeCallback);
+      else {
+        if (params.autoresize.delay) {
+          let resize = true;
+
+          addResizeListener(container, () => {
+            window.clearTimeout(resize);
+            resize = window.setTimeout(resizeCallback, params.autoresize.delay);
+          });
+        }
+        else addResizeListener(container, resizeCallback);
+      }
     }
   }
 
-  _initScene() {
-    const params = this.params,
-      scene = Physijs.default !== false
+  make$scene() {
+    const params = this.params;
+    const scene = Physijs.default !== false
       ? new Physijs.Scene(
         {
           fixedTimeStep: params.physics.fixedTimeStep,
@@ -187,9 +237,94 @@ class World extends Component {
       scene.fog = new FogExp2(params.fog.hex, params.fog.density);
 
     this.importScene(scene, false);
+  }
 
-    // Array for processing.
-    this.children = [];
+  make$element() {
+    this.$element = window.document.createElement('div');
+    this.$element.className = 'whs';
+    this.$element.style.width = 'inherit';
+    this.$element.style.height = 'inherit';
+    this.params.container.appendChild(this.$element);
+
+    return this.$element;
+  }
+
+  make$camera() {
+    const _params = this.params;
+
+    this.$camera = new PerspectiveCamera({
+      camera: {
+        fov: _params.camera.fov,
+        aspect: _params.width / _params.height,
+        near: _params.camera.near,
+        far: _params.camera.far
+      },
+
+      position: {
+        x: _params.camera.position.x,
+        y: _params.camera.position.y,
+        z: _params.camera.position.z
+      }
+    });
+
+    this.$camera.addTo(this);
+  }
+
+  make$rendering() {
+    const _params = this.params;
+    const computedWidth = Number(_params.width * _params.resolution.width).toFixed();
+    const computedHeight = Number(_params.height * _params.resolution.height).toFixed();
+
+    this.$rendering = new BasicRendering(this.params);
+  }
+
+  make$helpers() {
+    const _helpers = this.params.helpers;
+
+    if (_helpers.axis) this.addHelper('axis', _helpers.axis);
+    if (_helpers.grid) this.addHelper('grid', _helpers.grid);
+  }
+
+  /**
+   * Start animation.
+   */
+  start() {
+    if (this.$rendering) this.$rendering.start(this.beforeRender.bind(this), this.afterRender.bind(this));
+  }
+
+  /**
+   * Callback called immediately before Plugin Rendering.
+   * @param  {Number} delta : delta time elapsed since the last frame.
+   */
+  beforeRender(delta) {
+    for (let i = 0; i < this.children.length; i++)
+      if (this.children[i].type === 'morph') this.children[i].native.mixer.update(delta);
+
+    if (this.controls) {
+      this.controls.update(Date.now() - this.time);
+      this.time = Date.now();
+    };
+
+    if (this.simulate) this.$scene.simulate(delta, 1);
+  }
+
+  /**
+   * Callback called immediately after the Plugin Rendering.
+   * @param  {Number} delta : delta time elapsed since the last frame (will be equal to beforeRender delta).
+   */
+  afterRender(delta) {
+    for (let i = 0; i < this.loops.length; i++) {
+      const e = this.loops[i];
+      if (e.enabled) e.execute(e.clock);
+    }
+  }
+
+  /**
+   * Retrieve the renderer used by the active rendering plugin.
+   * @return {THREE.WebGLRenderer} The WebGLRenderer used by the current rendering plugin.
+   */
+  get renderer() {
+    if (this.$rendering) return this.$rendering.$renderer;
   }
 
   addLoop(loop) {
@@ -206,196 +341,28 @@ class World extends Component {
     });
   }
 
-  _initDOM() {
-    const params = this.params;
-
-    params.container.style.margin = 0;
-    params.container.style.padding = 0;
-    params.container.style.position = 'relative';
-    params.container.style.overflow = 'hidden';
-
-    this._dom = window.document.createElement('div');
-    this._dom.className = 'whs';
-
-    params.container.appendChild(this._dom);
-
-    return this._dom;
+  addHelper(name, params = {}, helpers = World.helpers) {
+    super.addHelper(name, params, helpers);
   }
 
-  _initCamera() {
-    const _params = this.params;
-
-    this.camera = new PerspectiveCamera({
-      camera: {
-        fov: _params.camera.fov,
-        aspect: _params.width / _params.height,
-        near: _params.camera.near,
-        far: _params.camera.far
-      },
-
-      position: {
-        x: _params.camera.position.x,
-        y: _params.camera.position.y,
-        z: _params.camera.position.z
-      }
-    });
-
-    this.camera.addTo(this);
-  }
-
-  _initRendering() {
-    const _params = this.params;
-    const computedWidth = Number(_params.width * _params.resolution.width).toFixed();
-    const computedHeight = Number(_params.height * _params.resolution.height).toFixed();
-
-    this.renderingPlugin = new BasicRendering({
-      width: computedWidth,
-      height: computedHeight,
-
-      stats: _params.stats,
-      init: {
-        stats: _params.init.stats
-      },
-
-      background: {
-        color: _params.rendering.background.color,
-        opacity: _params.rendering.background.opacity
-      },
-
-      shadowmap: {
-        enabled: _params.rendering.shadowmap.enabled,
-        type: _params.rendering.shadowmap.type
-      },
-
-      renderer: _params.rendering.renderer
-    });
-  }
-
-  _initHelpers() {
-    const _params = this.params,
-      _scene = this.scene;
-
-    if (_params.helpers.axis) {
-      _scene.add(
-        new AxisHelper(
-          _params.helpers.axis.size
-          ? _params.helpers.axis.size
-          : 5
-        )
-      );
-    }
-
-    if (_params.helpers.grid) {
-      _scene.add(
-        new GridHelper(
-          _params.helpers.grid.size
-          ? _params.helpers.grid.size
-          : 10,
-          _params.helpers.grid.step
-          ? _params.helpers.grid.step
-          : 1,
-          _params.helpers.grid.color1,
-          _params.helpers.grid.color2
-        )
-      );
-    }
-  }
-
-  /**
-   * Start animation.
-   */
-  start() {
-    if (this._renderingPlugin) {
-      this._renderingPlugin.start(this.onStartRendering.bind(this), this.onFinishRendering.bind(this));
-    }
-  }
-
-  /**
-   * Callback called immediately before Plugin Rendering.
-   * @param  {Number} delta : delta time elapsed since the last frame.
-   */
-  onStartRendering(delta) {
-    this._process(delta);
-    if (this.controls) this._updateControls();
-    if (this.simulate) this.scene.simulate(delta, 1);
-  }
-
-  /**
-   * Callback called immediately after the Plugin Rendering.
-   * @param  {Number} delta : delta time elapsed since the last frame (will be equal to onStartRendering delta).
-   */
-  onFinishRendering(delta) {
-    this._execLoops();
-  }
-
-  /**
-   * Set the current rendering plugin for this World.
-   * @param  {RenderingPlugin} renderingPlugin : The RenderingPlugin instance.
-   */
-  set renderingPlugin(plugin) {
-    this._renderingPlugin = plugin(this);
-  }
-
-  /**
-   * Accesor for the currently used rendering plugin.
-   * @return {RenderingPlugin} The RenderingPlugin instance.
-   */
-  get renderingPlugin() {
-    return this._renderingPlugin;
-  }
-
-  /**
-   * Retrieve the renderer used by the active rendering plugin.
-   * @return {THREE.WebGLRenderer} The WebGLRenderer used by the current rendering plugin.
-   */
-  get renderer() {
-    if (this._renderingPlugin) return this._renderingPlugin.renderer;
-  }
-
-  /**
-   * Execute all loops with a specific time.
-   *
-   * @params {number} time - The time value that will be passed to loops.
-   */
-  _execLoops() {
-    for (let i = 0; i < this.loops.length; i++) {
-      const e = this.loops[i];
-      if (e.enabled) e.execute(e.clock);
-    }
-  }
-
-  /**
-   * Update controls time values.
-   */
-  _updateControls() {
-    this.controls.update(Date.now() - this.time);
-    this.time = Date.now();
-  }
-
-  /**
-   * Update morphs animations.
-   *
-   * @params {THREE.Clock} clock - The clock object, which.
-   */
-  _process(delta) {
-    for (let i = 0; i < this.children.length; i++)
-      if (this.children[i].type === 'morph') this.children[i].native.mixer.update(delta);
+  addConstraint(constraint) {
+    this.$scene.addConstraint(constraint);
   }
 
   /**
    * This functon will scene properties when it's called.
    */
   setSize(width = 1, height = 1) {
-    this.camera.native.aspect = width / height;
-    this.camera.native.updateProjectionMatrix();
+    this.$camera.native.aspect = width / height;
+    this.$camera.native.updateProjectionMatrix();
 
-    if (this._renderingPlugin) {
-      this._renderingPlugin.setSize(width, height);
+    if (this.$rendering) {
+      this.$rendering.setSize(width, height);
     }
   }
 
   importScene(scene, nested = true) {
-    this.scene = scene;
+    this.plugins.scene = scene;
 
     if (nested) {
       this.children = [];
@@ -415,7 +382,7 @@ class World extends Component {
       moveChildren(scene, this);
     }
 
-    return this.scene;
+    return this.$scene;
   }
 
   setControls(controls) {

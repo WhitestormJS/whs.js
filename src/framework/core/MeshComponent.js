@@ -68,7 +68,7 @@ function MeshComponent(targetComponent) {
         color: 0xffffff,
         linewidth: 1
       }, ['size', 'color', 'linewidth']]
-    }
+    };
 
     g_(params = {}) {
       if (this.buildGeometry) {

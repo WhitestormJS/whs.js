@@ -1,4 +1,4 @@
-import {convertWorldPositionToObject, getObjectId} from '../api';
+import {convertWorldPositionToObject} from '../api';
 
 export class DOFConstraint {
   constructor(obja, objb, position) {
@@ -12,7 +12,6 @@ export class DOFConstraint {
 
     this.type = 'dof';
     this.appliedImpulse = 0;
-    this.id = getObjectId();
     this.scene = objecta.parent;
     this.objecta = objecta._physijs.id;
     this.positiona = convertWorldPositionToObject( position, objecta ).clone();

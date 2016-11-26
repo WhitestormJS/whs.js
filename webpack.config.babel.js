@@ -1,7 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
 import HappyPack from 'happypack';
-import OptimizeJSPlugin from 'webpack-optimizejs-plugin';
 
 process.env.BABEL_ENV = 'browser';
 
@@ -41,23 +40,18 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         hoist_funs: false, // Turn this off to prevent errors with Ammo.js
-        warnings: false
+        warnings: false,
+        dead_code: true
       },
       minimize: true
     }),
     new HappyPack({loaders: ['babel'], threads: 4}),
     new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
-    new webpack.DefinePlugin({
-      __VERSION__: JSON.stringify(_version)
-    }),
     new webpack.BannerPlugin(bannerText)
   ]
   : [
     new HappyPack({loaders: ['babel'], threads: 4}),
     new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
-    new webpack.DefinePlugin({
-      __VERSION__: JSON.stringify(_version)
-    }),
     new webpack.BannerPlugin(bannerText)
   ];
 
@@ -66,30 +60,26 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-        warnings: false
+        warnings: false,
+        dead_code: true
       },
       minimize: true
     }),
     new HappyPack({loaders: ['babel'], threads: 4}),
-    new OptimizeJSPlugin(),
-    new webpack.DefinePlugin({
-      __VERSION__: JSON.stringify(_version)
-    }),
     new webpack.BannerPlugin(bannerText)
   ]
   : [
     new HappyPack({loaders: ['babel'], threads: 4}),
-    new OptimizeJSPlugin(),
-    new webpack.DefinePlugin({
-      __VERSION__: JSON.stringify(_version)
-    }),
     new webpack.BannerPlugin(bannerText)
   ];
 
   return [{ // PHYSICS VERSION
     devtool: isProduction ? false : 'source-map',
     cache: true,
-    entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
+    entry: [
+      'babel-polyfill',
+      `${frameworkSrc}/index.js`
+    ],
     target: 'web',
     output: {
       path: path.join(__dirname, frameworkDest),
@@ -104,7 +94,10 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
   }, { // LIGHT VERSION
     devtool: isProduction ? false : 'source-map',
     cache: true,
-    entry: ['babel-polyfill', `${frameworkSrc}/index.js`],
+    entry: [
+      'babel-polyfill',
+      `${frameworkSrc}/index.js`
+    ],
     target: 'web',
     output: {
       path: path.join(__dirname, frameworkDest),

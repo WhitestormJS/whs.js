@@ -1,4 +1,4 @@
-import {convertWorldPositionToObject, getObjectId} from '../api';
+import {convertWorldPositionToObject} from '../api';
 
 export class HingeConstraint {
   constructor(obja, objb, position, axis) {
@@ -13,7 +13,6 @@ export class HingeConstraint {
 
     this.type = 'hinge';
     this.appliedImpulse = 0;
-    this.id = getObjectId();
     this.scene = objecta.parent;
     this.objecta = objecta._physijs.id;
     this.positiona = convertWorldPositionToObject(position, objecta).clone();

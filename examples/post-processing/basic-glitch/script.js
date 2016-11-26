@@ -28,7 +28,7 @@ var conf = {
       position: [0, 10, 30]
     },
 
-    init: {
+    plugins: {
       rendering: false
     }
   }),
@@ -48,9 +48,7 @@ var conf = {
     },
 
     position: {
-      x: 0,
-      y: 50,
-      z: 0
+      y: 50
     }
   }
 };
@@ -200,29 +198,8 @@ var Game = function () {
   _createClass(Game, [{
     key: 'createPostProcessing',
     value: function createPostProcessing() {
-      var computedWidth = Number(this.world.params.width * this.world.params.resolution.width).toFixed();
-      var computedHeight = Number(this.world.params.height * this.world.params.resolution.height).toFixed();
-
-      var renderingPluginParams = {
-        width: computedWidth,
-        height: computedHeight,
-
-        stats: this.world.params.stats,
-        init: {
-          stats: this.world.params.init.stats
-        },
-
-        renderer: {
-          antialias: true
-        },
-
-        background: {
-          color: 0x162129
-        }
-      };
-
-      this.world.renderingPlugin = new WHS.PostProcessor(renderingPluginParams);
-      this.postProcessor = this.world.renderingPlugin;
+      this.world.$rendering = new WHS.PostProcessor(this.world.params);
+      this.postProcessor = this.world.$rendering;
 
       this.postProcessor.createRenderPass(false);
       this.postProcessor.createPass(function (composer) {

@@ -1,8 +1,12 @@
-import * as THREE from 'three';
+import {
+  Line as LineNative,
+  Vector3
+} from 'three';
+
 import {Eventable} from '../eventable';
 import {getObjectId} from '../api';
 
-export class Line extends THREE.Line {
+export class Line extends LineNative {
   constructor(geometry, material, mass) {
     if (!geometry) return;
 
@@ -12,11 +16,10 @@ export class Line extends THREE.Line {
 
     this._physijs = {
       type: null,
-      id: getObjectId(),
       mass: mass || 0,
       touches: [],
-      linearVelocity: new THREE.Vector3(),
-      angularVelocity: new THREE.Vector3()
+      linearVelocity: new Vector3(),
+      angularVelocity: new Vector3()
     };
   }
 
