@@ -33,11 +33,11 @@ class BasicRendering extends RenderingPlugin {
   }
 
   renderPlugin(scene, camera, delta) {
-    this.renderer.render(scene, camera);
+    this.$renderer.render(scene, camera);
   }
 
   setSize(width, height) {
-    if (this.renderer) this.renderer.setSize(width, height);
+    if (this.$renderer) this.$renderer.setSize(width, height);
   }
 
   // static creator(params) {
