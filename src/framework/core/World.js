@@ -9,6 +9,7 @@ import {
 } from 'three';
 
 import * as Physijs from '../physics/index.js';
+import {addResizeListener} from 'detect-element-resize';
 
 import {extend} from '../utils/index';
 import {PerspectiveCamera} from '../components/cameras/PerspectiveCamera';
@@ -155,8 +156,6 @@ class World extends Component {
   constructor(params = {}) {
     super(params, World.defaults, World.instructions);
 
-    const _params = this.params;
-
     for (let plugin in this.plugins) {
       if (World.pluginDeps[plugin]) {
         const dependencies = World.pluginDeps[plugin];
@@ -172,28 +171,34 @@ class World extends Component {
       if (this.params.plugins[plugin] && this[`make$${plugin}`]) this[`make$${plugin}`]();
     }
 
-    // NOTE: ==================== Autoresize. ======================
 
-    if (_params.autoresize === 'window') {
-      window.addEventListener('resize', () => {
-        this.setSize(
-          Number(window.innerWidth * _params.resolution.width).toFixed(),
-          Number(window.innerHeight * _params.resolution.height).toFixed()
-        );
+    if (params.autoresize) {
+      const container = params.container;
 
-        this.emit('resize');
-      });
-    } else if (_params.autoresize) {
-      window.addEventListener('resize', () => {
+      const resizeCallback = () => {
         // FIXME: Am I crazy or offsetHeight is increasing even when we downsize the window ?
-        // console.log('height offset : ', _params.container.offsetHeight);
+        // console.log('height offset : ', params.container.offsetHeight);
+
         this.setSize(
-          Number(_params.container.offsetWidth * _params.resolution.width).toFixed(),
-          Number(_params.container.offsetHeight * _params.resolution.height).toFixed()
+          Number(container.offsetWidth * params.resolution.width).toFixed(),
+          Number(container.offsetHeight * params.resolution.height).toFixed()
         );
 
         this.emit('resize');
-      });
+      }
+
+      if (params.autoresize === 'window') window.addEventListener('resize', resizeCallback);
+      else {
+        if (params.autoresize.delay) {
+          let resize = true;
+
+          addResizeListener(container, () => {
+            window.clearTimeout(resize);
+            resize = window.setTimeout(resizeCallback, params.autoresize.delay);
+          });
+        }
+        else addResizeListener(container, resizeCallback);
+      }
     }
   }
 
@@ -237,6 +242,8 @@ class World extends Component {
   make$element() {
     this.$element = window.document.createElement('div');
     this.$element.className = 'whs';
+    this.$element.style.width = 'inherit';
+    this.$element.style.height = 'inherit';
     this.params.container.appendChild(this.$element);
 
     return this.$element;
