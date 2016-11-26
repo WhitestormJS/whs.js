@@ -98,10 +98,10 @@ for (let i = 0; i < 5; i++) {
     softbody: true
   });
 
-  rope.addTo(world);
-
-  rope.appendAnchor(world, toptube, 50, 1);
-  rope.appendAnchor(world, sc, 0, 1);
+  rope.addTo(world).then(() => {
+    rope.appendAnchor(world, toptube, 50, 1);
+    rope.appendAnchor(world, sc, 0, 1);
+  });
 }
 
 const sphereStart = new WHS.Sphere({

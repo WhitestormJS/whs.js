@@ -1,6 +1,6 @@
 import * as UTILS from './globals';
 
-const world = new WHS.World({
+window.world = new WHS.World({
   ...UTILS.$world
 });
 

@@ -13,8 +13,6 @@ import {PhysicsComponent} from '../../core/PhysicsComponent';
 import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 import {loadMaterial} from '../../utils/index';
 
-console.log(ParametricGeometries);
-
 @SoftbodyComponent
 @PhysicsComponent
 @MeshComponent

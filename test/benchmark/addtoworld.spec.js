@@ -16,8 +16,8 @@ define(['whs', 'table'], function(WHS, Table) {
   }, {
     onStart: () => {
       this.GAME = new WHS.World({
-        init: {
-          renderer: false
+        plugins: {
+          rendering: false
         },
 
         gravity: {
@@ -67,7 +67,7 @@ define(['whs', 'table'], function(WHS, Table) {
           {field: "test", name: "Test name"}
         ],
       };
-       
+
       console.log('\n' + asciitable(options, tableContent));
     }
   });
