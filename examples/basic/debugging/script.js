@@ -17,6 +17,7 @@ var world = new WHS.World(_extends({}, UTILS.$world, {
       step: 100,
       color1: 0xff0000
     },
+
     axis: {
       size: 100
     }

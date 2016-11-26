@@ -149,7 +149,7 @@ export class FirstPersonControls extends Component {
         quat.multiplyVector3(targetVec);
       };
 
-      // Moves the camera to the Cannon.js object position
+      // Moves the camera to the Physi.js object position
       // and adds velocity to the object if the run key is down.
       const inputVelocity = new Vector3(),
         euler = new Euler();
@@ -184,7 +184,7 @@ export class FirstPersonControls extends Component {
 
         yawObject.position.copy(player.position);
       };
-    })(world.camera, this.object.native, this.params);
+    })(world.$camera, this.object.native, this.params);
 
     if ('pointerLockElement' in document
         || 'mozPointerLockElement' in document
@@ -248,7 +248,7 @@ export class FirstPersonControls extends Component {
     return [
       controls,
       function callback(world) {
-        world.scene.add(world.controls.getObject());
+        world.$scene.add(world.controls.getObject());
       }
     ];
   }

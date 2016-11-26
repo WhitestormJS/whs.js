@@ -1,6 +1,6 @@
 define(['whs'], (WHS) => {
   describe('Cameras', () => {
-    const world = new WHS.World({init: {rendering: false}});
+    const world = new WHS.World({plugins: {rendering: false}});
 
     function describeAttribute(component, name, dims, Type) {
       describe(`@test .${name}`, () => {

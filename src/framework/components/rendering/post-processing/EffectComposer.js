@@ -6,12 +6,12 @@ import {MaskPass, ClearMaskPass} from './pass/MaskPass.js';
 
 export class EffectComposer {
   /**
-   * EffecComposer handle a set of Passes and render them in a RenderTarget through a Renderer
+   * EffectComposer handle a set of Passes and render them in a RenderTarget through a Renderer
    * @param  {THREE.WebGLRenderer} renderer : The renderer that will be used to render objects
    * @param  {THREE.WebGLRenderTarget} renderTarget : The renderTarget used to draw buffers and compose them
    */
   constructor(renderer, renderTarget) {
-    this.renderer = renderer;
+    this.$renderer = renderer;
 
     if (renderTarget === undefined) {
       const parameters = {
@@ -26,15 +26,13 @@ export class EffectComposer {
       renderTarget = new THREE.WebGLRenderTarget(size.width, size.height, parameters);
     }
 
-    this.renderTarget1 = renderTarget;
-    this.renderTarget2 = renderTarget.clone();
-    this.writeBuffer = this.renderTarget1;
-    this.readBuffer = this.renderTarget2;
+    this.$renderTarget1 = renderTarget;
+    this.$renderTarget2 = renderTarget.clone();
+    this.writeBuffer = this.$renderTarget1;
+    this.readBuffer = this.$renderTarget2;
     this.passes = [];
 
-    if (CopyShader === undefined) console.error('EffectComposer relies on CopyShader"');
-
-    this.copyPass = new ShaderPass(CopyShader);
+    this.$copyPass = new ShaderPass(CopyShader);
   }
 
   /**
@@ -52,7 +50,7 @@ export class EffectComposer {
    */
   addPass(pass) {
     if (!pass) return;
-    const size = this.renderer ? this.renderer.getSize() : {width: 0, height: 0};
+    const size = this.$renderer ? this.$renderer.getSize() : {width: 0, height: 0};
     pass.setSize(size.width, size.height);
     this.passes.push(pass);
   }
@@ -110,26 +108,22 @@ export class EffectComposer {
    * @param  {Number} delta : The delta time since the last frame.
    */
   render(delta) {
-    const il = this.passes.length;
-
-    let maskActive = false;
-    let pass, i;
-
-    for (i = 0; i < il; i++) {
+    for (let i = 0, il = this.passes.length, pass, maskActive = false; i < il; i++) {
       pass = this.passes[i];
 
       if (pass.enabled === false) continue;
 
-      pass.render(this.renderer, this.writeBuffer, this.readBuffer, delta, maskActive);
+      pass.render(this.$renderer, this.writeBuffer, this.readBuffer, delta, maskActive);
 
       if (pass.needsSwap) {
         if (maskActive) {
-          const context = this.renderer.context;
+          const context = this.$renderer.context;
 
           context.stencilFunc(context.NOTEQUAL, 1, 0xffffffff);
-          this.copyPass.render(this.renderer, this.writeBuffer, this.readBuffer, delta);
+          this.$copyPass.render(this.$renderer, this.writeBuffer, this.readBuffer, delta);
           context.stencilFunc(context.EQUAL, 1, 0xffffffff);
         }
+
         this.swapBuffers();
       }
 
@@ -146,19 +140,19 @@ export class EffectComposer {
    */
   reset(renderTarget) {
     if (renderTarget === undefined) {
-      const size = this.renderer.getSize();
+      const size = this.$renderer.getSize();
 
-      renderTarget = this.renderTarget1.clone();
+      renderTarget = this.$renderTarget1.clone();
       renderTarget.setSize(size.width, size.height);
     }
 
-    this.renderTarget1.dispose();
-    this.renderTarget2.dispose();
-    this.renderTarget1 = renderTarget;
-    this.renderTarget2 = renderTarget.clone();
+    this.$renderTarget1.dispose();
+    this.$renderTarget2.dispose();
+    this.$renderTarget1 = renderTarget;
+    this.$renderTarget2 = renderTarget.clone();
 
-    this.writeBuffer = this.renderTarget1;
-    this.readBuffer = this.renderTarget2;
+    this.writeBuffer = this.$renderTarget1;
+    this.readBuffer = this.$renderTarget2;
   }
 
   /**
@@ -167,8 +161,8 @@ export class EffectComposer {
    * @param {Number} height : The height in pixels
    */
   setSize(width, height) {
-    this.renderTarget1.setSize(width, height);
-    this.renderTarget2.setSize(width, height);
+    this.$renderTarget1.setSize(width, height);
+    this.$renderTarget2.setSize(width, height);
 
     for (let i = 0; i < this.passes.length; i++) this.passes[i].setSize(width, height);
   }

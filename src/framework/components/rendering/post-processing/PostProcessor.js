@@ -9,6 +9,9 @@ class PostProcessor extends RenderingPlugin {
   static defaults = {
     autoresize: true,
 
+    width: window.innerWidth,
+    height: window.innerHeight,
+
     resolution: {
       width: 1,
       height: 1
@@ -24,63 +27,47 @@ class PostProcessor extends RenderingPlugin {
   };
 
   constructor(params = {}) {
-    PostProcessor.defaults.width = window.innerWidth;
-    PostProcessor.defaults.height = window.innerHeight;
-    const _params = extend(params, PostProcessor.defaults);
-
-    super(_params);
+    super(extend(params, PostProcessor.defaults));
 
     return (world) => {
-      this.parentWorld = world;
+      this.world = world;
       return this;
     }
   }
 
   build() {
-    const _params = this.params;
+    const renderParams = this.params.rendering;
 
-    const width = Number(window.innerWidth * _params.resolution.width).toFixed();
-    const height = Number(window.innerHeight * _params.resolution.height).toFixed();
+    const width = Number(this.params.width * this.params.resolution.width).toFixed();
+    const height = Number(this.params.height * this.params.resolution.height).toFixed();
 
     // Renderer.
-    this.renderer = new THREE.WebGLRenderer(_params.renderer);
+    this.$renderer = new THREE.WebGLRenderer(renderParams.renderer);
 
-    const _renderer = this.renderer;
-    _renderer.setClearColor(_params.background.color, _params.background.opacity);
+    const renderer = this.$renderer;
+    renderer.setClearColor(renderParams.background.color, renderParams.background.opacity);
 
     // Shadowmap.
-    _renderer.shadowMap.enabled = _params.shadowmap.enabled;
-    _renderer.shadowMap.type = _params.shadowmap.type;
-    _renderer.shadowMap.cascade = true;
+    renderer.shadowMap.enabled = renderParams.shadowmap.enabled;
+    renderer.shadowMap.type = renderParams.shadowmap.type;
+    renderer.shadowMap.cascade = true;
 
-    this.setSize(_params.width, _params.height);
+    this.setSize(this.params.width, this.params.height);
 
     // RenderTarget
-    this.renderTarget = new THREE.WebGLRenderTarget(width, height, _params.renderTarget);
+    this.$renderTarget = new THREE.WebGLRenderTarget(width, height, this.params.renderTarget);
   }
 
-  _initComposer() {
-    const _renderer = this.renderer;
-    const _renderTarget = this.renderTarget;
-
+  make$composer() {
     // TODO: throw or something here
-    if (!_renderer || !_renderTarget) return;
-
-    if (!this.composer)
-      this.composer = new EffectComposer(_renderer, _renderTarget);
+    if (!this.$renderer || !this.$renderTarget || this.$composer) return;
+    this.$composer = new EffectComposer(this.$renderer, this.$renderTarget);
   }
 
   onParentWorldChanged() {
-    // Scene and camera
-    this.setRenderScene(this.parentWorld.scene, this.parentWorld.camera);
-
     // EffectComposer
-    if (this.parentWorld){
-      this._initComposer();
-    }
-    else {
-      this.composer = undefined;
-    }
+    if (this.world) this.make$composer();
+    else this.$composer = undefined;
   }
 
   /**
@@ -89,7 +76,7 @@ class PostProcessor extends RenderingPlugin {
    * @return {WHS.Pass} The created WHS.Pass
    */
   createPass(passCreator) {
-    if (typeof passCreator === 'function') return passCreator(this.composer);
+    if (typeof passCreator === 'function') return passCreator(this.$composer);
   }
 
   /**
@@ -98,7 +85,7 @@ class PostProcessor extends RenderingPlugin {
    * @return {WHS.Pass} The found WHS.Pass, otherwise undefined.
    */
   getPass(name) {
-    return this.composer ? this.composer.getPass(name) : undefined;
+    return this.$composer ? this.$composer.getPass(name) : undefined;
   }
 
   /**
@@ -106,11 +93,11 @@ class PostProcessor extends RenderingPlugin {
    * @param  {Boolean} renderToScreen : Should the renderpass be rendered directly to screen
    */
   createRenderPass(renderToScreen = false) {
-    const world = this.parentWorld;
+    const world = this.world;
 
-    if (world.scene && world.camera && this.composer) {
+    if (world.$scene && world.$camera && this.$composer) {
       this.createPass(composer => {
-        const pass = new RenderPass('renderscene', world.scene, world.camera.native);
+        const pass = new RenderPass('renderscene', world.$scene, world.$camera.native);
         pass.renderToScreen = renderToScreen;
         composer.addPass(pass);
       });
@@ -130,7 +117,7 @@ class PostProcessor extends RenderingPlugin {
    * @param  {String} name : The unique name of the pass
    */
   removePass(name) {
-    if (this.composer) this.composer.removePass(name);
+    if (this.$composer) this.$composer.removePass(name);
   }
 
   /**
@@ -142,21 +129,10 @@ class PostProcessor extends RenderingPlugin {
     // TODO: handle autoresize container offset
   }
 
-  /**
-   * Set the Scene and camera used by the renderTarget in this PostProcessor.
-   * @param {THREE.Scene} scene : The scenagraph containing the geometry.
-   * @param {THREE.Camera} camera : The camera used for the rendering point of view.
-   */
-  setRenderScene(scene, camera) {
-    this.scene = scene;
-    this.camera = camera;
-  }
-
   setSize(width, height) {
-    if (this.renderer) {
-      this.renderer.setSize(width, height);
-      const _composer = this.composer;
-      if (_composer) _composer.setSize(width, height);
+    if (this.$renderer) {
+      this.$renderer.setSize(width, height);
+      if (this.$composer) this.$composer.setSize(width, height);
     }
   }
 
@@ -165,23 +141,23 @@ class PostProcessor extends RenderingPlugin {
    * @param  {Number} delta : The delta time between two frames.
    */
   renderPlugin(delta) {
-    if (this.composer) this.composer.render(delta);
+    if (this.$composer) this.$composer.render(delta);
   }
 
   /**
    * Set the renderer to use.
    * @param {THREE.WebGLRenderer} renderer : The renderer instance.
    */
-  set renderer(renderer) {
+  set $renderer(renderer) {
     this._renderer = renderer;
-    this._initComposer();
+    this.make$composer();
   }
 
   /**
    * Get the renderer used by this PostProcessor to render.
    * @return {THREE.WebGLRenderer} The WebGLRenderer.
    */
-  get renderer() {
+  get $renderer() {
     return this._renderer;
   }
 
@@ -189,16 +165,16 @@ class PostProcessor extends RenderingPlugin {
    * Set renderTarget, this will rebuild the internal EffectComposer.
    * @param  {THREE.WebGLRenderTarget} renderTarget : The WebGLRenderTarget to use.
    */
-  set renderTarget(renderTarget) {
+  set $renderTarget(renderTarget) {
     this._renderTarget = renderTarget;
-    this._initComposer();
+    this.make$composer();
   }
 
   /**
    * Get renderTarget used by this PostProcessor to render to.
    * @return {THREE.WebGLRenderTarget} The WebGLRenderTarget.
    */
-  get renderTarget() {
+  get $renderTarget() {
     return this._renderTarget;
   }
 
@@ -206,7 +182,7 @@ class PostProcessor extends RenderingPlugin {
    * Set composer, by default PostProcessor instanciate its own instance of EffectComposer.
    * @param  {EffectComposer} composer : The composer instance to use.
    */
-  set composer(composer) {
+  set $composer(composer) {
     this._composer = composer;
   }
 
@@ -214,10 +190,9 @@ class PostProcessor extends RenderingPlugin {
    * Get composer attribute
    * @return {EffectCompost} The EffectComposer managed by this PostProcessor.
    */
-  get composer() {
+  get $composer() {
     return this._composer;
   }
-
 }
 
 export {

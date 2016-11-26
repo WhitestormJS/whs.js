@@ -16,7 +16,7 @@ export const extend = (object, ...extensions) => { // $.extend alternative, ... 
         else extend(object[prop], extension[prop]);
 
       } else
-        object[prop] = (object[prop] === 0) ? 0 : object[prop];
+        object[prop] = typeof object[prop] === 'undefined' ? extension[prop] : object[prop];
       if (typeof object[prop] === 'undefined') object[prop] = extension[prop]; // Add values that do not already exist.
     }
   }

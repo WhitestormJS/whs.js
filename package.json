@@ -1,6 +1,6 @@
 {
   "name": "whs",
-  "version": "1.1.5",
+  "version": "1.2.0",
   "description": "Framework for developing 3D web apps with physics.",
   "main": "lib/index.js",
   "scripts": {
@@ -12,10 +12,7 @@
     "dev": "gulp dev",
     "lint": "gulp src:lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/WhitestormJS/whitestorm.js.git"
-  },
+  "repository": "WhitestormJS/whitestorm.js",
   "keywords": [
     "whitestorm.js",
     "three.js",
@@ -29,22 +26,21 @@
     "gulpjs"
   ],
   "author": "Alexander Buzin",
-  "license": "CC",
-  "bugs": {
-    "url": "https://github.com/WhitestormJS/whitestorm.js/issues"
-  },
+  "license": "MIT",
   "homepage": "https://github.com/WhitestormJS/whitestorm.js#readme",
   "dependencies": {
+    "ammonext": "^0.0.3",
+    "detect-element-resize": "0.0.2",
+    "element-resize-detector": "^1.1.9",
     "inline-worker": "^1.1.0",
     "minivents": "^2.0.2",
+    "resize-event": "^1.1.0",
     "stats.js": "^0.16.0",
     "three": "^0.82.1",
-    "three-orbit-controls": "^72.0.0",
-    "webworkify-webpack": "^1.1.0",
-    "ammonext": "^0.0.3"
+    "watch-element-resize.js": "^2.0.1",
+    "webworkify-webpack": "^1.1.2"
   },
   "devDependencies": {
-    "assert": "^1.4.1",
     "babel": "^6.5.2",
     "babel-loader": "^6.2.4",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -95,9 +91,6 @@
     "uglify-loader": "^1.3.0",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1",
-    "webpack-optimizejs-plugin": "0.0.2",
-    "webworkify-webpack": "1.1.2",
-    "whs-component-terrain": "0.0.2",
     "xo": "^0.15.1",
     "yargs": "^6.3.0"
   },

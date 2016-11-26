@@ -13,66 +13,59 @@ class RenderingPlugin extends Component {
     super.wrap();
   }
 
-  get parentWorld() {
-    return this._parentWorld;
+  get world() {
+    return this._world;
   }
 
-  set parentWorld(world) {
+  set world(world) {
     const params = this.params;
 
-    this._parentWorld = world;
-    this._attachToCanvas();
+    this._world = world;
+    this.attachToCanvas();
 
-    if (params.init && params.init.stats) this._initStats();
+    if (params.plugins && params.plugins.stats) this.make$stats();
 
-    this.onParentWorldChanged();
+    this.emit('worldchange');
   }
 
-  _attachToCanvas() {
-    if (this._parentWorld) {
+  attachToCanvas() {
+    if (this.world) {
       // TODO: detach from dom
     }
 
+    const canvas = this.$renderer.domElement;
+    this.world.$canvas = canvas;
+
     // attach to new parent world dom
-    this._parentWorld._dom.appendChild(this.renderer.domElement);
-    this.renderer.domElement.style.width = '100%';
-    this.renderer.domElement.style.height = '100%';
+    this.world.$element.appendChild(canvas);
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
   }
 
-  _initStats() {
-    const params = this.params;
+  make$stats() {
+    const statsData = this.params.stats;
 
-    if (params.stats) {
-      this.stats = new Stats();
+    if (statsData) {
+      const stats = new Stats();
+      this.$stats = stats;
 
-      if (params.stats === 'fps')
-        this.stats.setMode(0);
+      if (statsData === 'fps') stats.setMode(0);
+      else if (statsData === 'ms') stats.setMode(1);
+      else if (statsData === 'mb') stats.setMode(1);
+      else stats.setMode(0);
 
-      else if (params.stats === 'ms')
-        this.stats.setMode(1);
+      const stStyle = stats.domElement.style;
 
-      else if (params.stats === 'mb')
-        this.stats.setMode(1);
+      stStyle.position = 'absolute';
+      stStyle.left = '0px';
+      stStyle.top = '0px';
 
-      else {
-        this.stats.setMode(0);
-        console.warn([this.stats], 'Please, apply stats mode [fps, ms, mb] .');
-      }
-
-      this.stats.domElement.style.position = 'absolute';
-      this.stats.domElement.style.left = '0px';
-      this.stats.domElement.style.bottom = '0px';
-
-      this._parentWorld._dom.appendChild(this.stats.domElement);
+      this.world.$element.appendChild(stats.domElement);
     }
   }
 
   build(params = {}) {
-     throw new Error('Build method has to be re-implemented in each rendering plugin (use it to initialize your rendering plugin!)');
-  }
-
-  onParentWorldChanged() {
-
+    throw new Error('Build method has to be re-implemented in each rendering plugin (use it to initialize your rendering plugin!)');
   }
 
   renderPlugin(delta) {
@@ -97,25 +90,36 @@ class RenderingPlugin extends Component {
 
     this.onStartRendering = onStartRendering;
     this.onFinishRendering = onFinishRendering;
-    this.render();
+    if (this.world.render) this.render(this.world.$scene, this.world.$camera.native);
   }
 
-  render() {
-    window.requestAnimFrame(this.render.bind(this));
+  render(cachedScene, cachedCamera) {
+    const scene = cachedScene;
+    const camera = cachedCamera;
+    const clock = this.clock;
+    const stats = this.$stats;
 
-    const delta = this.clock.getDelta();
+    const onStartRendering = this.onStartRendering;
+    const onFinishRendering = this.onFinishRendering;
 
-    // Init stats.
-    if (this.stats) this.stats.begin();
+    function render() {
+      window.requestAnimFrame(render.bind(this));
 
-    if (this.onStartRendering) this.onStartRendering(delta);
+      const delta = clock.getDelta();
 
-    this.renderPlugin(delta);
+      // Init stats.
+      if (stats) stats.begin();
+      if (onStartRendering) onStartRendering(delta);
 
-    if (this.onFinishRendering) this.onFinishRendering(delta);
+      this.renderPlugin(scene, camera, delta);
 
-    // End helper.
-    if (this.stats) this.stats.end();
+      if (onFinishRendering) onFinishRendering(delta);
+
+      // End helper.
+      if (stats) stats.end();
+    }
+
+    (render.bind(this))();
   }
 }
 

@@ -1,25 +1,33 @@
 import {Mesh} from '../core/mesh';
 
 export class ConvexMesh extends Mesh {
-  constructor(geom, material, params = {}, cGeometry) {
+  constructor(geom, material, params = {}, physicsReplacementGeometry) {
     const physParams = params.physics;
     const mass = physParams.mass || params.mass;
     super(geom, material, mass, physParams);
 
-    if (!geom.boundingBox) geom.computeBoundingBox();
+    const geometry = physicsReplacementGeometry ? physicsReplacementGeometry : geom;
 
-    const geometry = cGeometry ? cGeometry : geom,
-      data = new Float32Array(geometry.vertices.length * 3);
+    const isBuffer = geometry.type === 'BufferGeometry';
 
-    const cScale = params.scale || {x: 1, y: 1, z: 1};
-    cScale.x = cScale.x || 1;
-    cScale.y = cScale.y || 1;
-    cScale.z = cScale.z || 1;
+    if (params.scale) geometry.scale(
+      params.scale.x,
+      params.scale.y,
+      params.scale.z
+    );
 
-    for (let i = 0; i < geometry.vertices.length; i++) {
-      data[i * 3] = geometry.vertices[i].x * cScale.x;
-      data[i * 3 + 1] = geometry.vertices[i].y * cScale.y;
-      data[i * 3 + 2] = geometry.vertices[i].z * cScale.z;
+    const data = isBuffer ?
+      geometry.attributes.position.array :
+      new Float32Array(geometry.vertices.length * 3);
+
+    if (!geometry.boundingBox) geom.computeBoundingBox();
+
+    if(!isBuffer) {
+      for (let i = 0; i < geometry.vertices.length; i++) {
+        data[i * 3] = geometry.vertices[i].x;
+        data[i * 3 + 1] = geometry.vertices[i].y;
+        data[i * 3 + 2] = geometry.vertices[i].z;
+      }
     }
 
     const width = geom.boundingBox.max.x - geom.boundingBox.min.x;

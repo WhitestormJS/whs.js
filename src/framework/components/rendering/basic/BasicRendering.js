@@ -6,35 +6,38 @@ class BasicRendering extends RenderingPlugin {
   constructor(params = {}) {
     super(params);
     return (world) => {
-      this.parentWorld = world;
+      this.world = world;
       return this;
     }
   }
 
   build(params = {}) {
-    // Renderer.
-    this.renderer = new THREE.WebGLRenderer(this.params.renderer);
+    const renderParams = this.params.rendering;
 
-    const _renderer = this.renderer;
-    _renderer.setClearColor(this.params.background.color, this.params.background.opacity);
+    // Renderer.
+    this.$renderer = new THREE.WebGLRenderer(renderParams.renderer);
+
+    const renderer = this.$renderer;
+
+    renderer.setClearColor(
+      renderParams.background.color,
+      renderParams.background.opacity
+    );
 
     // Shadowmap.
-    _renderer.shadowMap.enabled = this.params.shadowmap.enabled;
-    _renderer.shadowMap.type = this.params.shadowmap.type;
-    _renderer.shadowMap.cascade = true;
+    renderer.shadowMap.enabled = renderParams.shadowmap.enabled;
+    renderer.shadowMap.type = renderParams.shadowmap.type;
+    renderer.shadowMap.cascade = true;
 
     this.setSize(this.params.width, this.params.height);
   }
 
-  renderPlugin(delta) {
-    const _scene = this.parentWorld.scene;
-    const _cameraNative = this.parentWorld.camera.native;
-
-    this.renderer.render(_scene, _cameraNative);
+  renderPlugin(scene, camera, delta) {
+    this.$renderer.render(scene, camera);
   }
 
   setSize(width, height) {
-    if (this.renderer) this.renderer.setSize(width, height);
+    if (this.$renderer) this.$renderer.setSize(width, height);
   }
 
   // static creator(params) {

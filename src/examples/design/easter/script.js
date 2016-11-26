@@ -29,7 +29,7 @@ const world = new WHS.World({
   }
 });
 
-world.camera.lookAt(new THREE.Vector3(0, 0, 0));
+world.$camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 // Start rendering.
 world.start();
@@ -260,9 +260,9 @@ egg.addTo(world, 'wait').then((object) => {
 });
 
 document.body.addEventListener('mousemove', (e) => {
-  world.camera.position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
-  world.camera.position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
-  world.camera.lookAt(new THREE.Vector3(-4, 0, 0));
+  world.$camera.position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
+  world.$camera.position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
+  world.$camera.lookAt(new THREE.Vector3(-4, 0, 0));
 });
 
 document.body.addEventListener('click', () => {

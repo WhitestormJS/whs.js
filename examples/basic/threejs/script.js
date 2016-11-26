@@ -16,7 +16,7 @@ var world = new WHS.World(_extends({}, UTILS.$world, {
     position: [0, 2, 12]
   },
 
-  init: {
+  plugins: {
     scene: false
   }
 }));
@@ -49,9 +49,9 @@ mesh3.position.set(0, 0, 1);
 mesh2.add(mesh3);
 
 world.importScene(scene, true);
-world._initCamera();
-world._initRendering();
-world._initHelpers();
+world.make$camera();
+world.make$rendering();
+world.make$helpers();
 
 var sphere = new WHS.Element(new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), materialWHS), [WHS.MeshComponent]);
 
