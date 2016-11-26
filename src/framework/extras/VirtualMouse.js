@@ -19,19 +19,21 @@ export class VirtualMouse extends Events {
 
     world.mouse = this;
     this.world = world;
-    this.canvas = world.$rendering.renderer.domElement;
-    window.addEventListener('mousemove', this.update.bind(this));
-    window.addEventListener('click', () => this.emit('click'));
-    window.addEventListener('mousedown', () => this.emit('mousedown'));
-    window.addEventListener('mouseup', () => this.emit('mouseup'));
+
+    if (world.renderer) this.canvas = world.renderer.domElement;
+
+    world.$element.addEventListener('mousemove', this.update.bind(this));
+    world.$element.addEventListener('click', () => this.emit('click'));
+    world.$element.addEventListener('mousedown', () => this.emit('mousedown'));
+    world.$element.addEventListener('mouseup', () => this.emit('mouseup'));
   }
 
   update(e) {
-    var rect = this.canvas.getBoundingClientRect();
-    // this.mouse.x = (e.clientX - rect.left);
-    // this.mouse.y = (e.clientY - rect.top);
-    this.mouse.x = ((e.clientX - rect.left) / window.innerWidth) * 2 - 1;
-    this.mouse.y = -((e.clientY - rect.top) / window.innerHeight) * 2 + 1;
+    const rect = this.canvas.getBoundingClientRect();
+
+    this.mouse.x = ((e.clientX - rect.left) / (rect.right - rect.left)) * 2 - 1;
+    this.mouse.y = -((e.clientY - rect.top) / (rect.bottom - rect.top)) * 2 + 1;
+
     this.projectionPlane.normal.copy(this.world.$camera.native.getWorldDirection());
 
     this.raycaster.setFromCamera(this.mouse, this.world.$camera.native);

@@ -29,12 +29,16 @@
   "license": "MIT",
   "homepage": "https://github.com/WhitestormJS/whitestorm.js#readme",
   "dependencies": {
+    "ammonext": "^0.0.3",
+    "detect-element-resize": "0.0.2",
+    "element-resize-detector": "^1.1.9",
     "inline-worker": "^1.1.0",
     "minivents": "^2.0.2",
+    "resize-event": "^1.1.0",
     "stats.js": "^0.16.0",
     "three": "^0.82.1",
-    "webworkify-webpack": "^1.1.2",
-    "ammonext": "^0.0.3"
+    "watch-element-resize.js": "^2.0.1",
+    "webworkify-webpack": "^1.1.2"
   },
   "devDependencies": {
     "babel": "^6.5.2",

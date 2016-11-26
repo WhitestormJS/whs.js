@@ -1,14 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.addAmbient = addAmbient;
-exports.addBasicLights = addBasicLights;
-exports.addPlane = addPlane;
-exports.addBoxPlane = addBoxPlane;
-var $world = exports.$world = {
+export const $world = {
   stats: "fps", // fps, ms, mb or false if not need.
   autoresize: "window",
 
@@ -33,14 +23,14 @@ var $world = exports.$world = {
   }
 };
 
-var $colors = exports.$colors = {
+export const $colors = {
   bg: 0x162129,
   plane: 0x447F8B,
   mesh: 0xF2F2F2,
   softbody: 0x434B7F
 };
 
-function addAmbient(world, intensity) {
+export function addAmbient(world, intensity) {
   new WHS.AmbientLight({
     light: {
       intensity: intensity
@@ -48,30 +38,24 @@ function addAmbient(world, intensity) {
   }).addTo(world);
 }
 
-function addBasicLights(world) {
-  var intensity = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
-  var position = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 10, 10];
-  var distance = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
-
+export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], distance = 100) {
   addAmbient(world, 1 - intensity);
 
   return new WHS.PointLight({
     light: {
-      intensity: intensity,
-      distance: distance
+      intensity,
+      distance
     },
 
     shadowmap: {
       fov: 90
     },
 
-    position: position
+    position
   }).addTo(world);
 }
 
-function addPlane(world) {
-  var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
-
+export function addPlane(world, size = 100) {
   return new WHS.Plane({
     geometry: {
       width: size,
@@ -86,14 +70,12 @@ function addPlane(world) {
     },
 
     rotation: {
-      x: -Math.PI / 2
+      x: - Math.PI / 2
     }
-  }).addTo(world);
+  }).addTo(world)
 }
 
-function addBoxPlane(world) {
-  var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
-
+export function addBoxPlane(world, size = 100) {
   return new WHS.Box({
     geometry: {
       width: size,
@@ -107,7 +89,5 @@ function addBoxPlane(world) {
       color: 0x447F8B,
       kind: 'phong'
     }
-  }).addTo(world);
+  }).addTo(world)
 }
-
-},{}]},{},[1]);
