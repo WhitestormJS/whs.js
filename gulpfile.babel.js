@@ -13,6 +13,7 @@ import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
 import {config} from './webpack.config.babel.js';
+import wConfig from './test/webpack/webpack.config.js';
 
 // SETTINGS
 const
@@ -50,6 +51,7 @@ const webpackConfiguration = config({
 
 const webpackCompiler = webpack(webpackConfiguration[0]);
 const webpackCompilerLight = webpack(webpackConfiguration[1]);
+const wCompiler = webpack(wConfig); // Webpack test.
 
 // ENVIRONMENT  SETUP
 process.env.BABEL_ENV = 'node';
@@ -104,6 +106,18 @@ gulp.task('dev', ['examples:build', 'examples:watch'], () => {
   });
 
   server.listen(8080, 'localhost', () => {});
+});
+
+// DEV MODE
+gulp.task('webpack-dev', () => {
+  const server = new WebpackDevServer(wCompiler, {
+    contentBase: './test/webpack/',
+    publicPath: '/build/',
+
+    stats: {colors: true}
+  });
+
+  server.listen(8001, 'localhost', () => {});
 });
 
 // EXAMPLES: WATCH
