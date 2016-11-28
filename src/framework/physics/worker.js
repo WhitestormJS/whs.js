@@ -512,7 +512,6 @@ module.exports = function (self) {
       _vec3_1.setY(0);
       _vec3_1.setZ(0);
       shape.calculateLocalInertia(description.mass, _vec3_1);
-      if (physParams.margin) shape.setMargin(physParams.margin);
 
       _transform.setIdentity();
 
@@ -536,6 +535,7 @@ module.exports = function (self) {
       rbInfo.set_m_angularDamping(physParams.damping);
 
       body = new Ammo.btRigidBody(rbInfo);
+      Ammo.castObject(body, Ammo.btCollisionObject).getCollisionShape().setMargin(physParams.margin ? physParams.margin : 0);
       body.setActivationState(physParams.state || 4);
       Ammo.destroy(rbInfo);
 
