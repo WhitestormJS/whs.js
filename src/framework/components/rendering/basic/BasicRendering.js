@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
-import { RenderingPlugin } from '../RenderingPlugin';
+import { RenderingModule } from '../RenderingModule';
 
-class BasicRendering extends RenderingPlugin {
+class BasicRendering extends RenderingModule {
   constructor(params = {}) {
     super(params);
     return (world) => {
@@ -32,7 +32,7 @@ class BasicRendering extends RenderingPlugin {
     this.setSize(this.params.width, this.params.height);
   }
 
-  renderPlugin(scene, camera, delta) {
+  renderModule(scene, camera, delta) {
     this.$renderer.render(scene, camera);
   }
 
