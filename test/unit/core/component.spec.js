@@ -1,6 +1,6 @@
 define(['whs'], (WHS) => {
   describe('[WHS.Component]', () => {
-    const world = new WHS.World({plugins: {rendering: false}});
+    const world = new WHS.World({modules: {rendering: false}});
 
     describe('Working with default values', () => {
       let result;
