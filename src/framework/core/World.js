@@ -82,7 +82,7 @@ class World extends Component {
       far: 1000
     },
 
-    plugins: {
+    modules: {
       element: true,
       scene: true,
       stats: true,
@@ -99,7 +99,7 @@ class World extends Component {
 
     gravity: ['x', 'y', 'z'],
 
-    plugins: [
+    modules: [
       'element',
       'scene',
       'stats',
@@ -128,7 +128,7 @@ class World extends Component {
     'helpers': ['scene']
   }
 
-  plugins = {
+  modules = {
     element: null,
     scene: null,
     camera: null,
@@ -137,17 +137,17 @@ class World extends Component {
     stats: null
   };
 
-  get $rendering() { return this.plugins.rendering; }
-  set $rendering(plugin) { this.plugins.rendering = plugin(this); }
+  get $rendering() { return this.modules.rendering; }
+  set $rendering(plugin) { this.modules.rendering = plugin(this); }
 
-  get $scene() { return this.plugins.scene; }
+  get $scene() { return this.modules.scene; }
   set $scene(scene) { this.importScene(scene); }
 
-  get $camera() { return this.plugins.camera; }
-  set $camera(camera) { this.plugins.camera = camera; }
+  get $camera() { return this.modules.camera; }
+  set $camera(camera) { this.modules.camera = camera; }
 
-  get $element() { return this.plugins.element; }
-  set $element(element) { this.plugins.element = element; }
+  get $element() { return this.modules.element; }
+  set $element(element) { this.modules.element = element; }
 
   simulate = false;
   render = true;
@@ -156,19 +156,19 @@ class World extends Component {
   constructor(params = {}) {
     super(params, World.defaults, World.instructions);
 
-    for (let plugin in this.plugins) {
+    for (let plugin in this.modules) {
       if (World.pluginDeps[plugin]) {
         const dependencies = World.pluginDeps[plugin];
         let skip = false;
 
         for (let i = 0, max = dependencies.length; i < max; i++)  { // console.log(dependencies[i]);
-          if (!this.params.plugins[dependencies[i]]) skip = true;
+          if (!this.params.modules[dependencies[i]]) skip = true;
         }
 
         if (skip) continue;
       }
 
-      if (this.params.plugins[plugin] && this[`make$${plugin}`]) this[`make$${plugin}`]();
+      if (this.params.modules[plugin] && this[`make$${plugin}`]) this[`make$${plugin}`]();
     }
 
 
@@ -362,7 +362,7 @@ class World extends Component {
   }
 
   importScene(scene, nested = true) {
-    this.plugins.scene = scene;
+    this.modules.scene = scene;
 
     if (nested) {
       this.children = [];
