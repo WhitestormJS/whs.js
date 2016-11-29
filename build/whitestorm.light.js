@@ -71768,15 +71768,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  (0, _createClass3.default)(World, [{
 	    key: '$rendering',
 	    get: function get() {
-	      return this.plugins.rendering;
+	      return this.modules.rendering;
 	    },
 	    set: function set(plugin) {
-	      this.plugins.rendering = plugin(this);
+	      this.modules.rendering = plugin(this);
 	    }
 	  }, {
 	    key: '$scene',
 	    get: function get() {
-	      return this.plugins.scene;
+	      return this.modules.scene;
 	    },
 	    set: function set(scene) {
 	      this.importScene(scene);
@@ -71784,18 +71784,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: '$camera',
 	    get: function get() {
-	      return this.plugins.camera;
+	      return this.modules.camera;
 	    },
 	    set: function set(camera) {
-	      this.plugins.camera = camera;
+	      this.modules.camera = camera;
 	    }
 	  }, {
 	    key: '$element',
 	    get: function get() {
-	      return this.plugins.element;
+	      return this.modules.element;
 	    },
 	    set: function set(element) {
-	      this.plugins.element = element;
+	      this.modules.element = element;
 	    }
 	  }]);
 	
@@ -71805,7 +71805,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (World.__proto__ || Object.getPrototypeOf(World)).call(this, params, World.defaults, World.instructions));
 	
-	    _this.plugins = {
+	    _this.modules = {
 	      element: null,
 	      scene: null,
 	      camera: null,
@@ -71818,20 +71818,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _this.loops = [];
 	
 	
-	    for (var plugin in _this.plugins) {
+	    for (var plugin in _this.modules) {
 	      if (World.pluginDeps[plugin]) {
 	        var dependencies = World.pluginDeps[plugin];
 	        var skip = false;
 	
 	        for (var i = 0, max = dependencies.length; i < max; i++) {
 	          // console.log(dependencies[i]);
-	          if (!_this.params.plugins[dependencies[i]]) skip = true;
+	          if (!_this.params.modules[dependencies[i]]) skip = true;
 	        }
 	
 	        if (skip) continue;
 	      }
 	
-	      if (_this.params.plugins[plugin] && _this['make$' + plugin]) _this['make$' + plugin]();
+	      if (_this.params.modules[plugin] && _this['make$' + plugin]) _this['make$' + plugin]();
 	    }
 	
 	    if (params.autoresize) {
@@ -72046,7 +72046,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      var nested = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 	
-	      this.plugins.scene = scene;
+	      this.modules.scene = scene;
 	
 	      if (nested) {
 	        (function () {
@@ -72153,7 +72153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    far: 1000
 	  },
 	
-	  plugins: {
+	  modules: {
 	    element: true,
 	    scene: true,
 	    stats: true,
@@ -72168,7 +72168,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	  gravity: ['x', 'y', 'z'],
 	
-	  plugins: ['element', 'scene', 'stats', 'camera', 'helpers', 'rendering']
+	  modules: ['element', 'scene', 'stats', 'camera', 'helpers', 'rendering']
 	}, _class.helpers = {
 	  axis: [_three.AxisHelper, {
 	    size: 5
@@ -79412,7 +79412,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	
 	      this.on('click', function () {
-	        if (isHovered) component.emit('click');
+	        if (isHovered) component.emit('click');else component.emit('offClick');
 	      });
 	
 	      this.on('mousedown', function () {

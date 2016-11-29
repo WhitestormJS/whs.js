@@ -1,6 +1,6 @@
 define(['whs'], (WHS) => {
   const assetsPath = '/base/test/_assets/';
-  const world = new WHS.World({plugins: {rendering: false}});
+  const world = new WHS.World({modules: {rendering: false}});
 
   const shapes = [
     'Box',
@@ -88,7 +88,7 @@ define(['whs'], (WHS) => {
   }
 
   describe('Meshes', () => {
-    const world = new WHS.World({plugins: {rendering: false}});
+    const world = new WHS.World({modules: {rendering: false}});
 
     context('Automatic mesh test. (Used only for meshes that don\'t rely on specific files', () => {
       for (let i = 0, max = shapes.length; i < max; i++) {
