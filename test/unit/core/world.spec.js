@@ -1,16 +1,16 @@
 define(['whs'], (WHS) => {
   describe('[WHS.World]', () => {
     // WHS.Work class works properly.
-    it('Basic world', () => new WHS.World({plugins: {rendering: false}}));
+    it('Basic world', () => new WHS.World({modules: {rendering: false}}));
 
     // It's custom settings also works.
     it('World with custom settings', () => new WHS.World({
-      plugins: {
+      modules: {
         rendering: false
       },
 
       stats: 'fps',
-      autoresize: true,
+      autoresize: "window",
       softbody: true,
 
       shadowmap: {

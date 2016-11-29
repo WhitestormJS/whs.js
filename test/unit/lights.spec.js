@@ -1,5 +1,5 @@
 define(['whs'], (WHS) => {
-  const world = new WHS.World({plugins: {rendering: false}});
+  const world = new WHS.World({modules: {rendering: false}});
 
   const lights = [
     'AmbientLight',
@@ -57,7 +57,7 @@ define(['whs'], (WHS) => {
   }
 
   describe('Meshes', () => {
-    const world = new WHS.World({plugins: {rendering: false}});
+    const world = new WHS.World({modules: {rendering: false}});
 
     context('Automatic lights test. (Used only for lights that don\'t rely on specific files', () => {
       for (let i = 0, max = lights.length; i < max; i++) {

@@ -1,6 +1,6 @@
 define(['whs'], (WHS) => {
   describe('- Extras -', () => {
-    const world = new WHS.World({plugins: {rendering: false}});
+    const world = new WHS.World({modules: {rendering: false}});
 
     describe('[WHS.Group]', () => {
       const group = new WHS.Group();

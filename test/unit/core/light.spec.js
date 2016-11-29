@@ -1,6 +1,6 @@
 define(['whs'], (WHS) => {
   describe('[WHS.LightComponent]', () => {
-    const world = new WHS.World({plugins: {rendering: false}});
+    const world = new WHS.World({modules: {rendering: false}});
 
     function describeAttribute(component, name, dims, Type) {
       describe(`@test .${name}`, () => {
