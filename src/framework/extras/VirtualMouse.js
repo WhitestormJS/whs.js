@@ -58,6 +58,7 @@ export class VirtualMouse extends Events {
 
     this.on('click', () => {
       if (isHovered) component.emit('click');
+      else component.emit('offClick');
     });
 
     this.on('mousedown', () => {
