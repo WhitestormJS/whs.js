@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 
 import { extend } from '../../../utils/index';
-import { RenderingPlugin } from '../RenderingPlugin';
+import { RenderingModule } from '../RenderingModule';
 import { EffectComposer } from './EffectComposer.js';
 import { RenderPass } from './pass/RenderPass.js';
 
-class PostProcessor extends RenderingPlugin {
+class PostProcessor extends RenderingModule {
   static defaults = {
     autoresize: true,
 
@@ -140,7 +140,7 @@ class PostProcessor extends RenderingPlugin {
    * Rendering the PostProcessor and all its passes.
    * @param  {Number} delta : The delta time between two frames.
    */
-  renderPlugin(delta) {
+  renderModule(delta) {
     if (this.$composer) this.$composer.render(delta);
   }
 
