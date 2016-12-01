@@ -1,4 +1,5 @@
-# [![logo](https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/dev/media/art/logo/big-inverted.png)](https://whsjs.io/)
+
+<a href="https://whsjs.io/"><img width="60%" src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/dev/media/art/logo/big-inverted.png"></a>
 
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square)](https://github.com/sindresorhus/xo)
 [![NPM Version](https://img.shields.io/npm/v/whs.svg?style=flat-square)](https://www.npmjs.com/package/whs)
