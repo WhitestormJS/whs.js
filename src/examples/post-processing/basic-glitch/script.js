@@ -12,7 +12,7 @@ const conf = {
       position: [0, 10, 30]
     },
 
-    plugins: {
+    modules: {
       rendering: false
     }
   },
