@@ -44,8 +44,9 @@ function SoftbodyComponent(targetComponent) {
           this.native = new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.params);
         else this.native = sourceNative.clone(source.params);
 
-        this.native.mass = sourceNative.mass;
+        if (sourceNative.mass) this.native.mass = sourceNative.mass;
         this.params = {...source.params};
+        this.isPhysics = source.isPhysics;
 
         this.wrap('no-transforms');
 

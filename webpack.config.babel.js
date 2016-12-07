@@ -17,7 +17,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
         /node_modules/,
         /ammo\.js/
       ],
-      loader: 'babel',
+      loader: 'babel-loader',
       query: {
         cacheDirectory: true,
         plugins: [
@@ -27,7 +27,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
           'transform-class-properties',
           'transform-object-rest-spread'
         ],
-        presets: ['es2015']
+        presets: [['es2015', {modules: false}]]
       }
     }
   ];
@@ -36,14 +36,14 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
 
   const pluginsSectionPhysics = isProduction
   ? [
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         hoist_funs: false, // Turn this off to prevent errors with Ammo.js
         warnings: false,
         dead_code: true
       },
-      minimize: true
+      minimize: true,
+      exclude: 'physicsWorker.js'
     }),
     new HappyPack({loaders: ['babel'], threads: 4}),
     new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
@@ -57,7 +57,6 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
 
   const pluginsSectionLight = isProduction
   ? [
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,

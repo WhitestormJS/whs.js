@@ -8,13 +8,14 @@ import {
   GridHelper
 } from 'three';
 
-import * as Physijs from '../physics/index.js';
-import {addResizeListener} from 'detect-element-resize';
+import { physicsEnabled } from '../physics/enabled';
+import { create } from '../physics/create/World';
+import { addResizeListener } from 'detect-element-resize';
 
-import {extend} from '../utils/index';
-import {PerspectiveCamera} from '../components/cameras/PerspectiveCamera';
-import {BasicRendering} from '../components/rendering/basic/BasicRendering';
-import {Component} from './Component';
+import { extend } from '../utils/index';
+import { PerspectiveCamera } from '../components/cameras/PerspectiveCamera';
+import { BasicRendering } from '../components/rendering/basic/BasicRendering';
+import { Component } from './Component';
 
 class World extends Component {
   static defaults = {
@@ -69,6 +70,7 @@ class World extends Component {
     },
 
     physics: {
+      create: create,
       fixedTimeStep: 1 / 60,
       broadphase: {type: 'dynamic'}
     },
@@ -204,31 +206,11 @@ class World extends Component {
 
   make$scene() {
     const params = this.params;
-    const scene = Physijs.default !== false
-      ? new Physijs.Scene(
-        {
-          fixedTimeStep: params.physics.fixedTimeStep,
-          broadphase: params.physics.broadphase
-        },
-        {
-          stats: params.stats,
-          world: this,
-          softbody: params.softbody
-        }
-      ) : new Scene();
+    params.physics.create = params.physics.create || function () {};
 
-    if (Physijs.default !== false) {
-      scene.setGravity(
-        new Vector3(
-          params.gravity.x,
-          params.gravity.y,
-          params.gravity.z
-        )
-      );
+    const scene = physicsEnabled ? params.physics.create.bind(this)() : new Scene();
 
-      scene.simulate();
-      this.simulate = true;
-    }
+    this.simulate = Boolean(physicsEnabled);
 
     if (params.fog.type === 'regular')
       scene.fog = new Fog(params.fog.hex, params.fog.near, params.fog.far);

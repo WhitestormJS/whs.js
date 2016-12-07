@@ -4,7 +4,7 @@ import {
   ExtrudeGeometry
 } from 'three';
 
-import {ConvexMesh, ConcaveMesh, SoftMesh} from '../../physics/index.js';
+import {create} from '../../physics/create/meshes/ConvexConcave';
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
@@ -21,6 +21,10 @@ class Extrude extends Component {
     geometry: {
       shapes: [],
       options: {}
+    },
+
+    physics: {
+      create: create
     }
   };
 
@@ -38,22 +42,16 @@ class Extrude extends Component {
     }
   }
 
-  build(params = {}) {
+  build(params = this.params) {
     const material = loadMaterial(params.material);
 
-    let MeshNative;
-
-    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
-    else if (this.physics && this.physics.type === 'concave') MeshNative = ConcaveMesh;
-    else if (this.physics) MeshNative = ConvexMesh;
-    else MeshNative = Mesh;
-
     return new Promise((resolve) => {
-      this.native = new MeshNative(
-        this.buildGeometry(params),
-        material,
-        this.params
-      );
+      this.native = this.isPhysics ?
+        params.physics.create.bind(this)(params, material)
+        : new Mesh(
+          this.buildGeometry(params),
+          material
+        );
 
       resolve();
     });

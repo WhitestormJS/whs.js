@@ -4,7 +4,7 @@ import {
   TetrahedronGeometry
 } from 'three';
 
-import {ConvexMesh, SoftMesh} from '../../physics/index.js';
+import {create} from '../../physics/create/meshes/Convex';
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
@@ -21,6 +21,10 @@ class Tetrahedron extends Component {
     geometry: {
       radius: 1,
       detail: 0
+    },
+
+    physics: {
+      create: create
     }
   };
 
@@ -38,21 +42,16 @@ class Tetrahedron extends Component {
     }
   }
 
-  build(params = {}) {
+  build(params = this.params) {
     const material = loadMaterial(params.material);
 
-    let MeshNative;
-
-    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
-    else if (this.physics) MeshNative = ConvexMesh;
-    else MeshNative = Mesh;
-
     return new Promise((resolve) => {
-      this.native = new MeshNative(
-        this.buildGeometry(params),
-        material,
-        this.params
-      );
+      this.native = this.isPhysics ?
+        params.physics.create.bind(this)(params, material)
+        : new Mesh(
+          this.buildGeometry(params),
+          material
+        );
 
       resolve();
     });

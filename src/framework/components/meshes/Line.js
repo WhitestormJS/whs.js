@@ -5,8 +5,9 @@ import {
   BufferAttribute
 } from 'three';
 
+import {create} from '../../physics/create/meshes/Line';
+
 import {loadMaterial} from '../../utils/index';
-import {RopeMesh} from '../../physics/index.js';
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {PhysicsComponent} from '../../core/PhysicsComponent';
@@ -21,6 +22,10 @@ class Line extends Component {
     geometry: {
       curve: false,
       points: 50
+    },
+
+    physics: {
+      create: create
     }
   };
 
@@ -38,20 +43,16 @@ class Line extends Component {
     }
   }
 
-  build(params = {}) {
+  build(params = this.params) {
     const material = loadMaterial(params.material);
 
-    let Native;
-
-    if (this.physics) Native = RopeMesh;
-    else Native = LineNative;
-
     return new Promise((resolve) => {
-      this.native = new Native(
-        this.buildGeometry(params),
-        material,
-        this.params
-      );
+      this.native = this.isPhysics ?
+        params.physics.create.bind(this)(params, material)
+        : new LineNative(
+          this.buildGeometry(params),
+          material
+        );
 
       resolve();
     });

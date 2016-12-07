@@ -4,7 +4,7 @@ import {
   LatheGeometry
 } from 'three';
 
-import {ConvexMesh, ConcaveMesh, SoftMesh} from '../../physics/index.js';
+import {create} from '../../physics/create/meshes/ConvexConcave';
 
 import {Component} from '../../core/Component';
 import {loadMaterial} from '../../utils/index';
@@ -20,6 +20,10 @@ class Lathe extends Component {
     ...Component.defaults,
     geometry: {
       points: []
+    },
+
+    physics: {
+      create: create
     }
   };
 
@@ -37,22 +41,16 @@ class Lathe extends Component {
     }
   }
 
-  build(params = {}) {
+  build(params = this.params) {
     const material = loadMaterial(params.material);
 
-    let MeshNative;
-
-    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
-    else if (this.physics && this.physics.type === 'concave') MeshNative = ConcaveMesh;
-    else if (this.physics) MeshNative = ConvexMesh;
-    else MeshNative = Mesh;
-
     return new Promise((resolve) => {
-      this.native = new MeshNative(
-        this.buildGeometry(params),
-        material,
-        this.params
-      );
+      this.native = this.isPhysics ?
+        params.physics.create.bind(this)(params, material)
+        : new Mesh(
+          this.buildGeometry(params),
+          material
+        );
 
       resolve();
     });

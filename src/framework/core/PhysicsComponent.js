@@ -3,12 +3,12 @@ import {
   Object3D
 } from 'three';
 
-import * as Physijs from '../physics/index.js';
+import { physicsEnabled } from '../physics/enabled';
 import {$wrap} from '../utils/ComponentUtils';
 
 import {extend} from '../utils/index';
 
-const physicsDefaults = Physijs.default === false ? false : {
+const physicsDefaults = physicsEnabled ? {
   restitution: 0.3,
   friction: 0.8,
   damping: 0,
@@ -16,8 +16,9 @@ const physicsDefaults = Physijs.default === false ? false : {
   margin: 0,
   klst: 0.9,
   kvst: 0.9,
-  kast: 0.9
-};
+  kast: 0.9,
+  create: function noCreateFunction() {}
+} : false;
 
 function PhysicsComponent(targetComponent) {
   const resultComponent = class PhysicsComponentEnhance extends targetComponent {
@@ -93,8 +94,10 @@ function PhysicsComponent(targetComponent) {
 
       if (sourceNative) {
         this.native = sourceNative.clone(source.params);
-        this.native.mass = sourceNative.mass;
+
+        if (sourceNative.mass) this.native.mass = sourceNative.mass;
         this.params = {...source.params};
+        this.isPhysics = source.isPhysics;
 
         this.wrap('no-transforms');
 
@@ -184,7 +187,7 @@ function PhysicsComponent(targetComponent) {
       const rot = this._native.rotation,
         native = this._native;
 
-      rot.copy(euler);
+      this.quaternion.copy(new Quaternion().setFromEuler(euler));
 
       rot.onChange(() => {
         if (this.__c_rot) {
@@ -210,7 +213,7 @@ function PhysicsComponent(targetComponent) {
   }
 
   $wrap(resultComponent).onCallConstructor(scope => {
-    scope.physics = scope.params.physics !== undefined ? scope.params.physics : Physijs.default !== false;
+    scope.isPhysics = scope.params.physics.create !== undefined ? true : physicsEnabled;
     scope.__c_rot = false;
   })
 
