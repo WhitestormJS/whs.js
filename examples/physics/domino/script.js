@@ -57,6 +57,8 @@ var tramplin = new WHS.Box({
   }
 });
 
+tramplin.rotation = new THREE.Euler(0, 0, -Math.PI / 6);
+
 tramplin.addTo(world);
 
 var tramplin2 = tramplin.clone();

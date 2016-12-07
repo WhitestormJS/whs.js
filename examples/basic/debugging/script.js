@@ -64,8 +64,11 @@ sphere.wait().then(function () {
 
   window.boundingBoxHelper = sphere.clone();
   boundingBoxHelper.params.physics = WHS.physicsDefaults;
+  boundingBoxHelper.params.physics.create = WHS.Sphere.defaults.physics.create;
   boundingBoxHelper.wrap();
-  boundingBoxHelper.build();
+  boundingBoxHelper.build().then(function () {
+    console.log(boundingBoxHelper.native);
+  });
 
   boundingBoxHelper.position.y = 10;
   boundingBoxHelper.position.z = 10;

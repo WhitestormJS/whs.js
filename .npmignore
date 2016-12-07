@@ -1,6 +1,6 @@
 examples/
-src/
 test/
 media/
 test/
+src/examples/
 .happypack/

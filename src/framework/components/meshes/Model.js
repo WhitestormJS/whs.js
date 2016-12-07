@@ -4,7 +4,7 @@ import {
   FaceColors
 } from 'three';
 
-import {ConvexMesh, ConcaveMesh} from '../../physics/index.js';
+import {create} from '../../physics/create/meshes/ConvexConcaveCustom';
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
@@ -22,6 +22,10 @@ class Model extends Component {
       path: '',
       physics: '',
       loader: JSONLoader
+    },
+
+    physics: {
+      create: create
     }
   };
 
@@ -31,7 +35,7 @@ class Model extends Component {
   };
 
   constructor(params = {}) {
-    super(params, Model.defaults, Model.instructions);
+    super(params, Model.defaults, Model.instructions, false);
 
     if (params.build) {
       this.build(params);
@@ -40,12 +44,6 @@ class Model extends Component {
   }
 
   build(params = {}) {
-    let MeshNative;
-
-    if (this.physics && params.physics.type === 'concave') MeshNative = ConcaveMesh;
-    else if (this.physics) MeshNative = ConvexMesh;
-    else MeshNative = Mesh;
-
     const promise = new Promise((resolve) => {
       const pGeometry = params.geometry;
       const Loader = pGeometry.loader
@@ -69,7 +67,8 @@ class Model extends Component {
             data.computeFaceNormals();
             data.computeVertexNormals();
 
-            this.native = new MeshNative(
+            this.native = this.isPhysics ? params.physics.create.bind(this)(this.params, material, data, data2)
+            : new Mesh(
               data,
               material,
               this.params,
@@ -95,9 +94,8 @@ class Model extends Component {
           data.computeFaceNormals();
           data.computeVertexNormals();
 
-          console.log(this.params);
-
-          this.native = new MeshNative(
+          this.native = this.isPhysics ? params.physics.create.bind(this)(this.params, material, data)
+          : new Mesh(
             data,
             material,
             this.params

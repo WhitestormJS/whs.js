@@ -3,7 +3,8 @@ import {
   BoxBufferGeometry,
   BoxGeometry
 } from 'three';
-import {BoxMesh, SoftMesh} from '../../physics/index.js';
+
+import {create} from '../../physics/create/meshes/Box';
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
@@ -21,6 +22,10 @@ class Box extends Component {
       width: 1,
       height: 1,
       depth: 1
+    },
+
+    physics: {
+      create: create
     }
   };
 
@@ -38,21 +43,16 @@ class Box extends Component {
     }
   }
 
-  build(params = {}) {
+  build(params = this.params) {
     const material = loadMaterial(params.material);
 
-    let MeshNative;
-
-    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
-    else if (this.physics) MeshNative = BoxMesh;
-    else MeshNative = Mesh;
-
     return new Promise((resolve) => {
-      this.native = new MeshNative(
-        this.buildGeometry(params),
-        material,
-        this.params
-      );
+      this.native = this.isPhysics ?
+        params.physics.create.bind(this)(params, material)
+        : new Mesh(
+          this.buildGeometry(params),
+          material
+        );
 
       resolve();
     });

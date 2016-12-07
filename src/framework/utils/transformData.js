@@ -1,4 +1,7 @@
-import _ from 'lodash';
+import {
+  isArray,
+  isObject
+} from 'lodash';
 
 export const instruct = (array, instArray) => {
   const tempObject = {};
@@ -14,9 +17,9 @@ export const instruct = (array, instArray) => {
 
 export const transformData = (object, instructions) => {
   for (const key in instructions) {
-    if (_.isArray(object[key]))
+    if (isArray(object[key]))
       object[key] = instruct(object[key], instructions[key]);
-    else if (_.isObject(object[key]) && !_.isArray(instructions[key]))
+    else if (isObject(object[key]) && !isArray(instructions[key]))
       object[key] = transformData(object[key], instructions[key]);
   }
 

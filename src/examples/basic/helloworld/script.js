@@ -1,7 +1,11 @@
 import * as UTILS from './globals';
 
 window.world = new WHS.World({
-  ...UTILS.$world
+  ...UTILS.$world,
+
+  physics: {
+    ammo: 'http://localhost:8080/vendor/ammo.js'
+  }
 });
 
 const sphere = new WHS.Sphere({ // Create sphere comonent.
