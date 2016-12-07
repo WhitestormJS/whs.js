@@ -43112,8 +43112,8 @@ function MeshComponent(targetComponent) {
         return this._native.rotation;
       },
       set: function set(euler) {
-        this.native.rotation.copy(euler);
-        return this.native.rotation;
+        this._native.rotation.copy(euler);
+        return this._native.rotation;
       }
     }, {
       key: 'scale',
@@ -43304,7 +43304,8 @@ var physicsDefaults = __WEBPACK_IMPORTED_MODULE_6__physics_enabled__["physicsEna
   margin: 0,
   klst: 0.9,
   kvst: 0.9,
-  kast: 0.9
+  kast: 0.9,
+  create: function noCreateFunction() {}
 } : false;
 
 function PhysicsComponent(targetComponent) {
@@ -43431,8 +43432,10 @@ function PhysicsComponent(targetComponent) {
 
         if (sourceNative) {
           this.native = sourceNative.clone(source.params);
-          this.native.mass = sourceNative.mass;
+
+          if (sourceNative.mass) this.native.mass = sourceNative.mass;
           this.params = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, source.params);
+          this.isPhysics = source.isPhysics;
 
           this.wrap('no-transforms');
 
@@ -43523,7 +43526,7 @@ function PhysicsComponent(targetComponent) {
         var rot = this._native.rotation,
             native = this._native;
 
-        rot.copy(euler);
+        this.quaternion.copy(new __WEBPACK_IMPORTED_MODULE_5_three__["Quaternion"]().setFromEuler(euler));
 
         rot.onChange(function () {
           if (_this3.__c_rot) {
@@ -43555,7 +43558,7 @@ function PhysicsComponent(targetComponent) {
   }), _temp);
 
   __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__utils_ComponentUtils__["a" /* $wrap */])(resultComponent).onCallConstructor(function (scope) {
-    scope.physics = scope.params.physics !== undefined ? scope.params.physics : __WEBPACK_IMPORTED_MODULE_6__physics_enabled__["physicsEnabled"] !== false;
+    scope.isPhysics = scope.params.physics.create !== undefined ? true : __WEBPACK_IMPORTED_MODULE_6__physics_enabled__["physicsEnabled"];
     scope.__c_rot = false;
   });
 
@@ -43626,8 +43629,9 @@ function SoftbodyComponent(targetComponent) {
         if (sourceNative) {
           if (source.params.softbody) this.native = new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.params);else this.native = sourceNative.clone(source.params);
 
-          this.native.mass = sourceNative.mass;
+          if (sourceNative.mass) this.native.mass = sourceNative.mass;
           this.params = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, source.params);
+          this.isPhysics = source.isPhysics;
 
           this.wrap('no-transforms');
 
@@ -49765,7 +49769,7 @@ var Box = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyCompo
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Box.__proto__ || Object.getPrototypeOf(Box)).call(this, params, Box.defaults, Box.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Box.prototype.__proto__ || Object.getPrototypeOf(Box.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Box.prototype.__proto__ || Object.getPrototypeOf(Box.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -49780,10 +49784,8 @@ var Box = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyCompo
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -49921,10 +49923,8 @@ var Cylinder = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softbody
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -50060,7 +50060,7 @@ var Dodecahedron = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Soft
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Dodecahedron.__proto__ || Object.getPrototypeOf(Dodecahedron)).call(this, params, Dodecahedron.defaults, Dodecahedron.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Dodecahedron.prototype.__proto__ || Object.getPrototypeOf(Dodecahedron.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Dodecahedron.prototype.__proto__ || Object.getPrototypeOf(Dodecahedron.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -50075,10 +50075,8 @@ var Dodecahedron = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Soft
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -50203,10 +50201,8 @@ var Extrude = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyC
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -50316,7 +50312,7 @@ var Icosahedron = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softb
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Icosahedron.__proto__ || Object.getPrototypeOf(Icosahedron)).call(this, params, Icosahedron.defaults, Icosahedron.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Icosahedron.prototype.__proto__ || Object.getPrototypeOf(Icosahedron.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Icosahedron.prototype.__proto__ || Object.getPrototypeOf(Icosahedron.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -50331,10 +50327,8 @@ var Icosahedron = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softb
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -50444,7 +50438,7 @@ var Lathe = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__core_SoftbodyCom
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Lathe.__proto__ || Object.getPrototypeOf(Lathe)).call(this, params, Lathe.defaults, Lathe.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Lathe.prototype.__proto__ || Object.getPrototypeOf(Lathe.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Lathe.prototype.__proto__ || Object.getPrototypeOf(Lathe.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -50459,10 +50453,8 @@ var Lathe = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__core_SoftbodyCom
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -50561,7 +50553,7 @@ var Line = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__core_SoftbodyComp
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Line.__proto__ || Object.getPrototypeOf(Line)).call(this, params, Line.defaults, Line.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Line.prototype.__proto__ || Object.getPrototypeOf(Line.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Line.prototype.__proto__ || Object.getPrototypeOf(Line.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -50576,10 +50568,8 @@ var Line = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__core_SoftbodyComp
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new Mesh(_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Line"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -50717,7 +50707,7 @@ var Model = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyCom
               data.computeFaceNormals();
               data.computeVertexNormals();
 
-              _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(_this2.params, material, data, data2) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](data, material, _this2.params, data2);
+              _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(_this2.params, material, data, data2) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](data, material, _this2.params, data2);
 
               resolve();
             });
@@ -50736,7 +50726,7 @@ var Model = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyCom
             data.computeFaceNormals();
             data.computeVertexNormals();
 
-            _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(_this2.params, material, data) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](data, material, _this2.params);
+            _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(_this2.params, material, data) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](data, material, _this2.params);
 
             resolve();
           }
@@ -50958,7 +50948,7 @@ var Octahedron = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softbo
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Octahedron.__proto__ || Object.getPrototypeOf(Octahedron)).call(this, params, Octahedron.defaults, Octahedron.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Octahedron.prototype.__proto__ || Object.getPrototypeOf(Octahedron.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Octahedron.prototype.__proto__ || Object.getPrototypeOf(Octahedron.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -50973,10 +50963,8 @@ var Octahedron = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softbo
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -51084,7 +51072,7 @@ var Parametric = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softbo
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Parametric.__proto__ || Object.getPrototypeOf(Parametric)).call(this, params, Parametric.defaults, Parametric.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Parametric.prototype.__proto__ || Object.getPrototypeOf(Parametric.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Parametric.prototype.__proto__ || Object.getPrototypeOf(Parametric.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -51099,10 +51087,8 @@ var Parametric = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softbo
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -51221,7 +51207,7 @@ var Plane = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyCom
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Plane.__proto__ || Object.getPrototypeOf(Plane)).call(this, params, Plane.defaults, Plane.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Plane.prototype.__proto__ || Object.getPrototypeOf(Plane.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Plane.prototype.__proto__ || Object.getPrototypeOf(Plane.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -51236,10 +51222,8 @@ var Plane = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyCom
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -51293,8 +51277,8 @@ var Plane = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyCom
   geometry: {
     width: 10,
     height: 10,
-    wSegments: 32,
-    hSegments: 32
+    widthSegments: 1,
+    heightSegments: 1
   },
 
   physics: {
@@ -51366,7 +51350,7 @@ var Polyhedron = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softbo
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Polyhedron.__proto__ || Object.getPrototypeOf(Polyhedron)).call(this, params, Polyhedron.defaults, Polyhedron.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Polyhedron.prototype.__proto__ || Object.getPrototypeOf(Polyhedron.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Polyhedron.prototype.__proto__ || Object.getPrototypeOf(Polyhedron.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -51381,10 +51365,8 @@ var Polyhedron = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softbo
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -51767,7 +51749,7 @@ var Sphere = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyCo
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Sphere.__proto__ || Object.getPrototypeOf(Sphere)).call(this, params, Sphere.defaults, Sphere.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Sphere.prototype.__proto__ || Object.getPrototypeOf(Sphere.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Sphere.prototype.__proto__ || Object.getPrototypeOf(Sphere.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -51782,10 +51764,8 @@ var Sphere = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyCo
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -51908,7 +51888,7 @@ var Tetrahedron = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softb
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Tetrahedron.__proto__ || Object.getPrototypeOf(Tetrahedron)).call(this, params, Tetrahedron.defaults, Tetrahedron.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Tetrahedron.prototype.__proto__ || Object.getPrototypeOf(Tetrahedron.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Tetrahedron.prototype.__proto__ || Object.getPrototypeOf(Tetrahedron.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -51923,10 +51903,8 @@ var Tetrahedron = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softb
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -52057,7 +52035,7 @@ var Text = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyComp
 
           var geometry = new __WEBPACK_IMPORTED_MODULE_6_three__["TextGeometry"](params.geometry.text, params.geometry.parameters);
 
-          _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(_this2.params, material, geometry) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](geometry, material, _this2.params);
+          _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(_this2.params, material, geometry) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](geometry, material, _this2.params);
 
           resolve();
         });
@@ -52156,7 +52134,7 @@ var Torus = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyCom
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Torus.__proto__ || Object.getPrototypeOf(Torus)).call(this, params, Torus.defaults, Torus.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Torus.prototype.__proto__ || Object.getPrototypeOf(Torus.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Torus.prototype.__proto__ || Object.getPrototypeOf(Torus.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -52171,10 +52149,8 @@ var Torus = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyCom
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -52311,7 +52287,7 @@ var Torusknot = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softbod
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Torusknot.__proto__ || Object.getPrototypeOf(Torusknot)).call(this, params, Torusknot.defaults, Torusknot.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Torusknot.prototype.__proto__ || Object.getPrototypeOf(Torusknot.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Torusknot.prototype.__proto__ || Object.getPrototypeOf(Torusknot.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -52326,10 +52302,8 @@ var Torusknot = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_Softbod
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -52483,7 +52457,7 @@ var Tube = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyComp
     var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Tube.__proto__ || Object.getPrototypeOf(Tube)).call(this, params, Tube.defaults, Tube.instructions));
 
     if (params.build) {
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Tube.prototype.__proto__ || Object.getPrototypeOf(Tube.prototype), 'wait', _this).call(_this, _this.build(params));
+      _this.build(params);
       __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Tube.prototype.__proto__ || Object.getPrototypeOf(Tube.prototype), 'wrap', _this).call(_this);
     }
     return _this;
@@ -52498,10 +52472,8 @@ var Tube = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_11__core_SoftbodyComp
 
       var material = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_12__utils_index__["d" /* loadMaterial */])(params.material);
 
-      this.params.physics.create = this.params.physics.create || function () {};
-
       return new Promise(function (resolve) {
-        _this2.native = _this2.physics ? _this2.params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
+        _this2.native = _this2.isPhysics ? params.physics.create.bind(_this2)(params, material) : new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](_this2.buildGeometry(params), material);
 
         resolve();
       });
@@ -53858,6 +53830,8 @@ var VirtualMouse = function (_Events) {
   __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default()(VirtualMouse, _Events);
 
   function VirtualMouse(world) {
+    var globalMovement = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
     __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, VirtualMouse);
 
     var _this = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_possibleConstructorReturn___default()(this, (VirtualMouse.__proto__ || Object.getPrototypeOf(VirtualMouse)).call(this));
@@ -53874,7 +53848,9 @@ var VirtualMouse = function (_Events) {
 
     if (world.renderer) _this.canvas = world.renderer.domElement;
 
-    world.$element.addEventListener('mousemove', _this.update.bind(_this));
+    var mouseMoveContainer = globalMovement ? window : world.$element;
+
+    mouseMoveContainer.addEventListener('mousemove', _this.update.bind(_this));
     world.$element.addEventListener('click', function () {
       return _this.emit('click');
     });
