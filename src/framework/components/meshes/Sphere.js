@@ -4,7 +4,7 @@ import {
   SphereGeometry
 } from 'three';
 
-import {SphereMesh, SoftMesh} from '../../physics/index.js';
+import {create} from '../../physics/create/meshes/Sphere';
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
@@ -22,6 +22,10 @@ class Sphere extends Component {
       radius: 1,
       widthSegments: 8,
       heightSegments: 6
+    },
+
+    physics: {
+      create: create
     }
   };
 
@@ -42,19 +46,13 @@ class Sphere extends Component {
   build(params = this.params) {
     const material = loadMaterial(params.material);
 
-    let MeshNative;
-
-    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
-    else if (this.physics) MeshNative = SphereMesh;
-    else MeshNative = Mesh;
-
     return new Promise((resolve) => {
-      this.native = new MeshNative(
-        this.buildGeometry(params),
-
-        material,
-        this.params
-      );
+      this.native = this.isPhysics ?
+        params.physics.create.bind(this)(params, material)
+        : new Mesh(
+          this.buildGeometry(params),
+          material
+        );
 
       resolve();
     });

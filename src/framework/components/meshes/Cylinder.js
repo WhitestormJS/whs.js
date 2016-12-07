@@ -4,7 +4,7 @@ import {
   CylinderGeometry
 } from 'three';
 
-import {CylinderMesh, SoftMesh} from '../../physics/index.js';
+import {create} from '../../physics/create/meshes/Cylinder';
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
@@ -27,6 +27,10 @@ class Cylinder extends Component {
       openEnded: false,
       thetaStart: 0,
       thetaLength: Math.PI * 2
+    },
+
+    physics: {
+      create: create
     }
   };
 
@@ -53,21 +57,16 @@ class Cylinder extends Component {
     }
   }
 
-  build(params = {}) {
+  build(params = this.params) {
     const material = loadMaterial(params.material);
 
-    let MeshNative;
-
-    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
-    else if (this.physics) MeshNative = CylinderMesh;
-    else MeshNative = Mesh;
-
     return new Promise((resolve) => {
-      this.native = new MeshNative(
-        this.buildGeometry(params),
-        material,
-        this.params
-      );
+      this.native = this.isPhysics ?
+        params.physics.create.bind(this)(params, material)
+        : new Mesh(
+          this.buildGeometry(params),
+          material
+        );
 
       resolve();
     });

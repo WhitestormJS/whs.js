@@ -4,7 +4,7 @@ import {
   PlaneGeometry
 } from 'three';
 
-import {PlaneMesh, ClothMesh} from '../../physics/index.js';
+import {create} from '../../physics/create/meshes/Plane';
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
@@ -21,8 +21,12 @@ class Plane extends Component {
     geometry: {
       width: 10,
       height: 10,
-      wSegments: 32,
-      hSegments: 32
+      widthSegments: 1,
+      heightSegments: 1
+    },
+
+    physics: {
+      create: create
     }
   };
 
@@ -40,21 +44,16 @@ class Plane extends Component {
     }
   }
 
-  build(params = {}) {
+  build(params = this.params) {
     const material = loadMaterial(params.material);
 
-    let MeshNative;
-
-    if (this.physics && this.params.softbody) MeshNative = ClothMesh;
-    else if (this.physics) MeshNative = PlaneMesh;
-    else MeshNative = Mesh;
-
     return new Promise((resolve) => {
-      this.native = new MeshNative(
-        this.buildGeometry(params),
-        material,
-        this.params
-      );
+      this.native = this.isPhysics ?
+        params.physics.create.bind(this)(params, material)
+        : new Mesh(
+          this.buildGeometry(params),
+          material
+        );
 
       resolve();
     });

@@ -7,7 +7,6 @@ import {
   Vector3
 } from 'three';
 
-import Worker from 'inline-worker';
 import Stats from 'stats.js';
 import {Vehicle} from '../vehicle/vehicle';
 import {Eventable} from '../eventable';
@@ -23,11 +22,13 @@ import {
   CONSTRAINTREPORT_ITEMSIZE
 } from '../api';
 
+const Worker = require('worker-loader?inline!../worker.js');
+
 export class Scene extends SceneNative {
   constructor(params = {}, init = {}) {
     super();
 
-    this._worker = new Worker(require('../worker.js'));
+    this._worker = new Worker();
     this._worker.transferableMessage = this._worker.webkitPostMessage || this._worker.postMessage;
 
     params.fixedTimeStep = params.fixedTimeStep || 1 / 60;

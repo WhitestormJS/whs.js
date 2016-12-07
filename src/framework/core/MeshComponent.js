@@ -70,6 +70,10 @@ function MeshComponent(targetComponent) {
       }, ['size', 'color', 'linewidth']]
     };
 
+    constructor(params = {}, defaults = {}, instructions = {}) {
+      super(params, defaults, instructions);
+    }
+
     g_(params = {}) {
       if (this.buildGeometry) {
         this.native.geometry = this.buildGeometry(
@@ -165,8 +169,8 @@ function MeshComponent(targetComponent) {
     }
 
     set rotation(euler) {
-      this.native.rotation.copy(euler);
-      return this.native.rotation;
+      this._native.rotation.copy(euler);
+      return this._native.rotation;
     }
 
     get scale() {

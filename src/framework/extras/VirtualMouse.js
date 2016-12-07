@@ -14,7 +14,7 @@ export class VirtualMouse extends Events {
   canvas = null;
   projectionPlane = new Plane(new Vector3(0, 0, 1), 0);
 
-  constructor(world) {
+  constructor(world, globalMovement = false) {
     super();
 
     world.mouse = this;
@@ -22,7 +22,9 @@ export class VirtualMouse extends Events {
 
     if (world.renderer) this.canvas = world.renderer.domElement;
 
-    world.$element.addEventListener('mousemove', this.update.bind(this));
+    const mouseMoveContainer = globalMovement ? window : world.$element;
+
+    mouseMoveContainer.addEventListener('mousemove', this.update.bind(this));
     world.$element.addEventListener('click', () => this.emit('click'));
     world.$element.addEventListener('mousedown', () => this.emit('mousedown'));
     world.$element.addEventListener('mouseup', () => this.emit('mouseup'));

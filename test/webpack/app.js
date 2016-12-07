@@ -1,6 +1,6 @@
-import { World } from '../../lib/core/World';
-import { Sphere } from '../../lib/components/meshes/Sphere';
-import { Plane } from '../../lib/components/meshes/Plane';
+import { World } from '../../src/framework/core/World';
+import { Sphere } from '../../src/framework/components/meshes/Sphere';
+import { Plane } from '../../src/framework/components/meshes/Plane';
 
 const world = new World({
   stats: 'fps', // fps, ms, mb

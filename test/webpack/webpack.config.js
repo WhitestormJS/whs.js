@@ -11,18 +11,16 @@ module.exports = {
     loaders: [{
       test: /\.js$/,
       exclude: /node_modules/,
-      loader: 'babel'
+      loader: 'babel-loader'
     }]
   },
   plugins: [
-    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         hoist_funs: false, // Turn this off to prevent errors with Ammo.js
         warnings: false
       },
       minimize: true
-    }),
-    new webpack.optimize.DedupePlugin()
+    })
   ]
 };

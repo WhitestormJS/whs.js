@@ -4,7 +4,7 @@ import {
   TextGeometry
 } from 'three';
 
-import {ConvexMesh, ConcaveMesh, SoftMesh} from '../../physics/index.js';
+import {create} from '../../physics/create/meshes/ConvexConcaveCustom';
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
@@ -30,6 +30,10 @@ class Text extends Component {
         bevelThickness: 10,
         bevelSize: 8
       }
+    },
+
+    physics: {
+      create: create
     }
   };
 
@@ -50,23 +54,18 @@ class Text extends Component {
   build(params = {}) {
     const material = loadMaterial(params.material);
 
-    let MeshNative;
-
-    if (this.physics && this.params.softbody) MeshNative = SoftMesh;
-    else if (this.physics && this.physics.type === 'concave') MeshNative = ConcaveMesh;
-    else if (this.physics) MeshNative = ConvexMesh;
-    else MeshNative = Mesh;
-
     const promise = new Promise((resolve) => {
       FontLoader.load(params.geometry.parameters.font, font => {
         params.geometry.parameters.font = font;
 
-        this.native = new MeshNative(
-          new TextGeometry(
-            params.geometry.text,
-            params.geometry.parameters
-          ),
+        const geometry = new TextGeometry(
+          params.geometry.text,
+          params.geometry.parameters
+        );
 
+        this.native = this.isPhysics ? params.physics.create.bind(this)(this.params, material, geometry)
+        : new Mesh(
+          geometry,
           material,
           this.params
         );
