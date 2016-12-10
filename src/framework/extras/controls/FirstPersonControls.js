@@ -144,15 +144,13 @@ export class FirstPersonControls extends Component {
       this.enabled = false;
       this.getObject = () => yawObject;
 
-      this.getDirection = targetVec => {
-        targetVec.set(0, 0, -1);
-        quat.multiplyVector3(targetVec);
-      };
-
       // Moves the camera to the Physi.js object position
       // and adds velocity to the object if the run key is down.
       const inputVelocity = new Vector3(),
-        euler = new Euler();
+        euler = new Euler(),
+        direction = new Vector3();
+
+      this.getDirection = () => direction.set(0, 0, -1).applyQuaternion(quat);
 
       this.update = delta => {
         if (this.enabled === false) return;
