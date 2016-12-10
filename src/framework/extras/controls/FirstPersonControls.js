@@ -148,11 +148,9 @@ export class FirstPersonControls extends Component {
       // and adds velocity to the object if the run key is down.
       const inputVelocity = new Vector3(),
         euler = new Euler(),
-        direction = new Vector3(0, 0, -1);
+        direction = new Vector3();
 
-      this.getDirection = () => { return direction };
-      this.getDirectionEuler = () => { return euler };
-      this.getDirectionQuaternion = () => { return quat };
+      this.getDirection = () => direction.set(0, 0, -1).applyQuaternion(quat);
 
       this.update = delta => {
         if (this.enabled === false) return;
@@ -175,8 +173,6 @@ export class FirstPersonControls extends Component {
         euler.order = 'XYZ';
 
         quat.setFromEuler(euler);
-
-        direction.applyQuaternion(quat);
 
         inputVelocity.applyQuaternion(quat);
 
