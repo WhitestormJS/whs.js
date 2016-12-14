@@ -61,7 +61,7 @@ WHS.Component.prototype.changeColor = function (world) {
   animation.start(world);
 };
 
-var world = new WHS.World(_extends({}, UTILS.$world, {
+var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
 
   camera: {
     far: 10000,
@@ -173,10 +173,16 @@ function addBasicLights(world) {
 function addPlane(world) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  return new WHS.Plane({
+  WHS.PlanePhysics = PHYSICS.RigidbodyComponent(WHS.Plane);
+
+  return new WHS.PlanePhysics({
     geometry: {
       width: size,
       height: size
+    },
+
+    physics: {
+      create: PHYSICS.createPlane
     },
 
     mass: 0,

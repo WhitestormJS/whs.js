@@ -5,16 +5,12 @@ import {
   BufferAttribute
 } from 'three';
 
-import {create} from '../../physics/create/meshes/Line';
+
 
 import {loadMaterial} from '../../utils/index';
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {PhysicsComponent} from '../../core/PhysicsComponent';
-import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 
-@SoftbodyComponent
-@PhysicsComponent
 @MeshComponent
 class Line extends Component {
   static defaults = {
@@ -25,7 +21,7 @@ class Line extends Component {
     },
 
     physics: {
-      create: create
+      create: false
     }
   };
 

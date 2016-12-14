@@ -8,8 +8,6 @@ import {
   GridHelper
 } from 'three';
 
-import { physicsEnabled } from '../physics/enabled';
-import { create } from '../physics/create/World';
 import { addResizeListener } from 'detect-element-resize';
 
 import { extend } from '../utils/index';
@@ -70,7 +68,7 @@ class World extends Component {
     },
 
     physics: {
-      create: create,
+      create: false,
       fixedTimeStep: 1 / 60,
       broadphase: {type: 'dynamic'}
     },
@@ -206,11 +204,10 @@ class World extends Component {
 
   make$scene() {
     const params = this.params;
-    params.physics.create = params.physics.create || function () {};
 
-    const scene = physicsEnabled ? params.physics.create.bind(this)() : new Scene();
+    const scene = (params.physics && params.physics.create) ? params.physics.create.bind(this)() : new Scene();
 
-    this.simulate = Boolean(physicsEnabled);
+    this.simulate = (params.physics && params.physics.create);
 
     if (params.fog.type === 'regular')
       scene.fog = new Fog(params.fog.hex, params.fog.near, params.fog.far);

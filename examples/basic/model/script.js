@@ -9,7 +9,7 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var world = new WHS.World(_extends({}, UTILS.$world, {
+var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
 
   camera: {
     far: 10000,
@@ -17,7 +17,7 @@ var world = new WHS.World(_extends({}, UTILS.$world, {
   }
 }));
 
-var teapot = new WHS.Model({
+var teapot = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CUSTOM))({
   geometry: {
     path: '../../_assets/models/teapot/utah-teapot-large.json',
     physics: '../../_assets/models/teapot/utah-teapot-light.json'
@@ -46,7 +46,7 @@ var teapot = new WHS.Model({
   scale: [4, 4, 4]
 });
 
-var ball = new WHS.Sphere({
+var ball = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
   geometry: {
     radius: 3,
     widthSegments: 16,
@@ -171,10 +171,14 @@ function addBasicLights(world) {
 function addPlane(world) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  return new WHS.Plane({
+  return new (PHYSICS.$rigidBody(WHS.Plane, PHYSICS.PLANE))({
     geometry: {
       width: size,
       height: size
+    },
+
+    physics: {
+      create: PHYSICS.createPlane
     },
 
     mass: 0,
@@ -193,7 +197,7 @@ function addPlane(world) {
 function addBoxPlane(world) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  return new WHS.Box({
+  return new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
     geometry: {
       width: size,
       height: 1,

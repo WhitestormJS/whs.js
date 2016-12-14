@@ -185,7 +185,7 @@ var Game = function () {
 
     this.options = options;
 
-    this.world = new WHS.World(options.world);
+    this.world = new (PHYSICS.$world(WHS.World))(options.world);
 
     UTILS.addPlane(this.world, 250);
     UTILS.addBasicLights(this.world);
@@ -325,10 +325,16 @@ function addBasicLights(world) {
 function addPlane(world) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  return new WHS.Plane({
+  WHS.PlanePhysics = PHYSICS.RigidbodyComponent(WHS.Plane);
+
+  return new WHS.PlanePhysics({
     geometry: {
       width: size,
       height: size
+    },
+
+    physics: {
+      create: PHYSICS.createPlane
     },
 
     mass: 0,

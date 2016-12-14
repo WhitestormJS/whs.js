@@ -1,4 +1,4 @@
-const world = new WHS.World({
+const world = new (PHYSICS.$world(WHS.World))({
   autoresize: "window",
 
   gravity: {
