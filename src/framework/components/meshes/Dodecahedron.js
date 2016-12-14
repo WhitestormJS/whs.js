@@ -4,16 +4,12 @@ import {
   DodecahedronGeometry
 } from 'three';
 
-import {create} from '../../physics/create/meshes/Convex';
+
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {PhysicsComponent} from '../../core/PhysicsComponent';
-import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 import {loadMaterial} from '../../utils/index';
 
-@SoftbodyComponent
-@PhysicsComponent
 @MeshComponent
 class Dodecahedron extends Component {
   static defaults = {
@@ -24,7 +20,7 @@ class Dodecahedron extends Component {
     },
 
     physics: {
-      create: create
+      create: false
     }
   };
 

@@ -4,16 +4,12 @@ import {
   TextGeometry
 } from 'three';
 
-import {create} from '../../physics/create/meshes/ConvexConcaveCustom';
+
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {PhysicsComponent} from '../../core/PhysicsComponent';
-import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 import {loadMaterial, FontLoader} from '../../utils/index';
 
-@SoftbodyComponent
-@PhysicsComponent
 @MeshComponent
 class Text extends Component {
   static defaults = {
@@ -33,7 +29,7 @@ class Text extends Component {
     },
 
     physics: {
-      create: create
+      create: false
     }
   };
 

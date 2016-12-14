@@ -365,8 +365,8 @@ class Game {
   constructor(options) {
     this.options = options;
 
-    this.world = new WHS.World(options.world);
-    this.glowWorld = new WHS.World({ init: { render: false } });
+    this.world = new (PHYSICS.$world(WHS.World))(options.world);
+    this.glowWorld = new (PHYSICS.$world(WHS.World))({ init: { render: false } });
     this.world.attachWorld(this.glowWorld);
 
     this.createGlowPostProcessing();

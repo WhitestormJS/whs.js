@@ -5,12 +5,8 @@ import {
   AnimationMixer
 } from 'three';
 
-import * as Physijs from '../../physics/index.js';
-
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {PhysicsComponent} from '../../core/PhysicsComponent';
-import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 import {loadMaterial} from '../../utils/index';
 import {JSONLoader} from '../../utils/loaders';
 

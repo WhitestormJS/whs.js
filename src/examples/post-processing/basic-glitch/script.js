@@ -230,7 +230,7 @@ class Game {
   constructor(options) {
     this.options = options;
 
-    this.world = new WHS.World(options.world);
+    this.world = new (PHYSICS.$world(WHS.World))(options.world);
 
     UTILS.addPlane(this.world, 250);
     UTILS.addBasicLights(this.world);

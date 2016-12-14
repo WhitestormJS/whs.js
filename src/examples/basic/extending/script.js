@@ -57,7 +57,7 @@ WHS.Component.prototype.changeColor = function (world) {
   animation.start(world);
 };
 
-const world = new WHS.World({
+const world = new (PHYSICS.$world(WHS.World))({
   ...UTILS.$world,
 
   camera: {

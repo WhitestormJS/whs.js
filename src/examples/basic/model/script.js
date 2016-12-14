@@ -1,6 +1,6 @@
 import * as UTILS from './globals';
 
-const world = new WHS.World({
+const world = new (PHYSICS.$world(WHS.World))({
   ...UTILS.$world,
 
   camera: {
@@ -9,7 +9,7 @@ const world = new WHS.World({
   }
 });
 
-const teapot = new WHS.Model({
+const teapot = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CUSTOM))({
   geometry: {
     path: '{{ assets }}/models/teapot/utah-teapot-large.json',
     physics: '{{ assets }}/models/teapot/utah-teapot-light.json'
@@ -38,7 +38,7 @@ const teapot = new WHS.Model({
   scale: [4, 4, 4]
 });
 
-const ball = new WHS.Sphere({
+const ball = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
   geometry: {
     radius: 3,
     widthSegments: 16,

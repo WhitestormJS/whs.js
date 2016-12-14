@@ -1,6 +1,6 @@
 import * as UTILS from './globals';
 
-window.world = new WHS.World({
+window.world = new (PHYSICS.$world(WHS.World))({
   ...UTILS.$world,
   autoresize: { delay: 50 },
 

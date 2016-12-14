@@ -9,14 +9,9 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-window.world = new WHS.World(_extends({}, UTILS.$world, {
+window.world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world));
 
-  physics: {
-    ammo: 'http://localhost:8080/vendor/ammo.js'
-  }
-}));
-
-var sphere = new WHS.Sphere({ // Create sphere comonent.
+var sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,
@@ -117,10 +112,16 @@ function addBasicLights(world) {
 function addPlane(world) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  return new WHS.Plane({
+  WHS.PlanePhysics = PHYSICS.RigidbodyComponent(WHS.Plane);
+
+  return new WHS.PlanePhysics({
     geometry: {
       width: size,
       height: size
+    },
+
+    physics: {
+      create: PHYSICS.createPlane
     },
 
     mass: 0,

@@ -4,12 +4,10 @@ import {
   PolyhedronGeometry
 } from 'three';
 
-import {create} from '../../physics/create/meshes/Convex';
+
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {PhysicsComponent} from '../../core/PhysicsComponent';
-import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 import {loadMaterial} from '../../utils/index';
 
 const [verticesOfCube, indicesOfFaces] = [
@@ -27,8 +25,6 @@ const [verticesOfCube, indicesOfFaces] = [
   ]
 ];
 
-@SoftbodyComponent
-@PhysicsComponent
 @MeshComponent
 class Polyhedron extends Component {
   static verticesOfCube = verticesOfCube;
@@ -44,7 +40,7 @@ class Polyhedron extends Component {
     },
 
     physics: {
-      create: create
+      create: false
     }
   };
 

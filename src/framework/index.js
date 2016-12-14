@@ -1,7 +1,5 @@
 import * as THREE from 'three';
-import * as Physijs from './physics/index.js';
 
-export * from './physics/alias/index';
 export * from './core/index';
 export * from './components/lights/index';
 export * from './components/cameras/index';
@@ -15,8 +13,6 @@ export * from './deprecation';
 
 if (typeof window !== 'undefined') {
   window.THREE = THREE;
-  window.Physijs = Physijs;
 } else if (typeof global !== 'undefined') {
   global.THREE = THREE;
-  global.Physijs = Physijs;
 }

@@ -1,14 +1,10 @@
 import * as UTILS from './globals';
 
-window.world = new WHS.World({
-  ...UTILS.$world,
-
-  physics: {
-    ammo: 'http://localhost:8080/vendor/ammo.js'
-  }
+window.world = new (PHYSICS.$world(WHS.World))({
+  ...UTILS.$world
 });
 
-const sphere = new WHS.Sphere({ // Create sphere comonent.
+const sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,

@@ -4,16 +4,12 @@ import {
   FaceColors
 } from 'three';
 
-import {create} from '../../physics/create/meshes/ConvexConcaveCustom';
+
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {PhysicsComponent} from '../../core/PhysicsComponent';
-import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 import {loadMaterial, JSONLoader} from '../../utils/index';
 
-@SoftbodyComponent
-@PhysicsComponent
 @MeshComponent
 class Model extends Component {
   static defaults = {
@@ -25,7 +21,7 @@ class Model extends Component {
     },
 
     physics: {
-      create: create
+      create: false
     }
   };
 

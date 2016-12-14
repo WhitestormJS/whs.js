@@ -4,16 +4,12 @@ import {
   TorusGeometry
 } from 'three';
 
-import {create} from '../../physics/create/meshes/ConvexConcave';
+
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {PhysicsComponent} from '../../core/PhysicsComponent';
-import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 import {loadMaterial} from '../../utils/index';
 
-@SoftbodyComponent
-@PhysicsComponent
 @MeshComponent
 class Torus extends Component {
   static defaults = {
@@ -27,7 +23,7 @@ class Torus extends Component {
     },
 
     physics: {
-      create: create
+      create: false
     }
   };
 
