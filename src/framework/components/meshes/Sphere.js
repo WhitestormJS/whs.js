@@ -4,16 +4,12 @@ import {
   SphereGeometry
 } from 'three';
 
-import {create} from '../../physics/create/meshes/Sphere';
+
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {PhysicsComponent} from '../../core/PhysicsComponent';
-import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 import {loadMaterial} from '../../utils/index';
 
-@SoftbodyComponent
-@PhysicsComponent
 @MeshComponent
 class Sphere extends Component {
   static defaults = {
@@ -25,7 +21,7 @@ class Sphere extends Component {
     },
 
     physics: {
-      create: create
+      create: false
     }
   };
 

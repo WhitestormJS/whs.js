@@ -2,6 +2,8 @@
 import path from 'path';
 import del from 'del';
 import {argv} from 'yargs';
+import express from 'express';
+import serveIndex from 'serve-index';
 
 // GULP
 import gulp from 'gulp';
@@ -10,10 +12,11 @@ import loadPlugins from 'gulp-load-plugins';
 // WEBPACK & KARMA
 import karma from 'karma';
 import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
+import WebpackDevMiddleware from 'webpack-dev-middleware';
 
 import {config} from './webpack.config.babel.js';
 import wConfig from './test/webpack/webpack.config.js';
+if (argv.devPhysics) console.log(`DevPhysics is running on: ${argv.devPhysics} port`);
 
 // SETTINGS
 const
@@ -29,7 +32,10 @@ const
       cache: false,
 
       locals: {
-        assets: '../../_assets'
+        assets: '../../_assets',
+        physicsModule: argv.devPhysics ?
+          `http://localhost:${argv.devPhysics}/physics-module.js`
+          : '../../../vendor/physics-module.js'
       }
     }
   };
@@ -98,11 +104,20 @@ gulp.task('src:build:node', () => {
 
 // DEV MODE
 gulp.task('dev', ['examples:build', 'examples:watch'], () => {
-  const server = new WebpackDevServer(webpackCompiler, {
+  const server = express();
+
+  server.use(new WebpackDevMiddleware(webpackCompiler, {
     contentBase: examplesDest,
     publicPath: '/build/',
 
     stats: {colors: true}
+  }));
+
+  server.get('*', express.static(path.resolve(__dirname, examplesDest)));
+  server.get('*', serveIndex(path.resolve(__dirname, examplesDest), {icons: true}));
+
+  server.get('/vendor/physics-module.js', (req, res) => {
+    res.sendFile(path.resolve(__dirname, './vendor/physics-module.js'));
   });
 
   server.listen(8080, 'localhost', () => {});
@@ -110,7 +125,7 @@ gulp.task('dev', ['examples:build', 'examples:watch'], () => {
 
 // DEV MODE
 gulp.task('webpack-dev', () => {
-  const server = new WebpackDevServer(wCompiler, {
+  const server = new WebpackDevMiddleware(wCompiler, {
     contentBase: './test/webpack/',
     publicPath: '/build/',
 

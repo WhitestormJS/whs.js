@@ -4,16 +4,12 @@ import {
   LatheGeometry
 } from 'three';
 
-import {create} from '../../physics/create/meshes/ConvexConcave';
+
 
 import {Component} from '../../core/Component';
 import {loadMaterial} from '../../utils/index';
 import {MeshComponent} from '../../core/MeshComponent';
-import {PhysicsComponent} from '../../core/PhysicsComponent';
-import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 
-@SoftbodyComponent
-@PhysicsComponent
 @MeshComponent
 class Lathe extends Component {
   static defaults = {
@@ -23,7 +19,7 @@ class Lathe extends Component {
     },
 
     physics: {
-      create: create
+      create: false
     }
   };
 

@@ -27,6 +27,22 @@ function CameraComponent(targetComponent) {
       if (this.native instanceof Object3D) this.params = CameraComponentEnhance.defaults;
     }
 
+    wrapTransforms() {
+      const _params = this.params;
+
+      this.position.set(
+        _params.position.x,
+        _params.position.y,
+        _params.position.z
+      );
+
+      this.rotation.set(
+        _params.rotation.x,
+        _params.rotation.y,
+        _params.rotation.z
+      );
+    }
+
     get position() {
       return this.native.position;
     }
@@ -94,18 +110,6 @@ function CameraComponent(targetComponent) {
   $wrap(resultComponent).onCallWrap((scope, ...tags) => {
     const _native = scope.native;
     const _params = scope.params;
-
-    scope.position.set(
-      _params.position.x,
-      _params.position.y,
-      _params.position.z
-    );
-
-    scope.rotation.set(
-      _params.rotation.x,
-      _params.rotation.y,
-      _params.rotation.z
-    );
 
     if (_params.useTarget) scope.lookAt(_params.target);
     if (_params.helper) scope.helper = new THREE.CameraHelper(_native);

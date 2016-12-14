@@ -12,7 +12,7 @@ const colors = {
   yellow: 0xfaff70
 };
 
-const world = new WHS.World({
+const world = new (PHYSICS.$world(WHS.World))({
   stats: false,
   autoresize: "window",
 

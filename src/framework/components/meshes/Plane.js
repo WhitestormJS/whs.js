@@ -4,16 +4,12 @@ import {
   PlaneGeometry
 } from 'three';
 
-import {create} from '../../physics/create/meshes/Plane';
+
 
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {PhysicsComponent} from '../../core/PhysicsComponent';
-import {SoftbodyComponent} from '../../core/SoftbodyComponent';
 import {loadMaterial} from '../../utils/index';
 
-@SoftbodyComponent
-@PhysicsComponent
 @MeshComponent
 class Plane extends Component {
   static defaults = {
@@ -26,7 +22,7 @@ class Plane extends Component {
     },
 
     physics: {
-      create: create
+      create: false
     }
   };
 

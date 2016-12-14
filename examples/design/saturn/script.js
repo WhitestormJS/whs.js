@@ -20,7 +20,7 @@ var colors = {
   yellow: 0xfaff70
 };
 
-var world = new WHS.World({
+var world = new (PHYSICS.$world(WHS.World))({
   stats: false,
   autoresize: "window",
 

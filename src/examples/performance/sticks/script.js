@@ -1,6 +1,6 @@
 import * as UTILS from './globals';
 
-const world = new WHS.World({
+const world = new (PHYSICS.$world(WHS.World))({
   ...UTILS.$world,
 
   gravity: {
