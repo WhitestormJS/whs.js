@@ -131,9 +131,7 @@ function addBasicLights(world) {
 function addPlane(world) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  WHS.PlanePhysics = PHYSICS.RigidbodyComponent(WHS.Plane);
-
-  return new WHS.PlanePhysics({
+  return new (PHYSICS.$rigidBody(WHS.Plane, PHYSICS.PLANE))({
     geometry: {
       width: size,
       height: size
@@ -159,7 +157,7 @@ function addPlane(world) {
 function addBoxPlane(world) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  return new WHS.Box({
+  return new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
     geometry: {
       width: size,
       height: 1,
