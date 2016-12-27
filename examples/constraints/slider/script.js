@@ -23,7 +23,9 @@ var halfMat = {
   opacity: 0.5
 };
 
-var box = new WHS.Box({
+var PhysicsBox = PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX);
+
+var box = new PhysicsBox({
   geometry: {
     width: 2,
     height: 30,
@@ -41,7 +43,7 @@ var box = new WHS.Box({
   }
 });
 
-var box2 = new WHS.Box({
+var box2 = new PhysicsBox({
   geometry: {
     width: 2,
     height: 20,
@@ -67,7 +69,7 @@ var box2 = new WHS.Box({
 box.addTo(world);
 box2.addTo(world);
 
-var constraint = new WHS.SliderConstraint(box2, box, new THREE.Vector3(0, box2.position.y, 0), new THREE.Vector3(0, 1, 0));
+var constraint = new PHYSICS.SliderConstraint(box2.native, box.native, new THREE.Vector3(0, box2.position.y, 0), new THREE.Vector3(0, 1, 0));
 
 world.addConstraint(constraint);
 

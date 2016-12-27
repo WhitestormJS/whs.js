@@ -31,7 +31,7 @@ var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
   // }
 }));
 
-var stick = new WHS.Box({
+var stick = new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
   geometry: {
     width: 5,
     height: 1,
@@ -101,7 +101,7 @@ for (var k = 0; k < rows; k++) {
 
 document.querySelector('.object_count').innerText = objects + ' objects';
 
-var sphere = new WHS.Sphere({
+var sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.BOX))({
   geometry: {
     radius: 1,
     widthSegments: 32,

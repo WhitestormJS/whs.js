@@ -11,7 +11,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world));
 
-var sphere = new WHS.Sphere({ // Create sphere comonent.
+var sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,

@@ -37,7 +37,7 @@ world.$camera.lookAt(new THREE.Vector3(0, 0, 0));
 // Start rendering.
 world.start();
 
-new WHS.Box({
+new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
   geometry: {
     width: 100,
     height: 1,
@@ -58,7 +58,7 @@ new WHS.Box({
   }
 }).addTo(world);
 
-var egg = new WHS.Model({
+var egg = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONVEX2))({
   geometry: {
     path: '../../_assets/models/easter/egg_light.json',
     physics: '../../_assets/models/easter/egg_low.json'
@@ -90,7 +90,7 @@ var egg = new WHS.Model({
   }
 });
 
-var rabbit = new WHS.Model({
+var rabbit = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONVEX2))({
   geometry: {
     path: '../../_assets/models/easter/rabbit.json',
     physics: '../../_assets/models/easter/rabbit_low.json'

@@ -29,7 +29,7 @@ var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
   }
 }));
 
-var sphere = new WHS.Sphere({
+var sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
   geometry: {
     radius: 2,
     widthSegments: 16,
@@ -37,7 +37,6 @@ var sphere = new WHS.Sphere({
   },
 
   mass: 0,
-  physics: false,
 
   material: {
     color: UTILS.$colors.mesh,
@@ -46,6 +45,8 @@ var sphere = new WHS.Sphere({
 
   position: [0, 10, 0]
 });
+
+console.log(sphere.copy);
 
 sphere.wait().then(function () {
   var boxHelper = sphere.clone();
@@ -63,8 +64,6 @@ sphere.wait().then(function () {
   vertexNormalsHelper.addHelper('vertexNormals', { color: 0x00ff00, size: 0.5 });
 
   window.boundingBoxHelper = sphere.clone();
-  boundingBoxHelper.params.physics = WHS.physicsDefaults;
-  boundingBoxHelper.params.physics.create = WHS.Sphere.defaults.physics.create;
   boundingBoxHelper.wrap();
   boundingBoxHelper.build().then(function () {
     console.log(boundingBoxHelper.native);
@@ -76,9 +75,9 @@ sphere.wait().then(function () {
   boundingBoxHelper.addTo(world);
   boundingBoxHelper.addHelper('boundingBox', { color: 0x00ffff });
 
-  new WHS.Loop(function () {
-    return boundingBoxHelper.updateHelper('boundingBox');
-  }).start(world);
+  // new WHS.Loop(() =>
+  //   // boundingBoxHelper.updateHelper('boundingBox')
+  // ).start(world);
 });
 
 UTILS.addPlane(world, 250);

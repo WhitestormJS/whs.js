@@ -36,7 +36,7 @@
     "minivents": "^2.0.2",
     "resize-event": "^1.1.0",
     "stats.js": "^0.16.0",
-    "three": "^0.82.1",
+    "three": "^0.83.0",
     "watch-element-resize.js": "^2.0.1",
     "webworkify-webpack": "^2.0.1"
   },

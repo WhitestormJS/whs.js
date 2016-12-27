@@ -9,7 +9,7 @@ const world = new (PHYSICS.$world(WHS.World))({
   }
 });
 
-const teapot = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CUSTOM))({
+const teapot = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONCAVE2))({
   geometry: {
     path: '{{ assets }}/models/teapot/utah-teapot-large.json',
     physics: '{{ assets }}/models/teapot/utah-teapot-light.json'
