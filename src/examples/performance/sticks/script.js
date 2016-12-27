@@ -23,7 +23,7 @@ const world = new (PHYSICS.$world(WHS.World))({
   // }
 });
 
-const stick = new WHS.Box({
+const stick = new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
   geometry: {
     width: 5,
     height: 1,
@@ -93,7 +93,7 @@ for (let k = 0; k < rows; k++) {
 
 document.querySelector('.object_count').innerText = `${objects} objects`;
 
-const sphere = new WHS.Sphere({
+const sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.BOX))({
   geometry: {
     radius: 1,
     widthSegments: 32,

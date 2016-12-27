@@ -23,7 +23,9 @@ var halfMat = {
   opacity: 0.5
 };
 
-var box = new WHS.Box({
+var PhysicsBox = PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX);
+
+var box = new PhysicsBox({
   geometry: {
     width: 30,
     height: 2,
@@ -41,7 +43,7 @@ var box = new WHS.Box({
   }
 });
 
-var box2 = new WHS.Box({
+var box2 = new PhysicsBox({
   geometry: {
     width: 30,
     height: 1,
@@ -64,14 +66,14 @@ var box2 = new WHS.Box({
   }
 });
 
-var pointer = new WHS.Sphere({ material: { color: UTILS.$colors.mesh, kind: 'phong' } });
+var pointer = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ material: { color: UTILS.$colors.mesh, kind: 'phong' } });
 pointer.position.set(0, 60, -8);
 pointer.addTo(world);
 
 box.addTo(world);
 box2.addTo(world);
 
-var constraint = new WHS.DOFConstraint(box2, box, new THREE.Vector3(0, 38, 1));
+var constraint = new PHYSICS.DOFConstraint(box2.native, box.native, new THREE.Vector3(0, 38, 1));
 
 world.addConstraint(constraint);
 constraint.enableAngularMotor(10, 20);

@@ -9,14 +9,14 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
+var world = new WHS.World(_extends({}, UTILS.$world, {
 
   camera: {
     far: 10000,
     position: [0, 2, 12]
   },
 
-  plugins: {
+  modules: {
     scene: false
   }
 }));

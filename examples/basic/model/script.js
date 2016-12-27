@@ -17,7 +17,7 @@ var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
   }
 }));
 
-var teapot = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CUSTOM))({
+var teapot = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONCAVE2))({
   geometry: {
     path: '../../_assets/models/teapot/utah-teapot-large.json',
     physics: '../../_assets/models/teapot/utah-teapot-light.json'

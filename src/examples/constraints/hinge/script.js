@@ -15,7 +15,9 @@ const halfMat = {
   opacity: 0.5
 };
 
-const box = new WHS.Box({
+const PhysicsBox = PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX);
+
+const box = new PhysicsBox({
   geometry: {
     width: 30,
     height: 2,
@@ -34,7 +36,7 @@ const box = new WHS.Box({
   }
 });
 
-const box2 = new WHS.Box({
+const box2 = new PhysicsBox({
   geometry: {
     width: 30,
     height: 1,
@@ -58,14 +60,14 @@ const box2 = new WHS.Box({
   }
 });
 
-const pointer = new WHS.Sphere({material: {color: 0x00ff00}});
+const pointer = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({material: {color: 0x00ff00}});
 pointer.position.set(0, 60, -8);
 pointer.addTo(world);
 
 box.addTo(world);
 box2.addTo(world);
 
-const constraint = new WHS.HingeConstraint(box2, box,
+const constraint = new PHYSICS.HingeConstraint(box2.native, box.native,
   new THREE.Vector3(0, 38, 1),
   new THREE.Vector3(1, 0, 0)
 )
