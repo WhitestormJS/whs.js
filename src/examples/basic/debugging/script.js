@@ -21,7 +21,7 @@ const world = new (PHYSICS.$world(WHS.World))({
   }
 });
 
-const sphere = new WHS.Sphere({
+const sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
   geometry: {
     radius: 2,
     widthSegments: 16,
@@ -29,7 +29,6 @@ const sphere = new WHS.Sphere({
   },
 
   mass: 0,
-  physics: false,
 
   material: {
     color: UTILS.$colors.mesh,
@@ -38,6 +37,8 @@ const sphere = new WHS.Sphere({
 
   position: [0, 10, 0]
 });
+
+console.log(sphere.copy);
 
 sphere.wait().then(() => {
   const boxHelper = sphere.clone();
@@ -55,13 +56,10 @@ sphere.wait().then(() => {
   vertexNormalsHelper.addHelper('vertexNormals', {color: 0x00ff00, size: 0.5});
 
   window.boundingBoxHelper = sphere.clone();
-  boundingBoxHelper.params.physics = WHS.physicsDefaults;
-  boundingBoxHelper.params.physics.create = WHS.Sphere.defaults.physics.create;
   boundingBoxHelper.wrap();
   boundingBoxHelper.build().then(() => {
     console.log(boundingBoxHelper.native);
   });
-
 
   boundingBoxHelper.position.y = 10;
   boundingBoxHelper.position.z = 10;
@@ -69,9 +67,9 @@ sphere.wait().then(() => {
   boundingBoxHelper.addTo(world);
   boundingBoxHelper.addHelper('boundingBox', {color: 0x00ffff});
 
-  new WHS.Loop(() =>
-    boundingBoxHelper.updateHelper('boundingBox')
-  ).start(world);
+  // new WHS.Loop(() =>
+  //   // boundingBoxHelper.updateHelper('boundingBox')
+  // ).start(world);
 });
 
 UTILS.addPlane(world, 250);

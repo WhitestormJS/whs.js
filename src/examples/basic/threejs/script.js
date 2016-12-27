@@ -1,6 +1,6 @@
 import * as UTILS from './globals';
 
-const world = new (PHYSICS.$world(WHS.World))({
+const world = new WHS.World({
   ...UTILS.$world,
 
   camera: {
@@ -8,7 +8,7 @@ const world = new (PHYSICS.$world(WHS.World))({
     position: [0, 2, 12]
   },
 
-  plugins: {
+  modules: {
     scene: false
   }
 });

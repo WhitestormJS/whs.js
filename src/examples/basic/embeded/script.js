@@ -10,7 +10,7 @@ window.world = new (PHYSICS.$world(WHS.World))({
   container: document.getElementById('embed')
 });
 
-const sphere = new WHS.Sphere({ // Create sphere comonent.
+const sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,

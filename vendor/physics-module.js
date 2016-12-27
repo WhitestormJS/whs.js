@@ -109,7 +109,7 @@ var _create = __webpack_require__(91);
 
 var _create2 = _interopRequireDefault(_create);
 
-var _typeof2 = __webpack_require__(45);
+var _typeof2 = __webpack_require__(46);
 
 var _typeof3 = _interopRequireDefault(_typeof2);
 
@@ -140,7 +140,7 @@ exports.default = function (subClass, superClass) {
 
 exports.__esModule = true;
 
-var _typeof2 = __webpack_require__(45);
+var _typeof2 = __webpack_require__(46);
 
 var _typeof3 = _interopRequireDefault(_typeof2);
 
@@ -381,13 +381,11 @@ var Mesh = function (_MeshNative) {
 Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__eventable__ = __webpack_require__(21);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Eventable", function() { return __WEBPACK_IMPORTED_MODULE_1__eventable__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_index__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_index__ = __webpack_require__(64);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Mesh", function() { return __WEBPACK_IMPORTED_MODULE_2__core_index__["a"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Scene", function() { return __WEBPACK_IMPORTED_MODULE_2__core_index__["b"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Line", function() { return __WEBPACK_IMPORTED_MODULE_2__core_index__["c"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "PhysicsComponent", function() { return __WEBPACK_IMPORTED_MODULE_2__core_index__["d"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "SoftbodyComponent", function() { return __WEBPACK_IMPORTED_MODULE_2__core_index__["e"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constraints_index__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constraints_index__ = __webpack_require__(63);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "ConeTwistConstraint", function() { return __WEBPACK_IMPORTED_MODULE_3__constraints_index__["a"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "HingeConstraint", function() { return __WEBPACK_IMPORTED_MODULE_3__constraints_index__["b"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "PointConstraint", function() { return __WEBPACK_IMPORTED_MODULE_3__constraints_index__["c"]; });
@@ -409,16 +407,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__vehicle_index__ = __webpack_require__(89);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "VehicleTunning", function() { return __WEBPACK_IMPORTED_MODULE_5__vehicle_index__["a"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Vehicle", function() { return __WEBPACK_IMPORTED_MODULE_5__vehicle_index__["b"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__create_index__ = __webpack_require__(67);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "createBox", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "createConvex", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["b"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "createConvexConcave", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["c"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "createConvexConcaveCustom", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["d"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "createCylinder", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["e"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "createLine", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["f"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__create_index__ = __webpack_require__(66);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "BOX", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["a"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "CONVEX", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["b"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "CONVEX_CONCAVE", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["c"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "CUSTOM", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["d"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "CYLINDER", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["e"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "ROPE", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["f"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "createPlane", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["g"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "createSphere", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["h"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "SPHERE", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["h"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "createWorld", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["i"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "$world", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["j"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "RigidbodyComponent", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["k"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "$rigidBody", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["l"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "SoftbodyComponent", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["m"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "$softBody", function() { return __WEBPACK_IMPORTED_MODULE_6__create_index__["n"]; });
 
 
 
@@ -576,7 +579,7 @@ module.exports = function(it, key){
 /***/ function(module, exports, __webpack_require__) {
 
 var anObject       = __webpack_require__(17)
-  , IE8_DOM_DEFINE = __webpack_require__(49)
+  , IE8_DOM_DEFINE = __webpack_require__(50)
   , toPrimitive    = __webpack_require__(35)
   , dP             = Object.defineProperty;
 
@@ -597,7 +600,7 @@ exports.f = __webpack_require__(9) ? Object.defineProperty : function defineProp
 /***/ function(module, exports, __webpack_require__) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __webpack_require__(50)
+var IObject = __webpack_require__(51)
   , defined = __webpack_require__(25);
 module.exports = function(it){
   return IObject(defined(it));
@@ -615,7 +618,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_13__;
 
 var global    = __webpack_require__(7)
   , core      = __webpack_require__(8)
-  , ctx       = __webpack_require__(47)
+  , ctx       = __webpack_require__(48)
   , hide      = __webpack_require__(15)
   , PROTOTYPE = 'prototype';
 
@@ -739,7 +742,7 @@ module.exports = function(it){
 /***/ function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys       = __webpack_require__(54)
+var $keys       = __webpack_require__(55)
   , enumBugKeys = __webpack_require__(26);
 
 module.exports = Object.keys || function keys(O){
@@ -885,7 +888,7 @@ var anObject    = __webpack_require__(17)
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
 var createDict = function(){
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = __webpack_require__(48)('iframe')
+  var iframe = __webpack_require__(49)('iframe')
     , i      = enumBugKeys.length
     , lt     = '<'
     , gt     = '>'
@@ -1187,7 +1190,7 @@ var Line = function (_LineNative) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_three__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__vehicle_vehicle__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__vehicle_vehicle__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__eventable__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__api__ = __webpack_require__(6);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Scene; });
@@ -1822,987 +1825,7 @@ var Scene = function (_SceneNative) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ exports["a"] = $wrap;
-/* unused harmony export $extend */
-/* unused harmony export $define */
-/* unused harmony export $defaults */
-function $wrap(target) {
-  var _proto = target.prototype || target.__proto__;
-
-  return {
-    onCallConstructor: function onCallConstructor(callback) {
-      _proto.callConstructor = function (old) {
-        return function (scope) {
-          old(scope);
-          callback(scope);
-        };
-      }(_proto.callConstructor);
-    },
-    onCallWrap: function onCallWrap(callback) {
-      _proto.callWrap = function (old) {
-        return function (scope) {
-          for (var _len = arguments.length, tags = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-            tags[_key - 1] = arguments[_key];
-          }
-
-          old.apply(undefined, [scope].concat(tags));
-          callback.apply(undefined, [scope].concat(tags));
-        };
-      }(_proto.callWrap);
-    },
-    onCallAddTo: function onCallAddTo(callback) {
-      _proto.callAddTo = function (old) {
-        return function (scope) {
-          old(scope);
-          callback(scope);
-        };
-      }(_proto.callAddTo);
-    },
-    onCallCopy: function onCallCopy(callback) {
-      _proto.callCopy = function (old) {
-        return function (scope) {
-          old(scope);
-          callback(scope);
-        };
-      }(_proto.callCopy);
-    }
-  };
-}
-
-function $extend(target, obj) {
-  var _proto = target.prototype || target.__proto__;
-  Object.assign(_proto, obj);
-}
-
-function $define(target, obj) {
-  for (var key in obj) {
-    var value = obj[key];
-    var _proto = target.prototype || target.__proto__;
-
-    value.configurable = true;
-
-    Object.defineProperty(_proto, key, value);
-  }
-}
-
-function $defaults(target, obj) {
-  var defs = target.defaults || {};
-  target.defaults = Object.assign(defs, obj);
-  target.params = Object.assign(defs, obj);
-}
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return extend; });
-var extend = function extend(object) {
-  for (var _len = arguments.length, extensions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    extensions[_key - 1] = arguments[_key];
-  }
-
-  // $.extend alternative, ... is the spread operator.
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = extensions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var extension = _step.value;
-
-      // console.log(extension);
-      // console.log(typeof extension);
-
-      if (!extension) continue; // Ignore null and undefined objects and paramaters.
-
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = Object.getOwnPropertyNames(extension)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var prop = _step2.value;
-          // Do not traverse the prototype chain.
-          if (object[prop] !== undefined && object[prop].toString() === '[object Object]' && extension[prop].toString() === '[object Object]') {
-
-            // Goes deep only if object[prop] and extension[prop] are both objects !
-            if (extension[prop].uuid) object[prop] = extension[prop];else extend(object[prop], extension[prop]);
-          } else object[prop] = typeof object[prop] === 'undefined' ? extension[prop] : object[prop];
-          if (typeof object[prop] === 'undefined') object[prop] = extension[prop]; // Add values that do not already exist.
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  return object;
-};
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return VehicleTunning; });
-
-var VehicleTunning = function VehicleTunning() {
-  var suspension_stiffness = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 5.88;
-  var suspension_compression = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.83;
-  var suspension_damping = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.88;
-  var max_suspension_travel = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 500;
-  var friction_slip = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 10.5;
-  var max_suspension_force = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 6000;
-
-  __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, VehicleTunning);
-
-  this.suspension_stiffness = suspension_stiffness;
-  this.suspension_compression = suspension_compression;
-  this.suspension_damping = suspension_damping;
-  this.max_suspension_travel = max_suspension_travel;
-  this.friction_slip = friction_slip;
-  this.max_suspension_force = max_suspension_force;
-};
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_three__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tunning__ = __webpack_require__(42);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Vehicle; });
-
-
-
-
-
-var Vehicle = function () {
-  function Vehicle(mesh) {
-    var tuning = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new VehicleTuning();
-
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Vehicle);
-
-    this.mesh = mesh;
-    this.wheels = [];
-
-    this._physijs = {
-      id: getObjectId(),
-      rigidBody: mesh._physijs.id,
-      suspension_stiffness: tuning.suspension_stiffness,
-      suspension_compression: tuning.suspension_compression,
-      suspension_damping: tuning.suspension_damping,
-      max_suspension_travel: tuning.max_suspension_travel,
-      friction_slip: tuning.friction_slip,
-      max_suspension_force: tuning.max_suspension_force
-    };
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Vehicle, [{
-    key: 'addWheel',
-    value: function addWheel(wheel_geometry, wheel_material, connection_point, wheel_direction, wheel_axle, suspension_rest_length, wheel_radius, is_front_wheel, tuning) {
-      var wheel = new __WEBPACK_IMPORTED_MODULE_2_three__["Mesh"](wheel_geometry, wheel_material);
-
-      wheel.castShadow = wheel.receiveShadow = true;
-      wheel.position.copy(wheel_direction).multiplyScalar(suspension_rest_length / 100).add(connection_point);
-
-      this.world.add(wheel);
-      this.wheels.push(wheel);
-
-      this.world.execute('addWheel', {
-        id: this._physijs.id,
-        connection_point: { x: connection_point.x, y: connection_point.y, z: connection_point.z },
-        wheel_direction: { x: wheel_direction.x, y: wheel_direction.y, z: wheel_direction.z },
-        wheel_axle: { x: wheel_axle.x, y: wheel_axle.y, z: wheel_axle.z },
-        suspension_rest_length: suspension_rest_length,
-        wheel_radius: wheel_radius,
-        is_front_wheel: is_front_wheel,
-        tuning: tuning
-      });
-    }
-  }, {
-    key: 'setSteering',
-    value: function setSteering(amount, wheel) {
-      if (wheel !== undefined && this.wheels[wheel] !== undefined) this.world.execute('setSteering', { id: this._physijs.id, wheel: wheel, steering: amount });else if (this.wheels.length > 0) {
-        for (var i = 0; i < this.wheels.length; i++) {
-          this.world.execute('setSteering', { id: this._physijs.id, wheel: i, steering: amount });
-        }
-      }
-    }
-  }, {
-    key: 'setBrake',
-    value: function setBrake(amount, wheel) {
-      if (wheel !== undefined && this.wheels[wheel] !== undefined) this.world.execute('setBrake', { id: this._physijs.id, wheel: wheel, brake: amount });else if (this.wheels.length > 0) {
-        for (var i = 0; i < this.wheels.length; i++) {
-          this.world.execute('setBrake', { id: this._physijs.id, wheel: i, brake: amount });
-        }
-      }
-    }
-  }, {
-    key: 'applyEngineForce',
-    value: function applyEngineForce(amount, wheel) {
-      if (wheel !== undefined && this.wheels[wheel] !== undefined) this.world.execute('applyEngineForce', { id: this._physijs.id, wheel: wheel, force: amount });else if (this.wheels.length > 0) {
-        for (var i = 0; i < this.wheels.length; i++) {
-          this.world.execute('applyEngineForce', { id: this._physijs.id, wheel: i, force: amount });
-        }
-      }
-    }
-  }]);
-
-  return Vehicle;
-}();
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-
-exports.__esModule = true;
-
-var _assign = __webpack_require__(90);
-
-var _assign2 = _interopRequireDefault(_assign);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _assign2.default || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-
-exports.__esModule = true;
-
-var _iterator = __webpack_require__(95);
-
-var _iterator2 = _interopRequireDefault(_iterator);
-
-var _symbol = __webpack_require__(94);
-
-var _symbol2 = _interopRequireDefault(_symbol);
-
-var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.default) === "symbol" ? function (obj) {
-  return typeof obj === "undefined" ? "undefined" : _typeof(obj);
-} : function (obj) {
-  return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
-};
-
-/***/ },
-/* 46 */
-/***/ function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = function(it){
-  return toString.call(it).slice(8, -1);
-};
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-// optional / simple context binding
-var aFunction = __webpack_require__(102);
-module.exports = function(fn, that, length){
-  aFunction(fn);
-  if(that === undefined)return fn;
-  switch(length){
-    case 1: return function(a){
-      return fn.call(that, a);
-    };
-    case 2: return function(a, b){
-      return fn.call(that, a, b);
-    };
-    case 3: return function(a, b, c){
-      return fn.call(that, a, b, c);
-    };
-  }
-  return function(/* ...args */){
-    return fn.apply(that, arguments);
-  };
-};
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(19)
-  , document = __webpack_require__(7).document
-  // in old IE typeof document.createElement is 'object'
-  , is = isObject(document) && isObject(document.createElement);
-module.exports = function(it){
-  return is ? document.createElement(it) : {};
-};
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-module.exports = !__webpack_require__(9) && !__webpack_require__(18)(function(){
-  return Object.defineProperty(__webpack_require__(48)('div'), 'a', {get: function(){ return 7; }}).a != 7;
-});
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = __webpack_require__(46);
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
-  return cof(it) == 'String' ? it.split('') : Object(it);
-};
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-'use strict';
-var LIBRARY        = __webpack_require__(28)
-  , $export        = __webpack_require__(14)
-  , redefine       = __webpack_require__(55)
-  , hide           = __webpack_require__(15)
-  , has            = __webpack_require__(10)
-  , Iterators      = __webpack_require__(27)
-  , $iterCreate    = __webpack_require__(108)
-  , setToStringTag = __webpack_require__(31)
-  , getPrototypeOf = __webpack_require__(115)
-  , ITERATOR       = __webpack_require__(16)('iterator')
-  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
-  , FF_ITERATOR    = '@@iterator'
-  , KEYS           = 'keys'
-  , VALUES         = 'values';
-
-var returnThis = function(){ return this; };
-
-module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
-  $iterCreate(Constructor, NAME, next);
-  var getMethod = function(kind){
-    if(!BUGGY && kind in proto)return proto[kind];
-    switch(kind){
-      case KEYS: return function keys(){ return new Constructor(this, kind); };
-      case VALUES: return function values(){ return new Constructor(this, kind); };
-    } return function entries(){ return new Constructor(this, kind); };
-  };
-  var TAG        = NAME + ' Iterator'
-    , DEF_VALUES = DEFAULT == VALUES
-    , VALUES_BUG = false
-    , proto      = Base.prototype
-    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
-    , $default   = $native || getMethod(DEFAULT)
-    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
-    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
-    , methods, key, IteratorPrototype;
-  // Fix native
-  if($anyNative){
-    IteratorPrototype = getPrototypeOf($anyNative.call(new Base));
-    if(IteratorPrototype !== Object.prototype){
-      // Set @@toStringTag to native iterators
-      setToStringTag(IteratorPrototype, TAG, true);
-      // fix for some old engines
-      if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
-    }
-  }
-  // fix Array#{values, @@iterator}.name in V8 / FF
-  if(DEF_VALUES && $native && $native.name !== VALUES){
-    VALUES_BUG = true;
-    $default = function values(){ return $native.call(this); };
-  }
-  // Define iterator
-  if((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
-    hide(proto, ITERATOR, $default);
-  }
-  // Plug for library
-  Iterators[NAME] = $default;
-  Iterators[TAG]  = returnThis;
-  if(DEFAULT){
-    methods = {
-      values:  DEF_VALUES ? $default : getMethod(VALUES),
-      keys:    IS_SET     ? $default : getMethod(KEYS),
-      entries: $entries
-    };
-    if(FORCED)for(key in methods){
-      if(!(key in proto))redefine(proto, key, methods[key]);
-    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
-  }
-  return methods;
-};
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-var pIE            = __webpack_require__(22)
-  , createDesc     = __webpack_require__(23)
-  , toIObject      = __webpack_require__(12)
-  , toPrimitive    = __webpack_require__(35)
-  , has            = __webpack_require__(10)
-  , IE8_DOM_DEFINE = __webpack_require__(49)
-  , gOPD           = Object.getOwnPropertyDescriptor;
-
-exports.f = __webpack_require__(9) ? gOPD : function getOwnPropertyDescriptor(O, P){
-  O = toIObject(O);
-  P = toPrimitive(P, true);
-  if(IE8_DOM_DEFINE)try {
-    return gOPD(O, P);
-  } catch(e){ /* empty */ }
-  if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
-};
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-var $keys      = __webpack_require__(54)
-  , hiddenKeys = __webpack_require__(26).concat('length', 'prototype');
-
-exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
-  return $keys(O, hiddenKeys);
-};
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-var has          = __webpack_require__(10)
-  , toIObject    = __webpack_require__(12)
-  , arrayIndexOf = __webpack_require__(104)(false)
-  , IE_PROTO     = __webpack_require__(32)('IE_PROTO');
-
-module.exports = function(object, names){
-  var O      = toIObject(object)
-    , i      = 0
-    , result = []
-    , key;
-  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
-  // Don't enum bug & hidden keys
-  while(names.length > i)if(has(O, key = names[i++])){
-    ~arrayIndexOf(result, key) || result.push(key);
-  }
-  return result;
-};
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(15);
-
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-// 7.1.13 ToObject(argument)
-var defined = __webpack_require__(25);
-module.exports = function(it){
-  return Object(defined(it));
-};
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(6);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ConeTwistConstraint; });
-
-
-
-
-var ConeTwistConstraint = function () {
-  function ConeTwistConstraint(obja, objb, position) {
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, ConeTwistConstraint);
-
-    var objecta = obja;
-    var objectb = obja;
-
-    if (position === undefined) console.error('Both objects must be defined in a ConeTwistConstraint.');
-
-    this.type = 'conetwist';
-    this.appliedImpulse = 0;
-    this.scene = objecta.parent;
-    this.objecta = objecta._physijs.id;
-    this.positiona = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objecta).clone();
-    this.objectb = objectb._physijs.id;
-    this.positionb = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objectb).clone();
-    this.axisa = { x: objecta.rotation.x, y: objecta.rotation.y, z: objecta.rotation.z };
-    this.axisb = { x: objectb.rotation.x, y: objectb.rotation.y, z: objectb.rotation.z };
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(ConeTwistConstraint, [{
-    key: 'getDefinition',
-    value: function getDefinition() {
-      return {
-        type: this.type,
-        id: this.id,
-        objecta: this.objecta,
-        objectb: this.objectb,
-        positiona: this.positiona,
-        positionb: this.positionb,
-        axisa: this.axisa,
-        axisb: this.axisb
-      };
-    }
-  }, {
-    key: 'setLimit',
-    value: function setLimit(x, y, z) {
-      this.scene.execute('conetwist_setLimit', { constraint: this.id, x: x, y: y, z: z });
-    }
-  }, {
-    key: 'enableMotor',
-    value: function enableMotor() {
-      this.scene.execute('conetwist_enableMotor', { constraint: this.id });
-    }
-  }, {
-    key: 'setMaxMotorImpulse',
-    value: function setMaxMotorImpulse(max_impulse) {
-      this.scene.execute('conetwist_setMaxMotorImpulse', { constraint: this.id, max_impulse: max_impulse });
-    }
-  }, {
-    key: 'setMotorTarget',
-    value: function setMotorTarget(target) {
-      if (target instanceof THREE.Vector3) target = new THREE.Quaternion().setFromEuler(new THREE.Euler(target.x, target.y, target.z));else if (target instanceof THREE.Euler) target = new THREE.Quaternion().setFromEuler(target);else if (target instanceof THREE.Matrix4) target = new THREE.Quaternion().setFromRotationMatrix(target);
-
-      this.scene.execute('conetwist_setMotorTarget', {
-        constraint: this.id,
-        x: target.x,
-        y: target.y,
-        z: target.z,
-        w: target.w
-      });
-    }
-  }]);
-
-  return ConeTwistConstraint;
-}();
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(6);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return DOFConstraint; });
-
-
-
-
-var DOFConstraint = function () {
-  function DOFConstraint(obja, objb, position) {
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, DOFConstraint);
-
-    var objecta = obja;
-    var objectb = objb;
-
-    if (position === undefined) {
-      position = objectb;
-      objectb = undefined;
-    }
-
-    this.type = 'dof';
-    this.appliedImpulse = 0;
-    this.scene = objecta.parent;
-    this.objecta = objecta._physijs.id;
-    this.positiona = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objecta).clone();
-    this.axisa = { x: objecta.rotation.x, y: objecta.rotation.y, z: objecta.rotation.z };
-
-    if (objectb) {
-      this.objectb = objectb._physijs.id;
-      this.positionb = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objectb).clone();
-      this.axisb = { x: objectb.rotation.x, y: objectb.rotation.y, z: objectb.rotation.z };
-    }
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(DOFConstraint, [{
-    key: 'getDefinition',
-    value: function getDefinition() {
-      return {
-        type: this.type,
-        id: this.id,
-        objecta: this.objecta,
-        objectb: this.objectb,
-        positiona: this.positiona,
-        positionb: this.positionb,
-        axisa: this.axisa,
-        axisb: this.axisb
-      };
-    }
-  }, {
-    key: 'setLinearLowerLimit',
-    value: function setLinearLowerLimit(limit) {
-      this.scene.execute('dof_setLinearLowerLimit', { constraint: this.id, x: limit.x, y: limit.y, z: limit.z });
-    }
-  }, {
-    key: 'setLinearUpperLimit',
-    value: function setLinearUpperLimit(limit) {
-      this.scene.execute('dof_setLinearUpperLimit', { constraint: this.id, x: limit.x, y: limit.y, z: limit.z });
-    }
-  }, {
-    key: 'setAngularLowerLimit',
-    value: function setAngularLowerLimit(limit) {
-      this.scene.execute('dof_setAngularLowerLimit', { constraint: this.id, x: limit.x, y: limit.y, z: limit.z });
-    }
-  }, {
-    key: 'setAngularUpperLimit',
-    value: function setAngularUpperLimit(limit) {
-      this.scene.execute('dof_setAngularUpperLimit', { constraint: this.id, x: limit.x, y: limit.y, z: limit.z });
-    }
-  }, {
-    key: 'enableAngularMotor',
-    value: function enableAngularMotor(which) {
-      this.scene.execute('dof_enableAngularMotor', { constraint: this.id, which: which });
-    }
-  }, {
-    key: 'configureAngularMotor',
-    value: function configureAngularMotor(which, low_angle, high_angle, velocity, max_force) {
-      this.scene.execute('dof_configureAngularMotor', { constraint: this.id, which: which, low_angle: low_angle, high_angle: high_angle, velocity: velocity, max_force: max_force });
-    }
-  }, {
-    key: 'disableAngularMotor',
-    value: function disableAngularMotor(which) {
-      this.scene.execute('dof_disableAngularMotor', { constraint: this.id, which: which });
-    }
-  }]);
-
-  return DOFConstraint;
-}();
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(6);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return HingeConstraint; });
-
-
-
-
-var HingeConstraint = function () {
-  function HingeConstraint(obja, objb, position, axis) {
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, HingeConstraint);
-
-    var objecta = obja;
-    var objectb = objb;
-
-    if (axis === undefined) {
-      axis = position;
-      position = objectb;
-      objectb = undefined;
-    }
-
-    this.type = 'hinge';
-    this.appliedImpulse = 0;
-    this.scene = objecta.parent;
-    this.objecta = objecta._physijs.id;
-    this.positiona = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objecta).clone();
-    this.position = position.clone();
-    this.axis = axis;
-
-    if (objectb) {
-      this.objectb = objectb._physijs.id;
-      this.positionb = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objectb).clone();
-    }
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(HingeConstraint, [{
-    key: 'getDefinition',
-    value: function getDefinition() {
-      return {
-        type: this.type,
-        id: this.id,
-        objecta: this.objecta,
-        objectb: this.objectb,
-        positiona: this.positiona,
-        positionb: this.positionb,
-        axis: this.axis
-      };
-    }
-  }, {
-    key: 'setLimits',
-    value: function setLimits(low, high, bias_factor, relaxation_factor) {
-      this.scene.execute('hinge_setLimits', {
-        constraint: this.id,
-        low: low,
-        high: high,
-        bias_factor: bias_factor,
-        relaxation_factor: relaxation_factor
-      });
-    }
-  }, {
-    key: 'enableAngularMotor',
-    value: function enableAngularMotor(velocity, acceleration) {
-      this.scene.execute('hinge_enableAngularMotor', {
-        constraint: this.id,
-        velocity: velocity,
-        acceleration: acceleration
-      });
-    }
-  }, {
-    key: 'disableMotor',
-    value: function disableMotor() {
-      this.scene.execute('hinge_disableMotor', { constraint: this.id });
-    }
-  }]);
-
-  return HingeConstraint;
-}();
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(6);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return PointConstraint; });
-
-
-
-
-var PointConstraint = function () {
-  function PointConstraint(obja, objb, position) {
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, PointConstraint);
-
-    var objecta = obja;
-    var objectb = objb;
-
-    if (position === undefined) {
-      position = objectb;
-      objectb = undefined;
-    }
-
-    this.type = 'point';
-    this.appliedImpulse = 0;
-    this.objecta = objecta._physijs.id;
-    this.positiona = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objecta).clone();
-
-    if (objectb) {
-      this.objectb = objectb._physijs.id;
-      this.positionb = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objectb).clone();
-    }
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(PointConstraint, [{
-    key: 'getDefinition',
-    value: function getDefinition() {
-      return {
-        type: this.type,
-        id: this.id,
-        objecta: this.objecta,
-        objectb: this.objectb,
-        positiona: this.positiona,
-        positionb: this.positionb
-      };
-    }
-  }]);
-
-  return PointConstraint;
-}();
-
-/***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(6);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return SliderConstraint; });
-
-
-
-
-var SliderConstraint = function () {
-  function SliderConstraint(obja, objb, position, axis) {
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, SliderConstraint);
-
-    var objecta = obja;
-    var objectb = objb;
-
-    if (axis === undefined) {
-      axis = position;
-      position = objectb;
-      objectb = undefined;
-    }
-
-    this.type = 'slider';
-    this.appliedImpulse = 0;
-    this.scene = objecta.parent;
-    this.objecta = objecta._physijs.id;
-    this.positiona = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objecta).clone();
-    this.axis = axis;
-
-    if (objectb) {
-      this.objectb = objectb._physijs.id;
-      this.positionb = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objectb).clone();
-    }
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(SliderConstraint, [{
-    key: 'getDefinition',
-    value: function getDefinition() {
-      return {
-        type: this.type,
-        id: this.id,
-        objecta: this.objecta,
-        objectb: this.objectb,
-        positiona: this.positiona,
-        positionb: this.positionb,
-        axis: this.axis
-      };
-    }
-  }, {
-    key: 'setLimits',
-    value: function setLimits(lin_lower, lin_upper, ang_lower, ang_upper) {
-      this.scene.execute('slider_setLimits', {
-        constraint: this.id,
-        lin_lower: lin_lower,
-        lin_upper: lin_upper,
-        ang_lower: ang_lower,
-        ang_upper: ang_upper
-      });
-    }
-  }, {
-    key: 'setRestitution',
-    value: function setRestitution(linear, angular) {
-      this.scene.execute('slider_setRestitution', {
-        constraint: this.id,
-        linear: linear,
-        angular: angular
-      });
-    }
-  }, {
-    key: 'enableLinearMotor',
-    value: function enableLinearMotor(velocity, acceleration) {
-      this.scene.execute('slider_enableLinearMotor', {
-        constraint: this.id,
-        velocity: velocity,
-        acceleration: acceleration
-      });
-    }
-  }, {
-    key: 'disableLinearMotor',
-    value: function disableLinearMotor() {
-      this.scene.execute('slider_disableLinearMotor', { constraint: this.id });
-    }
-  }, {
-    key: 'enableAngularMotor',
-    value: function enableAngularMotor(velocity, acceleration) {
-      this.scene.execute('slider_enableAngularMotor', {
-        constraint: this.id,
-        velocity: velocity,
-        acceleration: acceleration
-      });
-    }
-  }, {
-    key: 'disableAngularMotor',
-    value: function disableAngularMotor() {
-      this.scene.execute('slider_disableAngularMotor', { constraint: this.id });
-    }
-  }]);
-
-  return SliderConstraint;
-}();
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ConeTwistConstraint__ = __webpack_require__(57);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__ConeTwistConstraint__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__HingeConstraint__ = __webpack_require__(59);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__HingeConstraint__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PointConstraint__ = __webpack_require__(60);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__PointConstraint__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__SliderConstraint__ = __webpack_require__(61);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "d", function() { return __WEBPACK_IMPORTED_MODULE_3__SliderConstraint__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__DOFConstraint__ = __webpack_require__(58);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "e", function() { return __WEBPACK_IMPORTED_MODULE_4__DOFConstraint__["a"]; });
-
-
-
-
-
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
@@ -2814,9 +1837,10 @@ var SliderConstraint = function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_three__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_ComponentUtils__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_extend__ = __webpack_require__(41);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return PhysicsComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_ComponentUtils__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_extend__ = __webpack_require__(42);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return RigidbodyComponent; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return $rigidBody; });
 
 
 
@@ -2827,19 +1851,19 @@ var SliderConstraint = function () {
 
 
 
-function PhysicsComponent(targetComponent) {
+function RigidbodyComponent(targetComponent) {
   var _class, _temp;
 
   var resultComponent = (_temp = _class = function (_targetComponent) {
-    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(PhysicsComponentEnhance, _targetComponent);
+    __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(RigidbodyComponentEnhance, _targetComponent);
 
-    function PhysicsComponentEnhance() {
-      __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, PhysicsComponentEnhance);
+    function RigidbodyComponentEnhance() {
+      __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, RigidbodyComponentEnhance);
 
-      return __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (PhysicsComponentEnhance.__proto__ || Object.getPrototypeOf(PhysicsComponentEnhance)).apply(this, arguments));
+      return __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (RigidbodyComponentEnhance.__proto__ || Object.getPrototypeOf(RigidbodyComponentEnhance)).apply(this, arguments));
     }
 
-    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(PhysicsComponentEnhance, [{
+    __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(RigidbodyComponentEnhance, [{
       key: 'setAngularVelocity',
       value: function setAngularVelocity() {
         var _native;
@@ -3070,7 +2094,7 @@ function PhysicsComponent(targetComponent) {
       }
     }]);
 
-    return PhysicsComponentEnhance;
+    return RigidbodyComponentEnhance;
   }(targetComponent), _class.defautls = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__utils_extend__["a" /* extend */])(targetComponent.defaults, {
     mass: 10,
     physics: {
@@ -3100,6 +2124,993 @@ function PhysicsComponent(targetComponent) {
   return resultComponent;
 }
 
+var $rigidBody = function $rigidBody(target, create) {
+  var result = RigidbodyComponent(target);
+  result.defaults.physics.create = create;
+
+  return result;
+};
+
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ exports["a"] = $wrap;
+/* unused harmony export $extend */
+/* unused harmony export $define */
+/* unused harmony export $defaults */
+function $wrap(target) {
+  var _proto = target.prototype || target.__proto__;
+
+  return {
+    onCallConstructor: function onCallConstructor(callback) {
+      _proto.callConstructor = function (old) {
+        return function (scope) {
+          old(scope);
+          callback(scope);
+        };
+      }(_proto.callConstructor);
+    },
+    onCallWrap: function onCallWrap(callback) {
+      _proto.callWrap = function (old) {
+        return function (scope) {
+          for (var _len = arguments.length, tags = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+            tags[_key - 1] = arguments[_key];
+          }
+
+          old.apply(undefined, [scope].concat(tags));
+          callback.apply(undefined, [scope].concat(tags));
+        };
+      }(_proto.callWrap);
+    },
+    onCallAddTo: function onCallAddTo(callback) {
+      _proto.callAddTo = function (old) {
+        return function (scope) {
+          old(scope);
+          callback(scope);
+        };
+      }(_proto.callAddTo);
+    },
+    onCallCopy: function onCallCopy(callback) {
+      _proto.callCopy = function (old) {
+        return function (scope) {
+          old(scope);
+          callback(scope);
+        };
+      }(_proto.callCopy);
+    }
+  };
+}
+
+function $extend(target, obj) {
+  var _proto = target.prototype || target.__proto__;
+  Object.assign(_proto, obj);
+}
+
+function $define(target, obj) {
+  for (var key in obj) {
+    var value = obj[key];
+    var _proto = target.prototype || target.__proto__;
+
+    value.configurable = true;
+
+    Object.defineProperty(_proto, key, value);
+  }
+}
+
+function $defaults(target, obj) {
+  var defs = target.defaults || {};
+  target.defaults = Object.assign(defs, obj);
+  target.params = Object.assign(defs, obj);
+}
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return extend; });
+var extend = function extend(object) {
+  for (var _len = arguments.length, extensions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    extensions[_key - 1] = arguments[_key];
+  }
+
+  // $.extend alternative, ... is the spread operator.
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = extensions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var extension = _step.value;
+
+      // console.log(extension);
+      // console.log(typeof extension);
+
+      if (!extension) continue; // Ignore null and undefined objects and paramaters.
+
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = Object.getOwnPropertyNames(extension)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var prop = _step2.value;
+          // Do not traverse the prototype chain.
+          if (object[prop] !== undefined && object[prop].toString() === '[object Object]' && extension[prop].toString() === '[object Object]') {
+
+            // Goes deep only if object[prop] and extension[prop] are both objects !
+            if (extension[prop].uuid) object[prop] = extension[prop];else extend(object[prop], extension[prop]);
+          } else object[prop] = typeof object[prop] === 'undefined' ? extension[prop] : object[prop];
+          if (typeof object[prop] === 'undefined') object[prop] = extension[prop]; // Add values that do not already exist.
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  return object;
+};
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return VehicleTunning; });
+
+var VehicleTunning = function VehicleTunning() {
+  var suspension_stiffness = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 5.88;
+  var suspension_compression = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.83;
+  var suspension_damping = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.88;
+  var max_suspension_travel = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 500;
+  var friction_slip = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 10.5;
+  var max_suspension_force = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 6000;
+
+  __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, VehicleTunning);
+
+  this.suspension_stiffness = suspension_stiffness;
+  this.suspension_compression = suspension_compression;
+  this.suspension_damping = suspension_damping;
+  this.max_suspension_travel = max_suspension_travel;
+  this.friction_slip = friction_slip;
+  this.max_suspension_force = max_suspension_force;
+};
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_three__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_three__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tunning__ = __webpack_require__(43);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Vehicle; });
+
+
+
+
+
+var Vehicle = function () {
+  function Vehicle(mesh) {
+    var tuning = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new VehicleTuning();
+
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, Vehicle);
+
+    this.mesh = mesh;
+    this.wheels = [];
+
+    this._physijs = {
+      id: getObjectId(),
+      rigidBody: mesh._physijs.id,
+      suspension_stiffness: tuning.suspension_stiffness,
+      suspension_compression: tuning.suspension_compression,
+      suspension_damping: tuning.suspension_damping,
+      max_suspension_travel: tuning.max_suspension_travel,
+      friction_slip: tuning.friction_slip,
+      max_suspension_force: tuning.max_suspension_force
+    };
+  }
+
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(Vehicle, [{
+    key: 'addWheel',
+    value: function addWheel(wheel_geometry, wheel_material, connection_point, wheel_direction, wheel_axle, suspension_rest_length, wheel_radius, is_front_wheel, tuning) {
+      var wheel = new __WEBPACK_IMPORTED_MODULE_2_three__["Mesh"](wheel_geometry, wheel_material);
+
+      wheel.castShadow = wheel.receiveShadow = true;
+      wheel.position.copy(wheel_direction).multiplyScalar(suspension_rest_length / 100).add(connection_point);
+
+      this.world.add(wheel);
+      this.wheels.push(wheel);
+
+      this.world.execute('addWheel', {
+        id: this._physijs.id,
+        connection_point: { x: connection_point.x, y: connection_point.y, z: connection_point.z },
+        wheel_direction: { x: wheel_direction.x, y: wheel_direction.y, z: wheel_direction.z },
+        wheel_axle: { x: wheel_axle.x, y: wheel_axle.y, z: wheel_axle.z },
+        suspension_rest_length: suspension_rest_length,
+        wheel_radius: wheel_radius,
+        is_front_wheel: is_front_wheel,
+        tuning: tuning
+      });
+    }
+  }, {
+    key: 'setSteering',
+    value: function setSteering(amount, wheel) {
+      if (wheel !== undefined && this.wheels[wheel] !== undefined) this.world.execute('setSteering', { id: this._physijs.id, wheel: wheel, steering: amount });else if (this.wheels.length > 0) {
+        for (var i = 0; i < this.wheels.length; i++) {
+          this.world.execute('setSteering', { id: this._physijs.id, wheel: i, steering: amount });
+        }
+      }
+    }
+  }, {
+    key: 'setBrake',
+    value: function setBrake(amount, wheel) {
+      if (wheel !== undefined && this.wheels[wheel] !== undefined) this.world.execute('setBrake', { id: this._physijs.id, wheel: wheel, brake: amount });else if (this.wheels.length > 0) {
+        for (var i = 0; i < this.wheels.length; i++) {
+          this.world.execute('setBrake', { id: this._physijs.id, wheel: i, brake: amount });
+        }
+      }
+    }
+  }, {
+    key: 'applyEngineForce',
+    value: function applyEngineForce(amount, wheel) {
+      if (wheel !== undefined && this.wheels[wheel] !== undefined) this.world.execute('applyEngineForce', { id: this._physijs.id, wheel: wheel, force: amount });else if (this.wheels.length > 0) {
+        for (var i = 0; i < this.wheels.length; i++) {
+          this.world.execute('applyEngineForce', { id: this._physijs.id, wheel: i, force: amount });
+        }
+      }
+    }
+  }]);
+
+  return Vehicle;
+}();
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+
+exports.__esModule = true;
+
+var _assign = __webpack_require__(90);
+
+var _assign2 = _interopRequireDefault(_assign);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _assign2.default || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+
+exports.__esModule = true;
+
+var _iterator = __webpack_require__(95);
+
+var _iterator2 = _interopRequireDefault(_iterator);
+
+var _symbol = __webpack_require__(94);
+
+var _symbol2 = _interopRequireDefault(_symbol);
+
+var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.default) === "symbol" ? function (obj) {
+  return typeof obj === "undefined" ? "undefined" : _typeof(obj);
+} : function (obj) {
+  return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
+};
+
+/***/ },
+/* 47 */
+/***/ function(module, exports) {
+
+var toString = {}.toString;
+
+module.exports = function(it){
+  return toString.call(it).slice(8, -1);
+};
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+// optional / simple context binding
+var aFunction = __webpack_require__(102);
+module.exports = function(fn, that, length){
+  aFunction(fn);
+  if(that === undefined)return fn;
+  switch(length){
+    case 1: return function(a){
+      return fn.call(that, a);
+    };
+    case 2: return function(a, b){
+      return fn.call(that, a, b);
+    };
+    case 3: return function(a, b, c){
+      return fn.call(that, a, b, c);
+    };
+  }
+  return function(/* ...args */){
+    return fn.apply(that, arguments);
+  };
+};
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(19)
+  , document = __webpack_require__(7).document
+  // in old IE typeof document.createElement is 'object'
+  , is = isObject(document) && isObject(document.createElement);
+module.exports = function(it){
+  return is ? document.createElement(it) : {};
+};
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = !__webpack_require__(9) && !__webpack_require__(18)(function(){
+  return Object.defineProperty(__webpack_require__(49)('div'), 'a', {get: function(){ return 7; }}).a != 7;
+});
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+var cof = __webpack_require__(47);
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+  return cof(it) == 'String' ? it.split('') : Object(it);
+};
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+'use strict';
+var LIBRARY        = __webpack_require__(28)
+  , $export        = __webpack_require__(14)
+  , redefine       = __webpack_require__(56)
+  , hide           = __webpack_require__(15)
+  , has            = __webpack_require__(10)
+  , Iterators      = __webpack_require__(27)
+  , $iterCreate    = __webpack_require__(108)
+  , setToStringTag = __webpack_require__(31)
+  , getPrototypeOf = __webpack_require__(115)
+  , ITERATOR       = __webpack_require__(16)('iterator')
+  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
+  , FF_ITERATOR    = '@@iterator'
+  , KEYS           = 'keys'
+  , VALUES         = 'values';
+
+var returnThis = function(){ return this; };
+
+module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
+  $iterCreate(Constructor, NAME, next);
+  var getMethod = function(kind){
+    if(!BUGGY && kind in proto)return proto[kind];
+    switch(kind){
+      case KEYS: return function keys(){ return new Constructor(this, kind); };
+      case VALUES: return function values(){ return new Constructor(this, kind); };
+    } return function entries(){ return new Constructor(this, kind); };
+  };
+  var TAG        = NAME + ' Iterator'
+    , DEF_VALUES = DEFAULT == VALUES
+    , VALUES_BUG = false
+    , proto      = Base.prototype
+    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
+    , $default   = $native || getMethod(DEFAULT)
+    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
+    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
+    , methods, key, IteratorPrototype;
+  // Fix native
+  if($anyNative){
+    IteratorPrototype = getPrototypeOf($anyNative.call(new Base));
+    if(IteratorPrototype !== Object.prototype){
+      // Set @@toStringTag to native iterators
+      setToStringTag(IteratorPrototype, TAG, true);
+      // fix for some old engines
+      if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
+    }
+  }
+  // fix Array#{values, @@iterator}.name in V8 / FF
+  if(DEF_VALUES && $native && $native.name !== VALUES){
+    VALUES_BUG = true;
+    $default = function values(){ return $native.call(this); };
+  }
+  // Define iterator
+  if((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
+    hide(proto, ITERATOR, $default);
+  }
+  // Plug for library
+  Iterators[NAME] = $default;
+  Iterators[TAG]  = returnThis;
+  if(DEFAULT){
+    methods = {
+      values:  DEF_VALUES ? $default : getMethod(VALUES),
+      keys:    IS_SET     ? $default : getMethod(KEYS),
+      entries: $entries
+    };
+    if(FORCED)for(key in methods){
+      if(!(key in proto))redefine(proto, key, methods[key]);
+    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
+  }
+  return methods;
+};
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+var pIE            = __webpack_require__(22)
+  , createDesc     = __webpack_require__(23)
+  , toIObject      = __webpack_require__(12)
+  , toPrimitive    = __webpack_require__(35)
+  , has            = __webpack_require__(10)
+  , IE8_DOM_DEFINE = __webpack_require__(50)
+  , gOPD           = Object.getOwnPropertyDescriptor;
+
+exports.f = __webpack_require__(9) ? gOPD : function getOwnPropertyDescriptor(O, P){
+  O = toIObject(O);
+  P = toPrimitive(P, true);
+  if(IE8_DOM_DEFINE)try {
+    return gOPD(O, P);
+  } catch(e){ /* empty */ }
+  if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
+};
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
+var $keys      = __webpack_require__(55)
+  , hiddenKeys = __webpack_require__(26).concat('length', 'prototype');
+
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
+  return $keys(O, hiddenKeys);
+};
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+var has          = __webpack_require__(10)
+  , toIObject    = __webpack_require__(12)
+  , arrayIndexOf = __webpack_require__(104)(false)
+  , IE_PROTO     = __webpack_require__(32)('IE_PROTO');
+
+module.exports = function(object, names){
+  var O      = toIObject(object)
+    , i      = 0
+    , result = []
+    , key;
+  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
+  // Don't enum bug & hidden keys
+  while(names.length > i)if(has(O, key = names[i++])){
+    ~arrayIndexOf(result, key) || result.push(key);
+  }
+  return result;
+};
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(15);
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+// 7.1.13 ToObject(argument)
+var defined = __webpack_require__(25);
+module.exports = function(it){
+  return Object(defined(it));
+};
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(6);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ConeTwistConstraint; });
+
+
+
+
+var ConeTwistConstraint = function () {
+  function ConeTwistConstraint(obja, objb, position) {
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, ConeTwistConstraint);
+
+    var objecta = obja;
+    var objectb = obja;
+
+    if (position === undefined) console.error('Both objects must be defined in a ConeTwistConstraint.');
+
+    this.type = 'conetwist';
+    this.appliedImpulse = 0;
+    this.scene = objecta.parent;
+    this.objecta = objecta._physijs.id;
+    this.positiona = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objecta).clone();
+    this.objectb = objectb._physijs.id;
+    this.positionb = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objectb).clone();
+    this.axisa = { x: objecta.rotation.x, y: objecta.rotation.y, z: objecta.rotation.z };
+    this.axisb = { x: objectb.rotation.x, y: objectb.rotation.y, z: objectb.rotation.z };
+  }
+
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(ConeTwistConstraint, [{
+    key: 'getDefinition',
+    value: function getDefinition() {
+      return {
+        type: this.type,
+        id: this.id,
+        objecta: this.objecta,
+        objectb: this.objectb,
+        positiona: this.positiona,
+        positionb: this.positionb,
+        axisa: this.axisa,
+        axisb: this.axisb
+      };
+    }
+  }, {
+    key: 'setLimit',
+    value: function setLimit(x, y, z) {
+      this.scene.execute('conetwist_setLimit', { constraint: this.id, x: x, y: y, z: z });
+    }
+  }, {
+    key: 'enableMotor',
+    value: function enableMotor() {
+      this.scene.execute('conetwist_enableMotor', { constraint: this.id });
+    }
+  }, {
+    key: 'setMaxMotorImpulse',
+    value: function setMaxMotorImpulse(max_impulse) {
+      this.scene.execute('conetwist_setMaxMotorImpulse', { constraint: this.id, max_impulse: max_impulse });
+    }
+  }, {
+    key: 'setMotorTarget',
+    value: function setMotorTarget(target) {
+      if (target instanceof THREE.Vector3) target = new THREE.Quaternion().setFromEuler(new THREE.Euler(target.x, target.y, target.z));else if (target instanceof THREE.Euler) target = new THREE.Quaternion().setFromEuler(target);else if (target instanceof THREE.Matrix4) target = new THREE.Quaternion().setFromRotationMatrix(target);
+
+      this.scene.execute('conetwist_setMotorTarget', {
+        constraint: this.id,
+        x: target.x,
+        y: target.y,
+        z: target.z,
+        w: target.w
+      });
+    }
+  }]);
+
+  return ConeTwistConstraint;
+}();
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(6);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return DOFConstraint; });
+
+
+
+
+var DOFConstraint = function () {
+  function DOFConstraint(obja, objb, position) {
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, DOFConstraint);
+
+    var objecta = obja;
+    var objectb = objb;
+
+    if (position === undefined) {
+      position = objectb;
+      objectb = undefined;
+    }
+
+    this.type = 'dof';
+    this.appliedImpulse = 0;
+    this.scene = objecta.parent;
+    this.objecta = objecta._physijs.id;
+    this.positiona = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objecta).clone();
+    this.axisa = { x: objecta.rotation.x, y: objecta.rotation.y, z: objecta.rotation.z };
+
+    if (objectb) {
+      this.objectb = objectb._physijs.id;
+      this.positionb = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objectb).clone();
+      this.axisb = { x: objectb.rotation.x, y: objectb.rotation.y, z: objectb.rotation.z };
+    }
+  }
+
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(DOFConstraint, [{
+    key: 'getDefinition',
+    value: function getDefinition() {
+      return {
+        type: this.type,
+        id: this.id,
+        objecta: this.objecta,
+        objectb: this.objectb,
+        positiona: this.positiona,
+        positionb: this.positionb,
+        axisa: this.axisa,
+        axisb: this.axisb
+      };
+    }
+  }, {
+    key: 'setLinearLowerLimit',
+    value: function setLinearLowerLimit(limit) {
+      this.scene.execute('dof_setLinearLowerLimit', { constraint: this.id, x: limit.x, y: limit.y, z: limit.z });
+    }
+  }, {
+    key: 'setLinearUpperLimit',
+    value: function setLinearUpperLimit(limit) {
+      this.scene.execute('dof_setLinearUpperLimit', { constraint: this.id, x: limit.x, y: limit.y, z: limit.z });
+    }
+  }, {
+    key: 'setAngularLowerLimit',
+    value: function setAngularLowerLimit(limit) {
+      this.scene.execute('dof_setAngularLowerLimit', { constraint: this.id, x: limit.x, y: limit.y, z: limit.z });
+    }
+  }, {
+    key: 'setAngularUpperLimit',
+    value: function setAngularUpperLimit(limit) {
+      this.scene.execute('dof_setAngularUpperLimit', { constraint: this.id, x: limit.x, y: limit.y, z: limit.z });
+    }
+  }, {
+    key: 'enableAngularMotor',
+    value: function enableAngularMotor(which) {
+      this.scene.execute('dof_enableAngularMotor', { constraint: this.id, which: which });
+    }
+  }, {
+    key: 'configureAngularMotor',
+    value: function configureAngularMotor(which, low_angle, high_angle, velocity, max_force) {
+      this.scene.execute('dof_configureAngularMotor', { constraint: this.id, which: which, low_angle: low_angle, high_angle: high_angle, velocity: velocity, max_force: max_force });
+    }
+  }, {
+    key: 'disableAngularMotor',
+    value: function disableAngularMotor(which) {
+      this.scene.execute('dof_disableAngularMotor', { constraint: this.id, which: which });
+    }
+  }]);
+
+  return DOFConstraint;
+}();
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(6);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return HingeConstraint; });
+
+
+
+
+var HingeConstraint = function () {
+  function HingeConstraint(obja, objb, position, axis) {
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, HingeConstraint);
+
+    var objecta = obja;
+    var objectb = objb;
+
+    if (axis === undefined) {
+      axis = position;
+      position = objectb;
+      objectb = undefined;
+    }
+
+    this.type = 'hinge';
+    this.appliedImpulse = 0;
+    this.scene = objecta.parent;
+    this.objecta = objecta._physijs.id;
+    this.positiona = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objecta).clone();
+    this.position = position.clone();
+    this.axis = axis;
+
+    if (objectb) {
+      this.objectb = objectb._physijs.id;
+      this.positionb = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objectb).clone();
+    }
+  }
+
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(HingeConstraint, [{
+    key: 'getDefinition',
+    value: function getDefinition() {
+      return {
+        type: this.type,
+        id: this.id,
+        objecta: this.objecta,
+        objectb: this.objectb,
+        positiona: this.positiona,
+        positionb: this.positionb,
+        axis: this.axis
+      };
+    }
+  }, {
+    key: 'setLimits',
+    value: function setLimits(low, high, bias_factor, relaxation_factor) {
+      this.scene.execute('hinge_setLimits', {
+        constraint: this.id,
+        low: low,
+        high: high,
+        bias_factor: bias_factor,
+        relaxation_factor: relaxation_factor
+      });
+    }
+  }, {
+    key: 'enableAngularMotor',
+    value: function enableAngularMotor(velocity, acceleration) {
+      this.scene.execute('hinge_enableAngularMotor', {
+        constraint: this.id,
+        velocity: velocity,
+        acceleration: acceleration
+      });
+    }
+  }, {
+    key: 'disableMotor',
+    value: function disableMotor() {
+      this.scene.execute('hinge_disableMotor', { constraint: this.id });
+    }
+  }]);
+
+  return HingeConstraint;
+}();
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(6);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return PointConstraint; });
+
+
+
+
+var PointConstraint = function () {
+  function PointConstraint(obja, objb, position) {
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, PointConstraint);
+
+    var objecta = obja;
+    var objectb = objb;
+
+    if (position === undefined) {
+      position = objectb;
+      objectb = undefined;
+    }
+
+    this.type = 'point';
+    this.appliedImpulse = 0;
+    this.objecta = objecta._physijs.id;
+    this.positiona = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objecta).clone();
+
+    if (objectb) {
+      this.objectb = objectb._physijs.id;
+      this.positionb = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objectb).clone();
+    }
+  }
+
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(PointConstraint, [{
+    key: 'getDefinition',
+    value: function getDefinition() {
+      return {
+        type: this.type,
+        id: this.id,
+        objecta: this.objecta,
+        objectb: this.objectb,
+        positiona: this.positiona,
+        positionb: this.positionb
+      };
+    }
+  }]);
+
+  return PointConstraint;
+}();
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__api__ = __webpack_require__(6);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return SliderConstraint; });
+
+
+
+
+var SliderConstraint = function () {
+  function SliderConstraint(obja, objb, position, axis) {
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, SliderConstraint);
+
+    var objecta = obja;
+    var objectb = objb;
+
+    if (axis === undefined) {
+      axis = position;
+      position = objectb;
+      objectb = undefined;
+    }
+
+    this.type = 'slider';
+    this.appliedImpulse = 0;
+    this.scene = objecta.parent;
+    this.objecta = objecta._physijs.id;
+    this.positiona = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objecta).clone();
+    this.axis = axis;
+
+    if (objectb) {
+      this.objectb = objectb._physijs.id;
+      this.positionb = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__api__["m" /* convertWorldPositionToObject */])(position, objectb).clone();
+    }
+  }
+
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(SliderConstraint, [{
+    key: 'getDefinition',
+    value: function getDefinition() {
+      return {
+        type: this.type,
+        id: this.id,
+        objecta: this.objecta,
+        objectb: this.objectb,
+        positiona: this.positiona,
+        positionb: this.positionb,
+        axis: this.axis
+      };
+    }
+  }, {
+    key: 'setLimits',
+    value: function setLimits(lin_lower, lin_upper, ang_lower, ang_upper) {
+      this.scene.execute('slider_setLimits', {
+        constraint: this.id,
+        lin_lower: lin_lower,
+        lin_upper: lin_upper,
+        ang_lower: ang_lower,
+        ang_upper: ang_upper
+      });
+    }
+  }, {
+    key: 'setRestitution',
+    value: function setRestitution(linear, angular) {
+      this.scene.execute('slider_setRestitution', {
+        constraint: this.id,
+        linear: linear,
+        angular: angular
+      });
+    }
+  }, {
+    key: 'enableLinearMotor',
+    value: function enableLinearMotor(velocity, acceleration) {
+      this.scene.execute('slider_enableLinearMotor', {
+        constraint: this.id,
+        velocity: velocity,
+        acceleration: acceleration
+      });
+    }
+  }, {
+    key: 'disableLinearMotor',
+    value: function disableLinearMotor() {
+      this.scene.execute('slider_disableLinearMotor', { constraint: this.id });
+    }
+  }, {
+    key: 'enableAngularMotor',
+    value: function enableAngularMotor(velocity, acceleration) {
+      this.scene.execute('slider_enableAngularMotor', {
+        constraint: this.id,
+        velocity: velocity,
+        acceleration: acceleration
+      });
+    }
+  }, {
+    key: 'disableAngularMotor',
+    value: function disableAngularMotor() {
+      this.scene.execute('slider_disableAngularMotor', { constraint: this.id });
+    }
+  }]);
+
+  return SliderConstraint;
+}();
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ConeTwistConstraint__ = __webpack_require__(58);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__ConeTwistConstraint__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__HingeConstraint__ = __webpack_require__(60);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__HingeConstraint__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PointConstraint__ = __webpack_require__(61);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__PointConstraint__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__SliderConstraint__ = __webpack_require__(62);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "d", function() { return __WEBPACK_IMPORTED_MODULE_3__SliderConstraint__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__DOFConstraint__ = __webpack_require__(59);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "e", function() { return __WEBPACK_IMPORTED_MODULE_4__DOFConstraint__["a"]; });
+
+
+
+
 
 
 /***/ },
@@ -3107,7 +3118,206 @@ function PhysicsComponent(targetComponent) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mesh__ = __webpack_require__(4);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__mesh__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__scene__ = __webpack_require__(39);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__scene__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line__ = __webpack_require__(38);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__line__["a"]; });
+
+
+
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core_scene__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_three__);
+/* harmony export (immutable) */ exports["a"] = createWorld;
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return $world; });
+
+
+
+function createWorld() {
+  var scene = new __WEBPACK_IMPORTED_MODULE_0__core_scene__["a" /* Scene */]({
+    fixedTimeStep: this.params.physics.fixedTimeStep,
+    broadphase: this.params.physics.broadphase
+  }, {
+    stats: this.params.stats,
+    world: this,
+    softbody: this.params.softbody
+  });
+
+  scene.setGravity(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](this.params.gravity.x, this.params.gravity.y, this.params.gravity.z));
+
+  scene.simulate();
+
+  return scene;
+}
+
+var $world = function $world(target) {
+  target.defaults.physics.create = createWorld;
+  return target;
+};
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__meshes_Box__ = __webpack_require__(67);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__meshes_Box__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__meshes_Convex__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__meshes_Convex__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__meshes_ConvexConcave__ = __webpack_require__(69);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__meshes_ConvexConcave__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__meshes_Custom__ = __webpack_require__(70);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "d", function() { return __WEBPACK_IMPORTED_MODULE_3__meshes_Custom__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__meshes_Cylinder__ = __webpack_require__(71);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "e", function() { return __WEBPACK_IMPORTED_MODULE_4__meshes_Cylinder__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__meshes_Rope__ = __webpack_require__(73);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "f", function() { return __WEBPACK_IMPORTED_MODULE_5__meshes_Rope__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__meshes_Plane__ = __webpack_require__(72);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "g", function() { return __WEBPACK_IMPORTED_MODULE_6__meshes_Plane__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__meshes_Sphere__ = __webpack_require__(74);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "h", function() { return __WEBPACK_IMPORTED_MODULE_7__meshes_Sphere__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__World__ = __webpack_require__(65);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "i", function() { return __WEBPACK_IMPORTED_MODULE_8__World__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "j", function() { return __WEBPACK_IMPORTED_MODULE_8__World__["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__rigidbody__ = __webpack_require__(40);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "k", function() { return __WEBPACK_IMPORTED_MODULE_9__rigidbody__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "l", function() { return __WEBPACK_IMPORTED_MODULE_9__rigidbody__["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__softbody__ = __webpack_require__(75);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "m", function() { return __WEBPACK_IMPORTED_MODULE_10__softbody__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "n", function() { return __WEBPACK_IMPORTED_MODULE_10__softbody__["b"]; });
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
+/* harmony export (immutable) */ exports["a"] = BOX;
+
+
+function BOX(params, material) {
+  return new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["BoxMesh"])(this.buildGeometry(params), material, params);
+}
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
+/* harmony export (immutable) */ exports["a"] = CONVEX;
+
+
+function CONVEX(params, material) {
+  return new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["ConvexMesh"])(this.buildGeometry(params), material, params);
+}
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
+/* harmony export (immutable) */ exports["a"] = CONVEX_CONCAVE;
+
+
+function CONVEX_CONCAVE(params, material) {
+  return new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : this.physics.type === 'concave' ? __WEBPACK_IMPORTED_MODULE_0__index_js__["ConcaveMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["ConvexMesh"])(this.buildGeometry(params), material, params);
+}
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
+/* harmony export (immutable) */ exports["a"] = CUSTOM;
+
+
+function CUSTOM(params, material, geometry) {
+  var geometry2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+  return geometry2 ? new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : params.physics.type === 'concave' ? __WEBPACK_IMPORTED_MODULE_0__index_js__["ConcaveMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["ConvexMesh"])(geometry, material, params, geometry2) : new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : params.physics.type === 'concave' ? __WEBPACK_IMPORTED_MODULE_0__index_js__["ConcaveMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["ConvexMesh"])(geometry, material, params, geometry2);
+}
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
+/* harmony export (immutable) */ exports["a"] = CYLINDER;
+
+
+function CYLINDER(params, material) {
+  return new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["CylinderMesh"])(this.buildGeometry(params), material, params);
+}
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
+/* harmony export (immutable) */ exports["a"] = createPlane;
+
+
+function createPlane(params, material) {
+  return new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["ClothMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["PlaneMesh"])(this.buildGeometry(params), material, params);
+}
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
+/* harmony export (immutable) */ exports["a"] = ROPE;
+
+
+function ROPE(params, material) {
+  return new __WEBPACK_IMPORTED_MODULE_0__index_js__["RopeMesh"](this.buildGeometry(params), material, params);
+}
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
+/* harmony export (immutable) */ exports["a"] = SPHERE;
+
+
+function SPHERE(params, material) {
+  return new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["SphereMesh"])(this.buildGeometry(params), material, params);
+}
+
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
@@ -3117,9 +3327,12 @@ function PhysicsComponent(targetComponent) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_ComponentUtils__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_extend__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_ComponentUtils__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__rigidbody__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_extend__ = __webpack_require__(42);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return SoftbodyComponent; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return $softBody; });
+
 
 
 
@@ -3131,6 +3344,7 @@ function PhysicsComponent(targetComponent) {
 function SoftbodyComponent(targetComponent) {
   var _class, _temp;
 
+  targetComponent = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__rigidbody__["a" /* RigidbodyComponent */])(targetComponent);
   var resultComponent = (_temp = _class = function (_targetComponent) {
     __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(SoftbodyComponentEnhance, _targetComponent);
 
@@ -3198,7 +3412,7 @@ function SoftbodyComponent(targetComponent) {
     }]);
 
     return SoftbodyComponentEnhance;
-  }(targetComponent), _class.defautls = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__utils_extend__["a" /* extend */])(targetComponent.defaults, {
+  }(targetComponent), _class.defautls = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__utils_extend__["a" /* extend */])(targetComponent.defaults, {
     softbody: false
   }), _temp);
 
@@ -3212,198 +3426,14 @@ function SoftbodyComponent(targetComponent) {
   return resultComponent;
 }
 
+var $softBody = function $softBody(target, create) {
+  var result = SoftbodyComponent(target);
+  result.defaults.physics.create = create;
+
+  return result;
+};
 
 
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mesh__ = __webpack_require__(4);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__mesh__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__scene__ = __webpack_require__(39);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__scene__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line__ = __webpack_require__(38);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__line__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PhysicsComponent__ = __webpack_require__(63);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "d", function() { return __WEBPACK_IMPORTED_MODULE_3__PhysicsComponent__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__SoftbodyComponent__ = __webpack_require__(64);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "e", function() { return __WEBPACK_IMPORTED_MODULE_4__SoftbodyComponent__["a"]; });
-
-
-
-
-
-
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core_scene__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_three__);
-/* harmony export (immutable) */ exports["a"] = createWorld;
-
-
-
-function createWorld() {
-  var scene = new __WEBPACK_IMPORTED_MODULE_0__core_scene__["a" /* Scene */]({
-    fixedTimeStep: this.params.physics.fixedTimeStep,
-    broadphase: this.params.physics.broadphase,
-    ammo: this.params.physics.ammo
-  }, {
-    stats: this.params.stats,
-    world: this,
-    softbody: this.params.softbody
-  });
-
-  scene.setGravity(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](this.params.gravity.x, this.params.gravity.y, this.params.gravity.z));
-
-  scene.simulate();
-
-  return scene;
-}
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__meshes_Box__ = __webpack_require__(68);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__meshes_Box__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__meshes_Convex__ = __webpack_require__(69);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__meshes_Convex__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__meshes_ConvexConcave__ = __webpack_require__(70);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__meshes_ConvexConcave__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__meshes_ConvexConcaveCustom__ = __webpack_require__(71);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "d", function() { return __WEBPACK_IMPORTED_MODULE_3__meshes_ConvexConcaveCustom__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__meshes_Cylinder__ = __webpack_require__(72);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "e", function() { return __WEBPACK_IMPORTED_MODULE_4__meshes_Cylinder__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__meshes_Line__ = __webpack_require__(73);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "f", function() { return __WEBPACK_IMPORTED_MODULE_5__meshes_Line__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__meshes_Plane__ = __webpack_require__(74);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "g", function() { return __WEBPACK_IMPORTED_MODULE_6__meshes_Plane__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__meshes_Sphere__ = __webpack_require__(75);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "h", function() { return __WEBPACK_IMPORTED_MODULE_7__meshes_Sphere__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__World__ = __webpack_require__(66);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "i", function() { return __WEBPACK_IMPORTED_MODULE_8__World__["a"]; });
-
-
-
-
-
-
-
-
-
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
-/* harmony export (immutable) */ exports["a"] = createBox;
-
-
-function createBox(params, material) {
-  return new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["BoxMesh"])(this.buildGeometry(params), material, params);
-}
-
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
-/* harmony export (immutable) */ exports["a"] = createConvex;
-
-
-function createConvex(params, material) {
-  return new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["ConvexMesh"])(this.buildGeometry(params), material, params);
-}
-
-/***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
-/* harmony export (immutable) */ exports["a"] = createConvexConcave;
-
-
-function createConvexConcave(params, material) {
-  return new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : this.physics.type === 'concave' ? __WEBPACK_IMPORTED_MODULE_0__index_js__["ConcaveMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["ConvexMesh"])(this.buildGeometry(params), material, params);
-}
-
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
-/* harmony export (immutable) */ exports["a"] = createConvexConcaveCustom;
-
-
-function createConvexConcaveCustom(params, material, geometry) {
-  var geometry2 = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-  return geometry2 ? new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : this.physics.type === 'concave' ? __WEBPACK_IMPORTED_MODULE_0__index_js__["ConcaveMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["ConvexMesh"])(geometry, material, params, geometry2) : new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : this.physics.type === 'concave' ? __WEBPACK_IMPORTED_MODULE_0__index_js__["ConcaveMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["ConvexMesh"])(geometry, material, params, geometry2);
-}
-
-/***/ },
-/* 72 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
-/* harmony export (immutable) */ exports["a"] = createCylinder;
-
-
-function createCylinder(params, material) {
-  return new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["CylinderMesh"])(this.buildGeometry(params), material, params);
-}
-
-/***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
-/* harmony export (immutable) */ exports["a"] = createLine;
-
-
-function createLine(params, material) {
-  return new __WEBPACK_IMPORTED_MODULE_0__index_js__["RopeMesh"](this.buildGeometry(params), material, params);
-}
-
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
-/* harmony export (immutable) */ exports["a"] = createPlane;
-
-
-function createPlane(params, material) {
-  return new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["ClothMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["PlaneMesh"])(this.buildGeometry(params), material, params);
-}
-
-/***/ },
-/* 75 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_js__ = __webpack_require__(5);
-/* harmony export (immutable) */ exports["a"] = createSphere;
-
-
-function createSphere(params, material) {
-  return new (params.softbody ? __WEBPACK_IMPORTED_MODULE_0__index_js__["SoftMesh"] : __WEBPACK_IMPORTED_MODULE_0__index_js__["SphereMesh"])(this.buildGeometry(params), material, params);
-}
 
 /***/ },
 /* 76 */
@@ -4332,9 +4362,9 @@ var SphereMesh = function (_Mesh) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tunning__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tunning__ = __webpack_require__(43);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__tunning__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vehicle__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vehicle__ = __webpack_require__(44);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__vehicle__["a"]; });
 
 
@@ -4499,7 +4529,7 @@ module.exports = __webpack_require__(7).document && document.documentElement;
 /***/ function(module, exports, __webpack_require__) {
 
 // 7.2.2 IsArray(argument)
-var cof = __webpack_require__(46);
+var cof = __webpack_require__(47);
 module.exports = Array.isArray || function isArray(arg){
   return cof(arg) == 'Array';
 };
@@ -4614,8 +4644,8 @@ var meta = module.exports = {
 var getKeys  = __webpack_require__(20)
   , gOPS     = __webpack_require__(30)
   , pIE      = __webpack_require__(22)
-  , toObject = __webpack_require__(56)
-  , IObject  = __webpack_require__(50)
+  , toObject = __webpack_require__(57)
+  , IObject  = __webpack_require__(51)
   , $assign  = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
@@ -4667,7 +4697,7 @@ module.exports = __webpack_require__(9) ? Object.defineProperties : function def
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 var toIObject = __webpack_require__(12)
-  , gOPN      = __webpack_require__(53).f
+  , gOPN      = __webpack_require__(54).f
   , toString  = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
@@ -4692,7 +4722,7 @@ module.exports.f = function getOwnPropertyNames(it){
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has         = __webpack_require__(10)
-  , toObject    = __webpack_require__(56)
+  , toObject    = __webpack_require__(57)
   , IE_PROTO    = __webpack_require__(32)('IE_PROTO')
   , ObjectProto = Object.prototype;
 
@@ -4720,7 +4750,7 @@ module.exports = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
     function(test, buggy, set){
       try {
-        set = __webpack_require__(47)(Function.call, __webpack_require__(52).f(Object.prototype, '__proto__').set, 2);
+        set = __webpack_require__(48)(Function.call, __webpack_require__(53).f(Object.prototype, '__proto__').set, 2);
         set(test, []);
         buggy = !(test instanceof Array);
       } catch(e){ buggy = true; }
@@ -4794,7 +4824,7 @@ var addToUnscopables = __webpack_require__(103)
 // 22.1.3.13 Array.prototype.keys()
 // 22.1.3.29 Array.prototype.values()
 // 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = __webpack_require__(51)(Array, 'Array', function(iterated, kind){
+module.exports = __webpack_require__(52)(Array, 'Array', function(iterated, kind){
   this._t = toIObject(iterated); // target
   this._i = 0;                   // next index
   this._k = kind;                // kind
@@ -4867,7 +4897,7 @@ $export($export.S, 'Object', {setPrototypeOf: __webpack_require__(116).set});
 var $at  = __webpack_require__(117)(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
-__webpack_require__(51)(String, 'String', function(iterated){
+__webpack_require__(52)(String, 'String', function(iterated){
   this._t = String(iterated); // target
   this._i = 0;                // next index
 // 21.1.5.2.1 %StringIteratorPrototype%.next()
@@ -4892,7 +4922,7 @@ var global         = __webpack_require__(7)
   , has            = __webpack_require__(10)
   , DESCRIPTORS    = __webpack_require__(9)
   , $export        = __webpack_require__(14)
-  , redefine       = __webpack_require__(55)
+  , redefine       = __webpack_require__(56)
   , META           = __webpack_require__(111).KEY
   , $fails         = __webpack_require__(18)
   , shared         = __webpack_require__(33)
@@ -4910,7 +4940,7 @@ var global         = __webpack_require__(7)
   , createDesc     = __webpack_require__(23)
   , _create        = __webpack_require__(29)
   , gOPNExt        = __webpack_require__(114)
-  , $GOPD          = __webpack_require__(52)
+  , $GOPD          = __webpack_require__(53)
   , $DP            = __webpack_require__(11)
   , $keys          = __webpack_require__(20)
   , gOPD           = $GOPD.f
@@ -5035,7 +5065,7 @@ if(!USE_NATIVE){
 
   $GOPD.f = $getOwnPropertyDescriptor;
   $DP.f   = $defineProperty;
-  __webpack_require__(53).f = gOPNExt.f = $getOwnPropertyNames;
+  __webpack_require__(54).f = gOPNExt.f = $getOwnPropertyNames;
   __webpack_require__(22).f  = $propertyIsEnumerable;
   __webpack_require__(30).f = $getOwnPropertySymbols;
 
