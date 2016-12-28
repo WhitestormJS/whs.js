@@ -3,6 +3,10 @@ import * as UTILS from './globals';
 const world = new (PHYSICS.$world(WHS.World))({
   ...UTILS.$world,
 
+  physics: {
+    ammo: '{{ ammojs }}'
+  },
+
   gravity: {
     x: 0,
     y: -100,

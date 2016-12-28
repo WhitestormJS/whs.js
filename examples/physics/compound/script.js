@@ -9,9 +9,14 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world));
+var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
 
-var sphere = new WHS.Sphere({ // Create sphere comonent.
+  physics: {
+    ammo: 'http://localhost:8001/vendor/ammo.js'
+  }
+}));
+
+var sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,
@@ -28,7 +33,7 @@ var sphere = new WHS.Sphere({ // Create sphere comonent.
   position: [0, 100, 0]
 });
 
-var box = new WHS.Box({ // Create sphere comonent.
+var box = new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({ // Create sphere comonent.
   geometry: [2, 2, 2],
 
   mass: 10, // Mass of physics object.

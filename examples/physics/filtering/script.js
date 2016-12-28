@@ -9,9 +9,17 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world));
+var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
 
-var sphere = new WHS.Sphere({ // Create sphere comonent.
+  physics: {
+    ammo: 'http://localhost:8001/vendor/ammo.js'
+  }
+}));
+
+var PhysicsSphere = PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE);
+var PhysicsBox = PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX);
+
+var sphere = new PhysicsSphere({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,
@@ -35,7 +43,7 @@ var sphere = new WHS.Sphere({ // Create sphere comonent.
 
 sphere.addTo(world);
 
-var sphere2 = new WHS.Sphere({ // Create sphere comonent.
+var sphere2 = new PhysicsSphere({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,
@@ -66,12 +74,12 @@ UTILS.addPlane(world).then(function (o) {
     mass: 0
   };
 
-  new WHS.Box(_extends({}, planeParams, {
+  new PhysicsBox(_extends({}, planeParams, {
     rotation: [0, 0, -Math.PI / 4],
     position: [-20, 3, 0]
   })).addTo(world);
 
-  new WHS.Box(_extends({}, planeParams, {
+  new PhysicsBox(_extends({}, planeParams, {
     rotation: [0, 0, Math.PI / 4],
     position: [20, 3, 0]
   })).addTo(world);

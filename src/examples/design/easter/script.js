@@ -87,7 +87,7 @@ const egg = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONVEX2))({
   }
 });
 
-const rabbit = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONVEX2))({
+const rabbit = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONCAVE2))({
   geometry: {
     path: '{{ assets }}/models/easter/rabbit.json',
     physics: '{{ assets }}/models/easter/rabbit_low.json'

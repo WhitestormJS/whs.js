@@ -2,6 +2,11 @@ import * as UTILS from './globals';
 
 window.world = new (PHYSICS.$world(WHS.World))({
   ...UTILS.$world,
+
+  physics: {
+    ammo: '{{ ammojs }}'
+  },
+
   autoresize: { delay: 50 },
 
   height: 300,

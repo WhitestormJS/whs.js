@@ -35,7 +35,10 @@ const
         assets: '../../_assets',
         physicsModule: argv.devPhysics ?
           `http://localhost:${argv.devPhysics}/physics-module.js`
-          : '../../../vendor/physics-module.js'
+          : '../../../vendor/physics-module.js',
+        ammojs: argv.devPhysics ?
+          `http://localhost:${argv.devPhysics}/vendor/ammo.js`
+          : '../../../vendor/ammo.js'
       }
     }
   };

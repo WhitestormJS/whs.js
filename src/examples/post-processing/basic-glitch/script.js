@@ -7,6 +7,10 @@ const conf = {
   world: {
     ...UTILS.$world,
 
+    physics: {
+      ammo: '{{ ammojs }}'
+    },
+
     camera: {
       far: 10000,
       position: [0, 10, 30]
@@ -253,7 +257,7 @@ class Game {
   }
 
   createGeometry() {
-    this.sphere = new WHS.Sphere(this.options.sphere);
+    this.sphere = new (PHYSICS.$rigidBody(WHS.Wphere, PHYSICS.SPHERE))(this.options.sphere);
     this.sphere.addTo(this.world);
   }
 

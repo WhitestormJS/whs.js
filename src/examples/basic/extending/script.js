@@ -60,6 +60,10 @@ WHS.Component.prototype.changeColor = function (world) {
 const world = new (PHYSICS.$world(WHS.World))({
   ...UTILS.$world,
 
+  physics: {
+    ammo: '{{ ammojs }}'
+  },
+
   camera: {
     far: 10000,
     position: [0, 10, 30]

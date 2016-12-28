@@ -23,6 +23,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var conf = {
   world: _extends({}, UTILS.$world, {
 
+    physics: {
+      ammo: 'http://localhost:8001/vendor/ammo.js'
+    },
+
     camera: {
       far: 10000,
       position: [0, 10, 30]
@@ -211,7 +215,7 @@ var Game = function () {
   }, {
     key: 'createGeometry',
     value: function createGeometry() {
-      this.sphere = new WHS.Sphere(this.options.sphere);
+      this.sphere = new (PHYSICS.$rigidBody(WHS.Wphere, PHYSICS.SPHERE))(this.options.sphere);
       this.sphere.addTo(this.world);
     }
   }, {
