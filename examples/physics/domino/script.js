@@ -11,13 +11,17 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
 
+  physics: {
+    ammo: 'http://localhost:8001/vendor/ammo.js'
+  },
+
   camera: {
     far: 10000,
     position: [62, 30, 130]
   }
 }));
 
-new WHS.Sphere({
+new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
   geometry: [4, 32, 32],
 
   mass: 5,
@@ -31,7 +35,9 @@ new WHS.Sphere({
   position: [0, 100, 0]
 }).addTo(world);
 
-var tramplin = new WHS.Box({
+var PhysicsBox = PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX);
+
+var tramplin = new PhysicsBox({
   geometry: {
     height: 2,
     width: 20,
@@ -70,7 +76,7 @@ tramplin3.position.set(24, 24, 0);
 tramplin3.rotation.z = Math.PI / 6;
 tramplin3.addTo(world);
 
-var domino = new WHS.Box({
+var domino = new PhysicsBox({
   geometry: {
     height: 8,
     width: 1,

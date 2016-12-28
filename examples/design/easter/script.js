@@ -90,7 +90,7 @@ var egg = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONVEX2))({
   }
 });
 
-var rabbit = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONVEX2))({
+var rabbit = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONCAVE2))({
   geometry: {
     path: '../../_assets/models/easter/rabbit.json',
     physics: '../../_assets/models/easter/rabbit_low.json'

@@ -1,10 +1,14 @@
 import * as UTILS from './globals';
 
 const world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world
+  ...UTILS.$world,
+
+  physics: {
+    ammo: '{{ ammojs }}'
+  }
 });
 
-const sphere = new WHS.Sphere({ // Create sphere comonent.
+const sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,
@@ -21,7 +25,7 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
   position: [0, 100, 0]
 });
 
-const box = new WHS.Box({ // Create sphere comonent.
+const box = new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({ // Create sphere comonent.
   geometry: [2, 2, 2],
 
   mass: 10, // Mass of physics object.
