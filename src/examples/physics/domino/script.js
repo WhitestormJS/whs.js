@@ -3,13 +3,17 @@ import * as UTILS from './globals';
 const world = new (PHYSICS.$world(WHS.World))({
   ...UTILS.$world,
 
+  physics: {
+    ammo: '{{ ammojs }}'
+  },
+
   camera: {
     far: 10000,
     position: [62, 30, 130]
   }
 });
 
-new WHS.Sphere({
+new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
   geometry: [4, 32, 32],
 
   mass: 5,
@@ -23,7 +27,9 @@ new WHS.Sphere({
   position: [0, 100, 0]
 }).addTo(world);
 
-const tramplin = new WHS.Box({
+const PhysicsBox = PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX);
+
+const tramplin = new PhysicsBox({
   geometry: {
     height: 2,
     width: 20,
@@ -62,7 +68,7 @@ tramplin3.position.set(24, 24, 0);
 tramplin3.rotation.z = Math.PI / 6;
 tramplin3.addTo(world);
 
-const domino = new WHS.Box({
+const domino = new PhysicsBox({
   geometry: {
     height: 8,
     width: 1,

@@ -76,7 +76,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     devtool: isProduction ? false : 'source-map',
     cache: true,
     entry: [
-      'babel-polyfill',
+      // 'babel-polyfill',
       `${frameworkSrc}/index.js`
     ],
     target: 'web',
@@ -94,7 +94,7 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     devtool: isProduction ? false : 'source-map',
     cache: true,
     entry: [
-      'babel-polyfill',
+      // 'babel-polyfill',
       `${frameworkSrc}/index.js`
     ],
     target: 'web',

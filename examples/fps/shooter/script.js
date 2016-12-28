@@ -11,6 +11,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
 
+  physics: {
+    ammo: 'http://localhost:8001/vendor/ammo.js'
+  },
+
   camera: {
     position: {
       z: 10
@@ -18,7 +22,7 @@ var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
   }
 }));
 
-var sphere = new WHS.Sphere({ // Create sphere comonent.
+var sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,
@@ -39,8 +43,10 @@ sphere.addTo(world);
 
 var material = new THREE.MeshPhongMaterial({ color: UTILS.$colors.mesh });
 
+var PhysicsBox = PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX);
+
 for (var i = 0; i < 10; i++) {
-  new WHS.Box({
+  new PhysicsBox({
     geometry: [10 + Math.random() * 90, 10 + Math.random() * 90, 10 + Math.random() * 90],
     material: material,
     position: [Math.random() * 1000 - 500, 100, Math.random() * 1000 - 500]
