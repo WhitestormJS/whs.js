@@ -1,7 +1,14 @@
 import * as UTILS from './globals';
 
-window.world = new (PHYSICS.$world(WHS.World))({
+window.world = new (PHYSICS.$world(WHS.App))({
   ...UTILS.$world,
+
+  modules: [
+    new WHS.modules.ElementModule(),
+    new WHS.modules.SceneModule(),
+    new WHS.modules.RenderingModule(),
+    new WHS.modules.CameraModule()
+  ],
 
   physics: {
     ammo: '{{ ammojs }}'
