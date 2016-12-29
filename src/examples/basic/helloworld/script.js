@@ -5,10 +5,6 @@ window.world = new (PHYSICS.$world(WHS.World))({
 
   physics: {
     ammo: '{{ ammojs }}'
-  },
-
-  physics: {
-    ammo: '{{ ammojs }}'
   }
 });
 
