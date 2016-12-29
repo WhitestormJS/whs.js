@@ -4,6 +4,10 @@
 var world = new (PHYSICS.$world(WHS.World))({
   autoresize: "window",
 
+  physics: {
+    ammo: 'http://localhost:8001/vendor/ammo.js'
+  },
+
   gravity: {
     x: 0,
     y: -10,

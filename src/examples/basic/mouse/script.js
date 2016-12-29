@@ -1,7 +1,11 @@
 import * as UTILS from './globals';
 
 const world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world
+  ...UTILS.$world,
+
+  physics: {
+    ammo: '{{ ammojs }}'
+  }
 });
 
 const sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sphere comonent.

@@ -1,6 +1,10 @@
 const world = new (PHYSICS.$world(WHS.World))({
   autoresize: "window",
 
+  physics: {
+    ammo: '{{ ammojs }}'
+  },
+
   gravity: {
     x: 0,
     y: -10,

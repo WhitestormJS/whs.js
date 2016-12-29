@@ -41,6 +41,7 @@
     "webworkify-webpack": "^2.0.1"
   },
   "devDependencies": {
+    "babel": "^6.5.2",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.4",
     "babel-plugin-add-module-exports": "^0.2.1",
