@@ -215,8 +215,8 @@ world.start();
 // Check mouse.
 var mouse = new WHS.VirtualMouse(world);
 
-var _loop2 = function _loop2(max, _i) {
-  var nows = sphereHandler[_i];
+var _loop2 = function _loop2(i, max) {
+  var nows = sphereHandler[i];
   mouse.track(nows);
 
   var dragged = void 0;
@@ -244,8 +244,8 @@ var _loop2 = function _loop2(max, _i) {
   });
 };
 
-for (var _i = 0, max = sphereHandler.length; _i < max; _i++) {
-  _loop2(max, _i);
+for (var i = 0, max = sphereHandler.length; i < max; i++) {
+  _loop2(i, max);
 }
 
 },{"./globals":2}],2:[function(require,module,exports){
