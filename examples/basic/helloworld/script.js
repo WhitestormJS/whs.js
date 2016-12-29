@@ -11,8 +11,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 window.world = new (PHYSICS.$world(WHS.App))(_extends({}, UTILS.$world, {
 
-  modules: [new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.RenderingModule(), new WHS.modules.CameraModule()],
-
   physics: {
     ammo: 'http://localhost:8001/vendor/ammo.js'
   }
