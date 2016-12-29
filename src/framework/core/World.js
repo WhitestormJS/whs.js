@@ -1,9 +1,9 @@
 import {
   PCFSoftShadowMap,
-  Scene,
+  // Scene,
   Vector3,
-  Fog,
-  FogExp2,
+  // Fog,
+  // FogExp2,
   AxisHelper,
   GridHelper
 } from 'three';
@@ -11,11 +11,11 @@ import {
 import { addResizeListener } from 'detect-element-resize';
 
 import { extend } from '../utils/index';
-import { PerspectiveCamera } from '../components/cameras/PerspectiveCamera';
-import { BasicRendering } from '../components/rendering/basic/BasicRendering';
+// import { PerspectiveCamera } from '../components/cameras/PerspectiveCamera';
+// import { BasicRendering } from '../components/rendering/basic/BasicRendering';
 import { Component } from './Component';
 
-class World extends Component {
+class App extends Component {
   static defaults = {
     stats: false,
     autoresize: false,
@@ -82,14 +82,7 @@ class World extends Component {
       far: 1000
     },
 
-    modules: {
-      element: true,
-      scene: true,
-      stats: true,
-      camera: true,
-      helpers: true,
-      rendering: true
-    }
+    modules: []
   };
 
   static instructions = {
@@ -97,16 +90,7 @@ class World extends Component {
       position: ['x', 'y', 'z']
     },
 
-    gravity: ['x', 'y', 'z'],
-
-    modules: [
-      'element',
-      'scene',
-      'stats',
-      'camera',
-      'helpers',
-      'rendering'
-    ]
+    gravity: ['x', 'y', 'z']
   };
 
   static helpers = {
@@ -122,55 +106,16 @@ class World extends Component {
     }, ['size', 'step', 'color1', 'color2']]
   };
 
-  static pluginDeps = {
-    'camera': ['scene'],
-    'rendering': ['scene'],
-    'helpers': ['scene']
-  }
-
-  modules = {
-    element: null,
-    scene: null,
-    camera: null,
-    rendering: null,
-    helpers: null,
-    stats: null
-  };
-
-  get $rendering() { return this.modules.rendering; }
-  set $rendering(plugin) { this.modules.rendering = plugin(this); }
-
-  get $scene() { return this.modules.scene; }
-  set $scene(scene) { this.importScene(scene); }
-
-  get $camera() { return this.modules.camera; }
-  set $camera(camera) { this.modules.camera = camera; }
-
-  get $element() { return this.modules.element; }
-  set $element(element) { this.modules.element = element; }
-
   simulate = false;
   render = true;
   loops = [];
 
   constructor(params = {}) {
-    super(params, World.defaults, World.instructions);
+    super(params, App.defaults, App.instructions);
 
-    for (let plugin in this.modules) {
-      if (World.pluginDeps[plugin]) {
-        const dependencies = World.pluginDeps[plugin];
-        let skip = false;
-
-        for (let i = 0, max = dependencies.length; i < max; i++)  { // console.log(dependencies[i]);
-          if (!this.params.modules[dependencies[i]]) skip = true;
-        }
-
-        if (skip) continue;
-      }
-
-      if (this.params.modules[plugin] && this[`make$${plugin}`]) this[`make$${plugin}`]();
+    for (let i = 0, max = this.params.modules.length; i < max; i++) {
+      this.params.modules[i].integrate.bind(this)();
     }
-
 
     if (params.autoresize) {
       const container = params.container;
@@ -200,68 +145,6 @@ class World extends Component {
         else addResizeListener(container, resizeCallback);
       }
     }
-  }
-
-  make$scene() {
-    const params = this.params;
-
-    const scene = (params.physics && params.physics.create) ? params.physics.create.bind(this)() : new Scene();
-
-    this.simulate = (params.physics && params.physics.create);
-
-    if (params.fog.type === 'regular')
-      scene.fog = new Fog(params.fog.hex, params.fog.near, params.fog.far);
-    else if (params.fog.type === 'exp'
-      || params.fog.type === 'expodential')
-      scene.fog = new FogExp2(params.fog.hex, params.fog.density);
-
-    this.importScene(scene, false);
-  }
-
-  make$element() {
-    this.$element = window.document.createElement('div');
-    this.$element.className = 'whs';
-    this.$element.style.width = 'inherit';
-    this.$element.style.height = 'inherit';
-    this.params.container.appendChild(this.$element);
-
-    return this.$element;
-  }
-
-  make$camera() {
-    const _params = this.params;
-
-    this.$camera = new PerspectiveCamera({
-      camera: {
-        fov: _params.camera.fov,
-        aspect: _params.width / _params.height,
-        near: _params.camera.near,
-        far: _params.camera.far
-      },
-
-      position: {
-        x: _params.camera.position.x,
-        y: _params.camera.position.y,
-        z: _params.camera.position.z
-      }
-    });
-
-    this.$camera.addTo(this);
-  }
-
-  make$rendering() {
-    const _params = this.params;
-    const computedWidth = Number(_params.width * _params.resolution.width).toFixed();
-    const computedHeight = Number(_params.height * _params.resolution.height).toFixed();
-
-    this.$rendering = new BasicRendering(this.params);
-  }
-
-  make$helpers() {
-    const _helpers = this.params.helpers;
-
-    if (_helpers.axis) this.addHelper('axis', _helpers.axis);
-    if (_helpers.grid) this.addHelper('grid', _helpers.grid);
   }
 
   /**
@@ -320,7 +203,7 @@ class World extends Component {
     });
   }
 
-  addHelper(name, params = {}, helpers = World.helpers) {
+  addHelper(name, params = {}, helpers = App.helpers) {
     super.addHelper(name, params, helpers);
   }
 
@@ -341,7 +224,7 @@ class World extends Component {
   }
 
   importScene(scene, nested = true) {
-    this.modules.scene = scene;
+    this.$scene = scene;
 
     if (nested) {
       this.children = [];
@@ -379,6 +262,6 @@ class World extends Component {
 }
 
 export {
-  World
+  App
 };
 
