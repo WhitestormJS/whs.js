@@ -105,6 +105,10 @@ function CameraComponent(targetComponent) {
     clone() {
       return new resultComponent({build: false}).copy(this);
     }
+
+    addTo(world) {
+      return world.add(this);
+    }
   }
 
   $wrap(resultComponent).onCallWrap((scope, ...tags) => {

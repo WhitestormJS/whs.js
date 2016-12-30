@@ -10,7 +10,10 @@ export const getWorld = (element) => {
 };
 
 class Component extends Events {
-  static defaults = {};
+  static defaults = {
+    modules: []
+  };
+
   static instructions = {};
   static helpers = {};
   _wait = [];
@@ -28,6 +31,15 @@ class Component extends Events {
 
     if (obj instanceof Object3D) this.native = obj;
     else this.params = extend(transformData(obj, instructions), defaults);
+
+    const modules = this.params.modules;
+    const modulesSharedScope = {};
+
+    for (let i = 0, max = modules.length; i < max; i++) {
+      const module = modules[i];
+      if (typeof module === 'function') module.bind(modulesSharedScope)().integrate.bind(this)(module.params, module);
+      else module.integrate.bind(this)(module.params, module);
+    }
 
     this.callConstructor(this);
   }
@@ -58,53 +70,37 @@ class Component extends Events {
 
   wrapTransforms() {}
 
-  addTo(parent) {
-    this.parent = parent;
+  // addTo(parent) {
+  //   this.parent = parent;
 
-    return new Promise((resolve, reject) => {
-      const _add = () => {
-        const {native, params, parent} = this;
+  //   return new Promise((resolve, reject) => {
+  //     const _add = () => {
+  //       const {native, params, parent} = this;
 
-        if (!native) reject();
+  //       if (!native) reject();
 
-        const parentNative = '$scene' in parent ? parent.$scene : parent.native;
+  //       const parentNative = '$scene' in parent ? parent.$scene : parent.native;
 
-        parentNative.add(native);
-        parent.children.push(this);
+  //       parentNative.add(native);
 
-        if (typeof params.helpers === 'undefined')
-          params.helpers = {};
+  //       if (typeof params.helpers === 'undefined')
+  //         params.helpers = {};
 
-        for (const key in this._helpers)
-          if (this._helpers[key]) parentNative.add(this._helpers[key]);
+  //       for (const key in this._helpers)
+  //         if (this._helpers[key]) parentNative.add(this._helpers[key]);
 
-        this.callAddTo(this);
-        resolve(this);
-      };
+  //       this.callAddTo(this);
+  //       resolve(this);
+  //     };
 
-      if (this._wait.length > 0) Promise.all(this._wait).then(_add);
-      else _add();
-    });
-  }
+  //     if (this._wait.length > 0) Promise.all(this._wait).then(_add);
+  //     else _add();
+  //   });
+  // }
 
   updateParams(params = {}) {
     this.params = extend(params, this.params);
     return this.params;
-  }
-
-  add(children) {
-    if (children.addTo)
-      return children.addTo(this);
-    else if (children instanceof Component) {
-      return new Promise((resolve) => {
-        children.parent = this;
-
-        this.native.add(children.native);
-        this.children.push(this);
-
-        resolve();
-      });
-    }
   }
 
   addHelper(name, params = {}, helpers = Component.helpers) {
@@ -152,6 +148,7 @@ class Component extends Events {
 
   set native(mesh) {
     this._native = mesh;
+    this._native.component = this;
     return this._native;
   }
 
