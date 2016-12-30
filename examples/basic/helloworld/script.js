@@ -1,47 +1,62 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _globals = require('./globals');
 
 var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-window.world = new (PHYSICS.$world(WHS.App))(_extends({}, UTILS.$world, {
+window.world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new PHYSICS.WorldModule({
+  ammo: 'http://localhost:8001/vendor/ammo.js'
+}), new WHS.modules.RenderingModule({
+  background: {
+    color: 0x162129
+  },
 
-  physics: {
-    ammo: 'http://localhost:8001/vendor/ammo.js'
+  renderer: {
+    antialias: true
+  },
+
+  shadowmap: {
+    type: THREE.PCFSoftShadowMap
   }
-}));
+}), new WHS.modules.CameraModule({
+  position: new THREE.Vector3(0, 10, 50)
+})]);
 
-var sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sphere comonent.
+console.log(world);
+
+var sphere = new WHS.Sphere({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,
     heightSegments: 32
   },
 
-  mass: 10, // Mass of physics object.
+  modules: [new PHYSICS.SphereModule({
+    mass: 10
+  })],
 
   material: {
     color: UTILS.$colors.mesh,
-    kind: 'lambert'
+    kind: 'basic' // lambert
   },
 
-  position: [0, 100, 0]
+  position: [0, 100, 0] // 0 100 0
 });
 
 sphere.addTo(world);
 
-UTILS.addPlane(world);
+// world.add(sphere);
+
+UTILS.addBoxPlane(world);
 UTILS.addBasicLights(world).then(function (o) {
   return console.log(o.native);
 });
 
 world.start(); // Start animations and physics simulation.
-world.setControls(new WHS.OrbitControls());
+// world.setControls(new WHS.OrbitControls());
 
 },{"./globals":2}],2:[function(require,module,exports){
 "use strict";
@@ -58,6 +73,8 @@ var $world = exports.$world = {
   autoresize: "window",
 
   gravity: [0, -100, 0],
+
+  modules: [new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.RenderingModule(), new WHS.modules.CameraModule()],
 
   camera: {
     position: [0, 10, 50]
@@ -117,17 +134,15 @@ function addBasicLights(world) {
 function addPlane(world) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  return new (PHYSICS.$rigidBody(WHS.Plane, PHYSICS.PLANE))({
+  return new WHS.Plane({
     geometry: {
       width: size,
       height: size
     },
 
-    physics: {
-      create: PHYSICS.createPlane
-    },
-
-    mass: 0,
+    modules: [new PHYSICS.PlaneModule({
+      mass: 0
+    })],
 
     material: {
       color: 0x447F8B,
@@ -143,14 +158,16 @@ function addPlane(world) {
 function addBoxPlane(world) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  return new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
+  return new WHS.Box({
     geometry: {
       width: size,
       height: 1,
       depth: size
     },
 
-    mass: 0,
+    modules: [new PHYSICS.BoxModule({
+      mass: 0
+    })],
 
     material: {
       color: 0x447F8B,

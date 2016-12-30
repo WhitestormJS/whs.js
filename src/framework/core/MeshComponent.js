@@ -209,6 +209,23 @@ function MeshComponent(targetComponent) {
     updateHelper(name) {
       this._helpers[name].update();
     }
+
+    applyBridge(bridgeMap = {}) {
+      const modules = this.params.modules;
+
+      for (let i = 0, max = modules.length; i < max; i++) {
+        for (let key in bridgeMap) {
+          if (modules[i].bridge && modules[i].bridge[key])
+            bridgeMap[key] = modules[i].bridge[key].apply(this, [bridgeMap[key]]);
+        }
+      }
+
+      return bridgeMap;
+    }
+
+    addTo(world) {
+      return world.add(this);
+    }
   }
 
   $wrap(resultComponent).onCallWrap((scope, ...tags) => {

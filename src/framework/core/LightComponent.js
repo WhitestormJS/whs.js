@@ -157,6 +157,10 @@ function LightComponent(targetComponent) {
     clone() {
       return new resultComponent({build: false}).copy(this);
     }
+
+    addTo(world) {
+      return world.add(this);
+    }
   };
 
   $wrap(targetComponent).onCallConstructor(scope => {

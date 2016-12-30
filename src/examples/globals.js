@@ -63,17 +63,17 @@ export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], d
 }
 
 export function addPlane(world, size = 100) {
-  return new (PHYSICS.$rigidBody(WHS.Plane, PHYSICS.PLANE))({
+  return new WHS.Plane({
     geometry: {
       width: size,
       height: size
     },
 
-    physics: {
-      create: PHYSICS.createPlane
-    },
-
-    mass: 0,
+    modules: [
+      new PHYSICS.PlaneModule({
+        mass: 0
+      })
+    ],
 
     material: {
       color: 0x447F8B,
@@ -87,14 +87,18 @@ export function addPlane(world, size = 100) {
 }
 
 export function addBoxPlane(world, size = 100) {
-  return new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
+  return new WHS.Box({
     geometry: {
       width: size,
       height: 1,
       depth: size
     },
 
-    mass: 0,
+    modules: [
+      new PHYSICS.BoxModule({
+        mass: 0
+      })
+    ],
 
     material: {
       color: 0x447F8B,

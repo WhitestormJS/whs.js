@@ -1,30 +1,32 @@
-import * as THREE from 'three';
-import Stats from 'stats.js';
+import {
+  PCFSoftShadowMap
+} from 'three';
 
-import { Component } from '../../core/Component';
+import {Loop} from '../../extras/Loop';
 
-class RenderingModule extends Component {
-  static defaults = {
-    rendering: {
+export class Renderer {
+  constructor(params = {}) {
+    this.params = Object.assign({
+      width: window.innerWidth,
+      height: window.innerHeight,
+
+      resolution: {
+        width: 1,
+        height: 1
+      },
+
+      shadowmap: {
+        enabled: true,
+        type: PCFSoftShadowMap
+      },
+
       background: {
         color: 0x000000,
         opacity: 1
       },
 
-      shadowmap: {
-        enabled: true,
-        type: THREE.PCFSoftShadowMap
-      },
-
       renderer: {}
-    }
-  }
-
-  constructor(params = {}) {
-    super(params, RenderingModule.defaults, RenderingModule.instructions);
-
-    this.build(params);
-    super.wrap();
+    }, params);
   }
 
   get world() {
@@ -32,14 +34,13 @@ class RenderingModule extends Component {
   }
 
   set world(world) {
-    const params = this.params;
-
+    if (this._world) this.renderLoop.stop(world);
+    this.renderLoop = new Loop((clock) => this.renderModule(world.$scene, world.$camera.native, clock.getDelta()));
     this._world = world;
+    this.renderLoop.start(world);
     this.attachToCanvas();
 
-    if (params.modules && params.modules.stats) this.make$stats();
-
-    this.emit('worldchange');
+    // if (params.modules && params.modules.stats) this.make$stats();
   }
 
   attachToCanvas() {
@@ -56,27 +57,27 @@ class RenderingModule extends Component {
     canvas.style.height = '100%';
   }
 
-  make$stats() {
-    const statsData = this.params.stats;
+  // make$stats() {
+  //   const statsData = this.params.stats;
 
-    if (statsData) {
-      const stats = new Stats();
-      this.$stats = stats;
+  //   if (statsData) {
+  //     const stats = new Stats();
+  //     this.$stats = stats;
 
-      if (statsData === 'fps') stats.setMode(0);
-      else if (statsData === 'ms') stats.setMode(1);
-      else if (statsData === 'mb') stats.setMode(1);
-      else stats.setMode(0);
+  //     if (statsData === 'fps') stats.setMode(0);
+  //     else if (statsData === 'ms') stats.setMode(1);
+  //     else if (statsData === 'mb') stats.setMode(1);
+  //     else stats.setMode(0);
 
-      const stStyle = stats.domElement.style;
+  //     const stStyle = stats.domElement.style;
 
-      stStyle.position = 'absolute';
-      stStyle.left = '0px';
-      stStyle.top = '0px';
+  //     stStyle.position = 'absolute';
+  //     stStyle.left = '0px';
+  //     stStyle.top = '0px';
 
-      this.world.$element.appendChild(stats.domElement);
-    }
-  }
+  //     this.world.$element.appendChild(stats.domElement);
+  //   }
+  // }
 
   build(params = {}) {
     throw new Error('Build method has to be re-implemented in each rendering module (use it to initialize your rendering module!)');
@@ -89,54 +90,4 @@ class RenderingModule extends Component {
   setSize(width, height) {
     throw new Error('setSize method has to be re-implemented in each rendering module (or else your module won\'t resize!)');
   }
-
-  start(onStartRendering, onFinishRendering) {
-    this.clock = new THREE.Clock();
-
-    window.requestAnimFrame = (() => {
-      return window.requestAnimationFrame
-        || window.webkitRequestAnimationFrame
-        || window.mozRequestAnimationFrame
-        || function (callback) {
-          window.setTimeout(callback, 1000 / 60);
-        };
-    })();
-
-    this.onStartRendering = onStartRendering;
-    this.onFinishRendering = onFinishRendering;
-    if (this.world.render) this.render(this.world.$scene, this.world.$camera.native);
-  }
-
-  render(cachedScene, cachedCamera) {
-    const scene = cachedScene;
-    const camera = cachedCamera;
-    const clock = this.clock;
-    const stats = this.$stats;
-
-    const onStartRendering = this.onStartRendering;
-    const onFinishRendering = this.onFinishRendering;
-
-    function render() {
-      window.requestAnimFrame(render.bind(this));
-
-      const delta = clock.getDelta();
-
-      // Init stats.
-      if (stats) stats.begin();
-      if (onStartRendering) onStartRendering(delta);
-
-      this.renderModule(scene, camera, delta);
-
-      if (onFinishRendering) onFinishRendering(delta);
-
-      // End helper.
-      if (stats) stats.end();
-    }
-
-    (render.bind(this))();
-  }
 }
-
-export {
-  RenderingModule
-};

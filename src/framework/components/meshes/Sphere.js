@@ -4,8 +4,6 @@ import {
   SphereGeometry
 } from 'three';
 
-
-
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {loadMaterial} from '../../utils/index';
@@ -43,12 +41,15 @@ class Sphere extends Component {
     const material = loadMaterial(params.material);
 
     return new Promise((resolve) => {
-      this.native = this.isPhysics ?
-        params.physics.create.bind(this)(params, material)
-        : new Mesh(
-          this.buildGeometry(params),
-          material
-        );
+      let {geometry, material} = this.applyBridge({
+        geometry: this.buildGeometry(params),
+        material: loadMaterial(params.material)
+      });
+
+      this.native = new Mesh(
+        geometry,
+        material
+      );
 
       resolve();
     });
