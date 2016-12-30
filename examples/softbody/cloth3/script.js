@@ -126,6 +126,8 @@ var $world = exports.$world = {
 
   gravity: [0, -100, 0],
 
+  modules: [new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.RenderingModule(), new WHS.modules.CameraModule()],
+
   camera: {
     position: [0, 10, 50]
   },

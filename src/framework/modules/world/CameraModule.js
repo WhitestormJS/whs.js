@@ -1,24 +1,37 @@
 import { PerspectiveCamera } from '../../components/cameras/PerspectiveCamera';
 
 export class CameraModule {
-  integrate() {
-    const _params = this.params;
+  constructor(params) {
+    this.params = Object.assign({
+      fov: 75,
+      near: 1,
+      far: 1000,
+      aspect: window.innerWidth / window.innerHeight,
 
+      position: {
+        x: 0,
+        y: 0,
+        z: 0
+      }
+    }, params);
+  }
+
+  integrate(params) {
     this.$camera = new PerspectiveCamera({
       camera: {
-        fov: _params.camera.fov,
-        aspect: _params.width / _params.height,
-        near: _params.camera.near,
-        far: _params.camera.far
+        fov: params.fov,
+        aspect: params.aspect,
+        near: params.near,
+        far: params.far
       },
 
       position: {
-        x: _params.camera.position.x,
-        y: _params.camera.position.y,
-        z: _params.camera.position.z
+        x: params.position.x,
+        y: params.position.y,
+        z: params.position.z
       }
     });
 
-    this.$camera.addTo(this);
+    this.add(this.$camera);
   }
 }
