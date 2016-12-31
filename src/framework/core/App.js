@@ -16,86 +16,86 @@ import { extend } from '../utils/index';
 import { Component } from './Component';
 
 class App {
-  static defaults = {
-    stats: false,
-    autoresize: false,
-    softbody: false,
-
-    helpers: {
-      grid: false,
-      axis: false
-    },
-
-    gravity: {
-      x: 0,
-      y: 0,
-      z: 0
-    },
-
-    rendering: {
-      shadowmap: {
-        enabled: true,
-        type: PCFSoftShadowMap
-      },
-
-      background: {
-        color: 0x000000,
-        opacity: 1
-      },
-
-      renderer: {}
-    },
-
-    camera: {
-      fov: 75,
-      near: 1,
-      far: 1000,
-
-      position: {
-        x: 0,
-        y: 0,
-        z: 0
-      }
-    },
-
-    width: window.innerWidth,
-    height: window.innerHeight,
-    container: window.document.body,
-
-    resolution: {
-      width: 1,
-      height: 1
-    },
-
-    physics: {
-      create: false,
-      fixedTimeStep: 1 / 60,
-      broadphase: {type: 'dynamic'}
-    },
-
-    modules: []
-  };
-
-  static instructions = {
-    camera: {
-      position: ['x', 'y', 'z']
-    },
-
-    gravity: ['x', 'y', 'z']
-  };
-
-  static helpers = {
-    axis: [AxisHelper, {
-      size: 5
-    }, ['size']],
-
-    grid: [GridHelper, {
-      size: 10,
-      step: 1,
-      color1: 0xffffff,
-      color2: 0xffffff
-    }, ['size', 'step', 'color1', 'color2']]
-  };
+  // static defaults = {
+  //   stats: false,
+  //   autoresize: false,
+  //   softbody: false,
+  //
+  //   helpers: {
+  //     grid: false,
+  //     axis: false
+  //   },
+  //
+  //   gravity: {
+  //     x: 0,
+  //     y: 0,
+  //     z: 0
+  //   },
+  //
+  //   rendering: {
+  //     shadowmap: {
+  //       enabled: true,
+  //       type: PCFSoftShadowMap
+  //     },
+  //
+  //     background: {
+  //       color: 0x000000,
+  //       opacity: 1
+  //     },
+  //
+  //     renderer: {}
+  //   },
+  //
+  //   camera: {
+  //     fov: 75,
+  //     near: 1,
+  //     far: 1000,
+  //
+  //     position: {
+  //       x: 0,
+  //       y: 0,
+  //       z: 0
+  //     }
+  //   },
+  //
+  //   width: window.innerWidth,
+  //   height: window.innerHeight,
+  //   container: window.document.body,
+  //
+  //   resolution: {
+  //     width: 1,
+  //     height: 1
+  //   },
+  //
+  //   physics: {
+  //     create: false,
+  //     fixedTimeStep: 1 / 60,
+  //     broadphase: {type: 'dynamic'}
+  //   },
+  //
+  //   modules: []
+  // };
+  //
+  // static instructions = {
+  //   camera: {
+  //     position: ['x', 'y', 'z']
+  //   },
+  //
+  //   gravity: ['x', 'y', 'z']
+  // };
+  //
+  // static helpers = {
+  //   axis: [AxisHelper, {
+  //     size: 5
+  //   }, ['size']],
+  //
+  //   grid: [GridHelper, {
+  //     size: 10,
+  //     step: 1,
+  //     color1: 0xffffff,
+  //     color2: 0xffffff
+  //   }, ['size', 'step', 'color1', 'color2']]
+  // };
 
   simulate = false;
   render = true;
@@ -107,8 +107,11 @@ class App {
 
     for (let i = 0, max = modules.length; i < max; i++) {
       const module = modules[i];
-      if (typeof module === 'function') module.bind(modulesSharedScope)().integrate.bind(this)(module.params, module);
-      else module.integrate.bind(this)(module.params, module);
+
+      if (typeof module === 'function')
+        module.bind(modulesSharedScope)().integrate.bind(this)(module.params, module);
+      else
+        module.integrate.bind(this)(module.params, module);
     }
 
     // if (params.autoresize) {
@@ -255,18 +258,18 @@ class App {
   //   }
   // }
 
-  setControls(controls) {
-    const recieved = controls.integrate(this);
-
-    this.controls = recieved instanceof Array ? recieved[0] : recieved;
-
-    if (
-      recieved instanceof Array
-      && typeof recieved[1] === 'function'
-    ) recieved[1](this);
-
-    return this.controls;
-  }
+  // setControls(controls) {
+  //   const recieved = controls.integrate(this);
+  //
+  //   this.controls = recieved instanceof Array ? recieved[0] : recieved;
+  //
+  //   if (
+  //     recieved instanceof Array
+  //     && typeof recieved[1] === 'function'
+  //   ) recieved[1](this);
+  //
+  //   return this.controls;
+  // }
 }
 
 export {

@@ -35,7 +35,8 @@ export class Renderer {
 
   set world(world) {
     if (this._world) this.renderLoop.stop(world);
-    this.renderLoop = new Loop((clock) => this.renderModule(world.$scene, world.$camera.native, clock.getDelta()));
+    this.renderLoop = new Loop((clock) =>
+      this.renderModule(world.$scene, world.$camera.native, clock.getDelta()));
     this._world = world;
     this.renderLoop.start(world);
     this.attachToCanvas();

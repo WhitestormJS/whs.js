@@ -18,10 +18,6 @@ class Box extends Component {
       width: 1,
       height: 1,
       depth: 1
-    },
-
-    physics: {
-      create: false
     }
   };
 
@@ -40,8 +36,6 @@ class Box extends Component {
   }
 
   build(params = this.params) {
-    const material = loadMaterial(params.material);
-
     return new Promise((resolve) => {
       let {geometry, material} = this.applyBridge({
         geometry: this.buildGeometry(params),
