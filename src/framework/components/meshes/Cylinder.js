@@ -23,10 +23,6 @@ class Cylinder extends Component {
       openEnded: false,
       thetaStart: 0,
       thetaLength: Math.PI * 2
-    },
-
-    physics: {
-      create: false
     }
   };
 
@@ -54,15 +50,16 @@ class Cylinder extends Component {
   }
 
   build(params = this.params) {
-    const material = loadMaterial(params.material);
-
     return new Promise((resolve) => {
-      this.native = this.isPhysics ?
-        params.physics.create.bind(this)(params, material)
-        : new Mesh(
-          this.buildGeometry(params),
-          material
-        );
+      let {geometry, material} = this.applyBridge({
+        geometry: this.buildGeometry(params),
+        material: loadMaterial(params.material)
+      });
+
+      this.native = new Mesh(
+        geometry,
+        material
+      );
 
       resolve();
     });

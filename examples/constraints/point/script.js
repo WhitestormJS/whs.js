@@ -163,17 +163,15 @@ function addBasicLights(world) {
 function addPlane(world) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  return new (PHYSICS.$rigidBody(WHS.Plane, PHYSICS.PLANE))({
+  return new WHS.Plane({
     geometry: {
       width: size,
       height: size
     },
 
-    physics: {
-      create: PHYSICS.createPlane
-    },
-
-    mass: 0,
+    modules: [new PHYSICS.PlaneModule({
+      mass: 0
+    })],
 
     material: {
       color: 0x447F8B,
@@ -189,14 +187,16 @@ function addPlane(world) {
 function addBoxPlane(world) {
   var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
 
-  return new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
+  return new WHS.Box({
     geometry: {
       width: size,
       height: 1,
       depth: size
     },
 
-    mass: 0,
+    modules: [new PHYSICS.BoxModule({
+      mass: 0
+    })],
 
     material: {
       color: 0x447F8B,
