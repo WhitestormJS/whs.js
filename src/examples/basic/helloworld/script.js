@@ -4,8 +4,7 @@ window.world = new WHS.App([
   new WHS.modules.ElementModule(),
   new WHS.modules.SceneModule(),
   new PHYSICS.WorldModule({
-    ammo: '{{ ammojs }}',
-    gravity: {x: 0, y: -10, z: 0}
+    ammo: '{{ ammojs }}'
   }),
   new WHS.modules.RenderingModule({
     background: {
@@ -35,7 +34,8 @@ const sphere = new WHS.Cylinder({ // Create sphere comonent.
 
   modules: [
     new PHYSICS.CylinderModule({
-      mass: 1
+      mass: 10,
+      restitution: 3
     })
   ],
 
@@ -44,7 +44,7 @@ const sphere = new WHS.Cylinder({ // Create sphere comonent.
     kind: 'basic' // lambert
   },
 
-  position: [0, 10, 0] // 0 100 0
+  position: [0, 20, 0] // 0 100 0
 });
 
 sphere.addTo(world);
