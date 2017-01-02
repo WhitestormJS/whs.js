@@ -42,7 +42,7 @@ class Icosahedron extends Component {
     return new Promise((resolve) => {
       let {geometry, material} = this.applyBridge({
         geometry: this.buildGeometry(params),
-        material: loadMaterial(params.material)
+        material: params.material
       });
 
       this.native = new Mesh(

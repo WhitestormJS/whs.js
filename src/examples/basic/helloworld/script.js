@@ -1,6 +1,6 @@
 import * as UTILS from './globals';
 
-window.world = new WHS.App([
+const world = new WHS.App([
   new WHS.modules.ElementModule(),
   new WHS.modules.SceneModule(),
   new PHYSICS.WorldModule({
@@ -25,14 +25,15 @@ window.world = new WHS.App([
   new WHS.OrbitControlsModule()
 ]);
 
-const sphere = new WHS.Dodecahedron({ // Create sphere comonent.
+const sphere = new WHS.Sphere({ // Create sphere comonent.
   geometry: {
     radius: 5,
-    detail: 0
+    widthSegments: 32,
+    heightSegments: 32
   },
 
   modules: [
-    new PHYSICS.ConvexModule({
+    new PHYSICS.SphereModule({
       mass: 10,
       restitution: 1
     })
@@ -48,10 +49,7 @@ const sphere = new WHS.Dodecahedron({ // Create sphere comonent.
 
 sphere.addTo(world);
 
-// world.add(sphere);
-
 UTILS.addBoxPlane(world);
 UTILS.addBasicLights(world).then(o => console.log(o.native));
 
 world.start(); // Start animations and physics simulation.
-// world.setControls(new WHS.OrbitControls());
