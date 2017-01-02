@@ -25,11 +25,10 @@ window.world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.Sce
   position: new THREE.Vector3(0, 10, 50)
 }), new WHS.OrbitControlsModule()]);
 
-var sphere = new WHS.Cylinder({ // Create sphere comonent.
+var sphere = new WHS.Icosahedron({ // Create sphere comonent.
   geometry: {
-    radiusTop: 3,
-    radiusBottom: 3,
-    height: 5
+    radius: 2,
+    detail: 2
   },
 
   modules: [new PHYSICS.CylinderModule({
