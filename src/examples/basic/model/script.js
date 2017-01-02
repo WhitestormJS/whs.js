@@ -1,39 +1,73 @@
 import * as UTILS from './globals';
 
-const world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world,
-
-  physics: {
+const world = new WHS.App([
+  new WHS.modules.ElementModule(),
+  new WHS.modules.SceneModule(),
+  new PHYSICS.WorldModule({
     ammo: '{{ ammojs }}'
-  },
+  }),
+  new WHS.modules.RenderingModule({
+    background: {
+      color: 0x162129
+    },
 
-  camera: {
-    far: 10000,
-    position: [0, 100, 300]
-  }
-});
+    renderer: {
+      antialias: true
+    },
 
-const teapot = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONCAVE2))({
+    shadowmap: {
+      type: THREE.PCFSoftShadowMap
+    }
+  }),
+  new WHS.modules.CameraModule({
+    position: new THREE.Vector3(0, 10, 50)
+  }),
+  new WHS.OrbitControlsModule()
+]);
+
+// const sphere = new WHS.Dodecahedron({ // Create sphere comonent.
+//   geometry: {
+//     radius: 5,
+//     detail: 0
+//   },
+//
+//   modules: [
+//     new PHYSICS.ConvexModule({
+//       mass: 10,
+//       restitution: 1
+//     })
+//   ],
+//
+//   material: {
+//     color: UTILS.$colors.mesh,
+//     kind: 'basic' // lambert
+//   },
+//
+//   position: [0, 20, 0] // 0 100 0
+// });
+
+const teapot = new WHS.Model({
   geometry: {
-    path: '{{ assets }}/models/teapot/utah-teapot-large.json',
-    physics: '{{ assets }}/models/teapot/utah-teapot-light.json'
+    path: '{{ assets }}/models/teapot/utah-teapot-large.json'
   },
 
-  mass: 200,
+  modules: [
+    new PHYSICS.ConcaveModule({
+      friction: 1,
+      mass: 200,
+      restitution: 0.5,
+      path: '{{ assets }}/models/teapot/utah-teapot-light.json',
+      scale: new THREE.Vector3(4, 4, 4)
+    })
+  ],
 
-  physics: {
-    type: 'concave',
-    friction: 1,
-    restitution: 0.5
-  },
+  useCustomMaterial: true,
 
-  material: {
-    kind: 'phong',
+  material: new THREE.MeshBasicMaterial({
     shading: THREE.SmoothShading,
     map: WHS.texture('{{ assets }}/textures/teapot.jpg', {repeat: {x: 1, y: 1}}),
-    side: THREE.DoubleSide,
-    useCustomMaterial: true
-  },
+    side: THREE.DoubleSide
+  }),
 
   position: {
     y: 100
@@ -42,36 +76,36 @@ const teapot = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONCAVE2))({
   scale: [4, 4, 4]
 });
 
-const ball = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
-  geometry: {
-    radius: 3,
-    widthSegments: 16,
-    heightSegments: 16
-  },
-
-  mass: 60,
-
-  material: {
-    kind: 'phong',
-    color: UTILS.$colors.mesh
-  },
-
-  physics: {
-    restitution: 1
-  },
-
-  position: [10, 250, -1.969]
-});
+// const ball = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
+//   geometry: {
+//     radius: 3,
+//     widthSegments: 16,
+//     heightSegments: 16
+//   },
+//
+//   mass: 60,
+//
+//   material: {
+//     kind: 'phong',
+//     color: UTILS.$colors.mesh
+//   },
+//
+//   physics: {
+//     restitution: 1
+//   },
+//
+//   position: [10, 250, -1.969]
+// });
 
 teapot.addTo(world).then(() => {
-  ball.addTo(world);
+  // ball.addTo(world);
 });
 
 UTILS.addBoxPlane(world, 500);
 
 new WHS.SpotLight({
   light: {
-    color: 0xffffff, // 0x00ff00,
+    color: 0xffffff,
     intensity: 1,
     distance: 300,
     angle: 180
@@ -90,5 +124,4 @@ new WHS.SpotLight({
 
 UTILS.addAmbient(world, 0.3);
 
-world.setControls(new WHS.OrbitControls());
 world.start();

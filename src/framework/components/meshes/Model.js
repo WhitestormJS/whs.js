@@ -4,11 +4,9 @@ import {
   FaceColors
 } from 'three';
 
-
-
 import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {loadMaterial, JSONLoader} from '../../utils/index';
+import {JSONLoader} from '../../utils/index';
 
 @MeshComponent
 class Model extends Component {
@@ -41,64 +39,22 @@ class Model extends Component {
 
   build(params = {}) {
     const promise = new Promise((resolve) => {
-      const pGeometry = params.geometry;
-      const Loader = pGeometry.loader
+      params.geometry.loader.load(params.geometry.path, (geom, materials) => {
+        const mat = params.useCustomMaterial
+          ? params.material
+          : new MultiMaterial(materials);
 
-      Loader.load(pGeometry.path, (data, materials) => {
-        if (pGeometry.physics) {
-          Loader.load(pGeometry.physics, data2 => {
-            let material;
+        let {geometry, material} = this.applyBridge({
+          geometry: geom,
+          material: mat
+        });
 
-            if (params.material.useVertexColors) {
-              material = loadMaterial(
-                extend(params.material, {
-                  morphTargets: true,
-                  vertexColors: FaceColors
-                })
-              );
-            } else if (!materials || params.material.useCustomMaterial) {
-              material = loadMaterial(params.material);
-            } else material = new MultiMaterial(materials);
+        this.native = new Mesh(
+          geometry,
+          material
+        );
 
-            data.computeFaceNormals();
-            data.computeVertexNormals();
-
-            this.native = this.isPhysics ? params.physics.create.bind(this)(this.params, material, data, data2)
-            : new Mesh(
-              data,
-              material,
-              this.params,
-              data2
-            );
-
-            resolve();
-          });
-        } else {
-          let material;
-
-          if (params.material.useVertexColors) {
-            material = loadMaterial(
-              extend(params.material, {
-                morphTargets: true,
-                vertexColors: FaceColors
-              })
-            );
-          } else if (!materials || params.material.useCustomMaterial) {
-            material = loadMaterial(params.material);
-          } else material = new MultiMaterial(materials);
-
-          data.computeFaceNormals();
-          data.computeVertexNormals();
-
-          this.native = this.isPhysics ? params.physics.create.bind(this)(this.params, material, data)
-          : new Mesh(
-            data,
-            material,
-            this.params
-          );
-
-          resolve();
-        }
+        resolve();
       });
     });
 
