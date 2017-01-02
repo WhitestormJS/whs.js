@@ -75,10 +75,7 @@ export function addPlane(world, size = 100) {
       })
     ],
 
-    material: {
-      color: 0x447F8B,
-      kind: 'phong'
-    },
+    material: new THREE.MeshPhongMaterial({color: 0x447F8B}),
 
     rotation: {
       x: - Math.PI / 2
@@ -100,9 +97,6 @@ export function addBoxPlane(world, size = 100) {
       })
     ],
 
-    material: {
-      color: 0x447F8B,
-      kind: 'phong'
-    }
+    material: new THREE.MeshPhongMaterial({color: 0x447F8B})
   }).addTo(world)
 }

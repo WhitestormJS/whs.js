@@ -1,6 +1,7 @@
 import {
   BoxHelper,
   BoundingBoxHelper,
+  MeshBasicMaterial,
   EdgesHelper,
   FaceNormalsHelper,
   VertexNormalsHelper
@@ -21,9 +22,7 @@ function MeshComponent(targetComponent) {
         receive: true
       },
 
-      material: {
-        kind: 'basic'
-      },
+      material: false,
 
       helpers: {
         box: false,
@@ -215,8 +214,10 @@ function MeshComponent(targetComponent) {
 
       for (let i = 0, max = modules.length; i < max; i++) {
         for (let key in bridgeMap) {
-          if (modules[i].bridge && modules[i].bridge[key])
-            bridgeMap[key] = modules[i].bridge[key].apply(this, [bridgeMap[key]]);
+          const module = modules[i];
+
+          if (module.bridge && module.bridge[key])
+            bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
         }
       }
 

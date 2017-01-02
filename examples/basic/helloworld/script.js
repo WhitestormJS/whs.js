@@ -7,7 +7,7 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-window.world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new PHYSICS.WorldModule({
+var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new PHYSICS.WorldModule({
   ammo: 'http://localhost:8001/vendor/ammo.js'
 }), new WHS.modules.RenderingModule({
   background: {
@@ -25,13 +25,14 @@ window.world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.Sce
   position: new THREE.Vector3(0, 10, 50)
 }), new WHS.OrbitControlsModule()]);
 
-var sphere = new WHS.Dodecahedron({ // Create sphere comonent.
+var sphere = new WHS.Sphere({ // Create sphere comonent.
   geometry: {
     radius: 5,
-    detail: 0
+    widthSegments: 32,
+    heightSegments: 32
   },
 
-  modules: [new PHYSICS.ConvexModule({
+  modules: [new PHYSICS.SphereModule({
     mass: 10,
     restitution: 1
   })],
@@ -46,15 +47,12 @@ var sphere = new WHS.Dodecahedron({ // Create sphere comonent.
 
 sphere.addTo(world);
 
-// world.add(sphere);
-
 UTILS.addBoxPlane(world);
 UTILS.addBasicLights(world).then(function (o) {
   return console.log(o.native);
 });
 
 world.start(); // Start animations and physics simulation.
-// world.setControls(new WHS.OrbitControls());
 
 },{"./globals":2}],2:[function(require,module,exports){
 "use strict";
@@ -142,10 +140,7 @@ function addPlane(world) {
       mass: 0
     })],
 
-    material: {
-      color: 0x447F8B,
-      kind: 'phong'
-    },
+    material: new THREE.MeshPhongMaterial({ color: 0x447F8B }),
 
     rotation: {
       x: -Math.PI / 2
@@ -167,10 +162,7 @@ function addBoxPlane(world) {
       mass: 0
     })],
 
-    material: {
-      color: 0x447F8B,
-      kind: 'phong'
-    }
+    material: new THREE.MeshPhongMaterial({ color: 0x447F8B })
   }).addTo(world);
 }
 
