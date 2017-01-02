@@ -25,15 +25,15 @@ window.world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.Sce
   position: new THREE.Vector3(0, 10, 50)
 }), new WHS.OrbitControlsModule()]);
 
-var sphere = new WHS.Icosahedron({ // Create sphere comonent.
+var sphere = new WHS.Dodecahedron({ // Create sphere comonent.
   geometry: {
-    radius: 2,
-    detail: 2
+    radius: 5,
+    detail: 0
   },
 
-  modules: [new PHYSICS.CylinderModule({
+  modules: [new PHYSICS.ConvexModule({
     mass: 10,
-    restitution: 3
+    restitution: 1
   })],
 
   material: {
