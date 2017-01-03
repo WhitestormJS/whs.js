@@ -10,7 +10,7 @@ window.world = new WHS.World({
   container: document.getElementById('embed')
 });
 
-const sphere = new WHS.Sphere({ // Create sphere comonent.
+const sphere = new WHS.Sphere({ // Create sphere component.
   geometry: {
     radius: 3,
     widthSegments: 32,
