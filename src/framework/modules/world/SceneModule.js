@@ -5,11 +5,11 @@ import {
 } from 'three';
 
 export class SceneModule {
+  manager(manager) {
+    manager.addDependency('scene', new Scene(), {alias: '$scene'});
+  }
+
   integrate() {
-    this.$scene = new Scene();
-
-    console.log(this);
-
     this.add = function (object) {
       object.parent = this;
 

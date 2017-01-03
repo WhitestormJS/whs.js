@@ -9,11 +9,21 @@ export class OrbitControlsModule {
     }, params);
   }
 
-  integrate(params, self) {
-    const controls = new ThreeOrbitControls(
-      this.$camera.native,
-      this.$rendering.$renderer.domElement
+  manager(manager) {
+    this.controls = new ThreeOrbitControls(
+      manager.get('camera').native,
+      manager.get('rendering').$renderer.domElement
     );
+
+    manager.onDependencyUpdate({
+      camera: (camera) => {
+        this.controls.object = camera.native;
+      }
+    })
+  }
+
+  integrate(params, self) {
+    const controls = self.controls;
 
     const updateProcessor = params.follow ? (c) => {
       controls.update(c.getDelta());

@@ -7,7 +7,7 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.CameraModule({
+window.world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.CameraModule({
   position: new THREE.Vector3(0, 10, 50)
 }), new WHS.modules.RenderingModule({
   background: {
@@ -24,6 +24,21 @@ var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneM
 }), new PHYSICS.WorldModule({
   ammo: 'http://localhost:8001/vendor/ammo.js'
 }), new WHS.OrbitControlsModule()]);
+
+world.module(new WHS.modules.CameraModule({
+  position: new THREE.Vector3(0, 100, 50)
+}));
+
+world.$camera = new WHS.PerspectiveCamera({
+  camera: {
+    near: 1,
+    far: 1000,
+    fov: 45,
+    aspect: window.innerWidth / window.innerHeight
+  },
+
+  position: [200, 200, 200]
+});
 
 var sphere = new WHS.Sphere({ // Create sphere comonent.
   geometry: {
@@ -69,8 +84,6 @@ var $world = exports.$world = {
   autoresize: "window",
 
   gravity: [0, -100, 0],
-
-  modules: [new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.RenderingModule(), new WHS.modules.CameraModule()],
 
   camera: {
     position: [0, 10, 50]
