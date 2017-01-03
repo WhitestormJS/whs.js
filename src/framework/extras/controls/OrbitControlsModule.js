@@ -12,7 +12,7 @@ export class OrbitControlsModule {
   manager(manager) {
     this.controls = new ThreeOrbitControls(
       manager.get('camera').native,
-      manager.get('rendering').$renderer.domElement
+      manager.get('renderer').domElement
     );
 
     manager.onDependencyUpdate({

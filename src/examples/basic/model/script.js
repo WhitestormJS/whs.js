@@ -6,6 +6,9 @@ const world = new WHS.App([
   new PHYSICS.WorldModule({
     ammo: '{{ ammojs }}'
   }),
+  new WHS.modules.CameraModule({
+    position: new THREE.Vector3(0, 40, 250)
+  }),
   new WHS.modules.RenderingModule({
     background: {
       color: 0x162129
@@ -19,32 +22,9 @@ const world = new WHS.App([
       type: THREE.PCFSoftShadowMap
     }
   }),
-  new WHS.modules.CameraModule({
-    position: new THREE.Vector3(0, 10, 50)
-  }),
-  new WHS.OrbitControlsModule()
+  new WHS.OrbitControlsModule(),
+  new WHS.modules.AutoresizeModule()
 ]);
-
-// const sphere = new WHS.Dodecahedron({ // Create sphere comonent.
-//   geometry: {
-//     radius: 5,
-//     detail: 0
-//   },
-//
-//   modules: [
-//     new PHYSICS.ConvexModule({
-//       mass: 10,
-//       restitution: 1
-//     })
-//   ],
-//
-//   material: {
-//     color: UTILS.$colors.mesh,
-//     kind: 'basic' // lambert
-//   },
-//
-//   position: [0, 20, 0] // 0 100 0
-// });
 
 const teapot = new WHS.Model({
   geometry: {
@@ -63,7 +43,7 @@ const teapot = new WHS.Model({
 
   useCustomMaterial: true,
 
-  material: new THREE.MeshBasicMaterial({
+  material: new THREE.MeshPhongMaterial({
     shading: THREE.SmoothShading,
     map: WHS.texture('{{ assets }}/textures/teapot.jpg', {repeat: {x: 1, y: 1}}),
     side: THREE.DoubleSide
@@ -76,29 +56,29 @@ const teapot = new WHS.Model({
   scale: [4, 4, 4]
 });
 
-// const ball = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
-//   geometry: {
-//     radius: 3,
-//     widthSegments: 16,
-//     heightSegments: 16
-//   },
-//
-//   mass: 60,
-//
-//   material: {
-//     kind: 'phong',
-//     color: UTILS.$colors.mesh
-//   },
-//
-//   physics: {
-//     restitution: 1
-//   },
-//
-//   position: [10, 250, -1.969]
-// });
+const ball = new WHS.Sphere({
+  geometry: {
+    radius: 3,
+    widthSegments: 16,
+    heightSegments: 16
+  },
+
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
+
+  modules: [
+    new PHYSICS.SphereModule({
+      restitution: 1,
+      mass: 60
+    })
+  ],
+
+  position: [10, 250, -1.969]
+});
 
 teapot.addTo(world).then(() => {
-  // ball.addTo(world);
+  ball.addTo(world);
 });
 
 UTILS.addBoxPlane(world, 500);
