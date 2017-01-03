@@ -4,7 +4,7 @@ const world = new WHS.World({
   ...UTILS.$world
 });
 
-const sphere = new WHS.Sphere({ // Create sphere comonent.
+const sphere = new WHS.Sphere({ // Create sphere component.
   geometry: {
     radius: 3,
     widthSegments: 32,
