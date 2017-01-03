@@ -1,19 +1,5 @@
-import {
-  PCFSoftShadowMap,
-  // Scene,
-  Vector3,
-  // Fog,
-  // FogExp2,
-  AxisHelper,
-  GridHelper
-} from 'three';
-
-import { addResizeListener } from 'detect-element-resize';
-
-import { extend } from '../utils/index';
-// import { PerspectiveCamera } from '../components/cameras/PerspectiveCamera';
-// import { BasicRendering } from '../components/rendering/basic/BasicRendering';
-import { Component } from './Component';
+import {ModuleManager} from './ModuleManager';
+import {addResizeListener} from 'detect-element-resize';
 
 class App {
   // static defaults = {
@@ -102,16 +88,23 @@ class App {
   loops = [];
 
   constructor(modules = []) {
-    this.modules = modules;
+    this.modules = modules
+    this.manager = new ModuleManager(this);
 
     for (let i = 0, max = modules.length; i < max; i++) {
       const module = modules[i];
 
       if (typeof module === 'function')
         module.bind(this)();
-      else
-        module.integrate.bind(this)(module.params, module);
+      else {
+        if (!module.name) module.name = '';
+        this.manager.setActiveModule(module);
+        if (module.manager) module.manager(this.manager);
+        if (module.integrate) module.integrate.bind(this)(module.params, module);
+      }
     }
+
+    this.manager.reset();
 
     // if (params.autoresize) {
     //   const container = params.container;
@@ -196,8 +189,12 @@ class App {
   module(module) {
     if (typeof module === 'function')
       module.bind(this.modulesSharedScope)().integrate.bind(this)(module.params, module);
-    else
-      module.integrate.bind(this)(module.params, module);
+    else {
+      if (!module.name) module.name = '';
+      this.manager.setActiveModule(module);
+      if (module.manager) module.manager(this.manager);
+      if (module.integrate) module.integrate.bind(this)(module.params, module);
+    }
 
     return this;
   }
@@ -264,19 +261,6 @@ class App {
   //   if (this.$rendering) {
   //     this.$rendering.setSize(width, height);
   //   }
-  // }
-
-  // setControls(controls) {
-  //   const recieved = controls.integrate(this);
-  //
-  //   this.controls = recieved instanceof Array ? recieved[0] : recieved;
-  //
-  //   if (
-  //     recieved instanceof Array
-  //     && typeof recieved[1] === 'function'
-  //   ) recieved[1](this);
-  //
-  //   return this.controls;
   // }
 }
 

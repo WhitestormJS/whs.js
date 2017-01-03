@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import { Renderer } from '../RenderingModule';
+import {Renderer} from '../Renderer';
 
 class BasicRendering extends Renderer {
   constructor(params = {}) {
@@ -10,8 +10,6 @@ class BasicRendering extends Renderer {
     this.$renderer = new THREE.WebGLRenderer(this.params.renderer);
 
     const renderer = this.$renderer;
-
-    console.log(this.params);
 
     renderer.setClearColor(
       this.params.background.color,
@@ -24,11 +22,6 @@ class BasicRendering extends Renderer {
     renderer.shadowMap.cascade = true;
 
     this.setSize(this.params.width, this.params.height);
-
-    return (world) => {
-      this.world = world;
-      return this;
-    }
   }
 
   renderModule(scene, camera, delta) {

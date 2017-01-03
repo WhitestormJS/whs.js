@@ -29,31 +29,20 @@ export class Renderer {
     }, params);
   }
 
-  get world() {
-    return this._world;
+  integrateRenderer(element, scene, camera) {
+    this.scene = scene;
+    this.camera = camera;
+    this.renderLoop = new Loop((clock) => this.renderModule(this.scene, this.camera, clock.getDelta()));
+    this.attachToCanvas(element);
+
+    return this.renderLoop;
   }
 
-  set world(world) {
-    if (this._world) this.renderLoop.stop(world);
-    this.renderLoop = new Loop((clock) =>
-      this.renderModule(world.$scene, world.$camera.native, clock.getDelta()));
-    this._world = world;
-    this.renderLoop.start(world);
-    this.attachToCanvas();
-
-    // if (params.modules && params.modules.stats) this.make$stats();
-  }
-
-  attachToCanvas() {
-    if (this.world) {
-      // TODO: detach from dom
-    }
-
+  attachToCanvas(element) {
     const canvas = this.$renderer.domElement;
-    this.world.$canvas = canvas;
 
     // attach to new parent world dom
-    this.world.$element.appendChild(canvas);
+    element.appendChild(canvas);
     canvas.style.width = '100%';
     canvas.style.height = '100%';
   }

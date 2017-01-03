@@ -14,24 +14,28 @@ export class CameraModule {
         z: 0
       }
     }, params);
-  }
 
-  integrate(params) {
-    this.$camera = new PerspectiveCamera({
+    this.camera = new PerspectiveCamera({
       camera: {
-        fov: params.fov,
-        aspect: params.aspect,
-        near: params.near,
-        far: params.far
+        fov: this.params.fov,
+        aspect: this.params.aspect,
+        near: this.params.near,
+        far: this.params.far
       },
 
       position: {
-        x: params.position.x,
-        y: params.position.y,
-        z: params.position.z
+        x: this.params.position.x,
+        y: this.params.position.y,
+        z: this.params.position.z
       }
     });
+  }
 
-    this.add(this.$camera);
+  integrate(params, self) {
+    this.add(self.camera);
+  }
+
+  manager(manager) {
+    manager.addDependency('camera', this.camera, {alias: '$camera'});
   }
 }
