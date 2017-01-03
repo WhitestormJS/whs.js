@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 import { extend } from '../../../utils/index';
-import { Renderer } from '../RenderingModule';
+import { Renderer } from '../Renderer';
 import { EffectComposer } from './EffectComposer.js';
 import { RenderPass } from './pass/RenderPass.js';
 
