@@ -7,8 +7,8 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new PHYSICS.WorldModule({
-  ammo: 'http://localhost:8001/vendor/ammo.js'
+var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.CameraModule({
+  position: new THREE.Vector3(0, 10, 50)
 }), new WHS.modules.RenderingModule({
   background: {
     color: 0x162129
@@ -21,8 +21,8 @@ var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneM
   shadowmap: {
     type: THREE.PCFSoftShadowMap
   }
-}), new WHS.modules.CameraModule({
-  position: new THREE.Vector3(0, 10, 50)
+}), new PHYSICS.WorldModule({
+  ammo: 'http://localhost:8001/vendor/ammo.js'
 }), new WHS.OrbitControlsModule()]);
 
 var sphere = new WHS.Sphere({ // Create sphere comonent.
