@@ -1,5 +1,4 @@
 import {ModuleManager} from './ModuleManager';
-import {addResizeListener} from 'detect-element-resize';
 
 class App {
   // static defaults = {
@@ -88,7 +87,7 @@ class App {
   loops = [];
 
   constructor(modules = []) {
-    this.modules = modules
+    this.modules = modules;
     this.manager = new ModuleManager(this);
 
     for (let i = 0, max = modules.length; i < max; i++) {

@@ -37,8 +37,6 @@ export class ModuleManager {
     this.store[key] = [object, this.currentModule, config];
 
     if (config.alias) {
-      this.app[config.alias] = object;
-
       Object.defineProperty(this.app, config.alias, {
         get: () => {
           return this.store[key][0];
@@ -73,7 +71,7 @@ export class ModuleManager {
     }
   }
 
-  get(key) {
+  get(key, getModule = false) {
     if (!this.store[key]) {
       console.error(
         `@ModuleManager: Module requires '${key}' dependency`,
@@ -83,6 +81,6 @@ export class ModuleManager {
       return;
     }
 
-    return this.store[key][0];
+    return getModule ? this.store[key][1] : this.store[key][0];
   }
 }
