@@ -173,10 +173,7 @@ function addPlane(world) {
       mass: 0
     })],
 
-    material: {
-      color: 0x447F8B,
-      kind: 'phong'
-    },
+    material: new THREE.MeshPhongMaterial({ color: 0x447F8B }),
 
     rotation: {
       x: -Math.PI / 2
@@ -198,10 +195,7 @@ function addBoxPlane(world) {
       mass: 0
     })],
 
-    material: {
-      color: 0x447F8B,
-      kind: 'phong'
-    }
+    material: new THREE.MeshPhongMaterial({ color: 0x447F8B })
   }).addTo(world);
 }
 

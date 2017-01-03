@@ -3,8 +3,8 @@ import * as UTILS from './globals';
 const world = new WHS.App([
   new WHS.modules.ElementModule(),
   new WHS.modules.SceneModule(),
-  new PHYSICS.WorldModule({
-    ammo: '{{ ammojs }}'
+  new WHS.modules.CameraModule({
+    position: new THREE.Vector3(0, 10, 50)
   }),
   new WHS.modules.RenderingModule({
     background: {
@@ -19,8 +19,8 @@ const world = new WHS.App([
       type: THREE.PCFSoftShadowMap
     }
   }),
-  new WHS.modules.CameraModule({
-    position: new THREE.Vector3(0, 10, 50)
+  new PHYSICS.WorldModule({
+    ammo: '{{ ammojs }}'
   }),
   new WHS.OrbitControlsModule()
 ]);

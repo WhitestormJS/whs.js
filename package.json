@@ -9,8 +9,7 @@
     "start": "npm run dev",
     "build": "gulp build",
     "deploy": "surge --project ./ --domain whs-dev.surge.sh",
-    "dev": "gulp dev",
-    "lint": "gulp src:lint"
+    "dev": "gulp dev --devPhysics 8001"
   },
   "repository": "WhitestormJS/whitestorm.js",
   "keywords": [
