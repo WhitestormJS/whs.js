@@ -103,13 +103,12 @@ class App {
 
   constructor(modules = []) {
     this.modules = modules;
-    const modulesSharedScope = {};
 
     for (let i = 0, max = modules.length; i < max; i++) {
       const module = modules[i];
 
       if (typeof module === 'function')
-        module.bind(modulesSharedScope)().integrate.bind(this)(module.params, module);
+        module.bind(this)();
       else
         module.integrate.bind(this)(module.params, module);
     }
@@ -192,6 +191,15 @@ class App {
     }
 
     (process.bind(this))();
+  }
+
+  module(module) {
+    if (typeof module === 'function')
+      module.bind(this.modulesSharedScope)().integrate.bind(this)(module.params, module);
+    else
+      module.integrate.bind(this)(module.params, module);
+
+    return this;
   }
 
   // /**

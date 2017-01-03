@@ -1,0 +1,14 @@
+{
+    "folders": [{
+      "path": "/"
+    }],
+    "settings": {
+        "todoreview": {
+            "exclude_folders": [
+                "*.git*",
+                "*node_modules*",
+                "*build*"
+            ]
+        }
+    }
+}
