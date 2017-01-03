@@ -9,6 +9,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new PHYSICS.WorldModule({
   ammo: 'http://localhost:8001/vendor/ammo.js'
+}), new WHS.modules.CameraModule({
+  position: new THREE.Vector3(0, 40, 250)
 }), new WHS.modules.RenderingModule({
   background: {
     color: 0x162129
@@ -21,30 +23,7 @@ var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneM
   shadowmap: {
     type: THREE.PCFSoftShadowMap
   }
-}), new WHS.modules.CameraModule({
-  position: new THREE.Vector3(0, 10, 50)
-}), new WHS.OrbitControlsModule()]);
-
-// const sphere = new WHS.Dodecahedron({ // Create sphere comonent.
-//   geometry: {
-//     radius: 5,
-//     detail: 0
-//   },
-//
-//   modules: [
-//     new PHYSICS.ConvexModule({
-//       mass: 10,
-//       restitution: 1
-//     })
-//   ],
-//
-//   material: {
-//     color: UTILS.$colors.mesh,
-//     kind: 'basic' // lambert
-//   },
-//
-//   position: [0, 20, 0] // 0 100 0
-// });
+}), new WHS.OrbitControlsModule(), new WHS.modules.AutoresizeModule()]);
 
 var teapot = new WHS.Model({
   geometry: {
@@ -61,7 +40,7 @@ var teapot = new WHS.Model({
 
   useCustomMaterial: true,
 
-  material: new THREE.MeshBasicMaterial({
+  material: new THREE.MeshPhongMaterial({
     shading: THREE.SmoothShading,
     map: WHS.texture('../../_assets/textures/teapot.jpg', { repeat: { x: 1, y: 1 } }),
     side: THREE.DoubleSide
@@ -74,29 +53,27 @@ var teapot = new WHS.Model({
   scale: [4, 4, 4]
 });
 
-// const ball = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
-//   geometry: {
-//     radius: 3,
-//     widthSegments: 16,
-//     heightSegments: 16
-//   },
-//
-//   mass: 60,
-//
-//   material: {
-//     kind: 'phong',
-//     color: UTILS.$colors.mesh
-//   },
-//
-//   physics: {
-//     restitution: 1
-//   },
-//
-//   position: [10, 250, -1.969]
-// });
+var ball = new WHS.Sphere({
+  geometry: {
+    radius: 3,
+    widthSegments: 16,
+    heightSegments: 16
+  },
+
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
+
+  modules: [new PHYSICS.SphereModule({
+    restitution: 1,
+    mass: 60
+  })],
+
+  position: [10, 250, -1.969]
+});
 
 teapot.addTo(world).then(function () {
-  // ball.addTo(world);
+  ball.addTo(world);
 });
 
 UTILS.addBoxPlane(world, 500);
@@ -139,8 +116,6 @@ var $world = exports.$world = {
   autoresize: "window",
 
   gravity: [0, -100, 0],
-
-  modules: [new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.RenderingModule(), new WHS.modules.CameraModule()],
 
   camera: {
     position: [0, 10, 50]
