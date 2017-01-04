@@ -1,22 +1,27 @@
 import * as UTILS from './globals';
 
-const world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world,
+const world = new WHS.App([
+  new WHS.modules.ElementModule(),
+  new WHS.modules.SceneModule(),
+  new WHS.modules.CameraModule({
+    position: new THREE.Vector3(0, 10, 50)
+  }),
+  new WHS.modules.RenderingModule({
+    bgColor: 0x162129,
 
-  physics: {
+    renderer: {
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
+      }
+    }
+  }),
+  new PHYSICS.WorldModule({
     ammo: '{{ ammojs }}'
-  },
-
-  softbody: true,
-
-  shadowmap: {
-    type: THREE.PCFSoftShadowMap
-  },
-
-  physics: {
-    fixedTimeStep: 1 / 120
-  }
-});
+  }),
+  new WHS.OrbitControlsModule(),
+  new WHS.modules.AutoresizeModule()
+]);
 
 new WHS.Sphere({ // Softbody (blue).
   geometry: {
@@ -25,20 +30,15 @@ new WHS.Sphere({ // Softbody (blue).
     heightSegments: 16
   },
 
-  mass: 15,
-  softbody: true,
+  modules: [
+    new PHYSICS.SphereModule({
+      mass: 15
+    })
+  ],
 
-  physics: {
-    pressure: 2000,
-
-    piteration: 40,
-    viteration: 40
-  },
-
-  material: {
-    color: UTILS.$colors.softbody,
-    kind: 'phong'
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: {
     y: 4
@@ -52,12 +52,15 @@ new WHS.Sphere({ // Rigidbody (green).
     heightSegments: 16
   },
 
-  mass: 2,
+  modules: [
+    new PHYSICS.SphereModule({
+      mass: 2
+    })
+  ],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'phong'
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: {
     y: 30,
@@ -69,5 +72,4 @@ new WHS.Sphere({ // Rigidbody (green).
 UTILS.addBoxPlane(world, 2500);
 UTILS.addBasicLights(world);
 
-world.setControls(new WHS.OrbitControls());
 world.start();

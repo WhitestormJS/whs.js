@@ -37,7 +37,6 @@ class Box extends Component {
 
   build(params = this.params) {
     return new Promise((resolve) => {
-      console.log(params.material, 'gfgf');
       let {geometry, material} = this.applyBridge({
         geometry: this.buildGeometry(params),
         material: params.material

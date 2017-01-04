@@ -7,7 +7,7 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-window.world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.CameraModule({
+var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.CameraModule({
   position: new THREE.Vector3(0, 10, 50)
 }), new WHS.modules.RenderingModule({
   bgColor: 0x162129,
@@ -51,10 +51,9 @@ var sphere = new WHS.Sphere({ // Create sphere comonent.
     restitution: 1
   })],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'basic' // lambert
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: [0, 20, 0] // 0 100 0
 });
@@ -62,9 +61,7 @@ var sphere = new WHS.Sphere({ // Create sphere comonent.
 sphere.addTo(world);
 
 UTILS.addBoxPlane(world);
-UTILS.addBasicLights(world).then(function (o) {
-  return console.log(o.native);
-});
+UTILS.addBasicLights(world);
 
 world.start(); // Start animations and physics simulation.
 
