@@ -18,16 +18,16 @@ export class VirtualMouse extends Events {
     super();
 
     world.mouse = this;
-    this.world = world;
+    this.manager = world;
 
-    if (world.renderer) this.canvas = world.renderer.domElement;
+    if (this.manager.get('renderer')) this.canvas = this.manager.get('renderer').domElement;
 
-    const mouseMoveContainer = globalMovement ? window : world.$element;
+    const mouseMoveContainer = globalMovement ? window : this.manager.get('element');
 
     mouseMoveContainer.addEventListener('mousemove', this.update.bind(this));
-    world.$element.addEventListener('click', () => this.emit('click'));
-    world.$element.addEventListener('mousedown', () => this.emit('mousedown'));
-    world.$element.addEventListener('mouseup', () => this.emit('mouseup'));
+    this.manager.get('element').addEventListener('click', () => this.emit('click'));
+    this.manager.get('element').addEventListener('mousedown', () => this.emit('mousedown'));
+    this.manager.get('element').addEventListener('mouseup', () => this.emit('mouseup'));
   }
 
   update(e) {
@@ -36,9 +36,9 @@ export class VirtualMouse extends Events {
     this.mouse.x = ((e.clientX - rect.left) / (rect.right - rect.left)) * 2 - 1;
     this.mouse.y = -((e.clientY - rect.top) / (rect.bottom - rect.top)) * 2 + 1;
 
-    this.projectionPlane.normal.copy(this.world.$camera.native.getWorldDirection());
+    this.projectionPlane.normal.copy(this.manager.get('camera').native.getWorldDirection());
 
-    this.raycaster.setFromCamera(this.mouse, this.world.$camera.native);
+    this.raycaster.setFromCamera(this.mouse, this.manager.get('camera').native);
     this.emit('move');
   }
 
