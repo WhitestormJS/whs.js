@@ -1,33 +1,41 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _globals = require('./globals');
 
 var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
+var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.CameraModule({
+  position: new THREE.Vector3(0, 10, 50)
+}), new WHS.modules.RenderingModule({
+  bgColor: 0x162129,
 
-  physics: {
-    ammo: 'http://localhost:8001/vendor/ammo.js'
+  renderer: {
+    antialias: true,
+    shadowmap: {
+      type: THREE.PCFSoftShadowMap
+    }
   }
-}));
+}), new PHYSICS.WorldModule({
+  ammo: 'http://localhost:8001/vendor/ammo.js'
+}), new WHS.OrbitControlsModule(), new WHS.modules.AutoresizeModule()]);
 
-var sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sphere comonent.
+var sphere = new WHS.Sphere({ // Create sphere component.
   geometry: {
     radius: 3,
     widthSegments: 32,
     heightSegments: 32
   },
 
-  mass: 10, // Mass of physics object.
+  modules: [new PHYSICS.SphereModule({
+    mass: 10
+  })],
 
   material: {
     color: UTILS.$colors.mesh,
-    kind: 'lambert'
+    kind: 'basic' // lambert
   },
 
   position: [0, 100, 0]
@@ -35,7 +43,7 @@ var sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sp
 
 sphere.addTo(world);
 
-var mouse = new WHS.VirtualMouse(world);
+var mouse = new WHS.VirtualMouse(world.manager);
 mouse.track(sphere);
 
 sphere.on('mouseover', function () {
@@ -60,7 +68,6 @@ UTILS.addPlane(world);
 UTILS.addBasicLights(world);
 
 world.start(); // Start animations and physics simulation.
-world.setControls(new WHS.OrbitControls());
 
 },{"./globals":2}],2:[function(require,module,exports){
 "use strict";

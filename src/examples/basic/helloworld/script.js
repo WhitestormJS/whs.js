@@ -1,6 +1,6 @@
 import * as UTILS from './globals';
 
-window.world = new WHS.App([
+const world = new WHS.App([
   new WHS.modules.ElementModule(),
   new WHS.modules.SceneModule(),
   new WHS.modules.CameraModule({
@@ -54,10 +54,9 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
     })
   ],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'basic' // lambert
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: [0, 20, 0] // 0 100 0
 });
@@ -65,6 +64,6 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
 sphere.addTo(world);
 
 UTILS.addBoxPlane(world);
-UTILS.addBasicLights(world).then(o => console.log(o.native));
+UTILS.addBasicLights(world);
 
 world.start(); // Start animations and physics simulation.

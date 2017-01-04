@@ -1,31 +1,26 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _globals = require('./globals');
 
 var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.CameraModule({
+  position: new THREE.Vector3(0, 10, 50)
+}), new WHS.modules.RenderingModule({
+  bgColor: 0x162129,
 
-var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, _defineProperty({
-
-  physics: {
-    ammo: 'http://localhost:8001/vendor/ammo.js'
-  },
-
-  softbody: true,
-
-  shadowmap: {
-    type: THREE.PCFSoftShadowMap
+  renderer: {
+    antialias: true,
+    shadowmap: {
+      type: THREE.PCFSoftShadowMap
+    }
   }
-
-}, 'physics', {
-  fixedTimeStep: 1 / 120
-})));
+}), new PHYSICS.WorldModule({
+  ammo: 'http://localhost:8001/vendor/ammo.js'
+}), new WHS.OrbitControlsModule(), new WHS.modules.AutoresizeModule()]);
 
 new WHS.Sphere({ // Softbody (blue).
   geometry: {
@@ -34,20 +29,13 @@ new WHS.Sphere({ // Softbody (blue).
     heightSegments: 16
   },
 
-  mass: 15,
-  softbody: true,
+  modules: [new PHYSICS.SphereModule({
+    mass: 15
+  })],
 
-  physics: {
-    pressure: 2000,
-
-    piteration: 40,
-    viteration: 40
-  },
-
-  material: {
-    color: UTILS.$colors.softbody,
-    kind: 'phong'
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: {
     y: 4
@@ -63,12 +51,13 @@ new WHS.Sphere({ // Rigidbody (green).
     heightSegments: 16
   },
 
-  mass: 2,
+  modules: [new PHYSICS.SphereModule({
+    mass: 2
+  })],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'phong'
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: {
     y: 30,
@@ -80,7 +69,6 @@ new WHS.Sphere({ // Rigidbody (green).
 UTILS.addBoxPlane(world, 2500);
 UTILS.addBasicLights(world);
 
-world.setControls(new WHS.OrbitControls());
 world.start();
 
 },{"./globals":2}],2:[function(require,module,exports){
