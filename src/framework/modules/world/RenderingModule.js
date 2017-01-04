@@ -1,6 +1,7 @@
 import {
   PCFSoftShadowMap,
-  WebGLRenderer
+  WebGLRenderer,
+  Vector2
 } from 'three';
 
 import {Loop} from '../../extras/Loop';
@@ -11,20 +12,10 @@ export class RenderingModule {
       width: window.innerWidth,
       height: window.innerHeight,
 
-      resolution: {
-        width: 1,
-        height: 1
-      },
+      resolution: new Vector2(1, 1),
 
-      shadowmap: {
-        enabled: true,
-        type: PCFSoftShadowMap
-      },
-
-      background: {
-        color: 0x000000,
-        opacity: 1
-      },
+      bgColor: 0x000000,
+      bgOpacity: 1,
 
       renderer: {}
     }, params);
@@ -32,16 +23,14 @@ export class RenderingModule {
     this.renderer = new WebGLRenderer(this.params.renderer);
 
     this.renderer.setClearColor(
-      this.params.background.color,
-      this.params.background.opacity
+      this.params.bgColor,
+      this.params.bgOpacity
     );
 
-    // Shadowmap.
-    this.renderer.shadowMap.enabled = this.params.shadowmap.enabled;
-    this.renderer.shadowMap.type = this.params.shadowmap.type;
-    this.renderer.shadowMap.cascade = true;
-
-    this.setSize(this.params.width, this.params.height);
+    this.setSize(
+      Number(this.params.width * this.params.resolution.x).toFixed(),
+      Number(this.params.height * this.params.resolution.y).toFixed()
+    );
   }
 
   integrateRenderer(element, scene, camera) {
