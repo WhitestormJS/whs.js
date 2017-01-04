@@ -1,5 +1,6 @@
 import {
-  PCFSoftShadowMap
+  PCFSoftShadowMap,
+  WebGLRenderer
 } from 'three';
 
 import {Loop} from '../../extras/Loop';
@@ -28,7 +29,7 @@ export class RenderingModule {
       renderer: {}
     }, params);
 
-    this.renderer = new THREE.WebGLRenderer(this.params.renderer);
+    this.renderer = new WebGLRenderer(this.params.renderer);
 
     this.renderer.setClearColor(
       this.params.background.color,
@@ -92,9 +93,6 @@ export class RenderingModule {
   }
 
   integrate(params, self) {
-    // const computedWidth = Number(params.width * params.resolution.width).toFixed();
-    // const computedHeight = Number(params.height * params.resolution.height).toFixed();
-
     self.renderLoop.start(this);
   }
 }
