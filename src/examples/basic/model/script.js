@@ -10,16 +10,13 @@ const world = new WHS.App([
     position: new THREE.Vector3(0, 40, 250)
   }),
   new WHS.modules.RenderingModule({
-    background: {
-      color: 0x162129
-    },
+    bgColor: 0x162129,
 
     renderer: {
-      antialias: true
-    },
-
-    shadowmap: {
-      type: THREE.PCFSoftShadowMap
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
+      }
     }
   }),
   new WHS.OrbitControlsModule(),

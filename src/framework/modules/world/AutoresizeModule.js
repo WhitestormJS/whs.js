@@ -23,8 +23,8 @@ export class AutoresizeModule {
       const resolution = this.getResolution();
 
       this.setSize(
-        Number(container.offsetWidth * resolution.width).toFixed(),
-        Number(container.offsetHeight * resolution.height).toFixed()
+        Number(container.offsetWidth * resolution.x).toFixed(),
+        Number(container.offsetHeight * resolution.y).toFixed()
       );
     };
 

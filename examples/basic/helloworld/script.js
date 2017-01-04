@@ -10,16 +10,13 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 window.world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.CameraModule({
   position: new THREE.Vector3(0, 10, 50)
 }), new WHS.modules.RenderingModule({
-  background: {
-    color: 0x162129
-  },
+  bgColor: 0x162129,
 
   renderer: {
-    antialias: true
-  },
-
-  shadowmap: {
-    type: THREE.PCFSoftShadowMap
+    antialias: true,
+    shadowmap: {
+      type: THREE.PCFSoftShadowMap
+    }
   }
 }), new PHYSICS.WorldModule({
   ammo: 'http://localhost:8001/vendor/ammo.js'
