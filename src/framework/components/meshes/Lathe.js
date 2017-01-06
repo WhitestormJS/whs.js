@@ -6,14 +6,12 @@ import {
 
 
 
-import {Component} from '../../core/Component';
 import {loadMaterial} from '../../utils/index';
 import {MeshComponent} from '../../core/MeshComponent';
 
-@MeshComponent
-class Lathe extends Component {
+class Lathe extends MeshComponent {
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: {
       points: []
     },
@@ -24,7 +22,7 @@ class Lathe extends Component {
   };
 
   static instructions = {
-    ...Component.instructions,
+    ...MeshComponent.instructions,
     geometry: ['points']
   };
 

@@ -1,125 +1,83 @@
-import {Object3D} from 'three';
-import {$wrap, $defaults, $extend, $define} from '../utils/ComponentUtils';
+import {Vector3, Euler} from 'three';
+import {Component} from './Component';
 
-import {extend} from '../utils/index';
+import {NativeArguments} from './prototype/NativeArguments';
 
-function CameraComponent(targetComponent) {
-  const resultComponent = class CameraComponentEnhance extends targetComponent {
-    static defautls = extend(targetComponent.defaults, {
-      helper: false,
+@NativeArguments(
+  // Three.js Instances.
+  ['position',   {copy: true}],
+  ['rotation',   {copy: true}],
+  ['quaternion', {copy: true}],
+  ['target', {copy: true}]
+)
+class CameraComponent extends Component {
+  static defaults = {
+    ...Component.defaults,
 
-      position: {x: 0, y: 0, z: 0},
-      rotation: {x: 0, y: 0, z: 0},
-      target: {x: 0, y: 0, z: 0}
-    });
+    build: true,
 
-    static instructions = (() => targetComponent.instructions = {
-      ...targetComponent.instructions,
-      position: ['x', 'y', 'z'],
-      rotation: ['x', 'y', 'z'],
-      target: ['x', 'y', 'z']
-    })();
+    position: new Vector3(0, 0, 0),
+    rotation: new Euler(0, 0, 0)
+  };
 
-    constructor(...props) {
-      super(...props);
+  static instructions = {
+    position: ['x', 'y', 'z'],
+    rotation: ['x', 'y', 'z'],
+    scale: ['x', 'y', 'z']
+  };
 
-      this.helper = null;
-      if (this.native instanceof Object3D) this.params = CameraComponentEnhance.defaults;
-    }
+  constructor(params, defaults = CameraComponent.defaults, instructions = CameraComponent.instructions) {
+    super(params, defaults, instructions);
 
-    wrapTransforms() {
-      const _params = this.params;
+    if (this.params.build) {
+      const build = this.build(this.params);
 
-      this.position.set(
-        _params.position.x,
-        _params.position.y,
-        _params.position.z
-      );
+      if (!build) throw new Error('@CameraComponent: .build() method should return a THREE.Object3D or a Promise resolved with THREE.Object3D.');
 
-      this.rotation.set(
-        _params.rotation.x,
-        _params.rotation.y,
-        _params.rotation.z
-      );
-    }
+      if (build instanceof Promise) build.then((native) => {this.native = native});
+      else this.native = build;
 
-    get position() {
-      return this.native.position;
-    }
-
-    set position(vector3) {
-      this.native.position.copy(vector3);
-      return this.native.position;
-    }
-
-    get quaternion() {
-      return this.native.quaternion;
-    }
-
-    set quaternion(quaternion) {
-      this.native.quaternion.copy(quaternion);
-      return this.native.quaternion;
-    }
-
-    get rotation() {
-      return this._native.rotation;
-    }
-
-    set rotation(euler) {
-      this.native.rotation.copy(euler);
-      return this.native.rotation;
-    }
-
-    get target() {
-      return this.native.target;
-    }
-
-    set target(vector3) {
-      if (vector3 instanceof Object3D)
-        this.native.target.copy(vector3); // THREE.Object3D in this case.
-      else this.native.target.position.copy(vector3);
-    }
-
-    lookAt(...args) {
-      return this.native.lookAt(...args);
-    }
-
-    copy(source) {
-      if (source.native) {
-        this.native = source.native.clone();
-        this.params = {...source.params};
-
-        if (source.helper) this.helper = source.helper.clone();
-        if (source.target) this.target = source.target.clone();
-        this.wrap();
-
-        this.position = source.position.clone();
-        this.rotation = source.rotation.clone();
-      } else this.params = source.params;
-
-      this.callCopy(this);
-
-      return this;
-    }
-
-    clone() {
-      return new resultComponent({build: false}).copy(this);
-    }
-
-    addTo(world) {
-      return world.add(this);
+      this.wrap();
     }
   }
 
-  $wrap(resultComponent).onCallWrap((scope, ...tags) => {
-    const _native = scope.native;
-    const _params = scope.params;
+  build() {
+    throw new Error('@CameraComponent: Instance should have it\'s own .build().');
+  }
 
-    if (_params.useTarget) scope.lookAt(_params.target);
-    if (_params.helper) scope.helper = new THREE.CameraHelper(_native);
-  });
+  wrap() {
+    return new Promise(resolve => {
+      this.defer(() => {
+        this.position.copy(this.params.position);
+        this.rotation.copy(this.params.rotation);
 
-  return resultComponent;
+        resolve(this);
+      });
+    });
+  }
+
+  copy(source) {
+    if (source.native) {
+      this.native = source.native.clone();
+      this.params = {...source.params};
+
+      if (this.target) this.target.copy(source.target());
+
+      this.position.copy(source.position);
+      this.rotation.copy(source.rotation);
+      this.quaternion.copy(source.quaternion);
+    } else this.params = source.params;
+
+    return this;
+  }
+
+  clone() {
+    return new this.constructor({build: false}).copy(this);
+  }
+
+  addTo(object) {
+    return object.add(this);
+  }
 }
 
 export {

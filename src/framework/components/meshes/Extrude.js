@@ -6,14 +6,12 @@ import {
 
 
 
-import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {loadMaterial} from '../../utils/index';
 
-@MeshComponent
-class Extrude extends Component {
+class Extrude extends MeshComponent {
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: {
       shapes: [],
       options: {}
@@ -25,7 +23,7 @@ class Extrude extends Component {
   };
 
   static instructions = {
-    ...Component.instructions,
+    ...MeshComponent.instructions,
     geometry: ['shapes', 'options']
   };
 

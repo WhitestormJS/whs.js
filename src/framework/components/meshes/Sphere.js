@@ -4,14 +4,12 @@ import {
   SphereGeometry
 } from 'three';
 
-import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {loadMaterial} from '../../utils/index';
 
-@MeshComponent
-class Sphere extends Component {
+class Sphere extends MeshComponent {
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: {
       radius: 1,
       widthSegments: 8,
@@ -24,35 +22,21 @@ class Sphere extends Component {
   };
 
   static instructions = {
-    ...Component.instructions,
+    ...MeshComponent.instructions,
     geometry: ['radius', 'widthSegments', 'heightSegments']
   };
 
   constructor(params = {}) {
     super(params, Sphere.defaults, Sphere.instructions);
-
-    if (params.build) {
-      this.build(params);
-      super.wrap();
-    }
   }
 
   build(params = this.params) {
-    const material = loadMaterial(params.material);
-
-    return new Promise((resolve) => {
-      let {geometry, material} = this.applyBridge({
-        geometry: this.buildGeometry(params),
-        material: loadMaterial(params.material)
-      });
-
-      this.native = this.applyBridge({mesh: new Mesh(
-        geometry,
-        material
-      )}).mesh;
-
-      resolve();
+    let {geometry, material} = this.applyBridge({
+      geometry: this.buildGeometry(params),
+      material: params.material
     });
+
+    return this.applyBridge({mesh: new Mesh(geometry, material)}).mesh;
   }
 
   buildGeometry(params = {}) {

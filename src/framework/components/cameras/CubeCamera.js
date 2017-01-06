@@ -1,11 +1,9 @@
 import {CubeCamera as CubeCameraNative} from 'three';
-import {Component} from '../../core/Component';
 import {CameraComponent} from '../../core/CameraComponent';
 
-@CameraComponent
-class CubeCamera extends Component {
+class CubeCamera extends CameraComponent {
   static defaults = {
-    ...Component.defaults,
+    ...CameraComponent.defaults,
 
     camera: {
       near: 1,
@@ -15,22 +13,15 @@ class CubeCamera extends Component {
   };
 
   constructor(params = {}) {
-    super(params, CubeCamera.defaults, CubeCamera.instructions);
-
-    this.build(params);
-    super.wrap();
+    super(params, CubeCamera.defaults);
   }
 
   build(params = {}) {
-    return new Promise((resolve) => {
-      this.native = new CubeCameraNative(
-        params.camera.near,
-        params.camera.far,
-        params.camera.cubeResolution
-      );
-
-      resolve();
-    });
+    return new CubeCameraNative(
+      params.camera.near,
+      params.camera.far,
+      params.camera.cubeResolution
+    );
   }
 }
 

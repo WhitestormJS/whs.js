@@ -6,14 +6,12 @@ import {
 
 
 
-import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {loadMaterial} from '../../utils/index';
 
-@MeshComponent
-class Plane extends Component {
+class Plane extends MeshComponent {
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: {
       width: 10,
       height: 10,
@@ -27,7 +25,7 @@ class Plane extends Component {
   };
 
   static instructions = {
-    ...Component.instructions,
+    ...MeshComponent.instructions,
     geometry: ['width', 'height', 'wSegments', 'hSegments']
   };
 

@@ -14,7 +14,7 @@
 // @MeshComponent
 // class Line extends Component {
 //   static defaults = {
-//     ...Component.defaults,
+//     ...MeshComponent.defaults,
 //     geometry: {
 //       curve: false,
 //       points: 50
@@ -26,7 +26,7 @@
 //   };
 //
 //   static instructions = {
-//     ...Component.instructions,
+//     ...MeshComponent.instructions,
 //     geometry: ['curve', 'points']
 //   };
 //
