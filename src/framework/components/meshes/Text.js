@@ -6,14 +6,12 @@ import {
 
 
 
-import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {loadMaterial, FontLoader} from '../../utils/index';
 
-@MeshComponent
-class Text extends Component {
+class Text extends MeshComponent {
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: {
       text: 'Hello World!',
 
@@ -34,7 +32,7 @@ class Text extends Component {
   };
 
   static instructions = {
-    ...Component.instructions,
+    ...MeshComponent.instructions,
     geometry: ['text', 'parameters']
   }
 

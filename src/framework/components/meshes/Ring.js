@@ -4,14 +4,12 @@
   RingBufferGeometry
 } from 'three';
 
-import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {loadMaterial} from '../../utils/index';
 
-@MeshComponent
-class Ring extends Component {
+class Ring extends MeshComponent {
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: {
       innerRadius: 0,
       outerRadius: 50,
@@ -23,7 +21,7 @@ class Ring extends Component {
   };
 
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: [
       'innerRadius',
       'outerRadius',

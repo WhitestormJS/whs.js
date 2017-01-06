@@ -7,14 +7,12 @@ import {
 
 
 
-import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {loadMaterial} from '../../utils/index';
 
-@MeshComponent
-class Parametric extends Component {
+class Parametric extends MeshComponent {
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: {
       func: (u, v) => new THREE.Vector3(u, v, 0),
       slices: 10,

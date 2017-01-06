@@ -6,14 +6,12 @@ import {
 
 
 
-import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {loadMaterial} from '../../utils/index';
 
-@MeshComponent
-class Torus extends Component {
+class Torus extends MeshComponent {
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: {
       radius: 100,
       tube: 40,
@@ -28,7 +26,7 @@ class Torus extends Component {
   };
 
   static instructions = {
-    ...Component.instructions,
+    ...MeshComponent.instructions,
     geometry: [
       'radius',
       'tube',

@@ -4,16 +4,11 @@ import {
   BoxGeometry
 } from 'three';
 
-
-
-import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
-import {loadMaterial} from '../../utils/index';
 
-@MeshComponent
-class Box extends Component {
+class Box extends MeshComponent {
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: {
       width: 1,
       height: 1,
@@ -22,33 +17,24 @@ class Box extends Component {
   };
 
   static instructions = {
-    ...Component.instructions,
+    ...MeshComponent.instructions,
     geometry: ['width', 'height', 'depth']
   };
 
   constructor(params = {}) {
     super(params, Box.defaults, Box.instructions);
-
-    if (params.build) {
-      this.build(params);
-      super.wrap();
-    }
   }
 
   build(params = this.params) {
-    return new Promise((resolve) => {
-      let {geometry, material} = this.applyBridge({
-        geometry: this.buildGeometry(params),
-        material: params.material
-      });
-
-      this.native = this.applyBridge({mesh: new Mesh(
-        geometry,
-        material
-      )}).mesh;
-
-      resolve();
+    let {geometry, material} = this.applyBridge({
+      geometry: this.buildGeometry(params),
+      material: params.material
     });
+
+    return this.applyBridge({mesh: new Mesh(
+      geometry,
+      material
+    )}).mesh;
   }
 
   buildGeometry(params = {}) {
