@@ -42,12 +42,15 @@ class Tetrahedron extends Component {
     const material = loadMaterial(params.material);
 
     return new Promise((resolve) => {
-      this.native = this.isPhysics ?
-        params.physics.create.bind(this)(params, material)
-        : new Mesh(
-          this.buildGeometry(params),
-          material
-        );
+      let {geometry, material} = this.applyBridge({
+        geometry: this.buildGeometry(params),
+        material: loadMaterial(params.material)
+      });
+
+      this.native = this.applyBridge({mesh: new Mesh(
+        geometry,
+        material
+      )}).mesh;
 
       resolve();
     });

@@ -42,10 +42,10 @@ class Parametric extends Component {
         material: loadMaterial(params.material)
       });
 
-      this.native = new Mesh(
+      this.native = this.applyBridge({mesh: new Mesh(
         geometry,
         material
-      );
+      )}).mesh;
 
       resolve();
     });

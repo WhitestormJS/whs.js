@@ -1,59 +1,52 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var world = new (PHYSICS.$world(WHS.World))({
-  autoresize: "window",
+var _globals = require('./globals');
 
-  physics: {
-    ammo: 'http://localhost:8001/vendor/ammo.js'
-  },
+var UTILS = _interopRequireWildcard(_globals);
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new PHYSICS.WorldModule({
+  ammo: 'http://localhost:8001/vendor/ammo.js',
   gravity: {
     x: 0,
     y: -10,
     z: 0
-  },
+  }
+}), new WHS.modules.CameraModule({
+  position: new THREE.Vector3(-8, 5, 20),
+  fov: 45,
+  far: 2000
+}), new WHS.modules.RenderingModule({
+  bgColor: 0xffffff,
 
-  camera: {
-    far: 2000,
-    near: 1,
-    position: [-8, 5, 20],
-    fov: 45
-  },
-
-  rendering: {
+  renderer: {
+    antialias: true,
     shadowmap: {
       type: THREE.PCFSoftShadowMap
-    },
-
-    renderer: {
-      antialias: true
-    },
-
-    background: {
-      color: 0xffffff
     }
   }
-});
+}), new WHS.OrbitControlsModule(), new WHS.modules.AutoresizeModule()]);
 
-world.$camera.lookAt(new THREE.Vector3(0, 0, 0));
+// world.$camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 // Start rendering.
 world.start();
 
-new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
+new WHS.Box({
   geometry: {
     width: 100,
     height: 1,
     depth: 100
   },
+  modules: [new PHYSICS.BoxModule({
+    mass: 0
+  })],
 
-  mass: 0,
-
-  material: {
-    kind: 'phong',
+  material: new THREE.MeshPhongMaterial({
     color: 0xffffff
-  },
+  }),
 
   position: {
     x: 0,
@@ -62,29 +55,25 @@ new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
   }
 }).addTo(world);
 
-var egg = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONVEX2))({
+var egg = new WHS.Model({
   geometry: {
-    path: '../../_assets/models/easter/egg_light.json',
-    physics: '../../_assets/models/easter/egg_low.json'
+    path: '../../_assets/models/easter/egg_light.json'
   },
 
-  mass: 10,
+  modules: [new PHYSICS.ConvexModule({
+    path: '../../_assets/models/easter/egg_low.json'
+  })],
 
-  material: {
-    kind: 'lambert',
+  useCustomMaterial: true,
+
+  material: new THREE.MeshPhongMaterial({
+    shading: THREE.SmoothShading,
     map: WHS.texture('../../_assets/textures/easter/egg1.jpg'),
-    color: 0xffffff,
-    rest: 1
-  },
-
-  scale: {
-    x: 1,
-    y: 1,
-    z: 1
-  },
+    side: THREE.DoubleSide
+  }),
 
   position: {
-    y: 0,
+    y: 10,
     x: -10
   },
 
@@ -94,27 +83,19 @@ var egg = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONVEX2))({
   }
 });
 
-var rabbit = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONCAVE2))({
+var rabbit = new WHS.Model({
   geometry: {
-    path: '../../_assets/models/easter/rabbit.json',
-    physics: '../../_assets/models/easter/rabbit_low.json'
+    path: '../../_assets/models/easter/rabbit.json'
   },
 
-  material: {
-    kind: 'lambert',
-    side: THREE.DoubleSide,
-    rest: 1
-  },
+  modules: [new PHYSICS.ConcaveModule({
+    path: '../../_assets/models/easter/rabbit_low.json',
+    scale: new THREE.Vector3(0.5, 0.5, 0.5)
+  })],
 
-  physics: {
-    type: 'concave'
-  },
-
-  scale: {
-    x: 0.5,
-    y: 0.5,
-    z: 0.5
-  },
+  material: new THREE.MeshPhongMaterial({
+    side: THREE.DoubleSide
+  }),
 
   position: {
     y: 5,
@@ -123,7 +104,9 @@ var rabbit = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONCAVE2))({
 
   rotation: {
     x: Math.PI / 2
-  }
+  },
+
+  scale: [0.5, 0.5, 0.5]
 });
 
 rabbit.addTo(world, 'wait');
@@ -273,23 +256,133 @@ egg.addTo(world, 'wait').then(function (object) {
   });
 });
 
-document.body.addEventListener('mousemove', function (e) {
-  world.$camera.position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
-  world.$camera.position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
-  world.$camera.lookAt(new THREE.Vector3(-4, 0, 0));
-});
+// document.body.addEventListener('mousemove', (e) => {
+//   world.$camera.position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
+//   world.$camera.position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
+//   world.$camera.lookAt(new THREE.Vector3(-4, 0, 0));
+// });
+//
+// document.body.addEventListener('click', () => {
+//   rabbit.setLinearVelocity(new THREE.Vector3(0, 5, 0));
+//   egg.setAngularVelocity(new THREE.Vector3(0, 10, 0));
+//   egg2.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+//   egg3.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+//   egg4.setAngularVelocity(new THREE.Vector3(0, 10, 0));
+//   egg5.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+//   egg6.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+//   egg7.setAngularVelocity(new THREE.Vector3(0, 10, 0));
+//   egg8.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+//   egg9.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+// });
 
-document.body.addEventListener('click', function () {
-  rabbit.setLinearVelocity(new THREE.Vector3(0, 5, 0));
-  egg.setAngularVelocity(new THREE.Vector3(0, 10, 0));
-  egg2.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg3.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg4.setAngularVelocity(new THREE.Vector3(0, 10, 0));
-  egg5.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg6.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg7.setAngularVelocity(new THREE.Vector3(0, 10, 0));
-  egg8.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg9.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+},{"./globals":2}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
+exports.addAmbient = addAmbient;
+exports.addBasicLights = addBasicLights;
+exports.addPlane = addPlane;
+exports.addBoxPlane = addBoxPlane;
+var $world = exports.$world = {
+  stats: "fps", // fps, ms, mb or false if not need.
+  autoresize: "window",
+
+  gravity: [0, -100, 0],
+
+  camera: {
+    position: [0, 10, 50]
+  },
+
+  rendering: {
+    background: {
+      color: 0x162129
+    },
+
+    renderer: {
+      antialias: true
+    }
+  },
+
+  shadowmap: {
+    type: THREE.PCFSoftShadowMap
+  }
+};
+
+var $colors = exports.$colors = {
+  bg: 0x162129,
+  plane: 0x447F8B,
+  mesh: 0xF2F2F2,
+  softbody: 0x434B7F
+};
+
+function addAmbient(world, intensity) {
+  new WHS.AmbientLight({
+    light: {
+      intensity: intensity
+    }
+  }).addTo(world);
+}
+
+function addBasicLights(world) {
+  var intensity = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
+  var position = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 10, 10];
+  var distance = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
+
+  addAmbient(world, 1 - intensity);
+
+  return new WHS.PointLight({
+    light: {
+      intensity: intensity,
+      distance: distance
+    },
+
+    shadowmap: {
+      fov: 90
+    },
+
+    position: position
+  }).addTo(world);
+}
+
+function addPlane(world) {
+  var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
+
+  return new WHS.Plane({
+    geometry: {
+      width: size,
+      height: size
+    },
+
+    modules: [new PHYSICS.PlaneModule({
+      mass: 0
+    })],
+
+    material: new THREE.MeshPhongMaterial({ color: 0x447F8B }),
+
+    rotation: {
+      x: -Math.PI / 2
+    }
+  }).addTo(world);
+}
+
+function addBoxPlane(world) {
+  var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
+
+  return new WHS.Box({
+    geometry: {
+      width: size,
+      height: 1,
+      depth: size
+    },
+
+    modules: [new PHYSICS.BoxModule({
+      mass: 0
+    })],
+
+    material: new THREE.MeshPhongMaterial({ color: 0x447F8B })
+  }).addTo(world);
+}
 
 },{}]},{},[1]);
