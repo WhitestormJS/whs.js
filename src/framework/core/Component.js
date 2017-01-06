@@ -142,6 +142,21 @@ class Component extends Events {
     return this;
   }
 
+  applyBridge(bridgeMap = {}) {
+    const modules = this.params.modules;
+
+    for (let i = 0, max = modules.length; i < max; i++) {
+      for (let key in bridgeMap) {
+        const module = modules[i];
+
+        if (module.bridge && module.bridge[key])
+          bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
+      }
+    }
+
+    return bridgeMap;
+  }
+
   get native() {
     return this._native;
   }
