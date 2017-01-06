@@ -1,7 +1,7 @@
 import {Object3D} from 'three';
 import Events from 'minivents';
 
-import {extend, transformData, toArray} from '../utils/index';
+import {extend, transformData} from '../utils/index';
 
 export const getWorld = (element) => {
   let world = element;
@@ -21,12 +21,7 @@ class Component extends Events {
   children = [];
   params = {};
 
-  static applyDecorator(component, decorator) {
-    component.prototype = decorator(component).prototype;
-    return component;
-  }
-
-  constructor(obj = {}, defaults = {}, instructions = {}) {
+  constructor(obj = {}, defaults = Component.defaults, instructions = Component.instructions) {
     super();
 
     if (obj instanceof Object3D) this.native = obj;
@@ -47,6 +42,15 @@ class Component extends Events {
   wait(promise) {
     if (promise) this._wait.push(promise);
     return Promise.all(this._wait);
+  }
+
+  defer(func) {
+    if (this.isDeffered) this.wait().then(func);
+    else func();
+  }
+
+  get isDeffered() {
+    return this._wait.length > 0;
   }
 
   callConstructor() {}
@@ -103,41 +107,15 @@ class Component extends Events {
     return this.params;
   }
 
-  addHelper(name, params = {}, helpers = Component.helpers) {
-    const helper = helpers[name];
-    const data = helper[1] ? toArray(
-      extend(params, helper[1]),
-      helper[2]
-    ) : [];
-
-    this._helpers[name] = this.$scene ? new helper[0](...data) : new helper[0](this.native, ...data);
-    if (this.parent || this.$scene) getWorld(this).$scene.add(this._helpers[name]);
-  }
-
-  remove(source) {
-    this.$scene.remove(source.native);
-
-    this.children.splice(this.children.indexOf(source), 1);
-    source.parent = null;
-    source.emit('remove');
-
-    return this;
-  }
-
   clone() {
-    return new Component(this.params).copy(this);
+    return new this.constructor(this.params).copy(this);
   }
 
   copy(source) {
-    const sourceNative = source.native;
-
-    if (sourceNative) {
-      this.native = sourceNative.clone(source.params);
+    if (source.native) {
+      this.native = source.native.clone(source.params);
       this.params = {...source.params};
-      this.wrap();
     } else this.params = source.params;
-
-    this.callCopy(this);
 
     return this;
   }
@@ -165,15 +143,6 @@ class Component extends Events {
     this._native = mesh;
     this._native.component = this;
     return this._native;
-  }
-
-  /* VISIBILITY */
-  show() {
-    this.native.visible = true;
-  }
-
-  hide() {
-    this.native.visible = false;
   }
 }
 

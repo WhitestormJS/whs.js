@@ -6,7 +6,6 @@ import {
 
 
 
-import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {loadMaterial} from '../../utils/index';
 
@@ -25,13 +24,12 @@ const [verticesOfCube, indicesOfFaces] = [
   ]
 ];
 
-@MeshComponent
-class Polyhedron extends Component {
+class Polyhedron extends MeshComponent {
   static verticesOfCube = verticesOfCube;
   static indicesOfFaces = indicesOfFaces;
 
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: {
       verticesOfCube: verticesOfCube,
       indicesOfFaces: indicesOfFaces,
@@ -45,7 +43,7 @@ class Polyhedron extends Component {
   };
 
   static instructions = {
-    ...Component.instructions,
+    ...MeshComponent.instructions,
     geometry: ['verticesOfCube', 'indicesOfFaces', 'radius', 'detail']
   };
 

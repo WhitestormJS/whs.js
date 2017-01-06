@@ -8,14 +8,12 @@ import {
 
 
 
-import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {loadMaterial} from '../../utils/index';
 
-@MeshComponent
-class Tube extends Component {
+class Tube extends MeshComponent {
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: {
       path: new LineCurve3(new Vector3(0, 0, 0), new Vector3(0, 0, 1)),
       segments: 20,
@@ -30,7 +28,7 @@ class Tube extends Component {
   };
 
   static instructions = {
-    ...Component.instructions,
+    ...MeshComponent.instructions,
     geometry: [
       'path',
       'segments',

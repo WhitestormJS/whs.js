@@ -1,11 +1,9 @@
 import {OrthographicCamera as OrthographicCameraNative} from 'three';
-import {Component} from '../../core/Component';
 import {CameraComponent} from '../../core/CameraComponent';
 
-@CameraComponent
-class OrthographicCamera extends Component {
+class OrthographicCamera extends CameraComponent {
   static defaults = {
-    ...Component.defaults,
+    ...CameraComponent.defaults,
 
     camera: {
       near: 1,
@@ -18,25 +16,18 @@ class OrthographicCamera extends Component {
   };
 
   constructor(params = {}) {
-    super(params, OrthographicCamera.defaults, OrthographicCamera.instructions);
-
-    this.build(params);
-    super.wrap();
+    super(params, OrthographicCamera.defaults);
   }
 
   build(params = {}) {
-    return new Promise((resolve) => {
-      this.native = new OrthographicCameraNative(
-        params.camera.left,
-        params.camera.right,
-        params.camera.top,
-        params.camera.bottom,
-        params.camera.near,
-        params.camera.far
-      );
-
-      resolve();
-    });
+    return new OrthographicCameraNative(
+      params.camera.left,
+      params.camera.right,
+      params.camera.top,
+      params.camera.bottom,
+      params.camera.near,
+      params.camera.far
+    );
   }
 }
 

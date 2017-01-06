@@ -1,34 +1,45 @@
-import {Object3D} from 'three';
-import {$wrap} from '../utils/ComponentUtils';
+import {Vector3, Euler} from 'three';
+import {Component} from './Component';
 
-import {extend} from '../utils/index';
+import {NativeArguments} from './prototype/NativeArguments';
 
-function LightComponent(targetComponent) {
-  const resultComponent = class LightComponentEnhance extends targetComponent {
-    static defaults = extend(targetComponent.defaults, {
-      light: {
-        color: 0xffffff,
-        skyColor: 0xffffff,
-        groundColor: 0xffffff,
+@NativeArguments(
+  // Three.js Instances.
+  ['position',   {copy: true}],
+  ['rotation',   {copy: true}],
+  ['quaternion', {copy: true}],
+  ['target', {copy: true}]
+)
+class LightComponent extends Component {
+  static defaults = {
+    ...Component.defaults,
 
-        intensity: 1,
-        distance: 100,
-        angle: Math.PI / 3,
-        exponent: 0,
-        decay: 1
+    build: true,
+
+    light: {
+      color: 0xffffff,
+      skyColor: 0xffffff,
+      groundColor: 0xffffff,
+
+      intensity: 1,
+      distance: 100,
+      angle: Math.PI / 3,
+      exponent: 0,
+      decay: 1
+    },
+
+    shadow: {
+      cast: true,
+
+      bias: 0,
+      radius: 1,
+
+      mapSize: {
+        width: 1024,
+        height: 1024
       },
 
-      helper: false,
-
-      shadowmap: {
-        cast: true,
-
-        bias: 0,
-        radius: 1,
-
-        width: 1024,
-        height: 1024,
-
+      camera: {
         near: true,
         far: 400,
         fov: 60,
@@ -37,145 +48,92 @@ function LightComponent(targetComponent) {
         bottom: -200,
         left: -200,
         right: 200
-      },
+      }
+    },
 
-      position: {x: 0, y: 0, z: 0},
-      rotation: {x: 0, y: 0, z: 0}
-    });
+    position: new Vector3(0, 0, 0),
+    rotation: new Euler(0, 0, 0)
+  };
 
-    static instructions = (() => targetComponent.instructions = {
-      ...targetComponent.instructions,
-      position: ['x', 'y', 'z'],
-      rotation: ['x', 'y', 'z']
-    })();
+  static instructions = {
+    position: ['x', 'y', 'z'],
+    rotation: ['x', 'y', 'z'],
+    scale: ['x', 'y', 'z']
+  };
 
-    wrapShadow() {
-      return new Promise(resolve => {
-        const _native = this.native,
-          _shadow = this.params.shadowmap;
+  constructor(params, defaults = LightComponent.defaults, instructions = LightComponent.instructions) {
+    super(params, defaults, instructions);
 
-        _native.castShadow = _shadow.cast;
-        _native.shadow.mapSize.width = _shadow.width;
-        _native.shadow.mapSize.height = _shadow.height;
-        _native.shadow.bias = _shadow.bias;
-        _native.shadow.radius = _shadow.radius;
+    if (this.params.build) {
+      const build = this.build(this.params);
 
-        const _shadowCamera = _native.shadow.camera;
+      if (!build) throw new Error('@LightComponent: .build() method should return a THREE.Object3D or a Promise resolved with THREE.Object3D.');
 
-        _shadowCamera.near = _shadow.near;
-        _shadowCamera.far = _shadow.far;
-        _shadowCamera.fov = _shadow.fov;
+      if (build instanceof Promise) build.then((native) => {this.native = native});
+      else this.native = build;
 
-        _shadowCamera.left = _shadow.left;
-        _shadowCamera.right = _shadow.right;
-        _shadowCamera.top = _shadow.top;
-        _shadowCamera.bottom = _shadow.bottom;
+      this.wrap();
+    }
+  }
+
+  build() {
+    throw new Error('@LightComponent: Instance should have it\'s own .build().');
+  }
+
+  wrap() {
+    return new Promise(resolve => {
+      this.defer(() => {
+        this.position.copy(this.params.position);
+        this.rotation.copy(this.params.rotation);
 
         resolve(this);
       });
-    }
+    });
+  }
 
-    wrapTransforms() {
-      const _params = this.params;
+  wrapShadow() {
+    const {native, params: {shadow}} = this;
 
-      this.position.set(
-        _params.position.x,
-        _params.position.y,
-        _params.position.z
-      );
+    native.castShadow = shadow.cast;
+    native.shadow.mapSize.width = shadow.mapSize.width;
+    native.shadow.mapSize.height = shadow.mapSize.height;
+    native.shadow.bias = shadow.bias;
+    native.shadow.radius = shadow.radius;
 
-      this.rotation.set(
-        _params.rotation.x,
-        _params.rotation.y,
-        _params.rotation.z
-      );
-    }
+    const shadowCamera = native.shadow.camera;
 
-    copy(source) {
-      if (source.native) {
-        this.native = source.native.clone();
-        this.params = {...source.params};
+    shadowCamera.near = shadow.near;
+    shadowCamera.far = shadow.far;
+    shadowCamera.fov = shadow.fov;
 
-        if (source.helper) this.helper = source.helper.clone();
-        if (source.target) this.target = source.target.clone();
-        this.wrap();
+    shadowCamera.left = shadow.left;
+    shadowCamera.right = shadow.right;
+    shadowCamera.top = shadow.top;
+    shadowCamera.bottom = shadow.bottom;
+  }
 
-        this.position = source.position.clone();
-        this.rotation = source.rotation.clone();
-      } else this.params = source.params;
+  copy(source) {
+    if (source.native) {
+      this.native = source.native.clone();
+      this.params = {...source.params};
 
-      this.callCopy(this);
+      if (this.target) this.target.copy(source.target());
 
-      return this;
-    }
+      this.position.copy(source.position);
+      this.rotation.copy(source.rotation);
+      this.quaternion.copy(source.quaternion);
+    } else this.params = source.params;
 
-    get position() {
-      return this.native.position;
-    }
+    return this;
+  }
 
-    set position(vector3) {
-      this.native.position.copy(vector3);
-      return this.native.position;
-    }
+  clone() {
+    return new this.constructor({build: false}).copy(this);
+  }
 
-    get quaternion() {
-      return this.native.quaternion;
-    }
-
-    set quaternion(quaternion) {
-      this.native.quaternion.copy(quaternion);
-      return this.native.quaternion;
-    }
-
-    get rotation() {
-      return this._native.rotation;
-    }
-
-    set rotation(euler) {
-      this.native.rotation.copy(euler);
-      return this.native.rotation;
-    }
-
-    get target() {
-      return this.native.target;
-    }
-
-    set target(vector3) {
-      if (vector3 instanceof Object3D)
-        this.native.target.copy(vector3); // THREE.Object3D in this case.
-      else this.native.target.position.copy(vector3);
-    }
-
-    addHelper(name, params = {}, helpers = resultComponent.helpers) {
-      super.addHelper(name, params, helpers);
-    }
-
-    updateHelper(name) {
-      this._helpers[name].update();
-    }
-
-    clone() {
-      return new resultComponent({build: false}).copy(this);
-    }
-
-    addTo(world) {
-      return world.add(this);
-    }
-  };
-
-  $wrap(targetComponent).onCallConstructor(scope => {
-    scope._helpers = {
-      default: null
-    };
-
-    if (scope.params.helper) scope.addHelper('default', scope.params.helper);
-  });
-
-  $wrap(targetComponent).onCallWrap((scope, ...tags) => {
-    if (tags.indexOf('no-shadows') < 0) scope.wrapShadow();
-  });
-
-  return resultComponent;
+  addTo(object) {
+    return object.add(this);
+  }
 }
 
 export {

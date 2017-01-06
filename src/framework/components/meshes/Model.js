@@ -4,14 +4,12 @@ import {
   FaceColors
 } from 'three';
 
-import {Component} from '../../core/Component';
 import {MeshComponent} from '../../core/MeshComponent';
 import {JSONLoader} from '../../utils/index';
 
-@MeshComponent
-class Model extends Component {
+class Model extends MeshComponent {
   static defaults = {
-    ...Component.defaults,
+    ...MeshComponent.defaults,
     geometry: {
       path: '',
       physics: '',
@@ -24,17 +22,12 @@ class Model extends Component {
   };
 
   static instructions = {
-    ...Component.instructions,
+    ...MeshComponent.instructions,
     geometry: ['path', 'physics', 'loader']
   };
 
   constructor(params = {}) {
     super(params, Model.defaults, Model.instructions, false);
-
-    if (params.build) {
-      this.build(params);
-      super.wrap();
-    }
   }
 
   build(params = {}) {
@@ -49,12 +42,10 @@ class Model extends Component {
           material: mat
         });
 
-        this.native = this.applyBridge({mesh: new Mesh(
+        resolve(this.applyBridge({mesh: new Mesh(
           geometry,
           material
-        )}).mesh;
-
-        resolve();
+        )}).mesh);
       });
     });
 
