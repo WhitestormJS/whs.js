@@ -19,7 +19,9 @@ var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneM
     }
   }
 }), new PHYSICS.WorldModule({
-  ammo: 'http://localhost:8001/vendor/ammo.js'
+  ammo: 'http://localhost:8001/vendor/ammo.js',
+  gravity: new THREE.Vector3(0, -10, 0),
+  softbody: true
 }), new WHS.OrbitControlsModule(), new WHS.modules.AutoresizeModule()]);
 
 new WHS.Sphere({ // Softbody (blue).
@@ -29,8 +31,9 @@ new WHS.Sphere({ // Softbody (blue).
     heightSegments: 16
   },
 
-  modules: [new PHYSICS.SphereModule({
-    mass: 15
+  modules: [new PHYSICS.SoftbodyModule({
+    mass: 15,
+    pressure: 1000
   })],
 
   material: new THREE.MeshPhongMaterial({
@@ -52,7 +55,7 @@ new WHS.Sphere({ // Rigidbody (green).
   },
 
   modules: [new PHYSICS.SphereModule({
-    mass: 2
+    mass: 1
   })],
 
   material: new THREE.MeshPhongMaterial({

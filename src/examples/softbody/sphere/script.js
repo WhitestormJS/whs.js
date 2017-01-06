@@ -17,7 +17,9 @@ const world = new WHS.App([
     }
   }),
   new PHYSICS.WorldModule({
-    ammo: '{{ ammojs }}'
+    ammo: '{{ ammojs }}',
+    gravity: new THREE.Vector3(0, -10, 0),
+    softbody: true
   }),
   new WHS.OrbitControlsModule(),
   new WHS.modules.AutoresizeModule()
@@ -31,8 +33,9 @@ new WHS.Sphere({ // Softbody (blue).
   },
 
   modules: [
-    new PHYSICS.SphereModule({
-      mass: 15
+    new PHYSICS.SoftbodyModule({
+      mass: 15,
+      pressure: 1000
     })
   ],
 
@@ -54,7 +57,7 @@ new WHS.Sphere({ // Rigidbody (green).
 
   modules: [
     new PHYSICS.SphereModule({
-      mass: 2
+      mass: 1
     })
   ],
 
