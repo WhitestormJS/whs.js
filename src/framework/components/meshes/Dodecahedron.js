@@ -45,10 +45,10 @@ class Dodecahedron extends Component {
         material: params.material
       });
 
-      this.native = new Mesh(
+      this.native = this.applyBridge({mesh: new Mesh(
         geometry,
         material
-      );
+      )}).mesh;
 
       this.applyBridge({mesh: this.native});
 

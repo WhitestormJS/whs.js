@@ -24,15 +24,16 @@ var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneM
   softbody: true
 }), new WHS.OrbitControlsModule(), new WHS.modules.AutoresizeModule()]);
 
-new WHS.Sphere({ // Softbody (blue).
+new WHS.Icosahedron({ // Softbody (blue).
   geometry: {
     radius: 4,
-    widthSegments: 16,
-    heightSegments: 16
+    detail: 3
   },
 
   modules: [new PHYSICS.SoftbodyModule({
     mass: 15,
+    viterations: 2,
+    diterations: 2,
     pressure: 1000
   })],
 

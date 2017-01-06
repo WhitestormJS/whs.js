@@ -1,56 +1,56 @@
-const world = new (PHYSICS.$world(WHS.World))({
-  autoresize: "window",
+import * as UTILS from './globals';
 
-  physics: {
-    ammo: '{{ ammojs }}'
-  },
-
-  gravity: {
-    x: 0,
-    y: -10,
-    z: 0
-  },
-
-  camera: {
-    far: 2000,
-    near: 1,
-    position: [-8, 5, 20],
-    fov: 45
-  },
-
-  rendering: {
-    shadowmap: {
-      type: THREE.PCFSoftShadowMap
+const world = new WHS.App([
+  new WHS.modules.ElementModule(),
+  new WHS.modules.SceneModule(),
+  new PHYSICS.WorldModule({
+    ammo: '{{ ammojs }}',
+    gravity: {
+      x: 0,
+      y: -10,
+      z: 0
     },
+  }),
+  new WHS.modules.CameraModule({
+    position: new THREE.Vector3(-8, 5, 20),
+    fov: 45,
+    far: 2000
+  }),
+  new WHS.modules.RenderingModule({
+    bgColor: 0xffffff,
 
     renderer: {
-      antialias: true
-    },
-
-    background: {
-      color: 0xffffff
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
+      }
     }
-  }
-});
+  }),
+  new WHS.OrbitControlsModule(),
+  new WHS.modules.AutoresizeModule()
+]);
 
-world.$camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+// world.$camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 // Start rendering.
 world.start();
 
-new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
+new WHS.Box({
   geometry: {
     width: 100,
     height: 1,
     depth: 100
   },
+  modules: [
+    new PHYSICS.BoxModule({
+      mass: 0
+    })
+  ],
 
-  mass: 0,
-
-  material: {
-    kind: 'phong',
-    color: 0xffffff
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+  }),
 
   position: {
     x: 0,
@@ -59,29 +59,27 @@ new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
   }
 }).addTo(world);
 
-const egg = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONVEX2))({
+const egg = new WHS.Model({
   geometry: {
     path: '{{ assets }}/models/easter/egg_light.json',
-    physics: '{{ assets }}/models/easter/egg_low.json'
   },
 
-  mass: 10,
+  modules: [
+    new PHYSICS.ConvexModule({
+      path: '{{ assets }}/models/easter/egg_low.json',
+    })
+  ],
 
-  material: {
-    kind: 'lambert',
+  useCustomMaterial: true,
+
+  material: new THREE.MeshPhongMaterial({
+    shading: THREE.SmoothShading,
     map: WHS.texture('{{ assets }}/textures/easter/egg1.jpg'),
-    color: 0xffffff,
-    rest: 1
-  },
-
-  scale: {
-    x: 1,
-    y: 1,
-    z: 1
-  },
+    side: THREE.DoubleSide
+  }),
 
   position: {
-    y: 0,
+    y: 10,
     x: -10
   },
 
@@ -91,27 +89,21 @@ const egg = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONVEX2))({
   }
 });
 
-const rabbit = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONCAVE2))({
+const rabbit = new WHS.Model({
   geometry: {
-    path: '{{ assets }}/models/easter/rabbit.json',
-    physics: '{{ assets }}/models/easter/rabbit_low.json'
+    path: '{{ assets }}/models/easter/rabbit.json'
   },
 
-  material: {
-    kind: 'lambert',
+  modules: [
+    new PHYSICS.ConcaveModule({
+      path: '{{ assets }}/models/easter/rabbit_low.json',
+      scale: new THREE.Vector3(0.5, 0.5, 0.5)
+    })
+  ],
+
+  material: new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide,
-    rest: 1
-  },
-
-  physics: {
-    type: 'concave'
-  },
-
-  scale: {
-    x: 0.5,
-    y: 0.5,
-    z: 0.5
-  },
+  }),
 
   position: {
     y: 5,
@@ -120,7 +112,9 @@ const rabbit = new (PHYSICS.$rigidBody(WHS.Model, PHYSICS.CONCAVE2))({
 
   rotation: {
     x: Math.PI / 2
-  }
+  },
+
+  scale: [0.5, 0.5, 0.5]
 });
 
 rabbit.addTo(world, 'wait');
@@ -263,21 +257,21 @@ egg.addTo(world, 'wait').then((object) => {
   });
 });
 
-document.body.addEventListener('mousemove', (e) => {
-  world.$camera.position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
-  world.$camera.position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
-  world.$camera.lookAt(new THREE.Vector3(-4, 0, 0));
-});
-
-document.body.addEventListener('click', () => {
-  rabbit.setLinearVelocity(new THREE.Vector3(0, 5, 0));
-  egg.setAngularVelocity(new THREE.Vector3(0, 10, 0));
-  egg2.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg3.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg4.setAngularVelocity(new THREE.Vector3(0, 10, 0));
-  egg5.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg6.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg7.setAngularVelocity(new THREE.Vector3(0, 10, 0));
-  egg8.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg9.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-});
+// document.body.addEventListener('mousemove', (e) => {
+//   world.$camera.position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
+//   world.$camera.position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
+//   world.$camera.lookAt(new THREE.Vector3(-4, 0, 0));
+// });
+//
+// document.body.addEventListener('click', () => {
+//   rabbit.setLinearVelocity(new THREE.Vector3(0, 5, 0));
+//   egg.setAngularVelocity(new THREE.Vector3(0, 10, 0));
+//   egg2.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+//   egg3.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+//   egg4.setAngularVelocity(new THREE.Vector3(0, 10, 0));
+//   egg5.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+//   egg6.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+//   egg7.setAngularVelocity(new THREE.Vector3(0, 10, 0));
+//   egg8.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+//   egg9.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+// });
