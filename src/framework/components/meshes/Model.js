@@ -49,10 +49,10 @@ class Model extends Component {
           material: mat
         });
 
-        this.native = new Mesh(
+        this.native = this.applyBridge({mesh: new Mesh(
           geometry,
           material
-        );
+        )}).mesh;
 
         resolve();
       });
