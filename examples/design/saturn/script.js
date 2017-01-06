@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var radiusMin = 110,
     // Min radius of the asteroid belt.
@@ -33,14 +33,9 @@ var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneM
       type: THREE.PCFSoftShadowMap
     }
   }
-}), new PHYSICS.WorldModule({
-  ammo: 'http://localhost:8001/vendor/ammo.js',
-  gravity: {
-    x: 0,
-    y: 0,
-    z: 0
-  }
 }), new WHS.OrbitControlsModule(), new WHS.modules.AutoresizeModule()]);
+
+console.log(world.add);
 
 var space = new WHS.Group();
 space.addTo(world);
@@ -51,10 +46,6 @@ var planet = new WHS.Tetrahedron({
     radius: planetSize,
     detail: 2
   },
-
-  modules: [new PHYSICS.SphereModule({
-    mass: 100
-  })],
 
   material: new THREE.MeshPhongMaterial({
     color: 0xee5624,

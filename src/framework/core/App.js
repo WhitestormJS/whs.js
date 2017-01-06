@@ -189,6 +189,7 @@ class App {
     if (typeof module === 'function')
       module.bind(this.modulesSharedScope)().integrate.bind(this)(module.params, module);
     else {
+      this.modules.push(module);
       if (!module.name) module.name = '';
       this.manager.setActiveModule(module);
       if (module.manager) module.manager(this.manager);
@@ -240,6 +241,21 @@ class App {
       this.loops.filter((l) => l !== loop);
       resolve(loop);
     });
+  }
+
+  applyBridge(bridgeMap = {}) {
+    const modules = this.modules;
+
+    for (let i = 0, max = modules.length; i < max; i++) {
+      for (let key in bridgeMap) {
+        const module = modules[i];
+
+        if (module.bridge && module.bridge[key])
+          bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
+      }
+    }
+
+    return bridgeMap;
   }
 
   // addHelper(name, params = {}, helpers = App.helpers) {

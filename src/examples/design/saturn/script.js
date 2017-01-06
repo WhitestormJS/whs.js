@@ -30,17 +30,11 @@ const world = new WHS.App([
       }
     }
   }),
-  new PHYSICS.WorldModule({
-    ammo: '{{ ammojs }}',
-    gravity: {
-      x: 0,
-      y: 0,
-      z: 0
-    },
-  }),
   new WHS.OrbitControlsModule(),
   new WHS.modules.AutoresizeModule()
 ]);
+
+console.log(world.add);
 
 const space = new WHS.Group();
 space.addTo(world);
@@ -51,12 +45,6 @@ const planet = new WHS.Tetrahedron({
     radius: planetSize,
     detail: 2
   },
-
-  modules: [
-    new PHYSICS.SphereModule({
-      mass: 100,
-    })
-  ],
 
   material: new THREE.MeshPhongMaterial({
     color: 0xee5624,

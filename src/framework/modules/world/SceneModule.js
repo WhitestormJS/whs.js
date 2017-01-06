@@ -5,38 +5,26 @@ import {
 } from 'three';
 
 export class SceneModule {
-  manager(manager) {
-    manager.addDependency('scene', new Scene(), {alias: '$scene'});
+  constructor() {
+    this.scene = new Scene();
   }
 
-  integrate() {
+  manager(manager) {
+    manager.addDependency('scene', this.scene, {alias: '$scene'});
+  }
+
+  integrate(params, self) {
     this.add = function (object) {
       object.parent = this;
 
       return new Promise((resolve, reject) => {
         const _add = () => {
-          const {native, params, parent} = object;
-
+          const {native, parent} = object;
           if (!native) reject();
 
-          const parentNative = '$scene' in parent ? parent.$scene : parent.native;
-          const modules = this.modules;
+          this.applyBridge({onAdd: object});
 
-          for (let i = 0, max = modules.length; i < max; i++) {
-            if (modules[i].bridge && modules[i].bridge.onAdd) {
-              modules[i].bridge.onAdd.apply(this, [object, modules[i]]);
-            }
-          }
-
-          parentNative.add(native);
-
-          if (typeof params.helpers === 'undefined')
-            params.helpers = {};
-
-          for (const key in object._helpers)
-            if (object._helpers[key]) parentNative.add(object._helpers[key]);
-
-          object.callAddTo(object);
+          self.scene.add(native);
           resolve(object);
         };
 

@@ -209,25 +209,10 @@ function MeshComponent(targetComponent) {
       this._helpers[name].update();
     }
 
-    applyBridge(bridgeMap = {}) {
-      const modules = this.params.modules;
-
-      for (let i = 0, max = modules.length; i < max; i++) {
-        for (let key in bridgeMap) {
-          const module = modules[i];
-
-          if (module.bridge && module.bridge[key])
-            bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
-        }
-      }
-
-      return bridgeMap;
-    }
-
     addTo(world) {
       return world.add(this);
     }
-  }
+  };
 
   $wrap(resultComponent).onCallWrap((scope, ...tags) => {
     const _native = scope.native,
