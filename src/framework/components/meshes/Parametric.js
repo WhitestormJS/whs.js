@@ -8,7 +8,6 @@ import {
 
 
 import {MeshComponent} from '../../core/MeshComponent';
-import {loadMaterial} from '../../utils/index';
 
 class Parametric extends MeshComponent {
   static defaults = {
@@ -34,19 +33,12 @@ class Parametric extends MeshComponent {
   }
 
   build(params = this.params) {
-    return new Promise((resolve) => {
-      let {geometry, material} = this.applyBridge({
-        geometry: this.buildGeometry(params),
-        material: loadMaterial(params.material)
-      });
-
-      this.native = this.applyBridge({mesh: new Mesh(
-        geometry,
-        material
-      )}).mesh;
-
-      resolve();
+    let {geometry, material} = this.applyBridge({
+      geometry: this.buildGeometry(params),
+      material: params.material
     });
+
+    return this.applyBridge({mesh: new Mesh(geometry, material)}).mesh;
   }
 
   buildGeometry(params = {}) {

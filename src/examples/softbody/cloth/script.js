@@ -1,23 +1,30 @@
 import * as UTILS from './globals';
 
-const world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world,
+const world = new WHS.App([
+  new WHS.modules.ElementModule(),
+  new WHS.modules.SceneModule(),
+  new WHS.modules.CameraModule({
+    position: new THREE.Vector3(0, 60, 120),
+    far: 10000
+  }),
+  new WHS.modules.RenderingModule({
+    bgColor: 0x162129,
 
-  physics: {
-    ammo: '{{ ammojs }}'
-  },
-
-  softbody: true,
-
-  camera: {
-    far: 10000,
-    position: [0, 60, 120]
-  },
-
-  gravity: {
-    y: -9.8,
-  },
-});
+    renderer: {
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
+      }
+    }
+  }),
+  new PHYSICS.WorldModule({
+    ammo: '{{ ammojs }}',
+    gravity: new THREE.Vector3(0, -9.8, 0),
+    softbody: true,
+  }),
+  new WHS.OrbitControlsModule(),
+  new WHS.modules.AutoresizeModule()
+]);
 
 const cloth = new WHS.Plane({ // Softbody (blue).
   geometry: {
@@ -27,20 +34,23 @@ const cloth = new WHS.Plane({ // Softbody (blue).
     hSegments: 30
   },
 
-  mass: 1,
-  softbody: true,
+  modules: [
+    new PHYSICS.SoftbodyModule({
+      mass: 2,
+      margin: 1,
+      damping: 0.02,
+      piterations: 12,
 
-  material: {
+      // viterations: 12,
+      // diterations: 12,
+      // pressure: 1000
+    })
+  ],
+
+  material: new THREE.MeshPhongMaterial({
     color: UTILS.$colors.softbody,
-    kind: 'phong',
     side: THREE.DoubleSide
-  },
-
-  physics: {
-    margin: 1,
-    damping: 0.02,
-    piterations: 12
-  },
+  }),
 
   position: {
     y: 50
@@ -60,12 +70,15 @@ new WHS.Box({ // Rigidbody (green).
     depth: 3
   },
 
-  mass: 0,
+  modules: [
+    new PHYSICS.BoxModule({
+      mass: 0,
+    })
+  ],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'phong'
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: {
     y: 36
@@ -75,5 +88,4 @@ new WHS.Box({ // Rigidbody (green).
 UTILS.addBoxPlane(world, 250);
 UTILS.addBasicLights(world, 0.5, [60, 60, 20], 400);
 
-world.setControls(new WHS.OrbitControls());
 world.start();

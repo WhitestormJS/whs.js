@@ -51,8 +51,8 @@ class LightComponent extends Component {
       }
     },
 
-    position: new Vector3(0, 0, 0),
-    rotation: new Euler(0, 0, 0)
+    position: {x: 0, y: 0, z: 0},
+    rotation: {x: 0, y: 0, z: 0}
   };
 
   static instructions = {
@@ -83,8 +83,8 @@ class LightComponent extends Component {
   wrap() {
     return new Promise(resolve => {
       this.defer(() => {
-        this.position.copy(this.params.position);
-        this.rotation.copy(this.params.rotation);
+        this.position.set(this.params.position.x, this.params.position.y, this.params.position.z);
+        this.rotation.set(this.params.rotation.x, this.params.rotation.y, this.params.rotation.z);
 
         resolve(this);
       });

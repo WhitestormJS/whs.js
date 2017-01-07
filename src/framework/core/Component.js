@@ -15,9 +15,8 @@ class Component extends Events {
   };
 
   static instructions = {};
-  static helpers = {};
+
   _wait = [];
-  _helpers = [];
   children = [];
   params = {};
 
@@ -35,8 +34,6 @@ class Component extends Events {
       if (typeof module === 'function') module.bind(modulesSharedScope)().integrate.bind(this)(module.params, module);
       else module.integrate.bind(this)(module.params, module);
     }
-
-    this.callConstructor(this);
   }
 
   wait(promise) {
@@ -52,55 +49,6 @@ class Component extends Events {
   get isDeffered() {
     return this._wait.length > 0;
   }
-
-  callConstructor() {}
-  callWrap() {}
-  callAddTo() {}
-  callCopy() {}
-
-  wrap(...tags) {
-    return new Promise(resolve => {
-      const _wrap = () => {
-        if (tags.indexOf('no-transforms') < 0) this.wrapTransforms();
-
-        this.callWrap(this, ...tags);
-        resolve(this);
-      };
-
-      if (this._wait.length > 0) Promise.all(this._wait).then(_wrap);
-      else _wrap();
-    });
-  }
-
-  wrapTransforms() {}
-
-  // addTo(parent) {
-  //   this.parent = parent;
-
-  //   return new Promise((resolve, reject) => {
-  //     const _add = () => {
-  //       const {native, params, parent} = this;
-
-  //       if (!native) reject();
-
-  //       const parentNative = '$scene' in parent ? parent.$scene : parent.native;
-
-  //       parentNative.add(native);
-
-  //       if (typeof params.helpers === 'undefined')
-  //         params.helpers = {};
-
-  //       for (const key in this._helpers)
-  //         if (this._helpers[key]) parentNative.add(this._helpers[key]);
-
-  //       this.callAddTo(this);
-  //       resolve(this);
-  //     };
-
-  //     if (this._wait.length > 0) Promise.all(this._wait).then(_add);
-  //     else _add();
-  //   });
-  // }
 
   updateParams(params = {}) {
     this.params = extend(params, this.params);
