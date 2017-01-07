@@ -12,7 +12,7 @@ class SpotLight extends LightComponent {
   }
 
   build(params = {}) {
-    return SpotLightNative(
+    return new SpotLightNative(
       params.light.color,
       params.light.intensity,
       params.light.distance,

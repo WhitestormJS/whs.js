@@ -14,6 +14,8 @@ export class SceneModule {
   }
 
   integrate(params, self) {
+    this.children = [];
+
     this.add = function (object) {
       object.parent = this;
 
@@ -25,6 +27,8 @@ export class SceneModule {
           this.applyBridge({onAdd: object});
 
           self.scene.add(native);
+          this.children.push(object);
+
           resolve(object);
         };
 

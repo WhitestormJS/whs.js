@@ -31,10 +31,7 @@ class Box extends MeshComponent {
       material: params.material
     });
 
-    return this.applyBridge({mesh: new Mesh(
-      geometry,
-      material
-    )}).mesh;
+    return this.applyBridge({mesh: new Mesh(geometry, material)}).mesh;
   }
 
   buildGeometry(params = {}) {

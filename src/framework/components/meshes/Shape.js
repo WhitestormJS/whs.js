@@ -5,7 +5,6 @@ import {
 } from 'three';
 
 import {MeshComponent} from '../../core/MeshComponent';
-import {loadMaterial} from '../../utils/index';
 
 class Shape extends MeshComponent {
   static defaults = {
@@ -30,17 +29,13 @@ class Shape extends MeshComponent {
     }
   }
 
-  build(params = {}) {
-    const material = loadMaterial(params.material);
-
-    return new Promise((resolve) => {
-      this.native = new Mesh(
-        this.buildGeometry(params),
-        material
-      );
-
-      resolve();
+  build(params = this.params) {
+    let {geometry, material} = this.applyBridge({
+      geometry: this.buildGeometry(params),
+      material: params.material
     });
+
+    return this.applyBridge({mesh: new Mesh(geometry, material)}).mesh;
   }
 
   buildGeometry(params = {}) {

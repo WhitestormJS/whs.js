@@ -1,30 +1,25 @@
-const world = new (PHYSICS.$world(WHS.World))({
-  autoresize: "window",
-
-  gravity: {
-    x: 0,
-    y: -10,
-    z: 0
-  },
-
-  camera: {
+const world = new WHS.App([
+  new WHS.modules.ElementModule(),
+  new WHS.modules.SceneModule(),
+  new WHS.modules.CameraModule({
+    position: new THREE.Vector3(-8, 5, 20),
     far: 2000,
     near: 1,
-    position: [-8, 5, 20],
-
     fov: 45
-  },
-
-  rendering: {
-    background: {
-      color: 0xffffff
-    },
+  }),
+  new WHS.modules.RenderingModule({
+    bgColor: 0xffffff,
 
     renderer: {
-      antialias: true
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
+      }
     }
-  }
-});
+  }),
+  new WHS.OrbitControlsModule({target: new THREE.Vector3(50, 50, 50)}),
+  new WHS.modules.AutoresizeModule()
+]);
 
 const data = new Float32Array(3993000);
 const colors = new Float32Array(3993000);
@@ -49,13 +44,13 @@ const geom = new THREE.BufferGeometry();
 geom.addAttribute('position', new THREE.BufferAttribute(data, 3));
 geom.addAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-const points = new WHS.Shape(
-  new THREE.Points(geom, new THREE.PointsMaterial({vertexColors: THREE.VertexColors, size: 0.1}))
-);
+class Points extends WHS.MeshComponent {
+  build(params = {}) {
+    return new THREE.Points(params.geom, new THREE.PointsMaterial({vertexColors: THREE.VertexColors, size: 0.1}));
+  }
+}
 
-points.addTo(world);
-
-world.setControls(new WHS.OrbitControls(new THREE.Vector3(50, 50, 50)));
+new Points({geom}).addTo(world);
 
 // Start rendering.
 world.start();

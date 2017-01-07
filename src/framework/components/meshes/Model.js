@@ -53,10 +53,6 @@ class Model extends MeshComponent {
 
     return promise;
   }
-
-  clone() {
-    return new Model({build: false}).copy(this);
-  }
 }
 
 export {
