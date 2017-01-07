@@ -2,6 +2,7 @@ import {Vector3, Euler} from 'three';
 import {Component} from './Component';
 
 import {NativeArguments} from './prototype/NativeArguments';
+import {CompositionError} from './errors';
 
 @NativeArguments(
   // Three.js Instances.
@@ -44,7 +45,13 @@ class MeshComponent extends Component {
     if (this.params.build) {
       const build = this.build(this.params);
 
-      if (!build) throw new Error('@MeshComponent: .build() method should return a THREE.Object3D or a Promise resolved with THREE.Object3D.');
+      if (!build) {
+        throw new CompositionError(
+          'MeshComponent',
+          '.build() method should return a THREE.Object3D or a Promise resolved with THREE.Object3D.',
+          this
+        );
+      }
 
       if (build instanceof Promise) build.then((native) => {this.native = native});
       else this.native = build;
@@ -54,8 +61,11 @@ class MeshComponent extends Component {
   }
 
   build() {
-    console.error(this);
-    throw new Error(`@MeshComponent: Instance should have it\'s own .build().`);
+    throw new CompositionError(
+      'MeshComponent',
+      'Instance should have it\'s own .build().',
+      this
+    );
   }
 
   wrap() {
