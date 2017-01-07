@@ -69,6 +69,7 @@ class CameraComponent extends Component {
     if (source.native) {
       this.native = source.native.clone();
       this.params = {...source.params};
+      this.modules = source.modules.slice(0);
 
       if (this.target) this.target.copy(source.target());
 

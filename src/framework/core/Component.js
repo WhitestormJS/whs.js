@@ -18,6 +18,7 @@ class Component extends Events {
 
   _wait = [];
   children = [];
+  modules = [];
   params = {};
 
   constructor(obj = {}, defaults = Component.defaults, instructions = Component.instructions) {
@@ -26,7 +27,8 @@ class Component extends Events {
     if (obj instanceof Object3D) this.native = obj;
     else this.params = extend(transformData(obj, instructions), defaults);
 
-    const modules = this.params.modules;
+    this.modules = this.params.modules || [];
+    const modules = this.modules;
     const modulesSharedScope = {};
 
     for (let i = 0, max = modules.length; i < max; i++) {
@@ -69,7 +71,7 @@ class Component extends Events {
   }
 
   applyBridge(bridgeMap = {}) {
-    const modules = this.params.modules;
+    const modules = this.modules;
 
     for (let i = 0, max = modules.length; i < max; i++) {
       for (let key in bridgeMap) {

@@ -75,6 +75,8 @@ class MeshComponent extends Component {
         this.rotation.set(this.params.rotation.x, this.params.rotation.y, this.params.rotation.z);
         this.scale.set(this.params.scale.x, this.params.scale.y, this.params.scale.z);
 
+        this.applyBridge({onWrap: null});
+
         resolve(this);
       });
     });
@@ -123,6 +125,7 @@ class MeshComponent extends Component {
     if (source.native) {
       this.native = source.native.clone();
       this.params = {...source.params};
+      this.modules = source.modules.slice(0);
 
       this.position.copy(source.position);
       this.rotation.copy(source.rotation);
