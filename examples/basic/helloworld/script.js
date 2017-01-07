@@ -58,8 +58,6 @@ var sphere = new WHS.Sphere({ // Create sphere comonent.
   position: new THREE.Vector3(0, 20, 0)
 });
 
-console.log(sphere.position);
-
 sphere.addTo(world);
 
 UTILS.addBoxPlane(world);
