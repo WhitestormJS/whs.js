@@ -1,3 +1,5 @@
+import {DependencyError} from './errors';
+
 export class ModuleManager {
   constructor(app) {
     this.app = app;
@@ -26,9 +28,10 @@ export class ModuleManager {
 
   addDependency(key, object, config) {
     if (this.store[key] && this.store[key][2].immutable) {
-      console.error(
-        `@ModuleManager: Dependency '${key}' is immutable and already used by another module`,
-        [this.store[key][1], this.currentModule]
+      throw new DependencyError(
+        'ModuleManager',
+        `Dependency '${key}' is immutable and already used by another module`,
+        this.currentModule, this.store[key][1]
       );
 
       return;
@@ -43,9 +46,10 @@ export class ModuleManager {
         },
         set: (value) => {
           if (this.store[key] && this.store[key][2].immutable) {
-            console.error(
-              `@ModuleManager: Dependency '${key}' is immutable and already used by another module`,
-              [this.store[key][1], this.currentModule]
+            throw new DependencyError(
+              'ModuleManager',
+              `Dependency '${key}' is immutable and already used by another module`,
+              this.currentModule, this.store[key][1]
             );
 
             return;
@@ -73,9 +77,10 @@ export class ModuleManager {
 
   get(key, getModule = false) {
     if (!this.store[key]) {
-      console.error(
-        `@ModuleManager: Module requires '${key}' dependency`,
-        [this.currentModule]
+      throw new DependencyError(
+        'ModuleManager',
+        `Module requires '${key}' dependency`,
+        this.currentModule
       );
 
       return;
