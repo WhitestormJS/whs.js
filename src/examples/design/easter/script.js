@@ -166,10 +166,9 @@ new WHS.AmbientLight({
 
 let egg2, egg3, egg4, egg5, egg6, egg7, egg8, egg9;
 
+
 egg.addTo(world).then((object) => {
-  console.log(object._physijs);
   egg2 = object.clone(false, true);
-  console.log(egg2);
   egg2.m_({ map: new WHS.texture('{{ assets }}/textures/easter/egg2.jpg') });
 
   egg2.addTo(world).then((obj) => {
