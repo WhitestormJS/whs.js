@@ -5,7 +5,6 @@ import {
 } from 'three';
 
 import {MeshComponent} from '../../core/MeshComponent';
-import {loadMaterial} from '../../utils/index';
 
 class Sphere extends MeshComponent {
   static defaults = {
