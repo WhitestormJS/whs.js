@@ -33,10 +33,9 @@ var sphere = new WHS.Sphere({ // Create sphere component.
     mass: 10
   })],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'basic' // lambert
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: [0, 100, 0]
 });
