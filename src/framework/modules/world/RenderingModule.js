@@ -4,7 +4,7 @@ import {
   Vector2
 } from 'three';
 
-import {Loop} from '../../extras/Loop';
+import {Loop} from '../../core/Loop';
 
 export class RenderingModule {
   constructor(params = {}) {
