@@ -2,7 +2,7 @@ import {
   PCFSoftShadowMap
 } from 'three';
 
-import {Loop} from '../../extras/Loop';
+import {Loop} from '../../core/Loop';
 
 export class Renderer {
   constructor(params = {}) {
