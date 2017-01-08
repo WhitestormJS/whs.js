@@ -71,7 +71,9 @@ new WHS.Sphere({ // Rigidbody (green).
     x: -0.5,
     z: 0.5
   }
-}).addTo(world);
+}).addTo(world)
+
+
 
 UTILS.addBoxPlane(world, 2500);
 UTILS.addBasicLights(world);

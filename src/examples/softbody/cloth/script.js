@@ -34,8 +34,10 @@ const cloth = new WHS.Plane({ // Softbody (blue).
     hSegments: 30
   },
 
+  // buffer: true,
+
   modules: [
-    new PHYSICS.SoftbodyModule({
+    new PHYSICS.ClothModule({
       mass: 2,
       margin: 1,
       damping: 0.02,
