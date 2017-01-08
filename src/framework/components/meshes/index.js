@@ -18,3 +18,4 @@ export * from './Text';
 export * from './Torus';
 export * from './Torusknot';
 export * from './Tube';
+export * from './Group';
