@@ -33,6 +33,7 @@
     "element-resize-detector": "^1.1.9",
     "inline-worker": "^1.1.0",
     "minivents": "^2.0.2",
+    "pug": "^2.0.0-beta6",
     "resize-event": "^1.1.0",
     "stats.js": "^0.16.0",
     "three": "^0.83.0",

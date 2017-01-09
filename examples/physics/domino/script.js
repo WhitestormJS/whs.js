@@ -1,25 +1,17 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
+import * as UTILS from '../../globals';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _globals = require('./globals');
-
-var UTILS = _interopRequireWildcard(_globals);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-var world = new (PHYSICS.$world(WHS.World))(_extends({}, UTILS.$world, {
+const world = new (PHYSICS.$world(WHS.World))({
+  ...UTILS.$world,
 
   physics: {
-    ammo: 'http://localhost:8001/vendor/ammo.js'
+    ammo: process.ammoPath
   },
 
   camera: {
     far: 10000,
     position: [62, 30, 130]
   }
-}));
+});
 
 new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
   geometry: [4, 32, 32],
@@ -35,9 +27,9 @@ new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
   position: [0, 100, 0]
 }).addTo(world);
 
-var PhysicsBox = PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX);
+const PhysicsBox = PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX);
 
-var tramplin = new PhysicsBox({
+const tramplin = new PhysicsBox({
   geometry: {
     height: 2,
     width: 20,
@@ -59,24 +51,24 @@ var tramplin = new PhysicsBox({
   },
 
   rotation: {
-    z: -Math.PI / 6
+    z: - Math.PI / 6
   }
 });
 
-tramplin.rotation = new THREE.Euler(0, 0, -Math.PI / 6);
+tramplin.rotation = new THREE.Euler(0, 0, -Math.PI/6);
 
 tramplin.addTo(world);
 
-var tramplin2 = tramplin.clone();
+const tramplin2 = tramplin.clone();
 tramplin2.position.y = 44;
 tramplin2.addTo(world);
 
-var tramplin3 = tramplin.clone();
+const tramplin3 = tramplin.clone();
 tramplin3.position.set(24, 24, 0);
 tramplin3.rotation.z = Math.PI / 6;
 tramplin3.addTo(world);
 
-var domino = new PhysicsBox({
+const domino = new PhysicsBox({
   geometry: {
     height: 8,
     width: 1,
@@ -99,129 +91,15 @@ var domino = new PhysicsBox({
   }
 });
 
-var d = domino.clone();
-for (var i = 0; i < 13; i++) {
+let d = domino.clone();
+for (let i = 0; i < 13; i++) {
   d = d.clone();
   d.position.x += 8;
   d.addTo(world);
 }
 
-UTILS.addBoxPlane(world, 250).then(function (o) {
-  return o.position.y = -0.5;
-});
+UTILS.addBoxPlane(world, 250).then(o => o.position.y = -0.5);
 UTILS.addBasicLights(world);
 
 world.setControls(new WHS.OrbitControls());
 world.start();
-
-},{"./globals":2}],2:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.addAmbient = addAmbient;
-exports.addBasicLights = addBasicLights;
-exports.addPlane = addPlane;
-exports.addBoxPlane = addBoxPlane;
-var $world = exports.$world = {
-  stats: "fps", // fps, ms, mb or false if not need.
-  autoresize: "window",
-
-  gravity: [0, -100, 0],
-
-  camera: {
-    position: [0, 10, 50]
-  },
-
-  rendering: {
-    background: {
-      color: 0x162129
-    },
-
-    renderer: {
-      antialias: true
-    }
-  },
-
-  shadowmap: {
-    type: THREE.PCFSoftShadowMap
-  }
-};
-
-var $colors = exports.$colors = {
-  bg: 0x162129,
-  plane: 0x447F8B,
-  mesh: 0xF2F2F2,
-  softbody: 0x434B7F
-};
-
-function addAmbient(world, intensity) {
-  new WHS.AmbientLight({
-    light: {
-      intensity: intensity
-    }
-  }).addTo(world);
-}
-
-function addBasicLights(world) {
-  var intensity = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
-  var position = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [0, 10, 10];
-  var distance = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
-
-  addAmbient(world, 1 - intensity);
-
-  return new WHS.PointLight({
-    light: {
-      intensity: intensity,
-      distance: distance
-    },
-
-    shadowmap: {
-      fov: 90
-    },
-
-    position: position
-  }).addTo(world);
-}
-
-function addPlane(world) {
-  var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
-
-  return new WHS.Plane({
-    geometry: {
-      width: size,
-      height: size
-    },
-
-    modules: [new PHYSICS.PlaneModule({
-      mass: 0
-    })],
-
-    material: new THREE.MeshPhongMaterial({ color: 0x447F8B }),
-
-    rotation: {
-      x: -Math.PI / 2
-    }
-  }).addTo(world);
-}
-
-function addBoxPlane(world) {
-  var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;
-
-  return new WHS.Box({
-    geometry: {
-      width: size,
-      height: 1,
-      depth: size
-    },
-
-    modules: [new PHYSICS.BoxModule({
-      mass: 0
-    })],
-
-    material: new THREE.MeshPhongMaterial({ color: 0x447F8B })
-  }).addTo(world);
-}
-
-},{}]},{},[1]);
