@@ -4,6 +4,7 @@ import del from 'del';
 import {argv} from 'yargs';
 import express from 'express';
 import serveIndex from 'serve-index';
+import fs from 'fs';
 
 // GULP
 import gulp from 'gulp';
@@ -27,20 +28,14 @@ const
   examplesSrc = `${examplesDev}/**/*`,
   examplesDest = './examples',
 
-  swigParameters = {
-    defaults: {
-      cache: false,
-
-      locals: {
-        assets: '../../_assets',
-        physicsModule: argv.devPhysics ?
-          `http://localhost:${argv.devPhysics}/physics-module.js`
-          : '../../../vendor/physics-module.js',
-        ammojs: argv.devPhysics ?
-          `http://localhost:${argv.devPhysics}/vendor/ammo.js`
-          : '../../../vendor/ammo.js'
-      }
-    }
+  templateData = {
+    assets: '../../assets',
+    physicsModule: argv.devPhysics ?
+      `http://localhost:${argv.devPhysics}/physics-module.js`
+      : '../../../vendor/physics-module.js',
+    ammojs: argv.devPhysics ?
+      `http://localhost:${argv.devPhysics}/vendor/ammo.js`
+      : '../../../vendor/ammo.js'
   };
 
 const $ = loadPlugins({
@@ -106,24 +101,112 @@ gulp.task('src:build:node', () => {
 });
 
 // DEV MODE
-gulp.task('dev', ['examples:build', 'examples:watch'], () => {
-  const server = express();
+gulp.task('dev', () => {
+  const app = express();
 
-  server.use(new WebpackDevMiddleware(webpackCompiler, {
+  app.use(new WebpackDevMiddleware(webpackCompiler, {
     contentBase: examplesDest,
     publicPath: '/build/',
 
     stats: {colors: true}
   }));
 
-  server.get('*', express.static(path.resolve(__dirname, examplesDest)));
-  server.get('*', serveIndex(path.resolve(__dirname, examplesDest), {icons: true}));
+  const getPaths = () => {
+    const paths = [];
+    const excludeFolders = ['_assets'];
 
-  server.get('/vendor/physics-module.js', (req, res) => {
+    const handleFolders = (folder, callback) => {
+      fs.readdirSync(folder).filter(file => {
+        if (excludeFolders.includes(file)) return;
+        if (fs.statSync(path.join(folder, file)).isDirectory()) callback(file);
+      });
+    }
+
+    handleFolders('./examples/', category => {
+      handleFolders(path.join('./examples/', category), name => {
+        paths.push(`${category}/${name}`);
+      });
+    });
+
+    return paths;
+  }
+
+  const configExtend = {
+    output: {
+      path: '/',
+      filename: 'script.js'
+    },
+    module: {
+      loaders: [{
+        loader: 'babel-loader',
+        query: {
+          cacheDirectory: true,
+          plugins: [
+            // ['transform-runtime', {polyfill: false}],
+            'transform-object-rest-spread'
+          ],
+          presets: [['es2015', {modules: false}]]
+        }
+      }]
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.ammoPath': `'${templateData.ammojs}'`,
+        'process.assetsPath': `'${templateData.assets}'`
+      })
+    ],
+    stats: {
+      colors: true,
+      hash: false,
+      version: false,
+      timings: false,
+      assets: false,
+      chunks: false,
+      modules: false,
+      reasons: false,
+      children: false,
+      source: false,
+      errors: true,
+      errorDetails: true,
+      warnings: true,
+      publicPath: false
+    }
+  };
+
+  const exampleCompiler = (path) => webpack({
+    entry: `./examples/${path}/script.js`,
+    output: configExtend.output,
+    module: configExtend.module,
+    plugins: configExtend.plugins
+  });
+
+  getPaths().forEach((path) => {
+    app.use(new WebpackDevMiddleware(
+      exampleCompiler(path),
+      {
+        contentBase: examplesDest,
+        publicPath: `/${path}`,
+        noInfo: true,
+        stats: configExtend.stats
+      }
+    ));
+  });
+
+  console.log(path.resolve(__dirname, `${examplesDest}/_assets`));
+  app.use('/assets', express.static(path.resolve(__dirname, `${examplesDest}/_assets`)));
+
+  app.get('/vendor/physics-module.js', (req, res) => {
     res.sendFile(path.resolve(__dirname, './vendor/physics-module.js'));
   });
 
-  server.listen(8080, 'localhost', () => {});
+  app.set('views', `./${examplesDest}`);
+  app.set('view engine', 'pug');
+
+  app.get('/:category/:name', (req, res) => {
+    res.render(`./${req.params.category}/${req.params.name}/index.pug`, templateData)
+  });
+
+  app.listen(8080, 'localhost', () => {});
 });
 
 // DEV MODE
@@ -139,106 +222,110 @@ gulp.task('webpack-dev', () => {
 });
 
 // EXAMPLES: WATCH
-gulp.task('examples:watch', () => {
-  const watcher = gulp.watch(examplesSrc, (obj) => {
-    if (obj.type === 'changed') {
-      if (path.extname(obj.path) === '.js') {
-        console.log('.js change detected.');
-        const filePath = path.relative(path.resolve('./'), obj.path);
+// gulp.task('examples:watch', () => {
+//   const watcher = gulp.watch(examplesSrc, (obj) => {
+//     if (obj.type === 'changed') {
+//       if (path.extname(obj.path) === '.js') {
+//         console.log('.js change detected.');
+//         const filePath = path.relative(path.resolve('./'), obj.path);
 
-        gulp.src([
-          obj.path,
-          `!${examplesDev}/_assets/**/*.js`
-        ])
-          .pipe($.plumber())
-          .pipe($.swig(Object.assign({}, swigParameters, {ext: '.js'})))
-          .pipe($.gbrowser.browserify({basedir: path.resolve(examplesDev)}, {
-            transform: 'babelify',
-            options: {presets: ['es2015']}
-          }))
-          .pipe(
-            gulp.dest(
-              path.join(
-                path.relative(path.resolve('./'), path.resolve(examplesDest)),
-                path.relative(path.resolve(examplesDev), path.dirname(obj.path))
-              )
-            )
-          );
+//         gulp.src([
+//           obj.path,
+//           `!${examplesDev}/_assets/**/*.js`
+//         ])
+//           .pipe($.plumber())
+//           .pipe($.swig(Object.assign({}, swigParameters, {ext: '.js'})))
+//           .pipe($.gbrowser.browserify({basedir: path.resolve(examplesDev)}, {
+//             transform: 'babelify',
+//             options: {presets: ['es2015']}
+//           }))
+//           .pipe(
+//             gulp.dest(
+//               path.join(
+//                 path.relative(path.resolve('./'), path.resolve(examplesDest)),
+//                 path.relative(path.resolve(examplesDev), path.dirname(obj.path))
+//               )
+//             )
+//           );
 
-        console.log(`Swig, babelify & browserify: ${filePath}`);
-      } else if (path.extname(obj.path) === '.html') {
-        console.log('.html change detected.');
-        const filePath = path.relative(path.resolve('./'), obj.path);
+//         console.log(`Swig, babelify & browserify: ${filePath}`);
+//       } else if (path.extname(obj.path) === '.html') {
+//         console.log('.html change detected.');
+//         const filePath = path.relative(path.resolve('./'), obj.path);
 
-        if (obj.path.indexOf('layout') > -1) {
-          gulp.src([
-            `${examplesDev}/**/*.html`
-          ])
-            .pipe($.plumber())
-            .pipe($.swig(swigParameters))
-            .pipe(
-              gulp.dest(
-                path.join(
-                  path.relative(path.resolve('./'), path.resolve(examplesDest)),
-                  path.relative(path.resolve(examplesDev), path.dirname(obj.path))
-                )
-              )
-            );
+//         if (obj.path.indexOf('layout') > -1) {
+//           gulp.src([
+//             `${examplesDev}/**/*.html`
+//           ])
+//             .pipe($.plumber())
+//             .pipe($.swig(swigParameters))
+//             .pipe(
+//               gulp.dest(
+//                 path.join(
+//                   path.relative(path.resolve('./'), path.resolve(examplesDest)),
+//                   path.relative(path.resolve(examplesDev), path.dirname(obj.path))
+//                 )
+//               )
+//             );
 
-          console.log(`Swig LAYOUT: ${filePath}`);
-        } else {
-          gulp.src(filePath)
-            .pipe($.plumber())
-            .pipe($.swig(swigParameters))
-            .pipe(
-              gulp.dest(
-                path.join(
-                  path.relative(path.resolve('./'), path.resolve(examplesDest)),
-                  path.relative(path.resolve(examplesDev), path.dirname(obj.path))
-                )
-              )
-            );
-        }
+//           console.log(`Swig LAYOUT: ${filePath}`);
+//         } else {
+//           gulp.src(filePath)
+//             .pipe($.plumber())
+//             .pipe($.swig(swigParameters))
+//             .pipe(
+//               gulp.dest(
+//                 path.join(
+//                   path.relative(path.resolve('./'), path.resolve(examplesDest)),
+//                   path.relative(path.resolve(examplesDev), path.dirname(obj.path))
+//                 )
+//               )
+//             );
+//         }
 
-        console.log(`Swig: ${filePath}`);
-      } else {
-        console.log('Other file change detected.');
-        const filePath = path.relative(path.resolve('./'), obj.path);
+//         console.log(`Swig: ${filePath}`);
+//       } else {
+//         console.log('Other file change detected.');
+//         const filePath = path.relative(path.resolve('./'), obj.path);
 
-        gulp.src([
-          filePath,
-          `!${examplesDev}/**/*.html`,
-          `!${examplesDev}/!(_libs)/*.js`,
-          `!${examplesDev}/**/script.js`,
-          `${examplesDev}/_assets/**/*.js`
-        ])
-          .pipe($.plumber())
-          .pipe(
-            gulp.dest(
-              path.join(
-                path.relative(path.resolve('./'), path.resolve(examplesDest)),
-                path.relative(path.resolve(examplesDev), path.dirname(obj.path))
-              )
-            )
-          );
+//         gulp.src([
+//           filePath,
+//           `!${examplesDev}/**/*.html`,
+//           `!${examplesDev}/!(_libs)/*.js`,
+//           `!${examplesDev}/**/script.js`,
+//           `${examplesDev}/_assets/**/*.js`
+//         ])
+//           .pipe($.plumber())
+//           .pipe(
+//             gulp.dest(
+//               path.join(
+//                 path.relative(path.resolve('./'), path.resolve(examplesDest)),
+//                 path.relative(path.resolve(examplesDev), path.dirname(obj.path))
+//               )
+//             )
+//           );
 
-        console.log(`File copied: ${filePath}`);
-      }
-    }
-  });
+//         console.log(`File copied: ${filePath}`);
+//       }
+//     }
+//   });
 
-  watcher.on('change', (event) => {
-    if (event.type === 'deleted') {
-      // Simulating the {base: 'src'} used with gulp.src in the scripts task
-      const filePathFromSrc = path.relative(path.resolve(examplesDev), event.path);
+//   watcher.on('change', (event) => {
+//     if (event.type === 'deleted') {
+//       // Simulating the {base: 'src'} used with gulp.src in the scripts task
+//       const filePathFromSrc = path.relative(path.resolve(examplesDev), event.path);
 
-      // Concatenating the 'build' absolute path used by gulp.dest in the scripts task
-      const destFilePath = path.resolve(examplesDest, filePathFromSrc);
+//       // Concatenating the 'build' absolute path used by gulp.dest in the scripts task
+//       const destFilePath = path.resolve(examplesDest, filePathFromSrc);
 
-      del.sync(destFilePath);
-    }
-  });
-});
+//       del.sync(destFilePath);
+//     }
+//   });
+// });
+
+// gulp.task('examples:watch', () => {
+
+// });
 
 // EXAMPLES: BUILD
 gulp.task('examples:build', ['examples:clean'], () => {
