@@ -1,51 +1,47 @@
 import * as UTILS from '../../globals';
 
-const world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world,
+const world = new WHS.App([
+  new WHS.modules.ElementModule(),
+  new WHS.modules.SceneModule(),
+  new WHS.modules.CameraModule({
+    position: new THREE.Vector3(0, 10, 50)
+  }),
+  new WHS.modules.RenderingModule({
+    bgColor: 0x162129,
 
-  physics: {
-    ammo: process.ammoPath
-  },
+    renderer: {
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
+      }
+    }
+  }),
+  new PHYSICS.WorldModule({
+    // ammo: process.ammoPath
+    ammo: 'http://localhost:8080/assets/ammoloader.js',
+    wasm: 'http://localhost:8001/vendor/ammo.wasm'
+  }),
+  new WHS.OrbitControlsModule(),
+  new WHS.modules.AutoresizeModule()
+]);
 
-  gravity: {
-    x: 0,
-    y: -100,
-    z: 0
-  },
-
-  camera: {
-    far: 1000,
-    position: [0, 30, 90]
-  },
-
-  shadowmap: {
-    type: THREE.PCFShadowMap
-  }// ,
-
-  // physics: {
-  //   broadphase: {type: 'sweepprune'}
-  // }
-});
-
-const stick = new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({
+const stick = new WHS.Box({
   geometry: {
     width: 5,
     height: 1,
     depth: 1
   },
 
-  mass: 1,
+  material: new THREE.MeshPhongMaterial({color: UTILS.$colors.mesh}),
 
-  material: {
-    kind: 'phong',
-    color: UTILS.$colors.mesh
-  },
-
-  physics: {
-    restitution: 0,
-    friction: 0.5,
-    state: 4
-  },
+  modules: [
+    new PHYSICS.BoxModule({
+      mass: 1,
+      restitution: 0,
+      friction: 0.5,
+      state: 4
+    })
+  ],
 
   shadow: {
     cast: false,
@@ -70,8 +66,11 @@ let objects = 0;
 for (let k = 0; k < rows; k++) {
   for (let j = 0; j < cols; j++) {
     for (let i = 0; i < height; i++) {
-      const newStick = stick.clone();
-      const newStick2 = stick2.clone();
+      const newStick = stick.clone(false, true);
+      const newStick2 = stick2.clone(false, true);
+
+      newStick.material.color.add(new THREE.Color(Math.random(), Math.random(), Math.random()).multiplyScalar(0.2));
+      newStick2.material.color.add(new THREE.Color(Math.random(), Math.random(), Math.random()).multiplyScalar(0.2));
 
       if (i % 2 === 0) {
         newStick.quaternion.setFromEuler(new THREE.Euler(0, Math.PI / 2, 0));
@@ -97,23 +96,29 @@ for (let k = 0; k < rows; k++) {
 
 document.querySelector('.object_count').innerText = `${objects} objects`;
 
-const sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.BOX))({
+const sphere = new WHS.Sphere({
   geometry: {
-    radius: 1,
+    radius: 3,
     widthSegments: 32,
     heightSegments: 32
   },
 
-  mass: 10,
+  modules: [
+    new PHYSICS.SphereModule({
+      mass: 10
+    })
+  ],
 
-  material: {
+  material: new THREE.MeshStandardMaterial({
+    emissive: 0xaaaaaa,
     color: UTILS.$colors.mesh,
-    kind: 'phong'
-  },
+    metalness: 0.8,
+    roughness: 0.5
+  }),
 
   position: {
     x: -20,
-    y: 1
+    y: 3
   }
 });
 
@@ -125,8 +130,10 @@ sphere.addTo(world).then((sphere) => {
   sphere.setLinearVelocity({x: mx, y: 0, z: mz});
 });
 
-UTILS.addBoxPlane(world, 250).then(o => {o.position.y = -1});
+UTILS.addBoxPlane(world, 250).then(o => {
+  o.position.y = -1;
+});
+
 UTILS.addBasicLights(world, 0.5, [100, 100, 100], 200);
 
-world.setControls(new WHS.OrbitControls());
 world.start();
