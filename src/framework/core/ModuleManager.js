@@ -26,7 +26,7 @@ export class ModuleManager {
     }
   }
 
-  addDependency(key, object, config) {
+  addDependency(key, object, config = {}) {
     if (this.store[key] && this.store[key][2].immutable) {
       throw new DependencyError(
         'ModuleManager',
@@ -87,5 +87,9 @@ export class ModuleManager {
     }
 
     return getModule ? this.store[key][1] : this.store[key][0];
+  }
+
+  has(key) {
+    return Boolean(this.store[key]);
   }
 }
