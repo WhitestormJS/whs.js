@@ -36,6 +36,9 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
 
   const pluginsSectionPhysics = isProduction
   ? [
+    new webpack.DefinePlugin({
+      'process.env.WHSDEV': false
+    }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         hoist_funs: false, // Turn this off to prevent errors with Ammo.js
@@ -50,6 +53,9 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     new webpack.BannerPlugin(bannerText)
   ]
   : [
+    new webpack.DefinePlugin({
+      'process.env.WHSDEV': true
+    }),
     new HappyPack({loaders: ['babel'], threads: 4}),
     new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
     new webpack.BannerPlugin(bannerText)
@@ -57,6 +63,9 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
 
   const pluginsSectionLight = isProduction
   ? [
+    new webpack.DefinePlugin({
+      'process.env.WHSDEV': false
+    }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
@@ -68,6 +77,9 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     new webpack.BannerPlugin(bannerText)
   ]
   : [
+    new webpack.DefinePlugin({
+      'process.env.WHSDEV': true
+    }),
     new HappyPack({loaders: ['babel'], threads: 4}),
     new webpack.BannerPlugin(bannerText)
   ];
