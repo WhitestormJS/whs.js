@@ -16,9 +16,23 @@ html
   body
     block body
 
-    script(src='../../../build/whitestorm.js')
-    script(src=physicsModule)
+    block dependencies
+      script(src='../../../build/whitestorm.js')
+      script(src=physicsModule)
 
     block scripts
-  </body>
-</html>
+
+    script.
+      console.log(window.appInstance.manager.get('physicsWorker'));
+      window.onbeforeunload = function (e) {
+        // alert('Closing worker');
+
+        if (window.appInstance.manager.has('physicsWorker')) {
+          window.appInstance.manager.get('physicsWorker').terminate();
+          console.log('Worker closed.');
+        }
+
+        e.returnValue = 'Closing worker';
+
+        return 'Closing worker';
+      };
