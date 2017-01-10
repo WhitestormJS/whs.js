@@ -59,7 +59,7 @@ class PostProcessor extends Renderer {
   }
 
   make$composer() {
-    // TODO: throw or something here
+    // TODO:10 throw or something here
     if (!this.$renderer || !this.$renderTarget || this.$composer) return;
     this.$composer = new EffectComposer(this.$renderer, this.$renderTarget);
   }
@@ -126,7 +126,7 @@ class PostProcessor extends Renderer {
    */
   setContainerConfig(container) {
     this.container = container;
-    // TODO: handle autoresize container offset
+    // TODO:0 handle autoresize container offset
   }
 
   setSize(width, height) {
