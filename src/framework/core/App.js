@@ -90,6 +90,10 @@ class App {
     this.modules = modules;
     this.manager = new ModuleManager(this);
 
+    if (process.env.WHSDEV) {
+      window.appInstance = this;
+    }
+
     for (let i = 0, max = modules.length; i < max; i++) {
       const module = modules[i];
 
@@ -109,7 +113,7 @@ class App {
     //   const container = params.container;
 
     //   const resizeCallback = () => {
-    //     // FIXME: Am I crazy or offsetHeight is increasing even when we downsize the window ?
+    //     // FIXME:20 Am I crazy or offsetHeight is increasing even when we downsize the window ?
     //     // console.log('height offset : ', params.container.offsetHeight);
 
     //     this.setSize(
@@ -282,4 +286,3 @@ class App {
 export {
   App
 };
-
