@@ -1,6 +1,6 @@
 export const $world = {
-  stats: "fps", // fps, ms, mb or false if not need.
-  autoresize: "window",
+  stats: 'fps', // fps, ms, mb or false if not need.
+  autoresize: 'window',
 
   gravity: [0, -100, 0],
 
@@ -33,7 +33,7 @@ export const $colors = {
 export function addAmbient(world, intensity) {
   new WHS.AmbientLight({
     light: {
-      intensity: intensity
+      intensity
     }
   }).addTo(world);
 }
@@ -71,9 +71,9 @@ export function addPlane(world, size = 100) {
     material: new THREE.MeshPhongMaterial({color: 0x447F8B}),
 
     rotation: {
-      x: - Math.PI / 2
+      x: -Math.PI / 2
     }
-  }).addTo(world)
+  }).addTo(world);
 }
 
 export function addBoxPlane(world, size = 100) {
@@ -91,5 +91,5 @@ export function addBoxPlane(world, size = 100) {
     ],
 
     material: new THREE.MeshPhongMaterial({color: 0x447F8B})
-  }).addTo(world)
+  }).addTo(world);
 }
