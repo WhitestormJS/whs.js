@@ -17,7 +17,8 @@ const world = new WHS.App([
     }
   }),
   new PHYSICS.WorldModule({
-    ammo: process.ammoPath
+    ammo: 'http://localhost:8080/assets/ammoloader.js',
+    wasm: 'http://localhost:8001/vendor/ammo.wasm'
   }),
   new WHS.OrbitControlsModule(),
   new WHS.modules.AutoresizeModule()
