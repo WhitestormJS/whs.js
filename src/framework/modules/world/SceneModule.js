@@ -21,15 +21,21 @@ export class SceneModule {
 
       return new Promise((resolve, reject) => {
         const _add = () => {
-          const {native, parent} = object;
+          const {native} = object;
           if (!native) reject();
 
-          this.applyBridge({onAdd: object});
+          const addPromise = this.applyBridge({onAdd: object}).onAdd;
 
-          self.scene.add(native);
-          this.children.push(object);
+          const resolver = () => {
+            self.scene.add(native);
+            this.children.push(object);
 
-          resolve(object);
+            resolve(object);
+          };
+
+          if (addPromise instanceof Promise) {
+            addPromise.then(resolver);
+          } else resolver();
         };
 
         if (object._wait.length > 0) Promise.all(object._wait).then(_add);
