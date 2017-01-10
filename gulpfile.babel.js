@@ -202,8 +202,12 @@ gulp.task('dev', () => {
   app.set('views', `./${examplesDest}`);
   app.set('view engine', 'pug');
 
+  app.get('/:name', (req, res) => {
+    res.render(`./${req.params.name}.pug`, templateData);
+  });
+
   app.get('/:category/:name', (req, res) => {
-    res.render(`./${req.params.category}/${req.params.name}/index.pug`, templateData)
+    res.render(`./${req.params.category}/${req.params.name}/index.pug`, templateData);
   });
 
   app.listen(8080, 'localhost', () => {});
