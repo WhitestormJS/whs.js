@@ -21,7 +21,7 @@ if (argv.devPhysics) console.log(`DevPhysics is running on: ${argv.devPhysics} p
 
 // SETTINGS
 const
-  frameworkSrc = './src/framework',
+  frameworkSrc = './src',
   frameworkDest = './build',
 
   examplesDev = './src/examples',
@@ -47,14 +47,45 @@ const $ = loadPlugins({
 // COMPILERS
 const isProduction = argv.prod ? true : process.env.NODE_ENV === 'production';
 
-const webpackConfiguration = config({
-  isProduction,
-  frameworkSrc,
-  frameworkDest
-});
+const compilers = {
+  'main': webpack(config({
+    isProduction,
+    frameworkSrc,
+    frameworkDest
+  })),
+  'compact': webpack((() => {
+    const configuration = config({
+      isProduction,
+      frameworkSrc,
+      frameworkDest
+    });
 
-const webpackCompiler = webpack(webpackConfiguration[0]);
-const webpackCompilerLight = webpack(webpackConfiguration[1]);
+    configuration.plugins.push(new webpack.IgnorePlugin(/(components)/));
+    configuration.output.filename = 'whitestorm.compact.js';
+
+    return configuration;
+  })())
+};
+
+const consoleColors = {
+  reset: '\x1b[0m',
+  hicolor: '\x1b[1m',
+  underline: '\x1b[4m',
+  inverse: '\x1b[7m',
+
+  // foreground colors
+  black: '\x1b[30m',
+  red: '\x1b[31m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m',
+  magenta: '\x1b[35m',
+  cyan: '\x1b[36m',
+  white: '\x1b[37m',
+}
+
+const log = (color, msg) => console.log(consoleColors[color], msg, consoleColors.reset);
+
 const wCompiler = webpack(wConfig); // Webpack test.
 
 // ENVIRONMENT  SETUP
@@ -63,48 +94,33 @@ process.env.BABEL_ENV = 'node';
 // ALIAS
 gulp.task('default', ['build']);
 gulp.task('build', ['src:build', 'examples:build']);
-gulp.task('src:build', ['src:build:browser', 'src:build:node']);
 
-// BUILD: browser
-gulp.task('src:build:browser', ['build:clean'], (callback) => {
-  webpackCompiler.run((error, stats) => {
+// BUILD
+gulp.task('src:build', ['build:clean'], (callback) => {
+  log('cyan', 'WEBPACK BUILD [\'main\' compiler status]: Started.');
+
+  compilers['main'].run((error, stats) => {
     if (error) throw new $.util.PluginError('webpack', error);
     $.util.log('[webpack]', stats.toString({colors: true}));
 
-    if (!argv.main)
-      webpackCompilerLight.run((error, stats) => {
-        if (error) throw new $.util.PluginError('webpack', error);
-        $.util.log('[webpack]', stats.toString({colors: true}));
-        callback();
-      });
+    log('green', 'WEBPACK BUILD [\'main\' compiler status]: Finished.');
   });
-});
 
-gulp.task('src:build:node', () => {
-  gulp.src(`${frameworkSrc}/**/*`)
-    .pipe($.cached('babel', {optimizeMemory: true}))
-    .pipe($.babel({
-      "presets": [
-        "es2015"
-      ],
-      "plugins": [
-        "transform-runtime",
-        "add-module-exports",
-        "transform-decorators-legacy",
-        "transform-class-properties",
-        "transform-object-rest-spread"
-      ]
-    }))
-    .on('error', makeBuildErrorHandler('babel'))
-    .pipe(gulp.dest('./lib/'));
+  log('cyan', 'WEBPACK BUILD [\'compact\' compiler status]: Started.');
 
+  compilers['compact'].run((error, stats) => {
+    if (error) throw new $.util.PluginError('webpack', error);
+    $.util.log('[webpack]', stats.toString({colors: true}));
+
+    log('cyan', 'WEBPACK BUILD [\'compact\' compiler status]: Finished.');
+  });
 });
 
 // DEV MODE
 gulp.task('dev', () => {
   const app = express();
 
-  app.use(new WebpackDevMiddleware(webpackCompiler, {
+  app.use(new WebpackDevMiddleware(compilers['main'], {
     contentBase: examplesDest,
     publicPath: '/build/',
 
@@ -236,142 +252,36 @@ gulp.task('webpack-dev', () => {
   server.listen(8001, 'localhost', () => {});
 });
 
-// EXAMPLES: WATCH
-// gulp.task('examples:watch', () => {
-//   const watcher = gulp.watch(examplesSrc, (obj) => {
-//     if (obj.type === 'changed') {
-//       if (path.extname(obj.path) === '.js') {
-//         console.log('.js change detected.');
-//         const filePath = path.relative(path.resolve('./'), obj.path);
-
-//         gulp.src([
-//           obj.path,
-//           `!${examplesDev}/_assets/**/*.js`
-//         ])
-//           .pipe($.plumber())
-//           .pipe($.swig(Object.assign({}, swigParameters, {ext: '.js'})))
-//           .pipe($.gbrowser.browserify({basedir: path.resolve(examplesDev)}, {
-//             transform: 'babelify',
-//             options: {presets: ['es2015']}
-//           }))
-//           .pipe(
-//             gulp.dest(
-//               path.join(
-//                 path.relative(path.resolve('./'), path.resolve(examplesDest)),
-//                 path.relative(path.resolve(examplesDev), path.dirname(obj.path))
-//               )
-//             )
-//           );
-
-//         console.log(`Swig, babelify & browserify: ${filePath}`);
-//       } else if (path.extname(obj.path) === '.html') {
-//         console.log('.html change detected.');
-//         const filePath = path.relative(path.resolve('./'), obj.path);
-
-//         if (obj.path.indexOf('layout') > -1) {
-//           gulp.src([
-//             `${examplesDev}/**/*.html`
-//           ])
-//             .pipe($.plumber())
-//             .pipe($.swig(swigParameters))
-//             .pipe(
-//               gulp.dest(
-//                 path.join(
-//                   path.relative(path.resolve('./'), path.resolve(examplesDest)),
-//                   path.relative(path.resolve(examplesDev), path.dirname(obj.path))
-//                 )
-//               )
-//             );
-
-//           console.log(`Swig LAYOUT: ${filePath}`);
-//         } else {
-//           gulp.src(filePath)
-//             .pipe($.plumber())
-//             .pipe($.swig(swigParameters))
-//             .pipe(
-//               gulp.dest(
-//                 path.join(
-//                   path.relative(path.resolve('./'), path.resolve(examplesDest)),
-//                   path.relative(path.resolve(examplesDev), path.dirname(obj.path))
-//                 )
-//               )
-//             );
-//         }
-
-//         console.log(`Swig: ${filePath}`);
-//       } else {
-//         console.log('Other file change detected.');
-//         const filePath = path.relative(path.resolve('./'), obj.path);
-
-//         gulp.src([
-//           filePath,
-//           `!${examplesDev}/**/*.html`,
-//           `!${examplesDev}/!(_libs)/*.js`,
-//           `!${examplesDev}/**/script.js`,
-//           `${examplesDev}/_assets/**/*.js`
-//         ])
-//           .pipe($.plumber())
-//           .pipe(
-//             gulp.dest(
-//               path.join(
-//                 path.relative(path.resolve('./'), path.resolve(examplesDest)),
-//                 path.relative(path.resolve(examplesDev), path.dirname(obj.path))
-//               )
-//             )
-//           );
-
-//         console.log(`File copied: ${filePath}`);
-//       }
-//     }
-//   });
-
-//   watcher.on('change', (event) => {
-//     if (event.type === 'deleted') {
-//       // Simulating the {base: 'src'} used with gulp.src in the scripts task
-//       const filePathFromSrc = path.relative(path.resolve(examplesDev), event.path);
-
-//       // Concatenating the 'build' absolute path used by gulp.dest in the scripts task
-//       const destFilePath = path.resolve(examplesDest, filePathFromSrc);
-
-//       del.sync(destFilePath);
-//     }
-//   });
-// });
-
-// gulp.task('examples:watch', () => {
-
-// });
-
 // EXAMPLES: BUILD
-gulp.task('examples:build', ['examples:clean'], () => {
-  gulp.src([
-    `${examplesDev}/**/*`,
-    `!${examplesDev}/**/*.html`,
-    `!${examplesDev}/!(_libs)/*.js`,
-    `!${examplesDev}/**/script.js`,
-    `${examplesDev}/_assets/**/*.js`
-  ])
-    .pipe($.plumber())
-    .pipe(gulp.dest(examplesDest));
+// gulp.task('examples:build', ['examples:clean'], () => {
+//   gulp.src([
+//     `${examplesDev}/**/*`,
+//     `!${examplesDev}/**/*.html`,
+//     `!${examplesDev}/!(_libs)/*.js`,
+//     `!${examplesDev}/**/script.js`,
+//     `${examplesDev}/_assets/**/*.js`
+//   ])
+//     .pipe($.plumber())
+//     .pipe(gulp.dest(examplesDest));
 
-  gulp.src([
-    `${examplesDev}/**/*.js`,
-    `!${examplesDev}/**/*.html`,
-    `!${examplesDev}/_assets/**/*.js`
-  ])
-    .pipe($.plumber())
-    .pipe($.swig(Object.assign({}, swigParameters, {ext: '.js'})))
-    .pipe($.gbrowser.browserify({basedir: path.resolve(examplesDev)}, {
-      transform: 'babelify',
-      options: {presets: ['es2015']}
-    }))
-    .pipe(gulp.dest(examplesDest));
+//   gulp.src([
+//     `${examplesDev}/**/*.js`,
+//     `!${examplesDev}/**/*.html`,
+//     `!${examplesDev}/_assets/**/*.js`
+//   ])
+//     .pipe($.plumber())
+//     .pipe($.swig(Object.assign({}, swigParameters, {ext: '.js'})))
+//     .pipe($.gbrowser.browserify({basedir: path.resolve(examplesDev)}, {
+//       transform: 'babelify',
+//       options: {presets: ['es2015']}
+//     }))
+//     .pipe(gulp.dest(examplesDest));
 
-  gulp.src(`${examplesDev}/**/*.html`)
-    .pipe($.plumber())
-    .pipe($.swig(swigParameters))
-    .pipe(gulp.dest(examplesDest));
-});
+//   gulp.src(`${examplesDev}/**/*.html`)
+//     .pipe($.plumber())
+//     .pipe($.swig(swigParameters))
+//     .pipe(gulp.dest(examplesDest));
+// });
 
 // TESTING
 gulp.task('test', ['test:benchmark', 'test:unit']);
@@ -401,9 +311,9 @@ gulp.task('src:lint', () => {
 });
 
 // CLEANING
-gulp.task('examples:clean', (callback) => {
-  del(examplesDest).then(() => callback());
-});
+// gulp.task('examples:clean', (callback) => {
+//   del(examplesDest).then(() => callback());
+// });
 
 gulp.task('build:clean', (callback) => {
   del([`${frameworkDest}/*.js`, `${frameworkDest}/*.map`, './lib/**/*.js', './lib/**/*.map']).then(() => callback());
