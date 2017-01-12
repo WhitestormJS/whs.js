@@ -30,17 +30,17 @@ const cloth = new WHS.Plane({ // Softbody (blue).
   geometry: {
     width: 60,
     height: 20,
-    wSegments: 40,
-    hSegments: 30
+    wSegments: 120, // 40
+    hSegments: 40 // 30
   },
 
   // buffer: true,
 
   modules: [
     new PHYSICS.ClothModule({
-      mass: 2,
+      mass: 4,
       margin: 1,
-      damping: 0.02,
+      damping: 0.01,
       piterations: 12,
 
       // viterations: 12,
