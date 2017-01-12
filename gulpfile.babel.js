@@ -112,6 +112,7 @@ gulp.task('dev', () => {
   }));
 
   const getPaths = () => {
+    const categories = [];
     const paths = [];
     const excludeFolders = ['_assets'];
 
@@ -123,12 +124,14 @@ gulp.task('dev', () => {
     }
 
     handleFolders('./examples/', category => {
+      categories.push(category);
+
       handleFolders(path.join('./examples/', category), name => {
         paths.push(`${category}/${name}`);
       });
     });
 
-    return paths;
+    return [paths, categories];
   }
 
   const configExtend = {
@@ -180,7 +183,11 @@ gulp.task('dev', () => {
     plugins: configExtend.plugins
   });
 
-  getPaths().forEach((path) => {
+  const paths = getPaths();
+  templateData.paths = paths[0];
+  templateData.categories = paths[1];
+
+  paths[0].forEach((path) => {
     app.use(new WebpackDevMiddleware(
       exampleCompiler(path),
       {
@@ -192,15 +199,19 @@ gulp.task('dev', () => {
     ));
   });
 
-  console.log(path.resolve(__dirname, `${examplesDest}/_assets`));
   app.use('/assets', express.static(path.resolve(__dirname, `${examplesDest}/_assets`)));
 
   app.get('/vendor/physics-module.js', (req, res) => {
     res.sendFile(path.resolve(__dirname, './vendor/physics-module.js'));
   });
 
-  app.set('views', `./${examplesDest}`);
+  app.set('views', path.resolve(__dirname, `./${examplesDest}`));
   app.set('view engine', 'pug');
+  app.set('view cache', false);
+
+  app.get('/', (req, res) => {
+    res.render(`./index.pug`, templateData);
+  });
 
   app.get('/:name', (req, res) => {
     res.render(`./${req.params.name}.pug`, templateData);
