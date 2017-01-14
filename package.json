@@ -84,6 +84,7 @@
     "karma-requirejs": "^1.0.0",
     "mocha": "^3.0.2",
     "path": "^0.12.7",
+    "pug": "^2.0.0-beta6",
     "requirejs": "^2.2.0",
     "serve-index": "^1.8.0",
     "snyk": "^1.19.1",

@@ -108,35 +108,6 @@ class App {
     }
 
     this.manager.reset();
-
-    // if (params.autoresize) {
-    //   const container = params.container;
-
-    //   const resizeCallback = () => {
-    //     // FIXME:20 Am I crazy or offsetHeight is increasing even when we downsize the window ?
-    //     // console.log('height offset : ', params.container.offsetHeight);
-
-    //     this.setSize(
-    //       Number(container.offsetWidth * params.resolution.width).toFixed(),
-    //       Number(container.offsetHeight * params.resolution.height).toFixed()
-    //     );
-
-    //     this.emit('resize');
-    //   }
-
-    //   if (params.autoresize === 'window') window.addEventListener('resize', resizeCallback);
-    //   else {
-    //     if (params.autoresize.delay) {
-    //       let resize = true;
-
-    //       addResizeListener(container, () => {
-    //         window.clearTimeout(resize);
-    //         resize = window.setTimeout(resizeCallback, params.autoresize.delay);
-    //       });
-    //     }
-    //     else addResizeListener(container, resizeCallback);
-    //   }
-    // }
   }
 
   /**
