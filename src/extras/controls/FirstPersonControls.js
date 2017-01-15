@@ -24,7 +24,6 @@ function FirstPersonControlsSolver(camera, mesh, params) {
 
   yawObject.position.y = params.ypos; // eyes are 2 meters above the ground
   yawObject.add(pitchObject);
-  console.log(camera.native);
 
   const quat = new Quaternion();
 
@@ -35,10 +34,10 @@ function FirstPersonControlsSolver(camera, mesh, params) {
     moveLeft = false,
     moveRight = false;
 
-  // player.addEventListener('collision', (otherObject, v, r, contactNormal) => {
-  //   if (contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
-  //     canJump = true;
-  // });
+  player.on('collision', (otherObject, v, r, contactNormal) => {
+    if (contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
+      canJump = true;
+  });
 
   const onMouseMove = event => {
     if (this.enabled === false) return;
@@ -164,15 +163,17 @@ function FirstPersonControlsSolver(camera, mesh, params) {
 
     inputVelocity.applyQuaternion(quat);
 
-    player.applyCentralImpulse({x: inputVelocity.x * 10, y: 0, z: inputVelocity.z * 10});
-    player.setAngularVelocity({x: inputVelocity.z * 10, y: 0, z: -inputVelocity.x * 10});
+    player.applyCentralImpulse({x: inputVelocity.x, y: 0, z: inputVelocity.z});
+    player.setAngularVelocity({x: inputVelocity.z, y: 0, z: -inputVelocity.x});
     player.setAngularFactor({x: 0, y: 0, z: 0});
-
-    yawObject.position.copy(player.native.position);
-    // console.log(yawObject.position, 1)
-    // console.log(player.native.position, 2)
-
   };
+
+  player.on('physics:added', () => {
+    player.manager.get('module:world').addEventListener('update', () => {
+      if (this.enabled === false) return;
+      yawObject.position.copy(player.position);
+    });
+  });
 }
 
 export class FirstPersonControls {
