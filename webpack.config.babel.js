@@ -4,25 +4,26 @@ import HappyPack from 'happypack';
 
 process.env.BABEL_ENV = 'browser';
 
-export function config({isProduction, frameworkSrc, frameworkDest}) {
+export function config({isProduction, src, dest, filename = 'whitestorm.js', plugins = []}) {
   if (process.env.CI) isProduction = true;
   console.log(isProduction ? 'Production mode' : 'Development mode');
-  const _version = require('./package.json').version;
-  console.log(_version);
 
-  const bannerText = `WhitestormJS Framework v${_version}`;
+  const version = require('./package.json').version;
+  console.log(version);
+
+  const bannerText = `WhitestormJS Framework v${version}`;
 
   return { // PHYSICS VERSION
     devtool: isProduction ? false : 'source-map',
     cache: true,
     entry: [
       // 'babel-polyfill',
-      `${frameworkSrc}/index.js`
+      `${src}/index.js`
     ],
     target: 'web',
     output: {
-      path: path.join(__dirname, frameworkDest),
-      filename: 'whitestorm.js',
+      path: path.join(__dirname, dest),
+      filename,
       library: 'WHS',
       libraryTarget: 'umd'
     },
@@ -50,9 +51,6 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
     },
     plugins: isProduction ?
       [
-        new webpack.DefinePlugin({
-          'process.env.WHSDEV': false
-        }),
         new webpack.optimize.UglifyJsPlugin({
           compress: {
             hoist_funs: false, // Turn this off to prevent errors with Ammo.js
@@ -63,15 +61,20 @@ export function config({isProduction, frameworkSrc, frameworkDest}) {
         }),
         new HappyPack({loaders: ['babel'], threads: 4}),
         new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
-        new webpack.BannerPlugin(bannerText)
+        new webpack.BannerPlugin(bannerText),
+        ...plugins
       ]
       : [
-        new webpack.DefinePlugin({
-          'process.env.WHSDEV': true
-        }),
         new HappyPack({loaders: ['babel'], threads: 4}),
         new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
-        new webpack.BannerPlugin(bannerText)
+        new webpack.BannerPlugin(bannerText),
+        ...plugins
       ]
   };
 }
+
+export default config({
+  isProduction: process.env.NODE_ENV === 'production',
+  src: './src',
+  dest: './build'
+});
