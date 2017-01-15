@@ -42,7 +42,7 @@ const world = new WHS.App([
   }),
   new WHS.FirstPersonControls(sphere, {
     speed: 500,
-    ypos: -10
+    ypos: 0
   }),
   // new WHS.OrbitControlsModule(),
   new WHS.modules.AutoresizeModule()
@@ -51,18 +51,27 @@ const world = new WHS.App([
 sphere.addTo(world);
 
 for (let i = 0; i < 10; i++) {
+  const height = 10 + Math.random() * 90;
+
   new WHS.Box({
     geometry: {
       width: 10 + Math.random() * 90,
-      height: 10 + Math.random() * 90,
+      height,
       depth: 10 + Math.random() * 90
     },
+
+    modules: [
+      new PHYSICS.SphereModule({
+        mass: 0,
+        restitution: 1
+      })
+    ],
 
     material: new THREE.MeshPhongMaterial({color: UTILS.$colors.mesh}),
 
     position: {
       x: Math.random() * 1000 - 500,
-      y: 0,
+      y: height / 2,
       z: Math.random() * 1000 - 500
     }
   }).addTo(world);
