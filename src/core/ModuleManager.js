@@ -75,6 +75,10 @@ export class ModuleManager {
     }
   }
 
+  removeDependency(key) {
+    this.store[key] = null;
+  }
+
   get(key, getModule = false) {
     if (!this.store[key]) {
       throw new DependencyError(
@@ -91,5 +95,13 @@ export class ModuleManager {
 
   has(key) {
     return Boolean(this.store[key]);
+  }
+
+  get publish() {
+    return this.addDependency;
+  }
+
+  get unpublish() {
+    return this.removeDependency;
   }
 }
