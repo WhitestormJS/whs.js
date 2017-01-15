@@ -1,5 +1,7 @@
 import {Object3D} from 'three';
 import Events from 'minivents';
+import {ModuleManager} from './ModuleManager';
+import {ManagerError} from './errors';
 
 import {extend, transformData} from '../utils/index';
 
@@ -11,7 +13,8 @@ export const getWorld = (element) => {
 
 class Component extends Events {
   static defaults = {
-    modules: []
+    modules: [],
+    manager: true
   };
 
   static instructions = {};
@@ -24,8 +27,8 @@ class Component extends Events {
   constructor(obj = {}, defaults = Component.defaults, instructions = Component.instructions) {
     super();
 
-    if (obj instanceof Object3D) this.native = obj;
-    else this.params = extend(transformData(obj, instructions), defaults);
+    this.params = extend(transformData(obj, instructions), defaults);
+    if (this.params.manager) this.manager = new ModuleManager();
 
     this.modules = this.params.modules || [];
     const modules = this.modules;
@@ -33,9 +36,36 @@ class Component extends Events {
 
     for (let i = 0, max = modules.length; i < max; i++) {
       const module = modules[i];
-      if (typeof module === 'function') module.bind(modulesSharedScope)().integrate.bind(this)(module.params, module);
-      else module.integrate.bind(this)(module.params, module);
+
+      if (typeof module === 'function')
+        module.bind(this)();
+      else {
+        if (!module.name) module.name = '';
+        if (this.manager) this.manager.setActiveModule(module);
+
+        if (module.manager && this.manager) module.manager(this.manager);
+        else if (module.manager) throw new ManagerError(
+          'Component',
+          `Module requires ModuleManager that is turned off for this component`,
+          this, module
+        );
+
+        if (module.integrate) module.integrate.bind(this)(module.params, module);
+      }
     }
+  }
+
+  get manager() {
+    if (this._manager) return this._manager;
+    else throw new ManagerError(
+      'Component',
+      `ModuleManager is not used in this component. 'manager' parameter should be set as 'true'`,
+      this
+    );
+  }
+
+  set manager(manager) {
+    this._manager = manager;
   }
 
   wait(promise) {
