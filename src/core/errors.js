@@ -30,3 +30,20 @@ export class DependencyError extends Error {
     this.message = `@${classInstance}: ${message}`;
   }
 }
+
+export class ManagerError extends Error {
+  constructor(classInstance, message, component, activeModule = false) {
+    super();
+
+    const stackArray = this.stack.split('\n');
+    stackArray.splice(1, 2);
+
+    this.stack = stackArray.join('\n');
+
+    console.error('Component:', dependencyModule);
+    if (activeModule) console.error('Active module:', activeModule);
+
+    this.name = "DependencyError";
+    this.message = `@${classInstance}: ${message}`;
+  }
+}
