@@ -21,17 +21,4 @@ html
       script(src=physicsModule)
 
     block scripts
-
-    script.
-      window.onbeforeunload = window.appInstance ? function (e) {
-        // alert('Closing worker');
-
-        if (window.appInstance.manager.has('physicsWorker')) {
-          window.appInstance.manager.get('physicsWorker').terminate();
-          console.log('Worker closed.');
-        }
-
-        e.returnValue = 'Closing worker';
-
-        return 'Closing worker';
-      } : function () {};
+      script(src=`./${scriptname}`)
