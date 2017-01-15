@@ -92,8 +92,7 @@ html
 
     script.
       var iframe = document.createElement('iframe');
-      var isLocal = window.location.hostname.indexOf('surge.sh') <= 0;
-      var rootPath = isLocal ? '' : '/examples';
+      var rootPath = #{devMode} ? '' : '/examples';
       var link = window.location.hash ? '/' + window.location.hash.substring(1, window.location.hash.length) + '/' : '/basic/helloworld/';
 
       iframe.src = rootPath + link;
