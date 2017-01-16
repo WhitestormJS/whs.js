@@ -1,6 +1,6 @@
 export const getTemplateData = ({devPhysics = false, devMode = false} = {devPhysics: false, devMode: false}) => ({
   scriptname: 'script.js',
-  assets: '\'../../_assets\'',
+  assets: '\'../../assets\'',
   devMode,
 
   physicsModule: devPhysics ?
