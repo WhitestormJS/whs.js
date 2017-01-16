@@ -2,5 +2,4 @@
 node_modules
 .happypack
 npm-debug.log
-.idea
-lib/
+.ide
