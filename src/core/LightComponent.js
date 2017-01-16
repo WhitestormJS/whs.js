@@ -43,7 +43,7 @@ class LightComponent extends Component {
       camera: {
         near: true,
         far: 400,
-        fov: 60,
+        fov: 90,
 
         top: 200,
         bottom: -200,
@@ -92,8 +92,10 @@ class LightComponent extends Component {
   wrap() {
     return new Promise(resolve => {
       this.defer(() => {
-        this.position.set(this.params.position.x, this.params.position.y, this.params.position.z);
-        this.rotation.set(this.params.rotation.x, this.params.rotation.y, this.params.rotation.z);
+        const {position, rotation} = this.params;
+
+        this.position.set(position.x, position.y, position.z);
+        this.rotation.set(rotation.x, rotation.y, rotation.z);
 
         resolve(this);
       });
@@ -110,15 +112,16 @@ class LightComponent extends Component {
     native.shadow.radius = shadow.radius;
 
     const shadowCamera = native.shadow.camera;
+    const camera = shadow.camera;
 
-    shadowCamera.near = shadow.near;
-    shadowCamera.far = shadow.far;
-    shadowCamera.fov = shadow.fov;
+    shadowCamera.near = camera.near;
+    shadowCamera.far = camera.far;
+    shadowCamera.fov = camera.fov;
 
-    shadowCamera.left = shadow.left;
-    shadowCamera.right = shadow.right;
-    shadowCamera.top = shadow.top;
-    shadowCamera.bottom = shadow.bottom;
+    shadowCamera.left = camera.left;
+    shadowCamera.right = camera.right;
+    shadowCamera.top = camera.top;
+    shadowCamera.bottom = camera.bottom;
   }
 
   copy(source) {
