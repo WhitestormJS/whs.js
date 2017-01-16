@@ -1,6 +1,7 @@
-export const getTemplateData = ({devPhysics} = {devPhysics: false}) => ({
+export const getTemplateData = ({devPhysics = false, devMode = false} = {devPhysics: false, devMode: false}) => ({
   scriptname: 'script.js',
   assets: '\'../../_assets\'',
+  devMode,
 
   physicsModule: devPhysics ?
     `http://localhost:${devPhysics}/physics-module.js`

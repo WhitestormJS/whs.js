@@ -13,7 +13,7 @@ gulp.task('examples:build', (callback) => {
   const paths = getPaths();
   const templateData = getTemplateData();
 
-  templateData.filename = 'bundle.js';
+  templateData.scriptname = 'bundle.js';
   templateData.paths = paths[0];
   templateData.categories = paths[1];
 

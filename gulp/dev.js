@@ -12,7 +12,7 @@ import {getTemplateData, examples} from './config';
 gulp.task('dev', () => {
   const app = express();
   const compiler = new FrameworkCompilerInstance();
-  const templateData = getTemplateData({devPhysics: argv.devPhysics});
+  const templateData = getTemplateData({devPhysics: argv.devPhysics, devMode: true});
   const exampleCompiler = new ExampleCompilerInstance({
     path: {
       ammojs: templateData.ammojs,
@@ -28,9 +28,9 @@ gulp.task('dev', () => {
   }));
 
   const paths = getPaths();
+
   templateData.paths = paths[0];
   templateData.categories = paths[1];
-  templateData.devMode = true;
 
   paths[0].forEach(p => {
     app.use(new WebpackDevMiddleware(
