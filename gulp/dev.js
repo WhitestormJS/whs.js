@@ -43,7 +43,7 @@ gulp.task('dev', () => {
     ));
   });
 
-  app.use('/assets', express.static(path.resolve(__dirname, `${examples}/_assets`)));
+  app.use('/assets', express.static(path.resolve(__dirname, `${examples}/assets`)));
 
   app.get('/vendor/physics-module.js', (req, res) => {
     res.sendFile(path.resolve(__dirname, './vendor/physics-module.js'));
