@@ -71,9 +71,14 @@ class MeshComponent extends Component {
   wrap() {
     return new Promise(resolve => {
       this.defer(() => {
-        this.position.set(this.params.position.x, this.params.position.y, this.params.position.z);
-        this.rotation.set(this.params.rotation.x, this.params.rotation.y, this.params.rotation.z);
-        this.scale.set(this.params.scale.x, this.params.scale.y, this.params.scale.z);
+        const {position, rotation, scale, shadow} = this.params;
+
+        this.position.set(position.x, position.y, position.z);
+        this.rotation.set(rotation.x, rotation.y, rotation.z);
+        this.scale.set(scale.x, scale.y, scale.z);
+
+        this.native.castShadow = shadow.cast;
+        this.native.receiveShadow = shadow.receive;
 
         this.applyBridge({onWrap: null});
 

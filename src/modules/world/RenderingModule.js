@@ -1,5 +1,4 @@
 import {
-  PCFSoftShadowMap,
   WebGLRenderer,
   Vector2
 } from 'three';
@@ -7,7 +6,13 @@ import {
 import {Loop} from '../../core/Loop';
 
 export class RenderingModule {
-  constructor(params = {}) {
+  static additional = {
+    shadow(renderer) {
+      renderer.shadowMap.enabled = true;
+    }
+  }
+
+  constructor(params = {}, {shadow: isShadow} = {shadow: false}) {
     this.params = Object.assign({
       width: window.innerWidth,
       height: window.innerHeight,
@@ -21,6 +26,9 @@ export class RenderingModule {
     }, params);
 
     this.renderer = new WebGLRenderer(this.params.renderer);
+    this.applyAdditional('shadow', isShadow);
+
+    console.log(this.renderer);
 
     this.renderer.setClearColor(
       this.params.bgColor,
@@ -31,6 +39,11 @@ export class RenderingModule {
       Number(this.params.width * this.params.resolution.x).toFixed(),
       Number(this.params.height * this.params.resolution.y).toFixed()
     );
+  }
+
+  applyAdditional(name, isApplied = false) {
+    if (!isApplied) return;
+    RenderingModule.additional[name].apply(this, [this.renderer]);
   }
 
   integrateRenderer(element, scene, camera) {
