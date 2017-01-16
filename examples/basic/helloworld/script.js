@@ -15,6 +15,8 @@ const world = new WHS.App([
         type: THREE.PCFSoftShadowMap
       }
     }
+  }, {
+    shadow: true
   }),
   new PHYSICS.WorldModule({
     ammo: process.ammoPath
