@@ -1,26 +1,9 @@
 import * as UTILS from '../../globals';
 
 const world = new WHS.App([
-  new WHS.modules.ElementModule(),
-  new WHS.modules.SceneModule(),
-  new PHYSICS.WorldModule({
-    ammo: process.ammoPath
-  }),
-  new WHS.modules.CameraModule({
+  ...UTILS.appModules({
     position: new THREE.Vector3(0, 40, 250)
-  }),
-  new WHS.modules.RenderingModule({
-    bgColor: 0x162129,
-
-    renderer: {
-      antialias: true,
-      shadowmap: {
-        type: THREE.PCFSoftShadowMap
-      }
-    }
-  }),
-  new WHS.OrbitControlsModule(),
-  new WHS.modules.AutoresizeModule()
+  })
 ]);
 
 const teapot = new WHS.Model({

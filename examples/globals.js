@@ -23,6 +23,34 @@ export const $world = {
   }
 };
 
+export const appModules = ( // appModules(camera, rendering);
+  camera = {
+    position: new THREE.Vector3(0, 10, 50)
+  },
+  rendering = {
+    bgColor: 0x162129,
+
+    renderer: {
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
+      }
+    }
+  }
+) => ([
+  new WHS.modules.ElementModule(),
+  new WHS.modules.SceneModule(),
+  new WHS.modules.CameraModule(camera),
+  new WHS.modules.RenderingModule(rendering, {
+    shadow: true
+  }),
+  new PHYSICS.WorldModule({
+    ammo: process.ammoPath
+  }),
+  new WHS.OrbitControlsModule(),
+  new WHS.modules.AutoresizeModule()
+]);
+
 export const $colors = {
   bg: 0x162129,
   plane: 0x447F8B,

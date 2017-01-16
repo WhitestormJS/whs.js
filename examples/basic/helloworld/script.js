@@ -1,28 +1,7 @@
 import * as UTILS from '../../globals';
 
 const world = new WHS.App([
-  new WHS.modules.ElementModule(),
-  new WHS.modules.SceneModule(),
-  new WHS.modules.CameraModule({
-    position: new THREE.Vector3(0, 10, 50)
-  }),
-  new WHS.modules.RenderingModule({
-    bgColor: 0x162129,
-
-    renderer: {
-      antialias: true,
-      shadowmap: {
-        type: THREE.PCFSoftShadowMap
-      }
-    }
-  }, {
-    shadow: true
-  }),
-  new PHYSICS.WorldModule({
-    ammo: process.ammoPath
-  }),
-  new WHS.OrbitControlsModule(),
-  new WHS.modules.AutoresizeModule()
+  ...UTILS.appModules()
 ]);
 
 // world.module(new WHS.modules.CameraModule({
