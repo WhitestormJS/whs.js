@@ -1,40 +1,59 @@
 import * as UTILS from '../../globals';
 
-window.world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world,
+const world = new WHS.App([
+  new WHS.modules.ElementModule({
+    container: document.getElementById('embed')
+  }),
+  new WHS.modules.SceneModule(),
+  new WHS.modules.CameraModule({
+    position: new THREE.Vector3(0, 10, 50)
+  }),
+  new WHS.modules.RenderingModule({
+    bgColor: 0x162129,
 
-  physics: {
+    renderer: {
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
+      }
+    },
+
+    height: 300,
+    width: 600
+  }),
+  new PHYSICS.WorldModule({
     ammo: process.ammoPath
-  },
+  }),
+  new WHS.OrbitControlsModule(),
+  new WHS.modules.AutoresizeModule({
+    scope: 'container',
+    delay: 50
+  })
+]);
 
-  autoresize: { delay: 50 },
-
-  height: 300,
-  width: 600,
-
-  container: document.getElementById('embed')
-});
-
-const sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sphere comonent.
+const sphere = new WHS.Sphere({ // Create sphere component.
   geometry: {
     radius: 3,
     widthSegments: 32,
     heightSegments: 32
   },
 
-  mass: 10, // Mass of physics object.
+  modules: [
+    new PHYSICS.SphereModule({
+      mass: 10
+    })
+  ],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'lambert'
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: [0, 100, 0]
 });
 
 sphere.addTo(world);
 
-const mouse = new WHS.VirtualMouse(world);
+const mouse = new WHS.VirtualMouse(world.manager);
 mouse.track(sphere);
 
 sphere.on('mouseover', () => {
@@ -59,4 +78,3 @@ UTILS.addPlane(world);
 UTILS.addBasicLights(world);
 
 world.start(); // Start animations and physics simulation.
-world.setControls(new WHS.OrbitControls());
