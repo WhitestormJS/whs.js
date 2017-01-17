@@ -1,5 +1,7 @@
 .DS_Store
 node_modules
+examples/**/**/index.html
+examples/**/**/bundle.js
 .happypack
 npm-debug.log
 .ide
