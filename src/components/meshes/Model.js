@@ -1,11 +1,10 @@
 import {
   Mesh,
   MultiMaterial,
-  FaceColors
+  JSONLoader
 } from 'three';
 
 import {MeshComponent} from '../../core/MeshComponent';
-import {JSONLoader} from '../../utils/index';
 
 class Model extends MeshComponent {
   static defaults = {
@@ -13,7 +12,7 @@ class Model extends MeshComponent {
     geometry: {
       path: '',
       physics: '',
-      loader: JSONLoader
+      loader: new JSONLoader()
     },
 
     physics: {

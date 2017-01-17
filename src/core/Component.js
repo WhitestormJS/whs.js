@@ -1,9 +1,8 @@
-import {Object3D} from 'three';
 import Events from 'minivents';
-import {ModuleManager} from './ModuleManager';
-import {ManagerError} from './errors';
 
 import {extend, transformData} from '../utils/index';
+import {ModuleManager} from './ModuleManager';
+import {ManagerError} from './errors';
 
 export const getWorld = (element) => {
   let world = element;
@@ -32,7 +31,6 @@ class Component extends Events {
 
     this.modules = this.params.modules || [];
     const modules = this.modules;
-    const modulesSharedScope = {};
 
     for (let i = 0, max = modules.length; i < max; i++) {
       const module = modules[i];
@@ -44,11 +42,13 @@ class Component extends Events {
         if (this.manager) this.manager.setActiveModule(module);
 
         if (module.manager && this.manager) module.manager(this.manager);
-        else if (module.manager) throw new ManagerError(
-          'Component',
-          `Module requires ModuleManager that is turned off for this component`,
-          this, module
-        );
+        else if (module.manager) {
+          throw new ManagerError(
+            'Component',
+            `Module requires ModuleManager that is turned off for this component`,
+            this, module
+          );
+        }
 
         if (module.integrate) module.integrate.bind(this)(module.params, module);
       }
@@ -57,7 +57,8 @@ class Component extends Events {
 
   get manager() {
     if (this._manager) return this._manager;
-    else throw new ManagerError(
+
+    throw new ManagerError(
       'Component',
       `ModuleManager is not used in this component. 'manager' parameter should be set as 'true'`,
       this
@@ -104,11 +105,13 @@ class Component extends Events {
     const modules = this.modules;
 
     for (let i = 0, max = modules.length; i < max; i++) {
-      for (let key in bridgeMap) {
-        const module = modules[i];
+      for (const key in bridgeMap) {
+        if (bridgeMap[key]) {
+          const module = modules[i];
 
-        if (module.bridge && module.bridge[key])
-          bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
+          if (module.bridge && module.bridge[key])
+            bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
+        }
       }
     }
 

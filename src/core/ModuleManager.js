@@ -17,12 +17,11 @@ export class ModuleManager {
   }
 
   onDependencyUpdate(depsMap = {}) {
-    for (let key in depsMap) {
-      if (!this.updateMap[key]) {
-        this.updateMap[key] = [depsMap[key]];
-      } else {
+    for (const key in depsMap) {
+      if (this.updateMap[key])
         this.updateMap[key].push(depsMap[key]);
-      }
+      else
+        this.updateMap[key] = [depsMap[key]];
     }
   }
 

@@ -79,11 +79,13 @@ class App {
     const modules = this.modules;
 
     for (let i = 0, max = modules.length; i < max; i++) {
-      for (let key in bridgeMap) {
-        const module = modules[i];
+      for (const key in bridgeMap) {
+        if (bridgeMap[key]) {
+          const module = modules[i];
 
-        if (module.bridge && module.bridge[key])
-          bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
+          if (module.bridge && module.bridge[key])
+            bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
+        }
       }
     }
 
