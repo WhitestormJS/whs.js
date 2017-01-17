@@ -14,10 +14,6 @@ class Extrude extends MeshComponent {
     geometry: {
       shapes: [],
       options: {}
-    },
-
-    physics: {
-      create: false
     }
   };
 
@@ -36,7 +32,7 @@ class Extrude extends MeshComponent {
   }
 
   build(params = this.params) {
-    let {geometry, material} = this.applyBridge({
+    const {geometry, material} = this.applyBridge({
       geometry: this.buildGeometry(params),
       material: params.material
     });
