@@ -1,6 +1,6 @@
 import fs from 'fs';
-import {argv} from 'yargs';
 import path from 'path';
+import {argv} from 'yargs';
 
 // ENVIRONMENT  SETUP
 export const isProduction = argv.prod ? true : process.env.NODE_ENV === 'production';
@@ -20,8 +20,8 @@ const consoleColors = {
   blue: '\x1b[34m',
   magenta: '\x1b[35m',
   cyan: '\x1b[36m',
-  white: '\x1b[37m',
-}
+  white: '\x1b[37m'
+};
 
 export const log = (color, msg) => console.log(consoleColors[color], msg, consoleColors.reset);
 
@@ -30,12 +30,13 @@ export const getPaths = () => {
   const paths = [];
   const excludeFolders = ['assets'];
 
-  const handleFolders = (folder, callback) => {
+  const handleFolders = (folder, callback) =>
     fs.readdirSync(folder).filter(file => {
-      if (excludeFolders.includes(file)) return;
+      if (excludeFolders.includes(file)) return false;
       if (fs.statSync(path.join(folder, file)).isDirectory()) callback(file);
+
+      return true;
     });
-  }
 
   handleFolders('./examples/', category => {
     categories.push(category);
@@ -49,10 +50,10 @@ export const getPaths = () => {
 };
 
 // ERRORS
-export const makeBuildErrorHandler = (taskName) => {
+export const makeBuildErrorHandler = () => {
   return function ({name, message, codeFrame}) {
     log('magenta', `${name} ${message}${codeFrame ? `\n${codeFrame}` : ''}`);
 
     this.emit('end');
   };
-}
+};

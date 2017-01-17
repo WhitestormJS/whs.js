@@ -1,7 +1,7 @@
-import gulp from 'gulp';
-import del from 'del';
 import path from 'path';
 import fs from 'fs';
+import gulp from 'gulp';
+import del from 'del';
 import pug from 'pug';
 
 import {ExampleCompilerInstance} from './compilers';
