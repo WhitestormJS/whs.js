@@ -32,7 +32,7 @@ const sphere = new WHS.Sphere({ // Create sphere component.
 
   modules: [
     new PHYSICS.SphereModule({
-      mass: 10,
+      mass: 10
     })
   ],
 
