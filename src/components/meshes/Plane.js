@@ -14,10 +14,6 @@ class Plane extends MeshComponent {
       height: 10,
       widthSegments: 1,
       heightSegments: 1
-    },
-
-    physics: {
-      create: false
     }
   };
 
@@ -36,7 +32,7 @@ class Plane extends MeshComponent {
   }
 
   build(params = this.params) {
-    let {geometry, material} = this.applyBridge({
+    const {geometry, material} = this.applyBridge({
       geometry: this.buildGeometry(params),
       material: params.material
     });
