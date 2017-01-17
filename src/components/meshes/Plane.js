@@ -4,8 +4,6 @@ import {
   PlaneGeometry
 } from 'three';
 
-
-
 import {MeshComponent} from '../../core/MeshComponent';
 
 class Plane extends MeshComponent {

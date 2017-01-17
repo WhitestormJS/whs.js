@@ -1,14 +1,16 @@
 import {
   RepeatWrapping,
   NearestFilter,
-  LinearMipMapLinearFilter
+  LinearMipMapLinearFilter,
+  TextureLoader
 } from 'three';
 
-import {TextureLoader} from './loaders';
 import {extend} from './extend';
 
+const loader = new TextureLoader();
+
 export const texture = (url, repeat = {}) => {
-  const texture = TextureLoader.load(url);
+  const texture = loader.load(url);
 
   if (repeat) {
     const opt = extend(repeat, {

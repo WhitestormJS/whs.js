@@ -55,7 +55,7 @@ export class RenderingModule {
     return this.renderLoop;
   }
 
-  renderModule(scene, camera, delta) {
+  renderModule(scene, camera) {
     this.renderer.render(scene, camera);
   }
 

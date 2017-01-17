@@ -1,4 +1,3 @@
-import {Vector3, Euler} from 'three';
 import {Component} from './Component';
 
 import {NativeArguments} from './prototype/NativeArguments';
@@ -6,8 +5,8 @@ import {CompositionError} from './errors';
 
 @NativeArguments(
   // Three.js Instances.
-  ['position',   {copy: true}],
-  ['rotation',   {copy: true}],
+  ['position', {copy: true}],
+  ['rotation', {copy: true}],
   ['quaternion', {copy: true}],
   ['target', {copy: true}]
 )
@@ -33,14 +32,19 @@ class CameraComponent extends Component {
     if (this.params.build) {
       const build = this.build(this.params);
 
-      if (!build) throw new CompositionError(
-        'CameraComponent',
-        '.build() method should return a THREE.Object3D or a Promise resolved with THREE.Object3D.',
-        this
-      );
+      if (!build) {
+        throw new CompositionError(
+          'CameraComponent',
+          '.build() method should return a THREE.Object3D or a Promise resolved with THREE.Object3D.',
+          this
+        );
+      }
 
-      if (build instanceof Promise) build.then((native) => {this.native = native});
-      else this.native = build;
+      if (build instanceof Promise) {
+        build.then((native) => {
+          this.native = native;
+        });
+      } else this.native = build;
 
       this.wrap();
     }

@@ -12,8 +12,5 @@ export * from './modules/world/index';
 // DEPRECATION
 export * from './deprecation';
 
-if (typeof window !== 'undefined') {
-  window.THREE = THREE;
-} else if (typeof global !== 'undefined') {
-  global.THREE = THREE;
-}
+if (typeof window !== 'undefined') window.THREE = THREE;
+else if (typeof global !== 'undefined') global.THREE = THREE;

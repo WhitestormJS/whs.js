@@ -1,7 +1,5 @@
 import {
-  Scene,
-  // Fog,
-  // FogExp2
+  Scene
 } from 'three';
 
 export class SceneModule {

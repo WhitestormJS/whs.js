@@ -1,5 +1,5 @@
-import { ThreeOrbitControls } from './lib/ThreeOrbitControls';
-import { Vector3 } from 'three';
+import {Vector3} from 'three';
+import {ThreeOrbitControls} from './lib/ThreeOrbitControls';
 
 export class OrbitControlsModule {
   constructor(params = {}) {
@@ -19,7 +19,7 @@ export class OrbitControlsModule {
       camera: (camera) => {
         this.controls.object = camera.native;
       }
-    })
+    });
   }
 
   integrate(params, self) {

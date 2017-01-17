@@ -11,9 +11,7 @@ export class AutoresizeModule {
     this.camera.native.aspect = width / height;
     this.camera.native.updateProjectionMatrix();
 
-    if (this.rendering) {
-      this.rendering.setSize(width, height);
-    }
+    if (this.rendering) this.rendering.setSize(width, height);
   }
 
   addAutoresize() {
@@ -29,17 +27,14 @@ export class AutoresizeModule {
     };
 
     if (this.params.autoresize === 'window') window.addEventListener('resize', resizeCallback);
-    else {
-      if (this.params.autoresize.delay) {
-        let resize = true;
+    else if (this.params.autoresize.delay) {
+      let resize = true;
 
-        addResizeListener(container, () => {
-          window.clearTimeout(resize);
-          resize = window.setTimeout(resizeCallback, params.autoresize.delay);
-        });
-      }
-      else addResizeListener(container, resizeCallback);
-    }
+      addResizeListener(container, () => {
+        window.clearTimeout(resize);
+        resize = window.setTimeout(resizeCallback, params.autoresize.delay);
+      });
+    } else addResizeListener(container, resizeCallback);
   }
 
   manager(manager) {
