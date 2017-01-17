@@ -1,18 +1,19 @@
+import path from 'path';
+import webpack from 'webpack';
+
+import {config} from '../webpack.config.babel.js';
 import {isProduction} from './utils';
 import {framework} from './config';
-import {config} from '../webpack.config.babel.js';
-import webpack from 'webpack';
-import path from 'path';
 
 // COMPILERS
 export const FrameworkCompilerInstance = (options = {framework}) =>
   name => ({
-    'main': webpack(config({
+    main: webpack(config({
       isProduction,
       src: options.framework.src,
       dest: options.framework.dest
     })),
-    'compact': webpack(config({
+    compact: webpack(config({
       isProduction,
       src: options.framework.src,
       dest: options.framework.dest,
