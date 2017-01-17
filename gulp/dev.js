@@ -1,8 +1,8 @@
+import path from 'path';
 import gulp from 'gulp';
 import express from 'express';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import {argv} from 'yargs';
-import path from 'path';
 
 import {FrameworkCompilerInstance, ExampleCompilerInstance} from './compilers';
 import {getPaths} from './utils';
