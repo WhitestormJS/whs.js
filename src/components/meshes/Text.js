@@ -4,10 +4,8 @@ import {
   TextGeometry
 } from 'three';
 
-
-
 import {MeshComponent} from '../../core/MeshComponent';
-import {loadMaterial, FontLoader} from '../../utils/index';
+// import {loadMaterial, FontLoader} from '../../utils/index';
 
 class Text extends MeshComponent {
   static defaults = {

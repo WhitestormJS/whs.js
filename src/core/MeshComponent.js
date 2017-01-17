@@ -1,4 +1,3 @@
-import {Vector3, Euler} from 'three';
 import {Component} from './Component';
 
 import {NativeArguments} from './prototype/NativeArguments';
@@ -6,10 +5,10 @@ import {CompositionError} from './errors';
 
 @NativeArguments(
   // Three.js Instances.
-  ['position',   {copy: true}],
-  ['rotation',   {copy: true}],
+  ['position', {copy: true}],
+  ['rotation', {copy: true}],
   ['quaternion', {copy: true}],
-  ['scale',      {copy: true}],
+  ['scale', {copy: true}],
 
   // Get properties.
   'material',
@@ -53,8 +52,11 @@ class MeshComponent extends Component {
         );
       }
 
-      if (build instanceof Promise) build.then((native) => {this.native = native});
-      else this.native = build;
+      if (build instanceof Promise) {
+        build.then(native => {
+          this.native = native;
+        });
+      } else this.native = build;
 
       this.wrap();
     }
@@ -112,24 +114,10 @@ class MeshComponent extends Component {
           resolve(object);
         };
 
-        if (addPromise instanceof Promise) {
-          addPromise.then(resolver);
-        } else resolver();
+        if (addPromise instanceof Promise) addPromise.then(resolver);
+        else resolver();
       });
     });
-  }
-
-  m_(params = {}) {
-    if (this.params.material && this.params.material.kind !== params.kind) {
-      this.native.material = loadMaterial(
-        this.updateParams({material: params}).material
-      );
-    } else {
-      this.updateParams({material: params});
-
-      for (const key in params)
-        this.native.material[key] = params[key];
-    }
   }
 
   copy(source) {

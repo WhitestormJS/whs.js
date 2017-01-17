@@ -9,7 +9,7 @@ export class CompositionError extends Error {
 
     console.error('Component:', component);
 
-    this.name = "CompositionError";
+    this.name = 'CompositionError';
     this.message = `@${classInstance}: ${message}`;
   }
 }
@@ -26,7 +26,7 @@ export class DependencyError extends Error {
     console.error('Active module:', activeModule);
     if (dependencyModule) console.error('Dependency published by module:', dependencyModule);
 
-    this.name = "DependencyError";
+    this.name = 'DependencyError';
     this.message = `@${classInstance}: ${message}`;
   }
 }
@@ -43,7 +43,7 @@ export class ManagerError extends Error {
     console.error('Component:', dependencyModule);
     if (activeModule) console.error('Active module:', activeModule);
 
-    this.name = "DependencyError";
+    this.name = 'DependencyError';
     this.message = `@${classInstance}: ${message}`;
   }
 }

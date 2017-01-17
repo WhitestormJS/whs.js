@@ -6,8 +6,6 @@ import {
   TubeGeometry
 } from 'three';
 
-
-
 import {MeshComponent} from '../../core/MeshComponent';
 import {loadMaterial} from '../../utils/index';
 

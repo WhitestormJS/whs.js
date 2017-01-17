@@ -18,7 +18,7 @@ function FirstPersonControlsSolver(camera, mesh, params) {
   const player = mesh,
     pitchObject = new Object3D();
 
-    pitchObject.add(camera.native);
+  pitchObject.add(camera.native);
 
   const yawObject = new Object3D();
 
@@ -199,13 +199,10 @@ export class FirstPersonControls {
       const pointerlockchange = () => {
         if (document.pointerLockElement === element
           || document.mozPointerLockElement === element
-          || document.webkitPointerLockElement === element) {
+          || document.webkitPointerLockElement === element)
           this.controls.enabled = true;
-          // this.params.block.style.display = 'none';
-        } else {
+        else
           this.controls.enabled = false;
-          // this.params.block.style.display = 'block';
-        }
       };
 
       document.addEventListener('pointerlockchange', pointerlockchange, false);
@@ -231,7 +228,7 @@ export class FirstPersonControls {
           || element.webkitRequestFullscreen;
 
         if (/Firefox/i.test(navigator.userAgent)) {
-          const fullcreenchange = () => {
+          const fullscreenchange = () => {
             if (document.fullscreenElement === element
               || document.mozFullscreenElement === element
               || document.mozFullScreenElement === element) {
@@ -261,4 +258,3 @@ export class FirstPersonControls {
     self.updateLoop = new WHS.Loop(updateProcessor).start(this);
   }
 }
-

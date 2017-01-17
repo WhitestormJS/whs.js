@@ -1,4 +1,4 @@
-import { PerspectiveCamera } from '../../components/cameras/PerspectiveCamera';
+import {PerspectiveCamera} from '../../components/cameras/PerspectiveCamera';
 
 export class CameraModule {
   constructor(params) {
