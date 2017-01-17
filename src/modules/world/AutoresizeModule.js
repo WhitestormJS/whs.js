@@ -3,7 +3,7 @@ import {addResizeListener} from 'detect-element-resize';
 export class AutoresizeModule {
   constructor(params) {
     this.params = Object.assign({
-      autoresize: 'window'
+      scope: 'window' // ... 'container'.
     }, params);
   }
 
@@ -26,15 +26,18 @@ export class AutoresizeModule {
       );
     };
 
-    if (this.params.autoresize === 'window') window.addEventListener('resize', resizeCallback);
-    else if (this.params.autoresize.delay) {
+    if (this.params.scope === 'window') window.addEventListener('resize', resizeCallback);
+    else if (this.params.delay && this.params.scope === 'container') {
+      // FIXME: Not the best way to do this.
       let resize = true;
+
+      console.log(4);
 
       addResizeListener(container, () => {
         window.clearTimeout(resize);
-        resize = window.setTimeout(resizeCallback, params.autoresize.delay);
+        resize = window.setTimeout(resizeCallback, this.params.delay);
       });
-    } else addResizeListener(container, resizeCallback);
+    } else if (this.params.scope === 'container') addResizeListener(container, resizeCallback);
   }
 
   manager(manager) {
