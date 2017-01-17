@@ -14,10 +14,6 @@ class Icosahedron extends MeshComponent {
     geometry: {
       radius: 1,
       detail: 0
-    },
-
-    physics: {
-      create: false
     }
   };
 
@@ -36,7 +32,7 @@ class Icosahedron extends MeshComponent {
   }
 
   build(params = this.params) {
-    let {geometry, material} = this.applyBridge({
+    const {geometry, material} = this.applyBridge({
       geometry: this.buildGeometry(params),
       material: params.material
     });

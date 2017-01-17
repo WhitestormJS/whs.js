@@ -41,7 +41,7 @@
 //
 //   build(params = this.params) {
 //     return new Promise((resolve) => {
-//       let {geometry, material} = this.applyBridge({
+//       const {geometry, material} = this.applyBridge({
 //         geometry: this.buildGeometry(params),
 //         material: loadMaterial(params.material)
 //       });

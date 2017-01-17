@@ -13,10 +13,6 @@ class Model extends MeshComponent {
       path: '',
       physics: '',
       loader: new JSONLoader()
-    },
-
-    physics: {
-      create: false
     }
   };
 
@@ -36,7 +32,7 @@ class Model extends MeshComponent {
           ? params.material
           : new MultiMaterial(materials);
 
-        let {geometry, material} = this.applyBridge({
+        const {geometry, material} = this.applyBridge({
           geometry: geom,
           material: mat
         });

@@ -13,10 +13,6 @@ class Sphere extends MeshComponent {
       radius: 1,
       widthSegments: 8,
       heightSegments: 6
-    },
-
-    physics: {
-      create: false
     }
   };
 
@@ -30,7 +26,7 @@ class Sphere extends MeshComponent {
   }
 
   build(params = this.params) {
-    let {geometry, material} = this.applyBridge({
+    const {geometry, material} = this.applyBridge({
       geometry: this.buildGeometry(params),
       material: params.material
     });

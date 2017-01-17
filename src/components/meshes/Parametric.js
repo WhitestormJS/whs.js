@@ -16,10 +16,6 @@ class Parametric extends MeshComponent {
       func: (u, v) => new THREE.Vector3(u, v, 0),
       slices: 10,
       stacks: 10
-    },
-
-    physics: {
-      create: false
     }
   }
 
@@ -33,7 +29,7 @@ class Parametric extends MeshComponent {
   }
 
   build(params = this.params) {
-    let {geometry, material} = this.applyBridge({
+    const {geometry, material} = this.applyBridge({
       geometry: this.buildGeometry(params),
       material: params.material
     });
