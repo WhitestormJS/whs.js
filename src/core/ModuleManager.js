@@ -1,8 +1,8 @@
 import {DependencyError} from './errors';
 
 export class ModuleManager {
-  constructor(app) {
-    this.app = app;
+  constructor(object) {
+    this.handler = object;
     this.currentModule = null;
     this.store = {};
     this.updateMap = {};
@@ -32,14 +32,12 @@ export class ModuleManager {
         `Dependency '${key}' is immutable and already used by another module`,
         this.currentModule, this.store[key][1]
       );
-
-      return;
     }
 
     this.store[key] = [object, this.currentModule, config];
 
     if (config.alias) {
-      Object.defineProperty(this.app, config.alias, {
+      Object.defineProperty(this.handler, config.alias, {
         get: () => {
           return this.store[key][0];
         },
@@ -50,16 +48,13 @@ export class ModuleManager {
               `Dependency '${key}' is immutable and already used by another module`,
               this.currentModule, this.store[key][1]
             );
-
-            return;
           }
 
           this.store[key][0] = value;
 
           if (this.updateMap[key]) {
-            for (let i = 0, max = this.updateMap[key].length; i < max; i++) {
+            for (let i = 0, max = this.updateMap[key].length; i < max; i++)
               this.updateMap[key][i](value);
-            }
           }
         },
         enumerable: true,
@@ -68,9 +63,8 @@ export class ModuleManager {
     }
 
     if (this.updateMap[key]) {
-      for (let i = 0, max = this.updateMap[key].length; i < max; i++) {
+      for (let i = 0, max = this.updateMap[key].length; i < max; i++)
         this.updateMap[key][i](object);
-      }
     }
   }
 
@@ -85,11 +79,13 @@ export class ModuleManager {
         `Module requires '${key}' dependency`,
         this.currentModule
       );
-
-      return;
     }
 
     return getModule ? this.store[key][1] : this.store[key][0];
+  }
+
+  set(key, value) {
+    this.addDependency(key, value, this.store[key][2] || {});
   }
 
   has(key) {
