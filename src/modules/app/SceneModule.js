@@ -3,8 +3,8 @@ import {
 } from 'three';
 
 export class SceneModule {
-  constructor() {
-    this.scene = new Scene();
+  constructor(willSceneBeReplaced = false) {
+    this.scene = willSceneBeReplaced ? null : new Scene();
   }
 
   manager(manager) {
@@ -18,7 +18,7 @@ export class SceneModule {
       object.parent = this;
 
       return new Promise((resolve, reject) => {
-        const _add = () => {
+        object.defer(() => {
           const {native} = object;
           if (!native) reject();
 
@@ -31,14 +31,16 @@ export class SceneModule {
             resolve(object);
           };
 
-          if (addPromise instanceof Promise) {
+          if (addPromise instanceof Promise)
             addPromise.then(resolver);
-          } else resolver();
-        };
-
-        if (object._wait.length > 0) Promise.all(object._wait).then(_add);
-        else _add();
+          else resolver();
+        });
       });
-    }
+    };
+
+    this.setScene = function (scene) {
+      self.scene = scene;
+      this.manager.set('scene', scene);
+    };
   }
 }
