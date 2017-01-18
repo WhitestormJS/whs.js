@@ -1,26 +1,9 @@
 import * as UTILS from '../../globals';
 
 const world = new WHS.App([
-  new WHS.app.ElementModule(),
-  new WHS.app.SceneModule(),
-  new WHS.app.CameraModule({
+  ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 50)
-  }),
-  new WHS.app.RenderingModule({
-    bgColor: 0x162129,
-
-    renderer: {
-      antialias: true,
-      shadowmap: {
-        type: THREE.PCFSoftShadowMap
-      }
-    }
-  }),
-  new PHYSICS.WorldModule({
-    ammo: process.ammoPath
-  }),
-  new WHS.OrbitControlsModule(),
-  new WHS.app.AutoresizeModule()
+  })
 ]);
 
 const stick = new WHS.Box({
@@ -40,11 +23,6 @@ const stick = new WHS.Box({
       state: 4
     })
   ],
-
-  shadow: {
-    cast: false,
-    receive: false
-  },
 
   position: {
     y: 0.5
@@ -121,8 +99,8 @@ const sphere = new WHS.Sphere({
 });
 
 sphere.addTo(world).then((sphere) => {
-  const mx = 60,
-    mz = 20;
+  const mx = 120,
+    mz = 40;
 
   sphere.setAngularVelocity({x: mx, y: 0, z: mz});
   sphere.setLinearVelocity({x: mx, y: 0, z: mz});
