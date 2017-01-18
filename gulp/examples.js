@@ -38,11 +38,11 @@ gulp.task('examples:build', (callback) => {
 
     wait.push(
       new Promise(resolve => {
-        exampleCompiler(p, false).run((error, stats) => {
+        exampleCompiler(p, false).run(() => {
           resolve();
         });
       })
-    )
+    );
   });
 
   Promise.all(wait).then(() => callback());
