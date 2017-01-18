@@ -47,7 +47,7 @@ class App {
     (process.bind(this))();
   }
 
-  module(module) {
+  applyModule(module) {
     if (typeof module === 'function')
       module.bind(this.modulesSharedScope)().integrate.bind(this)(module.params, module);
     else {
@@ -58,6 +58,11 @@ class App {
       if (module.integrate) module.integrate.bind(this)(module.params, module);
     }
 
+    return module;
+  }
+
+  module(module) {
+    this.applyModule(module);
     return this;
   }
 
