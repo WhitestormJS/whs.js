@@ -1,21 +1,9 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.World({
-  ...UTILS.$world,
-
-  physics: {
-    ammo: process.ammoPath
-  },
-
-  camera: {
-    far: 10000,
-    position: [0, 2, 12]
-  },
-
-  modules: {
-    scene: false
-  }
-});
+const world = new WHS.App([
+  new WHS.app.ElementModule(),
+  new WHS.app.SceneModule(true)
+]);
 
 const scene = new THREE.Scene();
 const material = new THREE.MeshPhongMaterial({color: UTILS.$colors.mesh});
@@ -23,7 +11,7 @@ const materialNested = material.clone();
 materialNested.color.set(0x0000ff);
 const materialWHS = material.clone();
 materialWHS.color.set(0xffffff);
-materialWHS.map = new WHS.texture('{{ assets }}/textures/earth.jpg');
+materialWHS.map = new WHS.texture(`${process.assetsPath}/textures/earth.jpg`);
 
 const mesh1 = new THREE.Mesh(
   new THREE.SphereGeometry(1, 32, 32),
@@ -53,33 +41,35 @@ mesh3.position.set(0, 0, 1);
 // Nested object.
 mesh2.add(mesh3);
 
-world.importScene(scene, true);
-world.make$camera();
-world.make$rendering();
-world.make$helpers();
+world.setScene(scene);
 
-const sphere = new WHS.Element(
-  new THREE.Mesh(
-    new THREE.SphereGeometry(1, 32, 32),
-    materialWHS
-  ),
-  [WHS.MeshComponent]
-);
+world
+  .module(new WHS.app.CameraModule({
+    position: new THREE.Vector3(0, 2, 12)
+  }))
+  .module(new WHS.app.RenderingModule({
+    bgColor: 0x162129,
+
+    renderer: {
+      antialias: true
+    }
+  }))
+  .module(new WHS.app.AutoresizeModule())
+  .module(new WHS.OrbitControlsModule());
+
+const sphere = new WHS.Sphere({
+  geometry: [1, 32, 32],
+  material: materialWHS
+});
 
 sphere.addTo(world);
 sphere.position.y = 2;
 
-const light = new WHS.Element(
-  new THREE.PointLight(),
-  [WHS.LightComponent]
-);
-
-light.wrap();
+const light = new WHS.PointLight();
 
 light.addTo(world);
 
 UTILS.addPlane(world);
 UTILS.addBasicLights(world);
 
-world.setControls(new WHS.OrbitControls());
 world.start();
