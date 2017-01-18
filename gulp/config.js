@@ -5,11 +5,11 @@ export const getTemplateData = ({devPhysics = false, devMode = false} = {devPhys
 
   physicsModule: devPhysics
     ? `http://localhost:${devPhysics}/physics-module.js`
-    : '../../../assets/physics-module.js',
+    : '../../assets/physics-module.js',
 
   ammojs: devPhysics
     ? `\'http://localhost:${devPhysics}/vendor/ammo.js\'`
-    : '`${window.location.href}../../../assets/ammo.js`'
+    : '`${window.location.href}../../assets/ammo.js`'
 });
 
 export const framework = {
