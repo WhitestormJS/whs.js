@@ -5,7 +5,7 @@ import {RenderingModule} from './RenderingModule';
 import {SceneModule} from './SceneModule';
 import {AutoresizeModule} from './AutoresizeModule';
 
-export const modules = {
+export const app = {
   ElementModule,
   CameraModule,
   HelpersModule,

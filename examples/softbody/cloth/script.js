@@ -1,13 +1,13 @@
 import * as UTILS from '../../globals';
 
 const world = new WHS.App([
-  new WHS.modules.ElementModule(),
-  new WHS.modules.SceneModule(),
-  new WHS.modules.CameraModule({
+  new WHS.app.ElementModule(),
+  new WHS.app.SceneModule(),
+  new WHS.app.CameraModule({
     position: new THREE.Vector3(0, 60, 120),
     far: 10000
   }),
-  new WHS.modules.RenderingModule({
+  new WHS.app.RenderingModule({
     bgColor: 0x162129,
 
     renderer: {
@@ -23,7 +23,7 @@ const world = new WHS.App([
     softbody: true,
   }),
   new WHS.OrbitControlsModule(),
-  new WHS.modules.AutoresizeModule()
+  new WHS.app.AutoresizeModule()
 ]);
 
 const cloth = new WHS.Plane({ // Softbody (blue).

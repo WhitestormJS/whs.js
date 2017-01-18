@@ -13,14 +13,14 @@ const colors = {
 };
 
 const world = new WHS.App([
-  new WHS.modules.ElementModule(),
-  new WHS.modules.SceneModule(),
-  new WHS.modules.CameraModule({
+  new WHS.app.ElementModule(),
+  new WHS.app.SceneModule(),
+  new WHS.app.CameraModule({
     position: new THREE.Vector3(0, 100, 400),
     far: 2000,
     near: 1
   }),
-  new WHS.modules.RenderingModule({
+  new WHS.app.RenderingModule({
     bgColor: 0x2a3340,
 
     renderer: {
@@ -31,7 +31,7 @@ const world = new WHS.App([
     }
   }),
   new WHS.OrbitControlsModule(),
-  new WHS.modules.AutoresizeModule()
+  new WHS.app.AutoresizeModule()
 ]);
 
 const space = new WHS.Group();

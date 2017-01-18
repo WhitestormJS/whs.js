@@ -193,18 +193,18 @@ var UTILS = _interopRequireWildcard(_globals);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new PHYSICS.WorldModule({
+var world = new WHS.App([new WHS.app.ElementModule(), new WHS.app.SceneModule(), new PHYSICS.WorldModule({
   ammo: `${window.location.href}../../../vendor/ammo.js`,
   gravity: {
     x: 0,
     y: -10,
     z: 0
   }
-}), new WHS.modules.CameraModule({
+}), new WHS.app.CameraModule({
   position: new THREE.Vector3(-8, 5, 20),
   fov: 45,
   far: 2000
-}), new WHS.modules.RenderingModule({
+}), new WHS.app.RenderingModule({
   bgColor: 0xffffff,
 
   renderer: {
@@ -213,7 +213,7 @@ var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneM
       type: THREE.PCFSoftShadowMap
     }
   }
-}), new WHS.modules.AutoresizeModule()]);
+}), new WHS.app.AutoresizeModule()]);
 
 // world.$camera.lookAt(new THREE.Vector3(0, 0, 0));
 

@@ -38,17 +38,17 @@ export const appModules = ( // appModules(camera, rendering);
     }
   }
 ) => ([
-  new WHS.modules.ElementModule(),
-  new WHS.modules.SceneModule(),
-  new WHS.modules.CameraModule(camera),
-  new WHS.modules.RenderingModule(rendering, {
+  new WHS.app.ElementModule(),
+  new WHS.app.SceneModule(),
+  new WHS.app.CameraModule(camera),
+  new WHS.app.RenderingModule(rendering, {
     shadow: true
   }),
   new PHYSICS.WorldModule({
     ammo: process.ammoPath
   }),
   new WHS.OrbitControlsModule(),
-  new WHS.modules.AutoresizeModule()
+  new WHS.app.AutoresizeModule()
 ]);
 
 export const $colors = {
