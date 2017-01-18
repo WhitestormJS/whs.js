@@ -45,10 +45,6 @@ gulp.task('dev', () => {
 
   app.use('/assets', express.static(path.resolve(__dirname, `${examples}/assets`)));
 
-  app.get('/vendor/physics-module.js', (req, res) => {
-    res.sendFile(path.resolve(__dirname, './vendor/physics-module.js'));
-  });
-
   app.set('views', path.resolve(__dirname, `./${examples}`));
   app.set('view engine', 'pug');
   app.set('view cache', false);
