@@ -92,11 +92,11 @@ var colors = {
   yellow: 0xfaff70
 };
 
-var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.CameraModule({
+var world = new WHS.App([new WHS.app.ElementModule(), new WHS.app.SceneModule(), new WHS.app.CameraModule({
   position: new THREE.Vector3(0, 100, 400),
   far: 2000,
   near: 1
-}), new WHS.modules.RenderingModule({
+}), new WHS.app.RenderingModule({
   bgColor: 0x2a3340,
 
   renderer: {
@@ -105,7 +105,7 @@ var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneM
       type: THREE.PCFSoftShadowMap
     }
   }
-}), new WHS.OrbitControlsModule(), new WHS.modules.AutoresizeModule()]);
+}), new WHS.OrbitControlsModule(), new WHS.app.AutoresizeModule()]);
 
 var space = new WHS.Group();
 space.addTo(world);

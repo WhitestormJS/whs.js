@@ -4,7 +4,7 @@ const world = new WHS.App([
   ...UTILS.appModules()
 ]);
 
-// world.module(new WHS.modules.CameraModule({
+// world.module(new WHS.app.CameraModule({
 //   position: new THREE.Vector3(0, 100, 50)
 // }));
 

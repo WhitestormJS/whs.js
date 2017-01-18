@@ -1,8 +1,8 @@
 import * as UTILS from '../../globals';
 
 const world = new WHS.App([
-  new WHS.modules.ElementModule(),
-  new WHS.modules.SceneModule(),
+  new WHS.app.ElementModule(),
+  new WHS.app.SceneModule(),
   new PHYSICS.WorldModule({
     ammo: process.ammoPath,
     gravity: {
@@ -11,12 +11,12 @@ const world = new WHS.App([
       z: 0
     },
   }),
-  new WHS.modules.CameraModule({
+  new WHS.app.CameraModule({
     position: new THREE.Vector3(-8, 5, 20),
     fov: 45,
     far: 2000
   }),
-  new WHS.modules.RenderingModule({
+  new WHS.app.RenderingModule({
     bgColor: 0xffffff,
 
     renderer: {
@@ -26,7 +26,7 @@ const world = new WHS.App([
       }
     }
   }),
-  new WHS.modules.AutoresizeModule()
+  new WHS.app.AutoresizeModule()
 ]);
 
 

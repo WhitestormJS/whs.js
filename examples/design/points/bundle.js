@@ -81,12 +81,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.CameraModule({
+var world = new WHS.App([new WHS.app.ElementModule(), new WHS.app.SceneModule(), new WHS.app.CameraModule({
   position: new THREE.Vector3(-8, 5, 20),
   far: 2000,
   near: 1,
   fov: 45
-}), new WHS.modules.RenderingModule({
+}), new WHS.app.RenderingModule({
   bgColor: 0xffffff,
 
   renderer: {
@@ -95,7 +95,7 @@ var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneM
       type: THREE.PCFSoftShadowMap
     }
   }
-}), new WHS.OrbitControlsModule({ target: new THREE.Vector3(50, 50, 50) }), new WHS.modules.AutoresizeModule()]);
+}), new WHS.OrbitControlsModule({ target: new THREE.Vector3(50, 50, 50) }), new WHS.app.AutoresizeModule()]);
 
 var data = new Float32Array(3993000);
 var colors = new Float32Array(3993000);
