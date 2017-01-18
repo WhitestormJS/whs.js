@@ -3,3 +3,7 @@ node_modules
 .happypack
 npm-debug.log
 .ide
+examples/index.html
+examples/layout.html
+examples/**/**/index.html
+examples/**/**/bundle.js
