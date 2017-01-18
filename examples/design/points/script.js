@@ -1,13 +1,13 @@
 const world = new WHS.App([
-  new WHS.modules.ElementModule(),
-  new WHS.modules.SceneModule(),
-  new WHS.modules.CameraModule({
+  new WHS.app.ElementModule(),
+  new WHS.app.SceneModule(),
+  new WHS.app.CameraModule({
     position: new THREE.Vector3(-8, 5, 20),
     far: 2000,
     near: 1,
     fov: 45
   }),
-  new WHS.modules.RenderingModule({
+  new WHS.app.RenderingModule({
     bgColor: 0xffffff,
 
     renderer: {
@@ -18,7 +18,7 @@ const world = new WHS.App([
     }
   }),
   new WHS.OrbitControlsModule({target: new THREE.Vector3(50, 50, 50)}),
-  new WHS.modules.AutoresizeModule()
+  new WHS.app.AutoresizeModule()
 ]);
 
 const data = new Float32Array(3993000);

@@ -212,9 +212,9 @@ var sphere = new WHS.Sphere({ // Create sphere comonent.
   position: new THREE.Vector3(0, 100, 0)
 });
 
-var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneModule(), new WHS.modules.CameraModule({
+var world = new WHS.App([new WHS.app.ElementModule(), new WHS.app.SceneModule(), new WHS.app.CameraModule({
   position: new THREE.Vector3(0, 10, 50)
-}), new WHS.modules.RenderingModule({
+}), new WHS.app.RenderingModule({
   bgColor: 0x162129,
 
   renderer: {
@@ -230,7 +230,7 @@ var world = new WHS.App([new WHS.modules.ElementModule(), new WHS.modules.SceneM
   ypos: 0
 }),
 // new WHS.OrbitControlsModule(),
-new WHS.modules.AutoresizeModule()]);
+new WHS.app.AutoresizeModule()]);
 
 sphere.addTo(world);
 
