@@ -1,5 +1,7 @@
 import * as UTILS from '../../globals';
 
+console.log(WHS.modules);
+
 const world = new WHS.App([
   ...UTILS.appModules()
 ]);
