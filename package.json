@@ -134,7 +134,8 @@
         }
       ],
       "babel/arrow-parens": 0,
-      "xo/filename-case": 0
+      "xo/filename-case": 0,
+      "no-warning-comments": 0
     }
   }
 }

@@ -5,6 +5,7 @@ import { Renderer } from '../Renderer';
 import { EffectComposer } from './EffectComposer.js';
 import { RenderPass } from './pass/RenderPass.js';
 
+// TODO: Fix PostProcessor.
 class PostProcessor extends Renderer {
   static defaults = {
     autoresize: true,
