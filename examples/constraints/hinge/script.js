@@ -1,62 +1,57 @@
 import * as UTILS from '../../globals';
 
-const world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world,
-
-  physics: {
-    ammo: process.ammoPath
-  },
-
-  camera: {
-    far: 10000,
-    position: [0, 40, 70]
-  }
-});
+const world = new WHS.App([
+  ...UTILS.appModules({
+    position: new THREE.Vector3(0, 40, 70)
+  })
+]);
 
 const halfMat = {
-  kind: 'phong',
   transparent: true,
   opacity: 0.5
 };
 
-const PhysicsBox = PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX);
-
-const box = new PhysicsBox({
+const box = new WHS.Box({
   geometry: {
     width: 30,
     height: 2,
     depth: 2
   },
 
-  mass: 0,
+  modules: [
+    new PHYSICS.BoxModule({
+      mass: 0
+    })
+  ],
 
-  material: {
+  material: new THREE.MeshPhongMaterial({
     color: UTILS.$colors.mesh,
     ...halfMat
-  },
+  }),
 
   position: {
     y: 40
   }
 });
 
-const box2 = new PhysicsBox({
+const box2 = new WHS.Box({
   geometry: {
     width: 30,
     height: 1,
     depth: 20
   },
 
-  mass: 10,
+  modules: [
+    new PHYSICS.BoxModule({
+      mass: 10,
+      damping: 0.1
+    })
+  ],
 
-  material: {
+  material: new THREE.MeshPhongMaterial({
     color: UTILS.$colors.softbody,
     ...halfMat
-  },
-
-  physics: {
-    damping: 0.1
-  },
+  }),
 
   position: {
     y: 38,
@@ -64,23 +59,33 @@ const box2 = new PhysicsBox({
   }
 });
 
-const pointer = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({material: {color: 0x00ff00}});
+const pointer = new WHS.Sphere({
+  modules: [
+    new PHYSICS.SphereModule()
+  ],
+
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  })
+});
+
+console.log(pointer);
+
 pointer.position.set(0, 60, -8);
 pointer.addTo(world);
 
 box.addTo(world);
-box2.addTo(world);
+box2.addTo(world).then(() => {
+  const constraint = new PHYSICS.HingeConstraint(box2, box,
+    new THREE.Vector3(0, 38, 1),
+    new THREE.Vector3(1, 0, 0)
+  );
 
-const constraint = new PHYSICS.HingeConstraint(box2.native, box.native,
-  new THREE.Vector3(0, 38, 1),
-  new THREE.Vector3(1, 0, 0)
-)
-
-world.addConstraint(constraint);
-constraint.enableAngularMotor(10, 20);
+  world.addConstraint(constraint);
+  constraint.enableAngularMotor(10, 20);
+});
 
 UTILS.addPlane(world, 250);
 UTILS.addBasicLights(world);
 
-world.setControls(new WHS.OrbitControls());
 world.start();
