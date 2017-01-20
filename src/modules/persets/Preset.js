@@ -1,4 +1,4 @@
-export class Perset {
+export class Preset {
   static Array(...modules) {
     const array = [];
 
