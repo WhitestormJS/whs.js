@@ -8,6 +8,7 @@ export * from './components/rendering/index';
 export * from './extras/index';
 export * from './utils/index';
 export * from './modules/app/index';
+export * from './modules/persets/index';
 
 // DEPRECATION
 export * from './deprecation';

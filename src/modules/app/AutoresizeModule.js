@@ -1,7 +1,7 @@
 import {addResizeListener} from 'detect-element-resize';
 
 export class AutoresizeModule {
-  constructor(params) {
+  constructor(params = {}) {
     this.params = Object.assign({
       scope: 'window' // ... 'container'.
     }, params);
