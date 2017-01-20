@@ -1,27 +1,8 @@
 import * as UTILS from '../../globals';
 
-console.log(WHS.modules);
-
 const world = new WHS.App([
   ...UTILS.appModules()
 ]);
-
-// world.module(new WHS.app.CameraModule({
-//   position: new THREE.Vector3(0, 100, 50)
-// }));
-
-
-// world.$camera = new WHS.PerspectiveCamera({
-//   camera: {
-//     near: 1,
-//     far: 1000,
-//     fov: 45,
-//     aspect: window.innerWidth / window.innerHeight
-//   },
-//
-//   position: [200, 200, 200]
-// });
-
 
 const sphere = new WHS.Sphere({ // Create sphere comonent.
   geometry: {
