@@ -1,11 +1,8 @@
 import {
   Mesh,
   ParametricBufferGeometry,
-  ParametricGeometry,
-  ParametricGeometries
+  ParametricGeometry
 } from 'three';
-
-
 
 import {MeshComponent} from '../../core/MeshComponent';
 

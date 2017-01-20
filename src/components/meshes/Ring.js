@@ -1,11 +1,10 @@
-  import {
+import {
   Mesh,
   RingGeometry,
   RingBufferGeometry
 } from 'three';
 
 import {MeshComponent} from '../../core/MeshComponent';
-import {loadMaterial} from '../../utils/index';
 
 class Ring extends MeshComponent {
   static defaults = {
@@ -41,25 +40,13 @@ class Ring extends MeshComponent {
     }
   }
 
-  build(params = {}) {
-    const material = loadMaterial(params.material);
-
-    return new Promise((resolve) => {
-      this.native = new Mesh(
-        new RingGeometry(
-          params.geometry.innerRadius,
-          params.geometry.outerRadius,
-          params.geometry.thetaSegments,
-          params.geometry.phiSegments,
-          params.geometry.thetaStart,
-          params.geometry.thetaLength
-        ),
-
-        material
-      );
-
-      resolve();
+  build(params = this.params) {
+    const {geometry, material} = this.applyBridge({
+      geometry: this.buildGeometry(params),
+      material: params.material
     });
+
+    return this.applyBridge({mesh: new Mesh(geometry, material)}).mesh;
   }
 
   buildGeometry(params = {}) {

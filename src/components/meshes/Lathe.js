@@ -4,8 +4,6 @@ import {
   LatheGeometry
 } from 'three';
 
-
-
 import {MeshComponent} from '../../core/MeshComponent';
 
 class Lathe extends MeshComponent {

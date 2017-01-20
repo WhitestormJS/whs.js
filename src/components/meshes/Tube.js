@@ -18,10 +18,6 @@ class Tube extends MeshComponent {
       radius: 2,
       radiusSegments: 8,
       closed: false
-    },
-
-    physics: {
-      create: false
     }
   };
 
@@ -45,19 +41,14 @@ class Tube extends MeshComponent {
     }
   }
 
+
   build(params = this.params) {
-    const material = loadMaterial(params.material);
-
-    return new Promise((resolve) => {
-      this.native = this.isPhysics ?
-        params.physics.create.bind(this)(params, material)
-        : new Mesh(
-          this.buildGeometry(params),
-          material
-        );
-
-      resolve();
+    const {geometry, material} = this.applyBridge({
+      geometry: this.buildGeometry(params),
+      material: params.material
     });
+
+    return this.applyBridge({mesh: new Mesh(geometry, material)}).mesh;
   }
 
   buildGeometry(params = {}) {

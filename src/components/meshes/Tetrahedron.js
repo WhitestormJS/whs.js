@@ -4,10 +4,7 @@ import {
   TetrahedronGeometry
 } from 'three';
 
-
-
 import {MeshComponent} from '../../core/MeshComponent';
-import {loadMaterial} from '../../utils/index';
 
 class Tetrahedron extends MeshComponent {
   static defaults = {
