@@ -1,7 +1,7 @@
 import {PerspectiveCamera} from '../../components/cameras/PerspectiveCamera';
 
 export class CameraModule {
-  constructor(params) {
+  constructor(params = {}) {
     this.params = Object.assign({
       fov: 75,
       near: 1,
