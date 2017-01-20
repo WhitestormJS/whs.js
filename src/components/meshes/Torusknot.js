@@ -19,10 +19,6 @@ class Torusknot extends MeshComponent {
       tubularSegments: 8,
       p: 2,
       q: 3
-    },
-
-    physics: {
-      create: false
     }
   };
 
@@ -48,18 +44,12 @@ class Torusknot extends MeshComponent {
   }
 
   build(params = this.params) {
-    const material = loadMaterial(params.material);
-
-    return new Promise((resolve) => {
-      this.native = this.isPhysics ?
-        params.physics.create.bind(this)(params, material)
-        : new Mesh(
-          this.buildGeometry(params),
-          material
-        );
-
-      resolve();
+    const {geometry, material} = this.applyBridge({
+      geometry: this.buildGeometry(params),
+      material: params.material
     });
+
+    return this.applyBridge({mesh: new Mesh(geometry, material)}).mesh;
   }
 
   buildGeometry(params = {}) {

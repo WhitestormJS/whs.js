@@ -4,8 +4,6 @@ import {
   IcosahedronGeometry
 } from 'three';
 
-
-
 import {MeshComponent} from '../../core/MeshComponent';
 
 class Icosahedron extends MeshComponent {
