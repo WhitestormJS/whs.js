@@ -1,4 +1,4 @@
-import {Preset} from '../Perset';
+import {Preset} from '../Preset';
 
 import {ElementModule} from '../../app/ElementModule';
 import {SceneModule} from '../../app/SceneModule';
