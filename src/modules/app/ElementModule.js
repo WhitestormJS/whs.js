@@ -1,5 +1,5 @@
 export class ElementModule {
-  constructor(params) {
+  constructor(params = {}) {
     this.params = Object.assign({
       container: document.body
     }, params);
