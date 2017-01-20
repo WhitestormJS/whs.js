@@ -4,8 +4,6 @@ import {
   DodecahedronGeometry
 } from 'three';
 
-
-
 import {MeshComponent} from '../../core/MeshComponent';
 
 class Dodecahedron extends MeshComponent {

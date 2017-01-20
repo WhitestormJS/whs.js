@@ -1,17 +1,18 @@
 import {
   Font,
   Mesh,
-  TextGeometry
+  TextGeometry,
+  FontLoader
 } from 'three';
 
 import {MeshComponent} from '../../core/MeshComponent';
-// import {loadMaterial, FontLoader} from '../../utils/index';
 
 class Text extends MeshComponent {
   static defaults = {
     ...MeshComponent.defaults,
     geometry: {
       text: 'Hello World!',
+      loader: new FontLoader(),
 
       parameters: {
         size: 12,
@@ -22,10 +23,6 @@ class Text extends MeshComponent {
         bevelThickness: 10,
         bevelSize: 8
       }
-    },
-
-    physics: {
-      create: false
     }
   };
 
@@ -44,25 +41,23 @@ class Text extends MeshComponent {
   }
 
   build(params = {}) {
-    const material = loadMaterial(params.material);
-
     const promise = new Promise((resolve) => {
       FontLoader.load(params.geometry.parameters.font, font => {
         params.geometry.parameters.font = font;
 
-        const geometry = new TextGeometry(
-          params.geometry.text,
-          params.geometry.parameters
-        );
+        const {geometry, material} = this.applyBridge({
+          geometry: new TextGeometry(
+            params.geometry.text,
+            params.geometry.parameters
+          ),
+          material: params.material
+        });
 
-        this.native = this.isPhysics ? params.physics.create.bind(this)(this.params, material, geometry)
-        : new Mesh(
-          geometry,
-          material,
-          this.params
+        resolve(
+          this.applyBridge({
+            mesh: new Mesh(geometry, material)
+          }).mesh
         );
-
-        resolve();
       });
     });
 

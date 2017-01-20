@@ -4,8 +4,6 @@ import {
   ExtrudeGeometry
 } from 'three';
 
-
-
 import {MeshComponent} from '../../core/MeshComponent';
 
 class Extrude extends MeshComponent {

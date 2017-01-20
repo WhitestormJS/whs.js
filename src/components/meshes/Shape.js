@@ -22,7 +22,6 @@ class Shape extends MeshComponent {
   constructor(params = {}) {
     super(params, Shape.defaults, Shape.instructions);
 
-
     if (params.build) {
       this.build(params);
       super.wrap();

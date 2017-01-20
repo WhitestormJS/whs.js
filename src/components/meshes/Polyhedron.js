@@ -4,8 +4,6 @@ import {
   PolyhedronGeometry
 } from 'three';
 
-
-
 import {MeshComponent} from '../../core/MeshComponent';
 
 const [verticesOfCube, indicesOfFaces] = [
@@ -30,8 +28,8 @@ class Polyhedron extends MeshComponent {
   static defaults = {
     ...MeshComponent.defaults,
     geometry: {
-      verticesOfCube: verticesOfCube,
-      indicesOfFaces: indicesOfFaces,
+      verticesOfCube,
+      indicesOfFaces,
       radius: 6,
       detail: 2
     },

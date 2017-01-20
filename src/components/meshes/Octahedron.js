@@ -4,8 +4,6 @@ import {
   OctahedronGeometry
 } from 'three';
 
-
-
 import {MeshComponent} from '../../core/MeshComponent';
 
 class Octahedron extends MeshComponent {
