@@ -39,12 +39,12 @@ export const appModules = ( // appModules(camera, rendering);
   }
 ) => (
   new WHS.BasicAppPreset({camera, rendering})
-    .extend(
+    .extend([
       new PHYSICS.WorldModule({
         ammo: process.ammoPath
       }),
       new WHS.OrbitControlsModule()
-    )
+    ])
     .autoresize()
     .get()
 );
