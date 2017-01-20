@@ -49,14 +49,10 @@ export class RenderingModule {
   integrateRenderer(element, scene, camera) {
     this.scene = scene;
     this.camera = camera;
-    this.renderLoop = new Loop((clock) => this.renderModule(this.scene, this.camera, clock.getDelta()));
+    this.renderLoop = new Loop(() => this.renderer.render(this.scene, this.camera));
     this.attachToCanvas(element);
 
     return this.renderLoop;
-  }
-
-  renderModule(scene, camera) {
-    this.renderer.render(scene, camera);
   }
 
   setSize(width, height) {

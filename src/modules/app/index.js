@@ -4,6 +4,7 @@ import {HelpersModule} from './HelpersModule';
 import {RenderingModule} from './RenderingModule';
 import {SceneModule} from './SceneModule';
 import {AutoresizeModule} from './AutoresizeModule';
+import {PostProcessorModule} from './PostProcessorModule';
 
 export const app = {
   ElementModule,
@@ -11,5 +12,6 @@ export const app = {
   HelpersModule,
   RenderingModule,
   SceneModule,
-  AutoresizeModule
+  AutoresizeModule,
+  PostProcessorModule
 };
