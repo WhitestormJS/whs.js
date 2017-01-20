@@ -1,46 +1,62 @@
 import * as UTILS from '../../globals';
 
-// -----------------------------------------------------------------------------
-// Configuration
-// -----------------------------------------------------------------------------
-const conf = {
-  world: {
-    ...UTILS.$world,
+const postprocessor = new WHS.app.PostProcessorModule();
 
-    physics: {
-      ammo: process.ammoPath
-    },
-
+window.world = new WHS.App(
+  new WHS.BasicAppPreset({
     camera: {
-      far: 10000,
-      position: [0, 10, 30]
+      position: new THREE.Vector3(0, 10, 50)
     },
 
-    modules: {
-      rendering: false
+    rendering: {
+      bgColor: 0x162129,
+
+      renderer: {
+        antialias: true,
+        shadowmap: {
+          type: THREE.PCFSoftShadowMap
+        }
+      }
     }
+  })
+    .extend([
+      new PHYSICS.WorldModule({
+        ammo: process.ammoPath
+      }),
+      postprocessor,
+      new WHS.OrbitControlsModule()
+    ])
+    .autoresize()
+    .get()
+);
+
+const sphere = new WHS.Sphere({ // Create sphere comonent.
+  geometry: {
+    radius: 5,
+    widthSegments: 32,
+    heightSegments: 32
   },
 
-  sphere: {
-    geometry: {
-      radius: 3,
-      widthSegments: 16,
-      heightSegments: 16
-    },
+  modules: [
+    new PHYSICS.SphereModule({
+      mass: 10,
+      restitution: 1
+    })
+  ],
 
-    mass: 10,
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
-    material: {
-      color: UTILS.$colors.mesh,
-      kind: 'phong'
-    },
+  position: new THREE.Vector3(0, 20, 0)
+});
 
-    position: {
-      y: 50
-    }
-  }
-};
+sphere.addTo(world);
 
+UTILS.addBoxPlane(world);
+UTILS.addBasicLights(world);
+
+world.start(); // Start animations and physics simulation.
 
 // -----------------------------------------------------------------------------
 // Glitch Pass
@@ -141,7 +157,6 @@ const DigitalGlitchShader = {
 
 class GlitchPass extends WHS.Pass {
   constructor(name, dt_size) {
-
     super(name);
 
     if (DigitalGlitchShader === undefined) console.error("THREE.GlitchPass relies on DigitalGlitchShader");
@@ -226,65 +241,9 @@ class GlitchPass extends WHS.Pass {
   }
 }
 
+postprocessor.createRenderPass(false);
 
-// -----------------------------------------------------------------------------
-// Game class
-// -----------------------------------------------------------------------------
-class Game {
-  constructor(options) {
-    this.options = options;
+const glitchPass = new GlitchPass('Glitch');
+glitchPass.renderToScreen = true;
 
-    this.world = new (PHYSICS.$world(WHS.World))(options.world);
-
-    UTILS.addPlane(this.world, 250);
-    UTILS.addBasicLights(this.world);
-
-    this.createPostProcessing();
-    this.createGeometry();
-    // this.world.setSize(window.innerWidth, window.innerHeight);
-  }
-
-  createPostProcessing() {
-    this.world.$rendering = new WHS.PostProcessor(this.world.params);
-    this.postProcessor = this.world.$rendering;
-
-    this.postProcessor.createRenderPass(false);
-    this.postProcessor.createPass(composer => {
-      const pass = new GlitchPass('Glitch');
-      pass.renderToScreen = true;
-      composer.addPass(pass);
-    });
-  }
-
-  createGeometry() {
-    this.sphere = new (PHYSICS.$rigidBody(WHS.Wphere, PHYSICS.SPHERE))(this.options.sphere);
-    this.sphere.addTo(this.world);
-  }
-
-  start() {
-    this.world.start();
-    this.world.setControls(new WHS.OrbitControls());
-  }
-}
-
-// -----------------------------------------------------------------------------
-// Application bootstrap
-// -----------------------------------------------------------------------------
-var app = null;
-
-function bootstrap() {
-  app.start()
-}
-
-function configure() {
-  return new Promise((resolve) => {
-    // some async config fetch could be done from here
-    // ...
-
-    // Create a Game instance with its conf
-    app = new Game(conf);
-    resolve(true);
-  });
-}
-
-configure().then(() => bootstrap());
+postprocessor.addPass(glitchPass);
