@@ -1,58 +1,51 @@
 import * as UTILS from '../../globals';
 
-const world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world,
+const world = new WHS.App([
+  ...UTILS.appModules()
+]);
 
-  physics: {
-    ammo: process.ammoPath
-  }
-});
-
-const PhysicsSphere = PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE);
-const PhysicsBox = PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX);
-
-const sphere = new PhysicsSphere({ // Create sphere comonent.
+const sphere = new WHS.Sphere({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,
     heightSegments: 32
   },
 
-  mass: 10, // Mass of physics object.
+  modules: [
+    new PHYSICS.SphereModule({
+      mass: 10,
+      group: 1,
+      mask: 2
+    })
+  ],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'lambert'
-  },
-
-  physics: {
-    group: 1,
-    mask: 2
-  },
+  material: new THREE.MeshLambertMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: [-20, 100, 0]
 });
 
 sphere.addTo(world);
 
-const sphere2 = new PhysicsSphere({ // Create sphere comonent.
+const sphere2 = new WHS.Sphere({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,
     heightSegments: 32
   },
 
-  mass: 10, // Mass of physics object.
+  modules: [
+    new PHYSICS.SphereModule({
+      mass: 10,
+      group: 1,
+      mask: 2
+    })
+  ],
 
-  material: {
-    color: 0xff0000,
-    kind: 'lambert'
-  },
-
-  physics: {
-    group: 1,
-    mask: 2
-  },
+  material: new THREE.MeshLambertMaterial({
+    color: 0xff0000
+  }),
 
   position: [20, 100, 0]
 });
@@ -60,19 +53,23 @@ const sphere2 = new PhysicsSphere({ // Create sphere comonent.
 sphere2.addTo(world);
 
 UTILS.addPlane(world).then(o => {
+  const boxModule = new PHYSICS.BoxModule({
+    mass: 0
+  });
+
   const planeParams = {
     geometry: [10, 1, 40],
     material: o.material,
-    mass: 0
+    modules: [boxModule]
   };
 
-  new PhysicsBox({
+  new WHS.Box({
     ...planeParams,
     rotation: [0, 0, -Math.PI / 4],
     position: [-20, 3, 0]
   }).addTo(world);
 
-  new PhysicsBox({
+  new WHS.Box({
     ...planeParams,
     rotation: [0, 0, Math.PI / 4],
     position: [20, 3, 0]
@@ -81,4 +78,3 @@ UTILS.addPlane(world).then(o => {
 UTILS.addBasicLights(world);
 
 world.start(); // Start animations and physics simulation.
-world.setControls(new WHS.OrbitControls());
