@@ -49,6 +49,7 @@ new WHS.Icosahedron({ // Softbody (blue).
   }
 }).addTo(world).then(obj => { obj.native.frustumCulled = false });
 
+// TODO: Make sphere position start from specific position. [Softbodies issue]
 new WHS.Sphere({ // Rigidbody (green).
   geometry: {
     radius: 1,

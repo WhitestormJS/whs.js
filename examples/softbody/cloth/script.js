@@ -20,12 +20,13 @@ const world = new WHS.App([
   new PHYSICS.WorldModule({
     ammo: process.ammoPath,
     gravity: new THREE.Vector3(0, -9.8, 0),
-    softbody: true,
+    softbody: true
   }),
   new WHS.OrbitControlsModule(),
   new WHS.app.AutoresizeModule()
 ]);
 
+// TODO: Make cloth position start from specific position. [Softbodies issue]
 const cloth = new WHS.Plane({ // Softbody (blue).
   geometry: {
     width: 60,
@@ -41,11 +42,7 @@ const cloth = new WHS.Plane({ // Softbody (blue).
       mass: 4,
       margin: 1,
       damping: 0.01,
-      piterations: 12,
-
-      // viterations: 12,
-      // diterations: 12,
-      // pressure: 1000
+      piterations: 12
     })
   ],
 
@@ -74,7 +71,7 @@ new WHS.Box({ // Rigidbody (green).
 
   modules: [
     new PHYSICS.BoxModule({
-      mass: 0,
+      mass: 0
     })
   ],
 
