@@ -26,7 +26,6 @@ const world = new WHS.App([
   new WHS.app.AutoresizeModule()
 ]);
 
-// TODO: Make cloth position start from specific position. [Softbodies issue]
 const cloth = new WHS.Plane({ // Softbody (blue).
   geometry: {
     width: 60,
