@@ -1,24 +1,30 @@
 import * as UTILS from '../../globals';
 
-const world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world,
+const world = new WHS.App([
+  new WHS.app.ElementModule(),
+  new WHS.app.SceneModule(),
+  new WHS.app.CameraModule({
+    position: new THREE.Vector3(0, 6, 18),
+    far: 10000
+  }),
+  new WHS.app.RenderingModule({
+    bgColor: 0x162129,
 
-  physics: {
-    ammo: process.ammoPath
-  },
-
-  softbody: true,
-
-  gravity: {
-    y: -9.8
-  },
-
-  camera: {
-    far: 10000,
-    near: 0.01,
-    position: [0, 6, 18]
-  }
-});
+    renderer: {
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
+      }
+    }
+  }),
+  new PHYSICS.WorldModule({
+    ammo: process.ammoPath,
+    gravity: new THREE.Vector3(0, -9.8, 0),
+    softbody: true
+  }),
+  new WHS.OrbitControlsModule(),
+  new WHS.app.AutoresizeModule()
+]);
 
 const sphere = new WHS.Icosahedron({ // Softbody.
   geometry: {
@@ -26,29 +32,27 @@ const sphere = new WHS.Icosahedron({ // Softbody.
     detail: 2
   },
 
-  mass: 2,
-  softbody: true,
-
-  physics: {
-    pressure: 100,
-    damping: 0.01,
-    friction: 0.3,
-
-    klst: 0.6,
-    kast: 0.6,
-    margin: 0.05
-  },
+  modules: [
+    new PHYSICS.SoftbodyModule({
+      mass: 2,
+      pressure: 100,
+      damping: 0.01,
+      friction: 0.3,
+      klst: 0.6,
+      kast: 0.6,
+      margin: 0.05
+    })
+  ],
 
   shadow: {
     cast: false,
     receive: false
   },
 
-  material: {
+  material: new THREE.MeshPhongMaterial({
     color: UTILS.$colors.softbody,
-    wireframe: true,
-    kind: 'phong'
-  },
+    wireframe: true
+  }),
 
   position: {
     y: 5
@@ -56,11 +60,10 @@ const sphere = new WHS.Icosahedron({ // Softbody.
 });
 
 sphere.native.frustumCulled = false;
-sphere.position.y = 5;
 
-UTILS.addBoxPlane(world, 250).then(() => sphere.addTo(world)).then(function () {
-  for (var i = 0; i < 30; i++) {
-    let newSphere = sphere.clone();
+UTILS.addBoxPlane(world, 250).then(() => sphere.addTo(world)).then(() => {
+  for (let i = 0; i < 30; i++) {
+    const newSphere = sphere.clone(true, false);
     newSphere.position.y = 5 + 4 * (i + 1);
     newSphere.native.frustumCulled = false;
     newSphere.addTo(world);
@@ -77,12 +80,6 @@ new WHS.DirectionalLight({
     x: 0,
     y: 10,
     z: 30
-  },
-
-  target: {
-    x: 0,
-    y: 0,
-    z: 0
   }
 }).addTo(world);
 
@@ -93,5 +90,4 @@ new WHS.AmbientLight({
   }
 }).addTo(world);
 
-world.setControls(new WHS.OrbitControls());
 world.start();
