@@ -62,10 +62,6 @@ class Extrude extends MeshComponent {
   get g_options() {
     return this._native.geometry.parameters.options;
   }
-
-  clone() {
-    return new Extrude({build: false}).copy(this);
-  }
 }
 
 export {

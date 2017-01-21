@@ -106,10 +106,6 @@ class Tube extends MeshComponent {
   get g_closed() {
     return this._native.geometry.parameters.closed;
   }
-
-  clone() {
-    return new Tube({build: false}).copy(this);
-  }
 }
 
 export {

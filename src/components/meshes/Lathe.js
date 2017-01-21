@@ -52,10 +52,6 @@ class Lathe extends MeshComponent {
   get g_points() {
     return this._native.geometry.parameters.points;
   }
-
-  clone() {
-    return new Lathe({build: false}).copy(this);
-  }
 }
 
 export {

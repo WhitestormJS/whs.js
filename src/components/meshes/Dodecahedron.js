@@ -62,10 +62,6 @@ class Dodecahedron extends MeshComponent {
   get g_detail() {
     return this._native.geometry.parameters.detail;
   }
-
-  clone() {
-    return new Dodecahedron({build: false}).copy(this);
-  }
 }
 
 export {

@@ -71,10 +71,6 @@ class Box extends MeshComponent {
   get g_depth() {
     return this._native.geometry.parameters.depth;
   }
-
-  // clone() {
-  //   return this.params.softbody ? new Box(this.params) : new Box({build: false}).copy(this);
-  // }
 }
 
 export {

@@ -66,10 +66,6 @@ class Tetrahedron extends MeshComponent {
   get g_detail() {
     return this._native.geometry.parameters.detail;
   }
-
-  clone() {
-    return new Tetrahedron({build: false}).copy(this);
-  }
 }
 
 export {
