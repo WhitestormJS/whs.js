@@ -78,10 +78,6 @@ class Plane extends MeshComponent {
   get g_segments() {
     return this._native.geometry.parameters.segments;
   }
-
-  clone() {
-    return new Plane({build: false}).copy(this);
-  }
 }
 
 export {

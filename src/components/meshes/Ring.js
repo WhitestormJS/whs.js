@@ -109,10 +109,6 @@ class Ring extends MeshComponent {
   get g_thetaLength() {
     return this._native.geometry.parameters.thetaLength;
   }
-
-  clone() {
-    return new Ring({build: false}).copy(this);
-  }
 }
 
 export {
