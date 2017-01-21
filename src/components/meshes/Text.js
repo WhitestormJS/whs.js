@@ -65,10 +65,6 @@ class Text extends MeshComponent {
 
     return promise;
   }
-
-  clone() {
-    return new Text({build: false}).copy(this);
-  }
 }
 
 export {

@@ -67,10 +67,6 @@ class Parametric extends MeshComponent {
   get g_stacks() {
     return this._native.geometry.parameters.stacks;
   }
-
-  clone() {
-    return new Parametric({build: false}).copy(this);
-  }
 }
 
 export {

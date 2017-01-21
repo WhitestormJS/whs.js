@@ -104,10 +104,6 @@ class Polyhedron extends MeshComponent {
   get g_detail() {
     return this._native.geometry.parameters.detail;
   }
-
-  clone() {
-    return new Polyhedron({build: false}).copy(this);
-  }
 }
 
 export {

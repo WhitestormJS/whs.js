@@ -101,10 +101,6 @@ class Torus extends MeshComponent {
   get g_arc() {
     return this._native.geometry.parameters.arc;
   }
-
-  clone() {
-    return new Torus({build: false}).copy(this);
-  }
 }
 
 export {

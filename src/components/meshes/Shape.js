@@ -52,10 +52,6 @@ class Shape extends MeshComponent {
   get g_shapes() {
     return this._native.geometry.parameters.shapes;
   }
-
-  clone() {
-    return new Shape({build: false}).copy(this);
-  }
 }
 
 export {

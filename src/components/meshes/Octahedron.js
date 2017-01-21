@@ -57,10 +57,6 @@ class Octahedron extends MeshComponent {
   get g_detail() {
     return this._native.geometry.parameters.detail;
   }
-
-  clone() {
-    return new Octahedron({build: false}).copy(this);
-  }
 }
 
 export {

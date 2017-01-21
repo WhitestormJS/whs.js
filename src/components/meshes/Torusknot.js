@@ -120,10 +120,6 @@ class Torusknot extends MeshComponent {
   get g_heightScale() {
     return this._native.geometry.parameters.heightScale;
   }
-
-  clone() {
-    return new Torusknot(this.params, this._type).copy(this);
-  }
 }
 
 export {

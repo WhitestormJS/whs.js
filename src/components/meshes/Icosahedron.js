@@ -62,10 +62,6 @@ class Icosahedron extends MeshComponent {
   get g_detail() {
     return this._native.geometry.parameters.detail;
   }
-
-  clone() {
-    return new Icosahedron({build: false}).copy(this);
-  }
 }
 
 export {

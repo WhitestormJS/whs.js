@@ -71,10 +71,6 @@ class Sphere extends MeshComponent {
   get g_heightSegments() {
     return this._native.geometry.parameters.widthSegments;
   }
-
-  clone() {
-    return this.params.softbody ? new Sphere(this.params) : new Sphere({build: false}).copy(this);
-  }
 }
 
 export {

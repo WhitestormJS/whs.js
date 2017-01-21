@@ -105,10 +105,6 @@ class Cylinder extends MeshComponent {
   get g_radiusSegments() {
     return this._native.geometry.parameters.radiusSegments;
   }
-
-  clone() {
-    return new Cylinder({build: false}).copy(this);
-  }
 }
 
 export {
