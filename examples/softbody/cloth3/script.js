@@ -1,25 +1,56 @@
 import * as UTILS from '../../globals';
 
-const world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world,
+const world = new WHS.App([
+  new WHS.app.ElementModule(),
+  new WHS.app.SceneModule(),
+  new WHS.app.CameraModule({
+    position: new THREE.Vector3(0, 60, 120),
+    far: 10000
+  }),
+  new WHS.app.RenderingModule({
+    bgColor: 0x162129,
 
-  physics: {
-    ammo: process.ammoPath
+    renderer: {
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
+      }
+    }
+  }),
+  new PHYSICS.WorldModule({
+    ammo: process.ammoPath,
+    gravity: new THREE.Vector3(0, -9.8, 0),
+    softbody: true
+  }),
+  new WHS.OrbitControlsModule(),
+  new WHS.app.AutoresizeModule()
+]);
+
+const cloth = new WHS.Tube({ // Softbody (blue).
+  geometry: {
+    path: new THREE.LineCurve3(new THREE.Vector3(0, 40, 0), new THREE.Vector3(0, 10, 0)),
+    segments: 20,
+    radius: 16,
+    radiusSegments: 16,
+    closed: false
   },
 
-  softbody: true,
+  modules: [
+    new PHYSICS.SoftbodyModule({
+      mass: 1,
+      margin: 3,
+      damping: 0.03,
+      piterations: 12,
+      viterations: 12,
+      pressure: 300
+    })
+  ],
 
-  gravity: {
-    y: -9.8,
-  },
-
-  camera: {
-    far: 10000,
-    position: [0, 30, 90]
-  }
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.softbody,
+    side: THREE.DoubleSide
+  })
 });
-
-const mouse = new WHS.VirtualMouse(world);
 
 const arm = new WHS.Box({ // Rigidbody (green).
   geometry: {
@@ -28,12 +59,15 @@ const arm = new WHS.Box({ // Rigidbody (green).
     depth: 6
   },
 
-  mass: 0,
+  modules: [
+    new PHYSICS.BoxModule({
+      mass: 0
+    })
+  ],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'phong'
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: {
     y: 50,
@@ -42,36 +76,12 @@ const arm = new WHS.Box({ // Rigidbody (green).
 });
 
 arm.addTo(world);
-
-const cloth = new WHS.Tube({ // Softbody (blue).
-  geometry: {
-    path: new THREE.LineCurve3(new THREE.Vector3(0, 30, 0), new THREE.Vector3(0, 10, 0)),
-    segments: 20,
-    radius: 12,
-    radiusSegments: 16,
-    closed: false
-  },
-
-  mass: 1,
-  softbody: true,
-
-  physics: {
-    margin: 1,
-    damping: 0.03,
-    piterations: 12
-  },
-
-  material: {
-    color: UTILS.$colors.softbody,
-    kind: 'phong',
-    side: THREE.DoubleSide
-  }
+cloth.addTo(world).then(() => {
+  cloth.appendAnchor(arm, 0, 1, false);
+  cloth.appendAnchor(arm, 40, 1, false);
 });
 
-cloth.addTo(world);
-
-cloth.appendAnchor(world, arm, 0, 1, false);
-cloth.appendAnchor(world, arm, 40, 1, false);
+const mouse = new WHS.VirtualMouse(world);
 
 new WHS.Box({ // Rigidbody (green).
   geometry: {
@@ -80,12 +90,15 @@ new WHS.Box({ // Rigidbody (green).
     depth: 10
   },
 
-  mass: 10,
+  modules: [
+    new PHYSICS.BoxModule({
+      mass: 10
+    })
+  ],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'phong'
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: {
     y: 18
@@ -97,7 +110,6 @@ new WHS.Box({ // Rigidbody (green).
 });
 
 UTILS.addBoxPlane(world, 250);
-UTILS.addBasicLights(world);
+UTILS.addBasicLights(world, 0.5, [60, 60, 20], 400);
 
-world.setControls(new WHS.OrbitControls());
 world.start();
