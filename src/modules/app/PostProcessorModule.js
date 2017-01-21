@@ -8,6 +8,7 @@ import {RenderPass} from '../../extras//pass/RenderPass.js';
 import {MaskPass, ClearMaskPass} from '../../extras/pass/MaskPass.js';
 import {Loop} from '../../core/Loop';
 
+// TODO: Rewrite deprecated API
 export class PostProcessorModule {
   renderTargetA = null;
   renderTargetB = null;
