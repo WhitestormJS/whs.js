@@ -18,7 +18,7 @@ export class VirtualMouse extends Events {
     super();
 
     world.mouse = this;
-    this.manager = world;
+    this.manager = world.manager;
 
     if (this.manager.get('renderer')) this.canvas = this.manager.get('renderer').domElement;
 
