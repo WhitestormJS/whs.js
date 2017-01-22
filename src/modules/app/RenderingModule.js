@@ -28,8 +28,6 @@ export class RenderingModule {
     this.renderer = new WebGLRenderer(this.params.renderer);
     this.applyAdditional('shadow', isShadow);
 
-    console.log(this.renderer);
-
     this.renderer.setClearColor(
       this.params.bgColor,
       this.params.bgOpacity
