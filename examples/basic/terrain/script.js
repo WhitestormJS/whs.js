@@ -1,17 +1,19 @@
 import * as UTILS from '../../globals';
 
 const world = new WHS.App([
-  ...UTILS.appModules()
+  ...UTILS.appModules({
+    position: new THREE.Vector3(0, 30, -100)
+  })
 ]);
 
 const func = (u, v) =>
-  new THREE.Vector3(u*300, 0, v*300);
+  new THREE.Vector3(u * 100, Math.sin(u * 10) * 4, v * 100);
 
 const terrain = new WHS.Parametric({
   geometry: {
     func,
-    slices: 300,
-    stacks: 300
+    slices: 20,
+    stacks: 20
   },
 
   material: new THREE.MeshPhongMaterial({
@@ -21,19 +23,18 @@ const terrain = new WHS.Parametric({
 
   modules: [
     new PHYSICS.HeightfieldModule({
-      mass: 0
+      mass: 0,
+      size: new THREE.Vector2(20, 20),
+      autoAlign: true
     })
-  ],
-
-  position: new THREE.Vector3(-150, 0, -150),
-  // rotation: new THREE.Euler(Math.PI, 0, 0)
+  ]
 });
 
 terrain.addTo(world);
 
 const sphere = new WHS.Sphere({
   geometry: {
-    radius: 5,
+    radius: 1,
     widthSegments: 32,
     heightSegments: 32
   },
@@ -49,7 +50,7 @@ const sphere = new WHS.Sphere({
     color: UTILS.$colors.mesh
   }),
 
-  position: new THREE.Vector3(0, 50, 0)
+  position: new THREE.Vector3(-31, 20, -31) // -30, 120, -40
 });
 
 sphere.addTo(world);
