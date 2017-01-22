@@ -1,5 +1,6 @@
 import {PerspectiveCamera as PerspectiveCameraNative} from 'three';
 import {CameraComponent} from '../../core/CameraComponent';
+import {system} from '../../polyfill';
 
 class PerspectiveCamera extends CameraComponent {
   static defaults = {
@@ -9,7 +10,7 @@ class PerspectiveCamera extends CameraComponent {
       near: 1,
       far: 1000,
       fov: 45,
-      aspect: window.innerWidth / window.innerHeight
+      aspect: system.window.innerWidth / system.window.innerHeight
     }
   };
 

@@ -1,5 +1,6 @@
 import {OrthographicCamera as OrthographicCameraNative} from 'three';
 import {CameraComponent} from '../../core/CameraComponent';
+import {system} from '../../polyfill';
 
 class OrthographicCamera extends CameraComponent {
   static defaults = {
@@ -8,10 +9,10 @@ class OrthographicCamera extends CameraComponent {
     camera: {
       near: 1,
       far: 1000,
-      left: window.innerWidth / -2,
-      right: window.innerWidth / 2,
-      top: window.innerHeight / 2,
-      bottom: window.innerHeight / -2
+      left: system.window.innerWidth / -2,
+      right: system.window.innerWidth / 2,
+      top: system.window.innerHeight / 2,
+      bottom: system.window.innerHeight / -2
     }
   };
 

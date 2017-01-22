@@ -1,3 +1,4 @@
+import {system} from '../polyfill';
 import {ModuleManager} from './ModuleManager';
 
 class App {
@@ -26,17 +27,17 @@ class App {
   }
 
   start() {
-    window.requestAnimFrame = (() => {
-      return window.requestAnimationFrame
-        || window.webkitRequestAnimationFrame
-        || window.mozRequestAnimationFrame
+    const requestAnimFrame = (() => {
+      return system.window.requestAnimationFrame
+        || system.window.webkitRequestAnimationFrame
+        || system.window.mozRequestAnimationFrame
         || function (callback) {
-          window.setTimeout(callback, 1000 / 60);
+          system.window.setTimeout(callback, 1000 / 60);
         };
     })();
 
     function process() {
-      window.requestAnimFrame(process.bind(this));
+      requestAnimFrame(process.bind(this));
 
       for (let i = 0; i < this.loops.length; i++) {
         const e = this.loops[i];
