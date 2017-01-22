@@ -1,49 +1,49 @@
 import * as UTILS from '../../globals';
 
-const world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world,
+const world = new WHS.App([
+  ...UTILS.appModules()
+]);
 
-  physics: {
-    ammo: process.ammoPath
-  }
-});
-
-const sphere = new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({ // Create sphere comonent.
+const sphere = new WHS.Sphere({ // Create sphere comonent.
   geometry: {
     radius: 3,
     widthSegments: 32,
     heightSegments: 32
   },
 
-  mass: 10, // Mass of physics object.
+  modules: [
+    new PHYSICS.SphereModule({
+      mass: 10 // Mass of physics object.
+    })
+  ],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'lambert'
-  },
+  material: new THREE.MeshLambertMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: [0, 100, 0]
 });
 
-const box = new (PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX))({ // Create sphere comonent.
+const box = new WHS.Box({ // Create sphere comonent.
   geometry: [2, 2, 2],
 
-  mass: 10, // Mass of physics object.
+  modules: [
+    new PHYSICS.BoxModule({
+      mass: 10 // Mass of physics object.
+    })
+  ],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'lambert'
-  },
+  material: new THREE.MeshLambertMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: [2, -3, 2]
 });
 
 box.addTo(sphere);
-
 sphere.addTo(world);
 
 UTILS.addPlane(world);
-UTILS.addBasicLights(world).then(o => console.log(o.native));
+UTILS.addBasicLights(world);
 
-world.start(); // Start animations and physics simulation.
-world.setControls(new WHS.OrbitControls());
+world.start(); // Start animations and physics simulation.]
