@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "postversion": "gulp build --prod",
-    "test": "ava --verbose",
+    "test": "ava --verbose --serial",
     "start": "npm run dev",
     "build": "gulp build",
     "deploy": "surge --project ./ --domain whs-dev.surge.sh",

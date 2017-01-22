@@ -26,20 +26,6 @@ test('.get()', t => {
   t.is(manager.get('immutable'), testValue);
 });
 
-test('.onDependencyUpdate()', async t => {
-  const update = new Promise((resolve, reject) => {
-    manager.onDependencyUpdate({
-      overwritable: () => {
-        resolve(true);
-      }
-    });
-
-    setTimeout(reject, 3000);
-  });
-
-  t.true(await update);
-});
-
 test('.set()', t => {
   t.plan(2);
 
@@ -54,6 +40,22 @@ test('.set()', t => {
   manager.set('overwritable', 'newValue');
 
   t.is(manager.store.overwritable[0], 'newValue', 'value is updated');
+});
+
+test('.onDependencyUpdate()', async t => {
+  const update = new Promise((resolve, reject) => {
+    manager.onDependencyUpdate({
+      overwritable: () => {
+        resolve(true);
+      }
+    });
+
+    setTimeout(reject, 3000);
+  });
+
+  manager.set('overwritable', 'check update');
+
+  t.true(await update);
 });
 
 test('.has()', t => {
