@@ -1,48 +1,45 @@
 import * as UTILS from '../../globals';
 
-const world = new (PHYSICS.$world(WHS.World))({
-  ...UTILS.$world,
+const world = new WHS.App([
+  ...UTILS.appModules({
+    position: new THREE.Vector3(62, 30, 130)
+  })
+]);
 
-  physics: {
-    ammo: process.ammoPath
-  },
-
-  camera: {
-    far: 10000,
-    position: [62, 30, 130]
-  }
-});
-
-new (PHYSICS.$rigidBody(WHS.Sphere, PHYSICS.SPHERE))({
+new WHS.Sphere({
   geometry: [4, 32, 32],
 
-  mass: 5,
+  modules: [
+    new PHYSICS.SphereModule({
+      mass: 5
+    })
+  ],
 
-  material: {
+  material: new THREE.MeshPhongMaterial({
     color: UTILS.$colors.mesh,
-    kind: 'phong',
-    rest: 0
-  },
+    restitution: 0
+  }),
 
   position: [0, 100, 0]
 }).addTo(world);
 
-const PhysicsBox = PHYSICS.$rigidBody(WHS.Box, PHYSICS.BOX);
-
-const tramplin = new PhysicsBox({
+const tramplin = new WHS.Box({
   geometry: {
     height: 2,
     width: 20,
     depth: 4
   },
 
-  mass: 0,
+  modules: [
+    new PHYSICS.BoxModule({
+      mass: 0,
+      restitution: 0
+    })
+  ],
 
-  material: {
-    color: UTILS.$colors.mesh,
-    kind: 'phong',
-    rest: 0
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: UTILS.$colors.mesh
+  }),
 
   position: {
     x: 0,
@@ -51,11 +48,11 @@ const tramplin = new PhysicsBox({
   },
 
   rotation: {
-    z: - Math.PI / 6
+    z: -Math.PI / 6
   }
 });
 
-tramplin.rotation = new THREE.Euler(0, 0, -Math.PI/6);
+tramplin.rotation = new THREE.Euler(0, 0, -Math.PI / 6);
 
 tramplin.addTo(world);
 
@@ -68,21 +65,24 @@ tramplin3.position.set(24, 24, 0);
 tramplin3.rotation.z = Math.PI / 6;
 tramplin3.addTo(world);
 
-const domino = new PhysicsBox({
+const domino = new WHS.Box({
   geometry: {
     height: 8,
     width: 1,
     depth: 4
   },
 
-  mass: 5,
+  modules: [
+    new PHYSICS.BoxModule({
+      mass: 5
+    })
+  ],
 
-  material: {
+  material: new THREE.MeshPhongMaterial({
     color: UTILS.$colors.mesh,
-    kind: 'phong',
-    rest: 0.5,
-    fri: 1
-  },
+    restitution: 0.5,
+    friction: 1
+  }),
 
   position: {
     x: 20,
@@ -98,8 +98,9 @@ for (let i = 0; i < 13; i++) {
   d.addTo(world);
 }
 
-UTILS.addBoxPlane(world, 250).then(o => o.position.y = -0.5);
-UTILS.addBasicLights(world);
+UTILS.addBoxPlane(world, 250).then(o => {
+  o.position.y = -0.5
+});
 
-world.setControls(new WHS.OrbitControls());
+UTILS.addBasicLights(world);
 world.start();
