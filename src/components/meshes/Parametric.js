@@ -18,11 +18,6 @@ class Parametric extends MeshComponent {
 
   constructor(params = {}) {
     super(params, Parametric.defaults, Parametric.instructions);
-
-    if (params.build) {
-      this.build(params);
-      super.wrap();
-    }
   }
 
   build(params = this.params) {
