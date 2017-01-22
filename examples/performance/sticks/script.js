@@ -24,6 +24,11 @@ const stick = new WHS.Box({
     })
   ],
 
+  shadow: {
+    cast: false,
+    receive: false
+  },
+
   position: {
     y: 0.5
   }
