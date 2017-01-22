@@ -178,7 +178,7 @@ function FirstPersonControlsSolver(camera, mesh, params) {
 
 export class FirstPersonControls {
   static defaults = {
-    block: document.getElementById('blocker'),
+    block: null,
     speed: 1,
     ypos: 1
   };
