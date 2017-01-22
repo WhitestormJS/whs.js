@@ -1,4 +1,4 @@
-import {addResizeListener} from 'detect-element-resize';
+// import {addResizeListener} from 'detect-element-resize';
 
 export class AutoresizeModule {
   constructor(params = {}) {
@@ -33,11 +33,15 @@ export class AutoresizeModule {
 
       console.log(4);
 
-      addResizeListener(container, () => {
-        window.clearTimeout(resize);
-        resize = window.setTimeout(resizeCallback, this.params.delay);
-      });
-    } else if (this.params.scope === 'container') addResizeListener(container, resizeCallback);
+      // FIXME: Element resize.
+
+      // addResizeListener(container, () => {
+      //   window.clearTimeout(resize);
+      //   resize = window.setTimeout(resizeCallback, this.params.delay);
+      // });
+    } else if (this.params.scope === 'container') {
+
+    } // addResizeListener(container, resizeCallback);
   }
 
   manager(manager) {

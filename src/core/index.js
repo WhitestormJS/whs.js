@@ -5,3 +5,4 @@ export * from './LightComponent';
 export * from './CameraComponent';
 export * from './App';
 export * from './Loop';
+export * from './ModuleManager';
