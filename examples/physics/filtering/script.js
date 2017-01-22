@@ -50,6 +50,8 @@ const sphere2 = new WHS.Sphere({ // Create sphere comonent.
   position: [20, 100, 0]
 });
 
+sphere2.addTo(world);
+
 UTILS.addPlane(world).then(o => {
   const boxModule = new PHYSICS.BoxModule({
     mass: 0
