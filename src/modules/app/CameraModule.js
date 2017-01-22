@@ -32,7 +32,6 @@ export class CameraModule {
   }
 
   integrate(params, self) {
-    console.log(2);
     this.add(self.camera);
   }
 
