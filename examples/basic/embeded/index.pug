@@ -3,22 +3,3 @@ extends ../../layout.pug
 block body
   div(id="embed" style="position: relative; left: 50px; top: 100px; width: 600px; height: 300px;")
     div(id="sizer" style="position: absolute; right: -20px; height: inherit; width: 20px; background: #ccc;")
-
-block scripts
-  script(type="text/javascript").
-    const sizer = document.getElementById('sizer');
-    const embed = document.getElementById('embed');
-    let resize = false;
-
-    sizer.addEventListener('mousedown', function() {
-      resize = true;
-    });
-
-    window.addEventListener('mouseup', function() {
-      resize = false;
-    });
-
-    window.addEventListener('mousemove', function(e) {
-      if (resize) embed.style.width = (+embed.style.width.replace('px', '') + e.movementX) + 'px';
-    });
-  script(src='./script.js')

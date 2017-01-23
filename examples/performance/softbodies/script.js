@@ -23,7 +23,7 @@ const world = new WHS.App([
     softbody: true
   }),
   new WHS.OrbitControlsModule(),
-  new WHS.app.AutoresizeModule()
+  new WHS.app.ResizeModule()
 ]);
 
 const sphere = new WHS.Icosahedron({ // Softbody.

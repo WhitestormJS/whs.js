@@ -4,7 +4,7 @@ import {ElementModule} from '../../app/ElementModule';
 import {SceneModule} from '../../app/SceneModule';
 import {CameraModule} from '../../app/CameraModule';
 import {RenderingModule} from '../../app/RenderingModule';
-import {AutoresizeModule} from '../../app/AutoresizeModule';
+import {ResizeModule} from '../../app/ResizeModule';
 
 export class BasicAppPreset extends Preset {
   constructor({camera, rendering, element} = {}) {
@@ -19,7 +19,7 @@ export class BasicAppPreset extends Preset {
   }
 
   autoresize() {
-    this.modules.push(new AutoresizeModule());
+    this.modules.push(new ResizeModule());
     return this;
   }
 }
