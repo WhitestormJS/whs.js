@@ -1,5 +1,7 @@
 import * as UTILS from '../../globals';
 
+const resizer = new WHS.app.ResizeModule();
+
 const world = new WHS.App([
   new WHS.app.ElementModule({
     container: document.getElementById('embed')
@@ -25,10 +27,7 @@ const world = new WHS.App([
     ammo: process.ammoPath
   }),
   new WHS.OrbitControlsModule(),
-  new WHS.app.AutoresizeModule({
-    scope: 'container',
-    delay: 50
-  })
+  resizer
 ]);
 
 const sphere = new WHS.Sphere({ // Create sphere component.
@@ -53,7 +52,7 @@ const sphere = new WHS.Sphere({ // Create sphere component.
 
 sphere.addTo(world);
 
-const mouse = new WHS.VirtualMouse(world.manager);
+const mouse = new WHS.VirtualMouse(world);
 mouse.track(sphere);
 
 sphere.on('mouseover', () => {
@@ -78,3 +77,24 @@ UTILS.addPlane(world);
 UTILS.addBasicLights(world);
 
 world.start(); // Start animations and physics simulation.
+
+// DOM
+
+const sizer = document.getElementById('sizer');
+const embed = document.getElementById('embed');
+let resize = false;
+
+sizer.addEventListener('mousedown', () => {
+  resize = true;
+});
+
+window.addEventListener('mouseup', () => {
+  resize = false;
+});
+
+window.addEventListener('mousemove', e => {
+  if (resize) {
+    embed.style.width = (+embed.style.width.replace('px', '') + e.movementX) + 'px';
+    resizer.trigger();
+  }
+});

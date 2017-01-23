@@ -3,7 +3,7 @@ import {CameraModule} from './CameraModule';
 import {HelpersModule} from './HelpersModule';
 import {RenderingModule} from './RenderingModule';
 import {SceneModule} from './SceneModule';
-import {AutoresizeModule} from './AutoresizeModule';
+import {ResizeModule} from './ResizeModule';
 import {PostProcessorModule} from './PostProcessorModule';
 
 export const app = {
@@ -12,6 +12,6 @@ export const app = {
   HelpersModule,
   RenderingModule,
   SceneModule,
-  AutoresizeModule,
+  ResizeModule,
   PostProcessorModule
 };

@@ -26,7 +26,7 @@ const world = new WHS.App([
       }
     }
   }),
-  new WHS.app.AutoresizeModule()
+  new WHS.app.ResizeModule()
 ]);
 
 

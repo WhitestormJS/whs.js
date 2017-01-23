@@ -31,7 +31,7 @@ const world = new WHS.App([
     }
   }),
   new WHS.OrbitControlsModule(),
-  new WHS.app.AutoresizeModule()
+  new WHS.app.ResizeModule()
 ]);
 
 const space = new WHS.Group();

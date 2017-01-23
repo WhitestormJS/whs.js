@@ -23,7 +23,7 @@ const world = new WHS.App([
     softbody: true
   }),
   new WHS.OrbitControlsModule(),
-  new WHS.app.AutoresizeModule()
+  new WHS.app.ResizeModule()
 ]);
 
 const cloth = new WHS.Tube({ // Softbody (blue).

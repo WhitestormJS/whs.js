@@ -45,7 +45,7 @@ const world = new WHS.App([
     ypos: 0
   }),
   // new WHS.OrbitControlsModule(),
-  new WHS.app.AutoresizeModule()
+  new WHS.app.ResizeModule()
 ]);
 
 sphere.addTo(world);
