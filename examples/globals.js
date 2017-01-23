@@ -64,8 +64,10 @@ export function addAmbient(world, intensity) {
   }).addTo(world);
 }
 
-export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], distance = 100) {
+export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], distance = 100, shadowmap) {
   addAmbient(world, 1 - intensity);
+
+  console.log(shadowmap);
 
   return new WHS.PointLight({
     light: {
@@ -73,9 +75,9 @@ export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], d
       distance
     },
 
-    shadowmap: {
+    shadow: Object.assign({
       fov: 90
-    },
+    }, shadowmap),
 
     position
   }).addTo(world);
