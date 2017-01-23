@@ -23,11 +23,11 @@ export const $world = {
   }
 };
 
-export const appModules = ( // appModules(camera, rendering);
-  camera = {
+export const appDefaults = {
+  camera: {
     position: new THREE.Vector3(0, 10, 50)
   },
-  rendering = {
+  rendering: {
     bgColor: 0x162129,
 
     renderer: {
@@ -36,13 +36,20 @@ export const appModules = ( // appModules(camera, rendering);
         type: THREE.PCFSoftShadowMap
       }
     }
+  },
+  physics: {
+    ammo: process.ammoPath
   }
+};
+
+export const appModules = ( // appModules(camera, rendering);
+  camera = appDefaults.camera,
+  rendering = appDefaults.rendering,
+  physics = appDefaults.physics
 ) => (
   new WHS.BasicAppPreset({camera, rendering})
     .extend([
-      new PHYSICS.WorldModule({
-        ammo: process.ammoPath
-      }),
+      new PHYSICS.WorldModule(physics),
       new WHS.OrbitControlsModule()
     ])
     .autoresize()
