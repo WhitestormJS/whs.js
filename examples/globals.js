@@ -45,12 +45,13 @@ export const appDefaults = {
 export const appModules = ( // appModules(camera, rendering);
   camera = appDefaults.camera,
   rendering = appDefaults.rendering,
-  physics = appDefaults.physics
+  physics = appDefaults.physics,
+  useControls = true
 ) => (
   new WHS.BasicAppPreset({camera, rendering})
     .extend([
       new PHYSICS.WorldModule(physics),
-      new WHS.OrbitControlsModule()
+      useControls ? new WHS.OrbitControlsModule() : null
     ])
     .autoresize()
     .get()
