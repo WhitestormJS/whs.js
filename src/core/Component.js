@@ -75,8 +75,8 @@ class Component extends Events {
   }
 
   defer(func) {
-    if (this.isDeffered) this.wait().then(func);
-    else func();
+    if (this.isDeffered) this.wait().then(() => func(this));
+    else func(this);
   }
 
   get isDeffered() {

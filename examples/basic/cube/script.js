@@ -1,12 +1,12 @@
 import * as UTILS from '../../globals';
 
 const world = new WHS.App([
-  ...UTILS.appModules()
+  ...UTILS.appModules({
+    position: new THREE.Vector3(0, 10, 200)
+  })
 ]);
 
-
-// Create ball
-
+// Create a ball
 const ball = new WHS.Sphere({
   geometry: {
     radius: 5,
@@ -25,12 +25,10 @@ const ball = new WHS.Sphere({
     color: UTILS.$colors.mesh
   }),
 
-  position: [ 0, 50, 0 ]
-})
-
+  position: [0, 30, 0]
+});
 
 // Create all sides of the box
-
 function makeBoxWall(attrs = {}, size = 100) {
   return new WHS.Box({
     ...attrs,
@@ -55,37 +53,7 @@ function makeBoxWall(attrs = {}, size = 100) {
   });
 }
 
-const box = makeBoxWall({
-  position: [ 0, 0, 50 ]
-});
-
-makeBoxWall({
-  position: [ 0, 0, -100 ]
-}).addTo(box);
-
-makeBoxWall({
-  rotation: { x: -Math.PI / 2 },
-  position: [ 0, 50, -50 ]
-}).addTo(box);
-
-makeBoxWall({
-  rotation: { x: -Math.PI / 2 },
-  position: [ 0, -50, -50 ]
-}).addTo(box);
-
-makeBoxWall({
-  rotation: { y: -Math.PI / 2 },
-  position: [ 50, 0, -50 ]
-}).addTo(box);
-
-makeBoxWall({
-  rotation: { y: -Math.PI / 2 },
-  position: [ -50, 0, -50]
-}).addTo(box);
-
-
 // Create wireframe box
-
 new WHS.Box({
   geometry: {
     width: 100,
@@ -93,20 +61,61 @@ new WHS.Box({
     depth: 100
   },
 
+  modules: [
+    new PHYSICS.CompoundModule({
+      mass: 10
+    })
+  ],
+
   material: new THREE.MeshPhongMaterial({
     color: 0xffffff,
     wireframe: true
   }),
 
-  position: [ 0, 0, -50 ]
-}).addTo(box);
+  position: [0, 0, 0],
+  rotation: [0, 0, 25]
+}).defer(box => {
+  makeBoxWall({
+    position: [0, 0, 50]
+  }).addTo(box);
 
+  makeBoxWall({
+    position: [0, 0, -50]
+  }).addTo(box);
 
-box.rotation.set(0, 0, 25)
+  makeBoxWall({
+    rotation: {x: -Math.PI / 2},
+    position: [0, 50, 0]
+  }).addTo(box);
 
-box.addTo(world);
+  makeBoxWall({
+    rotation: {x: -Math.PI / 2},
+    position: [0, -50, 0]
+  }).addTo(box);
+
+  makeBoxWall({
+    rotation: {y: -Math.PI / 2},
+    position: [50, 0, 0]
+  }).addTo(box);
+
+  makeBoxWall({
+    rotation: {y: -Math.PI / 2},
+    position: [-50, 0, 0]
+  }).addTo(box);
+
+  box.addTo(world).then(() => {
+    const v = new THREE.Vector3(0, 0, 1);
+
+    box.setLinearFactor(new THREE.Vector3(0, 0, 0));
+
+    new WHS.Loop(() => {
+      box.setAngularVelocity(v);
+    }).start(world);
+  });
+});
+
 ball.addTo(world);
 
-UTILS.addBasicLights(world)
+UTILS.addBasicLights(world);
 
-world.start()
+world.start();
