@@ -12,8 +12,12 @@ const func = (u, v) =>
 const terrain = new WHS.Parametric({
   geometry: {
     func,
-    slices: 20,
-    stacks: 20
+    slices: 40,
+    stacks: 40
+  },
+
+  shadow: {
+    cast: false
   },
 
   material: new THREE.MeshPhongMaterial({
@@ -24,7 +28,7 @@ const terrain = new WHS.Parametric({
   modules: [
     new PHYSICS.HeightfieldModule({
       mass: 0,
-      size: new THREE.Vector2(20, 20),
+      size: new THREE.Vector2(40, 40),
       autoAlign: true
     })
   ]
@@ -50,11 +54,18 @@ const sphere = new WHS.Sphere({
     color: UTILS.$colors.mesh
   }),
 
-  position: new THREE.Vector3(-31, 20, -31) // -30, 120, -40
+  position: new THREE.Vector3(-31, 20, 0) // -30, 120, -40
 });
 
 sphere.addTo(world);
 
-UTILS.addBasicLights(world);
+UTILS.addBasicLights(world, 0.5, [0, 10, 10], 100, {
+  bias: 0.0001,
+  radius: 2,
+
+  camera: {
+    fov: 90
+  }
+});
 
 world.start(); // Start animations and physics simulation.
