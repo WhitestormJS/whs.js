@@ -1,10 +1,17 @@
 import * as UTILS from '../../globals';
 
+const ad = UTILS.appDefaults;
+
+const controlsModule = new WHS.OrbitControlsModule();
+
 const world = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 200)
-  })
+  }, ad.rendering, ad.physics, false),
+  controlsModule
 ]);
+
+controlsModule.controls.autoRotate = true;
 
 // Create a ball
 const ball = new WHS.Sphere({
@@ -17,7 +24,8 @@ const ball = new WHS.Sphere({
   modules: [
     new PHYSICS.SphereModule({
       mass: 10,
-      restitution: 1
+      restitution: 3,
+      friction: 0
     })
   ],
 
@@ -41,7 +49,9 @@ function makeBoxWall(attrs = {}, size = 100) {
 
     modules: [
       new PHYSICS.BoxModule({
-        mass: 0
+        mass: 0,
+        restitution: 3,
+        friction: 0
       })
     ],
 
@@ -63,7 +73,7 @@ new WHS.Box({
 
   modules: [
     new PHYSICS.CompoundModule({
-      mass: 10
+      mass: 100
     })
   ],
 

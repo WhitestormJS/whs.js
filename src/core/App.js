@@ -16,10 +16,9 @@ class App {
       if (typeof module === 'function')
         module.bind(this)();
       else {
-        if (!module.name) module.name = '';
         this.manager.setActiveModule(module);
-        if (module.manager) module.manager(this.manager);
-        if (module.integrate) module.integrate.bind(this)(module.params, module);
+        if (module && module.manager) module.manager(this.manager);
+        if (module && module.integrate) module.integrate.bind(this)(module.params, module);
       }
     }
 
@@ -89,7 +88,7 @@ class App {
         if (bridgeMap[key]) {
           const module = modules[i];
 
-          if (module.bridge && module.bridge[key])
+          if (module && module.bridge && module.bridge[key])
             bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
         }
       }
