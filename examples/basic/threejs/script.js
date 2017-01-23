@@ -54,7 +54,7 @@ world
       antialias: true
     }
   }))
-  .module(new WHS.app.AutoresizeModule())
+  .module(new WHS.app.ResizeModule())
   .module(new WHS.OrbitControlsModule());
 
 const sphere = new WHS.Sphere({

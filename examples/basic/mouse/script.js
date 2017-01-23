@@ -20,7 +20,7 @@ const world = new WHS.App([
     ammo: process.ammoPath
   }),
   new WHS.OrbitControlsModule(),
-  new WHS.app.AutoresizeModule()
+  new WHS.app.ResizeModule()
 ]);
 
 const sphere = new WHS.Sphere({ // Create sphere component.
@@ -45,7 +45,7 @@ const sphere = new WHS.Sphere({ // Create sphere component.
 
 sphere.addTo(world);
 
-const mouse = new WHS.VirtualMouse(world.manager);
+const mouse = new WHS.VirtualMouse(world);
 mouse.track(sphere);
 
 sphere.on('mouseover', () => {

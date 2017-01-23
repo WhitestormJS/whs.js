@@ -44839,92 +44839,6 @@ var ShaderPass = function (_Pass) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AutoresizeModule; });
-
-
-
-// import {addResizeListener} from 'detect-element-resize';
-
-var AutoresizeModule = function () {
-  function AutoresizeModule() {
-    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, AutoresizeModule);
-
-    this.params = Object.assign({
-      scope: 'window' // ... 'container'.
-    }, params);
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(AutoresizeModule, [{
-    key: 'setSize',
-    value: function setSize() {
-      var width = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      var height = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-
-      this.camera.native.aspect = width / height;
-      this.camera.native.updateProjectionMatrix();
-
-      if (this.rendering) this.rendering.setSize(width, height);
-    }
-  }, {
-    key: 'addAutoresize',
-    value: function addAutoresize() {
-      var _this = this;
-
-      var container = this.getContainer();
-
-      var resizeCallback = function resizeCallback() {
-        var resolution = _this.getResolution();
-
-        _this.setSize(Number(container.offsetWidth * resolution.x).toFixed(), Number(container.offsetHeight * resolution.y).toFixed());
-      };
-
-      if (this.params.scope === 'window') window.addEventListener('resize', resizeCallback);else if (this.params.delay && this.params.scope === 'container') {
-        // FIXME: Not the best way to do this.
-        var resize = true;
-
-        console.log(4);
-
-        // FIXME: Element resize.
-
-        // addResizeListener(container, () => {
-        //   window.clearTimeout(resize);
-        //   resize = window.setTimeout(resizeCallback, this.params.delay);
-        // });
-      } else if (this.params.scope === 'container') {} // addResizeListener(container, resizeCallback);
-    }
-  }, {
-    key: 'manager',
-    value: function manager(_manager) {
-      this.rendering = _manager.get('renderer');
-      this.camera = _manager.get('camera');
-
-      this.getResolution = function () {
-        return _manager.get('renderer', true).params.resolution;
-      };
-      this.getContainer = function () {
-        return _manager.get('element', true).params.container;
-      };
-
-      this.addAutoresize();
-    }
-  }]);
-
-  return AutoresizeModule;
-}();
-
-
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
 throw new Error("Cannot find module \"../../components/cameras/PerspectiveCamera\"");
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return CameraModule; });
 
@@ -44983,7 +44897,7 @@ var CameraModule = function () {
 
 
 /***/ },
-/* 48 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45029,7 +44943,7 @@ var ElementModule = function () {
 
 
 /***/ },
-/* 49 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45149,6 +45063,84 @@ var RenderingModule = (_temp = _class = function () {
     renderer.shadowMap.enabled = true;
   }
 }, _temp);
+
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass__);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ResizeModule; });
+
+
+
+// import {addResizeListener} from 'detect-element-resize';
+
+var ResizeModule = function () {
+  function ResizeModule() {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_classCallCheck___default()(this, ResizeModule);
+
+    this.params = Object.assign({
+      auto: true
+    }, params);
+  }
+
+  __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(ResizeModule, [{
+    key: 'setSize',
+    value: function setSize() {
+      var width = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      var height = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+      this.camera.native.aspect = width / height;
+      this.camera.native.updateProjectionMatrix();
+
+      if (this.rendering) this.rendering.setSize(width, height);
+    }
+  }, {
+    key: 'trigger',
+    value: function trigger() {
+      var _container = this.container,
+          offsetWidth = _container.offsetWidth,
+          offsetHeight = _container.offsetHeight,
+          resolution = this.resolution;
+
+
+      this.setSize(Number(offsetWidth * resolution.x).toFixed(), Number(offsetHeight * resolution.y).toFixed());
+    }
+  }, {
+    key: 'addAutoresize',
+    value: function addAutoresize() {
+      this.container = this.getContainer();
+      this.resolution = this.getResolution();
+
+      if (this.params.auto) window.addEventListener('resize', this.trigger);
+    }
+  }, {
+    key: 'manager',
+    value: function manager(_manager) {
+      this.rendering = _manager.get('renderer');
+      this.camera = _manager.get('camera');
+
+      this.getResolution = function () {
+        return _manager.get('renderer', true).params.resolution;
+      };
+      this.getContainer = function () {
+        return _manager.get('element', true).params.container;
+      };
+
+      this.addAutoresize();
+    }
+  }]);
+
+  return ResizeModule;
+}();
+
 
 
 /***/ },
@@ -48194,12 +48186,12 @@ var PostProcessorModule = function () {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ElementModule__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__CameraModule__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ElementModule__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__CameraModule__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__HelpersModule__ = __webpack_require__(83);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__RenderingModule__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__RenderingModule__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__SceneModule__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__AutoresizeModule__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ResizeModule__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__PostProcessorModule__ = __webpack_require__(84);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return app; });
 
@@ -48216,7 +48208,7 @@ var app = {
   HelpersModule: __WEBPACK_IMPORTED_MODULE_2__HelpersModule__["a" /* HelpersModule */],
   RenderingModule: __WEBPACK_IMPORTED_MODULE_3__RenderingModule__["a" /* RenderingModule */],
   SceneModule: __WEBPACK_IMPORTED_MODULE_4__SceneModule__["a" /* SceneModule */],
-  AutoresizeModule: __WEBPACK_IMPORTED_MODULE_5__AutoresizeModule__["a" /* AutoresizeModule */],
+  ResizeModule: __WEBPACK_IMPORTED_MODULE_5__ResizeModule__["a" /* ResizeModule */],
   PostProcessorModule: __WEBPACK_IMPORTED_MODULE_6__PostProcessorModule__["a" /* PostProcessorModule */]
 };
 
@@ -48286,11 +48278,11 @@ var Preset = function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_inherits__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Preset__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_ElementModule__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_ElementModule__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_SceneModule__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_CameraModule__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_RenderingModule__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_AutoresizeModule__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_CameraModule__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_RenderingModule__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_ResizeModule__ = __webpack_require__(49);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return BasicAppPreset; });
 
 
@@ -48323,7 +48315,7 @@ var BasicAppPreset = function (_Preset) {
   __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_createClass___default()(BasicAppPreset, [{
     key: 'autoresize',
     value: function autoresize() {
-      this.modules.push(new __WEBPACK_IMPORTED_MODULE_9__app_AutoresizeModule__["a" /* AutoresizeModule */]());
+      this.modules.push(new __WEBPACK_IMPORTED_MODULE_9__app_ResizeModule__["a" /* ResizeModule */]());
       return this;
     }
   }]);

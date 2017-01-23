@@ -18,7 +18,7 @@ const world = new WHS.App([
     }
   }),
   new WHS.OrbitControlsModule({target: new THREE.Vector3(50, 50, 50)}),
-  new WHS.app.AutoresizeModule()
+  new WHS.app.ResizeModule()
 ]);
 
 const data = new Float32Array(3993000);
