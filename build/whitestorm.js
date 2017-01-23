@@ -44324,7 +44324,11 @@ var Component = (_temp = _class = function (_Events) {
   }, {
     key: 'defer',
     value: function defer(func) {
-      if (this.isDeffered) this.wait().then(func);else func();
+      var _this2 = this;
+
+      if (this.isDeffered) this.wait().then(function () {
+        return func(_this2);
+      });else func(this);
     }
   }, {
     key: 'updateParams',
@@ -47716,12 +47720,9 @@ var Octahedron = (_temp = _class = function (_MeshComponent) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_three__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__core_MeshComponent__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_three__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__core_MeshComponent__ = __webpack_require__(6);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Parametric; });
-
 
 
 
@@ -47742,13 +47743,7 @@ var Parametric = (_temp = _class = function (_MeshComponent) {
 
     __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, Parametric);
 
-    var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Parametric.__proto__ || Object.getPrototypeOf(Parametric)).call(this, params, Parametric.defaults, Parametric.instructions));
-
-    if (params.build) {
-      _this.build(params);
-      __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_get___default()(Parametric.prototype.__proto__ || Object.getPrototypeOf(Parametric.prototype), 'wrap', _this).call(_this);
-    }
-    return _this;
+    return __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Parametric.__proto__ || Object.getPrototypeOf(Parametric)).call(this, params, Parametric.defaults, Parametric.instructions));
   }
 
   __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(Parametric, [{
@@ -47763,14 +47758,14 @@ var Parametric = (_temp = _class = function (_MeshComponent) {
           geometry = _applyBridge.geometry,
           material = _applyBridge.material;
 
-      return this.applyBridge({ mesh: new __WEBPACK_IMPORTED_MODULE_6_three__["Mesh"](geometry, material) }).mesh;
+      return this.applyBridge({ mesh: new __WEBPACK_IMPORTED_MODULE_5_three__["Mesh"](geometry, material) }).mesh;
     }
   }, {
     key: 'buildGeometry',
     value: function buildGeometry() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      var GConstruct = params.buffer && !params.softbody ? __WEBPACK_IMPORTED_MODULE_6_three__["ParametricBufferGeometry"] : __WEBPACK_IMPORTED_MODULE_6_three__["ParametricGeometry"];
+      var GConstruct = params.buffer && !params.softbody ? __WEBPACK_IMPORTED_MODULE_5_three__["ParametricBufferGeometry"] : __WEBPACK_IMPORTED_MODULE_5_three__["ParametricGeometry"];
 
       return new GConstruct(params.geometry.func, params.geometry.slices, params.geometry.stacks);
     }
@@ -47801,7 +47796,7 @@ var Parametric = (_temp = _class = function (_MeshComponent) {
   }]);
 
   return Parametric;
-}(__WEBPACK_IMPORTED_MODULE_7__core_MeshComponent__["a" /* MeshComponent */]), _class.defaults = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, __WEBPACK_IMPORTED_MODULE_7__core_MeshComponent__["a" /* MeshComponent */].defaults, {
+}(__WEBPACK_IMPORTED_MODULE_6__core_MeshComponent__["a" /* MeshComponent */]), _class.defaults = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, __WEBPACK_IMPORTED_MODULE_6__core_MeshComponent__["a" /* MeshComponent */].defaults, {
   geometry: {
     func: function func(u, v) {
       return new THREE.Vector3(u, v, 0);
@@ -49139,10 +49134,9 @@ var App = function () {
       var module = modules[i];
 
       if (typeof module === 'function') module.bind(this)();else {
-        if (!module.name) module.name = '';
         this.manager.setActiveModule(module);
-        if (module.manager) module.manager(this.manager);
-        if (module.integrate) module.integrate.bind(this)(module.params, module);
+        if (module && module.manager) module.manager(this.manager);
+        if (module && module.integrate) module.integrate.bind(this)(module.params, module);
       }
     }
 
@@ -49222,7 +49216,7 @@ var App = function () {
           if (bridgeMap[key]) {
             var module = modules[i];
 
-            if (module.bridge && module.bridge[key]) bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
+            if (module && module.bridge && module.bridge[key]) bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
           }
         }
       }

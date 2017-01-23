@@ -43856,7 +43856,11 @@ var Component = (_temp = _class = function (_Events) {
   }, {
     key: 'defer',
     value: function defer(func) {
-      if (this.isDeffered) this.wait().then(func);else func();
+      var _this2 = this;
+
+      if (this.isDeffered) this.wait().then(function () {
+        return func(_this2);
+      });else func(this);
     }
   }, {
     key: 'updateParams',
@@ -45652,10 +45656,9 @@ var App = function () {
       var module = modules[i];
 
       if (typeof module === 'function') module.bind(this)();else {
-        if (!module.name) module.name = '';
         this.manager.setActiveModule(module);
-        if (module.manager) module.manager(this.manager);
-        if (module.integrate) module.integrate.bind(this)(module.params, module);
+        if (module && module.manager) module.manager(this.manager);
+        if (module && module.integrate) module.integrate.bind(this)(module.params, module);
       }
     }
 
@@ -45735,7 +45738,7 @@ var App = function () {
           if (bridgeMap[key]) {
             var module = modules[i];
 
-            if (module.bridge && module.bridge[key]) bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
+            if (module && module.bridge && module.bridge[key]) bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
           }
         }
       }
