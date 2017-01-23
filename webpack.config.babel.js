@@ -4,116 +4,77 @@ import HappyPack from 'happypack';
 
 process.env.BABEL_ENV = 'browser';
 
-export function config({isProduction, frameworkSrc, frameworkDest}) {
+export function config({isProduction, src, dest, filename = 'whitestorm.js', plugins = []}) {
   if (process.env.CI) isProduction = true;
   console.log(isProduction ? 'Production mode' : 'Development mode');
-  const _version = require('./package.json').version;
-  console.log(_version);
 
-  const loadersSection = [
-    {
-      test: /\.js$/,
-      exclude: [
-        /node_modules/,
-        /ammo\.js/
-      ],
-      loader: 'babel',
-      query: {
-        cacheDirectory: true,
-        plugins: [
-          ['transform-runtime', {polyfill: false}],
-          'add-module-exports',
-          'transform-decorators-legacy',
-          'transform-class-properties',
-          'transform-object-rest-spread'
-        ],
-        presets: ['es2015']
-      }
-    }
-  ];
+  const version = require('./package.json').version;
+  console.log(version);
 
-  const bannerText = `WhitestormJS Framework v${_version}`;
+  const bannerText = `WhitestormJS Framework v${version}`;
 
-  const pluginsSectionPhysics = isProduction
-  ? [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        hoist_funs: false, // Turn this off to prevent errors with Ammo.js
-        warnings: false,
-        dead_code: true
-      },
-      minimize: true
-    }),
-    new HappyPack({loaders: ['babel'], threads: 4}),
-    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
-    new webpack.BannerPlugin(bannerText)
-  ]
-  : [
-    new HappyPack({loaders: ['babel'], threads: 4}),
-    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
-    new webpack.BannerPlugin(bannerText)
-  ];
-
-  const pluginsSectionLight = isProduction
-  ? [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        dead_code: true
-      },
-      minimize: true
-    }),
-    new HappyPack({loaders: ['babel'], threads: 4}),
-    new webpack.BannerPlugin(bannerText)
-  ]
-  : [
-    new HappyPack({loaders: ['babel'], threads: 4}),
-    new webpack.BannerPlugin(bannerText)
-  ];
-
-  return [{ // PHYSICS VERSION
+  return { // PHYSICS VERSION
     devtool: isProduction ? false : 'source-map',
     cache: true,
     entry: [
-      'babel-polyfill',
-      `${frameworkSrc}/index.js`
+      // 'babel-polyfill',
+      `${src}/index.js`
     ],
     target: 'web',
     output: {
-      path: path.join(__dirname, frameworkDest),
-      filename: 'whitestorm.js',
+      path: path.join(__dirname, dest),
+      filename,
       library: 'WHS',
       libraryTarget: 'umd'
     },
     module: {
-      loaders: loadersSection
+      loaders: [
+        {
+          test: /\.js$/,
+          exclude: [
+            /node_modules/
+          ],
+          loader: 'babel-loader', // babel-loader
+          query: {
+            cacheDirectory: true,
+            plugins: [
+              ['transform-runtime', {polyfill: false}],
+              'add-module-exports',
+              'transform-decorators-legacy',
+              'transform-class-properties',
+              'transform-object-rest-spread'
+            ],
+            presets: [['es2015', {modules: false}]]
+          }
+        }
+      ]
     },
-    plugins: pluginsSectionPhysics
-  }, { // LIGHT VERSION
-    devtool: isProduction ? false : 'source-map',
-    cache: true,
-    entry: [
-      'babel-polyfill',
-      `${frameworkSrc}/index.js`
-    ],
-    target: 'web',
-    output: {
-      path: path.join(__dirname, frameworkDest),
-      filename: 'whitestorm.light.js',
-      library: 'WHS',
-      libraryTarget: 'umd'
-    },
-    externals: [
-      function(ctx, req, cb) {
-        if (/.*\/physics.*/g.test(req)) return cb(null, 'var false');
-        cb();
-      }
-    ],
-    module: {
-      loaders: loadersSection
-    },
-    plugins: pluginsSectionLight
-  }];
+    plugins: isProduction ?
+      [
+        new webpack.optimize.UglifyJsPlugin({
+          compress: {
+            hoist_funs: false, // Turn this off to prevent errors with Ammo.js
+            warnings: false,
+            dead_code: true
+          },
+          minimize: true
+        }),
+        new HappyPack({loaders: ['babel'], threads: 4}),
+        new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
+        new webpack.BannerPlugin(bannerText),
+        ...plugins
+      ]
+      : [
+        new HappyPack({loaders: ['babel'], threads: 4}),
+        new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
+        new webpack.BannerPlugin(bannerText),
+        ...plugins
+      ]
+  };
 }
+
+export default config({
+  isProduction: process.env.NODE_ENV === 'production',
+  src: './src',
+  dest: './build'
+});

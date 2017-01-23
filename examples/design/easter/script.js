@@ -1,38 +1,36 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
+import * as UTILS from '../../globals';
 
-var world = new WHS.World({
-  autoresize: "window",
-
-  gravity: {
-    x: 0,
-    y: -10,
-    z: 0
-  },
-
-  camera: {
-    far: 2000,
-    near: 1,
-    position: [-8, 5, 20],
-    fov: 45
-  },
-
-  rendering: {
-    shadowmap: {
-      type: THREE.PCFSoftShadowMap
+const world = new WHS.App([
+  new WHS.app.ElementModule(),
+  new WHS.app.SceneModule(),
+  new PHYSICS.WorldModule({
+    ammo: process.ammoPath,
+    gravity: {
+      x: 0,
+      y: -10,
+      z: 0
     },
+  }),
+  new WHS.app.CameraModule({
+    position: new THREE.Vector3(-8, 5, 20),
+    fov: 45,
+    far: 2000
+  }),
+  new WHS.app.RenderingModule({
+    bgColor: 0xffffff,
 
     renderer: {
-      antialias: true
-    },
-
-    background: {
-      color: 0xffffff
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
+      }
     }
-  }
-});
+  }),
+  new WHS.app.AutoresizeModule()
+]);
 
-world.$camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+// world.$camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 // Start rendering.
 world.start();
@@ -43,13 +41,15 @@ new WHS.Box({
     height: 1,
     depth: 100
   },
+  modules: [
+    new PHYSICS.BoxModule({
+      mass: 0
+    })
+  ],
 
-  mass: 0,
-
-  material: {
-    kind: 'phong',
-    color: 0xffffff
-  },
+  material: new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+  }),
 
   position: {
     x: 0,
@@ -58,26 +58,24 @@ new WHS.Box({
   }
 }).addTo(world);
 
-var egg = new WHS.Model({
+const egg = new WHS.Model({
   geometry: {
-    path: '../../_assets/models/easter/egg_light.json',
-    physics: '../../_assets/models/easter/egg_low.json'
+    path: `${process.assetsPath}/models/easter/egg_light.json`,
   },
 
-  mass: 10,
+  modules: [
+    new PHYSICS.ConvexModule({
+      path: `${process.assetsPath}/models/easter/egg_low.json`,
+    })
+  ],
 
-  material: {
-    kind: 'lambert',
-    map: WHS.texture('../../_assets/textures/easter/egg1.jpg'),
-    color: 0xffffff,
-    rest: 1
-  },
+  useCustomMaterial: true,
 
-  scale: {
-    x: 1,
-    y: 1,
-    z: 1
-  },
+  material: new THREE.MeshPhongMaterial({
+    shading: THREE.SmoothShading,
+    map: WHS.texture(`${process.assetsPath}/textures/easter/egg1.jpg`),
+    side: THREE.DoubleSide
+  }),
 
   position: {
     y: 0,
@@ -90,27 +88,22 @@ var egg = new WHS.Model({
   }
 });
 
-var rabbit = new WHS.Model({
+const rabbit = new WHS.Model({
   geometry: {
-    path: '../../_assets/models/easter/rabbit.json',
-    physics: '../../_assets/models/easter/rabbit_low.json'
+    path: `${process.assetsPath}/models/easter/rabbit.json`
   },
 
-  material: {
-    kind: 'lambert',
+  modules: [
+    new PHYSICS.ConcaveModule({
+      path: `${process.assetsPath}/models/easter/rabbit_low.json`,
+      scale: new THREE.Vector3(0.5, 0.5, 0.5)
+    })
+  ],
+
+  material: new THREE.MeshLambertMaterial({
     side: THREE.DoubleSide,
-    rest: 1
-  },
-
-  physics: {
-    type: 'concave'
-  },
-
-  scale: {
-    x: 0.5,
-    y: 0.5,
-    z: 0.5
-  },
+    shading: THREE.SmoothShading
+  }),
 
   position: {
     y: 5,
@@ -119,7 +112,9 @@ var rabbit = new WHS.Model({
 
   rotation: {
     x: Math.PI / 2
-  }
+  },
+
+  scale: [0.5, 0.5, 0.5]
 });
 
 rabbit.addTo(world, 'wait');
@@ -169,113 +164,90 @@ new WHS.AmbientLight({
   }
 }).addTo(world);
 
-var egg2 = void 0,
-    egg3 = void 0,
-    egg4 = void 0,
-    egg5 = void 0,
-    egg6 = void 0,
-    egg7 = void 0,
-    egg8 = void 0,
-    egg9 = void 0;
+let egg2, egg3, egg4, egg5, egg6, egg7, egg8, egg9;
 
-egg.addTo(world, 'wait').then(function (object) {
-  egg2 = object.clone();
-  console.log(egg2);
-  egg2.m_({ map: new WHS.texture('../../_assets/textures/easter/egg2.jpg') });
 
-  egg2.addTo(world, 'wait').then(function (obj) {
-    obj.wrap('no-transforms');
+egg.addTo(world).then((object) => {
+  egg2 = object.clone(false, true);
+  egg2.material.map = new WHS.texture(`${process.assetsPath}/textures/easter/egg2.jpg`);
 
+  egg2.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(-8.5);
     obj.position.setZ(1.5);
   });
 
-  egg3 = object.clone();
-  egg3.m_({ map: new WHS.texture('../../_assets/textures/easter/egg3.jpg') });
+  egg3 = object.clone(false, true);
+  egg3.material.map = new WHS.texture(`${process.assetsPath}/textures/easter/egg3.jpg`);
 
-  egg3.addTo(world, 'wait').then(function (obj) {
-    obj.wrap('no-transforms');
-
+  egg3.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(-8.5);
     obj.position.setZ(1.5);
   });
 
-  egg4 = object.clone();
-  egg4.m_({ map: new WHS.texture('../../_assets/textures/easter/egg4.jpg') });
+  egg4 = object.clone(false, true);
+  egg4.material.map = new WHS.texture(`${process.assetsPath}/textures/easter/egg4.jpg`);
 
-  egg4.addTo(world, 'wait').then(function (obj) {
-    obj.wrap('no-transforms');
-
+  egg4.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(0);
     obj.position.setZ(-1.5);
   });
 
-  egg5 = object.clone();
-  egg5.m_({ map: new WHS.texture('../../_assets/textures/easter/egg1.jpg') });
+  egg5 = object.clone(false, true);
+  egg5.material.map = new WHS.texture(`${process.assetsPath}/textures/easter/egg1.jpg`);
 
-  egg5.addTo(world, 'wait').then(function (obj) {
-    obj.wrap('no-transforms');
-
+  egg5.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(2);
     obj.position.setZ(2.5);
   });
 
-  egg6 = object.clone();
-  egg6.m_({ map: new WHS.texture('../../_assets/textures/easter/egg2.jpg') });
+  egg6 = object.clone(false, true);
+  egg6.material.map = new WHS.texture(`${process.assetsPath}/textures/easter/egg2.jpg`);
 
-  egg6.addTo(world, 'wait').then(function (obj) {
-    obj.wrap('no-transforms');
-
+  egg6.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(0.5);
     obj.position.setZ(1.5);
   });
 
-  egg7 = object.clone();
-  egg7.m_({ map: new WHS.texture('../../_assets/textures/easter/egg3.jpg') });
+  egg7 = object.clone(false, true);
+  egg7.material.map = new WHS.texture(`${process.assetsPath}/textures/easter/egg3.jpg`);
 
-  egg7.addTo(world, 'wait').then(function (obj) {
-    obj.wrap('no-transforms');
-
+  egg7.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(2);
     obj.position.setZ(-1.5);
   });
 
-  egg8 = object.clone();
-  egg8.m_({ map: new WHS.texture('../../_assets/textures/easter/egg4.jpg') });
+  egg8 = object.clone(false, true);
+  egg8.material.map = new WHS.texture(`${process.assetsPath}/textures/easter/egg4.jpg`);
 
-  egg8.addTo(world, 'wait').then(function (obj) {
-    obj.wrap('no-transforms');
-
+  egg8.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(1);
     obj.position.setZ(2.5);
   });
 
-  egg9 = object.clone();
-  egg9.m_({ map: new WHS.texture('../../_assets/textures/easter/egg1.jpg') });
+  egg9 = object.clone(false, true);
+  egg9.material.map = new WHS.texture(`${process.assetsPath}/textures/easter/egg1.jpg`);
 
-  egg9.addTo(world, 'wait').then(function (obj) {
-    obj.wrap('no-transforms');
-
+  egg9.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(3);
     obj.position.setZ(-1.5);
   });
 });
 
-document.body.addEventListener('mousemove', function (e) {
+document.body.addEventListener('mousemove', (e) => {
   world.$camera.position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
   world.$camera.position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
-  world.$camera.lookAt(new THREE.Vector3(-4, 0, 0));
+  world.$camera.native.lookAt(new THREE.Vector3(-4, 0, 0));
 });
 
-document.body.addEventListener('click', function () {
+document.body.addEventListener('click', () => {
   rabbit.setLinearVelocity(new THREE.Vector3(0, 5, 0));
   egg.setAngularVelocity(new THREE.Vector3(0, 10, 0));
   egg2.setAngularVelocity(new THREE.Vector3(0, -10, 0));
@@ -287,5 +259,3 @@ document.body.addEventListener('click', function () {
   egg8.setAngularVelocity(new THREE.Vector3(0, -10, 0));
   egg9.setAngularVelocity(new THREE.Vector3(0, -10, 0));
 });
-
-},{}]},{},[1]);

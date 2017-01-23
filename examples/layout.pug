@@ -1,0 +1,25 @@
+html
+  head
+    title Example
+    include meta.pug
+    block head
+    style(type='text/css').
+      html, body {
+        position: relative;
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+  body
+    block body
+
+    block dependencies
+      script(src='../../../build/whitestorm.js')
+      script(src=physicsModule)
+
+    block scripts
+      script(src=`./${scriptname}`)
