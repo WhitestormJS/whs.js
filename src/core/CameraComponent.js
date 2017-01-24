@@ -65,20 +65,15 @@ class CameraComponent extends Component {
     });
   }
 
-  copy(source) {
-    if (source.native) {
-      this.native = source.native.clone();
-      this.params = {...source.params};
-      this.modules = source.modules.slice(0);
 
+  copy(source) {
+    return super.copy(source, () => {
       if (this.target) this.target.copy(source.target());
 
       this.position.copy(source.position);
       this.rotation.copy(source.rotation);
       this.quaternion.copy(source.quaternion);
-    } else this.params = source.params;
-
-    return this;
+    });
   }
 
   clone() {
