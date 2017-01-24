@@ -47,30 +47,6 @@ class Box extends MeshComponent {
 
     return geometry;
   }
-
-  set g_width(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {width: val}}));
-  }
-
-  get g_width() {
-    return this._native.geometry.parameters.width;
-  }
-
-  set g_height(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {height: val}}));
-  }
-
-  get g_height() {
-    return this._native.geometry.parameters.height;
-  }
-
-  set g_depth(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {depth: val}}));
-  }
-
-  get g_depth() {
-    return this._native.geometry.parameters.depth;
-  }
 }
 
 export {

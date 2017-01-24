@@ -1,5 +1,11 @@
 export class DynamicGeometryModule {
-  integrate() {
+  constructor(params = {}) {
+    this.params = Object.assign({
+      attributes: false
+    }, params);
+  }
+
+  integrate(params) {
     this.g_ = function (params = {}) {
       if (this.buildGeometry) {
         this.native.geometry = this.buildGeometry(
@@ -7,5 +13,22 @@ export class DynamicGeometryModule {
         );
       }
     };
+
+    if (params.attributes) {
+      for (const key in this.params.geometry) {
+        if (key) {
+          Object.defineProperty(this, `g_${key}`, {
+            get() {
+              return this.native.geometry.parameters[key];
+            },
+            set(value) {
+              this.native.geometry = this.buildGeometry(this.updateParams({geometry: {[key]: value}}));
+            },
+            configurable: true,
+            enumerable: true
+          });
+        }
+      }
+    }
   }
 }

@@ -7,7 +7,6 @@ import {
 } from 'three';
 
 import {MeshComponent} from '../../core/MeshComponent';
-import {loadMaterial} from '../../utils/index';
 
 class Tube extends MeshComponent {
   static defaults = {
@@ -41,7 +40,6 @@ class Tube extends MeshComponent {
     }
   }
 
-
   build(params = this.params) {
     const {geometry, material} = this.applyBridge({
       geometry: this.buildGeometry(params),
@@ -65,46 +63,6 @@ class Tube extends MeshComponent {
     if (params.softbody) this.proccessSoftbodyGeometry(geometry);
 
     return geometry;
-  }
-
-  set g_path(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {path: val}}));
-  }
-
-  get g_path() {
-    return this._native.geometry.parameters.path;
-  }
-
-  set g_segments(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {segments: val}}));
-  }
-
-  get g_segments() {
-    return this._native.geometry.parameters.segments;
-  }
-
-  set g_radius(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
-  }
-
-  get g_radius() {
-    return this._native.geometry.parameters.radius;
-  }
-
-  set g_radiusSegments(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusSegments: val}}));
-  }
-
-  get g_radiusSegments() {
-    return this._native.geometry.parameters.radiusSegments;
-  }
-
-  set g_closed(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {closed: val}}));
-  }
-
-  get g_closed() {
-    return this._native.geometry.parameters.closed;
   }
 }
 

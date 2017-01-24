@@ -61,54 +61,6 @@ class Ring extends MeshComponent {
       params.geometry.thetaLength
     );
   }
-
-  set g_innerRadius(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {innerRadius: val}}));
-  }
-
-  get g_innerRadius() {
-    return this._native.geometry.parameters.innerRadius;
-  }
-
-  set g_outerRadius(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {outerRadius: val}}));
-  }
-
-  get g_outerRadius() {
-    return this._native.geometry.parameters.outerRadius;
-  }
-
-  set g_thetaSegments(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {thetaSegments: val}}));
-  }
-
-  get g_thetaSegments() {
-    return this._native.geometry.parameters.thetaSegments;
-  }
-
-  set g_phiSegments(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {phiSegments: val}}));
-  }
-
-  get g_phiSegments() {
-    return this._native.geometry.parameters.phiSegments;
-  }
-
-  set g_thetaStart(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {thetaStart: val}}));
-  }
-
-  get g_thetaStart() {
-    return this._native.geometry.parameters.thetaStart;
-  }
-
-  set g_thetaLength(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {thetaLength: val}}));
-  }
-
-  get g_thetaLength() {
-    return this._native.geometry.parameters.thetaLength;
-  }
 }
 
 export {

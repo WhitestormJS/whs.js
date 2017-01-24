@@ -4,8 +4,6 @@ import {
   CylinderGeometry
 } from 'three';
 
-
-
 import {MeshComponent} from '../../core/MeshComponent';
 
 class Cylinder extends MeshComponent {
@@ -72,38 +70,6 @@ class Cylinder extends MeshComponent {
     if (params.softbody) this.proccessSoftbodyGeometry(geometry);
 
     return geometry;
-  }
-
-  set g_radiusTop(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusTop: val}}));
-  }
-
-  get g_radiusTop() {
-    return this._native.geometry.parameters.radiusTop;
-  }
-
-  set g_radiusBottom(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusBottom: val}}));
-  }
-
-  get g_radiusBottom() {
-    return this._native.geometry.parameters.radiusBottom;
-  }
-
-  set g_height(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {height: val}}));
-  }
-
-  get g_height() {
-    return this._native.geometry.parameters.height;
-  }
-
-  set g_radiusSegments(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusSegments: val}}));
-  }
-
-  get g_radiusSegments() {
-    return this._native.geometry.parameters.radiusSegments;
   }
 }
 

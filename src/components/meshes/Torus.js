@@ -4,10 +4,7 @@ import {
   TorusGeometry
 } from 'three';
 
-
-
 import {MeshComponent} from '../../core/MeshComponent';
-import {loadMaterial} from '../../utils/index';
 
 class Torus extends MeshComponent {
   static defaults = {
@@ -51,8 +48,6 @@ class Torus extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? TorusBufferGeometry : TorusGeometry;
-
     return new TorusGeometry(
       params.geometry.radius,
       params.geometry.tube,
@@ -60,46 +55,6 @@ class Torus extends MeshComponent {
       params.geometry.tubularSegments,
       params.geometry.arc
     );
-  }
-
-  set g_radius(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
-  }
-
-  get g_radius() {
-    return this._native.geometry.parameters.radius;
-  }
-
-  set g_tube(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {tube: val}}));
-  }
-
-  get g_tube() {
-    return this._native.geometry.parameters.tube;
-  }
-
-  set g_radialSegments(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radialSegments: val}}));
-  }
-
-  get g_radialSegments() {
-    return this._native.geometry.parameters.radialSegments;
-  }
-
-  set g_tubularSegments(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {tubularSegments: val}}));
-  }
-
-  get g_tubularSegments() {
-    return this._native.geometry.parameters.tubularSegments;
-  }
-
-  set g_arc(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {arc: val}}));
-  }
-
-  get g_arc() {
-    return this._native.geometry.parameters.arc;
   }
 }
 

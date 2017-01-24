@@ -46,22 +46,6 @@ class Icosahedron extends MeshComponent {
       params.geometry.detail
     );
   }
-
-  set g_radius(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
-  }
-
-  get g_radius() {
-    return this._native.geometry.parameters.radius;
-  }
-
-  set g_detail(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {detail: val}}));
-  }
-
-  get g_detail() {
-    return this._native.geometry.parameters.detail;
-  }
 }
 
 export {
