@@ -46,22 +46,6 @@ class Extrude extends MeshComponent {
       params.geometry.options
     );
   }
-
-  set g_shapes(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {shapes: val}}));
-  }
-
-  get g_shapes() {
-    return this._native.geometry.parameters.shapes;
-  }
-
-  set g_options(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {options: val}}));
-  }
-
-  get g_options() {
-    return this._native.geometry.parameters.options;
-  }
 }
 
 export {

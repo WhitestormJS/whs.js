@@ -47,30 +47,6 @@ class Sphere extends MeshComponent {
 
     return geometry;
   }
-
-  set g_radius(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
-  }
-
-  get g_radius() {
-    return this._native.geometry.parameters.radius;
-  }
-
-  set g_widthSegments(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {widthSegments: val}}));
-  }
-
-  get g_widthSegments() {
-    return this._native.geometry.parameters.widthSegments;
-  }
-
-  set g_heightSegments(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {widthSegments: val}}));
-  }
-
-  get g_heightSegments() {
-    return this._native.geometry.parameters.widthSegments;
-  }
 }
 
 export {

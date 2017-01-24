@@ -44,14 +44,6 @@ class Shape extends MeshComponent {
       params.geometry.shapes
     );
   }
-
-  set g_shapes(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {shapes: val}}));
-  }
-
-  get g_shapes() {
-    return this._native.geometry.parameters.shapes;
-  }
 }
 
 export {

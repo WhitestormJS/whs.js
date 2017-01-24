@@ -38,30 +38,6 @@ class Parametric extends MeshComponent {
       params.geometry.stacks
     );
   }
-
-  set g_func(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {func: val}}));
-  }
-
-  get g_func() {
-    return this._native.geometry.parameters.func;
-  }
-
-  set g_slices(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {slices: val}}));
-  }
-
-  get g_slices() {
-    return this._native.geometry.parameters.slices;
-  }
-
-  set g_stacks(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {stacks: val}}));
-  }
-
-  get g_stacks() {
-    return this._native.geometry.parameters.stacks;
-  }
 }
 
 export {

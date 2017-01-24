@@ -44,14 +44,6 @@ class Lathe extends MeshComponent {
       params.geometry.points
     );
   }
-
-  set g_points(val) {
-    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {points: val}}));
-  }
-
-  get g_points() {
-    return this._native.geometry.parameters.points;
-  }
 }
 
 export {
