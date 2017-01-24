@@ -12,6 +12,7 @@ export class ElementModule {
 
   manager(manager) {
     manager.addDependency('element', this.element, {alias: '$element'});
+    manager.addDependency('container', this.params.container, {alias: '$container'});
   }
 
   integrate(params, self) {
