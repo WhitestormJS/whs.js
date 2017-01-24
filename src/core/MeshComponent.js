@@ -1,3 +1,4 @@
+import {Mesh} from 'three';
 import {Component} from './Component';
 
 import {NativeArguments} from './prototype/NativeArguments';
@@ -37,6 +38,23 @@ class MeshComponent extends Component {
     rotation: ['x', 'y', 'z'],
     scale: ['x', 'y', 'z']
   };
+
+  static Custom(geom) {
+    return class extends MeshComponent {
+      build(params = this.params) {
+        const {geometry, material} = this.applyBridge({
+          geometry: geom,
+          material: params.material
+        });
+
+        return this.applyBridge({mesh: new Mesh(geometry, material)}).mesh;
+      }
+    };
+  }
+
+  static create(geom, params) {
+    return new (WHS.MeshComponent.Custom(geom))(params);
+  }
 
   constructor(params, defaults = MeshComponent.defaults, instructions = MeshComponent.instructions) {
     super(params, defaults, instructions);

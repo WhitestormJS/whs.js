@@ -10,17 +10,8 @@ class App {
     this.modules = modules;
     this.manager = new ModuleManager(this);
 
-    for (let i = 0, max = modules.length; i < max; i++) {
-      const module = modules[i];
-
-      if (typeof module === 'function')
-        module.bind(this)();
-      else {
-        this.manager.setActiveModule(module);
-        if (module && module.manager) module.manager(this.manager);
-        if (module && module.integrate) module.integrate.bind(this)(module.params, module);
-      }
-    }
+    for (let i = 0, max = modules.length; i < max; i++)
+      this.applyModule(modules[i]);
 
     this.manager.reset();
   }
@@ -49,13 +40,11 @@ class App {
 
   applyModule(module) {
     if (typeof module === 'function')
-      module.bind(this.modulesSharedScope)().integrate.bind(this)(module.params, module);
+      module.bind(this)();
     else {
-      this.modules.push(module);
-      if (!module.name) module.name = '';
       this.manager.setActiveModule(module);
-      if (module.manager) module.manager(this.manager);
-      if (module.integrate) module.integrate.bind(this)(module.params, module);
+      if (module && module.manager) module.manager(this.manager);
+      if (module && module.integrate) module.integrate.bind(this)(module.params, module);
     }
 
     return module;
