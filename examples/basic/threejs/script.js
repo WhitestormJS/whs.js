@@ -13,15 +13,6 @@ const materialWHS = material.clone();
 materialWHS.color.set(0xffffff);
 materialWHS.map = new WHS.texture(`${process.assetsPath}/textures/earth.jpg`);
 
-const mesh1 = new THREE.Mesh(
-  new THREE.SphereGeometry(1, 32, 32),
-  material
-);
-
-mesh1.position.set(2, 2, 0);
-
-scene.add(mesh1);
-
 const mesh2 = new THREE.Mesh(
   new THREE.SphereGeometry(1, 32, 32),
   material
@@ -64,6 +55,15 @@ const sphere = new WHS.Sphere({
 
 sphere.addTo(world);
 sphere.position.y = 2;
+
+const mesh1 = WHS.MeshComponent.create(
+  new THREE.SphereGeometry(1, 32, 32),
+  {material}
+);
+
+mesh1.position.set(2, 2, 0);
+
+world.add(mesh1);
 
 const light = new WHS.PointLight();
 
