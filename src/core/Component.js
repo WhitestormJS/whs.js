@@ -30,29 +30,9 @@ class Component extends Events {
     if (this.params.manager) this.manager = new ModuleManager();
 
     this.modules = this.params.modules || [];
-    const modules = this.modules;
 
-    for (let i = 0, max = modules.length; i < max; i++) {
-      const module = modules[i];
-
-      if (typeof module === 'function')
-        module.bind(this)();
-      else {
-        if (!module.name) module.name = '';
-        if (this.manager) this.manager.setActiveModule(module);
-
-        if (module.manager && this.manager) module.manager(this.manager);
-        else if (module.manager) {
-          throw new ManagerError(
-            'Component',
-            `Module requires ModuleManager that is turned off for this component`,
-            this, module
-          );
-        }
-
-        if (module.integrate) module.integrate.bind(this)(module.params, module);
-      }
-    }
+    for (let i = 0, max = this.modules.length; i < max; i++)
+      this.applyModule(this.modules[i]);
   }
 
   get manager() {
@@ -116,6 +96,28 @@ class Component extends Events {
     }
 
     return bridgeMap;
+  }
+
+  applyModule(module) {
+    if (module && this.manager) this.manager.setActiveModule(module);
+
+    if (module && module.manager && this.manager) module.manager(this.manager);
+    else if (module && module.manager) {
+      throw new ManagerError(
+        'Component',
+        `Module requires ModuleManager that is turned off for this component`,
+        this, module
+      );
+    }
+
+    if (module && module.integrate) module.integrate.bind(this)(module.params, module);
+
+    return module;
+  }
+
+  module(module) {
+    this.applyModule(module);
+    return this;
   }
 
   get native() {
