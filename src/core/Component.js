@@ -4,12 +4,6 @@ import {extend, transformData} from '../utils/index';
 import {ModuleManager} from './ModuleManager';
 import {ManagerError} from './errors';
 
-export const getWorld = (element) => {
-  let world = element;
-  if (!world.$scene) while (!world.$scene) world = world.parent;
-  return world;
-};
-
 class Component extends Events {
   static defaults = {
     modules: [],
