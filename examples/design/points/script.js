@@ -11,23 +11,23 @@ const world = new WHS.App([
     bgColor: 0xffffff,
 
     renderer: {
-      antialias: true,
-      shadowmap: {
-        type: THREE.PCFSoftShadowMap
-      }
+      antialias: false
     }
   }),
   new WHS.OrbitControlsModule({target: new THREE.Vector3(50, 50, 50)}),
   new WHS.app.ResizeModule()
 ]);
 
-const data = new Float32Array(3993000);
-const colors = new Float32Array(3993000);
+const size = new THREE.Vector3(100, 100, 100);
+const sizel = size.x * size.y * size.z * 3;
+
+const data = new Float32Array(sizel); // 3993000
+const colors = new Float32Array(sizel);
 
 let i = 0;
-for (let x = 0; x <= 100; x++) {
-  for (let y = 0; y <= 100; y++) {
-    for (let z = 0; z <= 100; z++) {
+for (let x = 0; x <= size.x; x++) {
+  for (let y = 0; y <= size.y; y++) {
+    for (let z = 0; z <= size.z; z++) {
       data[i * 3] = x;
       data[i * 3 + 1] = y;
       data[i * 3 + 2] = z;

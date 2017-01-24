@@ -3,6 +3,9 @@ import * as UTILS from '../../globals';
 const world = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 50)
+  }, UTILS.appDefaults.rendering, {
+    ammo: process.ammoPath,
+    gravity: new THREE.Vector3(0, -10, 0)
   })
 ]);
 
@@ -104,8 +107,8 @@ const sphere = new WHS.Sphere({
 });
 
 sphere.addTo(world).then((sphere) => {
-  const mx = 120,
-    mz = 40;
+  const mx = 96,
+    mz = 32;
 
   sphere.setAngularVelocity({x: mx, y: 0, z: mz});
   sphere.setLinearVelocity({x: mx, y: 0, z: mz});
