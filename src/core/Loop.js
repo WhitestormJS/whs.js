@@ -1,21 +1,25 @@
 import {Clock} from 'three';
 
 class Loop {
-  constructor(func) {
+  constructor(func, useClock = true) {
     this.func = func;
-    this.clock = new Clock();
+    this.clock = useClock ? new Clock() : null;
     this.enabled = false;
   }
 
   start(world) {
+    if (this.enabled) return;
+
     if (world) world.addLoop(this);
 
-    this.clock.start();
+    if (this.clock) this.clock.start();
     this.enabled = true;
   }
 
   stop(world) {
-    this.clock.stop();
+    if (!this.enabled) return;
+
+    if (this.clock) this.clock.stop();
     this.enabled = false;
 
     if (world) world.removeLoop(this);
