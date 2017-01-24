@@ -33,7 +33,7 @@ export class ResizeModule {
     this.container = this.getContainer();
     this.resolution = this.getResolution();
 
-    if (this.params.auto) window.addEventListener('resize', this.trigger);
+    if (this.params.auto) window.addEventListener('resize', this.trigger.bind(this));
   }
 
   manager(manager) {
@@ -41,7 +41,7 @@ export class ResizeModule {
     this.camera = manager.get('camera');
 
     this.getResolution = () => manager.get('renderer', true).params.resolution;
-    this.getContainer = () => manager.get('element', true).params.container;
+    this.getContainer = () => manager.get('container');
 
     this.addAutoresize();
   }
