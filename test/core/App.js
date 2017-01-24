@@ -4,8 +4,9 @@ import * as WHS from '../../build/whitestorm.js';
 const app = new WHS.App();
 
 test('.start()', t => {
-  app.start();
-  t.pass();
+  t.notThrows(() => {
+    app.start();
+  });
 });
 
 test('.applyModule()', t => {
