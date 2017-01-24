@@ -32,7 +32,7 @@ class MeshComponent extends Component {
     scale: ['x', 'y', 'z']
   };
 
-  static Custom(geom, constructor = Mesh) {
+  static custom(geom, constructor = Mesh) {
     return class extends MeshComponent {
       build(params = this.params) {
         const {geometry, material} = this.applyBridge({
@@ -46,7 +46,7 @@ class MeshComponent extends Component {
   }
 
   static create(geom, params, constructor) {
-    return new (WHS.MeshComponent.Custom(geom, constructor))(params);
+    return new (WHS.MeshComponent.custom(geom, constructor))(params);
   }
 
   constructor(params, defaults = MeshComponent.defaults, instructions = MeshComponent.instructions) {
