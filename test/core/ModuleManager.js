@@ -1,6 +1,13 @@
 import test from 'ava';
 import * as WHS from '../../build/whitestorm.js';
 
+/*
+ * Ignored methods:
+ *
+ * - .publish() & .unpublish() - Aliases of .addDependency() and .removeDependency();
+ *
+ */
+
 const composition = {};
 const testValue = {test: true};
 
@@ -50,7 +57,7 @@ test('.onDependencyUpdate()', async t => {
       }
     });
 
-    setTimeout(reject, 3000);
+    setTimeout(reject, 1);
   });
 
   manager.set('overwritable', 'check update');
