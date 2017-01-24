@@ -102,10 +102,13 @@ class Component extends Events {
   }
 
   applyModule(module) {
-    if (module && this.manager) this.manager.setActiveModule(module);
+    if (!module) return;
+    this.modules.push(module);
 
-    if (module && module.manager && this.manager) module.manager(this.manager);
-    else if (module && module.manager) {
+    if (this.manager) this.manager.setActiveModule(module);
+
+    if (module.manager && this.manager) module.manager(this.manager);
+    else if (module.manager) {
       throw new ManagerError(
         'Component',
         `Module requires ModuleManager that is turned off for this component`,
@@ -113,7 +116,7 @@ class Component extends Events {
       );
     }
 
-    if (module && module.integrate) module.integrate.bind(this)(module.params, module);
+    if (module.integrate) module.integrate.bind(this)(module.params, module);
 
     return module;
   }
