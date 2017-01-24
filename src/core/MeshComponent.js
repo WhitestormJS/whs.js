@@ -1,19 +1,12 @@
 import {Mesh} from 'three';
 import {Component} from './Component';
 
-import {NativeArguments} from './prototype/NativeArguments';
+import {attributes, copy, mirror} from './prototype/attributes';
 import {CompositionError} from './errors';
 
-@NativeArguments(
-  // Three.js Instances.
-  ['position', {copy: true}],
-  ['rotation', {copy: true}],
-  ['quaternion', {copy: true}],
-  ['scale', {copy: true}],
-
-  // Get properties.
-  'material',
-  'geometry'
+@attributes(
+  copy('position', 'rotation', 'quaternion', 'scale'),
+  mirror('material', 'geometry')
 )
 class MeshComponent extends Component {
   static defaults = {

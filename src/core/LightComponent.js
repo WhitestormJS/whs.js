@@ -1,14 +1,10 @@
 import {Component} from './Component';
 
-import {NativeArguments} from './prototype/NativeArguments';
+import {attributes, copy} from './prototype/attributes';
 import {CompositionError} from './errors';
 
-@NativeArguments(
-  // Three.js Instances.
-  ['position', {copy: true}],
-  ['rotation', {copy: true}],
-  ['quaternion', {copy: true}],
-  ['target', {copy: true}]
+@attributes(
+  copy('position', 'rotation', 'quaternion', 'target')
 )
 class LightComponent extends Component {
   static defaults = {
