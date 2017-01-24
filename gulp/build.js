@@ -9,7 +9,7 @@ const logStart = name => log('cyan', `WEBPACK BUILD ['${name}' compiler status]:
 const logEnd = name => log('green', `WEBPACK BUILD ['${name}' compiler status]: Finished.`);
 
 // BUILD
-gulp.task('src:build', ['build:clean'], () => {
+gulp.task('build', ['build:clean'], () => {
   const compilers = new FrameworkCompilerInstance();
 
   logStart('main');

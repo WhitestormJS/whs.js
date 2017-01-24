@@ -2,7 +2,7 @@
   "name": "whs",
   "version": "1.2.6",
   "description": "Framework for developing 3D web apps with physics.",
-  "main": "lib/index.js",
+  "main": "build/whitestorm.js",
   "scripts": {
     "postversion": "gulp build --prod",
     "test": "ava --verbose --serial",
