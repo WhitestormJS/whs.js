@@ -48,7 +48,7 @@ const planet = new WHS.Tetrahedron({
     color: 0xee5624,
     shading: THREE.FlatShading,
     roughness: 0.9,
-    emissive: 0x270000,
+    emissive: 0x270000
   })
 });
 
@@ -87,16 +87,22 @@ new WHS.DirectionalLight({
   }
 }).addTo(world);
 
+const dynamicGeometry = new WHS.mesh.DynamicGeometryModule();
+
 const s1 = new WHS.Dodecahedron({
   geometry: {
     buffer: true,
     radius: 10
   },
 
+  modules: [
+    dynamicGeometry
+  ],
+
   material: new THREE.MeshStandardMaterial({
     shading: THREE.FlatShading,
     emissive: 0x270000,
-    roughness: 0.9,
+    roughness: 0.9
   })
 });
 
@@ -108,10 +114,14 @@ const s2 = new WHS.Box({
     depth: 10
   },
 
+  modules: [
+    dynamicGeometry
+  ],
+
   material: new THREE.MeshStandardMaterial({
     shading: THREE.FlatShading,
     roughness: 0.9,
-    emissive: 0x270000,
+    emissive: 0x270000
   })
 });
 
@@ -123,10 +133,14 @@ const s3 = new WHS.Cylinder({
     height: 10
   },
 
+  modules: [
+    dynamicGeometry
+  ],
+
   material: new THREE.MeshStandardMaterial({
     shading: THREE.FlatShading,
     roughness: 0.9,
-    emissive: 0x270000,
+    emissive: 0x270000
   })
 });
 
@@ -135,6 +149,10 @@ const s4 = new WHS.Sphere({
     buffer: true,
     radius: 10
   },
+
+  modules: [
+    dynamicGeometry
+  ],
 
   material: new THREE.MeshStandardMaterial({
     shading: THREE.FlatShading,
@@ -148,10 +166,10 @@ asteroids.addTo(space);
 
 // Materials.
 const mat = [
-  new THREE.MeshPhongMaterial({ color: colors.green, shading: THREE.FlatShading }),
-  new THREE.MeshPhongMaterial({ color: colors.blue, shading: THREE.FlatShading }),
-  new THREE.MeshPhongMaterial({ color: colors.orange, shading: THREE.FlatShading }),
-  new THREE.MeshPhongMaterial({ color: colors.yellow, shading: THREE.FlatShading })
+  new THREE.MeshPhongMaterial({color: colors.green, shading: THREE.FlatShading}),
+  new THREE.MeshPhongMaterial({color: colors.blue, shading: THREE.FlatShading}),
+  new THREE.MeshPhongMaterial({color: colors.orange, shading: THREE.FlatShading}),
+  new THREE.MeshPhongMaterial({color: colors.yellow, shading: THREE.FlatShading})
 ];
 
 for (let i = 0; i < particleCount; i++) {
