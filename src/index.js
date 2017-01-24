@@ -7,6 +7,7 @@ export * from './components/meshes/index';
 export * from './extras/index';
 export * from './utils/index';
 export * from './modules/app/index';
+export * from './modules/mesh/index';
 export * from './modules/presets/index';
 
 // DEPRECATION
