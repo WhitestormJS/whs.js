@@ -31,8 +31,7 @@ class Component extends Events {
 
     this.modules = this.params.modules || [];
 
-    for (let i = 0, max = this.modules.length; i < max; i++)
-      this.applyModule(this.modules[i]);
+    this.integrateModules();
   }
 
   get manager() {
@@ -72,13 +71,23 @@ class Component extends Events {
     return new this.constructor(this.params).copy(this);
   }
 
-  copy(source) {
-    if (source.native) {
-      this.native = source.native.clone(source.params);
-      this.params = {...source.params};
-    } else this.params = source.params;
+  copy(source, customize) {
+    this.params = {...source.params};
+
+    if (source.native) this.native = source.native.clone(source.params);
+    if (customize) customize();
+    this.integrateModules(source);
 
     return this;
+  }
+
+  integrateModules(source) {
+    if (source) this.modules = source.modules.slice(0);
+
+    for (let i = 0, max = this.modules.length; i < max; i++)
+      this.applyModule(this.modules[i]);
+
+    if (source) this.applyBridge({onCopy: source});
   }
 
   applyBridge(bridgeMap = {}) {
@@ -118,6 +127,29 @@ class Component extends Events {
   module(module) {
     this.applyModule(module);
     return this;
+  }
+
+  add(object) {
+    object.parent = this;
+
+    return new Promise((resolve, reject) => {
+      this.defer(() => {
+        const {native} = object;
+        if (!native) reject();
+
+        const addPromise = this.applyBridge({onAdd: object}).onAdd;
+
+        const resolver = () => {
+          this.native.add(native);
+          this.children.push(object);
+
+          resolve(object);
+        };
+
+        if (addPromise instanceof Promise) addPromise.then(resolver);
+        else resolver();
+      });
+    });
   }
 
   get native() {
