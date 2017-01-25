@@ -7,6 +7,8 @@ class Loop {
     this.enabled = false;
   }
 
+  // CONTROLS
+
   start(world) {
     if (this.enabled) return;
 
@@ -24,6 +26,8 @@ class Loop {
 
     if (world) world.removeLoop(this);
   }
+
+  // EXECUTION
 
   execute() {
     return this.func(this.clock);

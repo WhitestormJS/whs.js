@@ -1,10 +1,8 @@
-import Events from 'minivents';
-
 import {extend, transformData} from '../utils/index';
+import {ModuleSystem} from './ModuleSystem';
 import {ModuleManager} from './ModuleManager';
-import {ManagerError} from './errors';
 
-class Component extends Events {
+class Component extends ModuleSystem {
   static defaults = {
     modules: [],
     manager: true
@@ -12,36 +10,25 @@ class Component extends Events {
 
   static instructions = {};
 
-  _wait = [];
-  children = [];
-  modules = [];
-  params = {};
+  _wait = []; // Collection of promises;
+  modules = []; // Collection of modules;
+  children = []; // For keeping children components;
 
-  constructor(obj = {}, defaults = Component.defaults, instructions = Component.instructions) {
+  constructor(params = {}, defaults = Component.defaults, instructions = Component.instructions) {
     super();
 
-    this.params = extend(transformData(obj, instructions), defaults);
+    // Apply polyfilled parameters to .params;
+    this.params = extend(transformData(params, instructions), defaults);
     if (this.params.manager) this.manager = new ModuleManager();
 
-    this.modules = this.params.modules || [];
+    this.modules = this.params.modules;
 
     this.integrateModules();
   }
 
-  get manager() {
-    if (this._manager) return this._manager;
+  // PROMISES (Asynchronous code)
 
-    throw new ManagerError(
-      'Component',
-      `ModuleManager is not used in this component. 'manager' parameter should be set as 'true'`,
-      this
-    );
-  }
-
-  set manager(manager) {
-    this._manager = manager;
-  }
-
+  // FIXME: possible use of Promise.all(this._wait) only in .defer();
   wait(promise) {
     if (promise) this._wait.push(promise);
     return Promise.all(this._wait);
@@ -52,14 +39,14 @@ class Component extends Events {
     else func(this);
   }
 
-  get isDeffered() {
-    return this._wait.length > 0;
-  }
+  // PARAMETERS
 
   updateParams(params = {}) {
     this.params = extend(params, this.params);
     return this.params;
   }
+
+  // COPYING & CLONING
 
   clone() {
     return new this.constructor(this.params).copy(this);
@@ -75,56 +62,7 @@ class Component extends Events {
     return this;
   }
 
-  integrateModules(source) {
-    if (source) this.modules = source.modules.slice(0);
-
-    for (let i = 0, max = this.modules.length; i < max; i++)
-      this.applyModule(this.modules[i]);
-
-    if (source) this.applyBridge({onCopy: source});
-  }
-
-  applyBridge(bridgeMap = {}) {
-    const modules = this.modules;
-
-    for (let i = 0, max = modules.length; i < max; i++) {
-      for (const key in bridgeMap) {
-        if (bridgeMap[key]) {
-          const module = modules[i];
-
-          if (module.bridge && module.bridge[key])
-            bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
-        }
-      }
-    }
-
-    return bridgeMap;
-  }
-
-  applyModule(module) {
-    if (!module) return;
-    this.modules.push(module);
-
-    if (this.manager) this.manager.setActiveModule(module);
-
-    if (module.manager && this.manager) module.manager(this.manager);
-    else if (module.manager) {
-      throw new ManagerError(
-        'Component',
-        `Module requires ModuleManager that is turned off for this component`,
-        this, module
-      );
-    }
-
-    if (module.integrate) module.integrate.bind(this)(module.params, module);
-
-    return module;
-  }
-
-  module(module) {
-    this.applyModule(module);
-    return this;
-  }
+  // ADD
 
   add(object) {
     object.parent = this;
@@ -148,6 +86,34 @@ class Component extends Events {
       });
     });
   }
+
+  addTo(object) {
+    return object.add(this);
+  }
+
+  // GETTERS & SETTERS
+
+  get isDeffered() {
+    return this._wait.length > 0;
+  }
+
+  // .manager
+
+  get manager() {
+    if (this._manager) return this._manager;
+
+    throw new ManagerError(
+      'Component',
+      `ModuleManager is not used in this component. 'manager' parameter should be set as 'true'`,
+      this
+    );
+  }
+
+  set manager(manager) {
+    this._manager = manager;
+  }
+
+  // .native
 
   get native() {
     return this._native;

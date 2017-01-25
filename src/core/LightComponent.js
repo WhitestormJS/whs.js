@@ -81,6 +81,8 @@ class LightComponent extends Component {
     }
   }
 
+  // BUILDING & WRAPPING
+
   build() {
     throw new CompositionError(
       'MeshComponent',
@@ -124,6 +126,8 @@ class LightComponent extends Component {
     shadowCamera.bottom = camera.bottom;
   }
 
+  // COPYING & CLONING
+
   copy(source) {
     return super.copy(source, () => {
       if (this.target) this.target.copy(source.target());
@@ -136,10 +140,6 @@ class LightComponent extends Component {
 
   clone() {
     return new this.constructor({build: false}).copy(this);
-  }
-
-  addTo(object) {
-    return object.add(this);
   }
 }
 
