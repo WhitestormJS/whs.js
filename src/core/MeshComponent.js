@@ -32,6 +32,8 @@ class MeshComponent extends Component {
     scale: ['x', 'y', 'z']
   };
 
+  // CUSTOM GEOMETRY HANDLING
+
   static custom(geom, constructor = Mesh) {
     return class extends MeshComponent {
       build(params = this.params) {
@@ -73,6 +75,8 @@ class MeshComponent extends Component {
     }
   }
 
+  // BUILDING & WRAPPING
+
   build() {
     throw new CompositionError(
       'MeshComponent',
@@ -100,6 +104,8 @@ class MeshComponent extends Component {
     });
   }
 
+  // COPYING & CLONING
+
   copy(source) {
     return super.copy(source, () => {
       this.position.copy(source.position);
@@ -115,10 +121,6 @@ class MeshComponent extends Component {
     if (material) dest.material = dest.material.clone();
 
     return dest;
-  }
-
-  addTo(object) {
-    return object.add(this);
   }
 }
 

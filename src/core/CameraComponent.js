@@ -46,6 +46,8 @@ class CameraComponent extends Component {
     }
   }
 
+  // BUILDING & WRAPPING
+
   build() {
     throw new CompositionError(
       'CameraComponent',
@@ -65,6 +67,7 @@ class CameraComponent extends Component {
     });
   }
 
+  // COPYING & CLONING
 
   copy(source) {
     return super.copy(source, () => {
@@ -78,10 +81,6 @@ class CameraComponent extends Component {
 
   clone() {
     return new this.constructor({build: false}).copy(this);
-  }
-
-  addTo(object) {
-    return object.add(this);
   }
 }
 
