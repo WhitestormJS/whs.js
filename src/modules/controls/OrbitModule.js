@@ -1,4 +1,6 @@
 import {Vector3} from 'three';
+
+import {Loop} from '../../core/Loop';
 import {ThreeOrbitControls} from './lib/ThreeOrbitControls';
 
 export class OrbitModule {
@@ -32,7 +34,7 @@ export class OrbitModule {
       controls.update(c.getDelta());
     };
 
-    self.updateLoop = new WHS.Loop(updateProcessor).start(this);
+    self.updateLoop = new Loop(updateProcessor).start(this);
 
     controls.target.copy(params.target);
   }
