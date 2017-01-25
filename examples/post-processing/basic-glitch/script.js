@@ -24,7 +24,7 @@ window.world = new WHS.App(
         ammo: process.ammoPath
       }),
       postprocessor,
-      new WHS.OrbitControlsModule()
+      new WHS.controls.OrbitModule()
     ])
     .autoresize()
     .get()
