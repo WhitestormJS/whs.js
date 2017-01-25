@@ -7,27 +7,16 @@ import {
 
 import Events from 'minivents';
 
-export class VirtualMouse extends Events {
+export class VirtualMouseModule extends Events {
   mouse = new Vector2();
   raycaster = new Raycaster();
   world = null;
   canvas = null;
   projectionPlane = new Plane(new Vector3(0, 0, 1), 0);
 
-  constructor(world, globalMovement = false) {
+  constructor(globalMovement = false) {
     super();
-
-    world.mouse = this;
-    this.manager = world.manager;
-
-    if (this.manager.get('renderer')) this.canvas = this.manager.get('renderer').domElement;
-
-    const mouseMoveContainer = globalMovement ? window : this.manager.get('element');
-
-    mouseMoveContainer.addEventListener('mousemove', this.update.bind(this));
-    this.manager.get('element').addEventListener('click', () => this.emit('click'));
-    this.manager.get('element').addEventListener('mousedown', () => this.emit('mousedown'));
-    this.manager.get('element').addEventListener('mouseup', () => this.emit('mouseup'));
+    this.globalMovement = globalMovement;
   }
 
   update(e) {
@@ -36,10 +25,22 @@ export class VirtualMouse extends Events {
     this.mouse.x = ((e.clientX - rect.left) / (rect.right - rect.left)) * 2 - 1;
     this.mouse.y = -((e.clientY - rect.top) / (rect.bottom - rect.top)) * 2 + 1;
 
-    this.projectionPlane.normal.copy(this.manager.get('camera').native.getWorldDirection());
+    this.projectionPlane.normal.copy(this.camera.getWorldDirection());
 
-    this.raycaster.setFromCamera(this.mouse, this.manager.get('camera').native);
+    this.raycaster.setFromCamera(this.mouse, this.camera);
     this.emit('move');
+  }
+
+  manager(manager) {
+    this.canvas = manager.get('renderer').domElement;
+    const mouseMoveContainer = this.globalMovement ? window : manager.get('element');
+
+    this.camera = manager.get('camera').native;
+
+    mouseMoveContainer.addEventListener('mousemove', this.update.bind(this));
+    manager.get('element').addEventListener('click', () => this.emit('click'));
+    manager.get('element').addEventListener('mousedown', () => this.emit('mousedown'));
+    manager.get('element').addEventListener('mouseup', () => this.emit('mouseup'));
   }
 
   track(component) {
