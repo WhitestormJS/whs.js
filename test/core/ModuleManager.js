@@ -4,7 +4,7 @@ import * as WHS from '../../build/whitestorm.js';
 /*
  * Ignored methods:
  *
- * - .publish() & .unpublish() - Aliases of .addDependency() and .removeDependency();
+ * - .publish() & .unpublish() - Aliases of .add() and .remove();
  *
  */
 
@@ -14,16 +14,16 @@ const testValue = {test: true};
 const manager = new WHS.ModuleManager(composition);
 const module = new WHS.app.SceneModule();
 
-test('.setActiveModule()', t => {
-  manager.setActiveModule(module);
+test('.active()', t => {
+  manager.active(module);
   t.is(manager.currentModule, module);
 });
 
-test('.addDependency()', t => {
+test('.add()', t => {
   t.plan(2);
 
-  manager.addDependency('immutable', testValue, {immutable: true, alias: '$testkey'});
-  manager.addDependency('overwritable', testValue);
+  manager.add('immutable', testValue, {immutable: true, alias: '$testkey'});
+  manager.add('overwritable', testValue);
 
   t.is(manager.store.immutable[0], testValue, 'value is set');
   t.is(composition.$testkey, testValue, 'alias is set');
@@ -49,9 +49,9 @@ test('.set()', t => {
   t.is(manager.store.overwritable[0], 'newValue', 'value is updated');
 });
 
-test('.onDependencyUpdate()', async t => {
+test('.update()', async t => {
   const update = new Promise((resolve, reject) => {
-    manager.onDependencyUpdate({
+    manager.update({
       overwritable: () => {
         resolve(true);
       }
@@ -72,11 +72,11 @@ test('.has()', t => {
   t.false(manager.has('whatever'), 'manager doesn\'t have \'whatever\' dependency');
 });
 
-test('.removeDependency()', t => {
+test('.remove()', t => {
   t.plan(2);
 
-  manager.removeDependency('immutable');
-  manager.removeDependency('overwritable');
+  manager.remove('immutable');
+  manager.remove('overwritable');
 
   t.is(manager.store.immutable, null);
   t.is(manager.store.overwritable, null);
