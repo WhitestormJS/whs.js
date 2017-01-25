@@ -8,6 +8,8 @@ export class ModuleManager {
     this.updateMap = {};
   }
 
+  // SETTING ACTIVE MODULE
+
   setActiveModule(module) {
     this.currentModule = module;
   }
@@ -15,6 +17,8 @@ export class ModuleManager {
   reset() {
     this.currentModule = null;
   }
+
+  // DEPENDENCIES
 
   onDependencyUpdate(depsMap = {}) {
     for (const key in depsMap) {
@@ -71,6 +75,8 @@ export class ModuleManager {
   removeDependency(key) {
     this.store[key] = null;
   }
+
+  // ALIAS METHODS
 
   get(key, getModule = false) {
     if (!this.store[key]) {
