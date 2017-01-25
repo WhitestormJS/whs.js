@@ -2,7 +2,7 @@ import * as UTILS from '../../globals';
 
 const ad = UTILS.appDefaults;
 
-const controlsModule = new WHS.OrbitControlsModule();
+const controlsModule = new WHS.controls.OrbitModule();
 
 const world = new WHS.App([
   ...UTILS.appModules({

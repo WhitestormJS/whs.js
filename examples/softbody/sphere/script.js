@@ -21,7 +21,7 @@ const world = new WHS.App([
     gravity: new THREE.Vector3(0, -10, 0),
     softbody: true
   }),
-  new WHS.OrbitControlsModule(),
+  new WHS.controls.OrbitModule(),
   new WHS.app.ResizeModule()
 ]);
 
