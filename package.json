@@ -3,6 +3,7 @@
   "version": "2.0.0-alpha.1",
   "description": "Framework for developing 3D web apps with physics.",
   "main": "build/whitestorm.js",
+  "module": "src/index.js",
   "scripts": {
     "postversion": "gulp build --prod && git add . && git commit -m 'Build'",
     "test": "ava --verbose --serial",
