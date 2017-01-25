@@ -84,6 +84,8 @@ const sizer = document.getElementById('sizer');
 const embed = document.getElementById('embed');
 let resize = false;
 
+resizer.trigger();
+
 sizer.addEventListener('mousedown', () => {
   resize = true;
 });
