@@ -15,7 +15,7 @@ export class OrbitModule {
       manager.get('renderer').domElement
     );
 
-    manager.onDependencyUpdate({
+    manager.update({
       camera: (camera) => {
         this.controls.object = camera.native;
       }
