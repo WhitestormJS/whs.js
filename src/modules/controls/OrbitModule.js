@@ -22,8 +22,8 @@ export class OrbitModule {
     });
   }
 
-  integrate(params, self) {
-    const controls = self.controls;
+  integrate(self) {
+    const {params, controls} = self;
 
     const updateProcessor = params.follow ? (c) => {
       controls.update(c.getDelta());

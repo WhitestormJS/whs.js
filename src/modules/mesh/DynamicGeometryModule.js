@@ -5,7 +5,9 @@ export class DynamicGeometryModule {
     }, params);
   }
 
-  integrate(params) {
+  integrate(self) {
+    const params = self.params;
+
     this.g_ = function (params = {}) {
       if (this.buildGeometry) {
         this.native.geometry = this.buildGeometry(

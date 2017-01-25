@@ -15,7 +15,7 @@ export class ElementModule {
     manager.add('container', this.params.container, {alias: '$container'});
   }
 
-  integrate(params, self) {
-    params.container.appendChild(self.element);
+  integrate(self) {
+    self.params.container.appendChild(self.element);
   }
 }
