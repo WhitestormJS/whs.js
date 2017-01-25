@@ -19,7 +19,7 @@ const world = new WHS.App([
   new PHYSICS.WorldModule({
     ammo: process.ammoPath
   }),
-  new WHS.OrbitControlsModule(),
+  new WHS.controls.OrbitModule(),
   new WHS.app.ResizeModule()
 ]);
 

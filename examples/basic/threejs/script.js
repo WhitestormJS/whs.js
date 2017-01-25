@@ -46,7 +46,7 @@ world
     }
   }))
   .module(new WHS.app.ResizeModule())
-  .module(new WHS.OrbitControlsModule());
+  .module(new WHS.controls.OrbitModule());
 
 const sphere = new WHS.Sphere({
   geometry: [1, 32, 32],

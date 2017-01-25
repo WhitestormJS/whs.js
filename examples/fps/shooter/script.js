@@ -40,11 +40,10 @@ const world = new WHS.App([
   new PHYSICS.WorldModule({
     ammo: process.ammoPath
   }),
-  new WHS.FirstPersonControls(sphere, {
+  new WHS.controls.FirstPersonModule(sphere, {
     speed: 500,
     ypos: 0
   }),
-  // new WHS.OrbitControlsModule(),
   new WHS.app.ResizeModule()
 ]);
 
