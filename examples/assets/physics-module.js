@@ -3387,7 +3387,7 @@ var WorldModule = function (_Eventable) {
       var _physijs = object._physijs || object.component._physijs;
 
       if (_physijs) {
-        component.manager.addDependency('module:world', this);
+        component.manager.add('module:world', this);
         _physijs.id = this.getObjectId();
 
         if (object instanceof __WEBPACK_IMPORTED_MODULE_7__vehicle_vehicle__["a" /* Vehicle */]) {
@@ -3451,7 +3451,7 @@ var WorldModule = function (_Eventable) {
         // Mesh.prototype.remove.call(this, object);
 
         if (object._physijs) {
-          component.manager.removeDependency('module:world');
+          component.manager.remove('module:world');
           this._objects[object._physijs.id] = null;
           this.execute('removeObject', { id: object._physijs.id });
         }
@@ -3483,7 +3483,7 @@ var WorldModule = function (_Eventable) {
   }, {
     key: 'manager',
     value: function manager(_manager) {
-      _manager.addDependency('physicsWorker', this._worker);
+      _manager.add('physicsWorker', this._worker);
     }
   }, {
     key: 'integrate',

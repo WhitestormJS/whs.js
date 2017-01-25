@@ -37,7 +37,7 @@ export class ModuleSystem extends Events {
     if (!module) return;
     this.modules.push(module);
 
-    if (this.manager) this.manager.setActiveModule(module);
+    if (this.manager) this.manager.active(module);
 
     if (module.manager && this.manager) module.manager(this.manager);
     else if (module.manager) {

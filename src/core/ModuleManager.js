@@ -10,7 +10,7 @@ export class ModuleManager {
 
   // SETTING ACTIVE MODULE
 
-  setActiveModule(module) {
+  active(module) {
     this.currentModule = module;
   }
 
@@ -20,7 +20,7 @@ export class ModuleManager {
 
   // DEPENDENCIES
 
-  onDependencyUpdate(depsMap = {}) {
+  update(depsMap = {}) {
     for (const key in depsMap) {
       if (this.updateMap[key])
         this.updateMap[key].push(depsMap[key]);
@@ -29,7 +29,7 @@ export class ModuleManager {
     }
   }
 
-  addDependency(key, object, config = {}) {
+  add(key, object, config = {}) {
     if (this.store[key] && this.store[key][2].immutable) {
       throw new DependencyError(
         'ModuleManager',
@@ -72,11 +72,9 @@ export class ModuleManager {
     }
   }
 
-  removeDependency(key) {
+  remove(key) {
     this.store[key] = null;
   }
-
-  // ALIAS METHODS
 
   get(key, getModule = false) {
     if (!this.store[key]) {
@@ -90,19 +88,13 @@ export class ModuleManager {
     return getModule ? this.store[key][1] : this.store[key][0];
   }
 
-  set(key, value) {
-    this.addDependency(key, value, this.store[key][2] || {});
-  }
-
   has(key) {
     return Boolean(this.store[key]);
   }
 
-  get publish() {
-    return this.addDependency;
-  }
+  // ALIAS METHODS
 
-  get unpublish() {
-    return this.removeDependency;
+  set(key, value) {
+    this.add(key, value, this.store[key][2] || {});
   }
 }
