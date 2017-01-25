@@ -5,6 +5,7 @@ import {RenderingModule} from './RenderingModule';
 import {SceneModule} from './SceneModule';
 import {ResizeModule} from './ResizeModule';
 import {PostProcessorModule} from './PostProcessorModule';
+import {VirtualMouseModule} from './VirtualMouseModule';
 
 export const app = {
   ElementModule,
@@ -13,5 +14,6 @@ export const app = {
   RenderingModule,
   SceneModule,
   ResizeModule,
-  PostProcessorModule
+  PostProcessorModule,
+  VirtualMouseModule
 };

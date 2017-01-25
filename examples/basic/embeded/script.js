@@ -1,6 +1,7 @@
 import * as UTILS from '../../globals';
 
 const resizer = new WHS.app.ResizeModule();
+const mouse = new WHS.app.VirtualMouseModule();
 
 const world = new WHS.App([
   new WHS.app.ElementModule({
@@ -27,7 +28,8 @@ const world = new WHS.App([
     ammo: process.ammoPath
   }),
   new WHS.controls.OrbitModule(),
-  resizer
+  resizer,
+  mouse
 ]);
 
 const sphere = new WHS.Sphere({ // Create sphere component.
@@ -51,8 +53,6 @@ const sphere = new WHS.Sphere({ // Create sphere component.
 });
 
 sphere.addTo(world);
-
-const mouse = new WHS.VirtualMouse(world);
 mouse.track(sphere);
 
 sphere.on('mouseover', () => {

@@ -18,6 +18,10 @@ const teapot = new WHS.Model({
       restitution: 0.5,
       path: `${process.assetsPath}/models/teapot/utah-teapot-light.json`,
       scale: new THREE.Vector3(4, 4, 4)
+    }),
+    new WHS.mesh.TextureModule({
+      url: `${process.assetsPath}/textures/teapot.jpg`,
+      repeat: new THREE.Vector2(1, 1)
     })
   ],
 
@@ -25,7 +29,6 @@ const teapot = new WHS.Model({
 
   material: new THREE.MeshPhongMaterial({
     shading: THREE.SmoothShading,
-    map: WHS.texture(`${process.assetsPath}/textures/teapot.jpg`, {repeat: {x: 1, y: 1}}),
     side: THREE.DoubleSide
   }),
 

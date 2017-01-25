@@ -48,7 +48,7 @@ export class ModuleSystem extends Events {
       );
     }
 
-    if (module.integrate) module.integrate.bind(this)(module.params, module);
+    if (module.integrate) module.integrate.bind(this)(module);
 
     return module;
   }

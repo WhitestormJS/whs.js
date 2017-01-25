@@ -250,7 +250,7 @@ export class FirstPersonModule {
     manager.get('scene').add(this.controls.getObject());
   }
 
-  integrate(params, self) {
+  integrate(self) {
     const updateProcessor = (c) => {
       self.controls.update(c.getDelta());
     };

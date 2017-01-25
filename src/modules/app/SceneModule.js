@@ -11,7 +11,7 @@ export class SceneModule {
     manager.add('scene', this.scene, {alias: '$scene'});
   }
 
-  integrate(params, self) {
+  integrate(self) {
     this.children = [];
 
     this.add = function (object) {
