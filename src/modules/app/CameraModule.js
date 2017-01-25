@@ -30,7 +30,7 @@ export class CameraModule {
     });
   }
 
-  integrate(params, self) {
+  integrate(self) {
     this.add(self.camera);
   }
 

@@ -32,7 +32,7 @@ export class PostProcessorModule {
     this.configure();
   }
 
-  integrate(params, self) {
+  integrate(self) {
     self.oldLoop.stop(this);
     self.renderLoop.start(this);
   }

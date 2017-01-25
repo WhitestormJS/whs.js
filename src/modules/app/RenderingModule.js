@@ -88,7 +88,7 @@ export class RenderingModule {
     manager.add('renderer', this.renderer, {alias: '$rendering'});
   }
 
-  integrate(params, self) {
+  integrate(self) {
     self.renderLoop.start(this);
   }
 }
