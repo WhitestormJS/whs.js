@@ -24,7 +24,7 @@ export class ModuleSystem extends Events {
         if (bridgeMap[key]) {
           const module = modules[i];
 
-          if (module.bridge && module.bridge[key])
+          if (module && module.bridge && module.bridge[key])
             bridgeMap[key] = module.bridge[key].apply(this, [bridgeMap[key], module]);
         }
       }
