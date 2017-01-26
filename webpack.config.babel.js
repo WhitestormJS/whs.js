@@ -4,21 +4,30 @@ import HappyPack from 'happypack';
 
 process.env.BABEL_ENV = 'browser';
 
-export function config({isProduction, src, dest, filename = 'whitestorm.js', plugins = []}) {
+export function config(
+    {
+      isProduction,
+      src,
+      dest,
+      filename = 'whitestorm.js',
+      plugins = [],
+      compact = false
+    }
+) {
   if (process.env.CI) isProduction = true;
   console.log(isProduction ? 'Production mode' : 'Development mode');
 
   const version = require('./package.json').version;
   console.log(version);
 
-  const bannerText = `WhitestormJS Framework v${version}`;
+  const bannerText = `WhitestormJS Framework v${version}${compact ? ' compact' : ''}`;
 
   return { // PHYSICS VERSION
     devtool: isProduction ? false : 'source-map',
     cache: true,
     entry: [
       // 'babel-polyfill',
-      `${src}/index.js`
+      compact ? `${src}/compact.js` : `${src}/index.js`
     ],
     target: 'web',
     output: {
@@ -49,8 +58,8 @@ export function config({isProduction, src, dest, filename = 'whitestorm.js', plu
         }
       ]
     },
-    plugins: isProduction ?
-      [
+    plugins: isProduction
+      ? [
         new webpack.optimize.UglifyJsPlugin({
           compress: {
             hoist_funs: false, // Turn this off to prevent errors with Ammo.js
