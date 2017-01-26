@@ -12,7 +12,7 @@ module.exports = {
   '@whs:controls/firstperson': 'whs/src/modules/controls/FirstPersonModule',
 
   '@whs$': 'whs/src/index',
-  '@whs^three': 'whs/src/three.js',
+  '@three$': 'whs/src/three.js',
   '@whs/core$': 'whs/src/core/index',
   '@whs/core': 'whs/src/core',
   '@whs:app$': 'whs/src/modules/app/export',
