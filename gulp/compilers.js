@@ -18,9 +18,7 @@ export const FrameworkCompilerInstance = (options = {framework}) =>
       src: options.framework.src,
       dest: options.framework.dest,
       filename: 'whitestorm.compact.js',
-      plugins: [
-        new webpack.IgnorePlugin(/(components)/)
-      ]
+      compact: true
     }))
   }[name]);
 
