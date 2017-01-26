@@ -11,7 +11,7 @@ const materialNested = material.clone();
 materialNested.color.set(0x0000ff);
 const materialWHS = material.clone();
 materialWHS.color.set(0xffffff);
-materialWHS.map = new WHS.texture(`${process.assetsPath}/textures/earth.jpg`);
+materialWHS.map = WHS.mesh.TextureModule.load(`${process.assetsPath}/textures/earth.jpg`);
 
 const mesh2 = new THREE.Mesh(
   new THREE.SphereGeometry(1, 32, 32),
