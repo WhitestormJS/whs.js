@@ -37,7 +37,7 @@ export function config(
       libraryTarget: 'umd'
     },
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js$/,
           exclude: [
@@ -45,40 +45,49 @@ export function config(
           ],
           loader: 'babel-loader', // babel-loader
           query: {
-            cacheDirectory: true,
-            plugins: [
-              ['transform-runtime', {polyfill: false}],
-              'add-module-exports',
-              'transform-decorators-legacy',
-              'transform-class-properties',
-              'transform-object-rest-spread'
-            ],
-            presets: [['es2015', {modules: false}]]
+            cacheDirectory: true
           }
         }
       ]
     },
-    plugins: isProduction
-      ? [
+    plugins: [
+      new webpack.LoaderOptionsPlugin({
+        minimize: isProduction,
+        debug: !isProduction
+      }),
+      ...(isProduction ? [
         new webpack.optimize.UglifyJsPlugin({
           compress: {
-            hoist_funs: false, // Turn this off to prevent errors with Ammo.js
             warnings: false,
-            dead_code: true
+            screw_ie8: true,
+            conditionals: true,
+            unused: true,
+            comparisons: true,
+            sequences: true,
+            dead_code: true,
+            evaluate: true,
+            if_return: true,
+            join_vars: true
           },
-          minimize: true
-        }),
-        new HappyPack({loaders: ['babel'], threads: 4}),
-        new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
-        new webpack.BannerPlugin(bannerText),
-        ...plugins
-      ]
-      : [
-        new HappyPack({loaders: ['babel'], threads: 4}),
-        new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
-        new webpack.BannerPlugin(bannerText),
-        ...plugins
-      ]
+
+          output: {
+            comments: false
+          }
+        })
+      ] : []),
+      new HappyPack({loaders: ['babel-loader'], threads: 4}),
+      new webpack.BannerPlugin(bannerText),
+      ...plugins
+    ],
+    resolve: {
+      modules: [
+        path.resolve(__dirname, 'node_modules'),
+        src
+      ],
+      alias: {
+        three$: path.join(__dirname, './node_modules/three/build/three.module.js')
+      }
+    }
   };
 }
 
