@@ -4,7 +4,7 @@ import {
 
 import {CopyShader} from '../../extras/shader/CopyShader.js';
 import {ShaderPass} from '../../extras/pass/ShaderPass.js';
-import {RenderPass} from '../../extras//pass/RenderPass.js';
+import {RenderPass} from '../../extras/pass/RenderPass.js';
 import {MaskPass, ClearMaskPass} from '../../extras/pass/MaskPass.js';
 import {Loop} from '../../core/Loop';
 
