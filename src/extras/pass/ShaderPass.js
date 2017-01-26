@@ -3,8 +3,16 @@
  * @author yannis torres / es6 migration
  */
 
-import * as THREE from 'three';
-import {Pass} from './Pass.js';
+import {
+  ShaderMaterial,
+  UniformsUtils,
+  OrthographicCamera,
+  Scene,
+  Mesh,
+  PlaneBufferGeometry
+} from 'three';
+
+import {Pass} from './Pass';
 
 export class ShaderPass extends Pass {
   constructor(name, shader, textureID) {
@@ -12,12 +20,12 @@ export class ShaderPass extends Pass {
 
     this.textureID = (textureID === undefined) ? 'tDiffuse' : textureID;
 
-    if (shader instanceof THREE.ShaderMaterial) {
+    if (shader instanceof ShaderMaterial) {
       this.uniforms = shader.uniforms;
       this.material = shader;
     } else if (shader) {
-      this.uniforms = THREE.UniformsUtils.clone(shader.uniforms);
-      this.material = new THREE.ShaderMaterial({
+      this.uniforms = UniformsUtils.clone(shader.uniforms);
+      this.material = new ShaderMaterial({
         defines: shader.defines || {},
         uniforms: this.uniforms,
         vertexShader: shader.vertexShader,
@@ -25,10 +33,10 @@ export class ShaderPass extends Pass {
       });
     }
 
-    this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    this.scene = new THREE.Scene();
+    this.camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    this.scene = new Scene();
 
-    this.quad = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), null);
+    this.quad = new Mesh(new PlaneBufferGeometry(2, 2), null);
     this.scene.add(this.quad);
   }
 

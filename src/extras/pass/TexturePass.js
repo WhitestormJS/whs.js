@@ -3,9 +3,17 @@
  * @author yannis torres / es6 migration
  */
 
-import * as THREE from 'three';
-import {CopyShader} from '../shader/CopyShader.js';
-import {Pass} from './Pass.js';
+import {
+  UniformsUtils,
+  ShaderMaterial,
+  OrthographicCamera,
+  Scene,
+  Mesh,
+  PlaneBufferGeometry
+} from 'three';
+
+import {CopyShader} from '../shader/CopyShader';
+import {Pass} from './Pass';
 
 export class TexturePass extends Pass {
   constructor(name, map, opacity) {
@@ -19,9 +27,9 @@ export class TexturePass extends Pass {
     this.map = map;
     this.opacity = (opacity === undefined) ? 1.0 : opacity;
 
-    this.uniforms = THREE.UniformsUtils.clone(shader.uniforms);
+    this.uniforms = UniformsUtils.clone(shader.uniforms);
 
-    this.material = new THREE.ShaderMaterial({
+    this.material = new ShaderMaterial({
       uniforms: this.uniforms,
       vertexShader: shader.vertexShader,
       fragmentShader: shader.fragmentShader,
@@ -31,10 +39,10 @@ export class TexturePass extends Pass {
 
     this.needsSwap = false;
 
-    this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    this.scene = new THREE.Scene();
+    this.camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    this.scene = new Scene();
 
-    this.quad = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), null);
+    this.quad = new Mesh(new PlaneBufferGeometry(2, 2), null);
     this.scene.add(this.quad);
   }
 
