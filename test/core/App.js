@@ -31,5 +31,3 @@ test('.module()', t => {
       .module(new WHS.app.CameraModule());
   });
 });
-
-test.todo('.applyBridge()');

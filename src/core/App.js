@@ -40,15 +40,15 @@ class App extends ModuleSystem {
   }
 
   addLoop(loop) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this.loops.push(loop);
       resolve(loop);
     });
   }
 
   removeLoop(loop) {
-    return new Promise((resolve) => {
-      this.loops.filter((l) => l !== loop);
+    return new Promise(resolve => {
+      this.loops.filter(l => l !== loop);
       resolve(loop);
     });
   }
