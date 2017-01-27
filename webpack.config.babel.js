@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import HappyPack from 'happypack';
+import DashboardPlugin from 'webpack-dashboard/plugin';
 
 process.env.BABEL_ENV = 'browser';
 
@@ -77,6 +78,7 @@ export function config(
       ] : []),
       new HappyPack({loaders: ['babel-loader'], threads: 4}),
       new webpack.BannerPlugin(bannerText),
+      new DashboardPlugin(),
       ...plugins
     ],
     resolve: {
