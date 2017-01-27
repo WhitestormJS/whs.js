@@ -21,6 +21,6 @@ gulp.task('build', ['build:clean'], () => {
   compilers('compact').run(() => logEnd('compact'));
 });
 
-gulp.task('build:clean', (callback) => {
+gulp.task('build:clean', callback => {
   del([`${framework.dest}/*.js`, `${framework.dest}/*.map`]).then(() => callback());
 });
