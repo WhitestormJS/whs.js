@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as WHS from '../../build/whitestorm.js';
+import * as WHS from '../../build/whitestorm';
 
 /*
  * Ignored methods:
@@ -17,7 +17,7 @@ const component2 = new WHS.Component();
 app.start();
 
 test('.wait() & .defer()', t => {
-  const promise = new Promise((resolve) => {
+  const promise = new Promise(resolve => {
     setTimeout(() => resolve(), 1);
   });
 

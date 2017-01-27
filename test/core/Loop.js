@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as WHS from '../../build/whitestorm.js';
+import * as WHS from '../../build/whitestorm';
 
 const app = new WHS.App();
 const loop = new WHS.Loop(() => {}, false);
