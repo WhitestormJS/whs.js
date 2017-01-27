@@ -5,12 +5,11 @@
   "main": "build/whitestorm.js",
   "module": "src/index.js",
   "scripts": {
-    "postversion": "gulp build --prod && git add . && git commit -m 'Build'",
-    "test": "ava --verbose --serial",
-    "start": "npm run dev",
-    "build": "gulp build",
-    "deploy": "surge --project ./ --domain whs-dev.surge.sh",
-    "dev": "gulp dev --devPhysics 8001"
+    "postversion": "gulp build --prod & git add . & git commit -m 'Build'",
+    "test": "ava --verbose --serial & xo ./src/**/*.js",
+    "start": "gulp dev --devPhysics 8001",
+    "build": "gulp build & gulp examples:build",
+    "deploy": "surge --project ./ --domain whs-dev.surge.sh"
   },
   "repository": "WhitestormJS/whitestorm.js",
   "keywords": [
@@ -36,7 +35,7 @@
     "ava": "^0.17.0",
     "babel": "^6.5.2",
     "babel-core": "^6.22.1",
-    "babel-eslint": "^6.1.2",
+    "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-class-properties": "^6.22.0",
@@ -57,9 +56,7 @@
     "gulp-benchmark": "^1.1.1",
     "gulp-browser-basedir": "^1.0.1",
     "gulp-browserify": "^0.5.1",
-    "gulp-cached": "^1.1.1",
     "gulp-cli": "^1.2.2",
-    "gulp-xo": "^0.14.0",
     "happypack": "^3.0.2",
     "mocha": "^3.2.0",
     "path": "^0.12.7",
