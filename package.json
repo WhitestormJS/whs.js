@@ -28,6 +28,7 @@
   "license": "MIT",
   "homepage": "https://github.com/WhitestormJS/whitestorm.js#readme",
   "dependencies": {
+    "lodash-es": "^4.17.4",
     "minivents": "^2.0.2",
     "three": "^0.84.0"
   },
