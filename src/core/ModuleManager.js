@@ -45,7 +45,7 @@ export class ModuleManager {
         get: () => {
           return this.store[key][0];
         },
-        set: (value) => {
+        set: value => {
           if (this.store[key] && this.store[key][2].immutable) {
             throw new DependencyError(
               'ModuleManager',
