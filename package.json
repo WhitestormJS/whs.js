@@ -7,7 +7,7 @@
   "scripts": {
     "postversion": "gulp build --prod & git add . & git commit -m 'Build'",
     "test": "ava --verbose --serial & xo ./src/**/*.js",
-    "start": "gulp dev --devPhysics 8001",
+    "start": "webpack-dashboard -t WhitestormJS -- gulp dev --devPhysics 8001",
     "build": "gulp build & gulp examples:build",
     "deploy": "surge --project ./ --domain whs-dev.surge.sh"
   },
@@ -66,6 +66,7 @@
     "three": "^0.84.0",
     "uglify-loader": "^1.4.0",
     "webpack": "^2.1.0-beta.27",
+    "webpack-dashboard": "^0.3.0",
     "webpack-dev-middleware": "^1.9.0",
     "xo": "^0.17.1",
     "yargs": "^6.6.0"
