@@ -3,6 +3,7 @@ import gulp from 'gulp';
 import express from 'express';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import {argv} from 'yargs';
+import DashboardPlugin from 'webpack-dashboard/plugin';
 
 import {FrameworkCompilerInstance, ExampleCompilerInstance} from './compilers';
 import {getPaths} from './utils';
@@ -11,7 +12,7 @@ import {getTemplateData, examples} from './config';
 // DEV MODE
 gulp.task('dev', () => {
   const app = express();
-  const compiler = new FrameworkCompilerInstance();
+  const compilerInstance = new FrameworkCompilerInstance();
   const templateData = getTemplateData({devPhysics: argv.devPhysics, devMode: true});
   const exampleCompiler = new ExampleCompilerInstance({
     path: {
@@ -20,7 +21,10 @@ gulp.task('dev', () => {
     }
   });
 
-  app.use(new WebpackDevMiddleware(compiler('main'), {
+  const compiler = compilerInstance('main');
+  compiler.apply(new DashboardPlugin());
+
+  app.use(new WebpackDevMiddleware(compiler, {
     contentBase: examples,
     publicPath: '/build/',
 
