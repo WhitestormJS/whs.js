@@ -36,6 +36,7 @@
     "ava": "^0.17.0",
     "babel": "^6.5.2",
     "babel-core": "^6.22.1",
+    "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.10",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-class-properties": "^6.22.0",
@@ -72,9 +73,16 @@
     "xo": "^0.17.1",
     "yargs": "^6.6.0"
   },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2017,
+      "sourceType": "module"
+    }
+  },
   "xo": {
     "space": 2,
     "esnext": true,
+    "parser": "babel-eslint",
     "envs": [
       "node",
       "browser",
@@ -108,7 +116,9 @@
       ],
       "babel/arrow-parens": 0,
       "xo/filename-case": 0,
-      "no-warning-comments": 0
+      "no-warning-comments": 0,
+      "unicorn/filename-case": 0,
+      "import/no-unassigned-import": 0
     }
   }
 }

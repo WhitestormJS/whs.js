@@ -1,7 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 
-import {config} from '../webpack.config.babel.js';
+import {config} from '../webpack.config.babel';
 import {isProduction} from './utils';
 import {framework} from './config';
 
