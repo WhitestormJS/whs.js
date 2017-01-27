@@ -1,8 +1,11 @@
 .DS_Store
-node_modules
 .happypack
-npm-debug.log
 .ide
+
+node_modules
+
+npm-debug.log
+
 examples/index.html
 examples/layout.html
 examples/**/**/index.html
