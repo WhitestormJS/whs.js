@@ -1,7 +1,5 @@
-import {
-  isArray,
-  isObject
-} from 'lodash';
+import isArray from 'lodash-es/isArray';
+import isObject from 'lodash-es/isObject';
 
 export const instruct = (array, instArray) => {
   const tempObject = {};
