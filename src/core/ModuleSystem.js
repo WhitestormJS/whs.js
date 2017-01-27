@@ -9,7 +9,7 @@ export class ModuleSystem extends Events {
     if (source) this.modules = source.modules.slice(0);
 
     for (let i = 0, max = this.modules.length; i < max; i++)
-      this.applyModule(this.modules[i]);
+      this.applyModule(this.modules[i], false);
 
     if (source) this.applyBridge({onCopy: source});
   }
@@ -33,9 +33,9 @@ export class ModuleSystem extends Events {
     return bridgeMap;
   }
 
-  applyModule(module) {
+  applyModule(module, push = true) {
     if (!module) return;
-    this.modules.push(module);
+    if (push) this.modules.push(module);
 
     if (this.manager) this.manager.active(module);
 
