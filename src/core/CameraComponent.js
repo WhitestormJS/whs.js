@@ -37,7 +37,7 @@ class CameraComponent extends Component {
       }
 
       if (build instanceof Promise) {
-        build.then((native) => {
+        build.then(native => {
           this.native = native;
         });
       } else this.native = build;

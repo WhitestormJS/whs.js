@@ -6,7 +6,7 @@
   "module": "src/index.js",
   "scripts": {
     "postversion": "gulp build --prod & git add . & git commit -m 'Build'",
-    "test": "ava --verbose --serial & xo ./src/**/*.js",
+    "test": "xo ./src/**/*.js && ava --verbose --serial",
     "start": "webpack-dashboard -t WhitestormJS -- gulp dev --devPhysics 8001",
     "build": "gulp build & gulp examples:build",
     "deploy": "surge --project ./ --domain whs-dev.surge.sh"
@@ -117,7 +117,8 @@
       "xo/filename-case": 0,
       "no-warning-comments": 0,
       "unicorn/filename-case": 0,
-      "import/no-unassigned-import": 0
+      "import/no-unassigned-import": 0,
+      "import/prefer-default-export": 0
     }
   }
 }

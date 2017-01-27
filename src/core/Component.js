@@ -1,6 +1,7 @@
 import {extend, transformData} from '../utils/index';
 import {ModuleSystem} from './ModuleSystem';
 import {ModuleManager} from './ModuleManager';
+import {ManagerError} from './errors';
 
 class Component extends ModuleSystem {
   static defaults = {
