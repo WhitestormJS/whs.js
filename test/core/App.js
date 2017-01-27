@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as WHS from '../../build/whitestorm.js';
+import * as WHS from '../../build/whitestorm';
 
 /*
  * Ignored methods:
