@@ -1,5 +1,3 @@
-import * as UTILS from '../../globals';
-
 const mouse = new WHS.app.VirtualMouseModule();
 
 const world = new WHS.App([
