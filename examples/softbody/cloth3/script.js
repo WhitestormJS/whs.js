@@ -1,5 +1,7 @@
 import * as UTILS from '../../globals';
 
+const mouse = new WHS.app.VirtualMouseModule();
+
 const world = new WHS.App([
   new WHS.app.ElementModule(),
   new WHS.app.SceneModule(),
@@ -23,7 +25,8 @@ const world = new WHS.App([
     softbody: true
   }),
   new WHS.controls.OrbitModule(),
-  new WHS.app.ResizeModule()
+  new WHS.app.ResizeModule(),
+  mouse
 ]);
 
 const cloth = new WHS.Tube({ // Softbody (blue).
@@ -80,8 +83,6 @@ cloth.addTo(world).then(() => {
   cloth.appendAnchor(arm, 0, 1, false);
   cloth.appendAnchor(arm, 40, 1, false);
 });
-
-const mouse = new WHS.VirtualMouse(world);
 
 new WHS.Box({ // Rigidbody (green).
   geometry: {
