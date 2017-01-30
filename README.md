@@ -116,7 +116,7 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 ### NODE
 
 ```bash
-$ npm install --save whs
+$ npm install --save whs@beta
 ```
 
 ### WEBPACK
