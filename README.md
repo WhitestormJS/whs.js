@@ -34,16 +34,50 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 
 ### Why?
 * 🤔 Because making of even **a basic Three.js application requires at least ~20 lines of code** (see [this tutorial](https://threejs.org/docs/index.html#Manual/Introduction/Creating_a_scene))
-  - **Native three.js:** you will need to setup: _scene, renderer, camera_, make an `animate()` function before making the actual app.
-  - **Whitestorm.js:** all those values are filled with defaults, you just need to define your own values **only if they differs from defaults**.
+  - **Three.js:** you will need to setup: _scene, renderer, camera_, make an `animate()` function before making the actual app.
+  - **Whitestorm.js:** There are modules that helps you easily setup them:
+  
+  ```javascript
+  const app = new WHS.App([
+    new WHS.app.ElementModule(), // attach to DOM
+    new WHS.app.SceneModule(), // creates THREE.Scene instance
+    new WHS.app.CameraModule(), // creates PerspectiveCamera instance
+    new WHS.app.RenderingModule() // creates WebGLRenderer instance
+  ]);
+  
+  app.start(); // run animation
+  ```
 
 * 💣 **Adding physics is hard.**
-  - **Other frameworks:** To make your app run with physics you need to make a second world with same 3d objects and apply their transform (position & rotation) to your rendered scene objects (`THREE.Scene` for example) in every frame.
-  - **Whitestorm.js:** All this can be done **automatically**.
+  - **Three.js:** To make your app run with physics you need to make a second world with same 3d objects and apply their transform (position & rotation) to your rendered scene objects (`THREE.Scene` for example) in every frame.
+  - **Whitestorm.js:** Can be done with modules in a few lines:
+  
+    ```javascript
+  const app = new WHS.App([
+    // Other modules...
+    new PHYSICS.WorldModule()
+  ]);
+  
+  const sphere = new WHS.Sphere({
+    geometry: {
+      radius: 3
+    },
+    
+    modules: [
+      new PHYSICS.SphereModule({
+        mass: 10
+      })
+    ],
+    
+    material: new THREE.MeshBasicMaterial({color: 0xff0000}) // red material
+  });
+  
+  app.start(); // run animation
+  ```
 
 * 🔌 **Components & plugins**
   - **Other:** `Unknown yet`.
-  - **Whitestorm.js:** It provides ability to create your own components using framework's tools. (**You can add a component** like `WHS.Box` or `WHS.PointLight` but for creating a _terrain (`WHS.Terrain`) / aquarium (`WHS.Aquarium`) / car (`WHS.Car`) / any other_ with specific merhods and scripts.
+  - **Three.js:** It provides ability to create your own components using framework's tools. (**You can add a component** like `WHS.Box` or `WHS.PointLight` but for creating a _terrain (`WHS.Terrain`) / aquarium (`WHS.Aquarium`) / car (`WHS.Car`) / any other_ with specific merhods and scripts.
   - See [Component system in interactive 3D of web](https://medium.com/@_alex_buzin/component-system-in-interactive-3d-of-web-18348eecf270#.lynivy4ut) article for more info.
 
 -----
