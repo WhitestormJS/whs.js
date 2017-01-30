@@ -104,13 +104,10 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 * 💎 **Simple in usage**
 * Minimize 3D scene prototyping
 * 🔌  **Component based scene graph**
-* 💣 Integrated **high performance physics** with `Worker` (Multithreading)
+* 💣 Simple integration of any **high performance physics** even with `Worker` (Multithreading)
 * Automatization of rendering
-* Enhanced **softbodies**
 * 🆕 **ES2015+ based**
-* Extension system (plugins)
-* Dynamic geometry update
-* [asm.js](http://asmjs.org/) acceleration
+* Extension system (modules)
 * [Webpack](https://whsjs.io/#/api/webpack) friendly
 * ✔️ **Integrated [Three.js](https://threejs.org/) rendering engine**
 * Work with Whitestorm.js and Three.js at the same time
@@ -124,64 +121,41 @@ $ npm install --save whs
 
 ### WEBPACK
 
-See [WhitestormJS/test-whitestorm-webpack](https://github.com/WhitestormJS/test-whitestorm-webpack) for more details.
+Use (whitestorm-app-boilerplate)[https://github.com/WhitestormJS/whitestorm-app-boilerplate]
 
 ## Documentation
 
-Full documentation of guides and APIs are located at [here](http://whsjs.io/).
+Documentation for beta is not yet released. (Contact developers inm discord chat)[https://discord.gg/frNetGE]
 
-## Usage
+## Basic application
 
 ```javascript
-const world = new WHS.World({
-    stats: "fps", // fps, ms, mb or false if not need.
-    autoresize: "window",
-
-    gravity: [0, -100, 0], // Physic gravity.
-
-    camera: {
-      position: {
-        z: 50 // Move camera.
-      }
-    }
-});
+const app = new WHS.App([
+  new WHS.app.ElementModule(), // attach to DOM
+  new WHS.app.SceneModule(), // creates THREE.Scene instance
+  new WHS.app.CameraModule({
+    position: new THREE.Vector3(0, 0, -10)
+  }), // creates PerspectiveCamera instance
+  new WHS.app.RenderingModule(), // creates WebGLRenderer instance
+  new WHS.controls.OrbitModule() // orbit controls
+]);
 
 const sphere = new WHS.Sphere({ // Create sphere comonent.
   geometry: {
     radius: 3
   },
 
-  mass: 10, // Mass of physics object.
-
-  material: {
+  material: new THREE.MeshBasicMaterial({
     color: 0xffffff, // White color.
-    kind: 'basic' // THREE.MeshBasicMaterial
-  },
+  }),
 
-  position: [0, 10, 0]
+  position: new THREE.Vector3(0, 1, 0) // x: 0, y: 1, z: 0
 });
 
-sphere.addTo(world);
-console.log(sphere.native); // Returns THREE.Mesh of this object.
+sphere.addTo(app);
+console.log(sphere.native); // Logs THREE.Mesh of this component
 
-world.start(); // Start animations and physics simulation.
+app.start(); // run animation
 ```
-
-## Playground!
-
-[![playground](http://i.imgur.com/6EdMjm1.gif)](http://whsjs.io/playground/)
-
-
-## Contributors
-
-[![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-orange.svg?style=flat-square)](https://github.com/sasha240100)
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-jackdalton-green.svg?style=flat-square)](https://github.com/jackdalton)
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-Noctisdark-green.svg?style=flat-square)](https://github.com/noctisdark)
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-bdirl-green.svg?style=flat-square)](https://github.com/bdirl)
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-preco21-green.svg?style=flat-square)](https://github.com/preco21)
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-yeliex-green.svg?style=flat-square)](https://github.com/yeliex)
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-t4r0-green.svg?style=flat-square)](https://github.com/t4r0)
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-electron0zero-green.svg?style=flat-square)](https://github.com/electron0zero)
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-typedef42-green.svg?style=flat-square)](https://github.com/typedef42)
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://alexbuzin.me/)
