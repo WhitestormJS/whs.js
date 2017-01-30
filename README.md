@@ -74,6 +74,8 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 
     app.start(); // run animation
     ```
+    
+    Use [physics-module-ammonext](https://github.com/WhitestormJS/physics-module-ammonext) as your physics module.
 
 * 🔌 **Components & plugins**
   - **Three.js:** You can create meshes with geometry and material.
