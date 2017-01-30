@@ -76,8 +76,24 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
   ```
 
 * 🔌 **Components & plugins**
-  - **Other:** `Unknown yet`.
-  - **Three.js:** It provides ability to create your own components using framework's tools. (**You can add a component** like `WHS.Box` or `WHS.PointLight` but for creating a _terrain (`WHS.Terrain`) / aquarium (`WHS.Aquarium`) / car (`WHS.Car`) / any other_ with specific merhods and scripts.
+  - **Three.js:** You can create meshes with geometry and material.
+  - **Whitestorm.js:** You can create components with advanced custom functionality.
+    
+    ```javascript
+    export class BasicComponent extends WHS.MeshComponent {
+      build() {
+        return new Mesh(
+          new IcosahedronGeometry(3, 5),
+          new MeshBasicMaterial({color: 0xffffff})
+        )
+      }
+      
+      randomize() { // Additional function
+        this.position.set(Math.random() * 10, Math.random() * 10, Math.random() * 10);
+      }
+    }
+  ```
+  
   - See [Component system in interactive 3D of web](https://medium.com/@_alex_buzin/component-system-in-interactive-3d-of-web-18348eecf270#.lynivy4ut) article for more info.
 
 -----
