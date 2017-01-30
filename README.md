@@ -1,5 +1,5 @@
 
-<a href="https://whsjs.io/"><img width="100%" src="http://i.imgur.com/Dr9m7Xj.jpg"></a>
+<a href="https://discord.gg/frNetGE"><img width="100%" src="http://i.imgur.com/Dr9m7Xj.jpg"></a>
 
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square)](https://github.com/sindresorhus/xo)
 [![NPM Version](https://img.shields.io/npm/v/whs.svg?style=flat-square)](https://www.npmjs.com/package/whs)
@@ -14,22 +14,22 @@
 You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/).
 
 <a href="https://whs-dev.surge.sh/examples/#basic/helloworld">
-  <img alt="basic/helloworld" target="_blank" src="http://i.imgur.com/IRq5Hp4.gif" width="33%" />
+  <img alt="basic/helloworld" target="_blank" src="http://i.imgur.com/IRq5Hp4.gif" width="32%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#basic/model">
-  <img alt="basic/model" target="_blank" src="http://i.imgur.com/RmTjjiA.gif" width="33%" />
+  <img alt="basic/model" target="_blank" src="http://i.imgur.com/RmTjjiA.gif" width="32%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#softbody/cloth3">
-  <img alt="softbody/cloth3" target="_blank" src="http://i.imgur.com/BgHdX56.gif" width="33%" />
+  <img alt="softbody/cloth3" target="_blank" src="http://i.imgur.com/BgHdX56.gif" width="32%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#post-processing/basic-glitch">
-  <img alt="postprocessing/basic-glitch" target="_blank" src="http://i.imgur.com/ASUN7tR.gif" width="33%" />
+  <img alt="postprocessing/basic-glitch" target="_blank" src="http://i.imgur.com/ASUN7tR.gif" width="32%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#softbody/ropes">
-  <img alt="softbody/ropes" target="_blank" src="http://i.imgur.com/wRFKfTM.gif" width="33%" />
+  <img alt="softbody/ropes" target="_blank" src="http://i.imgur.com/wRFKfTM.gif" width="32%" />
 </a>
 <a href="https://whs-dev.surge.sh/examples/#design/saturn">
-  <img alt="design/saturn" target="_blank" src="http://i.imgur.com/JZ5HryS.gif" width="33%" />
+  <img alt="design/saturn" target="_blank" src="http://i.imgur.com/JZ5HryS.gif" width="32%" />
 </a>
 
 ### Why?
