@@ -6,7 +6,7 @@
   "module": "src/index.js",
   "scripts": {
     "postversion": "gulp build --prod & git add . & git commit -m 'Build'",
-    "test": "xo ./src/**/*.js && ava --verbose --serial",
+    "test": "snyk test && xo ./src/**/*.js && ava --verbose --serial",
     "start": "webpack-dashboard -t WhitestormJS -- gulp dev --devPhysics 8001",
     "build": "gulp build & gulp examples:build",
     "deploy": "surge --project ./ --domain whs-dev.surge.sh"
