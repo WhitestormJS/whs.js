@@ -121,11 +121,11 @@ $ npm install --save whs
 
 ### WEBPACK
 
-Use (whitestorm-app-boilerplate)[https://github.com/WhitestormJS/whitestorm-app-boilerplate]
+Use [whitestorm-app-boilerplate](https://github.com/WhitestormJS/whitestorm-app-boilerplate)
 
 ## Documentation
 
-Documentation for beta is not yet released. (Contact developers inm discord chat)[https://discord.gg/frNetGE]
+Documentation for beta is not yet released. [Contact developers inm discord chat](https://discord.gg/frNetGE)
 
 ## Basic application
 
