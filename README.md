@@ -102,9 +102,9 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 
 ## Download
 
-<a href="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/beta/build/whitestorm.js"><img src="http://i.imgur.com/0FI66kA.png" height="50" /></a>
+<a href="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/beta/build/whitestorm.js"><img src="http://i.imgur.com/qKJEb5t.png" height="40" /></a>
 
-<a href="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/beta/build/whitestorm.compact.js"><img src="http://i.imgur.com/WJMmHYT.png" height="50" /></a>
+<a href="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/beta/build/whitestorm.compact.js"><img src="http://i.imgur.com/RY9kDFD.png" height="40" /></a>
 
 
 ## Features
