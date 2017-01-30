@@ -125,7 +125,7 @@ Use [whitestorm-app-boilerplate](https://github.com/WhitestormJS/whitestorm-app-
 
 ## Documentation
 
-Documentation for beta is not yet released. [Contact developers inm discord chat](https://discord.gg/frNetGE)
+Documentation for beta is not yet released. [Contact developers in discord chat](https://discord.gg/frNetGE)
 
 ## Basic application
 
