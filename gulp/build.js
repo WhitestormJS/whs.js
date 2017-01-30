@@ -9,16 +9,20 @@ const logStart = name => log('cyan', `WEBPACK BUILD ['${name}' compiler status]:
 const logEnd = name => log('green', `WEBPACK BUILD ['${name}' compiler status]: Finished.`);
 
 // BUILD
-gulp.task('build', ['build:clean'], () => {
+gulp.task('build', ['build:clean'], callback => {
   const compilers = new FrameworkCompilerInstance();
 
   logStart('main');
-  compilers('main').run(() => logEnd('main'));
 
-  // TODO: Make compilers run synchronously
+  compilers('main').run(() => {
+    logEnd('main');
+    logStart('compact');
 
-  logStart('compact');
-  compilers('compact').run(() => logEnd('compact'));
+    compilers('compact').run(() => {
+      logEnd('compact');
+      callback();
+    });
+  });
 });
 
 gulp.task('build:clean', callback => {

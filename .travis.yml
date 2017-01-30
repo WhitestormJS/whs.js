@@ -14,4 +14,7 @@ script:
   - npm test
   - npm run deploy
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - nyc --reporter=lcov ava
+  - cat ./coverage/lcov.info | node_modules/.bin/coveralls --verbose
+  - rm -rf ./coverage
+  - rm -rf ./nyc_output
