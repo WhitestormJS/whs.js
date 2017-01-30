@@ -37,7 +37,7 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
   - **Three.js:** you will need to setup: _scene, renderer, camera_, make an `animate()` function before making the actual app.
   - **Whitestorm.js:** There are modules that helps you easily setup them:
   
-  ```javascript
+    ```javascript
   const app = new WHS.App([
     new WHS.app.ElementModule(), // attach to DOM
     new WHS.app.SceneModule(), // creates THREE.Scene instance
