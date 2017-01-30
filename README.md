@@ -38,42 +38,42 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
   - **Whitestorm.js:** There are modules that helps you easily setup them:
   
     ```javascript
-  const app = new WHS.App([
-    new WHS.app.ElementModule(), // attach to DOM
-    new WHS.app.SceneModule(), // creates THREE.Scene instance
-    new WHS.app.CameraModule(), // creates PerspectiveCamera instance
-    new WHS.app.RenderingModule() // creates WebGLRenderer instance
-  ]);
-  
-  app.start(); // run animation
-  ```
+    const app = new WHS.App([
+      new WHS.app.ElementModule(), // attach to DOM
+      new WHS.app.SceneModule(), // creates THREE.Scene instance
+      new WHS.app.CameraModule(), // creates PerspectiveCamera instance
+      new WHS.app.RenderingModule() // creates WebGLRenderer instance
+    ]);
+
+    app.start(); // run animation
+    ```
 
 * 💣 **Adding physics is hard.**
   - **Three.js:** To make your app run with physics you need to make a second world with same 3d objects and apply their transform (position & rotation) to your rendered scene objects (`THREE.Scene` for example) in every frame.
   - **Whitestorm.js:** Can be done with modules in a few lines:
   
     ```javascript
-  const app = new WHS.App([
-    // Other modules...
-    new PHYSICS.WorldModule()
-  ]);
-  
-  const sphere = new WHS.Sphere({
-    geometry: {
-      radius: 3
-    },
-    
-    modules: [
-      new PHYSICS.SphereModule({
-        mass: 10
-      })
-    ],
-    
-    material: new THREE.MeshBasicMaterial({color: 0xff0000}) // red material
-  });
-  
-  app.start(); // run animation
-  ```
+    const app = new WHS.App([
+      // Other modules...
+      new PHYSICS.WorldModule()
+    ]);
+
+    const sphere = new WHS.Sphere({
+      geometry: {
+        radius: 3
+      },
+
+      modules: [
+        new PHYSICS.SphereModule({
+          mass: 10
+        })
+      ],
+
+      material: new THREE.MeshBasicMaterial({color: 0xff0000}) // red material
+    });
+
+    app.start(); // run animation
+    ```
 
 * 🔌 **Components & plugins**
   - **Three.js:** You can create meshes with geometry and material.
@@ -87,12 +87,12 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
           new MeshBasicMaterial({color: 0xffffff})
         )
       }
-      
+
       randomize() { // Additional function
         this.position.set(Math.random() * 10, Math.random() * 10, Math.random() * 10);
       }
     }
-  ```
+    ```
   
   - See [Component system in interactive 3D of web](https://medium.com/@_alex_buzin/component-system-in-interactive-3d-of-web-18348eecf270#.lynivy4ut) article for more info.
 
