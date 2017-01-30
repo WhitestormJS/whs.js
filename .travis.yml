@@ -3,26 +3,13 @@ dist: trusty
 language: node_js
 node_js:
   - "6"
-addons:
-  # From some tests it seems you can only have one firefox addon.
-  # Adding two results in the last one defined being the one installed.
-  firefox: latest
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
-      - google-chrome-beta
 before_script:
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
   - npm install
-  - npm install -g karma
+  - npm install -g xo
   - npm install -g snyk
-  - gulp src:build
-  - export CHROME_BIN=/usr/bin/google-chrome
-before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
+  - gulp build
+  - gulp examples:build
 script:
   - npm test
   - npm run deploy
