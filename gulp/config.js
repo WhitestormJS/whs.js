@@ -9,7 +9,7 @@ export const getTemplateData = ({devPhysics = false, devMode = false} = {devPhys
 
   ammojs: devPhysics
     ? `'http://localhost:${devPhysics}/vendor/ammo.js'`
-    : '`${window.location.href}../../assets/ammo.js`'
+    : 'window.location.href + \'../../assets/ammo.js\''
 });
 
 export const framework = {
