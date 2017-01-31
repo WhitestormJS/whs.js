@@ -12,14 +12,13 @@ export function config(
       dest,
       filename = 'whitestorm.js',
       plugins = [],
-      compact = false
+      compact = false,
+      version = require('./package.json').version
     }
 ) {
   if (process.env.CI) isProduction = true;
-  console.log(isProduction ? 'Production mode' : 'Development mode');
-
-  const version = require('./package.json').version;
-  console.log(version);
+  console.log(`Mode: ${isProduction ? 'production' : 'development'}`);
+  console.log(`Version: ${version}`);
 
   const bannerText = `WhitestormJS Framework v${version}${compact ? ' compact' : ''}`;
 
