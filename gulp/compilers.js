@@ -1,5 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
+import {argv} from 'yargs';
 
 import {config} from '../webpack.config.babel';
 import {isProduction} from './utils';
@@ -11,14 +12,16 @@ export const FrameworkCompilerInstance = (options = {framework}) =>
     main: webpack(config({
       isProduction,
       src: options.framework.src,
-      dest: options.framework.dest
+      dest: options.framework.dest,
+      ...(argv.version ? {version: argv.version} : {})
     })),
     compact: webpack(config({
       isProduction,
       src: options.framework.src,
       dest: options.framework.dest,
       filename: 'whitestorm.compact.js',
-      compact: true
+      compact: true,
+      ...(argv.version ? {version: argv.version} : {})
     }))
   }[name]);
 
