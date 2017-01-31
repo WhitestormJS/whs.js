@@ -1,2 +1,18 @@
 extends ../../layout.pug
 
+block head
+  style(type='text/css').
+    .copyright {
+      color: white;
+      font-family: Verdana, Geneva, sans-serif;
+      position: fixed;
+      left: 100px;
+      bottom: 50px;
+    }
+    .copyright a {
+      color: white;
+    }
+
+block body
+  span.copyright Design by&nbsp;
+    a(target="_blank" href="http://codepen.io/Yakudoo/") Yakudoo
