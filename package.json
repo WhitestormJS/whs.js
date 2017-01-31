@@ -1,11 +1,11 @@
 {
   "name": "whs",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "Framework for developing 3D web apps with physics.",
   "main": "build/whitestorm.js",
   "module": "src/index.js",
   "scripts": {
-    "postversion": "gulp build --prod & git add . & git commit -m 'Build'",
+    "version": "gulp build --prod",
     "test": "snyk test && xo ./src/**/*.js && ava --verbose --serial",
     "start": "webpack-dashboard -t WhitestormJS -- gulp dev --devPhysics 8001",
     "build": "gulp build & gulp examples:build",
