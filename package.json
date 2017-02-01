@@ -1,6 +1,6 @@
 {
   "name": "whs",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "Framework for developing 3D web apps with physics.",
   "main": "build/whitestorm.js",
   "module": "src/index.js",
