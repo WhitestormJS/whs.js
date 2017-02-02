@@ -74,13 +74,13 @@ export class RenderingModule {
     );
 
     manager.update({
-      element: (element) => {
+      element: element => {
         this.attachToCanvas(element);
       },
-      scene: (scene) => {
+      scene: scene => {
         this.scene = scene;
       },
-      camera: (camera) => {
+      camera: camera => {
         this.camera = camera.native;
       }
     });
