@@ -106,6 +106,10 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 
 <a href="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/beta/build/whitestorm.compact.js"><img src="http://i.imgur.com/RY9kDFD.png" height="40" /></a>
 
+## CDN
+
+Proudly hosted by [cdnjs](https://cdnjs.com/):D (soon)
+
 
 ## Features
 
@@ -121,7 +125,6 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 * Work with Whitestorm.js and Three.js at the same time
 
 ## Installation
-### NODE
 
 ```bash
 $ npm install --save whs@beta
