@@ -19,5 +19,6 @@ module.exports = {
   '@whs:app': 'whs/src/modules/app',
   '@whs:controls$': 'whs/src/modules/controls/export',
   '@whs:controls': 'whs/src/modules/controls',
-  '@whs+meshes': 'whs/src/components/meshes'
+  '@whs+meshes': 'whs/src/components/meshes',
+  '@whs+lights': 'whs/src/components/lights',
 };
