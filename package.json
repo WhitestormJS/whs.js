@@ -133,8 +133,11 @@
     "coveragePathIgnorePatterns": [
       "/node_modules",
       "src/extras/pass",
+      "src/modules/presets",
+      "src/modules/controls",
 
       "RenderingModule.js",
+      "ResizeModule.js",
       "PostProcessorModule.js",
       "VirtualMouseModule.js"
     ]

@@ -56,3 +56,11 @@ app.start();
     });
   });
 });
+
+test('Group', () => {
+  const sphere = new WHS.Sphere();
+  const box = new WHS.Box();
+
+  const group = new WHS.Group(sphere, box, new THREE.Mesh());
+  group.addTo(app);
+});
