@@ -1,4 +1,4 @@
-import * as WHS from '../build/whitestorm';
+import * as WHS from '../../src/index';
 
 const app = new WHS.App();
 const loop = new WHS.Loop(() => {}, false);

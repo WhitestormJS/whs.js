@@ -1,4 +1,4 @@
-import * as WHS from '../build/whitestorm';
+import * as WHS from '../../src/index';
 
 /*
  * Ignored methods:
@@ -10,19 +10,22 @@ import * as WHS from '../build/whitestorm';
  */
 
 const app = new WHS.App();
+app.start();
 
-test('.start()', () => {
-  app.start();
-});
-
-test('.applyModule()', t => {
+test('.applyModule()', () => {
   const module = new WHS.app.SceneModule();
   expect(app.applyModule(module)).toBe(module);
 });
 
-test('.module()', t => {
+test('.module()', () => {
+  const sceneModule = new WHS.app.SceneModule();
+  const cameraModule = new WHS.app.CameraModule();
+
   // Module chain
   app
-    .module(new WHS.app.SceneModule())
-    .module(new WHS.app.CameraModule());
+    .module(sceneModule)
+    .module(cameraModule);
+
+  expect(app.modules).toContain(sceneModule);
+  expect(app.modules).toContain(cameraModule);
 });
