@@ -1,5 +1,4 @@
-import test from 'ava';
-import * as WHS from '../../build/whitestorm';
+import * as WHS from '../build/whitestorm';
 
 /*
  * Ignored methods:
@@ -12,22 +11,18 @@ import * as WHS from '../../build/whitestorm';
 
 const app = new WHS.App();
 
-test('.start()', t => {
-  t.notThrows(() => {
-    app.start();
-  });
+test('.start()', () => {
+  app.start();
 });
 
 test('.applyModule()', t => {
   const module = new WHS.app.SceneModule();
-  t.is(app.applyModule(module), module);
+  expect(app.applyModule(module)).toBe(module);
 });
 
 test('.module()', t => {
   // Module chain
-  t.notThrows(() => {
-    app
-      .module(new WHS.app.SceneModule())
-      .module(new WHS.app.CameraModule());
-  });
+  app
+    .module(new WHS.app.SceneModule())
+    .module(new WHS.app.CameraModule());
 });
