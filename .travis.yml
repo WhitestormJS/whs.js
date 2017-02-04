@@ -6,9 +6,6 @@ node_js:
 before_script:
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
   - npm install
-  - npm install -g xo
-  - npm install -g snyk
-  - npm install -g jest
   - snyk auth $SNYK_TOKEN
   - gulp build
   - gulp examples:build
