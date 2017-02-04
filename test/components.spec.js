@@ -1,0 +1,58 @@
+import * as WHS from '../src/index';
+
+const meshes = [
+  'Box',
+  'Cylinder',
+  'Dodecahedron',
+  'Extrude',
+  'Icosahedron',
+  'Lathe',
+  'Group',
+  // 'Model',
+  // 'Line',
+  'Octahedron',
+  'Parametric',
+  'Plane',
+  'Polyhedron',
+  'Ring',
+  'Shape',
+  'Sphere',
+  'Tetrahedron',
+  // 'Text',
+  'Torus',
+  'Torusknot',
+  'Tube'
+];
+
+const lights = [
+  'AmbientLight',
+  'DirectionalLight',
+  'HemisphereLight',
+  'PointLight',
+  'SpotLight'
+];
+
+const cameras = [
+  'PerspectiveCamera',
+  'CubeCamera',
+  'OrthographicCamera'
+];
+
+const app = new WHS.App([
+  new WHS.app.ElementModule(),
+  new WHS.app.SceneModule(),
+  new WHS.app.CameraModule()
+]);
+
+app.start();
+
+[meshes, lights, cameras].forEach(category => {
+  category.forEach(component => {
+    test(component, () => {
+      const element = new WHS[component]();
+
+      app.add(element);
+      expect(app.children).toContain(element);
+    });
+  });
+});

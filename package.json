@@ -129,6 +129,14 @@
   "jest": {
     "transform": {
       ".js$": "babel-jest"
-    }
+    },
+    "coveragePathIgnorePatterns": [
+      "/node_modules",
+      "src/extras/pass",
+
+      "RenderingModule.js",
+      "PostProcessorModule.js",
+      "VirtualMouseModule.js"
+    ]
   }
 }
