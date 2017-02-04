@@ -11,14 +11,13 @@ class Model extends MeshComponent {
     ...MeshComponent.defaults,
     geometry: {
       path: '',
-      physics: '',
       loader: new JSONLoader()
     }
   };
 
   static instructions = {
     ...MeshComponent.instructions,
-    geometry: ['path', 'physics', 'loader']
+    geometry: ['path', 'loader']
   };
 
   constructor(params = {}) {

@@ -22,6 +22,7 @@ class Line extends MeshComponent {
   };
 
   constructor(params) {
+    if (!params.geometry.curve) throw new Error('Curve is required');
     super(params, Line.defaults, Line.instructions);
   }
 
@@ -42,9 +43,11 @@ class Line extends MeshComponent {
       const verts = new Float32Array(pp.length * 3);
 
       for (let i = 0, max = pp.length; i < max; i++) {
-        verts[i * 3] = pp[i].x;
-        verts[i * 3 + 1] = pp[i].y;
-        verts[i * 3 + 2] = pp[i].z;
+        const i3 = i * 3;
+
+        verts[i3] = pp[i].x;
+        verts[i3 + 1] = pp[i].y;
+        verts[i3 + 2] = pp[i].z;
       }
 
       geometry.addAttribute('position', new BufferAttribute(verts, 3));

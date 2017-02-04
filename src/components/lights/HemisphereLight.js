@@ -10,7 +10,6 @@ class HemisphereLight extends LightComponent {
 
   constructor(params = {}) {
     super(params);
-    this.wrapShadow();
   }
 
   build(params = {}) {
