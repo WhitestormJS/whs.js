@@ -1,4 +1,4 @@
-import * as WHS from '../build/whitestorm';
+import * as WHS from '../../src/index';
 
 /*
  * Ignored methods:
