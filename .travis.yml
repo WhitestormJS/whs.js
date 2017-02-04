@@ -1,6 +1,7 @@
 sudo: required
 dist: trusty
 language: node_js
+os: osx
 node_js:
   - "6"
 before_script:
