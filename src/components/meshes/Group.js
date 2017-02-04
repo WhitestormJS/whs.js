@@ -1,5 +1,6 @@
 import {Object3D} from 'three';
 import {MeshComponent} from '../../core/MeshComponent';
+import {Component} from '../../core/Component';
 
 class Group extends MeshComponent {
   constructor(...objects) {
