@@ -33,10 +33,10 @@
     "three": "^0.84.0"
   },
   "devDependencies": {
-    "ava": "^0.17.0",
     "babel": "^6.5.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.1.1",
+    "babel-jest": "^18.0.0",
     "babel-loader": "^6.2.10",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-istanbul": "^3.1.2",
@@ -61,6 +61,7 @@
     "gulp-browserify": "^0.5.1",
     "gulp-cli": "^1.2.2",
     "happypack": "^3.0.2",
+    "jest": "^18.1.0",
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
     "path": "^0.12.7",
