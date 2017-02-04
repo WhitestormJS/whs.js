@@ -4,7 +4,7 @@
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square)](https://github.com/sindresorhus/xo)
 [![NPM Version](https://img.shields.io/npm/v/whs.svg?style=flat-square)](https://www.npmjs.com/package/whs)
 [![Build Status](https://img.shields.io/travis/WhitestormJS/whitestorm.js.svg?style=flat-square)](https://travis-ci.org/WhitestormJS/whitestorm.js)
-[![Coverage Status](https://coveralls.io/repos/github/WhitestormJS/whitestorm.js/badge.svg?branch=beta)](https://coveralls.io/github/WhitestormJS/whitestorm.js?branch=beta)
+[![Coverage Status](https://img.shields.io/coveralls/WhitestormJS/whitestorm.js/beta.svg?style=flat-square)](https://coveralls.io/github/WhitestormJS/whitestorm.js?branch=beta)
 [![Known Vulnerabilities](https://snyk.io/test/npm/whs/badge.svg?style=flat-square)](https://snyk.io/test/npm/whs)
 [![Discord](https://discordapp.com/api/guilds/238405369859145729/widget.png)](https://discord.gg/frNetGE)
 
