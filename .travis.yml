@@ -8,6 +8,7 @@ before_script:
   - npm install
   - npm install -g xo
   - npm install -g snyk
+  - npm install -g jest
   - snyk auth $SNYK_TOKEN
   - gulp build
   - gulp examples:build
@@ -15,7 +16,6 @@ script:
   - npm test
 after_success:
   - npm run deploy
-  - nyc --reporter=lcov ava
+  - jest --coverage
   - cat ./coverage/lcov.info | node_modules/.bin/coveralls --verbose
   - rm -rf ./coverage
-  - rm -rf ./nyc_output
