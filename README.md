@@ -1,12 +1,30 @@
 
 <a href="https://discord.gg/frNetGE"><img width="100%" src="http://i.imgur.com/Dr9m7Xj.jpg"></a>
 
-[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square)](https://github.com/sindresorhus/xo)
-[![NPM Version](https://img.shields.io/npm/v/whs.svg?style=flat-square)](https://www.npmjs.com/package/whs)
-[![Build Status](https://img.shields.io/travis/WhitestormJS/whitestorm.js.svg?style=flat-square)](https://travis-ci.org/WhitestormJS/whitestorm.js)
-[![Coverage Status](https://img.shields.io/coveralls/WhitestormJS/whitestorm.js/beta.svg?style=flat-square)](https://coveralls.io/github/WhitestormJS/whitestorm.js?branch=beta)
-[![Known Vulnerabilities](https://snyk.io/test/npm/whs/badge.svg?style=flat-square)](https://snyk.io/test/npm/whs)
-[![Discord](https://discordapp.com/api/guilds/238405369859145729/widget.png)](https://discord.gg/frNetGE)
+[![XO code style][xo]][xo-url]
+[![NPM Version][npm]][npm-url]
+[![Build Status][travis]][travis-url]
+[![Coverage Status][coverage]][coverage-url]
+[![Known Vulnerabilities][snyk]][snyk-url]
+[![Discord][discord]][discord-url]
+
+[xo]: https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square
+[xo-url]: https://github.com/sindresorhus/xo
+
+[npm]: https://img.shields.io/npm/v/whs.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/whs
+
+[travis]: https://img.shields.io/travis/WhitestormJS/whitestorm.js.svg?style=flat-square
+[travis-url]: https://travis-ci.org/WhitestormJS/whitestorm.js
+
+[coverage]: https://img.shields.io/coveralls/WhitestormJS/whitestorm.js/beta.svg?style=flat-square
+[coverage-url]: https://coveralls.io/github/WhitestormJS/whitestorm.js?branch=beta
+
+[snyk]: https://snyk.io/test/npm/whs/badge.svg?style=flat-square
+[snyk-url]: https://snyk.io/test/npm/whs
+
+[discord]: https://discordapp.com/api/guilds/238405369859145729/widget.png
+[discord-url]: https://discord.gg/frNetGE
 
 > **Framework for developing 3D web apps**
 
