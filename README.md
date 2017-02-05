@@ -203,4 +203,6 @@ app.start(); // run animation
 [datgui]: https://github.com/WhitestormJS/whs-module-dat.gui
 [datgui-npm]: https://img.shields.io/npm/v/whs-module-dat.gui.svg?style=flat-square
 
+## [Development chat](https://discord.gg/frNetGE)
+
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://alexbuzin.me/)
