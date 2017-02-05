@@ -28,6 +28,8 @@
 
 > **Framework for developing 3D web apps**
 
+### [Development chat](https://discord.gg/frNetGE) - opens in discord app
+
 ## [Showcases](https://whs-dev.surge.sh/examples/)
 
 You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/).
@@ -202,7 +204,5 @@ app.start(); // run animation
 
 [datgui]: https://github.com/WhitestormJS/whs-module-dat.gui
 [datgui-npm]: https://img.shields.io/npm/v/whs-module-dat.gui.svg?style=flat-square
-
-## [Development chat](https://discord.gg/frNetGE)
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://alexbuzin.me/)
