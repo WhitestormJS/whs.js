@@ -195,8 +195,12 @@ app.start(); // run animation
 |Name|Status|Description|
 |:--:|:----:|:----------|
 |[whs-module-statsjs][statsjs]|![statsjs-npm]|WhitestormJS module for JavaScript Performance Monitor ⚡⌛|
+|[whs-module-dat.gui][datgui]|![datgui-npm]|User Interface for runtime editing properties 🔑🛠🔩|
 
 [statsjs]: https://github.com/WhitestormJS/whs-module-statsjs
 [statsjs-npm]: https://img.shields.io/npm/v/whs-module-statsjs.svg?style=flat-square
+
+[datgui]: https://github.com/WhitestormJS/whs-module-dat.gui
+[datgui-npm]: https://img.shields.io/npm/v/whs-module-dat.gui.svg?style=flat-square
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://alexbuzin.me/)
