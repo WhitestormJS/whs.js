@@ -112,9 +112,9 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
     ```javascript
     export class BasicComponent extends WHS.MeshComponent {
       build() {
-        return new Mesh(
-          new IcosahedronGeometry(3, 5),
-          new MeshBasicMaterial({color: 0xffffff})
+        return new THREE.Mesh(
+          new THREE.IcosahedronGeometry(3, 5),
+          new THREE.MeshBasicMaterial({color: 0xffffff})
         )
       }
 
