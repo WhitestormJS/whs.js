@@ -2,16 +2,22 @@
 <a href="https://discord.gg/frNetGE"><img width="100%" src="http://i.imgur.com/Dr9m7Xj.jpg"></a>
 
 [![XO code style][xo]][xo-url]
+[![Three][three]][three-url]
 [![NPM Version][npm]][npm-url]
 [![Build Status][travis]][travis-url]
 [![Coverage Status][coverage]][coverage-url]
 [![Known Vulnerabilities][snyk]][snyk-url]
 [![Discord][discord]][discord-url]
+
+
 [![OpenCollective Backers][backer-badge]][backer-url]
 [![OpenCollective Sponsors][sponsor-badge]][sponsor-url]
 
 [xo]: https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square
 [xo-url]: https://github.com/sindresorhus/xo
+
+[three]: https://img.shields.io/badge/three-r84-blue.svg?style=flat-square
+[three-url]: https://github.com/mrdoob/three.js/
 
 [npm]: https://img.shields.io/npm/v/whs.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/whs
