@@ -40,7 +40,7 @@ const world = new WHS.App([
   new PHYSICS.WorldModule({
     ammo: process.ammoPath
   }),
-  new WHS.controls.FirstPersonModule(sphere, {
+  new PHYSICS.FirstPersonModule(sphere, {
     speed: 500,
     ypos: 0
   }),
@@ -78,6 +78,5 @@ for (let i = 0; i < 10; i++) {
 
 UTILS.addPlane(world, 1000);
 UTILS.addBasicLights(world);
-
 
 world.start();
