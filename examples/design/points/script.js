@@ -14,7 +14,7 @@ const world = new WHS.App([
       antialias: false
     }
   }),
-  new WHS.OrbitControlsModule({target: new THREE.Vector3(50, 50, 50)}),
+  new WHS.controls.OrbitModule({target: new THREE.Vector3(50, 50, 50)}),
   new WHS.app.ResizeModule()
 ]);
 
