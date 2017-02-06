@@ -2,10 +2,10 @@ import {
   WebGLRenderTarget
 } from 'three';
 
-import {CopyShader} from '../../extras/shader/CopyShader.js';
-import {ShaderPass} from '../../extras/pass/ShaderPass.js';
-import {RenderPass} from '../../extras/pass/RenderPass.js';
-import {MaskPass, ClearMaskPass} from '../../extras/pass/MaskPass.js';
+import {CopyShader} from '../../extras/shader/CopyShader';
+import {ShaderPass} from '../../extras/pass/ShaderPass';
+import {RenderPass} from '../../extras/pass/RenderPass';
+import {MaskPass, ClearMaskPass} from '../../extras/pass/MaskPass';
 import {Loop} from '../../core/Loop';
 
 // TODO: Rewrite deprecated API
@@ -19,7 +19,7 @@ export class PostProcessorModule {
   passes = [];
   copyPass = new ShaderPass(CopyShader);
 
-  constructor(params = {}) {
+  constructor() {
     this.params = {};
   }
 
@@ -28,7 +28,7 @@ export class PostProcessorModule {
     this.scene = manager.get('scene');
     this.camera = manager.get('camera');
     this.oldLoop = manager.get('renderer', true).renderLoop;
-    this.renderLoop = new Loop((clock) => this.render(clock.getDelta()));
+    this.renderLoop = new Loop(clock => this.render(clock.getDelta()));
     this.configure();
   }
 
@@ -40,6 +40,7 @@ export class PostProcessorModule {
   configure() {
     const size = this.renderer.getSize();
 
+    // TODO: Remove "THREE." declaration.
     this.renderTargetA = new WebGLRenderTarget(
       size.width,
       size.height,
