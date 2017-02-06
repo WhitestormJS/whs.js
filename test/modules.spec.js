@@ -56,15 +56,8 @@ test('OrbitModule', () => {
   modules.orbit = new WHS.controls.OrbitModule();
 });
 
-test('FirstPersonModule', () => {
-  modules.fps = new WHS.controls.FirstPersonModule();
-});
-
-// TODO: fix applying controls
 test('Applying controls modules to app', () => {
-  app
-    .module(modules.orbit);
-    // .module(modules.fps);
+  app.module(modules.orbit);
 
   app.start();
 });
