@@ -7,6 +7,8 @@
 [![Coverage Status][coverage]][coverage-url]
 [![Known Vulnerabilities][snyk]][snyk-url]
 [![Discord][discord]][discord-url]
+[![OpenCollective Backers][backer-badge]][backer-url]
+[![OpenCollective Sponsors][sponsor-badge]][sponsor-url]
 
 [xo]: https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square
 [xo-url]: https://github.com/sindresorhus/xo
@@ -199,10 +201,31 @@ app.start(); // run animation
 |[whs-module-statsjs][statsjs]|![statsjs-npm]|WhitestormJS module for JavaScript Performance Monitor ⚡⌛|
 |[whs-module-dat.gui][datgui]|![datgui-npm]|User Interface for runtime editing properties 🔑🛠🔩|
 
+## Backers
+
+Support us with a monthly donation and help us continue framework development🎉 and adding new features💡🎁.
+
+[![Backers][backers-image]][support-url]
+
+## Sponsors
+
+Become a sponsor and get your logo on on our README on Github with a link to your website🔭. 
+
+[![Sponsors][sponsors-image]][support-url]
+
 [statsjs]: https://github.com/WhitestormJS/whs-module-statsjs
 [statsjs-npm]: https://img.shields.io/npm/v/whs-module-statsjs.svg?style=flat-square
 
 [datgui]: https://github.com/WhitestormJS/whs-module-dat.gui
 [datgui-npm]: https://img.shields.io/npm/v/whs-module-dat.gui.svg?style=flat-square
+
+[backer-url]: #backers
+[backer-badge]: https://opencollective.com/whitestormjs/backers/badge.svg?color=blue
+[support-url]: https://opencollective.com/whitstormjs#support
+[sponsor-url]: #sponsors
+[sponsor-badge]: https://opencollective.com/whitestormjs/sponsors/badge.svg?color=blue
+
+[backers-image]: https://opencollective.com/whitestormjs/backers.svg
+[sponsors-image]: https://opencollective.com/whitestormjs/sponsors.svg
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://alexbuzin.me/)
