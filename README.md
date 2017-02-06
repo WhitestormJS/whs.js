@@ -194,7 +194,13 @@ app.start(); // run animation
 
 # [React integration](https://github.com/WhitestormJS/react-whs)
 
-You can easilty integrate Whitestorm.js with React using [react-whs](https://github.com/WhitestormJS/react-whs) tool! Example:
+You can easilty integrate Whitestorm.js with React using [react-whs](https://github.com/WhitestormJS/react-whs) tool! 
+
+```bash
+$ npm install react react-whs --save
+```
+
+**Example:**
 
 ```javascript
 
