@@ -239,6 +239,20 @@ export class Application extends Component {
 |[whs-module-statsjs][statsjs]|![statsjs-npm]|WhitestormJS module for JavaScript Performance Monitor ⚡⌛|
 |[whs-module-dat.gui][datgui]|![datgui-npm]|User Interface for runtime editing properties 🔑🛠🔩|
 
+### Physics
+
+
+|Name|Status|Description|
+|:--:|:----:|:----------|
+|[physics-module-ammonext][physics-ammonext]|![physics-ammonext-npm]|Physics module based on [Ammo.js](https://github.com/kripken/ammo.js/)|
+
+### Integrations
+
+
+|Name|Status|Description|
+|:--:|:----:|:----------|
+|[react-whs][react-whs]|![react-whs-npm]|Integration with [ReactJS](https://facebook.github.io/react/)|
+
 ## Backers
 
 Support us with a monthly donation and help us continue framework development🎉 and adding new features💡🎁.
@@ -256,6 +270,12 @@ Become a sponsor and get your logo on on our README on Github with a link to you
 
 [datgui]: https://github.com/WhitestormJS/whs-module-dat.gui
 [datgui-npm]: https://img.shields.io/npm/v/whs-module-dat.gui.svg?style=flat-square
+
+[physics-ammonext]: https://github.com/WhitestormJS/physics-module-ammonext
+[physics-ammonext-npm]: https://img.shields.io/npm/v/physics-module-ammonext.svg?style=flat-square
+
+[react-whs]: https://github.com/WhitestormJS/react-whs
+[react-whs-npm]: https://img.shields.io/npm/v/react-whs.svg?style=flat-square
 
 [backer-url]: #backers
 [backer-badge]: https://opencollective.com/whitestormjs/backers/badge.svg?color=blue
