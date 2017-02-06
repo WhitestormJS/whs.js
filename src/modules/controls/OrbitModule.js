@@ -18,7 +18,7 @@ export class OrbitModule {
     );
 
     manager.update({
-      camera: (camera) => {
+      camera: camera => {
         this.controls.object = camera.native;
       }
     });
@@ -27,10 +27,10 @@ export class OrbitModule {
   integrate(self) {
     const {params, controls} = self;
 
-    const updateProcessor = params.follow ? (c) => {
+    const updateProcessor = params.follow ? c => {
       controls.update(c.getDelta());
       controls.target.copy(params.target);
-    } : (c) => {
+    } : c => {
       controls.update(c.getDelta());
     };
 
