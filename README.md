@@ -34,7 +34,7 @@
 ### [Support the project](https://opencollective.com/whitestormjs#support) - [Donate] buy developers a ☕
 
 ```bash
-$ npm install --save whs@beta
+$ npm install --save whs
 ```
 
 ## [Showcases](https://whs-dev.surge.sh/examples/)
