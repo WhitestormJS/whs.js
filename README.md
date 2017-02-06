@@ -192,6 +192,39 @@ console.log(sphere.native); // Logs THREE.Mesh of this component
 app.start(); // run animation
 ```
 
+# [React integration](https://github.com/WhitestormJS/react-whs)
+
+You can easilty integrate Whitestorm.js with React using [react-whs](https://github.com/WhitestormJS/react-whs) tool! Example:
+
+```javascript
+
+import React, {Component} from 'react';
+import {App, Sphere} from 'react-whs';
+
+export class Application extends Component {
+  render() {
+    return (
+      <App modules={[
+        new WHS.app.SceneModule(),
+        new WHS.app.CameraModule({
+          position: {
+            z: 20
+          }
+        }),
+        new WHS.app.RenderingModule(),
+        new WHS.controls.OrbitModule()
+      ]}>
+        <Sphere
+          geometry={[3, 32, 32]}
+          material={new THREE.MeshBasicMaterial({color: 0xffffff})}
+          key="1"
+        />
+      </App>
+    )
+  }
+}
+```
+
 ## Modules
 ### Devtools
 
