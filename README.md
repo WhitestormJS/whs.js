@@ -260,7 +260,7 @@ Become a sponsor and get your logo on on our README on Github with a link to you
 
 [backer-url]: #backers
 [backer-badge]: https://opencollective.com/whitestormjs/backers/badge.svg?color=blue
-[support-url]: https://opencollective.com/whitstormjs#support
+[support-url]: https://opencollective.com/whitestormjs#support
 [sponsor-url]: #sponsors
 [sponsor-badge]: https://opencollective.com/whitestormjs/sponsors/badge.svg?color=blue
 
