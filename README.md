@@ -30,7 +30,12 @@
 
 > **Framework for developing 3D web apps**
 
-### [Development chat](https://discord.gg/frNetGE) - opens in discord app
+### [Development chat](https://discord.gg/frNetGE) - opens in discord app. Ask for help here;)
+### [Support the project](https://opencollective.com/whitestormjs#support) - [Donate] buy developers a ☕
+
+```bash
+$ npm install --save whs@beta
+```
 
 ## [Showcases](https://whs-dev.surge.sh/examples/)
 
@@ -146,12 +151,6 @@ Proudly hosted by [cdnjs](https://cdnjs.com/):D (soon)
 * [Webpack](https://whsjs.io/#/api/webpack) friendly
 * ✔️ **Integrated [Three.js](https://threejs.org/) rendering engine**
 * Work with Whitestorm.js and Three.js at the same time
-
-## Installation
-
-```bash
-$ npm install --save whs@beta
-```
 
 ### WEBPACK
 
