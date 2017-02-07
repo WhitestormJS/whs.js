@@ -97,7 +97,7 @@ class MeshComponent extends Component {
         this.native.castShadow = shadow.cast;
         this.native.receiveShadow = shadow.receive;
 
-        this.applyBridge({onWrap: null});
+        this.applyBridge({onWrap: 1});
 
         resolve(this);
       });
