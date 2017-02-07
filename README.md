@@ -81,6 +81,8 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 
     app.start(); // run animation
     ```
+    
+    See [more about modules](https://medium.com/whitestormjs-framework/migrating-to-whitestormjs-v2-beta-module-system-2eeaeda08a80#.qqdn2mhct)
 
 * 💣 **Adding physics is hard.**
   - **Three.js:** To make your app run with physics you need to make a second world with same 3d objects and apply their transform (position & rotation) to your rendered scene objects (`THREE.Scene` for example) in every frame.
