@@ -170,6 +170,10 @@ Documentation for beta is not yet released. [Contact developers in discord chat]
 
 ## Basic application
 
+Open with **codepen**:
+
+<a href="http://codepen.io/sasha240100/pen/JELBGX"><img src="http://i.imgur.com/AcsnqTs.png" height="50" /></a>
+
 ```javascript
 const app = new WHS.App([
   new WHS.app.ElementModule(), // attach to DOM
