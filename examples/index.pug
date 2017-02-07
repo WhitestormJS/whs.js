@@ -86,14 +86,14 @@ html
 
           each path in paths
             if !path.indexOf(category)
-              li: a(href='#' + path) #{path.replace('/', ' / ')}
+              li: a(href='?' + path) #{path.replace('/', ' / ')}
 
     a.source(href="/" target="_blank") Source code
 
     script.
       var iframe = document.createElement('iframe');
       var rootPath = #{devMode} ? '' : '/examples';
-      var link = window.location.hash ? '/' + window.location.hash.substring(1, window.location.hash.length) + '/' : '/basic/helloworld/';
+      var link = window.location.search ? '/' + window.location.search.substring(1, window.location.search.length) + '/' : '/basic/helloworld/';
 
       iframe.src = rootPath + link;
       document.querySelector('a.source').href = 'https://github.com/WhitestormJS/whitestorm.js/tree/beta/examples/' + link + '/script.js';
