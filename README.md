@@ -112,6 +112,11 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
     ```
     
     Use [physics-module-ammonext](https://github.com/WhitestormJS/physics-module-ammonext) as your physics module.
+    
+    Try with **physics** on [**Codepen**](http://codepen.io/sasha240100/pen/wgEXwN):
+
+    <a href="http://codepen.io/sasha240100/pen/wgEXwN"><img src="http://i.imgur.com/AcsnqTs.png" height="50" /></a>
+
 
 * 🔌 **Components & plugins**
   - **Three.js:** You can create meshes with geometry and material.
@@ -170,7 +175,7 @@ Documentation for beta is not yet released. [Contact developers in discord chat]
 
 ## Basic application
 
-Open with **codepen**:
+Try on [**Codepen**](http://codepen.io/sasha240100/pen/JELBGX):
 
 <a href="http://codepen.io/sasha240100/pen/JELBGX"><img src="http://i.imgur.com/AcsnqTs.png" height="50" /></a>
 
@@ -210,6 +215,10 @@ You can easilty integrate Whitestorm.js with React using [react-whs](https://git
 ```bash
 $ npm install react react-whs --save
 ```
+
+Try with **React** on [**Codepen**](http://codepen.io/sasha240100/pen/dNqKMd?editors=1010):
+
+<a href="http://codepen.io/sasha240100/pen/dNqKMd?editors=1010"><img src="http://i.imgur.com/AcsnqTs.png" height="50" /></a>
 
 **Example:**
 
