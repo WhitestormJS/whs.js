@@ -14,7 +14,7 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
   modules: [
     new PHYSICS.SphereModule({
       mass: 10,
-      restitution: 1
+      restitution: 0.2
     })
   ],
 

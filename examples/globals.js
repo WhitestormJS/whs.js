@@ -123,7 +123,8 @@ export function addBoxPlane(world, size = 100) {
 
     modules: [
       new PHYSICS.BoxModule({
-        mass: 0
+        mass: 0,
+        restitution: 0.1
       })
     ],
 

@@ -11,7 +11,8 @@ new WHS.Sphere({
 
   modules: [
     new PHYSICS.SphereModule({
-      mass: 5
+      mass: 5,
+      restitution: 0
     })
   ],
 
@@ -33,7 +34,7 @@ const tramplin = new WHS.Box({
   modules: [
     new PHYSICS.BoxModule({
       mass: 0,
-      restitution: 0
+      restitution: 0.1
     })
   ],
 
@@ -74,14 +75,13 @@ const domino = new WHS.Box({
 
   modules: [
     new PHYSICS.BoxModule({
-      mass: 5
+      mass: 1
     })
   ],
 
   material: new THREE.MeshPhongMaterial({
     color: UTILS.$colors.mesh,
-    restitution: 0.5,
-    friction: 1
+    restitution: 0.1
   }),
 
   position: {
@@ -99,7 +99,7 @@ for (let i = 0; i < 13; i++) {
 }
 
 UTILS.addBoxPlane(world, 250).then(o => {
-  o.position.y = -0.5
+  o.position.y = -0.5;
 });
 
 UTILS.addBasicLights(world);
