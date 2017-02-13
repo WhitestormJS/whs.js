@@ -17,12 +17,13 @@ import {
 //    Pan - right mouse, or arrow keys / touch: three finter swipe
 
 export class ThreeOrbitControls extends EventDispatcher {
-  constructor(object, domElement) {
+  constructor(object, domElement, eventHandler) {
     super();
 
     this.object = object;
 
     this.domElement = (domElement !== undefined) ? domElement : document;
+    this.eventHandler = eventHandler;
 
     // Set to false to disable this control
     this.enabled = true;
@@ -595,8 +596,8 @@ export class ThreeOrbitControls extends EventDispatcher {
       }
 
       if (state !== STATE.NONE) {
-        document.addEventListener('mousemove', onMouseMove, false);
-        document.addEventListener('mouseup', onMouseUp, false);
+        this.eventHandler.on('mousemove', onMouseMove, false);
+        this.eventHandler.on('mouseup', onMouseUp, false);
 
         this.dispatchEvent(startEvent);
 
@@ -760,16 +761,16 @@ export class ThreeOrbitControls extends EventDispatcher {
 
     //
 
-    this.domElement.addEventListener('contextmenu', onContextMenu, false);
+    this.eventHandler.on('contextmenu', onContextMenu, false);
 
-    this.domElement.addEventListener('mousedown', onMouseDown, false);
-    this.domElement.addEventListener('wheel', onMouseWheel, false);
+    this.eventHandler.on('mousedown', onMouseDown, false);
+    this.eventHandler.on('wheel', onMouseWheel, false);
 
-    this.domElement.addEventListener('touchstart', onTouchStart, false);
-    this.domElement.addEventListener('touchend', onTouchEnd, false);
-    this.domElement.addEventListener('touchmove', onTouchMove, false);
+    this.eventHandler.on('touchstart', onTouchStart, false);
+    this.eventHandler.on('touchend', onTouchEnd, false);
+    this.eventHandler.on('touchmove', onTouchMove, false);
 
-    window.addEventListener('keydown', onKeyDown, false);
+    this.eventHandler.on('keydown', onKeyDown, false);
 
     // force an update at start
 
