@@ -3,9 +3,7 @@
     ["es2015", {"modules": false}]
   ],
   "plugins": [
-    ["transform-runtime", {
-      "polyfill": false
-    }],
+    "transform-runtime",
     "add-module-exports",
     "transform-decorators-legacy",
     "transform-class-properties",

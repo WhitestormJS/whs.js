@@ -6,6 +6,7 @@ import {
 } from 'three';
 
 import Events from 'minivents';
+import {EventsPatchModule} from './EventsPatchModule';
 
 export class VirtualMouseModule extends Events {
   mouse = new Vector2();
@@ -14,9 +15,10 @@ export class VirtualMouseModule extends Events {
   canvas = null;
   projectionPlane = new Plane(new Vector3(0, 0, 1), 0);
 
-  constructor(globalMovement = false) {
+  constructor(globalMovement = false, patchEvents = true) {
     super();
     this.globalMovement = globalMovement;
+    this.patchEvents = patchEvents;
   }
 
   update(e) {
@@ -33,14 +35,20 @@ export class VirtualMouseModule extends Events {
 
   manager(manager) {
     this.canvas = manager.get('renderer').domElement;
-    const mouseMoveContainer = this.globalMovement ? window : manager.get('element');
-
     this.camera = manager.get('camera').native;
+  }
 
-    mouseMoveContainer.addEventListener('mousemove', this.update.bind(this));
-    manager.get('element').addEventListener('click', () => this.emit('click'));
-    manager.get('element').addEventListener('mousedown', () => this.emit('mousedown'));
-    manager.get('element').addEventListener('mouseup', () => this.emit('mouseup'));
+  integrate(self) {
+    if (self.patchEvents) this.applyModuleOnce(EventsPatchModule, () => new EventsPatchModule());
+
+    [
+      'click',
+      'mousedown',
+      'mouseup',
+      'mousemove'
+    ].forEach(ev => this.on(ev, e => self.emit(ev, e)));
+
+    this.on('mousemove', e => self.update(e));
   }
 
   track(component) {
