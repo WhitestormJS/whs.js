@@ -3,8 +3,6 @@ import webpack from 'webpack';
 import HappyPack from 'happypack';
 import DashboardPlugin from 'webpack-dashboard/plugin';
 
-process.env.BABEL_ENV = 'browser';
-
 export function config(
     {
       isProduction,
@@ -26,7 +24,6 @@ export function config(
     devtool: isProduction ? false : 'source-map',
     cache: true,
     entry: [
-      // 'babel-polyfill',
       compact ? `${src}/compact.js` : `${src}/index.js`
     ],
     target: 'web',
