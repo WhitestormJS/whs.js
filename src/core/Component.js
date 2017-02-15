@@ -88,6 +88,11 @@ class Component extends ModuleSystem {
     });
   }
 
+  remove(object) {
+    object.parent = null;
+    this.native.remove(object.native);
+  }
+
   addTo(object) {
     return object.add(this);
   }
