@@ -38,6 +38,11 @@ export class SceneModule {
       });
     };
 
+    this.remove = function (object) {
+      object.parent = null;
+      self.scene.remove(object.native);
+    };
+
     this.setScene = function (scene) {
       self.scene = scene;
       this.manager.set('scene', scene);
