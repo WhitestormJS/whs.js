@@ -21,7 +21,7 @@ export class EventsPatchModule {
       'touchstart',
       'touchend',
       'touchmove',
-      'keydown',
+      'keydown'
     ]);
 
     patchEvents(element, this, [
