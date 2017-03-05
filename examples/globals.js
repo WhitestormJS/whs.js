@@ -130,3 +130,49 @@ export function addBoxPlane(world, size = 100) {
     material: new THREE.MeshPhongMaterial({color: 0x447F8B})
   }).addTo(world);
 }
+
+function hexToRgb(hex) {
+  let bigint = parseInt(hex, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+
+  return `rgba(${r}, ${g}, ${b}, 1.0)`;
+}
+
+export class Label extends WHS.MeshComponent {
+  constructor(params = {}) {
+    super(params, Object.assign(WHS.MeshComponent.defaults, {
+      text: 'Hello world!',
+      color: '#ffffff',
+      size: 40
+    }));
+  }
+
+  build() {
+    this.canvas = document.createElement('canvas');
+    this.ctx = this.canvas.getContext('2d');
+
+    const {canvas, ctx} = this;
+    const {text, bgColor, color, size} = this.params;
+
+    ctx.font = `Bold ${size}px Arial`;
+    ctx.fillStyle = color;
+    ctx.lineWidth = 4;
+    ctx.textAlign = 'center';
+    // const size = ctx.measureText(text);
+    ctx.fillText(text, 150, 75);
+
+    // ctx.fillStyle = 'green';
+    // ctx.fillRect(10, 10, 100, 100);
+
+    const texture = new THREE.Texture(this.canvas);
+    texture.needsUpdate = true;
+
+    const sprite = new THREE.Sprite(
+      new THREE.SpriteMaterial({map: texture})
+    );
+
+    return sprite;
+  }
+}
