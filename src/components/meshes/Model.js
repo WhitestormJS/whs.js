@@ -11,7 +11,10 @@ class Model extends MeshComponent {
     ...MeshComponent.defaults,
     geometry: {
       path: '',
-      loader: new JSONLoader()
+      loader: new JSONLoader(),
+      parser(geometry, materials) {
+        return new Mesh(geometry, new MultiMaterial(materials));
+      }
     }
   };
 
@@ -26,20 +29,19 @@ class Model extends MeshComponent {
 
   build(params = {}) {
     const promise = new Promise((resolve) => {
-      params.geometry.loader.load(params.geometry.path, (geom, materials) => {
-        const mat = params.useCustomMaterial
-          ? params.material
-          : new MultiMaterial(materials);
+      params.geometry.loader.load(params.geometry.path, (...data) => { // geom, materials
+        console.log(params.geometry.parser(...data));
+        const mesh = this.applyBridge({mesh: params.geometry.parser(...data)}).mesh;
 
-        const {geometry, material} = this.applyBridge({
-          geometry: geom,
-          material: mat
+        const {geometry: geom, material: mat} = this.applyBridge({
+          geometry: mesh.geometry,
+          material: mesh.material
         });
 
-        resolve(this.applyBridge({mesh: new Mesh(
-          geometry,
-          material
-        )}).mesh);
+        mesh.geometry = geom;
+        mesh.material = params.useCustomMaterial ? params.material : mat;
+
+        resolve(mesh);
       });
     });
 
