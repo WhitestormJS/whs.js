@@ -13,23 +13,29 @@ export class TextureModule {
     return new TextureModule({url}).texture;
   }
 
-  constructor({url, offset = new Vector2(0, 0), repeat = new Vector2(1, 1)}) {
-    const texture = loader.load(url);
+  textures = [];
 
-    texture.wrapS = texture.wrapT = RepeatWrapping;
+  constructor(...textures) {
+    textures.forEach(({url, type = 'map', offset = new Vector2(0, 0), repeat = new Vector2(1, 1)}) => {
+      const texture = loader.load(url);
 
-    texture.offset.copy(offset);
-    texture.repeat.copy(repeat);
+      texture.wrapS = texture.wrapT = RepeatWrapping;
 
-    texture.magFilter = NearestFilter;
-    texture.minFilter = LinearMipMapLinearFilter;
+      texture.offset.copy(offset);
+      texture.repeat.copy(repeat);
 
-    this.texture = texture;
+      texture.magFilter = NearestFilter;
+      texture.minFilter = LinearMipMapLinearFilter;
+
+      this.textures.push([type, texture]);
+    });
   }
 
   bridge = {
     material(material, self) {
-      material.map = self.texture;
+      self.textures.forEach(texture => {
+        material[texture[0]] = texture[1];
+      });
 
       return material;
     }
