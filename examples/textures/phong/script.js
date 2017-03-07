@@ -21,7 +21,7 @@ const box = new WHS.Box({ // Create box comonent.
 
   modules: [
     new WHS.mesh.TextureModule({
-      url: '/assets/textures/box.jpg'
+      url: `${process.assetsPath}/textures/box.jpg`
     })
   ],
 
@@ -50,10 +50,10 @@ const boxNormal = new WHS.Box({ // Create box comonent.
 
   modules: [
     new WHS.mesh.TextureModule({
-      url: '/assets/textures/box.jpg'
-    },{
+      url: `${process.assetsPath}/textures/box.jpg`
+    }, {
       type: 'normalMap',
-      url: '/assets/textures/normalBox.png'
+      url: `${process.assetsPath}/textures/normalBox.png`
     })
   ],
 
@@ -82,10 +82,10 @@ const boxDisplace = new WHS.Box({ // Create box comonent.
 
   modules: [
     new WHS.mesh.TextureModule({
-      url: '/assets/textures/box.jpg'
-    },{
+      url: `${process.assetsPath}/textures/box.jpg`
+    }, {
       type: 'displacementMap',
-      url: '/assets/textures/displacementBox.png'
+      url: `${process.assetsPath}/textures/displacementBox.png`
     })
   ],
 
@@ -101,7 +101,6 @@ const labelDisplace = new UTILS.Label({
 
 boxDisplace.addTo(world);
 labelDisplace.addTo(world);
-
 
 new WHS.PointLight({
   light: {
