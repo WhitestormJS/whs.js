@@ -3,12 +3,21 @@ import * as UTILS from '../../globals';
 const ad = UTILS.appDefaults;
 
 const controlsModule = new WHS.controls.OrbitModule();
+const cameraModule = new WHS.app.CameraModule({
+  position: {
+    z: 500,
+    y: 400
+  },
+  far: 30000,
+  near: 10
+});
 
 const world = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 200)
   }, ad.rendering, ad.physics, false),
-  controlsModule
+  controlsModule,
+  cameraModule
 ]);
 
 controlsModule.controls.autoRotate = true;
@@ -21,7 +30,7 @@ new WHS.Box({
   },
 
   material: new THREE.MeshPhongMaterial({
-    color: 0xffffff
+    color: 0x4286f4
   }),
 
   position: [0, 0, 0],
