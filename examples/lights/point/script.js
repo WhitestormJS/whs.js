@@ -87,6 +87,8 @@ const redSpotLight = new WHS.PointLight({
 redSpotLight.addTo(world);
 
 new WHS.Sphere({
+  geometry: [1, 32, 32],
+
   material: new THREE.MeshBasicMaterial({
     color: red
   })
@@ -102,6 +104,8 @@ const whiteSpotLight = new WHS.PointLight({
 whiteSpotLight.addTo(world);
 
 new WHS.Sphere({
+  geometry: [1, 32, 32],
+
   material: new THREE.MeshBasicMaterial({
     color: white
   })
@@ -117,6 +121,8 @@ const blueSpotLight = new WHS.PointLight({
 blueSpotLight.addTo(world);
 
 new WHS.Sphere({
+  geometry: [1, 32, 32],
+
   material: new THREE.MeshBasicMaterial({
     color: blue
   }),
