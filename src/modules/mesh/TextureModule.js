@@ -23,7 +23,8 @@ export class TextureModule {
       offset = new Vector2(0, 0),
       repeat = new Vector2(1, 1),
       wrap = RepeatWrapping,
-      mapping = UVMapping
+      mapping = UVMapping,
+      fix = tex => tex
     }) => {
       const texture = loader.load(url);
 
@@ -41,7 +42,7 @@ export class TextureModule {
       texture.magFilter = NearestFilter;
       texture.minFilter = LinearMipMapLinearFilter;
 
-      this.textures.push([type, texture]);
+      this.textures.push([type, fix(texture)]);
     });
   }
 
