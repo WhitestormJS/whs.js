@@ -35,7 +35,11 @@ new WHS.Box({
   modules: [
     new WHS.mesh.TextureModule({
       url: `${process.assetsPath}/textures/box.jpg`
-    })
+    }, {
+      url: `${process.assetsPath}/textures/boxNormal.png`,
+      type: 'normalMap'
+    }
+  )
   ],
   position: [0, 5, 0]
 }).addTo(world);
