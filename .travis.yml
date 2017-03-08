@@ -8,11 +8,16 @@ before_script:
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
   - npm install
   - gulp build
-  - gulp examples:build
 script:
   - npm test
 after_success:
-  - npm run deploy
   - jest --coverage
   - cat ./coverage/lcov.info | node_modules/.bin/coveralls --verbose
   - rm -rf ./coverage
+before_deploy:
+  - gulp examples:build
+deploy:
+  provider: surge
+  project: ./
+  domain: whs-dev.surge.sh
+  on: beta
