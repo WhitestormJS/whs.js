@@ -18,6 +18,7 @@ export class RenderingModule {
       height: window.innerHeight,
 
       resolution: new Vector2(1, 1),
+      pixelRatio: window.devicePixelRatio,
 
       bgColor: 0x000000,
       bgOpacity: 1,
@@ -25,17 +26,29 @@ export class RenderingModule {
       renderer: {}
     }, params);
 
-    this.renderer = new WebGLRenderer(this.params.renderer);
+    const {
+      bgColor,
+      bgOpacity,
+      renderer,
+      pixelRatio,
+      width,
+      height,
+      resolution
+    } = this.params;
+
+    this.renderer = new WebGLRenderer(renderer);
     this.applyAdditional('shadow', isShadow);
 
     this.renderer.setClearColor(
-      this.params.bgColor,
-      this.params.bgOpacity
+      bgColor,
+      bgOpacity
     );
 
+    this.renderer.setPixelRatio(pixelRatio);
+
     this.setSize(
-      Number(this.params.width * this.params.resolution.x).toFixed(),
-      Number(this.params.height * this.params.resolution.y).toFixed()
+      Number(width * resolution.x).toFixed(),
+      Number(height * resolution.y).toFixed()
     );
   }
 
