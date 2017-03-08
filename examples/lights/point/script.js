@@ -26,18 +26,24 @@ const world = new WHS.App([
 controlsModule.controls.autoRotate = true;
 
 new WHS.Box({
-  geometry: {
-    width: 10,
-    height: 10,
-    depth: 10
-  },
-  material: new THREE.MeshPhongMaterial(),
+  geometry: [10, 10, 10, 100, 100, 100],
+  material: new THREE.MeshPhongMaterial({
+    bumpScale: 2,
+    displacementBias: -0.5,
+    displacementScale: 0.5
+  }),
   modules: [
     new WHS.mesh.TextureModule({
       url: `${process.assetsPath}/textures/box.jpg`
     }, {
-      url: `${process.assetsPath}/textures/boxNormal.png`,
+      url: `${process.assetsPath}/textures/normalBox.png`,
       type: 'normalMap'
+    }, {
+      url: `${process.assetsPath}/textures/bumpBox.png`,
+      type: 'bumpMap'
+    }, {
+      url: `${process.assetsPath}/textures/displacementBox.png`,
+      type: 'displacementMap'
     }
   )
   ],
