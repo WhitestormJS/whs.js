@@ -18,7 +18,12 @@ const controlsModule = new WHS.controls.OrbitModule();
 
 const world = new WHS.App([
   ...UTILS.appModules({
-    position: new THREE.Vector3(0, 10, 200)
+    position: new THREE.Vector3(0, 10, 200),
+    renderer: {
+      shadowmap: {
+        type: THREE.BasicShadowMap
+      }
+    }
   }),
   controlsModule,
   cameraModule
@@ -27,11 +32,17 @@ controlsModule.controls.autoRotate = true;
 
 new WHS.Box({
   geometry: [10, 10, 10, 100, 100, 100],
+
   material: new THREE.MeshPhongMaterial({
     bumpScale: 2,
     displacementBias: -0.5,
     displacementScale: 0.5
   }),
+
+  shadow: {
+    receive: false
+  },
+
   modules: [
     new WHS.mesh.TextureModule({
       url: `${process.assetsPath}/textures/box.jpg`
@@ -60,7 +71,11 @@ new WHS.Box({
     y: 0,
     x: -Math.PI / 2
   },
-  receiveShadow: true,
+
+  shadow: {
+    cast: false
+  },
+
   material: new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide
   })
