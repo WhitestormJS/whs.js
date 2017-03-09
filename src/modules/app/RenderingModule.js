@@ -79,6 +79,14 @@ export class RenderingModule {
     canvas.style.height = '100%';
   }
 
+  stop() {
+    this.renderLoop.stop();
+  }
+
+  play() {
+    this.renderLoop.start();
+  }
+
   manager(manager) {
     this.renderLoop = this.integrateRenderer(
       manager.get('element'),
