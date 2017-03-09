@@ -4,7 +4,7 @@ import {
   AudioLoader
 } from 'three';
 
-export class PositionalAudioModule {
+export default class PositionalAudioModule {
   constructor(params = {}) {
     this.params = Object.assign({
       auto: true
