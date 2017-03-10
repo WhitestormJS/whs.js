@@ -28,15 +28,22 @@ class App extends ModuleSystem {
     })();
 
     function process() {
-      requestAnimFrame(process.bind(this));
+      if (this.render) {
+        requestAnimFrame(process.bind(this));
 
-      for (let i = 0; i < this.loops.length; i++) {
-        const e = this.loops[i];
-        if (e.enabled) e.execute(e.clock);
+        for (let i = 0; i < this.loops.length; i++) {
+          const e = this.loops[i];
+          if (e.enabled) e.execute(e.clock);
+        }
       }
     }
 
+    this.render = true;
     (process.bind(this))();
+  }
+
+  stop() {
+    this.render = false;
   }
 
   addLoop(loop) {
