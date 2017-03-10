@@ -53,7 +53,7 @@ const sphere = new WHS.Sphere({
 sphere.addTo(world);
 
 sphere.addAudioListener(cameraModule);
-sphere.playAudio(`${process.assetsPath}/sounds/jaw-harp.mp3`);
+sphere.playAudio(`${process.assetsPath}/sounds/folk.mp3`);
 
 new WHS.PointLight({
   light: {
