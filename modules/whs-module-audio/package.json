@@ -5,9 +5,7 @@
   "main": "build/AudioPlugin.js",
   "scripts": {
     "start": "webpack --watch --hot",
-    "build": "webpack"
-  },
-  "scripts": {
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
