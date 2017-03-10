@@ -107,5 +107,6 @@ export class RenderingModule {
 
   dispose(self) {
     self.renderLoop.stop(this);
+    self.renderer.forceContextLoss();
   }
 }
