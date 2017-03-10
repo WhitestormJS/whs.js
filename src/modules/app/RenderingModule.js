@@ -112,4 +112,9 @@ export class RenderingModule {
   integrate(self) {
     self.renderLoop.start(this);
   }
+
+  dispose(self) {
+    self.renderLoop.stop(this);
+    self.renderer.forceContextLoss();
+  }
 }
