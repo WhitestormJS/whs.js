@@ -7,11 +7,12 @@ import {
 export default class PositionalAudioModule {
   constructor(params = {}) {
     this.params = Object.assign({
-      auto: true
+      loop: true
     }, params);
 
     this.audioListener = new AudioListener();
     this.positionalAudio = new PositionalAudio(this.audioListener);
+    this.positionalAudio.setLoop(this.params.loop);
     this.audioLoader = new AudioLoader();
   }
 
