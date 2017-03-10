@@ -58,6 +58,21 @@ export class ModuleSystem extends Events {
     if (!isAlreadyIncluded) return this.applyModule(getModule(), push);
   }
 
+  disposeModules() {
+    while(this.modules.length)
+      this.disposeModule(this.modules[0]);
+  }
+
+  disposeModule(module) {
+    if (!module) return;
+
+    this.modules.splice(this.modules.indexOf(module), 1)
+
+    if (module.dispose) module.dispose.bind(this)(module);
+
+    return module;
+  }
+
   // PIPED METHOD
 
   module(module) {
