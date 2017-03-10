@@ -4,7 +4,7 @@ import {ModuleManager} from './ModuleManager';
 
 class App extends ModuleSystem {
   simulate = false;
-  render = true;
+  updateEnabled = true;
   loops = [];
 
   constructor(modules = []) {
@@ -28,7 +28,7 @@ class App extends ModuleSystem {
     })();
 
     function process() {
-      if (this.render) {
+      if (this.updateEnabled) {
         requestAnimFrame(process.bind(this));
 
         for (let i = 0; i < this.loops.length; i++) {
@@ -38,12 +38,12 @@ class App extends ModuleSystem {
       }
     }
 
-    this.render = true;
+    this.updateEnabled = true;
     (process.bind(this))();
   }
 
   stop() {
-    this.render = false;
+    this.updateEnabled = false;
   }
 
   addLoop(loop) {
