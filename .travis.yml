@@ -27,10 +27,9 @@ after_success:
   - rm -rf ./coverage
 before_deploy:
   - gulp examples:build
-  - git add -A
-  - git commit -m "Build"
 deploy:
   provider: surge
   project: ./
   domain: whs-dev.surge.sh
+  skip_cleanup: true
   on: beta
