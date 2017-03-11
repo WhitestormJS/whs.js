@@ -4,7 +4,7 @@
   "description": "Audio module for whs",
   "main": "build/AudioPlugin.js",
   "scripts": {
-    "start": "webpack --watch --hot",
+    "start": "webpack --watch",
     "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
