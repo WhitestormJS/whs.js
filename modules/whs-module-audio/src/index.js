@@ -31,5 +31,10 @@ export default class PositionalAudioModule {
     });
   };
 
+  bridge = {
+    mesh(mesh, self) {
+      mesh.add(self.positionalAudio);
+      return mesh;
+    }
   }
 }
