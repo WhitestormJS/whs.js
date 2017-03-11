@@ -11,25 +11,25 @@ export default class PositionalAudioModule {
     }, params);
 
     this.audioListener = new AudioListener();
+    this.audioLoader = new AudioLoader();
+
     this.positionalAudio = new PositionalAudio(this.audioListener);
     this.positionalAudio.setLoop(this.params.loop);
-    this.audioLoader = new AudioLoader();
   }
 
-  integrate(self) {
-    this.addAudioListener = function (cameraModule) {
-      this.native.add(self.positionalAudio);
-      cameraModule.camera.native.add(self.audioListener);
-    };
+  addListener(object) {
+    object.native.add(this.audioListener);
+  };
 
-    this.playAudio = function (path) {
-      const sound = self.positionalAudio;
+  playAudio(path) {
+    const sound = this.positionalAudio;
 
-      self.audioLoader.load(path, buffer => {
-        sound.setBuffer(buffer);
-        sound.setRefDistance(50);
-        sound.play();
-      });
-    };
+    this.audioLoader.load(path, buffer => {
+      sound.setBuffer(buffer);
+      sound.setRefDistance(50);
+      sound.play();
+    });
+  };
+
   }
 }
