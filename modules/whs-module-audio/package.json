@@ -1,0 +1,17 @@
+{
+  "name": "whs-module-audio",
+  "version": "0.0.1",
+  "description": "Audio module for whs",
+  "main": "build/AudioPlugin.js",
+  "scripts": {
+    "start": "webpack --watch",
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "whs-module",
+    "audio"
+  ],
+  "author": "hirako2000",
+  "license": "MIT"
+}
