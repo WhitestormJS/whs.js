@@ -27,7 +27,7 @@ after_success:
   - rm -rf ./coverage
 before_deploy:
   - gulp examples:build
-  - git add -a
+  - git add -A
   - git commit -m "Build"
 deploy:
   provider: surge
