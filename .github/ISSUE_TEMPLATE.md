@@ -13,7 +13,8 @@ Describe your issue here.
 
 <details> 
 <summary> <b>Tested on: </b> </summary>
-###### --- Desktop
+
+###### Desktop
    - [ ] Chrome
    - [ ] Chrome Canary
    - [ ] Chrome dev-channel
@@ -22,12 +23,12 @@ Describe your issue here.
    - [ ] Microsoft IE
    - [ ] Microsoft Edge
 
-###### --- Android
+###### Android
    - [ ] Chrome
    - [ ] Firefox
    - [ ] Opera
 
-###### --- IOS
+###### IOS
    - [ ] Chrome
    - [ ] Firefox
    - [ ] Opera
