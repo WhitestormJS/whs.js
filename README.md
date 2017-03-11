@@ -5,6 +5,7 @@
 [![Three][three]][three-url]
 [![NPM Version][npm]][npm-url]
 [![Build Status][travis]][travis-url]
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Coverage Status][coverage]][coverage-url]
 [![Known Vulnerabilities][snyk]][snyk-url]
 [![Discord][discord]][discord-url]
