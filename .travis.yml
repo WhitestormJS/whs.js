@@ -1,10 +1,21 @@
 sudo: required
 dist: trusty
 language: node_js
-os: osx
+os: linux
+sudo: required
+dist: trusty
+addons:
+  apt:
+    packages:
+    - mesa-utils
+    - xvfb
+    - libgl1-mesa-dri
+    - libglapi-mesa
+    - libosmesa6
 node_js:
   - "6"
 before_script:
+  - export DISPLAY=:99.0; sh -e /etc/init.d/xvfb start
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
   - npm install
   - gulp build
