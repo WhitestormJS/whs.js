@@ -1,5 +1,4 @@
 import * as UTILS from '../../globals';
-import PositionalAudioModule from '../../../modules/whs-module-audio/src';
 
 const controlsModule = new WHS.controls.OrbitModule();
 
@@ -24,7 +23,7 @@ const world = new WHS.App([
 
 controlsModule.controls.autoRotate = true;
 
-const audioModule = new PositionalAudioModule({
+const audioModule = new AudioModule({
   loop: true
 });
 
@@ -52,8 +51,8 @@ const sphere = new WHS.Sphere({
 });
 sphere.addTo(world);
 
-sphere.addAudioListener(cameraModule);
-sphere.playAudio(`${process.assetsPath}/sounds/folk.mp3`);
+audioModule.addListener(cameraModule.camera);
+audioModule.playAudio(`${process.assetsPath}/sounds/folk.mp3`);
 
 new WHS.PointLight({
   light: {
