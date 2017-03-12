@@ -267,35 +267,31 @@ export class ThreeOrbitControls extends EventDispatcher {
       sphericalDelta.phi -= angle;
     }
 
-    const panLeft = () => {
+    const panLeft = (() => {
       const v = new Vector3();
 
-      return function panLeft(distance, objectMatrix) {
+      return (distance, objectMatrix) => {
         v.setFromMatrixColumn(objectMatrix, 0); // get X column of objectMatrix
         v.multiplyScalar(-distance);
-
         panOffset.add(v);
-
       };
-    };
+    })();
 
-    const panUp = () => {
+    const panUp = (() => {
       const v = new Vector3();
 
-      return function panUp(distance, objectMatrix) {
+      return (distance, objectMatrix) => {
         v.setFromMatrixColumn(objectMatrix, 1); // get Y column of objectMatrix
         v.multiplyScalar(distance);
-
         panOffset.add(v);
-
       };
-    };
+    })();
 
     // deltaX and deltaY are in pixels; right and down are positive
-    const pan = () => {
+    const pan = (() => {
       const offset = new Vector3();
 
-      return function pan(deltaX, deltaY) {
+      return (deltaX, deltaY) => {
         const element = this.domElement === document ? this.domElement.body : this.domElement;
 
         if (this.object instanceof PerspectiveCamera) {
@@ -320,11 +316,9 @@ export class ThreeOrbitControls extends EventDispatcher {
           // camera neither orthographic nor perspective
           console.warn('WARNING: OrbitControlsModule.js encountered an unknown camera type - pan disabled.');
           this.enablePan = false;
-
         }
-
       };
-    };
+    })();
 
     const dollyIn = (dollyScale) => {
       if (this.object instanceof PerspectiveCamera) {
