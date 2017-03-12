@@ -17,6 +17,7 @@ export class EventsPatchModule {
       'mouseup',
       'contextmenu',
       'mousedown',
+      'click',
       'wheel',
       'touchstart',
       'touchend',
