@@ -22,7 +22,7 @@ export class ThreeOrbitControls extends EventDispatcher {
 
     this.object = object;
 
-    this.domElement = (domElement !== undefined) ? domElement : document;
+    this.domElement = (domElement === undefined) ? document : domElement;
     this.eventHandler = eventHandler;
 
     // Set to false to disable this control
@@ -133,10 +133,8 @@ export class ThreeOrbitControls extends EventDispatcher {
         // angle from z-axis around y-axis
         spherical.setFromVector3(offset);
 
-        if (this.autoRotate && state === STATE.NONE) {
+        if (this.autoRotate && state === STATE.NONE)
           rotateLeft(getAutoRotationAngle());
-
-        }
 
         spherical.theta += sphericalDelta.theta;
         spherical.phi += sphericalDelta.phi;
@@ -148,7 +146,6 @@ export class ThreeOrbitControls extends EventDispatcher {
         spherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, spherical.phi));
 
         spherical.makeSafe();
-
 
         spherical.radius *= scale;
 
@@ -170,11 +167,8 @@ export class ThreeOrbitControls extends EventDispatcher {
         if (this.enableDamping === true) {
           sphericalDelta.theta *= (1 - this.dampingFactor);
           sphericalDelta.phi *= (1 - this.dampingFactor);
-
-        } else {
+        } else
           sphericalDelta.set(0, 0, 0);
-
-        }
 
         scale = 1;
         panOffset.set(0, 0, 0);
@@ -183,9 +177,9 @@ export class ThreeOrbitControls extends EventDispatcher {
         // min(camera displacement, camera rotation in radians)^2 > EPS
         // using small-angle approximation cos(x/2) = 1 - x^2 / 8
 
-        if (zoomChanged ||
-          lastPosition.distanceToSquared(this.object.position) > EPS ||
-          8 * (1 - lastQuaternion.dot(this.object.quaternion)) > EPS) {
+        if (zoomChanged
+          || lastPosition.distanceToSquared(this.object.position) > EPS
+          || 8 * (1 - lastQuaternion.dot(this.object.quaternion)) > EPS) {
           this.dispatchEvent(changeEvent);
 
           lastPosition.copy(this.object.position);
@@ -193,7 +187,6 @@ export class ThreeOrbitControls extends EventDispatcher {
           zoomChanged = false;
 
           return true;
-
         }
 
         return false;
@@ -225,7 +218,7 @@ export class ThreeOrbitControls extends EventDispatcher {
     const startEvent = {type: 'start'};
     const endEvent = {type: 'end'};
 
-    const STATE = {NONE : -1, ROTATE : 0, DOLLY : 1, PAN : 2, TOUCH_ROTATE : 3, TOUCH_DOLLY : 4, TOUCH_PAN : 5};
+    const STATE = {NONE: -1, ROTATE: 0, DOLLY: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_DOLLY: 4, TOUCH_PAN: 5};
 
     let state = STATE.NONE;
 
@@ -253,19 +246,19 @@ export class ThreeOrbitControls extends EventDispatcher {
 
     const getAutoRotationAngle = () => {
       return 2 * Math.PI / 60 / 60 * this.autoRotateSpeed;
-    }
+    };
 
     const getZoomScale = () => {
       return Math.pow(0.95, this.zoomSpeed);
-    }
+    };
 
-    const rotateLeft = (angle) => {
+    const rotateLeft = angle => {
       sphericalDelta.theta -= angle;
-    }
+    };
 
-    const rotateUp = (angle) => {
+    const rotateUp = angle => {
       sphericalDelta.phi -= angle;
-    }
+    };
 
     const panLeft = (() => {
       const v = new Vector3();
@@ -306,12 +299,10 @@ export class ThreeOrbitControls extends EventDispatcher {
           // we actually don't use screenWidth, since perspective camera is fixed to screen height
           panLeft(2 * deltaX * targetDistance / element.clientHeight, this.object.matrix);
           panUp(2 * deltaY * targetDistance / element.clientHeight, this.object.matrix);
-
         } else if (this.object instanceof OrthographicCamera) {
           // orthographic
           panLeft(deltaX * (this.object.right - this.object.left) / this.object.zoom / element.clientWidth, this.object.matrix);
           panUp(deltaY * (this.object.top - this.object.bottom) / this.object.zoom / element.clientHeight, this.object.matrix);
-
         } else {
           // camera neither orthographic nor perspective
           console.warn('WARNING: OrbitControlsModule.js encountered an unknown camera type - pan disabled.');
@@ -320,61 +311,57 @@ export class ThreeOrbitControls extends EventDispatcher {
       };
     })();
 
-    const dollyIn = (dollyScale) => {
-      if (this.object instanceof PerspectiveCamera) {
+    const dollyIn = dollyScale => {
+      if (this.object instanceof PerspectiveCamera)
         scale /= dollyScale;
 
-      } else if (this.object instanceof OrthographicCamera) {
+      else if (this.object instanceof OrthographicCamera) {
         this.object.zoom = Math.max(this.minZoom, Math.min(this.maxZoom, this.object.zoom * dollyScale));
         this.object.updateProjectionMatrix();
         zoomChanged = true;
-
       } else {
         console.warn('WARNING: OrbitControlsModule.js encountered an unknown camera type - dolly/zoom disabled.');
         this.enableZoom = false;
-
       }
-    }
+    };
 
-    const dollyOut = (dollyScale) => {
-      if (this.object instanceof PerspectiveCamera) {
+    const dollyOut = dollyScale => {
+      if (this.object instanceof PerspectiveCamera)
         scale *= dollyScale;
 
-      } else if (this.object instanceof OrthographicCamera) {
+      else if (this.object instanceof OrthographicCamera) {
         this.object.zoom = Math.max(this.minZoom, Math.min(this.maxZoom, this.object.zoom / dollyScale));
         this.object.updateProjectionMatrix();
         zoomChanged = true;
-
       } else {
         console.warn('WARNING: OrbitControlsModule.js encountered an unknown camera type - dolly/zoom disabled.');
         this.enableZoom = false;
-
       }
-    }
+    };
 
     //
     // event callbacks - update the object state
     //
 
-    const handleMouseDownRotate = (event) => {
+    const handleMouseDownRotate = event => {
       // console.log( 'handleMouseDownRotate' );
 
       rotateStart.set(event.clientX, event.clientY);
-    }
+    };
 
-    const handleMouseDownDolly = (event) => {
+    const handleMouseDownDolly = event => {
       // console.log( 'handleMouseDownDolly' );
 
       dollyStart.set(event.clientX, event.clientY);
-    }
+    };
 
-    const handleMouseDownPan = (event) => {
+    const handleMouseDownPan = event => {
       // console.log( 'handleMouseDownPan' );
 
       panStart.set(event.clientX, event.clientY);
-    }
+    };
 
-    const handleMouseMoveRotate = (event) => {
+    const handleMouseMoveRotate = event => {
       // console.log( 'handleMouseMoveRotate' );
 
       rotateEnd.set(event.clientX, event.clientY);
@@ -391,29 +378,27 @@ export class ThreeOrbitControls extends EventDispatcher {
       rotateStart.copy(rotateEnd);
 
       this.update();
-    }
+    };
 
-    const handleMouseMoveDolly = (event) => {
+    const handleMouseMoveDolly = event => {
       // console.log( 'handleMouseMoveDolly' );
 
       dollyEnd.set(event.clientX, event.clientY);
 
       dollyDelta.subVectors(dollyEnd, dollyStart);
 
-      if (dollyDelta.y > 0) {
+      if (dollyDelta.y > 0)
         dollyIn(getZoomScale());
 
-      } else if (dollyDelta.y < 0) {
+      else if (dollyDelta.y < 0)
         dollyOut(getZoomScale());
-
-      }
 
       dollyStart.copy(dollyEnd);
 
       this.update();
-    }
+    };
 
-    const handleMouseMovePan = (event) => {
+    const handleMouseMovePan = event => {
       // console.log( 'handleMouseMovePan' );
 
       panEnd.set(event.clientX, event.clientY);
@@ -425,27 +410,25 @@ export class ThreeOrbitControls extends EventDispatcher {
       panStart.copy(panEnd);
 
       this.update();
-    }
+    };
 
-    const handleMouseUp = (event) => {
+    const handleMouseUp = event => {
       // console.log( 'handleMouseUp' );
-    }
+    };
 
-    const handleMouseWheel = (event) => {
+    const handleMouseWheel = event => {
       // console.log( 'handleMouseWheel' );
 
-      if (event.deltaY < 0) {
+      if (event.deltaY < 0)
         dollyOut(getZoomScale());
 
-      } else if (event.deltaY > 0) {
+      else if (event.deltaY > 0)
         dollyIn(getZoomScale());
 
-      }
-
       this.update();
-    }
+    };
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = event => {
       // console.log( 'handleKeyDown' );
 
       switch (event.keyCode) {
@@ -470,15 +453,15 @@ export class ThreeOrbitControls extends EventDispatcher {
           break;
 
       }
-    }
+    };
 
-    const handleTouchStartRotate = (event) => {
+    const handleTouchStartRotate = event => {
       // console.log( 'handleTouchStartRotate' );
 
       rotateStart.set(event.touches[0].pageX, event.touches[0].pageY);
-    }
+    };
 
-    const handleTouchStartDolly = (event) => {
+    const handleTouchStartDolly = event => {
       // console.log( 'handleTouchStartDolly' );
 
       const dx = event.touches[0].pageX - event.touches[1].pageX;
@@ -487,15 +470,15 @@ export class ThreeOrbitControls extends EventDispatcher {
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       dollyStart.set(0, distance);
-    }
+    };
 
-    const handleTouchStartPan = (event) => {
+    const handleTouchStartPan = event => {
       // console.log( 'handleTouchStartPan' );
 
       panStart.set(event.touches[0].pageX, event.touches[0].pageY);
-    }
+    };
 
-    const handleTouchMoveRotate = (event) => {
+    const handleTouchMoveRotate = event => {
       // console.log( 'handleTouchMoveRotate' );
 
       rotateEnd.set(event.touches[0].pageX, event.touches[0].pageY);
@@ -512,9 +495,9 @@ export class ThreeOrbitControls extends EventDispatcher {
       rotateStart.copy(rotateEnd);
 
       this.update();
-    }
+    };
 
-    const handleTouchMoveDolly = (event) => {
+    const handleTouchMoveDolly = event => {
       // console.log( 'handleTouchMoveDolly' );
 
       const dx = event.touches[0].pageX - event.touches[1].pageX;
@@ -526,20 +509,18 @@ export class ThreeOrbitControls extends EventDispatcher {
 
       dollyDelta.subVectors(dollyEnd, dollyStart);
 
-      if (dollyDelta.y > 0) {
+      if (dollyDelta.y > 0)
         dollyOut(getZoomScale());
 
-      } else if (dollyDelta.y < 0) {
+      else if (dollyDelta.y < 0)
         dollyIn(getZoomScale());
-
-      }
 
       dollyStart.copy(dollyEnd);
 
       this.update();
-    }
+    };
 
-    const handleTouchMovePan = (event) => {
+    const handleTouchMovePan = event => {
       // console.log( 'handleTouchMovePan' );
 
       panEnd.set(event.touches[0].pageX, event.touches[0].pageY);
@@ -551,17 +532,17 @@ export class ThreeOrbitControls extends EventDispatcher {
       panStart.copy(panEnd);
 
       this.update();
-    }
+    };
 
-    const handleTouchEnd = (event) => {
+    const handleTouchEnd = () => {
       // console.log( 'handleTouchEnd' );
-    }
+    };
 
     //
     // event handlers - FSM: listen for events and reset state
     //
 
-    const onMouseDown = (event) => {
+    const onMouseDown = event => {
       if (this.enabled === false) return;
 
       event.preventDefault();
@@ -572,21 +553,18 @@ export class ThreeOrbitControls extends EventDispatcher {
         handleMouseDownRotate(event);
 
         state = STATE.ROTATE;
-
       } else if (event.button === this.mouseButtons.ZOOM) {
         if (this.enableZoom === false) return;
 
         handleMouseDownDolly(event);
 
         state = STATE.DOLLY;
-
       } else if (event.button === this.mouseButtons.PAN) {
         if (this.enablePan === false) return;
 
         handleMouseDownPan(event);
 
         state = STATE.PAN;
-
       }
 
       if (state !== STATE.NONE) {
@@ -594,11 +572,10 @@ export class ThreeOrbitControls extends EventDispatcher {
         this.eventHandler.on('mouseup', onMouseUp, false);
 
         this.dispatchEvent(startEvent);
-
       }
-    }
+    };
 
-    const onMouseMove = (event) => {
+    const onMouseMove = event => {
       if (this.enabled === false) return;
 
       event.preventDefault();
@@ -607,21 +584,18 @@ export class ThreeOrbitControls extends EventDispatcher {
         if (this.enableRotate === false) return;
 
         handleMouseMoveRotate(event);
-
       } else if (state === STATE.DOLLY) {
         if (this.enableZoom === false) return;
 
         handleMouseMoveDolly(event);
-
       } else if (state === STATE.PAN) {
         if (this.enablePan === false) return;
 
         handleMouseMovePan(event);
-
       }
-    }
+    };
 
-    const onMouseUp = (event) => {
+    const onMouseUp = event => {
       if (this.enabled === false) return;
 
       handleMouseUp(event);
@@ -632,9 +606,9 @@ export class ThreeOrbitControls extends EventDispatcher {
       this.dispatchEvent(endEvent);
 
       state = STATE.NONE;
-    }
+    };
 
-    const onMouseWheel = (event) => {
+    const onMouseWheel = event => {
       if (this.enabled === false || this.enableZoom === false || (state !== STATE.NONE && state !== STATE.ROTATE)) return;
 
       event.preventDefault();
@@ -644,15 +618,15 @@ export class ThreeOrbitControls extends EventDispatcher {
 
       this.dispatchEvent(startEvent); // not sure why these are here...
       this.dispatchEvent(endEvent);
-    }
+    };
 
-    const onKeyDown = (event) => {
+    const onKeyDown = event => {
       if (this.enabled === false || this.enableKeys === false || this.enablePan === false) return;
 
       handleKeyDown(event);
-    }
+    };
 
-    const onTouchStart = (event) => {
+    const onTouchStart = event => {
       if (this.enabled === false) return;
 
       switch (event.touches.length) {
@@ -692,13 +666,11 @@ export class ThreeOrbitControls extends EventDispatcher {
 
       }
 
-      if (state !== STATE.NONE) {
+      if (state !== STATE.NONE)
         this.dispatchEvent(startEvent);
+    };
 
-      }
-    }
-
-    const onTouchMove = (event) => {
+    const onTouchMove = event => {
       if (this.enabled === false) return;
 
       event.preventDefault();
@@ -737,9 +709,9 @@ export class ThreeOrbitControls extends EventDispatcher {
           state = STATE.NONE;
 
       }
-    }
+    };
 
-    const onTouchEnd = (event) => {
+    const onTouchEnd = event => {
       if (this.enabled === false) return;
 
       handleTouchEnd(event);
@@ -747,11 +719,11 @@ export class ThreeOrbitControls extends EventDispatcher {
       this.dispatchEvent(endEvent);
 
       state = STATE.NONE;
-    }
+    };
 
-    const onContextMenu = (event) => {
+    const onContextMenu = event => {
       event.preventDefault();
-    }
+    };
 
     //
 
