@@ -7,43 +7,15 @@ html, body {
   background: #262C38;
 }
 
-div.sidebar {
+div.ui.sidebar.vertical.inverted.menu.left.overlay.visible {
   width: 300px;
-  float: left;
-  position: relative;
-  height: 100%;
   overflow: auto;
+  font-size: 1.3rem;
+  background: #262C38;
 }
 
-.sidebar h1 {
-  font-family: 'Montserrat', sans-serif;
-  color: white;
-  text-align: center;
-}
-
-ul {
-  color: white;
-  list-style: none;
-}
-
-li.h {
-  color: white;
-  text-decoration: none;
-  font-family: 'Oxygen', sans-serif;
-  font-size: 14pt;
-  font-weight: bold;
-  line-height: 2;
-  padding-top: 15px;
-}
-
-li a {
-  color: white;
-  text-decoration: none;
-  font-family: 'Oxygen', sans-serif;
-}
-
-li a:hover {
-  text-decoration: underline;
+.logo.image {
+  margin-right: 1em;
 }
 
 iframe {
@@ -62,7 +34,6 @@ a.source {
   padding: 5px 10px;
   border-radius: 5px;
   text-decoration: none;
-  font-family: 'Oxygen', sans-serif;
   transition: all 0.1s linear;
 }
 
