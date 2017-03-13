@@ -4,6 +4,7 @@ import express from 'express';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import {argv} from 'yargs';
 import DashboardPlugin from 'webpack-dashboard/plugin';
+import eLess from 'express-less';
 
 import {FrameworkCompilerInstance, ExampleCompilerInstance} from './compilers';
 import {getPaths} from './utils';
@@ -47,7 +48,10 @@ gulp.task('dev', () => {
     ));
   });
 
+  console.log(eLess);
+
   app.use('/assets', express.static(path.resolve(__dirname, `${examples}/assets`)));
+  app.use('/css', eLess(path.resolve(__dirname, `${examples}/less`), {compress: true}));
   app.use('/modules', express.static('modules'));
 
   app.set('views', path.resolve(__dirname, `./${examples}`));
