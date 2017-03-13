@@ -388,10 +388,10 @@ Become a sponsor and get your logo on on our README on Github with a link to you
 
 [![Sponsors][sponsors-image]][support-url]
 
-[statsjs]: https://github.com/WhitestormJS/whs-module-statsjs
+[statsjs]: https://github.com/WhitestormJS/whitestorm.js/tree/beta/modules/whs-module-statsjs
 [statsjs-npm]: https://img.shields.io/npm/v/whs-module-statsjs.svg?style=flat-square
 
-[datgui]: https://github.com/WhitestormJS/whs-module-dat.gui
+[datgui]: https://github.com/WhitestormJS/whitestorm.js/tree/beta/modules/whs-module-dat.gui
 [datgui-npm]: https://img.shields.io/npm/v/whs-module-dat.gui.svg?style=flat-square
 
 [physics-ammonext]: https://github.com/WhitestormJS/physics-module-ammonext
