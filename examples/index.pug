@@ -1,20 +1,27 @@
 html
   head
     include meta.pug
-    include style.pug
     style.
       @import url('https://fonts.googleapis.com/css?family=Cabin|Fjalla+One|Montserrat|Oxygen');
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.js')
+    script(src='/assets/js/script.js')
+    include style.pug
   body
-    div.sidebar
-      h1 Examples
+    div.ui.menu.sidebar.vertical.inverted.left.overlay.visible
+      div.item
+        a.ui.mini.logo.icon.image(href='/')
+          img(src='/assets/img/whs-logo.png')
+        a(href='/')
+          span Examples
 
-      ul
-        each category in categories
-          li.h #{category}
-
-          each path in paths
-            if !path.indexOf(category)
-              li: a(href='?' + path) #{path.replace('/', ' / ')}
+      each category in categories
+        div.item
+          div.header #{category}
+          div.menu
+            each path in paths
+              if !path.indexOf(category)
+                a.ui.item(href='?' + path) #{path.replace('/', ' / ')}
 
     a.source(href="/" target="_blank") Source code
 

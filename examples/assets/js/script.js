@@ -1,0 +1,1 @@
+// js for example page
