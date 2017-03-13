@@ -3,12 +3,19 @@ import fs from 'fs';
 import gulp from 'gulp';
 import del from 'del';
 import pug from 'pug';
+import less from 'gulp-less';
 
 import {ExampleCompilerInstance} from './compilers';
 import {getTemplateData} from './config';
 import {getPaths} from './utils';
 
-gulp.task('examples:build', (callback) => {
+gulp.task('less', () => {
+  return gulp.src('./examples/less/**/*.less')
+    .pipe(less())
+    .pipe(gulp.dest('./examples/css/'));
+});
+
+gulp.task('examples:build', ['less'], callback => {
   const wait = [];
   const paths = getPaths();
   const templateData = getTemplateData();
