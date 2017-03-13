@@ -28,7 +28,7 @@ export const log = (color, msg) => console.log(consoleColors[color], msg, consol
 export const getPaths = () => {
   const categories = [];
   const paths = [];
-  const excludeFolders = ['assets', 'less'];
+  const excludeFolders = ['assets', 'less', 'css'];
 
   const handleFolders = (folder, callback) =>
     fs.readdirSync(folder).filter(file => {
