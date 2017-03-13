@@ -28,18 +28,18 @@ class Model extends MeshComponent {
   }
 
   build(params = {}) {
-    const promise = new Promise((resolve) => {
+    const promise = new Promise(resolve => {
       params.geometry.loader.load(params.geometry.path, (...data) => { // geom, materials
         console.log(params.geometry.parser(...data));
         const mesh = this.applyBridge({mesh: params.geometry.parser(...data)}).mesh;
 
         const {geometry: geom, material: mat} = this.applyBridge({
           geometry: mesh.geometry,
-          material: mesh.material
+          material: params.useCustomMaterial ? params.material : mesh.material
         });
 
         mesh.geometry = geom;
-        mesh.material = params.useCustomMaterial ? params.material : mat;
+        mesh.material = mat;
 
         resolve(mesh);
       });
