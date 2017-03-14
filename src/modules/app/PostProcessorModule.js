@@ -1,4 +1,6 @@
 import {
+  LinearFilter,
+  RGBAFormat,
   WebGLRenderTarget
 } from 'three';
 
@@ -45,9 +47,9 @@ export class PostProcessorModule {
       size.width,
       size.height,
       {
-        minFilter: THREE.LinearFilter,
-        magFilter: THREE.LinearFilter,
-        format: THREE.RGBAFormat,
+        minFilter: LinearFilter,
+        magFilter: LinearFilter,
+        format: RGBAFormat,
         stencilBuffer: false
       }
     );
