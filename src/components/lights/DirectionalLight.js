@@ -2,14 +2,17 @@ import {DirectionalLight as DirectionalLightNative, DirectionalLightHelper} from
 import {LightComponent} from '../../core/LightComponent';
 
 class DirectionalLight extends LightComponent {
-  // static helpers = {
-  //   default: [DirectionalLightHelper, {
-  //     size: 0
-  //   }, ['size']]
-  // };
+  static defaults = {
+    ...LightComponent.defaults,
+
+    light: {
+      color: 0xffffff,
+      intensity: 1
+    }
+  };
 
   constructor(params = {}) {
-    super(params);
+    super(params, DirectionalLight.defaults);
     this.wrapShadow();
   }
 
