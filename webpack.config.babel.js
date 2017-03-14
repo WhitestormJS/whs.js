@@ -47,6 +47,14 @@ export function config(
         }
       ]
     },
+    externals: {
+      three: {
+        commonjs: 'three',
+        commonjs2: 'three',
+        amd: 'three',
+        root: 'THREE'
+      }
+    },
     plugins: [
       new webpack.LoaderOptionsPlugin({
         minimize: isProduction,
@@ -81,10 +89,7 @@ export function config(
       modules: [
         path.resolve(__dirname, 'node_modules'),
         src
-      ],
-      alias: {
-        three$: path.join(__dirname, './node_modules/three/build/three.module.js')
-      }
+      ]
     }
   };
 }
