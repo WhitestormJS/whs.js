@@ -1,7 +1,8 @@
 import {
   Mesh,
   ParametricBufferGeometry,
-  ParametricGeometry
+  ParametricGeometry,
+  Vector3
 } from 'three';
 
 import {MeshComponent} from '../../core/MeshComponent';
@@ -10,7 +11,7 @@ class Parametric extends MeshComponent {
   static defaults = {
     ...MeshComponent.defaults,
     geometry: {
-      func: (u, v) => new THREE.Vector3(u, v, 0),
+      func: (u, v) => new Vector3(u, v, 0),
       slices: 10,
       stacks: 10
     }
