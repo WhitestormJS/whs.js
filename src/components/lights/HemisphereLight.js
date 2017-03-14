@@ -13,7 +13,7 @@ class HemisphereLight extends LightComponent {
   }
 
   constructor(params = {}) {
-    super(params);
+    super(params, HemisphereLight.defaults);
   }
 
   build(params = {}) {

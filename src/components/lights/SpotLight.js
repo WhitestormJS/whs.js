@@ -1,4 +1,4 @@
-import {SpotLight as SpotLightNative, SpotLightHelper} from 'three';
+import {SpotLight as SpotLightNative} from 'three';
 import {LightComponent} from '../../core/LightComponent';
 
 class SpotLight extends LightComponent {
@@ -15,12 +15,8 @@ class SpotLight extends LightComponent {
     }
   };
 
-  static helpers = {
-    default: [SpotLightHelper]
-  };
-
   constructor(params = {}) {
-    super(params);
+    super(params, SpotLight.defaults);
     this.wrapShadow();
   }
 
