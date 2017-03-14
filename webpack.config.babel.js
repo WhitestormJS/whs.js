@@ -4,15 +4,15 @@ import HappyPack from 'happypack';
 import DashboardPlugin from 'webpack-dashboard/plugin';
 
 export function config(
-    {
-      isProduction,
-      src,
-      dest,
-      filename = 'whitestorm.js',
-      plugins = [],
-      compact = false,
-      version = require('./package.json').version
-    }
+  {
+    isProduction,
+    src,
+    dest,
+    filename = 'whitestorm.js',
+    plugins = [],
+    compact = false,
+    version = require('./package.json').version
+  }
 ) {
   if (process.env.CI) isProduction = true;
   console.log(`Mode: ${isProduction ? 'production' : 'development'}`);
@@ -46,6 +46,14 @@ export function config(
           }
         }
       ]
+    },
+    externals: {
+      three: {
+        commonjs: 'three',
+        commonjs2: 'three',
+        amd: 'three',
+        root: 'THREE'
+      }
     },
     plugins: [
       new webpack.LoaderOptionsPlugin({
@@ -81,10 +89,7 @@ export function config(
       modules: [
         path.resolve(__dirname, 'node_modules'),
         src
-      ],
-      alias: {
-        three$: path.join(__dirname, './node_modules/three/build/three.module.js')
-      }
+      ]
     }
   };
 }

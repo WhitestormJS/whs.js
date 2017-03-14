@@ -1,4 +1,5 @@
 import * as WHS from '../src/index';
+import {Mesh} from 'three';
 
 const meshes = [
   'Box',
@@ -61,6 +62,6 @@ test('Group', () => {
   const sphere = new WHS.Sphere();
   const box = new WHS.Box();
 
-  const group = new WHS.Group(sphere, box, new THREE.Mesh());
+  const group = new WHS.Group(sphere, box, new Mesh());
   group.addTo(app);
 });
