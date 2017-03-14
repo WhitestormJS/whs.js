@@ -4,15 +4,15 @@ import HappyPack from 'happypack';
 import DashboardPlugin from 'webpack-dashboard/plugin';
 
 export function config(
-    {
-      isProduction,
-      src,
-      dest,
-      filename = 'whitestorm.js',
-      plugins = [],
-      compact = false,
-      version = require('./package.json').version
-    }
+  {
+    isProduction,
+    src,
+    dest,
+    filename = 'whitestorm.js',
+    plugins = [],
+    compact = false,
+    version = require('./package.json').version
+  }
 ) {
   if (process.env.CI) isProduction = true;
   console.log(`Mode: ${isProduction ? 'production' : 'development'}`);
