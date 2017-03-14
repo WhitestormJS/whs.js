@@ -75,7 +75,6 @@
     "semantic-ui-less": "^2.2.9",
     "snyk": "^1.25.1",
     "surge": "^0.18.0",
-    "three": "^0.84.0",
     "uglify-loader": "^1.4.0",
     "webpack": "^2.2.1",
     "webpack-dashboard": "^0.3.0",
