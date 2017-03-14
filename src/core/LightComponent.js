@@ -12,20 +12,6 @@ class LightComponent extends Component {
 
     build: true,
 
-    light: {
-      color: 0xffffff,
-      skyColor: 0xffffff,
-      groundColor: 0xffffff,
-
-      intensity: 1,
-      distance: 100,
-      angle: Math.PI / 3,
-      exponent: 0,
-      decay: 1,
-      width: 10,
-      height: 10
-    },
-
     shadow: {
       cast: true,
 

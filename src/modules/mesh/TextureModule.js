@@ -1,5 +1,6 @@
 import {
   RepeatWrapping,
+  UVMapping,
   NearestFilter,
   LinearMipMapLinearFilter,
   TextureLoader,
@@ -16,10 +17,24 @@ export class TextureModule {
   textures = [];
 
   constructor(...textures) {
-    textures.forEach(({url, type = 'map', offset = new Vector2(0, 0), repeat = new Vector2(1, 1)}) => {
+    textures.forEach(({
+      url,
+      type = 'map',
+      offset = new Vector2(0, 0),
+      repeat = new Vector2(1, 1),
+      wrap = RepeatWrapping,
+      mapping = UVMapping,
+      fix = tex => tex
+    }) => {
       const texture = loader.load(url);
 
-      texture.wrapS = texture.wrapT = RepeatWrapping;
+      if (wrap.length > 0) {
+        texture.wrapS = wrap[0];
+        texture.wrapT = wrap[1];
+      } else
+        texture.wrapS = texture.wrapT = wrap;
+
+      texture.mapping = mapping;
 
       texture.offset.copy(offset);
       texture.repeat.copy(repeat);
@@ -27,7 +42,7 @@ export class TextureModule {
       texture.magFilter = NearestFilter;
       texture.minFilter = LinearMipMapLinearFilter;
 
-      this.textures.push([type, texture]);
+      this.textures.push([type, fix(texture)]);
     });
   }
 
