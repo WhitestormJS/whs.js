@@ -11,6 +11,10 @@ class AmbientLight extends LightComponent {
     }
   };
 
+  constructor(params = {}) {
+    super(params, AmbientLight.defaults);
+  }
+
   build(params = {}) {
     return new AmbientLightNative(
       params.light.color,

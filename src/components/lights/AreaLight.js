@@ -14,7 +14,7 @@ class AreaLight extends LightComponent {
   };
 
   constructor(params = {}) {
-    super(params);
+    super(params, AreaLight.defaults);
   }
 
   build(params = {}) {
