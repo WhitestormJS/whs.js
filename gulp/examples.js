@@ -15,7 +15,9 @@ gulp.task('less', () => {
     .pipe(gulp.dest('./examples/css/'));
 });
 
-gulp.task('examples:build', ['less'], callback => {
+gulp.task('examples:build', ['examples:html', 'less']);
+
+gulp.task('examples:html', callback => {
   const wait = [];
   const paths = getPaths();
   const templateData = getTemplateData();
