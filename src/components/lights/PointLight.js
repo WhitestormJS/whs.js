@@ -2,11 +2,15 @@ import {PointLight as PointLightNative, PointLightHelper} from 'three';
 import {LightComponent} from '../../core/LightComponent';
 
 class PointLight extends LightComponent {
-  // static helpers = {
-  //   default: [PointLightHelper, {
-  //     size: 0
-  //   }, ['size']]
-  // };
+  static defaults= {
+    ...LightComponent.defaults,
+    light: {
+      color: 0xffffff,
+      intensity: 1,
+      distance: 100,
+      decay: 1
+    }
+  }
 
   constructor(params = {}) {
     super(params);
