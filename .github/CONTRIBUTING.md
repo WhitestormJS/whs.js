@@ -77,7 +77,7 @@ Deletes `examples` folder. (Only used by other commands.)
 
 ----
 
-## Commiting
+## Committing
 
 All engine code is in `src/` folder.
 **Do not edit files in `build/` folder!!!*
