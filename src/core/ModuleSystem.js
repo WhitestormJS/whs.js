@@ -1,6 +1,17 @@
+import {REVISION} from 'three';
 import Events from 'minivents';
-
 import {ManagerError} from './errors';
+
+// Check for Three.js
+const warnDeps = () => {
+  throw new Error('WhitestormJS Framework requires Three.js r74. https://threejs.org/');
+};
+
+try {
+  if (!REVISION) warnDeps();
+} catch (err) {
+  warnDeps();
+}
 
 export class ModuleSystem extends Events {
   // INTEGRATING
