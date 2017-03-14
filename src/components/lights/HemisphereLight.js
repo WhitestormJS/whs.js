@@ -2,11 +2,15 @@ import {HemisphereLight as HemisphereLightNative, HemisphereLightHelper} from 't
 import {LightComponent} from '../../core/LightComponent';
 
 class HemisphereLight extends LightComponent {
-  // static helpers = {
-  //   default: [HemisphereLightHelper, {
-  //     size: 0
-  //   }, ['size']]
-  // };
+  static defaults = {
+    ...LightComponent.defaults,
+    light: {
+      skyColor: 0xffffff,
+      groundColor: 0xffffff,
+
+      intensity: 1
+    }
+  }
 
   constructor(params = {}) {
     super(params);
