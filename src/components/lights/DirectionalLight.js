@@ -12,7 +12,7 @@ class DirectionalLight extends LightComponent {
   };
 
   constructor(params = {}) {
-    super(params);
+    super(params, DirectionalLight.defaults);
     this.wrapShadow();
   }
 

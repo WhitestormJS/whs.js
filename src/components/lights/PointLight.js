@@ -13,7 +13,7 @@ class PointLight extends LightComponent {
   }
 
   constructor(params = {}) {
-    super(params);
+    super(params, PointLight.defaults);
     this.wrapShadow();
   }
 
