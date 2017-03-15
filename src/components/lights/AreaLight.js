@@ -18,12 +18,12 @@ class AreaLight extends LightComponent {
   }
 
   build(params = {}) {
-    return new RectAreaLightNative(
+    return this.applyBridge({light: new RectAreaLightNative(
       params.light.color,
       params.light.intensity,
       params.light.width,
       params.light.height
-    );
+    )}).light;
   }
 }
 
