@@ -1,17 +1,40 @@
 html, body {
-  position: relative;
+  width: 100%;
   height: 100%;
-  margin:0;
+  margin: 0;
   padding: 0;
   overflow: hidden;
   background: #262C38;
+  display: flex;
 }
 
+a {
+  text-decoration: none;
+}
+
+/*
+ * Style ugly scroll bar on webkit browsers (Chrome/Safari)
+ * Ref: https://webkit.org/blog/363/styling-scrollbars/
+ */
+ ::-webkit-scrollbar {
+     width: 12px;
+ }
+
+ ::-webkit-scrollbar-track {
+     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+     border-radius: 10px;
+ }
+
+ ::-webkit-scrollbar-thumb {
+     border-radius: 10px;
+     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+ }
+
 div.ui.sidebar.vertical.inverted.menu.left.overlay.visible {
-  width: 300px;
+  width: 270px;
   overflow: auto;
-  font-size: 1.3rem;
   background: #262C38;
+  margin-bottom: 0;
 }
 
 .logo.image {
@@ -19,7 +42,7 @@ div.ui.sidebar.vertical.inverted.menu.left.overlay.visible {
 }
 
 iframe {
-  width: calc(100% - 300px);
+  width: calc(100% - 270px);
   float: right;
   height: 100%;
   border: none;
