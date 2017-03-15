@@ -19,12 +19,12 @@ class PerspectiveCamera extends CameraComponent {
   }
 
   build(params = {}) {
-    return new PerspectiveCameraNative(
+    return this.applyBridge({camera: new PerspectiveCameraNative(
       params.camera.fov,
       params.camera.aspect,
       params.camera.near,
       params.camera.far
-    );
+    )}).camera;
   }
 }
 
