@@ -14,20 +14,16 @@ dat.GUI.prototype.removeFolder = function(name) {
   this.onResize();
 }
 
-export default class DatGUIModule {
+class DatMeshModule {
   constructor(params = {}) {
     this.params = Object.assign({
       name: 'Unknown object',
-      material: false,
-      geometry: false,
-      tryMaterial: [],
-      custom: {},
-      defaults: {},
-      range: {},
-      step: {}
+      geometry: true,
+      material: true,
+      gui: false
     }, params);
 
-    this.gui = new dat.GUI();
+    this.gui = this.params.gui;
     this.fold = this.gui.addFolder(this.params.name);
   }
 
@@ -63,10 +59,19 @@ export default class DatGUIModule {
   }
 
   guiGeometry(component, instance = this.fold) {
-    for (let key in component.params.geometry) {
-      instance.add(component.params.geometry, key)
-        .min(0)
-        .max(100)
+    if (!component.g_) throw new Error('DatGUIModule requires WHS.mesh.DynamicGeometryModule for geometry updates.');
+
+    const geomParams = component.params.geometry;
+    const geomData = this.params.geometry;
+
+    for (let key in geomParams) {
+      const data = geomData[key];
+
+      const range = data && data.range ? data.range : [0, 100];
+
+      instance.add(geomParams, key)
+        .min(range[0])
+        .max(range[1])
         .step(key.indexOf('Segments') > 0 ? 1 : 0.1)
         .onChange(value => {
           component.g_({[key]: value});
@@ -75,17 +80,9 @@ export default class DatGUIModule {
   }
 
   integrate(self) {
-    const {custom, defaults, range, step} = self.params;
-
-    for (let key in custom) {
-      if (!this[key] && defaults[key]) this[key] = defaults[key];
-
-      const handler = self.fold.add(this, key);
-
-      if (range[key]) handler.min(range[key][0]).max(range[key][1]);
-
-      if (step[key]) handler.step(step[key]);
-      if (custom[key]) handler.onChange(value => custom[key](value, this));
+    if (this.native) {
+      self.bridge.material.bind(this)(this.native.material, self);
+      self.bridge.geometry.bind(this)(this.native.geometry, self);
     }
   }
 
@@ -96,21 +93,6 @@ export default class DatGUIModule {
       const makeFolder = (material) => {
         const folder = self.fold.addFolder('material');
         self.guiMaterial(this, material, folder);
-
-        const tryMaterialMap = {};
-
-        const tryMaterialTypes = self.params.tryMaterial.slice().map(value => {
-          const type = (new value).type;
-          tryMaterialMap[type] = value;
-          return type;
-        });
-
-        folder.add({tryMaterial: material.type}, 'tryMaterial', tryMaterialTypes).onChange(value => {
-          // TODO: Make material update without folder reload.
-          this.material = new tryMaterialMap[value](); // .copy(this.material);
-          self.fold.removeFolder('material');
-          makeFolder(this.material);
-        });
       }
 
       makeFolder(material);
@@ -127,5 +109,132 @@ export default class DatGUIModule {
 
       return geometry;
     }
+  }
+};
+
+class DatLightModule {
+  constructor(params = {}) {
+    this.params = Object.assign({
+      name: 'Unknown object',
+      light: true,
+      shadow: true,
+      gui: false
+    }, params);
+
+    this.gui = this.params.gui;
+    this.fold = this.gui.addFolder(this.params.name);
+  }
+
+  addColor(object, property, instance = this.fold) {
+    const color = object[property];
+
+    instance.addColor({[property]: color.getHex()}, property).onChange(value => {
+      if (typeof value === 'string') value.replace('#', '0x');
+      color.setHex(value);
+    });
+  }
+
+  integrate(self) {
+    if (this.native) self.bridge.light.bind(this)(this.native, self);
+  }
+
+  foldObject(object, origin, instance = this.fold) {
+    for (let key in origin) {
+      const value = object[key];
+      if (!value) continue;
+
+      if (value.isColor) {
+        this.addColor(object, key, instance);
+      } else if (typeof origin[key] === 'object') {
+        this.foldObject(object[key], origin[key], instance.addFolder(key));
+      } else {
+        const range = '1' + '0'.repeat(value.toString().length);
+
+        instance.add(object, key)
+          .min(0)
+          .step(range > 10 ? 1 : 0.1);
+      }
+    }
+  }
+
+  bridge = {
+    light(light, self) {
+      if (!self.params.light) return light;
+
+      self.foldObject(light, this.params.light, self.fold.addFolder('light'));
+      self.foldObject(light.shadow, this.params.shadow, self.fold.addFolder('shadow'));
+
+      return light;
+    }
+  }
+};
+
+class DatCameraModule {
+  constructor(params = {}) {
+    this.params = Object.assign({
+      name: 'Unknown object',
+      camera: true,
+      gui: false
+    }, params);
+
+    this.gui = this.params.gui;
+    this.fold = this.gui.addFolder(this.params.name);
+  }
+
+  integrate(self) {
+    if (this.native) self.bridge.camera.bind(this)(this.native, self);
+  }
+
+  foldObject(object, origin, instance = this.fold, onChange = () => {}) {
+    for (let key in origin) {
+      const value = object[key];
+      if (!value) continue;
+
+      if (value.isColor) {
+        this.addColor(object, key, instance);
+      } else if (typeof origin[key] === 'object') {
+        if (object[key] === object) continue;
+        this.foldObject(object[key], origin[key], instance.addFolder(key));
+      } else {
+        const range = '1' + '0'.repeat(value.toString().length);
+
+        instance.add(object, key)
+          .min(0)
+          .step(range > 10 ? 1 : 0.1)
+          .onChange(onChange);
+      }
+    }
+  }
+
+  bridge = {
+    camera(camera, self) {
+      if (!self.params.camera) return camera;
+      self.foldObject(camera, this.params.camera, self.fold.addFolder('camera'), () => {
+        camera.updateProjectionMatrix();
+      });
+
+      return camera;
+    }
+  }
+};
+
+export default class DatGUIModule {
+  constructor(params = {}) {
+    this.gui = new dat.GUI();
+  }
+
+  Mesh(params = {}) {
+    params.gui = this.gui;
+    return new DatMeshModule(params);
+  }
+
+  Light(params = {}) {
+    params.gui = this.gui;
+    return new DatLightModule(params);
+  }
+
+  Camera(params = {}) {
+    params.gui = this.gui;
+    return new DatCameraModule(params);
   }
 }
