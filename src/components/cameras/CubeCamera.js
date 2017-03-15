@@ -17,11 +17,11 @@ class CubeCamera extends CameraComponent {
   }
 
   build(params = {}) {
-    return new CubeCameraNative(
+    return this.applyBridge({camera: new CubeCameraNative(
       params.camera.near,
       params.camera.far,
       params.camera.cubeResolution
-    );
+    )}).camera;
   }
 }
 
