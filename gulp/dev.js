@@ -4,11 +4,19 @@ import express from 'express';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import {argv} from 'yargs';
 import DashboardPlugin from 'webpack-dashboard/plugin';
-import eLess from 'express-less';
+import less from 'gulp-less';
+import watch from 'gulp-watch';
 
 import {FrameworkCompilerInstance, ExampleCompilerInstance} from './compilers';
 import {getPaths} from './utils';
 import {getTemplateData, examples} from './config';
+
+gulp.task('less:watch', () => {
+  return gulp.src('./examples/assets/less/*.less')
+    .pipe(watch('./examples/assets/less/*.less'))
+    .pipe(less())
+    .pipe(gulp.dest('./examples/assets/css/'));
+});
 
 // DEV MODE
 gulp.task('dev', () => {
@@ -48,10 +56,7 @@ gulp.task('dev', () => {
     ));
   });
 
-  console.log(eLess);
-
   app.use('/assets', express.static(path.resolve(__dirname, `${examples}/assets`)));
-  app.use('/css', eLess(path.resolve(__dirname, `${examples}/less`), {compress: true}));
   app.use('/modules', express.static('modules'));
 
   app.set('views', path.resolve(__dirname, `./${examples}`));
@@ -71,4 +76,6 @@ gulp.task('dev', () => {
   });
 
   app.listen(8080, 'localhost', () => {});
+
+  gulp.start('less:watch');
 });
