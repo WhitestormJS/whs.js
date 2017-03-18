@@ -1,5 +1,9 @@
-export class DatLightModule {
-  constructor(params = {}) {
+import {DatAPI} from './DatAPI';
+
+export class DatLightModule extends DatAPI {
+  constructor(params = {}, gui) {
+    super();
+
     this.params = Object.assign({
       name: 'Unknown light',
       light: true,
@@ -7,7 +11,7 @@ export class DatLightModule {
       gui: false
     }, params);
 
-    this.gui = this.params.gui;
+    this.gui = gui;
     this.fold = this.gui.addFolder(this.params.name);
   }
 
@@ -22,25 +26,6 @@ export class DatLightModule {
 
   integrate(self) {
     if (this.native) self.bridge.light.bind(this)(this.native, self);
-  }
-
-  foldObject(object, origin, instance = this.fold) {
-    for (let key in origin) {
-      const value = object[key];
-      if (!value) continue;
-
-      if (value.isColor) {
-        this.addColor(object, key, instance);
-      } else if (typeof origin[key] === 'object') {
-        this.foldObject(object[key], origin[key], instance.addFolder(key));
-      } else {
-        const range = '1' + '0'.repeat(value.toString().length);
-
-        instance.add(object, key)
-          .min(0)
-          .step(range > 10 ? 1 : 0.1);
-      }
-    }
   }
 
   bridge = {
