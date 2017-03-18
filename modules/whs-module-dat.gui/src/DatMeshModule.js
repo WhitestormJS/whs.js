@@ -1,7 +1,10 @@
 import materials from './materials';
+import {DatAPI} from './DatAPI';
 
-export class DatMeshModule {
-  constructor(params = {}) {
+export class DatMeshModule extends DatAPI {
+  constructor(params = {}, gui) {
+    super();
+
     this.params = Object.assign({
       name: 'Unknown mesh',
       geometry: true,
@@ -9,7 +12,7 @@ export class DatMeshModule {
       gui: false
     }, params);
 
-    this.gui = this.params.gui;
+    this.gui = gui;
     this.fold = this.gui.addFolder(this.params.name);
   }
 
@@ -76,12 +79,8 @@ export class DatMeshModule {
     material(material, self) {
       if (!self.params.material) return material;
 
-      const makeFolder = (material) => {
-        const folder = self.fold.addFolder('material');
-        self.guiMaterial(this, material, folder);
-      }
-
-      makeFolder(material);
+      const folder = self.fold.addFolder('material');
+      self.guiMaterial(this, material, folder);
 
       return material;
     },
