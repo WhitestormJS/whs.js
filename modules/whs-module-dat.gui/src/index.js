@@ -3,6 +3,7 @@ import dat from 'dat-gui';
 import {DatMeshModule} from './DatMeshModule';
 import {DatLightModule} from './DatLightModule';
 import {DatCameraModule} from './DatCameraModule';
+import {DatCustomModule} from './DatCustomModule';
 
 // Polyfill
 dat.GUI.prototype.removeFolder = function(name) {
@@ -17,22 +18,38 @@ dat.GUI.prototype.removeFolder = function(name) {
 }
 
 export default class DatGUIModule {
-  constructor(params = {}) {
-    this.gui = new dat.GUI();
+  static new(params) {
+    return new DatGUIModule(new dat.GUI(params));
   }
 
-  Mesh(params = {}) {
-    params.gui = this.gui;
-    return new DatMeshModule(params);
+  constructor(gui = new dat.GUI()) {
+    this.gui = gui;
   }
 
-  Light(params = {}) {
-    params.gui = this.gui;
-    return new DatLightModule(params);
+  set(gui) {
+    this.gui = gui;
+    return this;
   }
 
-  Camera(params = {}) {
-    params.gui = this.gui;
-    return new DatCameraModule(params);
+  folder(name = 'folder') {
+    return new DatGUIModule(this.gui.addFolder(name));
+  }
+
+  Mesh(params = {}, gui = this.gui) {
+    return new DatMeshModule(params, gui);
+  }
+
+  Light(params = {}, gui = this.gui) {
+    return new DatLightModule(params, gui);
+  }
+
+  Camera(params = {}, gui = this.gui) {
+    return new DatCameraModule(params, gui);
+  }
+
+  Custom(params = {}, gui = this.gui) {
+    return new DatCustomModule(params, gui);
   }
 }
+
+DatGUIModule.dat = dat;
