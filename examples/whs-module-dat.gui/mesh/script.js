@@ -28,7 +28,7 @@ const sphere = new WHS.Sphere({
       name: 'Sphere1',
       geometry: {
         radius: {
-          range: [10, 100]
+          range: [2, 100]
         }
       }
     })
