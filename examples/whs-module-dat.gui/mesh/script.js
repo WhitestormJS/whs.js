@@ -35,6 +35,16 @@ const sphere = new WHS.Sphere({
   ]
 });
 
+DatGUI.folder('hello').folder('cool').Custom([{
+  name: 'myProp',
+  value: 10,
+  step: 10,
+  range: [false, 100],
+  onChange: v => {
+    console.log(`myProp: ${v}`);
+  }
+}]);
+
 new WHS.SpotLight({
   position: [10, 20, 10],
 
