@@ -7,7 +7,7 @@
 		exports["DatGUIModule"] = factory(require("THREE"));
 	else
 		root["DatGUIModule"] = factory(root["THREE"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_4__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_7__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,11 +86,412 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.DatCameraModule = undefined;
 
-var _three = __webpack_require__(4);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _DatAPI2 = __webpack_require__(10);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DatCameraModule = exports.DatCameraModule = function (_DatAPI) {
+  _inherits(DatCameraModule, _DatAPI);
+
+  function DatCameraModule() {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var gui = arguments[1];
+
+    _classCallCheck(this, DatCameraModule);
+
+    var _this = _possibleConstructorReturn(this, (DatCameraModule.__proto__ || Object.getPrototypeOf(DatCameraModule)).call(this));
+
+    _this.bridge = {
+      camera: function camera(_camera, self) {
+        // console.log(this);
+        if (!self.params.camera) return _camera;
+        self.foldObject(_camera, this.params.camera, self.fold, function () {
+          _camera.updateProjectionMatrix();
+        });
+
+        return _camera;
+      },
+      onWrap: function onWrap(a, self) {
+        self.guiTransforms(this.native, self.fold);
+      }
+    };
+
+
+    _this.params = Object.assign({
+      name: 'Unknown camera',
+      transforms: true,
+      camera: true
+    }, params);
+
+    _this.gui = gui;
+    _this.fold = _this.gui.addFolder(_this.params.name);
+    return _this;
+  }
+
+  _createClass(DatCameraModule, [{
+    key: 'integrate',
+    value: function integrate(self) {
+      if (this.native) {
+        self.bridge.camera.bind(this)(this.native, self);
+        self.bridge.onWrap.bind(this)(this.native, self);
+      }
+    }
+  }]);
+
+  return DatCameraModule;
+}(_DatAPI2.DatAPI);
+
+;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DatLightModule = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _DatAPI2 = __webpack_require__(10);
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DatLightModule = exports.DatLightModule = function (_DatAPI) {
+  _inherits(DatLightModule, _DatAPI);
+
+  function DatLightModule() {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var gui = arguments[1];
+
+    _classCallCheck(this, DatLightModule);
+
+    var _this = _possibleConstructorReturn(this, (DatLightModule.__proto__ || Object.getPrototypeOf(DatLightModule)).call(this));
+
+    _this.bridge = {
+      light: function light(_light, self) {
+        if (!self.params.light) return _light;
+
+        self.foldObject(_light, this.params.light, self.fold.addFolder('light'));
+        self.foldObject(_light.shadow, this.params.shadow, self.fold.addFolder('shadow'));
+
+        return _light;
+      },
+      onWrap: function onWrap(a, self) {
+        self.guiTransforms(this.native, self.fold);
+      }
+    };
+
+
+    _this.params = Object.assign({
+      name: 'Unknown light',
+      light: true,
+      shadow: true,
+      transforms: true,
+      gui: false
+    }, params);
+
+    _this.gui = gui;
+    _this.fold = _this.gui.addFolder(_this.params.name);
+    return _this;
+  }
+
+  _createClass(DatLightModule, [{
+    key: 'addColor',
+    value: function addColor(object, property) {
+      var instance = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.fold;
+
+      var color = object[property];
+
+      instance.addColor(_defineProperty({}, property, color.getHex()), property).onChange(function (value) {
+        if (typeof value === 'string') value.replace('#', '0x');
+        color.setHex(value);
+      });
+    }
+  }, {
+    key: 'integrate',
+    value: function integrate(self) {
+      if (this.native) {
+        self.bridge.light.bind(this)(this.native, self);
+        self.bridge.onWrap.bind(this)(this.native, self);
+      }
+    }
+  }]);
+
+  return DatLightModule;
+}(_DatAPI2.DatAPI);
+
+;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DatMeshModule = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _materials2 = __webpack_require__(3);
+
+var _materials3 = _interopRequireDefault(_materials2);
+
+var _DatAPI2 = __webpack_require__(10);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DatMeshModule = function (_DatAPI) {
+  _inherits(DatMeshModule, _DatAPI);
+
+  function DatMeshModule() {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var gui = arguments[1];
+
+    _classCallCheck(this, DatMeshModule);
+
+    var _this = _possibleConstructorReturn(this, (DatMeshModule.__proto__ || Object.getPrototypeOf(DatMeshModule)).call(this));
+
+    _this.bridge = {
+      material: function material(_material, self) {
+        if (!self.params.material) return _material;
+
+        var folder = self.fold.addFolder('material');
+        self.guiMaterial(this, _material, folder);
+
+        return _material;
+      },
+      geometry: function geometry(_geometry, self) {
+        if (!self.params.geometry) return _geometry;
+        if (!this.g_) throw new Error('WHS.mesh.DynamicGeometryModule should be used in a component (before gui)');
+
+        var folder = self.fold.addFolder('geometry');
+        self.guiGeometry(this, folder);
+
+        return _geometry;
+      },
+      mesh: function mesh(_mesh, self) {
+        var _this2 = this;
+
+        if (!self.customMaterials) return _mesh;
+
+        self.customMaterials.current = _mesh.material;
+
+        var matAlias = { material: 'current' };
+        var keys = Object.keys(self.customMaterials);
+        var folder = self.fold.addFolder('other materials');
+
+        folder.add({ material: 'current' }, 'material', keys).onChange(function (v) {
+          _mesh.material = self.customMaterials[v];
+          folder.removeFolder('customize');
+          self.guiMaterial(_this2, _mesh.material, folder.addFolder('customize'));
+        });
+
+        return _mesh;
+      },
+      onWrap: function onWrap(a, self) {
+        self.guiTransforms(this.native, self.fold);
+      }
+    };
+
+
+    _this.params = Object.assign({
+      name: 'Unknown mesh',
+      geometry: true,
+      material: true,
+      transforms: true,
+      gui: false
+    }, params);
+
+    _this.gui = gui;
+    _this.fold = _this.gui.addFolder(_this.params.name);
+    _this.customMaterials = false;
+    return _this;
+  }
+
+  _createClass(DatMeshModule, [{
+    key: 'addColor',
+    value: function addColor(object, property) {
+      var instance = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.fold;
+
+      var color = object[property];
+
+      instance.addColor(_defineProperty({}, property, color.getHex()), property).onChange(function (value) {
+        if (typeof value === 'string') value.replace('#', '0x');
+        color.setHex(value);
+      });
+    }
+  }, {
+    key: 'guiMaterial',
+    value: function guiMaterial(component, material) {
+      var _this3 = this;
+
+      var instance = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.fold;
+
+      var paramsProcessor = function paramsProcessor(params) {
+        for (var key in params) {
+          if (params[key] && material[key] !== undefined) {
+            switch (params[key]) {
+              case 'color':
+                _this3.addColor(material, key, instance);
+                break;
+              case 'boolean':
+                instance.add(material, key);
+                break;
+              case 'number':
+                instance.add(material, key);
+                break;
+              case 'texture':
+                // TODO
+                break;
+              default:
+                instance.add(material, key, params[key]);
+            }
+          }
+        }
+      };
+
+      paramsProcessor(_materials3.default[material.type]);
+      paramsProcessor(_materials3.default.any);
+    }
+  }, {
+    key: 'guiGeometry',
+    value: function guiGeometry(component) {
+      var instance = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.fold;
+
+      if (!component.g_) throw new Error('DatGUIModule requires WHS.mesh.DynamicGeometryModule for geometry updates.');
+
+      var geomParams = component.params.geometry;
+      var geomData = this.params.geometry;
+
+      var _loop = function _loop(key) {
+        var data = geomData[key];
+
+        var range = data && data.range ? data.range : [0, 100];
+
+        instance.add(geomParams, key).min(range[0]).max(range[1]).step(key.indexOf('Segments') > 0 ? 1 : 0.1).onChange(function (value) {
+          component.g_(_defineProperty({}, key, value));
+        });
+      };
+
+      for (var key in geomParams) {
+        _loop(key);
+      }
+    }
+  }, {
+    key: 'materials',
+    value: function materials() {
+      var _materials = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      this.customMaterials = _materials;
+
+      return this;
+    }
+  }, {
+    key: 'integrate',
+    value: function integrate(self) {
+      if (this.native) {
+        self.bridge.material.bind(this)(this.native.material, self);
+        self.bridge.geometry.bind(this)(this.native.geometry, self);
+        self.bridge.onWrap.bind(this)(this.native, self);
+      }
+    }
+  }]);
+
+  return DatMeshModule;
+}(_DatAPI2.DatAPI);
+
+exports.DatMeshModule = DatMeshModule;
+;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _three = __webpack_require__(7);
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var additional = {
+  wireframe: {
+    wireframe: 'boolean',
+    wireframeLinecap: ['butt', 'round', 'square'],
+    wireframeLinejoin: ['round', 'bevel', 'miter'],
+    wireframeLinewidth: 'number'
+  },
+
+  refr: {
+    reflectivity: 'number',
+    refractionRatio: 'number'
+  },
+
+  light: {
+    lightMap: 'texture',
+    lightMapIntensity: 'number'
+  },
+
+  displacement: {
+    displacementScale: 'number',
+    displacementBias: 'number',
+    displacementMap: 'texture'
+  },
+
+  emissive: {
+    emissive: 'color',
+    emissiveMap: 'texture',
+    emissiveIntensity: 'number'
+  }
+};
+
+var add = function add(origin) {
+  for (var _len = arguments.length, addv = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    addv[_key - 1] = arguments[_key];
+  }
+
+  return Object.assign.apply(Object, [origin].concat(_toConsumableArray(addv.map(function (value) {
+    return additional[value];
+  }))));
+};
 
 exports.default = {
-  any: {
+  any: add({
     side: { FrontSide: _three.FrontSide, BackSide: _three.BackSide, DoubleSide: _three.DoubleSide },
     shading: { SmoothShading: _three.SmoothShading, FlatShading: _three.FlatShading },
     blending: {
@@ -99,27 +500,38 @@ exports.default = {
     depthFunc: {
       NeverDepth: _three.NeverDepth, AlwaysDepth: _three.AlwaysDepth, LessDepth: _three.LessDepth, LessEqualDepth: _three.LessEqualDepth, GreaterEqualDepth: _three.GreaterEqualDepth, GreaterDepth: _three.GreaterDepth, NotEqualDepth: _three.NotEqualDepth
     }
-  },
+  }, 'wireframe'),
+
   MeshBasicMaterial: {
     color: 'color',
-    lights: 'boolean'
+    lights: 'boolean',
+    linewidth: 'number',
+    linecap: ['butt', 'round', 'square'],
+    linejoin: ['round', 'bevel', 'miter']
   },
-  MeshLambertMaterial: {
+
+  MeshLambertMaterial: add({
     color: 'color'
-  }
+  }, 'emissive', 'refr', 'light'),
+
+  MeshPhongMaterial: add({
+    color: 'color'
+  }, 'displacement', 'emissive'),
+
+  MeshDepthMaterial: {}
   // To be continued...
 };
 module.exports = exports['default'];
 
 /***/ }),
-/* 1 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(3)
-module.exports.color = __webpack_require__(2)
+module.exports = __webpack_require__(6)
+module.exports.color = __webpack_require__(5)
 
 /***/ }),
-/* 2 */
+/* 5 */
 /***/ (function(module, exports) {
 
 /**
@@ -879,7 +1291,7 @@ dat.color.toString,
 dat.utils.common);
 
 /***/ }),
-/* 3 */
+/* 6 */
 /***/ (function(module, exports) {
 
 /**
@@ -4544,13 +4956,202 @@ dat.dom.dom,
 dat.utils.common);
 
 /***/ }),
-/* 4 */
+/* 7 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_7__;
 
 /***/ }),
-/* 5 */
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _datGui = __webpack_require__(4);
+
+var _datGui2 = _interopRequireDefault(_datGui);
+
+var _DatMeshModule = __webpack_require__(2);
+
+var _DatLightModule = __webpack_require__(1);
+
+var _DatCameraModule = __webpack_require__(0);
+
+var _DatCustomModule = __webpack_require__(9);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// Polyfill
+_datGui2.default.GUI.prototype.removeFolder = function (name) {
+  var folder = this.__folders[name];
+  if (!folder) {
+    return;
+  }
+  folder.close();
+  this.__ul.removeChild(folder.domElement.parentNode);
+  delete this.__folders[name];
+  this.onResize();
+};
+
+var DatGUIModule = function () {
+  _createClass(DatGUIModule, null, [{
+    key: 'new',
+    value: function _new(params) {
+      return new DatGUIModule(new _datGui2.default.GUI(params));
+    }
+  }]);
+
+  function DatGUIModule() {
+    var gui = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new _datGui2.default.GUI({ autoPlace: false });
+
+    _classCallCheck(this, DatGUIModule);
+
+    this.gui = gui;
+  }
+
+  _createClass(DatGUIModule, [{
+    key: 'manager',
+    value: function manager(_manager) {
+      var dom = this.gui.domElement;
+      var style = dom.style;
+
+      style.position = 'absolute';
+      style.top = 0;
+      style.right = '20px';
+
+      _manager.get('element').appendChild(this.gui.domElement);
+    }
+  }, {
+    key: 'set',
+    value: function set(gui) {
+      this.gui = gui;
+      return this;
+    }
+  }, {
+    key: 'folder',
+    value: function folder() {
+      var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'folder';
+
+      return new DatGUIModule(this.gui.addFolder(name));
+    }
+  }, {
+    key: 'Mesh',
+    value: function Mesh() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var gui = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.gui;
+
+      return new _DatMeshModule.DatMeshModule(params, gui);
+    }
+  }, {
+    key: 'Light',
+    value: function Light() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var gui = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.gui;
+
+      return new _DatLightModule.DatLightModule(params, gui);
+    }
+  }, {
+    key: 'Camera',
+    value: function Camera() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var gui = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.gui;
+
+      return new _DatCameraModule.DatCameraModule(params, gui);
+    }
+  }, {
+    key: 'Custom',
+    value: function Custom() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var gui = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.gui;
+
+      return new _DatCustomModule.DatCustomModule(params, gui);
+    }
+  }]);
+
+  return DatGUIModule;
+}();
+
+exports.default = DatGUIModule;
+
+
+DatGUIModule.dat = _datGui2.default;
+module.exports = exports['default'];
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var DatCustomModule = exports.DatCustomModule = function () {
+  function DatCustomModule() {
+    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var gui = arguments[1];
+
+    _classCallCheck(this, DatCustomModule);
+
+    this.props = props;
+    this.gui = gui;
+
+    props.forEach(this.add.bind(this));
+  }
+
+  _createClass(DatCustomModule, [{
+    key: "add",
+    value: function add(_ref) {
+      var name = _ref.name,
+          value = _ref.value,
+          _ref$range = _ref.range,
+          range = _ref$range === undefined ? [false, false] : _ref$range,
+          _ref$step = _ref.step,
+          step = _ref$step === undefined ? 1 : _ref$step,
+          onChange = _ref.onChange,
+          onFinishChange = _ref.onFinishChange,
+          _ref$listen = _ref.listen,
+          listen = _ref$listen === undefined ? false : _ref$listen;
+
+      var controller = this.gui.add(_defineProperty({}, name, value), name);
+
+      if (range[0] !== false) controller.min(range[0]);
+      if (range[1] !== false) controller.max(range[1]);
+
+      controller.step(step);
+
+      if (onChange) controller.onChange(onChange);
+      if (onFinishChange) controller.onFinishChange(onFinishChange);
+      if (listen) controller.listen();
+
+      return controller;
+    }
+  }]);
+
+  return DatCustomModule;
+}();
+
+;
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4564,259 +5165,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _datGui = __webpack_require__(1);
-
-var _datGui2 = _interopRequireDefault(_datGui);
-
-var _materials = __webpack_require__(0);
-
-var _materials2 = _interopRequireDefault(_materials);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// Polyfill
-
-_datGui2.default.GUI.prototype.removeFolder = function (name) {
-  var folder = this.__folders[name];
-  if (!folder) {
-    return;
-  }
-  folder.close();
-  this.__ul.removeChild(folder.domElement.parentNode);
-  delete this.__folders[name];
-  this.onResize();
-};
-
-var DatMeshModule = function () {
-  function DatMeshModule() {
-    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, DatMeshModule);
-
-    this.bridge = {
-      material: function material(_material, self) {
-        var _this = this;
-
-        if (!self.params.material) return _material;
-
-        var makeFolder = function makeFolder(material) {
-          var folder = self.fold.addFolder('material');
-          self.guiMaterial(_this, material, folder);
-        };
-
-        makeFolder(_material);
-
-        return _material;
-      },
-      geometry: function geometry(_geometry, self) {
-        if (!self.params.geometry) return _geometry;
-        if (!this.g_) throw new Error('WHS.mesh.DynamicGeometryModule should be used in a component (before gui)');
-
-        var folder = self.fold.addFolder('geometry');
-        self.guiGeometry(this, folder);
-
-        return _geometry;
-      }
-    };
-
-    this.params = Object.assign({
-      name: 'Unknown object',
-      geometry: true,
-      material: true,
-      gui: false
-    }, params);
-
-    this.gui = this.params.gui;
-    this.fold = this.gui.addFolder(this.params.name);
+var DatAPI = exports.DatAPI = function () {
+  function DatAPI() {
+    _classCallCheck(this, DatAPI);
   }
 
-  _createClass(DatMeshModule, [{
-    key: 'addColor',
-    value: function addColor(object, property) {
-      var instance = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.fold;
-
-      var color = object[property];
-
-      instance.addColor(_defineProperty({}, property, color.getHex()), property).onChange(function (value) {
-        if (typeof value === 'string') value.replace('#', '0x');
-        color.setHex(value);
-      });
-    }
-  }, {
-    key: 'guiMaterial',
-    value: function guiMaterial(component, material) {
-      var _this2 = this;
-
-      var instance = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.fold;
-
-      var paramsProcessor = function paramsProcessor(params) {
-        for (var key in params) {
-          if (params[key] && material[key]) {
-            switch (params[key]) {
-              case 'color':
-                _this2.addColor(material, key, instance);
-                break;
-              case 'boolean':
-                instance.add(material, key);
-                break;
-              default:
-                instance.add(material, key, params[key]);
-            }
-          }
-        }
-      };
-
-      paramsProcessor(_materials2.default[material.type]);
-      paramsProcessor(_materials2.default.any);
-    }
-  }, {
-    key: 'guiGeometry',
-    value: function guiGeometry(component) {
-      var instance = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.fold;
-
-      if (!component.g_) throw new Error('DatGUIModule requires WHS.mesh.DynamicGeometryModule for geometry updates.');
-
-      var geomParams = component.params.geometry;
-      var geomData = this.params.geometry;
-
-      var _loop = function _loop(key) {
-        var data = geomData[key];
-
-        var range = data && data.range ? data.range : [0, 100];
-
-        instance.add(geomParams, key).min(range[0]).max(range[1]).step(key.indexOf('Segments') > 0 ? 1 : 0.1).onChange(function (value) {
-          component.g_(_defineProperty({}, key, value));
-        });
-      };
-
-      for (var key in geomParams) {
-        _loop(key);
-      }
-    }
-  }, {
-    key: 'integrate',
-    value: function integrate(self) {
-      if (this.native) {
-        self.bridge.material.bind(this)(this.native.material, self);
-        self.bridge.geometry.bind(this)(this.native.geometry, self);
-      }
-    }
-  }]);
-
-  return DatMeshModule;
-}();
-
-;
-
-var DatLightModule = function () {
-  function DatLightModule() {
-    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, DatLightModule);
-
-    this.bridge = {
-      light: function light(_light, self) {
-        if (!self.params.light) return _light;
-
-        self.foldObject(_light, this.params.light, self.fold.addFolder('light'));
-        self.foldObject(_light.shadow, this.params.shadow, self.fold.addFolder('shadow'));
-
-        return _light;
-      }
-    };
-
-    this.params = Object.assign({
-      name: 'Unknown object',
-      light: true,
-      shadow: true,
-      gui: false
-    }, params);
-
-    this.gui = this.params.gui;
-    this.fold = this.gui.addFolder(this.params.name);
-  }
-
-  _createClass(DatLightModule, [{
-    key: 'addColor',
-    value: function addColor(object, property) {
-      var instance = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.fold;
-
-      var color = object[property];
-
-      instance.addColor(_defineProperty({}, property, color.getHex()), property).onChange(function (value) {
-        if (typeof value === 'string') value.replace('#', '0x');
-        color.setHex(value);
-      });
-    }
-  }, {
-    key: 'integrate',
-    value: function integrate(self) {
-      if (this.native) self.bridge.light.bind(this)(this.native, self);
-    }
-  }, {
-    key: 'foldObject',
-    value: function foldObject(object, origin) {
-      var instance = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.fold;
-
-      for (var key in origin) {
-        var value = object[key];
-        if (!value) continue;
-
-        if (value.isColor) {
-          this.addColor(object, key, instance);
-        } else if (_typeof(origin[key]) === 'object') {
-          this.foldObject(object[key], origin[key], instance.addFolder(key));
-        } else {
-          var range = '1' + '0'.repeat(value.toString().length);
-
-          instance.add(object, key).min(0).step(range > 10 ? 1 : 0.1);
-        }
-      }
-    }
-  }]);
-
-  return DatLightModule;
-}();
-
-;
-
-var DatCameraModule = function () {
-  function DatCameraModule() {
-    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, DatCameraModule);
-
-    this.bridge = {
-      camera: function camera(_camera, self) {
-        if (!self.params.camera) return _camera;
-        self.foldObject(_camera, this.params.camera, self.fold.addFolder('camera'), function () {
-          _camera.updateProjectionMatrix();
-        });
-
-        return _camera;
-      }
-    };
-
-    this.params = Object.assign({
-      name: 'Unknown object',
-      camera: true,
-      gui: false
-    }, params);
-
-    this.gui = this.params.gui;
-    this.fold = this.gui.addFolder(this.params.name);
-  }
-
-  _createClass(DatCameraModule, [{
-    key: 'integrate',
-    value: function integrate(self) {
-      if (this.native) self.bridge.camera.bind(this)(this.native, self);
-    }
-  }, {
+  _createClass(DatAPI, [{
     key: 'foldObject',
     value: function foldObject(object, origin) {
       var instance = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.fold;
@@ -4838,53 +5194,38 @@ var DatCameraModule = function () {
         }
       }
     }
-  }]);
-
-  return DatCameraModule;
-}();
-
-;
-
-var DatGUIModule = function () {
-  function DatGUIModule() {
-    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, DatGUIModule);
-
-    this.gui = new _datGui2.default.GUI();
-  }
-
-  _createClass(DatGUIModule, [{
-    key: 'Mesh',
-    value: function Mesh() {
-      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      params.gui = this.gui;
-      return new DatMeshModule(params);
-    }
   }, {
-    key: 'Light',
-    value: function Light() {
-      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    key: 'guiTransforms',
+    value: function guiTransforms(native) {
+      var instance = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.fold;
 
-      params.gui = this.gui;
-      return new DatLightModule(params);
-    }
-  }, {
-    key: 'Camera',
-    value: function Camera() {
-      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      if (!this.params.transforms) return;
 
-      params.gui = this.gui;
-      return new DatCameraModule(params);
+      var controller = instance.addFolder('transforms');
+
+      // position
+      var position = controller.addFolder('position');
+      position.add(native.position, 'x');
+      position.add(native.position, 'y');
+      position.add(native.position, 'z');
+
+      // rotation
+      var rotation = controller.addFolder('rotation');
+      rotation.add(native.rotation, 'x').step(0.1);
+      rotation.add(native.rotation, 'y').step(0.1);
+      rotation.add(native.rotation, 'z').step(0.1);
+
+      // scale
+      if (!native.scale) return;
+      var scale = controller.addFolder('scale');
+      scale.add(native.scale, 'x').step(0.1);
+      scale.add(native.scale, 'y').step(0.1);
+      scale.add(native.scale, 'z').step(0.1);
     }
   }]);
 
-  return DatGUIModule;
+  return DatAPI;
 }();
-
-exports.default = DatGUIModule;
-module.exports = exports['default'];
 
 /***/ })
 /******/ ]);
