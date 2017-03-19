@@ -87,6 +87,8 @@ class LightComponent extends Component {
         this.position.set(position.x, position.y, position.z);
         this.rotation.set(rotation.x, rotation.y, rotation.z);
 
+        this.applyBridge({onWrap: 1});
+
         resolve(this);
       });
     });

@@ -8,6 +8,7 @@ export class ElementModule {
     this.element.className = 'whs';
     this.element.style.width = 'inherit';
     this.element.style.height = 'inherit';
+    this.element.style.position = 'relative';
   }
 
   manager(manager) {

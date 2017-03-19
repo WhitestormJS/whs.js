@@ -21,14 +21,14 @@ class SpotLight extends LightComponent {
   }
 
   build(params = {}) {
-    return new SpotLightNative(
+    return this.applyBridge({light: new SpotLightNative(
       params.light.color,
       params.light.intensity,
       params.light.distance,
       params.light.angle,
       params.light.exponent,
       params.light.decay
-    );
+    )}).light;
   }
 }
 

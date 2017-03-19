@@ -21,14 +21,14 @@ class OrthographicCamera extends CameraComponent {
   }
 
   build(params = {}) {
-    return new OrthographicCameraNative(
+    return this.applyBridge({camera: new OrthographicCameraNative(
       params.camera.left,
       params.camera.right,
       params.camera.top,
       params.camera.bottom,
       params.camera.near,
       params.camera.far
-    );
+    )}).camera;
   }
 }
 

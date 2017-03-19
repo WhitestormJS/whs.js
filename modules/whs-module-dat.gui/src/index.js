@@ -1,8 +1,11 @@
 import dat from 'dat-gui';
-import materials from './materials';
+
+import {DatMeshModule} from './DatMeshModule';
+import {DatLightModule} from './DatLightModule';
+import {DatCameraModule} from './DatCameraModule';
+import {DatCustomModule} from './DatCustomModule';
 
 // Polyfill
-
 dat.GUI.prototype.removeFolder = function(name) {
   var folder = this.__folders[name];
   if (!folder) {
@@ -15,117 +18,49 @@ dat.GUI.prototype.removeFolder = function(name) {
 }
 
 export default class DatGUIModule {
-  constructor(params = {}) {
-    this.params = Object.assign({
-      name: 'Unknown object',
-      material: false,
-      geometry: false,
-      tryMaterial: [],
-      custom: {},
-      defaults: {},
-      range: {},
-      step: {}
-    }, params);
-
-    this.gui = new dat.GUI();
-    this.fold = this.gui.addFolder(this.params.name);
+  static new(params) {
+    return new DatGUIModule(new dat.GUI(params));
   }
 
-  addColor(object, property, instance = this.fold) {
-    const color = object[property];
-
-    instance.addColor({[property]: color.getHex()}, property).onChange(value => {
-      if (typeof value === 'string') value.replace('#', '0x');
-      color.setHex(value);
-    });
+  constructor(gui = new dat.GUI({autoPlace: false})) {
+    this.gui = gui;
   }
 
-  guiMaterial(component, material, instance = this.fold) {
-    const paramsProcessor = (params) => {
-      for (let key in params) {
-        if (params[key] && material[key]) {
-          switch (params[key]) {
-            case 'color':
-              this.addColor(material, key, instance);
-              break;
-            case 'boolean':
-              instance.add(material, key);
-              break;
-            default:
-              instance.add(material, key, params[key]);
-          }
-        }
-      }
-    }
+  manager(manager) {
+    const dom = this.gui.domElement;
+    const style = dom.style;
 
-    paramsProcessor(materials[material.type]);
-    paramsProcessor(materials.any);
+    style.position = 'absolute';
+    style.top = 0;
+    style.right = '20px';
+
+    manager.get('element').appendChild(this.gui.domElement);
   }
 
-  guiGeometry(component, instance = this.fold) {
-    for (let key in component.params.geometry) {
-      instance.add(component.params.geometry, key)
-        .min(0)
-        .max(100)
-        .step(key.indexOf('Segments') > 0 ? 1 : 0.1)
-        .onChange(value => {
-          component.g_({[key]: value});
-        });
-    }
+  set(gui) {
+    this.gui = gui;
+    return this;
   }
 
-  integrate(self) {
-    const {custom, defaults, range, step} = self.params;
-
-    for (let key in custom) {
-      if (!this[key] && defaults[key]) this[key] = defaults[key];
-
-      const handler = self.fold.add(this, key);
-
-      if (range[key]) handler.min(range[key][0]).max(range[key][1]);
-
-      if (step[key]) handler.step(step[key]);
-      if (custom[key]) handler.onChange(value => custom[key](value, this));
-    }
+  folder(name = 'folder') {
+    return new DatGUIModule(this.gui.addFolder(name));
   }
 
-  bridge = {
-    material(material, self) {
-      if (!self.params.material) return material;
+  Mesh(params = {}, gui = this.gui) {
+    return new DatMeshModule(params, gui);
+  }
 
-      const makeFolder = (material) => {
-        const folder = self.fold.addFolder('material');
-        self.guiMaterial(this, material, folder);
+  Light(params = {}, gui = this.gui) {
+    return new DatLightModule(params, gui);
+  }
 
-        const tryMaterialMap = {};
+  Camera(params = {}, gui = this.gui) {
+    return new DatCameraModule(params, gui);
+  }
 
-        const tryMaterialTypes = self.params.tryMaterial.slice().map(value => {
-          const type = (new value).type;
-          tryMaterialMap[type] = value;
-          return type;
-        });
-
-        folder.add({tryMaterial: material.type}, 'tryMaterial', tryMaterialTypes).onChange(value => {
-          // TODO: Make material update without folder reload.
-          this.material = new tryMaterialMap[value](); // .copy(this.material);
-          self.fold.removeFolder('material');
-          makeFolder(this.material);
-        });
-      }
-
-      makeFolder(material);
-
-      return material;
-    },
-
-    geometry(geometry, self) {
-      if (!self.params.geometry) return geometry;
-      if (!this.g_) throw new Error('WHS.mesh.DynamicGeometryModule should be used in a component (before gui)');
-
-      const folder = self.fold.addFolder('geometry');
-      self.guiGeometry(this, folder);
-
-      return geometry;
-    }
+  Custom(params = {}, gui = this.gui) {
+    return new DatCustomModule(params, gui);
   }
 }
+
+DatGUIModule.dat = dat;

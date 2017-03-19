@@ -16,10 +16,10 @@ class AmbientLight extends LightComponent {
   }
 
   build(params = {}) {
-    return new AmbientLightNative(
+    return this.applyBridge({light: new AmbientLightNative(
       params.light.color,
       params.light.intensity
-    );
+    )}).light;
   }
 }
 
