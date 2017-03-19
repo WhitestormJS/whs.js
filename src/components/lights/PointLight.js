@@ -18,12 +18,12 @@ class PointLight extends LightComponent {
   }
 
   build(params = {}) {
-    return new PointLightNative(
+    return this.applyBridge({light: new PointLightNative(
       params.light.color,
       params.light.intensity,
       params.light.distance,
       params.light.decay
-    );
+    )}).light;
   }
 }
 

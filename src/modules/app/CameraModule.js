@@ -22,6 +22,8 @@ export class CameraModule {
         far: this.params.far
       },
 
+      modules: [],
+
       position: {
         x: this.params.position.x,
         y: this.params.position.y,

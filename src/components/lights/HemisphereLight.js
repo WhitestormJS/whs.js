@@ -17,11 +17,11 @@ class HemisphereLight extends LightComponent {
   }
 
   build(params = {}) {
-    return new HemisphereLightNative(
+    return this.applyBridge({light: new HemisphereLightNative(
       params.light.skyColor,
       params.light.groundColor,
       params.light.intensity
-    );
+    )}).light;
   }
 }
 

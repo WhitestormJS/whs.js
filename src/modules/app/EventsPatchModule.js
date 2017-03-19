@@ -1,6 +1,6 @@
 export class EventsPatchModule {
   manager(manager) {
-    this.element = manager.get('element');
+    this.element = manager.get('renderer').domElement;
   }
 
   patchEvents(originObject, destObject, events = []) {
