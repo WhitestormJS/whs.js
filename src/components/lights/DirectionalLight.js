@@ -17,10 +17,10 @@ class DirectionalLight extends LightComponent {
   }
 
   build(params = {}) {
-    return new DirectionalLightNative(
+    return this.applyBridge({light: new DirectionalLightNative(
       params.light.color,
       params.light.intensity
-    );
+    )}).light;
   }
 }
 
