@@ -32,6 +32,11 @@ const sphere = new WHS.Sphere({
           range: [2, 100]
         }
       }
+    }).materials({
+      phong: new THREE.MeshPhongMaterial(),
+      depth: new THREE.MeshDepthMaterial(),
+      lambert: new THREE.MeshLambertMaterial(),
+      basic: new THREE.MeshBasicMaterial()
     })
   ]
 });
