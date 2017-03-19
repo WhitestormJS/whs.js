@@ -9,6 +9,7 @@ export class DatMeshModule extends DatAPI {
       name: 'Unknown mesh',
       geometry: true,
       material: true,
+      transforms: true,
       gui: false
     }, params);
 
@@ -35,7 +36,6 @@ export class DatMeshModule extends DatAPI {
               this.addColor(material, key, instance);
               break;
             case 'boolean':
-              console.log(key);
               instance.add(material, key);
               break;
             case 'number':
@@ -86,6 +86,7 @@ export class DatMeshModule extends DatAPI {
     if (this.native) {
       self.bridge.material.bind(this)(this.native.material, self);
       self.bridge.geometry.bind(this)(this.native.geometry, self);
+      self.bridge.onWrap.bind(this)(this.native, self);
     }
   }
 
@@ -125,6 +126,10 @@ export class DatMeshModule extends DatAPI {
       });
 
       return mesh;
+    },
+
+    onWrap(a, self) {
+      self.guiTransforms(this.native, self.fold);
     }
   }
 };

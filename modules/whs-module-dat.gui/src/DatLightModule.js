@@ -8,6 +8,7 @@ export class DatLightModule extends DatAPI {
       name: 'Unknown light',
       light: true,
       shadow: true,
+      transforms: true,
       gui: false
     }, params);
 
@@ -25,7 +26,10 @@ export class DatLightModule extends DatAPI {
   }
 
   integrate(self) {
-    if (this.native) self.bridge.light.bind(this)(this.native, self);
+    if (this.native) {
+      self.bridge.light.bind(this)(this.native, self);
+      self.bridge.onWrap.bind(this)(this.native, self);
+    }
   }
 
   bridge = {
@@ -36,6 +40,10 @@ export class DatLightModule extends DatAPI {
       self.foldObject(light.shadow, this.params.shadow, self.fold.addFolder('shadow'));
 
       return light;
+    },
+
+    onWrap(a, self) {
+      self.guiTransforms(this.native, self.fold);
     }
   }
 };
