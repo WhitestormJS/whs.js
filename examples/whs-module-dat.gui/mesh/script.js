@@ -11,7 +11,8 @@ const app = new WHS.App(
   })
   .extend([
     new WHS.controls.OrbitModule(),
-    new StatsModule(0)
+    new StatsModule(0),
+    DatGUI
   ])
   .get()
 );
