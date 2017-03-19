@@ -62,6 +62,8 @@ class CameraComponent extends Component {
         this.position.set(this.params.position.x, this.params.position.y, this.params.position.z);
         this.rotation.set(this.params.rotation.x, this.params.rotation.y, this.params.rotation.z);
 
+        this.applyBridge({onWrap: 1});
+
         resolve(this);
       });
     });
