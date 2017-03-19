@@ -14,6 +14,7 @@ export class DatMeshModule extends DatAPI {
 
     this.gui = gui;
     this.fold = this.gui.addFolder(this.params.name);
+    this.customMaterials = false;
   }
 
   addColor(object, property, instance = this.fold) {
@@ -28,13 +29,20 @@ export class DatMeshModule extends DatAPI {
   guiMaterial(component, material, instance = this.fold) {
     const paramsProcessor = (params) => {
       for (let key in params) {
-        if (params[key] && material[key]) {
+        if (params[key] && material[key] !== undefined) {
           switch (params[key]) {
             case 'color':
               this.addColor(material, key, instance);
               break;
             case 'boolean':
+              console.log(key);
               instance.add(material, key);
+              break;
+            case 'number':
+              instance.add(material, key);
+              break;
+            case 'texture':
+              // TODO
               break;
             default:
               instance.add(material, key, params[key]);
@@ -68,6 +76,12 @@ export class DatMeshModule extends DatAPI {
     }
   }
 
+  materials(materials = {}) {
+    this.customMaterials = materials;
+
+    return this;
+  }
+
   integrate(self) {
     if (this.native) {
       self.bridge.material.bind(this)(this.native.material, self);
@@ -93,6 +107,24 @@ export class DatMeshModule extends DatAPI {
       self.guiGeometry(this, folder);
 
       return geometry;
+    },
+
+    mesh(mesh, self) {
+      if (!self.customMaterials) return mesh;
+
+      self.customMaterials.current = mesh.material;
+
+      const matAlias = {material: 'current'}
+      const keys = Object.keys(self.customMaterials);
+      const folder = self.fold.addFolder('other materials');
+
+      folder.add({material: 'current'}, 'material', keys).onChange(v => {
+        mesh.material = self.customMaterials[v];
+        folder.removeFolder('customize');
+        self.guiMaterial(this, mesh.material, folder.addFolder('customize'));
+      });
+
+      return mesh;
     }
   }
 };
