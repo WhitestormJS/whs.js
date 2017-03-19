@@ -22,8 +22,19 @@ export default class DatGUIModule {
     return new DatGUIModule(new dat.GUI(params));
   }
 
-  constructor(gui = new dat.GUI()) {
+  constructor(gui = new dat.GUI({autoPlace: false})) {
     this.gui = gui;
+  }
+
+  manager(manager) {
+    const dom = this.gui.domElement;
+    const style = dom.style;
+
+    style.position = 'absolute';
+    style.top = 0;
+    style.right = '20px';
+
+    manager.get('element').appendChild(this.gui.domElement);
   }
 
   set(gui) {
