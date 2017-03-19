@@ -54,7 +54,6 @@ const additional = {
 }
 
 const add = (origin, ...addv) => {
-  console.log(addv.map(value => additional[value]));
   return Object.assign(origin, ...addv.map(value => additional[value]))
 }
 
@@ -83,7 +82,7 @@ export default {
   }, 'emissive', 'refr', 'light'),
 
   MeshPhongMaterial: add({
-
+    color: 'color'
   }, 'displacement', 'emissive'),
 
   MeshDepthMaterial: {
