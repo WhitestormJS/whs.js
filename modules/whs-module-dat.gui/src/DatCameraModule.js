@@ -20,7 +20,7 @@ export class DatCameraModule extends DatAPI {
   bridge = {
     camera(camera, self) {
       if (!self.params.camera) return camera;
-      self.foldObject(camera, this.params.camera, self.fold.addFolder('camera'), () => {
+      self.foldObject(camera, this.params.camera, self.fold, () => {
         camera.updateProjectionMatrix();
       });
 
