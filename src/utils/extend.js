@@ -12,12 +12,12 @@ export const extend = (object, ...extensions) => { // $.extend alternative, ... 
         && extension[prop].toString() === '[object Object]') {
         // Goes deep only if object[prop] and extension[prop] are both objects !
         if (extension[prop].uuid) object[prop] = extension[prop];
-        else if (Array.isArray(object)) continue;
         else extend(object[prop], extension[prop]);
       } else
         object[prop] = typeof object[prop] === 'undefined' ? extension[prop] : object[prop];
 
-      if (typeof object[prop] === 'undefined') object[prop] = extension[prop]; // Add values that do not already exist.
+      if (typeof object[prop] === 'undefined' && Array.isArray(extension[prop])) object[prop] = extension[prop].slice(); // Add values that do not already exist.
+      else if (typeof object[prop] === 'undefined' && Array.isArray(extension[prop])) object[prop] = extension[prop];
     }
   }
 
