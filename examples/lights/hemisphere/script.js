@@ -144,7 +144,8 @@ function addPillar(position) {
     }),
 
     shadow: {
-      cast: true
+      cast: true,
+      receive: true
     },
 
     position,
@@ -154,6 +155,59 @@ function addPillar(position) {
     },
 
     scale: [2, 3, 2]
+  }).addTo(world);
+}
+
+const topPlaneSize = 30;
+const topPlaneYpos = 24;
+addTopPlane({
+  width: topPlaneSize,
+  height: topPlaneSize
+}, topPlaneYpos);
+
+addTopPlane({
+  width: topPlaneSize - 3,
+  height: topPlaneSize - 3,
+  depth: 2
+}, topPlaneYpos + 1);
+
+addTopPlane({
+  width: topPlaneSize,
+  height: topPlaneSize
+}, topPlaneYpos + 2);
+
+function addTopPlane(geometry, y) {
+  new WHS.Box({
+    geometry,
+
+    specular: 0x050505,
+    position: [9, y, 10],
+    rotation: {
+      y: 0,
+      x: -Math.PI / 2
+    },
+
+    shadow: {
+      cast: true,
+      receive: true
+    },
+
+    modules: [
+      new WHS.mesh.TextureModule({
+        url: `${process.assetsPath}/textures/stone.jpg`
+      }, {
+        url: `${process.assetsPath}/textures/stoneNormal.jpg`,
+        type: 'normalMap'
+      }, {
+        url: `${process.assetsPath}/textures/stoneBump.jpg`,
+        type: 'bumpMap'
+      }
+    )],
+
+    material: new THREE.MeshPhongMaterial({
+      emissive: 0xffffff,
+      emissiveIntensity: 0.2
+    })
   }).addTo(world);
 }
 
