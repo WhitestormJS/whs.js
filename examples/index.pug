@@ -6,20 +6,27 @@ html
     script(src='/assets/js/script.js')
     include style.pug
   body
-    div.ui.menu.sidebar.vertical.inverted.left.overlay.visible#sidebar
-      div.item
-        a.ui.mini.logo.icon.image(href='/')
-          img(src='/assets/img/whs-logo.png')
-        a(href='/')
+    div.ui.menu.sidebar.vertical.inverted.left.overlay.visible.styled#sidebar
+      h2.item.ui.header
+        a.ui.huge.logo.image(href='/')
+          img(src='https://avatars3.githubusercontent.com/u/16437392?v=3&s=200')
+        div.content
           span Examples
+          div.sub.header
+            a(href='https://github.com/WhitestormJS/whitestorm.js') GitHub
+            = " "
+            span /
+            = " "
+            a(href='https://twitter.com/_alex_buzin') Twitter
 
       each category in categories
         div.item
-          div.header #{category}
-          div.menu
+          h2.ui.header #{category}
+          div.vertical.pointing.menu
             each path in paths
               if !path.indexOf(category)
-                a.ui.item(href='?' + path) #{path.replace('/', ' / ')}
+                div.item.minor
+                  a.ui.medium.header(href='?' + path) #{path.replace('/', ' / ')}
 
     a.source(href="/" target="_blank") Source code
 
