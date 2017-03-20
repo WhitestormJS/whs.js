@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
+
 html, body {
   width: 100%;
   height: 100%;
@@ -12,26 +14,29 @@ a {
   text-decoration: none;
 }
 
+* {
+  font-family: 'Inconsolata', monospace !important;
+}
+
 /*
  * Style ugly scroll bar on webkit browsers (Chrome/Safari)
  * Ref: https://webkit.org/blog/363/styling-scrollbars/
  */
  ::-webkit-scrollbar {
      width: 12px;
+     background: #2194CE;
  }
 
  ::-webkit-scrollbar-track {
-     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
      border-radius: 10px;
  }
 
  ::-webkit-scrollbar-thumb {
-     border-radius: 10px;
-     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+     background: #262C38;
  }
 
 div.ui.sidebar.vertical.inverted.menu.left.overlay.visible {
-  width: 270px;
+  width: 340px;
   overflow: auto;
   background: #262C38;
   margin-bottom: 0;
@@ -68,4 +73,37 @@ a.source:hover {
 div#sidebar {
   float: left;
   position: relative;
+}
+
+.ui.header {
+  color: white;
+}
+
+/* My styles */
+
+.ui.sidebar.styled {
+  .ui.header {
+    .content {
+      .sub.header {
+        color: #ccc;
+      }
+    }
+  }
+
+  div.item {
+    background: #fafafa;
+
+    h2.ui.header {
+      color: #555;
+      font-weight: normal;
+    }
+
+    .minor {
+      padding: 0.2em 1.33333333em !important;
+
+      a.header {
+        color: #2194CE;
+      }
+    }
+  }
 }
