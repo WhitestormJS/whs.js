@@ -1,5 +1,6 @@
 import './polyfill';
 import * as WHS from '../src/index';
+import {FogModule} from '../src/modules/app/FogModule';
 import gl from 'gl';
 
 const app = new WHS.App();
@@ -39,8 +40,49 @@ test('VirtualMouseModule', () => {
   modules.mouse = new WHS.app.VirtualMouseModule();
 });
 
+
+// TODO move Modules tests into individual specs
+const defaultFog = new FogModule();
 test('FogModule', () => {
-  modules.fog = new WHS.app.FogModule();
+  modules.fog = defaultFog;
+});
+// TODO figure out a better approach to add assertions
+// and cleaner way to assert object properties
+test('Default Fog is a FogExp2', () => {
+  expect(defaultFog.fog.isFogExp2).toBeTruthy();
+});
+
+test('Fog has the default color', () => {
+  expect(defaultFog.fog.color.getHex()).toBe(0xefd1b5);
+});
+
+test('Fog has the default density', () => {
+  expect(defaultFog.fog.density).toBe(0.020);
+});
+
+const linearFog = new FogModule({}, 'linear');
+test('Linear Fog is a Fog', () => {
+  expect(linearFog.fog.isFog).toBeTruthy();
+});
+
+test('Linear Fog has the default color', () => {
+  expect(linearFog.fog.color.getHex()).toBe(0xefd1b5);
+});
+
+test('Linear Fog has the default near value', () => {
+  expect(linearFog.fog.near).toBe(10);
+});
+
+test('Linear Fog has the default far value', () => {
+  expect(linearFog.fog.far).toBe(1000);
+});
+
+const fogColor = 0xffffff;
+const fogDensity = 0.025;
+const customExp2Fog = new FogModule({color: fogColor, density: fogDensity});
+test('Custom exp2 Fog is set with the constructor params', () => {
+  expect(customExp2Fog.fog.color.getHex()).toBe(fogColor);
+  expect(customExp2Fog.fog.density).toBe(fogDensity);
 });
 
 test('Applying basic modules to app', () => {
