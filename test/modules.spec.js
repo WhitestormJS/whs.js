@@ -51,7 +51,8 @@ test('Applying basic modules to app', () => {
     .module(modules.rendering)
     .module(modules.postprocessor)
     .module(modules.resize)
-    .module(modules.mouse);
+    .module(modules.mouse)
+    .module(modules.fog);
 
   app.start();
 });
