@@ -60,7 +60,7 @@ describe('Default Fog', () => {
   });
 });
 
-describe('Default Fog', () => {
+describe('Linear Fog', () => {
   const linearFog = new FogModule({}, 'linear');
   test('is a Fog', () => {
     expect(linearFog.fog.isFog).toBeTruthy();
@@ -83,8 +83,10 @@ describe('Custom Fog', () => {
   const fogColor = 0xffffff;
   const fogDensity = 0.025;
   const customExp2Fog = new FogModule({color: fogColor, density: fogDensity});
-  test('Custom exp2 Fog is set with the constructor params', () => {
+  test('is set with the color param', () => {
     expect(customExp2Fog.fog.color.getHex()).toBe(fogColor);
+  });
+  test('s set with the density param', () => {
     expect(customExp2Fog.fog.density).toBe(fogDensity);
   });
 });
