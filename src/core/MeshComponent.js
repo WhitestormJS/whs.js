@@ -68,10 +68,12 @@ class MeshComponent extends Component {
       if (build instanceof Promise) {
         build.then(native => {
           this.native = native;
+          this.wrap();
         });
-      } else this.native = build;
-
-      this.wrap();
+      } else {
+        this.native = build;
+        this.wrap();
+      }
     }
   }
 
@@ -93,6 +95,8 @@ class MeshComponent extends Component {
         this.position.set(position.x, position.y, position.z);
         this.rotation.set(rotation.x, rotation.y, rotation.z);
         this.scale.set(scale.x, scale.y, scale.z);
+
+        console.log(this.native.position);
 
         this.native.castShadow = shadow.cast;
         this.native.receiveShadow = shadow.receive;

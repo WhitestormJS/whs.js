@@ -26,7 +26,8 @@ const world = new WHS.App([
     }
   }),
   controlsModule,
-  cameraModule
+  cameraModule,
+  new WHS.app.ResizeModule()
 ]);
 controlsModule.controls.autoRotate = true;
 
@@ -94,6 +95,9 @@ const redSpotLight = new WHS.PointLight({
     intensity: lightIntensity,
     distance: 40
   },
+  shadow: {
+    cast: false
+  },
 
   material: new THREE.MeshBasicMaterial({
     color: red
@@ -131,6 +135,9 @@ const blueSpotLight = new WHS.PointLight({
     color: blue,
     intensity: lightIntensity,
     distance: 50
+  },
+  shadow: {
+    cast: false
   }
 });
 blueSpotLight.addTo(world);
@@ -140,8 +147,7 @@ new WHS.Sphere({
 
   material: new THREE.MeshBasicMaterial({
     color: blue
-  }),
-  castShadow: false
+  })
 }).addTo(blueSpotLight);
 
 const distance = 15;
