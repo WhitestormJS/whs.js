@@ -157,15 +157,15 @@ Proudly hosted by [cdnjs](https://cdnjs.com/):D (soon)
 ## Features
 
 * 💎 **Simple in usage**
-* Minimize 3D scene prototyping
+* :rocket: Speeds up 3D scene prototyping
 * 🔌  **Component based scene graph**
 * 💣 Simple integration of any **high performance physics** even with `Worker` (Multithreading)
-* Automatization of rendering
+* :dizzy: Automatization of rendering
 * 🆕 **ES2015+ based**
-* Extension system (modules)
-* [Webpack](https://whsjs.io/#/api/webpack) friendly
+* :large_blue_diamond: Extension system (modules)
+* :package: [Webpack](https://whsjs.io/#/api/webpack) friendly
 * ✔️ **Integrated [Three.js](https://threejs.org/) rendering engine**
-* Work with Whitestorm.js and Three.js at the same time
+* :revolving_hearts: Work with Whitestorm.js and Three.js at the same time
 
 ### WEBPACK
 
