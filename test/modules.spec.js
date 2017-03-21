@@ -56,7 +56,7 @@ describe('Default Fog', () => {
   });
 
   test('has the default density', () => {
-    expect(defaultFog.fog.density).toBe(0.020);
+    expect(defaultFog.fog.density).toBeCloseTo(0.020);
   });
 });
 
@@ -87,7 +87,7 @@ describe('Custom Fog', () => {
     expect(customExp2Fog.fog.color.getHex()).toBe(fogColor);
   });
   test('s set with the density param', () => {
-    expect(customExp2Fog.fog.density).toBe(fogDensity);
+    expect(customExp2Fog.fog.density).toBeCloseTo(fogDensity);
   });
 });
 
