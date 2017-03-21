@@ -34,9 +34,11 @@ WhitestormJS will be built, and written to `build/whitestorm.js`, and `build/whi
 
 ## CLI
 
-### gulp 
+### gulp
 
 Builds examples `gulp examples:build` and sources `gulp src:build`
+To run the example, serve the static content using your favorite http server.
+_Ensure the example content is served from the root directory of the project_ **not** _from the example folder, then navigate to (if set up locally) to `http://locathost:port/examples` to navigate through built examples._
 
 ### gulp src:build
 
@@ -52,20 +54,20 @@ This command builds all sources only for `node.js` environment.
 
 ### gulp dev
 
-This command runs development mode in which you can make changes as to sources as to examples and all your changes will be done immediately.
-After running command you should see all examples by `localhost:8080`.
+This command runs development mode. The source and examples are _watched_ by the build system, so making any code change will be reflected immediately.
+Examples are accessible via `http://localhost:8080/`.
 
 ### gulp examples:watch
 
-Watches all your changes in `src-examples` folder.
+Watches your changes to the `./examples` folder only.
 
 ### gulp examples:build
 
-Deletes existing `examples` folder and makes a new one by compiling `src-examples`.
+Deletes existing built examples and makes a new one by compiling `examples` source files.
 
 ### gulp src:test
 
-Runs karma and performance tests.
+Runs the linter and Jest tests.
 
 ### gulp src:clean
 
@@ -79,66 +81,70 @@ Deletes `examples` folder. (Only used by other commands.)
 
 ## Committing
 
-All engine code is in `src/` folder.
+All engine code is in the `src/` folder.
+Modules are in the `modules/`, each having their own build
+
+_We still in the process of moving all remaining modules from `src/` to `modules`. If you create a new module, please put it in the `modules` folder._
+
 **Do not edit files in `build/` folder!!!*
 
 ### * Commit names.
 
 #### Codes.
- - **WIP.** - Work in progress.
- - **CSF.** - Code style fix. (Comes with file name.)
- - **TU.** - Temporary update. (Will be changed later.)
- - **README.** - You changed README.md file.
- - **LICENSE.** - You changed LICENSE.md file.
+ - **CSF** - Code style fix. (Comes with file name.)
+ - **TU** - Temporary update. (Will be changed later.)
+ - **README** - You changed README.md file.
+ - **LICENSE** - You changed LICENSE.md file.
  - **CONTRIBUTING.** - You changed CONTRIBUTING.md file.
 
 
 
 #### Fixed Issue.
 
-If your commit fixes issue on github, you must add `Fixed #25`. Where **#25 is ID of your issue.**
+If your commit fixes for an _issue_ on github, you must add `Fixed #25`. Where **#25 is ID of the issue.**
 
 
 
 #### Syntax.
- 
-- **Code** - Can be `WIP.`, `CSF.` or `TU.` (If your commit matches one of them.)
-- **Comment** - Your comment to commit. (If you want or you have no code.)
-- **Fix** - Example: `Fixed #25`. (If you fixed an issue or your commit made some task from issue.)
 
->**After code/comment must always be a dot and they must start with big letter.**
+- **Code** - e.g `CSF.` or `TU.` (If your commit matches one of them.)
+- **Comment** - Your comment to commit. (optional, unless you have no code.)
+- **Fix** - Example: `Fixed #25`. (If you fixed issue #25)
 
->**If you have `CSF.` your comment must be a name of file you fixed.** No dot after filename
+>**code must be UPPCERCASE, comment must be be Capitalized**
+
+>**If you have `CSF.` your comment must be the name of the file you fixed.** No dot after filename
 
 
 #### Examples.
 
 Good:
- - `WIP. Files updated.`
- - `CSF. ShaderTerrain.js Fixed #25`
- - `WIP.`
- - `TU. Fixed #3`
+ - `CSF ShaderTerrain.js Fixed #25`
+ - `TU Fixed #3`
+ - `README`
 
 Poor:
+ - `Changes..`
  - `Fixed #25`
  - `Fixed code style.` (Use "CSF.")
- - `WIPSHADEERTERRAINJSFIXES####2016!!!!`
- - `WIP shader` (No dot after `WIP`, comment starts with small letter.)
+ - `WIPSHADEERTERRAINJSFIXES####2017!!!!`
+ - `WIP`
+ - `CSF shader` (No dot after `WIP`, comment starts with small letter.)
 
 
 ### * Code style guidelines:
- - Follow code style guides: 
+ - Follow code style guides:
     - [**Mr.doob**](https://github.com/mrdoob/three.js/wiki/Mr.doob's-Code-Style%E2%84%A2)
     - [Google](https://google.github.io/styleguide/javascriptguide.xml)
- - Each line of code should not be longer than 80 symbols
+ - Each line of code should be no longer than 80 symbols
  - https://www.codacy.com/app/siteprogcom/WhitestormJS/dashboard
  - After you fixed one file:
-   - Write `CSF. {filenamehere}` to current version in `CHANGELOG.md` file.
-   - Commit with msg `CSF. {filenamhere} #25` or just `CSF.`
+   - Write `CSF {filenamehere}` to current version in `CHANGELOG.md` file.
+   - Commit with msg `CSF {filenamhere} #25` or just `CSF`.
 
 ### * Adding changes to [CHANGELOG.md](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
 
-If you will contribute to this project, please follow this rules of editting CHANGELOG.md each time you make changes:
+If you contribute to this project, please follow this rules of editting CHANGELOG.md each time you make changes:
 
 
 **Comment:** `Added ...`
@@ -179,4 +185,4 @@ If you will contribute to this project, please follow this rules of editting CHA
 
 ## Testing WhitestormJS
 
-Our tests are run using [Mocha](https://mochajs.org/). We're still adding more tests.
+Our tests are run using [Jest](https://facebook.github.io/jest/). We're adding more tests cases.
