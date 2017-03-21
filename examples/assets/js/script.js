@@ -11,7 +11,7 @@ if (isMobile) {
   new Slideout({
     panel: document.getElementById('panel'),
     menu: document.getElementById('sidebar'),
-    padding: 256,
+    padding: 320,
     tolerance: 70
   });
 }
