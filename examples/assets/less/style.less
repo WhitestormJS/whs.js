@@ -65,6 +65,15 @@ div.ui.sidebar.vertical.inverted.menu.left.overlay.visible {
   }
 }
 
+.desktop {
+  @media only screen
+    and (min-device-width: 320px)
+    and (max-device-width: 480px)
+    and (-webkit-min-device-pixel-ratio: 2) {
+      display: none;
+  }
+}
+
 a.source {
   position: fixed;
   bottom: 50px;
