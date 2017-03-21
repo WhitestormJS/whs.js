@@ -3,12 +3,12 @@ html
     title Example
     include meta.pug
     block head
-    link(rel='stylesheet', href='../../../assets/css/layout.css', type='text/css' )
+    link(rel='stylesheet', href='/examples/assets/css/layout.css', type='text/css' )
   body
     block body
 
     block dependencies
-      script(src='../../assets/vendor/three.min.js')
+      script(src='/examples/assets/vendor/three.min.js')
       script(src='../../../build/whitestorm.js')
       block additional
         script(src='../../../modules/whs-module-statsjs/build/StatsModule.js')
