@@ -17,7 +17,8 @@ const world = new WHS.App([
     position: new THREE.Vector3(0, 10, 200)
   }, ad.rendering, ad.physics, false),
   controlsModule,
-  cameraModule
+  cameraModule,
+  new WHS.app.ResizeModule()
 ]);
 
 controlsModule.controls.autoRotate = true;
