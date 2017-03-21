@@ -269,6 +269,12 @@ export class Application extends Component {
 |:--:|:----:|:----------|
 |[physics-module-ammonext][physics-ammonext]|![physics-ammonext-npm]|Physics module based on [Ammo.js](https://github.com/kripken/ammo.js/)|
 
+### Audio
+|Name|Status|Description|
+|:--:|:----:|:----------|
+|[whs-module-audio][audio]| WIP |Audio module for 3D positional sound 🔉|
+
+
 ### Integrations
 
 
@@ -396,6 +402,8 @@ Become a sponsor and get your logo on on our README on Github with a link to you
 
 [physics-ammonext]: https://github.com/WhitestormJS/physics-module-ammonext
 [physics-ammonext-npm]: https://img.shields.io/npm/v/physics-module-ammonext.svg?style=flat-square
+
+[audio]: https://github.com/WhitestormJS/whitestorm.js/tree/beta/modules/whs-module-audio
 
 [react-whs]: https://github.com/WhitestormJS/react-whs
 [react-whs-npm]: https://img.shields.io/npm/v/react-whs.svg?style=flat-square
