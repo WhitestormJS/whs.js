@@ -3,7 +3,7 @@ html
     include meta.pug
     style.
       @import url('https://fonts.googleapis.com/css?family=Cabin|Fjalla+One|Montserrat|Oxygen');
-    script(src='/assets/js/script.js')
+    script(src='/assets/js/slideout.min.js')
     include style.pug
   body
     div.ui.menu.sidebar.vertical.inverted.left.overlay.visible.styled#sidebar
@@ -34,15 +34,19 @@ html
 
     a.source(href="/" target="_blank") Source code
 
+    div#panel
+      div.slide-zone
+
     script.
       var iframe = document.createElement('iframe');
       var rootPath = #{devMode} ? '' : '/examples';
       var link = window.location.search ? '/' + window.location.search.substring(1, window.location.search.length) + '/' : '/basic/helloworld/';
 
       iframe.src = rootPath + link;
+      iframe.id = 'content'
       document.querySelector('a.source').href = 'https://github.com/WhitestormJS/whitestorm.js/tree/beta/examples/' + link + '/script.js';
 
-      document.body.appendChild(iframe);
+      document.getElementById('panel').appendChild(iframe);
       var links = document.querySelectorAll('a');
 
       for (var i = 0, max = links.length; i < max; i++) {
@@ -50,3 +54,4 @@ html
           window.location.reload();
         });
       }
+    script(src='/assets/js/script.js')
