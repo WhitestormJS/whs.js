@@ -26,7 +26,8 @@ const world = new WHS.App([
     }
   }),
   controlsModule,
-  cameraModule
+  cameraModule,
+  new WHS.app.ResizeModule()
 ]);
 controlsModule.controls.autoRotate = true;
 
