@@ -83,3 +83,6 @@ div#sidebar {
 .ui.sidebar.styled div.item .minor a.header {
   color: #2194CE;
 }
+.ui.sidebar.styled div.item .minor a.header:hover {
+  border-bottom: 1px solid;
+}
