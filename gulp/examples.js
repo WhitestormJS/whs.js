@@ -10,9 +10,9 @@ import {getTemplateData} from './config';
 import {getPaths} from './utils';
 
 gulp.task('less', () => {
-  return gulp.src('./examples/less/**/*.less')
+  return gulp.src('./examples/assets/less/*.less')
     .pipe(less())
-    .pipe(gulp.dest('./examples/css/'));
+    .pipe(gulp.dest('./examples/assets/css/'));
 });
 
 gulp.task('examples:build', ['examples:html', 'less']);

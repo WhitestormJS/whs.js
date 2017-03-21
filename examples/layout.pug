@@ -3,18 +3,7 @@ html
     title Example
     include meta.pug
     block head
-    style(type='text/css' href='/css/style.css')
-    style(type='text/css').
-      html, body {
-        position: relative;
-        height: 100%;
-      }
-
-      body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-      }
+    link(rel='stylesheet', href='../../../assets/css/layout.css', type='text/css' )
   body
     block body
 
