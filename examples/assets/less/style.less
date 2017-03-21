@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #262C38;
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+}
+
+* {
+  font-family: 'Inconsolata', monospace !important;
+}
+
+/*
+ * Style ugly scroll bar on webkit browsers (Chrome/Safari)
+ * Ref: https://webkit.org/blog/363/styling-scrollbars/
+ */
+ ::-webkit-scrollbar {
+     width: 12px;
+     background: #2194CE;
+ }
+
+ ::-webkit-scrollbar-track {
+     border-radius: 10px;
+ }
+
+ ::-webkit-scrollbar-thumb {
+     background: #262C38;
+ }
+
+div.ui.sidebar.vertical.inverted.menu.left.overlay.visible {
+  width: 340px;
+  overflow: auto;
+  background: #262C38;
+  margin-bottom: 0;
+}
+
+.logo.image {
+  margin-right: 1em;
+}
+
+#panel {
+  width: calc(~"100% - 270px");
+  float: right;
+  height: 100%;
+
+  @media only screen
+    and (min-device-width: 320px)
+    and (max-device-width: 480px)
+    and (-webkit-min-device-pixel-ratio: 2) {
+      width: calc(~"100%");
+  }
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+}
+
+.desktop {
+  @media only screen
+    and (min-device-width: 320px)
+    and (max-device-width: 480px)
+    and (-webkit-min-device-pixel-ratio: 2) {
+      display: none;
+  }
+}
+
+a.source {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  color: white;
+  border: 2px solid white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.1s linear;
+}
+
+a.source:hover {
+  background: #fff;
+  color: #078BDA;
+}
+
+div#sidebar {
+  float: left;
+  position: relative;
+}
+
+.ui.header {
+  color: white;
+}
+
+/* My styles */
+
+.ui.sidebar.styled {
+  .ui.header {
+    .content {
+      .sub.header {
+        color: #ccc;
+      }
+    }
+  }
+
+  div.item {
+    background: #fafafa;
+
+    h2.ui.header {
+      color: #555;
+      font-weight: normal;
+    }
+
+    .minor {
+      padding: 0.2em 1.33333333em !important;
+
+      a.header {
+        color: #2194CE;
+
+        &:hover {
+          border-bottom: 1px solid;
+        }
+      }
+    }
+  }
+}
+
+.slide-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  z-index: 3;
+  background: -moz-linear-gradient(left, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(left, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to right, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#00000000',GradientType=1 ); /* IE6-9 */
+}
+
+/* SLIDEOUT */
+
+body {
+  width: 100%;
+  height: 100%;
+}
+
+#sidebar {
+  &.slideout-menu {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 320px;
+    min-height: 100vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    z-index: 0;
+    display: none;
+  }
+
+  &.slideout-menu-left {
+    left: 0;
+  }
+
+  &.slideout-menu-right {
+    right: 0;
+  }
+}
+
+.slideout-open #sidebar.slideout-menu {
+  display: block;
+}
+
+.slideout-panel {
+  position: relative;
+  z-index: 1;
+  will-change: transform;
+  background-color: #FFF; /* A background-color is required */
+  min-height: 100vh;
+}
+
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+  overflow: hidden;
+}

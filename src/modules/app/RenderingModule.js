@@ -44,7 +44,7 @@ export class RenderingModule {
       bgOpacity
     );
 
-    this.renderer.setPixelRatio(pixelRatio);
+    if (pixelRatio) this.renderer.setPixelRatio(pixelRatio);
 
     this.setSize(
       Number(width * resolution.x).toFixed(),
