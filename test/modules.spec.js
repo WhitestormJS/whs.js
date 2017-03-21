@@ -39,6 +39,10 @@ test('VirtualMouseModule', () => {
   modules.mouse = new WHS.app.VirtualMouseModule();
 });
 
+test('FogModule', () => {
+  modules.fog = new WHS.app.FogModule();
+});
+
 test('Applying basic modules to app', () => {
   app
     .module(modules.element)
