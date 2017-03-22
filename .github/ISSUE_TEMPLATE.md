@@ -8,6 +8,7 @@ Describe your issue here.
  - [ ] Bug
  - [ ] Proposal/Enhancement
  - [ ] Question
+ - [ ] Discussion
 
 ------
 
