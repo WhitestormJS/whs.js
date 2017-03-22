@@ -66,3 +66,14 @@ test('Group', () => {
   const group = new WHS.Group(sphere, box, new Mesh());
   group.addTo(app);
 });
+
+describe('Line', () => {
+  test('throws if no curve', () => {
+    expect(() => {
+      new WHS.Line();
+    }).toThrow();
+  });
+  test('has points passed in', () => {
+    // TODO assert, I suspect this component is broken
+  });
+});
