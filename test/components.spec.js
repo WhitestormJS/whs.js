@@ -27,6 +27,7 @@ const meshes = [
 
 const lights = [
   'AmbientLight',
+  'AreaLight',
   'DirectionalLight',
   'HemisphereLight',
   'PointLight',
