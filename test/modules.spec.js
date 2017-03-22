@@ -115,8 +115,12 @@ test('Applying controls modules to app', () => {
   app.start();
 });
 
-test('DynamicGeometryModule', () => {
+describe('DynamicGeometryModule', () => {
   modules.dym = new WHS.mesh.DynamicGeometryModule();
+
+  test('has false attributes by default', () => {
+    expect(modules.dym.attributes).toBeFalsy();
+  });
 });
 
 test('TextureModule', () => {

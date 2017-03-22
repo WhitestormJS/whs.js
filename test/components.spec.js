@@ -9,8 +9,6 @@ const meshes = [
   'Icosahedron',
   'Lathe',
   'Group',
-  // 'Model',
-  // 'Line',
   'Octahedron',
   'Parametric',
   'Plane',
@@ -27,6 +25,7 @@ const meshes = [
 
 const lights = [
   'AmbientLight',
+  'AreaLight',
   'DirectionalLight',
   'HemisphereLight',
   'PointLight',
@@ -64,4 +63,28 @@ test('Group', () => {
 
   const group = new WHS.Group(sphere, box, new Mesh());
   group.addTo(app);
+});
+
+describe('Line', () => {
+  test('throws if no curve', () => {
+    expect(() => {
+      new WHS.Line();
+    }).toThrow();
+  });
+
+  test('has points passed in', () => {
+    // TODO assert, I suspect this component is broken
+  });
+});
+
+describe('Model', () => {
+  test('can construct', () => {
+    new WHS.Model();
+  });
+});
+
+describe('Text', () => {
+  test('can construct', () => {
+    new WHS.Text();
+  });
 });
