@@ -27,19 +27,20 @@ class App extends ModuleSystem {
         };
     })();
 
+    const {loops, updateEnabled} = this;
+
     function process() {
-      if (!this.updateEnabled) return;
+      requestAnimFrame(process);
+      if (!updateEnabled) return;
 
-      requestAnimFrame(process.bind(this));
-
-      for (let i = 0; i < this.loops.length; i++) {
-        const e = this.loops[i];
+      for (let i = 0, ll = loops.length; i < ll; i++) {
+        const e = loops[i];
         if (e.enabled) e.execute(e.clock);
       }
     }
 
     this.updateEnabled = true;
-    (process.bind(this))();
+    process();
   }
 
   stop() {
