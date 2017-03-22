@@ -49,22 +49,22 @@ $ npm install --save whs
 
 You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/).
 
-<a href="https://whs-dev.surge.sh/examples/#basic/helloworld">
+<a href="https://whs-dev.surge.sh/examples/?basic/helloworld">
   <img alt="basic/helloworld" target="_blank" src="http://i.imgur.com/IRq5Hp4.gif" width="32%" />
 </a>
-<a href="https://whs-dev.surge.sh/examples/#basic/model">
+<a href="https://whs-dev.surge.sh/examples/?basic/model">
   <img alt="basic/model" target="_blank" src="http://i.imgur.com/RmTjjiA.gif" width="32%" />
 </a>
-<a href="https://whs-dev.surge.sh/examples/#softbody/cloth3">
+<a href="https://whs-dev.surge.sh/examples/?softbody/cloth3">
   <img alt="softbody/cloth3" target="_blank" src="http://i.imgur.com/BgHdX56.gif" width="32%" />
 </a>
-<a href="https://whs-dev.surge.sh/examples/#post-processing/basic-glitch">
+<a href="https://whs-dev.surge.sh/examples/?post-processing/basic-glitch">
   <img alt="postprocessing/basic-glitch" target="_blank" src="http://i.imgur.com/ASUN7tR.gif" width="32%" />
 </a>
-<a href="https://whs-dev.surge.sh/examples/#softbody/ropes">
+<a href="https://whs-dev.surge.sh/examples/?softbody/ropes">
   <img alt="softbody/ropes" target="_blank" src="http://i.imgur.com/wRFKfTM.gif" width="32%" />
 </a>
-<a href="https://whs-dev.surge.sh/examples/#design/saturn">
+<a href="https://whs-dev.surge.sh/examples/?design/saturn">
   <img alt="design/saturn" target="_blank" src="http://i.imgur.com/JZ5HryS.gif" width="32%" />
 </a>
 
