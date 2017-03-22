@@ -81,3 +81,9 @@ describe('Model', () => {
     const model = new WHS.Model();
   });
 });
+
+describe('Text', () => {
+  test('can construct', () => {
+    const text = new WHS.Text();
+  });
+});
