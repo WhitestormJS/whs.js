@@ -71,6 +71,7 @@ describe('Line', () => {
       new WHS.Line();
     }).toThrow();
   });
+
   test('has points passed in', () => {
     // TODO assert, I suspect this component is broken
   });
@@ -78,12 +79,12 @@ describe('Line', () => {
 
 describe('Model', () => {
   test('can construct', () => {
-    const model = new WHS.Model();
+    new WHS.Model();
   });
 });
 
 describe('Text', () => {
   test('can construct', () => {
-    const text = new WHS.Text();
+    new WHS.Text();
   });
 });
