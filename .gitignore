@@ -11,3 +11,5 @@ examples/layout.html
 examples/**/**/index.html
 examples/**/**/bundle.js
 examples/css/
+
+coverage
