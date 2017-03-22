@@ -9,8 +9,6 @@ const meshes = [
   'Icosahedron',
   'Lathe',
   'Group',
-  // 'Model',
-  // 'Line',
   'Octahedron',
   'Parametric',
   'Plane',
@@ -75,5 +73,11 @@ describe('Line', () => {
   });
   test('has points passed in', () => {
     // TODO assert, I suspect this component is broken
+  });
+});
+
+describe('Model', () => {
+  test('can construct', () => {
+    const model = new WHS.Model();
   });
 });
