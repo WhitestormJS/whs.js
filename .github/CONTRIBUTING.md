@@ -12,13 +12,9 @@ If you've found a *reproduceable* bug, [submit an issue](https://github.com/Whit
 
 You're welcome to fix things for us, and submit pull requests; it frees up time for us to implement useful new features.
 
-----
-
 ## Adding Features
 
 If you've added a new feature to WhitestormJS and would like for it to be included, submit a pull request. We'll take a look at it.
-
-----
 
 ## Building WhitestormJS
 
@@ -109,47 +105,6 @@ Poor:
     - Wrap logical blocks* with newlines.
    
 _logical blocks_* - lines that have something in common.
-
-### * Adding changes to [CHANGELOG.md](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
-
-If you contribute to this project, please follow this rules of editting CHANGELOG.md each time you make changes:
-
-
-**Comment:** `Added ...`
-
-**Issue fixed:** `Fixed #{issueId}`
-
-**Issue fixed (extended):** `Fixed #{issueId} "{issueDesc}"`
-
-**Fixed file/example/function:** `Fixed ...`
-
-**Files moved:** `*folder/ -> anotherfolder/*`
-
-**Changed structure of folder:** `*folder/ + sorted = {sortedFiles}*`
-
-**Library update:** `**{libName} update. {rnum} -> {rnum}**`
-
-**Function arguments changed:** `{funcName}({arguments}) -> {funcName}({arguments})`
-
-
-#### Definition:
-
-- **{issueID}** - Github issue id. Example: #7.
-
-- **{issueDesc}** - Short issue description. Example: Shadowmap error.
-
-- **{sortedFiles}** - List of sorted files/folders. Example: ai/, big.png, default.png.
-
-- **{libName}** - Included library name. Example: Three.js.
-
-- **{rnum}** - Revision/version number. Example: r79 or v0.1.
-
-- **{funcName}** - Function name.
-
-- **{arguments}** - Function arguments.
-
-
-----
 
 ## Testing WhitestormJS
 
