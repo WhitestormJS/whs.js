@@ -56,7 +56,7 @@ Runs all testing suites. Used in Travis CI for this project.
 ## Committing
 
 All engine code is in the `src/` folder.
-Modules are in the `modules/`, each having their own build
+Modules are in the `modules/`, each having their own build.
 
 _We still in the process of moving all remaining modules from `src/` to `modules`. If you create a new module, please put it in the `modules` folder._
 
@@ -87,34 +87,28 @@ If your commit fixes for an _issue_ on github, you must add `Fixed #25`. Where *
 
 >**code must be UPPCERCASE, comment must be be Capitalized**
 
->**If you have `CSF.` your comment must be the name of the file you fixed.** No dot after filename
+>**If you have `CSF` your comment must be the name of the file you fixed.** No dot after filename
 
 
 #### Examples.
 
 Good:
- - `CSF ShaderTerrain.js Fixed #25`
- - `TU Fixed #3`
- - `README`
+ - `CSF: ShaderTerrain.js Fixed #25`
+ - `Edited core module`
 
 Poor:
  - `Changes..`
  - `Fixed #25`
- - `Fixed code style.` (Use "CSF.")
+ - `Fixed code style.` (Use "CSF")
  - `WIPSHADEERTERRAINJSFIXES####2017!!!!`
- - `WIP`
- - `CSF shader` (No dot after `WIP`, comment starts with small letter.)
 
 
 ### * Code style guidelines:
  - Follow code style guides:
-    - [**Mr.doob**](https://github.com/mrdoob/three.js/wiki/Mr.doob's-Code-Style%E2%84%A2)
-    - [Google](https://google.github.io/styleguide/javascriptguide.xml)
- - Each line of code should be no longer than 80 symbols
- - https://www.codacy.com/app/siteprogcom/WhitestormJS/dashboard
- - After you fixed one file:
-   - Write `CSF {filenamehere}` to current version in `CHANGELOG.md` file.
-   - Commit with msg `CSF {filenamhere} #25` or just `CSF`.
+    - [XO](https://github.com/sindresorhus/xo)
+    - Wrap logical blocks* with newlines.
+   
+_logical blocks_* - lines that have something in common.
 
 ### * Adding changes to [CHANGELOG.md](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
 
