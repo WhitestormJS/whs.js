@@ -34,48 +34,22 @@ WhitestormJS will be built, and written to `build/whitestorm.js`, and `build/whi
 
 ## CLI
 
-### gulp
+### `npm start` - Development mode
+- Starts `webpack-dev-server` for whs sources.
+- Starts `webpack-dev-server` for each example located in `./examples`
+- Starts `gulp less:watch`
+  - Watches each `.less` in `./examples/assets/less`
+  - Compiles to `./examples/assets/css`
+  
+### `npm run build` - Build all
+- Runs `gulp build` - build sources
+- Runs `gulp examples:build` - build examples
 
-Builds examples `gulp examples:build` and sources `gulp src:build`
-To run the example, serve the static content using your favorite http server.
-_Ensure the example content is served from the root directory of the project_ **not** _from the example folder, then navigate to (if set up locally) to `http://locathost:port/examples` to navigate through built examples._
+### `npm test` - Unit testing, coverage, snyk
+Runs all testing suites. Used in Travis CI for this project.
 
-### gulp src:build
-
-This command builds all sources for `node.js` and `browser` environment.
-
-#### gulp src:build:node
-
-This command builds all sources only for `node.js` environment.
-
-#### gulp src:build:browser
-
-This command builds all sources only for `node.js` environment.
-
-### gulp dev
-
-This command runs development mode. The source and examples are _watched_ by the build system, so making any code change will be reflected immediately.
-Examples are accessible via `http://localhost:8080/`.
-
-### gulp examples:watch
-
-Watches your changes to the `./examples` folder only.
-
-### gulp examples:build
-
-Deletes existing built examples and makes a new one by compiling `examples` source files.
-
-### gulp src:test
-
-Runs the linter and Jest tests.
-
-### gulp src:clean
-
-Deletes `lib` folder. (Only used by other commands.)
-
-### gulp examples:clean
-
-Deletes `examples` folder. (Only used by other commands.)
+### `npm run deploy` - Deploy examples
+> Only for those, **who are in dev team and have write acess on surge.sh for examples domain**
 
 ----
 
