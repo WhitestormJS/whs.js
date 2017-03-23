@@ -21,6 +21,17 @@ You're welcome to fix things for us, and submit pull requests; it frees up time 
 
 If you've added a new feature to WhitestormJS and would like for it to be included, submit a pull request. We'll take a look at it.
 
+## Want to help us? Take a task!
+
+We have a [task board](https://github.com/WhitestormJS/whitestorm.js/projects/4) where we keep all TODOs sorted by it's priority.
+
+[![](http://i.imgur.com/KYmYwN7.png)](https://github.com/WhitestormJS/whitestorm.js/projects/4)
+
+Before starting contributing it's better to contact us in [discord](https://discordapp.com/invite/frNetGE):
+ - [@sasha240100](https://github.com/sasha240100) (`@alex2401#9076` in discord)
+ - [@hirako2000](https://github.com/hirako2000) (`@Hirako#4563` in discord)
+ - [@thejmazz](https://github.com/thejmazz) (`@thejmazz#3954` in discord)
+
 ## Building WhitestormJS
 
 WhitestormJS can be built by installing [Node.js](https://nodejs.org), and the [gulp](https://www.npmjs.com/package/gulp) package through [npm](https://www.npmjs.com/).
