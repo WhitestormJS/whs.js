@@ -4,11 +4,16 @@ Contributions to WhitestormJS are welcome; to make things easier, we've included
 
 We look forward to your contributions to WhitestormJS.
 
+![](http://i.imgur.com/Mh5HMEn.png)
+
 # Getting Started
 
 ## Reporting Bugs
 
 If you've found a *reproduceable* bug, [submit an issue](https://github.com/WhitestormJS/whitestorm.js/issues)! If you're sure that the issue is caused by WhitestormJS, submitting an issue will help us fix the problem.
+
+**Don't forget to check "bug" in issue type**
+![](http://i.imgur.com/Y16kjgv.png)
 
 You're welcome to fix things for us, and submit pull requests; it frees up time for us to implement useful new features.
 
@@ -24,9 +29,16 @@ After that, clone the repository anywhere you'd like (`git clone https://github.
 
 Open the new directory (`./WhitestormJS/` by default) using whatever terminal emulator you'd like.
 
-You can build WhitestormJS with the following command: `gulp`
+You can build WhitestormJS with the following command: `npm run build`
 
-WhitestormJS will be built, and written to `build/whitestorm.js`, and `build/whitestorm.min.js`.
+WhitestormJS will be built, and written to `build/whitestorm.js`, and `build/whitestorm.compact.js`.
+
+```bash
+$ git clone https://github.com/WhitestormJS/whitestorm.js.git
+$ cd whitestorm.js
+$ npm install
+$ npm run build
+```
 
 ## CLI
 
@@ -37,12 +49,18 @@ WhitestormJS will be built, and written to `build/whitestorm.js`, and `build/whi
   - Watches each `.less` in `./examples/assets/less`
   - Compiles to `./examples/assets/css`
   
+![](http://i.imgur.com/7bDhpHK.png)
+  
 ### `npm run build` - Build all
 - Runs `gulp build` - build sources
 - Runs `gulp examples:build` - build examples
 
+![](http://i.imgur.com/AfIQY8l.png)
+
 ### `npm test` - Unit testing, coverage, snyk
 Runs all testing suites. Used in Travis CI for this project.
+
+![](http://i.imgur.com/WbWMykP.png)
 
 ### `npm run deploy` - Deploy examples
 > Only for those, **who are in dev team and have write acess on surge.sh for examples domain**
@@ -72,8 +90,6 @@ _We still in the process of moving all remaining modules from `src/` to `modules
 #### Fixed Issue.
 
 If your commit fixes for an _issue_ on github, you must add `Fixed #25`. Where **#25 is ID of the issue.**
-
-
 
 #### Syntax.
 
@@ -105,7 +121,3 @@ Poor:
     - Wrap logical blocks* with newlines.
    
 _logical blocks_* - lines that have something in common.
-
-## Testing WhitestormJS
-
-Our tests are run using [Jest](https://facebook.github.io/jest/). We're adding more tests cases.
