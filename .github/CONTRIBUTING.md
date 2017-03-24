@@ -6,9 +6,9 @@ We look forward to your contributions to WhitestormJS.
 
 ![](http://i.imgur.com/Mh5HMEn.png)
 
-# Getting Started
+# 😎 Getting Started
 
-## Reporting Bugs
+## 🐞 Reporting Bugs
 
 If you've found a *reproduceable* bug, [submit an issue](https://github.com/WhitestormJS/whitestorm.js/issues)! If you're sure that the issue is caused by WhitestormJS, submitting an issue will help us fix the problem.
 
@@ -21,7 +21,7 @@ You're welcome to fix things for us, and submit pull requests; it frees up time 
 
 If you've added a new feature to WhitestormJS and would like for it to be included, submit a pull request. We'll take a look at it.
 
-## Want to help us? Take a task!
+## ⚡️ Want to help us? Take a task!
 
 We have a [task board](https://github.com/WhitestormJS/whitestorm.js/projects/4) where we keep all TODOs sorted by it's priority.
 
@@ -31,8 +31,16 @@ Before starting contributing it's better to contact us in [discord](https://disc
  - [@sasha240100](https://github.com/sasha240100) (`@alex2401#9076` in discord)
  - [@hirako2000](https://github.com/hirako2000) (`@Hirako#4563` in discord)
  - [@thejmazz](https://github.com/thejmazz) (`@thejmazz#3954` in discord)
+ 
+## ✏️ How to make a PR (Pull Request)
 
-## Building WhitestormJS
+1. 🔭 First of all you should **check if there is an issue that you will fix with your PR**. 
+2. 🛡 Then you should go and **make a new branch** with name `#xxx` (Issue number)
+3. 🛠 **Make changes**
+4. ✏️ **Submit a PR!**
+   - If PR is related to an issue - 📌 **refer top that issue in PR description**.
+
+## 🌪 Building WhitestormJS
 
 WhitestormJS can be built by installing [Node.js](https://nodejs.org), and the [gulp](https://www.npmjs.com/package/gulp) package through [npm](https://www.npmjs.com/).
 
@@ -51,7 +59,7 @@ $ npm install
 $ npm run build
 ```
 
-## CLI
+## 🖥 CLI
 
 ### `npm start` - Development mode
 - Starts `webpack-dev-server` for whs sources.
