@@ -38,7 +38,7 @@ Before starting contributing it's better to contact us in [discord](https://disc
 2. 🛡 Then you should go and **make a new branch** with name `#xxx` (Issue number)
 3. 🛠 **Make changes**
 4. ✏️ **Submit a PR!**
-   - If PR is related to an issue - 📌 **refer top that issue in PR description**.
+   - If PR is related to an issue - 📌 **refer to that issue in PR description**.
 
 ## 🌪 Building WhitestormJS
 
