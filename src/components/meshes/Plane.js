@@ -12,8 +12,8 @@ class Plane extends MeshComponent {
     geometry: {
       width: 10,
       height: 10,
-      widthSegments: 1,
-      heightSegments: 1
+      wSegments: 1,
+      hSegments: 1
     }
   };
 
