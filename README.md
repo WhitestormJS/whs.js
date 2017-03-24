@@ -37,7 +37,7 @@
 
 > **Framework for developing 3D web apps**
 
-### Contributors welcome! :P [Contact me](mailto:alexbuzin88@gmail.com)
+### Contributors welcome! :P [How to start contributing](https://github.com/WhitestormJS/whitestorm.js/blob/beta/.github/CONTRIBUTING.md)
 ### [Development chat](https://discord.gg/frNetGE) - opens in discord app. Ask for help here;)
 ### [Support the project](https://opencollective.com/whitestormjs#support) - [Donate] buy developers a ☕
 
