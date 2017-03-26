@@ -48,7 +48,7 @@ class MeshComponent extends Component {
   }
 
   static create(geom, params, constructor) {
-    return new (WHS.MeshComponent.custom(geom, constructor))(params);
+    return new (MeshComponent.custom(geom, constructor))(params);
   }
 
   constructor(params, defaults = MeshComponent.defaults, instructions = MeshComponent.instructions) {
@@ -95,8 +95,6 @@ class MeshComponent extends Component {
         this.position.set(position.x, position.y, position.z);
         this.rotation.set(rotation.x, rotation.y, rotation.z);
         this.scale.set(scale.x, scale.y, scale.z);
-
-        console.log(this.native.position);
 
         this.native.castShadow = shadow.cast;
         this.native.receiveShadow = shadow.receive;
