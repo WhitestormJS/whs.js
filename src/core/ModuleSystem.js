@@ -4,7 +4,7 @@ import {ManagerError} from './errors';
 
 // Check for Three.js
 const warnDeps = () => {
-  throw new Error('WhitestormJS Framework requires Three.js r74. https://threejs.org/');
+  throw new Error('WhitestormJS Framework requires Three.js r84. https://threejs.org/');
 };
 
 try {
