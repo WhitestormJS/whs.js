@@ -6,3 +6,4 @@ export * from './ResizeModule';
 export * from './PostProcessorModule';
 export * from './VirtualMouseModule';
 export * from './EventsPatchModule';
+export * from './FogModule';

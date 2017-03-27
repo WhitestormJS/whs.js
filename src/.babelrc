@@ -10,8 +10,7 @@
   ],
   "env": {
     "test": {
-      "plugins": ["transform-es2015-modules-commonjs"]
-      "plugins": ["istanbul"]
+      "plugins": ["transform-es2015-modules-commonjs", "istanbul"]
     },
     "production": {
       "plugins": [

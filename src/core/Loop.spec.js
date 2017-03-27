@@ -1,7 +1,7 @@
-import * as WHS from '../../src/index';
+import {App, Loop} from './index';
 
-const app = new WHS.App();
-const loop = new WHS.Loop(() => {}, false);
+const app = new App();
+const loop = new Loop(() => {}, false);
 
 app.start();
 
@@ -15,6 +15,6 @@ test('.stop()', () => {
   expect(loop.enabled).toBeFalsy();
 });
 
-test('.execute()', (done) => {
-  new WHS.Loop(() => done()).execute();
+test('.execute()', done => {
+  new Loop(() => done()).execute();
 });

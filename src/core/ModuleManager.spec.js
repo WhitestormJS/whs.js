@@ -1,4 +1,5 @@
-import * as WHS from '../../src/index';
+import {SceneModule} from '../modules/app/export';
+import {ModuleManager} from './index';
 
 /*
  * Ignored methods:
@@ -10,8 +11,8 @@ import * as WHS from '../../src/index';
 const composition = {};
 const testValue = {test: true};
 
-const manager = new WHS.ModuleManager(composition);
-const module = new WHS.app.SceneModule();
+const manager = new ModuleManager(composition);
+const module = new SceneModule();
 
 test('.active()', () => {
   manager.active(module);
@@ -41,7 +42,7 @@ test('.set()', () => {
   expect(manager.store.overwritable[0]).toBe('newValue');
 });
 
-test('.update()', async () => {
+test('.update()', () => {
   const update = new Promise((resolve, reject) => {
     manager.update({
       overwritable: () => {
@@ -54,7 +55,7 @@ test('.update()', async () => {
 
   manager.set('overwritable', 'check update');
 
-  expect(await update).toBeTruthy();
+  expect(update).toBeTruthy();
 });
 
 test('.has()', () => {
