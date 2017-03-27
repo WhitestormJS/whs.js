@@ -36,6 +36,7 @@ div.ui.sidebar.vertical.inverted.menu.left.overlay.visible {
   margin-bottom: 0;
 }
 .ui.header > .image:not(.icon), .ui.header > img {
+  margin-right: 0.6em;
   margin-top: 0;
   width: 3.4em;
 }
