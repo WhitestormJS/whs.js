@@ -27,6 +27,11 @@ html
         input(type="text" id="filter" placeholder="Filter examples...")
         i(class="remove circle icon")
 
+      div(class="ui large breadcrumb" id="path")
+        a(class="section" id="cat_") basic
+        i(class="right chevron icon divider")
+        div(class="active section" id="ex_") helloworld
+
       each category in categories
         div.item.category
           h2.ui.header #{category}
@@ -58,4 +63,9 @@ html
           window.location.reload();
         });
       }
+
+      const la = link.split('/');
+
+      document.getElementById('cat_').innerText = la[1];
+      document.getElementById('ex_').innerText = la[2];
     script(src='/examples/assets/js/script.js')
