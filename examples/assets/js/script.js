@@ -22,7 +22,7 @@ const filter = document.getElementById('filter');
 const items = document.querySelectorAll('#sidebar .item .minor');
 const categories = document.querySelectorAll('#sidebar .item.category');
 
-filter.addEventListener('keyup', e => {
+filter.addEventListener('keyup', function (e) {
   items.forEach(item => {
     if (
       item.innerText.indexOf(e.target.value) > -1
@@ -31,12 +31,10 @@ filter.addEventListener('keyup', e => {
     else item.style.display = 'none';
   });
 
-  categories.forEach(cat => {
+  categories.forEach(function (cat) {
     const isHidden = [].slice.call(cat.querySelectorAll('.minor')).every(item => item.style.display === 'none');
-
-    console.log(isHidden);
 
     if (isHidden) cat.style.display = 'none';
     else cat.style.display = 'block';
-  })
+  });
 });
