@@ -14,7 +14,7 @@ a {
   text-decoration: none;
 }
 
-* {
+*:not(.icon) {
   font-family: 'Inconsolata', monospace !important;
 }
 
@@ -50,6 +50,7 @@ div.ui.sidebar.vertical.inverted.menu.left.overlay.visible {
   width: calc(~"100% - 270px");
   float: right;
   height: 100%;
+  position: relative;
 
   @media only screen
     and (min-device-width: 320px)
@@ -154,6 +155,16 @@ body {
 }
 
 #sidebar {
+  background: #fafafa;
+
+  #top-nav {
+    background: #262C38;
+  }
+
+  #path {
+    padding: 16px;
+  }
+
   &.slideout-menu {
     position: fixed;
     top: 0;
@@ -172,6 +183,12 @@ body {
 
   &.slideout-menu-right {
     right: 0;
+  }
+
+  input[type='text'] {
+    border-radius: 0;
+    background: #fafafa;
+    border: none;
   }
 }
 
