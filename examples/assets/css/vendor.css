@@ -11188,8 +11188,7 @@ a.ui.inverted.grey.header:hover {
 *******************************/
 @font-face {
   font-family: 'Icons';
-  src: url("../../themes/default/assets/fonts/icons.eot");
-  src: url("../../themes/default/assets/fonts/icons.eot?#iefix") format('embedded-opentype'), url("../../themes/default/assets/fonts/icons.woff2") format('woff2'), url("../../themes/default/assets/fonts/icons.woff") format('woff'), url("../../themes/default/assets/fonts/icons.ttf") format('truetype'), url("../../themes/default/assets/fonts/icons.svg#icons") format('svg');
+  src: url('/assets/fonts/icons.ttf');
   font-style: normal;
   font-weight: normal;
   font-variant: normal;

@@ -7,7 +7,7 @@ html
     include style.pug
   body
     div.ui.menu.sidebar.vertical.inverted.left.overlay.visible.styled#sidebar
-      h2.item.ui.header
+      h2.item.ui.header#top-nav
         a.ui.huge.logo.image(href='/')
           img(src='https://avatars3.githubusercontent.com/u/16437392?v=3&s=200')
         div.content
@@ -23,8 +23,12 @@ html
             = " "
             a(href='https://discordapp.com/invite/frNetGE' target='_blank') Chat
 
+      div(class="ui left icon fluid input")
+        input(type="text" id="filter" placeholder="Filter examples...")
+        i(class="remove circle icon")
+
       each category in categories
-        div.item
+        div.item.category
           h2.ui.header #{category}
           div.vertical.pointing.menu
             each path in paths
