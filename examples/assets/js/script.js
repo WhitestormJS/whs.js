@@ -15,3 +15,28 @@ if (isMobile) {
     tolerance: 70
   });
 }
+
+// Filter
+
+const filter = document.getElementById('filter');
+const items = document.querySelectorAll('#sidebar .item .minor');
+const categories = document.querySelectorAll('#sidebar .item.category');
+
+filter.addEventListener('keyup', e => {
+  items.forEach(item => {
+    if (
+      item.innerText.indexOf(e.target.value) > -1
+      || e.target.value === ''
+    ) item.style.display = 'block';
+    else item.style.display = 'none';
+  });
+
+  categories.forEach(cat => {
+    const isHidden = [].slice.call(cat.querySelectorAll('.minor')).every(item => item.style.display === 'none');
+
+    console.log(isHidden);
+
+    if (isHidden) cat.style.display = 'none';
+    else cat.style.display = 'block';
+  })
+});
