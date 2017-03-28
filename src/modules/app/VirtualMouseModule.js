@@ -51,15 +51,15 @@ export class VirtualMouseModule extends Events {
       'mousemove'
     ].forEach(ev => this.on(ev, e => self.emit(ev, e)));
 
-    let cacheX = 0;
-    let cacheY = 0;
+    self.globalX = 0;
+    self.globalY = 0;
 
     this.on('mousemove', e => {
       if (document.pointerLockElement !== null) {
-        cacheX += e.movementX;
-        cacheY += e.movementY;
+        self.globalX += e.movementX;
+        self.globalY += e.movementY;
 
-        self.update(e, cacheX, cacheY);
+        self.update(e, self.globalX, self.globalY);
       } else self.update(e);
     });
   }
