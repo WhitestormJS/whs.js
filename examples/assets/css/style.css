@@ -36,12 +36,12 @@ div.ui.sidebar.vertical.inverted.menu.left.overlay.visible {
   margin-bottom: 0;
 }
 .ui.header > .image:not(.icon), .ui.header > img {
-  margin-right: 0.6em;
+  margin-left: -1em;
   margin-top: 0;
   width: 3.4em;
 }
 .logo.image {
-  margin-right: 0;
+  margin-right: 0.5em;
 }
 #panel {
   width: calc(100% - 270px);
@@ -131,7 +131,6 @@ body {
   background: #fafafa;
 }
 #sidebar #top-nav {
-  padding: 0.5em 0.20em;
   background: #262C38;
 }
 #sidebar #path {
