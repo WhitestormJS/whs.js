@@ -1,4 +1,4 @@
-import * as WHS from '../../src/index';
+import * as WHS from '../../index';
 
 /*
  * Ignored methods:
@@ -41,7 +41,7 @@ test('.set()', () => {
   expect(manager.store.overwritable[0]).toBe('newValue');
 });
 
-test('.update()', async () => {
+test('.update()', () => {
   const update = new Promise((resolve, reject) => {
     manager.update({
       overwritable: () => {
@@ -54,7 +54,7 @@ test('.update()', async () => {
 
   manager.set('overwritable', 'check update');
 
-  expect(await update).toBeTruthy();
+  expect(update).toBeTruthy();
 });
 
 test('.has()', () => {
