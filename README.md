@@ -151,7 +151,7 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 
 ## CDN
 
-Proudly hosted by [cdnjs](https://cdnjs.com/):D (soon)
+Proudly hosted by [cdnjs](https://cdnjs.com/libraries/whitestorm.js)
 
 
 ## Features
