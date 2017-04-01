@@ -1,4 +1,4 @@
-import * as WHS from '../../src/index';
+import * as WHS from '../index';
 
 const app = new WHS.App();
 const loop = new WHS.Loop(() => {}, false);
