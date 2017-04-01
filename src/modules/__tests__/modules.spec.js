@@ -1,6 +1,6 @@
-import './polyfill';
-import * as WHS from '../src/index';
-import {FogModule} from '../src/modules/app/FogModule';
+import '../../polyfill';
+import * as WHS from '../../index';
+import {FogModule} from '../app/FogModule';
 import gl from 'gl';
 
 const app = new WHS.App();
@@ -39,7 +39,6 @@ test('ResizeModule', () => {
 test('VirtualMouseModule', () => {
   modules.mouse = new WHS.app.VirtualMouseModule();
 });
-
 
 // TODO move Modules tests into individual specs
 const defaultFog = new FogModule();
