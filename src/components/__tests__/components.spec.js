@@ -1,4 +1,4 @@
-import * as WHS from '../src/index';
+import * as WHS from '../../index';
 import {Mesh} from 'three';
 
 const meshes = [
