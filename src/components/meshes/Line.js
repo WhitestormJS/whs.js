@@ -43,6 +43,7 @@ class Line extends MeshComponent {
     if (params.geometry.curve === false) {
       geometry.vertices.push(params.geometry.start);
       geometry.vertices.push(params.geometry.end);
+
       return geometry;
     }
 
