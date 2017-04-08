@@ -20,7 +20,6 @@ const world = new WHS.App([
   new WHS.RenderingModule(UTILS.appDefaults.rendering, {
     shadow: true
   }),
-  new PHYSICS.WorldModule(UTILS.appDefaults.physics),
   controlsModule,
   new StatsModule(),
   new WHS.ResizeModule(),
