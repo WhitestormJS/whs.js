@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const postprocessor = new WHS.app.PostProcessorModule();
+const postprocessor = new WHS.PostProcessorModule();
 
 window.world = new WHS.App(
   new WHS.BasicAppPreset({
@@ -24,7 +24,7 @@ window.world = new WHS.App(
         ammo: process.ammoPath
       }),
       postprocessor,
-      new WHS.controls.OrbitModule()
+      new WHS.OrbitControlsModule()
     ])
     .autoresize()
     .get()

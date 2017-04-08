@@ -4,7 +4,7 @@ const white = 0xffffff;
 const lightIntensity = 1;
 const lightDistance = 80;
 
-const cameraModule = new WHS.app.CameraModule({
+const cameraModule = new WHS.CameraModule({
   position: {
     z: -30,
     y: 20,
@@ -14,7 +14,7 @@ const cameraModule = new WHS.app.CameraModule({
   near: 1
 });
 
-const controlsModule = new WHS.controls.OrbitModule();
+const controlsModule = new WHS.OrbitControlsModule();
 
 const world = new WHS.App([
   ...UTILS.appModules({
@@ -27,7 +27,7 @@ const world = new WHS.App([
   }),
   controlsModule,
   cameraModule,
-  new WHS.app.ResizeModule()
+  new WHS.ResizeModule()
 ]);
 controlsModule.controls.autoRotate = true;
 
@@ -42,7 +42,7 @@ new WHS.Box({
     receive: false
   },
   modules: [
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/box.jpg`
     }, {
       url: `${process.assetsPath}/textures/normalBox.png`,

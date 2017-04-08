@@ -13,13 +13,13 @@ const app = new WHS.App();
 app.start();
 
 test('.applyModule()', () => {
-  const module = new WHS.app.SceneModule();
+  const module = new WHS.SceneModule();
   expect(app.applyModule(module)).toBe(module);
 });
 
 test('.module()', () => {
-  const sceneModule = new WHS.app.SceneModule();
-  const cameraModule = new WHS.app.CameraModule();
+  const sceneModule = new WHS.SceneModule();
+  const cameraModule = new WHS.CameraModule();
 
   // Module chain
   app

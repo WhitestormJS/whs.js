@@ -19,7 +19,7 @@ const teapot = new WHS.Model({
       path: `${process.assetsPath}/models/teapot/utah-teapot-light.json`,
       scale: new THREE.Vector3(4, 4, 4)
     }),
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/teapot.jpg`,
       repeat: new THREE.Vector2(1, 1)
     })

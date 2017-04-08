@@ -293,7 +293,7 @@ var DatMeshModule = function (_DatAPI) {
       },
       geometry: function geometry(_geometry, self) {
         if (!self.params.geometry) return _geometry;
-        if (!this.g_) throw new Error('WHS.mesh.DynamicGeometryModule should be used in a component (before gui)');
+        if (!this.g_) throw new Error('WHS.DynamicGeometryModule should be used in a component (before gui)');
 
         var folder = self.fold.addFolder('geometry');
         self.guiGeometry(this, folder);
@@ -389,7 +389,7 @@ var DatMeshModule = function (_DatAPI) {
     value: function guiGeometry(component) {
       var instance = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.fold;
 
-      if (!component.g_) throw new Error('DatGUIModule requires WHS.mesh.DynamicGeometryModule for geometry updates.');
+      if (!component.g_) throw new Error('DatGUIModule requires WHS.DynamicGeometryModule for geometry updates.');
 
       var geomParams = component.params.geometry;
       var geomData = this.params.geometry;

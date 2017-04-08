@@ -1,17 +1,17 @@
 import * as UTILS from '../../globals';
 
-const resizer = new WHS.app.ResizeModule();
-const mouse = new WHS.app.VirtualMouseModule();
+const resizer = new WHS.ResizeModule();
+const mouse = new WHS.VirtualMouseModule();
 
 const world = new WHS.App([
-  new WHS.app.ElementModule({
+  new WHS.ElementModule({
     container: document.getElementById('embed')
   }),
-  new WHS.app.SceneModule(),
-  new WHS.app.CameraModule({
+  new WHS.SceneModule(),
+  new WHS.CameraModule({
     position: new THREE.Vector3(0, 10, 50)
   }),
-  new WHS.app.RenderingModule({
+  new WHS.RenderingModule({
     bgColor: 0x162129,
 
     renderer: {
@@ -27,7 +27,7 @@ const world = new WHS.App([
   new PHYSICS.WorldModule({
     ammo: process.ammoPath
   }),
-  new WHS.controls.OrbitModule(),
+  new WHS.OrbitControlsModule(),
   resizer,
   mouse
 ]);
