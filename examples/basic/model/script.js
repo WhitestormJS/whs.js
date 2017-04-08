@@ -6,10 +6,8 @@ const world = new WHS.App([
   })
 ]);
 
-const teapot = new WHS.Model({
-  geometry: {
-    path: `${process.assetsPath}/models/teapot/utah-teapot-large.json`
-  },
+const teapot = new WHS.Importer({
+  url: `${process.assetsPath}/models/teapot/utah-teapot-large.json`,
 
   modules: [
     new PHYSICS.ConcaveModule({
