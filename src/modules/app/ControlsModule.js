@@ -2,6 +2,10 @@ import {Loop} from '../../core/Loop';
 import {EventsPatchModule} from './EventsPatchModule';
 
 export class ControlsModule {
+  static from(controls) {
+    return new ControlsModule({controls});
+  }
+
   constructor(params = {}, patchEvents = true) {
     this.params = Object.assign({
       controls: false,
