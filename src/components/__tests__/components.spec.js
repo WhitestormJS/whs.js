@@ -77,9 +77,9 @@ describe('Line', () => {
   });
 });
 
-describe('Model', () => {
+describe('Importer', () => {
   test('can construct', () => {
-    new WHS.Model();
+    new WHS.Importer();
   });
 });
 
