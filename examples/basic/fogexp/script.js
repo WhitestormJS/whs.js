@@ -14,13 +14,17 @@ const controlsModule = new WHS.OrbitControlsModule();
 const fogModule = new WHS.FogModule({color: 0xaaaaaa, near: 10, far: 200});
 
 const world = new WHS.App([
-  ...UTILS.appModules({
-    position: new THREE.Vector3(0, 10, 200)
-  }),
-  controlsModule,
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
   cameraModule,
-  fogModule,
-  new WHS.ResizeModule()
+  new WHS.RenderingModule(UTILS.appDefaults.rendering, {
+    shadow: true
+  }),
+  new PHYSICS.WorldModule(UTILS.appDefaults.physics),
+  controlsModule,
+  new StatsModule(),
+  new WHS.ResizeModule(),
+  fogModule
 ]);
 
 controlsModule.controls.minDistance = 15;
