@@ -57,7 +57,7 @@ new WHS.Sphere({
 
   new WHS.DirectionalLight({
     light: {
-      intensity: 2
+      intensity: 1
     },
 
     shadow: {
