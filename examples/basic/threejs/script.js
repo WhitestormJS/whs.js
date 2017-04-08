@@ -1,8 +1,8 @@
 import * as UTILS from '../../globals';
 
 const world = new WHS.App([
-  new WHS.app.ElementModule(),
-  new WHS.app.SceneModule(true)
+  new WHS.ElementModule(),
+  new WHS.SceneModule(true)
 ]);
 
 const scene = new THREE.Scene();
@@ -11,7 +11,7 @@ const materialNested = material.clone();
 materialNested.color.set(0x0000ff);
 const materialWHS = material.clone();
 materialWHS.color.set(0xffffff);
-materialWHS.map = WHS.mesh.TextureModule.load(`${process.assetsPath}/textures/earth.jpg`);
+materialWHS.map = WHS.TextureModule.load(`${process.assetsPath}/textures/earth.jpg`);
 
 const mesh2 = new THREE.Mesh(
   new THREE.SphereGeometry(1, 32, 32),
@@ -35,18 +35,18 @@ mesh2.add(mesh3);
 world.setScene(scene);
 
 world
-  .module(new WHS.app.CameraModule({
+  .module(new WHS.CameraModule({
     position: new THREE.Vector3(0, 2, 12)
   }))
-  .module(new WHS.app.RenderingModule({
+  .module(new WHS.RenderingModule({
     bgColor: 0x162129,
 
     renderer: {
       antialias: true
     }
   }))
-  .module(new WHS.app.ResizeModule())
-  .module(new WHS.controls.OrbitModule());
+  .module(new WHS.ResizeModule())
+  .module(new WHS.OrbitControlsModule());
 
 const sphere = new WHS.Sphere({
   geometry: [1, 32, 32],

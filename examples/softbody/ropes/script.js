@@ -1,13 +1,13 @@
-const mouse = new WHS.app.VirtualMouseModule();
+const mouse = new WHS.VirtualMouseModule();
 
 const world = new WHS.App([
-  new WHS.app.ElementModule(),
-  new WHS.app.SceneModule(),
-  new WHS.app.CameraModule({
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  new WHS.CameraModule({
     position: new THREE.Vector3(0, 15, 60),
     far: 10000
   }),
-  new WHS.app.RenderingModule({
+  new WHS.RenderingModule({
     bgColor: 0x162129,
 
     renderer: {
@@ -22,7 +22,7 @@ const world = new WHS.App([
     gravity: new THREE.Vector3(0, -10, 0),
     softbody: true
   }),
-  new WHS.app.ResizeModule(),
+  new WHS.ResizeModule(),
   mouse
 ]);
 

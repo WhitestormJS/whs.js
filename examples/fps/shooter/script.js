@@ -22,12 +22,12 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
 });
 
 const world = new WHS.App([
-  new WHS.app.ElementModule(),
-  new WHS.app.SceneModule(),
-  new WHS.app.CameraModule({
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  new WHS.CameraModule({
     position: new THREE.Vector3(0, 10, 50)
   }),
-  new WHS.app.RenderingModule({
+  new WHS.RenderingModule({
     bgColor: 0x162129,
 
     renderer: {
@@ -44,7 +44,7 @@ const world = new WHS.App([
     speed: 500,
     ypos: 0
   }),
-  new WHS.app.ResizeModule()
+  new WHS.ResizeModule()
 ]);
 
 sphere.addTo(world);

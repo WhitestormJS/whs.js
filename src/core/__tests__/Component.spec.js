@@ -48,7 +48,7 @@ test('.clone()', () => {
 });
 
 test('.applyModule()', () => {
-  const module = new WHS.mesh.DynamicGeometryModule();
+  const module = new WHS.DynamicGeometryModule();
   expect(component.applyModule(module)).toBe(module);
 });
 

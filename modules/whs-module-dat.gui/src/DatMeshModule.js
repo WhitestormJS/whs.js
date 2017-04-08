@@ -56,7 +56,7 @@ export class DatMeshModule extends DatAPI {
   }
 
   guiGeometry(component, instance = this.fold) {
-    if (!component.g_) throw new Error('DatGUIModule requires WHS.mesh.DynamicGeometryModule for geometry updates.');
+    if (!component.g_) throw new Error('DatGUIModule requires WHS.DynamicGeometryModule for geometry updates.');
 
     const geomParams = component.params.geometry;
     const geomData = this.params.geometry;
@@ -102,7 +102,7 @@ export class DatMeshModule extends DatAPI {
 
     geometry(geometry, self) {
       if (!self.params.geometry) return geometry;
-      if (!this.g_) throw new Error('WHS.mesh.DynamicGeometryModule should be used in a component (before gui)');
+      if (!this.g_) throw new Error('WHS.DynamicGeometryModule should be used in a component (before gui)');
 
       const folder = self.fold.addFolder('geometry');
       self.guiGeometry(this, folder);
