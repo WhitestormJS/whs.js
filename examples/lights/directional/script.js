@@ -31,14 +31,14 @@ const world = new WHS.App([
 
 // controlsModule.controls.autoRotate = true;
 
-new WHS.Model({
-  geometry: {
-    path: `${process.assetsPath}/models/bedroom/bedroom.json`,
-    loader: new THREE.ObjectLoader(),
+new WHS.Importer({
+  url: `${process.assetsPath}/models/bedroom/bedroom.json`,
+  loader: new THREE.ObjectLoader(),
 
-    parser(scene) {
-      return scene;
-    }
+  parser(scene) {
+    return WHS.Importer.filter(scene, el => {
+      return !el.isLight;
+    });
   },
 
   position: [0, -10, 0],

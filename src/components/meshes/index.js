@@ -5,7 +5,7 @@ export * from './Extrude';
 export * from './Icosahedron';
 export * from './Lathe';
 export * from './Line';
-export * from './Model';
+export * from './Importer';
 export * from './Octahedron';
 export * from './Parametric';
 export * from './Plane';
