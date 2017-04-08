@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const cameraModule = new WHS.app.CameraModule({
+const cameraModule = new WHS.CameraModule({
   position: {
     z: 50,
     y: 60
@@ -9,7 +9,7 @@ const cameraModule = new WHS.app.CameraModule({
   near: 1
 });
 
-const controlsModule = new WHS.controls.OrbitModule();
+const controlsModule = new WHS.OrbitControlsModule();
 
 console.log(THREE.PCFSoftShadowMap);
 

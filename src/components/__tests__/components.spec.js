@@ -39,9 +39,9 @@ const cameras = [
 ];
 
 const app = new WHS.App([
-  new WHS.app.ElementModule(),
-  new WHS.app.SceneModule(),
-  new WHS.app.CameraModule()
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  new WHS.CameraModule()
 ]);
 
 app.start();

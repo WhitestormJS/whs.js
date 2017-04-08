@@ -2,8 +2,8 @@ import * as UTILS from '../../globals';
 
 const ad = UTILS.appDefaults;
 
-const controlsModule = new WHS.controls.OrbitModule();
-const cameraModule = new WHS.app.CameraModule({
+const controlsModule = new WHS.OrbitControlsModule();
+const cameraModule = new WHS.CameraModule({
   position: {
     z: 500,
     y: 400
@@ -18,7 +18,7 @@ const world = new WHS.App([
   }, ad.rendering, ad.physics, false),
   controlsModule,
   cameraModule,
-  new WHS.app.ResizeModule()
+  new WHS.ResizeModule()
 ]);
 
 controlsModule.controls.autoRotate = true;
