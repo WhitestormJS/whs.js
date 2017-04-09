@@ -65,7 +65,7 @@ export const appModules = ( // appModules(camera, rendering);
   new WHS.BasicAppPreset({camera, rendering})
     .extend([
       new PHYSICS.WorldModule(physics),
-      useControls ? new WHS.controls.OrbitModule() : null,
+      useControls ? new WHS.OrbitControlsModule() : null,
       new StatsModule()
     ])
     .autoresize()

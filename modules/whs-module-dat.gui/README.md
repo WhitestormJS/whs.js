@@ -25,7 +25,7 @@ const sphere = new WHS.Sphere({
 const sphere = new WHS.Sphere({
   material: new THREE.MeshBasicMaterial({color: 0xffffff}),
   modules: [
-    new WHS.mesh.DynamicGeometryModule(),
+    new WHS.DynamicGeometryModule(),
     new DatGUIModule({
       name: 'MySphere',
       material: true,
@@ -54,7 +54,7 @@ const sphere = new WHS.Sphere({
 });
 ```
 
-> `geometry` parameter requires `WHS.mesh.DynamicGeometryModule` to be set before `DatGUIModule`.
+> `geometry` parameter requires `WHS.DynamicGeometryModule` to be set before `DatGUIModule`.
 
 
 ## Screenshot

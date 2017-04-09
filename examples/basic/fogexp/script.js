@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const cameraModule = new WHS.app.CameraModule({
+const cameraModule = new WHS.CameraModule({
   position: {
     z: -30,
     y: 20,
@@ -10,17 +10,20 @@ const cameraModule = new WHS.app.CameraModule({
   near: 1
 });
 
-const controlsModule = new WHS.controls.OrbitModule();
-const fogModule = new WHS.app.FogModule({color: 0xaaaaaa, near: 10, far: 200});
+const controlsModule = new WHS.OrbitControlsModule();
+const fogModule = new WHS.FogModule({color: 0xaaaaaa, near: 10, far: 200});
 
 const world = new WHS.App([
-  ...UTILS.appModules({
-    position: new THREE.Vector3(0, 10, 200)
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  cameraModule,
+  new WHS.RenderingModule(UTILS.appDefaults.rendering, {
+    shadow: true
   }),
   controlsModule,
-  cameraModule,
-  fogModule,
-  new WHS.app.ResizeModule()
+  new StatsModule(),
+  new WHS.ResizeModule(),
+  fogModule
 ]);
 
 controlsModule.controls.minDistance = 15;
@@ -39,7 +42,7 @@ new WHS.Box({
   },
 
   modules: [
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/box.jpg`
     }, {
       url: `${process.assetsPath}/textures/normalBox.png`,
@@ -74,7 +77,7 @@ new WHS.Box({
   },
 
   modules: [
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/metal-floor.png`,
       repeat: new THREE.Vector2(30, 30)
     }
@@ -98,7 +101,7 @@ new WHS.Box({
   },
 
   modules: [
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/wall-brick.jpg`,
       repeat: new THREE.Vector2(10, 5)
     }
@@ -122,7 +125,7 @@ new WHS.Box({
   },
 
   modules: [
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/wall-brick.jpg`,
       repeat: new THREE.Vector2(10, 5)
     }
@@ -152,7 +155,7 @@ new WHS.Box({
   },
 
   modules: [
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/wall-brick.jpg`,
       repeat: new THREE.Vector2(10, 5)
     }
@@ -177,7 +180,7 @@ new WHS.Sphere({
   },
 
   modules: [
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/baseball.jpg`
     }
   )],

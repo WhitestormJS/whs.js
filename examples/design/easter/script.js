@@ -1,8 +1,8 @@
 import * as UTILS from '../../globals';
 
 const world = new WHS.App([
-  new WHS.app.ElementModule(),
-  new WHS.app.SceneModule(),
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
   new PHYSICS.WorldModule({
     ammo: process.ammoPath,
     gravity: {
@@ -11,12 +11,12 @@ const world = new WHS.App([
       z: 0
     },
   }),
-  new WHS.app.CameraModule({
+  new WHS.CameraModule({
     position: new THREE.Vector3(-8, 5, 20),
     fov: 45,
     far: 2000
   }),
-  new WHS.app.RenderingModule({
+  new WHS.RenderingModule({
     bgColor: 0xffffff,
 
     renderer: {
@@ -26,7 +26,7 @@ const world = new WHS.App([
       }
     }
   }),
-  new WHS.app.ResizeModule()
+  new WHS.ResizeModule()
 ]);
 
 
@@ -67,7 +67,7 @@ const egg = new WHS.Model({
     new PHYSICS.ConvexModule({
       path: `${process.assetsPath}/models/easter/egg_low.json`,
     }),
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/easter/egg1.jpg`
     })
   ],
@@ -170,7 +170,7 @@ let egg2, egg3, egg4, egg5, egg6, egg7, egg8, egg9;
 
 egg.addTo(world).then((object) => {
   egg2 = object.clone(false, true);
-  egg2.material.map = WHS.mesh.TextureModule.load(`${process.assetsPath}/textures/easter/egg2.jpg`);
+  egg2.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg2.jpg`);
 
   egg2.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
@@ -179,7 +179,7 @@ egg.addTo(world).then((object) => {
   });
 
   egg3 = object.clone(false, true);
-  egg3.material.map = WHS.mesh.TextureModule.load(`${process.assetsPath}/textures/easter/egg3.jpg`);
+  egg3.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg3.jpg`);
 
   egg3.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
@@ -188,7 +188,7 @@ egg.addTo(world).then((object) => {
   });
 
   egg4 = object.clone(false, true);
-  egg4.material.map = WHS.mesh.TextureModule.load(`${process.assetsPath}/textures/easter/egg4.jpg`);
+  egg4.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg4.jpg`);
 
   egg4.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
@@ -197,7 +197,7 @@ egg.addTo(world).then((object) => {
   });
 
   egg5 = object.clone(false, true);
-  egg5.material.map = WHS.mesh.TextureModule.load(`${process.assetsPath}/textures/easter/egg1.jpg`);
+  egg5.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg1.jpg`);
 
   egg5.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
@@ -206,7 +206,7 @@ egg.addTo(world).then((object) => {
   });
 
   egg6 = object.clone(false, true);
-  egg6.material.map = WHS.mesh.TextureModule.load(`${process.assetsPath}/textures/easter/egg2.jpg`);
+  egg6.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg2.jpg`);
 
   egg6.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
@@ -215,7 +215,7 @@ egg.addTo(world).then((object) => {
   });
 
   egg7 = object.clone(false, true);
-  egg7.material.map = WHS.mesh.TextureModule.load(`${process.assetsPath}/textures/easter/egg3.jpg`);
+  egg7.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg3.jpg`);
 
   egg7.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
@@ -224,7 +224,7 @@ egg.addTo(world).then((object) => {
   });
 
   egg8 = object.clone(false, true);
-  egg8.material.map = WHS.mesh.TextureModule.load(`${process.assetsPath}/textures/easter/egg4.jpg`);
+  egg8.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg4.jpg`);
 
   egg8.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
@@ -233,7 +233,7 @@ egg.addTo(world).then((object) => {
   });
 
   egg9 = object.clone(false, true);
-  egg9.material.map = WHS.mesh.TextureModule.load(`${process.assetsPath}/textures/easter/egg1.jpg`);
+  egg9.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg1.jpg`);
 
   egg9.addTo(world).then((obj) => {
     obj.rotation.y = -Math.PI / 8;

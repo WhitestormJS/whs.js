@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const cameraModule = new WHS.app.CameraModule({
+const cameraModule = new WHS.CameraModule({
   position: {
     z: 50,
     y: 60
@@ -9,7 +9,7 @@ const cameraModule = new WHS.app.CameraModule({
   near: 1
 });
 
-const controlsModule = new WHS.controls.OrbitModule();
+const controlsModule = new WHS.OrbitControlsModule();
 
 console.log(THREE.PCFSoftShadowMap);
 
@@ -31,14 +31,14 @@ const world = new WHS.App([
 
 // controlsModule.controls.autoRotate = true;
 
-new WHS.Model({
-  geometry: {
-    path: `${process.assetsPath}/models/bedroom/bedroom.json`,
-    loader: new THREE.ObjectLoader(),
+new WHS.Importer({
+  url: `${process.assetsPath}/models/bedroom/bedroom.json`,
+  loader: new THREE.ObjectLoader(),
 
-    parser(scene) {
-      return scene;
-    }
+  parser(scene) {
+    return WHS.Importer.filter(scene, el => {
+      return !el.isLight;
+    });
   },
 
   position: [0, -10, 0],
@@ -57,7 +57,7 @@ new WHS.Sphere({
 
   new WHS.DirectionalLight({
     light: {
-      intensity: 2
+      intensity: 1
     },
 
     shadow: {

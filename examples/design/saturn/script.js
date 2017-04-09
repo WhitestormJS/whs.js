@@ -13,14 +13,14 @@ const colors = {
 };
 
 const world = new WHS.App([
-  new WHS.app.ElementModule(),
-  new WHS.app.SceneModule(),
-  new WHS.app.CameraModule({
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  new WHS.CameraModule({
     position: new THREE.Vector3(0, 100, 400),
     far: 2000,
     near: 1
   }),
-  new WHS.app.RenderingModule({
+  new WHS.RenderingModule({
     bgColor: 0x2a3340,
 
     renderer: {
@@ -30,8 +30,8 @@ const world = new WHS.App([
       }
     }
   }),
-  new WHS.controls.OrbitModule(),
-  new WHS.app.ResizeModule()
+  new WHS.OrbitControlsModule(),
+  new WHS.ResizeModule()
 ]);
 
 const space = new WHS.Group();
@@ -87,7 +87,7 @@ new WHS.DirectionalLight({
   }
 }).addTo(world);
 
-const dynamicGeometry = new WHS.mesh.DynamicGeometryModule();
+const dynamicGeometry = new WHS.DynamicGeometryModule();
 
 const s1 = new WHS.Dodecahedron({
   geometry: {
