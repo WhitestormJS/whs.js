@@ -10,7 +10,6 @@ export function config(
     dest,
     filename = 'whitestorm.js',
     plugins = [],
-    compact = false,
     version = require('./package.json').version
   }
 ) {
@@ -18,13 +17,13 @@ export function config(
   console.log(`Mode: ${isProduction ? 'production' : 'development'}`);
   console.log(`Version: ${version}`);
 
-  const bannerText = `WhitestormJS Framework v${version}${compact ? ' compact' : ''}`;
+  const bannerText = `WhitestormJS Framework v${version}`;
 
   return { // PHYSICS VERSION
     devtool: isProduction ? false : 'source-map',
     cache: true,
     entry: [
-      compact ? `${src}/compact.js` : `${src}/index.js`
+      `${src}/index.js`
     ],
     target: 'web',
     output: {

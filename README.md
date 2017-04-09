@@ -75,10 +75,10 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
 
     ```javascript
     const app = new WHS.App([
-      new WHS.app.ElementModule(), // attach to DOM
-      new WHS.app.SceneModule(), // creates THREE.Scene instance
-      new WHS.app.CameraModule(), // creates PerspectiveCamera instance
-      new WHS.app.RenderingModule() // creates WebGLRenderer instance
+      new WHS.ElementModule(), // attach to DOM
+      new WHS.SceneModule(), // creates THREE.Scene instance
+      new WHS.CameraModule(), // creates PerspectiveCamera instance
+      new WHS.RenderingModule() // creates WebGLRenderer instance
     ]);
 
     app.start(); // run animation
@@ -183,13 +183,13 @@ Try on [**Codepen**](http://codepen.io/sasha240100/pen/JELBGX):
 
 ```javascript
 const app = new WHS.App([
-  new WHS.app.ElementModule(), // attach to DOM
-  new WHS.app.SceneModule(), // creates THREE.Scene instance
-  new WHS.app.CameraModule({
+  new WHS.ElementModule(), // attach to DOM
+  new WHS.SceneModule(), // creates THREE.Scene instance
+  new WHS.CameraModule({
     position: new THREE.Vector3(0, 0, -10)
   }), // creates PerspectiveCamera instance
-  new WHS.app.RenderingModule(), // creates WebGLRenderer instance
-  new WHS.controls.OrbitModule() // orbit controls
+  new WHS.RenderingModule(), // creates WebGLRenderer instance
+  new WHS.OrbitControlsModule() // orbit controls
 ]);
 
 const sphere = new WHS.Sphere({ // Create sphere comonent.
@@ -233,14 +233,14 @@ export class Application extends Component {
   render() {
     return (
       <App modules={[
-        new WHS.app.SceneModule(),
-        new WHS.app.CameraModule({
+        new WHS.SceneModule(),
+        new WHS.CameraModule({
           position: {
             z: 20
           }
         }),
-        new WHS.app.RenderingModule(),
-        new WHS.controls.OrbitModule()
+        new WHS.RenderingModule(),
+        new WHS.OrbitControlsModule()
       ]}>
         <Sphere
           geometry={[3, 32, 32]}

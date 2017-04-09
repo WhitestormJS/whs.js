@@ -11,7 +11,7 @@ const composition = {};
 const testValue = {test: true};
 
 const manager = new WHS.ModuleManager(composition);
-const module = new WHS.app.SceneModule();
+const module = new WHS.SceneModule();
 
 test('.active()', () => {
   manager.active(module);

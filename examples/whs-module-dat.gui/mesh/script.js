@@ -10,7 +10,7 @@ const app = new WHS.App(
     }
   })
   .extend([
-    new WHS.controls.OrbitModule(),
+    new WHS.OrbitControlsModule(),
     new StatsModule(0),
     DatGUI
   ])
@@ -24,7 +24,7 @@ app.$camera.applyModule(DatGUI.Camera({
 const sphere = new WHS.Sphere({
   material: new THREE.MeshLambertMaterial({color: 0xffffff}),
   modules: [
-    new WHS.mesh.DynamicGeometryModule(),
+    new WHS.DynamicGeometryModule(),
     DatGUI.Mesh({
       name: 'Sphere1',
       geometry: {

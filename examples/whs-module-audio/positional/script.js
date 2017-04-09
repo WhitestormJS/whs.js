@@ -1,8 +1,8 @@
 import * as UTILS from '../../globals';
 
-const controlsModule = new WHS.controls.OrbitModule();
+const controlsModule = new WHS.OrbitControlsModule();
 
-const cameraModule = new WHS.app.CameraModule({
+const cameraModule = new WHS.CameraModule({
   position: {
     z: 250,
     y: 100
