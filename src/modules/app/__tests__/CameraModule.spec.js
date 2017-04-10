@@ -26,14 +26,15 @@ describe('CameraModule', () => {
   const far = 70;
 
   const params = {
-    position: position,
-    fov: fov,
-    aspect: aspect,
-    near: near,
-    far: far
+    position,
+    fov,
+    aspect,
+    near,
+    far
   };
 
   const customCameraModule = new CameraModule(params);
+  const customCameraNative = customCameraModule.camera.native;
 
   test('has the custom Camera Position', () => {
     expect(customCameraModule.camera.position.x).toBeCloseTo(position.x, 5);
@@ -42,18 +43,18 @@ describe('CameraModule', () => {
   });
 
   test('passes a custom fov value', () => {
-    expect(customCameraModule.camera.native.fov).toBeCloseTo(fov, 5);
+    expect(customCameraNative.fov).toBeCloseTo(fov, 5);
   });
 
   test('passes a custom aspect value', () => {
-    expect(customCameraModule.camera.native.aspect).toBeCloseTo(aspect, 5);
+    expect(customCameraNative.aspect).toBeCloseTo(aspect, 5);
   });
 
   test('passes a custom near value', () => {
-    expect(customCameraModule.camera.native.near).toBeCloseTo(near, 5);
+    expect(customCameraNative.near).toBeCloseTo(near, 5);
   });
 
   test('passes a custom far value', () => {
-    expect(customCameraModule.camera.native.far).toBeCloseTo(far, 5);
+    expect(customCameraNative.far).toBeCloseTo(far, 5);
   });
 });
