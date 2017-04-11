@@ -1,0 +1,21 @@
+{
+  "name": "whs-module-loader",
+  "main": "build/LoaderModule.js",
+  "module": "src/index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack --watch"
+  },
+  "keywords": [
+    "whs-module",
+    "loader"
+  ],
+  "description": "Loading progress for components, textures, ...",
+  "version": "0.1.0",
+  "dependencies": {
+    "minivents": "^2.0.2"
+  },
+  "repository": "https://github.com/WhitestormJS/whitestorm.js/tree/beta/modules/whs-module-loader",
+  "author": "Alexander Buzin",
+  "license": "MIT"
+}

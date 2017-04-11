@@ -14,14 +14,6 @@ export const FrameworkCompilerInstance = (options = {framework}) =>
       src: options.framework.src,
       dest: options.framework.dest,
       ...(argv.version ? {version: argv.version} : {})
-    })),
-    compact: webpack(config({
-      isProduction,
-      src: options.framework.src,
-      dest: options.framework.dest,
-      filename: 'whitestorm.compact.js',
-      compact: true,
-      ...(argv.version ? {version: argv.version} : {})
     }))
   }[name]);
 

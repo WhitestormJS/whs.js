@@ -1,15 +1,15 @@
 import * as UTILS from '../../globals';
 
-const mouse = new WHS.app.VirtualMouseModule();
+const mouse = new WHS.VirtualMouseModule();
 
 const world = new WHS.App([
-  new WHS.app.ElementModule(),
-  new WHS.app.SceneModule(),
-  new WHS.app.CameraModule({
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  new WHS.CameraModule({
     position: new THREE.Vector3(0, 60, 120),
     far: 10000
   }),
-  new WHS.app.RenderingModule({
+  new WHS.RenderingModule({
     bgColor: 0x162129,
 
     renderer: {
@@ -24,8 +24,8 @@ const world = new WHS.App([
     gravity: new THREE.Vector3(0, -9.8, 0),
     softbody: true
   }),
-  new WHS.controls.OrbitModule(),
-  new WHS.app.ResizeModule(),
+  new WHS.OrbitControlsModule(),
+  new WHS.ResizeModule(),
   mouse
 ]);
 
