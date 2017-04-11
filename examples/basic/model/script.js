@@ -6,10 +6,8 @@ const world = new WHS.App([
   })
 ]);
 
-const teapot = new WHS.Model({
-  geometry: {
-    path: `${process.assetsPath}/models/teapot/utah-teapot-large.json`
-  },
+const teapot = new WHS.Importer({
+  url: `${process.assetsPath}/models/teapot/utah-teapot-large.json`,
 
   modules: [
     new PHYSICS.ConcaveModule({
@@ -19,7 +17,7 @@ const teapot = new WHS.Model({
       path: `${process.assetsPath}/models/teapot/utah-teapot-light.json`,
       scale: new THREE.Vector3(4, 4, 4)
     }),
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/teapot.jpg`,
       repeat: new THREE.Vector2(1, 1)
     })

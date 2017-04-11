@@ -1,21 +1,21 @@
 const world = new WHS.App([
-  new WHS.app.ElementModule(),
-  new WHS.app.SceneModule(),
-  new WHS.app.CameraModule({
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  new WHS.CameraModule({
     position: new THREE.Vector3(-8, 5, 20),
     far: 2000,
     near: 1,
     fov: 45
   }),
-  new WHS.app.RenderingModule({
+  new WHS.RenderingModule({
     bgColor: 0xffffff,
 
     renderer: {
       antialias: false
     }
   }),
-  new WHS.controls.OrbitModule({target: new THREE.Vector3(50, 50, 50)}),
-  new WHS.app.ResizeModule()
+  new WHS.OrbitControlsModule({target: new THREE.Vector3(50, 50, 50)}),
+  new WHS.ResizeModule()
 ]);
 
 const size = new THREE.Vector3(100, 100, 100);

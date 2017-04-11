@@ -9,19 +9,19 @@ const modules = {};
 // console.log((typeof performance === 'undefined' ? Date : performance).now());
 
 test('ElementModule', () => {
-  modules.element = new WHS.app.ElementModule();
+  modules.element = new WHS.ElementModule();
 });
 
 test('SceneModule', () => {
-  modules.scene = new WHS.app.SceneModule();
+  modules.scene = new WHS.SceneModule();
 });
 
 test('CameraModule', () => {
-  modules.camera = new WHS.app.CameraModule();
+  modules.camera = new WHS.CameraModule();
 });
 
 test('RenderingModule', () => {
-  modules.rendering = new WHS.app.RenderingModule({
+  modules.rendering = new WHS.RenderingModule({
     renderer: {
       context: gl(10, 10)
     }
@@ -29,15 +29,15 @@ test('RenderingModule', () => {
 });
 
 test('PostProcessorModule', () => {
-  modules.postprocessor = new WHS.app.PostProcessorModule();
+  modules.postprocessor = new WHS.PostProcessorModule();
 });
 
 test('ResizeModule', () => {
-  modules.resize = new WHS.app.ResizeModule();
+  modules.resize = new WHS.ResizeModule();
 });
 
 test('VirtualMouseModule', () => {
-  modules.mouse = new WHS.app.VirtualMouseModule();
+  modules.mouse = new WHS.VirtualMouseModule();
 });
 
 // TODO move Modules tests into individual specs
@@ -105,7 +105,7 @@ test('Applying basic modules to app', () => {
 });
 
 test('OrbitModule', () => {
-  modules.orbit = new WHS.controls.OrbitModule();
+  modules.orbit = new WHS.OrbitControlsModule();
 });
 
 test('Applying controls modules to app', () => {
@@ -115,7 +115,7 @@ test('Applying controls modules to app', () => {
 });
 
 describe('DynamicGeometryModule', () => {
-  modules.dym = new WHS.mesh.DynamicGeometryModule();
+  modules.dym = new WHS.DynamicGeometryModule();
 
   test('has false attributes by default', () => {
     expect(modules.dym.attributes).toBeFalsy();
@@ -123,7 +123,7 @@ describe('DynamicGeometryModule', () => {
 });
 
 test('TextureModule', () => {
-  modules.texture = new WHS.mesh.TextureModule({
+  modules.texture = new WHS.TextureModule({
     url: 'myurl.png'
   });
 });

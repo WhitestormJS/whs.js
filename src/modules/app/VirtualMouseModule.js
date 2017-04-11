@@ -21,11 +21,14 @@ export class VirtualMouseModule extends Events {
     this.patchEvents = patchEvents;
   }
 
-  update(e) {
+  update(e, customX, customY) {
     const rect = this.canvas.getBoundingClientRect();
 
-    this.mouse.x = ((e.clientX - rect.left) / (rect.right - rect.left)) * 2 - 1;
-    this.mouse.y = -((e.clientY - rect.top) / (rect.bottom - rect.top)) * 2 + 1;
+    const x = customX || e.clientX;
+    const y = customY || e.clientY;
+
+    this.mouse.x = ((x - rect.left) / (rect.right - rect.left)) * 2 - 1;
+    this.mouse.y = -((y - rect.top) / (rect.bottom - rect.top)) * 2 + 1;
 
     this.projectionPlane.normal.copy(this.camera.getWorldDirection());
 
@@ -48,7 +51,17 @@ export class VirtualMouseModule extends Events {
       'mousemove'
     ].forEach(ev => this.on(ev, e => self.emit(ev, e)));
 
-    this.on('mousemove', e => self.update(e));
+    self.globalX = 0;
+    self.globalY = 0;
+
+    this.on('mousemove', e => {
+      if (document.pointerLockElement !== null) {
+        self.globalX += e.movementX;
+        self.globalY += e.movementY;
+
+        self.update(e, self.globalX, self.globalY);
+      } else self.update(e);
+    });
   }
 
   track(component) {

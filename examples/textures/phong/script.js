@@ -20,7 +20,7 @@ const box = new WHS.Box({ // Create box comonent.
   shadow,
 
   modules: [
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/box.jpg`
     })
   ],
@@ -49,7 +49,7 @@ const boxNormal = new WHS.Box({ // Create box comonent.
   shadow,
 
   modules: [
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/box.jpg`
     }, {
       type: 'normalMap',
@@ -81,7 +81,7 @@ const boxDisplace = new WHS.Box({ // Create box comonent.
   shadow,
 
   modules: [
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/box.jpg`
     }, {
       type: 'displacementMap',

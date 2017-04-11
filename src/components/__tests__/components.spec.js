@@ -39,9 +39,9 @@ const cameras = [
 ];
 
 const app = new WHS.App([
-  new WHS.app.ElementModule(),
-  new WHS.app.SceneModule(),
-  new WHS.app.CameraModule()
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  new WHS.CameraModule()
 ]);
 
 app.start();
@@ -65,9 +65,21 @@ test('Group', () => {
   group.addTo(app);
 });
 
-describe('Model', () => {
+describe('Line', () => {
+  test('throws if no curve', () => {
+    expect(() => {
+      new WHS.Line();
+    }).toThrow();
+  });
+
+  test('has points passed in', () => {
+    // TODO assert, I suspect this component is broken
+  });
+});
+
+describe('Importer', () => {
   test('can construct', () => {
-    new WHS.Model();
+    new WHS.Importer();
   });
 });
 
