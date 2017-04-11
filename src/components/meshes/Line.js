@@ -2,7 +2,8 @@ import {
   Line as LineNative,
   BufferGeometry,
   Geometry,
-  BufferAttribute
+  BufferAttribute,
+  Vector3
 } from 'three';
 
 import {MeshComponent} from '../../core/MeshComponent';
@@ -12,7 +13,9 @@ class Line extends MeshComponent {
     ...MeshComponent.defaults,
     geometry: {
       curve: false,
-      points: 50
+      points: 50,
+      start: new Vector3(0, 0, 0),
+      end: new Vector3(10, 0, 0)
     }
   };
 
@@ -22,7 +25,6 @@ class Line extends MeshComponent {
   };
 
   constructor(params) {
-    if (!params.geometry.curve) throw new Error('Curve is required');
     super(params, Line.defaults, Line.instructions);
   }
 
@@ -37,6 +39,13 @@ class Line extends MeshComponent {
 
   buildGeometry(params = {}) {
     const geometry = params.buffer ? new BufferGeometry() : new Geometry();
+
+    if (params.geometry.curve === false) {
+      geometry.vertices.push(params.geometry.start);
+      geometry.vertices.push(params.geometry.end);
+
+      return geometry;
+    }
 
     if (params.buffer) {
       const pp = params.geometry.curve.getPoints(params.geometry.points);
