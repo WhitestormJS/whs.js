@@ -1,21 +1,10 @@
-import {ElementModule} from './ElementModule';
-import {CameraModule} from './CameraModule';
-import {RenderingModule} from './RenderingModule';
-import {SceneModule} from './SceneModule';
-import {ResizeModule} from './ResizeModule';
-import {PostProcessorModule} from './PostProcessorModule';
-import {VirtualMouseModule} from './VirtualMouseModule';
-import {EventsPatchModule} from './EventsPatchModule';
-import {FogModule} from './FogModule';
-
-export const app = {
-  ElementModule,
-  CameraModule,
-  RenderingModule,
-  SceneModule,
-  ResizeModule,
-  PostProcessorModule,
-  VirtualMouseModule,
-  EventsPatchModule,
-  FogModule
-};
+export * from './ElementModule';
+export * from './CameraModule';
+export * from './RenderingModule';
+export * from './SceneModule';
+export * from './ResizeModule';
+export * from './PostProcessorModule';
+export * from './VirtualMouseModule';
+export * from './EventsPatchModule';
+export * from './ControlsModule';
+export * from './FogModule';

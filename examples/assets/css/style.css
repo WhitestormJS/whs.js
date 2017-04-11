@@ -35,13 +35,8 @@ div.ui.sidebar.vertical.inverted.menu.left.overlay.visible {
   background: #262C38;
   margin-bottom: 0;
 }
-.ui.header > .image:not(.icon), .ui.header > img {
-  margin-left: -1em;
-  margin-top: 0;
-  width: 3.4em;
-}
 .logo.image {
-  margin-right: 0.5em;
+  margin-right: 1em;
 }
 #panel {
   width: calc(100% - 270px);

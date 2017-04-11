@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const cameraModule = new WHS.app.CameraModule({
+const cameraModule = new WHS.CameraModule({
   position: {
     z: -30,
     y: 20,
@@ -10,7 +10,7 @@ const cameraModule = new WHS.app.CameraModule({
   near: 1
 });
 
-const controlsModule = new WHS.controls.OrbitModule();
+const controlsModule = new WHS.OrbitControlsModule();
 
 const world = new WHS.App([
   ...UTILS.appModules({
@@ -24,7 +24,7 @@ const world = new WHS.App([
   }),
   controlsModule,
   cameraModule,
-  new WHS.app.ResizeModule()
+  new WHS.ResizeModule()
 ]);
 controlsModule.controls.autoRotate = true;
 
@@ -70,7 +70,7 @@ new WHS.Box({
     receive: true
   },
   modules: [
-    new WHS.mesh.TextureModule({
+    new WHS.TextureModule({
       url: `${process.assetsPath}/textures/marble.jpg`,
       repeat: new THREE.Vector2(300, 300)
     }
@@ -123,7 +123,7 @@ function addPillar(position) {
     },
 
     modules: [
-      new WHS.mesh.TextureModule({
+      new WHS.TextureModule({
         url: `${process.assetsPath}/textures/stone.jpg`,
         repeat: new THREE.Vector2(3, 3)
       }, {
@@ -194,7 +194,7 @@ function addTopPlane(geometry, y) {
     },
 
     modules: [
-      new WHS.mesh.TextureModule({
+      new WHS.TextureModule({
         url: `${process.assetsPath}/textures/stone.jpg`
       }, {
         url: `${process.assetsPath}/textures/stoneNormal.jpg`,

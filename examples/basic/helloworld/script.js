@@ -1,7 +1,16 @@
 import * as UTILS from '../../globals';
 
 const world = new WHS.App([
-  ...UTILS.appModules()
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  new WHS.CameraModule(UTILS.appDefaults.camera),
+  new WHS.RenderingModule(UTILS.appDefaults.rendering, {
+    shadow: true
+  }),
+  new PHYSICS.WorldModule(UTILS.appDefaults.physics),
+  new WHS.OrbitControlsModule(),
+  new WHS.ResizeModule(),
+  new StatsModule()
 ]);
 
 const sphere = new WHS.Sphere({ // Create sphere comonent.

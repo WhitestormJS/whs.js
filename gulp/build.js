@@ -18,15 +18,10 @@ gulp.task('build', ['build:clean'], () => {
     main: new Promise(resolve => {
       logStart('main');
       compilers('main').run(() => resolve(logEnd('main')));
-    }),
-    compact: new Promise(resolve => {
-      if (argv['main-only']) resolve();
-      logStart('compact');
-      compilers('compact').run(() => resolve(logEnd('compact')));
     })
   };
 
-  Promise.all([instances.main, instances.compact]).then(() => process.exit(0), () => process.exit(1));
+  Promise.all([instances.main]).then(() => process.exit(0), () => process.exit(1));
 });
 
 gulp.task('travis-build', ['build'], () => {
