@@ -1,6 +1,6 @@
 import {
   Mesh,
-  ExtrudeBufferGeometry,
+  BufferGeometry,
   ExtrudeGeometry
 } from 'three';
 
@@ -39,12 +39,12 @@ class Extrude extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? ExtrudeBufferGeometry : ExtrudeGeometry;
-
-    return new GConstruct(
+    const extrudeGeometry = new ExtrudeGeometry(
       params.geometry.shapes,
       params.geometry.options
     );
+
+    return params.buffer && !params.softbody ? new BufferGeometry().fromGeometry(extrudeGeometry) : extrudeGeometry;
   }
 }
 
