@@ -35,21 +35,6 @@ describe('Extrude', () => {
     const geometry = extrude.buildGeometry(params);
     expect(geometry.isBufferGeometry).toBeTruthy();
   });
-
-  test('builds softbody as non buffered extrude geometry', () => {
-    const params = {
-      buffer: true,
-      softbody: true,
-
-      geometry: {
-        shapes: [newShape(10, 25)],
-        options: []
-      }
-    };
-
-    const geometry = extrude.buildGeometry(params);
-    expect(geometry.isBufferGeometry).toBeFalsy();
-  });
 });
 
 function newShape(width, height) {
