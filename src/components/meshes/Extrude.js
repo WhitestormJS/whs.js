@@ -44,7 +44,7 @@ class Extrude extends MeshComponent {
       params.geometry.options
     );
 
-    return params.buffer && !params.softbody ? new BufferGeometry().fromGeometry(extrudeGeometry) : extrudeGeometry;
+    return params.buffer ? new BufferGeometry().fromGeometry(extrudeGeometry) : extrudeGeometry;
   }
 }
 
