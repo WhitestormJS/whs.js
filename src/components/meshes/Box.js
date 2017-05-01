@@ -15,7 +15,7 @@ class Box extends MeshComponent {
       depth: 1,
       widthSegments: 1,
       heightSegments: 1,
-      depthSegements: 1
+      depthSegments: 1
     }
   };
 
@@ -38,7 +38,7 @@ class Box extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? BoxBufferGeometry : BoxGeometry;
+    const GConstruct = params.buffer ? BoxBufferGeometry : BoxGeometry;
 
     const geometry = new GConstruct(
       params.geometry.width,
@@ -48,8 +48,6 @@ class Box extends MeshComponent {
       params.geometry.heightSegments,
       params.geometry.depthSegments
     );
-
-    if (params.softbody) this.proccessSoftbodyGeometry(geometry);
 
     return geometry;
   }
