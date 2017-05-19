@@ -41,6 +41,6 @@ export class ManagerError extends Error {
     if (!process) console.error('Component:', dependencyModule);
     if (!process && activeModule) console.error('Active module:', activeModule);
 
-    this.name = 'DependencyError';
+    this.name = 'ManagerError';
   }
 }
