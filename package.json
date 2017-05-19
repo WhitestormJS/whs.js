@@ -111,6 +111,7 @@
       ],
       "one-var": 0,
       "no-else-return": 1,
+      "capitalized-comments": 0,
       "no-undef": 0,
       "no-new": 0,
       "camelcase": 0,

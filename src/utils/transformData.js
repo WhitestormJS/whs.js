@@ -12,9 +12,9 @@ export const instruct = (array, instArray) => {
 
 export const transformData = (object, instructions) => {
   for (const key in instructions) {
-    if (object[key] instanceof Array)
+    if (Array.isArray(object[key]))
       object[key] = instruct(object[key], instructions[key]);
-    else if (object[key] instanceof Object && !(instructions[key] instanceof Array))
+    else if (object[key] instanceof Object && !(Array.isArray(instructions[key])))
       object[key] = transformData(object[key], instructions[key]);
   }
 

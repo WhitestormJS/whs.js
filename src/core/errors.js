@@ -1,6 +1,6 @@
 export class CompositionError extends Error {
   constructor(classInstance, message, component) {
-    super();
+    super(`@${classInstance}: ${message}`);
 
     const stackArray = this.stack.split('\n');
     stackArray.splice(1, 2);
@@ -10,13 +10,12 @@ export class CompositionError extends Error {
     if (!process) console.error('Component:', component);
 
     this.name = 'CompositionError';
-    this.message = `@${classInstance}: ${message}`;
   }
 }
 
 export class DependencyError extends Error {
   constructor(classInstance, message, activeModule, dependencyModule = false) {
-    super();
+    super(`@${classInstance}: ${message}`);
 
     const stackArray = this.stack.split('\n');
     stackArray.splice(1, 2);
@@ -27,13 +26,12 @@ export class DependencyError extends Error {
     if (!process && dependencyModule) console.error('Dependency published by module:', dependencyModule);
 
     this.name = 'DependencyError';
-    this.message = `@${classInstance}: ${message}`;
   }
 }
 
 export class ManagerError extends Error {
   constructor(classInstance, message, component, activeModule = false) {
-    super();
+    super(`@${classInstance}: ${message}`);
 
     const stackArray = this.stack.split('\n');
     stackArray.splice(1, 2);
@@ -44,6 +42,5 @@ export class ManagerError extends Error {
     if (!process && activeModule) console.error('Active module:', activeModule);
 
     this.name = 'DependencyError';
-    this.message = `@${classInstance}: ${message}`;
   }
 }
