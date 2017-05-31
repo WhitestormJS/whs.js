@@ -11,7 +11,7 @@ const loader = new TextureLoader();
 
 export class TextureModule {
   static load(url) {
-    return new TextureModule({url}).texture;
+    return new TextureModule({url}).textures[0][1];
   }
 
   textures = [];
