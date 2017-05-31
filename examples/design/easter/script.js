@@ -29,7 +29,6 @@ const world = new WHS.App([
   new WHS.ResizeModule()
 ]);
 
-
 // world.$camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 // Start rendering.
@@ -48,7 +47,7 @@ new WHS.Box({
   ],
 
   material: new THREE.MeshPhongMaterial({
-    color: 0xffffff,
+    color: 0xffffff
   }),
 
   position: {
@@ -58,14 +57,12 @@ new WHS.Box({
   }
 }).addTo(world);
 
-const egg = new WHS.Model({
-  geometry: {
-    path: `${process.assetsPath}/models/easter/egg_light.json`,
-  },
+const egg = new WHS.Importer({
+  url: `${process.assetsPath}/models/easter/egg_light.json`,
 
   modules: [
     new PHYSICS.ConvexModule({
-      path: `${process.assetsPath}/models/easter/egg_low.json`,
+      path: `${process.assetsPath}/models/easter/egg_low.json`
     }),
     new WHS.TextureModule({
       url: `${process.assetsPath}/textures/easter/egg1.jpg`
@@ -90,10 +87,8 @@ const egg = new WHS.Model({
   }
 });
 
-const rabbit = new WHS.Model({
-  geometry: {
-    path: `${process.assetsPath}/models/easter/rabbit.json`
-  },
+const rabbit = new WHS.Importer({
+  url: `${process.assetsPath}/models/easter/rabbit.json`,
 
   modules: [
     new PHYSICS.ConcaveModule({
@@ -101,11 +96,6 @@ const rabbit = new WHS.Model({
       scale: new THREE.Vector3(0.5, 0.5, 0.5)
     })
   ],
-
-  material: new THREE.MeshLambertMaterial({
-    side: THREE.DoubleSide,
-    shading: THREE.SmoothShading
-  }),
 
   position: {
     y: 5,
@@ -119,7 +109,7 @@ const rabbit = new WHS.Model({
   scale: [0.5, 0.5, 0.5]
 });
 
-rabbit.addTo(world, 'wait');
+rabbit.addTo(world);
 
 new WHS.SpotLight({
   light: {
