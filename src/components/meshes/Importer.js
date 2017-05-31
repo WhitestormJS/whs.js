@@ -1,6 +1,5 @@
 import {
   Mesh,
-  MultiMaterial,
   JSONLoader
 } from 'three';
 
@@ -21,7 +20,7 @@ class Importer extends MeshComponent {
     useCustomMaterial: false,
 
     parser(geometry, materials) {
-      return new Mesh(geometry, new MultiMaterial(materials));
+      return new Mesh(geometry, materials);
     }
   };
 
