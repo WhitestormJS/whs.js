@@ -89,20 +89,21 @@ class MeshComponent extends Component {
 
   wrap() {
     return new Promise(resolve => {
-      this.defer(() => {
-        const {position, rotation, scale, shadow} = this.params;
+      // TODO: Fix defer with physics
+      // this.defer(() => {
+      const {position, rotation, scale, shadow} = this.params;
 
-        this.position.set(position.x, position.y, position.z);
-        this.rotation.set(rotation.x, rotation.y, rotation.z);
-        this.scale.set(scale.x, scale.y, scale.z);
+      this.position.set(position.x, position.y, position.z);
+      this.rotation.set(rotation.x, rotation.y, rotation.z);
+      this.scale.set(scale.x, scale.y, scale.z);
 
-        this.native.castShadow = shadow.cast;
-        this.native.receiveShadow = shadow.receive;
+      this.native.castShadow = shadow.cast;
+      this.native.receiveShadow = shadow.receive;
 
-        this.applyBridge({onWrap: 1});
+      this.applyBridge({onWrap: 1});
 
-        resolve(this);
-      });
+      resolve(this);
+      // });
     });
   }
 
