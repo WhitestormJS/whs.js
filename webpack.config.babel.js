@@ -3,6 +3,25 @@ import webpack from 'webpack';
 import HappyPack from 'happypack';
 import DashboardPlugin from 'webpack-dashboard/plugin';
 
+const consoleColors = {
+  reset: '\x1b[0m',
+  hicolor: '\x1b[1m',
+  underline: '\x1b[4m',
+  inverse: '\x1b[7m',
+
+  // foreground colors
+  black: '\x1b[30m',
+  red: '\x1b[31m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m',
+  magenta: '\x1b[35m',
+  cyan: '\x1b[36m',
+  white: '\x1b[37m'
+};
+
+const log = (color, msg) => console.log(consoleColors[color], msg, consoleColors.reset);
+
 export function config(
   {
     isProduction,
@@ -14,8 +33,8 @@ export function config(
   }
 ) {
   if (process.env.CI) isProduction = true;
-  console.log(`Mode: ${isProduction ? 'production' : 'development'}`);
-  console.log(`Version: ${version}`);
+  log('red', `Mode: ${isProduction ? 'production' : 'development'}`);
+  log('magenta', `Version: ${version}`);
 
   const bannerText = `WhitestormJS Framework v${version}`;
 
@@ -93,7 +112,7 @@ export function config(
   };
 }
 
-export default config({
+export default () => config({
   isProduction: process.env.NODE_ENV === 'production',
   src: './src',
   dest: './build'
