@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import {argv} from 'yargs';
 
-// ENVIRONMENT  SETUP
+// ENVIRONMENT  SETUP'
 export const isProduction = argv.prod ? true : process.env.NODE_ENV === 'production';
 process.env.BABEL_ENV = argv.prod ? 'production' : process.env.NODE_ENV;
 
