@@ -17,7 +17,7 @@
 [xo]: https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square
 [xo-url]: https://github.com/sindresorhus/xo
 
-[three]: https://img.shields.io/badge/three-r84-blue.svg?style=flat-square
+[three]: https://img.shields.io/badge/three-r85-blue.svg?style=flat-square
 [three-url]: https://github.com/mrdoob/three.js/
 
 [npm]: https://img.shields.io/npm/v/whs.svg?style=flat-square
