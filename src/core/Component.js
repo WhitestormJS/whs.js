@@ -1,8 +1,10 @@
+/** @module core/Component */
 import {extend, transformData} from '../utils/index';
 import {ModuleSystem} from './ModuleSystem';
 import {ModuleManager} from './ModuleManager';
 import {ManagerError} from './errors';
 
+/** Class representing a Comonent */
 class Component extends ModuleSystem {
   static defaults = {
     modules: [],
@@ -15,6 +17,12 @@ class Component extends ModuleSystem {
   modules = []; // Collection of modules;
   children = []; // For keeping children components;
 
+  /**
+   * Create a Component.
+   * @constructor
+   * @param {Object} [params] - The parameters object.
+   * @param {Object} [instructions] - The instructions object.
+   */
   constructor(params = {}, defaults = Component.defaults, instructions = Component.instructions) {
     super();
 
@@ -49,6 +57,10 @@ class Component extends ModuleSystem {
 
   // COPYING & CLONING
 
+  /**
+   * Clone this component
+   * @return {object} a cloned component with all its source component' params copied.
+   */
   clone() {
     return new this.constructor(this.params).copy(this);
   }
@@ -133,5 +145,6 @@ class Component extends ModuleSystem {
 }
 
 export {
+  /** Component class */
   Component
 };
