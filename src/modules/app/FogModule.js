@@ -16,7 +16,7 @@ export class FogModule {
   }
 
   manager(manager) {
-    this.scene = manager.get('scene');
-    this.scene.fog = this.fog;
+    manager.set('fog', this.fog);
+    manager.get('scene').fog = this.fog;
   }
 }

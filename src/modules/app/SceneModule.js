@@ -8,7 +8,7 @@ export class SceneModule {
   }
 
   manager(manager) {
-    manager.add('scene', this.scene, {alias: '$scene'});
+    manager.set('scene', this.scene);
   }
 
   integrate(self) {
