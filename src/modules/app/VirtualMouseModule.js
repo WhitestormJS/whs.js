@@ -37,6 +37,8 @@ export class VirtualMouseModule extends Events {
   }
 
   manager(manager) {
+    manager.define('mouse');
+
     this.canvas = manager.get('renderer').domElement;
     this.camera = manager.get('camera').native;
   }
