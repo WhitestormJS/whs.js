@@ -33,6 +33,7 @@ export class ControlsModule {
 
   integrate(self) {
     if (self.patchEvents) this.applyModuleOnce(EventsPatchModule, () => new EventsPatchModule());
-    self.updateLoop = new Loop(self.update.bind(self)).start(this);
+    self.updateLoop = new Loop(self.update.bind(self));
+    self.updateLoop.start(this);
   }
 }

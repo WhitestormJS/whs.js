@@ -9,13 +9,18 @@ export class OrbitControlsModule extends ControlsModule {
 
     this.params = Object.assign({
       follow: false,
+      object: null,
       target: new Vector3(0, 0, 0)
     }, params);
   }
 
   manager(manager) {
+    const object = this.params.object
+      ? this.params.object
+      : manager.get('camera').native;
+
     const controls = new ThreeOrbitControls(
-      manager.get('camera').native,
+      object,
       manager.get('element'),
       manager.handler
     );
@@ -34,6 +39,7 @@ export class OrbitControlsModule extends ControlsModule {
 
     manager.update({
       camera: camera => {
+        if (this.params.object) return;
         controls.object = camera.native;
       }
     });
