@@ -1,3 +1,4 @@
+/** @module core/CameraComponent */
 import {Component} from './Component';
 
 import {attributes, copy} from './prototype/attributes';
@@ -6,6 +7,7 @@ import {CompositionError} from './errors';
 @attributes(
   copy('position', 'rotation', 'quaternion', 'target')
 )
+/** Camera component */
 class CameraComponent extends Component {
   static defaults = {
     ...Component.defaults,
@@ -22,6 +24,12 @@ class CameraComponent extends Component {
     scale: ['x', 'y', 'z']
   };
 
+  /**
+  * @constructor
+  * Camera Constructor
+  * @param {Object} [params] - The parameters object.
+  * @param {Object} [instructions] - The instructions object.
+  */
   constructor(params, defaults = CameraComponent.defaults, instructions = CameraComponent.instructions) {
     super(params, defaults, instructions);
 
