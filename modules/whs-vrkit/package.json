@@ -8,13 +8,12 @@
   "keywords": [
     "whs-module"
   ],
-  "description": "> Based of [stats.js](https://github.com/mrdoob/stats.js). Thanks to [@mrdoob](https://github.com/mrdoob)",
+  "description": "Modules for VR in WhitestormJS",
   "version": "0.1.0",
   "dependencies": {},
   "repository": "https://github.com/WhitestormJS/whitestorm.js/tree/beta/modules/whs-vrkit",
   "author": "Alexander Buzin",
   "license": "MIT",
   "devDependencies": {
-    "postprocessing": "^2.1.4"
   }
 }
