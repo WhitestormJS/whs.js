@@ -103,9 +103,13 @@ export class PostProcessorModule {
       : this.currentPass;
   }
 
-  renderToScreen() {
+  to(name) {
+    this.currentPass = name;
+  }
+
+  renderToScreen(bool = true) {
     this.defer.then(() => {
-      this.currentPass.renderToScreen = true;
+      this.currentPass.renderToScreen = bool;
     });
 
     return this;
