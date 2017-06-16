@@ -7,7 +7,7 @@
 		exports["VRKit"] = factory(require("WHS"));
 	else
 		root["VRKit"] = factory(root["WHS"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -73,86 +73,149 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
-exports.VRModule = undefined;
+/**
+ * @author dmarcos / https://github.com/dmarcos
+ * @author mrdoob / http://mrdoob.com
+ */
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var VRControls = exports.VRControls = function VRControls(object, onError) {
 
-var _whs = __webpack_require__(0);
+	var scope = this;
 
-var _VREffect = __webpack_require__(3);
+	var vrDisplay, vrDisplays;
 
-var _WebVR = __webpack_require__(4);
+	var standingMatrix = new THREE.Matrix4();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var frameData = null;
 
-var VRModule = function () {
-  function VRModule() {
-    _classCallCheck(this, VRModule);
+	if ('VRFrameData' in window) {
 
-    this.scene = null;
-    this.camera = null;
-  }
+		frameData = new VRFrameData();
+	}
 
-  _createClass(VRModule, [{
-    key: 'manager',
-    value: function manager(_manager) {
-      var rendering = _manager.use('rendering');
-      var renderer = _manager.get('renderer');
+	function gotVRDisplays(displays) {
 
-      var resize = _manager.use('resize');
+		vrDisplays = displays;
 
-      var effect = new _VREffect.VREffect(renderer);
+		if (displays.length > 0) {
 
-      this.scene = _manager.get('scene');
-      this.camera = _manager.get('camera');
+			vrDisplay = displays[0];
+		} else {
 
-      rendering.effect(effect);
+			if (onError) onError('VR input not available.');
+		}
+	}
 
-      // TODO: Fix resize.
+	if (navigator.getVRDisplays) {
 
-      resize.addCallback(function (width, height) {
-        effect.setSize.apply(effect, [width, height]);
-      });
+		navigator.getVRDisplays().then(gotVRDisplays).catch(function () {
 
-      // WEBVR
+			console.warn('THREE.VRControls: Unable to get VR Displays');
+		});
+	}
 
-      _WebVR.WEBVR.checkAvailability().catch(function (message) {
-        document.body.appendChild(_WebVR.WEBVR.getMessageContainer(message));
-      });
+	// the Rift SDK returns the position in meters
+	// this scale factor allows the user to define how meters
+	// are converted to scene units.
 
-      _WebVR.WEBVR.getVRDisplay(function (display) {
-        document.body.appendChild(_WebVR.WEBVR.getButton(display, renderer.domElement));
-      });
-    }
-  }]);
+	this.scale = 1;
 
-  return VRModule;
-}();
+	// If true will use "standing space" coordinate system where y=0 is the
+	// floor and x=0, z=0 is the center of the room.
+	this.standing = false;
 
-exports.VRModule = VRModule;
+	// Distance from the users eyes to the floor in meters. Used when
+	// standing=true but the VRDisplay doesn't provide stageParameters.
+	this.userHeight = 1.6;
+
+	this.getVRDisplay = function () {
+
+		return vrDisplay;
+	};
+
+	this.setVRDisplay = function (value) {
+
+		vrDisplay = value;
+	};
+
+	this.getVRDisplays = function () {
+
+		console.warn('THREE.VRControls: getVRDisplays() is being deprecated.');
+		return vrDisplays;
+	};
+
+	this.getStandingMatrix = function () {
+
+		return standingMatrix;
+	};
+
+	this.update = function () {
+
+		if (vrDisplay) {
+
+			var pose;
+
+			if (vrDisplay.getFrameData) {
+
+				vrDisplay.getFrameData(frameData);
+				pose = frameData.pose;
+			} else if (vrDisplay.getPose) {
+
+				pose = vrDisplay.getPose();
+			}
+
+			if (pose.orientation !== null) {
+
+				object.quaternion.fromArray(pose.orientation);
+			}
+
+			if (pose.position !== null) {
+
+				object.position.fromArray(pose.position);
+			} else {
+
+				object.position.set(0, 0, 0);
+			}
+
+			if (this.standing) {
+
+				if (vrDisplay.stageParameters) {
+
+					object.updateMatrix();
+
+					standingMatrix.fromArray(vrDisplay.stageParameters.sittingToStandingTransform);
+					object.applyMatrix(standingMatrix);
+				} else {
+
+					object.position.setY(object.position.y + this.userHeight);
+				}
+			}
+
+			object.position.multiplyScalar(scope.scale);
+		}
+	};
+
+	this.dispose = function () {
+
+		vrDisplay = null;
+	};
+};
 
 /***/ }),
-/* 2 */,
-/* 3 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -588,7 +651,7 @@ var VREffect = exports.VREffect = function VREffect(renderer, onError) {
 };
 
 /***/ }),
-/* 4 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -760,6 +823,120 @@ var WEBVR = exports.WEBVR = {
 	}
 
 };
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.VRControls = exports.VRModule = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _whs = __webpack_require__(3);
+
+var _VREffect = __webpack_require__(1);
+
+var _VRControls = __webpack_require__(0);
+
+var _WebVR = __webpack_require__(2);
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var VRModule = function () {
+  function VRModule() {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, VRModule);
+
+    this.params = Object.assign(params, {
+      message: true,
+      button: true
+    });
+
+    this.scene = null;
+    this.camera = null;
+  }
+
+  _createClass(VRModule, [{
+    key: 'manager',
+    value: function manager(_manager) {
+      var rendering = _manager.use('rendering');
+      var renderer = _manager.get('renderer');
+
+      var resize = _manager.use('resize');
+
+      var effect = new _VREffect.VREffect(renderer);
+
+      this.scene = _manager.get('scene');
+      this.camera = _manager.get('camera');
+
+      rendering.effect(effect);
+
+      // TODO: Fix resize.
+
+      console.log(effect);
+
+      resize.addCallback(function (width, height) {
+        effect.setSize(+width, +height);
+      });
+
+      // WEBVR
+      var _params = this.params,
+          message = _params.message,
+          button = _params.button;
+
+
+      if (message) _WebVR.WEBVR.checkAvailability().catch(function (message) {
+        document.body.appendChild(_WebVR.WEBVR.getMessageContainer(message));
+      });
+
+      if (button) _WebVR.WEBVR.getVRDisplay(function (display) {
+        document.body.appendChild(_WebVR.WEBVR.getButton(display, renderer.domElement));
+      });
+    }
+  }]);
+
+  return VRModule;
+}();
+
+exports.VRModule = VRModule;
+
+var VRControls = exports.VRControls = function (_ControlsModule) {
+  _inherits(VRControls, _ControlsModule);
+
+  function VRControls(_ref) {
+    var object = _ref.object,
+        onError = _ref.onError,
+        intensity = _ref.intensity;
+
+    _classCallCheck(this, VRControls);
+
+    var controls = new _VRControls.VRControls(object.native, onError);
+
+    controls.standing = true;
+    controls.scale = intensity;
+
+    return _possibleConstructorReturn(this, (VRControls.__proto__ || Object.getPrototypeOf(VRControls)).call(this, { controls: controls }));
+  }
+
+  return VRControls;
+}(_whs.ControlsModule);
 
 /***/ })
 /******/ ]);

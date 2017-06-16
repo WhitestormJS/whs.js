@@ -1,10 +1,16 @@
-import {Loop} from 'whs';
+import {Loop, ControlsModule} from 'whs';
 
 import {VREffect} from './lib/VREffect';
+import {VRControls as VRControlsNative} from './lib/VRControls';
 import {WEBVR} from './lib/WebVR';
 
 export class VRModule {
-  constructor() {
+  constructor(params = {}) {
+    this.params = Object.assign(params, {
+      message: true,
+      button: true
+    });
+
     this.scene = null;
     this.camera = null;
   }
@@ -24,18 +30,32 @@ export class VRModule {
 
     // TODO: Fix resize.
 
+    console.log(effect);
+
     resize.addCallback((width, height) => {
-      effect.setSize.apply(effect, [width, height]);
+      effect.setSize(+width, +height);
     });
 
     // WEBVR
+    const {message, button} = this.params;
 
-    WEBVR.checkAvailability().catch(message => {
+    if (message) WEBVR.checkAvailability().catch(message => {
 			document.body.appendChild(WEBVR.getMessageContainer(message));
 		});
 
-    WEBVR.getVRDisplay(display => {
+    if (button) WEBVR.getVRDisplay(display => {
       document.body.appendChild(WEBVR.getButton(display, renderer.domElement));
     });
+  }
+}
+
+export class VRControls extends ControlsModule {
+  constructor({object, onError, intensity}) {
+    const controls = new VRControlsNative(object.native, onError);
+
+    controls.standing = true;
+    controls.scale = intensity;
+
+    super({controls});
   }
 }
