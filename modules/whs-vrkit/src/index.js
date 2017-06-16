@@ -13,27 +13,28 @@ export class VRModule {
 
     this.scene = null;
     this.camera = null;
+    this.effect = null;
   }
 
   manager(manager) {
+    manager.define('vr');
+
     const rendering = manager.use('rendering');
     const renderer = manager.get('renderer');
 
     const resize = manager.use('resize');
 
-    const effect = new VREffect(renderer);
+    this.effect = new VREffect(renderer);
 
     this.scene = manager.get('scene');
     this.camera = manager.get('camera');
 
-    rendering.effect(effect);
+    rendering.effect(this.effect);
 
     // TODO: Fix resize.
 
-    console.log(effect);
-
     resize.addCallback((width, height) => {
-      effect.setSize(+width, +height);
+      this.effect.setSize(+width, +height);
     });
 
     // WEBVR

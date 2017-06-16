@@ -1,5 +1,7 @@
-# whs-vrkit - Module for JavaScript Performance Monitor
-> Based of [stats.js](https://github.com/mrdoob/stats.js). Thanks to [@mrdoob](https://github.com/mrdoob)
+# whs-vrkit - Modules for VR
+> Based on `VRControls` and `VREffect`
+
+[![NPM](https://nodei.co/npm/whs-vrkit.png)](https://nodei.co/npm/whs-vrkit/)
 
 ## Usage
 
@@ -7,20 +9,38 @@
 const app = new WHS.App([
   new WHS.ElementModule(), // This module is required
   // other modules
-  new StatsModule(StatsModule.codes.fps) // or just "0"
+  new VRKit.VRModule() // enables VR
 ]);
 ```
 
-## Exported dependencies
+## API
 
-Name    | Description                                                              | Alias
---------|--------------------------------------------------------------------------|------
-`stats` | `Stats` object provided by [stats.js](https://github.com/mrdoob/stats.js)| `app.$stats`
+### `new VRKit.VRModule({message = true, button = true})`
 
-See [stats.js example](https://github.com/mrdoob/stats.js#usage) for full codes list
+Parameters:
 
-## Screenshots
+- **message** - Boolean. Defines whether show message about VR displays.
+- **button** - Boolean. ...whether add button to enter VR mode.
 
-![Screenshot](http://i.imgur.com/TMUoJ88.png)
+### `new VRKit.VRControls()`
 
-<img src="http://i.imgur.com/i4A4FIp.png" width="50%" />
+```javascript
+app.module(
+  new VRKit.VRControls({
+    object: app.manager.get('camera')
+  })
+);
+```
+
+Parameters:
+
+- **object** - Object3D. An object controlled by VR (usually camera).
+- **intensity** - Number. Move intensity.
+
+## manager
+
+`VRModule` is defined as `vr`.
+
+## Screenshot
+
+![](http://i.imgur.com/9gYC15p.png)
