@@ -9,7 +9,7 @@
     "whs-module"
   ],
   "description": "Modules for VR in WhitestormJS",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "dependencies": {},
   "repository": "https://github.com/WhitestormJS/whitestorm.js/tree/beta/modules/whs-vrkit",
   "author": "Alexander Buzin",
