@@ -1,5 +1,5 @@
-# whs-module-statsjs - Module for JavaScript Performance Monitor
-> Based of [stats.js](https://github.com/mrdoob/stats.js). Thanks to [@mrdoob](https://github.com/mrdoob) 
+# whs-vrkit - Module for JavaScript Performance Monitor
+> Based of [stats.js](https://github.com/mrdoob/stats.js). Thanks to [@mrdoob](https://github.com/mrdoob)
 
 ## Usage
 

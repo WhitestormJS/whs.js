@@ -2,7 +2,7 @@ import * as UTILS from '../../globals';
 
 const postprocessor = new WHS.PostProcessorModule();
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.CameraModule(UTILS.appDefaults.camera),
@@ -10,7 +10,7 @@ const world = new WHS.App([
     shadow: true
   }),
   new PHYSICS.WorldModule(UTILS.appDefaults.physics),
-  new WHS.OrbitControlsModule(),
+  // new WHS.OrbitControlsModule(),
   new WHS.ResizeModule(),
   new StatsModule(),
   new VRKit.VRModule()
@@ -37,9 +37,14 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
   position: new THREE.Vector3(0, 20, 0)
 });
 
-sphere.addTo(world);
+sphere.addTo(app);
 
-UTILS.addBoxPlane(world);
-UTILS.addBasicLights(world);
+app.module(new VRKit.VRControls({
+  object: app.manager.get('camera'),
+  intensity: 10
+}));
 
-world.start();
+UTILS.addBoxPlane(app);
+UTILS.addBasicLights(app);
+
+app.start();
