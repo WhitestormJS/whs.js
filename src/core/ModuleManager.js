@@ -47,6 +47,14 @@ export class ModuleManager {
   }
 
   get(key) {
+    if (!this.store.getState()[0][key]) {
+      throw new DependencyError(
+        'ModuleManager',
+        `Module requires '${key}' dependency`,
+        this.currentModule
+      );
+    }
+
     return this.store.getState()[0][key];
   }
 
