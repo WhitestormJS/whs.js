@@ -16,7 +16,7 @@ export class OrbitControlsModule extends ControlsModule {
 
   manager(manager) {
     const object = this.params.object
-      ? this.params.object
+      ? this.params.object.native
       : manager.get('camera').native;
 
     const controls = new ThreeOrbitControls(
