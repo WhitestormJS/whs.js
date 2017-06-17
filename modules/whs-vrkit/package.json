@@ -2,18 +2,19 @@
   "name": "whs-vrkit",
   "main": "build/VRKit.js",
   "scripts": {
-    "build": "webpack",
+    "build": "NODE_ENV=production webpack -p",
     "start": "webpack --watch"
   },
   "keywords": [
     "whs-module"
   ],
   "description": "Modules for VR in WhitestormJS",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "dependencies": {},
   "repository": "https://github.com/WhitestormJS/whitestorm.js/tree/beta/modules/whs-vrkit",
   "author": "Alexander Buzin",
   "license": "MIT",
   "devDependencies": {
+    "three-vrcontrols-module": "^2.0.1"
   }
 }
