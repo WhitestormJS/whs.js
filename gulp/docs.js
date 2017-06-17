@@ -9,7 +9,7 @@ gulp.task('docs', cb => {
     .pipe(less())
     .pipe(gulp.dest('./docs/public/styles/'));
 
-  gulp.src(['./docs/data/**/*', './src/core/Component.js']) // ['README.md', './src/**/*.js']
+  gulp.src(['./docs/data/**/*', './src/**/*.js']) // ['README.md', './src/**/*.js']
     .pipe(jsdoc(config, cb));
 });
 
