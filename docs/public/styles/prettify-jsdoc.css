@@ -1,0 +1,95 @@
+/* JSDoc prettify.js theme */
+/* plain text */
+/* string content */
+/* a keyword */
+/* a comment */
+/* a type name */
+/* a literal value */
+/* punctuation */
+/* lisp open bracket */
+/* lisp close bracket */
+/* a markup tag name */
+/* a markup attribute name */
+/* a markup attribute value */
+/* a declaration */
+/* a variable name */
+/* a function name */
+/* Specify class=linenums on a pre to get line numbering */
+.pln {
+  color: #000000;
+  font-weight: normal;
+  font-style: normal;
+}
+.str {
+  color: #217a00;
+  font-weight: normal;
+  font-style: normal;
+}
+.kwd {
+  color: #000000;
+  font-weight: bold;
+  font-style: normal;
+}
+.com {
+  font-weight: normal;
+  font-style: italic;
+}
+.typ {
+  color: #000000;
+  font-weight: normal;
+  font-style: normal;
+}
+.lit {
+  color: #006400;
+  font-weight: normal;
+  font-style: normal;
+}
+.pun {
+  color: #000000;
+  font-weight: bold;
+  font-style: normal;
+}
+.opn {
+  color: #000000;
+  font-weight: bold;
+  font-style: normal;
+}
+.clo {
+  color: #000000;
+  font-weight: bold;
+  font-style: normal;
+}
+.tag {
+  color: #006400;
+  font-weight: normal;
+  font-style: normal;
+}
+.atn {
+  color: #006400;
+  font-weight: normal;
+  font-style: normal;
+}
+.atv {
+  color: #006400;
+  font-weight: normal;
+  font-style: normal;
+}
+.dec {
+  color: #000000;
+  font-weight: bold;
+  font-style: normal;
+}
+.var {
+  color: #000000;
+  font-weight: normal;
+  font-style: normal;
+}
+.fun {
+  color: #000000;
+  font-weight: bold;
+  font-style: normal;
+}
+ol.linenums {
+  margin-top: 0;
+  margin-bottom: 0;
+}

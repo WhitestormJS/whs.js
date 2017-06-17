@@ -11,6 +11,7 @@
     "start": "webpack-dashboard -t WhitestormJS -- gulp dev",
     "start:physics": "webpack-dashboard -t WhitestormJS -- gulp dev --devPhysics 8001",
     "build": "gulp build & gulp examples:build",
+    "docs": "gulp docs",
     "deploy": "surge --project ./ --domain whs-dev.surge.sh"
   },
   "repository": "WhitestormJS/whitestorm.js",

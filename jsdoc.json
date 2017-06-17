@@ -14,10 +14,10 @@
         "showInheritedInNav": true
     },
     "opts": {
-        "destination": "./docs/",
+        "destination": "./docs/public/",
         "encoding": "utf8",
         "private": true,
         "recurse": true,
-        "template": "./node_modules/minami"
+        "template": "./docs/template"
     }
 }
