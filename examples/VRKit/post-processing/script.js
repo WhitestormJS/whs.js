@@ -54,7 +54,7 @@ const world = new WHS.App([
 //   // .name('MyShader')
 //   .renderToScreen();
 
-const sphere = new WHS.Sphere({ // Create sphere comonent.
+const sphere = new WHS.Sphere({
   geometry: {
     radius: 5,
     widthSegments: 32,
@@ -80,8 +80,4 @@ sphere.addTo(world);
 UTILS.addBoxPlane(world);
 UTILS.addBasicLights(world);
 
-world.start(); // Start animations and physics simulation.
-
-// ....
-
-// postprocessor
+world.start();
