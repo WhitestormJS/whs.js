@@ -1,7 +1,7 @@
 import {Loop, ControlsModule} from 'whs';
 
 import {VREffect} from './lib/VREffect';
-import {VRControls as VRControlsNative} from './lib/VRControls';
+import VRControlsNative from 'three-vrcontrols-module';
 import {WEBVR} from './lib/WebVR';
 
 export class VRModule {

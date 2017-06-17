@@ -109,8 +109,8 @@ export class RenderingModule {
   }
 
   play() {
-    // this.renderLoop.start();
-    // this.effects.forEach(loop => loop.start());
+    this.renderLoop.start();
+    this.effects.forEach(loop => loop.start());
   }
 
   manager(manager) {
