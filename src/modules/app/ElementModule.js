@@ -12,8 +12,8 @@ export class ElementModule {
   }
 
   manager(manager) {
-    manager.add('element', this.element, {alias: '$element'});
-    manager.add('container', this.params.container, {alias: '$container'});
+    manager.add('element', this.element);
+    manager.add('container', this.params.container);
   }
 
   integrate(self) {
