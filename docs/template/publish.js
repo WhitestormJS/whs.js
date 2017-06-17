@@ -742,7 +742,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     // console.log('Page: ' + title);
 
     generate(
-      "",
+      "markdown",
       title,
       packages
         .concat([
@@ -753,7 +753,7 @@ exports.publish = function(taffyData, opts, tutorials) {
           }
         ])
         .concat(files),
-      helper.getUniqueFilename(title)
+      helper.getUniqueFilename(title === 'Welcome' ? 'index' : title)
     )
   })
 
