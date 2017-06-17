@@ -23,8 +23,8 @@
 [npm]: https://img.shields.io/npm/v/whs.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/whs
 
-[travis]: https://img.shields.io/travis/WhitestormJS/whitestorm.js.svg?style=flat-square
-[travis-url]: https://travis-ci.org/WhitestormJS/whitestorm.js
+[travis]: https://travis-ci.org/WhitestormJS/whitestorm.js.svg?branch=beta&style=flat-square
+[travis-url]: https://travis-ci.org/WhitestormJS/whitestorm.js?branch=beta
 
 [coverage]: https://img.shields.io/coveralls/WhitestormJS/whitestorm.js/beta.svg?style=flat-square
 [coverage-url]: https://coveralls.io/github/WhitestormJS/whitestorm.js?branch=beta
