@@ -6,25 +6,55 @@ import {ManagerError} from './errors';
 
 /**
  * @class Component
+ * @param {Object} [params] - The parameters object.
+ * @param {Object} [instructions] - The instructions object.
+ * @extends ModuleSystem
+ * @memberof module:core/Component
  */
 class Component extends ModuleSystem {
+  /**
+   * Default values for parameters
+   * @member {Object} module:core/Component.Component#defaults
+   * @static
+   * @default {
+     modules: [],
+     manager: true
+   }
+   */
   static defaults = {
     modules: [],
     manager: true
   };
 
+  /**
+   * Static instructions
+   * @member {Object} module:core/Component.Component#instructions
+   * @static
+   * @default {}
+   */
   static instructions = {};
 
+  /**
+   * Array of promises that should be resolved before Component is ready.
+   * @member {Array} module:core/Component.Component#_wait
+   * @private
+   */
   _wait = []; // Collection of promises;
-  modules = []; // Collection of modules;
-  children = []; // For keeping children components;
 
   /**
-   * @constructor
-   * Create a Component.
-   * @param {Object} [params] - The parameters object.
-   * @param {Object} [instructions] - The instructions object.
+   * Collection of `modules`.
+   * @member {Array} module:core/Component.Component#modules
+   * @public
    */
+  modules = []; // Collection of modules;
+
+  /**
+   * Collection of `child` Components.
+   * @member {Array} module:core/Component.Component#children
+   * @public
+   */
+  children = []; // For keeping children components;
+
   constructor(params = {}, defaults = Component.defaults, instructions = Component.instructions) {
     super();
 
@@ -40,14 +70,21 @@ class Component extends ModuleSystem {
   /**
    * @method wait
    * @description Wait for a promise.
-   * @param {Promise} promise - The promise that should be added to a queue.
+   * @param {Promise} [promise] - The promise that should be added to a queue.
    * @return {Promise} Promise that is resolved when all promises completed.
+   * @memberof module:core/Component.Component
    */
   wait(promise) {
     if (promise) this._wait.push(promise);
     return Promise.all(this._wait);
   }
 
+  /**
+   * @method defer
+   * @description Execute `func` (Callback) when Component is ready.
+   * @param {Function} func - Callback.
+   * @memberof module:core/Component.Component
+   */
   defer(func) {
     if (this.isDeffered) this.wait().then(() => func(this));
     else func(this);
@@ -55,6 +92,12 @@ class Component extends ModuleSystem {
 
   // PARAMETERS
 
+  /**
+   * @method updateParams
+   * @description Updates parameters of the Component.
+   * @return {Object} Params of this Component
+   * @memberof module:core/Component.Component
+   */
   updateParams(params = {}) {
     this.params = extend(params, this.params);
     return this.params;
@@ -66,11 +109,20 @@ class Component extends ModuleSystem {
    * @method clone
    * @description Clone this component
    * @return {object} a cloned component with all its source component' params copied.
+   * @memberof module:core/Component.Component
    */
   clone() {
     return new this.constructor(this.params).copy(this);
   }
 
+  /**
+   * @method copy
+   * @description Copy source native and integrate `modules` to it.
+   * @param {Component} source - Source component that is used for `copy()` action.
+   * @param {Function} [customize] - Callback executed before modules integration process.
+   * @return {this} Component
+   * @memberof module:core/Component.Component
+   */
   copy(source, customize) {
     this.params = {...source.params};
 
@@ -81,8 +133,13 @@ class Component extends ModuleSystem {
     return this;
   }
 
-  // ADD
-
+  /**
+   * @method add
+   * @description Add a child `Component`.
+   * @param {Component} object - Component that should be added as a `child`.
+   * @return {Promise} Resolved when action is done.
+   * @memberof module:core/Component.Component
+   */
   add(object) {
     object.parent = this;
 
@@ -106,23 +163,40 @@ class Component extends ModuleSystem {
     });
   }
 
+  /**
+   * @method remove
+   * @description Remove a child `Component`.
+   * @param {Component} object - Component that should be a **child** of this Component.
+   * @memberof module:core/Component.Component
+   */
   remove(object) {
     object.parent = null;
     this.native.remove(object.native);
   }
 
+  /**
+   * @method addTo
+   * @description Adds `this` Component to specified `App`/`Component`.
+   * @param {Component} object - Component that will be a parent of `this`.
+   * @memberof module:core/Component.Component
+   */
   addTo(object) {
     return object.add(this);
   }
 
-  // GETTERS & SETTERS
-
+  /**
+   * Returns whether the object is `async` (`wait` promises are more than `0`).
+   * @member {Boolean} module:core/Component.Component#isDeffered
+   */
   get isDeffered() {
     return this._wait.length > 0;
   }
 
-  // .manager
-
+  /**
+   * Returns the `ModuleManager` used for this component.
+   * @member {ModuleManager} module:core/Component.Component#manager
+   * @throws {ManagerError}
+   */
   get manager() {
     if (this._manager) return this._manager;
 
@@ -137,8 +211,10 @@ class Component extends ModuleSystem {
     this._manager = manager;
   }
 
-  // .native
-
+  /**
+   * Returns the `native` object used for this component.
+   * @member {Object} module:core/Component.Component#native
+   */
   get native() {
     return this._native;
   }
@@ -151,6 +227,5 @@ class Component extends ModuleSystem {
 }
 
 export {
-  /** Component class */
   Component
 };

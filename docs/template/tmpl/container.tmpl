@@ -67,13 +67,13 @@
     </div>
 
     <?js if (doc.augments && doc.augments.length) { ?>
-        <h3 class="subsection-title">Extends</h3>
+        <h3 class="subsection-title">Extends <span class="gline"></span></h3>
 
         <?js= self.partial('augments.tmpl', doc) ?>
     <?js } ?>
 
     <?js if (doc.kind === 'module' && doc.requires && doc.requires.length) { ?>
-        <h3 class="subsection-title">Requires</h3>
+        <h3 class="subsection-title">Requires <span class="gline"></span></h3>
 
         <ul><?js doc.requires.forEach(function(r) { ?>
             <li><?js= self.linkto(r, r) ?></li>
@@ -84,7 +84,7 @@
         var classes = self.find({kind: 'class', memberof: doc.longname});
         if (!isGlobalPage && classes && classes.length) {
     ?>
-        <h3 class="subsection-title">Classes</h3>
+        <h3 class="subsection-title">Classes <span class="gline"></span></h3>
 
         <dl><?js classes.forEach(function(c) { ?>
             <dt><?js= self.linkto(c.longname, c.name) ?></dt>
@@ -96,7 +96,7 @@
         var mixins = self.find({kind: 'mixin', memberof: doc.longname});
         if (!isGlobalPage && mixins && mixins.length) {
     ?>
-        <h3 class="subsection-title">Mixins</h3>
+        <h3 class="subsection-title">Mixins <span class="gline"></span></h3>
 
         <dl><?js mixins.forEach(function(m) { ?>
             <dt><?js= self.linkto(m.longname, m.name) ?></dt>
@@ -108,7 +108,7 @@
         var namespaces = self.find({kind: 'namespace', memberof: doc.longname});
         if (!isGlobalPage && namespaces && namespaces.length) {
     ?>
-        <h3 class="subsection-title">Namespaces</h3>
+        <h3 class="subsection-title">Namespaces <span class="gline"></span></h3>
 
         <dl><?js namespaces.forEach(function(n) { ?>
             <dt><?js= self.linkto(n.longname, n.name) ?></dt>
@@ -127,7 +127,7 @@
         }
         if (members && members.length && members.forEach) {
     ?>
-        <h3 class="subsection-title">Members</h3>
+        <h3 class="subsection-title">Members <span class="gline"></span></h3>
 
         <?js members.forEach(function(p) { ?>
             <?js= self.partial('members.tmpl', p) ?>
@@ -138,7 +138,7 @@
         var methods = self.find({kind: 'function', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
         if (methods && methods.length && methods.forEach) {
     ?>
-        <h3 class="subsection-title">Methods</h3>
+        <h3 class="subsection-title">Methods <span class="gline"></span></h3>
 
         <?js methods.forEach(function(m) { ?>
             <?js= self.partial('method.tmpl', m) ?>
@@ -149,7 +149,7 @@
         var typedefs = self.find({kind: 'typedef', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
         if (typedefs && typedefs.length && typedefs.forEach) {
     ?>
-        <h3 class="subsection-title">Type Definitions</h3>
+        <h3 class="subsection-title">Type Definitions <span class="gline"></span></h3>
 
         <?js typedefs.forEach(function(e) {
                 if (e.signature) {
@@ -169,7 +169,7 @@
         var events = self.find({kind: 'event', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
         if (events && events.length && events.forEach) {
     ?>
-        <h3 class="subsection-title">Events</h3>
+        <h3 class="subsection-title">Events <span class="gline"></span></h3>
 
         <?js events.forEach(function(e) { ?>
             <?js= self.partial('method.tmpl', e) ?>
