@@ -4,7 +4,9 @@ import {ModuleSystem} from './ModuleSystem';
 import {ModuleManager} from './ModuleManager';
 import {ManagerError} from './errors';
 
-/** Class representing a Comonent */
+/**
+ * @class Component
+ */
 class Component extends ModuleSystem {
   static defaults = {
     modules: [],
@@ -18,8 +20,8 @@ class Component extends ModuleSystem {
   children = []; // For keeping children components;
 
   /**
-   * Create a Component.
    * @constructor
+   * Create a Component.
    * @param {Object} [params] - The parameters object.
    * @param {Object} [instructions] - The instructions object.
    */
@@ -35,11 +37,10 @@ class Component extends ModuleSystem {
     this.integrateModules();
   }
 
-  // PROMISES (Asynchronous code)
-
-  // FIXME: possible use of Promise.all(this._wait) only in .defer();
   /**
-   * Wait for a promise.
+   * @method wait
+   * @description Wait for a promise.
+   * @param {Promise} promise - The promise that should be added to a queue.
    * @return {Promise} Promise that is resolved when all promises completed.
    */
   wait(promise) {
@@ -62,7 +63,8 @@ class Component extends ModuleSystem {
   // COPYING & CLONING
 
   /**
-   * Clone this component
+   * @method clone
+   * @description Clone this component
    * @return {object} a cloned component with all its source component' params copied.
    */
   clone() {
