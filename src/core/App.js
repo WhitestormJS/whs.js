@@ -57,9 +57,8 @@ class App extends ModuleSystem {
   removeLoop(loop) {
     return new Promise(resolve => {
       let index = this.loops.indexOf(loop);
-      if(index!==-1){
-        this.loops.splice(index,1)
-      }
+      if (index !== -1) this.loops.splice(index,1);
+      
       resolve(loop);
     });
   }
