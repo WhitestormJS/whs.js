@@ -1,12 +1,13 @@
 import {
   AnimationMixer,
-  AnimationClip
+  AnimationClip,
+  Clock
 } from 'three';
 
 export class AnimationModule {
   constructor(params = {}) {
     this.params = Object.assign(params);
-    this.clock = new THREE.Clock();
+    this.clock = new Clock();
   }
 
   play(clipName) {
