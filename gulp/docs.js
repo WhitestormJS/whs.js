@@ -3,8 +3,11 @@ import gulp from 'gulp';
 import watch from 'gulp-watch';
 import config from '../jsdoc';
 import less from 'gulp-less';
+import del from 'del';
 
 gulp.task('docs', cb => {
+  del('./docs/public/*.html');
+
   gulp.src('./docs/template/static/less/*.less')
     .pipe(less())
     .pipe(gulp.dest('./docs/public/styles/'));
@@ -31,9 +34,10 @@ gulp.task('docs:watch', ['docs'], () => {
     './docs/data/**/*',
     './src/core/*.js'
   ], () => {
+    del('./docs/public/*.html');
     console.log(`update #${i++}`);
 
-    gulp.src(['./docs/data/**/*.md', './src/core/Component.js'])
+    gulp.src(['./docs/data/**/*.md', './src/core/Component.js', './src/core/CameraComponent.js'])
       .pipe(jsdoc(config));
   });
 });
