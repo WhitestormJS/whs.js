@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title><?js= title ?> - Documentation</title>
+    <title><?js= headtitle ? headtitle : title ?> - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -16,6 +16,7 @@
 </head>
 <body>
 
+
 <input type="checkbox" id="nav-trigger" class="nav-trigger" />
 <label for="nav-trigger" class="navicon-button x">
   <div class="navicon"></div>
@@ -25,13 +26,12 @@
 
 <nav>
     <span class="logo">whs<span class="gl">.js</span>&nbsp;<span class="gline"></span></span>
-    <li class="nav-heading">Pages</li>
     <?js= this.nav ?>
 </nav>
 
 
 <div id="main">
-    <?js if (type != 'markdown') { ?>
+    <?js if (type != 'Page') { ?>
     <h1 class="page-title"><?js= title ?></h1>
     <?js } ?>
 
