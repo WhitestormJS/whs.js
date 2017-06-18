@@ -103,7 +103,7 @@ if (data.defaultvalue && (data.defaultvaluetype === 'object' || data.defaultvalu
     <?js if (data.defaultvalue) {?>
     <dt class="tag-default">Default Value:</dt>
     <dd class="tag-default"><ul class="dummy">
-            <li<?js= defaultObjectClass ?>><?js= data.defaultvalue ?></li>
+            <li<?js= defaultObjectClass ?>><code><?js= data.defaultvalue ?></code></li>
         </ul></dd>
     <?js } ?>
 
