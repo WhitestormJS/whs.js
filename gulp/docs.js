@@ -9,11 +9,11 @@ gulp.task('docs', cb => {
     .pipe(less())
     .pipe(gulp.dest('./docs/public/styles/'));
 
-  gulp.src(['./docs/data/**/*', './src/**/*.js']) // ['README.md', './src/**/*.js']
+  gulp.src(['./docs/data/**/*', './src/core/Component.js']) // ['README.md', './src/**/*.js']
     .pipe(jsdoc(config, cb));
 });
 
-gulp.task('docs:watch', () => {
+gulp.task('docs:watch', ['docs'], () => {
   let i = 0;
 
   watch([
@@ -28,7 +28,8 @@ gulp.task('docs:watch', () => {
 
   return watch([
     './docs/template/**/*.tmpl',
-    './docs/data/**/*'
+    './docs/data/**/*',
+    './src/core/*.js'
   ], () => {
     console.log(`update #${i++}`);
 

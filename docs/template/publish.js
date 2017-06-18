@@ -11,9 +11,20 @@ var readme = require("jsdoc/readme");
 var taffy = require("taffydb").taffy
 var template = require("jsdoc/template")
 var util = require("util")
+var mdurl = require("mdurl")
 
 var htmlsafe = helper.htmlsafe
-var linkto = helper.linkto
+
+var linkto = function(longname, linkText, cssClass, fragmentId) {
+  let result = helper.linkto(longname, linkText, cssClass, fragmentId);
+
+  // while (result.indexOf('%') > 0) {
+  //   result = mdurl.decode(result);
+  // }
+
+  return result; // Fix whitespace bug.
+}
+
 var resolveAuthorLinks = helper.resolveAuthorLinks
 var scopeToPunc = helper.scopeToPunc
 var hasOwnProp = Object.prototype.hasOwnProperty
@@ -236,11 +247,12 @@ function getPathFromDoclet(doclet) {
     : doclet.meta.filename
 }
 
-function generate(type, title, docs, filename, resolveLinks) {
+function generate(type, title, docs, filename, resolveLinks, headtitle) {
   resolveLinks = resolveLinks === false ? false : true
 
   var docData = {
     type: type,
+    headtitle: headtitle || null,
     title: title,
     docs: docs
   }
@@ -350,8 +362,9 @@ function buildNav(members) {
   var seen = {}
   var seenTutorials = {}
 
+  if (members.titles.length > 0) nav.push('<li class="nav-heading">Pages</li>');
+
   members.titles.forEach(name => {
-    // console.log(name);
     nav.push(buildNavLink(name, '<a href="' + name + '.html">' + name + '</a>'))
   });
   // nav.push(buildNavLink('examples', '<a href="examples.html">examples</a>'))
@@ -739,10 +752,8 @@ exports.publish = function(taffyData, opts, tutorials) {
     const data = new readme(path);
     const title = path.slice(path.lastIndexOf('/') + 1, path.indexOf('.md'));
 
-    // console.log('Page: ' + title);
-
     generate(
-      "markdown",
+      "Page",
       title,
       packages
         .concat([
@@ -779,7 +790,9 @@ exports.publish = function(taffyData, opts, tutorials) {
         "Module",
         fix(myModules[0].name),
         myModules,
-        helper.longnameToUrl[longname]
+        helper.longnameToUrl[longname],
+        true,
+        myModules[0].name
       )
     }
 
@@ -789,7 +802,9 @@ exports.publish = function(taffyData, opts, tutorials) {
         "Class",
         fix(myClasses[0].name),
         myClasses,
-        helper.longnameToUrl[longname]
+        helper.longnameToUrl[longname],
+        true,
+        myClasses[0].name
       )
     }
 
@@ -799,7 +814,9 @@ exports.publish = function(taffyData, opts, tutorials) {
         "Namespace",
         fix(myNamespaces[0].name),
         myNamespaces,
-        helper.longnameToUrl[longname]
+        helper.longnameToUrl[longname],
+        true,
+        myNamespaces[0].name
       )
     }
 
@@ -809,7 +826,9 @@ exports.publish = function(taffyData, opts, tutorials) {
         "Mixin",
         fix(myMixins[0].name),
         myMixins,
-        helper.longnameToUrl[longname]
+        helper.longnameToUrl[longname],
+        true,
+        myMixins[0].name
       )
     }
 
@@ -819,7 +838,9 @@ exports.publish = function(taffyData, opts, tutorials) {
         "External",
         fix(myExternals[0].name),
         myExternals,
-        helper.longnameToUrl[longname]
+        helper.longnameToUrl[longname],
+        true,
+        myExternals[0].name
       )
     }
 
@@ -829,7 +850,9 @@ exports.publish = function(taffyData, opts, tutorials) {
         "Interface",
         fix(myInterfaces[0].name),
         myInterfaces,
-        helper.longnameToUrl[longname]
+        helper.longnameToUrl[longname],
+        true,
+        myInterfaces[0].name
       )
     }
   })
