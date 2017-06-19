@@ -52,7 +52,13 @@ new WHS.Importer({
     metalness: 1
   }),
 
-  modules: [textureModule, animationModule]
+  modules: [textureModule, animationModule],
+
+  shadow: {
+    receive: false
+  },
+
+  position: [0, -5, 0]
 
 }).addTo(world).then(() => {
   animationModule.play('observe');
@@ -70,7 +76,7 @@ new WHS.PointLight({
     near: 2
   },
 
-  position: [-1, 8, 5]
+  position: [-1, 3, 5]
 
 }).addTo(world);
 
@@ -109,7 +115,10 @@ new WHS.Box({
       repeat: floorTextureRepeat,
       type: 'roughnessMap'
     })
-  ]
+  ],
+
+  position: [0, -5, 0]
+
 }).addTo(world);
 
 new WHS.SpotLight({
