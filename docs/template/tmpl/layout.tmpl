@@ -47,5 +47,13 @@
 
 <script>prettyPrint();</script>
 <script src="scripts/linenumber.js"></script>
+<script src="scripts/scroll.js"></script>
+<script>
+const links = document.querySelectorAll('.sidebar a[href]');
+
+[].slice.call(links).forEach(link => {
+  link.classList.add('scroll');
+});
+</script>
 </body>
 </html>

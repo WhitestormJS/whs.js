@@ -2,13 +2,13 @@
 var data = obj;
 var self = this;
 ?>
-<div class="section-method">
+<div class="section-method" id="<?js= id ?>">
 <?js if (data.kind !== 'module') { ?>
     <?js if (data.kind === 'class' && data.classdesc) { ?>
     <h2>Constructor</h2>
     <?js } ?>
 
-    <h4 class="name" id="<?js= id ?>"><?js= data.attribs + '<span class="dot">.</span>' + (kind === 'class' ? 'new ' : '') +
+    <h4 class="name"><?js= data.attribs + '<span class="dot">.</span>' + (kind === 'class' ? 'new ' : '') +
     name + (data.signature || '') ?></h4>
 
     <?js if (data.summary) { ?>
