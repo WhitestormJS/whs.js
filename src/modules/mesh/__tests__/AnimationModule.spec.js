@@ -1,8 +1,10 @@
 import '../../../polyfill';
 
 import {Clock, AnimationMixer} from 'three';
-import {Box} from '../../../index';
+import {Box, App} from '../../../index';
 import {AnimationModule} from '../AnimationModule';
+
+const app = new App();
 
 const box = new Box();
 box.skeleton = ['skel'];
@@ -12,7 +14,7 @@ box.geometry = {
 };
 
 const modules = {};
-const animationModule = new AnimationModule();
+const animationModule = new AnimationModule(app);
 modules.animationModule = animationModule;
 
 describe('Animation module', () => {
