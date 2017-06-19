@@ -198,6 +198,8 @@ section {
 	display: block;
 	background-color: @background_color_2;
 	padding: 0;
+  max-width: 800px;
+	float: left;
 }
 .variation {
 	display: none;
@@ -578,7 +580,8 @@ footer {
 	border: 1px solid #ddd;
 	border-collapse: collapse;
 	border-radius: 3px;
-	width: 100%;
+	width: calc(~'100% - 20px');
+	// width: 100%;
 	font-size: 14px;
   margin-left: 20px;
   margin-top: 20px;
@@ -896,8 +899,20 @@ dl.param-type {
 }
 
 .section-members, .section-method {
-  margin: 60px 0;
-	border-bottom: none;
+  padding-top: 60px;
+	border-bottom: 1px solid #efefef;
+	padding-bottom: 60px;
+	max-width: 800px;
+  transition: background 0.3s ease-in 0.4s;
+
+	&:target {
+		background: #fafafa;
+
+		h4 {
+	    border-left: 4px solid #29acff !important;
+			box-shadow: 10px 0 10px -10px #29acff inset !important;
+		}
+	}
 
 	>*:not(h4) {
 		padding-left: 20px;
@@ -909,6 +924,7 @@ dl.param-type {
 	  padding-left: 20px;
 		position: relative;
     box-shadow: 10px 0 10px -10px #efefef inset;
+	  transition: all 0.3s ease-in 0.4s;
 
 		&:after {
 			content: '=';
@@ -926,6 +942,7 @@ dl.param-type {
 	  padding-left: 20px;
 		position: relative;
     box-shadow: 10px 0 10px -10px #efefef inset;
+	  transition: all 0.3s ease-in 0.4s;
 
 		&:after {
 			content: 'F';
@@ -942,4 +959,71 @@ dl.param-type {
 
 .dot {
   color: #aaa;
+}
+
+.subsection-left {
+  float: left;
+  position: relative;
+	width: 50%;
+}
+
+.subsection-right {
+  float: right;
+  position: relative;
+	width: 50%;
+}
+
+.sidebar {
+  float: right;
+  width: calc(~'100% - 1350px');
+	position: fixed;
+	right: 40px;
+
+	h5 {
+		margin: 20px 0;
+	}
+
+  ul {
+    list-style: none;
+		margin: 0 auto;
+    padding: 0;
+
+    &.sub {
+      padding: 5px 20px 20px 20px;
+
+      &.folded {
+        display: none;
+      }
+
+			li {
+				font-size: 10pt;
+				line-height: 1.7;
+
+				&:before {
+					content: '';
+				}
+			}
+    }
+
+    li {
+			font-size: 12pt;
+			line-height: 1.5;
+
+			a {
+				color: #29acff;
+			}
+
+      .folder {
+        // content: '—  ';
+				color: #aaa;
+				margin-right: 5px;
+      }
+
+      &.folded .folder {
+        // content: '+  ';
+				color: #aaa;
+				margin-right: 5px;
+      }
+    }
+  }
 }

@@ -437,7 +437,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
           nav.push(buildNavHeading(buildNavType(item.kind, linktoFn(item.longname, displayName))))
         }
 
-        if (methods.length) {
+        if (methods.length && itemHeading !== "Classes") {
           methods.forEach(function(method) {
             if (method.inherited && conf.showInheritedInNav === false) {
               return
