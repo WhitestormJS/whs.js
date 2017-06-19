@@ -127,22 +127,26 @@
         }
         if (members && members.length && members.forEach) {
     ?>
-        <h3 class="subsection-title">Members <span class="gline"></span></h3>
+        <!-- <div class="subsection-left"> -->
+          <h3 class="subsection-title" id="tag-members">Members <span class="gline"></span></h3>
 
-        <?js members.forEach(function(p) { ?>
-            <?js= self.partial('members.tmpl', p) ?>
-        <?js }); ?>
+          <?js members.forEach(function(p) { ?>
+              <?js= self.partial('members.tmpl', p) ?>
+          <?js }); ?>
+        <!-- </div> -->
     <?js } ?>
 
     <?js
         var methods = self.find({kind: 'function', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
         if (methods && methods.length && methods.forEach) {
     ?>
-        <h3 class="subsection-title">Methods <span class="gline"></span></h3>
+        <!-- <div class="subsection-right"> -->
+            <h3 class="subsection-title" id="tag-methods">Methods <span class="gline"></span></h3>
 
-        <?js methods.forEach(function(m) { ?>
-            <?js= self.partial('method.tmpl', m) ?>
-        <?js }); ?>
+            <?js methods.forEach(function(m) { ?>
+                <?js= self.partial('method.tmpl', m) ?>
+            <?js }); ?>
+        <!-- </div> -->
     <?js } ?>
 
     <?js
@@ -178,6 +182,49 @@
 </article>
 
 </section>
+
+<div class="sidebar">
+  <h5>Table of content</h5>
+  <?js
+    var folded = 0;
+    var limit = 10
+    ?>
+  <ul>
+    <?js folded += members.length ?>
+    <?js if (members.length > 0) { ?>
+    <li><span class="folder <?js= folded > limit ? 'folded' : '' ?>"><?js= folded > limit ? '+' : '—' ?>  </span><a href="#tag-members">Members</a></li>
+    <ul class="sub <?js= folded > limit ? 'folded' : '' ?>">
+      <?js members.forEach(function(p) { ?>
+      <li><a href="#<?js= p.id ?>">.<?js= p.name ?></a></li>
+      <?js }); ?>
+    </ul>
+    <?js }; ?>
+    <?js folded += methods.length ?>
+    <?js if (methods.length > 0) { ?>
+    <li><span class="folder <?js= folded > limit ? 'folded' : '' ?>"><?js= folded > limit ? '+' : '—' ?>  </span><a href="#tag-methods">Methods</a></li>
+    <ul class="sub <?js= folded > limit ? 'folded' : '' ?>">
+      <?js methods.forEach(function(p) { ?>
+      <li><a href="#<?js= p.id ?>">.<?js= p.name ?>()</a></li>
+      <?js }); ?>
+    </ul>
+    <?js }; ?>
+  </ul>
+</div>
 <?js } ?>
+
+<script>
+var folders = document.querySelectorAll('.folder');
+console.log(folders);
+
+[].slice.call(folders).forEach(function (folder) {
+  folder.addEventListener('click', function() {
+    folder.classList.toggle('folded');
+    folder.parentNode.nextElementSibling.classList.toggle('folded');
+
+    folder.innerText = folder.className.indexOf('folded') > -1 ? '+  ' : '— ';
+  });
+})
+
+</script>
 
 <?js }); ?>
