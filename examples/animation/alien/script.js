@@ -16,7 +16,10 @@ const world = new WHS.App([
   new WHS.ResizeModule()
 ]);
 
-const animationModule = new WHS.AnimationModule();
+const animationModule = new WHS.AnimationModule(world, false, {
+  speed: 1.2
+});
+
 const characterTexturePath = `${process.assetsPath}/textures/space-alien/`;
 const textureModule = new WHS.TextureModule({
   url: `${characterTexturePath}diffuse.png`,
@@ -131,7 +134,6 @@ new WHS.SpotLight({
 UTILS.addAmbient(world, 0.1);
 
 new WHS.Loop(() => {
-  animationModule.update();
 }).start(world);
 
 world.start();
