@@ -17,26 +17,25 @@ const world = new WHS.App([
 ]);
 
 const animationModule = new WHS.AnimationModule();
-
 const characterTexturePath = `${process.assetsPath}/textures/space-alien/`;
 const textureModule = new WHS.TextureModule({
-  url: characterTexturePath + `diffuse.png`,
+  url: `${characterTexturePath}diffuse.png`,
   type: 'map'
 }, {
-  url: characterTexturePath + `emissive.png`,
+  url: `${characterTexturePath}emissive.png`,
   type: 'emissiveMap'
 }, {
-  url: characterTexturePath + `normal.png`,
+  url: `${characterTexturePath}normal.png`,
   type: 'normalMap'
 }, {
-  url: characterTexturePath + `metalness.png`,
+  url: `${characterTexturePath}metalness.png`,
   type: 'metalnessMap'
 }, {
-  url: characterTexturePath + `ao.png`,
+  url: `${characterTexturePath}ao.png`,
   type: 'aoMap'
 });
 
-const robot = new WHS.Importer({
+new WHS.Importer({
   parser(geometry, materials) {
     return new THREE.SkinnedMesh(geometry, materials);
   },
@@ -51,12 +50,12 @@ const robot = new WHS.Importer({
   }),
 
   modules: [textureModule, animationModule]
-});
-robot.addTo(world).then(() => {
+
+}).addTo(world).then(() => {
   animationModule.play('observe');
 });
 
-const whitePointLight = new WHS.PointLight({
+new WHS.PointLight({
   light: {
     color: 0xffffff,
     intensity: 2,
@@ -69,17 +68,18 @@ const whitePointLight = new WHS.PointLight({
   },
 
   position: [-1, 8, 5]
-});
-whitePointLight.addTo(world);
+
+}).addTo(world);
 
 const floorTextureRepeat = new THREE.Vector2(15, 15);
+
 new WHS.Box({
   geometry: {
     width: 80,
     height: 80,
     depth: 0.1
   },
-  position: [0, 0, 0],
+
   rotation: {
     y: 0,
     x: -Math.PI / 2
@@ -107,7 +107,6 @@ new WHS.Box({
       type: 'roughnessMap'
     })
   ]
-
 }).addTo(world);
 
 new WHS.SpotLight({
