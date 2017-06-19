@@ -4,10 +4,17 @@ import {
   Clock
 } from 'three';
 
+import {Loop} from '../../core/Loop';
+
 export class AnimationModule {
-  constructor(params = {}) {
-    this.params = Object.assign(params);
+  constructor(app, isDeferred, params = {}) {
+    this.params = Object.assign({
+      speed: 1
+    }, params);
     this.clock = new Clock();
+
+    this.app = app;
+    this.isDeferred = isDeferred;
   }
 
   play(clipName) {
@@ -18,7 +25,19 @@ export class AnimationModule {
   }
 
   update() {
-    if (this.mixer) this.mixer.update(this.clock.getDelta());
+    if (this.mixer) this.mixer.update(this.clock.getDelta() * this.params.speed);
+  }
+
+  integrate(self) {
+    self.loop = new Loop(() => {
+      self.update();
+    });
+
+    if (!self.isDeferred) self.loop.start(self.app);
+  }
+
+  manager(manager) {
+    manager.add('animation', this);
   }
 
   bridge = {
