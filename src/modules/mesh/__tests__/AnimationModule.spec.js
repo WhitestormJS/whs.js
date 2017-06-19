@@ -1,10 +1,12 @@
 import '../../../polyfill';
+
 import {Clock, AnimationMixer} from 'three';
 import {Box} from '../../../index';
 import {AnimationModule} from '../AnimationModule';
 
 const box = new Box();
 box.skeleton = ['skel'];
+
 box.geometry = {
   animations: ['anim']
 };
