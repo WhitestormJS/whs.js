@@ -13,6 +13,7 @@ export class AnimationModule {
   play(clipName) {
     const clip = AnimationClip.findByName(this.clips, clipName);
     const action = this.mixer.clipAction(clip);
+
     action.play();
   }
 
@@ -23,8 +24,10 @@ export class AnimationModule {
   bridge = {
     mesh(mesh, self) {
       mesh.geometry.skeleton = mesh.skeleton;
+
       self.mixer = new AnimationMixer(mesh.geometry);
       self.clips = mesh.geometry.animations;
+
       return mesh;
     }
   }
