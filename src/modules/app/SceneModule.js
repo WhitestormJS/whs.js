@@ -4,6 +4,7 @@ import {
 
 /**
  * @class SceneModule
+ * @category Modules/App
  * @param {Boolean} [willSceneBeReplaced=false] willSceneBeReplaced should be true only if you are going to overwrite scene dependency even without the use of default one.
  * @memberof module:modules/app
  */
