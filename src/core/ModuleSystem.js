@@ -124,7 +124,7 @@ export class ModuleSystem extends Events {
    * @return {Object} returns this - app/component
    * @throws {ManagerError}
    * @memberof module:core.ModuleSystem
-   * @example <caption>Piped modules</section>
+   * @example <caption>Piped modules</caption>
    * component
    *   .module(new Module1())
    *   .module(new Module2())
