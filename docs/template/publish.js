@@ -401,10 +401,22 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
 
   if (items && items.length) {
     var itemsNav = ""
+    var categories = {none: []};
 
     nav.push(buildNavHeading(itemHeading))
 
     items.forEach(function(item) {
+      if (itemHeading === "Classes" && item.category) {
+        var name = item.category.name;
+
+        if (!categories[name]) categories[name] = [item];
+        else categories[name].push(item);
+      } else {
+        categories.none.push(item);
+      }
+    });
+
+    var processItemEach = function(item) {
       var methods = find({ kind: "function", memberof: item.longname })
       var members = find({ kind: "member", memberof: item.longname })
       var displayName
@@ -449,7 +461,16 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
 
         itemsSeen[item.longname] = true
       }
-    })
+    };
+
+    categories.none.forEach(processItemEach);
+
+    for (let key in categories) {
+      if (key !== 'none') {
+        nav.push(buildNavHeading(key));
+        categories[key].forEach(processItemEach)
+      }
+    }
   }
 
   return nav
@@ -562,6 +583,8 @@ exports.publish = function(taffyData, opts, tutorials) {
 
   data().each(function (doclet) {
     doclet.attribs = ""
+
+    // console.log(doclet); // .category.name
 
     if (doclet.examples) {
       doclet.examples = doclet.examples.map(function(example) {

@@ -3,6 +3,7 @@ import {ModuleSystem} from './ModuleSystem';
 import {ModuleManager} from './ModuleManager';
 /**
  * @class App
+ * @category Core
  * @description This component is used to prepare a world scene, setup physics, camera, renderer and all other things that you usually do before making meshes.
  * @param {Array} [modules=[]] - Array of Modules
  * @extends ModuleSystem

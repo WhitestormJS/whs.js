@@ -2,6 +2,7 @@
 
 /**
  * @class ResizeModule
+ * @category Modules/App
  * @param {Object} [params={auto: true}] - If auto is set to true - resize will be triggered when container resizes
  * @memberof module:modules/app
  */
