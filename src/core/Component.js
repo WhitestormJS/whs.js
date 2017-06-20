@@ -1,4 +1,3 @@
-/** @module core/Component */
 import {extend, transformData} from '../utils/index';
 import {ModuleSystem} from './ModuleSystem';
 import {ModuleManager} from './ModuleManager';
@@ -9,7 +8,7 @@ import {ManagerError} from './errors';
  * @param {Object} [params] - The parameters object.
  * @param {Object} [instructions] - The instructions object.
  * @extends ModuleSystem
- * @memberof module:core/Component
+ * @memberof core
  */
 class Component extends ModuleSystem {
   /**

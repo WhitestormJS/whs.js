@@ -1,3 +1,9 @@
+/**
+ * @class DynamicGeometryModule
+ * @param {Object} [params={attributes: false}] - params
+ * @param {Boolean} [patchEvents=true]
+ * @memberof module:modules/mesh
+ */
 export class DynamicGeometryModule {
   constructor(params = {}) {
     this.params = Object.assign({
