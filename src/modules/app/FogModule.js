@@ -1,4 +1,3 @@
-/** @module modules/app/FogModule */
 import {
   FogExp2,
   Fog

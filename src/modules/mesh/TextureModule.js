@@ -9,6 +9,11 @@ import {
 
 const loader = new TextureLoader();
 
+/**
+ * @class TextureModule
+ * @param {Array} [textures] - array of texture objects
+ * @memberof module:modules/mesh
+ */
 export class TextureModule {
   static load(url) {
     return new TextureModule({url}).textures[0][1];

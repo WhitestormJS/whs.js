@@ -2,6 +2,12 @@ import {PerspectiveCamera as PerspectiveCameraNative} from 'three';
 import {CameraComponent} from '../../core/CameraComponent';
 import {system} from '../../polyfill';
 
+/**
+ * @class PerspectiveCamera
+ * @param {Object} [params] - The parameters object.
+ * @memberof module:components/cameras
+ * @extends CameraComponent
+ */
 class PerspectiveCamera extends CameraComponent {
   static defaults = {
     ...CameraComponent.defaults,

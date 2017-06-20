@@ -1,3 +1,4 @@
+/** @module modules/app */
 export * from './ElementModule';
 export * from './CameraModule';
 export * from './RenderingModule';
