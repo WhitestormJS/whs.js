@@ -371,7 +371,7 @@ function buildNav(members) {
 
   nav = nav.concat(buildMemberNav(members.tutorials, "Tutorials", seenTutorials, linktoTutorial))
   nav = nav.concat(buildMemberNav(members.classes, "Classes", seen, linkto))
-  nav = nav.concat(buildMemberNav(members.modules, "Modules", {}, linkto))
+  // nav = nav.concat(buildMemberNav(members.modules, "Modules", {}, linkto))
   nav = nav.concat(buildMemberNav(members.externals, "Externals", seen, linktoExternal))
   nav = nav.concat(buildMemberNav(members.events, "Events", seen, linkto))
   nav = nav.concat(buildMemberNav(members.namespaces, "Namespaces", seen, linkto))
