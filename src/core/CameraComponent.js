@@ -1,4 +1,3 @@
-/** @module core/CameraComponent */
 import {Component} from './Component';
 
 import {attributes, copy} from './prototype/attributes';
@@ -12,7 +11,7 @@ import {CompositionError} from './errors';
  * @param {Object} [params] - The parameters object.
  * @param {Object} [instructions] - The instructions object.
  * @extends Component
- * @memberof module:core/CameraComponent
+ * @memberof module:core
  */
 class CameraComponent extends Component {
   static defaults = {
