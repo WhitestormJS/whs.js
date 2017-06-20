@@ -107,9 +107,9 @@
 
             <?js if (params.hasDefault) {?>
                 <td class="default">
-                <?js if (typeof param.defaultvalue !== 'undefined') { ?>
+                <code><?js if (typeof param.defaultvalue !== 'undefined') { ?>
                     <?js= self.htmlsafe(param.defaultvalue) ?>
-                <?js } ?>
+                <?js } ?></code>
                 </td>
             <?js } ?>
 
