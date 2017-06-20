@@ -15,6 +15,7 @@ try {
 
 /**
  * @class ModuleSystem
+ * @category core
  * @description  Provides API for classes that will use Modules.<br/>
  * This class includes basic event system with those supported methods:
  * <pre>.on()</pre><pre>.off()</pre><pre>.emit()</pre>

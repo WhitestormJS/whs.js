@@ -3,6 +3,7 @@ import {LightComponent} from '../../core/LightComponent';
 
 /**
  * @class HemisphereLight
+ * @category components/lights
  * @description HemisphereLight is a light source positioned directly above the scene.<br/>
  * It also doesn't need position and target properties.
  * @param {Object} [params={light: {skyColor: 0xffffff, groundColor: 0xffffff, intensity: 1}}] - The params.
