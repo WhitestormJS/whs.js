@@ -10,7 +10,7 @@ import {EventsPatchModule} from './EventsPatchModule';
 
 /**
  * @class VirtualMouseModule
- * @category Modules/App
+ * @category modules/app
  * @param {Boolean} [globalMovement=false]
  * @param {Boolean} [patchEvents=true]
  * @memberof module:modules/app

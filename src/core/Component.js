@@ -5,7 +5,7 @@ import {ManagerError} from './errors';
 
 /**
  * @class Component
- * @category Core
+ * @category core
  * @param {Object} [params] - The parameters object.
  * @param {Object} [instructions] - The instructions object.
  * @extends ModuleSystem
