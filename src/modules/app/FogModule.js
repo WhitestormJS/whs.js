@@ -5,7 +5,7 @@ import {
 
 /**
  * @class FogModule
- * @category Modules/App
+ * @category modules/app
  * @param {Object} [params={color: 0xefd1b5, density: 0.020, near: 10, far: 1000}] - The parameters object.
  * @param {String} [type=exp2] - The type of fog - exp2 or linear
  * @memberof module:modules/app

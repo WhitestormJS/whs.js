@@ -402,15 +402,19 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
   if (items && items.length) {
     var itemsNav = ""
     var categories = {none: []};
+    var categoryLinks = {};
 
-    nav.push(buildNavHeading(itemHeading))
+    nav.push(buildNavHeading(itemHeading, false, true))
 
     items.forEach(function(item) {
       if (itemHeading === "Classes" && item.category) {
         var name = item.category.name;
 
-        if (!categories[name]) categories[name] = [item];
-        else categories[name].push(item);
+        if (!categories[name]) {
+          categories[name] = [item];
+          categoryLinks[name] = linktoFn(item.memberof, name);
+          console.log(item);
+        } else categories[name].push(item);
       } else {
         categories.none.push(item);
       }
@@ -446,6 +450,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         if (itemHeading === 'Tutorials') {
           nav.push(buildNavItem(linktoFn(item.longname, displayName)))
         } else {
+          console.log(item.longname);
           nav.push(buildNavHeading(buildNavType(item.kind, linktoFn(item.longname, displayName))))
         }
 
@@ -467,8 +472,9 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
 
     for (let key in categories) {
       if (key !== 'none') {
-        nav.push(buildNavHeading(key));
-        categories[key].forEach(processItemEach)
+        console.log(categoryLinks[key]);
+        nav.push(buildNavHeading(categoryLinks[key], true));
+        categories[key].forEach(processItemEach);
       }
     }
   }
@@ -507,9 +513,9 @@ function buildNavLink (linkClass, linkContent) {
  * @param {String} content navigation header content
  * @return {String}
  */
-function buildNavHeading (content) {
+function buildNavHeading (content, pad, margin) {
   return [
-    '<li class="nav-heading">',
+    '<li class="nav-heading ' + (pad ? 'pad ' : '') + (margin ? 'margin' : '')  + '">',
     content,
     '</li>'
   ].join('')
