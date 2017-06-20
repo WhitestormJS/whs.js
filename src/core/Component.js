@@ -8,12 +8,12 @@ import {ManagerError} from './errors';
  * @param {Object} [params] - The parameters object.
  * @param {Object} [instructions] - The instructions object.
  * @extends ModuleSystem
- * @memberof core
+ * @memberof module:core
  */
 class Component extends ModuleSystem {
   /**
    * Default values for parameters
-   * @member {Object} module:core/Component.Component#defaults
+   * @member {Object} module:core.Component#defaults
    * @static
    * @default {
      modules: [],
@@ -27,7 +27,7 @@ class Component extends ModuleSystem {
 
   /**
    * Static instructions
-   * @member {Object} module:core/Component.Component#instructions
+   * @member {Object} module:core.Component#instructions
    * @static
    * @default {}
    */
@@ -35,21 +35,21 @@ class Component extends ModuleSystem {
 
   /**
    * Array of promises that should be resolved before Component is ready.
-   * @member {Array} module:core/Component.Component#_wait
+   * @member {Array} module:core.Component#_wait
    * @private
    */
   _wait = []; // Collection of promises;
 
   /**
    * Collection of `modules`.
-   * @member {Array} module:core/Component.Component#modules
+   * @member {Array} module:core.Component#modules
    * @public
    */
   modules = []; // Collection of modules;
 
   /**
    * Collection of `child` Components.
-   * @member {Array} module:core/Component.Component#children
+   * @member {Array} module:core.Component#children
    * @public
    */
   children = []; // For keeping children components;
@@ -71,7 +71,7 @@ class Component extends ModuleSystem {
    * @description Wait for a promise.
    * @param {Promise} [promise] - The promise that should be added to a queue.
    * @return {Promise} Promise that is resolved when all promises completed.
-   * @memberof module:core/Component.Component
+   * @memberof module:core.Component
    */
   wait(promise) {
     if (promise) this._wait.push(promise);
@@ -82,7 +82,7 @@ class Component extends ModuleSystem {
    * @method defer
    * @description Execute `func` (Callback) when Component is ready.
    * @param {Function} func - Callback.
-   * @memberof module:core/Component.Component
+   * @memberof module:core.Component
    */
   defer(func) {
     if (this.isDeffered) this.wait().then(() => func(this));
@@ -95,7 +95,7 @@ class Component extends ModuleSystem {
    * @method updateParams
    * @description Updates parameters of the Component.
    * @return {Object} Params of this Component
-   * @memberof module:core/Component.Component
+   * @memberof module:core.Component
    */
   updateParams(params = {}) {
     this.params = extend(params, this.params);
@@ -108,7 +108,7 @@ class Component extends ModuleSystem {
    * @method clone
    * @description Clone this component
    * @return {object} a cloned component with all its source component' params copied.
-   * @memberof module:core/Component.Component
+   * @memberof module:core.Component
    */
   clone() {
     return new this.constructor(this.params).copy(this);
@@ -120,7 +120,7 @@ class Component extends ModuleSystem {
    * @param {Component} source - Source component that is used for `copy()` action.
    * @param {Function} [customize] - Callback executed before modules integration process.
    * @return {this} Component
-   * @memberof module:core/Component.Component
+   * @memberof module:core.Component
    */
   copy(source, customize) {
     this.params = {...source.params};
@@ -137,7 +137,7 @@ class Component extends ModuleSystem {
    * @description Add a child `Component`.
    * @param {Component} object - Component that should be added as a `child`.
    * @return {Promise} Resolved when action is done.
-   * @memberof module:core/Component.Component
+   * @memberof module:core.Component
    */
   add(object) {
     object.parent = this;
@@ -166,7 +166,7 @@ class Component extends ModuleSystem {
    * @method remove
    * @description Remove a child `Component`.
    * @param {Component} object - Component that should be a **child** of this Component.
-   * @memberof module:core/Component.Component
+   * @memberof module:core.Component
    */
   remove(object) {
     object.parent = null;
@@ -177,7 +177,7 @@ class Component extends ModuleSystem {
    * @method addTo
    * @description Adds `this` Component to specified `App`/`Component`.
    * @param {Component} object - Component that will be a parent of `this`.
-   * @memberof module:core/Component.Component
+   * @memberof module:core.Component
    */
   addTo(object) {
     return object.add(this);
@@ -185,7 +185,7 @@ class Component extends ModuleSystem {
 
   /**
    * Returns whether the object is `async` (`wait` promises are more than `0`).
-   * @member {Boolean} module:core/Component.Component#isDeffered
+   * @member {Boolean} module:core.Component#isDeffered
    */
   get isDeffered() {
     return this._wait.length > 0;
@@ -193,7 +193,7 @@ class Component extends ModuleSystem {
 
   /**
    * Returns the `ModuleManager` used for this component.
-   * @member {ModuleManager} module:core/Component.Component#manager
+   * @member {ModuleManager} module:core.Component#manager
    * @throws {ManagerError}
    */
   get manager() {
@@ -212,7 +212,7 @@ class Component extends ModuleSystem {
 
   /**
    * Returns the `native` object used for this component.
-   * @member {Object} module:core/Component.Component#native
+   * @member {Object} module:core.Component#native
    */
   get native() {
     return this._native;
