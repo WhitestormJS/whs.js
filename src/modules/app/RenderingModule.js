@@ -7,6 +7,7 @@ import {Loop} from '../../core/Loop';
 
 /**
  * @class RenderingModule
+ * @category modules/app
  * @param {Object} [params]
  * @memberof module:modules/app
  * @example <caption> Creating a rendering module and passing it to App's modules</caption>

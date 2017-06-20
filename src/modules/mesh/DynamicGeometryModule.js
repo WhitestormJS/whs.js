@@ -1,6 +1,6 @@
 /**
  * @class DynamicGeometryModule
- * @category Modules/Mesh
+ * @category modules/mesh
  * @param {Object} [params={attributes: false}] - params
  * @param {Boolean} [patchEvents=true]
  * @memberof module:modules/mesh

@@ -11,7 +11,7 @@ const loader = new TextureLoader();
 
 /**
  * @class TextureModule
- * @category Modules/Mesh
+ * @category modules/mesh
  * @description A TextureModule can be applied to any Mesh or Model.
  * @param {Array} [textures] - array of texture objects
  * @memberof module:modules/mesh
