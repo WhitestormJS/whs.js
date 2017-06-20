@@ -3,6 +3,7 @@ import {LightComponent} from '../../core/LightComponent';
 
 /**
  * @class DirectionalLight
+ * @category components/lights
  * @description DirectinalLight creates a light that shines from a specific direction not from a specific position.<br/><br/>
  * This light will behave as though it is infinitely far away and the rays produced from it are all parallel. <br/><br/>
  * The best analogy would be a light source that acts like the sun: the sun is so far away that all sunlight hitting objects comes from the same angle.<br/><br/>

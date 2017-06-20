@@ -4,6 +4,7 @@ import {system} from '../../polyfill';
 
 /**
  * @class PerspectiveCamera
+ * @category components/cameras
  * @param {Object} [params] - The parameters object.
  * @memberof module:components/cameras
  * @extends CameraComponent

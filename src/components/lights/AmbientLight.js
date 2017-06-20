@@ -3,6 +3,7 @@ import {LightComponent} from '../../core/LightComponent';
 
 /**
  * @class AmbientLight
+ * @category components/lights
  * @description AmbientLight is a simple class, it extends Light and inherits all its methods.
  * AmbientLight creates basic light around all scene, so it doesn't need properties like pos or target.
  * It supports only color and intensity as parameters, which defines the color of the surrounded light and intensity of light.

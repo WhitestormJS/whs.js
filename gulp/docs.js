@@ -13,7 +13,7 @@ gulp.task('docs', cb => {
     .pipe(less())
     .pipe(gulp.dest('./docs/public/styles/'));
 
-  gulp.src(['./docs/data/**/*', argv.all ? './src/**/*.js' : './src/core/Component.js'])
+  gulp.src(['./docs/data/**/*', !argv.all ? './src/**/*.js' : './src/core/Component.js'])
     .pipe(jsdoc(config, cb));
 });
 
