@@ -11,8 +11,32 @@ const loader = new TextureLoader();
 
 /**
  * @class TextureModule
+ * @description A TextureModule can be applied to any Mesh or Model.
  * @param {Array} [textures] - array of texture objects
  * @memberof module:modules/mesh
+ * @example <caption>Creating an instance. url takes a path, or a data object.</caption>
+ * var woodTexture = new TextureModule({
+ *   url: `${process.assetsPath}/textures/wood.jpg`
+ * });
+ * @example <caption>More comprehensive example, wood texture applied to a Box.</caption>
+ * const box = new Box({
+ *   geometry: {
+ *     width: 2,
+ *     height: 2,
+ *     depth: 2
+ *   },
+ *   modules: [
+ *     new TextureModule({
+ *       url: `${process.assetsPath}/textures/wood.jpg`,
+ *       repeat: new THREE.Vector2(1, 1) // optional
+ *     })
+ *   ],
+ *   material: new THREE.MeshBasicMaterial({
+ *     color: 0xffffff
+ *   }),
+ *   position: [50, 60, 70]
+ * });
+ * box.addTo(app);
  */
 export class TextureModule {
   static load(url) {
