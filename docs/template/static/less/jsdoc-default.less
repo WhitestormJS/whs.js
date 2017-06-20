@@ -32,6 +32,7 @@
 
 @nav_width: 25%;
 @middle_width: 50%;
+@sidebar_width: 30%;
 
 /** Container **/
 /** Readme  **/
@@ -205,7 +206,7 @@ section {
 }
 
 .main-doc {
-  width: @middle_width;
+  margin-right: @sidebar_width;
 }
 .variation {
 	display: none;
@@ -519,6 +520,7 @@ footer {
 	margin: 0;
 }
 .prettyprint {
+  background: #383C47;
 	font-size: 13px;
 	border: 1px solid #ddd;
 	border-radius: 3px;
@@ -540,6 +542,7 @@ footer {
 		}
 	}
 	>code {
+    background: #383C47;
 		padding: 15px;
 	}
 	.linenums {
