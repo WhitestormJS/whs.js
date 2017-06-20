@@ -8,6 +8,7 @@ import {CompositionError} from './errors';
 )
 /**
  * @class CameraComponent
+ * @category Core
  * @param {Object} [params] - The parameters object.
  * @param {Object} [instructions] - The instructions object.
  * @extends Component
