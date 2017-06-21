@@ -6,7 +6,47 @@ import {
 
 import {MeshComponent} from '../../core/MeshComponent';
 
+/**
+ * @class Box
+ * @category components/meshes
+ * @description As told on Component definition, while you can pass any of the inherited params for this component construction, you will need to
+ * pass specific parameters to build this mesh as a geometry object.
+ * @param {Object} [params] - The params.
+ * @extends MeshComponent
+ * @memberof module:components/meshes
+ * @example <caption>Creating a Box, and adding to app</caption>
+ *  new Box({
+ *    geometry: {
+ *      width: 2,
+ *      height: 2,
+ *      depth: 2
+ *    },
+ *
+ *    material: new THREE.MeshBasicMaterial({
+ *      color: 0xffffff
+ *    }),
+ *
+ *    position: [50, 60, 70]
+ * }).addTo(app);
+ */
 class Box extends MeshComponent {
+
+  /**
+   * Default values for parameters
+   * @member {Object} module:components/meshes.Box#defaults
+   * @static
+   * @default <pre>
+   * {
+   *   geometry: {
+   *     width: 1,
+   *     height: 1,
+   *     depth: 1,
+   *     widthSegments: 1,
+   *     heightSegments: 1,
+   *     depthSegments: 1
+   *   }
+   * }</pre>
+   */
   static defaults = {
     ...MeshComponent.defaults,
     geometry: {
@@ -19,6 +59,12 @@ class Box extends MeshComponent {
     }
   };
 
+  /**
+   * Instructions
+   * @member {Object} module:components/meshes.Box#instructions
+   * @static
+   * @default geometry: ['width', 'height', 'depth', 'widthSegments', 'heightSegments', 'depthSegements']
+   */
   static instructions = {
     ...MeshComponent.instructions,
     geometry: ['width', 'height', 'depth', 'widthSegments', 'heightSegments', 'depthSegements']
