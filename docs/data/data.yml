@@ -2,4 +2,9 @@ markdown:
   default: Welcome
   order:
     - Welcome
-    - Example
+    - Hello World!
+    - Loops & 3D Animation
+    - Groups
+    - 3D Transforms
+    - Usage with webpack
+    - Modules
