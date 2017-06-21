@@ -1,6 +1,12 @@
 # Welcome to whs.js docs!
 
+
 **whs.js** is a framework for 3D web apps built with Three.js technology.
+
+```bash
+# Install npm version
+$ npm install whs --save-dev
+```
 
 It implements a core with component system and plugin support for fast development of 3D scene with physics.
 
