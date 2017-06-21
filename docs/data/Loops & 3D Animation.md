@@ -1,7 +1,9 @@
 # Loops & 3D Animation
 
-[//]: # (TODO: Make a codepen with it)
-![](http://i.imgur.com/v7OaN9h.gif)
+<div class="embed" style="border-radius: 4px; overflow: hidden; height:400px;">
+  <iframe style="height: inherit; width: 100%;"  scrolling='no' title='Loops & 3D Animation' src='https://codepen.io/sasha240100/embed/mwmvBJ/?height=265&theme-id=dark&default-tab=result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='https://codepen.io/sasha240100/pen/mwmvBJ/'>Loops & 3D Animation</a> by Alexander Buzin (<a href='https://codepen.io/sasha240100'>@sasha240100</a>) on <a href='https://codepen.io'>CodePen</a>.
+  </iframe>
+</div>
 
 You don't need to write `animate()` function like you do in Three.js. The problem is that bigger you app become, the bigger your `animate()` function is.
 
