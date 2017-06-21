@@ -1,0 +1,5 @@
+markdown:
+  default: Welcome
+  order:
+    - Welcome
+    - Example
