@@ -71,6 +71,7 @@
     "happypack": "^3.0.3",
     "jest": "^19.0.2",
     "jest-babel": "^1.0.1",
+    "js-yaml": "^3.8.4",
     "jsdoc-babel": "^0.3.0",
     "less": "^2.7.2",
     "mdurl": "^1.0.1",

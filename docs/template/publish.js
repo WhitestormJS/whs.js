@@ -12,6 +12,10 @@ var taffy = require("taffydb").taffy
 var template = require("jsdoc/template")
 var util = require("util")
 var mdurl = require("mdurl")
+var yaml = require("js-yaml");
+var _path = require("path");
+
+var config = yaml.safeLoad(fs.readFileSync(_path.resolve(__dirname, '../data/data.yml'), 'utf8'));
 
 var htmlsafe = helper.htmlsafe
 
@@ -365,7 +369,7 @@ function buildNav(members) {
   if (members.titles.length > 0) nav.push('<li class="nav-heading">Pages</li>');
 
   members.titles.forEach(name => {
-    nav.push(buildNavLink(name, '<a href="' + (name === 'Welcome' ? 'index' : name) + '.html">' + name + '</a>'))
+    nav.push(buildNavLink(name, '<a href="' + (name === config.markdown.default ? 'index' : name) + '.html">' + name + '</a>'))
   });
   // nav.push(buildNavLink('examples', '<a href="examples.html">examples</a>'))
 
@@ -764,10 +768,11 @@ exports.publish = function(taffyData, opts, tutorials) {
 
   markdowns = markdowns.filter(s => s.indexOf('.md') > 0)
 
-  members.titles = [];
+  members.titles = config.markdown.order ? config.markdown.order : [];
 
   markdowns.forEach(path => {
-    members.titles.push(path.slice(path.lastIndexOf('/') + 1, path.indexOf('.md')));
+    var name = path.slice(path.lastIndexOf('/') + 1, path.indexOf('.md'));
+    if (members.titles.indexOf(name) === -1) members.titles.push(name);
   })
 
   view.nav = buildNav(members)
@@ -788,7 +793,7 @@ exports.publish = function(taffyData, opts, tutorials) {
           }
         ])
         .concat(files),
-      helper.getUniqueFilename(title === 'Welcome' ? 'index' : title)
+      helper.getUniqueFilename(title === config.markdown.default ? 'index' : title)
     )
   })
 
