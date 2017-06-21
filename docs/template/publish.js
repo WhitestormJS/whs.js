@@ -365,7 +365,7 @@ function buildNav(members) {
   if (members.titles.length > 0) nav.push('<li class="nav-heading">Pages</li>');
 
   members.titles.forEach(name => {
-    nav.push(buildNavLink(name, '<a href="' + name + '.html">' + name + '</a>'))
+    nav.push(buildNavLink(name, '<a href="' + (name === 'Welcome' ? 'index' : name) + '.html">' + name + '</a>'))
   });
   // nav.push(buildNavLink('examples', '<a href="examples.html">examples</a>'))
 
