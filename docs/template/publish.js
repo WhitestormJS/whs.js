@@ -717,7 +717,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
   // do this after the urls have all been generated
   data().each(function(doclet) {
-    doclet.ancestors = getAncestorLinks(doclet)
+    doclet.ancestors = getAncestorLinks(doclet).map(ancestor => ancestor.replace('</a>.', '</a>/'));
 
     if (doclet.kind === "member") {
       addSignatureTypes(doclet)
