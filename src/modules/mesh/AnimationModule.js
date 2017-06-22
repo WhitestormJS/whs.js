@@ -19,7 +19,7 @@ import {Loop} from '../../core/Loop';
  *   speed: 1.2 // speed up animation by 20%
  * });
  *
- * new WHS.Importer({
+ * new Importer({
  *   parser(geometry, materials) {
  *     // Override parse to generate a skinnedMesh, needed for skinned models
  *     return new THREE.SkinnedMesh(geometry, materials);
