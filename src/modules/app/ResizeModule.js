@@ -11,6 +11,8 @@ export class ResizeModule {
     this.params = Object.assign({
       auto: true
     }, params);
+
+    this.callbacks = [this.setSize.bind(this)];
   }
 
   /**
@@ -41,10 +43,12 @@ export class ResizeModule {
       resolution
     } = this;
 
-    this.setSize(
-      Number(offsetWidth * resolution.x).toFixed(),
-      Number(offsetHeight * resolution.y).toFixed()
-    );
+    const width = Number(offsetWidth * resolution.x).toFixed();
+    const height = Number(offsetHeight * resolution.y).toFixed();
+
+    this.callbacks.forEach(cb => {
+      cb(width, height);
+    });
   }
 
   addAutoresize() {
@@ -54,11 +58,17 @@ export class ResizeModule {
     if (this.params.auto) window.addEventListener('resize', this.trigger.bind(this));
   }
 
+  addCallback(func) {
+    this.callbacks.push(func);
+  }
+
   manager(manager) {
+    manager.define('resize');
+
     this.rendering = manager.get('renderer');
     this.camera = manager.get('camera');
 
-    this.getResolution = () => manager.get('renderer', true).params.resolution;
+    this.getResolution = () => manager.use('rendering').params.resolution;
     this.getContainer = () => manager.get('container');
 
     this.addAutoresize();
