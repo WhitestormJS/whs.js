@@ -11,11 +11,11 @@ const app = new WHS.App([
       z: 0
     },
   }),
-  new WHS.CameraModule({
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
     position: new THREE.Vector3(-8, 5, 20),
     fov: 45,
     far: 2000
-  }),
+  })),
   new WHS.RenderingModule({
     bgColor: 0xffffff,
 

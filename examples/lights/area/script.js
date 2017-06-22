@@ -3,14 +3,14 @@ import * as UTILS from '../../globals';
 const ad = UTILS.appDefaults;
 
 const controlsModule = new WHS.OrbitControlsModule();
-const cameraModule = new WHS.CameraModule({
+const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
   position: {
     z: 500,
     y: 400
   },
   far: 30000,
   near: 10
-});
+}));
 
 const world = new WHS.App([
   ...UTILS.appModules({

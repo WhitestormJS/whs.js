@@ -15,11 +15,11 @@ const colors = {
 const world = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
-  new WHS.CameraModule({
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
     position: new THREE.Vector3(0, 100, 400),
     far: 2000,
     near: 1
-  }),
+  })),
   new WHS.RenderingModule({
     bgColor: 0x2a3340,
 

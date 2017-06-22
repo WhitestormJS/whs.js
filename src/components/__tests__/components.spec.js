@@ -41,7 +41,7 @@ const cameras = [
 const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
-  new WHS.CameraModule()
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera())
 ]);
 
 app.start();
