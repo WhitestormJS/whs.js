@@ -62,14 +62,16 @@ export const appModules = ( // appModules(camera, rendering);
   physics = appDefaults.physics,
   useControls = true
 ) => (
-  new WHS.BasicAppPreset({camera, rendering})
-    .extend([
-      new PHYSICS.WorldModule(physics),
-      useControls ? new WHS.OrbitControlsModule() : null,
-      new StatsModule()
-    ])
-    .autoresize()
-    .get()
+  [
+    new WHS.ElementModule(),
+    new WHS.SceneModule(),
+    new WHS.DefineModule('camera', new WHS.PerspectiveCamera(camera)),
+    new WHS.RenderingModule(rendering),
+    new PHYSICS.WorldModule(physics),
+    useControls ? new WHS.OrbitControlsModule() : null,
+    new StatsModule(),
+    new WHS.ResizeModule()
+  ]
 );
 
 export const $colors = {
