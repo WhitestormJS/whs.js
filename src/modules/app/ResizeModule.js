@@ -17,9 +17,10 @@ export class ResizeModule {
 
   /**
    * @function setSize
+   * @instance
    * @description This function sets the provided width & height to the renderer object.
    * @param {Number} [width=1] - The promise that should be added to a queue.
-   * @return {Number} [height=1] - that is resolved when all promises completed.
+   * @param {Number} [height=1] - that is resolved when all promises completed.
    * @memberof module:modules/app.ResizeModule
    */
   setSize(width = 1, height = 1) {
@@ -31,7 +32,9 @@ export class ResizeModule {
 
   /**
    * @method trigger
+   * @instance
    * @description Triggers resize when called. width & height are determined automatically
+   * This invokes each callbacks with the new width and height as params
    * @memberof module:modules/app.ResizeModule
    */
   trigger() {
@@ -53,6 +56,7 @@ export class ResizeModule {
 
   /**
    * @method addAutoresize
+   * @instance
    * @description Sets module to autoresize, this adds an event listene on window resize to trigger the resize
    * @memberof module:modules/app.ResizeModule
    */
@@ -65,6 +69,7 @@ export class ResizeModule {
 
   /**
    * @method addCallback
+   * @instance
    * @description Adds a call back function to the existing callbacks list.
    * @param {Function} func - The callback function to add
    * @memberof module:modules/app.ResizeModule

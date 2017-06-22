@@ -51,6 +51,7 @@ export class AnimationModule {
 
   /**
    * @method play
+   * @instance
    * @description Plays the given clip name
    * @param {String} clipName - the clip to play
    * @memberof module:modules/mesh.AnimationModule
@@ -64,6 +65,7 @@ export class AnimationModule {
 
   /**
    * @method update
+   * @instance
    * @description Update the mixer (being called on frame animation loop)
    * @memberof module:modules/mesh.AnimationModule
    */
