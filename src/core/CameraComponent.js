@@ -81,6 +81,7 @@ class CameraComponent extends Component {
 
   /**
    * @method build
+   * @instance
    * @description Build livecycle should return a native object.
    * @throws {CompositionError}
    * @memberof module:core.CameraComponent
@@ -95,6 +96,7 @@ class CameraComponent extends Component {
 
   /**
    * @method wrap
+   * @instance
    * @description Wraps transforms (`position` & `rotation`)
    * @return {Promise} Resolved when action is completed
    * @memberof module:core.CameraComponent
@@ -114,6 +116,7 @@ class CameraComponent extends Component {
 
   /**
    * @method copy
+   * @instance
    * @description Copy source transforms & execute `Component.copy()`
    * @return {this} CameraComponent
    * @memberof module:core.CameraComponent
@@ -130,6 +133,7 @@ class CameraComponent extends Component {
 
   /**
    * @method clone
+   * @instance
    * @description Make a clone of this CameraComponent using `.copy()`
    * @return {CameraComponent} clone of this object
    * @memberof module:core.CameraComponent

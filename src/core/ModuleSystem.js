@@ -27,6 +27,7 @@ export class ModuleSystem extends Events {
 
   /**
    * @method integrateModules
+   * @instance
    * @description This method applies all modules from .modules collection.
    * @param {Object} [source] If source (should be a component) is provided, will replace .modules with source's one before executing modules.
    * @memberof module:core.ModuleSystem
@@ -44,6 +45,7 @@ export class ModuleSystem extends Events {
 
   /**
    * @method applyBridge
+   * @instance
    * @description Makes component-specific API to work with modules.
    * @param {Object} bridgeMap
    * @return {Object} Returns object with modified values.
@@ -68,6 +70,7 @@ export class ModuleSystem extends Events {
 
   /**
    * @method applyModule
+   * @instance
    * @description .applyModule is also used in .integrateModules() function.
    * It does exactly what its name says (applies module to component or app).
    * @param {Object} module the module to apply
@@ -103,6 +106,7 @@ export class ModuleSystem extends Events {
 
   /**
    * @method disposeModules
+   * @instance
    * @description Disposes of all modules
    * @memberof module:core.ModuleSystem
    */
@@ -113,6 +117,7 @@ export class ModuleSystem extends Events {
 
   /**
    * @method disposeModule
+   * @instance
    * @description Disposes of the given module
    * @param {Object} module the module to dispose
    * @return {Module} Returns module that was removed.
@@ -132,9 +137,10 @@ export class ModuleSystem extends Events {
 
   /**
    * @method module
+   * @instance
    * @description piped version of .applyModule().
    * @param {Object} module the module to apply
-   * @return {Object} returns this - app/component
+   * @return {this} returns this - app/component
    * @throws {ManagerError}
    * @memberof module:core.ModuleSystem
    * @example <caption>Piped modules</caption>
