@@ -41,7 +41,7 @@ export class ModuleManager {
   reset() {
     this.currentModule = null;
   }
-  
+
   /**
    * @method define
    * @description Define the module in manager
