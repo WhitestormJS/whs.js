@@ -101,11 +101,23 @@ export class ModuleSystem extends Events {
     if (!isAlreadyIncluded) return this.applyModule(getModule(), push);
   }
 
+  /**
+   * @method disposeModules
+   * @description Disposes of all modules
+   * @memberof module:core.ModuleSystem
+   */
   disposeModules() {
     while (this.modules.length)
       this.disposeModule(this.modules[0]);
   }
 
+  /**
+   * @method disposeModule
+   * @description Disposes of the given module
+   * @param {Object} module the module to dispose
+   * @return {Module} Returns module that was removed.
+   * @memberof module:core.ModuleSystem
+   */
   disposeModule(module) {
     if (!module) return;
 
