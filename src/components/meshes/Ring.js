@@ -6,7 +6,50 @@ import {
 
 import {MeshComponent} from '../../core/MeshComponent';
 
+/**
+ * @class Ring
+ * @category components/meshes
+ * @description Ring class creates a circle or just 2D Torus. Does not support physics.
+ * @param {Object} [params] - The params.
+ * @extends MeshComponent
+ * @memberof module:components/meshes
+ * @example <caption>Creating a Ring, and adding to app</caption>
+ * new Ring({
+ *   geometry: {
+ *     innerRadius: 5,
+ *     outerRadius: 2
+ *   },
+ *
+ *   material: new THREE.MeshLambertMaterial({
+ *     color: 0xffffff,
+ *     side THREE.DoubleSide
+ *   }),
+ *
+ *   position: [0, 8, 0],
+ *
+ *   rotation: {
+ *     x: Math.PI/4
+ *   }
+ * }).addTo(app);
+ */
 class Ring extends MeshComponent {
+  /**
+   * Default values for parameters
+   * @member {Object} module:components/meshes.Ring#defaults
+   * @static
+   * @default <pre>
+   * {
+   *   geometry: {
+   *     innerRadius: 0,
+   *     outerRadius: 50,
+   *     thetaSegments: 8,
+   *     phiSegments: 8,
+   *     thetaStart: 0,
+   *     thetaLength: Math.PI * 2
+   *   }
+   * }
+   * </pre>
+   */
   static defaults = {
     ...MeshComponent.defaults,
     geometry: {
@@ -19,7 +62,24 @@ class Ring extends MeshComponent {
     }
   };
 
-  static defaults = {
+  /**
+   * Instructions
+   * @member {Object} module:components/meshes.Ring#instructions
+   * @static
+   * @default <pre>
+   * {
+   *   geometry: [
+   *     'innerRadius',
+   *     'outerRadius',
+   *     'thetaSegments',
+   *     'phiSegments',
+   *     'thetaStart',
+   *     'thetaLength'
+   *   ]
+   * }
+   * </pre>
+   */
+  static instructions = {
     ...MeshComponent.defaults,
     geometry: [
       'innerRadius',
@@ -50,7 +110,7 @@ class Ring extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? RingBufferGeometry : RingGeometry;
+    const GConstruct = params.buffer ? RingBufferGeometry : RingGeometry;
 
     return new GConstruct(
       params.geometry.innerRadius,
