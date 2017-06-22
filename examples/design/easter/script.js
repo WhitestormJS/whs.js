@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new PHYSICS.WorldModule({
@@ -29,10 +29,12 @@ const world = new WHS.App([
   new WHS.ResizeModule()
 ]);
 
-// world.$camera.lookAt(new THREE.Vector3(0, 0, 0));
+const camera = app.manager.get('camera');
+
+// camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 // Start rendering.
-world.start();
+app.start();
 
 new WHS.Box({
   geometry: {
@@ -55,7 +57,7 @@ new WHS.Box({
     y: -1,
     z: 0
   }
-}).addTo(world);
+}).addTo(app);
 
 const egg = new WHS.Importer({
   url: `${process.assetsPath}/models/easter/egg_light.json`,
@@ -109,7 +111,7 @@ const rabbit = new WHS.Importer({
   scale: [0.5, 0.5, 0.5]
 });
 
-rabbit.addTo(world);
+rabbit.addTo(app);
 
 new WHS.SpotLight({
   light: {
@@ -147,22 +149,22 @@ new WHS.SpotLight({
     y: 0,
     z: 0
   }
-}).addTo(world);
+}).addTo(app);
 
 new WHS.AmbientLight({
   light: {
     intensity: 0.9,
     color: 0xffffff
   }
-}).addTo(world);
+}).addTo(app);
 
 let egg2, egg3, egg4, egg5, egg6, egg7, egg8, egg9;
 
-egg.addTo(world).then((object) => {
+egg.addTo(app).then((object) => {
   egg2 = object.clone(false, true);
   egg2.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg2.jpg`);
 
-  egg2.addTo(world).then((obj) => {
+  egg2.addTo(app).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(-8.5);
     obj.position.setZ(1.5);
@@ -171,7 +173,7 @@ egg.addTo(world).then((object) => {
   egg3 = object.clone(false, true);
   egg3.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg3.jpg`);
 
-  egg3.addTo(world).then((obj) => {
+  egg3.addTo(app).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(-8.5);
     obj.position.setZ(1.5);
@@ -180,7 +182,7 @@ egg.addTo(world).then((object) => {
   egg4 = object.clone(false, true);
   egg4.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg4.jpg`);
 
-  egg4.addTo(world).then((obj) => {
+  egg4.addTo(app).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(0);
     obj.position.setZ(-1.5);
@@ -189,7 +191,7 @@ egg.addTo(world).then((object) => {
   egg5 = object.clone(false, true);
   egg5.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg1.jpg`);
 
-  egg5.addTo(world).then((obj) => {
+  egg5.addTo(app).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(2);
     obj.position.setZ(2.5);
@@ -198,7 +200,7 @@ egg.addTo(world).then((object) => {
   egg6 = object.clone(false, true);
   egg6.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg2.jpg`);
 
-  egg6.addTo(world).then((obj) => {
+  egg6.addTo(app).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(0.5);
     obj.position.setZ(1.5);
@@ -207,7 +209,7 @@ egg.addTo(world).then((object) => {
   egg7 = object.clone(false, true);
   egg7.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg3.jpg`);
 
-  egg7.addTo(world).then((obj) => {
+  egg7.addTo(app).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(2);
     obj.position.setZ(-1.5);
@@ -216,7 +218,7 @@ egg.addTo(world).then((object) => {
   egg8 = object.clone(false, true);
   egg8.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg4.jpg`);
 
-  egg8.addTo(world).then((obj) => {
+  egg8.addTo(app).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(1);
     obj.position.setZ(2.5);
@@ -225,19 +227,19 @@ egg.addTo(world).then((object) => {
   egg9 = object.clone(false, true);
   egg9.material.map = WHS.TextureModule.load(`${process.assetsPath}/textures/easter/egg1.jpg`);
 
-  egg9.addTo(world).then((obj) => {
+  egg9.addTo(app).then((obj) => {
     obj.rotation.y = -Math.PI / 8;
     obj.position.setX(3);
     obj.position.setZ(-1.5);
   });
 });
 
-world.$camera.native.lookAt(new THREE.Vector3(-4, 0, 0));
+camera.native.lookAt(new THREE.Vector3(-4, 0, 0));
 
 document.body.addEventListener('mousemove', (e) => {
-  world.$camera.position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
-  world.$camera.position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
-  world.$camera.native.lookAt(new THREE.Vector3(-4, 0, 0));
+  camera.position.x = -8 + (e.screenX - window.innerWidth / 2) / 40;
+  camera.position.y = 5 + (e.screenY - window.innerHeight / 2) / 80;
+  camera.native.lookAt(new THREE.Vector3(-4, 0, 0));
 });
 
 document.body.addEventListener('click', () => {
