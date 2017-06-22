@@ -1,3 +1,15 @@
+/**
+ * @class ElementModule
+ * @category modules/app
+ * @param {Object} [params={container: document.body}] container is the DOM object to which application's canvas will be added to.
+ * @memberof module:modules/app
+ * @example <caption>Creating an element module, passing it to the App</caption>
+ * new App([
+ *   new ElementModule({
+ *     container: document.getElementById('app')
+ *   })
+ * ]);
+ */
 export class ElementModule {
   constructor(params = {}) {
     this.params = Object.assign({

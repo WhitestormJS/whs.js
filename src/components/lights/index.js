@@ -1,3 +1,4 @@
+/** @module components/lights */
 export * from './AmbientLight';
 export * from './DirectionalLight';
 export * from './HemisphereLight';

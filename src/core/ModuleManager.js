@@ -1,6 +1,13 @@
 import {createStore} from 'redux';
 import {DependencyError} from './errors';
 
+/**
+ * @class ModuleManager
+ * @category core
+ * @param {Object} object handler
+ * @description  Solves modules dependencies
+ * @memberof module:core
+ */
 export class ModuleManager {
   constructor(object) {
     this.handler = object;
@@ -16,28 +23,54 @@ export class ModuleManager {
     this.modules = {};
   }
 
-  // SETTING ACTIVE MODULE
-
+  /**
+   * @method active
+   * @description Sets .currentModule to provided module.
+   * @param {Object} module the module to make current
+   * @memberof module:core.ModuleManager
+   */
   active(module) {
     this.currentModule = module;
   }
 
+  /**
+   * @method reset
+   * @description Set's .currentModule to null.
+   * @memberof module:core.ModuleManager
+   */
   reset() {
     this.currentModule = null;
   }
-
-  // MODULES
-
+  
+  /**
+   * @method define
+   * @description Define the module in manager
+   * @param name The module name
+   * @memberof module:core.ModuleManager
+   */
   define(name) {
     this.modules[name] = this.currentModule;
   }
 
+  /**
+   * @method use
+   * @description Get the defined module from manager
+   * @param name The module name
+   * @memberof module:core.ModuleManager
+   */
   use(name) {
     return this.modules[name];
   }
 
-  // DEPENDENCIES
-
+  /**
+   * @method set
+   * @description An alias for .add() <br/><br/>
+   * Use this method if you know that you will overwrite existing dependency.<br/>
+   * Use it in your app, but not in module that you provide to other people.
+   * @param {String} key the key of the dependency
+   * @param {Object} value the value of the dependency
+   * @memberof module:core.ModuleManager
+   */
   set(key, data) {
     this.store.dispatch({
       type: 'ADD',
@@ -46,6 +79,17 @@ export class ModuleManager {
     });
   }
 
+  /**
+   * @method get
+   * @description Returns dependency in store object, by key.
+   * @param {String} key the key of the dependency
+   * @param {Boolean} [getModule=false]
+   * @memberof module:core.ModuleManager
+   * @return {Object|Module}
+   * @throws DependencyError if dependency is not in the store
+   * @example <caption>Get the 'hello' dependency</caption>
+   * manager.get('hello'); // -> {world: true}
+   */
   get(key) {
     if (!this.store.getState()[0][key]) {
       throw new DependencyError(
@@ -58,10 +102,25 @@ export class ModuleManager {
     return this.store.getState()[0][key];
   }
 
+  /**
+   * @method has
+   * @description Returns whether manager has a dependency with the given key
+   * @param {String} key the key of the dependency
+   * @memberof module:core.ModuleManager
+   * @return {Boolean} Promise that is resolved when all promises completed.
+   * @example <caption>Check whether the store has the 'hello' dependency</caption>
+   * manager.has('hello'); // -> true
+   */
   has(key) {
     return Boolean(this.store.getState()[0][key]);
   }
 
+  /**
+   * @method update
+   * @description Updates deps
+   * @param {Object} [depsMap={}]
+   * @memberof module:core.ModuleManager
+   */
   update(depsMap = {}) {
     this.store.subscribe(() => {
       const [data, changedKey] = this.store.getState();

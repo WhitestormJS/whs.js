@@ -8,7 +8,40 @@ import {
 
 import {MeshComponent} from '../../core/MeshComponent';
 
+/**
+ * @class Line
+ * @category components/meshes
+ * @description Line component is generated from a curve/line and amount of vectors that should be used (points).
+ * @param {Object} [params] - The params.
+ * @extends MeshComponent
+ * @memberof module:components/meshes
+ * @example <caption>Creating a Line, and adding to app</caption>
+ * new Line({
+ *   geometry: {
+ *     curve: new THREE.LineCurve3(new THREE.Vector3(10, 10, 0), new THREE.Vector3(10, 30, 0))
+ *   },
+ *
+ *   material: new THREE.MeshBasicMaterial({
+ *     color: 0xffffff
+ *   })
+ * }).addTo(app);
+ */
 class Line extends MeshComponent {
+  /**
+   * Default values for parameters
+   * @member {Object} module:components/meshes.Line#defaults
+   * @static
+   * @default <pre>
+   * {
+   *   geometry: {
+   *     curve: false,
+   *     points: 50,
+   *     start: new Vector3(0, 0, 0),
+   *     end: new Vector3(10, 0, 0)
+   *   }
+   * }
+   * </pre>
+   */
   static defaults = {
     ...MeshComponent.defaults,
     geometry: {
@@ -19,6 +52,15 @@ class Line extends MeshComponent {
     }
   };
 
+  /**
+   * Instructions
+   * @member {Object} module:components/meshes.Line#instructions
+   * @static
+   * @default <pre>{
+   *   geometry: ['curve', 'points']
+   * }
+   * </pre>
+   */
   static instructions = {
     ...MeshComponent.instructions,
     geometry: ['curve', 'points']

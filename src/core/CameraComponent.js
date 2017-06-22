@@ -6,6 +6,14 @@ import {CompositionError} from './errors';
 @attributes(
   copy('position', 'rotation', 'quaternion', 'target')
 )
+/**
+ * @class CameraComponent
+ * @category core
+ * @param {Object} [params] - The parameters object.
+ * @param {Object} [instructions] - The instructions object.
+ * @extends Component
+ * @memberof module:core
+ */
 class CameraComponent extends Component {
   static defaults = {
     ...Component.defaults,
@@ -48,6 +56,12 @@ class CameraComponent extends Component {
 
   // BUILDING & WRAPPING
 
+  /**
+   * @method build
+   * @description Build livecycle should return a native object.
+   * @throws {CompositionError}
+   * @memberof module:core/CameraComponent.CameraComponent
+   */
   build() {
     throw new CompositionError(
       'CameraComponent',
@@ -56,6 +70,12 @@ class CameraComponent extends Component {
     );
   }
 
+  /**
+   * @method wrap
+   * @description Wraps transforms (`position` & `rotation`)
+   * @return {Promise} Resolved when action is completed
+   * @memberof module:core/CameraComponent.CameraComponent
+   */
   wrap() {
     return new Promise(resolve => {
       this.defer(() => {
@@ -69,8 +89,12 @@ class CameraComponent extends Component {
     });
   }
 
-  // COPYING & CLONING
-
+  /**
+   * @method copy
+   * @description Copy source transforms & execute `Component.copy()`
+   * @return {this} CameraComponent
+   * @memberof module:core/CameraComponent.CameraComponent
+   */
   copy(source) {
     return super.copy(source, () => {
       if (this.target) this.target.copy(source.target());
@@ -81,6 +105,12 @@ class CameraComponent extends Component {
     });
   }
 
+  /**
+   * @method clone
+   * @description Make a clone of this CameraComponent using `.copy()`
+   * @return {CameraComponent} clone of this object
+   * @memberof module:core/CameraComponent.CameraComponent
+   */
   clone() {
     return new this.constructor({build: false}).copy(this);
   }
