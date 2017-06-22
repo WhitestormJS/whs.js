@@ -1,3 +1,4 @@
+/** @module components/meshes */
 export * from './Box';
 export * from './Cylinder';
 export * from './Dodecahedron';

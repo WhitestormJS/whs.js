@@ -8,6 +8,14 @@ import {
 import Events from 'minivents';
 import {EventsPatchModule} from './EventsPatchModule';
 
+/**
+ * @class VirtualMouseModule
+ * @category modules/app
+ * @param {Boolean} [globalMovement=false]
+ * @param {Boolean} [patchEvents=true]
+ * @memberof module:modules/app
+ * @extends Events
+ */
 export class VirtualMouseModule extends Events {
   mouse = new Vector2();
   raycaster = new Raycaster();
