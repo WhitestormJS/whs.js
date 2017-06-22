@@ -51,6 +51,11 @@ export class ResizeModule {
     });
   }
 
+  /**
+   * @method addAutoresize
+   * @description Sets module to autoresize, this adds an event listene on window resize to trigger the resize
+   * @memberof module:modules/app.ResizeModule
+   */
   addAutoresize() {
     this.container = this.getContainer();
     this.resolution = this.getResolution();
@@ -58,6 +63,12 @@ export class ResizeModule {
     if (this.params.auto) window.addEventListener('resize', this.trigger.bind(this));
   }
 
+  /**
+   * @method addCallback
+   * @description Adds a call back function to the existing callbacks list.
+   * @param {Function} func - The callback function to add
+   * @memberof module:modules/app.ResizeModule
+   */
   addCallback(func) {
     this.callbacks.push(func);
   }
