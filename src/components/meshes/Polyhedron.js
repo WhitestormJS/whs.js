@@ -32,7 +32,7 @@ const [verticesOfCube, indicesOfFaces] = [
  * @extends MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating an Polyhedron, and adding to app</caption>
- * const polyhedron = new Polyhedron({
+ * new Polyhedron({
  *   geometry: {
  *     radius: 2,
  *     detail: 1
