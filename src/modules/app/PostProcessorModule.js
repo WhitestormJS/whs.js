@@ -1,158 +1,125 @@
 import {
-  LinearFilter,
-  RGBAFormat,
-  WebGLRenderTarget
-} from 'three';
+  EffectComposer,
+  RenderPass,
+  ShaderPass
+} from 'postprocessing';
 
-import {CopyShader} from '../../extras/shader/CopyShader';
-import {ShaderPass} from '../../extras/pass/ShaderPass';
-import {RenderPass} from '../../extras/pass/RenderPass';
-import {MaskPass, ClearMaskPass} from '../../extras/pass/MaskPass';
 import {Loop} from '../../core/Loop';
 
-// TODO: Rewrite deprecated API
+const polyfill = (object, method, showWarn = true) => {
+  if (object[method]) return;
+  if (showWarn) console.warn(`@PostProcessorModule: pass.${method}() was not found.`, object);
+  object[method] = () => {};
+};
+
 export class PostProcessorModule {
-  renderTargetA = null;
-  renderTargetB = null;
+  currentPass = null;
 
-  writeBuffer = null;
-  readBuffer = null;
+  defer = new Promise(resolve => {
+    this.resolve = resolve;
+  });
 
-  passes = [];
-  copyPass = new ShaderPass(CopyShader);
-
-  constructor() {
-    this.params = {};
+  constructor({debug} = {debug: true}) {
+    this.debug = debug;
   }
 
   manager(manager) {
+    manager.define('postprocessor');
+
+    this.effects = manager.use('rendering').effects;
     this.renderer = manager.get('renderer');
     this.scene = manager.get('scene');
     this.camera = manager.get('camera');
-    this.oldLoop = manager.get('renderer', true).renderLoop;
-    this.renderLoop = new Loop(clock => this.render(clock.getDelta()));
-    this.configure();
-  }
 
-  integrate(self) {
-    self.oldLoop.stop(this);
-    self.renderLoop.start(this);
-  }
+    this.composer = new EffectComposer(this.renderer);
 
-  configure() {
-    const size = this.renderer.getSize();
+    manager.use('rendering').stop();
 
-    // TODO: Remove "THREE." declaration.
-    this.renderTargetA = new WebGLRenderTarget(
-      size.width,
-      size.height,
-      {
-        minFilter: LinearFilter,
-        magFilter: LinearFilter,
-        format: RGBAFormat,
-        stencilBuffer: false
+    const composer = this.composer;
+    this.renderLoop = new Loop(clock => composer.render(clock.getDelta())).start(manager.handler);
+
+    manager.update({
+      renderer: renderer => {
+        this.composer.replaceRenderer(renderer);
+      },
+
+      scene: scene => {
+        this.scene = scene;
+      },
+
+      camera: camera => {
+        this.camera = camera;
       }
-    );
+    });
 
-    this.renderTargetB = this.renderTargetA.clone();
-    this.writeBuffer = this.renderTargetA;
-    this.readBuffer = this.renderTargetB;
+    this.resolve();
   }
 
-  swapBuffers() {
-    const tmp = this.readBuffer;
-    this.readBuffer = this.writeBuffer;
-    this.writeBuffer = tmp;
+  render() {
+    this.defer.then(() => {
+      const pass = new RenderPass(this.scene, this.camera.native);
+
+      // TODO: Support for effects.
+
+      this.composer.addPass(pass);
+      this.currentPass = pass;
+    });
+
+    return this;
   }
 
-  addPass(pass) {
-    if (!pass) return;
-    const size = this.renderer ? this.renderer.getSize() : {width: 0, height: 0};
-    pass.setSize(size.width, size.height);
-    this.passes.push(pass);
+  // API
+
+  pass(pass) {
+    this.defer.then(() => {
+      polyfill(pass, 'setSize', this.debug);
+      polyfill(pass, 'initialise', this.debug);
+
+      this.composer.addPass(pass);
+      this.currentPass = pass;
+    });
+
+    return this;
   }
 
-  getPass(name) {
-    return this.passes.filter(v => v.name === name)[0];
+  shader(material, textureID = 'readBuffer') {
+    this.defer.then(() => {
+      if (!material.uniforms[textureID])
+        material.uniforms[textureID] = {value: null};
+
+      const pass = new ShaderPass(material, textureID);
+      this.composer.addPass(pass);
+      this.currentPass = pass;
+    });
+
+    return this;
   }
 
-  getPassIndex(passIndicator) {
-    const passName = typeof passIndicator === 'string' ? passIndicator : passIndicator.name;
-    return this.passes.indexOf(this.getPass(passName));
+  // Pass API
+
+  get(name) {
+    return name
+      ? this.composer.passes.filter(pass => pass.name === name)[0]
+      : this.currentPass;
   }
 
-  addPassAfter(previousPassIndicator, pass) {
-    if (!pass) return;
-    let index = this.getPassIndex(previousPassIndicator);
-    index = index < 0 ? 0 : index + 1;
-    this.insertPass(pass, index);
+  to(name) {
+    this.currentPass = name;
   }
 
-  insertPass(pass, index) {
-    if (pass) this.passes.splice(index, 0, pass);
+  renderToScreen(bool = true) {
+    this.defer.then(() => {
+      this.currentPass.renderToScreen = bool;
+    });
+
+    return this;
   }
 
-  removePass(passIndicator) {
-    const index = this.getPassIndex(passIndicator);
-    if (index > -1) this.passes.splice(index, 1);
-  }
+  name(name) {
+    this.defer.then(() => {
+      this.currentPass.name = name;
+    });
 
-  createRenderPass(renderToScreen = false) {
-    if (this.scene && this.camera) {
-      const pass = new RenderPass('renderscene', this.scene, this.camera.native);
-      pass.renderToScreen = renderToScreen;
-      this.addPass(pass);
-    }
-  }
-
-  render(delta) {
-    for (let i = 0, il = this.passes.length, pass, maskActive = false; i < il; i++) {
-      pass = this.passes[i];
-
-      if (pass.enabled === false) continue;
-
-      pass.render(this.renderer, this.writeBuffer, this.readBuffer, delta, maskActive);
-
-      if (pass.needsSwap) {
-        if (maskActive) {
-          const context = this.renderer.context;
-
-          context.stencilFunc(context.NOTEQUAL, 1, 0xffffffff);
-          this.copyPass.render(this.renderer, this.writeBuffer, this.readBuffer, delta);
-          context.stencilFunc(context.EQUAL, 1, 0xffffffff);
-        }
-
-        this.swapBuffers();
-      }
-
-      if (MaskPass !== undefined) {
-        if (pass instanceof MaskPass) maskActive = true;
-        else if (pass instanceof ClearMaskPass) maskActive = false;
-      }
-    }
-  }
-
-  reset(renderTarget) {
-    if (renderTarget === undefined) {
-      const size = this.renderer.getSize();
-
-      renderTarget = this.renderTarget1.clone();
-      renderTarget.setSize(size.width, size.height);
-    }
-
-    this.renderTarget1.dispose();
-    this.renderTarget2.dispose();
-    this.renderTarget1 = renderTarget;
-    this.$renderTarget2 = renderTarget.clone();
-
-    this.writeBuffer = this.renderTarget1;
-    this.readBuffer = this.$renderTarget2;
-  }
-
-  setSize(width, height) {
-    this.renderTarget1.setSize(width, height);
-    this.renderTarget2.setSize(width, height);
-
-    for (let i = 0; i < this.passes.length; i++) this.passes[i].setSize(width, height);
+    return this;
   }
 }

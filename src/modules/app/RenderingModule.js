@@ -37,6 +37,12 @@ export class RenderingModule {
     }
   }
 
+  enabled = true;
+
+  defer = new Promise(resolve => {
+    this.resolve = resolve;
+  });
+
   constructor(params = {}, {shadow: isShadow} = {shadow: false}) {
     this.params = Object.assign({
       width: window.innerWidth,
@@ -62,6 +68,7 @@ export class RenderingModule {
     } = this.params;
 
     this.renderer = new WebGLRenderer(renderer);
+    this.effects = [];
     this.applyAdditional('shadow', isShadow);
 
     this.renderer.setClearColor(
@@ -91,6 +98,22 @@ export class RenderingModule {
     return this.renderLoop;
   }
 
+  effect(effect, cb) {
+    this.defer.then(() => {
+      this.renderLoop.stop();
+
+      const size = this.renderer.getSize();
+      effect.setSize(size.width, size.height);
+
+      const loop = new Loop(cb ? cb : () => {
+        effect.render(this.scene, this.camera);
+      });
+
+      this.effects.push(loop);
+      if (this.enabled) loop.start(this.app);
+    });
+  }
+
   /**
    * @method setSize
    * @description Update render target width and height.
@@ -112,14 +135,22 @@ export class RenderingModule {
   }
 
   stop() {
+    this.enabled = false;
     this.renderLoop.stop();
+    this.effects.forEach(loop => loop.stop());
   }
 
   play() {
     this.renderLoop.start();
+    this.effects.forEach(loop => loop.start());
   }
 
   manager(manager) {
+    manager.define('rendering');
+    manager.set('renderer', this.renderer);
+
+    this.app = manager.handler;
+
     this.renderLoop = this.integrateRenderer(
       manager.get('element'),
       manager.get('scene'),
@@ -138,15 +169,17 @@ export class RenderingModule {
       }
     });
 
-    manager.add('renderer', this.renderer, {alias: '$rendering'});
+    this.resolve();
   }
 
   integrate(self) {
     self.renderLoop.start(this);
+    self.effects.forEach(loop => loop.start(this));
   }
 
   dispose(self) {
     self.renderLoop.stop(this);
+    self.effects.forEach(loop => loop.stop(this));
     self.renderer.forceContextLoss();
   }
 }
