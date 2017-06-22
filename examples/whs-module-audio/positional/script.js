@@ -2,7 +2,7 @@ import * as UTILS from '../../globals';
 
 const controlsModule = new WHS.OrbitControlsModule();
 
-const cameraModule = new WHS.CameraModule({
+const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
   position: {
     z: 250,
     y: 100
@@ -10,7 +10,7 @@ const cameraModule = new WHS.CameraModule({
 
   far: 30000,
   near: 1
-});
+}));
 
 const world = new WHS.App([
   ...UTILS.appModules({

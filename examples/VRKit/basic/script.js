@@ -5,7 +5,7 @@ const postprocessor = new WHS.PostProcessorModule();
 const world = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
-  new WHS.CameraModule(UTILS.appDefaults.camera),
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera(UTILS.appDefaults.camera)),
   new WHS.RenderingModule(UTILS.appDefaults.rendering, {
     shadow: true
   }),
