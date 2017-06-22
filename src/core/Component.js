@@ -17,9 +17,9 @@ class Component extends ModuleSystem {
    * @member {Object} module:core.Component#defaults
    * @static
    * @default {
-     modules: [],
-     manager: true
-   }
+   *   modules: [],
+   *   manager: true
+   * }
    */
   static defaults = {
     modules: [],

@@ -15,6 +15,18 @@ import {CompositionError} from './errors';
  * @memberof module:core
  */
 class CameraComponent extends Component {
+  /**
+   * Default values for parameters
+   * @member {Object} module:core.CameraComponent#defaults
+   * @static
+   * @default
+   * {
+   *   build: true,
+   *
+   *   position: {x: 0, y: 0, z: 0},
+   *   rotation: {x: 0, y: 0, z: 0}
+   * }
+   */
   static defaults = {
     ...Component.defaults,
 
@@ -24,6 +36,17 @@ class CameraComponent extends Component {
     rotation: {x: 0, y: 0, z: 0}
   };
 
+  /**
+   * Static instructions
+   * @member {Object} module:core.CameraComponent#instructions
+   * @static
+   * @default
+   * {
+   *   position: ['x', 'y', 'z'],
+   *   rotation: ['x', 'y', 'z'],
+   *   scale: ['x', 'y', 'z']
+   * }
+   */
   static instructions = {
     position: ['x', 'y', 'z'],
     rotation: ['x', 'y', 'z'],
@@ -60,7 +83,7 @@ class CameraComponent extends Component {
    * @method build
    * @description Build livecycle should return a native object.
    * @throws {CompositionError}
-   * @memberof module:core/CameraComponent.CameraComponent
+   * @memberof module:core.CameraComponent
    */
   build() {
     throw new CompositionError(
@@ -74,7 +97,7 @@ class CameraComponent extends Component {
    * @method wrap
    * @description Wraps transforms (`position` & `rotation`)
    * @return {Promise} Resolved when action is completed
-   * @memberof module:core/CameraComponent.CameraComponent
+   * @memberof module:core.CameraComponent
    */
   wrap() {
     return new Promise(resolve => {
@@ -93,7 +116,7 @@ class CameraComponent extends Component {
    * @method copy
    * @description Copy source transforms & execute `Component.copy()`
    * @return {this} CameraComponent
-   * @memberof module:core/CameraComponent.CameraComponent
+   * @memberof module:core.CameraComponent
    */
   copy(source) {
     return super.copy(source, () => {
@@ -109,7 +132,7 @@ class CameraComponent extends Component {
    * @method clone
    * @description Make a clone of this CameraComponent using `.copy()`
    * @return {CameraComponent} clone of this object
-   * @memberof module:core/CameraComponent.CameraComponent
+   * @memberof module:core.CameraComponent
    */
   clone() {
     return new this.constructor({build: false}).copy(this);
