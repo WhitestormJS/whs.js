@@ -1,4 +1,5 @@
 import {Importer} from './components/meshes/Importer';
+import {PerspectiveCamera} from './components/cameras/PerspectiveCamera';
 
 export class Model extends Importer {
   constructor(params, ...additional) {
@@ -10,5 +11,20 @@ export class Model extends Importer {
     }
 
     super(params, ...additional);
+  }
+}
+
+export class CameraModule {
+  constructor(params = {}) {
+    console.warn('CameraModule is deprecated. Use DefineModule instead.');
+    this.camera = new PerspectiveCamera(params);
+  }
+
+  integrate(self) {
+    this.add(self.camera);
+  }
+
+  manager(manager) {
+    manager.add('camera', this.camera);
   }
 }
