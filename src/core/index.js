@@ -1,3 +1,4 @@
+/** @module core */
 export * from './Component';
 export * from './MeshComponent';
 export * from './LightComponent';

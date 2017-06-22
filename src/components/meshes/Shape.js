@@ -6,7 +6,49 @@ import {
 
 import {MeshComponent} from '../../core/MeshComponent';
 
+/**
+ * @class Shape
+ * @category components/meshes
+ * @description Shape is a universal class. It allows you to create different 2D shapes in 3D scene.<br/>
+ * Unfortunately, not all of them support physics, an alternative is to make a similar 3D object and scale its width down to near zero.
+ * <br/><br/>
+ * `Shape` consists of shapes that are in its shapes parameter.
+ * @param {Object} [params] - The params.
+ * @extends MeshComponent
+ * @memberof module:components/meshes
+ * @example <caption>Creating a plane looking Shape from a THREE.Shape, and adding it to app</caption>
+ * const rectWidth = 10,
+ * rectLength = 5;
+ *
+ * const rectShape = new THREE.Shape();
+ * rectShape.moveTo(0,0);
+ * rectShape.lineTo(0, rectWidth);
+ * rectShape.lineTo(rectLength, rectWidth);
+ * rectShape.lineTo(rectLength, 0);
+ * rectShape.lineTo(0, 0);
+ *
+ * const plane = new Shape({
+ *   geometry: {
+ *     shape: rectShape
+ *   },
+ *
+ *   material: new THREE.MeshBasicMaterial({
+ *     color: 0xffffff
+ *   })
+ * }).addTo(app);
+ */
 class Shape extends MeshComponent {
+  /**
+   * Default values for parameters
+   * @member {Object} module:components/meshes.Shape#defaults
+   * @static
+   * @default <pre>
+   * {
+   *   geometry: {
+   *     shapes: []
+   * }
+   * </pre>
+   */
   static defaults = {
     ...MeshComponent.defaults,
     geometry: {
@@ -14,6 +56,16 @@ class Shape extends MeshComponent {
     }
   };
 
+  /**
+   * Instructions
+   * @member {Object} module:components/meshes.Shape#instructions
+   * @static
+   * @default <pre>
+   * {
+   *   geometry: ['shapes']
+   * }
+   * </pre>
+   */
   static instructions = {
     ...MeshComponent.instructions,
     geometry: ['shapes']
@@ -38,7 +90,7 @@ class Shape extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? ShapeBufferGeometry : ShapeGeometry;
+    const GConstruct = params.buffer ? ShapeBufferGeometry : ShapeGeometry;
 
     return new GConstruct(
       params.geometry.shapes

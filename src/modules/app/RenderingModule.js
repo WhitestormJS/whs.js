@@ -5,6 +5,31 @@ import {
 
 import {Loop} from '../../core/Loop';
 
+/**
+ * @class RenderingModule
+ * @category modules/app
+ * @param {Object} [params]
+ * @memberof module:modules/app
+ * @example <caption> Creating a rendering module and passing it to App's modules</caption>
+ * new App([
+ *   new ElementModule(),
+ *   new SceneModule(),
+ *   new CameraModule({
+ *     position: new THREE.Vector3(0, 6, 18),
+ *     far: 10000
+ *   }),
+ *   new RenderingModule({
+ *     bgColor: 0x162129,
+ *
+ *     renderer: {
+ *       antialias: true,
+ *       shadowmap: {
+ *         type: THREE.PCFSoftShadowMap
+ *       }
+ *     }
+ *   }, {shadow: true})
+ * ]);
+ */
 export class RenderingModule {
   static additional = {
     shadow(renderer) {
@@ -89,6 +114,13 @@ export class RenderingModule {
     });
   }
 
+  /**
+   * @method setSize
+   * @description Update render target width and height.
+   * @param {Number} width
+   * @param {Number} height
+   * @memberof module:modules/app.RenderingModule
+   */
   setSize(width, height) {
     if (this.renderer) this.renderer.setSize(width, height);
   }
