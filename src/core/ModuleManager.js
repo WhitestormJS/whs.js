@@ -1,3 +1,4 @@
+import {createStore} from 'redux';
 import {DependencyError} from './errors';
 
 /**
@@ -11,11 +12,16 @@ export class ModuleManager {
   constructor(object) {
     this.handler = object;
     this.currentModule = null;
-    this.store = {};
-    this.updateMap = {};
-  }
 
-  // SETTING ACTIVE MODULE
+    this.store = createStore((state = [{}, ''], action) => {
+      state[0][action.key] = action.data;
+      state[1] = action.key;
+
+      return state;
+    });
+
+    this.modules = {};
+  }
 
   /**
    * @method active
@@ -35,79 +41,42 @@ export class ModuleManager {
   reset() {
     this.currentModule = null;
   }
-
-  // DEPENDENCIES
-
+  
   /**
-   * @method update
-   * @description Updates deps
-   * @param {Object} [depsMap={}]
+   * @method define
+   * @description Define the module in manager
+   * @param name The module name
    * @memberof module:core.ModuleManager
    */
-  update(depsMap = {}) {
-    for (const key in depsMap) {
-      if (this.updateMap[key])
-        this.updateMap[key].push(depsMap[key]);
-      else
-        this.updateMap[key] = [depsMap[key]];
-    }
+  define(name) {
+    this.modules[name] = this.currentModule;
   }
 
   /**
-   * @method add
-   * @description Adds dependency to .store collection.
+   * @method use
+   * @description Get the defined module from manager
+   * @param name The module name
+   * @memberof module:core.ModuleManager
+   */
+  use(name) {
+    return this.modules[name];
+  }
+
+  /**
+   * @method set
+   * @description An alias for .add() <br/><br/>
+   * Use this method if you know that you will overwrite existing dependency.<br/>
+   * Use it in your app, but not in module that you provide to other people.
    * @param {String} key the key of the dependency
-   * @param {Object} object
-   * @param {Object} [config]
+   * @param {Object} value the value of the dependency
    * @memberof module:core.ModuleManager
-   * @example <caption>Adding config to as 'hello'</caption>
-   * manager.add('hello', {world: true});
    */
-  add(key, object, config = {}) {
-    if (this.store[key] && this.store[key][2].immutable) {
-      throw new DependencyError(
-        'ModuleManager',
-        `Dependency '${key}' is immutable and already used by another module`,
-        this.currentModule, this.store[key][1]
-      );
-    }
-
-    this.store[key] = [object, this.currentModule, config];
-
-    if (config.alias) {
-      Object.defineProperty(this.handler, config.alias, {
-        get: () => {
-          return this.store[key][0];
-        },
-        set: value => {
-          if (this.store[key] && this.store[key][2].immutable) {
-            throw new DependencyError(
-              'ModuleManager',
-              `Dependency '${key}' is immutable and already used by another module`,
-              this.currentModule, this.store[key][1]
-            );
-          }
-
-          this.store[key][0] = value;
-
-          if (this.updateMap[key]) {
-            for (let i = 0, max = this.updateMap[key].length; i < max; i++)
-              this.updateMap[key][i](value);
-          }
-        },
-        enumerable: true,
-        configurable: true
-      });
-    }
-
-    if (this.updateMap[key]) {
-      for (let i = 0, max = this.updateMap[key].length; i < max; i++)
-        this.updateMap[key][i](object);
-    }
-  }
-
-  remove(key) {
-    this.store[key] = null;
+  set(key, data) {
+    this.store.dispatch({
+      type: 'ADD',
+      key,
+      data
+    });
   }
 
   /**
@@ -121,8 +90,8 @@ export class ModuleManager {
    * @example <caption>Get the 'hello' dependency</caption>
    * manager.get('hello'); // -> {world: true}
    */
-  get(key, getModule = false) {
-    if (!this.store[key]) {
+  get(key) {
+    if (!this.store.getState()[0][key]) {
       throw new DependencyError(
         'ModuleManager',
         `Module requires '${key}' dependency`,
@@ -130,7 +99,7 @@ export class ModuleManager {
       );
     }
 
-    return getModule ? this.store[key][1] : this.store[key][0];
+    return this.store.getState()[0][key];
   }
 
   /**
@@ -143,20 +112,26 @@ export class ModuleManager {
    * manager.has('hello'); // -> true
    */
   has(key) {
-    return Boolean(this.store[key]);
+    return Boolean(this.store.getState()[0][key]);
   }
 
-  // ALIAS METHODS
   /**
-   * @method set
-   * @description An alias for .add() <br/><br/>
-   * Use this method if you know that you will overwrite existing dependency.<br/>
-   * Use it in your app, but not in module that you provide to other people.
-   * @param {String} key the key of the dependency
-   * @param {Object} value the value of the dependency
+   * @method update
+   * @description Updates deps
+   * @param {Object} [depsMap={}]
    * @memberof module:core.ModuleManager
    */
-  set(key, value) {
-    this.add(key, value, this.store[key][2] || {});
+  update(depsMap = {}) {
+    this.store.subscribe(() => {
+      const [data, changedKey] = this.store.getState();
+      const callback = depsMap[changedKey];
+
+      if (callback) callback(data[changedKey]);
+    });
+  }
+
+  add(...data) {
+    console.warn('.add() method is deprecated. Use .set() instead');
+    return this.set(...data);
   }
 }

@@ -37,6 +37,6 @@ export class CameraModule {
   }
 
   manager(manager) {
-    manager.add('camera', this.camera, {alias: '$camera'});
+    manager.add('camera', this.camera);
   }
 }
