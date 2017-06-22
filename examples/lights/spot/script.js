@@ -4,7 +4,7 @@ const white = 0xffffff;
 const lightIntensity = 1;
 const lightDistance = 80;
 
-const cameraModule = new WHS.CameraModule({
+const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
   position: {
     z: -30,
     y: 20,
@@ -12,7 +12,7 @@ const cameraModule = new WHS.CameraModule({
   },
   far: 20000,
   near: 1
-});
+}));
 
 const controlsModule = new WHS.OrbitControlsModule();
 

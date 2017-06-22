@@ -5,10 +5,10 @@ const mouse = new WHS.VirtualMouseModule();
 const world = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
-  new WHS.CameraModule({
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
     position: new THREE.Vector3(0, 60, 120),
     far: 10000
-  }),
+  })),
   new WHS.RenderingModule({
     bgColor: 0x162129,
 

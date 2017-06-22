@@ -35,9 +35,9 @@ mesh2.add(mesh3);
 world.setScene(scene);
 
 world
-  .module(new WHS.CameraModule({
+  .module(new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
     position: new THREE.Vector3(0, 2, 12)
-  }))
+  })))
   .module(new WHS.RenderingModule({
     bgColor: 0x162129,
 

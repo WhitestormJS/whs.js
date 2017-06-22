@@ -77,7 +77,7 @@ You can find lots of examples at [showcases](https://whs-dev.surge.sh/examples/)
     const app = new WHS.App([
       new WHS.ElementModule(), // attach to DOM
       new WHS.SceneModule(), // creates THREE.Scene instance
-      new WHS.CameraModule(), // creates PerspectiveCamera instance
+      new WHS.DefineModule('camera', new WHS.PerspectiveCamera()), // creates PerspectiveCamera instance
       new WHS.RenderingModule() // creates WebGLRenderer instance
     ]);
 
@@ -185,9 +185,9 @@ Try on [**Codepen**](http://codepen.io/sasha240100/pen/JELBGX):
 const app = new WHS.App([
   new WHS.ElementModule(), // attach to DOM
   new WHS.SceneModule(), // creates THREE.Scene instance
-  new WHS.CameraModule({
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
     position: new THREE.Vector3(0, 0, -10)
-  }), // creates PerspectiveCamera instance
+  })), // creates PerspectiveCamera instance
   new WHS.RenderingModule(), // creates WebGLRenderer instance
   new WHS.OrbitControlsModule() // orbit controls
 ]);
@@ -234,11 +234,11 @@ export class Application extends Component {
     return (
       <App modules={[
         new WHS.SceneModule(),
-        new WHS.CameraModule({
+        new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
           position: {
             z: 20
           }
-        }),
+        })),
         new WHS.RenderingModule(),
         new WHS.OrbitControlsModule()
       ]}>
