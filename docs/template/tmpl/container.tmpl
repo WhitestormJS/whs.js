@@ -18,15 +18,17 @@
 <?js } else { ?>
 
   <div class="sidebar">
+    <?js var members = self.find({kind: 'member', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
+      var methods = self.find({kind: 'function', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
+    ?>
+    <?js if (members.length + methods.length > 0) { ?>
     <h5>Table of content</h5>
+    <?js } ?>
     <?js
       var folded = 0;
       var limit = 10
       ?>
     <ul>
-      <?js var members = self.find({kind: 'member', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
-        var methods = self.find({kind: 'function', memberof: isGlobalPage ? {isUndefined: true} : doc.longname});
-      ?>
       <?js folded += members.length ?>
       <?js if (members.length > 0) { ?>
       <li><span class="folder <?js= folded > limit ? 'folded' : '' ?>"><?js= folded > limit ? '+' : '—' ?>  </span><a href="#tag-members">Members</a></li>
