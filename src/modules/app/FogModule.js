@@ -9,7 +9,7 @@ import {
  * @param {Object} [params={color: 0xefd1b5, density: 0.020, near: 10, far: 1000}] - The parameters object.
  * @param {String} [type=exp2] - The type of fog - exp2 or linear
  * @memberof module:modules/app
- * @example <caption>How to reate and apply a FogModule</caption>
+ * @example <caption>How to create and apply a FogModule</caption>
  * const fogModule = new FogModule({
  *    color: 0xffffff,
  *    density: 0.03,
