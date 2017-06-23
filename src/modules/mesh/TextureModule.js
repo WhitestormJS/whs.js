@@ -20,7 +20,7 @@ const loader = new TextureLoader();
  *   url: `${process.assetsPath}/textures/wood.jpg`
  * });
  * @example <caption>More comprehensive example, wood texture applied to a Box.</caption>
- * const box = new Box({
+ * new Box({
  *   geometry: {
  *     width: 2,
  *     height: 2,
@@ -28,7 +28,7 @@ const loader = new TextureLoader();
  *   },
  *   modules: [
  *     new TextureModule({
- *       url: `${process.assetsPath}/textures/wood.jpg`,
+ *       url: `path/to/texture.jpg`,
  *       repeat: new THREE.Vector2(1, 1) // optional
  *     })
  *   ],
@@ -36,8 +36,7 @@ const loader = new TextureLoader();
  *     color: 0xffffff
  *   }),
  *   position: [50, 60, 70]
- * });
- * box.addTo(app);
+ * }).addTo(app);
  */
 export class TextureModule {
   static load(url) {
