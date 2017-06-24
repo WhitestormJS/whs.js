@@ -68,4 +68,8 @@ html
 
       document.getElementById('cat_').innerText = la[1];
       document.getElementById('ex_').innerText = la[2];
+
+      setTimeout(function () {
+        window.state = iframe.contentWindow['state'];
+      }, 1000);
     script(src='/examples/assets/js/script.js')
