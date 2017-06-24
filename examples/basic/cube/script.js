@@ -4,7 +4,7 @@ const ad = UTILS.appDefaults;
 
 const controlsModule = new WHS.OrbitControlsModule();
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 200)
   }, ad.rendering, ad.physics, false),
@@ -113,19 +113,19 @@ new WHS.Box({
     position: [-50, 0, 0]
   }).addTo(box);
 
-  box.addTo(world).then(() => {
+  box.addTo(app).then(() => {
     const v = new THREE.Vector3(0, 0, 1);
 
     box.setLinearFactor(new THREE.Vector3(0, 0, 0));
 
     new WHS.Loop(() => {
       box.setAngularVelocity(v);
-    }).start(world);
+    }).start(app);
   });
 });
 
-ball.addTo(world);
+ball.addTo(app);
 
-UTILS.addBasicLights(world);
+UTILS.addBasicLights(app);
 
-world.start();
+app.start();

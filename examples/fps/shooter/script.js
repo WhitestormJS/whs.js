@@ -21,7 +21,7 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
   position: new THREE.Vector3(0, 100, 0)
 });
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
@@ -47,7 +47,7 @@ const world = new WHS.App([
   new WHS.ResizeModule()
 ]);
 
-sphere.addTo(world);
+sphere.addTo(app);
 
 for (let i = 0; i < 10; i++) {
   const height = 10 + Math.random() * 90;
@@ -73,10 +73,10 @@ for (let i = 0; i < 10; i++) {
       y: height / 2,
       z: Math.random() * 1000 - 500
     }
-  }).addTo(world);
+  }).addTo(app);
 }
 
-UTILS.addPlane(world, 1000);
-UTILS.addBasicLights(world);
+UTILS.addPlane(app, 1000);
+UTILS.addBasicLights(app);
 
-world.start();
+app.start();

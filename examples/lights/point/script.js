@@ -16,7 +16,7 @@ const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
 
 const controlsModule = new WHS.OrbitControlsModule();
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 200),
     renderer: {
@@ -60,7 +60,7 @@ new WHS.Box({
   )
   ],
   position: [0, 5, 0]
-}).addTo(world);
+}).addTo(app);
 
 new WHS.Box({
   geometry: {
@@ -80,12 +80,12 @@ new WHS.Box({
   material: new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide
   })
-}).addTo(world);
+}).addTo(app);
 
 new WHS.AmbientLight({
   color: 0xffffff,
   intensity: 0.05
-}).addTo(world);
+}).addTo(app);
 
 const redSpotLight = new WHS.PointLight({
   color: red,
@@ -100,7 +100,7 @@ const redSpotLight = new WHS.PointLight({
     color: red
   })
 });
-redSpotLight.addTo(world);
+redSpotLight.addTo(app);
 
 new WHS.Sphere({
   geometry: [1, 32, 32],
@@ -115,7 +115,7 @@ const whiteSpotLight = new WHS.PointLight({
   intensity: lightIntensity,
   distance: 90
 });
-whiteSpotLight.addTo(world);
+whiteSpotLight.addTo(app);
 
 new WHS.Sphere({
   geometry: [1, 32, 32],
@@ -134,7 +134,7 @@ const blueSpotLight = new WHS.PointLight({
     cast: false
   }
 });
-blueSpotLight.addTo(world);
+blueSpotLight.addTo(app);
 
 new WHS.Sphere({
   geometry: [1, 32, 32],
@@ -159,6 +159,6 @@ new WHS.Loop(() => {
   whiteSpotLight.position.x = distance * Math.sin(t);
   whiteSpotLight.position.y = Math.abs(distance * Math.cos(t));
   whiteSpotLight.position.z = distance * Math.cos(t);
-}).start(world);
+}).start(app);
 
-world.start();
+app.start();

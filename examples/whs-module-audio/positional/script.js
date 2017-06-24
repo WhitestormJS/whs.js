@@ -12,7 +12,7 @@ const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
   near: 1
 }));
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 200)
   }),
@@ -49,7 +49,7 @@ const sphere = new WHS.Sphere({
   }
 
 });
-sphere.addTo(world);
+sphere.addTo(app);
 
 audioModule.addListener(cameraModule.camera);
 audioModule.playAudio(`${process.assetsPath}/sounds/folk.mp3`);
@@ -60,7 +60,7 @@ new WHS.PointLight({
   distance: 1000,
 
   position: [10, 40, 10]
-}).addTo(world);
+}).addTo(app);
 
 new WHS.Box({
   geometry: {
@@ -79,6 +79,6 @@ new WHS.Box({
 
   position: [0, -60, 0],
   rotation: [0, 0, 25]
-}).addTo(world);
+}).addTo(app);
 
-world.start();
+app.start();

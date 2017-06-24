@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules()
 ]);
 
@@ -34,8 +34,8 @@ const label = new UTILS.Label({
   position: [-15, 7, 0]
 });
 
-box.addTo(world);
-label.addTo(world);
+box.addTo(app);
+label.addTo(app);
 
 // normalMap
 
@@ -66,8 +66,8 @@ const labelNormal = new UTILS.Label({
   position: [0, 7, 0]
 });
 
-boxNormal.addTo(world);
-labelNormal.addTo(world);
+boxNormal.addTo(app);
+labelNormal.addTo(app);
 
 // displacementMap
 
@@ -99,14 +99,14 @@ const labelDisplace = new UTILS.Label({
   position: [15, 7, 0]
 });
 
-boxDisplace.addTo(world);
-labelDisplace.addTo(world);
+boxDisplace.addTo(app);
+labelDisplace.addTo(app);
 
 new WHS.PointLight({
   distance: 100,
   position: [0, 0, 10]
-}).addTo(world);
+}).addTo(app);
 
-UTILS.addBasicLights(world);
+UTILS.addBasicLights(app);
 
-world.start(); // Start animations and physics simulation.
+app.start(); // Start animations and physics simulation.

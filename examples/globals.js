@@ -81,14 +81,14 @@ export const $colors = {
   softbody: 0x434B7F
 };
 
-export function addAmbient(world, intensity) {
+export function addAmbient(app, intensity) {
   new WHS.AmbientLight({
     intensity
-  }).addTo(world);
+  }).addTo(app);
 }
 
-export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], distance = 100, shadowmap) {
-  addAmbient(world, 1 - intensity);
+export function addBasicLights(app, intensity = 0.5, position = [0, 10, 10], distance = 100, shadowmap) {
+  addAmbient(app, 1 - intensity);
 
   return new WHS.PointLight({
     intensity,
@@ -99,10 +99,10 @@ export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], d
     }, shadowmap),
 
     position
-  }).addTo(world);
+  }).addTo(app);
 }
 
-export function addPlane(world, size = 100) {
+export function addPlane(app, size = 100) {
   return new WHS.Plane({
     geometry: {
       width: size,
@@ -120,10 +120,10 @@ export function addPlane(world, size = 100) {
     rotation: {
       x: -Math.PI / 2
     }
-  }).addTo(world);
+  }).addTo(app);
 }
 
-export function addBoxPlane(world, size = 100) {
+export function addBoxPlane(app, size = 100, color = 0x447F8B) {
   return new WHS.Box({
     geometry: {
       width: size,
@@ -137,8 +137,8 @@ export function addBoxPlane(world, size = 100) {
       })
     ],
 
-    material: new THREE.MeshPhongMaterial({color: 0x447F8B})
-  }).addTo(world);
+    material: new THREE.MeshPhongMaterial({color})
+  }).addTo(app);
 }
 
 function hexToRgb(hex) {

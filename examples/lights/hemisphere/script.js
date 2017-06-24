@@ -12,7 +12,7 @@ const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
 
 const controlsModule = new WHS.OrbitControlsModule();
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 200),
     renderer: {
@@ -52,7 +52,7 @@ new WHS.Sphere({
     receive: false
   }
 
-}).addTo(world);
+}).addTo(app);
 
 new WHS.Box({
   geometry: {
@@ -77,7 +77,7 @@ new WHS.Box({
   )],
   material: new THREE.MeshPhongMaterial({
   })
-}).addTo(world);
+}).addTo(app);
 
 new WHS.DirectionalLight({
   intensity: 0.4,
@@ -94,14 +94,14 @@ new WHS.DirectionalLight({
   },
 
   position: [-105, 70, -10]
-}).addTo(world);
+}).addTo(app);
 
 // The hemisphere light
 const hemisphereLight = new WHS.HemisphereLight({
   skyColor: 0xFCD440,
   intensity: 0.4
 });
-hemisphereLight.addTo(world);
+hemisphereLight.addTo(app);
 
 const pilar1 = {x: 0, y: -3.5, z: 0};
 const pilar2 = {x: 0, y: -3.5, z: 20};
@@ -151,7 +151,7 @@ function addPillar(position) {
     },
 
     scale: [2, 3, 2]
-  }).addTo(world);
+  }).addTo(app);
 }
 
 const topPlaneSize = 30;
@@ -204,7 +204,7 @@ function addTopPlane(geometry, y) {
       emissive: 0xffffff,
       emissiveIntensity: 0.2
     })
-  }).addTo(world);
+  }).addTo(app);
 }
 
-world.start();
+app.start();
