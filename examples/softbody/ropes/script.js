@@ -1,6 +1,6 @@
 const mouse = new WHS.VirtualMouseModule();
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
@@ -49,7 +49,7 @@ const toptube = new WHS.Tube({
   material: tubeMaterial
 });
 
-toptube.addTo(world);
+toptube.addTo(app);
 
 // LEFT.
 new WHS.Tube({
@@ -65,7 +65,7 @@ new WHS.Tube({
   ],
 
   material: tubeMaterial
-}).addTo(world);
+}).addTo(app);
 
 // RIGHT.
 new WHS.Tube({
@@ -81,7 +81,7 @@ new WHS.Tube({
   ],
 
   material: tubeMaterial
-}).addTo(world);
+}).addTo(app);
 
 const sphere = new WHS.Sphere({
   geometry: {
@@ -114,7 +114,7 @@ for (let i = 0; i < 5; i++) {
   const sc = sphere.clone();
   sc.position.x = -20 + i * 6;
   sc.material = sc.material.clone();
-  sc.addTo(world);
+  sc.addTo(app);
   sphereHandler.push(sc);
 
   const v1 = sc.position.clone();
@@ -137,7 +137,7 @@ for (let i = 0; i < 5; i++) {
     ]
   });
 
-  rope.addTo(world).then(() => {
+  rope.addTo(app).then(() => {
     rope.appendAnchor(toptube, 50, 1);
     rope.appendAnchor(sc, 0, 1);
   });
@@ -167,7 +167,7 @@ const sphereStart = new WHS.Sphere({
   }
 });
 
-sphereStart.addTo(world);
+sphereStart.addTo(app);
 sphereHandler.push(sphereStart);
 
 const rope1 = new WHS.Line({
@@ -186,7 +186,7 @@ const rope1 = new WHS.Line({
   ]
 });
 
-rope1.addTo(world).then(() => {
+rope1.addTo(app).then(() => {
   rope1.appendAnchor(toptube, 50, 1);
   rope1.appendAnchor(sphereStart, 0, 1);
 });
@@ -218,7 +218,7 @@ new WHS.Plane({
   rotation: {
     x: -Math.PI / 2
   }
-}).addTo(world);
+}).addTo(app);
 
 new WHS.SpotLight({
   intensity: 6,
@@ -228,14 +228,14 @@ new WHS.SpotLight({
   position: {
     y: 50
   }
-}).addTo(world);
+}).addTo(app);
 
 new WHS.AmbientLight({
   intensity: 0.6,
   color: 0xffffff
-}).addTo(world);
+}).addTo(app);
 
-world.start();
+app.start();
 
 // Check mouse.
 

@@ -2,7 +2,7 @@ import * as UTILS from '../../globals';
 
 const postprocessor = new WHS.PostProcessorModule();
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera(UTILS.appDefaults.camera)),
@@ -75,9 +75,9 @@ const sphere = new WHS.Sphere({
   position: new THREE.Vector3(0, 20, 0)
 });
 
-sphere.addTo(world);
+sphere.addTo(app);
 
-UTILS.addBoxPlane(world);
-UTILS.addBasicLights(world);
+UTILS.addBoxPlane(app);
+UTILS.addBasicLights(app);
 
-world.start();
+app.start();

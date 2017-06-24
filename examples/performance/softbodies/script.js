@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
@@ -61,12 +61,12 @@ const sphere = new WHS.Icosahedron({ // Softbody.
 
 sphere.native.frustumCulled = false;
 
-UTILS.addBoxPlane(world, 250).then(() => sphere.addTo(world)).then(() => {
+UTILS.addBoxPlane(app, 250).then(() => sphere.addTo(app)).then(() => {
   for (let i = 0; i < 30; i++) {
     const newSphere = sphere.clone(true, false);
     newSphere.position.y = 5 + 4 * (i + 1);
     newSphere.native.frustumCulled = false;
-    newSphere.addTo(world);
+    newSphere.addTo(app);
   }
 });
 
@@ -79,11 +79,11 @@ new WHS.DirectionalLight({
     y: 10,
     z: 30
   }
-}).addTo(world);
+}).addTo(app);
 
 new WHS.AmbientLight({
   color: 0xffffff,
   intensity: 0.5
-}).addTo(world);
+}).addTo(app);
 
-world.start();
+app.start();

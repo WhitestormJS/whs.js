@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
@@ -80,8 +80,8 @@ const arm = new WHS.Box({ // Rigidbody (green).
   }
 });
 
-arm.addTo(world);
-cloth.addTo(world).then(() => {
+arm.addTo(app);
+cloth.addTo(app).then(() => {
   cloth.appendAnchor(arm, 0, 1, false);
   cloth.appendAnchor(arm, 20, 1, false);
 });
@@ -106,9 +106,9 @@ new WHS.Box({ // Rigidbody (green).
   position: {
     y: 18
   }
-}).addTo(world);
+}).addTo(app);
 
-UTILS.addBoxPlane(world, 250);
-UTILS.addBasicLights(world, 0.5, [60, 60, 20], 400);
+UTILS.addBoxPlane(app, 250);
+UTILS.addBasicLights(app, 0.5, [60, 60, 20], 400);
 
-world.start();
+app.start();
