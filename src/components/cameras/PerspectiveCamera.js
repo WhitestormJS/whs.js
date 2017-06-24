@@ -11,10 +11,8 @@ import {system} from '../../polyfill';
  * @extends CameraComponent
  * @example <caption>Create an PerspectiveCamera and set it as app's camera</caption>
  * const camera = new PerspectiveCamera({
- *   camera: {
- *     fov: 75,
- *     aspect: window.innerWidth / window.innerHeight
- *   },
+ *   fov: 75,
+ *   aspect: window.innerWidth / window.innerHeight,
  *
  *   position: {
  *     x: 0,
@@ -32,23 +30,19 @@ class PerspectiveCamera extends CameraComponent {
    * @static
    * @default <pre>
    * {
-   *   camera: {
-   *     near: 1,
-   *     far: 1000,
-   *     fov: 45,
-   *     aspect: system.window.innerWidth / system.window.innerHeight
-   *   }
+   *   near: 1,
+   *   far: 1000,
+   *   fov: 45,
+   *   aspect: system.window.innerWidth / system.window.innerHeight
    * }</pre>
    */
   static defaults = {
     ...CameraComponent.defaults,
 
-    camera: {
-      near: 1,
-      far: 1000,
-      fov: 45,
-      aspect: system.window.innerWidth / system.window.innerHeight
-    }
+    near: 1,
+    far: 1000,
+    fov: 45,
+    aspect: system.window.innerWidth / system.window.innerHeight
   };
 
   constructor(params = {}) {
@@ -57,10 +51,10 @@ class PerspectiveCamera extends CameraComponent {
 
   build(params = {}) {
     return this.applyBridge({camera: new PerspectiveCameraNative(
-      params.camera.fov,
-      params.camera.aspect,
-      params.camera.near,
-      params.camera.far
+      params.fov,
+      params.aspect,
+      params.near,
+      params.far
     )}).camera;
   }
 }
