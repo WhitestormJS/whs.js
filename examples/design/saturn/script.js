@@ -56,18 +56,14 @@ planet.addTo(space);
 
 // LIGHTS.
 new WHS.AmbientLight({
-  light: {
-    color: 0x663344,
-    intensity: 2
-  }
+  color: 0x663344,
+  intensity: 2
 }).addTo(world);
 
 new WHS.DirectionalLight({
-  light: {
-    color: 0xffffff,
-    intensity: 1.5,
-    distance: 800
-  },
+  color: 0xffffff,
+  intensity: 1.5,
+  distance: 800,
 
   shadowmap: {
     width: 2048,

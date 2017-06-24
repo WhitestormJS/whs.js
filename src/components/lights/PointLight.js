@@ -34,6 +34,7 @@ class PointLight extends LightComponent {
   }
 
   build(params = {}) {
+    console.log(params);
     return this.applyBridge({light: new PointLightNative(
       params.color,
       params.intensity,

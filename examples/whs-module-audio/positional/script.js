@@ -55,11 +55,9 @@ audioModule.addListener(cameraModule.camera);
 audioModule.playAudio(`${process.assetsPath}/sounds/folk.mp3`);
 
 new WHS.PointLight({
-  light: {
-    color: 0xffffff,
-    intensity: 1,
-    distance: 1000
-  },
+  color: 0xffffff,
+  intensity: 1,
+  distance: 1000,
 
   position: [10, 40, 10]
 }).addTo(world);

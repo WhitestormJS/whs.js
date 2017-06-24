@@ -80,9 +80,7 @@ new WHS.Box({
 }).addTo(world);
 
 new WHS.DirectionalLight({
-  light: {
-    intensity: 0.4
-  },
+  intensity: 0.4,
 
   shadow: {
     mapSize: {
@@ -100,11 +98,8 @@ new WHS.DirectionalLight({
 
 // The hemisphere light
 const hemisphereLight = new WHS.HemisphereLight({
-  light: {
-    skyColor: 0xFCD440,
-    intensity: 0.4
-  }
-
+  skyColor: 0xFCD440,
+  intensity: 0.4
 });
 hemisphereLight.addTo(world);
 
