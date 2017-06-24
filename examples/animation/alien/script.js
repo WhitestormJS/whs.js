@@ -3,6 +3,8 @@ import * as UTILS from '../../globals';
 const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(5, 5, 10),
+    near: true
+  }, {
     renderer: {
       shadowMap: {
         type: THREE.PCFSoftShadowMap,
@@ -20,22 +22,35 @@ const animationModule = new WHS.AnimationModule(app, false, {
   speed: 1.2
 });
 
+const fix = texture => {
+  texture.anisotropy = 2;
+  texture.magFilter = THREE.LinearFilter;
+  texture.minFilter = THREE.LinearMipMapLinearFilter;
+
+  return texture;
+};
+
 const characterTexturePath = `${process.assetsPath}/textures/space-alien/`;
 const textureModule = new WHS.TextureModule({
   url: `${characterTexturePath}diffuse.png`,
-  type: 'map'
+  type: 'map',
+  fix
 }, {
   url: `${characterTexturePath}emissive.png`,
-  type: 'emissiveMap'
+  type: 'emissiveMap',
+  fix
 }, {
   url: `${characterTexturePath}normal.png`,
-  type: 'normalMap'
+  type: 'normalMap',
+  fix
 }, {
   url: `${characterTexturePath}metalness.png`,
-  type: 'metalnessMap'
+  type: 'metalnessMap',
+  fix
 }, {
   url: `${characterTexturePath}ao.png`,
-  type: 'aoMap'
+  type: 'aoMap',
+  fix
 });
 
 new WHS.Importer({
@@ -61,7 +76,7 @@ new WHS.Importer({
   position: [0, -5, 0]
 
 }).addTo(app).then(() => {
-  animationModule.play('observe');
+  // animationModule.play('observe');
 });
 
 new WHS.PointLight({
