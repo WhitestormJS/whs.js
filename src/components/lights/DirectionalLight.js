@@ -13,10 +13,8 @@ import {LightComponent} from '../../core/LightComponent';
  * @memberof module:components/lights
  * @example <caption>Creating a DirectionalLight to fall down from vec3(10, 20, 10) to vec3(0, 0, 0)</caption>
  * new DirectionalLight({
- *   light: {
- *     color: 0xffffff,
- *     intensity: 0.2
- *   },
+ *   color: 0xffffff,
+ *   intensity: 0.2,
  *
  *   position: [10, 20, 10]
  * }).addTo(app);
@@ -25,10 +23,8 @@ class DirectionalLight extends LightComponent {
   static defaults = {
     ...LightComponent.defaults,
 
-    light: {
-      color: 0xffffff,
-      intensity: 1
-    }
+    color: 0xffffff,
+    intensity: 1
   };
 
   constructor(params = {}) {
@@ -38,8 +34,8 @@ class DirectionalLight extends LightComponent {
 
   build(params = {}) {
     return this.applyBridge({light: new DirectionalLightNative(
-      params.light.color,
-      params.light.intensity
+      params.color,
+      params.intensity
     )}).light;
   }
 }
