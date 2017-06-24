@@ -65,7 +65,7 @@ export const appModules = ( // appModules(camera, rendering);
   [
     new WHS.ElementModule(),
     new WHS.SceneModule(),
-    new WHS.DefineModule('camera', new WHS.PerspectiveCamera(camera)),
+    new WHS.DefineModule('camera', new WHS.PerspectiveCamera(Object.assign(camera, {fov: 75}))),
     new WHS.RenderingModule(rendering),
     new PHYSICS.WorldModule(physics),
     useControls ? new WHS.OrbitControlsModule() : null,
