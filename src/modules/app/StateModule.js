@@ -7,6 +7,19 @@ const isEqualDefault = (a, b) => {
   return false;
 };
 
+/**
+ * @class StateModule
+ * @category modules/app
+ * @param {Object} [params]
+ * @memberof module:modules/app
+ * @example <caption> Creating a state module</caption>
+ * new App([
+ *   // ...
+ *   new StateModule().default({
+ *     sphereColor: 0xff0000
+ *   })
+ * ]);
+ */
 export class StateModule {
   static actionGenerate(isEqual) {
     return (state = [{}, ''], {key, data}) => {
@@ -29,11 +42,23 @@ export class StateModule {
     this.prevConfig = 'default';
   }
 
+  /**
+   * @method default
+   * @description Add default configuration.
+   * @param {Object} data Configuration setup
+   * @memberof module:modules/app.StateModule
+   */
   default(data) {
     this.config({default: data});
     return this;
   }
 
+  /**
+   * @method setEqualCheck
+   * @description Sets an equalCheck function
+   * @param {Object} data Configuration setup
+   * @memberof module:modules/app.StateModule
+   */
   setEqualCheck(func) {
     this.store.replaceReducer(
       StateModule.actionGenerate(func)
