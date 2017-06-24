@@ -3,7 +3,7 @@ import * as UTILS from '../../globals';
 const world = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
-  new WHS.DefineModule('camera', new WHS.PerspectiveCamera(UTILS.appDefaults.camera),
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera(UTILS.appDefaults.camera)),
   new WHS.RenderingModule(UTILS.appDefaults.rendering, {
     shadow: true
   }),

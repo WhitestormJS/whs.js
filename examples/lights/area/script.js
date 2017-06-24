@@ -74,12 +74,10 @@ planeLight.addTo(world);
 
 const intensityFactor = 2000;
 const areaLight = new WHS.AreaLight({
-  light: {
-    color: 0xffffff,
-    intensity: lightDimension.width * intensityFactor,
-    width: lightDimension.width,
-    height: lightDimension.height
-  },
+  color: 0xffffff,
+  intensity: lightDimension.width * intensityFactor,
+  width: lightDimension.width,
+  height: lightDimension.height,
 
   position: {
     x: lightPosition.x,

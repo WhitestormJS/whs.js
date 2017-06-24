@@ -190,10 +190,8 @@ new WHS.Sphere({
 }).addTo(world);
 
 new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.3
-  }
+  color: 0xffffff,
+  intensity: 0.3
 }).addTo(world);
 
 world.start();

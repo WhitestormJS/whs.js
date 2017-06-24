@@ -78,19 +78,16 @@ new WHS.Box({
 }).addTo(world);
 
 new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.05
-  }
+  color: 0xffffff,
+  intensity: 0.05
 }).addTo(world);
 
 const spotLight = new WHS.SpotLight({
-  light: {
-    color: white,
-    intensity: lightIntensity,
-    distance: lightDistance,
-    angle: Math.PI / 4
-  },
+  color: white,
+  intensity: lightIntensity,
+  distance: lightDistance,
+  angle: Math.PI / 4,
+
   position: {
     x: 0,
     y: 20,

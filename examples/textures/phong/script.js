@@ -103,10 +103,7 @@ boxDisplace.addTo(world);
 labelDisplace.addTo(world);
 
 new WHS.PointLight({
-  light: {
-    distance: 100
-  },
-
+  distance: 100,
   position: [0, 0, 10]
 }).addTo(world);
 

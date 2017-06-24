@@ -221,11 +221,9 @@ new WHS.Plane({
 }).addTo(world);
 
 new WHS.SpotLight({
-  light: {
-    intensity: 6,
-    distance: 100,
-    angle: 90
-  },
+  intensity: 6,
+  distance: 100,
+  angle: 90,
 
   position: {
     y: 50
@@ -233,10 +231,8 @@ new WHS.SpotLight({
 }).addTo(world);
 
 new WHS.AmbientLight({
-  light: {
-    intensity: 0.6,
-    color: 0xffffff
-  }
+  intensity: 0.6,
+  color: 0xffffff
 }).addTo(world);
 
 world.start();
