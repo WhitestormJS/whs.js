@@ -41,11 +41,9 @@ class CubeCamera extends CameraComponent {
   static defaults = {
     ...CameraComponent.defaults,
 
-    camera: {
-      near: 1,
-      far: 1000,
-      cubeResolution: 128
-    }
+    near: 1,
+    far: 1000,
+    cubeResolution: 128
   };
 
   constructor(params = {}) {
@@ -54,9 +52,9 @@ class CubeCamera extends CameraComponent {
 
   build(params = {}) {
     return this.applyBridge({camera: new CubeCameraNative(
-      params.camera.near,
-      params.camera.far,
-      params.camera.cubeResolution
+      params.near,
+      params.far,
+      params.cubeResolution
     )}).camera;
   }
 }

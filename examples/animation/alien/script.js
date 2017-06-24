@@ -65,11 +65,9 @@ new WHS.Importer({
 });
 
 new WHS.PointLight({
-  light: {
-    color: 0xffffff,
-    intensity: 2,
-    distance: 20
-  },
+  color: 0xffffff,
+  intensity: 2,
+  distance: 20,
 
   shadow: {
     far: 30,

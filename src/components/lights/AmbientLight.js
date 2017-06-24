@@ -12,20 +12,16 @@ import {LightComponent} from '../../core/LightComponent';
  * @memberof module:components/lights
  * @example <caption>Creating an AmbientLight </caption>
  * new AmbientLight({
- *   light: {
- *     color: 0xffffff,
- *     intensity: 0.2
- *   }
+ *   color: 0xffffff,
+ *   intensity: 0.2
  * }).addTo(world);
  */
 class AmbientLight extends LightComponent {
   static defaults = {
     ...LightComponent.defaults,
 
-    light: {
-      color: 0xffffff,
-      intensity: 1
-    }
+    color: 0xffffff,
+    intensity: 1
   };
 
   constructor(params = {}) {
@@ -34,8 +30,8 @@ class AmbientLight extends LightComponent {
 
   build(params = {}) {
     return this.applyBridge({light: new AmbientLightNative(
-      params.light.color,
-      params.light.intensity
+      params.color,
+      params.intensity
     )}).light;
   }
 }
