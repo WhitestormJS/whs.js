@@ -16,7 +16,7 @@ const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
-    position: new THREE.Vector3(0, 100, 400),
+    position: new THREE.Vector3(0, 200, 800),
     far: 2000,
     near: 1
   })),
@@ -29,7 +29,7 @@ const app = new WHS.App([
         type: THREE.PCFSoftShadowMap
       }
     }
-  }),
+  }, {shadow: true}),
   new WHS.OrbitControlsModule(),
   new WHS.ResizeModule()
 ]);
@@ -65,15 +65,19 @@ new WHS.DirectionalLight({
   intensity: 1.5,
   distance: 800,
 
-  shadowmap: {
-    width: 2048,
-    height: 2048,
+  shadow: {
+    mapSize: {
+      width: 2048,
+      height: 2048
+    },
 
-    left: -800,
-    right: 800,
-    top: 800,
-    bottom: -800,
-    far: 800
+    camera: {
+      left: -800,
+      right: 800,
+      top: 800,
+      bottom: -800,
+      far: 800
+    }
   },
 
   position: {
@@ -85,6 +89,12 @@ new WHS.DirectionalLight({
 
 const dynamicGeometry = new WHS.DynamicGeometryModule();
 
+const material = new THREE.MeshStandardMaterial({
+  shading: THREE.FlatShading,
+  emissive: 0x270000,
+  roughness: 0.9
+});
+
 const s1 = new WHS.Dodecahedron({
   geometry: {
     buffer: true,
@@ -95,11 +105,7 @@ const s1 = new WHS.Dodecahedron({
     dynamicGeometry
   ],
 
-  material: new THREE.MeshStandardMaterial({
-    shading: THREE.FlatShading,
-    emissive: 0x270000,
-    roughness: 0.9
-  })
+  material
 });
 
 const s2 = new WHS.Box({
@@ -114,11 +120,7 @@ const s2 = new WHS.Box({
     dynamicGeometry
   ],
 
-  material: new THREE.MeshStandardMaterial({
-    shading: THREE.FlatShading,
-    roughness: 0.9,
-    emissive: 0x270000
-  })
+  material
 });
 
 const s3 = new WHS.Cylinder({
@@ -133,11 +135,7 @@ const s3 = new WHS.Cylinder({
     dynamicGeometry
   ],
 
-  material: new THREE.MeshStandardMaterial({
-    shading: THREE.FlatShading,
-    roughness: 0.9,
-    emissive: 0x270000
-  })
+  material
 });
 
 const s4 = new WHS.Sphere({
@@ -150,11 +148,7 @@ const s4 = new WHS.Sphere({
     dynamicGeometry
   ],
 
-  material: new THREE.MeshStandardMaterial({
-    shading: THREE.FlatShading,
-    roughness: 0.9,
-    emissive: 0x270000
-  })
+  material
 });
 
 const asteroids = new WHS.Group();
