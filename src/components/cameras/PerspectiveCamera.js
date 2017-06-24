@@ -32,7 +32,7 @@ class PerspectiveCamera extends CameraComponent {
    * {
    *   near: 1,
    *   far: 1000,
-   *   fov: 45,
+   *   fov: 75,
    *   aspect: system.window.innerWidth / system.window.innerHeight
    * }</pre>
    */
@@ -41,7 +41,7 @@ class PerspectiveCamera extends CameraComponent {
 
     near: 1,
     far: 1000,
-    fov: 45,
+    fov: 75,
     aspect: system.window.innerWidth / system.window.innerHeight
   };
 
