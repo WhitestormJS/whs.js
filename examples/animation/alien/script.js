@@ -76,7 +76,7 @@ new WHS.Importer({
   position: [0, -5, 0]
 
 }).addTo(app).then(() => {
-  // animationModule.play('observe');
+  animationModule.play('observe');
 });
 
 new WHS.PointLight({
