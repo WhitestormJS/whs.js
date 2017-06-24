@@ -56,9 +56,7 @@ new WHS.Sphere({
   let angle = 0;
 
   new WHS.DirectionalLight({
-    light: {
-      intensity: 1
-    },
+    intensity: 1,
 
     shadow: {
       mapSize: {

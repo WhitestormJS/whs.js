@@ -74,10 +74,8 @@ new WHS.Box({
 }).addTo(world);
 
 new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.4
-  }
+  color: 0xffffff,
+  intensity: 0.4
 }).addTo(world);
 
 world.start();

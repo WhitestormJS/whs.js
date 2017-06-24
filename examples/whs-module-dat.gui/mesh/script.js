@@ -54,10 +54,8 @@ DatGUI.folder('hello').folder('cool').Custom([{
 new WHS.SpotLight({
   position: [10, 20, 10],
 
-  light: {
-    distance: 200,
-    intensity: 2
-  },
+  distance: 200,
+  intensity: 2,
 
   modules: [
     DatGUI.Light({

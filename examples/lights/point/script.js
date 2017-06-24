@@ -83,18 +83,15 @@ new WHS.Box({
 }).addTo(world);
 
 new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.05
-  }
+  color: 0xffffff,
+  intensity: 0.05
 }).addTo(world);
 
 const redSpotLight = new WHS.PointLight({
-  light: {
-    color: red,
-    intensity: lightIntensity,
-    distance: 40
-  },
+  color: red,
+  intensity: lightIntensity,
+  distance: 40,
+
   shadow: {
     cast: false
   },
@@ -114,11 +111,9 @@ new WHS.Sphere({
 }).addTo(redSpotLight);
 
 const whiteSpotLight = new WHS.PointLight({
-  light: {
-    color: white,
-    intensity: lightIntensity,
-    distance: 90
-  }
+  color: white,
+  intensity: lightIntensity,
+  distance: 90
 });
 whiteSpotLight.addTo(world);
 
@@ -131,11 +126,10 @@ new WHS.Sphere({
 }).addTo(whiteSpotLight);
 
 const blueSpotLight = new WHS.PointLight({
-  light: {
-    color: blue,
-    intensity: lightIntensity,
-    distance: 50
-  },
+  color: blue,
+  intensity: lightIntensity,
+  distance: 50,
+
   shadow: {
     cast: false
   }

@@ -120,12 +120,10 @@ new WHS.Box({
 }).addTo(world);
 
 new WHS.SpotLight({
-  light: {
-    color: 0xffffff,
-    intensity: 1,
-    distance: 100,
-    angle: 90
-  },
+  color: 0xffffff,
+  intensity: 1,
+  distance: 100,
+  angle: 90,
 
   shadow: {
     cast: false

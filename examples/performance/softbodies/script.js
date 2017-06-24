@@ -71,10 +71,8 @@ UTILS.addBoxPlane(world, 250).then(() => sphere.addTo(world)).then(() => {
 });
 
 new WHS.DirectionalLight({
-  light: {
-    color: 0xffffff, // 0x00ff00,
-    intensity: 1
-  },
+  color: 0xffffff, // 0x00ff00,
+  intensity: 1,
 
   position: {
     x: 0,
@@ -84,10 +82,8 @@ new WHS.DirectionalLight({
 }).addTo(world);
 
 new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.5
-  }
+  color: 0xffffff,
+  intensity: 0.5
 }).addTo(world);
 
 world.start();

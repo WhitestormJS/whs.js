@@ -114,12 +114,10 @@ const rabbit = new WHS.Importer({
 rabbit.addTo(app);
 
 new WHS.SpotLight({
-  light: {
-    color: 0xffffff,
-    decay: 1,
-    distance: 150,
-    intensity: 1
-  },
+  color: 0xffffff,
+  decay: 1,
+  distance: 150,
+  intensity: 1,
 
   shadowmap: {
     left: -20,
@@ -152,10 +150,8 @@ new WHS.SpotLight({
 }).addTo(app);
 
 new WHS.AmbientLight({
-  light: {
-    intensity: 0.9,
-    color: 0xffffff
-  }
+  intensity: 0.9,
+  color: 0xffffff
 }).addTo(app);
 
 let egg2, egg3, egg4, egg5, egg6, egg7, egg8, egg9;

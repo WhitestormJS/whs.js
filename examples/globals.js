@@ -83,22 +83,16 @@ export const $colors = {
 
 export function addAmbient(world, intensity) {
   new WHS.AmbientLight({
-    light: {
-      intensity
-    }
+    intensity
   }).addTo(world);
 }
 
 export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], distance = 100, shadowmap) {
   addAmbient(world, 1 - intensity);
 
-  console.log(shadowmap);
-
   return new WHS.PointLight({
-    light: {
-      intensity,
-      distance
-    },
+    intensity,
+    distance,
 
     shadow: Object.assign({
       fov: 90
