@@ -16,8 +16,9 @@ const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
-    position: new THREE.Vector3(0, 200, 800),
+    position: new THREE.Vector3(0, 100, 400),
     far: 2000,
+    fov: 75,
     near: 1
   })),
   new WHS.RenderingModule({
