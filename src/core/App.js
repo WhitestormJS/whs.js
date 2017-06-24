@@ -120,6 +120,14 @@ class App extends ModuleSystem {
       resolve(loop);
     });
   }
+
+  get(key) {
+    return this.manager.get(key);
+  }
+
+  use(key) {
+    return this.manager.use(key);
+  }
 }
 
 export {

@@ -12,7 +12,7 @@ const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
   near: 10
 }));
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 200)
   }, ad.rendering, ad.physics, false),
@@ -36,7 +36,7 @@ new WHS.Box({
 
   position: [0, 0, 0],
   rotation: [0, 0, 25]
-}).addTo(world);
+}).addTo(app);
 
 const plane = new WHS.Box({
   geometry: {
@@ -50,7 +50,7 @@ const plane = new WHS.Box({
   position: [0, -60, 0],
   rotation: [0, 0, 25]
 });
-plane.addTo(world);
+plane.addTo(app);
 
 const lightDimension = {width: 50, height: 200};
 const lightPosition = {x: 0, y: 100, z: -200};
@@ -70,7 +70,7 @@ const planeLight = new WHS.Box({
   position: [lightPosition.x, lightPosition.y, lightPosition.z],
   rotation: [lightRotation.x, lightRotation.y, lightRotation.z]
 });
-planeLight.addTo(world);
+planeLight.addTo(app);
 
 const intensityFactor = 2000;
 const areaLight = new WHS.AreaLight({
@@ -91,6 +91,6 @@ const areaLight = new WHS.AreaLight({
     z: lightRotation.z
   }
 });
-areaLight.addTo(world);
+areaLight.addTo(app);
 
-world.start();
+app.start();

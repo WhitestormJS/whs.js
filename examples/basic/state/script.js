@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera(UTILS.appDefaults.camera)),
@@ -12,11 +12,12 @@ const world = new WHS.App([
   new WHS.ResizeModule(),
   new StatsModule(),
   new WHS.StateModule().default({
-    sphereColor: UTILS.$colors.mesh
+    sphereColor: UTILS.$colors.mesh,
+    planeColor: 0x447F8B
   })
 ]);
 
-const state = world.manager.use('state');
+const state = app.use('state');
 window.state = state;
 
 const sphere = new WHS.Sphere({ // Create sphere comonent.
@@ -40,22 +41,24 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
   position: new THREE.Vector3(0, 20, 0)
 });
 
-sphere.addTo(world);
+sphere.addTo(app);
 
-UTILS.addBoxPlane(world);
-UTILS.addBasicLights(world);
+UTILS.addBoxPlane(app, 100, state.get('planeColor')).then(plane =>
+  state.update({planeColor: color => plane.material.color.setHex(color)})
+);
 
-world.start(); // Start animations and physics simulation.
+UTILS.addBasicLights(app);
+
+app.start(); // Start animations and physics simulation.
 
 // STATE
 state.update({
-  sphereColor: color => {
-    sphere.material.color.setHex(color);
-  }
+  sphereColor: color => sphere.material.color.setHex(color)
 });
 
 state.config({
   green: {
-    sphereColor: 0x00ff00
+    sphereColor: 0x00ff00,
+    planeColor: 0x00ff00
   }
 });

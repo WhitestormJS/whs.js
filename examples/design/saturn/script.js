@@ -12,7 +12,7 @@ const colors = {
   yellow: 0xfaff70
 };
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
@@ -35,7 +35,7 @@ const world = new WHS.App([
 ]);
 
 const space = new WHS.Group();
-space.addTo(world);
+space.addTo(app);
 space.rotation.z = Math.PI / 12;
 
 const planet = new WHS.Tetrahedron({
@@ -58,7 +58,7 @@ planet.addTo(space);
 new WHS.AmbientLight({
   color: 0x663344,
   intensity: 2
-}).addTo(world);
+}).addTo(app);
 
 new WHS.DirectionalLight({
   color: 0xffffff,
@@ -81,7 +81,7 @@ new WHS.DirectionalLight({
     z: 300,
     y: 100
   }
-}).addTo(world);
+}).addTo(app);
 
 const dynamicGeometry = new WHS.DynamicGeometryModule();
 
@@ -219,9 +219,9 @@ const animation = new WHS.Loop(() => {
   planet.rotation.y += 0.005;
 });
 
-world.addLoop(animation);
+app.addLoop(animation);
 
 animation.start();
 
 // Start rendering.
-world.start();
+app.start();

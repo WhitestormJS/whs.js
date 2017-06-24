@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(5, 5, 10),
     renderer: {
@@ -16,7 +16,7 @@ const world = new WHS.App([
   new WHS.ResizeModule()
 ]);
 
-const animationModule = new WHS.AnimationModule(world, false, {
+const animationModule = new WHS.AnimationModule(app, false, {
   speed: 1.2
 });
 
@@ -60,7 +60,7 @@ new WHS.Importer({
 
   position: [0, -5, 0]
 
-}).addTo(world).then(() => {
+}).addTo(app).then(() => {
   animationModule.play('observe');
 });
 
@@ -76,7 +76,7 @@ new WHS.PointLight({
 
   position: [-1, 3, 5]
 
-}).addTo(world);
+}).addTo(app);
 
 const floorTextureRepeat = new THREE.Vector2(15, 15);
 
@@ -117,7 +117,7 @@ new WHS.Box({
 
   position: [0, -5, 0]
 
-}).addTo(world);
+}).addTo(app);
 
 new WHS.SpotLight({
   color: 0xffffff,
@@ -134,11 +134,11 @@ new WHS.SpotLight({
     y: 30,
     z: 10
   }
-}).addTo(world);
+}).addTo(app);
 
-UTILS.addAmbient(world, 0.1);
+UTILS.addAmbient(app, 0.1);
 
 new WHS.Loop(() => {
-}).start(world);
+}).start(app);
 
-world.start();
+app.start();

@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
@@ -47,7 +47,7 @@ new WHS.Icosahedron({ // Softbody (blue).
   position: {
     y: 4
   }
-}).addTo(world).then(obj => { obj.native.frustumCulled = false });
+}).addTo(app).then(obj => { obj.native.frustumCulled = false });
 
 // TODO: Make sphere position start from specific position. [Softbodies issue]
 new WHS.Sphere({ // Rigidbody (green).
@@ -72,11 +72,11 @@ new WHS.Sphere({ // Rigidbody (green).
     x: -0.5,
     z: 0.5
   }
-}).addTo(world)
+}).addTo(app)
 
 
 
-UTILS.addBoxPlane(world, 2500);
-UTILS.addBasicLights(world);
+UTILS.addBoxPlane(app, 2500);
+UTILS.addBasicLights(app);
 
-world.start();
+app.start();

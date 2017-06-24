@@ -12,7 +12,7 @@ const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
 
 const controlsModule = new WHS.OrbitControlsModule();
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 200),
     renderer: {
@@ -53,7 +53,7 @@ new WHS.Box({
   )
   ],
   position: [0, 4, 0]
-}).addTo(world);
+}).addTo(app);
 
 new WHS.Box({
   geometry: {
@@ -71,11 +71,11 @@ new WHS.Box({
   material: new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide
   })
-}).addTo(world);
+}).addTo(app);
 
 new WHS.AmbientLight({
   color: 0xffffff,
   intensity: 0.4
-}).addTo(world);
+}).addTo(app);
 
-world.start();
+app.start();
