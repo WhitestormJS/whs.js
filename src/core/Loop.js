@@ -18,6 +18,7 @@ class Loop {
 
   /**
    * @method start
+   * @instance
    * @description Starts this loop, clock if it has one. Won't do anything if loop enabled already.
    * @param {Component} [world] app to add this loop to, if provided.
    * @memberof module:core.Loop
@@ -33,6 +34,7 @@ class Loop {
 
   /**
    * @method stop
+   * @instance
    * @description Stops this loop and its clock if it has one, won't do anything if this loop is not enabled)
    * @param {Component} [world] app to remove this loop from, if provided.
    * @memberof module:core.Loop
@@ -50,6 +52,7 @@ class Loop {
 
   /**
    * @method execute
+   * @instance
    * @description Executes the function of this loop
    * @memberof module:core.Loop
    * @returns {*} whatever the function of this loop returns
