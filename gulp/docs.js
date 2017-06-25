@@ -34,7 +34,7 @@ gulp.task('docs:watch', ['docs'], () => {
     './docs/template/**/*.tmpl',
     './docs/template/publish.js',
     './docs/data/**/*',
-    './src/core/*.js'
+    argv.all ? './src/**/*.js' : './src/core/Component.js'
   ], () => {
     del('./docs/public/*.html');
     console.log(`update #${i++}`);
