@@ -25,6 +25,7 @@ export class ModuleManager {
 
   /**
    * @method active
+   * @instance
    * @description Sets .currentModule to provided module.
    * @param {Object} module the module to make current
    * @memberof module:core.ModuleManager
@@ -35,6 +36,7 @@ export class ModuleManager {
 
   /**
    * @method reset
+   * @instance
    * @description Set's .currentModule to null.
    * @memberof module:core.ModuleManager
    */
@@ -44,6 +46,7 @@ export class ModuleManager {
 
   /**
    * @method define
+   * @instance
    * @description Define the module in manager
    * @param name The module name
    * @memberof module:core.ModuleManager
@@ -54,6 +57,7 @@ export class ModuleManager {
 
   /**
    * @method use
+   * @instance
    * @description Get the defined module from manager
    * @param name The module name
    * @memberof module:core.ModuleManager
@@ -64,11 +68,12 @@ export class ModuleManager {
 
   /**
    * @method set
+   * @instance
    * @description An alias for .add() <br/><br/>
    * Use this method if you know that you will overwrite existing dependency.<br/>
    * Use it in your app, but not in module that you provide to other people.
    * @param {String} key the key of the dependency
-   * @param {Object} value the value of the dependency
+   * @param {Object} data the value of the dependency
    * @memberof module:core.ModuleManager
    */
   set(key, data) {
@@ -81,12 +86,12 @@ export class ModuleManager {
 
   /**
    * @method get
+   * @instance
    * @description Returns dependency in store object, by key.
    * @param {String} key the key of the dependency
-   * @param {Boolean} [getModule=false]
    * @memberof module:core.ModuleManager
    * @return {Object|Module}
-   * @throws DependencyError if dependency is not in the store
+   * @throws {DependencyError} if dependency is not in the store
    * @example <caption>Get the 'hello' dependency</caption>
    * manager.get('hello'); // -> {world: true}
    */
@@ -104,6 +109,7 @@ export class ModuleManager {
 
   /**
    * @method has
+   * @instance
    * @description Returns whether manager has a dependency with the given key
    * @param {String} key the key of the dependency
    * @memberof module:core.ModuleManager
@@ -117,6 +123,7 @@ export class ModuleManager {
 
   /**
    * @method update
+   * @instance
    * @description Updates deps
    * @param {Object} [depsMap={}]
    * @memberof module:core.ModuleManager
