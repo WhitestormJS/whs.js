@@ -11,10 +11,10 @@ import {LightComponent} from '../../core/LightComponent';
  * @extends LightComponent
  * @memberof module:components/lights
  * @example <caption>Creating a SpotLight that falls down from vec3(10, 20, 10) to vec3(0, 0, 0)</caption>
- * new LightComponent({
+ * new SpotLight( {
  *   color: 0x00ff00,
  *   intensity: 3,
- *   distance: 1000,
+ *   distance: 1000
  *
  *   position: [10, 20, 10]
  * }).addTo(app);
