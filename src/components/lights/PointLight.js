@@ -10,10 +10,10 @@ import {LightComponent} from '../../core/LightComponent';
  * @extends LightComponent
  * @memberof module:components/lights
  * @example <caption>Creating a PointLight</caption>
- * new LightComponent({
+ * new PointLight( {
  *   color: 0xff0000,
- *   intensity: 3,
- *   distance: 1000,
+ *   intensity: 2,
+ *   distance: 300
  *
  *   position: [10, 20, 10]
  * }).addTo(app);
