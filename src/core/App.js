@@ -1,6 +1,7 @@
 import {system} from '../polyfill';
 import {ModuleSystem} from './ModuleSystem';
 import {ModuleManager} from './ModuleManager';
+
 /**
  * @class App
  * @category core

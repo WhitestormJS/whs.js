@@ -29,7 +29,7 @@ const [verticesOfCube, indicesOfFaces] = [
  * `Polyhedron` creates a Polyhedron by its `radius` and `detail`.
  * <br/><br/>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating an Polyhedron, and adding to app</caption>
  * new Polyhedron({

@@ -20,7 +20,7 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @classDesc
  * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#ParametricGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Example creating an heightfield-like geometry. `u` and `v` are like `x` and `y` in shape, but their values are always from `0` to `1`.
  * We use them in `THREE.Vector3` like `x` and `z` and `Math.random() * 5` for `y`.</caption>

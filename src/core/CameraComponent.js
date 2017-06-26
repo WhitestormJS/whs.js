@@ -11,7 +11,7 @@ import {CompositionError} from './errors';
  * @category core
  * @param {Object} [params] - The parameters object.
  * @param {Object} [instructions] - The instructions object.
- * @extends Component
+ * @extends module:core.Component
  * @memberof module:core
  */
 class CameraComponent extends Component {

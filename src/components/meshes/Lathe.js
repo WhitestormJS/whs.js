@@ -18,7 +18,7 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @classDesc
  * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#LatheGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Lath, and adding to app</caption>
  * const points = [];
