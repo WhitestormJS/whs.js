@@ -12,6 +12,8 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @class Tube
  * @category components/meshes
  * @description Tube class makes a tube that extrudes along a 3d curve.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/index.html#api/geometries/TubeGeometry"></iframe>
  * @param {Object} [params] - The params.
  * @extends MeshComponent
  * @memberof module:components/meshes

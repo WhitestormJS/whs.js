@@ -11,6 +11,8 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @class Text
  * @category components/meshes
  * @description Text class is made for creating 3D text objects.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#TextGeometry"></iframe>
  * <br/><br/>
  * Physics text object can be convex or concave. By default it's convex but you can also switch to concave.
  * @param {Object} [params] - The params.

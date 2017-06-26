@@ -14,6 +14,8 @@ import {MeshComponent} from '../../core/MeshComponent';
  * There are also three regular star dodecahedra, which are constructed as stellations of the convex form. <br/>
  * All of these have icosahedral symmetry, order 120.
  * Dodecahedron creates Dodecahedron object by it's radius and detail.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#DodecahedronGeometry"></iframe>
  * @param {Object} [params] - The params.
  * @extends MeshComponent
  * @memberof module:components/meshes
