@@ -9,7 +9,7 @@ import {LightComponent} from '../../core/LightComponent';
  * @param {Object} [params={light: {color: 0xffffff, intensity: 1, distance: 100, decay: 1}}] - The params.
  * @classDesc
  * <iframe src="https://threejs.org/examples/webgl_lights_pointlights.html"></iframe>
- * @extends LightComponent
+ * @extends module:core.LightComponent
  * @memberof module:components/lights
  * @example <caption>Creating a PointLight</caption>
  * new PointLight({

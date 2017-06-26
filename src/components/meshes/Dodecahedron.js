@@ -17,7 +17,7 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @classDesc
  * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#DodecahedronGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Dodecahedron, and adding to app</caption>
  * new Dodecahedron({

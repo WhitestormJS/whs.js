@@ -8,7 +8,35 @@ import {CompositionError} from './errors';
   copy('position', 'rotation', 'quaternion', 'scale'),
   mirror('material', 'geometry')
 )
+/**
+ * @class MeshComponent
+ * @category core
+ * @param {Object} [params] - The parameters object.
+ * @param {Object} [instructions] - The instructions object.
+ * @extends module:core.Component
+ * @memberof module:core
+ */
 class MeshComponent extends Component {
+  /**
+   * Default values for parameters
+   * @member {Object} module:core.MeshComponent#defaults
+   * @static
+   * @default
+   * {
+   *   build: true,
+   *   geometry: {},
+   *   material: false,
+   *
+   *   shadow: {
+   *     cast: true,
+   *     receive: true
+   *   },
+   *
+   *   position: {x: 0, y: 0, z: 0},
+   *   rotation: {x: 0, y: 0, z: 0},
+   *   scale: {x: 1, y: 1, z: 1}
+   * }
+   */
   static defaults = {
     ...Component.defaults,
 
@@ -26,6 +54,17 @@ class MeshComponent extends Component {
     scale: {x: 1, y: 1, z: 1}
   };
 
+  /**
+   * Static instructions
+   * @member {Object} module:core.MeshComponent#instructions
+   * @static
+   * @default
+   * {
+   *   position: ['x', 'y', 'z'],
+   *   rotation: ['x', 'y', 'z'],
+   *   scale: ['x', 'y', 'z']
+   * }
+   */
   static instructions = {
     position: ['x', 'y', 'z'],
     rotation: ['x', 'y', 'z'],
@@ -79,6 +118,13 @@ class MeshComponent extends Component {
 
   // BUILDING & WRAPPING
 
+  /**
+   * @method build
+   * @instance
+   * @description Build livecycle should return a native object.
+   * @throws {CompositionError}
+   * @memberof module:core.MeshComponent
+   */
   build() {
     throw new CompositionError(
       'MeshComponent',
@@ -87,6 +133,13 @@ class MeshComponent extends Component {
     );
   }
 
+  /**
+   * @method wrap
+   * @instance
+   * @description Wraps transforms (`position` & `rotation`)
+   * @return {Promise} Resolved when action is completed
+   * @memberof module:core.MeshComponent
+   */
   wrap() {
     return new Promise(resolve => {
       // TODO: Fix defer with physics
@@ -109,6 +162,13 @@ class MeshComponent extends Component {
 
   // COPYING & CLONING
 
+  /**
+   * @method copy
+   * @instance
+   * @description Copy source transforms & execute `Component.copy()`
+   * @return {this} MeshComponent
+   * @memberof module:core.MeshComponent
+   */
   copy(source) {
     return super.copy(source, () => {
       this.position.copy(source.position);
@@ -117,6 +177,13 @@ class MeshComponent extends Component {
     });
   }
 
+  /**
+   * @method clone
+   * @instance
+   * @description Make a clone of this MeshComponent using `.copy()`
+   * @return {MeshComponent} clone of this object
+   * @memberof module:core.MeshComponent
+   */
   clone(geometry, material) {
     const dest = new this.constructor({build: false}).copy(this);
 

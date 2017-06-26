@@ -9,7 +9,7 @@ import {LightComponent} from '../../core/LightComponent';
  * The best analogy would be a light source that acts like the sun: the sun is so far away that all sunlight hitting objects comes from the same angle.<br/><br/>
  * It has the same options as AmbientLight in light paramater, but it also supports pos and target paramaters.
  * @param {Object} [params={light: {color: 0xffffff, intensity: 1}}] - The params.
- * @extends LightComponent
+ * @extends module:core.LightComponent
  * @memberof module:components/lights
  * @example <caption>Creating a DirectionalLight to fall down from vec3(10, 20, 10) to vec3(0, 0, 0)</caption>
  * new DirectionalLight({

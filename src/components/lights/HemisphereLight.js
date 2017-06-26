@@ -9,7 +9,7 @@ import {LightComponent} from '../../core/LightComponent';
  * @classDesc
  * <iframe src="https://threejs.org/examples/webgl_lights_hemisphere.html"></iframe>
  * @param {Object} [params={light: {skyColor: 0xffffff, groundColor: 0xffffff, intensity: 1}}] - The params.
- * @extends LightComponent
+ * @extends module:core.LightComponent
  * @memberof module:components/lights
  * @example <caption>Creating a HemisphereLight</caption>
  * new HemisphereLight({

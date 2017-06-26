@@ -15,7 +15,7 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @classDesc
  * <iframe src="https://threejs.org/docs/index.html#api/geometries/TubeGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Tube from a three.js Curve, and adding it to app</caption>
  * const CustomSinCurve = THREE.Curve.create(

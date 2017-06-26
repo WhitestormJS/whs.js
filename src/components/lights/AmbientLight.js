@@ -8,7 +8,7 @@ import {LightComponent} from '../../core/LightComponent';
  * AmbientLight creates basic light around all scene, so it doesn't need properties like pos or target.
  * It supports only color and intensity as parameters, which defines the color of the surrounded light and intensity of light.
  * @param {Object} [params={light: {color: 0xffffff, intensity: 1}}] - The params.
- * @extends LightComponent
+ * @extends module:core.LightComponent
  * @memberof module:components/lights
  * @example <caption>Creating an AmbientLight </caption>
  * new AmbientLight({
