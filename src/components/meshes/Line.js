@@ -13,7 +13,7 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @category components/meshes
  * @description Line component is generated from a curve/line and amount of vectors that should be used (points).
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Line, and adding to app</caption>
  * new Line({

@@ -8,7 +8,7 @@ import {system} from '../../polyfill';
  * @category components/cameras
  * @param {Object} [params] - The parameters object.
  * @memberof module:components/cameras
- * @extends CameraComponent
+ * @extends module:core.CameraComponent
  * @example <caption>Create an PerspectiveCamera and set it as app's camera</caption>
  * const camera = new PerspectiveCamera({
  *   fov: 75,

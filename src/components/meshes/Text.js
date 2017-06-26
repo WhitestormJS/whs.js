@@ -16,7 +16,7 @@ import {MeshComponent} from '../../core/MeshComponent';
  * <br/><br/>
  * Physics text object can be convex or concave. By default it's convex but you can also switch to concave.
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Text, and adding it to app</caption>
  * new Text({

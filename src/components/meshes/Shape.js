@@ -16,7 +16,7 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @classDesc
  * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#ShapeGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a plane looking Shape from a THREE.Shape, and adding it to app</caption>
  * const rectWidth = 10,

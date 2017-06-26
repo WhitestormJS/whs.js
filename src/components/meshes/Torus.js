@@ -12,7 +12,7 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @classDesc
  * <iframe src="https://threejs.org/docs/index.html#api/geometries/TorusGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Torus, and adding it to app</caption>
  * new Torus({

@@ -10,7 +10,7 @@ import {LightComponent} from '../../core/LightComponent';
  * @classDesc
  * <iframe src="https://threejs.org/examples/webgl_lights_spotlight.html"></iframe>
  * @param {Object} [params={light: {color: 0xffffff, intensity: 1, distance: 100, angle: Math.PI / 3, exponent: 0, decay: 1}}] - The params.
- * @extends LightComponent
+ * @extends module:core.LightComponent
  * @memberof module:components/lights
  * @example <caption>Creating a SpotLight that falls down from vec3(10, 20, 10) to vec3(0, 0, 0)</caption>
  * new SpotLight({
