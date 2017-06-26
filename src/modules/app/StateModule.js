@@ -9,6 +9,9 @@ const isEqualDefault = (a, b) => {
 
 /**
  * @class StateModule
+ * @description `StateModule` is useful for apps, where you need state manipulation.
+ * This can be: _transitions between screens, games, development moments_.
+ * You can check [basic/state](https://whs-dev.surge.sh/examples/?basic/state) example.
  * @category modules/app
  * @param {Object} [params]
  * @memberof module:modules/app
@@ -47,6 +50,11 @@ export class StateModule {
    * @description Add default configuration.
    * @param {Object} data Configuration setup
    * @memberof module:modules/app.StateModule
+   * @example
+   * new WHS.StateModule().default({
+   *   sphereColor: UTILS.$colors.mesh,
+   *   planeColor: 0x447F8B
+   * })
    */
   default(data) {
     this.config({default: data});
@@ -135,6 +143,10 @@ export class StateModule {
    * @description Set current parameters.
    * @param {Object} data Configuration parameters.
    * @memberof module:modules/app.StateModule
+   * @example
+   * state.set({
+   *   sphereColor: 0x00ff00
+   * });
    */
   set(data) {
     for (const key in data)
