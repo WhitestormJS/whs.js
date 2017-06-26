@@ -7,10 +7,12 @@ import {LightComponent} from '../../core/LightComponent';
  * @description PointLight creates a light at a specific position in the scene. The light shines in all directions (roughly similar to a light bulb.)<br/><br/>
  * It has the same options as AmbientLight in light paramater, but it also supports position, distance and decay.<br/>
  * @param {Object} [params={light: {color: 0xffffff, intensity: 1, distance: 100, decay: 1}}] - The params.
+ * @classDesc
+ * <iframe src="https://threejs.org/examples/webgl_lights_pointlights.html"></iframe>
  * @extends LightComponent
  * @memberof module:components/lights
  * @example <caption>Creating a PointLight</caption>
- * new LightComponent({
+ * new PointLight({
  *   color: 0xff0000,
  *   intensity: 3,
  *   distance: 1000,

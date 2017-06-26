@@ -13,6 +13,8 @@ import {MeshComponent} from '../../core/MeshComponent';
  * Unfortunately, not all of them support physics, an alternative is to make a similar 3D object and scale its width down to near zero.
  * <br/><br/>
  * `Shape` consists of shapes that are in its shapes parameter.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#ShapeGeometry"></iframe>
  * @param {Object} [params] - The params.
  * @extends MeshComponent
  * @memberof module:components/meshes

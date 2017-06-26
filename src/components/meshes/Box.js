@@ -11,6 +11,8 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @category components/meshes
  * @description As told on Component definition, while you can pass any of the inherited params for this component construction, you will need to
  * pass specific parameters to build this mesh as a geometry object.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#BoxGeometry"></iframe>
  * @param {Object} [params] - The params.
  * @extends MeshComponent
  * @memberof module:components/meshes

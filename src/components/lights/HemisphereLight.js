@@ -6,6 +6,8 @@ import {LightComponent} from '../../core/LightComponent';
  * @category components/lights
  * @description HemisphereLight is a light source positioned directly above the scene.<br/>
  * It also doesn't need position and target properties.
+ * @classDesc
+ * <iframe src="https://threejs.org/examples/webgl_lights_hemisphere.html"></iframe>
  * @param {Object} [params={light: {skyColor: 0xffffff, groundColor: 0xffffff, intensity: 1}}] - The params.
  * @extends LightComponent
  * @memberof module:components/lights

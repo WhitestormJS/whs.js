@@ -9,6 +9,8 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @class Torus
  * @category components/meshes
  * @description Torus class makes a torus figure. A donut is a torus.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/index.html#api/geometries/TorusGeometry"></iframe>
  * @param {Object} [params] - The params.
  * @extends MeshComponent
  * @memberof module:components/meshes
