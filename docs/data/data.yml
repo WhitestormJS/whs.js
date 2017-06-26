@@ -8,3 +8,13 @@ markdown:
     - 3D Transforms
     - Usage with webpack
     - Modules
+
+Classes:
+  order:
+    - core
+    - components/meshes
+    - components/lights
+    - components/cameras
+    - modules
+    - modules/app
+    - modules/mesh
