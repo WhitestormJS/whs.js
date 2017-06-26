@@ -296,13 +296,13 @@ function generateSourceFiles(sourceFiles, encoding) {
       logger.error("Error while generating source file %s: %s", file, e.message)
     }
 
-    generate(
-      "Source",
-      sourceFiles[file].shortened,
-      [source],
-      helper.getUniqueFilename(sourceFiles[file].shortened),
-      false
-    )
+    // generate(
+    //   "Source",
+    //   sourceFiles[file].shortened,
+    //   [source],
+    //   helper.getUniqueFilename(sourceFiles[file].shortened),
+    //   false
+    // )
   })
 }
 
