@@ -13,6 +13,8 @@ import {MeshComponent} from '../../core/MeshComponent';
  * The tetrahedron is the simplest of all the ordinary convex polyhedra and the only one that has fewer than 5 faces.
  * <br/><br/>
  * `Tetrahedron` creates a Tetrahedron object by its `radius` and `detail`
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#TetrahedronGeometry"></iframe>
  * @param {Object} [params] - The params.
  * @extends MeshComponent
  * @memberof module:components/meshes

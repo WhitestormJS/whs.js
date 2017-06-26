@@ -7,11 +7,13 @@ import {LightComponent} from '../../core/LightComponent';
  * @description SpotLight creates spot light that can cast shadow in one direction. <br/><br/>
  * It has the same parameters as AmbientLight in light, but it also supports pos and target. <br/><br/>
  * SpotLight affects meshes with lambert and phong material.
+ * @classDesc
+ * <iframe src="https://threejs.org/examples/webgl_lights_spotlight.html"></iframe>
  * @param {Object} [params={light: {color: 0xffffff, intensity: 1, distance: 100, angle: Math.PI / 3, exponent: 0, decay: 1}}] - The params.
  * @extends LightComponent
  * @memberof module:components/lights
  * @example <caption>Creating a SpotLight that falls down from vec3(10, 20, 10) to vec3(0, 0, 0)</caption>
- * new LightComponent({
+ * new SpotLight({
  *   color: 0x00ff00,
  *   intensity: 3,
  *   distance: 1000,
