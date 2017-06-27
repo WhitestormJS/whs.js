@@ -33,12 +33,6 @@ const app = new WHS.App([
 
 ## FAQ
 
-> Q: Can I use presets of modules in App?
->
-> A: `App` has it's own preset for simple apps quickstart.
->
-> ---
->
 > Q: Why is the color in Hexadecimal format?
 >
 > A: Simply following Three.js' [best practice](https://threejs.org/docs/api/math/Color.html).

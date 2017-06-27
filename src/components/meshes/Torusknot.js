@@ -6,7 +6,49 @@ import {
 
 import {MeshComponent} from '../../core/MeshComponent';
 
+/**
+ * @class Torusknot
+ * @category components/meshes
+ * @description Torusknot class makes a torusknot figure. It's like a crooked donut, very crooked.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#TorusKnotGeometry"></iframe>
+ * @param {Object} [params] - The params.
+ * @extends module:core.MeshComponent
+ * @memberof module:components/meshes
+ * @example <caption>Creating a Torusknot, and adding it to app</caption>
+ * new Torusknot({
+ *   geometry: {
+ *     radius:5,
+ *     tube: 2
+ *   },
+ *
+ *   material: new THREE.MeshBasicMaterial({
+ *     color: 0xffffff
+ *   }),
+ *
+ *   pos: {
+ *     y: 100
+ *   }
+ * }).addTo(app);
+ */
 class Torusknot extends MeshComponent {
+  /**
+   * Default values for parameters
+   * @member {Object} module:components/meshes.Torusknot#defaults
+   * @static
+   * @default <pre>
+   * {
+   *   geometry: {
+   *     radius: 100,
+   *     tube: 40,
+   *     radialSegments: 64,
+   *     tubularSegments: 8,
+   *     p: 2,
+   *     q: 3
+   *   }
+   * }
+   * </pre>
+   */
   static defaults = {
     ...MeshComponent.defaults,
     geometry: {
@@ -19,6 +61,23 @@ class Torusknot extends MeshComponent {
     }
   };
 
+  /**
+   * Instructions
+   * @member {Object} module:components/meshes.Torusknot#instructions
+   * @static
+   * @default <pre>
+   * {
+   *   geometry: [
+   *     'radius',
+   *     'tube',
+   *     'radialSegments',
+   *     'tubularSegments',
+   *     'p',
+   *     'q'
+   *   ]
+   * }
+   * </pre>
+   */
   static instructions = {
     ...MeshComponent.instructions,
     geometry: [
@@ -50,7 +109,7 @@ class Torusknot extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? TorusKnotBufferGeometry : TorusKnotGeometry;
+    const GConstruct = params.buffer ? TorusKnotBufferGeometry : TorusKnotGeometry;
 
     return new GConstruct(
       params.geometry.radius,

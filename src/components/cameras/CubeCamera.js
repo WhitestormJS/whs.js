@@ -7,7 +7,7 @@ import {CameraComponent} from '../../core/CameraComponent';
  * @description Creates 6 cameras that render to a WebGLRenderTargetCube
  * @param {Object} [params] - The parameters object.
  * @memberof module:components/cameras
- * @extends CameraComponent
+ * @extends module:core.CameraComponent
  * @example <caption>Creates a CubeCamera and set it as app's camera</caption>
  * const camera = new CubeCamera({
  *   camera: {
