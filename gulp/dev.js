@@ -23,6 +23,7 @@ gulp.task('dev', () => {
   const app = express();
   const compilerInstance = new FrameworkCompilerInstance();
   const templateData = getTemplateData({devPhysics: argv.devPhysics, devMode: true});
+
   const exampleCompiler = new ExampleCompilerInstance({
     path: {
       ammojs: templateData.ammojs,

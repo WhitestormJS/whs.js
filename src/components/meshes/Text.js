@@ -7,7 +7,64 @@ import {
 
 import {MeshComponent} from '../../core/MeshComponent';
 
+/**
+ * @class Text
+ * @category components/meshes
+ * @description Text class is made for creating 3D text objects.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#TextGeometry"></iframe>
+ * <br/><br/>
+ * Physics text object can be convex or concave. By default it's convex but you can also switch to concave.
+ * @param {Object} [params] - The params.
+ * @extends module:core.MeshComponent
+ * @memberof module:components/meshes
+ * @example <caption>Creating a Text, and adding it to app</caption>
+ * new Text({
+ *   geometry: {
+ *     text: 'hello world',
+ *     parameters: {
+ *       font: 'path/to/font.typeface.js',
+ *       size: 20,
+ *       height: 5,
+ *       curveSegments: 6
+ *     }
+ *   },
+ *
+ *   material: new THREE.MeshBasicMaterial({
+ *     color: 0xffffff
+ *   }),
+ *
+ *   position: {
+ *     x: -40,
+ *     y: 20,
+ *     z: 0
+ *   }
+ * }).addTo(app);
+ */
 class Text extends MeshComponent {
+  /**
+   * Default values for parameters
+   * @member {Object} module:components/meshes.Text#defaults
+   * @static
+   * @default <pre>
+   * {
+   *   geometry: {
+   *     text: 'Hello World!',
+   *     loader: new FontLoader(),
+   *
+   *     parameters: {
+   *       size: 12,
+   *       height: 50,
+   *       curveSegments: 12,
+   *       font: new Font(),
+   *       bevelEnabled: false,
+   *       bevelThickness: 10,
+   *       bevelSize: 8
+   *     }
+   *   }
+   * }
+   * </pre>
+   */
   static defaults = {
     ...MeshComponent.defaults,
     geometry: {
@@ -26,9 +83,19 @@ class Text extends MeshComponent {
     }
   };
 
+  /**
+   * Instructions
+   * @member {Object} module:components/meshes.Text#instructions
+   * @static
+   * @default <pre>
+   * {
+   *   geometry: ['text', 'loader', 'parameters']
+   * }
+   * </pre>
+   */
   static instructions = {
     ...MeshComponent.instructions,
-    geometry: ['text', 'parameters']
+    geometry: ['text', 'loader', 'parameters']
   }
 
   constructor(params = {}) {

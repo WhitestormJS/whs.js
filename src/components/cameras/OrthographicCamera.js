@@ -8,7 +8,7 @@ import {system} from '../../polyfill';
  * @description Camera with orthographic projection.
  * @param {Object} [params] - The parameters object.
  * @memberof module:components/cameras
- * @extends CameraComponent
+ * @extends module:core.CameraComponent
  * @example <caption>Create an OrthographicCamera and set it as app's camera</caption>
  * const camera = new OrthographicCamera({
  *   camera: {

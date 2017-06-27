@@ -10,8 +10,10 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @class Plane
  * @category components/meshes
  * @description `Plane` is used for creating planes given some `width` and `height`.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#PlaneGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Plane, and adding to app</caption>
  * new Plane({
