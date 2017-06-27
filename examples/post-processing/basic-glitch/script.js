@@ -2,33 +2,29 @@ import * as UTILS from '../../globals';
 
 const postprocessor = new WHS.PostProcessorModule();
 
-window.app = new WHS.App(
-  new WHS.BasicAppPreset({
-    camera: {
-      position: new THREE.Vector3(0, 10, 50)
-    },
+window.app = new WHS.App([
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
+    position: new THREE.Vector3(0, 10, 50)
+  })),
+  new WHS.RenderingModule({
+    bgColor: 0x162129,
 
-    rendering: {
-      bgColor: 0x162129,
-
-      renderer: {
-        antialias: true,
-        shadowmap: {
-          type: THREE.PCFSoftShadowMap
-        }
+    renderer: {
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
       }
     }
-  })
-    .extend([
-      new PHYSICS.WorldModule({
-        ammo: process.ammoPath
-      }),
-      postprocessor,
-      new WHS.OrbitControlsModule()
-    ])
-    .autoresize()
-    .get()
-);
+  }),
+  new PHYSICS.WorldModule({
+    ammo: process.ammoPath
+  }),
+  postprocessor,
+  new WHS.OrbitControlsModule(),
+  new WHS.ResizeModule()
+]);
 
 const sphere = new WHS.Sphere({ // Create sphere comonent.
   geometry: {
