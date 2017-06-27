@@ -10,8 +10,10 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @class Ring
  * @category components/meshes
  * @description Ring class creates a circle or just 2D Torus. Does not support physics.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#RingGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Ring, and adding to app</caption>
  * new Ring({

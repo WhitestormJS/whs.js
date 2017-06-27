@@ -17,9 +17,9 @@ class Component extends ModuleSystem {
    * @member {Object} module:core.Component#defaults
    * @static
    * @default {
-     modules: [],
-     manager: true
-   }
+   *   modules: [],
+   *   manager: true
+   * }
    */
   static defaults = {
     modules: [],
@@ -69,6 +69,7 @@ class Component extends ModuleSystem {
 
   /**
    * @method wait
+   * @instance
    * @description Wait for a promise.
    * @param {Promise} [promise] - The promise that should be added to a queue.
    * @return {Promise} Promise that is resolved when all promises completed.
@@ -81,6 +82,7 @@ class Component extends ModuleSystem {
 
   /**
    * @method defer
+   * @instance
    * @description Execute `func` (Callback) when Component is ready.
    * @param {Function} func - Callback.
    * @memberof module:core.Component
@@ -94,6 +96,7 @@ class Component extends ModuleSystem {
 
   /**
    * @method updateParams
+   * @instance
    * @description Updates parameters of the Component.
    * @return {Object} Params of this Component
    * @memberof module:core.Component
@@ -107,6 +110,7 @@ class Component extends ModuleSystem {
 
   /**
    * @method clone
+   * @instance
    * @description Clone this component
    * @return {object} a cloned component with all its source component' params copied.
    * @memberof module:core.Component
@@ -117,6 +121,7 @@ class Component extends ModuleSystem {
 
   /**
    * @method copy
+   * @instance
    * @description Copy source native and integrate `modules` to it.
    * @param {Component} source - Source component that is used for `copy()` action.
    * @param {Function} [customize] - Callback executed before modules integration process.
@@ -135,6 +140,7 @@ class Component extends ModuleSystem {
 
   /**
    * @method add
+   * @instance
    * @description Add a child `Component`.
    * @param {Component} object - Component that should be added as a `child`.
    * @return {Promise} Resolved when action is done.
@@ -165,6 +171,7 @@ class Component extends ModuleSystem {
 
   /**
    * @method remove
+   * @instance
    * @description Remove a child `Component`.
    * @param {Component} object - Component that should be a **child** of this Component.
    * @memberof module:core.Component
@@ -176,6 +183,7 @@ class Component extends ModuleSystem {
 
   /**
    * @method addTo
+   * @instance
    * @description Adds `this` Component to specified `App`/`Component`.
    * @param {Component} object - Component that will be a parent of `this`.
    * @memberof module:core.Component
