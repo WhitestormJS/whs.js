@@ -4,8 +4,8 @@ import {ControlsModule} from '../ControlsModule';
 import {ThreeOrbitControls} from './lib/ThreeOrbitControls';
 
 export class OrbitControlsModule extends ControlsModule {
-  constructor(params = {}, patchEvents = true) {
-    super(params, patchEvents);
+  constructor(params = {}) {
+    super(params);
 
     this.params = Object.assign({
       follow: false,
@@ -15,9 +15,10 @@ export class OrbitControlsModule extends ControlsModule {
   }
 
   manager(manager) {
-    const object = this.params.object
-      ? this.params.object.native
-      : manager.get('camera').native;
+    super.manager(manager);
+
+    const {object: obj, follow, target} = this.params;
+    const object = obj ? obj.native : manager.get('camera').native;
 
     const controls = new ThreeOrbitControls(
       object,
@@ -25,11 +26,9 @@ export class OrbitControlsModule extends ControlsModule {
       manager.handler
     );
 
-    const {params} = this;
-
-    const updateProcessor = params.follow ? c => {
+    const updateProcessor = follow ? c => {
       controls.update(c.getDelta());
-      controls.target.copy(params.target);
+      controls.target.copy(target);
     } : c => {
       controls.update(c.getDelta());
     };
@@ -39,11 +38,11 @@ export class OrbitControlsModule extends ControlsModule {
 
     manager.update({
       camera: camera => {
-        if (this.params.object) return;
+        if (obj) return;
         controls.object = camera.native;
       }
     });
 
-    controls.target.copy(params.target);
+    controls.target.copy(target);
   }
 }

@@ -6,7 +6,7 @@ export class ControlsModule {
     return new ControlsModule({controls});
   }
 
-  constructor(params = {}, patchEvents = true) {
+  constructor(params = {}) {
     this.params = Object.assign({
       controls: false,
       fix: controls => controls,
@@ -18,7 +18,10 @@ export class ControlsModule {
 
     this.controls = this.params.controls;
     this.update = this.params.update;
-    this.patchEvents = patchEvents;
+  }
+
+  manager(manager) {
+    manager.require('events', () => new EventsPatchModule());
   }
 
   setControls(controls) {
@@ -32,7 +35,6 @@ export class ControlsModule {
   }
 
   integrate(self) {
-    if (self.patchEvents) this.applyModuleOnce(EventsPatchModule, () => new EventsPatchModule());
     self.updateLoop = new Loop(self.update.bind(self));
     self.updateLoop.start(this);
   }
