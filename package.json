@@ -9,7 +9,7 @@
     "test": "xo ./src/**/*.js && jest",
     "start": "webpack-dashboard -t WhitestormJS -- gulp dev",
     "start:physics": "webpack-dashboard -t WhitestormJS -- gulp dev --devPhysics 8001",
-    "build": "gulp build & gulp examples:build",
+    "build": "cross-env NODE_ENV=production gulp build && gulp examples:build",
     "deploy": "surge --project ./ --domain whs-dev.surge.sh",
     "docs": "gulp docs --all",
     "deploy:docs": "surge --project ./docs/public/ --domain whsjs.io"
@@ -58,6 +58,7 @@
     "benchmark": "^2.1.4",
     "buffer-shims": "^1.0.0",
     "coveralls": "^2.13.1",
+    "cross-env": "^5.0.1",
     "del": "^3.0.0",
     "express": "^4.15.3",
     "gl": "^4.0.3",
