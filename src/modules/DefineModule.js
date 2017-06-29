@@ -17,6 +17,6 @@ export class DefineModule {
   }
 
   manager(manager) {
-    manager.add(this.name, this.data);
+    manager.set(this.name, this.data);
   }
 }

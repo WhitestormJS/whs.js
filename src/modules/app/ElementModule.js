@@ -34,11 +34,11 @@ export class ElementModule {
   }
 
   manager(manager) {
-    manager.add('element', this.element);
-    manager.add('container', this.params.container);
+    manager.set('element', this.element);
+    manager.set('container', this.container);
   }
 
   integrate(self) {
-    self.params.container.appendChild(self.element);
+    self.container.appendChild(self.element);
   }
 }
