@@ -12,7 +12,6 @@ import {EventsPatchModule} from './EventsPatchModule';
  * @class VirtualMouseModule
  * @category modules/app
  * @param {Boolean} [globalMovement=false]
- * @param {Boolean} [patchEvents=true]
  * @memberof module:modules/app
  * @extends Events
  */
@@ -23,10 +22,9 @@ export class VirtualMouseModule extends Events {
   canvas = null;
   projectionPlane = new Plane(new Vector3(0, 0, 1), 0);
 
-  constructor(globalMovement = false, patchEvents = true) {
+  constructor(globalMovement = false) {
     super();
     this.globalMovement = globalMovement;
-    this.patchEvents = patchEvents;
   }
 
   update(e, customX, customY) {
@@ -46,14 +44,13 @@ export class VirtualMouseModule extends Events {
 
   manager(manager) {
     manager.define('mouse');
+    manager.require('events', () => new EventsPatchModule());
 
     this.canvas = manager.get('renderer').domElement;
     this.camera = manager.get('camera').native;
   }
 
   integrate(self) {
-    if (self.patchEvents) this.applyModuleOnce(EventsPatchModule, () => new EventsPatchModule());
-
     [
       'click',
       'mousedown',
