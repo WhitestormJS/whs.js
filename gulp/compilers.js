@@ -13,6 +13,16 @@ export const FrameworkCompilerInstance = (options = {framework}) =>
       isProduction,
       src: options.framework.src,
       dest: options.framework.dest,
+      isMinified: false,
+      ...(argv.version ? {version: argv.version} : {})
+    })),
+
+    minified: webpack(config({
+      isProduction,
+      src: options.framework.src,
+      dest: options.framework.dest,
+      isMinified: true,
+      filename: 'whs.min.js',
       ...(argv.version ? {version: argv.version} : {})
     }))
   }[name]);
