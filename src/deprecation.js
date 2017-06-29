@@ -25,6 +25,6 @@ export class CameraModule {
   }
 
   manager(manager) {
-    manager.add('camera', this.camera);
+    manager.set('camera', this.camera);
   }
 }
