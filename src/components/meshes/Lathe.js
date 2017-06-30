@@ -97,9 +97,7 @@ class Lathe extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? LatheBufferGeometry : LatheGeometry;
-
-    return new GConstruct(
+    return new (params.buffer ? LatheBufferGeometry : LatheGeometry)(
       params.geometry.points
     );
   }

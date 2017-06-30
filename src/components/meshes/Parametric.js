@@ -79,9 +79,7 @@ class Parametric extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? ParametricBufferGeometry : ParametricGeometry;
-
-    return new GConstruct(
+    return new (params.buffer ? ParametricBufferGeometry : ParametricGeometry)(
       params.geometry.func,
       params.geometry.slices,
       params.geometry.stacks

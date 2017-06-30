@@ -73,9 +73,7 @@ class Octahedron extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? OctahedronBufferGeometry : OctahedronGeometry;
-
-    return new GConstruct(
+    return new (params.buffer ? OctahedronBufferGeometry : OctahedronGeometry)(
       params.geometry.radius,
       params.geometry.detail
     );

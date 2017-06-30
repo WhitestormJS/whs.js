@@ -86,9 +86,7 @@ class Dodecahedron extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? DodecahedronBufferGeometry : DodecahedronGeometry;
-
-    return new GConstruct(
+    return new (params.buffer ? DodecahedronBufferGeometry : DodecahedronGeometry)(
       params.geometry.radius,
       params.geometry.detail
     );
