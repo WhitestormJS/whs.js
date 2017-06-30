@@ -3,6 +3,8 @@ import {Mesh} from 'three';
 
 const meshes = [
   'Box',
+  'Circle',
+  'Cone',
   'Cylinder',
   'Dodecahedron',
   'Extrude',

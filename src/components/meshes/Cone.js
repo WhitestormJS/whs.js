@@ -1,24 +1,24 @@
 import {
   Mesh,
-  CylinderBufferGeometry,
-  CylinderGeometry
+  ConeBufferGeometry,
+  ConeGeometry
 } from 'three';
 
 import {MeshComponent} from '../../core/MeshComponent';
 
 /**
- * @class Cylinder
+ * @class Cone
  * @category components/meshes
  * @description A cylinder is one of the most basic curvilinear geometric shapes, the surface formed by the points at a fixed distance from a given straight line, the axis of the cylinder. <br/><br/>
  * The solid enclosed by this surface and by two planes perpendicular to the axis is also called a cylinder.<br/>
  * The surface area and the volume of a cylinder have been known since deep antiquity.
  * @classDesc
- * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#CylinderGeometry"></iframe>
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#ConeGeometry"></iframe>
  * @param {Object} [params] - The params.
  * @extends module:core.MeshComponent
  * @memberof module:components/meshes
- * @example <caption>Creating a Cylinder, and adding to app</caption>
- * new Cylinder({
+ * @example <caption>Creating a Cone, and adding to app</caption>
+ * new Cone({
  *   geometry: {
  *     radiusTop: 2,
  *     radiusBottom: 4,
@@ -32,17 +32,16 @@ import {MeshComponent} from '../../core/MeshComponent';
  *   pos: [0, 100, 0]
  * }).addTo(app);
  */
-class Cylinder extends MeshComponent {
+class Cone extends MeshComponent {
 
   /**
    * Default values for parameters
-   * @member {Object} module:components/meshes.Cylinder#defaults
+   * @member {Object} module:components/meshes.Cone#defaults
    * @static
    * @default <pre>
    * {
    *   geometry: {
-   *     radiusTop: 20,
-   *     radiusBottom: 20,
+   *     radius: 20,
    *     height: 100,
    *     radiusSegments: 32,
    *     heightSegments: 1,
@@ -54,10 +53,10 @@ class Cylinder extends MeshComponent {
    */
   static defaults = {
     ...MeshComponent.defaults,
+
     geometry: {
-      radiusTop: 0,
-      radiusBottom: 1,
-      height: 1,
+      radius: 20,
+      height: 100,
       radiusSegments: 32,
       heightSegments: 1,
       openEnded: false,
@@ -68,12 +67,11 @@ class Cylinder extends MeshComponent {
 
   /**
    * Instructions
-   * @member {Object} module:components/meshes.Cylinder#instructions
+   * @member {Object} module:components/meshes.Cone#instructions
    * @static
    * @default <pre>
    * geometry: [
-   *   'radiusTop',
-   *   'radiusBottom',
+   *   'radius',
    *   'height',
    *   'radiusSegments',
    *   'heightSegments',
@@ -86,8 +84,7 @@ class Cylinder extends MeshComponent {
   static instructions = {
     ...MeshComponent.instructions,
     geometry: [
-      'radiusTop',
-      'radiusBottom',
+      'radius',
       'height',
       'radiusSegments',
       'heightSegments',
@@ -98,7 +95,7 @@ class Cylinder extends MeshComponent {
   };
 
   constructor(params = {}) {
-    super(params, Cylinder.defaults, Cylinder.instructions);
+    super(params, Cone.defaults, Cone.instructions);
 
     if (params.build) {
       this.build(params);
@@ -116,9 +113,8 @@ class Cylinder extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const geometry = new (params.buffer ? CylinderBufferGeometry : CylinderGeometry)(
-      params.geometry.radiusTop,
-      params.geometry.radiusBottom,
+    const geometry = new (params.buffer ? ConeBufferGeometry : ConeGeometry)(
+      params.geometry.radius,
       params.geometry.height,
       params.geometry.radiusSegments,
       params.geometry.heightSegments,
@@ -132,5 +128,5 @@ class Cylinder extends MeshComponent {
 }
 
 export {
-  Cylinder
+  Cone
 };
