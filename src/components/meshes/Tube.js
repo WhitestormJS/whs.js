@@ -118,9 +118,7 @@ class Tube extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer ? TubeBufferGeometry : TubeGeometry;
-
-    const geometry = new GConstruct(
+    const geometry = new (params.buffer ? TubeBufferGeometry : TubeGeometry)(
       params.geometry.path,
       params.geometry.segments,
       params.geometry.radius,

@@ -87,16 +87,12 @@ class Plane extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer || params.softbody ? PlaneBufferGeometry : PlaneGeometry;
-
-    const geometry = new GConstruct(
+    const geometry = new (params.buffer ? PlaneBufferGeometry : PlaneGeometry)(
       params.geometry.width,
       params.geometry.height,
       params.geometry.wSegments,
       params.geometry.hSegments
     );
-
-    if (params.softbody) this.proccessSoftbodyGeometry(geometry);
 
     return geometry;
   }

@@ -82,9 +82,7 @@ class Icosahedron extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? IcosahedronBufferGeometry : IcosahedronGeometry;
-
-    return new GConstruct(
+    return new (params.buffer ? IcosahedronBufferGeometry : IcosahedronGeometry)(
       params.geometry.radius,
       params.geometry.detail
     );

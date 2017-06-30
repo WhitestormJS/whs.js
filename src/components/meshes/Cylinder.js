@@ -116,9 +116,7 @@ class Cylinder extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? CylinderBufferGeometry : CylinderGeometry;
-
-    const geometry = new GConstruct(
+    const geometry = new (params.buffer ? CylinderBufferGeometry : CylinderGeometry)(
       params.geometry.radiusTop,
       params.geometry.radiusBottom,
       params.geometry.height,
@@ -128,8 +126,6 @@ class Cylinder extends MeshComponent {
       params.geometry.thetaStart,
       params.geometry.thetaLength
     );
-
-    if (params.softbody) this.proccessSoftbodyGeometry(geometry);
 
     return geometry;
   }
