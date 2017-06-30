@@ -32,4 +32,4 @@ deploy:
   project: ./
   domain: whs-dev.surge.sh
   skip_cleanup: true
-  on: beta
+  on: dev
