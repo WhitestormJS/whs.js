@@ -1,4 +1,4 @@
-/*! WhitestormJS Framework v2.0.0-beta.9.1 */
+/*! WhitestormJS Framework v2.0.0 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("three"));
@@ -7267,7 +7267,7 @@ var App = function (_ModuleSystem) {
 
 module.exports = {
 	"name": "whs",
-	"version": "2.0.0-beta.9.1",
+	"version": "2.0.0",
 	"description": "Framework for developing 3D web apps with physics.",
 	"main": "build/whs.js",
 	"typings": "types/index.d.ts",
