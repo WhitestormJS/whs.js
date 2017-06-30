@@ -28,7 +28,7 @@ Community chat. [Join us!][discord-url]
 $ npm install whs --save-dev
 ```
 
-Download the [minified library](https://whs-dev.surge.sh/build/whs.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
+Download the [minified library](https://whs-dev.surge.sh/build/whs.min.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
 
 ```html
 <script src="js/three.min.js"></script>
