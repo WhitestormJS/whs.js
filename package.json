@@ -1,7 +1,7 @@
 {
   "name": "whs",
   "version": "2.0.0",
-  "description": "Framework for developing 3D web apps with physics.",
+  "description": "Super-fast 3D framework for Web Applications & Games. Based on Three.js",
   "main": "build/whs.js",
   "typings": "types/index.d.ts",
   "scripts": {
