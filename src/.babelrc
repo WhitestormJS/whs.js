@@ -1,0 +1,28 @@
+{
+  "presets": [
+    ["es2015", {"modules": false}]
+  ],
+  "plugins": [
+    "add-module-exports",
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    "transform-object-rest-spread"
+  ],
+  "env": {
+    "test": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    },
+    "production": {
+      "plugins": [
+        "transform-runtime"
+      ]
+    },
+    "development": {
+      "plugins": [
+        ["transform-runtime", {
+          "polyfill": false
+        }]
+      ]
+    }
+  }
+}

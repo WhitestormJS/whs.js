@@ -1,41 +1,33 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
-
-var world = new WHS.World({
-  autoresize: "window",
-
-  gravity: {
-    x: 0,
-    y: -10,
-    z: 0
-  },
-
-  camera: {
+const app = new WHS.App([
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
+    position: new THREE.Vector3(-8, 5, 20),
     far: 2000,
     near: 1,
-    position: [-8, 5, 20],
-
     fov: 45
-  },
-
-  rendering: {
-    background: {
-      color: 0xffffff
-    },
+  })),
+  new WHS.RenderingModule({
+    bgColor: 0xffffff,
 
     renderer: {
-      antialias: true
+      antialias: false
     }
-  }
-});
+  }),
+  new WHS.OrbitControlsModule({target: new THREE.Vector3(50, 50, 50)}),
+  new WHS.ResizeModule()
+]);
 
-var data = new Float32Array(3993000);
-var colors = new Float32Array(3993000);
+const size = new THREE.Vector3(100, 100, 100);
+const sizel = size.x * size.y * size.z * 3;
 
-var i = 0;
-for (var x = 0; x <= 100; x++) {
-  for (var y = 0; y <= 100; y++) {
-    for (var z = 0; z <= 100; z++) {
+const data = new Float32Array(sizel); // 3993000
+const colors = new Float32Array(sizel);
+
+let i = 0;
+for (let x = 0; x <= size.x; x++) {
+  for (let y = 0; y <= size.y; y++) {
+    for (let z = 0; z <= size.z; z++) {
       data[i * 3] = x;
       data[i * 3 + 1] = y;
       data[i * 3 + 2] = z;
@@ -47,18 +39,18 @@ for (var x = 0; x <= 100; x++) {
   }
 }
 
-var geom = new THREE.BufferGeometry();
+const geom = new THREE.BufferGeometry();
 
 geom.addAttribute('position', new THREE.BufferAttribute(data, 3));
 geom.addAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-var points = new WHS.Shape(new THREE.Points(geom, new THREE.PointsMaterial({ vertexColors: THREE.VertexColors, size: 0.1 })));
+class Points extends WHS.MeshComponent {
+  build(params = {}) {
+    return new THREE.Points(params.geom, new THREE.PointsMaterial({vertexColors: THREE.VertexColors, size: 0.1}));
+  }
+}
 
-points.addTo(world);
-
-world.setControls(new WHS.OrbitControls(new THREE.Vector3(50, 50, 50)));
+new Points({geom}).addTo(app);
 
 // Start rendering.
-world.start();
-
-},{}]},{},[1]);
+app.start();

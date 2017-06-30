@@ -1,0 +1,19 @@
+{
+  "name": "whs-module-dat.gui",
+  "description": "User Interface for runtime editing properties",
+  "version": "0.1.0",
+  "main": "build/DatGUIModule.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack --watch"
+  },
+  "keywords": [
+    "whs-module"
+  ],
+  "dependencies": {
+    "dat.gui": "^0.6.1"
+  },
+  "repository": "https://github.com/WhitestormJS/whitestorm.js/tree/beta/modules/whs-module-dat.gui",
+  "author": "Alexander Buzin",
+  "license": "MIT"
+}
