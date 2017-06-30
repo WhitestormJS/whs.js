@@ -87,9 +87,7 @@ class Sphere extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer ? SphereBufferGeometry : SphereGeometry;
-
-    const geometry = new GConstruct(
+    const geometry = new (params.buffer ? SphereBufferGeometry : SphereGeometry)(
       params.geometry.radius,
       params.geometry.widthSegments,
       params.geometry.heightSegments

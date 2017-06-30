@@ -86,9 +86,7 @@ class Box extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer ? BoxBufferGeometry : BoxGeometry;
-
-    const geometry = new GConstruct(
+    const geometry = new (params.buffer ? BoxBufferGeometry : BoxGeometry)(
       params.geometry.width,
       params.geometry.height,
       params.geometry.depth,

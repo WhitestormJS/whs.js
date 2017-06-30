@@ -112,9 +112,7 @@ class Ring extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer ? RingBufferGeometry : RingGeometry;
-
-    return new GConstruct(
+    return new (params.buffer ? RingBufferGeometry : RingGeometry)(
       params.geometry.innerRadius,
       params.geometry.outerRadius,
       params.geometry.thetaSegments,

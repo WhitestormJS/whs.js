@@ -120,9 +120,7 @@ class Polyhedron extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer ? PolyhedronBufferGeometry : PolyhedronGeometry;
-
-    return new GConstruct(
+    return new (params.buffer ? PolyhedronBufferGeometry : PolyhedronGeometry)(
       params.geometry.verticesOfCube,
       params.geometry.indicesOfFaces,
       params.geometry.radius,

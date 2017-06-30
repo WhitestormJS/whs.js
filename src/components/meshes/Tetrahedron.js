@@ -91,9 +91,7 @@ class Tetrahedron extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer ? TetrahedronBufferGeometry : TetrahedronGeometry;
-
-    return new GConstruct(
+    return new (params.buffer ? TetrahedronBufferGeometry : TetrahedronGeometry)(
       params.geometry.radius,
       params.geometry.detail
     );

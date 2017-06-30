@@ -108,7 +108,7 @@ class Text extends MeshComponent {
   }
 
   build(params = {}) {
-    const promise = new Promise((resolve) => {
+    const promise = new Promise(resolve => {
       FontLoader.load(params.geometry.parameters.font, font => {
         params.geometry.parameters.font = font;
 
@@ -117,6 +117,7 @@ class Text extends MeshComponent {
             params.geometry.text,
             params.geometry.parameters
           ),
+
           material: params.material
         });
 

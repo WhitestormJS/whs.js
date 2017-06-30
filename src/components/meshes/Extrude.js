@@ -111,12 +111,12 @@ class Extrude extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const extrudeGeometry = new ExtrudeGeometry(
+    const geometry = new ExtrudeGeometry(
       params.geometry.shapes,
       params.geometry.options
     );
 
-    return params.buffer ? new BufferGeometry().fromGeometry(extrudeGeometry) : extrudeGeometry;
+    return params.buffer ? new BufferGeometry().fromGeometry(geometry) : geometry;
   }
 }
 

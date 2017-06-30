@@ -92,9 +92,7 @@ class Shape extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer ? ShapeBufferGeometry : ShapeGeometry;
-
-    return new GConstruct(
+    return new (params.buffer ? ShapeBufferGeometry : ShapeGeometry)(
       params.geometry.shapes
     );
   }
