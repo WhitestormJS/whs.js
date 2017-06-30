@@ -5,7 +5,7 @@
 
 ```bash
 # Install npm version
-$ npm install whs --save-dev
+$ npm install whs
 ```
 
 It implements a core with component system and plugin support for fast development of 3D scene with physics.
