@@ -95,3 +95,5 @@ Commonly used:
   - `ball.scale= new THREE.Vector3( x, y, z )`
 
 See [list of THREE.Vector3 methods](https://threejs.org/docs/index.html#Reference/Math/Vector3.set) at Three.js documentation.
+
+[> Usage with webpack](Usage with webpack.html)

@@ -3,6 +3,8 @@ import {Mesh} from 'three';
 
 const meshes = [
   'Box',
+  'Circle',
+  'Cone',
   'Cylinder',
   'Dodecahedron',
   'Extrude',
@@ -41,7 +43,7 @@ const cameras = [
 const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
-  new WHS.CameraModule()
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera())
 ]);
 
 app.start();

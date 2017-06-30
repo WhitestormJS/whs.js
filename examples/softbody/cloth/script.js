@@ -1,12 +1,12 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
-  new WHS.CameraModule({
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
     position: new THREE.Vector3(0, 60, 120),
     far: 10000
-  }),
+  })),
   new WHS.RenderingModule({
     bgColor: 0x162129,
 
@@ -59,7 +59,7 @@ const cloth = new WHS.Plane({ // Softbody (blue).
   }
 });
 
-cloth.addTo(world);
+cloth.addTo(app);
 
 new WHS.Box({ // Rigidbody (green).
   geometry: {
@@ -81,9 +81,9 @@ new WHS.Box({ // Rigidbody (green).
   position: {
     y: 36
   }
-}).addTo(world);
+}).addTo(app);
 
-UTILS.addBoxPlane(world, 250);
-UTILS.addBasicLights(world, 0.5, [60, 60, 20], 400);
+UTILS.addBoxPlane(app, 250);
+UTILS.addBasicLights(app, 0.5, [60, 60, 20], 400);
 
-world.start();
+app.start();

@@ -10,8 +10,10 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @class Torusknot
  * @category components/meshes
  * @description Torusknot class makes a torusknot figure. It's like a crooked donut, very crooked.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#TorusKnotGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Torusknot, and adding it to app</caption>
  * new Torusknot({

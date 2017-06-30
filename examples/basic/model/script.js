@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 40, 250)
   })
@@ -58,19 +58,17 @@ const ball = new WHS.Sphere({
   position: [10, 250, -1.969]
 });
 
-teapot.addTo(world).then(() => {
-  ball.addTo(world);
+teapot.addTo(app).then(() => {
+  ball.addTo(app);
 });
 
-UTILS.addBoxPlane(world, 500);
+UTILS.addBoxPlane(app, 500);
 
 new WHS.SpotLight({
-  light: {
-    color: 0xffffff,
-    intensity: 1,
-    distance: 300,
-    angle: 180
-  },
+  color: 0xffffff,
+  intensity: 1,
+  distance: 300,
+  angle: 180,
 
   shadowmap: {
     fov: 90
@@ -81,8 +79,8 @@ new WHS.SpotLight({
     y: 150,
     z: 50
   }
-}).addTo(world);
+}).addTo(app);
 
-UTILS.addAmbient(world, 0.3);
+UTILS.addAmbient(app, 0.3);
 
-world.start();
+app.start();

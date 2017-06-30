@@ -19,8 +19,10 @@ import {MeshComponent} from '../../core/MeshComponent';
  * Such examples can be easily implemented using whitestorm.js or it's plugins. Use `Extrude` class with <a href='https://threejs.org/docs/#api/extras/core/Shape'>THREE.Shape</a> to get extrude effect of shape defined by 2D vectors.
  * This class is similar to <a href='https://threejs.org/docs/#api/geometries/ExtrudeGeometry'>THREE.ExtrudeGeometry</a>,
  * but it also contains all properties, applied by `Shape`, such as material, mass and vectors like position (pos) and rotation (rot).
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#ExtrudeGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a shape, then an Extrude from it</caption>
  * const shape = new THREE.Shape([
@@ -109,12 +111,12 @@ class Extrude extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const extrudeGeometry = new ExtrudeGeometry(
+    const geometry = new ExtrudeGeometry(
       params.geometry.shapes,
       params.geometry.options
     );
 
-    return params.buffer ? new BufferGeometry().fromGeometry(extrudeGeometry) : extrudeGeometry;
+    return params.buffer ? new BufferGeometry().fromGeometry(geometry) : geometry;
   }
 }
 

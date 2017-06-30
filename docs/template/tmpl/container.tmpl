@@ -98,11 +98,7 @@
       <?js } ?>
       </div>
 
-      <?js if (doc.augments && doc.augments.length) { ?>
-          <h3 class="subsection-title">Extends <span class="gline"></span></h3>
 
-          <?js= self.partial('augments.tmpl', doc) ?>
-      <?js } ?>
 
       <?js if (doc.kind === 'module' && doc.requires && doc.requires.length) { ?>
           <h3 class="subsection-title">Requires <span class="gline"></span></h3>

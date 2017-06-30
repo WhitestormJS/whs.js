@@ -22,23 +22,19 @@ const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
 
-  new WHS.CameraModule({
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
     position: new THREE.Vector3(0, 0, 50)
-  }),
+  })),
 
   new WHS.RenderingModule({bgColor: 0x162129}),
   new WHS.ResizeModule()
 ]);
 ```
 
+[> Loops & 3D Animation](Loops & 3D Animation.html)
+
 ## FAQ
 
-> Q: Can I use presets of modules in App?
->
-> A: `App` has it's own preset for simple apps quickstart.
->
-> ---
->
 > Q: Why is the color in Hexadecimal format?
 >
 > A: Simply following Three.js' [best practice](https://threejs.org/docs/api/math/Color.html).

@@ -13,8 +13,10 @@ import {MeshComponent} from '../../core/MeshComponent';
  * A regular octahedron is a Platonic solid composed of eight equilateral triangles, four of which meet at each vertex.
  * <br/><br/>
  * `Octahedron` creates an Octahedron object by its `radius` and `detail`.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#OctahedronGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating an Octahedron, and adding to app</caption>
  * new Octahedron({
@@ -71,9 +73,7 @@ class Octahedron extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? OctahedronBufferGeometry : OctahedronGeometry;
-
-    return new GConstruct(
+    return new (params.buffer ? OctahedronBufferGeometry : OctahedronGeometry)(
       params.geometry.radius,
       params.geometry.detail
     );

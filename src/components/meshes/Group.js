@@ -8,7 +8,7 @@ import {Component} from '../../core/Component';
  * @description Sometimes you need to make groups of objects (it's not conveniently to apply transforms to each object when can make just one to a group).<br/>
  * In Three.js you make it using `THREE.Object3D` and it's children. <br/><br/>
  * In whs.js we have `Group`
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Approach 2 - Adding objects to an empty group</caption>
  * const sphere = new Sphere();

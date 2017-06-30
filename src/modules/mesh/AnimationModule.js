@@ -82,7 +82,7 @@ export class AnimationModule {
   }
 
   manager(manager) {
-    manager.add('animation', this);
+    manager.define('animation');
   }
 
   bridge = {

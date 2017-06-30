@@ -1,5 +1,6 @@
 export class EventsPatchModule {
   manager(manager) {
+    manager.define('events');
     this.element = manager.get('renderer').domElement;
   }
 

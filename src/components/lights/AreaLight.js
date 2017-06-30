@@ -5,12 +5,10 @@ class AreaLight extends LightComponent {
   static defaults = {
     ...LightComponent.defaults,
 
-    light: {
-      color: 0xffffff,
-      intensity: 1,
-      width: 10,
-      height: 10
-    }
+    color: 0xffffff,
+    intensity: 1,
+    width: 10,
+    height: 10
   };
 
   constructor(params = {}) {
@@ -19,11 +17,10 @@ class AreaLight extends LightComponent {
 
   build(params = {}) {
     return this.applyBridge({light: new RectAreaLightNative(
-      params.light.color,
-      params.light.intensity,
-      params.light.distance,
-      params.light.width,
-      params.light.height
+      params.color,
+      params.intensity,
+      params.width,
+      params.height
     )}).light;
   }
 }

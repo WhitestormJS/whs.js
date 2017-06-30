@@ -2,6 +2,10 @@
 
 Modules provide easy integration with components. They can make a lot of complex things much simpler to other developers (such as adding 3D physics).
 
+### Articles:
+
+- [Migrating to WhitestormJS v2 beta. Module system](https://hackernoon.com/migrating-to-whitestormjs-v2-beta-module-system-2eeaeda08a80)
+
 ## Simple module
 
 Let's create a simple module that will add `.alertRandom()` method to component, in which this module is used.
@@ -130,3 +134,6 @@ Module methods are executed in this order:
 | `geometry`  | `THREE.Geometry` instance |
 | `material`  | `THREE.Material` instance |
 | `mesh`      | `THREE.Mesh` instance |
+
+
+[> Animation Clips](Animation Clips.html)

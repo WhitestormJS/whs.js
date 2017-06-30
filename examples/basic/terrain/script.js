@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 30, -100)
   })
@@ -34,7 +34,7 @@ const terrain = new WHS.Parametric({
   ]
 });
 
-terrain.addTo(world);
+terrain.addTo(app);
 
 const sphere = new WHS.Sphere({
   geometry: {
@@ -57,9 +57,9 @@ const sphere = new WHS.Sphere({
   position: new THREE.Vector3(-31, 20, 0) // -30, 120, -40
 });
 
-sphere.addTo(world);
+sphere.addTo(app);
 
-UTILS.addBasicLights(world, 0.5, [0, 10, 10], 100, {
+UTILS.addBasicLights(app, 0.5, [0, 10, 10], 100, {
   bias: 0.0001,
   radius: 2,
 
@@ -68,4 +68,4 @@ UTILS.addBasicLights(world, 0.5, [0, 10, 10], 100, {
   }
 });
 
-world.start(); // Start animations and physics simulation.
+app.start(); // Start animations and physics simulation.

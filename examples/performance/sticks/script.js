@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 50)
   }, UTILS.appDefaults.rendering, {
@@ -72,8 +72,8 @@ for (let k = 0; k < rows; k++) {
 
       objects += 2;
 
-      newStick.addTo(world);
-      newStick2.addTo(world);
+      newStick.addTo(app);
+      newStick2.addTo(app);
     }
   }
 }
@@ -106,7 +106,7 @@ const sphere = new WHS.Sphere({
   }
 });
 
-sphere.addTo(world).then((sphere) => {
+sphere.addTo(app).then((sphere) => {
   const mx = 96,
     mz = 32;
 
@@ -114,10 +114,10 @@ sphere.addTo(world).then((sphere) => {
   sphere.setLinearVelocity({x: mx, y: 0, z: mz});
 });
 
-UTILS.addBoxPlane(world, 250).then(o => {
+UTILS.addBoxPlane(app, 250).then(o => {
   o.position.y = -1;
 });
 
-UTILS.addBasicLights(world, 0.5, [100, 100, 100], 200);
+UTILS.addBasicLights(app, 0.5, [100, 100, 100], 200);
 
-world.start();
+app.start();

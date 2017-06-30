@@ -12,14 +12,15 @@ const colors = {
   yellow: 0xfaff70
 };
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
-  new WHS.CameraModule({
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
     position: new THREE.Vector3(0, 100, 400),
     far: 2000,
+    fov: 75,
     near: 1
-  }),
+  })),
   new WHS.RenderingModule({
     bgColor: 0x2a3340,
 
@@ -29,13 +30,13 @@ const world = new WHS.App([
         type: THREE.PCFSoftShadowMap
       }
     }
-  }),
+  }, {shadow: true}),
   new WHS.OrbitControlsModule(),
   new WHS.ResizeModule()
 ]);
 
 const space = new WHS.Group();
-space.addTo(world);
+space.addTo(app);
 space.rotation.z = Math.PI / 12;
 
 const planet = new WHS.Tetrahedron({
@@ -56,28 +57,28 @@ planet.addTo(space);
 
 // LIGHTS.
 new WHS.AmbientLight({
-  light: {
-    color: 0x663344,
-    intensity: 2
-  }
-}).addTo(world);
+  color: 0x663344,
+  intensity: 2
+}).addTo(app);
 
 new WHS.DirectionalLight({
-  light: {
-    color: 0xffffff,
-    intensity: 1.5,
-    distance: 800
-  },
+  color: 0xffffff,
+  intensity: 1.5,
+  distance: 800,
 
-  shadowmap: {
-    width: 2048,
-    height: 2048,
+  shadow: {
+    mapSize: {
+      width: 2048,
+      height: 2048
+    },
 
-    left: -800,
-    right: 800,
-    top: 800,
-    bottom: -800,
-    far: 800
+    camera: {
+      left: -800,
+      right: 800,
+      top: 800,
+      bottom: -800,
+      far: 800
+    }
   },
 
   position: {
@@ -85,9 +86,15 @@ new WHS.DirectionalLight({
     z: 300,
     y: 100
   }
-}).addTo(world);
+}).addTo(app);
 
 const dynamicGeometry = new WHS.DynamicGeometryModule();
+
+const material = new THREE.MeshStandardMaterial({
+  shading: THREE.FlatShading,
+  emissive: 0x270000,
+  roughness: 0.9
+});
 
 const s1 = new WHS.Dodecahedron({
   geometry: {
@@ -99,11 +106,7 @@ const s1 = new WHS.Dodecahedron({
     dynamicGeometry
   ],
 
-  material: new THREE.MeshStandardMaterial({
-    shading: THREE.FlatShading,
-    emissive: 0x270000,
-    roughness: 0.9
-  })
+  material
 });
 
 const s2 = new WHS.Box({
@@ -118,11 +121,7 @@ const s2 = new WHS.Box({
     dynamicGeometry
   ],
 
-  material: new THREE.MeshStandardMaterial({
-    shading: THREE.FlatShading,
-    roughness: 0.9,
-    emissive: 0x270000
-  })
+  material
 });
 
 const s3 = new WHS.Cylinder({
@@ -137,11 +136,7 @@ const s3 = new WHS.Cylinder({
     dynamicGeometry
   ],
 
-  material: new THREE.MeshStandardMaterial({
-    shading: THREE.FlatShading,
-    roughness: 0.9,
-    emissive: 0x270000
-  })
+  material
 });
 
 const s4 = new WHS.Sphere({
@@ -154,11 +149,7 @@ const s4 = new WHS.Sphere({
     dynamicGeometry
   ],
 
-  material: new THREE.MeshStandardMaterial({
-    shading: THREE.FlatShading,
-    roughness: 0.9,
-    emissive: 0x270000
-  })
+  material
 });
 
 const asteroids = new WHS.Group();
@@ -223,9 +214,9 @@ const animation = new WHS.Loop(() => {
   planet.rotation.y += 0.005;
 });
 
-world.addLoop(animation);
+app.addLoop(animation);
 
 animation.start();
 
 // Start rendering.
-world.start();
+app.start();

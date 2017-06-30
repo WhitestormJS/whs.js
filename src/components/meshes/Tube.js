@@ -12,8 +12,10 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @class Tube
  * @category components/meshes
  * @description Tube class makes a tube that extrudes along a 3d curve.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/index.html#api/geometries/TubeGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Tube from a three.js Curve, and adding it to app</caption>
  * const CustomSinCurve = THREE.Curve.create(
@@ -116,9 +118,7 @@ class Tube extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer ? TubeBufferGeometry : TubeGeometry;
-
-    const geometry = new GConstruct(
+    const geometry = new (params.buffer ? TubeBufferGeometry : TubeGeometry)(
       params.geometry.path,
       params.geometry.segments,
       params.geometry.radius,

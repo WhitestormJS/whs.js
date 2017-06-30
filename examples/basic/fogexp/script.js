@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const cameraModule = new WHS.CameraModule({
+const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
   position: {
     z: -30,
     y: 20,
@@ -8,12 +8,12 @@ const cameraModule = new WHS.CameraModule({
   },
   far: 20000,
   near: 1
-});
+}));
 
 const controlsModule = new WHS.OrbitControlsModule();
 const fogModule = new WHS.FogModule({color: 0xaaaaaa, near: 10, far: 200});
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   cameraModule,
@@ -57,7 +57,7 @@ new WHS.Box({
   )],
 
   position: [0, 4, 0]
-}).addTo(world);
+}).addTo(app);
 
 new WHS.Box({
   geometry: {
@@ -85,7 +85,7 @@ new WHS.Box({
 
   material: new THREE.MeshPhongMaterial({
   })
-}).addTo(world);
+}).addTo(app);
 
 new WHS.Box({
   geometry: {
@@ -109,7 +109,7 @@ new WHS.Box({
 
   material: new THREE.MeshPhongMaterial({
   })
-}).addTo(world);
+}).addTo(app);
 
 new WHS.Box({
   geometry: {
@@ -133,7 +133,7 @@ new WHS.Box({
 
   material: new THREE.MeshPhongMaterial({
   })
-}).addTo(world);
+}).addTo(app);
 
 // z wall
 new WHS.Box({
@@ -163,7 +163,7 @@ new WHS.Box({
 
   material: new THREE.MeshPhongMaterial({
   })
-}).addTo(world);
+}).addTo(app);
 
 new WHS.Sphere({
   geometry: {
@@ -187,13 +187,11 @@ new WHS.Sphere({
 
   material: new THREE.MeshPhongMaterial({
   })
-}).addTo(world);
+}).addTo(app);
 
 new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.3
-  }
-}).addTo(world);
+  color: 0xffffff,
+  intensity: 0.3
+}).addTo(app);
 
-world.start();
+app.start();

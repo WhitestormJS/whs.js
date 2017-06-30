@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 40, 70)
   })
@@ -60,17 +60,17 @@ const box2 = new WHS.Box({
   }
 });
 
-box.addTo(world);
-box2.addTo(world).then(() => {
+box.addTo(app);
+box2.addTo(app).then(() => {
   const constraint = new PHYSICS.SliderConstraint(box2, box,
     new THREE.Vector3(0, box2.position.y, 0),
     new THREE.Vector3(0, 1, 0)
   );
 
-  world.addConstraint(constraint);
+  app.addConstraint(constraint);
 });
 
-UTILS.addPlane(world, 250);
-UTILS.addBasicLights(world);
+UTILS.addPlane(app, 250);
+UTILS.addBasicLights(app);
 
-world.start();
+app.start();

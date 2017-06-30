@@ -24,8 +24,6 @@ export class ModuleSystem {
    */
   applyModule(module: Module, push?: Boolean): Module;
 
-  applyModuleOnce(moduleConstructor: ModuleConstructor, getModule: Function, push?: Boolean): void;
-
   disposeModules(): void;
 
   disposeModule(module: Module): Module;

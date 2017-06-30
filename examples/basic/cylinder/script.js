@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules()
 ]);
 
@@ -27,9 +27,9 @@ const sphere = new WHS.Cylinder({ // Create sphere comonent.
   position: new THREE.Vector3(0, 20, 0)
 });
 
-sphere.addTo(world);
+sphere.addTo(app);
 
-UTILS.addBoxPlane(world);
-UTILS.addBasicLights(world);
+UTILS.addBoxPlane(app);
+UTILS.addBasicLights(app);
 
-world.start(); // Start animations and physics simulation.
+app.start(); // Start animations and physics simulation.

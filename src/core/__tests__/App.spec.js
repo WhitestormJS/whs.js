@@ -19,7 +19,7 @@ test('.applyModule()', () => {
 
 test('.module()', () => {
   const sceneModule = new WHS.SceneModule();
-  const cameraModule = new WHS.CameraModule();
+  const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera());
 
   // Module chain
   app

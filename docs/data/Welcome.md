@@ -5,7 +5,7 @@
 
 ```bash
 # Install npm version
-$ npm install whs --save-dev
+$ npm install whs
 ```
 
 It implements a core with component system and plugin support for fast development of 3D scene with physics.
@@ -17,9 +17,9 @@ const app = new WHS.App([
   new WHS.ElementModule(), // Apply to DOM.
   new WHS.SceneModule(), // Create a new THREE.Scene and set it to app.
 
-  new WHS.CameraModule({ // Apply a camera.
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({ // Apply a camera.
     position: new Vector3(0, 0, 50)
-  }),
+  })),
 
   new WHS.RenderingModule({bgColor: 0x162129}), // Apply THREE.WebGLRenderer
   new WHS.ResizeModule() // Make it resizable.
@@ -27,3 +27,5 @@ const app = new WHS.App([
 
 app.start(); // Run app.
 ```
+
+[> featured projects](Showcase.html)
