@@ -2,7 +2,9 @@ import {
   Line as LineNative,
   BufferGeometry,
   Geometry,
-  BufferAttribute
+  BufferAttribute,
+  LineCurve3,
+  Vector3
 } from 'three';
 
 import {MeshComponent} from '../../core/MeshComponent';
@@ -33,7 +35,7 @@ class Line extends MeshComponent {
    * @default <pre>
    * {
    *   geometry: {
-   *     curve: false,
+   *     curve: new THREE.LineCurve3(new THREE.Vector3(10, 10, 0), new THREE.Vector3(10, 30, 0)),
    *     points: 50
    *   }
    * }
@@ -42,7 +44,7 @@ class Line extends MeshComponent {
   static defaults = {
     ...MeshComponent.defaults,
     geometry: {
-      curve: false,
+      curve: new LineCurve3(new Vector3(10, 10, 0), new Vector3(10, 30, 0)),
       points: 50
     }
   };
