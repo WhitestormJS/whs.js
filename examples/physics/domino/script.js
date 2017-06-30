@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(62, 30, 130)
   })
@@ -21,7 +21,7 @@ new WHS.Sphere({
   }),
 
   position: [0, 100, 0]
-}).addTo(world);
+}).addTo(app);
 
 const tramplin = new WHS.Box({
   geometry: {
@@ -54,16 +54,16 @@ const tramplin = new WHS.Box({
 
 tramplin.rotation = new THREE.Euler(0, 0, -Math.PI / 6);
 
-tramplin.addTo(world);
+tramplin.addTo(app);
 
 const tramplin2 = tramplin.clone();
 tramplin2.position.y = 44;
-tramplin2.addTo(world);
+tramplin2.addTo(app);
 
 const tramplin3 = tramplin.clone();
 tramplin3.position.set(24, 24, 0);
 tramplin3.rotation.z = Math.PI / 6;
-tramplin3.addTo(world);
+tramplin3.addTo(app);
 
 const domino = new WHS.Box({
   geometry: {
@@ -95,12 +95,12 @@ let d = domino.clone();
 for (let i = 0; i < 13; i++) {
   d = d.clone();
   d.position.x += 8;
-  d.addTo(world);
+  d.addTo(app);
 }
 
-UTILS.addBoxPlane(world, 250).then(o => {
+UTILS.addBoxPlane(app, 250).then(o => {
   o.position.y = -0.5
 });
 
-UTILS.addBasicLights(world);
-world.start();
+UTILS.addBasicLights(app);
+app.start();

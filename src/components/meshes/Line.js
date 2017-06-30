@@ -3,6 +3,7 @@ import {
   BufferGeometry,
   Geometry,
   BufferAttribute,
+  LineCurve3,
   Vector3
 } from 'three';
 
@@ -13,7 +14,7 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @category components/meshes
  * @description Line component is generated from a curve/line and amount of vectors that should be used (points).
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Line, and adding to app</caption>
  * new Line({
@@ -34,10 +35,8 @@ class Line extends MeshComponent {
    * @default <pre>
    * {
    *   geometry: {
-   *     curve: false,
-   *     points: 50,
-   *     start: new Vector3(0, 0, 0),
-   *     end: new Vector3(10, 0, 0)
+   *     curve: new LineCurve3(new Vector3(0, 0, 0), new Vector3(10, 0, 0)),
+   *     points: 50
    *   }
    * }
    * </pre>
@@ -45,10 +44,8 @@ class Line extends MeshComponent {
   static defaults = {
     ...MeshComponent.defaults,
     geometry: {
-      curve: false,
-      points: 50,
-      start: new Vector3(0, 0, 0),
-      end: new Vector3(10, 0, 0)
+      curve: new LineCurve3(new Vector3(0, 0, 0), new Vector3(10, 0, 0)),
+      points: 50
     }
   };
 
@@ -81,13 +78,6 @@ class Line extends MeshComponent {
 
   buildGeometry(params = {}) {
     const geometry = params.buffer ? new BufferGeometry() : new Geometry();
-
-    if (params.geometry.curve === false) {
-      geometry.vertices.push(params.geometry.start);
-      geometry.vertices.push(params.geometry.end);
-
-      return geometry;
-    }
 
     if (params.buffer) {
       const pp = params.geometry.curve.getPoints(params.geometry.points);

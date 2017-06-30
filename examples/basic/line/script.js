@@ -2,7 +2,7 @@ import * as UTILS from '../../globals';
 
 const controlsModule = new WHS.OrbitControlsModule();
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 200)
   }),
@@ -46,7 +46,7 @@ function drawRectangle(points, color) {
       })
     });
 
-    line.addTo(world);
+    line.addTo(app);
   }
 
   // top square
@@ -62,7 +62,7 @@ function drawRectangle(points, color) {
       })
     });
 
-    line.addTo(world);
+    line.addTo(app);
   }
 
   // closes the top square
@@ -83,7 +83,7 @@ function drawRectangle(points, color) {
       color
     })
   });
-  line2.addTo(world);
+  line2.addTo(app);
 
   // closes the bottom square
   const line = new WHS.Line({
@@ -96,7 +96,7 @@ function drawRectangle(points, color) {
       color
     })
   });
-  line.addTo(world);
+  line.addTo(app);
 
   // vertical join
   for (let i = 0; i < points.length - 1; i++) {
@@ -111,7 +111,7 @@ function drawRectangle(points, color) {
       })
     });
 
-    line.addTo(world);
+    line.addTo(app);
   }
   // closes the vertical one
   const line3 = new WHS.Line({
@@ -124,7 +124,7 @@ function drawRectangle(points, color) {
       color
     })
   });
-  line3.addTo(world);
+  line3.addTo(app);
 }
 
 new WHS.Box({
@@ -150,6 +150,6 @@ new WHS.Box({
     wireframe: true,
     color: 0x444444
   })
-}).addTo(world);
+}).addTo(app);
 
-world.start();
+app.start();

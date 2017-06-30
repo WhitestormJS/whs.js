@@ -114,4 +114,7 @@ var self = this;
 <?js= this.partial('examples.tmpl', examples) ?>
 </div>
 <?js } ?>
+<?js if (data.augments && data.augments.length) { ?>
+    <h4 class="no-dec" style="padding-left: 20px;">Extends <?js= self.partial('augments.tmpl', data) ?></h4>
+<?js } ?>
 </div>

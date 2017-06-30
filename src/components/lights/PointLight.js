@@ -10,12 +10,10 @@ import {LightComponent} from '../../core/LightComponent';
  * @extends LightComponent
  * @memberof module:components/lights
  * @example <caption>Creating a PointLight</caption>
- * new LightComponent({
- *   light: {
- *     color: 0xff0000,
- *     intensity: 3,
- *     distance: 1000
- *   },
+ * new PointLight( {
+ *   color: 0xff0000,
+ *   intensity: 2,
+ *   distance: 300
  *
  *   position: [10, 20, 10]
  * }).addTo(app);
@@ -23,12 +21,11 @@ import {LightComponent} from '../../core/LightComponent';
 class PointLight extends LightComponent {
   static defaults= {
     ...LightComponent.defaults,
-    light: {
-      color: 0xffffff,
-      intensity: 1,
-      distance: 100,
-      decay: 1
-    }
+
+    color: 0xffffff,
+    intensity: 1,
+    distance: 100,
+    decay: 1
   }
 
   constructor(params = {}) {
@@ -38,10 +35,10 @@ class PointLight extends LightComponent {
 
   build(params = {}) {
     return this.applyBridge({light: new PointLightNative(
-      params.light.color,
-      params.light.intensity,
-      params.light.distance,
-      params.light.decay
+      params.color,
+      params.intensity,
+      params.distance,
+      params.decay
     )}).light;
   }
 }

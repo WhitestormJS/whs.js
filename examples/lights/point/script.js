@@ -5,18 +5,18 @@ const blue = 0x6666ff;
 const white = 0xffffff;
 const lightIntensity = 1;
 
-const cameraModule = new WHS.CameraModule({
+const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
   position: {
     z: 30,
     y: 40
   },
   far: 20000,
   near: 1
-});
+}));
 
 const controlsModule = new WHS.OrbitControlsModule();
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 200),
     renderer: {
@@ -60,7 +60,7 @@ new WHS.Box({
   )
   ],
   position: [0, 5, 0]
-}).addTo(world);
+}).addTo(app);
 
 new WHS.Box({
   geometry: {
@@ -80,21 +80,18 @@ new WHS.Box({
   material: new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide
   })
-}).addTo(world);
+}).addTo(app);
 
 new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.05
-  }
-}).addTo(world);
+  color: 0xffffff,
+  intensity: 0.05
+}).addTo(app);
 
 const redSpotLight = new WHS.PointLight({
-  light: {
-    color: red,
-    intensity: lightIntensity,
-    distance: 40
-  },
+  color: red,
+  intensity: lightIntensity,
+  distance: 40,
+
   shadow: {
     cast: false
   },
@@ -103,7 +100,7 @@ const redSpotLight = new WHS.PointLight({
     color: red
   })
 });
-redSpotLight.addTo(world);
+redSpotLight.addTo(app);
 
 new WHS.Sphere({
   geometry: [1, 32, 32],
@@ -114,13 +111,11 @@ new WHS.Sphere({
 }).addTo(redSpotLight);
 
 const whiteSpotLight = new WHS.PointLight({
-  light: {
-    color: white,
-    intensity: lightIntensity,
-    distance: 90
-  }
+  color: white,
+  intensity: lightIntensity,
+  distance: 90
 });
-whiteSpotLight.addTo(world);
+whiteSpotLight.addTo(app);
 
 new WHS.Sphere({
   geometry: [1, 32, 32],
@@ -131,16 +126,15 @@ new WHS.Sphere({
 }).addTo(whiteSpotLight);
 
 const blueSpotLight = new WHS.PointLight({
-  light: {
-    color: blue,
-    intensity: lightIntensity,
-    distance: 50
-  },
+  color: blue,
+  intensity: lightIntensity,
+  distance: 50,
+
   shadow: {
     cast: false
   }
 });
-blueSpotLight.addTo(world);
+blueSpotLight.addTo(app);
 
 new WHS.Sphere({
   geometry: [1, 32, 32],
@@ -165,6 +159,6 @@ new WHS.Loop(() => {
   whiteSpotLight.position.x = distance * Math.sin(t);
   whiteSpotLight.position.y = Math.abs(distance * Math.cos(t));
   whiteSpotLight.position.z = distance * Math.cos(t);
-}).start(world);
+}).start(app);
 
-world.start();
+app.start();

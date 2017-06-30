@@ -3,14 +3,14 @@ import * as UTILS from '../../globals';
 const resizer = new WHS.ResizeModule();
 const mouse = new WHS.VirtualMouseModule();
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule({
     container: document.getElementById('embed')
   }),
   new WHS.SceneModule(),
-  new WHS.CameraModule({
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
     position: new THREE.Vector3(0, 10, 50)
-  }),
+  })),
   new WHS.RenderingModule({
     bgColor: 0x162129,
 
@@ -52,7 +52,7 @@ const sphere = new WHS.Sphere({ // Create sphere component.
   position: [0, 100, 0]
 });
 
-sphere.addTo(world);
+sphere.addTo(app);
 mouse.track(sphere);
 
 sphere.on('mouseover', () => {
@@ -73,10 +73,10 @@ sphere.on('click', () => {
   alert('click!');
 });
 
-UTILS.addPlane(world);
-UTILS.addBasicLights(world);
+UTILS.addPlane(app);
+UTILS.addBasicLights(app);
 
-world.start(); // Start animations and physics simulation.
+app.start(); // Start animations and physics simulation.
 
 // DOM
 

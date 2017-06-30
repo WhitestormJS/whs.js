@@ -1,5 +1,7 @@
 /** @module components/meshes */
 export * from './Box';
+export * from './Circle';
+export * from './Cone';
 export * from './Cylinder';
 export * from './Dodecahedron';
 export * from './Extrude';

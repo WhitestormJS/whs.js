@@ -1,6 +1,8 @@
+import {version} from '../../package';
 import {system} from '../polyfill';
 import {ModuleSystem} from './ModuleSystem';
 import {ModuleManager} from './ModuleManager';
+
 /**
  * @class App
  * @category core
@@ -33,6 +35,8 @@ class App extends ModuleSystem {
   loops = [];
 
   constructor(modules = []) {
+    console.log(`WHS.App ${version}`);
+
     super();
     this.manager = new ModuleManager(this);
     this.modules = modules;
@@ -119,6 +123,14 @@ class App extends ModuleSystem {
 
       resolve(loop);
     });
+  }
+
+  get(key) {
+    return this.manager.get(key);
+  }
+
+  use(key) {
+    return this.manager.use(key);
   }
 }
 

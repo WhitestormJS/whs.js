@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 40, 70)
   })
@@ -72,18 +72,18 @@ const pointer = new WHS.Sphere({
 console.log(pointer);
 
 pointer.position.set(0.5, 60, -8);
-pointer.addTo(world);
+pointer.addTo(app);
 
-box.addTo(world);
-box2.addTo(world).then(() => {
+box.addTo(app);
+box2.addTo(app).then(() => {
   const constraint = new PHYSICS.PointConstraint(box2, box,
     new THREE.Vector3(0, box2.position.y, 1)
   );
 
-  world.addConstraint(constraint);
+  app.addConstraint(constraint);
 });
 
-UTILS.addPlane(world, 250);
-UTILS.addBasicLights(world);
+UTILS.addPlane(app, 250);
+UTILS.addBasicLights(app);
 
-world.start();
+app.start();

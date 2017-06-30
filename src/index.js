@@ -8,15 +8,13 @@
  * WHS.extend() // utils
  */
 
+
 export * from './core/index';
 export * from './components/lights/index';
 export * from './components/cameras/index';
 export * from './components/meshes/index';
 export * from './utils/index';
-export * from './modules/app/index';
-export * from './modules/app/controls/index';
-export * from './modules/mesh/index';
-export * from './modules/presets/index';
+export * from './modules/index';
 
 // DEPRECATION
 export * from './deprecation';

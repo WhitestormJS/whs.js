@@ -1,8 +1,10 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(5, 5, 10),
+    near: true
+  }, {
     renderer: {
       shadowMap: {
         type: THREE.PCFSoftShadowMap,
@@ -16,26 +18,39 @@ const world = new WHS.App([
   new WHS.ResizeModule()
 ]);
 
-const animationModule = new WHS.AnimationModule(world, false, {
+const animationModule = new WHS.AnimationModule(app, false, {
   speed: 1.2
 });
+
+const fix = texture => {
+  texture.anisotropy = 2;
+  texture.magFilter = THREE.LinearFilter;
+  texture.minFilter = THREE.LinearMipMapLinearFilter;
+
+  return texture;
+};
 
 const characterTexturePath = `${process.assetsPath}/textures/space-alien/`;
 const textureModule = new WHS.TextureModule({
   url: `${characterTexturePath}diffuse.png`,
-  type: 'map'
+  type: 'map',
+  fix
 }, {
   url: `${characterTexturePath}emissive.png`,
-  type: 'emissiveMap'
+  type: 'emissiveMap',
+  fix
 }, {
   url: `${characterTexturePath}normal.png`,
-  type: 'normalMap'
+  type: 'normalMap',
+  fix
 }, {
   url: `${characterTexturePath}metalness.png`,
-  type: 'metalnessMap'
+  type: 'metalnessMap',
+  fix
 }, {
   url: `${characterTexturePath}ao.png`,
-  type: 'aoMap'
+  type: 'aoMap',
+  fix
 });
 
 new WHS.Importer({
@@ -60,16 +75,14 @@ new WHS.Importer({
 
   position: [0, -5, 0]
 
-}).addTo(world).then(() => {
+}).addTo(app).then(() => {
   animationModule.play('observe');
 });
 
 new WHS.PointLight({
-  light: {
-    color: 0xffffff,
-    intensity: 2,
-    distance: 20
-  },
+  color: 0xffffff,
+  intensity: 2,
+  distance: 20,
 
   shadow: {
     far: 30,
@@ -78,7 +91,7 @@ new WHS.PointLight({
 
   position: [-1, 3, 5]
 
-}).addTo(world);
+}).addTo(app);
 
 const floorTextureRepeat = new THREE.Vector2(15, 15);
 
@@ -119,15 +132,13 @@ new WHS.Box({
 
   position: [0, -5, 0]
 
-}).addTo(world);
+}).addTo(app);
 
 new WHS.SpotLight({
-  light: {
-    color: 0xffffff,
-    intensity: 1,
-    distance: 100,
-    angle: 90
-  },
+  color: 0xffffff,
+  intensity: 1,
+  distance: 100,
+  angle: 90,
 
   shadow: {
     cast: false
@@ -138,11 +149,11 @@ new WHS.SpotLight({
     y: 30,
     z: 10
   }
-}).addTo(world);
+}).addTo(app);
 
-UTILS.addAmbient(world, 0.1);
+UTILS.addAmbient(app, 0.1);
 
 new WHS.Loop(() => {
-}).start(world);
+}).start(app);
 
-world.start();
+app.start();

@@ -12,12 +12,14 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @description A cylinder is one of the most basic curvilinear geometric shapes, the surface formed by the points at a fixed distance from a given straight line, the axis of the cylinder. <br/><br/>
  * The solid enclosed by this surface and by two planes perpendicular to the axis is also called a cylinder.<br/>
  * The surface area and the volume of a cylinder have been known since deep antiquity.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#CylinderGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Cylinder, and adding to app</caption>
  * new Cylinder({
- *     geometry: {
+ *   geometry: {
  *     radiusTop: 2,
  *     radiusBottom: 4,
  *     height: 5
@@ -39,9 +41,9 @@ class Cylinder extends MeshComponent {
    * @default <pre>
    * {
    *   geometry: {
-   *     radiusTop: 0,
-   *     radiusBottom: 1,
-   *     height: 1,
+   *     radiusTop: 20,
+   *     radiusBottom: 20,
+   *     height: 100,
    *     radiusSegments: 32,
    *     heightSegments: 1,
    *     openEnded: false,
@@ -114,9 +116,7 @@ class Cylinder extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? CylinderBufferGeometry : CylinderGeometry;
-
-    const geometry = new GConstruct(
+    const geometry = new (params.buffer ? CylinderBufferGeometry : CylinderGeometry)(
       params.geometry.radiusTop,
       params.geometry.radiusBottom,
       params.geometry.height,
@@ -126,8 +126,6 @@ class Cylinder extends MeshComponent {
       params.geometry.thetaStart,
       params.geometry.thetaLength
     );
-
-    if (params.softbody) this.proccessSoftbodyGeometry(geometry);
 
     return geometry;
   }

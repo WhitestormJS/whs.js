@@ -16,8 +16,8 @@ test('SceneModule', () => {
   modules.scene = new WHS.SceneModule();
 });
 
-test('CameraModule', () => {
-  modules.camera = new WHS.CameraModule();
+test('DefineModule', () => {
+  modules.camera = new WHS.DefineModule('camera', new WHS.PerspectiveCamera());
 });
 
 test('RenderingModule', () => {

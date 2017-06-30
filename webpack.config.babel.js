@@ -2,6 +2,8 @@ import path from 'path';
 import webpack from 'webpack';
 import HappyPack from 'happypack';
 import DashboardPlugin from 'webpack-dashboard/plugin';
+import externals from './tools/externals';
+import BabiliPlugin from 'babili-webpack-plugin';
 
 const consoleColors = {
   reset: '\x1b[0m',
@@ -25,9 +27,10 @@ const log = (color, msg) => console.log(consoleColors[color], msg, consoleColors
 export function config(
   {
     isProduction,
+    isMinified = false,
     src,
     dest,
-    filename = 'whitestorm.js',
+    filename = 'whs.js',
     plugins = [],
     version = require('./package.json').version
   }
@@ -39,7 +42,7 @@ export function config(
   const bannerText = `WhitestormJS Framework v${version}`;
 
   return { // PHYSICS VERSION
-    devtool: isProduction ? false : 'source-map',
+    devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
     cache: true,
     entry: [
       `${src}/index.js`
@@ -66,12 +69,7 @@ export function config(
       ]
     },
     externals: {
-      three: {
-        commonjs: 'three',
-        commonjs2: 'three',
-        amd: 'three',
-        root: 'THREE'
-      }
+      three: externals.three
     },
     plugins: [
       new webpack.LoaderOptionsPlugin({
@@ -79,28 +77,18 @@ export function config(
         debug: !isProduction
       }),
       ...(isProduction ? [
-        new webpack.optimize.UglifyJsPlugin({
-          compress: {
-            warnings: false,
-            screw_ie8: true,
-            conditionals: true,
-            unused: true,
-            comparisons: true,
-            sequences: true,
-            dead_code: true,
-            evaluate: true,
-            if_return: true,
-            join_vars: true
-          },
-
-          output: {
-            comments: false
-          }
-        })
-      ] : []),
+        ...(isMinified ? [
+          new BabiliPlugin({
+            mangle: true
+          }, {
+            sourceMap: true
+          })
+        ] : [])
+      ] : [
+        new DashboardPlugin()
+      ]),
       new HappyPack({loaders: ['babel-loader'], threads: 4}),
       new webpack.BannerPlugin(bannerText),
-      new DashboardPlugin(),
       ...plugins
     ],
     resolve: {
