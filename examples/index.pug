@@ -1,0 +1,75 @@
+html
+  head
+    include meta.pug
+    style.
+      @import url('https://fonts.googleapis.com/css?family=Cabin|Fjalla+One|Montserrat|Oxygen');
+    script(src='/examples/assets/js/slideout.min.js')
+    include style.pug
+  body
+    div.ui.menu.sidebar.vertical.inverted.left.overlay.visible.styled#sidebar
+      h2.item.ui.header#top-nav
+        a.ui.huge.logo.image(href='/')
+          img(src='https://avatars3.githubusercontent.com/u/16437392?v=3&s=200')
+        div.content
+          span Examples
+          div.sub.header
+            a(href='https://github.com/WhitestormJS/whitestorm.js' target='_blank') GitHub
+            = " "
+            span /
+            = " "
+            a(href='https://whsjs.io/' target='_blank') Docs
+            = " "
+            span /
+            = " "
+            a(href='https://discordapp.com/invite/frNetGE' target='_blank') Chat
+
+      div(class="ui left icon fluid input")
+        input(type="text" id="filter" placeholder="Filter examples...")
+        i(class="remove circle icon")
+
+      div(class="ui large breadcrumb" id="path")
+        a(class="section" id="cat_") basic
+        i(class="right chevron icon divider")
+        div(class="active section" id="ex_") helloworld
+
+      each category in categories
+        div.item.category
+          h2.ui.header #{category}
+          div.vertical.pointing.menu
+            each path in paths
+              if !path.indexOf(category)
+                div.item.minor
+                  a.ui.medium.header(href='?' + path) #{path.replace('/', ' / ')}
+
+    a.source.desktop(href="/" target="_blank") Source code
+
+    div#panel
+      div.slide-zone
+
+    script.
+      var iframe = document.createElement('iframe');
+      var rootPath = #{devMode} ? '' : '/examples';
+      var link = window.location.search ? '/' + window.location.search.substring(1, window.location.search.length) + '/' : '/basic/helloworld/';
+
+      iframe.src = rootPath + link;
+      iframe.id = 'content'
+      document.querySelector('a.source').href = 'https://github.com/WhitestormJS/whitestorm.js/tree/beta/examples/' + link + '/script.js';
+
+      document.getElementById('panel').appendChild(iframe);
+      var links = document.querySelectorAll('a');
+
+      for (var i = 0, max = links.length; i < max; i++) {
+        links[i].addEventListener('click', function() {
+          window.location.reload();
+        });
+      }
+
+      const la = link.split('/');
+
+      document.getElementById('cat_').innerText = la[1];
+      document.getElementById('ex_').innerText = la[2];
+
+      setTimeout(function () {
+        window.state = iframe.contentWindow['state'];
+      }, 1000);
+    script(src='/examples/assets/js/script.js')

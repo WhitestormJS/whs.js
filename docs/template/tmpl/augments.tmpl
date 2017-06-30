@@ -1,0 +1,10 @@
+<?js
+    var data = obj;
+    var self = this;
+?>
+
+<?js if (data.augments && data.augments.length) { ?>
+    <?js data.augments.forEach(function(a) { ?>
+        <?js= self.linkto(a, a) ?>
+    <?js }) ?>
+<?js } ?>

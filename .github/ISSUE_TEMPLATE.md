@@ -1,23 +1,21 @@
 Describe your issue here.
 
 ###### Version:
- - [ ] r11
- - [ ] r10
- - [ ] r9
- - [ ] r9 (dev)
- - [ ] r8
- - [ ] r7
+ - [x] v2.x.x
+ - [ ] v1.x.x
 
 ###### Issue type:
  - [ ] Bug
  - [ ] Proposal/Enhancement
  - [ ] Question
+ - [ ] Discussion
 
 ------
 
 <details> 
 <summary> <b>Tested on: </b> </summary>
-###### --- Desktop
+
+###### Desktop
    - [ ] Chrome
    - [ ] Chrome Canary
    - [ ] Chrome dev-channel
@@ -26,12 +24,12 @@ Describe your issue here.
    - [ ] Microsoft IE
    - [ ] Microsoft Edge
 
-###### --- Android
+###### Android
    - [ ] Chrome
    - [ ] Firefox
    - [ ] Opera
 
-###### --- IOS
+###### IOS
    - [ ] Chrome
    - [ ] Firefox
    - [ ] Opera
