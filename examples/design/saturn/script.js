@@ -1,99 +1,84 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
+const radiusMin = 110, // Min radius of the asteroid belt.
+  radiusMax = 220, // Max radius of the asteroid belt.
+  particleCount = 400, // Ammount of asteroids.
+  particleMinRadius = 0.1, // Min of asteroid radius.
+  particleMaxRadius = 4, // Max of asteroid radius.
+  planetSize = 50; // Radius of planet.
 
-var radiusMin = 110,
-    // Min radius of the asteroid belt.
-radiusMax = 220,
-    // Max radius of the asteroid belt.
-particleCount = 400,
-    // Ammount of asteroids.
-particleMinRadius = 0.1,
-    // Min of asteroid radius.
-particleMaxRadius = 4,
-    // Max of asteroid radius.
-planetSize = 50; // Radius of planet.
-
-var colors = {
+const colors = {
   green: 0x8fc999,
   blue: 0x5fc4d0,
   orange: 0xee5624,
   yellow: 0xfaff70
 };
 
-var world = new WHS.World({
-  stats: false,
-  autoresize: "window",
-
-  gravity: {
-    x: 0,
-    y: 0,
-    z: 0
-  },
-
-  camera: {
+const app = new WHS.App([
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
+    position: new THREE.Vector3(0, 100, 400),
     far: 2000,
-    near: 1,
-    position: [0, 100, 400]
-  },
-
-  rendering: {
-    background: {
-      color: 0x2a3340
-    },
+    fov: 75,
+    near: 1
+  })),
+  new WHS.RenderingModule({
+    bgColor: 0x2a3340,
 
     renderer: {
-      antialias: true
+      antialias: true,
+      shadowmap: {
+        type: THREE.PCFSoftShadowMap
+      }
     }
-  }
-});
+  }, {shadow: true}),
+  new WHS.OrbitControlsModule(),
+  new WHS.ResizeModule()
+]);
 
-var space = new WHS.Group();
-space.addTo(world);
+const space = new WHS.Group();
+space.addTo(app);
 space.rotation.z = Math.PI / 12;
 
-var planet = new WHS.Tetrahedron({
+const planet = new WHS.Tetrahedron({
   geometry: {
     radius: planetSize,
     detail: 2
   },
 
-  mass: 100,
-
-  material: {
+  material: new THREE.MeshStandardMaterial({
     color: 0xee5624,
     shading: THREE.FlatShading,
     roughness: 0.9,
-    emissive: 0x270000,
-    kind: 'standard'
-  }
+    emissive: 0x270000
+  })
 });
 
 planet.addTo(space);
 
 // LIGHTS.
 new WHS.AmbientLight({
-  light: {
-    color: 0x663344,
-    intensity: 2
-  }
-}).addTo(world);
+  color: 0x663344,
+  intensity: 2
+}).addTo(app);
 
 new WHS.DirectionalLight({
-  light: {
-    color: 0xffffff,
-    intensity: 1.5,
-    distance: 800
-  },
+  color: 0xffffff,
+  intensity: 1.5,
+  distance: 800,
 
-  shadowmap: {
-    width: 2048,
-    height: 2048,
+  shadow: {
+    mapSize: {
+      width: 2048,
+      height: 2048
+    },
 
-    left: -800,
-    right: 800,
-    top: 800,
-    bottom: -800,
-    far: 800
+    camera: {
+      left: -800,
+      right: 800,
+      top: 800,
+      bottom: -800,
+      far: 800
+    }
   },
 
   position: {
@@ -101,26 +86,30 @@ new WHS.DirectionalLight({
     z: 300,
     y: 100
   }
-}).addTo(world);
+}).addTo(app);
 
-var s1 = new WHS.Dodecahedron({
+const dynamicGeometry = new WHS.DynamicGeometryModule();
+
+const material = new THREE.MeshStandardMaterial({
+  shading: THREE.FlatShading,
+  emissive: 0x270000,
+  roughness: 0.9
+});
+
+const s1 = new WHS.Dodecahedron({
   geometry: {
     buffer: true,
     radius: 10
   },
 
-  mass: 0,
-  physics: false,
+  modules: [
+    dynamicGeometry
+  ],
 
-  material: {
-    shading: THREE.FlatShading,
-    emissive: 0x270000,
-    roughness: 0.9,
-    kind: 'standard'
-  }
+  material
 });
 
-var s2 = new WHS.Box({
+const s2 = new WHS.Box({
   geometry: {
     buffer: true,
     width: 10,
@@ -128,18 +117,14 @@ var s2 = new WHS.Box({
     depth: 10
   },
 
-  mass: 0,
-  physics: false,
+  modules: [
+    dynamicGeometry
+  ],
 
-  material: {
-    shading: THREE.FlatShading,
-    roughness: 0.9,
-    emissive: 0x270000,
-    kind: 'standard'
-  }
+  material
 });
 
-var s3 = new WHS.Cylinder({
+const s3 = new WHS.Cylinder({
   geometry: {
     buffer: true,
     radiusTop: 0,
@@ -147,43 +132,40 @@ var s3 = new WHS.Cylinder({
     height: 10
   },
 
-  mass: 0,
-  physics: false,
+  modules: [
+    dynamicGeometry
+  ],
 
-  material: {
-    shading: THREE.FlatShading,
-    roughness: 0.9,
-    emissive: 0x270000,
-    kind: 'standard'
-  }
+  material
 });
 
-var s4 = new WHS.Sphere({
+const s4 = new WHS.Sphere({
   geometry: {
     buffer: true,
     radius: 10
   },
 
-  mass: 0,
-  physics: false,
+  modules: [
+    dynamicGeometry
+  ],
 
-  material: {
-    shading: THREE.FlatShading,
-    roughness: 0.9,
-    emissive: 0x270000,
-    kind: 'standard'
-  }
+  material
 });
 
-var asteroids = new WHS.Group();
+const asteroids = new WHS.Group();
 asteroids.addTo(space);
 
 // Materials.
-var mat = [new THREE.MeshPhongMaterial({ color: colors.green, shading: THREE.FlatShading }), new THREE.MeshPhongMaterial({ color: colors.blue, shading: THREE.FlatShading }), new THREE.MeshPhongMaterial({ color: colors.orange, shading: THREE.FlatShading }), new THREE.MeshPhongMaterial({ color: colors.yellow, shading: THREE.FlatShading })];
+const mat = [
+  new THREE.MeshPhongMaterial({color: colors.green, shading: THREE.FlatShading}),
+  new THREE.MeshPhongMaterial({color: colors.blue, shading: THREE.FlatShading}),
+  new THREE.MeshPhongMaterial({color: colors.orange, shading: THREE.FlatShading}),
+  new THREE.MeshPhongMaterial({color: colors.yellow, shading: THREE.FlatShading})
+];
 
-for (var i = 0; i < particleCount; i++) {
-  var particle = [s1, s2, s3, s4][Math.ceil(Math.random() * 3)].clone(),
-      radius = particleMinRadius + Math.random() * (particleMaxRadius - particleMinRadius);
+for (let i = 0; i < particleCount; i++) {
+  const particle = [s1, s2, s3, s4][Math.ceil(Math.random() * 3)].clone(),
+    radius = particleMinRadius + Math.random() * (particleMaxRadius - particleMinRadius);
 
   particle.g_({
     radiusBottom: radius,
@@ -191,7 +173,7 @@ for (var i = 0; i < particleCount; i++) {
     height: particle instanceof WHS.Cylinder ? radius * 2 : radius,
     width: radius,
     depth: radius,
-    radius: radius
+    radius
   });
 
   particle.material = mat[Math.floor(4 * Math.random())]; // Set custom THREE.Material to mesh.
@@ -213,29 +195,28 @@ for (var i = 0; i < particleCount; i++) {
 }
 
 // Animating rotating shapes around planet.
-var particles = asteroids.children;
-var animation = new WHS.Loop(function () {
-  for (var _i = 0, max = particles.length; _i < max; _i++) {
-    var _particle = particles[_i];
+const particles = asteroids.children;
+console.log(asteroids);
 
-    _particle.data.angle += 0.02 * _particle.data.distance / radiusMax;
+const animation = new WHS.Loop(() => {
+  for (let i = 0, max = particles.length; i < max; i++) {
+    const particle = particles[i];
 
-    _particle.position.x = Math.cos(_particle.data.angle) * _particle.data.distance;
-    _particle.position.z = Math.sin(_particle.data.angle) * _particle.data.distance;
+    particle.data.angle += 0.02 * particle.data.distance / radiusMax;
 
-    _particle.rotation.x += Math.PI / 60;
-    _particle.rotation.y += Math.PI / 60;
+    particle.position.x = Math.cos(particle.data.angle) * particle.data.distance;
+    particle.position.z = Math.sin(particle.data.angle) * particle.data.distance;
+
+    particle.rotation.x += Math.PI / 60;
+    particle.rotation.y += Math.PI / 60;
   }
 
   planet.rotation.y += 0.005;
 });
 
-world.addLoop(animation);
-world.setControls(new WHS.OrbitControls());
+app.addLoop(animation);
 
 animation.start();
 
 // Start rendering.
-world.start();
-
-},{}]},{},[1]);
+app.start();

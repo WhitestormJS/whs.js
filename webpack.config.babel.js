@@ -1,119 +1,107 @@
 import path from 'path';
 import webpack from 'webpack';
 import HappyPack from 'happypack';
+import DashboardPlugin from 'webpack-dashboard/plugin';
+import externals from './tools/externals';
+import BabiliPlugin from 'babili-webpack-plugin';
 
-process.env.BABEL_ENV = 'browser';
+const consoleColors = {
+  reset: '\x1b[0m',
+  hicolor: '\x1b[1m',
+  underline: '\x1b[4m',
+  inverse: '\x1b[7m',
 
-export function config({isProduction, frameworkSrc, frameworkDest}) {
+  // foreground colors
+  black: '\x1b[30m',
+  red: '\x1b[31m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m',
+  magenta: '\x1b[35m',
+  cyan: '\x1b[36m',
+  white: '\x1b[37m'
+};
+
+const log = (color, msg) => console.log(consoleColors[color], msg, consoleColors.reset);
+
+export function config(
+  {
+    isProduction,
+    isMinified = false,
+    src,
+    dest,
+    filename = 'whs.js',
+    plugins = [],
+    version = require('./package.json').version
+  }
+) {
   if (process.env.CI) isProduction = true;
-  console.log(isProduction ? 'Production mode' : 'Development mode');
-  const _version = require('./package.json').version;
-  console.log(_version);
+  log('red', `Mode: ${isProduction ? 'production' : 'development'}`);
+  log('magenta', `Version: ${version}`);
 
-  const loadersSection = [
-    {
-      test: /\.js$/,
-      exclude: [
-        /node_modules/,
-        /ammo\.js/
-      ],
-      loader: 'babel',
-      query: {
-        cacheDirectory: true,
-        plugins: [
-          ['transform-runtime', {polyfill: false}],
-          'add-module-exports',
-          'transform-decorators-legacy',
-          'transform-class-properties',
-          'transform-object-rest-spread'
-        ],
-        presets: ['es2015']
-      }
+  const bannerText = `WhitestormJS Framework v${version}`;
+
+  return { // PHYSICS VERSION
+    devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
+    cache: true,
+    entry: [
+      `${src}/index.js`
+    ],
+    target: 'web',
+    output: {
+      path: path.join(__dirname, dest),
+      filename,
+      library: 'WHS',
+      libraryTarget: 'umd'
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: [
+            /node_modules/
+          ],
+          loader: 'babel-loader', // babel-loader
+          query: {
+            cacheDirectory: true
+          }
+        }
+      ]
+    },
+    externals: {
+      three: externals.three
+    },
+    plugins: [
+      new webpack.LoaderOptionsPlugin({
+        minimize: isProduction,
+        debug: !isProduction
+      }),
+      ...(isProduction ? [
+        ...(isMinified ? [
+          new BabiliPlugin({
+            mangle: true
+          }, {
+            sourceMap: true
+          })
+        ] : [])
+      ] : [
+        new DashboardPlugin()
+      ]),
+      new HappyPack({loaders: ['babel-loader'], threads: 4}),
+      new webpack.BannerPlugin(bannerText),
+      ...plugins
+    ],
+    resolve: {
+      modules: [
+        path.resolve(__dirname, 'node_modules'),
+        src
+      ]
     }
-  ];
-
-  const bannerText = `WhitestormJS Framework v${_version}`;
-
-  const pluginsSectionPhysics = isProduction
-  ? [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        hoist_funs: false, // Turn this off to prevent errors with Ammo.js
-        warnings: false,
-        dead_code: true
-      },
-      minimize: true
-    }),
-    new HappyPack({loaders: ['babel'], threads: 4}),
-    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
-    new webpack.BannerPlugin(bannerText)
-  ]
-  : [
-    new HappyPack({loaders: ['babel'], threads: 4}),
-    new webpack.NormalModuleReplacementPlugin(/inline\-worker/, 'webworkify-webpack'),
-    new webpack.BannerPlugin(bannerText)
-  ];
-
-  const pluginsSectionLight = isProduction
-  ? [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        dead_code: true
-      },
-      minimize: true
-    }),
-    new HappyPack({loaders: ['babel'], threads: 4}),
-    new webpack.BannerPlugin(bannerText)
-  ]
-  : [
-    new HappyPack({loaders: ['babel'], threads: 4}),
-    new webpack.BannerPlugin(bannerText)
-  ];
-
-  return [{ // PHYSICS VERSION
-    devtool: isProduction ? false : 'source-map',
-    cache: true,
-    entry: [
-      'babel-polyfill',
-      `${frameworkSrc}/index.js`
-    ],
-    target: 'web',
-    output: {
-      path: path.join(__dirname, frameworkDest),
-      filename: 'whitestorm.js',
-      library: 'WHS',
-      libraryTarget: 'umd'
-    },
-    module: {
-      loaders: loadersSection
-    },
-    plugins: pluginsSectionPhysics
-  }, { // LIGHT VERSION
-    devtool: isProduction ? false : 'source-map',
-    cache: true,
-    entry: [
-      'babel-polyfill',
-      `${frameworkSrc}/index.js`
-    ],
-    target: 'web',
-    output: {
-      path: path.join(__dirname, frameworkDest),
-      filename: 'whitestorm.light.js',
-      library: 'WHS',
-      libraryTarget: 'umd'
-    },
-    externals: [
-      function(ctx, req, cb) {
-        if (/.*\/physics.*/g.test(req)) return cb(null, 'var false');
-        cb();
-      }
-    ],
-    module: {
-      loaders: loadersSection
-    },
-    plugins: pluginsSectionLight
-  }];
+  };
 }
+
+export default () => config({
+  isProduction: process.env.NODE_ENV === 'production',
+  src: './src',
+  dest: './build'
+});
