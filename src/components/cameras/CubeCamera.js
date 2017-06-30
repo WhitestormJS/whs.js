@@ -7,7 +7,7 @@ import {CameraComponent} from '../../core/CameraComponent';
  * @description Creates 6 cameras that render to a WebGLRenderTargetCube
  * @param {Object} [params] - The parameters object.
  * @memberof module:components/cameras
- * @extends CameraComponent
+ * @extends module:core.CameraComponent
  * @example <caption>Creates a CubeCamera and set it as app's camera</caption>
  * const camera = new CubeCamera({
  *   camera: {
@@ -41,11 +41,9 @@ class CubeCamera extends CameraComponent {
   static defaults = {
     ...CameraComponent.defaults,
 
-    camera: {
-      near: 1,
-      far: 1000,
-      cubeResolution: 128
-    }
+    near: 1,
+    far: 1000,
+    cubeResolution: 128
   };
 
   constructor(params = {}) {
@@ -54,9 +52,9 @@ class CubeCamera extends CameraComponent {
 
   build(params = {}) {
     return this.applyBridge({camera: new CubeCameraNative(
-      params.camera.near,
-      params.camera.far,
-      params.camera.cubeResolution
+      params.near,
+      params.far,
+      params.cubeResolution
     )}).camera;
   }
 }

@@ -6,27 +6,25 @@ import {LightComponent} from '../../core/LightComponent';
  * @category components/lights
  * @description HemisphereLight is a light source positioned directly above the scene.<br/>
  * It also doesn't need position and target properties.
+ * @classDesc
+ * <iframe src="https://threejs.org/examples/webgl_lights_hemisphere.html"></iframe>
  * @param {Object} [params={light: {skyColor: 0xffffff, groundColor: 0xffffff, intensity: 1}}] - The params.
- * @extends LightComponent
+ * @extends module:core.LightComponent
  * @memberof module:components/lights
  * @example <caption>Creating a HemisphereLight</caption>
  * new HemisphereLight({
- *   light: {
- *     skyColor: 0xff0000,
- *     groundColor: 0x0000ff,
- *     intensity: 0.2
- *   }
+ *   skyColor: 0xff0000,
+ *   groundColor: 0x0000ff,
+ *   intensity: 0.2
  * }).addTo(app);
  */
 class HemisphereLight extends LightComponent {
   static defaults = {
     ...LightComponent.defaults,
-    light: {
-      skyColor: 0xffffff,
-      groundColor: 0xffffff,
 
-      intensity: 1
-    }
+    skyColor: 0xffffff,
+    groundColor: 0xffffff,
+    intensity: 1
   }
 
   constructor(params = {}) {
@@ -35,9 +33,9 @@ class HemisphereLight extends LightComponent {
 
   build(params = {}) {
     return this.applyBridge({light: new HemisphereLightNative(
-      params.light.skyColor,
-      params.light.groundColor,
-      params.light.intensity
+      params.skyColor,
+      params.groundColor,
+      params.intensity
     )}).light;
   }
 }

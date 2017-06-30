@@ -1,19 +1,19 @@
 import * as UTILS from '../../globals';
 
-const cameraModule = new WHS.CameraModule({
+const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
   position: {
     z: 50,
     y: 60
   },
   far: 20000,
   near: 1
-});
+}));
 
 const controlsModule = new WHS.OrbitControlsModule();
 
 console.log(THREE.PCFSoftShadowMap);
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 200),
     renderer: {
@@ -43,7 +43,7 @@ new WHS.Importer({
 
   position: [0, -10, 0],
   rotation: new THREE.Euler(0, Math.PI / 2 * 3, 0)
-}).addTo(world).then(o => {
+}).addTo(app).then(o => {
   console.log(o);
 });
 
@@ -52,13 +52,11 @@ const radius = 55;
 new WHS.Sphere({
   material: new THREE.MeshBasicMaterial({color: 0xffffff}),
   position: [20, 20, 0]
-}).addTo(world).then(mesh => {
+}).addTo(app).then(mesh => {
   let angle = 0;
 
   new WHS.DirectionalLight({
-    light: {
-      intensity: 1
-    },
+    intensity: 1,
 
     shadow: {
       mapSize: {
@@ -79,7 +77,7 @@ new WHS.Sphere({
 
     mesh.position.set(x, 35, z);
     angle += 0.01;
-  }).start(world);
+  }).start(app);
 });
 
-world.start();
+app.start();

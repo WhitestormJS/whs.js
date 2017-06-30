@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const cameraModule = new WHS.CameraModule({
+const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
   position: {
     z: -30,
     y: 20,
@@ -8,11 +8,11 @@ const cameraModule = new WHS.CameraModule({
   },
   far: 20000,
   near: 1
-});
+}));
 
 const controlsModule = new WHS.OrbitControlsModule();
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules({
     position: new THREE.Vector3(0, 10, 200),
     renderer: {
@@ -53,7 +53,7 @@ new WHS.Box({
   )
   ],
   position: [0, 4, 0]
-}).addTo(world);
+}).addTo(app);
 
 new WHS.Box({
   geometry: {
@@ -71,13 +71,11 @@ new WHS.Box({
   material: new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide
   })
-}).addTo(world);
+}).addTo(app);
 
 new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.4
-  }
-}).addTo(world);
+  color: 0xffffff,
+  intensity: 0.4
+}).addTo(app);
 
-world.start();
+app.start();

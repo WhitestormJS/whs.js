@@ -1,6 +1,6 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   ...UTILS.appModules()
 ]);
 
@@ -26,7 +26,7 @@ const sphere = new WHS.Sphere({ // Create sphere comonent.
   position: [-20, 100, 0]
 });
 
-sphere.addTo(world);
+sphere.addTo(app);
 
 const sphere2 = new WHS.Sphere({ // Create sphere comonent.
   geometry: {
@@ -50,9 +50,9 @@ const sphere2 = new WHS.Sphere({ // Create sphere comonent.
   position: [20, 100, 0]
 });
 
-sphere2.addTo(world);
+sphere2.addTo(app);
 
-UTILS.addPlane(world).then(o => {
+UTILS.addPlane(app).then(o => {
   const boxModule = new PHYSICS.BoxModule({
     mass: 0
   });
@@ -67,14 +67,14 @@ UTILS.addPlane(world).then(o => {
     ...planeParams,
     rotation: [0, 0, -Math.PI / 4],
     position: [-20, 3, 0]
-  }).addTo(world);
+  }).addTo(app);
 
   new WHS.Box({
     ...planeParams,
     rotation: [0, 0, Math.PI / 4],
     position: [20, 3, 0]
-  }).addTo(world);
+  }).addTo(app);
 });
-UTILS.addBasicLights(world);
+UTILS.addBasicLights(app);
 
-world.start(); // Start animations and physics simulation.
+app.start(); // Start animations and physics simulation.

@@ -99,11 +99,6 @@ export class ModuleSystem extends Events {
     return module;
   }
 
-  applyModuleOnce(ModuleConstructor, getModule, push = true) {
-    const isAlreadyIncluded = this.modules.some(m => m instanceof ModuleConstructor);
-    if (!isAlreadyIncluded) return this.applyModule(getModule(), push);
-  }
-
   /**
    * @method disposeModules
    * @instance

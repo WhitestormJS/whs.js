@@ -11,10 +11,12 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @class Text
  * @category components/meshes
  * @description Text class is made for creating 3D text objects.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#TextGeometry"></iframe>
  * <br/><br/>
  * Physics text object can be convex or concave. By default it's convex but you can also switch to concave.
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Text, and adding it to app</caption>
  * new Text({
@@ -106,7 +108,7 @@ class Text extends MeshComponent {
   }
 
   build(params = {}) {
-    const promise = new Promise((resolve) => {
+    const promise = new Promise(resolve => {
       FontLoader.load(params.geometry.parameters.font, font => {
         params.geometry.parameters.font = font;
 
@@ -115,6 +117,7 @@ class Text extends MeshComponent {
             params.geometry.text,
             params.geometry.parameters
           ),
+
           material: params.material
         });
 

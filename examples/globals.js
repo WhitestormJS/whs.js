@@ -62,14 +62,16 @@ export const appModules = ( // appModules(camera, rendering);
   physics = appDefaults.physics,
   useControls = true
 ) => (
-  new WHS.BasicAppPreset({camera, rendering})
-    .extend([
-      new PHYSICS.WorldModule(physics),
-      useControls ? new WHS.OrbitControlsModule() : null,
-      new StatsModule()
-    ])
-    .autoresize()
-    .get()
+  [
+    new WHS.ElementModule(),
+    new WHS.SceneModule(),
+    new WHS.DefineModule('camera', new WHS.PerspectiveCamera(Object.assign(camera, {fov: 75}))),
+    new WHS.RenderingModule(rendering, {shadow: true}),
+    new PHYSICS.WorldModule(physics),
+    useControls ? new WHS.OrbitControlsModule() : null,
+    new StatsModule(),
+    new WHS.ResizeModule()
+  ]
 );
 
 export const $colors = {
@@ -79,34 +81,28 @@ export const $colors = {
   softbody: 0x434B7F
 };
 
-export function addAmbient(world, intensity) {
+export function addAmbient(app, intensity) {
   new WHS.AmbientLight({
-    light: {
-      intensity
-    }
-  }).addTo(world);
+    intensity
+  }).addTo(app);
 }
 
-export function addBasicLights(world, intensity = 0.5, position = [0, 10, 10], distance = 100, shadowmap) {
-  addAmbient(world, 1 - intensity);
-
-  console.log(shadowmap);
+export function addBasicLights(app, intensity = 0.5, position = [0, 10, 10], distance = 100, shadowmap) {
+  addAmbient(app, 1 - intensity);
 
   return new WHS.PointLight({
-    light: {
-      intensity,
-      distance
-    },
+    intensity,
+    distance,
 
     shadow: Object.assign({
       fov: 90
     }, shadowmap),
 
     position
-  }).addTo(world);
+  }).addTo(app);
 }
 
-export function addPlane(world, size = 100) {
+export function addPlane(app, size = 100) {
   return new WHS.Plane({
     geometry: {
       width: size,
@@ -124,10 +120,10 @@ export function addPlane(world, size = 100) {
     rotation: {
       x: -Math.PI / 2
     }
-  }).addTo(world);
+  }).addTo(app);
 }
 
-export function addBoxPlane(world, size = 100) {
+export function addBoxPlane(app, size = 100, color = 0x447F8B) {
   return new WHS.Box({
     geometry: {
       width: size,
@@ -141,8 +137,8 @@ export function addBoxPlane(world, size = 100) {
       })
     ],
 
-    material: new THREE.MeshPhongMaterial({color: 0x447F8B})
-  }).addTo(world);
+    material: new THREE.MeshPhongMaterial({color})
+  }).addTo(app);
 }
 
 function hexToRgb(hex) {

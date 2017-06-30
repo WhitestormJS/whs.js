@@ -1,12 +1,12 @@
 import * as UTILS from '../../globals';
 
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
-  new WHS.CameraModule({
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
     position: new THREE.Vector3(0, 6, 18),
     far: 10000
-  }),
+  })),
   new WHS.RenderingModule({
     bgColor: 0x162129,
 
@@ -61,33 +61,29 @@ const sphere = new WHS.Icosahedron({ // Softbody.
 
 sphere.native.frustumCulled = false;
 
-UTILS.addBoxPlane(world, 250).then(() => sphere.addTo(world)).then(() => {
+UTILS.addBoxPlane(app, 250).then(() => sphere.addTo(app)).then(() => {
   for (let i = 0; i < 30; i++) {
     const newSphere = sphere.clone(true, false);
     newSphere.position.y = 5 + 4 * (i + 1);
     newSphere.native.frustumCulled = false;
-    newSphere.addTo(world);
+    newSphere.addTo(app);
   }
 });
 
 new WHS.DirectionalLight({
-  light: {
-    color: 0xffffff, // 0x00ff00,
-    intensity: 1
-  },
+  color: 0xffffff, // 0x00ff00,
+  intensity: 1,
 
   position: {
     x: 0,
     y: 10,
     z: 30
   }
-}).addTo(world);
+}).addTo(app);
 
 new WHS.AmbientLight({
-  light: {
-    color: 0xffffff,
-    intensity: 0.5
-  }
-}).addTo(world);
+  color: 0xffffff,
+  intensity: 0.5
+}).addTo(app);
 
-world.start();
+app.start();

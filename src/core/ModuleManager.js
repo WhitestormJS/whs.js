@@ -137,8 +137,25 @@ export class ModuleManager {
     });
   }
 
+  /**
+   * @method add
+   * @alias module:core.ModuleManager#set
+   * @memberof module:core.ModuleManager
+   */
   add(...data) {
     console.warn('.add() method is deprecated. Use .set() instead');
     return this.set(...data);
+  }
+
+  /**
+   * @method require
+   * @instance
+   * @description Require module
+   * @param {String} name Defined name
+   * @param {Function} moduleExecutor Function that returns applied module
+   * @memberof module:core.ModuleManager
+   */
+  require(name, moduleExecutor) {
+    if (this.use(name) === undefined) this.handler.applyModule(moduleExecutor());
   }
 }

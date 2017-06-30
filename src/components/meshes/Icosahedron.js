@@ -12,8 +12,10 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @description In geometry, an icosahedron is a polyhedron with 20 faces.<br/>
  * There are many kinds of icosahedra, with some being more symmetrical than others. The most well known is the Platonic, convex regular icosahedron.<br/>
  * `Icosahedron` creates an Icosahedron object by its radius and detail.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#IcosahedronGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Icosahedron, and adding to app</caption>
  * new Icosahedron({
@@ -80,9 +82,7 @@ class Icosahedron extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? IcosahedronBufferGeometry : IcosahedronGeometry;
-
-    return new GConstruct(
+    return new (params.buffer ? IcosahedronBufferGeometry : IcosahedronGeometry)(
       params.geometry.radius,
       params.geometry.detail
     );

@@ -1,12 +1,12 @@
-const world = new WHS.App([
+const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
-  new WHS.CameraModule({
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
     position: new THREE.Vector3(-8, 5, 20),
     far: 2000,
     near: 1,
     fov: 45
-  }),
+  })),
   new WHS.RenderingModule({
     bgColor: 0xffffff,
 
@@ -50,7 +50,7 @@ class Points extends WHS.MeshComponent {
   }
 }
 
-new Points({geom}).addTo(world);
+new Points({geom}).addTo(app);
 
 // Start rendering.
-world.start();
+app.start();

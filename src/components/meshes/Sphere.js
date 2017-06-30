@@ -15,8 +15,10 @@ import {MeshComponent} from '../../core/MeshComponent';
  * <br/><br/>
  * Then it creates an `Three.js mesh` or a `Physijs mesh`, that is similar to `Three.js mesh`, but it also take into consideration collision calculations.
  * This mesh is a combination of `Three.js geometry` and `Physijs material` (The same as in three.js, but with friction and restitution).
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#SphereGeometry"></iframe>
  * @param {Object} [params] - The params.
- * @extends MeshComponent
+ * @extends module:core.MeshComponent
  * @memberof module:components/meshes
  * @example <caption>Creating a Sphere, and adding it to app</caption>
  * new Sphere({
@@ -85,9 +87,7 @@ class Sphere extends MeshComponent {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer ? SphereBufferGeometry : SphereGeometry;
-
-    const geometry = new GConstruct(
+    const geometry = new (params.buffer ? SphereBufferGeometry : SphereGeometry)(
       params.geometry.radius,
       params.geometry.widthSegments,
       params.geometry.heightSegments

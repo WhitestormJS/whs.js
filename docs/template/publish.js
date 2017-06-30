@@ -296,13 +296,13 @@ function generateSourceFiles(sourceFiles, encoding) {
       logger.error("Error while generating source file %s: %s", file, e.message)
     }
 
-    generate(
-      "Source",
-      sourceFiles[file].shortened,
-      [source],
-      helper.getUniqueFilename(sourceFiles[file].shortened),
-      false
-    )
+    // generate(
+    //   "Source",
+    //   sourceFiles[file].shortened,
+    //   [source],
+    //   helper.getUniqueFilename(sourceFiles[file].shortened),
+    //   false
+    // )
   })
 }
 
@@ -407,6 +407,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
     var itemsNav = ""
     var categories = {none: []};
     var categoryLinks = {};
+    var categoriesOrder = config.Classes.order || [];
 
     nav.push(buildNavHeading(itemHeading, false, true))
 
@@ -417,6 +418,9 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         if (!categories[name]) {
           categories[name] = [item];
           categoryLinks[name] = linktoFn(item.memberof, name);
+          // console.log(name);
+          // console.log(categoriesOrder);
+          if (categoriesOrder.indexOf(name) == -1) categoriesOrder.push(name);
         } else categories[name].push(item);
       } else {
         categories.none.push(item);
@@ -472,12 +476,11 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
 
     categories.none.forEach(processItemEach);
 
-    for (let key in categories) {
-      if (key !== 'none') {
-        nav.push(buildNavHeading(categoryLinks[key], true));
-        categories[key].forEach(processItemEach);
-      }
-    }
+    categoriesOrder.forEach(function (key) {
+      if (!categories[key]) return;
+      nav.push(buildNavHeading(categoryLinks[key], true));
+      categories[key].forEach(processItemEach);
+    });
   }
 
   return nav
