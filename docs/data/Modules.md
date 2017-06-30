@@ -134,3 +134,6 @@ Module methods are executed in this order:
 | `geometry`  | `THREE.Geometry` instance |
 | `material`  | `THREE.Material` instance |
 | `mesh`      | `THREE.Mesh` instance |
+
+
+[> Animation Clips](Animation Clips.html)
