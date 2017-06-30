@@ -27,3 +27,5 @@ const app = new WHS.App([
 
 app.start(); // Run app.
 ```
+
+[> featured projects](Showcase.html)

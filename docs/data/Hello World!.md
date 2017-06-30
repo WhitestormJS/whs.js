@@ -31,6 +31,8 @@ const app = new WHS.App([
 ]);
 ```
 
+[> Loops & 3D Animation](Loops & 3D Animation.html)
+
 ## FAQ
 
 > Q: Why is the color in Hexadecimal format?
