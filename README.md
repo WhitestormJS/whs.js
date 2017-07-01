@@ -113,7 +113,6 @@ Support us with a monthly donation and help us continue framework developmentðŸŽ
 
 
 <a href="https://opencollective.com/whitestormjs/backer/0/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/0/avatar.svg"></a>
-<a href="https://opencollective.com/whitestormjs/backer/1/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/1/avatar.svg"></a>
 <a href="https://opencollective.com/whitestormjs/backer/2/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/2/avatar.svg"></a>
 <a href="https://opencollective.com/whitestormjs/backer/3/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/3/avatar.svg"></a>
 <a href="https://opencollective.com/whitestormjs/backer/4/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/4/avatar.svg"></a>
