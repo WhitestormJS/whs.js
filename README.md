@@ -230,8 +230,8 @@ Support us with a monthly donation and help us continue framework developmentðŸŽ
 [discord]: https://discordapp.com/api/guilds/238405369859145729/widget.png
 [discord-url]: https://discord.gg/frNetGE
 
-[backer-url]: #backers
+[backer-url]: https://opencollective.com/whitestormjs
 [backer-badge]: https://opencollective.com/whitestormjs/backers/badge.svg?color=blue
 [support-url]: https://opencollective.com/whitestormjs#support
-[sponsor-url]: #sponsors
+[sponsor-url]: https://opencollective.com/whitestormjs
 [sponsor-badge]: https://opencollective.com/whitestormjs/sponsors/badge.svg?color=blue
