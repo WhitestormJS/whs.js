@@ -111,8 +111,8 @@ $ npm install whs
 [npm]: https://img.shields.io/npm/v/whs.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/whs
 
-[travis]: https://img.shields.io/travis/WhitestormJS/whitestorm.js.svg?style=flat-square
-[travis-url]: https://travis-ci.org/WhitestormJS/whitestorm.js?branch=beta
+[travis]: https://img.shields.io/travis/WhitestormJS/whs.js.svg?style=flat-square
+[travis-url]: https://travis-ci.org/WhitestormJS/whs.js.js?branch=develop
 
 [discord]: https://discordapp.com/api/guilds/238405369859145729/widget.png
 [discord-url]: https://discord.gg/frNetGE
