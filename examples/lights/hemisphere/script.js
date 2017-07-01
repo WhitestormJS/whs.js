@@ -6,8 +6,8 @@ const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
     y: 20,
     x: -40
   },
-  far: 5000,
-  near: 1
+  far: 1000,
+  near: 5
 }));
 
 const controlsModule = new WHS.OrbitControlsModule();
@@ -40,7 +40,7 @@ const uniforms = {
 
 // Sky dome
 new WHS.Sphere({
-  geometry: [4000, 32, 15],
+  geometry: [800, 32, 15],
   material: new THREE.ShaderMaterial({
     vertexShader,
     fragmentShader,
@@ -54,12 +54,19 @@ new WHS.Sphere({
 
 }).addTo(app);
 
+const fix = texture => {
+  texture.anisotropy = 2;
+  texture.magFilter = THREE.LinearFilter;
+  texture.minFilter = THREE.LinearMipMapLinearFilter;
+
+  return texture;
+};
+
 new WHS.Box({
   geometry: {
-    width: 9000,
-    height: 9000
+    width: 3000,
+    height: 3000
   },
-  specular: 0x050505,
   position: [0, -1.5, 0],
   rotation: {
     y: 0,
@@ -72,10 +79,14 @@ new WHS.Box({
   modules: [
     new WHS.TextureModule({
       url: `${process.assetsPath}/textures/marble.jpg`,
-      repeat: new THREE.Vector2(300, 300)
+      repeat: new THREE.Vector2(200, 200),
+      fix
     }
   )],
-  material: new THREE.MeshPhongMaterial({
+
+  material: new THREE.MeshStandardMaterial({
+    emissive: 0xffffff,
+    emissiveIntensity: 0.2
   })
 }).addTo(app);
 
@@ -88,9 +99,8 @@ new WHS.DirectionalLight({
       height: 4096
     },
 
-    cast: true,
-    far: 150,
-    near: 5
+    far: 20,
+    near: 10
   },
 
   position: [-105, 70, -10]
@@ -120,15 +130,19 @@ function addPillar(position) {
     modules: [
       new WHS.TextureModule({
         url: `${process.assetsPath}/textures/stone.jpg`,
-        repeat: new THREE.Vector2(3, 3)
+        type: 'map',
+        repeat: new THREE.Vector2(3, 3),
+        fix
       }, {
         url: `${process.assetsPath}/textures/stoneNormal.jpg`,
         type: 'normalMap',
-        repeat: new THREE.Vector2(3, 3)
+        repeat: new THREE.Vector2(3, 3),
+        fix
       }, {
         url: `${process.assetsPath}/textures/stoneBump.jpg`,
         type: 'bumpMap',
-        repeat: new THREE.Vector2(3, 3)
+        repeat: new THREE.Vector2(3, 3),
+        fix
       }
     )],
 
@@ -176,7 +190,6 @@ function addTopPlane(geometry, y) {
   new WHS.Box({
     geometry,
 
-    specular: 0x050505,
     position: [9, y, 10],
     rotation: {
       y: 0,
@@ -185,18 +198,21 @@ function addTopPlane(geometry, y) {
 
     shadow: {
       cast: true,
-      receive: true
+      receive: false
     },
 
     modules: [
       new WHS.TextureModule({
-        url: `${process.assetsPath}/textures/stone.jpg`
+        url: `${process.assetsPath}/textures/stone.jpg`,
+        type: 'map'
       }, {
         url: `${process.assetsPath}/textures/stoneNormal.jpg`,
-        type: 'normalMap'
+        type: 'normalMap',
+        fix
       }, {
         url: `${process.assetsPath}/textures/stoneBump.jpg`,
-        type: 'bumpMap'
+        type: 'bumpMap',
+        fix
       }
     )],
 
