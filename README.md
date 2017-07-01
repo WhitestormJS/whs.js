@@ -18,6 +18,7 @@ Community chat. [Join us!][discord-url]
    - [npm](#npm)
 - [Featured projects](#featured-projects)
 - [Features](#features)
+- [Donate](#donate)
 - [Why?](/.github/WHY.md)
 
 
