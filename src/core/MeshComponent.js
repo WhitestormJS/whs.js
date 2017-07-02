@@ -120,7 +120,6 @@ class MeshComponent extends Component {
 
   /**
    * @method build
-   * @instance
    * @description Build livecycle should return a native object.
    * @throws {CompositionError}
    * @memberof module:core.MeshComponent

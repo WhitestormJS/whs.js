@@ -107,6 +107,13 @@ class Text extends MeshComponent {
     }
   }
 
+  /**
+   * @method build
+   * @description Build livecycle creates a mesh using input params.
+   * @param {Object} params Component parameters.
+   * @return {THREE.Mesh} Built mesh
+   * @memberof module:components/meshes.Text
+   */
   build(params = {}) {
     const promise = new Promise(resolve => {
       FontLoader.load(params.geometry.parameters.font, font => {
