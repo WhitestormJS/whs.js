@@ -4,7 +4,7 @@ export const extend = (object, ...extensions) => { // $.extend alternative, ... 
     // console.log(typeof extension);
 
     if (!extension)
-      continue; // Ignore null and undefined objects and paramaters.
+      continue; // Ignore null and undefined objects and parameters.
 
     for (const prop of Object.getOwnPropertyNames(extension)) { // Do not traverse the prototype chain.
       if (object[prop] !== undefined
