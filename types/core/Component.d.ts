@@ -1,10 +1,6 @@
 import {ModuleSystem} from './ModuleSystem';
 import {App} from './App';
 
-export class AddPromise {
-  // TODO
-}
-
 export class Component extends ModuleSystem {
   /**
    *
@@ -16,12 +12,12 @@ export class Component extends ModuleSystem {
    * Notes: As we work in 3D space - we have an App and objects it contains.
    * The App is the parent, objects are its children.
    */
-  addTo(parent: App): AddPromise;
+  addTo(parent: App): Promise<Component>;
 
   /**
    * TODO
    */
-  add(object: object): AddPromise;
+  add(object: object): Promise<Component>;
 
   /**
    * TODO
