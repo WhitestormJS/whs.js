@@ -16,7 +16,7 @@ import {MeshComponent} from '../../core/MeshComponent';
  * new Importer({
  *   loader: new THREE.OBJLoader(),
  *
- *   parse(geometry, material) { // data from loader
+ *   parser(geometry, material) { // data from loader
  *     return new THREE.Mesh(geometry, material); // should return your .native (mesh in this case)
  *   },
  *
