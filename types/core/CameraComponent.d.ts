@@ -1,45 +1,34 @@
 import {Component} from './Component';
+import {CompositionError} from '../core'
 
-export interface defaults {
-    build: true;
+export interface CameraComponentParams {
+    build?: boolean;
 
-    position: {
-      x: 0,
-      y: 0,
-      z: 0
+    position?: {
+      x?: number,
+      y?: number,
+      z?: number
     };
 
-    rotation: {
-      x: 0,
-      y: 0,
-      z: 0
+    rotation?: {
+      x?: number,
+      y?: number,
+      z?: number
     };
   }
 
 export class CameraComponent extends Component {
   /*
    * Creates a new CameraComponent
-   * TODO define params & instuctions interface
+   * TODO define instuctions interface
    */
-  constructor(params?: object, defaults?: defaults, instructions?: object);
+  constructor(params?: CameraComponentParams, defaults?: CameraComponentParams, instructions?: object);
 
-  /*
-   * TODO
-   */
-  build(): Error;
+  build(): CompositionError;
 
-  /*
-   * TODO
-   */
-  wrap(): any;
+  wrap(): Promise<CameraComponent>;
 
-  /*
-   * TODO
-   */
-  copy(source: Component): CameraComponent;
+  copy(source: CameraComponent): CameraComponent;
 
-  /*
-   * TODO
-   */
   clone(): CameraComponent;
 }
