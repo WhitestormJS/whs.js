@@ -1,19 +1,35 @@
-import * as WHS from "./core";
+import {
+  Loop,
+  Component,
+  App,
+  CameraComponent,
+  LightComponent,
+  MeshComponent
+} from "./core";
+import {MeshStandardMaterial} from 'three';
 
-const app = new WHS.App();
+import {
+  Box, 
+  Sphere, 
+  CubeCamera, 
+  OrthographicCamera,
+  PerspectiveCamera
+} from './components';
+
+const app = new App();
 app.start();
 
-let loop = new WHS.Loop(() => {});
-loop = new WHS.Loop(() => {}, true);
+let loop = new Loop(() => {});
+loop = new Loop(() => {}, true);
 
 loop.start(app);
 loop.stop(app);
 loop.execute();
 
-const component = new WHS.Component();
+const component = new Component();
 component.addTo(app);
 component.clone();
-const component2 = new WHS.Component();
+const component2 = new Component();
 component.copy(component2);
 
 // Testing parent of component (ModuleSystem)
@@ -25,17 +41,56 @@ component.disposeModule(null);
 component.disposeModules();
 component.module(null).disposeModules();
 
-const camera = new WHS.CameraComponent();
+const camera = new CameraComponent();
 const clonedCamera = camera.clone();
 
-const light = new WHS.LightComponent({});
+const light = new LightComponent({});
 const clonedLight = light.clone();
 const copiedLight = light.copy(clonedLight);
 copiedLight.wrap();
 copiedLight.addTo(app);
 
-const mesh = new WHS.MeshComponent({});
+const mesh = new MeshComponent({});
 mesh.addTo(app);
 mesh.clone();
 mesh.copy({});
 mesh.build();
+
+const box = new Box({
+  position: {
+    x: 1
+  },
+  material: new MeshStandardMaterial()
+});
+box.addTo(app);
+
+const sphere = new Sphere({
+  position: {
+    x: 1
+  },
+  material: new MeshStandardMaterial()
+});
+sphere.addTo(app);
+
+const cubeCamera = new CubeCamera({
+  build: false,
+  
+  position: {
+    x: 1,
+    y: 10,
+    z: 0
+  }
+});
+const nativeCubeCamera = cubeCamera.build();
+
+const orthographicCamera = new OrthographicCamera({
+  build: false,
+  far: 100
+});
+const orthographicCameraNative = orthographicCamera.build();
+
+const perspectiveCamera = new PerspectiveCamera({
+  build: false,
+  far: 100
+});
+const perspectiveCameraNative = orthographicCamera.build();
