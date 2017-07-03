@@ -18,8 +18,8 @@
   <img src="images/showcase/spatial.jpg" alt="https://spatial.100shapes.com/" width="300" />
 </a>
 
-<a href="http://plateux.space/">
-  <img src="images/showcase/plateux.jpg" alt="http://plateux.space/" width="300" />
+<a href="http://plateaux.space/">
+  <img src="images/showcase/plateux.jpg" alt="http://plateaux.space/" width="300" />
 </a>
 
 </div>
