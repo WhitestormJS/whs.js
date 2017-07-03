@@ -4,6 +4,7 @@
   ],
   "plugins": [
     "add-module-exports",
+    "external-helpers",
     "transform-decorators-legacy",
     "transform-class-properties",
     "transform-object-rest-spread"
@@ -12,17 +13,19 @@
     "test": {
       "plugins": ["transform-es2015-modules-commonjs"]
     },
-    "production": {
-      "plugins": [
-        "transform-runtime"
-      ]
-    },
-    "development": {
-      "plugins": [
-        ["transform-runtime", {
-          "polyfill": false
-        }]
-      ]
-    }
   }
 }
+
+
+/*"production": {
+  "plugins": [
+    "transform-runtime"
+  ]
+},
+"development": {
+  "plugins": [
+    ["transform-runtime", {
+      "polyfill": false
+    }]
+  ]
+}*/
