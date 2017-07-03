@@ -8,7 +8,13 @@ import {
 } from "./core";
 import {MeshStandardMaterial} from 'three';
 
-import {Box, Sphere} from './components';
+import {
+  Box, 
+  Sphere, 
+  CubeCamera, 
+  OrthographicCamera,
+  PerspectiveCamera
+} from './components';
 
 const app = new App();
 app.start();
@@ -65,3 +71,26 @@ const sphere = new Sphere({
   material: new MeshStandardMaterial()
 });
 sphere.addTo(app);
+
+const cubeCamera = new CubeCamera({
+  build: false,
+  
+  position: {
+    x: 1,
+    y: 10,
+    z: 0
+  }
+});
+const nativeCubeCamera = cubeCamera.build();
+
+const orthographicCamera = new OrthographicCamera({
+  build: false,
+  far: 100
+});
+const orthographicCameraNative = orthographicCamera.build();
+
+const perspectiveCamera = new PerspectiveCamera({
+  build: false,
+  far: 100
+});
+const perspectiveCameraNative = orthographicCamera.build();
