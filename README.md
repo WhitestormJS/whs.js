@@ -102,6 +102,26 @@ $ npm install whs
 * ✔️ **Integrated [Three.js](https://threejs.org/) rendering engine**
 * :revolving_hearts: Work with whs.js and Three.js at the same time
 
+### External Modules
+
+|Name|Status|Description|
+|:--:|:----:|:----------|
+|[whs-module-statsjs][statsjs]|![statsjs-npm]|WhitestormJS module for JavaScript Performance Monitor ⚡⌛|
+|[whs-module-dat.gui][datgui]|![datgui-npm]|User Interface for runtime editing properties 🔑🛠🔩|
+|[physics-module-ammonext][physics-ammonext]|![physics-ammonext-npm]|Physics module based on [Ammo.js](https://github.com/kripken/ammo.js/)|
+|[whs-module-audio][audio]| WIP |Audio module for 3D positional sound 🔉|
+|[whs-vrkit][vrkit]|![physics-ammonext-npm]|Module for Virtual Reality|
+
+[statsjs]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-statsjs
+[statsjs-npm]: https://img.shields.io/npm/v/whs-module-statsjs.svg?style=flat-square
+[datgui]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-dat.gui
+[datgui-npm]: https://img.shields.io/npm/v/whs-module-dat.gui.svg?style=flat-square
+[physics-ammonext]: https://github.com/WhitestormJS/physics-module-ammonext
+[physics-ammonext-npm]: https://img.shields.io/npm/v/physics-module-ammonext.svg?style=flat-square
+[audio]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-audio
+[vrkit]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-vrkit
+[vrkit-npm]: https://img.shields.io/npm/v/whs-vrkit.svg?style=flat-square
+
 ### Donate
 
 [![OpenCollective Backers][backer-badge]][backer-url]
