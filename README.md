@@ -24,11 +24,6 @@ Community chat. [Join us!][discord-url]
 
 ### Basic setup
 
-```bash
-# Install npm version
-$ npm install whs --save-dev
-```
-
 Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/whs.js/dev/build/whs.min.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
 
 ```html
