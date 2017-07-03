@@ -1,4 +1,4 @@
-import {version} from '../../package';
+import {version} from '../../package.json';
 import {system} from '../polyfill';
 import {ModuleSystem} from './ModuleSystem';
 import {ModuleManager} from './ModuleManager';
