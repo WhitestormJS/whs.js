@@ -1,11 +1,27 @@
 import {Component} from './Component';
 import {CompositionError} from './errors';
+import {Material} from 'three';
+
+interface MeshParameters {
+  material?: Material,
+
+  shadow?: {
+    receive?: boolean,
+    cast?: boolean
+  },
+
+  position?: {
+    x?: number,
+    y?: number,
+    z?: number
+  }
+}
 
 export class MeshComponent extends Component {
   /**
    * TODO
    */
-  constructor(params: object, defaults?: object, instructions?: object);
+  constructor(params?: MeshParameters, defaults?: object, instructions?: object);
 
   /**
    * TODO explain why error
