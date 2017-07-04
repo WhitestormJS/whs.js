@@ -3,6 +3,7 @@ import {CompositionError} from './errors';
 import {Material} from 'three';
 
 interface MeshComponentParams {
+  build?: boolean,
   material?: Material,
 
   /** Shadows properties */
