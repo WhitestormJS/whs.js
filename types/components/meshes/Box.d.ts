@@ -1,4 +1,9 @@
 import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
+import {
+  BoxGeometry,
+  BoxBufferGeometry,
+  Mesh
+} from 'three';
 
 interface BoxParams extends MeshComponentParams {
 
@@ -42,11 +47,11 @@ interface BufferedBoxParams extends BoxParams {
     * Build lifecycle creates a mesh using input params.
     * @param params 
     */
-   build(params?: BoxParams);
+   build(params?: BoxParams): Mesh;
 
    /**
     * Builds the geometry
     * @param params 
     */
-   buildGeometry(params?: BufferedBoxParams);
+   buildGeometry(params?: BufferedBoxParams): BoxGeometry | BoxBufferGeometry;
 }

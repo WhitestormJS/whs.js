@@ -1,4 +1,9 @@
 import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
+import {
+  SphereGeometry,
+  SphereBufferGeometry,
+  Mesh
+} from 'three';
 
 interface SphereParams extends MeshComponentParams {
 
@@ -49,11 +54,11 @@ interface BufferedSphereParams extends SphereParams {
     * Build lifecycle creates a mesh using input params.
     * @param params 
     */
-   build(params?: SphereParams);
+   build(params?: SphereParams): Mesh;
 
    /**
     * Build the geometry
     * @param params 
     */
-   buildGeometry(params?: BufferedSphereParams);
+   buildGeometry(params?: BufferedSphereParams): SphereGeometry | SphereBufferGeometry;
 }
