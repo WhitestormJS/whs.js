@@ -1,7 +1,7 @@
-import {MeshComponent, MeshParameters} from '../../core/MeshComponent';
+import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
 import {Material} from 'three';
 
-interface BoxParameters extends MeshParameters {
+interface BoxParameters extends MeshComponentParams {
   geometry?: {
     width?: number;
     height?: number;
