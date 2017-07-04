@@ -11,10 +11,11 @@ import {
 
 import {
   Box, 
-  Sphere, 
-  CubeCamera, 
+  Cone,
+  CubeCamera,
   OrthographicCamera,
-  PerspectiveCamera
+  PerspectiveCamera,
+  Sphere,
 } from './components';
 
 import {
@@ -87,6 +88,9 @@ const sphere = new Sphere({
 sphere.buildGeometry({buffer: true});
 sphere.addTo(app);
 
+const cone = new Cone({build: false});
+cone.buildGeometry({buffer: true});
+cone.addTo(app);
 
 // Cameras
 
