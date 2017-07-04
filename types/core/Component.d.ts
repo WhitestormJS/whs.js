@@ -3,7 +3,10 @@ import {App} from './App';
 
 export class Component extends ModuleSystem {
   /**
-   *
+   * Creates a component
+   * @param params
+   * @param defaults
+   * @param instructions
    */
   constructor(params?: object, defaults?: object, instructions?: object);
 
@@ -15,17 +18,21 @@ export class Component extends ModuleSystem {
   addTo(parent: App): Promise<Component>;
 
   /**
-   * TODO
+   * Adds a child Component.
    */
-  add(object: object): Promise<Component>;
+  add(object: Component): Promise<Component>;
 
   /**
-   * TODO
+   * Removes a child Component.
+   * @param object The child component to remove.
    */
-  remove(object: object): void;
+  remove(object: Component): void;
 
-  // TODO
-  updateParams(object: object): object;
+  /**
+   * Updates parameters of the Component.
+   * @param object the parameters
+   */
+  updateParams(params: object): object;
 
   // TODO
   wait(promise: object): any;
@@ -33,13 +40,15 @@ export class Component extends ModuleSystem {
   // TODO
   defer(func: Function): any;
 
-  /* TODO
+  /* 
    * .clone() invokes .copy() and returns a new Component
    */
   clone(): Component;
 
-  /* TODO
-   * This method is used to copy .native and .params from other WHS.Component
+  /* 
+   * This method is used to copy .native and .params from other Component.
+   * @param source
+   * @param customize
    */
-  copy(source: any, customize?: Function): Component;
+  copy(source: Component, customize?: Function): Component;
 }

@@ -3,7 +3,15 @@ import {CompositionError} from './errors';
 import {Material} from 'three';
 
 interface MeshComponentParams {
+  /**
+   * Sets whether the mesh should build right away after being constructed
+   * Default is true.
+   */
   build?: boolean,
+
+  /**
+   * Material of this Mesh.
+   */
   material?: Material,
 
   /** Shadows properties */
