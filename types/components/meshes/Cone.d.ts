@@ -1,12 +1,12 @@
 import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
 
-interface ConeParameters extends MeshComponentParams {
+interface ConeParams extends MeshComponentParams {
   geometry?: {
     radius?: number;
     height?: number;
     radiusSegments?: number;
     heightSegments?: number;
-    openEnded?: number;
+    openEnded?: boolean;
     thetaStart?: number;
     thetaLength?: number;
   }
@@ -17,5 +17,5 @@ interface ConeParameters extends MeshComponentParams {
    /**
     * @param params
     */
-   constructor(params?: ConeParameters);
+   constructor(params?: ConeParams);
 }
