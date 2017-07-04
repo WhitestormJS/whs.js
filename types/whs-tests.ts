@@ -66,21 +66,25 @@ mesh.copy({});
 mesh.build();
 
 const box = new Box({
+  build: false,
   position: {
     x: 1
   },
 
   material: new MeshStandardMaterial()
 });
+box.build();
 box.addTo(app);
 
 const sphere = new Sphere({
+  build: false,
   position: {
     x: 1
   },
 
   material: new MeshStandardMaterial()
 });
+sphere.buildGeometry({buffer: true});
 sphere.addTo(app);
 
 
