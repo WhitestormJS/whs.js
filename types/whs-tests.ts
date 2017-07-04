@@ -1,3 +1,5 @@
+import {MeshStandardMaterial} from 'three';
+
 import {
   Loop,
   Component,
@@ -6,7 +8,6 @@ import {
   LightComponent,
   MeshComponent
 } from "./core";
-import {MeshStandardMaterial} from 'three';
 
 import {
   Box, 
@@ -16,6 +17,17 @@ import {
   PerspectiveCamera
 } from './components';
 
+import {
+  AmbientLight,
+  AreaLight,
+  DirectionalLight,
+  HemisphereLight,
+  PointLight,
+  SpotLight
+} from './components/lights';
+
+
+// Core
 const app = new App();
 app.start();
 
@@ -44,11 +56,8 @@ component.module(null).disposeModules();
 const camera = new CameraComponent();
 const clonedCamera = camera.clone();
 
-const light = new LightComponent({});
-const clonedLight = light.clone();
-const copiedLight = light.copy(clonedLight);
-copiedLight.wrap();
-copiedLight.addTo(app);
+
+// Meshes
 
 const mesh = new MeshComponent({});
 mesh.addTo(app);
@@ -60,6 +69,7 @@ const box = new Box({
   position: {
     x: 1
   },
+
   material: new MeshStandardMaterial()
 });
 box.addTo(app);
@@ -68,9 +78,13 @@ const sphere = new Sphere({
   position: {
     x: 1
   },
+
   material: new MeshStandardMaterial()
 });
 sphere.addTo(app);
+
+
+// Cameras
 
 const cubeCamera = new CubeCamera({
   build: false,
@@ -93,4 +107,39 @@ const perspectiveCamera = new PerspectiveCamera({
   build: false,
   far: 100
 });
+perspectiveCamera.wrap
 const perspectiveCameraNative = orthographicCamera.build();
+
+
+// Lights
+
+const light = new LightComponent({build: false});
+light.build();
+const clonedLight = light.clone();
+const copiedLight = light.copy(clonedLight);
+copiedLight.wrap();
+copiedLight.addTo(app);
+
+const ambientLight = new AmbientLight({
+  color: 0xffffff,
+  intensity: 0.5
+});
+ambientLight.addTo(app);
+
+const areaLight = new AreaLight({build: false});
+areaLight.build();
+areaLight.addTo(app);
+
+const hemisphereLight = new HemisphereLight({ 
+  build: false
+});
+hemisphereLight.build();
+hemisphereLight.addTo(app);
+
+const pointLight = new PointLight({build: false});
+pointLight.build();
+pointLight.addTo(app);
+
+const spotLight = new SpotLight({build: false});
+spotLight.build();
+spotLight.addTo(app);

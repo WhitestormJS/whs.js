@@ -1,6 +1,6 @@
-import {MeshComponent, MeshParameters} from '../../core/MeshComponent';
+import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
 
-interface SphereParameter extends MeshParameters {
+interface SphereParameter extends MeshComponentParams {
   geometry?: {
       radius?: number;
       widthSegments?: number;
