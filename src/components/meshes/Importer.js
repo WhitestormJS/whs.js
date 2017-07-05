@@ -112,7 +112,7 @@ class Importer extends MeshComponent {
    * @memberof module:components/meshes.Importer
    */
   build(params = {}) {
-    const promise = new Promise(resolve => {
+    return new Promise(resolve => {
       if (params.texturePath) params.laoder.setTexturePath(params.texturePath);
 
       params.loader.load(params.url, (...data) => { // geometry, materials
@@ -131,10 +131,6 @@ class Importer extends MeshComponent {
         resolve(object);
       }, params.onProgress, params.onError);
     });
-
-    super.wait(promise);
-
-    return promise;
   }
 }
 
