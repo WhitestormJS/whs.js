@@ -1,9 +1,12 @@
 {
   "presets": [
-    ["es2015", {"modules": false}]
+    ["latest", {
+      "es2015": {
+        "modules": false
+      }
+    }]
   ],
   "plugins": [
-    "add-module-exports",
     "external-helpers",
     "transform-decorators-legacy",
     "transform-class-properties",
@@ -15,17 +18,3 @@
     },
   }
 }
-
-
-/*"production": {
-  "plugins": [
-    "transform-runtime"
-  ]
-},
-"development": {
-  "plugins": [
-    ["transform-runtime", {
-      "polyfill": false
-    }]
-  ]
-}*/
