@@ -2,7 +2,7 @@ import * as UTILS from '../../globals';
 
 const controlsModule = new WHS.OrbitControlsModule();
 
-const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
+const camera = new WHS.PerspectiveCamera({
   position: {
     z: 250,
     y: 100
@@ -10,7 +10,7 @@ const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
 
   far: 30000,
   near: 1
-}));
+});
 
 const app = new WHS.App([
   ...UTILS.appModules({
@@ -18,7 +18,7 @@ const app = new WHS.App([
   }),
 
   controlsModule,
-  cameraModule
+  new WHS.DefineModule('camera', camera)
 ]);
 
 controlsModule.controls.autoRotate = true;
@@ -51,8 +51,8 @@ const sphere = new WHS.Sphere({
 });
 sphere.addTo(app);
 
-audioModule.addListener(cameraModule.camera);
-audioModule.playAudio(`${process.assetsPath}/sounds/folk.mp3`);
+audioModule.addListener(camera);
+audioModule.play(`${process.assetsPath}/sounds/folk.mp3`);
 
 new WHS.PointLight({
   color: 0xffffff,

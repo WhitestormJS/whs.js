@@ -33,6 +33,7 @@ export class ModuleSystem extends Events {
    * @memberof module:core.ModuleSystem
    */
   integrateModules(source) {
+    if (!this.modules) return;
     if (source) this.modules = source.modules.slice(0);
 
     for (let i = 0, max = this.modules.length; i < max; i++)
@@ -53,6 +54,7 @@ export class ModuleSystem extends Events {
    */
   applyBridge(bridgeMap = {}) {
     const modules = this.modules;
+    if (!modules) return bridgeMap;
 
     for (let i = 0, max = modules.length; i < max; i++) {
       for (const key in bridgeMap) {
@@ -81,7 +83,8 @@ export class ModuleSystem extends Events {
    */
   applyModule(module, push = true) {
     if (!module) return;
-    if (push) this.modules.push(module);
+    if (push && this.modules) this.modules.push(module);
+    else if (push) this.modules = [module];
 
     if (this.manager) this.manager.active(module);
 

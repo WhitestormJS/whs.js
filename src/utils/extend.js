@@ -7,12 +7,12 @@ export const extend = (object, ...extensions) => { // $.extend alternative, ... 
       continue; // Ignore null and undefined objects and parameters.
 
     for (const prop of Object.getOwnPropertyNames(extension)) { // Do not traverse the prototype chain.
-      if (object[prop] !== undefined
+      if (object[prop] !== undefined && extension[prop]
         && object[prop].toString() === '[object Object]'
         && extension[prop].toString() === '[object Object]') {
         // Goes deep only if object[prop] and extension[prop] are both objects !
-        if (extension[prop].uuid) object[prop] = extension[prop];
-        else extend(object[prop], extension[prop]);
+        if (extension[prop].constructor === Object) extend(object[prop], extension[prop]);
+        else object[prop] = extension[prop];
       } else
         object[prop] = typeof object[prop] === 'undefined' ? extension[prop] : object[prop];
 

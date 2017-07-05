@@ -27,6 +27,7 @@ export default class DatGUIModule {
   }
 
   manager(manager) {
+    manager.define('gui/dat.gui');
     const dom = this.gui.domElement;
     const style = dom.style;
 

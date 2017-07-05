@@ -1,32 +1,39 @@
+import * as UTILS from '../../globals';
+
 const DatGUI = new DatGUIModule();
 
-const app = new WHS.App(
-  new WHS.BasicAppPreset({
-    camera: {
-      position: {
-        z: 20,
-        y: 5
-      }
+const app = new WHS.App([
+  new WHS.ElementModule(),
+  new WHS.SceneModule(),
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
+    position: {
+      z: 20,
+      y: 5
     }
-  })
-  .extend([
-    new WHS.OrbitControlsModule(),
-    new StatsModule(0),
-    DatGUI
-  ])
-  .get()
-);
+  })),
+  new WHS.RenderingModule(UTILS.appDefaults.rendering, {
+    shadow: true
+  }),
+  new PHYSICS.WorldModule(UTILS.appDefaults.physics),
+  new WHS.OrbitControlsModule(),
+  new StatsModule(0),
+  new WHS.ResizeModule(),
+  DatGUI
+]);
 
-app.$camera.applyModule(DatGUI.Camera({
-  name: 'camera'
-}));
+app.get('camera').applyModule(
+  DatGUI.Camera({
+    name: 'PerspectiveCamera'
+  })
+);
 
 const sphere = new WHS.Sphere({
   material: new THREE.MeshLambertMaterial({color: 0xffffff}),
+
   modules: [
     new WHS.DynamicGeometryModule(),
     DatGUI.Mesh({
-      name: 'Sphere1',
+      name: 'Sphere',
       geometry: {
         radius: {
           range: [2, 100]
@@ -41,7 +48,7 @@ const sphere = new WHS.Sphere({
   ]
 });
 
-DatGUI.folder('hello').folder('cool').Custom([{
+DatGUI.folder('main_folder').folder('child_folder').Custom([{
   name: 'myProp',
   value: 10,
   step: 10,
@@ -59,7 +66,7 @@ new WHS.SpotLight({
 
   modules: [
     DatGUI.Light({
-      name: 'light1'
+      name: 'SpotLight'
     })
   ]
 }).addTo(app);

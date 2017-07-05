@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "del *.js !*.config.js && rollup -c rollup.modules.config.js",
+    "build": "del ../../../modules/*.js !../../../modules/*.config.js --force && rollup -c rollup.modules.config.js",
     "start": "rollup -c rollup.modules.config.js -w -m inline"
   },
   "author": "Alexander Buzin",
@@ -22,6 +22,7 @@
     "minivents": "^2.1.0",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-resolve": "^3.0.0",
     "stats.js": "^0.17.0",
     "three-vrcontrols-module": "^2.0.1"
