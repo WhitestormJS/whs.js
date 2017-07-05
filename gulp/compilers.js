@@ -1,31 +1,5 @@
 import path from 'path';
 import webpack from 'webpack';
-import {argv} from 'yargs';
-
-import {config} from '../webpack.config.babel';
-import {isProduction} from './utils';
-import {framework} from './config';
-
-// COMPILERS
-export const FrameworkCompilerInstance = (options = {framework}) =>
-  name => ({
-    main: webpack(config({
-      isProduction,
-      src: options.framework.src,
-      dest: options.framework.dest,
-      isMinified: false,
-      ...(argv.version ? {version: argv.version} : {})
-    })),
-
-    minified: webpack(config({
-      isProduction,
-      src: options.framework.src,
-      dest: options.framework.dest,
-      isMinified: true,
-      filename: 'whs.min.js',
-      ...(argv.version ? {version: argv.version} : {})
-    }))
-  }[name]);
 
 export const ExampleCompilerInstance = (options = {path: {ammojs: '', assets: ''}}) => (p, isDev = true) => webpack({
   entry: `./examples/${p}/script.js`,

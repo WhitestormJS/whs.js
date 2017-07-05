@@ -3,11 +3,10 @@ import gulp from 'gulp';
 import express from 'express';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import {argv} from 'yargs';
-import DashboardPlugin from 'webpack-dashboard/plugin';
 import less from 'gulp-less';
 import watch from 'gulp-watch';
 
-import {FrameworkCompilerInstance, ExampleCompilerInstance} from './compilers';
+import {ExampleCompilerInstance} from './compilers';
 import {getPaths} from './utils';
 import {getTemplateData, examples} from './config';
 
@@ -21,7 +20,7 @@ gulp.task('less:watch', () => {
 // DEV MODE
 gulp.task('dev', () => {
   const app = express();
-  const compilerInstance = new FrameworkCompilerInstance();
+  // const compilerInstance = new FrameworkCompilerInstance();
   const templateData = getTemplateData({devPhysics: argv.devPhysics, devMode: true});
 
   const exampleCompiler = new ExampleCompilerInstance({
@@ -31,15 +30,15 @@ gulp.task('dev', () => {
     }
   });
 
-  const compiler = compilerInstance('main');
-  compiler.apply(new DashboardPlugin());
-
-  app.use(new WebpackDevMiddleware(compiler, {
-    contentBase: examples,
-    publicPath: '/build/',
-
-    stats: {colors: true}
-  }));
+  // const compiler = compilerInstance('main');
+  // compiler.apply(new DashboardPlugin());
+  //
+  // app.use(new WebpackDevMiddleware(compiler, {
+  //   contentBase: examples,
+  //   publicPath: '/build/',
+  //
+  //   stats: {colors: true}
+  // }));
 
   const paths = getPaths();
 
@@ -58,6 +57,7 @@ gulp.task('dev', () => {
   });
 
   app.use('/assets', express.static(path.resolve(__dirname, `${examples}/assets`)));
+  app.use('/build', express.static('build'));
   app.use('/modules', express.static('modules'));
 
   app.set('views', path.resolve(__dirname, `./${examples}`));
