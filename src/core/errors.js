@@ -7,7 +7,7 @@ export class CompositionError extends Error {
 
     this.stack = stackArray.join('\n');
 
-    if (!process) console.error('Component:', component);
+    if (console) console.error('Component:', component);
 
     this.name = 'CompositionError';
   }
@@ -22,8 +22,8 @@ export class DependencyError extends Error {
 
     this.stack = stackArray.join('\n');
 
-    if (!process) console.error('Active module:', activeModule);
-    if (!process && dependencyModule) console.error('Dependency published by module:', dependencyModule);
+    if (console) console.error('Active module:', activeModule);
+    if (console && dependencyModule) console.error('Dependency published by module:', dependencyModule);
 
     this.name = 'DependencyError';
   }
@@ -38,8 +38,8 @@ export class ManagerError extends Error {
 
     this.stack = stackArray.join('\n');
 
-    if (!process) console.error('Component:', dependencyModule);
-    if (!process && activeModule) console.error('Active module:', activeModule);
+    if (console) console.error('Component:', dependencyModule);
+    if (console && activeModule) console.error('Active module:', activeModule);
 
     this.name = 'ManagerError';
   }

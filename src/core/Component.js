@@ -22,7 +22,7 @@ class Component extends ModuleSystem {
    * }
    */
   static defaults = {
-    modules: [],
+    modules: null,
     manager: true
   };
 

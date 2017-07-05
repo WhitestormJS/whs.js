@@ -6,11 +6,11 @@ import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 
 const configure = (moduleName = 'file') => ({
-  entry: `src/${moduleName}.js`,
+  entry: `${moduleName}.js`,
   format: 'umd',
   moduleName,
   banner: `/* Built for whs v${require('./package.json').version} */`,
-  // sourceMap: true,
+  sourceMap: true,
 
   external: [
     'three',
@@ -27,18 +27,20 @@ const configure = (moduleName = 'file') => ({
     commonjs({include: 'node_modules/**'}),
     babel({
       exclude: [
-        'node_modules/**'
-      ]
+        'node_modules/**',
+        '*.json'
+      ],
+      sourceMap: true
     }),
   ],
 
   targets: [
     {
-      dest: `${moduleName}.js`
+      dest: `../../../modules/${moduleName}.js`
     },
     {
       format: 'es',
-      dest: `${moduleName}.module.js`
+      dest: `../../../modules/${moduleName}.module.js`
     }
   ]
 });
@@ -46,9 +48,9 @@ const configure = (moduleName = 'file') => ({
 function buildConfiguration() {
   const config = [];
 
-  const exclude = (file) => !(file === 'package.json' || file === 'package-lock.json');
+  const exclude = (file) => !(file === 'package.json' || file === 'package-lock.json' || file === 'rollup.modules.config.js');
 
-  fs.readdirSync('./src/').forEach(file => {
+  fs.readdirSync('./').forEach(file => {
     if (file.indexOf('.js') > 0 && exclude(file)) {
       config.push(configure(file.replace('.js', '')));
     }
