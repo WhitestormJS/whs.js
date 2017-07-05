@@ -7,16 +7,12 @@
   "scripts": {
     "version": "gulp build --prod && git add .",
     "test": "xo ./src/**/*.js && jest",
-
     "start": "npm run dev & npm run modules:dev",
     "dev": "rollup -c -w -m inline & gulp dev",
-
     "build": "del build/*.js && cross-env NODE_ENV=production rollup -c && npm run minify",
     "minify": "java -jar node_modules/google-closure-compiler/compiler.jar --warning_level=VERBOSE --jscomp_off=globalThis --jscomp_off=checkTypes --language_in=ECMASCRIPT6_STRICT --externs tools/build/externs.js --js build/whs.js --js_output_file build/whs.min.js",
-
     "modules": "cd src/modules/extra/ && npm run build",
     "modules:dev": "cd src/modules/extra/ && npm start",
-
     "docs": "gulp docs --all",
     "deploy": "surge --project ./ --domain whs-dev.surge.sh",
     "deploy:docs": "surge --project ./docs/public/ --domain whsjs.io"
@@ -69,6 +65,7 @@
     "coveralls": "^2.13.1",
     "cross-env": "^5.0.1",
     "del": "^3.0.0",
+    "del-cli": "^1.1.0",
     "express": "^4.15.3",
     "gl": "^4.0.3",
     "google-closure-compiler": "^20170521.0.0",
