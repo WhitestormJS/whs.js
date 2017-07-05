@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c rollup.modules.config.js"
+    "build": "del *.js !*.config.js && rollup -c rollup.modules.config.js",
+    "start": "rollup -c rollup.modules.config.js -w -m inline"
   },
   "author": "Alexander Buzin",
   "license": "MIT",

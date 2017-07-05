@@ -7,13 +7,18 @@
   "scripts": {
     "version": "gulp build --prod && git add .",
     "test": "xo ./src/**/*.js && jest",
-    "start": "rollup -c -w -m inline & gulp dev",
-    "start:physics": "webpack-dashboard -t WhitestormJS -- gulp dev --devPhysics 8001",
-    "build": "del build/*.js && cross-env NODE_ENV=production rollup -c rollup.config.js && npm run minify",
-    "modules": "del modules/*.js !modules/*.config.js && cd modules/ && rollup -c rollup.modules.config.js",
+
+    "start": "npm run dev & npm run modules:dev",
+    "dev": "rollup -c -w -m inline & gulp dev",
+
+    "build": "del build/*.js && cross-env NODE_ENV=production rollup -c && npm run minify",
     "minify": "java -jar node_modules/google-closure-compiler/compiler.jar --warning_level=VERBOSE --jscomp_off=globalThis --jscomp_off=checkTypes --language_in=ECMASCRIPT6_STRICT --externs tools/build/externs.js --js build/whs.js --js_output_file build/whs.min.js",
-    "deploy": "surge --project ./ --domain whs-dev.surge.sh",
+
+    "modules": "cd modules/ && npm run build",
+    "modules:dev": "cd modules/ && npm start",
+
     "docs": "gulp docs --all",
+    "deploy": "surge --project ./ --domain whs-dev.surge.sh",
     "deploy:docs": "surge --project ./docs/public/ --domain whsjs.io"
   },
   "repository": "WhitestormJS/whitestorm.js",
