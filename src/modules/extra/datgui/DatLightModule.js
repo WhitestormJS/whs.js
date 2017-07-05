@@ -25,18 +25,11 @@ export class DatLightModule extends DatAPI {
     });
   }
 
-  integrate(self) {
-    if (this.native) {
-      self.bridge.light.bind(this)(this.native, self);
-      self.bridge.onWrap.bind(this)(this.native, self);
-    }
-  }
-
   bridge = {
     light(light, self) {
       if (!self.params.light) return light;
 
-      self.foldObject(light, this.params.light, self.fold.addFolder('light'));
+      self.foldObject(light, this.params, self.fold.addFolder('light'));
       self.foldObject(light.shadow, this.params.shadow, self.fold.addFolder('shadow'));
 
       return light;

@@ -21,7 +21,7 @@ export default class PositionalAudioModule {
     object.native.add(this.audioListener);
   };
 
-  playAudio(path) {
+  play(path) {
     const sound = this.positionalAudio;
 
     this.audioLoader.load(path, buffer => {

@@ -82,14 +82,6 @@ export class DatMeshModule extends DatAPI {
     return this;
   }
 
-  integrate(self) {
-    if (this.native) {
-      self.bridge.material.bind(this)(this.native.material, self);
-      self.bridge.geometry.bind(this)(this.native.geometry, self);
-      self.bridge.onWrap.bind(this)(this.native, self);
-    }
-  }
-
   bridge = {
     material(material, self) {
       if (!self.params.material) return material;
@@ -117,12 +109,12 @@ export class DatMeshModule extends DatAPI {
 
       // const matAlias = {material: 'current'};
       const keys = Object.keys(self.customMaterials);
-      const folder = self.fold.addFolder('other materials');
+      const folder = self.fold;
 
-      folder.add({material: 'current'}, 'material', keys).onChange(v => {
+      folder.add({type: 'current'}, 'type', keys).onChange(v => {
         mesh.material = self.customMaterials[v];
-        folder.removeFolder('customize');
-        self.guiMaterial(this, mesh.material, folder.addFolder('customize'));
+        folder.removeFolder('material');
+        self.guiMaterial(this, mesh.material, folder.addFolder('material'));
       });
 
       return mesh;
