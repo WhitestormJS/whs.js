@@ -20,7 +20,6 @@ gulp.task('less:watch', () => {
 // DEV MODE
 gulp.task('dev', () => {
   const app = express();
-  // const compilerInstance = new FrameworkCompilerInstance();
   const templateData = getTemplateData({devPhysics: argv.devPhysics, devMode: true});
 
   const exampleCompiler = new ExampleCompilerInstance({
@@ -29,16 +28,6 @@ gulp.task('dev', () => {
       assets: templateData.assets
     }
   });
-
-  // const compiler = compilerInstance('main');
-  // compiler.apply(new DashboardPlugin());
-  //
-  // app.use(new WebpackDevMiddleware(compiler, {
-  //   contentBase: examples,
-  //   publicPath: '/build/',
-  //
-  //   stats: {colors: true}
-  // }));
 
   const paths = getPaths();
 
@@ -82,6 +71,5 @@ gulp.task('dev', () => {
   });
 
   app.listen(8080, 'localhost', () => {});
-
   gulp.start('less:watch');
 });
