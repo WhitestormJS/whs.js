@@ -105,15 +105,21 @@ class MeshComponent extends Component {
       }
 
       if (build instanceof Promise) {
-        build.then(native => {
-          this.native = native;
-          this.wrap();
-        });
+        this.wait(build);
+
+        this.wait(new Promise(resolve => {
+          build.then(native => {
+            this.native = native;
+            this.wrap().then(resolve);
+          });
+        }));
       } else {
         this.native = build;
-        this.wrap();
+        this.wait(this.wrap());
       }
     }
+
+    this.applyCommand('postIntegrate');
   }
 
   // BUILDING & WRAPPING

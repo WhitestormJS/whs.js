@@ -71,6 +71,24 @@ export class ModuleSystem extends Events {
   }
 
   /**
+   * @method applyCommand
+   * @instance
+   * @description .applyCommand runs a method called `name` on all modules.
+   * @param {String} name the method name.
+   * @param {Function} [cb=(func, moduleScope) => func.apply(this, [moduleScope])] How the function is wrapped/
+   * @memberof module:core.ModuleSystem
+   */
+  applyCommand(name, cb = (func, moduleScope) => func.apply(this, [moduleScope])) {
+    const modules = this.modules;
+    if (!modules) return;
+
+    for (let i = 0, max = modules.length; i < max; i++) {
+      const module = modules[i];
+      if (name in module) cb(module[name], module);
+    }
+  }
+
+  /**
    * @method applyModule
    * @instance
    * @description .applyModule is also used in .integrateModules() function.
