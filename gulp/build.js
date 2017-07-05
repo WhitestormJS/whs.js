@@ -2,7 +2,8 @@
 import gulp from 'gulp';
 import del from 'del';
 
-import {FrameworkCompilerInstance} from './compilers';
+import {rollup} from 'rollup';
+import {config} from '../rollup.config';
 import {framework} from './config';
 import {log, isProduction} from './utils';
 
@@ -11,17 +12,23 @@ const logEnd = name => log('green', `WEBPACK BUILD ['${name}' compiler status]: 
 
 // BUILD
 gulp.task('build', ['build:clean'], () => {
-  const compilers = new FrameworkCompilerInstance();
+  // const compilers = new FrameworkCompilerInstance();
 
   const instances = {
     main: new Promise(resolve => {
       logStart('main');
-      compilers('main').run(() => resolve(logEnd('main')));
+
+      rollup(
+        config({sProduction, name: 'whs.js', isMinified: false})
+      ).then(() => resolve(logEnd('main')));
     }),
 
     minified: isProduction ? new Promise(resolve => {
       logStart('minified');
-      compilers('minified').run(() => resolve(logEnd('minified')));
+
+      rollup(
+        config({isProduction, name: 'whs.min.js', isMinified: true})
+      ).then(() => resolve(logEnd('minified')));
     }) : Promise.resolve()
   };
 
