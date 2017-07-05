@@ -8,7 +8,7 @@
     "version": "gulp build --prod && git add .",
     "test": "xo ./src/**/*.js && jest",
     "start": "npm run dev & npm run modules:dev",
-    "dev": "rollup -c -w -m inline & gulp dev",
+    "dev": "rollup -c -w -m inline & gulp dev --devPhysics 8001",
     "build": "del build/*.js && cross-env NODE_ENV=production rollup -c && npm run minify",
     "minify": "java -jar node_modules/google-closure-compiler/compiler.jar --warning_level=VERBOSE --jscomp_off=globalThis --jscomp_off=checkTypes --language_in=ECMASCRIPT6_STRICT --externs tools/build/externs.js --js build/whs.js --js_output_file build/whs.min.js",
     "modules": "cd src/modules/extra/ && npm run build",
