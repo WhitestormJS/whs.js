@@ -11,10 +11,11 @@ import {
 
 import {
   Box, 
-  Sphere, 
-  CubeCamera, 
+  Cone,
+  CubeCamera,
   OrthographicCamera,
-  PerspectiveCamera
+  PerspectiveCamera,
+  Sphere,
 } from './components';
 
 import {
@@ -66,23 +67,30 @@ mesh.copy({});
 mesh.build();
 
 const box = new Box({
+  build: false,
   position: {
     x: 1
   },
 
   material: new MeshStandardMaterial()
 });
+box.build();
 box.addTo(app);
 
 const sphere = new Sphere({
+  build: false,
   position: {
     x: 1
   },
 
   material: new MeshStandardMaterial()
 });
+sphere.buildGeometry({buffer: true});
 sphere.addTo(app);
 
+const cone = new Cone({build: false});
+cone.buildGeometry({buffer: true});
+cone.addTo(app);
 
 // Cameras
 
