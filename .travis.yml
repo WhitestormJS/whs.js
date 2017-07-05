@@ -19,7 +19,6 @@ before_script:
   - export DISPLAY=:99.0; sh -e /etc/init.d/xvfb start
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
   - npm install
-  - sudo npm install del-cli -g
   - npm run build
 script:
   - npm test
