@@ -10,7 +10,7 @@ const app = new WHS.App([
   controlsModule
 ]);
 
-controlsModule.controls.autoRotate = true;
+// controlsModule.controls.autoRotate = true;
 
 const yPadding = 2;
 const xzPadding = 1;
@@ -36,10 +36,12 @@ function drawRectangle(points, color) {
   // join the bottom points
   for (let i = 0; i < points.length - 1; i++) {
     const line = new WHS.Line({
-      geometry: {
-        start: new THREE.Vector3(points[i].x, points[i].y, points[i].z),
-        end: new THREE.Vector3(points[i + 1].x, points[i + 1].y, points[i + 1].z)
-      },
+      curve: new THREE.LineCurve3(
+        new THREE.Vector3(points[i].x, points[i].y, points[i].z),
+        new THREE.Vector3(points[i + 1].x, points[i + 1].y, points[i + 1].z)
+      ),
+
+      points: 2,
 
       material: new THREE.LineBasicMaterial({
         color
@@ -52,10 +54,12 @@ function drawRectangle(points, color) {
   // top square
   for (let i = 0; i < points.length - 1; i++) {
     const line = new WHS.Line({
-      geometry: {
-        start: new THREE.Vector3(points[i].x, points[i].y + yDist, points[i].z),
-        end: new THREE.Vector3(points[i + 1].x, points[i + 1].y + yDist, points[i + 1].z)
-      },
+      curve: new THREE.LineCurve3(
+        new THREE.Vector3(points[i].x, points[i].y + yDist, points[i].z),
+        new THREE.Vector3(points[i + 1].x, points[i + 1].y + yDist, points[i + 1].z)
+      ),
+
+      points: 2,
 
       material: new THREE.LineBasicMaterial({
         color
@@ -67,17 +71,19 @@ function drawRectangle(points, color) {
 
   // closes the top square
   const line2 = new WHS.Line({
-    geometry: {
-      start: new THREE.Vector3(
+    curve: new THREE.LineCurve3(
+      new THREE.Vector3(
         points[points.length - 1].x,
         points[points.length - 1].y + yDist,
         points[points.length - 1].z),
 
-      end: new THREE.Vector3(
+      new THREE.Vector3(
         points[0].x,
         points[0].y + yDist,
         points[0].z)
-    },
+    ),
+
+    points: 2,
 
     material: new THREE.LineBasicMaterial({
       color
@@ -87,10 +93,12 @@ function drawRectangle(points, color) {
 
   // closes the bottom square
   const line = new WHS.Line({
-    geometry: {
-      start: new THREE.Vector3(points[points.length - 1].x, points[points.length - 1].y, points[points.length - 1].z),
-      end: new THREE.Vector3(points[0].x, points[0].y, points[0].z)
-    },
+    curve: new THREE.LineCurve3(
+      new THREE.Vector3(points[points.length - 1].x, points[points.length - 1].y, points[points.length - 1].z),
+      new THREE.Vector3(points[0].x, points[0].y, points[0].z)
+    ),
+
+    points: 2,
 
     material: new THREE.LineBasicMaterial({
       color
@@ -101,10 +109,12 @@ function drawRectangle(points, color) {
   // vertical join
   for (let i = 0; i < points.length - 1; i++) {
     const line = new WHS.Line({
-      geometry: {
-        start: new THREE.Vector3(points[i].x, points[i].y, points[i].z),
-        end: new THREE.Vector3(points[i].x, points[i + 1].y + yDist, points[i].z)
-      },
+      curve: new THREE.LineCurve3(
+        new THREE.Vector3(points[i].x, points[i].y, points[i].z),
+        new THREE.Vector3(points[i].x, points[i + 1].y + yDist, points[i].z)
+      ),
+
+      points: 2,
 
       material: new THREE.LineBasicMaterial({
         color
@@ -115,10 +125,12 @@ function drawRectangle(points, color) {
   }
   // closes the vertical one
   const line3 = new WHS.Line({
-    geometry: {
-      start: new THREE.Vector3(points[points.length - 1].x, points[points.length - 1].y, points[points.length - 1].z),
-      end: new THREE.Vector3(points[3].x, points[3].y + yDist, points[3].z)
-    },
+    curve: new THREE.LineCurve3(
+      new THREE.Vector3(points[points.length - 1].x, points[points.length - 1].y, points[points.length - 1].z),
+      new THREE.Vector3(points[3].x, points[3].y + yDist, points[3].z)
+    ),
+
+    points: 2,
 
     material: new THREE.LineBasicMaterial({
       color
