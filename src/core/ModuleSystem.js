@@ -33,7 +33,7 @@ export class ModuleSystem extends Events {
    * @memberof module:core.ModuleSystem
    */
   integrateModules(source) {
-    if (!this.modules) return;
+    if (!this.modules && !source) return;
     if (source) this.modules = source.modules.slice(0);
 
     for (let i = 0, max = this.modules.length; i < max; i++)

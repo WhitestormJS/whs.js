@@ -1,4 +1,4 @@
-/* WhitestormJS Framework v2.1.0 */
+/* WhitestormJS Framework v2.1.1 */
 import { AmbientLight, AnimationClip, AnimationMixer, BoxBufferGeometry, BoxGeometry, BufferAttribute, BufferGeometry, CircleBufferGeometry, CircleGeometry, Clock, Color, ConeBufferGeometry, ConeGeometry, CubeCamera, CylinderBufferGeometry, CylinderGeometry, DepthStencilFormat, DepthTexture, DirectionalLight, DodecahedronBufferGeometry, DodecahedronGeometry, EventDispatcher, ExtrudeGeometry, Fog, FogExp2, Font, FontLoader, Geometry, HemisphereLight, IcosahedronBufferGeometry, IcosahedronGeometry, JSONLoader, LatheBufferGeometry, LatheGeometry, Line, LineCurve3, LinearFilter, LinearMipMapLinearFilter, MOUSE, Mesh, NearestFilter, Object3D, OctahedronBufferGeometry, OctahedronGeometry, OrthographicCamera, ParametricBufferGeometry, ParametricGeometry, PerspectiveCamera, Plane, PlaneBufferGeometry, PlaneGeometry, PointLight, PolyhedronBufferGeometry, PolyhedronGeometry, Quaternion, REVISION, RGBAFormat, RGBFormat, Raycaster, RectAreaLight, RepeatWrapping, RingBufferGeometry, RingGeometry, Scene, ShaderMaterial, ShapeBufferGeometry, ShapeGeometry, SphereBufferGeometry, SphereGeometry, Spherical, SpotLight, TetrahedronBufferGeometry, TetrahedronGeometry, TextGeometry, TextureLoader, TorusGeometry, TorusKnotBufferGeometry, TorusKnotGeometry, TubeBufferGeometry, TubeGeometry, UVMapping, Uniform, UnsignedInt248Type, Vector2, Vector3, WebGLRenderTarget, WebGLRenderer } from 'three';
 
 var extend = function extend(object) {
@@ -398,7 +398,7 @@ var ModuleSystem = function (_Events) {
      * @memberof module:core.ModuleSystem
      */
     value: function integrateModules(source) {
-      if (!this.modules) return;
+      if (!this.modules && !source) return;
       if (source) this.modules = source.modules.slice(0);
 
       for (var i = 0, max = this.modules.length; i < max; i++) {
@@ -2277,22 +2277,11 @@ var CameraComponent = (_dec$2 = attributes(copy('position', 'rotation', 'quatern
   scale: ['x', 'y', 'z']
 }, _temp$3)) || _class$3);
 
-const version = "2.1.0";
-
-var presentNode = function () {
-  var time = process.hrtime();
-  return time[0] * 1e3 + time[1] / 1e6;
-};
+const version = "2.1.1";
 
 var system = {
   window: typeof window === 'undefined' ? global : window
 };
-
-if (typeof global !== 'undefined') {
-  global.performance = {
-    now: presentNode
-  };
-}
 
 /**
  * @class App
@@ -3974,10 +3963,8 @@ var Line$1 = (_temp$21 = _class$21 = function (_MeshComponent) {
    * @static
    * @default <pre>
    * {
-   *   geometry: {
-   *     curve: new LineCurve3(new Vector3(0, 0, 0), new Vector3(10, 0, 0)),
-   *     points: 50
-   *   }
+   *   curve: new LineCurve3(new Vector3(0, 0, 0), new Vector3(10, 0, 0)),
+   *   points: 50
    * }
    * </pre>
    */
@@ -4028,7 +4015,7 @@ var Line$1 = (_temp$21 = _class$21 = function (_MeshComponent) {
       var geometry = params.buffer ? new BufferGeometry() : new Geometry();
 
       if (params.buffer) {
-        var pp = params.geometry.curve.getPoints(params.geometry.points);
+        var pp = params.curve.getPoints(params.points);
         var verts = new Float32Array(pp.length * 3);
 
         for (var i = 0, max = pp.length; i < max; i++) {
@@ -4040,17 +4027,16 @@ var Line$1 = (_temp$21 = _class$21 = function (_MeshComponent) {
         }
 
         geometry.addAttribute('position', new BufferAttribute(verts, 3));
-      } else geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
+      } else geometry.vertices = params.curve.getPoints(params.points);
 
       return geometry;
     }
   }]);
   return Line$$1;
 }(MeshComponent), _class$21.defaults = _extends({}, MeshComponent.defaults, {
-  geometry: {
-    curve: new LineCurve3(new Vector3(0, 0, 0), new Vector3(10, 0, 0)),
-    points: 50
-  }
+
+  curve: null,
+  points: 50
 }), _class$21.instructions = _extends({}, MeshComponent.instructions, {
   geometry: ['curve', 'points']
 }), _temp$21);
