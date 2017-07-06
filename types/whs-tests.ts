@@ -27,6 +27,10 @@ import {
   SpotLight
 } from './components/lights';
 
+import {
+  TextureModule,
+} from './modules/mesh';
+
 
 // Core
 const app = new App();
@@ -151,3 +155,16 @@ pointLight.addTo(app);
 const spotLight = new SpotLight({build: false});
 spotLight.build();
 spotLight.addTo(app);
+
+// Mesh Modules
+
+let textureModule = new TextureModule([{
+    url: 'some/path',
+    type: 'map'
+  }]
+);
+textureModule = new TextureModule({
+    url: 'some/path',
+    type: 'bumpMap'
+  }
+);
