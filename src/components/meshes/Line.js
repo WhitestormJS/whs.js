@@ -34,19 +34,16 @@ class Line extends MeshComponent {
    * @static
    * @default <pre>
    * {
-   *   geometry: {
-   *     curve: new LineCurve3(new Vector3(0, 0, 0), new Vector3(10, 0, 0)),
-   *     points: 50
-   *   }
+   *   curve: new LineCurve3(new Vector3(0, 0, 0), new Vector3(10, 0, 0)),
+   *   points: 50
    * }
    * </pre>
    */
   static defaults = {
     ...MeshComponent.defaults,
-    geometry: {
-      curve: new LineCurve3(new Vector3(0, 0, 0), new Vector3(10, 0, 0)),
-      points: 50
-    }
+
+    curve: null,
+    points: 50
   };
 
   /**
@@ -87,7 +84,7 @@ class Line extends MeshComponent {
     const geometry = params.buffer ? new BufferGeometry() : new Geometry();
 
     if (params.buffer) {
-      const pp = params.geometry.curve.getPoints(params.geometry.points);
+      const pp = params.curve.getPoints(params.points);
       const verts = new Float32Array(pp.length * 3);
 
       for (let i = 0, max = pp.length; i < max; i++) {
@@ -99,7 +96,7 @@ class Line extends MeshComponent {
       }
 
       geometry.addAttribute('position', new BufferAttribute(verts, 3));
-    } else geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
+    } else geometry.vertices = params.curve.getPoints(params.points);
 
     return geometry;
   }
