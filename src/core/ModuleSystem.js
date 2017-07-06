@@ -34,10 +34,12 @@ export class ModuleSystem extends Events {
    */
   integrateModules(source) {
     if (!this.modules && !source) return;
-    if (source) this.modules = source.modules.slice(0);
+    if (source && source.modules) this.modules = source.modules.slice(0);
 
-    for (let i = 0, max = this.modules.length; i < max; i++)
-      this.applyModule(this.modules[i], false);
+    if (this.modules) {
+      for (let i = 0, max = this.modules.length; i < max; i++)
+        this.applyModule(this.modules[i], false);
+    }
 
     if (source) this.applyBridge({onCopy: source});
   }
