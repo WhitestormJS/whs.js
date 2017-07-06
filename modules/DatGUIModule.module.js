@@ -1,4 +1,4 @@
-/* Built for whs v1.0.0 */
+/* Built for whs v2.1.1 */
 import { AdditiveBlending, AlwaysDepth, BackSide, CustomBlending, DoubleSide, FlatShading, FrontSide, GreaterDepth, GreaterEqualDepth, LessDepth, LessEqualDepth, MultiplyBlending, NeverDepth, NoBlending, NormalBlending, NotEqualDepth, SmoothShading, SubtractiveBlending } from 'three';
 
 function createCommonjsModule(fn, module) {
