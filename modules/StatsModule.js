@@ -1,4 +1,4 @@
-/* Built for whs v1.0.0 */
+/* Built for whs v2.1.0 */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('whs')) :
 	typeof define === 'function' && define.amd ? define(['whs'], factory) :
