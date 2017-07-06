@@ -7,7 +7,7 @@
   "module": "build/whs.module.js",
   "typings": "types/index.d.ts",
   "scripts": {
-    "version": "npm run build && npm run examples && git add .",
+    "version": "npm run build && npm run modules && npm run examples && git add .",
     "test": "xo ./src/**/*.js && jest",
 
     "start": "npm run dev & npm run modules:dev",
