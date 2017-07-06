@@ -1,4 +1,4 @@
-/* Built for whs v2.1.1 */
+/* Built for whs v2.1.2 */
 var minivents_commonjs = function Events(target){
   var events = {}, empty = [];
   target = target || this;

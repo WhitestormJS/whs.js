@@ -1,4 +1,4 @@
-/* WhitestormJS Framework v2.1.1 */
+/* WhitestormJS Framework v2.1.2 */
 import { AmbientLight, AnimationClip, AnimationMixer, BoxBufferGeometry, BoxGeometry, BufferAttribute, BufferGeometry, CircleBufferGeometry, CircleGeometry, Clock, Color, ConeBufferGeometry, ConeGeometry, CubeCamera, CylinderBufferGeometry, CylinderGeometry, DepthStencilFormat, DepthTexture, DirectionalLight, DodecahedronBufferGeometry, DodecahedronGeometry, EventDispatcher, ExtrudeGeometry, Fog, FogExp2, Font, FontLoader, Geometry, HemisphereLight, IcosahedronBufferGeometry, IcosahedronGeometry, JSONLoader, LatheBufferGeometry, LatheGeometry, Line, LineCurve3, LinearFilter, LinearMipMapLinearFilter, MOUSE, Mesh, NearestFilter, Object3D, OctahedronBufferGeometry, OctahedronGeometry, OrthographicCamera, ParametricBufferGeometry, ParametricGeometry, PerspectiveCamera, Plane, PlaneBufferGeometry, PlaneGeometry, PointLight, PolyhedronBufferGeometry, PolyhedronGeometry, Quaternion, REVISION, RGBAFormat, RGBFormat, Raycaster, RectAreaLight, RepeatWrapping, RingBufferGeometry, RingGeometry, Scene, ShaderMaterial, ShapeBufferGeometry, ShapeGeometry, SphereBufferGeometry, SphereGeometry, Spherical, SpotLight, TetrahedronBufferGeometry, TetrahedronGeometry, TextGeometry, TextureLoader, TorusGeometry, TorusKnotBufferGeometry, TorusKnotGeometry, TubeBufferGeometry, TubeGeometry, UVMapping, Uniform, UnsignedInt248Type, Vector2, Vector3, WebGLRenderTarget, WebGLRenderer } from 'three';
 
 var extend = function extend(object) {
@@ -399,11 +399,15 @@ var ModuleSystem = function (_Events) {
      */
     value: function integrateModules(source) {
       if (!this.modules && !source) return;
-      if (source) this.modules = source.modules.slice(0);
+      if (source && source.modules) this.modules = source.modules.slice(0);
 
-      for (var i = 0, max = this.modules.length; i < max; i++) {
-        this.applyModule(this.modules[i], false);
-      }if (source) this.applyBridge({ onCopy: source });
+      if (this.modules) {
+        for (var i = 0, max = this.modules.length; i < max; i++) {
+          this.applyModule(this.modules[i], false);
+        }
+      }
+
+      if (source) this.applyBridge({ onCopy: source });
     }
 
     // APPLYING MODULE (...and a "bridge" for module)
@@ -2277,7 +2281,7 @@ var CameraComponent = (_dec$2 = attributes(copy('position', 'rotation', 'quatern
   scale: ['x', 'y', 'z']
 }, _temp$3)) || _class$3);
 
-const version = "2.1.1";
+const version = "2.1.2";
 
 var system = {
   window: typeof window === 'undefined' ? global : window
