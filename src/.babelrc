@@ -1,28 +1,25 @@
 {
   "presets": [
-    ["es2015", {"modules": false}]
+    ["latest", {
+      "es2015": {
+        "modules": false
+      }
+    }]
   ],
   "plugins": [
-    "add-module-exports",
+    "external-helpers",
     "transform-decorators-legacy",
     "transform-class-properties",
     "transform-object-rest-spread"
   ],
   "env": {
     "test": {
-      "plugins": ["transform-es2015-modules-commonjs"]
-    },
-    "production": {
       "plugins": [
-        "transform-runtime"
-      ]
-    },
-    "development": {
-      "plugins": [
+        "transform-es2015-modules-commonjs",
         ["transform-runtime", {
           "polyfill": false
         }]
       ]
-    }
+    },
   }
 }

@@ -102,6 +102,13 @@ class Ring extends MeshComponent {
     }
   }
 
+  /**
+   * @method build
+   * @description Build livecycle creates a mesh using input params.
+   * @param {Object} params Component parameters.
+   * @return {THREE.Mesh} Built mesh
+   * @memberof module:components/meshes.Ring
+   */
   build(params = this.params) {
     const {geometry, material} = this.applyBridge({
       geometry: this.buildGeometry(params),

@@ -71,11 +71,11 @@ export class VirtualMouseModule extends Events {
     });
   }
 
-  track(component) {
+  track(component, nested = true) {
     let isHovered = false;
 
     this.on('move', () => {
-      if (this.hovers(component)) {
+      if (this.hovers(component, nested)) {
         if (isHovered) component.emit('mousemove');
         else {
           component.emit('mouseover');
@@ -101,17 +101,23 @@ export class VirtualMouseModule extends Events {
     });
   }
 
-  intersection(component) {
-    return this.raycaster.intersectObject(component.native);
+  intersection({native}, nested = true) {
+    if (native.children.length > 0 && nested) {
+      const objects = [];
+      native.traverse(child => objects.push(child));
+
+      return this.raycaster.intersectObjects(objects);
+    }
+
+    return this.raycaster.intersectObject(native);
   }
 
   project(plane = this.projectionPlane) {
     return this.raycaster.ray.intersectPlane(plane);
   }
 
-  hovers(component) {
-    const intersection = this.intersection(component)[0];
-    return intersection ? intersection.object === component.native : false;
+  hovers(component, nested = true) {
+    return this.intersection(component, nested).length > 0;
   }
 
   get ray() {

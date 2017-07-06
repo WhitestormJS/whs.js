@@ -4,6 +4,8 @@ export const system = {
   window: typeof window === 'undefined' ? global : window
 };
 
-global.performance = {
-  now: present
-};
+if (typeof global !== 'undefined') {
+  global.performance = {
+    now: present
+  };
+}

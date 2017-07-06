@@ -33,6 +33,7 @@ export class ModuleSystem extends Events {
    * @memberof module:core.ModuleSystem
    */
   integrateModules(source) {
+    if (!this.modules) return;
     if (source) this.modules = source.modules.slice(0);
 
     for (let i = 0, max = this.modules.length; i < max; i++)
@@ -53,6 +54,7 @@ export class ModuleSystem extends Events {
    */
   applyBridge(bridgeMap = {}) {
     const modules = this.modules;
+    if (!modules) return bridgeMap;
 
     for (let i = 0, max = modules.length; i < max; i++) {
       for (const key in bridgeMap) {
@@ -69,6 +71,24 @@ export class ModuleSystem extends Events {
   }
 
   /**
+   * @method applyCommand
+   * @instance
+   * @description .applyCommand runs a method called `name` on all modules.
+   * @param {String} name the method name.
+   * @param {Function} [cb=(func, moduleScope) => func.apply(this, [moduleScope])] How the function is wrapped/
+   * @memberof module:core.ModuleSystem
+   */
+  applyCommand(name, cb = (func, moduleScope) => func.apply(this, [moduleScope])) {
+    const modules = this.modules;
+    if (!modules) return;
+
+    for (let i = 0, max = modules.length; i < max; i++) {
+      const module = modules[i];
+      if (name in module) cb(module[name], module);
+    }
+  }
+
+  /**
    * @method applyModule
    * @instance
    * @description .applyModule is also used in .integrateModules() function.
@@ -81,7 +101,8 @@ export class ModuleSystem extends Events {
    */
   applyModule(module, push = true) {
     if (!module) return;
-    if (push) this.modules.push(module);
+    if (push && this.modules) this.modules.push(module);
+    else if (push) this.modules = [module];
 
     if (this.manager) this.manager.active(module);
 
