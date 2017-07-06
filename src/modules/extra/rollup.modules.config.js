@@ -9,7 +9,7 @@ const configure = (moduleName = 'file') => ({
   entry: `${moduleName}.js`,
   format: 'umd',
   moduleName,
-  banner: `/* Built for whs v${require('./package.json').version} */`,
+  banner: `/* Built for whs v${require('../../../package.json').version} */`,
   sourceMap: true,
 
   external: [

@@ -1,4 +1,4 @@
-/* WhitestormJS Framework v2.1.0 */
+/* WhitestormJS Framework v2.1.1 */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('three')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'three'], factory) :
@@ -402,7 +402,7 @@ var ModuleSystem = function (_Events) {
      * @memberof module:core.ModuleSystem
      */
     value: function integrateModules(source) {
-      if (!this.modules) return;
+      if (!this.modules && !source) return;
       if (source) this.modules = source.modules.slice(0);
 
       for (var i = 0, max = this.modules.length; i < max; i++) {
@@ -2281,22 +2281,11 @@ var CameraComponent = (_dec$2 = attributes(copy('position', 'rotation', 'quatern
   scale: ['x', 'y', 'z']
 }, _temp$3)) || _class$3);
 
-const version = "2.1.0";
-
-var presentNode = function () {
-  var time = process.hrtime();
-  return time[0] * 1e3 + time[1] / 1e6;
-};
+const version = "2.1.1";
 
 var system = {
   window: typeof window === 'undefined' ? global : window
 };
-
-if (typeof global !== 'undefined') {
-  global.performance = {
-    now: presentNode
-  };
-}
 
 /**
  * @class App
@@ -3978,10 +3967,8 @@ var Line$1 = (_temp$21 = _class$21 = function (_MeshComponent) {
    * @static
    * @default <pre>
    * {
-   *   geometry: {
-   *     curve: new LineCurve3(new Vector3(0, 0, 0), new Vector3(10, 0, 0)),
-   *     points: 50
-   *   }
+   *   curve: new LineCurve3(new Vector3(0, 0, 0), new Vector3(10, 0, 0)),
+   *   points: 50
    * }
    * </pre>
    */
@@ -4032,7 +4019,7 @@ var Line$1 = (_temp$21 = _class$21 = function (_MeshComponent) {
       var geometry = params.buffer ? new three.BufferGeometry() : new three.Geometry();
 
       if (params.buffer) {
-        var pp = params.geometry.curve.getPoints(params.geometry.points);
+        var pp = params.curve.getPoints(params.points);
         var verts = new Float32Array(pp.length * 3);
 
         for (var i = 0, max = pp.length; i < max; i++) {
@@ -4044,17 +4031,16 @@ var Line$1 = (_temp$21 = _class$21 = function (_MeshComponent) {
         }
 
         geometry.addAttribute('position', new three.BufferAttribute(verts, 3));
-      } else geometry.vertices = params.geometry.curve.getPoints(params.geometry.points);
+      } else geometry.vertices = params.curve.getPoints(params.points);
 
       return geometry;
     }
   }]);
   return Line$$1;
 }(MeshComponent), _class$21.defaults = _extends({}, MeshComponent.defaults, {
-  geometry: {
-    curve: new three.LineCurve3(new three.Vector3(0, 0, 0), new three.Vector3(10, 0, 0)),
-    points: 50
-  }
+
+  curve: null,
+  points: 50
 }), _class$21.instructions = _extends({}, MeshComponent.instructions, {
   geometry: ['curve', 'points']
 }), _temp$21);
