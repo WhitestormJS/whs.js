@@ -1,4 +1,4 @@
-/* WhitestormJS Framework v2.1.1 */
+/* WhitestormJS Framework v2.1.2 */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('three')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'three'], factory) :
@@ -403,11 +403,15 @@ var ModuleSystem = function (_Events) {
      */
     value: function integrateModules(source) {
       if (!this.modules && !source) return;
-      if (source) this.modules = source.modules.slice(0);
+      if (source && source.modules) this.modules = source.modules.slice(0);
 
-      for (var i = 0, max = this.modules.length; i < max; i++) {
-        this.applyModule(this.modules[i], false);
-      }if (source) this.applyBridge({ onCopy: source });
+      if (this.modules) {
+        for (var i = 0, max = this.modules.length; i < max; i++) {
+          this.applyModule(this.modules[i], false);
+        }
+      }
+
+      if (source) this.applyBridge({ onCopy: source });
     }
 
     // APPLYING MODULE (...and a "bridge" for module)
@@ -2281,7 +2285,7 @@ var CameraComponent = (_dec$2 = attributes(copy('position', 'rotation', 'quatern
   scale: ['x', 'y', 'z']
 }, _temp$3)) || _class$3);
 
-const version = "2.1.1";
+const version = "2.1.2";
 
 var system = {
   window: typeof window === 'undefined' ? global : window
