@@ -117,8 +117,10 @@ class LightComponent extends Component {
         });
       } else this.native = build;
 
-      this.wrap();
+      this.wait(this.wrap());
     }
+
+    this.applyCommand('postIntegrate');
   }
 
   // BUILDING & WRAPPING
