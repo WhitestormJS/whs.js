@@ -12,9 +12,4 @@ export const getTemplateData = ({devPhysics = false, devMode = false} = {devPhys
     : 'window.location.href + \'../../assets/ammo.js\''
 });
 
-export const framework = {
-  src: './src',
-  dest: './build'
-};
-
 export const examples = '../examples';

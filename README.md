@@ -18,17 +18,13 @@ Community chat. [Join us!][discord-url]
    - [npm](#npm)
 - [Featured projects](#featured-projects)
 - [Features](#features)
+- [Donate](#donate)
 - [Why?](/.github/WHY.md)
 
 
 ### Basic setup
 
-```bash
-# Install npm version
-$ npm install whs --save-dev
-```
-
-Download the [minified library](https://whs-dev.surge.sh/build/whitestorm.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
+Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/whs.js/dev/build/whs.min.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
 
 ```html
 <script src="js/three.min.js"></script>
@@ -83,8 +79,8 @@ $ npm install whs
   <img src="http://whsjs.io/images/showcase/spatial.jpg" alt="https://spatial.100shapes.com/" width="30%" />
 </a>
 
-<a href="http://plateux.space/">
-  <img src="http://whsjs.io/images/showcase/plateux.jpg" alt="http://plateux.space/" width="30%" />
+<a href="http://plateaux.space/">
+  <img src="http://whsjs.io/images/showcase/plateux.jpg" alt="http://plateaux.space/" width="30%" />
 </a>
 
 
@@ -97,10 +93,81 @@ $ npm install whs
 * :dizzy: Automatization of rendering
 * 🆕 **ES2015+ based**
 * :large_blue_diamond: Extension system (modules)
-* :package: [Webpack](https://whsjs.io/#/api/webpack) friendly
+* :package: [Webpack](https://whsjs.io/Usage%20with%20webpack.html) friendly
 * ✔️ **Integrated [Three.js](https://threejs.org/) rendering engine**
-* :revolving_hearts: Work with Whitestorm.js and Three.js at the same time
+* :revolving_hearts: Work with whs.js and Three.js at the same time
 
+### External Modules
+
+|Name|Status|Description|
+|:--:|:----:|:----------|
+|[whs-module-statsjs][statsjs]|![statsjs-npm]|WhitestormJS module for JavaScript Performance Monitor ⚡⌛|
+|[whs-module-dat.gui][datgui]|![datgui-npm]|User Interface for runtime editing properties 🔑🛠🔩|
+|[physics-module-ammonext][physics-ammonext]|![physics-ammonext-npm]|Physics module based on [Ammo.js](https://github.com/kripken/ammo.js/)|
+|[whs-module-audio][audio]| WIP |Audio module for 3D positional sound 🔉|
+|[whs-vrkit][vrkit]|![physics-ammonext-npm]|Module for Virtual Reality|
+
+[statsjs]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-statsjs
+[statsjs-npm]: https://img.shields.io/npm/v/whs-module-statsjs.svg?style=flat-square
+[datgui]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-dat.gui
+[datgui-npm]: https://img.shields.io/npm/v/whs-module-dat.gui.svg?style=flat-square
+[physics-ammonext]: https://github.com/WhitestormJS/physics-module-ammonext
+[physics-ammonext-npm]: https://img.shields.io/npm/v/physics-module-ammonext.svg?style=flat-square
+[audio]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-audio
+[vrkit]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-vrkit
+[vrkit-npm]: https://img.shields.io/npm/v/whs-vrkit.svg?style=flat-square
+
+### Donate
+
+[![OpenCollective Backers][backer-badge]][backer-url]
+[![OpenCollective Sponsors][sponsor-badge]][sponsor-url]
+
+#### Backers
+
+Support us with a monthly donation and help us continue framework development🎉 and adding new features💡🎁.
+
+
+<a href="https://opencollective.com/whitestormjs/backer/0/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/0/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/1/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/1/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/2/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/2/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/3/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/3/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/4/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/4/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/5/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/5/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/6/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/6/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/7/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/7/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/8/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/8/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/9/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/9/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/10/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/10/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/11/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/11/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/12/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/12/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/13/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/13/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/14/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/14/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/15/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/15/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/16/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/16/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/17/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/17/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/18/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/18/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/19/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/19/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/20/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/20/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/21/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/21/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/22/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/22/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/23/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/23/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/24/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/24/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/25/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/25/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/26/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/26/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/27/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/27/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/28/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/28/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/29/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/29/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/30/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/30/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/31/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/31/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/32/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/32/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/33/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/33/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/34/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/34/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/35/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/35/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/36/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/36/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/37/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/37/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/38/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/38/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/39/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/39/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/40/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/40/avatar"></a>
 
 [xo]: https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square
 [xo-url]: https://github.com/sindresorhus/xo
@@ -111,8 +178,14 @@ $ npm install whs
 [npm]: https://img.shields.io/npm/v/whs.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/whs
 
-[travis]: https://img.shields.io/travis/WhitestormJS/whitestorm.js.svg?style=flat-square
-[travis-url]: https://travis-ci.org/WhitestormJS/whitestorm.js?branch=beta
+[travis]: https://img.shields.io/travis/WhitestormJS/whs.js.svg?style=flat-square
+[travis-url]: https://travis-ci.org/WhitestormJS/whs.js?branch=develop
 
 [discord]: https://discordapp.com/api/guilds/238405369859145729/widget.png
 [discord-url]: https://discord.gg/frNetGE
+
+[backer-url]: https://opencollective.com/whitestormjs
+[backer-badge]: https://opencollective.com/whitestormjs/backers/badge.svg?color=blue
+[support-url]: https://opencollective.com/whitestormjs#support
+[sponsor-url]: https://opencollective.com/whitestormjs
+[sponsor-badge]: https://opencollective.com/whitestormjs/sponsors/badge.svg?color=blue

@@ -4,6 +4,7 @@ language: node_js
 os: linux
 sudo: required
 dist: trusty
+group: deprecated-2017Q2
 addons:
   apt:
     packages:
@@ -18,7 +19,7 @@ before_script:
   - export DISPLAY=:99.0; sh -e /etc/init.d/xvfb start
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
   - npm install
-  - gulp build
+  - npm run build
 script:
   - npm test
 after_success:

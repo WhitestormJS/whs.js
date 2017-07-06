@@ -67,6 +67,13 @@ class Line extends MeshComponent {
     super(params, Line.defaults, Line.instructions);
   }
 
+  /**
+   * @method build
+   * @description Build livecycle creates a mesh using input params.
+   * @param {Object} params Component parameters.
+   * @return {THREE.Mesh} Built mesh
+   * @memberof module:components/meshes.Line
+   */
   build(params = this.params) {
     const {geometry, material} = this.applyBridge({
       geometry: this.buildGeometry(params),

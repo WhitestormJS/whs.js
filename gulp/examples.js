@@ -58,7 +58,7 @@ gulp.task('examples:html', callback => {
 });
 
 // CLEANING
-gulp.task('examples:clean', (callback) => {
+gulp.task('examples:clean', callback => {
   const paths = getPaths();
   const wait = [];
   const delExample = inPath => del(path.resolve('./examples/', inPath)); // wait.push(
