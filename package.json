@@ -3,16 +3,24 @@
   "version": "2.0.0",
   "description": "Super-fast 3D framework for Web Applications & Games. Based on Three.js",
   "main": "build/whs.js",
+  "jsnext:main": "build/whs.module.js",
+  "module": "build/whs.module.js",
   "typings": "types/index.d.ts",
   "scripts": {
-    "version": "gulp build --prod && git add .",
+    "version": "npm run build && npm run examples && git add .",
     "test": "xo ./src/**/*.js && jest",
+
     "start": "npm run dev & npm run modules:dev",
     "dev": "rollup -c -w -m inline & gulp dev",
+
     "build": "del build/*.js && cross-env NODE_ENV=production rollup -c && npm run minify",
     "minify": "java -jar node_modules/google-closure-compiler/compiler.jar --warning_level=VERBOSE --jscomp_off=globalThis --jscomp_off=checkTypes --language_in=ECMASCRIPT6_STRICT --externs tools/build/externs.js --js build/whs.js --js_output_file build/whs.min.js",
+
     "modules": "cd src/modules/extra/ && npm run build",
     "modules:dev": "cd src/modules/extra/ && npm start",
+
+    "examples": "gulp examples:build",
+
     "docs": "gulp docs --all",
     "deploy": "surge --project ./ --domain whs-dev.surge.sh",
     "deploy:docs": "surge --project ./docs/public/ --domain whsjs.io"
