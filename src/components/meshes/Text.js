@@ -48,58 +48,39 @@ class Text extends MeshComponent {
    * @static
    * @default <pre>
    * {
-   *   geometry: {
-   *     text: 'Hello World!',
-   *     loader: new FontLoader(),
+   *   text: 'Hello World!',
+   *   loader: new FontLoader(),
    *
-   *     parameters: {
-   *       size: 12,
-   *       height: 50,
-   *       curveSegments: 12,
-   *       font: new Font(),
-   *       bevelEnabled: false,
-   *       bevelThickness: 10,
-   *       bevelSize: 8
-   *     }
+   *   parameters: {
+   *     size: 12,
+   *     height: 50,
+   *     curveSegments: 12,
+   *     font: new Font(),
+   *     bevelEnabled: false,
+   *     bevelThickness: 10,
+   *     bevelSize: 8
    *   }
    * }
    * </pre>
    */
   static defaults = {
     ...MeshComponent.defaults,
-    geometry: {
-      text: 'Hello World!',
-      loader: new FontLoader(),
+    text: 'Hello World!',
+    loader: new FontLoader(),
 
-      parameters: {
-        size: 12,
-        height: 50,
-        curveSegments: 12,
-        font: new Font(),
-        bevelEnabled: false,
-        bevelThickness: 10,
-        bevelSize: 8
-      }
+    parameters: {
+      size: 12,
+      height: 50,
+      curveSegments: 12,
+      font: new Font(),
+      bevelEnabled: false,
+      bevelThickness: 10,
+      bevelSize: 8
     }
   };
 
-  /**
-   * Instructions
-   * @member {Object} module:components/meshes.Text#instructions
-   * @static
-   * @default <pre>
-   * {
-   *   geometry: ['text', 'loader', 'parameters']
-   * }
-   * </pre>
-   */
-  static instructions = {
-    ...MeshComponent.instructions,
-    geometry: ['text', 'loader', 'parameters']
-  }
-
   constructor(params = {}) {
-    super(params, Text.defaults, Text.instructions);
+    super(params, Text.defaults, MeshComponent.instructions);
 
     if (params.build) {
       this.build(params);
@@ -116,13 +97,13 @@ class Text extends MeshComponent {
    */
   build(params = {}) {
     const promise = new Promise(resolve => {
-      FontLoader.load(params.geometry.parameters.font, font => {
-        params.geometry.parameters.font = font;
+      params.loader.load(params.parameters.font, font => {
+        params.parameters.font = font;
 
         const {geometry, material} = this.applyBridge({
           geometry: new TextGeometry(
-            params.geometry.text,
-            params.geometry.parameters
+            params.text,
+            params.parameters
           ),
 
           material: params.material
