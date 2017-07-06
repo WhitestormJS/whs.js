@@ -65,7 +65,7 @@ export default class AdvancedModule {
   }
 
   manager(manager) {
-    manager.add('usedColor', this.params.color); // other modules can access this
+    manager.set('usedColor', this.params.color); // other modules can access this
   }
 }
 ```
@@ -99,10 +99,18 @@ myInstance.checkForColor(); // alerts "color is the same"
 Used to handle input parameters that define module's behavior
 
 
-### `.integrate()`
+### `.integrate(self)`
 
 In this method of any module, `this` is replaced with component's instance.
 `integrate()` is executed once when component instance is created with `new` keyword.
+
+`self` - module scope.
+
+
+### `.postIntegrate(self)`
+
+Same as `.integrate(self)`, but is invoked after `.build()`, that means you can use `.defer(() => {})` inside it.
+Will be useful for working with models (`WHS.Importer`) and `.native` objects.
 
 ### `.manager(manager)`
 
