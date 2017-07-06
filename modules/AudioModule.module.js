@@ -1,4 +1,4 @@
-/* Built for whs v1.0.0 */
+/* Built for whs v2.1.0 */
 import { AudioListener, AudioLoader, PositionalAudio } from 'three';
 
 var classCallCheck = function (instance, Constructor) {
