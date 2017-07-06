@@ -38,7 +38,7 @@ export class ManagerError extends Error {
 
     this.stack = stackArray.join('\n');
 
-    if (console) console.error('Component:', dependencyModule);
+    if (console) console.error('Component:', component);
     if (console && activeModule) console.error('Active module:', activeModule);
 
     this.name = 'ManagerError';
