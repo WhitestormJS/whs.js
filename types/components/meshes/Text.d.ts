@@ -72,5 +72,5 @@ interface TextParams extends MeshComponentParams {
     * Build lifecycle creates a mesh using input params.
     * @param params 
     */
-   build(params?: TextParams): Mesh;
+   build(params?: TextParams): Promise<Mesh>;
 }
