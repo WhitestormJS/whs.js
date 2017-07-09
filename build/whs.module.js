@@ -1,4 +1,4 @@
-/* WhitestormJS Framework v2.1.2 */
+/* WhitestormJS Framework v2.1.3 */
 import { AmbientLight, AnimationClip, AnimationMixer, BoxBufferGeometry, BoxGeometry, BufferAttribute, BufferGeometry, CircleBufferGeometry, CircleGeometry, Clock, Color, ConeBufferGeometry, ConeGeometry, CubeCamera, CylinderBufferGeometry, CylinderGeometry, DepthStencilFormat, DepthTexture, DirectionalLight, DodecahedronBufferGeometry, DodecahedronGeometry, EventDispatcher, ExtrudeGeometry, Fog, FogExp2, Font, FontLoader, Geometry, HemisphereLight, IcosahedronBufferGeometry, IcosahedronGeometry, JSONLoader, LatheBufferGeometry, LatheGeometry, Line, LineCurve3, LinearFilter, LinearMipMapLinearFilter, MOUSE, Mesh, NearestFilter, Object3D, OctahedronBufferGeometry, OctahedronGeometry, OrthographicCamera, ParametricBufferGeometry, ParametricGeometry, PerspectiveCamera, Plane, PlaneBufferGeometry, PlaneGeometry, PointLight, PolyhedronBufferGeometry, PolyhedronGeometry, Quaternion, REVISION, RGBAFormat, RGBFormat, Raycaster, RectAreaLight, RepeatWrapping, RingBufferGeometry, RingGeometry, Scene, ShaderMaterial, ShapeBufferGeometry, ShapeGeometry, SphereBufferGeometry, SphereGeometry, Spherical, SpotLight, TetrahedronBufferGeometry, TetrahedronGeometry, TextGeometry, TextureLoader, TorusGeometry, TorusKnotBufferGeometry, TorusKnotGeometry, TubeBufferGeometry, TubeGeometry, UVMapping, Uniform, UnsignedInt248Type, Vector2, Vector3, WebGLRenderTarget, WebGLRenderer } from 'three';
 
 var extend = function extend(object) {
@@ -30,7 +30,7 @@ var extend = function extend(object) {
           // Do not traverse the prototype chain.
           if (object[prop] !== undefined && extension[prop] && object[prop].toString() === '[object Object]' && extension[prop].toString() === '[object Object]') {
             // Goes deep only if object[prop] and extension[prop] are both objects !
-            if (extension[prop].constructor === Object) extend(object[prop], extension[prop]);else object[prop] = extension[prop];
+            if (object[prop].constructor === Object) extend(object[prop], extension[prop]);
           } else object[prop] = typeof object[prop] === 'undefined' ? extension[prop] : object[prop];
 
           if (typeof object[prop] === 'undefined' && Array.isArray(extension[prop])) object[prop] = extension[prop].slice(); // Add values that do not already exist.
@@ -2281,7 +2281,7 @@ var CameraComponent = (_dec$2 = attributes(copy('position', 'rotation', 'quatern
   scale: ['x', 'y', 'z']
 }, _temp$3)) || _class$3);
 
-const version = "2.1.2";
+const version = "2.1.3";
 
 var system = {
   window: typeof window === 'undefined' ? global : window
@@ -5157,7 +5157,7 @@ var Text = (_temp$31 = _class$31 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build as part of lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Text

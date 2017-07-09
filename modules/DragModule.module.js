@@ -1,4 +1,4 @@
-/* Built for whs v2.1.2 */
+/* Built for whs v2.1.3 */
 import { Vector3 } from 'three';
 
 var classCallCheck = function (instance, Constructor) {

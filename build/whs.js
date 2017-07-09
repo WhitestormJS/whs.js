@@ -1,4 +1,4 @@
-/* WhitestormJS Framework v2.1.2 */
+/* WhitestormJS Framework v2.1.3 */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('three')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'three'], factory) :
@@ -34,7 +34,7 @@ var extend = function extend(object) {
           // Do not traverse the prototype chain.
           if (object[prop] !== undefined && extension[prop] && object[prop].toString() === '[object Object]' && extension[prop].toString() === '[object Object]') {
             // Goes deep only if object[prop] and extension[prop] are both objects !
-            if (extension[prop].constructor === Object) extend(object[prop], extension[prop]);else object[prop] = extension[prop];
+            if (object[prop].constructor === Object) extend(object[prop], extension[prop]);
           } else object[prop] = typeof object[prop] === 'undefined' ? extension[prop] : object[prop];
 
           if (typeof object[prop] === 'undefined' && Array.isArray(extension[prop])) object[prop] = extension[prop].slice(); // Add values that do not already exist.
@@ -2285,7 +2285,7 @@ var CameraComponent = (_dec$2 = attributes(copy('position', 'rotation', 'quatern
   scale: ['x', 'y', 'z']
 }, _temp$3)) || _class$3);
 
-const version = "2.1.2";
+const version = "2.1.3";
 
 var system = {
   window: typeof window === 'undefined' ? global : window
@@ -5161,7 +5161,7 @@ var Text = (_temp$31 = _class$31 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build as part of lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Text
