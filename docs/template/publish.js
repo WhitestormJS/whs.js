@@ -275,7 +275,7 @@ function generateSourceFiles(sourceFiles, encoding) {
   encoding = encoding || "utf8"
   Object.keys(sourceFiles).forEach(function(file) {
     var source
-    var repo = 'https://github.com/WhitestormJS/whitestorm.js/blob/beta/';
+    var repo = 'https://github.com/WhitestormJS/whitestorm.js/blob/dev/';
     // links are keyed to the shortened path in each doclet's `meta.shortpath` property
 
     var res = sourceFiles[file].resolved;
