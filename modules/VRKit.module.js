@@ -1,4 +1,4 @@
-/* Built for whs v2.1.2 */
+/* Built for whs v2.1.3 */
 import { ControlsModule } from 'whs';
 import { Matrix4 } from 'three';
 
