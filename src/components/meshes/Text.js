@@ -20,8 +20,7 @@ import {MeshComponent} from '../../core/MeshComponent';
  * @memberof module:components/meshes
  * @example <caption>Creating a Text, and adding it to app</caption>
  * new Text({
- *   geometry: {
- *     text: 'hello world',
+ *     text: 'Some text',
  *     parameters: {
  *       font: 'path/to/font.typeface.js',
  *       size: 20,
