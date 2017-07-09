@@ -11,8 +11,7 @@ export const extend = (object, ...extensions) => { // $.extend alternative, ... 
         && object[prop].toString() === '[object Object]'
         && extension[prop].toString() === '[object Object]') {
         // Goes deep only if object[prop] and extension[prop] are both objects !
-        if (extension[prop].constructor === Object) extend(object[prop], extension[prop]);
-        else object[prop] = extension[prop];
+        if (object[prop].constructor === Object) extend(object[prop], extension[prop]);
       } else
         object[prop] = typeof object[prop] === 'undefined' ? extension[prop] : object[prop];
 
