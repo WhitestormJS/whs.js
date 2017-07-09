@@ -79,23 +79,26 @@ class Text extends MeshComponent {
     }
   };
 
+  static instructions = {
+    ...MeshComponent.instructions
+  };
+
   constructor(params = {}) {
-    super(params, Text.defaults, MeshComponent.instructions);
+    super(params, Text.defaults, Text.instructions);
 
     if (params.build) {
-      this.build(params);
-      super.wrap();
+      this.build(params).then(() => super.wrap());
     }
   }
 
   /**
    * @method build
-   * @description Build as part of lifecycle creates a mesh using input params.
+   * @description Build is called as part of the lifecycle to create a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Text
    */
-  build(params = {}) {
+  build(params = this.params) {
     const promise = new Promise(resolve => {
       params.loader.load(params.parameters.font, font => {
         params.parameters.font = font;
@@ -116,8 +119,6 @@ class Text extends MeshComponent {
         );
       });
     });
-
-    super.wait(promise);
 
     return promise;
   }
