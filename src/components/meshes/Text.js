@@ -119,6 +119,8 @@ class Text extends MeshComponent {
       });
     });
 
+    super.wait(promise);
+
     return promise;
   }
 }
