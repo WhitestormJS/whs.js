@@ -31,6 +31,13 @@ import {
   TextureModule,
 } from './modules/mesh';
 
+import {
+  ControlsModule,
+  ElementModule,
+  EventsPatchModule,
+  FogModule,
+  OrbitControlsModule
+} from './modules/app';
 
 // Core
 const app = new App();
@@ -168,3 +175,16 @@ textureModule = new TextureModule({
     type: 'bumpMap'
   }
 );
+
+// app Modules
+
+const controlsModule = new ControlsModule();
+const orbitControlsModule = new OrbitControlsModule();
+
+const elementModule = new ElementModule(document.getElementById('app'));
+elementModule.createElement();
+
+const eventsPatchModule = new EventsPatchModule();
+eventsPatchModule.patchEvents(null, null, ['mouseup', 'mousedown']);
+
+const fogModule = new FogModule({}, 'linear');
