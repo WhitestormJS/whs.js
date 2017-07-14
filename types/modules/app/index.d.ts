@@ -4,3 +4,4 @@ export * from './ElementModule';
 export * from './EventsPatchModule';
 export * from './FogModule';
 export * from './PostProcessorModule';
+export * from './RenderingModule';
