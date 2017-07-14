@@ -8,3 +8,4 @@ export * from './RenderingModule';
 export * from './ResizeModule';
 export * from './SceneModule';
 export * from './StateModule';
+export * from './VirtualMouseModule';

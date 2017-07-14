@@ -41,7 +41,8 @@ import {
   RenderingModule,
   ResizeModule,
   SceneModule,
-  StateModule
+  StateModule,
+  VirtualMouseModule
 } from './modules/app';
 
 // Core
@@ -212,3 +213,7 @@ const sceneModule = new SceneModule(false);
 
 const stateModule = new StateModule();
 const data = stateModule.get('key');
+
+const virtualMouseModule = new VirtualMouseModule();
+virtualMouseModule.hovers(new Box(), false);
+virtualMouseModule.track(new Sphere(), false);
