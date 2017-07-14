@@ -38,7 +38,8 @@ import {
   FogModule,
   OrbitControlsModule,
   PostProcessorModule,
-  RenderingModule
+  RenderingModule,
+  ResizeModule
 } from './modules/app';
 
 // Core
@@ -198,3 +199,9 @@ postProcessorModule.renderToScreen(true);
 const renderingModule = new RenderingModule();
 renderingModule.play();
 renderingModule.stop();
+
+const resizeModule = new ResizeModule({auto: true});
+resizeModule.addAutoresize();
+resizeModule.addCallback(function() {console.log('called back')});
+resizeModule.setSize(10, 10);
+resizeModule.trigger();
