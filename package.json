@@ -6,6 +6,9 @@
   "jsnext:main": "build/whs.module.js",
   "module": "build/whs.module.js",
   "typings": "types/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "version": "npm run build && npm run modules && npm run examples && git add .",
     "test": "xo ./src/**/*.js && jest",
