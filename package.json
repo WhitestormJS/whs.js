@@ -43,6 +43,7 @@
     "three": "^0.86.0"
   },
   "devDependencies": {
+    "@types/three": "^0.84.16",
     "babel": "^6.23.0",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",

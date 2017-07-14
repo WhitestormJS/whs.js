@@ -36,7 +36,8 @@ import {
   ElementModule,
   EventsPatchModule,
   FogModule,
-  OrbitControlsModule
+  OrbitControlsModule,
+  PostProcessorModule
 } from './modules/app';
 
 // Core
@@ -188,3 +189,7 @@ const eventsPatchModule = new EventsPatchModule();
 eventsPatchModule.patchEvents(null, null, ['mouseup', 'mousedown']);
 
 const fogModule = new FogModule({}, 'linear');
+
+const postProcessorModule = new PostProcessorModule();
+postProcessorModule.render();
+postProcessorModule.renderToScreen(true);
