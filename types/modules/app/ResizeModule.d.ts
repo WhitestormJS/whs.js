@@ -1,5 +1,3 @@
-import {Vector2} from 'three';
-
 /**
  * ResizeModule properties
  */
