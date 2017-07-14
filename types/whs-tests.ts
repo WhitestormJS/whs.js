@@ -40,7 +40,8 @@ import {
   PostProcessorModule,
   RenderingModule,
   ResizeModule,
-  SceneModule
+  SceneModule,
+  StateModule
 } from './modules/app';
 
 // Core
@@ -208,3 +209,6 @@ resizeModule.setSize(10, 10);
 resizeModule.trigger();
 
 const sceneModule = new SceneModule(false);
+
+const stateModule = new StateModule();
+const data = stateModule.get('key');
