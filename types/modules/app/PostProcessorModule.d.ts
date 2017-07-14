@@ -9,7 +9,7 @@ interface PostProcessorModuleParams {
    * Sets whether to debug or not.
    * Default is true.
    */
-  debug?: boolean,
+  debug?: boolean;
 } 
 
 export class PostProcessorModule {
