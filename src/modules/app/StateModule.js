@@ -64,7 +64,7 @@ export class StateModule {
   /**
    * @method setEqualCheck
    * @description Sets an equalCheck function
-   * @param {Object} data Configuration setup
+   * @param {Function} func function to generate equal check
    * @memberof module:modules/app.StateModule
    */
   setEqualCheck(func) {
@@ -170,7 +170,7 @@ export class StateModule {
    * @description Return `trueVal` if `config` match previous configuration, in other case - return `falseVal`.
    * @param {String} config Configuration name.
    * @param {Any} trueVal Value returned if condition is truthy.
-   * @param {Any} falseVal CValue returned if condition is falsy.
+   * @param {Any} falseVal Value returned if condition is falsy.
    * @memberof module:modules/app.StateModule
    */
   prev(config, trueVal, falseVal) {
@@ -182,7 +182,7 @@ export class StateModule {
    * @description Return `trueVal` if `config` match current configuration, in other case - return `falseVal`.
    * @param {String} config Configuration name.
    * @param {Any} trueVal Value returned if condition is truthy.
-   * @param {Any} falseVal CValue returned if condition is falsy.
+   * @param {Any} falseVal Value returned if condition is falsy.
    * @memberof module:modules/app.StateModule
    */
   current(config, trueVal, falseVal) {
