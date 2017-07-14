@@ -37,7 +37,8 @@ import {
   EventsPatchModule,
   FogModule,
   OrbitControlsModule,
-  PostProcessorModule
+  PostProcessorModule,
+  RenderingModule
 } from './modules/app';
 
 // Core
@@ -193,3 +194,7 @@ const fogModule = new FogModule({}, 'linear');
 const postProcessorModule = new PostProcessorModule();
 postProcessorModule.render();
 postProcessorModule.renderToScreen(true);
+
+const renderingModule = new RenderingModule();
+renderingModule.play();
+renderingModule.stop();
