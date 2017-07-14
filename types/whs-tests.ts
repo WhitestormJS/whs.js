@@ -39,7 +39,8 @@ import {
   OrbitControlsModule,
   PostProcessorModule,
   RenderingModule,
-  ResizeModule
+  ResizeModule,
+  SceneModule
 } from './modules/app';
 
 // Core
@@ -205,3 +206,5 @@ resizeModule.addAutoresize();
 resizeModule.addCallback(function() {console.log('called back')});
 resizeModule.setSize(10, 10);
 resizeModule.trigger();
+
+const sceneModule = new SceneModule(false);

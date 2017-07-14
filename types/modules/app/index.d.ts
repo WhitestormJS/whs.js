@@ -6,3 +6,4 @@ export * from './FogModule';
 export * from './PostProcessorModule';
 export * from './RenderingModule';
 export * from './ResizeModule';
+export * from './SceneModule';
