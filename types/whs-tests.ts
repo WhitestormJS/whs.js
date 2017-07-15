@@ -28,6 +28,8 @@ import {
 } from './components/lights';
 
 import {
+  AnimationModule,
+  DynamicGeometryModule,
   TextureModule,
 } from './modules/mesh';
 
@@ -170,6 +172,11 @@ spotLight.build();
 spotLight.addTo(app);
 
 // Mesh Modules
+
+const animationModule = new AnimationModule(app, false, {speed: 1.2});
+animationModule.play('clip');
+
+const dynamicGeometryModule = new DynamicGeometryModule({attributes: false});
 
 let textureModule = new TextureModule([{
     url: 'some/path',
