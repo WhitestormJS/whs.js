@@ -42,3 +42,4 @@ deploy:
   on:
     branch: dev
     tags: true
+  skip_cleanup: true
