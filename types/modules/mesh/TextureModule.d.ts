@@ -1,8 +1,6 @@
 import {
-  ClampToEdgeWrapping,
-  MirroredRepeatWrapping,
-  RepeatWrapping,
-  UVMapping,
+  Wrapping,
+  Mapping,
   Vector2
   } from 'three';
 import {App} from '../../core';
@@ -34,21 +32,21 @@ interface TextureParams {
    * Default is Vector2(1, 1)
    */
   repeat?: Vector2,
-  
+
   /**
    * Sets wrapS and wrapT.
    * This defines how the texture is wrapped horizontally and vertically, corresponds to UV mapping.
    * Default is RepeatWrapping.
    */
-  wrap?: ClampToEdgeWrapping | MirroredRepeatWrapping | RepeatWrapping | any[],
+  wrap?: Wrapping,
 
   /**
-   * How the image is applied to the object. 
+   * How the image is applied to the object.
    * An object type of THREE.UVMapping is the default, where the U,V coordinates are used to apply the map.
    */
-  mapping?: UVMapping,
+  mapping?: Mapping,
 
-  /** 
+  /**
    * Function to set more granular parameters
    * e.g const fix = texture => {
    *   texture.anisotropy = 2;
@@ -58,7 +56,7 @@ interface TextureParams {
    * };
    */
   fix?: Function
-} 
+}
 
 export class TextureModule {
 
