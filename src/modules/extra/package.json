@@ -19,6 +19,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "dat-gui": "^0.5.0",
     "dat.gui": "^0.6.1",
+    "fps": "0.0.3",
     "minivents": "^2.1.0",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-commonjs": "^8.0.2",
