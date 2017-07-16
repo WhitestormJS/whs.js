@@ -28,9 +28,24 @@ import {
 } from './components/lights';
 
 import {
+  AnimationModule,
+  DynamicGeometryModule,
   TextureModule,
 } from './modules/mesh';
 
+import {
+  ControlsModule,
+  ElementModule,
+  EventsPatchModule,
+  FogModule,
+  OrbitControlsModule,
+  PostProcessorModule,
+  RenderingModule,
+  ResizeModule,
+  SceneModule,
+  StateModule,
+  VirtualMouseModule
+} from './modules/app';
 
 // Core
 const app = new App();
@@ -158,6 +173,11 @@ spotLight.addTo(app);
 
 // Mesh Modules
 
+const animationModule = new AnimationModule(app, false, {speed: 1.2});
+animationModule.play('clip');
+
+const dynamicGeometryModule = new DynamicGeometryModule({attributes: false});
+
 let textureModule = new TextureModule([{
     url: 'some/path',
     type: 'map'
@@ -168,3 +188,39 @@ textureModule = new TextureModule({
     type: 'bumpMap'
   }
 );
+
+// app Modules
+
+const controlsModule = new ControlsModule();
+const orbitControlsModule = new OrbitControlsModule();
+
+const elementModule = new ElementModule(document.getElementById('app'));
+elementModule.createElement();
+
+const eventsPatchModule = new EventsPatchModule();
+eventsPatchModule.patchEvents(null, null, ['mouseup', 'mousedown']);
+
+const fogModule = new FogModule({}, 'linear');
+
+const postProcessorModule = new PostProcessorModule();
+postProcessorModule.render();
+postProcessorModule.renderToScreen(true);
+
+const renderingModule = new RenderingModule();
+renderingModule.play();
+renderingModule.stop();
+
+const resizeModule = new ResizeModule({auto: true});
+resizeModule.addAutoresize();
+resizeModule.addCallback(function() {console.log('called back')});
+resizeModule.setSize(10, 10);
+resizeModule.trigger();
+
+const sceneModule = new SceneModule(false);
+
+const stateModule = new StateModule();
+const data = stateModule.get('key');
+
+const virtualMouseModule = new VirtualMouseModule();
+virtualMouseModule.hovers(new Box(), false);
+virtualMouseModule.track(new Sphere(), false);
