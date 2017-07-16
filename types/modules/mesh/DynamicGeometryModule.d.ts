@@ -6,13 +6,13 @@ interface DynamicGeometryParams {
    * Sets whether to use attributes.
    * Default is false.
    */
-  attributes?: boolean,
+  attributes?: boolean;
 
   /**
    * TODO alex to explain
    * Map of geometry parameters
    */
-  geometry?: Map
+  geometry?: Map<string, any>;
 } 
 
 export class DynamicGeometryModule {
