@@ -90,6 +90,17 @@ class MeshComponent extends Component {
     return new (MeshComponent.custom(geom, constructor))(params);
   }
 
+  static from(mesh, params = {}) {
+    params.build = false;
+
+    const component = new MeshComponent(params);
+
+    component.native = mesh;
+    component.wrap();
+
+    return component;
+  }
+
   constructor(params, defaults = MeshComponent.defaults, instructions = MeshComponent.instructions) {
     super(params, defaults, instructions);
 
