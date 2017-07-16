@@ -1,4 +1,4 @@
-/* WhitestormJS Framework v2.1.3 */
+/* WhitestormJS Framework v2.1.5 */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('three')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'three'], factory) :
@@ -2229,7 +2229,7 @@ var CameraComponent = (_dec$2 = attributes(copy('position', 'rotation', 'quatern
   scale: ['x', 'y', 'z']
 }, _temp$3)) || _class$3);
 
-const version = "2.1.3";
+const version = "2.1.5";
 
 var system = {
   window: typeof window === 'undefined' ? global : window
@@ -3640,7 +3640,7 @@ var Importer = (_temp$22 = _class$22 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build called as part of the lifecycle to creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Importer
@@ -3661,7 +3661,9 @@ var Importer = (_temp$22 = _class$22 = function (_MeshComponent) {
           // geometry, materials
           params.onLoad.apply(params, arguments);
 
-          var object = _this2.applyBridge({ mesh: params.parser.apply(params, arguments) }).mesh;
+          var object = _this2.applyBridge({
+            mesh: params.parser.apply(params, arguments)
+          }).mesh;
 
           var _applyBridge = _this2.applyBridge({
             geometry: object.geometry,
@@ -4408,29 +4410,44 @@ var Tetrahedron = (_temp$30 = _class$30 = function (_MeshComponent) {
 var _class$31;
 var _temp$31;
 
+<<<<<<< HEAD
+=======
+/**
+ * @class Text
+ * @category components/meshes
+ * @description Text class is made for creating 3D text objects.
+ * @classDesc
+ * <iframe src="https://threejs.org/docs/scenes/geometry-browser.html#TextGeometry"></iframe>
+ * <br/><br/>
+ * Physics text object can be convex or concave. By default it's convex but you can also switch to concave.
+ * @param {Object} [params] - The params.
+ * @extends module:core.MeshComponent
+ * @memberof module:components/meshes
+ * @example <caption>Creating a Text, and adding it to app</caption>
+ * new Text({
+ *     text: 'Some text',
+ *     parameters: {
+ *       font: 'path/to/font.typeface.js',
+ *       size: 20,
+ *       height: 5,
+ *       curveSegments: 6
+ *     }
+ *   },
+ *
+ *   material: new THREE.MeshBasicMaterial({
+ *     color: 0xffffff
+ *   }),
+ *
+ *   position: {
+ *     x: -40,
+ *     y: 20,
+ *     z: 0
+ *   }
+ * }).addTo(app);
+ */
+>>>>>>> dev
 var Text = (_temp$31 = _class$31 = function (_MeshComponent) {
   inherits(Text, _MeshComponent);
-
-  function Text() {
-    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    classCallCheck(this, Text);
-
-    var _this = possibleConstructorReturn(this, (Text.__proto__ || Object.getPrototypeOf(Text)).call(this, params, Text.defaults, MeshComponent.instructions));
-
-    if (params.build) {
-      _this.build(params);
-      get(Text.prototype.__proto__ || Object.getPrototypeOf(Text.prototype), 'wrap', _this).call(_this);
-    }
-    return _this;
-  }
-
-  /**
-   * @method build
-   * @description Build as part of lifecycle creates a mesh using input params.
-   * @param {Object} params Component parameters.
-   * @return {THREE.Mesh} Built mesh
-   * @memberof module:components/meshes.Text
-   */
 
   /**
    * Default values for parameters
@@ -4453,6 +4470,27 @@ var Text = (_temp$31 = _class$31 = function (_MeshComponent) {
    * }
    * </pre>
    */
+  function Text() {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    classCallCheck(this, Text);
+
+    var _this = possibleConstructorReturn(this, (Text.__proto__ || Object.getPrototypeOf(Text)).call(this, params, Text.defaults, Text.instructions));
+
+    if (params.build) {
+      _this.build(params).then(function () {
+        return get(Text.prototype.__proto__ || Object.getPrototypeOf(Text.prototype), 'wrap', _this).call(_this);
+      });
+    }
+    return _this;
+  }
+
+  /**
+   * @method build
+   * @description Build is called as part of the lifecycle to create a mesh using input params.
+   * @param {Object} params Component parameters.
+   * @return {THREE.Mesh} Built mesh
+   * @memberof module:components/meshes.Text
+   */
 
 
   createClass(Text, [{
@@ -4460,7 +4498,7 @@ var Text = (_temp$31 = _class$31 = function (_MeshComponent) {
     value: function build() {
       var _this2 = this;
 
-      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
 
       var promise = new Promise(function (resolve) {
         params.loader.load(params.parameters.font, function (font) {
@@ -4499,7 +4537,7 @@ var Text = (_temp$31 = _class$31 = function (_MeshComponent) {
     bevelThickness: 10,
     bevelSize: 8
   }
-}), _temp$31);
+}), _class$31.instructions = _extends({}, MeshComponent.instructions), _temp$31);
 
 var _class$32;
 var _temp$32;
@@ -6871,7 +6909,7 @@ var StateModule = function () {
     /**
      * @method setEqualCheck
      * @description Sets an equalCheck function
-     * @param {Object} data Configuration setup
+     * @param {Function} func function to generate equal check
      * @memberof module:modules/app.StateModule
      */
 
@@ -6999,7 +7037,7 @@ var StateModule = function () {
      * @description Return `trueVal` if `config` match previous configuration, in other case - return `falseVal`.
      * @param {String} config Configuration name.
      * @param {Any} trueVal Value returned if condition is truthy.
-     * @param {Any} falseVal CValue returned if condition is falsy.
+     * @param {Any} falseVal Value returned if condition is falsy.
      * @memberof module:modules/app.StateModule
      */
 
@@ -7014,7 +7052,7 @@ var StateModule = function () {
      * @description Return `trueVal` if `config` match current configuration, in other case - return `falseVal`.
      * @param {String} config Configuration name.
      * @param {Any} trueVal Value returned if condition is truthy.
-     * @param {Any} falseVal CValue returned if condition is falsy.
+     * @param {Any} falseVal Value returned if condition is falsy.
      * @memberof module:modules/app.StateModule
      */
 

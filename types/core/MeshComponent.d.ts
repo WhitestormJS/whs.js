@@ -65,7 +65,7 @@ export class MeshComponent extends Component {
   /**
    * @throws a CompositionError.
    */
-  build(): CompositionError | Mesh;
+  build(): CompositionError | Mesh | Promise<Mesh>;
 
   /**
    * @returns a Promised mesh component
