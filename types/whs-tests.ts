@@ -47,6 +47,8 @@ import {
   VirtualMouseModule
 } from './modules/app';
 
+import {DefineModule} from './modules';
+
 // Core
 const app = new App();
 app.start();
@@ -224,3 +226,11 @@ const data = stateModule.get('key');
 const virtualMouseModule = new VirtualMouseModule();
 virtualMouseModule.hovers(new Box(), false);
 virtualMouseModule.track(new Sphere(), false);
+
+const defineModule = new DefineModule('camera', 
+  new PerspectiveCamera({
+    build: false,
+    far: 100
+  })
+);
+new App([defineModule]);
