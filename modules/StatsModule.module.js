@@ -1,4 +1,4 @@
-/* Built for whs v2.1.3 */
+/* Built for whs v2.1.5 */
 import { Loop } from 'whs';
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
