@@ -13,7 +13,7 @@ gulp.task('docs', cb => {
     .pipe(less())
     .pipe(gulp.dest('./docs/public/styles/'));
 
-  gulp.src(['./docs/data/**/*', argv.all ? './src/**/*.js' : './src/core/Component.js'])
+  gulp.src(['./docs/data/**/*', argv.all ? './src/**/*.js' : './src/core/Component.js', '!./src/modules/extra/node_modules/**/*.js'])
     .pipe(jsdoc(config, cb));
 });
 
@@ -39,7 +39,7 @@ gulp.task('docs:watch', ['docs'], () => {
     del('./docs/public/*.html');
     console.log(`update #${i++}`);
 
-    gulp.src(['./docs/data/**/*.md', argv.all ? './src/**/*.js' : './src/core/Component.js'])
+    gulp.src(['./docs/data/**/*.md', argv.all ? './src/**/*.js' : './src/core/Component.js', '!./src/modules/extra/node_modules/**/*.js'])
       .pipe(jsdoc(config));
   });
 });
