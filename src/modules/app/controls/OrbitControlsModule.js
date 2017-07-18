@@ -3,6 +3,26 @@ import {ControlsModule} from '../ControlsModule';
 
 import {ThreeOrbitControls} from './lib/ThreeOrbitControls';
 
+/**
+ * @class OrbitControlsModule
+ * @category modules/app
+ * @param {Object} [params]
+ * @param {Object} [params.object=camera] Object to which controls are aplied.
+ * @param {THREE.Vector3} [params.target=new Vector3()] Controls center vector.
+ * @param {Boolean} [params.follow=false] Follow the target
+ * @memberof module:modules/app
+ * @example <caption> Creating a rendering module and passing it to App's modules</caption>
+ * new App([
+ *   new ElementModule(),
+ *   new SceneModule(),
+ *   new DefineModule('camera', new WHS.PerspectiveCamera({
+ *     position: new THREE.Vector3(0, 6, 18),
+ *     far: 10000
+ *   })),
+ *   new RenderingModule(),
+ *   new OrbitControlsModule()
+ * ]);
+ */
 export class OrbitControlsModule extends ControlsModule {
   constructor(params = {}) {
     super(params);
@@ -10,7 +30,7 @@ export class OrbitControlsModule extends ControlsModule {
     this.params = Object.assign({
       follow: false,
       object: null,
-      target: new Vector3(0, 0, 0)
+      target: new Vector3()
     }, params);
   }
 
