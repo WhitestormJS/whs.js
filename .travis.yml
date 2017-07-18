@@ -28,12 +28,21 @@ after_success:
   - rm -rf ./coverage
 before_deploy:
   - gulp examples:build
+  - gulp docs --all
 deploy:
   provider: surge
   project: ./
   domain: whs-dev.surge.sh
   skip_cleanup: true
   on: dev
+deploy:
+  provider: surge
+  project: ./docs/public/
+  domain: whsjs.io
+  skip_cleanup: true
+  on:
+    branch: dev
+    tags: true
 deploy:
   provider: npm
   email: hirako2000@gmail.com
