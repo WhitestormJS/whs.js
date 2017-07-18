@@ -14,10 +14,10 @@ import {Loop} from '../../core/Loop';
  * new App([
  *   new ElementModule(),
  *   new SceneModule(),
- *   new CameraModule({
+ *   new DefineModule('camera', new WHS.PerspectiveCamera({
  *     position: new THREE.Vector3(0, 6, 18),
  *     far: 10000
- *   }),
+ *   })),
  *   new RenderingModule({
  *     bgColor: 0x162129,
  *
