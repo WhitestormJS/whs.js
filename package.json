@@ -43,6 +43,8 @@
     "@types/node": "^8.0.4",
     "lodash-es": "^4.17.4",
     "minivents": "^2.1.0",
+    "postprocessing": "^2.2.0",
+    "redux": "^3.7.1",
     "three": "^0.86.0"
   },
   "devDependencies": {
@@ -97,10 +99,8 @@
     "mocha": "^3.4.2",
     "nyc": "^11.0.3",
     "path": "^0.12.7",
-    "postprocessing": "^2.2.0",
     "present": "^1.0.0",
     "pug": "^2.0.0-rc.2",
-    "redux": "^3.7.1",
     "rollup": "^0.43.0",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-commonjs": "^8.0.2",
