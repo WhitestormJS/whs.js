@@ -71,6 +71,13 @@ export class VirtualMouseModule extends Events {
     });
   }
 
+  /**
+   * @method track
+   * @description Starts tracking events on a component
+   * @param {Component} component A component, that should be tracked by the mouse
+   * @param {Boolean} nested Whether component's children should be affected or not
+   * @memberof module:modules/app.VirtualMouseModule
+   */
   track(component, nested = true) {
     let isHovered = false;
 
@@ -101,6 +108,14 @@ export class VirtualMouseModule extends Events {
     });
   }
 
+  /**
+   * @method intersection
+   * @description Returns an intersection data
+   * @param {Component} component A component that intersects with mouse ray (or doesn't)
+   * @param {Boolean} nested Whether component's children should be affected or not
+   * @return {Array} intersection data.
+   * @memberof module:modules/app.VirtualMouseModule
+   */
   intersection({native}, nested = true) {
     if (native.children.length > 0 && nested) {
       const objects = [];
@@ -112,22 +127,53 @@ export class VirtualMouseModule extends Events {
     return this.raycaster.intersectObject(native);
   }
 
-  project(plane = this.projectionPlane) {
-    return this.raycaster.ray.intersectPlane(plane);
+  /**
+   * @method project
+   * @description Returns a boolean based on intersection data (Whether mouse hovers the component)
+   * @param {THREE.Plane} [plane=this.projectionPlane] Math plane that is used
+   * @param {Vector3} [target] Optional target
+   * @return {Vector3} An intersection point.
+   * @memberof module:modules/app.VirtualMouseModule
+   */
+  project(plane = this.projectionPlane, target) {
+    return this.raycaster.ray.intersectPlane(plane, target);
   }
 
+  /**
+   * @method hovers
+   * @description Returns a boolean based on intersection data (Whether mouse hovers the component)
+   * @param {Component} component A component that intersects with mouse ray (or doesn't)
+   * @param {Boolean} nested Whether component's children should be affected or not
+   * @return {Boolean} Whether the component is hovered.
+   * @memberof module:modules/app.VirtualMouseModule
+   */
   hovers(component, nested = true) {
     return this.intersection(component, nested).length > 0;
   }
 
+  /**
+   * Mouse ray
+   * @member {THREE.Ray} module:modules/app.VirtualMouseModule#ray
+   * @public
+   */
   get ray() {
     return this.raycaster.ray;
   }
 
+  /**
+   * Mouse x [-1; 1]
+   * @member {Number} module:modules/app.VirtualMouseModule#x
+   * @public
+   */
   get x() {
     return this.mouse.x;
   }
 
+  /**
+   * Mouse y [-1; 1]
+   * @member {Number} module:modules/app.VirtualMouseModule#y
+   * @public
+   */
   get y() {
     return this.mouse.y;
   }
