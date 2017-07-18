@@ -13,19 +13,12 @@ import {ModuleManager} from './ModuleManager';
  */
 class App extends ModuleSystem {
   /**
-   * Simulate flag
-   * @description Same as .updateEnabled, but for physics. Defines if physics is simulated each frame.
-   * @member {Boolean} module:core.App#simulate
-   * @public
-   */
-  simulate = false;
-
-  /**
    * @description Defines whether the scene should render or not
-   * @member {Boolean} module:core.App#updateEnabled
+   * @member {Boolean} module:core.App#enabled
    * @public
    */
-  updateEnabled = true;
+  enabled = true;
+
   /**
    * Loops in this app
    * @description Array of loops that are executed by this app.
@@ -61,11 +54,11 @@ class App extends ModuleSystem {
         };
     })();
 
-    const {loops, updateEnabled} = this;
+    const {loops, enabled} = this;
 
     function process() {
       requestAnimFrame(process);
-      if (!updateEnabled) return;
+      if (!enabled) return;
 
       for (let i = 0, ll = loops.length; i < ll; i++) {
         const e = loops[i];
@@ -73,7 +66,7 @@ class App extends ModuleSystem {
       }
     }
 
-    this.updateEnabled = true;
+    this.enabled = true;
     process();
   }
 
@@ -83,7 +76,7 @@ class App extends ModuleSystem {
    * @memberof module:core.App
    */
   stop() {
-    this.updateEnabled = false;
+    this.enabled = false;
   }
 
   /**
