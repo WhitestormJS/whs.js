@@ -43,7 +43,7 @@ export class RenderingModule {
     this.resolve = resolve;
   });
 
-  constructor(params = {}, {shadow: isShadow} = {shadow: false}) {
+  constructor(params = {}, additional) {
     this.params = Object.assign({
       width: window.innerWidth,
       height: window.innerHeight,
@@ -54,7 +54,8 @@ export class RenderingModule {
       bgColor: 0x000000,
       bgOpacity: 1,
 
-      renderer: {}
+      renderer: {},
+      fix() {}
     }, params);
 
     const {
@@ -64,12 +65,12 @@ export class RenderingModule {
       pixelRatio,
       width,
       height,
-      resolution
+      resolution,
+      fix
     } = this.params;
 
     this.renderer = new WebGLRenderer(renderer);
     this.effects = [];
-    this.applyAdditional('shadow', isShadow);
 
     this.renderer.setClearColor(
       bgColor,
@@ -82,10 +83,14 @@ export class RenderingModule {
       Number(width * resolution.x).toFixed(),
       Number(height * resolution.y).toFixed()
     );
+
+    for (const key in additional)
+      if (additional[key]) this.applyAdditional(key);
+
+    fix(this.renderer);
   }
 
-  applyAdditional(name, isApplied = false) {
-    if (!isApplied) return;
+  applyAdditional(name) {
     RenderingModule.additional[name].apply(this, [this.renderer]);
   }
 
@@ -98,16 +103,16 @@ export class RenderingModule {
     return this.renderLoop;
   }
 
-  effect(effect, cb) {
+  effect(effect, effectLoop = () => {
+    effect.render(this.scene, this.camera);
+  }) {
     this.defer.then(() => {
       this.renderLoop.stop();
 
       const size = this.renderer.getSize();
       effect.setSize(size.width, size.height);
 
-      const loop = new Loop(cb ? cb : () => {
-        effect.render(this.scene, this.camera);
-      });
+      const loop = new Loop(effectLoop);
 
       this.effects.push(loop);
       if (this.enabled) loop.start(this.app);
