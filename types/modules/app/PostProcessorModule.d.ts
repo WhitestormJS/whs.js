@@ -22,22 +22,23 @@ export class PostProcessorModule {
   constructor(params?: PostProcessorModuleParams);
 
   /**
-   * Renders
+   * Adds RenderPass
    */
   render(): PostProcessorModule;
 
   /**
    * Adds the given pass to the composer.
    * Also sets the pass as the current one.
+   * TODO define pass type
    * @param pass the pass to add.
    */
   pass(pass: any): PostProcessorModule;
 
   /**
-   * Adds the given material as Shader pass
+   * Adds a pass made from shader material.
    * Also sets the shader pass as the current pass.
-   * @param material the material to add, may contain uniform identified by the textureID
-   * @param textureID the textureID, for the uniform. Default is readBuffer.
+   * @param material the ShaderMaterial. May contain uniform identified by the textureID
+   * @param textureID the textureID, for the uniform. Name of the readBuffer uniform, Default is readBuffer.
    */
   shader(material: Material, textureID?: string): PostProcessorModule;
 
@@ -60,7 +61,7 @@ export class PostProcessorModule {
   renderToScreen(bool?: boolean): PostProcessorModule;
 
   /**
-   * Same as to, but using defer
+   * FIXME, this method seems to be going away
    * @param name 
    */
   name(name: string): PostProcessorModule;

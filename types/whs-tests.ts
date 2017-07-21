@@ -211,6 +211,7 @@ postProcessorModule.renderToScreen(true);
 const renderingModule = new RenderingModule();
 renderingModule.play();
 renderingModule.stop();
+renderingModule.dispose();
 
 const resizeModule = new ResizeModule({auto: true});
 resizeModule.addAutoresize();

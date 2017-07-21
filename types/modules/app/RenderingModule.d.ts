@@ -1,4 +1,10 @@
-import {Vector2} from 'three';
+import {
+  Vector2,
+  Scene,
+  Camera
+} from 'three';
+
+import {Loop} from '../../core';
 
 /**
  * RenderingModule properties
@@ -68,14 +74,22 @@ export class RenderingModule {
   constructor(params?: RenderingModuleParams, shadow?: RenderingModuleShadowParam);
 
   /**
-   * Applies additional ??
-   * @param name TODO
-   * @param isApplied will not apply if false. Default is false.
+   * Apply additional script from RenderingModule.additional
+   * @param name script name
    */
-  applyAdditional(name: string, isApplied?: boolean): void;
+  applyAdditional(name: string): void;
+
 
   /**
-   * 
+   * Integrate renderer
+   * @param element element DOM object
+   * @param scene used scene
+   * @param camera used camera
+   */
+  integrateRenderer(element: HTMLElement, scene: Scene, camera: Camera): Loop;
+
+  /**
+   * TODO define effect param
    * @param effect 
    * @param cb 
    */
@@ -100,7 +114,12 @@ export class RenderingModule {
   stop(): void;
 
   /**
-   * (re)Start rendering, also starts all effect loops.
+   * Resumes rendering, also resumes all effect loops.
    */
   play(): void;
+
+  /**
+   * Dispose rendering context
+   */
+  dispose(): void;
 }

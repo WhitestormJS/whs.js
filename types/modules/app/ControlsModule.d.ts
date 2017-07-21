@@ -3,35 +3,31 @@ import {App, ModuleManager} from '../../core';
 export class ControlsModule {
 
   /**
-   * TODO define type for params
+   * TODO define params type
    * @constructor Creates a controls module.
    * @param params the parameters.
    */
   constructor(params?: any);
 
   /**
-   * TODO define type for params
    * @param self this module
    */
   integrate(self: ControlsModule): void;
 
   /**
-   * TODO define type for params
    * @param manager the manager
    */
   manager(manager: ModuleManager): void;
 
   /**
-   * TODO define type
    * Sets controls 
-   * @param controls - the controls
+   * @param controls Working three.js controls object.
    */
-  setControls(controls?: any): void;
+  setControls(controls?: object): ControlsModule;
 
   /**
-   * TODO define type
-   * Sets update 
-   * @param update 
+   * Sets controls update function
+   * @param update Update function
    */
-  setUpdate(update?: any): ControlsModule;
+  setUpdate(update?: Function): ControlsModule;
 }
