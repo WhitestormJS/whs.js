@@ -67,8 +67,8 @@ tramplin3.addTo(app);
 
 const domino = new WHS.Box({
   geometry: {
-    height: 8,
-    width: 1,
+    height: 18,
+    width: 3,
     depth: 4
   },
 
@@ -79,7 +79,7 @@ const domino = new WHS.Box({
   ],
 
   material: new THREE.MeshPhongMaterial({
-    color: UTILS.$colors.mesh,
+    color: 0xfff111,
     restitution: 0.5,
     friction: 1
   }),
