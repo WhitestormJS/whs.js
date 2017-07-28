@@ -55,7 +55,7 @@ export class ControlsModule {
 
   /**
    * @method setUpdate
-   * @description Set controsl update function
+   * @description Set controls update function
    * @param {Function} update Update function
    * @return {this}
    * @memberof module:modules/app.ControlsModule

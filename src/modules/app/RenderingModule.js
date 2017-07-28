@@ -14,7 +14,7 @@ import {Loop} from '../../core/Loop';
  * new App([
  *   new ElementModule(),
  *   new SceneModule(),
- *   new DefineModule('camera', new WHS.PerspectiveCamera({
+ *   new DefineModule('camera', new PerspectiveCamera({
  *     position: new THREE.Vector3(0, 6, 18),
  *     far: 10000
  *   })),

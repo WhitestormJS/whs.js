@@ -7,7 +7,7 @@ import {ThreeOrbitControls} from './lib/ThreeOrbitControls';
  * @class OrbitControlsModule
  * @category modules/app
  * @param {Object} [params]
- * @param {Object} [params.object=camera] Object to which controls are aplied.
+ * @param {Object} [params.object=camera] Object to which controls are applied.
  * @param {THREE.Vector3} [params.target=new Vector3()] Controls center vector.
  * @param {Boolean} [params.follow=false] Follow the target
  * @memberof module:modules/app
