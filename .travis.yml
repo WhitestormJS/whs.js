@@ -41,7 +41,7 @@ deploy:
   domain: whsjs.io
   skip_cleanup: true
   on:
-    branch: dev
+    branch: master
     tags: true
 deploy:
   provider: npm

@@ -75,7 +75,7 @@ export class VirtualMouseModule extends Events {
    * @method track
    * @description Starts tracking events on a component
    * @param {Component} component A component, that should be tracked by the mouse
-   * @param {Boolean} nested Whether component's children should be affected or not
+   * @param {Boolean} nested Whether component's children should be tracked or not
    * @memberof module:modules/app.VirtualMouseModule
    */
   track(component, nested = true) {
@@ -112,7 +112,7 @@ export class VirtualMouseModule extends Events {
    * @method intersection
    * @description Returns an intersection data
    * @param {Component} component A component that intersects with mouse ray (or doesn't)
-   * @param {Boolean} nested Whether component's children should be affected or not
+   * @param {Boolean} nested Whether component's children should be tracked or not
    * @return {Array} intersection data.
    * @memberof module:modules/app.VirtualMouseModule
    */
@@ -129,7 +129,7 @@ export class VirtualMouseModule extends Events {
 
   /**
    * @method project
-   * @description Returns a boolean based on intersection data (Whether mouse hovers the component)
+   * @description Returns a vector based on mouse ray intersection with plane
    * @param {THREE.Plane} [plane=this.projectionPlane] Math plane that is used
    * @param {Vector3} [target] Optional target
    * @return {Vector3} An intersection point.
@@ -143,7 +143,7 @@ export class VirtualMouseModule extends Events {
    * @method hovers
    * @description Returns a boolean based on intersection data (Whether mouse hovers the component)
    * @param {Component} component A component that intersects with mouse ray (or doesn't)
-   * @param {Boolean} nested Whether component's children should be affected or not
+   * @param {Boolean} nested Whether component's children should be tracked or not
    * @return {Boolean} Whether the component is hovered.
    * @memberof module:modules/app.VirtualMouseModule
    */
