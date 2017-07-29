@@ -5,9 +5,24 @@ import {
 
 import {
   DodecahedronGeometry,
-  DodecahedronBufferGeometry,
+  Geometry,
   Mesh
 } from 'three';
+
+/**
+ * this is missing in @types from three.js :(
+ * 
+ * @interface DodecahedronBufferGeometry
+ * @extends {Geometry}
+ */
+interface DodecahedronBufferGeometry extends Geometry {
+    constructor(radius: number, detail: number): DodecahedronBufferGeometry;
+
+    parameters: {
+        radius: number;
+        detail: number;
+    };
+}
 
 interface DodecahedronParams extends MeshComponentParams {
 
@@ -38,7 +53,7 @@ interface DodecahedronParams extends MeshComponentParams {
     * @constructor Creates a Dodecahedron
     * @param params
     */
-   constructor(params?: SphereParams);
+   constructor(params?: DodecahedronParams);
 
    /**
     * Build lifecycle creates a mesh using input params.

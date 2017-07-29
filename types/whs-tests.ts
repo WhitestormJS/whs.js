@@ -19,6 +19,7 @@ import {
   CubeCamera,
   Extrude,
   Group,
+  Icosahedron,
   OrthographicCamera,
   PerspectiveCamera,
   Sphere
@@ -148,6 +149,14 @@ const object3D = group.build();
 sphere.addTo(group);
 
 group = new Group(extrude, cone);
+
+const icosahedron = new Icosahedron({
+  geometry: {
+    radius: 2,
+    detail: 0.2
+  }
+});
+icosahedron.addTo(app);
 
 // Cameras
 
