@@ -1,4 +1,8 @@
-import {MeshStandardMaterial} from 'three';
+import {
+  MeshStandardMaterial,
+  Shape,
+  Vector2
+} from 'three';
 
 import {
   Loop,
@@ -13,9 +17,10 @@ import {
   Box, 
   Cone,
   CubeCamera,
+  Extrude,
   OrthographicCamera,
   PerspectiveCamera,
-  Sphere,
+  Sphere
 } from './components';
 
 import {
@@ -102,6 +107,40 @@ sphere.addTo(app);
 const cone = new Cone({build: false});
 cone.buildGeometry({buffer: true});
 cone.addTo(app);
+
+const shape = new Shape([
+  new Vector2(-4,-4),
+  new Vector2(-2,0),
+  new Vector2(-4,4),
+  new Vector2(0,2),
+  new Vector2(4,4),
+  new Vector2(2,0),
+  new Vector2(4,-4),
+  new Vector2(0,-2)
+]);
+
+let extrude = new Extrude({
+  build: false,
+  geometry: {
+    shapes: shape,
+    options: {
+      bevelEnabled: false,
+      bevelSize: 0,
+      amount: 2
+    }
+  }
+});
+
+extrude = new Extrude({
+  geometry: {
+    shapes: [shape, shape],
+    options: {
+      bevelEnabled: false,
+      bevelSize: 0,
+      amount: 2
+    }
+  }
+});
 
 // Cameras
 
