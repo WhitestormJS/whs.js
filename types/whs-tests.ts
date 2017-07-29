@@ -18,6 +18,7 @@ import {
   Cone,
   CubeCamera,
   Extrude,
+  Group,
   OrthographicCamera,
   PerspectiveCamera,
   Sphere
@@ -141,6 +142,12 @@ extrude = new Extrude({
     }
   }
 });
+
+let group = new Group();
+const object3D = group.build();
+sphere.addTo(group);
+
+group = new Group(extrude, cone);
 
 // Cameras
 
