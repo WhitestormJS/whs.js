@@ -32,6 +32,7 @@ import {
   Octahedron,
   Parametric,
   Plane,
+  Polyhedron,
   OrthographicCamera,
   PerspectiveCamera,
   Sphere
@@ -247,6 +248,30 @@ const plane = new Plane({
   buffer: true
 });
 plane.addTo(app);
+
+const polyhedron = new Polyhedron({
+  geometry: {
+    verticesOfCube: [
+      -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
+      -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1
+    ],
+
+    indicesOfFaces: [
+      2, 1, 0, 0, 3, 2,
+      0, 4, 7, 7, 3, 0,
+      0, 1, 5, 5, 4, 0,
+      1, 2, 6, 6, 5, 1,
+      2, 3, 7, 7, 6, 2,
+      4, 5, 6, 6, 7, 4
+    ],
+
+    detail: 6,
+    radius: 4,
+  },
+
+  buffer: true
+});
+polyhedron.addTo(app);
 
 // Cameras
 
