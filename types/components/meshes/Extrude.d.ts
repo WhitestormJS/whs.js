@@ -1,4 +1,8 @@
-import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
+import {
+  MeshComponent,
+  MeshComponentParams
+} from '../../core/MeshComponent';
+
 import {
   BufferGeometry,
   CurvePath,
@@ -86,7 +90,8 @@ interface ExtrudeParamsOptions {
  export class Extrude extends MeshComponent {
 
    /**
-    * @constructor Creates an extruded geometry from a path shape.
+    * @description Creates an extruded geometry from a path shape.
+    * @constructor
     * @param params parameters
     */
    constructor(params?: ExtrudeParams);

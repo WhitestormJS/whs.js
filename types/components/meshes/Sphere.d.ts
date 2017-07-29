@@ -1,4 +1,8 @@
-import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
+import {
+  MeshComponent,
+  MeshComponentParams
+} from '../../core/MeshComponent';
+
 import {
   SphereGeometry,
   SphereBufferGeometry,
@@ -45,7 +49,8 @@ interface SphereParams extends MeshComponentParams {
  export class Sphere extends MeshComponent {
 
    /**
-    * @constructor Creates a Sphere
+    * @description Creates a Sphere.
+    * @constructor
     * @param params
     */
    constructor(params?: SphereParams);

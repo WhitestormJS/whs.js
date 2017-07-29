@@ -64,7 +64,8 @@ interface ImporterParams extends MeshComponentParams {
  export class Importer extends MeshComponent {
 
    /**
-    * @constructor Creates an Importer
+    * @description Creates an importer of meshes and any other data to your scene.
+    * @constructor
     * @param params parameters
     */
    constructor(params?: ImporterParams);

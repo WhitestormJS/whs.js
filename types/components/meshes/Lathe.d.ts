@@ -28,7 +28,8 @@ interface LatheParams extends MeshComponentParams {
  export class Lathe extends MeshComponent {
 
    /**
-    * @constructor Creates a Lath
+    * @description Creates a Lath
+    * @constructor
     * @param params parameters
     */
    constructor(params?: LatheParams);
