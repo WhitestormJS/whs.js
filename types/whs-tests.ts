@@ -3,7 +3,7 @@ import {
   Material,
   Mesh,
   MeshStandardMaterial,
-  GLTF2Loader,
+  JSONLoader,
   Shape,
   Vector2
 } from 'three';
@@ -25,6 +25,7 @@ import {
   Group,
   Icosahedron,
   Importer,
+  Lathe,
   OrthographicCamera,
   PerspectiveCamera,
   Sphere
@@ -164,9 +165,9 @@ const icosahedron = new Icosahedron({
 icosahedron.addTo(app);
 
 new Importer({
-  loader: new GLTF2Loader(),
+  loader: new JSONLoader(),
 
-  url: 'some/path/model.gltf',
+  url: 'some/path/model.json',
 
   onLoad: () => {
     console.log('on load');
@@ -186,6 +187,13 @@ new Importer({
 
   useCustomMaterial: false
 }).addTo(app);
+
+const lathe = new Lathe({
+  geometry: {
+    points: [new Vector2(1, 1)]
+  }
+});
+lathe.addTo(app);
 
 // Cameras
 
