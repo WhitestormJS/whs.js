@@ -8,6 +8,7 @@ export {Icosahedron} from './Icosahedron';
 export * from './Importer';
 export * from './Lathe';
 export * from './Line';
+export * from './Octahedron';
 export * from './Sphere';
 export * from './Text';
 export * from './Tetrahedron';

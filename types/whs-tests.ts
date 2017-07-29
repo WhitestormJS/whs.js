@@ -29,6 +29,7 @@ import {
   Importer,
   Lathe,
   Line,
+  Octahedron,
   OrthographicCamera,
   PerspectiveCamera,
   Sphere
@@ -207,6 +208,16 @@ const line = new Line({
   buffer: true
 });
 line.addTo(app);
+
+const octahedron = new Octahedron({
+  geometry: {
+    radius: 1,
+      detail: 0
+  },
+
+  buffer: true
+});
+octahedron.addTo(app);
 
 // Cameras
 
