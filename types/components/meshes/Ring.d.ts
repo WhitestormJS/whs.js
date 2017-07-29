@@ -59,17 +59,11 @@ interface RingParams extends MeshComponentParams {
   buffer?: boolean;
 }
 
-/**
- * generating a two-dimensional ring geometry.
- * 
- * @export
- * @class Ring
- * @extends {MeshComponent}
- */
 export class Ring extends MeshComponent {
 
   /**
-   * @constructor Creates a Ring
+   * @description Creates a two-dimensional ring geometry
+   * @constructor
    * @param params parameters
    */
   constructor(params?: RingParams);

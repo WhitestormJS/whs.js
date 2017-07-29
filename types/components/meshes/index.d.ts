@@ -14,6 +14,7 @@ export * from './Plane';
 export * from './Polyhedron';
 export * from './Ring';
 export * from './Sphere';
+export * from './Shape';
 export * from './Text';
 export * from './Tetrahedron';
 export * from './Torus';
