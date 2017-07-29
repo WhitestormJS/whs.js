@@ -1,0 +1,88 @@
+import {
+  MeshComponent,
+  MeshComponentParams
+} from '../../core/MeshComponent';
+
+import {
+  Mesh,
+  RingGeometry,
+  RingBufferGeometry
+} from 'three';
+
+interface RingParams extends MeshComponentParams {
+
+  /** Geometry parameters */
+  geometry?: {
+
+    /**
+     * Increase radius as it doesn't work right when innerRadius is set to 0.
+     * Default is 0.
+     */
+    innerRadius?: number;
+
+    /**
+     * 
+     * Default is 50.
+     */
+    outerRadius?: number;
+
+    /**
+     * Number of segments. 
+     * A higher number means the ring will be more round. Minimum is 3.
+     * Default is 8.
+     */
+    thetaSegments?: number;
+
+    /**
+     * Minimum is 1
+     * Default is 8.
+     */
+    phiSegments?: number;
+
+    /**
+     * Starting angle
+     * Default is 0.
+     */
+    thetaStart?: number;
+
+    /**
+     * Central angle
+     * Default is Math.PI * 2.
+     */
+    thetaLength?: number;
+  };
+
+  /** 
+   * Sets whether to build a buffered geometry
+   * Default is false.
+   */
+  buffer?: boolean;
+}
+
+/**
+ * generating a two-dimensional ring geometry.
+ * 
+ * @export
+ * @class Ring
+ * @extends {MeshComponent}
+ */
+export class Ring extends MeshComponent {
+
+  /**
+   * @constructor Creates a Ring
+   * @param params parameters
+   */
+  constructor(params?: RingParams);
+
+  /**
+   * Build lifecycle creates a mesh using input params.
+   * @param params 
+   */
+  build(params?: RingParams): Mesh;
+
+  /**
+   * Builds the geometry
+   * @param params 
+   */
+  buildGeometry(params?: RingParams): RingGeometry | RingBufferGeometry;
+}
