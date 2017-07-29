@@ -1,5 +1,9 @@
 import {
+  Geometry,
+  Material,
+  Mesh,
   MeshStandardMaterial,
+  GLTF2Loader,
   Shape,
   Vector2
 } from 'three';
@@ -20,6 +24,7 @@ import {
   Extrude,
   Group,
   Icosahedron,
+  Importer,
   OrthographicCamera,
   PerspectiveCamera,
   Sphere
@@ -157,6 +162,30 @@ const icosahedron = new Icosahedron({
   }
 });
 icosahedron.addTo(app);
+
+new Importer({
+  loader: new GLTF2Loader(),
+
+  url: 'some/path/model.gltf',
+
+  onLoad: () => {
+    console.log('on load');
+  },
+
+  onProgress: () => {
+    console.log('loading in progress');
+  },
+
+  onError: () => {
+    console.log('error loading with Importer');
+  },
+
+  parser(geometry: Geometry, material: Material) {
+    return new Mesh(geometry, material);
+  },
+
+  useCustomMaterial: false
+}).addTo(app);
 
 // Cameras
 
