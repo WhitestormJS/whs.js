@@ -54,6 +54,7 @@ class Importer extends MeshComponent {
 
     onLoad() {},
     onProgress() {},
+    // TODO add onComplete?
     onError() {},
 
     texturePath: null,
@@ -117,7 +118,7 @@ class Importer extends MeshComponent {
    */
   build(params = {}) {
     return new Promise(resolve => {
-      if (params.texturePath) params.laoder.setTexturePath(params.texturePath);
+      if (params.texturePath) params.loader.setTexturePath(params.texturePath);
 
       params.loader.load(params.url, (...data) => { // geometry, materials
         params.onLoad(...data);
