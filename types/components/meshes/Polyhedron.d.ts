@@ -45,14 +45,12 @@ interface PolyhedronParams extends MeshComponentParams {
   buffer?: boolean;
 }
 
-/**
- * A polyhedron is a solid in three dimensions with flat faces. 
- * This component will take an array of vertices, project them onto a sphere, and then divide them up to the desired level of detail.
- */
  export class Polyhedron extends MeshComponent {
 
    /**
-    * @constructor Creates a Polyhedron
+    * @description A polyhedron is a solid in three dimensions with flat faces. 
+    * This component will take an array of vertices, project them onto a sphere, and then divide them up to the desired level of detail.
+    * @constructor
     * @param params parameters
     */
    constructor(params?: PolyhedronParams);

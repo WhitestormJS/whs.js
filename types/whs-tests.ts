@@ -5,7 +5,7 @@ import {
   MeshStandardMaterial,
   JSONLoader,
   LineCurve3,
-  Shape,
+  Shape as ShapeNative,
   Vector2,
   Vector3
 } from 'three';
@@ -33,6 +33,7 @@ import {
   Plane,
   Polyhedron,
   Sphere,
+  Shape,
   Ring
 } from './components/meshes';
 
@@ -127,7 +128,7 @@ const cone = new Cone({build: false});
 cone.buildGeometry({buffer: true});
 cone.addTo(app);
 
-const shape = new Shape([
+const shapeNative = new ShapeNative([
   new Vector2(-4,-4),
   new Vector2(-2,0),
   new Vector2(-4,4),
@@ -141,7 +142,7 @@ const shape = new Shape([
 let extrude = new Extrude({
   build: false,
   geometry: {
-    shapes: shape,
+    shapes: shapeNative,
     options: {
       bevelEnabled: false,
       bevelSize: 0,
@@ -152,7 +153,7 @@ let extrude = new Extrude({
 
 extrude = new Extrude({
   geometry: {
-    shapes: [shape, shape],
+    shapes: [shapeNative, shapeNative],
     options: {
       bevelEnabled: false,
       bevelSize: 0,
@@ -288,6 +289,15 @@ const ring = new Ring({
   }
 }); 
 ring.addTo(app);
+
+const shape = new Shape({
+  geometry: {
+    shapes: [new ShapeNative([new Vector2(2, 2), new Vector2(3, 3)])]
+  },
+
+  buffer: true
+});
+shape.addTo(app);
 
 // Cameras
 
