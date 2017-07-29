@@ -30,6 +30,7 @@ import {
   Lathe,
   Line,
   Octahedron,
+  Parametric,
   OrthographicCamera,
   PerspectiveCamera,
   Sphere
@@ -218,6 +219,21 @@ const octahedron = new Octahedron({
   buffer: true
 });
 octahedron.addTo(app);
+
+const createParametric = (u, v) => {
+  return new Vector3(u * 30, Math.random() * 5, v * 30);
+};
+
+const parametric = new Parametric({
+  geometry: {
+    func: createParametric,
+    slices: 5,
+    stacks: 8
+  },
+
+  buffer: true
+});
+parametric.addTo(app);
 
 // Cameras
 
