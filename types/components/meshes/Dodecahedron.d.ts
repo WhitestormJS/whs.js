@@ -4,6 +4,7 @@ import {
 } from '../../core/MeshComponent';
 
 import {
+  BufferGeometry,
   DodecahedronGeometry,
   Geometry,
   Mesh
@@ -15,7 +16,7 @@ import {
  * @interface DodecahedronBufferGeometry
  * @extends {Geometry}
  */
-interface DodecahedronBufferGeometry extends Geometry {
+interface DodecahedronBufferGeometry extends BufferGeometry {
     constructor(radius: number, detail: number): DodecahedronBufferGeometry;
 
     parameters: {
@@ -50,7 +51,8 @@ interface DodecahedronParams extends MeshComponentParams {
  export class Dodecahedron extends MeshComponent {
 
    /**
-    * @constructor Creates a Dodecahedron
+    * @description Creates a Dodecahedron.
+    * @constructor
     * @param params
     */
    constructor(params?: DodecahedronParams);

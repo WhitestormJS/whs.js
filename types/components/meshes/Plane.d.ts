@@ -49,7 +49,8 @@ interface PlaneParams extends MeshComponentParams {
  export class Plane extends MeshComponent {
 
    /**
-    * @constructor Creates a Plane
+    * @description Creates a Plane.
+    * @constructor
     * @param params parameters
     */
    constructor(params?: PlaneParams);

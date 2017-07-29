@@ -1,4 +1,8 @@
-import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
+import {
+  MeshComponent,
+  MeshComponentParams
+} from '../../core/MeshComponent';
+
 import {
   CylinderGeometry,
   CylinderBufferGeometry,
@@ -50,12 +54,12 @@ interface CylinderParams extends MeshComponentParams {
        * The thetha length
        * Default is Math.PI * 2.
        */
-      thetaLength: number;
+      thetaLength?: number;
   };
 
   /**
    * Whether to create buffered geometry or not.
-   * Default is false
+   * Default is false.
    */
   buffer?: boolean;
 }
@@ -63,10 +67,11 @@ interface CylinderParams extends MeshComponentParams {
  export class Cylinder extends MeshComponent {
 
    /**
-    * @constructor Creates a Cylinder
+    * @description Creates a Cylinder. 
+    * @constructor
     * @param params
     */
-   constructor(params?: SphereParams);
+   constructor(params?: CylinderParams);
 
    /**
     * Build lifecycle creates a mesh using input params.

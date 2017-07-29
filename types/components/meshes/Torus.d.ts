@@ -1,4 +1,8 @@
-import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
+import {
+  MeshComponent,
+  MeshComponentParams
+} from '../../core/MeshComponent';
+
 import {
   Mesh
 } from 'three';
@@ -43,7 +47,8 @@ interface TorusParams extends MeshComponentParams {
 
  export class Torus extends MeshComponent {
    /**
-    * @constructor Creates Torus
+    * @description Creates a Torus
+    * @constructor
     * @param params
     */
    constructor(params?: TorusParams);

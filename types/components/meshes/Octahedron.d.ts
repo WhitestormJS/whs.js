@@ -3,11 +3,16 @@ import {
   MeshComponentParams
 } from '../../core/MeshComponent';
 
+import {PolyhedronBufferGeometry} from './Polyhedron';
+
 import {
   Mesh,
-  OctahedronBufferGeometry,
-  OctahedronGeometry
+  OctahedronGeometry,
 } from 'three';
+
+export class OctahedronBufferGeometry extends PolyhedronBufferGeometry {
+    constructor(radius: number, detail: number);
+}
 
 interface OctahedronParams extends MeshComponentParams {
 
@@ -37,7 +42,8 @@ interface OctahedronParams extends MeshComponentParams {
  export class Octahedron extends MeshComponent {
 
    /**
-    * @constructor Creates an Octahedron
+    * @description Creates an Octahedron
+    * @constructor
     * @param params parameters
     */
    constructor(params?: OctahedronParams);

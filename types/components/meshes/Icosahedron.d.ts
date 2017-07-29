@@ -43,7 +43,8 @@ interface IcosahedronParams extends MeshComponentParams {
  export class Icosahedron extends MeshComponent {
 
    /**
-    * @constructor Creates an Icosahedron
+    * @description Creates an Icosahedron.
+    * @constructor
     * @param params
     */
    constructor(params?: IcosahedronParams);

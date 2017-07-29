@@ -4,10 +4,21 @@ import {
 } from '../../core/MeshComponent';
 
 import {
+  BufferGeometry,
   Mesh,
-  ParametricBufferGeometry,
   ParametricGeometry,
+  Vector3
 } from 'three';
+
+interface ParametricBufferGeometry extends BufferGeometry {
+    constructor(func: (u: number, v: number) => Vector3, slices: number, stacks: number): ParametricBufferGeometry;
+
+    parameters: {
+        func: (u: number, v: number) => Vector3;
+        slices: number;
+        stacks: number;
+    };
+}
 
 interface ParametricParams extends MeshComponentParams {
 
@@ -42,7 +53,8 @@ interface ParametricParams extends MeshComponentParams {
  export class Parametric extends MeshComponent {
 
    /**
-    * @constructor Creates a Parametric
+    * @description Creates a Parametric surface.
+    * @constructor
     * @param params parameters
     */
    constructor(params?: ParametricParams);
