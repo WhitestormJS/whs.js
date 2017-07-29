@@ -35,7 +35,8 @@ interface LineParams extends MeshComponentParams {
  export class Line extends MeshComponent {
 
    /**
-    * @constructor Creates a Line
+    * @description Creates a Line
+    * @constructor
     * @param params parameters
     */
    constructor(params?: LineParams);

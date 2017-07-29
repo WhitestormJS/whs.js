@@ -4,10 +4,21 @@ import {
 } from '../../core/MeshComponent';
 
 import {
+  BufferGeometry,
   Mesh,
-  PolyhedronBufferGeometry,
-  PolyhedronGeometry
+  PolyhedronGeometry,
 } from 'three';
+
+export class PolyhedronBufferGeometry extends BufferGeometry {
+  constructor(vertices: number[], indices: number[], radius?: number, detail?: number): PolyhedronBufferGeometry;
+
+  parameters: {
+      vertices: number[];
+      indices: number[];
+      radius: number;
+      detail: number;
+  };
+}
 
 interface PolyhedronParams extends MeshComponentParams {
 

@@ -1,4 +1,8 @@
-import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
+import {
+  MeshComponent,
+  MeshComponentParams
+} from '../../core/MeshComponent';
+
 import {
   Mesh
 } from 'three';
@@ -49,7 +53,9 @@ interface TorusknotParams extends MeshComponentParams {
 
  export class Torusknot extends MeshComponent {
    /**
-    * @constructor Creates Torusknot
+    * @description Creates a torus knot, the particular shape of which is defined by a pair of coprime integers, p and q. 
+    * If p and q are not coprime, the result will be a torus link.
+    * @constructor
     * @param params
     */
    constructor(params?: TorusknotParams);

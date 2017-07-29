@@ -8,7 +8,8 @@ import {Object3D} from 'three';
  export class Group extends MeshComponent {
 
   /**
-   * @constructor Creates a Group of meshes
+   * @description Creates a Group of meshes
+   * @constructor
    * @param objects spread Meshes
    */
   constructor(...objects: Array<MeshComponent>);

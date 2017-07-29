@@ -11,8 +11,8 @@ import {
 } from 'three';
 
 interface ShapeBufferGeometry extends BufferGeometry {
-    constructor(shape: ShapeNative, options?: any);
-    constructor(shapes: ShapeNative[], options?: any);
+    constructor(shape: ShapeNative, options?: any): ShapeBufferGeometry;
+    constructor(shapes: ShapeNative[], options?: any): ShapeBufferGeometry;
 }
 
 interface ShapeParams extends MeshComponentParams {
