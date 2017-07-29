@@ -31,6 +31,7 @@ import {
   Line,
   Octahedron,
   Parametric,
+  Plane,
   OrthographicCamera,
   PerspectiveCamera,
   Sphere
@@ -220,7 +221,7 @@ const octahedron = new Octahedron({
 });
 octahedron.addTo(app);
 
-const createParametric = (u, v) => {
+const createParametric = (u: number, v: number) => {
   return new Vector3(u * 30, Math.random() * 5, v * 30);
 };
 
@@ -234,6 +235,18 @@ const parametric = new Parametric({
   buffer: true
 });
 parametric.addTo(app);
+
+const plane = new Plane({
+  geometry: {
+    height: 3,
+    width: 10,
+    hSegments: 2,
+    wSegments: 3
+  },
+
+  buffer: true
+});
+plane.addTo(app);
 
 // Cameras
 
@@ -258,7 +271,7 @@ const perspectiveCamera = new PerspectiveCamera({
   build: false,
   far: 100
 });
-perspectiveCamera.wrap
+perspectiveCamera.wrap();
 const perspectiveCameraNative = orthographicCamera.build();
 
 
