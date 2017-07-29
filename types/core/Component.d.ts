@@ -11,11 +11,11 @@ export class Component extends ModuleSystem {
   constructor(params?: object, defaults?: object, instructions?: object);
 
   /**
-   * Adds this object to the App.
+   * Adds this object to a Component (App ,etc)
    * Notes: As we work in 3D space - we have an App and objects it contains.
-   * The App is the parent, objects are its children.
+   * The App is usually the top the parent, objects are its children.
    */
-  addTo(parent: App): Promise<Component>;
+  addTo(parent: App | Component): Promise<Component>;
 
   /**
    * Adds a child Component.
