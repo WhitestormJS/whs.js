@@ -4,8 +4,10 @@ import {
   Mesh,
   MeshStandardMaterial,
   JSONLoader,
+  LineCurve3,
   Shape,
-  Vector2
+  Vector2,
+  Vector3
 } from 'three';
 
 import {
@@ -26,6 +28,7 @@ import {
   Icosahedron,
   Importer,
   Lathe,
+  Line,
   OrthographicCamera,
   PerspectiveCamera,
   Sphere
@@ -194,6 +197,16 @@ const lathe = new Lathe({
   }
 });
 lathe.addTo(app);
+
+const line = new Line({
+  geometry: {
+    curve: new LineCurve3(new Vector3(0, 0, 0), new Vector3(10, 0, 0)),
+    points: 5
+  },
+
+  buffer: true
+});
+line.addTo(app);
 
 // Cameras
 
