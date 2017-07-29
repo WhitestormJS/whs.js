@@ -22,7 +22,6 @@ import {
 import {
   Box, 
   Cone,
-  CubeCamera,
   Extrude,
   Group,
   Icosahedron,
@@ -33,10 +32,15 @@ import {
   Parametric,
   Plane,
   Polyhedron,
+  Sphere,
+  Ring
+} from './components/meshes';
+
+import {
+  CubeCamera,
   OrthographicCamera,
   PerspectiveCamera,
-  Sphere
-} from './components';
+} from './components/cameras';
 
 import {
   AmbientLight,
@@ -272,6 +276,18 @@ const polyhedron = new Polyhedron({
   buffer: true
 });
 polyhedron.addTo(app);
+
+const ring = new Ring({
+  geometry: {
+    innerRadius: 1,
+    outerRadius: 50,
+    phiSegments: 5,
+    thetaLength: Math.PI /3,
+    thetaSegments: 10,
+    thetaStart: 0
+  }
+}); 
+ring.addTo(app);
 
 // Cameras
 

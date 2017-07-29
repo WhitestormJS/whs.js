@@ -12,6 +12,7 @@ export * from './Octahedron';
 export * from './Parametric';
 export * from './Plane';
 export * from './Polyhedron';
+export * from './Ring';
 export * from './Sphere';
 export * from './Text';
 export * from './Tetrahedron';
