@@ -48,9 +48,9 @@ class Text extends MeshComponent {
    * @default <pre>
    * {
    *   text: 'Hello World!',
-   *   loader: new FontLoader(),
+   *   font: null,
    *
-   *   parameters: {
+   *   geometry: {
    *     size: 12,
    *     height: 50,
    *     curveSegments: 12,
@@ -65,9 +65,9 @@ class Text extends MeshComponent {
   static defaults = {
     ...MeshComponent.defaults,
     text: 'Hello World!',
-    loader: new FontLoader(),
+    font: null,
 
-    parameters: {
+    geometry: {
       size: 12,
       height: 50,
       curveSegments: 12,
@@ -82,12 +82,30 @@ class Text extends MeshComponent {
     ...MeshComponent.instructions
   };
 
+  /**
+   * Default FontLoader
+   * @member {Object} module:components/meshes.Text#loader
+   * @static
+   * @default new FontLoader()
+   */
+  static loader = new FontLoader();
+
+  /**
+   * @method load
+   * @static
+   * @description load() preloads a Font object and returns a Promise with it.
+   * @param {String} path Path to the font
+   * @return {Promise} A promise resolved with a font
+   * @memberof module:components/meshes.Text
+   */
+  static load(path, loader = Text.loader) {
+    return new Promise(resolve => {
+      loader.load(path, resolve);
+    });
+  }
+
   constructor(params = {}) {
     super(params, Text.defaults, Text.instructions);
-
-    if (params.build) {
-      this.build(params).then(() => super.wrap());
-    }
   }
 
   /**
@@ -99,13 +117,15 @@ class Text extends MeshComponent {
    */
   build(params = this.params) {
     const promise = new Promise(resolve => {
-      params.loader.load(params.parameters.font, font => {
-        params.parameters.font = font;
-
+      (params.font instanceof Promise ? params.font : Promise.resolve(params.font))
+      .then(font => {
         const {geometry, material} = this.applyBridge({
           geometry: new TextGeometry(
             params.text,
-            params.parameters
+            Object.assign(
+              params.geometry,
+              {font}
+            )
           ),
 
           material: params.material
