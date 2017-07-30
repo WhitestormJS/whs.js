@@ -10,21 +10,40 @@ const app = new WHS.App([
   controlsModule
 ]);
 
-const text = new WHS.Text({
-  text: 'Gentilis Bold Text',
+app.start();
 
-  parameters: {
-      font: `${process.assetsPath}/fonts/gentilis_bold.typeface.json`,
-      size: 20,
-      height: 5,
-      curveSegments: 6
+const text = new WHS.Text({
+  text: 'From whs',
+  font: WHS.Text.load(`${process.assetsPath}/fonts/gentilis_bold.typeface.json`),
+
+  geometry: {
+    size: 20,
+    height: 5,
+    curveSegments: 6
   },
 
   material: new THREE.MeshBasicMaterial({
     color: 0xffffff
   }),
 
-  position: [-100, 0, 0]
+  position: [-150, 0, 0]
 }).addTo(app);
 
-app.start();
+(new THREE.FontLoader()).load(`${process.assetsPath}/fonts/gentilis_bold.typeface.json`, font => {
+  const text2 = new WHS.Text({
+    text: 'From three',
+    font,
+
+    geometry: {
+      size: 20,
+      height: 5,
+      curveSegments: 6
+    },
+
+    material: new THREE.MeshBasicMaterial({
+      color: 0xffffff
+    }),
+
+    position: [50, 0, 0]
+  }).addTo(app);
+});
