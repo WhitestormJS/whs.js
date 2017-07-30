@@ -1,5 +1,5 @@
 import {
-  MeshComponent, 
+  MeshComponent,
   MeshComponentParams
 } from '../../core/MeshComponent';
 
@@ -47,18 +47,11 @@ interface ImporterParams extends MeshComponentParams {
   onError?: Function;
 
   /**
-   * Set the base path or URL from which to load files. 
+   * Set the base path or URL from which to load files.
    * This can be useful if you are loading many files from the same directory.
    * Default is null.
    */
   texturePath?: string;
-
-  /**
-   * Whether to use a custom material.
-   * Default is false.
-   */
-  useCustomMaterial?: boolean,
-
 }
 
  export class Importer extends MeshComponent {
@@ -72,7 +65,7 @@ interface ImporterParams extends MeshComponentParams {
 
    /**
     * Build lifecycle creates a mesh using input params.
-    * @param params 
+    * @param params
     */
    build(params?: ImporterParams): Mesh;
 
