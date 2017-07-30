@@ -59,8 +59,12 @@ class Importer extends MeshComponent {
     texturePath: null,
     useCustomMaterial: false,
 
-    parser(geometry, materials) {
-      return new Mesh(geometry, materials);
+    parser(geometry, material) {
+      const {geom, mat} = this.applyBridge({geom: geometry, mat: material});
+
+      return this.applyBridge({
+        mesh: new Mesh(geom, mat)
+      }).mesh;
     }
   };
 
@@ -118,15 +122,8 @@ class Importer extends MeshComponent {
       params.loader.load(params.url, (...data) => { // geometry, materials
         params.onLoad(...data);
 
-        const object = this.applyBridge({mesh: params.parser(...data)}).mesh;
-
-        const {geometry: geom, material: mat} = this.applyBridge({
-          geometry: object.geometry,
-          material: params.useCustomMaterial ? params.material : object.material
-        });
-
-        if (object.geometry) object.geometry = geom;
-        if (object.material) object.material = mat;
+        const object = params.parser.apply(this, data);
+        if (params.material) object.material = params.material;
 
         resolve(object);
       }, params.onProgress, params.onError);

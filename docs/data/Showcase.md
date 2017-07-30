@@ -2,6 +2,22 @@
 
 <div class="featured">
 
+<a href="http://abdaily.surge.sh/4/">
+  <img src="images/showcase/daily4.png" alt="http://abdaily.surge.sh/4/" width="300" />
+</a>
+
+<a href="http://abdaily.surge.sh/3/">
+  <img src="images/showcase/daily3.png" alt="http://abdaily.surge.sh/3/" width="300" />
+</a>
+
+<a href="http://abdaily.surge.sh/2/">
+  <img src="images/showcase/daily2.png" alt="http://abdaily.surge.sh/2/" width="300" />
+</a>
+
+<a href="http://abdaily.surge.sh/1/">
+  <img src="images/showcase/daily1.png" alt="http://abdaily.surge.sh/1/" width="300" />
+</a>
+
 <a href="http://theroguepixel.com/">
   <img src="images/showcase/roguepixel.jpg" alt="http://theroguepixel.com/" width="300" />
 </a>

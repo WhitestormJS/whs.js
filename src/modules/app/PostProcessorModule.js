@@ -19,8 +19,13 @@ export class PostProcessorModule {
     this.resolve = resolve;
   });
 
-  constructor({debug} = {debug: true}) {
-    this.debug = debug;
+  static defaults = {
+    debug: true
+  };
+
+  constructor(params = PostProcessorModule.defaults) {
+    this.debug = params.debug;
+    this.params = params;
   }
 
   manager(manager) {
@@ -31,7 +36,7 @@ export class PostProcessorModule {
     this.scene = manager.get('scene');
     this.camera = manager.get('camera');
 
-    this.composer = new EffectComposer(this.renderer);
+    this.composer = new EffectComposer(this.renderer, this.params);
 
     manager.use('rendering').stop();
 
@@ -88,6 +93,7 @@ export class PostProcessorModule {
         material.uniforms[textureID] = {value: null};
 
       const pass = new ShaderPass(material, textureID);
+
       this.composer.addPass(pass);
       this.currentPass = pass;
     });

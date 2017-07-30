@@ -7,7 +7,7 @@ interface FogModuleParams {
    * Fog color. Example: If set to black, far away objects will be rendered black.
    * Default is 0xefd1b5.
    */
-  color?: number,
+  color?: number;
 
   /**
    * Fog density defines how fast the fog will grow dense.
@@ -15,21 +15,21 @@ interface FogModuleParams {
    * 
    * Default is 0.02.
    */
-  density?: number,
+  density?: number;
 
   /**
    * The minimum distance to start applying fog. 
    * Objects that are less than 'near' units from the active camera won't be affected by fog.
    * Default is 0.02.
    */
-  near?: number,
+  near?: number;
 
   /**
    * The maximum distance at which fog stops being calculated and applied. 
    * Objects that are more than 'far' units away from the active camera won't be affected by fog.
    * Default is 1000.
    */
-  far?: number
+  far?: number;
 } 
 
 export class FogModule {

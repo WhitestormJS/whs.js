@@ -15,14 +15,9 @@ export class DatCustomModule {
     onFinishChange,
     listen = false
   }) {
-    const controller = this.gui.add({[name]: value}, name);
+    const controller = this.gui.add({[name]: value}, name, range[0] || 0, range[1] || 1);
 
-    if (range[0] !== false) controller.min(range[0])
-    if (range[1] !== false) controller.max(range[1])
-
-    controller.step(step);
-
-    if (onChange) controller.onChange(onChange);
+    controller.onChange(onChange);
     if (onFinishChange) controller.onFinishChange(onFinishChange);
     if (listen) controller.listen();
 
