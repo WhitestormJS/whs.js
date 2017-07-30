@@ -20,7 +20,7 @@ import {
 } from "./core";
 
 import {
-  Box, 
+  Box,
   Cone,
   Extrude,
   Group,
@@ -78,6 +78,7 @@ loop.execute();
 const component = new Component();
 component.addTo(app);
 component.clone();
+
 const component2 = new Component();
 component.copy(component2);
 
@@ -85,6 +86,7 @@ component.copy(component2);
 // TODO pass module type
 component.integrateModules();
 component.applyModule(null);
+
 const map = component.applyBridge();
 component.disposeModule(null);
 component.disposeModules();
@@ -93,9 +95,7 @@ component.module(null).disposeModules();
 const camera = new CameraComponent();
 const clonedCamera = camera.clone();
 
-
 // Meshes
-
 const mesh = new MeshComponent({});
 mesh.addTo(app);
 mesh.clone();
@@ -110,6 +110,7 @@ const box = new Box({
 
   material: new MeshStandardMaterial()
 });
+
 box.build();
 box.addTo(app);
 
@@ -121,6 +122,7 @@ const sphere = new Sphere({
 
   material: new MeshStandardMaterial()
 });
+
 sphere.buildGeometry({buffer: true});
 sphere.addTo(app);
 
@@ -174,11 +176,11 @@ const icosahedron = new Icosahedron({
     detail: 0.2
   }
 });
+
 icosahedron.addTo(app);
 
 new Importer({
   loader: new JSONLoader(),
-
   url: 'some/path/model.json',
 
   onLoad: () => {
@@ -195,9 +197,7 @@ new Importer({
 
   parser(geometry: Geometry, material: Material) {
     return new Mesh(geometry, material);
-  },
-
-  useCustomMaterial: false
+  }
 }).addTo(app);
 
 const lathe = new Lathe({
@@ -205,6 +205,7 @@ const lathe = new Lathe({
     points: [new Vector2(1, 1)]
   }
 });
+
 lathe.addTo(app);
 
 const line = new Line({
@@ -215,6 +216,7 @@ const line = new Line({
 
   buffer: true
 });
+
 line.addTo(app);
 
 const octahedron = new Octahedron({
@@ -225,6 +227,7 @@ const octahedron = new Octahedron({
 
   buffer: true
 });
+
 octahedron.addTo(app);
 
 const createParametric = (u: number, v: number) => {
@@ -240,6 +243,7 @@ const parametric = new Parametric({
 
   buffer: true
 });
+
 parametric.addTo(app);
 
 const plane = new Plane({
@@ -252,6 +256,7 @@ const plane = new Plane({
 
   buffer: true
 });
+
 plane.addTo(app);
 
 const polyhedron = new Polyhedron({
@@ -276,6 +281,7 @@ const polyhedron = new Polyhedron({
 
   buffer: true
 });
+
 polyhedron.addTo(app);
 
 const ring = new Ring({
@@ -287,7 +293,8 @@ const ring = new Ring({
     thetaSegments: 10,
     thetaStart: 0
   }
-}); 
+});
+
 ring.addTo(app);
 
 const shape = new Shape({
@@ -297,32 +304,37 @@ const shape = new Shape({
 
   buffer: true
 });
+
 shape.addTo(app);
 
 // Cameras
 
 const cubeCamera = new CubeCamera({
   build: false,
-  
+
   position: {
     x: 1,
     y: 10,
     z: 0
   }
 });
+
 const nativeCubeCamera = cubeCamera.build();
 
 const orthographicCamera = new OrthographicCamera({
   build: false,
   far: 100
 });
+
 const orthographicCameraNative = orthographicCamera.build();
 
 const perspectiveCamera = new PerspectiveCamera({
   build: false,
   far: 100
 });
+
 perspectiveCamera.wrap();
+
 const perspectiveCameraNative = orthographicCamera.build();
 
 
@@ -330,6 +342,7 @@ const perspectiveCameraNative = orthographicCamera.build();
 
 const light = new LightComponent({build: false});
 light.build();
+
 const clonedLight = light.clone();
 const copiedLight = light.copy(clonedLight);
 copiedLight.wrap();
@@ -339,15 +352,17 @@ const ambientLight = new AmbientLight({
   color: 0xffffff,
   intensity: 0.5
 });
+
 ambientLight.addTo(app);
 
 const areaLight = new AreaLight({build: false});
 areaLight.build();
 areaLight.addTo(app);
 
-const hemisphereLight = new HemisphereLight({ 
+const hemisphereLight = new HemisphereLight({
   build: false
 });
+
 hemisphereLight.build();
 hemisphereLight.addTo(app);
 
@@ -362,15 +377,14 @@ spotLight.addTo(app);
 // Mesh Modules
 
 let textureModule = new TextureModule([{
-    url: 'some/path',
-    type: 'map'
-  }]
-);
+  url: 'some/path',
+  type: 'map'
+}]);
+
 textureModule = new TextureModule({
-    url: 'some/path',
-    type: 'bumpMap'
-  }
-);
+  url: 'some/path',
+  type: 'bumpMap'
+});
 
 // app Modules
 
