@@ -1,4 +1,8 @@
-import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
+import {
+  MeshComponent,
+  MeshComponentParams
+} from '../../core/MeshComponent';
+
 import {
   Mesh,
   ConeBufferGeometry,
@@ -62,7 +66,7 @@ interface BufferedConeParams extends ConeParams {
 export class Cone extends MeshComponent {
 
    /**
-    * Creates a Cone
+    * @description Creates a Cone.
     * @param params
     */
    constructor(params?: ConeParams);
