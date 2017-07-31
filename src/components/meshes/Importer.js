@@ -54,6 +54,7 @@ class Importer extends MeshComponent {
 
     onLoad() {},
     onProgress() {},
+    // TODO add onComplete?
     onError() {},
 
     texturePath: null,
@@ -74,14 +75,14 @@ class Importer extends MeshComponent {
 
   /**
    * @method filter
-   * @description Default values for parameters
+   * @description Default values for filter
    * @static
    * @param {THREE.Mesh} object Instance for iterating through it's children.
    * @param {Function} filter Function with child as argument, should return a boolean whether include the child or not.
    * @return {THREE.Mesh} object with children
    * @memberof module:components/meshes.Importer
    * @example <caption>Removing unnecessary lights from children</caption>
-   * new Icosahedron({
+   * new Importer({
    *   loader: new THREE.OBJLoader(),
    *
    *   parse(group) { // data from loader
@@ -110,14 +111,14 @@ class Importer extends MeshComponent {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Importer
    */
   build(params = {}) {
     return new Promise(resolve => {
-      if (params.texturePath) params.laoder.setTexturePath(params.texturePath);
+      if (params.texturePath) params.loader.setTexturePath(params.texturePath);
 
       params.loader.load(params.url, (...data) => { // geometry, materials
         params.onLoad(...data);
