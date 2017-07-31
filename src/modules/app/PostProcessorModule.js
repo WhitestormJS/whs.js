@@ -12,6 +12,30 @@ const polyfill = (object, method, showWarn = true) => {
   object[method] = () => {};
 };
 
+/**
+ * @class PostProcessorModule
+ * @category modules/app
+ * @param {Object} [params]
+ * @memberof module:modules/app
+ * @example <caption> Creating a rendering module and passing it to App's modules</caption>
+ * new App([
+ *   new ElementModule(),
+ *   new SceneModule(),
+ *   new DefineModule('camera', new WHS.PerspectiveCamera({
+ *     position: new THREE.Vector3(0, 6, 18),
+ *     far: 10000
+ *   })),
+ *   new RenderingModule(),
+ *   new PostProcessorModule()
+ * ]);
+ *
+ * const processor = app.use('postprocessor');
+ *
+ * processor
+ *   .render()
+ *   .pass(new GlitchPass())
+ *   .renderToScreen()
+ */
 export class PostProcessorModule {
   currentPass = null;
 
@@ -60,6 +84,12 @@ export class PostProcessorModule {
     this.resolve();
   }
 
+  /**
+   * @method render
+   * @description Adds RenderPass
+   * @return {this}
+   * @memberof module:modules/app.PostProcessorModule
+   */
   render() {
     this.defer.then(() => {
       const pass = new RenderPass(this.scene, this.camera.native);
@@ -73,8 +103,13 @@ export class PostProcessorModule {
     return this;
   }
 
-  // API
-
+  /**
+   * @method pass
+   * @description Adds your custom pass
+   * @param {Pass} pass A custom pass
+   * @return {this}
+   * @memberof module:modules/app.PostProcessorModule
+   */
   pass(pass) {
     this.defer.then(() => {
       polyfill(pass, 'setSize', this.debug);
@@ -87,6 +122,14 @@ export class PostProcessorModule {
     return this;
   }
 
+  /**
+   * @method shader
+   * @description Adds a pass made from shader material
+   * @param {Material} material A ShaderMaterial
+   * @param {String} textureID Name of the readBuffer uniform
+   * @return {this}
+   * @memberof module:modules/app.PostProcessorModule
+   */
   shader(material, textureID = 'readBuffer') {
     this.defer.then(() => {
       if (!material.uniforms[textureID])
@@ -101,29 +144,29 @@ export class PostProcessorModule {
     return this;
   }
 
-  // Pass API
-
+  /**
+   * @method get
+   * @description Returns a pass by the given name
+   * @param {String} name The name of the pass
+   * @return {this}
+   * @memberof module:modules/app.PostProcessorModule
+   */
   get(name) {
     return name
       ? this.composer.passes.filter(pass => pass.name === name)[0]
       : this.currentPass;
   }
 
-  to(name) {
-    this.currentPass = name;
-  }
-
+  /**
+   * @method renderToScreen
+   * @description Sets the renderToScreen property of currentPass
+   * @param {String} [name=true] The name of the pass
+   * @return {this}
+   * @memberof module:modules/app.PostProcessorModule
+   */
   renderToScreen(bool = true) {
     this.defer.then(() => {
       this.currentPass.renderToScreen = bool;
-    });
-
-    return this;
-  }
-
-  name(name) {
-    this.defer.then(() => {
-      this.currentPass.name = name;
     });
 
     return this;
