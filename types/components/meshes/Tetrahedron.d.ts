@@ -1,4 +1,8 @@
-import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
+import {
+  MeshComponent, 
+  MeshComponentParams
+} from '../../core/MeshComponent';
+
 import {
   Mesh
 } from 'three';
@@ -25,7 +29,8 @@ interface TetrahedronParams extends MeshComponentParams {
 
  export class Tetrahedron extends MeshComponent {
    /**
-    * @constructor Creates Tetrahedron
+    * @description Creates a Tetrahedron
+    * @constructor
     * @param params
     */
    constructor(params?: TetrahedronParams);
