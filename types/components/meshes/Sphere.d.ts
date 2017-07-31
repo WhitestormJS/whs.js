@@ -1,4 +1,8 @@
-import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
+import {
+  MeshComponent,
+  MeshComponentParams
+} from '../../core/MeshComponent';
+
 import {
   SphereGeometry,
   SphereBufferGeometry,
@@ -33,19 +37,20 @@ interface SphereParams extends MeshComponentParams {
       phiLength?: number;
       thetaStart?: number;
       thetaLength?: number;
-  }
+  };
+
+  /**
+   * Whether to create buffered geometry or not.
+   * Default is false
+   */
+  buffer?: boolean;
 }
-
-interface BufferedSphereParams extends SphereParams {
-
-  /** Sets whether to build a buffered geometry */
-  buffer?: boolean
-} 
 
  export class Sphere extends MeshComponent {
 
    /**
-    * @constructor Creates a Sphere
+    * @description Creates a Sphere.
+    * @constructor
     * @param params
     */
    constructor(params?: SphereParams);
@@ -60,5 +65,5 @@ interface BufferedSphereParams extends SphereParams {
     * Build the geometry
     * @param params 
     */
-   buildGeometry(params?: BufferedSphereParams): SphereGeometry | SphereBufferGeometry;
+   buildGeometry(params?: SphereParams): SphereGeometry | SphereBufferGeometry;
 }
