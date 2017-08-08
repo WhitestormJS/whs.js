@@ -1,11 +1,14 @@
 {
   "name": "whs",
-  "version": "2.1.3",
+  "version": "2.1.6",
   "description": "Super-fast 3D framework for Web Applications & Games. Based on Three.js",
   "main": "build/whs.js",
   "jsnext:main": "build/whs.module.js",
   "module": "build/whs.module.js",
   "typings": "types/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "version": "npm run build && npm run modules && npm run examples && git add .",
     "test": "xo ./src/**/*.js && jest",
@@ -40,9 +43,12 @@
     "@types/node": "^8.0.4",
     "lodash-es": "^4.17.4",
     "minivents": "^2.1.0",
+    "postprocessing": "^2.2.0",
+    "redux": "^3.7.1",
     "three": "^0.86.0"
   },
   "devDependencies": {
+    "@types/three": "^0.84.16",
     "babel": "^6.23.0",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
@@ -93,10 +99,8 @@
     "mocha": "^3.4.2",
     "nyc": "^11.0.3",
     "path": "^0.12.7",
-    "postprocessing": "^2.2.0",
     "present": "^1.0.0",
     "pug": "^2.0.0-rc.2",
-    "redux": "^3.7.1",
     "rollup": "^0.43.0",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-commonjs": "^8.0.2",

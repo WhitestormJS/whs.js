@@ -2,7 +2,8 @@ import {Component} from './Component';
 import {CompositionError} from './errors';
 import {
   Material, 
-  Mesh
+  Mesh,
+  Object3D
 } from 'three';
 
 interface MeshComponentParams {
@@ -65,7 +66,7 @@ export class MeshComponent extends Component {
   /**
    * @throws a CompositionError.
    */
-  build(): CompositionError | Mesh;
+  build(): CompositionError | Mesh | Promise<Mesh> | Object3D;
 
   /**
    * @returns a Promised mesh component

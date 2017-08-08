@@ -1,5 +1,6 @@
 import {Component} from './Component';
 import {CompositionError} from '../core';
+import {Object3D} from 'three';
 
 export interface CameraComponentParams {
     build?: boolean;
@@ -24,7 +25,7 @@ export class CameraComponent extends Component {
    */
   constructor(params?: CameraComponentParams, defaults?: CameraComponentParams, instructions?: object);
 
-  build(): CompositionError | any;
+  build(): CompositionError | Object3D;
 
   wrap(): Promise<CameraComponent>;
 

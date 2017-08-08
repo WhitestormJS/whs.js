@@ -60,7 +60,7 @@ class Component extends ModuleSystem {
 
     // Apply polyfilled parameters to .params;
     this.params = extend(transformData(params, instructions), defaults);
-    if (this.params.manager) this.manager = new ModuleManager();
+    if (this.params.manager) this.manager = new ModuleManager(this);
 
     this.modules = this.params.modules;
 
