@@ -21,6 +21,7 @@ export class ControlsModule {
   }
 
   manager(manager) {
+    manager.define('controls');
     manager.require('events', () => new EventsPatchModule());
   }
 
