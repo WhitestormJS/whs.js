@@ -1,4 +1,4 @@
-/* WhitestormJS Framework v2.1.5 */
+/* WhitestormJS Framework v2.1.6 */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('three')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'three'], factory) :
@@ -2299,7 +2299,7 @@ var CameraComponent = (_dec$2 = attributes(copy('position', 'rotation', 'quatern
   scale: ['x', 'y', 'z']
 }, _temp$3)) || _class$3);
 
-const version = "2.1.5";
+const version = "2.1.6";
 
 var system = {
   window: typeof window === 'undefined' ? global : window
