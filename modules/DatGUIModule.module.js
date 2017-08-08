@@ -1,4 +1,4 @@
-/* Built for whs v2.1.3 */
+/* Built for whs v2.1.6 */
 import { AdditiveBlending, AlwaysDepth, BackSide, CustomBlending, DoubleSide, FlatShading, FrontSide, GreaterDepth, GreaterEqualDepth, LessDepth, LessEqualDepth, MultiplyBlending, NeverDepth, NoBlending, NormalBlending, NotEqualDepth, SmoothShading, SubtractiveBlending } from 'three';
 
 function createCommonjsModule(fn, module) {
@@ -4950,14 +4950,9 @@ var DatCustomModule = function () {
           _ref$listen = _ref.listen,
           listen = _ref$listen === undefined ? false : _ref$listen;
 
-      var controller = this.gui.add(defineProperty({}, name, value), name);
+      var controller = this.gui.add(defineProperty({}, name, value), name, range[0] || 0, range[1] || 1);
 
-      if (range[0] !== false) controller.min(range[0]);
-      if (range[1] !== false) controller.max(range[1]);
-
-      controller.step(step);
-
-      if (onChange) controller.onChange(onChange);
+      controller.onChange(onChange);
       if (onFinishChange) controller.onFinishChange(onFinishChange);
       if (listen) controller.listen();
 

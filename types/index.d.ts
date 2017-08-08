@@ -4,6 +4,7 @@
 
 export * from './core';
 export * from './components';
+export * from './modules';
 
 // For UMD - global space
 export as namespace WHS;
