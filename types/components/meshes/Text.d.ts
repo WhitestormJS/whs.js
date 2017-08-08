@@ -1,4 +1,8 @@
-import {MeshComponent, MeshComponentParams} from '../../core/MeshComponent';
+import {
+  MeshComponent,
+  MeshComponentParams
+} from '../../core/MeshComponent';
+
 import {
   Font,
   Mesh,
@@ -63,7 +67,8 @@ interface TextParams extends MeshComponentParams {
 
  export class Text extends MeshComponent {
    /**
-    * @constructor Creates Text
+    * @description Creates a Text
+    * @constructor
     * @param params
     */
    constructor(params?: TextParams);
