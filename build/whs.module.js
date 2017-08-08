@@ -1,4 +1,4 @@
-/* WhitestormJS Framework v2.1.3 */
+/* WhitestormJS Framework v2.1.6 */
 import { AmbientLight, AnimationClip, AnimationMixer, BoxBufferGeometry, BoxGeometry, BufferAttribute, BufferGeometry, CircleBufferGeometry, CircleGeometry, Clock, Color, ConeBufferGeometry, ConeGeometry, CubeCamera, CylinderBufferGeometry, CylinderGeometry, DepthStencilFormat, DepthTexture, DirectionalLight, DodecahedronBufferGeometry, DodecahedronGeometry, EventDispatcher, ExtrudeGeometry, Fog, FogExp2, Font, FontLoader, Geometry, HemisphereLight, IcosahedronBufferGeometry, IcosahedronGeometry, JSONLoader, LatheBufferGeometry, LatheGeometry, Line, LineCurve3, LinearFilter, LinearMipMapLinearFilter, MOUSE, Mesh, NearestFilter, Object3D, OctahedronBufferGeometry, OctahedronGeometry, OrthographicCamera, ParametricBufferGeometry, ParametricGeometry, PerspectiveCamera, Plane, PlaneBufferGeometry, PlaneGeometry, PointLight, PolyhedronBufferGeometry, PolyhedronGeometry, Quaternion, REVISION, RGBAFormat, RGBFormat, Raycaster, RectAreaLight, RepeatWrapping, RingBufferGeometry, RingGeometry, Scene, ShaderMaterial, ShapeBufferGeometry, ShapeGeometry, SphereBufferGeometry, SphereGeometry, Spherical, SpotLight, TetrahedronBufferGeometry, TetrahedronGeometry, TextGeometry, TextureLoader, TorusGeometry, TorusKnotBufferGeometry, TorusKnotGeometry, TubeBufferGeometry, TubeGeometry, UVMapping, Uniform, UnsignedInt248Type, Vector2, Vector3, WebGLRenderTarget, WebGLRenderer } from 'three';
 
 var extend = function extend(object) {
@@ -1333,7 +1333,7 @@ var Component = (_temp = _class = function (_ModuleSystem) {
     _this.modules = [];
     _this.children = [];
     _this.params = extend(transformData(params, instructions), defaults$$1);
-    if (_this.params.manager) _this.manager = new ModuleManager();
+    if (_this.params.manager) _this.manager = new ModuleManager(_this);
 
     _this.modules = _this.params.modules;
 
@@ -1728,6 +1728,20 @@ var MeshComponent = (_dec = attributes(copy('position', 'rotation', 'quaternion'
     key: 'create',
     value: function create(geom, params, constructor) {
       return new (MeshComponent.custom(geom, constructor))(params);
+    }
+  }, {
+    key: 'from',
+    value: function from(mesh) {
+      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      params.build = false;
+
+      var component = new MeshComponent(params);
+
+      component.native = mesh;
+      component.wrap();
+
+      return component;
     }
   }]);
 
@@ -2281,7 +2295,7 @@ var CameraComponent = (_dec$2 = attributes(copy('position', 'rotation', 'quatern
   scale: ['x', 'y', 'z']
 }, _temp$3)) || _class$3);
 
-const version = "2.1.3";
+const version = "2.1.6";
 
 var system = {
   window: typeof window === 'undefined' ? global : window
@@ -2301,7 +2315,7 @@ var App = function (_ModuleSystem) {
 
   /**
    * @description Defines whether the scene should render or not
-   * @member {Boolean} module:core.App#updateEnabled
+   * @member {Boolean} module:core.App#enabled
    * @public
    */
   function App() {
@@ -2312,8 +2326,7 @@ var App = function (_ModuleSystem) {
 
     var _this = possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
-    _this.simulate = false;
-    _this.updateEnabled = true;
+    _this.enabled = true;
     _this.loops = [];
 
     _this.manager = new ModuleManager(_this);
@@ -2331,17 +2344,11 @@ var App = function (_ModuleSystem) {
    * @memberof module:core.App
    */
 
+
   /**
    * Loops in this app
    * @description Array of loops that are executed by this app.
    * @member {Array} module:core.App#loops
-   * @public
-   */
-
-  /**
-   * Simulate flag
-   * @description Same as .updateEnabled, but for physics. Defines if physics is simulated each frame.
-   * @member {Boolean} module:core.App#simulate
    * @public
    */
 
@@ -2356,12 +2363,12 @@ var App = function (_ModuleSystem) {
       }();
 
       var loops = this.loops,
-          updateEnabled = this.updateEnabled;
+          enabled = this.enabled;
 
 
       function process() {
         requestAnimFrame(process);
-        if (!updateEnabled) return;
+        if (!enabled) return;
 
         for (var i = 0, ll = loops.length; i < ll; i++) {
           var e = loops[i];
@@ -2369,7 +2376,7 @@ var App = function (_ModuleSystem) {
         }
       }
 
-      this.updateEnabled = true;
+      this.enabled = true;
       process();
     }
 
@@ -2382,7 +2389,7 @@ var App = function (_ModuleSystem) {
   }, {
     key: 'stop',
     value: function stop() {
-      this.updateEnabled = false;
+      this.enabled = false;
     }
 
     /**
@@ -3050,7 +3057,7 @@ var Box = (_temp$13 = _class$13 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Box
@@ -3155,7 +3162,7 @@ var Circle = (_temp$14 = _class$14 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Circle
@@ -3271,7 +3278,7 @@ var Cone = (_temp$15 = _class$15 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Cone
@@ -3401,7 +3408,7 @@ var Cylinder = (_temp$16 = _class$16 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Cylinder
@@ -3527,7 +3534,7 @@ var Dodecahedron = (_temp$17 = _class$17 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Dodecahedron
@@ -3659,7 +3666,7 @@ var Extrude = (_temp$18 = _class$18 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Extrude
@@ -3770,7 +3777,7 @@ var Icosahedron = (_temp$19 = _class$19 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Icosahedron
@@ -3888,7 +3895,7 @@ var Lathe = (_temp$20 = _class$20 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Lathe
@@ -3979,7 +3986,7 @@ var Line$1 = (_temp$21 = _class$21 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Line
@@ -4074,14 +4081,14 @@ var Importer = (_temp$22 = _class$22 = function (_MeshComponent) {
 
     /**
      * @method filter
-     * @description Default values for parameters
+     * @description Default values for filter
      * @static
      * @param {THREE.Mesh} object Instance for iterating through it's children.
      * @param {Function} filter Function with child as argument, should return a boolean whether include the child or not.
      * @return {THREE.Mesh} object with children
      * @memberof module:components/meshes.Importer
      * @example <caption>Removing unnecessary lights from children</caption>
-     * new Icosahedron({
+     * new Importer({
      *   loader: new THREE.OBJLoader(),
      *
      *   parse(group) { // data from loader
@@ -4136,7 +4143,7 @@ var Importer = (_temp$22 = _class$22 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Importer
@@ -4151,23 +4158,18 @@ var Importer = (_temp$22 = _class$22 = function (_MeshComponent) {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
       return new Promise(function (resolve) {
-        if (params.texturePath) params.laoder.setTexturePath(params.texturePath);
+        if (params.texturePath) params.loader.setTexturePath(params.texturePath);
 
         params.loader.load(params.url, function () {
+          for (var _len = arguments.length, data = Array(_len), _key = 0; _key < _len; _key++) {
+            data[_key] = arguments[_key];
+          }
+
           // geometry, materials
-          params.onLoad.apply(params, arguments);
+          params.onLoad.apply(params, data);
 
-          var object = _this2.applyBridge({ mesh: params.parser.apply(params, arguments) }).mesh;
-
-          var _applyBridge = _this2.applyBridge({
-            geometry: object.geometry,
-            material: params.useCustomMaterial ? params.material : object.material
-          }),
-              geom = _applyBridge.geometry,
-              mat = _applyBridge.material;
-
-          if (object.geometry) object.geometry = geom;
-          if (object.material) object.material = mat;
+          var object = params.parser.apply(_this2, data);
+          if (params.material) object.material = params.material;
 
           resolve(object);
         }, params.onProgress, params.onError);
@@ -4182,14 +4184,22 @@ var Importer = (_temp$22 = _class$22 = function (_MeshComponent) {
 
   onLoad: function onLoad() {},
   onProgress: function onProgress() {},
+
+  // TODO add onComplete?
   onError: function onError() {},
 
 
   texturePath: null,
   useCustomMaterial: false,
 
-  parser: function parser(geometry, materials) {
-    return new Mesh(geometry, materials);
+  parser: function parser(geometry, material) {
+    var _applyBridge = this.applyBridge({ geom: geometry, mat: material }),
+        geom = _applyBridge.geom,
+        mat = _applyBridge.mat;
+
+    return this.applyBridge({
+      mesh: new Mesh(geom, mat)
+    }).mesh;
   }
 }), _class$22.instructions = _extends({}, MeshComponent.instructions), _temp$22);
 
@@ -4240,7 +4250,7 @@ var Octahedron = (_temp$23 = _class$23 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Octahedron
@@ -4339,7 +4349,7 @@ var Parametric = (_temp$24 = _class$24 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Parametric
@@ -4451,7 +4461,7 @@ var Plane$1 = (_temp$25 = _class$25 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Plane
@@ -4582,7 +4592,7 @@ var Polyhedron = (_temp$26 = _class$26 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Polyhedron
@@ -4701,7 +4711,7 @@ var Ring = (_temp$27 = _class$27 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Ring
@@ -4828,7 +4838,7 @@ var Shape = (_temp$28 = _class$28 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Shape
@@ -4934,7 +4944,7 @@ var Sphere = (_temp$29 = _class$29 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Sphere
@@ -5051,7 +5061,7 @@ var Tetrahedron = (_temp$30 = _class$30 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Tetrahedron
@@ -5118,8 +5128,7 @@ var _temp$31;
  * @memberof module:components/meshes
  * @example <caption>Creating a Text, and adding it to app</caption>
  * new Text({
- *   geometry: {
- *     text: 'hello world',
+ *     text: 'Some text',
  *     parameters: {
  *       font: 'path/to/font.typeface.js',
  *       size: 20,
@@ -5141,48 +5150,69 @@ var _temp$31;
  */
 var Text = (_temp$31 = _class$31 = function (_MeshComponent) {
   inherits(Text, _MeshComponent);
+  createClass(Text, null, [{
+    key: 'load',
+
+
+    /**
+     * @method load
+     * @static
+     * @description load() preloads a Font object and returns a Promise with it.
+     * @param {String} path Path to the font
+     * @return {Promise} A promise resolved with a font
+     * @memberof module:components/meshes.Text
+     */
+    value: function load(path) {
+      var loader = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Text.loader;
+
+      return new Promise(function (resolve) {
+        loader.load(path, resolve);
+      });
+    }
+
+    /**
+     * Default FontLoader
+     * @member {Object} module:components/meshes.Text#loader
+     * @static
+     * @default new FontLoader()
+     */
+
+    /**
+     * Default values for parameters
+     * @member {Object} module:components/meshes.Text#defaults
+     * @static
+     * @default <pre>
+     * {
+     *   text: 'Hello World!',
+     *   font: null,
+     *
+     *   geometry: {
+     *     size: 12,
+     *     height: 50,
+     *     curveSegments: 12,
+     *     font: new Font(),
+     *     bevelEnabled: false,
+     *     bevelThickness: 10,
+     *     bevelSize: 8
+     *   }
+     * }
+     * </pre>
+     */
+
+  }]);
 
   function Text() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     classCallCheck(this, Text);
-
-    var _this = possibleConstructorReturn(this, (Text.__proto__ || Object.getPrototypeOf(Text)).call(this, params, Text.defaults, MeshComponent.instructions));
-
-    if (params.build) {
-      _this.build(params);
-      get(Text.prototype.__proto__ || Object.getPrototypeOf(Text.prototype), 'wrap', _this).call(_this);
-    }
-    return _this;
+    return possibleConstructorReturn(this, (Text.__proto__ || Object.getPrototypeOf(Text)).call(this, params, Text.defaults, Text.instructions));
   }
 
   /**
    * @method build
-   * @description Build as part of lifecycle creates a mesh using input params.
+   * @description Build is called as part of the lifecycle to create a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Text
-   */
-
-  /**
-   * Default values for parameters
-   * @member {Object} module:components/meshes.Text#defaults
-   * @static
-   * @default <pre>
-   * {
-   *   text: 'Hello World!',
-   *   loader: new FontLoader(),
-   *
-   *   parameters: {
-   *     size: 12,
-   *     height: 50,
-   *     curveSegments: 12,
-   *     font: new Font(),
-   *     bevelEnabled: false,
-   *     bevelThickness: 10,
-   *     bevelSize: 8
-   *   }
-   * }
-   * </pre>
    */
 
 
@@ -5191,14 +5221,12 @@ var Text = (_temp$31 = _class$31 = function (_MeshComponent) {
     value: function build() {
       var _this2 = this;
 
-      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
 
       var promise = new Promise(function (resolve) {
-        params.loader.load(params.parameters.font, function (font) {
-          params.parameters.font = font;
-
+        (params.font instanceof Promise ? params.font : Promise.resolve(params.font)).then(function (font) {
           var _applyBridge = _this2.applyBridge({
-            geometry: new TextGeometry(params.text, params.parameters),
+            geometry: new TextGeometry(params.text, Object.assign(params.geometry, { font: font })),
 
             material: params.material
           }),
@@ -5219,9 +5247,9 @@ var Text = (_temp$31 = _class$31 = function (_MeshComponent) {
   return Text;
 }(MeshComponent), _class$31.defaults = _extends({}, MeshComponent.defaults, {
   text: 'Hello World!',
-  loader: new FontLoader(),
+  font: null,
 
-  parameters: {
+  geometry: {
     size: 12,
     height: 50,
     curveSegments: 12,
@@ -5230,7 +5258,7 @@ var Text = (_temp$31 = _class$31 = function (_MeshComponent) {
     bevelThickness: 10,
     bevelSize: 8
   }
-}), _temp$31);
+}), _class$31.instructions = _extends({}, MeshComponent.instructions), _class$31.loader = new FontLoader(), _temp$31);
 
 var _class$32;
 var _temp$32;
@@ -5294,7 +5322,7 @@ var Torus = (_temp$32 = _class$32 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Torus
@@ -5417,7 +5445,7 @@ var Torusknot = (_temp$33 = _class$33 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Torusknot
@@ -5554,7 +5582,7 @@ var Tube = (_temp$34 = _class$34 = function (_MeshComponent) {
 
   /**
    * @method build
-   * @description Build livecycle creates a mesh using input params.
+   * @description Build lifecycle creates a mesh using input params.
    * @param {Object} params Component parameters.
    * @return {THREE.Mesh} Built mesh
    * @memberof module:components/meshes.Tube
@@ -5738,29 +5766,30 @@ var _initialiseProps;
  * new App([
  *   new ElementModule(),
  *   new SceneModule(),
- *   new CameraModule({
+ *   new DefineModule('camera', new PerspectiveCamera({
  *     position: new THREE.Vector3(0, 6, 18),
  *     far: 10000
- *   }),
+ *   })),
  *   new RenderingModule({
  *     bgColor: 0x162129,
  *
  *     renderer: {
- *       antialias: true,
- *       shadowmap: {
- *         type: THREE.PCFSoftShadowMap
- *       }
+ *       antialias: true
  *     }
  *   }, {shadow: true})
  * ]);
  */
 var RenderingModule = (_temp$35 = _class$35 = function () {
+  /**
+   * additional
+   * @description collection of additional scripts
+   * @static
+   * @member {Object} module:core.App#additional
+   * @public
+   */
   function RenderingModule() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { shadow: false },
-        isShadow = _ref.shadow;
-
+    var additional = arguments[1];
     classCallCheck(this, RenderingModule);
 
     _initialiseProps.call(this);
@@ -5775,7 +5804,8 @@ var RenderingModule = (_temp$35 = _class$35 = function () {
       bgColor: 0x000000,
       bgOpacity: 1,
 
-      renderer: {}
+      renderer: {},
+      fix: function fix() {}
     }, params);
 
     var _params = this.params,
@@ -5785,28 +5815,57 @@ var RenderingModule = (_temp$35 = _class$35 = function () {
         pixelRatio = _params.pixelRatio,
         width = _params.width,
         height = _params.height,
-        resolution = _params.resolution;
+        resolution = _params.resolution,
+        fix = _params.fix;
 
 
     this.renderer = new WebGLRenderer(renderer);
     this.effects = [];
-    this.applyAdditional('shadow', isShadow);
 
     this.renderer.setClearColor(bgColor, bgOpacity);
 
     if (pixelRatio) this.renderer.setPixelRatio(pixelRatio);
 
     this.setSize(Number(width * resolution.x).toFixed(), Number(height * resolution.y).toFixed());
+
+    for (var key in additional) {
+      if (additional[key]) this.applyAdditional(key);
+    }fix(this.renderer);
   }
+
+  /**
+   * @method applyAdditional
+   * @description Apply additional script from RenderingModule.additional
+   * @param {Stirng} name Script name
+   * @return {this}
+   * @memberof module:modules/app.RenderingModule
+   */
+
+
+  /**
+   * enabled
+   * @static
+   * @member {Boolean} module:core.App#enabled
+   * @public
+   */
+
 
   createClass(RenderingModule, [{
     key: 'applyAdditional',
     value: function applyAdditional(name) {
-      var isApplied = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-      if (!isApplied) return;
       RenderingModule.additional[name].apply(this, [this.renderer]);
     }
+
+    /**
+     * @method integrateRenderer
+     * @description Integrate renderer
+     * @param {NodeElement} element DOM object
+     * @param {THREE.Scene} scene used scene
+     * @param {THREE.Camera} camera used camera
+     * @return {Loop} renderLoop
+     * @memberof module:modules/app.RenderingModule
+     */
+
   }, {
     key: 'integrateRenderer',
     value: function integrateRenderer(element, scene, camera) {
@@ -5814,31 +5873,42 @@ var RenderingModule = (_temp$35 = _class$35 = function () {
 
       this.scene = scene;
       this.camera = camera;
-      this.renderLoop = new Loop(function () {
-        return _this.renderer.render(_this.scene, _this.camera);
-      });
       this.attachToCanvas(element);
 
-      return this.renderLoop;
+      return new Loop(function () {
+        return _this.renderer.render(_this.scene, _this.camera);
+      });
     }
+
+    /**
+     * @method effect
+     * @description Add three.js effect
+     * @param {Object} effect three.js effect
+     * @param {function} effectLoop update function for effect
+     * @return {this}
+     * @memberof module:modules/app.RenderingModule
+     */
+
   }, {
     key: 'effect',
-    value: function effect(_effect, cb) {
+    value: function effect(_effect) {
       var _this2 = this;
 
-      this.defer.then(function () {
-        _this2.renderLoop.stop();
+      var effectLoop = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {
+        _effect.render(_this2.scene, _this2.camera);
+      };
 
-        var size = _this2.renderer.getSize();
-        _effect.setSize(size.width, size.height);
+      this.renderLoop.stop();
 
-        var loop = new Loop(cb ? cb : function () {
-          _effect.render(_this2.scene, _this2.camera);
-        });
+      var size = this.renderer.getSize();
+      _effect.setSize(size.width, size.height);
 
-        _this2.effects.push(loop);
-        if (_this2.enabled) loop.start(_this2.app);
-      });
+      var loop = new Loop(effectLoop);
+
+      this.effects.push(loop);
+      if (this.enabled) loop.start(this.app);
+
+      return this;
     }
 
     /**
@@ -5854,6 +5924,14 @@ var RenderingModule = (_temp$35 = _class$35 = function () {
     value: function setSize(width, height) {
       if (this.renderer) this.renderer.setSize(width, height);
     }
+
+    /**
+     * @method attachToCanvas
+     * @description Attach renderer.domElement to element
+     * @param {NodeElement} element DOM object
+     * @memberof module:modules/app.RenderingModule
+     */
+
   }, {
     key: 'attachToCanvas',
     value: function attachToCanvas(element) {
@@ -5864,6 +5942,13 @@ var RenderingModule = (_temp$35 = _class$35 = function () {
       canvas.style.width = '100%';
       canvas.style.height = '100%';
     }
+
+    /**
+     * @method stop
+     * @description Stops renderLoop and effect loops
+     * @memberof module:modules/app.RenderingModule
+     */
+
   }, {
     key: 'stop',
     value: function stop() {
@@ -5873,9 +5958,17 @@ var RenderingModule = (_temp$35 = _class$35 = function () {
         return loop.stop();
       });
     }
+
+    /**
+     * @method play
+     * @description Resumes renderLoop and effect loops
+     * @memberof module:modules/app.RenderingModule
+     */
+
   }, {
     key: 'play',
     value: function play() {
+      this.enabled = true;
       this.renderLoop.start();
       this.effects.forEach(function (loop) {
         return loop.start();
@@ -5904,8 +5997,6 @@ var RenderingModule = (_temp$35 = _class$35 = function () {
           _this3.camera = _camera.native;
         }
       });
-
-      this.resolve();
     }
   }, {
     key: 'integrate',
@@ -5917,16 +6008,18 @@ var RenderingModule = (_temp$35 = _class$35 = function () {
         return loop.start(_this4);
       });
     }
+
+    /**
+     * @method dispose
+     * @description Dispose rendering context
+     * @memberof module:modules/app.RenderingModule
+     */
+
   }, {
     key: 'dispose',
-    value: function dispose(self) {
-      var _this5 = this;
-
-      self.renderLoop.stop(this);
-      self.effects.forEach(function (loop) {
-        return loop.stop(_this5);
-      });
-      self.renderer.forceContextLoss();
+    value: function dispose() {
+      this.stop();
+      this.renderer.forceContextLoss();
     }
   }]);
   return RenderingModule;
@@ -5935,12 +6028,7 @@ var RenderingModule = (_temp$35 = _class$35 = function () {
     renderer.shadowMap.enabled = true;
   }
 }, _initialiseProps = function _initialiseProps() {
-  var _this6 = this;
-
   this.enabled = true;
-  this.defer = new Promise(function (resolve) {
-    _this6.resolve = resolve;
-  });
 }, _temp$35);
 
 /**
@@ -7530,6 +7618,9 @@ class EffectComposer {
  * @module postprocessing
  */
 
+var _class$36;
+var _temp$36;
+
 var polyfill = function polyfill(object, method) {
   var showWarn = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
@@ -7538,20 +7629,43 @@ var polyfill = function polyfill(object, method) {
   object[method] = function () {};
 };
 
-var PostProcessorModule = function () {
+/**
+ * @class PostProcessorModule
+ * @category modules/app
+ * @param {Object} [params]
+ * @memberof module:modules/app
+ * @example <caption> Creating a rendering module and passing it to App's modules</caption>
+ * new App([
+ *   new ElementModule(),
+ *   new SceneModule(),
+ *   new DefineModule('camera', new WHS.PerspectiveCamera({
+ *     position: new THREE.Vector3(0, 6, 18),
+ *     far: 10000
+ *   })),
+ *   new RenderingModule(),
+ *   new PostProcessorModule()
+ * ]);
+ *
+ * const processor = app.use('postprocessor');
+ *
+ * processor
+ *   .render()
+ *   .pass(new GlitchPass())
+ *   .renderToScreen()
+ */
+var PostProcessorModule = (_temp$36 = _class$36 = function () {
   function PostProcessorModule() {
     var _this = this;
 
-    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { debug: true },
-        debug = _ref.debug;
-
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : PostProcessorModule.defaults;
     classCallCheck(this, PostProcessorModule);
     this.currentPass = null;
     this.defer = new Promise(function (resolve) {
       _this.resolve = resolve;
     });
 
-    this.debug = debug;
+    this.debug = params.debug;
+    this.params = params;
   }
 
   createClass(PostProcessorModule, [{
@@ -7566,7 +7680,7 @@ var PostProcessorModule = function () {
       this.scene = _manager.get('scene');
       this.camera = _manager.get('camera');
 
-      this.composer = new EffectComposer(this.renderer);
+      this.composer = new EffectComposer(this.renderer, this.params);
 
       _manager.use('rendering').stop();
 
@@ -7591,6 +7705,14 @@ var PostProcessorModule = function () {
 
       this.resolve();
     }
+
+    /**
+     * @method render
+     * @description Adds RenderPass
+     * @return {this}
+     * @memberof module:modules/app.PostProcessorModule
+     */
+
   }, {
     key: 'render',
     value: function render() {
@@ -7608,7 +7730,13 @@ var PostProcessorModule = function () {
       return this;
     }
 
-    // API
+    /**
+     * @method pass
+     * @description Adds your custom pass
+     * @param {Pass} pass A custom pass
+     * @return {this}
+     * @memberof module:modules/app.PostProcessorModule
+     */
 
   }, {
     key: 'pass',
@@ -7625,6 +7753,16 @@ var PostProcessorModule = function () {
 
       return this;
     }
+
+    /**
+     * @method shader
+     * @description Adds a pass made from shader material
+     * @param {Material} material A ShaderMaterial
+     * @param {String} textureID Name of the readBuffer uniform
+     * @return {this}
+     * @memberof module:modules/app.PostProcessorModule
+     */
+
   }, {
     key: 'shader',
     value: function shader(material) {
@@ -7636,6 +7774,7 @@ var PostProcessorModule = function () {
         if (!material.uniforms[textureID]) material.uniforms[textureID] = { value: null };
 
         var pass = new ShaderPass(material, textureID);
+
         _this5.composer.addPass(pass);
         _this5.currentPass = pass;
       });
@@ -7643,7 +7782,13 @@ var PostProcessorModule = function () {
       return this;
     }
 
-    // Pass API
+    /**
+     * @method get
+     * @description Returns a pass by the given name
+     * @param {String} name The name of the pass
+     * @return {this}
+     * @memberof module:modules/app.PostProcessorModule
+     */
 
   }, {
     key: 'get',
@@ -7652,11 +7797,15 @@ var PostProcessorModule = function () {
         return pass.name === name;
       })[0] : this.currentPass;
     }
-  }, {
-    key: 'to',
-    value: function to(name) {
-      this.currentPass = name;
-    }
+
+    /**
+     * @method renderToScreen
+     * @description Sets the renderToScreen property of currentPass
+     * @param {String} [name=true] The name of the pass
+     * @return {this}
+     * @memberof module:modules/app.PostProcessorModule
+     */
+
   }, {
     key: 'renderToScreen',
     value: function renderToScreen() {
@@ -7670,21 +7819,18 @@ var PostProcessorModule = function () {
 
       return this;
     }
-  }, {
-    key: 'name',
-    value: function name(_name) {
-      var _this7 = this;
-
-      this.defer.then(function () {
-        _this7.currentPass.name = _name;
-      });
-
-      return this;
-    }
   }]);
   return PostProcessorModule;
-}();
+}(), _class$36.defaults = {
+  debug: true
+}, _temp$36);
 
+/**
+ * @class EventsPatchModule
+ * @description This one is used in the core to handle events used by modules. If you want to make custom events - please make a similar one.
+ * @category modules/app
+ * @memberof module:modules/app
+ */
 var EventsPatchModule = function () {
   function EventsPatchModule() {
     classCallCheck(this, EventsPatchModule);
@@ -7696,9 +7842,20 @@ var EventsPatchModule = function () {
       _manager.define('events');
       this.element = _manager.get('renderer').domElement;
     }
+
+    /**
+     * @function patchEvents
+     * @description This methods patches the list of events on specific object.
+     * @param {Number} originObject - The object that gives events.
+     * @param {Number} [destObject=this] - The object that takes events.
+     * @param {Array[Strings]} [events=[]] - The list of events by names.
+     * @memberof module:modules/app.EventsPatchModule
+     */
+
   }, {
     key: 'patchEvents',
-    value: function patchEvents(originObject, destObject) {
+    value: function patchEvents(originObject) {
+      var destObject = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this;
       var events = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
       events.forEach(function (event) {
@@ -7714,9 +7871,7 @@ var EventsPatchModule = function () {
           patchEvents = self.patchEvents;
 
 
-      patchEvents(element, this, ['mousemove', 'mouseup', 'contextmenu', 'mousedown', 'click', 'wheel', 'touchstart', 'touchend', 'touchmove', 'keydown']);
-
-      patchEvents(element, this, ['keydown', 'keyup', 'keypress']);
+      patchEvents(element, this, ['mousemove', 'mouseup', 'contextmenu', 'mousedown', 'click', 'wheel', 'touchstart', 'touchend', 'touchmove', 'keydown', 'keyup', 'keypress']);
     }
   }]);
   return EventsPatchModule;
@@ -7799,6 +7954,15 @@ var VirtualMouseModule = function (_Events) {
         } else self.update(e);
       });
     }
+
+    /**
+     * @method track
+     * @description Starts tracking events on a component
+     * @param {Component} component A component, that should be tracked by the mouse
+     * @param {Boolean} nested Whether component's children should be tracked or not
+     * @memberof module:modules/app.VirtualMouseModule
+     */
+
   }, {
     key: 'track',
     value: function track(component) {
@@ -7832,6 +7996,16 @@ var VirtualMouseModule = function (_Events) {
         if (isHovered) component.emit('mouseup');
       });
     }
+
+    /**
+     * @method intersection
+     * @description Returns an intersection data
+     * @param {Component} component A component that intersects with mouse ray (or doesn't)
+     * @param {Boolean} nested Whether component's children should be tracked or not
+     * @return {Array} intersection data.
+     * @memberof module:modules/app.VirtualMouseModule
+     */
+
   }, {
     key: 'intersection',
     value: function intersection(_ref) {
@@ -7849,13 +8023,34 @@ var VirtualMouseModule = function (_Events) {
 
       return this.raycaster.intersectObject(native);
     }
+
+    /**
+     * @method project
+     * @description Returns a vector based on mouse ray intersection with plane
+     * @param {THREE.Plane} [plane=this.projectionPlane] Math plane that is used
+     * @param {Vector3} [target] Optional target
+     * @return {Vector3} An intersection point.
+     * @memberof module:modules/app.VirtualMouseModule
+     */
+
   }, {
     key: 'project',
     value: function project() {
       var plane = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.projectionPlane;
+      var target = arguments[1];
 
-      return this.raycaster.ray.intersectPlane(plane);
+      return this.raycaster.ray.intersectPlane(plane, target);
     }
+
+    /**
+     * @method hovers
+     * @description Returns a boolean based on intersection data (Whether mouse hovers the component)
+     * @param {Component} component A component that intersects with mouse ray (or doesn't)
+     * @param {Boolean} nested Whether component's children should be tracked or not
+     * @return {Boolean} Whether the component is hovered.
+     * @memberof module:modules/app.VirtualMouseModule
+     */
+
   }, {
     key: 'hovers',
     value: function hovers(component) {
@@ -7863,16 +8058,37 @@ var VirtualMouseModule = function (_Events) {
 
       return this.intersection(component, nested).length > 0;
     }
+
+    /**
+     * Mouse ray
+     * @member {THREE.Ray} module:modules/app.VirtualMouseModule#ray
+     * @public
+     */
+
   }, {
     key: 'ray',
     get: function get$$1() {
       return this.raycaster.ray;
     }
+
+    /**
+     * Mouse x [-1; 1]
+     * @member {Number} module:modules/app.VirtualMouseModule#x
+     * @public
+     */
+
   }, {
     key: 'x',
     get: function get$$1() {
       return this.mouse.x;
     }
+
+    /**
+     * Mouse y [-1; 1]
+     * @member {Number} module:modules/app.VirtualMouseModule#y
+     * @public
+     */
+
   }, {
     key: 'y',
     get: function get$$1() {
@@ -7881,6 +8097,24 @@ var VirtualMouseModule = function (_Events) {
   }]);
   return VirtualMouseModule;
 }(minivents_commonjs);
+
+/**
+ * @class ControlsModule
+ * @category modules/app
+ * @param {Object} [params]
+ * @memberof module:modules/app
+ * @example <caption> Creating a rendering module and passing it to App's modules</caption>
+ * new App([
+ *   new ElementModule(),
+ *   new SceneModule(),
+ *   new DefineModule('camera', new WHS.PerspectiveCamera({
+ *     position: new THREE.Vector3(0, 6, 18),
+ *     far: 10000
+ *   })),
+ *   new RenderingModule(),
+ *   new ControlsModule.from(new THREE.TrackballControls())
+ * ]);
+ */
 
 var ControlsModule = function () {
   createClass(ControlsModule, null, [{
@@ -7912,16 +8146,35 @@ var ControlsModule = function () {
   createClass(ControlsModule, [{
     key: 'manager',
     value: function manager(_manager) {
+      _manager.define('controls');
       _manager.require('events', function () {
         return new EventsPatchModule();
       });
     }
+
+    /**
+     * @method setControls
+     * @description Set working controls
+     * @param {Object} controls Working three.js controls object.
+     * @return {this}
+     * @memberof module:modules/app.ControlsModule
+     */
+
   }, {
     key: 'setControls',
     value: function setControls(controls) {
       this.controls = controls;
       return this;
     }
+
+    /**
+     * @method setUpdate
+     * @description Set controls update function
+     * @param {Function} update Update function
+     * @return {this}
+     * @memberof module:modules/app.ControlsModule
+     */
+
   }, {
     key: 'setUpdate',
     value: function setUpdate(update) {
@@ -8060,7 +8313,7 @@ var StateModule = function () {
     /**
      * @method setEqualCheck
      * @description Sets an equalCheck function
-     * @param {Object} data Configuration setup
+     * @param {Function} func function to generate equal check
      * @memberof module:modules/app.StateModule
      */
 
@@ -8188,7 +8441,7 @@ var StateModule = function () {
      * @description Return `trueVal` if `config` match previous configuration, in other case - return `falseVal`.
      * @param {String} config Configuration name.
      * @param {Any} trueVal Value returned if condition is truthy.
-     * @param {Any} falseVal CValue returned if condition is falsy.
+     * @param {Any} falseVal Value returned if condition is falsy.
      * @memberof module:modules/app.StateModule
      */
 
@@ -8203,7 +8456,7 @@ var StateModule = function () {
      * @description Return `trueVal` if `config` match current configuration, in other case - return `falseVal`.
      * @param {String} config Configuration name.
      * @param {Any} trueVal Value returned if condition is truthy.
-     * @param {Any} falseVal CValue returned if condition is falsy.
+     * @param {Any} falseVal Value returned if condition is falsy.
      * @memberof module:modules/app.StateModule
      */
 
@@ -9008,6 +9261,27 @@ var ThreeOrbitControls = function (_EventDispatcher) {
   return ThreeOrbitControls;
 }(EventDispatcher);
 
+/**
+ * @class OrbitControlsModule
+ * @category modules/app
+ * @param {Object} [params]
+ * @param {Object} [params.object=camera] Object to which controls are applied.
+ * @param {THREE.Vector3} [params.target=new Vector3()] Controls center vector.
+ * @param {Boolean} [params.follow=false] Follow the target
+ * @memberof module:modules/app
+ * @example <caption> Creating a rendering module and passing it to App's modules</caption>
+ * new App([
+ *   new ElementModule(),
+ *   new SceneModule(),
+ *   new DefineModule('camera', new WHS.PerspectiveCamera({
+ *     position: new THREE.Vector3(0, 6, 18),
+ *     far: 10000
+ *   })),
+ *   new RenderingModule(),
+ *   new OrbitControlsModule()
+ * ]);
+ */
+
 var OrbitControlsModule = function (_ControlsModule) {
   inherits(OrbitControlsModule, _ControlsModule);
 
@@ -9020,7 +9294,7 @@ var OrbitControlsModule = function (_ControlsModule) {
     _this.params = Object.assign({
       follow: false,
       object: null,
-      target: new Vector3(0, 0, 0)
+      target: new Vector3()
     }, params);
     return _this;
   }
