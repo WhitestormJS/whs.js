@@ -39,7 +39,7 @@ export class LODModule {
   manager(manager) {
     //manager.define('animation');
     var z = 0;
-    this.scene = manager.get('camera');
+    this.scene = this.app.manager.get('camera');
   }
 
   bridge = {
