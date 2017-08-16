@@ -9,6 +9,7 @@ export * from './EventsPatchModule';
 export * from './ControlsModule';
 export * from './FogModule';
 export * from './StateModule';
+export * from './LODModule';
 
 // controls
 export * from './controls/index';
