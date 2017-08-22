@@ -1,0 +1,8 @@
+node_modules/
+src/
+test/
+lib/
+.github/
+.happypack/
+.git/
+media/

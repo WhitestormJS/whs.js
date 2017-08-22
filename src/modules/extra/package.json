@@ -1,0 +1,31 @@
+{
+  "name": "whs-modules",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "del ../../../modules/*.js !../../../modules/*.config.js --force && rollup -c rollup.modules.config.js",
+    "start": "rollup -c rollup.modules.config.js -w -m inline"
+  },
+  "author": "Alexander Buzin",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "dat-gui": "^0.5.0",
+    "dat.gui": "^0.6.1",
+    "fps": "0.0.3",
+    "minivents": "^2.1.0",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "stats.js": "^0.17.0",
+    "three-vrcontrols-module": "^2.0.1"
+  }
+}

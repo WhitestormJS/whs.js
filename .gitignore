@@ -1,9 +1,16 @@
-# https://git-scm.com/docs/gitignore
-# https://help.github.com/articles/ignoring-files
-# Example .gitignore files: https://github.com/github/gitignore
-/bower_components/
-/node_modules/
-/examples/test/
-.imdone/
-.sass-cache/
-.todo
+.DS_Store
+.happypack
+.ide
+
+node_modules
+
+npm-debug.log
+
+examples/index.html
+examples/layout.html
+examples/**/**/index.html
+examples/**/**/bundle.js
+examples/css/
+docs/public/
+
+coverage

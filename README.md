@@ -1,119 +1,207 @@
+<img src="http://i.imgur.com/EgdbmwO.png" width="40%"></img>
 
 
-<p align="center"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/logo/big-inverse.png"></p>
+[![](https://img.shields.io/github/release/WhitestormJS/whitestorm.js.svg?style=flat-square)](https://github.com/WhitestormJS/whitestorm.js/releases)
+[![Three][three]][three-url]
+[![Build Status][travis]][travis-url]
 
-<p align="center">
-    <a href="https://travis-ci.org/WhitestormJS/whitestorm.js" align="center">
-        <img src="https://travis-ci.org/WhitestormJS/whitestorm.js.svg">
-    </a>&nbsp;&nbsp;
-    <a href="https://www.npmjs.com/package/whitestormjs"><img src="http://wsbadge.herokuapp.com/npm/v/whitestormjs.svg"></a>&nbsp;&nbsp;          
-    <a href="https://github.com/WhitestormJS/whitestorm.js"><img src="http://wsbadge.herokuapp.com/bower/v/whitestormjs.svg"></a>&nbsp;&nbsp;
-    <a href="https://whslack.herokuapp.com/"><img src="https://whslack.herokuapp.com/badge.svg"></a>
-    <br>
+- [Documentation](http://whsjs.io/)
+- [Examples](https://whs-dev.surge.sh/examples/)
 
-    <p align="center"><i><b>Framework for developing 3D web apps with physics.</b></i></p>
-</p>
+Community chat. [Join us!][discord-url]
 
-<br>
+[![Discord][discord]][discord-url]
 
-------
+### Table of content
 
-## Features
-
-* **Simple shape crafting** — We use JSON-like structure for creating objects by inputed data and adding them to 3d world.
-
-<p align="center">
-    <img src="http://whitestormjs.xyz/images/shapes/dodecahedron.gif" height="100" alt="dodecahedron"> 
-    <img src="http://whitestormjs.xyz/images/shapes/polyhedron.gif" height="100" alt="polyhedron">
-    <img src="http://whitestormjs.xyz/images/shapes/icosahedron.gif" height="100" alt="icosahedron"> 
-    <img src="http://whitestormjs.xyz/images/shapes/tetrahedron.gif" height="100" alt="tetrahedron">
-</p>
-
-* **Physics with WebWorkers** — It uses [Physi.js](https://github.com/chandlerprall/Physijs/blob/master/physi.js) library for calculating physics of 3D shapes with **WebWorkers technology** that allows to make rendering an calculating physics in multiple threads.
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://i.imgur.com/LN1Ymsz.gif" height="100">
-
-* **Plugin system** — Framework supports *plugins & components* made by other users. You need to include them after whitestorm.js and follow provided instructions.
-
-* **Automatization of rendering** — Framework does rendering automatically and doesn't need function to be called for it. Functionality like `resize` function can be called automatically by setting additional parameters such as `autoresize: true`.
-
-* **ES6 Features** - Framework is written with using latest features of ECMAScript 6 and ECMAScript 7 (beta) features and compiled with [Babel](https://babeljs.io/).
-<p align="center"><img src="http://blog.makersquare.com/wp-content/uploads/2015/06/es6-logo.png" height="100" alt="es6">&nbsp;&nbsp; &nbsp;&nbsp; 
-<img src="https://cms-assets.tutsplus.com/uploads/users/16/posts/24511/preview_image/babel-1.png" height="100" alt="babel"></p>
+- [Basic setup](#basic-setup)
+   - [npm](#npm)
+- [Featured projects](#featured-projects)
+- [Features](#features)
+- [Donate](#donate)
+- [Why?](/.github/WHY.md)
 
 
-## Installation
+### Basic setup
 
-> It is advised to download your own copies of the following libraries, as large changes can break backwards compatibility.
-
-Include [Three.js](http://threejs.org/build/three.min.js) and [Physi.js](https://github.com/chandlerprall/Physijs/blob/master/physi.js) libraries.
-Include a script tag linking the [WhitestormJS](https://cdn.jsdelivr.net/whitestormjs/latest/whitestorm.min.js) library in your `head` or after your `body`:
+Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/whs.js/dev/build/whs.min.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
 
 ```html
-<script src="three.js"></script>
-<script src="physi.js"></script>
-<!-- WhitestormJS library -->
-<script src="{path_to_lib}/whitestorm.js"></script>
+<script src="js/three.min.js"></script>
+<script src="js/whs.min.js"></script>
 ```
 
-After adding these libraries, you can configure your app:
-```javascript
-var world = new WHS.World({
-    stats: "fps", // fps, ms, mb or false if not need.
+The code below makes a `WHS.App` instance which handles all your [modules]() and components for better work with `WebGL`. This one creates a _scene_, _camera_ and _renderer_ - we add the following modules to the App.
 
-    gravity: { // Physic gravity.
-        x: 0,
-        y: -100,
-        z: 0
-    },
+```js
+const app = new WHS.App([
+  new WHS.ElementModule(), // Apply to DOM.
+  new WHS.SceneModule(), // Create a new THREE.Scene and set it to app.
 
-    path_worker: 'physijs_worker.js', // Path to Physijs worker here.
-    path_ammo: 'ammo.js' // Path to Ammo.js from Physijs worker.
-});
+  new WHS.DefineModule('camera', new WHS.PerspectiveCamera({ // Apply a camera.
+    position: new Vector3(0, 0, 50)
+  })),
 
-// Define your scene objects here.
+  new WHS.RenderingModule({bgColor: 0x162129}), // Apply THREE.WebGLRenderer
+  new WHS.ResizeModule() // Make it resizable.
+]);
 
-world.start(); // Start animations and physics simulation.
+app.start(); // Run app.
 ```
 
-[![Join the chat at https://gitter.im/WhitestormJS/whitestorm.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WhitestormJS/whitestorm.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+<a href="http://codepen.io/sasha240100/pen/JELBGX"><img src="http://blog.codepen.io/wp-content/uploads/2012/06/TryItOn-CodePen.png" height="50" /></a>
 
-##### Documentation: [Look here](http://whitestormjs.xyz//)
 
-<br>
+#### NPM
 
-## Game example
-<a href="http://192.241.128.187/current/examples/fps.html" target="_blank"><img src="https://raw.githubusercontent.com/WhitestormJS/whitestorm.js/master/development/art/splash.png"></a>
+```bash
+# Install npm version
+$ npm install whs
+```
 
-## Other examples:
- * [FPS](http://192.241.128.187/current/examples/fps_fog.html)  (First person example with Wagner effects and terrain. + fog)
- * [Basic](http://192.241.128.187/current/examples/basic.html)  (Basic "Hello world!" example.)
- * [Physics/Dominos](http://192.241.128.187/current/examples/physics.html)  (Physics example with dominos.)
- * [Debugging](http://192.241.128.187/current/examples/debugging.html)  (Object's debug example.)
- * [Object/Model](http://192.241.128.187/current/examples/basic_model.html)  (Teapot model with *Three.js* JSONLoader.)
- * [Plugin/Color](http://192.241.128.187/current/examples/plugin_example.html)  (Basic plugin example.)
- * [Skybox](http://192.241.128.187/current/examples/skybox.html) (Skybox example)
+[![NPM Version][npm]][npm-url]
 
-##### Changelog: [Look here](https://github.com/WhitestormJS/whitestorm.js/blob/master/CHANGELOG.md)
+### Featured projects
 
-----
+<a href="http://abdaily.surge.sh/4/">
+  <img src="http://whsjs.io/images/showcase/daily4.png" alt="http://abdaily.surge.sh/4/" width="30%" />
+</a>
 
-### Contributors:
-[![Author](http://wsbadge.herokuapp.com/badge/Author-Alexander%20Buzin-red.svg)](https://github.com/sasha240100)
+<a href="http://abdaily.surge.sh/3/">
+  <img src="http://whsjs.io/images/showcase/daily3.png" alt="http://abdaily.surge.sh/3/" width="30%" />
+</a>
 
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-jackdalton-blue.svg)](https://github.com/jackdalton)
+<a href="http://abdaily.surge.sh/2/">
+  <img src="http://whsjs.io/images/showcase/daily2.png" alt="http://abdaily.surge.sh/2/" width="30%" />
+</a>
 
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-Noctisdark-blue.svg)](https://github.com/noctisdark)
+<a href="http://abdaily.surge.sh/1/">
+  <img src="http://whsjs.io/images/showcase/daily1.png" alt="http://abdaily.surge.sh/1/" width="30%" />
+</a>
 
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-bdirl-blue.svg)](https://github.com/bdirl)
+<a href="http://theroguepixel.com/">
+  <img src="http://whsjs.io/images/showcase/roguepixel.jpg" alt="http://theroguepixel.com/" width="30%" />
+</a>
 
-[![Contributor](http://wsbadge.herokuapp.com/badge/Contributor-t4r0-blue.svg)](https://github.com/t4r0)
+<a href="http://supertiny.agency/">
+  <img src="http://whsjs.io/images/showcase/supertiny.jpg" alt="http://supertiny.agency/" width="30%" />
+</a>
 
-<br>
+<a href="https://alexbuzin.me/">
+  <img src="http://whsjs.io/images/showcase/alexbuzinme.jpg" alt="https://alexbuzin.me/" width="30%" />
+</a>
 
-## License
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Лицензия Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />
+<a href="https://spatial.100shapes.com/">
+  <img src="http://whsjs.io/images/showcase/spatial.jpg" alt="https://spatial.100shapes.com/" width="30%" />
+</a>
 
-<br>
+<a href="http://plateaux.space/">
+  <img src="http://whsjs.io/images/showcase/plateux.jpg" alt="http://plateaux.space/" width="30%" />
+</a>
 
-[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://alexbuzin.me/)
+
+### Features
+
+* 💎 **Simple in usage**
+* :rocket: Speeds up 3D scene prototyping
+* 🔌  **Component based scene graph**
+* 💣 Simple integration of any **high performance physics** even with `Worker` (Multithreading)
+* :dizzy: Automatization of rendering
+* 🆕 **ES2015+ based**
+* :large_blue_diamond: Extension system (modules)
+* :package: [Webpack](https://whsjs.io/Usage%20with%20webpack.html) friendly
+* ✔️ **Integrated [Three.js](https://threejs.org/) rendering engine**
+* :revolving_hearts: Work with whs.js and Three.js at the same time
+
+### External Modules
+
+|Name|Status|Description|
+|:--:|:----:|:----------|
+|[whs-module-statsjs][statsjs]|![statsjs-npm]|WhitestormJS module for JavaScript Performance Monitor ⚡⌛|
+|[whs-module-dat.gui][datgui]|![datgui-npm]|User Interface for runtime editing properties 🔑🛠🔩|
+|[physics-module-ammonext][physics-ammonext]|![physics-ammonext-npm]|Physics module based on [Ammo.js](https://github.com/kripken/ammo.js/)|
+|[whs-module-audio][audio]| WIP |Audio module for 3D positional sound 🔉|
+|[whs-vrkit][vrkit]|![physics-ammonext-npm]|Module for Virtual Reality|
+
+[statsjs]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-statsjs
+[statsjs-npm]: https://img.shields.io/npm/v/whs-module-statsjs.svg?style=flat-square
+[datgui]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-dat.gui
+[datgui-npm]: https://img.shields.io/npm/v/whs-module-dat.gui.svg?style=flat-square
+[physics-ammonext]: https://github.com/WhitestormJS/physics-module-ammonext
+[physics-ammonext-npm]: https://img.shields.io/npm/v/physics-module-ammonext.svg?style=flat-square
+[audio]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-audio
+[vrkit]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-vrkit
+[vrkit-npm]: https://img.shields.io/npm/v/whs-vrkit.svg?style=flat-square
+
+### Donate
+
+[![OpenCollective Backers][backer-badge]][backer-url]
+[![OpenCollective Sponsors][sponsor-badge]][sponsor-url]
+
+#### Backers
+
+Support us with a monthly donation and help us continue framework development🎉 and adding new features💡🎁.
+
+
+<a href="https://opencollective.com/whitestormjs/backer/0/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/0/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/1/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/1/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/2/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/2/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/3/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/3/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/4/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/4/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/5/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/5/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/6/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/6/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/7/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/7/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/8/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/8/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/9/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/9/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/10/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/10/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/11/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/11/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/12/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/12/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/13/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/13/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/14/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/14/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/15/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/15/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/16/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/16/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/17/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/17/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/18/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/18/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/19/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/19/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/20/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/20/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/21/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/21/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/22/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/22/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/23/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/23/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/24/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/24/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/25/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/25/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/26/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/26/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/27/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/27/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/28/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/28/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/29/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/29/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/30/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/30/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/31/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/31/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/32/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/32/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/33/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/33/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/34/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/34/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/35/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/35/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/36/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/36/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/37/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/37/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/38/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/38/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/39/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/39/avatar"></a>
+<a href="https://opencollective.com/whitestormjs/backer/40/website" target="_blank"><img src="https://opencollective.com/whitestormjs/backer/40/avatar"></a>
+
+[xo]: https://img.shields.io/badge/code_style-XO-5ed9c7.svg?style=flat-square
+[xo-url]: https://github.com/sindresorhus/xo
+
+[three]: https://img.shields.io/badge/three-r86-blue.svg?style=flat-square
+[three-url]: https://github.com/mrdoob/three.js/
+
+[npm]: https://img.shields.io/npm/v/whs.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/whs
+
+[travis]: https://img.shields.io/travis/WhitestormJS/whs.js.svg?style=flat-square
+[travis-url]: https://travis-ci.org/WhitestormJS/whs.js?branch=develop
+
+[discord]: https://discordapp.com/api/guilds/238405369859145729/widget.png
+[discord-url]: https://discord.gg/frNetGE
+
+[backer-url]: https://opencollective.com/whitestormjs
+[backer-badge]: https://opencollective.com/whitestormjs/backers/badge.svg?color=blue
+[support-url]: https://opencollective.com/whitestormjs#support
+[sponsor-url]: https://opencollective.com/whitestormjs
+[sponsor-badge]: https://opencollective.com/whitestormjs/sponsors/badge.svg?color=blue

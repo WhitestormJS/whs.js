@@ -1,0 +1,21 @@
+markdown:
+  default: Welcome
+  order:
+    - Welcome
+    - Showcase
+    - Hello World!
+    - Loops & 3D Animation
+    - Groups
+    - 3D Transforms
+    - Usage with webpack
+    - Modules
+
+Classes:
+  order:
+    - core
+    - components/meshes
+    - components/lights
+    - components/cameras
+    - modules
+    - modules/app
+    - modules/mesh
