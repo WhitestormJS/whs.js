@@ -1,8 +1,6 @@
-import {
-  EffectComposer,
-  RenderPass,
-  ShaderPass
-} from 'postprocessing';
+import {EffectComposer} from 'postprocessing/src/core/effect-composer';
+import {RenderPass} from 'postprocessing/src/passes/render';
+import {ShaderPass} from 'postprocessing/src/passes/shader';
 
 import {Loop} from '../../core/Loop';
 

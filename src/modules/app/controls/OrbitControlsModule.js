@@ -60,6 +60,9 @@ export class OrbitControlsModule extends ControlsModule {
       camera: camera => {
         if (obj) return;
         controls.object = camera.native;
+      },
+      element: element => {
+        controls.domElement = element;
       }
     });
 
