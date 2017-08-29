@@ -185,8 +185,10 @@
       ".js$": "babel-jest"
     },
     "coveragePathIgnorePatterns": [
-      "/node_modules",
-      "src/extras/pass"
+      "/node_modules/"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules\/(?!postprocessing)/"
     ]
   }
 }
