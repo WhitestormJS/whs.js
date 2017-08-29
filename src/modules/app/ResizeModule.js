@@ -87,6 +87,12 @@ export class ResizeModule {
     this.getResolution = () => manager.use('rendering').params.resolution;
     this.getContainer = () => manager.get('container');
 
+    manager.update({
+      container: container => {
+        this.container = container;
+      }
+    });
+
     this.addAutoresize();
   }
 }

@@ -59,5 +59,4 @@ const glitchPass = new POSTPROCESSING.GlitchPass();
 postprocessor
   .render()
   .pass(glitchPass)
-  .name('glitch')
   .renderToScreen(true);
