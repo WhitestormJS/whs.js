@@ -35,9 +35,17 @@ const additional = {
     refractionRatio: 'number'
   },
 
-  light: {
+  maps: {
+    map: 'texture',
+    alphaMap: 'texture',
+    envMap: 'texture',
     lightMap: 'texture',
     lightMapIntensity: 'number'
+  },
+
+  normal: {
+    normalMap: 'texture',
+    normalScale: 'number'
   },
 
   displacement: {
@@ -50,6 +58,16 @@ const additional = {
     emissive: 'color',
     emissiveMap: 'texture',
     emissiveIntensity: 'number'
+  },
+
+  specular: {
+    specular: 'color',
+    specularMap: 'texture'
+  },
+
+  ao: {
+    aoMap: 'texture',
+    aoMapIntensity: 'number'
   }
 }
 
@@ -78,12 +96,18 @@ export default {
   },
 
   MeshLambertMaterial: add({
-    color: 'color'
-  }, 'emissive', 'refr', 'light'),
+    color: 'color',
+    skinning: 'boolean',
+    morphTargets: 'boolean',
+    morphNormals: 'boolean'
+  }, 'emissive', 'refr', 'maps', 'normal', 'specular', 'ao'),
 
   MeshPhongMaterial: add({
-    color: 'color'
-  }, 'displacement', 'emissive'),
+    color: 'color',
+    skinning: 'boolean',
+    morphTargets: 'boolean',
+    morphNormals: 'boolean'
+  }, 'displacement', 'emissive', 'maps', 'refr', 'specular', 'ao'),
 
   MeshDepthMaterial: {
 
