@@ -10,11 +10,12 @@ export class DatAPI {
         if (object[key] === object) continue;
         this.foldObject(object[key], origin[key], instance.addFolder(key));
       } else {
-        const range = '1' + '0'.repeat(value.toString().length);
+        // let range = '1' + '0'.repeat(value.toString().length);
+        // if (value.toString().indexOf('.') !== -1) range = 1;
 
         instance.add(object, key)
           .min(0)
-          .step(range > 10 ? 1 : 0.1)
+          .step(0.001)
           .onChange(onChange);
       }
     }

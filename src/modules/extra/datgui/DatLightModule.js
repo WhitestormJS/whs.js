@@ -29,8 +29,21 @@ export class DatLightModule extends DatAPI {
     light(light, self) {
       if (!self.params.light) return light;
 
-      self.foldObject(light, this.params, self.fold.addFolder('light'));
-      self.foldObject(light.shadow, this.params.shadow, self.fold.addFolder('shadow'));
+      const lightParams = Object.assign({}, this.params);
+      delete lightParams.position;
+      delete lightParams.rotation;
+      delete lightParams.shadow;
+
+      self.foldObject(light, lightParams, self.fold.addFolder('light'));
+
+      if (light.shadow) {
+        const shadowFolder = self.fold.addFolder('shadow');
+        self.foldObject(light.shadow, this.params.shadow, shadowFolder);
+
+        console.log(light);
+
+        shadowFolder.add(light, 'castShadow');
+      }
 
       return light;
     },
