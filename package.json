@@ -43,7 +43,6 @@
     "@types/node": "^8.0.4",
     "lodash-es": "^4.17.4",
     "minivents": "^2.1.0",
-    "postprocessing": "^2.2.0",
     "redux": "^3.7.1",
     "three": "^0.86.0"
   },
@@ -99,6 +98,7 @@
     "mocha": "^3.4.2",
     "nyc": "^11.0.3",
     "path": "^0.12.7",
+    "postprocessing": "^2.3.1",
     "present": "^1.0.0",
     "pug": "^2.0.0-rc.2",
     "rollup": "^0.43.0",
@@ -188,7 +188,7 @@
       "/node_modules/"
     ],
     "transformIgnorePatterns": [
-      "/node_modules\/(?!postprocessing)/"
+      "/node_modules/(?!postprocessing)/"
     ]
   }
 }
