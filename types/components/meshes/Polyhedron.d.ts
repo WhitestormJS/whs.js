@@ -10,7 +10,7 @@ import {
 } from 'three';
 
 export class PolyhedronBufferGeometry extends BufferGeometry {
-  constructor(vertices: number[], indices: number[], radius?: number, detail?: number): PolyhedronBufferGeometry;
+  constructor(vertices: number[], indices: number[], radius?: number, detail?: number);
 
   parameters: {
       vertices: number[];
