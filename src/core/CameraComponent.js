@@ -53,6 +53,17 @@ class CameraComponent extends Component {
     scale: ['x', 'y', 'z']
   };
 
+  static from(camera, params = {}) {
+    params.build = false;
+
+    const component = new CameraComponent(params);
+
+    component.native = camera;
+    component.wrap();
+
+    return component;
+  }
+
   constructor(params, defaults = CameraComponent.defaults, instructions = CameraComponent.instructions) {
     super(params, defaults, instructions);
 

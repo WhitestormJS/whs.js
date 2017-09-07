@@ -97,6 +97,18 @@ class LightComponent extends Component {
     rotation: ['x', 'y', 'z']
   };
 
+  static from(light, params = {}, wrapShadow = true) {
+    params.build = false;
+
+    const component = new LightComponent(params);
+
+    component.native = light;
+    component.wrap();
+    if (wrapShadow) component.wrapShadow();
+
+    return component;
+  }
+
   constructor(params, defaults = LightComponent.defaults, instructions = LightComponent.instructions) {
     super(params, defaults, instructions);
 
