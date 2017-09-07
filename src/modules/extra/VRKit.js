@@ -1,4 +1,5 @@
-import {Loop, ControlsModule} from 'whs';
+import {Loop, ControlsModule, CameraComponent} from 'whs';
+import {REVISION} from 'three';
 
 import {VREffect} from './vr/VREffect';
 import VRControlsNative from 'three-vrcontrols-module';
@@ -18,6 +19,8 @@ export class VRModule {
 
   manager(manager) {
     manager.define('vr');
+
+    if (REVISION > 86) console.warn('Please use VRModule2 for Three.js ^0.87.0 (r87)');
 
     const rendering = manager.use('rendering');
     const renderer = manager.get('renderer');
@@ -45,6 +48,26 @@ export class VRModule {
 		});
 
     if (button) WEBVR.getVRDisplay(display => {
+      document.body.appendChild(WEBVR.getButton(display, renderer.domElement));
+    });
+  }
+}
+
+export class VR2Module {
+  constructor() {
+    this.display = new Promise(resolve => WEBVR.getVRDisplay(display => resolve(display)));
+  }
+
+  manager(manager) {
+    manager.define('vr');
+
+    const renderer = manager.get('renderer');
+    renderer.vr.enabled = true;
+    console.log(REVISION);
+
+    this.display.then(display => {
+      renderer.vr.setDevice(display);
+
       document.body.appendChild(WEBVR.getButton(display, renderer.domElement));
     });
   }
