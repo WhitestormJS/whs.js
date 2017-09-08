@@ -70,6 +70,7 @@ gulp.task('dev', () => {
     res.render(`./${req.params.category}/${req.params.name}/index.pug`, templateData);
   });
 
-  app.listen(8080, 'localhost', () => {});
+  app.listen(8080);
+
   gulp.start('less:watch');
 });
