@@ -5,6 +5,10 @@ import {VREffect} from './vr/VREffect';
 import VRControlsNative from 'three-vrcontrols-module';
 import {WEBVR} from './vr/WebVR';
 
+export {
+  WEBVR
+};
+
 export class VRModule {
   constructor(params = {}) {
     this.params = Object.assign(params, {
@@ -48,7 +52,10 @@ export class VRModule {
 		});
 
     if (button) WEBVR.getVRDisplay(display => {
-      document.body.appendChild(WEBVR.getButton(display, renderer.domElement));
+      const vrbtn = WEBVR.getButton(display, renderer.domElement);
+      vrbtn.className = 'vr-btn';
+
+      document.body.appendChild(vrbtn);
     });
   }
 }
@@ -64,11 +71,15 @@ export class VR2Module {
     const renderer = manager.get('renderer');
     renderer.vr.enabled = true;
     console.log(REVISION);
+    console.log(1);
 
     this.display.then(display => {
       renderer.vr.setDevice(display);
 
-      document.body.appendChild(WEBVR.getButton(display, renderer.domElement));
+      const vrbtn = WEBVR.getButton(display, renderer.domElement);
+      vrbtn.className = 'vr-btn';
+
+      document.body.appendChild(vrbtn);
     });
   }
 }
