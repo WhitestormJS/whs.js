@@ -7,7 +7,7 @@ import {
 
 interface TubeParams extends MeshComponentParams {
 
-  /** Parameters */
+  /** Geometry params */
   geometry?: {
 
       /** 

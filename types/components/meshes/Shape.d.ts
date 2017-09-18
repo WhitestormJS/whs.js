@@ -17,7 +17,7 @@ interface ShapeBufferGeometry extends BufferGeometry {
 
 interface ShapeParams extends MeshComponentParams {
 
-  /** Geometry parameters */
+  /** Geometry params */
   geometry: {
 
     /**

@@ -9,8 +9,8 @@ import {
 
 interface TorusParams extends MeshComponentParams {
 
-  /** Parameters */
-  parameters?: {
+  /** Geometry params */
+  geometry?: {
 
       /** 
        * Radius. 
