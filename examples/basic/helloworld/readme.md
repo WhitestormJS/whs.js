@@ -141,7 +141,7 @@ app.start(); // Start animations and physics simultation.
 ---
 
 If you followed these instructions without error, open your browser and go to your html file. You should get something that looks like this:
-![Screenshot of HelloWorld Example](https://github.com/WhitestormJS/whs.js/raw/master/examples/basic/helloworld/HelloWorld Example.png)
+![Screenshot of HelloWorld Example](https://github.com/WhitestormJS/whs.js/raw/master/examples/basic/helloworld/screenshot.png)
 
 ---
 
