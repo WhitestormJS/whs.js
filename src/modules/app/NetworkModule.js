@@ -1,5 +1,4 @@
 import * as io from 'socket.io-client';
-var patch = require('socketio-wildcard')(io.Manager);
 import * as patch from 'socketio-wildcard';
 
 
