@@ -150,7 +150,7 @@ class Component extends ModuleSystem {
     object.parent = this;
 
     return new Promise((resolve, reject) => {
-      this.defer(() => {
+      object.defer(() => {
         const {native} = object;
         if (!native) reject();
 
