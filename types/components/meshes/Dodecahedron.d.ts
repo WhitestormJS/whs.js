@@ -19,7 +19,7 @@ import {
 interface DodecahedronBufferGeometry extends BufferGeometry {
     constructor(radius: number, detail: number): DodecahedronBufferGeometry;
 
-    parameters: {
+    geometry?: {
         radius: number;
         detail: number;
     };

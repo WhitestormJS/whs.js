@@ -9,8 +9,8 @@ import {
 
 interface TetrahedronParams extends MeshComponentParams {
 
-  /** Parameters */
-  parameters?: {
+  /** Geometry params */
+  geometry?: {
 
       /** 
        * Radius of the tetrahedron. 
