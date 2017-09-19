@@ -1,11 +1,13 @@
-import { io } from 'socket.io-client';
+import * as io from 'socket.io-client';
+var patch = require('socketio-wildcard')(io.Manager);
+import * as patch from 'socketio-wildcard';
+
+
 
 /**
  * @class NetworkModule
  * @category modules/app
- * @param {String} The url/host to connect to for the server.
- * @param {Int} The port to connect to on the host.
- * @param {String} Which scheme to use for the networking. Includes: HTTP, HTTPS, (PROXIES), etc.
+ * @param {Object} [params]
  * @memberof module:modules/app
  * @example <caption>Creating a network module, and passing it to the app.</caption>
  * new App([
@@ -14,20 +16,79 @@ import { io } from 'socket.io-client';
  */
  
  export class NetworkModule {
-   constructor(options = { host: 'localhost', port: 3000, scheme: 'http' }) {
-     this.host = options.host;
-     this.port = options.port;
-     this.scheme = options.scheme
+   constructor(params = {}) {
+     this.params = Object.assign({
+       hostname: window.location.hostname,
+       port: window.location.port,
+       scheme: window.location.protocol
+     }, params);
+     
+     // Variables
+     this.objects = new Map();
+     this.commands = new Map();
+     
+     // Server Management
+     this.server = this.params.scheme + '://' + this.params.host + ':' + this.params.port;
+     this.socket = this.connect(this.server);
+     
+     
+     // Events
+     this.socket.on('connect', () => {
+       console.info('Socket connected to ' + this.server);
+     });
+     
+     this.socket.on('*', (data) => {
+       checkEvents(data);
+     });
+     
+     this.on('disconnect', () => {
+       console.info('Socket disconnected from ' + this.server);
+     });
+     
+   }
+   
+   manager(manager) {
+    manager.add('socket', this.socket); 
    }
    
    /**
    * @method connect
    * @instance
-   * @description Connects to the socket server. 
-   * @memberof module:modules/app.ResizeModule
+   * @description Connects to the socket server using the provided configuration in the constructor.
    */
-   connect() {
-     this.socket = io((this.scheme + '://' + this.host + ':' + this.port));
+   connect(server) {
+     this.socket = io(server);
+     patch(io.Manager);
+     patch(this.socket);
+   }
+   
+   /**
+   * @method command
+   * @instance
+   * @description Creates a command that is checked for (custom event).
+   */
+   command(command, callback) {
+    this.commands.set(command.toString(), callback);
+   }
+   
+   /**
+   * @method checkEvents
+   * @instance
+   * @description Called when socket.io-client receives an event, checks event type and data.
+   */
+   checkEvents(data) {
+     if(data.event == 'update') {
+       // DO something
+       return;
+     } else {
+       try {
+         var command = this.commands.get(data.event);
+         command();
+       } catch {
+         console.warn("Unknown Event passed!");
+         // Notify server too
+       }
+     }
    }
    
  }
