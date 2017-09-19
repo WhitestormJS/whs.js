@@ -9,11 +9,17 @@
  *
  */
 
+import {
+  Vector3,
+  PerspectiveCamera,
+  Matrix4
+} from 'three';
+
 export const VREffect = function ( renderer, onError ) {
 
 	var vrDisplay, vrDisplays;
-	var eyeTranslationL = new THREE.Vector3();
-	var eyeTranslationR = new THREE.Vector3();
+	var eyeTranslationL = new Vector3();
+	var eyeTranslationR = new Vector3();
 	var renderRectL, renderRectR;
 
 	var frameData = null;
@@ -227,10 +233,10 @@ export const VREffect = function ( renderer, onError ) {
 
 	// render
 
-	var cameraL = new THREE.PerspectiveCamera();
+	var cameraL = new PerspectiveCamera();
 	cameraL.layers.enable( 1 );
 
-	var cameraR = new THREE.PerspectiveCamera();
+	var cameraR = new PerspectiveCamera();
 	cameraR.layers.enable( 2 );
 
 	this.render = function ( scene, camera, renderTarget, forceClear ) {
@@ -424,7 +430,7 @@ export const VREffect = function ( renderer, onError ) {
 		var handednessScale = rightHanded ? - 1.0 : 1.0;
 
 		// start with an identity matrix
-		var mobj = new THREE.Matrix4();
+		var mobj = new Matrix4();
 		var m = mobj.elements;
 
 		// and with scale/offset info for normalized device coords
