@@ -11,7 +11,7 @@ import {
 
 interface RingParams extends MeshComponentParams {
 
-  /** Geometry parameters */
+  /** Geometry params */
   geometry?: {
 
     /**
