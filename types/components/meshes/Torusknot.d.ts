@@ -9,8 +9,8 @@ import {
 
 interface TorusknotParams extends MeshComponentParams {
 
-  /** Parameters */
-  parameters?: {
+  /** Geometry params */
+  geometry?: {
 
       /** 
        * Radius. 
