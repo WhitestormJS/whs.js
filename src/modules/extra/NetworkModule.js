@@ -34,6 +34,7 @@ export class NetworkModule {
    // Events
    this.socket.on('connect', () => {
      console.info('Socket connected to ' + this.server);
+     this.id = this.socket.id;
    });
 
    this.socket.on('*', (data) => {
