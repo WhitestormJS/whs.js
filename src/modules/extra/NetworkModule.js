@@ -84,9 +84,16 @@ export class NetworkModule {
  checkEvents(data) {
    if(data.event == 'update') {
      // DO something
+     if(data.new)
+       this.onNewMesh(data);
+     else if(data.destroy)
+       this.onDestroyMesh(data);
+     else if(data.position || data.rotation || data.geometry || data.material)
+       this.onMeshEvent(data);
+     
      return;
    } else {
-       var command = this.commands.get(data.event);
+       let command = this.commands.get(data.event);
        command();
    }
   }
@@ -120,6 +127,13 @@ export class NetworkModule {
         mesh.geometry = data.geometry;
       if(data.material)
         mesh.material = data.material;
+    }
+    
+    this.onDestroyMesh(data) {
+      let mesh = findMesh(data.name);
+      
+      this.scene.remove(mesh);
+      this.objects.remove(data.name);
     }
   }
   
