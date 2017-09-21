@@ -129,10 +129,6 @@ export class NetworkModule {
    * @description Used to determine which mesh the sever wants the client to alter. Helper function.
    */
   findMesh(name) {
-   objects.forEach(function(m) {
-     if(m.name == name) {
-      return m; 
-     }
-   });
+   return objects.get(name);
   }
 }
