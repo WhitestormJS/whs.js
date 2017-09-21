@@ -109,7 +109,7 @@ export class NetworkModule {
       // Apply Mesh Changes sent by the server
       
       // Which mesh to change?
-      let mesh = getMesh(data.id);
+      let mesh = findMesh(data.name); // Return MeshComponent
       
       // What to change?
       if(data.position)
@@ -117,9 +117,22 @@ export class NetworkModule {
       if(data.rotation)
         mesh.rotation.set(data.rotation);
       if(data.geometry)
-        mesh.geometry = data.geometry; // Unsure/Should use WhitestormJS instead of default three setter?
+        mesh.geometry = data.geometry;
       if(data.material)
-        mesh.material = data.material; // Unsure/Should use WhitestormJS instead of default three setter?
+        mesh.material = data.material;
     }
+  }
+  
+  /**
+   * @method findMesh
+   * @instance
+   * @description Used to determine which mesh the sever wants the client to alter. Helper function.
+   */
+  findMesh(name) {
+   objects.forEach(function(m) {
+     if(m.name == name) {
+      return m; 
+     }
+   });
   }
 }
