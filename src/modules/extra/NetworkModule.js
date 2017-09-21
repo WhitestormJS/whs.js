@@ -1,6 +1,8 @@
 import * as io from 'socket.io-client';
 import * as patch from 'socketio-wildcard';
 
+import { MeshComponent } from WHS;
+
 
 
 /**
@@ -25,6 +27,8 @@ export class NetworkModule {
    // Variables
    this.objects = new Map();
    this.commands = new Map();
+   
+   this.scene;
 
    // Server Management
    this.server = this.params.scheme + '://' + this.params.host + ':' + this.params.port;
@@ -48,7 +52,8 @@ export class NetworkModule {
  }
 
  manager(manager) {
-  manager.add('socket', this.socket); 
+   manager.add('socket', this.socket);
+   this.scene = manager.get('scene');
  }
 
  /**
@@ -88,7 +93,33 @@ export class NetworkModule {
   
   
   integrate(self) {
+    this.onNewMesh(data) {
+      // Create a new mesh
+      let mesh = new MeshComponent({
+        geometry: data.geometry || new THREE.CubeGeometry(), 
+        material: data.material || new THREE.MeshNormalMaterial()
+      });
+      mesh.name = data.name; // Id sent by server; Server will create and manage IDs.
+      
+      this.objects.set(mesh.name, mesh);
+      this.scene.add(mesh);
+    }
     // Functions for on-event
-    
+    this.onMeshEvent(data) {
+      // Apply Mesh Changes sent by the server
+      
+      // Which mesh to change?
+      let mesh = getMesh(data.id);
+      
+      // What to change?
+      if(data.position)
+        mesh.position.set(data.position);
+      if(data.rotation)
+        mesh.rotation.set(data.rotation);
+      if(data.geometry)
+        mesh.geometry = data.geometry; // Unsure/Should use WhitestormJS instead of default three setter?
+      if(data.material)
+        mesh.material = data.material; // Unsure/Should use WhitestormJS instead of default three setter?
+    }
   }
 }
