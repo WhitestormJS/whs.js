@@ -28,7 +28,7 @@ export class NetworkModule {
     this.scene;
 
     // Server Management
-    this.server = this.params.scheme + '://' + this.params.host + ':' + this.params.port;
+    this.server = `${scheme}://${host}:${port}`;
     this.socket = this.connect(this.server);
 
     // Events
@@ -78,23 +78,17 @@ export class NetworkModule {
   * @description Called when socket.io-client receives an event, checks event type and data.
   */
   checkEvents(data) {
-    if (data.event == 'update') {
+    if (data.event === 'update') {
       // DO something
-      if (data.new)
-       this.onNewMesh(data);
-      else if (data.destroy)
-       this.onDestroyMesh(data);
-      else if (data.position || data.rotation || data.geometry || data.material)
-       this.onMeshEvent(data);
-
-      return;
+      if (data.new) this.onNewMesh(data);
+      else if (data.destroy) this.onDestroyMesh(data);
+      else if (data.position || data.rotation || data.geometry || data.material) this.onMeshEvent(data);
     } else
       this.commands.get(data.event)();
   }
 
-
-  integrate(self) {
-    this.onNewMesh(data) {
+  integrate() {
+    this.onNewMesh = data => {
       // Create a new mesh
       const mesh = new MeshComponent({
         geometry: data.geometry || new THREE.CubeGeometry(),
@@ -105,32 +99,28 @@ export class NetworkModule {
 
       this.objects.set(mesh.name, mesh);
       this.scene.add(mesh);
-    }
+    };
 
     // Functions for on-event
-    this.onMeshEvent(data) {
+    this.onMeshEvent = data => {
       // Apply Mesh Changes sent by the server
 
       // Which mesh to change?
       const mesh = findMesh(data.name); // Return MeshComponent
 
       // What to change?
-      if(data.position)
-        mesh.position.set(data.position);
-      if(data.rotation)
-        mesh.rotation.set(data.rotation);
-      if(data.geometry)
-        mesh.geometry = data.geometry;
-      if(data.material)
-        mesh.material = data.material;
-    }
+      if (data.position) mesh.position.set(data.position);
+      if (data.rotation) mesh.rotation.set(data.rotation);
+      if (data.geometry) mesh.geometry = data.geometry;
+      if (data.material) mesh.material = data.material;
+    };
 
-    this.onDestroyMesh(data) {
+    this.onDestroyMesh = data => {
       const mesh = findMesh(data.name);
 
       this.scene.remove(mesh);
       this.objects.remove(data.name);
-    }
+    };
   }
 
   /**
