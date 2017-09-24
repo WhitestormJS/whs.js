@@ -81,6 +81,7 @@ export class TextureModule {
         material[texture[0]] = texture[1];
       });
 
+      material.needsUpdate = true;
       return material;
     }
   }
