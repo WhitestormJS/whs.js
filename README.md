@@ -21,6 +21,14 @@ Community chat. [Join us!][discord-url]
 - [Donate](#donate)
 - [Why?](/.github/WHY.md)
 
+##### New releases
+
+> `whs` is currently at v2 major version. We don't have clear plans for v3 yet. So v2 will probably remain the main stable version until at least 2018.
+
+> We try to publish **patch releases every 20 days** or even more often.
+
+> We try to publish **minor update releases every 60 days** or even more often depending on the amount of features that sometimes get added in a very small period of time. We want the community to profit from new modules, components and feature enhancements as soon as they are implemented.
+
 
 ### Basic setup
 
