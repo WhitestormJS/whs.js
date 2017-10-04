@@ -98,7 +98,7 @@ export class NetworkModule {
       mesh.name = data.name; // Id sent by server; Server will create and manage IDs.
 
       this.objects.set(mesh.name, mesh);
-      this.scene.add(mesh);
+      this.scene.add(mesh); // Delete this and make this a seperate handler that is added on the the scene?
     };
 
     // Functions for on-event
