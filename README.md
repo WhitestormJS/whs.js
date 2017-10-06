@@ -39,7 +39,7 @@ Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/w
 <script src="js/whs.min.js"></script>
 ```
 
-The code below makes a `WHS.App` instance which handles all your [modules](WhitestormJS/blob/master/modules) and components for better work with `WebGL`. This one creates a _scene_, _camera_ and _renderer_ - we add the following modules to the App.
+The code below makes a `WHS.App` instance which handles all your [modules](modules) and components for better work with `WebGL`. This one creates a _scene_, _camera_ and _renderer_ - we add the following modules to the App.
 
 ```js
 const app = new WHS.App([
