@@ -32,14 +32,14 @@ Community chat. [Join us!][discord-url]
 
 ### Basic setup
 
-Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/whs.js/dev/build/whs.min.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
+Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/whs.js/build/whs.min.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
 
 ```html
 <script src="js/three.min.js"></script>
 <script src="js/whs.min.js"></script>
 ```
 
-The code below makes a `WHS.App` instance which handles all your [modules]() and components for better work with `WebGL`. This one creates a _scene_, _camera_ and _renderer_ - we add the following modules to the App.
+The code below makes a `WHS.App` instance which handles all your [modules](modules) and components for better work with `WebGL`. This one creates a _scene_, _camera_ and _renderer_ - we add the following modules to the App.
 
 ```js
 const app = new WHS.App([
