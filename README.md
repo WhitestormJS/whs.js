@@ -21,17 +21,25 @@ Community chat. [Join us!][discord-url]
 - [Donate](#donate)
 - [Why?](/.github/WHY.md)
 
+##### New releases
+
+> `whs` is currently at v2 major version. We don't have clear plans for v3 yet. So v2 will probably remain the main stable version until at least 2018.
+
+> We try to publish **patch releases every 20 days** or even more often.
+
+> We try to publish **minor update releases every 60 days** or even more often depending on the amount of features that sometimes get added in a very small period of time. We want the community to profit from new modules, components and feature enhancements as soon as they are implemented.
+
 
 ### Basic setup
 
-Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/whs.js/dev/build/whs.min.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
+Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/whs.js/build/whs.min.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
 
 ```html
 <script src="js/three.min.js"></script>
 <script src="js/whs.min.js"></script>
 ```
 
-The code below makes a `WHS.App` instance which handles all your [modules]() and components for better work with `WebGL`. This one creates a _scene_, _camera_ and _renderer_ - we add the following modules to the App.
+The code below makes a `WHS.App` instance which handles all your [modules](modules) and components for better work with `WebGL`. This one creates a _scene_, _camera_ and _renderer_ - we add the following modules to the App.
 
 ```js
 const app = new WHS.App([
@@ -117,21 +125,10 @@ $ npm install whs
 
 |Name|Status|Description|
 |:--:|:----:|:----------|
-|[whs-module-statsjs][statsjs]|![statsjs-npm]|WhitestormJS module for JavaScript Performance Monitor ⚡⌛|
-|[whs-module-dat.gui][datgui]|![datgui-npm]|User Interface for runtime editing properties 🔑🛠🔩|
 |[physics-module-ammonext][physics-ammonext]|![physics-ammonext-npm]|Physics module based on [Ammo.js](https://github.com/kripken/ammo.js/)|
-|[whs-module-audio][audio]| WIP |Audio module for 3D positional sound 🔉|
-|[whs-vrkit][vrkit]|![physics-ammonext-npm]|Module for Virtual Reality|
 
-[statsjs]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-statsjs
-[statsjs-npm]: https://img.shields.io/npm/v/whs-module-statsjs.svg?style=flat-square
-[datgui]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-dat.gui
-[datgui-npm]: https://img.shields.io/npm/v/whs-module-dat.gui.svg?style=flat-square
 [physics-ammonext]: https://github.com/WhitestormJS/physics-module-ammonext
 [physics-ammonext-npm]: https://img.shields.io/npm/v/physics-module-ammonext.svg?style=flat-square
-[audio]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-audio
-[vrkit]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-vrkit
-[vrkit-npm]: https://img.shields.io/npm/v/whs-vrkit.svg?style=flat-square
 
 ### Donate
 
