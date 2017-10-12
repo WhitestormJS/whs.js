@@ -54,12 +54,7 @@ const textureModule = new WHS.TextureModule({
 });
 
 new WHS.Importer({
-  parser(geometry, materials) {
-    return new THREE.SkinnedMesh(geometry, materials);
-  },
-
   url: `${process.assetsPath}/models/space-alien/character.json`,
-  useCustomMaterial: true,
   material: new THREE.MeshStandardMaterial({
     shading: THREE.SmoothShading,
     skinning: true,
