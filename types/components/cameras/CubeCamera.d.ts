@@ -5,7 +5,7 @@ import {
 
 import {CubeCamera as CubeCameraNative} from 'three';
 
-interface CubeCameraParams extends CameraComponentParams {
+export interface CubeCameraParams extends CameraComponentParams {
     near?: number,
     far?: number,
     cubeResolution?: number
