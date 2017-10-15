@@ -8,7 +8,7 @@ import {
   Loader,
 } from 'three';
 
-interface ImporterParams extends MeshComponentParams {
+export interface ImporterParams extends MeshComponentParams {
 
   /**
    * Loader.

@@ -2,7 +2,7 @@ import {
   LightComponent
 } from '../../core';
 
-interface AmbientLightParams {
+export interface AmbientLightParams {
   /** hexadecimal color of the light. Default is 0xffffff (white). */
   color: number,
 
