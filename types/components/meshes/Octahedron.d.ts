@@ -14,7 +14,7 @@ export class OctahedronBufferGeometry extends PolyhedronBufferGeometry {
     constructor(radius: number, detail: number);
 }
 
-interface OctahedronParams extends MeshComponentParams {
+export interface OctahedronParams extends MeshComponentParams {
 
   /** Geometry parameters */
   geometry?: {

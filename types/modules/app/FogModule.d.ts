@@ -1,7 +1,7 @@
 /**
  * FogModule properties
  */
-interface FogModuleParams {
+export interface FogModuleParams {
 
   /**
    * Fog color. Example: If set to black, far away objects will be rendered black.

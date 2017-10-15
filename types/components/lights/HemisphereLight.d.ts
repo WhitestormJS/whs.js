@@ -3,7 +3,7 @@ import {
   LightComponentParams
 } from '../../core';
 
-interface HemisphereLightParams extends LightComponentParams {
+export interface HemisphereLightParams extends LightComponentParams {
   /** hexadecimal color of the sky, Default is 0xffffff. */
   skyColor?: number,
 

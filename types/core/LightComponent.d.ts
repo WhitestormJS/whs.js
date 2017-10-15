@@ -1,7 +1,7 @@
 import {Component} from './Component';
 import {CompositionError} from './errors';
 
-interface LightComponentParams {
+export interface LightComponentParams {
   /** Sets whether the component should build automatically. Default is true. */
   build?: boolean,
   
