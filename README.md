@@ -7,6 +7,7 @@
 
 - [Documentation](http://whsjs.io/)
 - [Examples](https://whs-dev.surge.sh/examples/)
+- [Donate / OpenCollective](https://opencollective.com/whitestormjs)
 
 Community chat. [Join us!][discord-url]
 
