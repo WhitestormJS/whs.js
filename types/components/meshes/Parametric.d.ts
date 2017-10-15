@@ -10,7 +10,7 @@ import {
   Vector3
 } from 'three';
 
-interface ParametricBufferGeometry extends BufferGeometry {
+export interface ParametricBufferGeometry extends BufferGeometry {
     constructor(func: (u: number, v: number) => Vector3, slices: number, stacks: number): ParametricBufferGeometry;
 
     parameters: {
@@ -20,7 +20,7 @@ interface ParametricBufferGeometry extends BufferGeometry {
     };
 }
 
-interface ParametricParams extends MeshComponentParams {
+export interface ParametricParams extends MeshComponentParams {
 
   /** Geometry parameters */
   geometry?: {

@@ -3,7 +3,7 @@ import {
   LightComponentParams
 } from '../../core';
 
-interface DirectionalLightParams extends LightComponentParams {
+export interface DirectionalLightParams extends LightComponentParams {
   /** hexadecimal color of the light. Default is 0xffffff (white). */
   color: number,
 
