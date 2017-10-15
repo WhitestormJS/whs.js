@@ -3,7 +3,7 @@ import {Vector2} from 'three';
 /**
  * RenderingModule properties
  */
-interface RenderingModuleParams {
+export interface RenderingModuleParams {
 
   /**
    * Width of the rendering
@@ -48,7 +48,7 @@ interface RenderingModuleParams {
   renderer?: object;
 } 
 
-interface RenderingModuleShadowParam {
+export interface RenderingModuleShadowParam {
 
   /**
    * Sets whether to use shadow.

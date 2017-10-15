@@ -1,6 +1,6 @@
 import {App} from '../../core';
 
-interface AnimationModuleParams {
+export interface AnimationModuleParams {
 
   /**
    * Speed of the playing animation.
