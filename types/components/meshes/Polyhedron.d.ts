@@ -20,7 +20,7 @@ export class PolyhedronBufferGeometry extends BufferGeometry {
   };
 }
 
-interface PolyhedronParams extends MeshComponentParams {
+export interface PolyhedronParams extends MeshComponentParams {
 
   /** Geometry parameters */
   geometry?: {
