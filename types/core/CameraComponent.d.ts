@@ -2,7 +2,7 @@ import {Component} from './Component';
 import {CompositionError} from '../core';
 import {Object3D} from 'three';
 
-export export interface CameraComponentParams {
+export interface CameraComponentParams {
     build?: boolean;
 
     position?: {
