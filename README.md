@@ -118,7 +118,7 @@ $ npm install whs
 * :dizzy: Automatization of rendering
 * 🆕 **ES2015+ based**
 * :large_blue_diamond: Extension system (modules)
-* :package: [Webpack](https://whsjs.io/Usage%20with%20webpack.html) friendly
+* :package: [Webpack](http://whsjs.io/Usage%20with%20webpack.html) friendly
 * ✔️ **Integrated [Three.js](https://threejs.org/) rendering engine**
 * :revolving_hearts: Work with whs.js and Three.js at the same time
 
