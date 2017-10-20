@@ -1,4 +1,4 @@
-/* Built for whs v2.1.8-vrfix.1 */
+/* Built for whs v2.1.8-vrfix.3 */
 import { Loop } from 'whs';
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
