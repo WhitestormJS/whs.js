@@ -2,8 +2,8 @@ import path from 'path';
 import webpack from 'webpack';
 import HappyPack from 'happypack';
 import DashboardPlugin from 'webpack-dashboard/plugin';
-import externals from './tools/externals';
 import BabiliPlugin from 'babili-webpack-plugin';
+import externals from './tools/externals';
 
 const consoleColors = {
   reset: '\x1b[0m',
