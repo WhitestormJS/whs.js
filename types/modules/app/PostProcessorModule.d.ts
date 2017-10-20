@@ -3,7 +3,7 @@ import {Material} from 'three';
 /**
  * PostProcessorModule properties
  */
-interface PostProcessorModuleParams {
+export interface PostProcessorModuleParams {
 
   /**
    * Sets whether to debug or not.

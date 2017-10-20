@@ -9,7 +9,7 @@ import {
   ConeGeometry
 } from 'three';
 
-interface ConeParams extends MeshComponentParams {
+export interface ConeParams extends MeshComponentParams {
   /** Geometry params */
   geometry?: {
     
@@ -57,7 +57,7 @@ interface ConeParams extends MeshComponentParams {
   }
 }
 
-interface BufferedConeParams extends ConeParams {
+export interface BufferedConeParams extends ConeParams {
 
   /** Sets whether to build a buffered geometry */
   buffer?: boolean

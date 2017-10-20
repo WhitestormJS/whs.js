@@ -3,7 +3,7 @@ import {
   LightComponentParams
 } from '../../core';
 
-interface SpotLightParams extends LightComponentParams {
+export interface SpotLightParams extends LightComponentParams {
   /** hexadecimal color of the light. Default is 0xffffff (white). */
   color?: number,
 
