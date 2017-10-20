@@ -5,7 +5,7 @@ import {
 
 import {OrthographicCamera as OrthographicCameraNative} from 'three';
 
-interface OrthographicCameraParams extends CameraComponentParams {
+export interface OrthographicCameraParams extends CameraComponentParams {
     near?: number,
     far?: number,
     left?: number,

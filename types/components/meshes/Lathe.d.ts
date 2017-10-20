@@ -10,7 +10,7 @@ import {
   Vector2
 } from 'three';
 
-interface LatheParams extends MeshComponentParams {
+export interface LatheParams extends MeshComponentParams {
 
   /** Geometry parameters */
   geometry?: {

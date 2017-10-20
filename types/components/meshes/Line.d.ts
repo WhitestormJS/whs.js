@@ -10,7 +10,7 @@ import {
   Mesh
 } from 'three';
 
-interface LineParams extends MeshComponentParams {
+export interface LineParams extends MeshComponentParams {
 
   /** Geometry parameters */
   geometry: {

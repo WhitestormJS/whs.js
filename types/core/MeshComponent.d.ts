@@ -6,7 +6,7 @@ import {
   Object3D
 } from 'three';
 
-interface MeshComponentParams {
+export interface MeshComponentParams {
   /**
    * Sets whether the mesh should build right away after being constructed
    * Default is true.
