@@ -1,6 +1,6 @@
 import {App} from '../../core';
 
-interface DynamicGeometryParams {
+export interface DynamicGeometryParams {
 
   /**
    * Sets whether to use attributes.

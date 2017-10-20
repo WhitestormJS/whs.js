@@ -4,7 +4,7 @@ import {Component} from '../../core';
 /**
  * ResizeModule native param
  */
-interface NativeParam {
+export interface NativeParam {
   /**
    * the native object
    */

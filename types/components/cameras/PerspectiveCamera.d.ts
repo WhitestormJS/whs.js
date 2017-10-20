@@ -5,7 +5,7 @@ import {
 
 import {PerspectiveCamera as PerspectiveCameraNative} from 'three';
 
-interface PerspectiveCameraParams extends CameraComponentParams {
+export interface PerspectiveCameraParams extends CameraComponentParams {
     near?: number,
     far?: number,
     fov?: number,

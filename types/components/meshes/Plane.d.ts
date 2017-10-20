@@ -9,7 +9,7 @@ import {
   PlaneGeometry
 } from 'three';
 
-interface PlaneParams extends MeshComponentParams {
+export interface PlaneParams extends MeshComponentParams {
 
   /** Geometry parameters */
   geometry?: {
