@@ -20,7 +20,7 @@ gulp.task('less:watch', () => {
 // DEV MODE
 gulp.task('dev', () => {
   const app = express();
-  const templateData = getTemplateData({devPhysics: argv.devPhysics, devMode: true});
+  const templateData = getTemplateData({devPhysics: process.env.DEV_PHYSICS, devMode: true});
 
   const exampleCompiler = new ExampleCompilerInstance({
     path: {

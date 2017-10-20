@@ -192,6 +192,14 @@ class Component extends ModuleSystem {
     return object.add(this);
   }
 
+  get(key) {
+    return this.manager.get(key);
+  }
+
+  use(key) {
+    return this.manager.use(key);
+  }
+
   /**
    * Returns whether the object is `async` (`wait` promises are more than `0`).
    * @member {Boolean} module:core.Component#isDeffered

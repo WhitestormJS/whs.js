@@ -1,4 +1,4 @@
-/* Built for whs v2.1.8-vrfix.1 */
+/* Built for whs v2.1.8-vrfix.3 */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('events')) :
 	typeof define === 'function' && define.amd ? define(['events'], factory) :
