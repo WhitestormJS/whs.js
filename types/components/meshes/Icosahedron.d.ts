@@ -9,11 +9,11 @@ import {
   PolyhedronGeometry
 } from 'three';
 
-interface IcosahedronBufferGeometry extends PolyhedronGeometry {
+export interface IcosahedronBufferGeometry extends PolyhedronGeometry {
     constructor(radius: number, detail: number): IcosahedronBufferGeometry;
 }
 
-interface IcosahedronParams extends MeshComponentParams {
+export interface IcosahedronParams extends MeshComponentParams {
 
   /** Geometry parameters */
   geometry?: {

@@ -1,7 +1,7 @@
 /**
  * ResizeModule properties
  */
-interface ResizeModuleParams {
+export interface ResizeModuleParams {
 
   /**
    * Sets whether to auto resize.
