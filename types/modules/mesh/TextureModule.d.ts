@@ -8,7 +8,7 @@ import {App} from '../../core';
 /**
  * Texture properties
  */
-interface TextureParams {
+export interface TextureParams {
 
   /**
    * The path to the texture (e.g URL)
