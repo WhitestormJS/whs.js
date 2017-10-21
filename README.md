@@ -7,6 +7,7 @@
 
 - [Documentation](http://whsjs.io/)
 - [Examples](https://whs-dev.surge.sh/examples/)
+- [Donate / OpenCollective](https://opencollective.com/whitestormjs)
 
 Community chat. [Join us!][discord-url]
 
@@ -32,7 +33,7 @@ Community chat. [Join us!][discord-url]
 
 ### Basic setup
 
-Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/whs.js/build/whs.min.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
+Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/whs.js/dev/build/whs.min.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
 
 ```html
 <script src="js/three.min.js"></script>

@@ -9,7 +9,7 @@ import {
   RingBufferGeometry
 } from 'three';
 
-interface RingParams extends MeshComponentParams {
+export interface RingParams extends MeshComponentParams {
 
   /** Geometry params */
   geometry?: {

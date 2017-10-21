@@ -10,7 +10,7 @@ import {
   FontLoader
 } from 'three';
 
-interface TextParams extends MeshComponentParams {
+export interface TextParams extends MeshComponentParams {
 
   /** Test to display, defaults to Hello World  */
   text?: string,

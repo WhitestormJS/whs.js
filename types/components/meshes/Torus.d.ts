@@ -7,7 +7,7 @@ import {
   Mesh
 } from 'three';
 
-interface TorusParams extends MeshComponentParams {
+export interface TorusParams extends MeshComponentParams {
 
   /** Geometry params */
   geometry?: {

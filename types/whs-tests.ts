@@ -21,6 +21,7 @@ import {
 
 import {
   Box,
+  BoxParams,
   Cone,
   Extrude,
   Group,
@@ -110,14 +111,15 @@ mesh.clone();
 mesh.copy({});
 mesh.build();
 
-const box = new Box({
-  build: false,
+const boxParams: BoxParams = {
+  build: false, 
   position: {
-    x: 1
+    x : 1
   },
 
   material: new MeshStandardMaterial()
-});
+}
+const box = new Box(boxParams);
 
 box.build();
 box.addTo(app);
