@@ -79,9 +79,9 @@ const arm = new WHS.Box({ // Rigidbody (green).
 });
 
 arm.addTo(app);
-cloth.addTo(app).then(() => {
-  cloth.appendAnchor(arm, 0, 1, false);
-  cloth.appendAnchor(arm, 40, 1, false);
+cloth.addTo(app).then(object => object.use('physics')).then(physics => {
+  physics.appendAnchor(arm, 0, 1, false);
+  physics.appendAnchor(arm, 40, 1, false);
 });
 
 new WHS.Box({ // Rigidbody (green).
@@ -106,7 +106,7 @@ new WHS.Box({ // Rigidbody (green).
   }
 }).addTo(app).then(box => {
   mouse.on('move', () => {
-    box.setLinearVelocity(mouse.project().sub(box.position));
+    box.use('physics').setLinearVelocity(mouse.project().sub(box.position));
   });
 });
 
