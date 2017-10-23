@@ -239,14 +239,14 @@ document.body.addEventListener('mousemove', (e) => {
 });
 
 document.body.addEventListener('click', () => {
-  rabbit.setLinearVelocity(new THREE.Vector3(0, 5, 0));
-  egg.setAngularVelocity(new THREE.Vector3(0, 10, 0));
-  egg2.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg3.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg4.setAngularVelocity(new THREE.Vector3(0, 10, 0));
-  egg5.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg6.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg7.setAngularVelocity(new THREE.Vector3(0, 10, 0));
-  egg8.setAngularVelocity(new THREE.Vector3(0, -10, 0));
-  egg9.setAngularVelocity(new THREE.Vector3(0, -10, 0));
+  rabbit.use('physics').setLinearVelocity(new THREE.Vector3(0, 5, 0));
+  egg.use('physics').setAngularVelocity(new THREE.Vector3(0, 10, 0));
+  egg2.use('physics').setAngularVelocity(new THREE.Vector3(0, -10, 0));
+  egg3.use('physics').setAngularVelocity(new THREE.Vector3(0, -10, 0));
+  egg4.use('physics').setAngularVelocity(new THREE.Vector3(0, 10, 0));
+  egg5.use('physics').setAngularVelocity(new THREE.Vector3(0, -10, 0));
+  egg6.use('physics').setAngularVelocity(new THREE.Vector3(0, -10, 0));
+  egg7.use('physics').setAngularVelocity(new THREE.Vector3(0, 10, 0));
+  egg8.use('physics').setAngularVelocity(new THREE.Vector3(0, -10, 0));
+  egg9.use('physics').setAngularVelocity(new THREE.Vector3(0, -10, 0));
 });

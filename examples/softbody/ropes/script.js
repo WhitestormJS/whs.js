@@ -83,6 +83,8 @@ new WHS.Tube({
   material: tubeMaterial
 }).addTo(app);
 
+const envCamera = new THREE.CubeCamera(1, 100000, 128);
+
 const sphere = new WHS.Sphere({
   geometry: {
     radius: 3,
@@ -96,8 +98,11 @@ const sphere = new WHS.Sphere({
     })
   ],
 
-  material: new THREE.MeshBasicMaterial({
-    color: 0xffffff
+  material: new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    metalness: 0.8,
+    roughness: 0,
+    envMap: envCamera.renderTarget.texture
   }),
 
   position: {
@@ -107,13 +112,15 @@ const sphere = new WHS.Sphere({
   }
 });
 
+sphere.native.add(envCamera);
+
 const sphereHandler = [];
-const blackBasic = new THREE.MeshBasicMaterial({color: 0x000000});
+const blackBasic = new THREE.MeshBasicMaterial({color: 0xffffff});
 
 for (let i = 0; i < 5; i++) {
-  const sc = sphere.clone();
+  const sc = sphere.clone(false, true);
   sc.position.x = -20 + i * 6;
-  sc.material = sc.material.clone();
+  // sc.material = sc.material.clone();
   sc.addTo(app);
   sphereHandler.push(sc);
 
@@ -122,10 +129,7 @@ for (let i = 0; i < 5; i++) {
   v2.y = 30;
 
   const rope = new WHS.Line({
-    geometry: {
-      curve: new THREE.LineCurve3(v1, v2)
-    },
-
+    curve: new THREE.LineCurve3(v1, v2),
     material: blackBasic,
 
     modules: [
@@ -137,9 +141,9 @@ for (let i = 0; i < 5; i++) {
     ]
   });
 
-  rope.addTo(app).then(() => {
-    rope.appendAnchor(toptube, 50, 1);
-    rope.appendAnchor(sc, 0, 1);
+  rope.addTo(app).then(object => object.use('physics')).then(physics => {
+    physics.appendAnchor(toptube, 50, 1);
+    physics.appendAnchor(sc, 0, 1);
   });
 }
 
@@ -156,9 +160,7 @@ const sphereStart = new WHS.Sphere({
     })
   ],
 
-  material: new THREE.MeshBasicMaterial({
-    color: 0xffffff
-  }),
+  material: sphere.material.clone(),
 
   position: {
     x: 25,
@@ -171,10 +173,7 @@ sphereStart.addTo(app);
 sphereHandler.push(sphereStart);
 
 const rope1 = new WHS.Line({
-  geometry: {
-    curve: new THREE.LineCurve3(sphereStart.position.clone(), new THREE.Vector3(10, 30, 0))
-  },
-
+  curve: new THREE.LineCurve3(sphereStart.position.clone(), new THREE.Vector3(10, 30, 0)),
   material: blackBasic,
 
   modules: [
@@ -186,9 +185,9 @@ const rope1 = new WHS.Line({
   ]
 });
 
-rope1.addTo(app).then(() => {
-  rope1.appendAnchor(toptube, 50, 1);
-  rope1.appendAnchor(sphereStart, 0, 1);
+rope1.addTo(app).then(object => object.use('physics')).then(physics => {
+  physics.appendAnchor(toptube, 50, 1);
+  physics.appendAnchor(sphereStart, 0, 1);
 });
 
 new WHS.Plane({
@@ -236,6 +235,7 @@ new WHS.AmbientLight({
 }).addTo(app);
 
 app.start();
+new WHS.AmbientLight({intensity: 0.8}).addTo(app);
 
 // Check mouse.
 
@@ -264,6 +264,6 @@ for (let i = 0, max = sphereHandler.length; i < max; i++) {
   });
 
   mouse.on('move', () => {
-    if (dragged) nows.setLinearVelocity(mouse.project().sub(nows.position).multiplyScalar(3));
+    if (dragged) nows.use('physics').setLinearVelocity(mouse.project().sub(nows.position).multiplyScalar(3));
   });
 }

@@ -81,9 +81,9 @@ const arm = new WHS.Box({ // Rigidbody (green).
 });
 
 arm.addTo(app);
-cloth.addTo(app).then(() => {
-  cloth.appendAnchor(arm, 0, 1, false);
-  cloth.appendAnchor(arm, 20, 1, false);
+cloth.addTo(app).then(object => object.use('physics')).then(physics => {
+  physics.appendAnchor(arm, 0, 1, false);
+  physics.appendAnchor(arm, 20, 1, false);
 });
 
 new WHS.Box({ // Rigidbody (green).
