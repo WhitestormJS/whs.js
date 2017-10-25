@@ -97,10 +97,6 @@ $ npm install whs
   <img src="http://whs.io/images/showcase/alexbuzinme.jpg" alt="https://alexbuzin.me/" width="30%" />
 </a>
 
-<a href="http://abdaily.surge.sh/3/">
-  <img src="http://whs.io/images/showcase/daily3.png" width="30%"></img>
-</a>
-
 <a href="https://spatial.100shapes.com/">
   <img src="http://whs.io/images/showcase/spatial.jpg" alt="https://spatial.100shapes.com/" width="30%" />
 </a>
