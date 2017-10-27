@@ -1,5 +1,5 @@
 ### Why?
-* 🤔 Because making of even **a basic Three.js application requires at least ~20 lines of code** (see [this tutorial](https://threejs.org/docs/index.html#Manual/Introduction/Creating_a_scene))
+* 🤔 Because making of even **a basic Three.js application requires at least ~20 lines of code** (see [this tutorial](https://threejs.org/docs/index.html#manual/introduction/Creating-a-scene))
   - **Three.js:** you will need to setup: _scene, renderer, camera_, make an `animate()` function before making the actual app.
   - **Whitestorm.js:** There are modules that helps you easily setup them:
 
