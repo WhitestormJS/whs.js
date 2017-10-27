@@ -19,32 +19,32 @@ Modeling your mesh first, here is the model used in the Alien animation example.
 
 Then add bones to form the armature of the model for animation.
 
-![Bones](images/animation-clips/alien-bones.png "Bones")
+![Bones](../template/static/images/animation-clips/alien-bones.png "Bones")
 
 - Weight assign (Skin/Rig)
 
 Assign weight to vertices for the bones to influence.
 
-![Weights](images/animation-clips/alien-weights-to-bones.png "weights")
+![Weights](../template/static/images/animation-clips/alien-weights-to-bones.png "weights")
 
 - Add animation frames
 
 Create frames to start animating, here using animation frames.
 Use the dope sheet/actions editor.
 
-![Frames](images/animation-clips/alien-add-frames.png "frames")
+![Frames](../template/static/images/animation-clips/alien-add-frames.png "frames")
 
 - Animation names
 
 Your model might have multiple animations (actions/clips), here is the given name for the single animation created for this model.
 
-![Action name](images/animation-clips/alien-animation-name.png "action name")
+![Action name](../template/static/images/animation-clips/alien-animation-name.png "action name")
 
 - Export
 
 Finally, export to three.js json format, use the Blender exporter plugin, and ticket the appropriate options.
 
-![Export](images/animation-clips/alien-export.png "Export")
+![Export](../template/static/images/animation-clips/alien-export.png "Export")
 
 
 #### Whitestorm
