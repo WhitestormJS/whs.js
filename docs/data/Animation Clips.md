@@ -13,7 +13,7 @@ A simple pipeline with Blender to get animated models on the browser:
 
 Modeling your mesh first, here is the model used in the Alien animation example.
 
-![Modeling](images/animation-clips/alien-model.png "Modeling")
+![Modeling](template/static/images/animation-clips/alien-model.png "Modeling")
 
 - Add bones
 
