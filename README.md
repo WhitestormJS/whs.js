@@ -127,7 +127,7 @@ $ npm install whs
 
 |Name|Status|Description|
 |:--:|:----:|:----------|
-|[physics-module-ammonext][physics-ammonext]|![physics-ammonext-npm]|Physics module based on [Ammo.js](https://github.com/kripken/ammo.js/)|
+|[physics-module-ammonext][physics-ammonext]|[![NPM Version](https://img.shields.io/npm/v/physics-module-ammonext.svg?style=flat-square)](https://www.npmjs.com/package/physics-module-ammonext)|Physics module based on [Ammo.js](https://github.com/kripken/ammo.js/)|
 
 [physics-ammonext]: https://github.com/WhitestormJS/physics-module-ammonext
 [physics-ammonext-npm]: https://img.shields.io/npm/v/physics-module-ammonext.svg?style=flat-square
