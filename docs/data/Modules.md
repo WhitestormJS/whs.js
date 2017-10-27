@@ -144,4 +144,4 @@ Module methods are executed in this order:
 | `mesh`      | `THREE.Mesh` instance |
 
 
-[> Animation Clips](Animation Clips.html)
+[> Animation Clips](Animation%20Clips.md)
