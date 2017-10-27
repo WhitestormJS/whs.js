@@ -26,4 +26,4 @@ const group = new WHS.Group(box, sphere);
 
 > You can list elements in sequence or pass an array. (see es6 rest/spread).
 
-[> 3D Transforms](3D Transforms.html)
+[> 3D Transforms](3D%20Transforms.md)
