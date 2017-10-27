@@ -31,7 +31,7 @@ const app = new WHS.App([
 ]);
 ```
 
-[> Loops & 3D Animation](Loops & 3D Animation.html)
+[> Loops & 3D Animation](Loops%20&%203D%20Animation.md)
 
 ## FAQ
 
