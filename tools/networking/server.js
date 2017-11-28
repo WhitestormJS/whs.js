@@ -1,5 +1,6 @@
 var app = require('express').createServer();
 var io = require('socket.io')(app);
+const uuid = require('uuid/v4');
 
 app.listen(80);
 
@@ -21,7 +22,12 @@ io.on('connection', function (socket) {
   
   // Add/Remove Events
   function onAddMesh(data) {
+    // Register this new mesh with our objects list
+    var object = new Object(data);
+    data.id = object.id;
     
+    // Send all Data to other clients, it isn't meant to be interpreted by the server
+    socket.emit('addMesh', data); 
   }
   
   function onRemoveMesh(data) {
@@ -49,4 +55,16 @@ io.on('connection', function (socket) {
   function onNewGeometry(data) {
     
   }
+  
+  // ------------------------- //
 });
+
+
+var Object = function(data) {
+  this.options = data.options;
+  this.Type = data.type;
+  
+  this.id = uuid();
+  
+  this.mesh = new this.Type(this.options);
+}
