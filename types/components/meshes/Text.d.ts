@@ -16,7 +16,7 @@ export interface TextParams extends MeshComponentParams {
   text?: string,
 
   /** The font of the text */
-  font: Font,
+  font: Font | Promise<Font>,
 
   /** Geometry params */
   geometry?: {
