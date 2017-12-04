@@ -62,8 +62,8 @@ SO basically, the lines above will define what modules of WhitestormJS you will 
 5. `new WHS.NetworkingModule(UTILS.appDefaults.networking)`:: This is just initializing the connection to the server, and also tells WHS to run a server. This passes the variables "localhost" as where to host it, "80" as the port to host it with, and the connection proxy, "http" in this example.
 6. `new WHS.RenderingModule(UTILS.appDefaults.rendering, { shadow: true })` :: This one looks difficult, but all it's saying is create a window on the html page for the viewer to see what's going on inside the scene!
 7. `new PHYSICS.WorldModule(UTILS.appDefaults.physics)` :: This line is basically saying, "I want physics, I want them to be a part of my world, and I want them to be the WhitestormJS default physics.
-8. `new WHS.[CONTROLS MODULE]()` :: Another simple one, this one is importing some of the default controls available through WhitestormJS; In this case, the [CONTROLS].
-9. `new WHS.ResizeModule()` :: This is another simple one, this is saying the [CONTROLS] can also zoom in and out of the scene.
+8. `new WHS.OrbitControlsModule()` :: Another simple one, this one is importing some of the default controls available through WhitestormJS; In this case, the Orbital Controls.
+9. `new WHS.ResizeModule()` :: This is another simple one, this is saying the Orbital Controls can also zoom in and out of the scene when the screen is resized.
 10. `new WHS.StatsModule()` :: This one is probably the simplest one here, this simply says, display the fps and other statistics of the app.
 
 Whooee, that's a long explanation, but hopefully you are still following along!
@@ -85,7 +85,7 @@ let sphere = new WHS.Sphere({
     color: 0xF2F2F2
   }),
 
-  position: [0, 10, 0],
+  position: [Math.random(), 10, 0],
 
   modules: [
     new WHS.Networking.NetworkIdentity(), // To be accessible by the networking
@@ -115,6 +115,8 @@ app.start(); // Start animations and physics simultation.
 If you followed these instructions without error, open your browser and go to your html file. You should get something that looks like this:
 
 [SCREENSHOT OF FINAL PRODUCT]
+
+Now you can join with other tabs and have fun watching spheres uselessly fall into a void of nothingness.
 
 ---
 
@@ -156,8 +158,6 @@ const app = new WHS.App([
   new StatsModule()
 ]);
 
-**REST OF CODE IN EXAMPLE**
-
 let sphere = new WHS.Sphere({
   geometry: {
     radius: 3,
@@ -169,7 +169,7 @@ let sphere = new WHS.Sphere({
     color: 0xF2F2F2
   }),
 
-  position: [0, 10, 0],
+  position: [Math.random(), 10, 0],
 
   modules: [
     new WHS.Networking.NetworkIdentity(), // To be accessible by the networking
