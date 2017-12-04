@@ -44,7 +44,7 @@ const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera(UTILS.appDefaults.camera)),
-  new WHS.NetworkingModule(UTILS.appDefaults.networking),
+  new WHS.NetworkingModule(UTILS.appDefaults.networking), // This is the same as "localhost", "80", "http" being passed.
   new WHS.RenderingModule(UTILS.appDefaults.rendering, {
     shadow: true
   }),
@@ -59,11 +59,12 @@ SO basically, the lines above will define what modules of WhitestormJS you will 
 2. `new WHS.ElementModule()` :: This is where you tell it you are using a module, in this case the ElementModule, which is almost necessary for any type of creation whatsoever, this allows you to create elements, for example, a cube, in your scene/world.
 3. `new WHS.SceneModule()` :: Another module creation, this one is pretty obvious, you have to have a place to store all of your awesome 3D Objects, right?
 4. `new DefineModule('camera', new WHS.PerspectiveCamera(UTILS.appDefaults.camera))` :: Don't be scared of this line, basically, all this is is saying, I want to create a new module called "camera", and it is really a PerspectiveCamera using the default configurations, I'm just too lazy to type "PerspectiveCamera" the whole time.
-5. `new WHS.RenderingModule(UTILS.appDefaults.rendering, { shadow: true })` :: This one looks difficult, but all it's saying is create a window on the html page for the viewer to see what's going on inside the scene!
-6. `new PHYSICS.WorldModule(UTILS.appDefaults.physics)` :: This line is basically saying, "I want physics, I want them to be a part of my world, and I want them to be the WhitestormJS default physics.
-7. `new WHS.[CONTROLS MODULE]()` :: Another simple one, this one is importing some of the default controls available through WhitestormJS; In this case, the [CONTROLS].
-8. `new WHS.ResizeModule()` :: This is another simple one, this is saying the [CONTROLS] can also zoom in and out of the scene.
-9. `new WHS.StatsModule()` :: This one is probably the simplest one here, this simply says, display the fps and other statistics of the app.
+5. `new WHS.NetworkingModule(UTILS.appDefaults.networking)`:: This is just initializing the connection to the server, and also tells WHS to run a server. This passes the variables "localhost" as where to host it, "80" as the port to host it with, and the connection proxy, "http" in this example.
+6. `new WHS.RenderingModule(UTILS.appDefaults.rendering, { shadow: true })` :: This one looks difficult, but all it's saying is create a window on the html page for the viewer to see what's going on inside the scene!
+7. `new PHYSICS.WorldModule(UTILS.appDefaults.physics)` :: This line is basically saying, "I want physics, I want them to be a part of my world, and I want them to be the WhitestormJS default physics.
+8. `new WHS.[CONTROLS MODULE]()` :: Another simple one, this one is importing some of the default controls available through WhitestormJS; In this case, the [CONTROLS].
+9. `new WHS.ResizeModule()` :: This is another simple one, this is saying the [CONTROLS] can also zoom in and out of the scene.
+10. `new WHS.StatsModule()` :: This one is probably the simplest one here, this simply says, display the fps and other statistics of the app.
 
 Whooee, that's a long explanation, but hopefully you are still following along!
 
@@ -71,12 +72,38 @@ Whooee, that's a long explanation, but hopefully you are still following along!
 ## THE REST OF THE EXAMPLE'S CODE ##
 ---
 
-Now, we have to put some lights in our scene, and a floor, for simplicities purposes. Add these lines:
+Now, all we have to do is put a simple sphere in the scene, Add these lines:
 ```javascript
-UTILS.addBoxPlane(app);
-UTILS.addBasicLights(app);
+let sphere = new WHS.Sphere({
+  geometry: {
+    radius: 3,
+    widthSegments: 32,
+    heightSegments: 32
+  },
+
+  material: new THREE.MeshBasicMaterial({
+    color: 0xF2F2F2
+  }),
+
+  position: [0, 10, 0],
+
+  modules: [
+    new WHS.Networking.NetworkIdentity(), // To be accessible by the networking
+    new WHS.Networking.NetworkTransform() // To not be static
+  ]
+)};
 ```
-Those are pretty straightfoward. Those are just for easier and cleaner code, since those are easy to understand.
+This simply initializes your normal sphere. Instead of explaining all of this code again, go see some of our other basic tutorials to learn how to create objects such as this. Let's take a look at the modules.
+
+```javascript
+modules: [
+    new WHS.Networking.NetworkIdentity(), // To be accessible by the networking
+    new WHS.Networking.NetworkTransform() // To not be static
+  ]
+```
+
+This is pretty simple. It just says, 1, transmit the creation and destruction of this object to the server (IDENTITY), and to trasmit any geometry, material, or transform changes as well (TRANSFORM). That's all there is to it!
+
 
 The last line you need to add is the most obvious and blatant, so I won't really explain it:
 ```javascript
@@ -101,7 +128,7 @@ Here are the final files for y'all, check and see if your files looks like these
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>WHS.JS [EXAMPLE NAME]</title>
+    <title>WHS.JS Networking Basics</title>
     <meta charset="UTF-8" />
   </head>
   <body>
@@ -119,6 +146,7 @@ const app = new WHS.App([
   new WHS.ElementModule(),
   new WHS.SceneModule(),
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera(UTILS.appDefaults.camera)),
+  new WHS.NetworkingModule(UTILS.appDefaults.networking),
   new WHS.RenderingModule(UTILS.appDefaults.rendering, {
     shadow: true
   }),
@@ -130,8 +158,24 @@ const app = new WHS.App([
 
 **REST OF CODE IN EXAMPLE**
 
-UTILS.addBoxPlane(app);
-UTILS.addBasicLights(app);
+let sphere = new WHS.Sphere({
+  geometry: {
+    radius: 3,
+    widthSegments: 32,
+    heightSegments: 32
+  },
+
+  material: new THREE.MeshBasicMaterial({
+    color: 0xF2F2F2
+  }),
+
+  position: [0, 10, 0],
+
+  modules: [
+    new WHS.Networking.NetworkIdentity(), // To be accessible by the networking
+    new WHS.Networking.NetworkTransform() // To not be static
+  ]
+)};
 
 app.start(); // Start animations and physics simulation.
 ```
