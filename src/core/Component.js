@@ -150,21 +150,23 @@ class Component extends ModuleSystem {
     object.parent = this;
 
     return new Promise((resolve, reject) => {
-      object.defer(() => {
-        const {native} = object;
-        if (!native) reject();
+      this.defer(() => {
+        object.defer(() => {
+          const {native} = object;
+          if (!native) reject();
 
-        const addPromise = this.applyBridge({onAdd: object}).onAdd;
+          const addPromise = this.applyBridge({onAdd: object}).onAdd;
 
-        const resolver = () => {
-          this.native.add(native);
-          this.children.push(object);
+          const resolver = () => {
+            this.native.add(native);
+            this.children.push(object);
 
-          resolve(object);
-        };
+            resolve(object);
+          };
 
-        if (addPromise instanceof Promise) addPromise.then(resolver);
-        else resolver();
+          if (addPromise instanceof Promise) addPromise.then(resolver);
+          else resolver();
+        });
       });
     });
   }
