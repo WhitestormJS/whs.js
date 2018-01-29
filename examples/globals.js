@@ -19,7 +19,7 @@ export const $world = {
       color: 0x162129
     },
 
-    pixelRatio: isMobile ? false : window.devicePixelRatio,
+    pixelRatio: false,
 
     renderer: {
       antialias: !isMobile
