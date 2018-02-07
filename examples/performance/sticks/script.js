@@ -106,12 +106,12 @@ const sphere = new WHS.Sphere({
   }
 });
 
-sphere.addTo(app).then((sphere) => {
+sphere.addTo(app).then(sphere => sphere.use('physics')).then(physics => {
   const mx = 96,
     mz = 32;
 
-  sphere.setAngularVelocity({x: mx, y: 0, z: mz});
-  sphere.setLinearVelocity({x: mx, y: 0, z: mz});
+  physics.setAngularVelocity({x: mx, y: 0, z: mz});
+  physics.setLinearVelocity({x: mx, y: 0, z: mz});
 });
 
 UTILS.addBoxPlane(app, 250).then(o => {

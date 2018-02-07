@@ -7,10 +7,10 @@ import {
   Mesh
 } from 'three';
 
-interface TetrahedronParams extends MeshComponentParams {
+export interface TetrahedronParams extends MeshComponentParams {
 
-  /** Parameters */
-  parameters?: {
+  /** Geometry params */
+  geometry?: {
 
       /** 
        * Radius of the tetrahedron. 

@@ -3,7 +3,7 @@ import {
   LightComponentParams
 } from '../../core';
 
-interface AreaLightParams extends LightComponentParams {
+export interface AreaLightParams extends LightComponentParams {
   /** hexadecimal color of the light. Default is 0xffffff (white). */
   color?: number,
 

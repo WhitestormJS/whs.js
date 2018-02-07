@@ -10,10 +10,16 @@ import {
   FontLoader
 } from 'three';
 
-interface TextParams extends MeshComponentParams {
+export interface TextParams extends MeshComponentParams {
 
-  /** Parameters */
-  parameters?: {
+  /** Test to display, defaults to Hello World  */
+  text?: string,
+
+  /** The font of the text */
+  font: Font | Promise<Font>,
+
+  /** Geometry params */
+  geometry?: {
 
       /** 
        * Size of the text. 
@@ -54,14 +60,7 @@ interface TextParams extends MeshComponentParams {
        * How far from text outline is bevel. 
        * Default is 8. 
        */
-      bevelSize?: number;
-
-      /** 
-       * Number of bevel segments. 
-       * Default is 3. 
-       */
-      bevelSegments?: number;
-      
+      bevelSize?: number;      
   }
 }
 

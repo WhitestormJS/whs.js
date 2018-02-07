@@ -12,7 +12,7 @@ import {
   Vector
 } from 'three';
 
-interface ExtrudeParams extends MeshComponentParams {
+export interface ExtrudeParams extends MeshComponentParams {
 
   /** Geometry parameters */
   geometry: {
@@ -83,7 +83,7 @@ interface ExtrudeParams extends MeshComponentParams {
   buffer?: boolean;
 }
 
-interface ExtrudeParamsOptions {
+export interface ExtrudeParamsOptions {
   
 }
 

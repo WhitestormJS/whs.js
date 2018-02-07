@@ -5,9 +5,9 @@ import {
   TextGeometry
 } from 'three';
 
-interface TubeParams extends MeshComponentParams {
+export interface TubeParams extends MeshComponentParams {
 
-  /** Parameters */
+  /** Geometry params */
   geometry?: {
 
       /** 

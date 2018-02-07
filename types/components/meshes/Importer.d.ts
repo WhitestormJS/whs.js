@@ -5,16 +5,16 @@ import {
 
 import {
   Mesh,
-  Loader,
+  AnyLoader,
 } from 'three';
 
-interface ImporterParams extends MeshComponentParams {
+export interface ImporterParams extends MeshComponentParams {
 
   /**
    * Loader.
    * Default to THREE.JSONLoader.
    */
-  loader?: Loader;
+  loader?: AnyLoader;
 
   /**
    * Specific parser function.

@@ -5,8 +5,10 @@
 [![Three][three]][three-url]
 [![Build Status][travis]][travis-url]
 
-- [Documentation](http://whsjs.io/)
+
+- [Documentation](http://whs.io/)
 - [Examples](https://whs-dev.surge.sh/examples/)
+- [Donate / OpenCollective](https://opencollective.com/whitestormjs)
 
 Community chat. [Join us!][discord-url]
 
@@ -21,6 +23,14 @@ Community chat. [Join us!][discord-url]
 - [Donate](#donate)
 - [Why?](/.github/WHY.md)
 
+##### New releases
+
+> `whs` is currently at v2 major version. We don't have clear plans for v3 yet. So v2 will probably remain the main stable version until at least 2018.
+
+> We try to publish **patch releases every 20 days** or even more often.
+
+> We try to publish **minor update releases every 60 days** or even more often depending on the amount of features that sometimes get added in a very small period of time. We want the community to profit from new modules, components and feature enhancements as soon as they are implemented.
+
 
 ### Basic setup
 
@@ -31,7 +41,7 @@ Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/w
 <script src="js/whs.min.js"></script>
 ```
 
-The code below makes a `WHS.App` instance which handles all your [modules]() and components for better work with `WebGL`. This one creates a _scene_, _camera_ and _renderer_ - we add the following modules to the App.
+The code below makes a `WHS.App` instance which handles all your [modules](modules) and components for better work with `WebGL`. This one creates a _scene_, _camera_ and _renderer_ - we add the following modules to the App.
 
 ```js
 const app = new WHS.App([
@@ -39,7 +49,7 @@ const app = new WHS.App([
   new WHS.SceneModule(), // Create a new THREE.Scene and set it to app.
 
   new WHS.DefineModule('camera', new WHS.PerspectiveCamera({ // Apply a camera.
-    position: new Vector3(0, 0, 50)
+    position: new THREE.Vector3(0, 0, 50)
   })),
 
   new WHS.RenderingModule({bgColor: 0x162129}), // Apply THREE.WebGLRenderer
@@ -64,39 +74,39 @@ $ npm install whs
 ### Featured projects
 
 <a href="http://abdaily.surge.sh/4/">
-  <img src="http://whsjs.io/images/showcase/daily4.png" alt="http://abdaily.surge.sh/4/" width="30%" />
+  <img src="http://whs.io/images/showcase/daily4.png" alt="http://abdaily.surge.sh/4/" width="30%" />
 </a>
 
 <a href="http://abdaily.surge.sh/3/">
-  <img src="http://whsjs.io/images/showcase/daily3.png" alt="http://abdaily.surge.sh/3/" width="30%" />
+  <img src="http://whs.io/images/showcase/daily3.png" alt="http://abdaily.surge.sh/3/" width="30%" />
 </a>
 
 <a href="http://abdaily.surge.sh/2/">
-  <img src="http://whsjs.io/images/showcase/daily2.png" alt="http://abdaily.surge.sh/2/" width="30%" />
+  <img src="http://whs.io/images/showcase/daily2.png" alt="http://abdaily.surge.sh/2/" width="30%" />
 </a>
 
 <a href="http://abdaily.surge.sh/1/">
-  <img src="http://whsjs.io/images/showcase/daily1.png" alt="http://abdaily.surge.sh/1/" width="30%" />
+  <img src="http://whs.io/images/showcase/daily1.png" alt="http://abdaily.surge.sh/1/" width="30%" />
 </a>
 
 <a href="http://theroguepixel.com/">
-  <img src="http://whsjs.io/images/showcase/roguepixel.jpg" alt="http://theroguepixel.com/" width="30%" />
+  <img src="http://whs.io/images/showcase/roguepixel.jpg" alt="http://theroguepixel.com/" width="30%" />
 </a>
 
 <a href="http://supertiny.agency/">
-  <img src="http://whsjs.io/images/showcase/supertiny.jpg" alt="http://supertiny.agency/" width="30%" />
+  <img src="http://whs.io/images/showcase/supertiny.jpg" alt="http://supertiny.agency/" width="30%" />
 </a>
 
 <a href="https://alexbuzin.me/">
-  <img src="http://whsjs.io/images/showcase/alexbuzinme.jpg" alt="https://alexbuzin.me/" width="30%" />
+  <img src="http://whs.io/images/showcase/alexbuzinme.jpg" alt="https://alexbuzin.me/" width="30%" />
 </a>
 
 <a href="https://spatial.100shapes.com/">
-  <img src="http://whsjs.io/images/showcase/spatial.jpg" alt="https://spatial.100shapes.com/" width="30%" />
+  <img src="http://whs.io/images/showcase/spatial.jpg" alt="https://spatial.100shapes.com/" width="30%" />
 </a>
 
 <a href="http://plateaux.space/">
-  <img src="http://whsjs.io/images/showcase/plateux.jpg" alt="http://plateaux.space/" width="30%" />
+  <img src="http://whs.io/images/showcase/plateux.jpg" alt="http://plateaux.space/" width="30%" />
 </a>
 
 
@@ -109,7 +119,7 @@ $ npm install whs
 * :dizzy: Automatization of rendering
 * 🆕 **ES2015+ based**
 * :large_blue_diamond: Extension system (modules)
-* :package: [Webpack](https://whsjs.io/Usage%20with%20webpack.html) friendly
+* :package: [Webpack](https://whs.io/Usage%20with%20webpack.html) friendly
 * ✔️ **Integrated [Three.js](https://threejs.org/) rendering engine**
 * :revolving_hearts: Work with whs.js and Three.js at the same time
 
@@ -117,21 +127,10 @@ $ npm install whs
 
 |Name|Status|Description|
 |:--:|:----:|:----------|
-|[whs-module-statsjs][statsjs]|![statsjs-npm]|WhitestormJS module for JavaScript Performance Monitor ⚡⌛|
-|[whs-module-dat.gui][datgui]|![datgui-npm]|User Interface for runtime editing properties 🔑🛠🔩|
 |[physics-module-ammonext][physics-ammonext]|![physics-ammonext-npm]|Physics module based on [Ammo.js](https://github.com/kripken/ammo.js/)|
-|[whs-module-audio][audio]| WIP |Audio module for 3D positional sound 🔉|
-|[whs-vrkit][vrkit]|![physics-ammonext-npm]|Module for Virtual Reality|
 
-[statsjs]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-statsjs
-[statsjs-npm]: https://img.shields.io/npm/v/whs-module-statsjs.svg?style=flat-square
-[datgui]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-dat.gui
-[datgui-npm]: https://img.shields.io/npm/v/whs-module-dat.gui.svg?style=flat-square
 [physics-ammonext]: https://github.com/WhitestormJS/physics-module-ammonext
 [physics-ammonext-npm]: https://img.shields.io/npm/v/physics-module-ammonext.svg?style=flat-square
-[audio]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-module-audio
-[vrkit]: https://github.com/WhitestormJS/whs.js/tree/dev/modules/whs-vrkit
-[vrkit-npm]: https://img.shields.io/npm/v/whs-vrkit.svg?style=flat-square
 
 ### Donate
 

@@ -1,4 +1,4430 @@
-/*! Physics module "Ammonext" v0.1.0 */
-!function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e(require("THREE"),require("WHS")):"function"==typeof define&&define.amd?define(["THREE","WHS"],e):"object"==typeof exports?exports.PHYSICS=e(require("THREE"),require("WHS")):t.PHYSICS=e(t.THREE,t.WHS)}(this,function(t,e){return function(t){var e={};function n(i){if(e[i])return e[i].exports;var o=e[i]={i:i,l:!1,exports:{}};return t[i].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=t,n.c=e,n.i=function(t){return t},n.d=function(t,e,i){n.o(t,e)||Object.defineProperty(t,e,{configurable:!1,enumerable:!0,get:i})},n.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(e,"a",e),e},n.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},n.p="",n(n.s=129)}([function(t,e){"use strict";e.__esModule=!0,e.default=function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}},function(t,e,n){"use strict";e.__esModule=!0;var i=n(77),o=r(i);function r(t){return t&&t.__esModule?t:{default:t}}e.default=function(){function t(t,e){for(var n=0;n<e.length;n++){var i=e[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),(0,o.default)(t,i.key,i)}}return function(e,n,i){return n&&t(e.prototype,n),i&&t(e,i),e}}()},function(e,n){e.exports=t},function(t,e,n){"use strict";var i=n(81),o=n.n(i),r=n(2);n.n(r);e.c=u,e.a=c,e.b=d;var s={applyCentralImpulse:function(t){this.manager.has("module:world")&&this.manager.get("module:world").execute("applyCentralImpulse",{id:this._physijs.id,x:t.x,y:t.y,z:t.z})},applyImpulse:function(t,e){this.manager.has("module:world")&&this.manager.get("module:world").execute("applyImpulse",{id:this._physijs.id,impulse_x:t.x,impulse_y:t.y,impulse_z:t.z,x:e.x,y:e.y,z:e.z})},applyTorque:function(t){this.manager.has("module:world")&&this.manager.get("module:world").execute("applyTorque",{id:this._physijs.id,torque_x:t.x,torque_y:t.y,torque_z:t.z})},applyCentralForce:function(t){this.manager.has("module:world")&&this.manager.get("module:world").execute("applyCentralForce",{id:this._physijs.id,x:t.x,y:t.y,z:t.z})},applyForce:function(t,e){this.manager.has("module:world")&&this.manager.get("module:world").execute("applyForce",{id:this._physijs.id,force_x:t.x,force_y:t.y,force_z:t.z,x:e.x,y:e.y,z:e.z})},getAngularVelocity:function(){return this._physijs.angularVelocity},setAngularVelocity:function(t){this.manager.has("module:world")&&this.manager.get("module:world").execute("setAngularVelocity",{id:this._physijs.id,x:t.x,y:t.y,z:t.z})},getLinearVelocity:function(){return this._physijs.linearVelocity},setLinearVelocity:function(t){this.manager.has("module:world")&&this.manager.get("module:world").execute("setLinearVelocity",{id:this._physijs.id,x:t.x,y:t.y,z:t.z})},setAngularFactor:function(t){this.manager.has("module:world")&&this.manager.get("module:world").execute("setAngularFactor",{id:this._physijs.id,x:t.x,y:t.y,z:t.z})},setLinearFactor:function(t){this.manager.has("module:world")&&this.manager.get("module:world").execute("setLinearFactor",{id:this._physijs.id,x:t.x,y:t.y,z:t.z})},setDamping:function(t,e){this.manager.has("module:world")&&this.manager.get("module:world").execute("setDamping",{id:this._physijs.id,linear:t,angular:e})},setCcdMotionThreshold:function(t){this.manager.has("module:world")&&this.manager.get("module:world").execute("setCcdMotionThreshold",{id:this._physijs.id,threshold:t})},setCcdSweptSphereRadius:function(t){this.manager.has("module:world")&&this.manager.get("module:world").execute("setCcdSweptSphereRadius",{id:this._physijs.id,radius:t})}},a={position:{get:function(){return this._native.position},set:function(t){var e=this._native.position,n=this;Object.defineProperties(e,{x:{get:function(){return this._x},set:function(t){n.__dirtyPosition=!0,this._x=t}},y:{get:function(){return this._y},set:function(t){n.__dirtyPosition=!0,this._y=t}},z:{get:function(){return this._z},set:function(t){n.__dirtyPosition=!0,this._z=t}}}),n.__dirtyPosition=!0,e.copy(t)}},quaternion:{get:function(){return this.__c_rot=!0,this.native.quaternion},set:function(t){var e=this,n=this._native.quaternion,i=this._native;n.copy(t),n.onChange(function(){e.__c_rot&&(i.__dirtyRotation===!0&&(e.__c_rot=!1,i.__dirtyRotation=!1),i.__dirtyRotation=!0)})}},rotation:{get:function(){return this.__c_rot=!0,this._native.rotation},set:function(t){var e=this,n=this._native.rotation,i=this._native;this.quaternion.copy((new r.Quaternion).setFromEuler(t)),n.onChange(function(){e.__c_rot&&(e.quaternion.copy((new r.Quaternion).setFromEuler(n)),i.__dirtyRotation=!0)})}}};function u(t){for(var e in s)t[e]=s[e].bind(t);for(var n in a)Object.defineProperty(t,n,{get:a[n].get.bind(t),set:a[n].set.bind(t),configurable:!0,enumerable:!0})}function c(t){u(this),this._physijs=o()({},t._physijs),this.position=this.position.clone(),this.rotation=this.rotation.clone(),this.quaternion=this.quaternion.clone()}function d(){this.position=this.position.clone(),this.rotation=this.rotation.clone(),this.quaternion=this.quaternion.clone()}},function(t,e,n){var i=n(31)("wks"),o=n(21),r=n(6).Symbol,s="function"==typeof r,a=t.exports=function(t){return i[t]||(i[t]=s&&r[t]||(s?r:o)("Symbol."+t))};a.store=i},function(t,e){var n=t.exports={version:"2.4.0"};"number"==typeof __e&&(__e=n)},function(t,e){var n=t.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=n)},function(t,e,n){var i=n(13),o=n(40),r=n(34),s=Object.defineProperty;e.f=n(9)?Object.defineProperty:function(t,e,n){if(i(t),e=r(e,!0),i(n),o)try{return s(t,e,n)}catch(t){}if("get"in n||"set"in n)throw TypeError("Accessors not supported!");return"value"in n&&(t[e]=n.value),t}},function(t,e,n){"use strict";var i=n(2);n.n(i);n.d(e,"a",function(){return p}),n.d(e,"b",function(){return h}),n.d(e,"c",function(){return f}),n.d(e,"d",function(){return y}),n.d(e,"e",function(){return o}),n.d(e,"f",function(){return r}),n.d(e,"g",function(){return s}),n.d(e,"h",function(){return a}),n.d(e,"i",function(){return u}),n.d(e,"j",function(){return c}),n.d(e,"k",function(){return d}),n.d(e,"l",function(){return l}),n.d(e,"m",function(){return m});var o={WORLDREPORT:0,COLLISIONREPORT:1,VEHICLEREPORT:2,CONSTRAINTREPORT:3,SOFTREPORT:4},r=14,s=5,a=9,u=6,c=new i.Vector3,d=new i.Vector3,l=new i.Matrix4,f=new i.Quaternion,p=function(t,e,n,o){return new i.Vector3(Math.atan2(2*(t*o-e*n),o*o-t*t-e*e+n*n),Math.asin(2*(t*n+e*o)),Math.atan2(2*(n*o-t*e),o*o+t*t-e*e-n*n))},h=function(t,e,n){var i=Math.cos(e),o=Math.sin(e),r=Math.cos(-n),s=Math.sin(-n),a=Math.cos(t),u=Math.sin(t),c=i*r,d=o*s;return{w:c*a-d*u,x:c*u+d*a,y:o*r*a+i*s*u,z:i*s*a-o*r*u}},m=function(t,e){return l.identity(),l.identity().makeRotationFromQuaternion(e.quaternion),l.getInverse(l),c.copy(t),d.copy(e.position),c.sub(d).applyMatrix4(l)},y=function t(e,n){for(var i=0;i<n.children.length;i++){var o=n.children[i],r=o.component._physijs;r&&(o.updateMatrix(),o.updateMatrixWorld(),c.setFromMatrixPosition(o.matrixWorld),f.setFromRotationMatrix(o.matrixWorld),r.position_offset={x:c.x,y:c.y,z:c.z},r.rotation={x:f.x,y:f.y,z:f.z,w:f.w},e.component._physijs.children.push(r)),t(e,o)}}},function(t,e,n){t.exports=!n(15)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(t,e,n){var i=n(6),o=n(5),r=n(23),s=n(14),a="prototype",u=function(t,e,n){var c,d,l,f=t&u.F,p=t&u.G,h=t&u.S,m=t&u.P,y=t&u.B,g=t&u.W,v=p?o:o[e]||(o[e]={}),_=v[a],b=p?i:h?i[e]:(i[e]||{})[a];p&&(n=e);for(c in n)d=!f&&b&&void 0!==b[c],d&&c in v||(l=d?b[c]:n[c],v[c]=p&&"function"!=typeof b[c]?n[c]:y&&d?r(l,i):g&&b[c]==l?function(t){var e=function(e,n,i){if(this instanceof t){switch(arguments.length){case 0:return new t;case 1:return new t(e);case 2:return new t(e,n)}return new t(e,n,i)}return t.apply(this,arguments)};return e[a]=t[a],e}(l):m&&"function"==typeof l?r(Function.call,l):l,m&&((v.virtual||(v.virtual={}))[c]=l,t&u.R&&_&&!_[c]&&s(_,c,l)))};u.F=1,u.G=2,u.S=4,u.P=8,u.B=16,u.W=32,u.U=64,u.R=128,t.exports=u},function(t,e){var n={}.hasOwnProperty;t.exports=function(t,e){return n.call(t,e)}},function(t,e,n){var i=n(41),o=n(24);t.exports=function(t){return i(o(t))}},function(t,e,n){var i=n(16);t.exports=function(t){if(!i(t))throw TypeError(t+" is not an object!");return t}},function(t,e,n){var i=n(7),o=n(19);t.exports=n(9)?function(t,e,n){return i.f(t,e,o(1,n))}:function(t,e,n){return t[e]=n,t}},function(t,e){t.exports=function(t){try{return!!t()}catch(t){return!0}}},function(t,e){t.exports=function(t){return"object"==typeof t?null!==t:"function"==typeof t}},function(t,e){t.exports={}},function(t,e,n){var i=n(45),o=n(25);t.exports=Object.keys||function(t){return i(t,o)}},function(t,e){t.exports=function(t,e){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:e}}},function(t,e){e.f={}.propertyIsEnumerable},function(t,e){var n=0,i=Math.random();t.exports=function(t){return"Symbol(".concat(void 0===t?"":t,")_",(++n+i).toString(36))}},function(t,e){var n={}.toString;t.exports=function(t){return n.call(t).slice(8,-1)}},function(t,e,n){var i=n(92);t.exports=function(t,e,n){if(i(t),void 0===e)return t;switch(n){case 1:return function(n){return t.call(e,n)};case 2:return function(n,i){return t.call(e,n,i)};case 3:return function(n,i,o){return t.call(e,n,i,o)}}return function(){return t.apply(e,arguments)}}},function(t,e){t.exports=function(t){if(void 0==t)throw TypeError("Can't call method on  "+t);return t}},function(t,e){t.exports="constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(",")},function(t,e){t.exports=!0},function(t,e,n){var i=n(13),o=n(108),r=n(25),s=n(30)("IE_PROTO"),a=function(){},u="prototype",c=function(){var t,e=n(39)("iframe"),i=r.length,o="<",s=">";for(e.style.display="none",n(98).appendChild(e),e.src="javascript:",t=e.contentWindow.document,t.open(),t.write(o+"script"+s+"document.F=Object"+o+"/script"+s),t.close(),c=t.F;i--;)delete c[u][r[i]];return c()};t.exports=Object.create||function(t,e){var n;return null!==t?(a[u]=i(t),n=new a,a[u]=null,n[s]=t):n=c(),void 0===e?n:o(n,e)}},function(t,e){e.f=Object.getOwnPropertySymbols},function(t,e,n){var i=n(7).f,o=n(11),r=n(4)("toStringTag");t.exports=function(t,e,n){t&&!o(t=n?t:t.prototype,r)&&i(t,r,{configurable:!0,value:e})}},function(t,e,n){var i=n(31)("keys"),o=n(21);t.exports=function(t){return i[t]||(i[t]=o(t))}},function(t,e,n){var i=n(6),o="__core-js_shared__",r=i[o]||(i[o]={});t.exports=function(t){return r[t]||(r[t]={})}},function(t,e){var n=Math.ceil,i=Math.floor;t.exports=function(t){return isNaN(t=+t)?0:(t>0?i:n)(t)}},function(t,e,n){var i=n(24);t.exports=function(t){return Object(i(t))}},function(t,e,n){var i=n(16);t.exports=function(t,e){if(!i(t))return t;var n,o;if(e&&"function"==typeof(n=t.toString)&&!i(o=n.call(t)))return o;if("function"==typeof(n=t.valueOf)&&!i(o=n.call(t)))return o;if(!e&&"function"==typeof(n=t.toString)&&!i(o=n.call(t)))return o;throw TypeError("Can't convert object to primitive value")}},function(t,e,n){var i=n(6),o=n(5),r=n(26),s=n(36),a=n(7).f;t.exports=function(t){var e=o.Symbol||(o.Symbol=r?{}:i.Symbol||{});"_"==t.charAt(0)||t in e||a(e,t,{value:s.f(t)})}},function(t,e,n){e.f=n(4)},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r);n.d(e,"a",function(){return a});var a=function(){function t(){o()(this,t),this._eventListeners={}}return s()(t,[{key:"addEventListener",value:function(t,e){this._eventListeners.hasOwnProperty(t)||(this._eventListeners[t]=[]),this._eventListeners[t].push(e)}},{key:"removeEventListener",value:function(t,e){var n=void 0;return!!this._eventListeners.hasOwnProperty(t)&&((n=this._eventListeners[t].indexOf(e))>=0&&(this._eventListeners[t].splice(n,1),!0))}},{key:"dispatchEvent",value:function(t){var e=void 0,n=Array.prototype.splice.call(arguments,1);if(this._eventListeners.hasOwnProperty(t))for(e=0;e<this._eventListeners[t].length;e++)this._eventListeners[t][e].apply(this,n)}}],[{key:"make",value:function(e){e.prototype.addEventListener=t.prototype.addEventListener,e.prototype.removeEventListener=t.prototype.removeEventListener,e.prototype.dispatchEvent=t.prototype.dispatchEvent}}]),t}()},function(t,e,n){"use strict";e.__esModule=!0;var i=n(80),o=u(i),r=n(79),s=u(r),a="function"==typeof s.default&&"symbol"==typeof o.default?function(t){return typeof t}:function(t){return t&&"function"==typeof s.default&&t.constructor===s.default&&t!==s.default.prototype?"symbol":typeof t};function u(t){return t&&t.__esModule?t:{default:t}}e.default="function"==typeof s.default&&"symbol"===a(o.default)?function(t){return"undefined"==typeof t?"undefined":a(t)}:function(t){return t&&"function"==typeof s.default&&t.constructor===s.default&&t!==s.default.prototype?"symbol":"undefined"==typeof t?"undefined":a(t)}},function(t,e,n){var i=n(16),o=n(6).document,r=i(o)&&i(o.createElement);t.exports=function(t){return r?o.createElement(t):{}}},function(t,e,n){t.exports=!n(9)&&!n(15)(function(){return 7!=Object.defineProperty(n(39)("div"),"a",{get:function(){return 7}}).a})},function(t,e,n){var i=n(22);t.exports=Object("z").propertyIsEnumerable(0)?Object:function(t){return"String"==i(t)?t.split(""):Object(t)}},function(t,e,n){"use strict";var i=n(26),o=n(10),r=n(46),s=n(14),a=n(11),u=n(17),c=n(102),d=n(29),l=n(110),f=n(4)("iterator"),p=!([].keys&&"next"in[].keys()),h="@@iterator",m="keys",y="values",g=function(){return this};t.exports=function(t,e,n,v,_,b,w){c(n,e,v);var x,j,A,k=function(t){if(!p&&t in R)return R[t];switch(t){case m:return function(){return new n(this,t)};case y:return function(){return new n(this,t)}}return function(){return new n(this,t)}},M=e+" Iterator",S=_==y,O=!1,R=t.prototype,L=R[f]||R[h]||_&&R[_],E=L||k(_),z=_?S?k("entries"):E:void 0,T="Array"==e?R.entries||L:L;if(T&&(A=l(T.call(new t)),A!==Object.prototype&&(d(A,M,!0),i||a(A,f)||s(A,f,g))),S&&L&&L.name!==y&&(O=!0,E=function(){return L.call(this)}),i&&!w||!p&&!O&&R[f]||s(R,f,E),u[e]=E,u[M]=g,_)if(x={values:S?E:k(y),keys:b?E:k(m),entries:z},w)for(j in x)j in R||r(R,j,x[j]);else o(o.P+o.F*(p||O),e,x);return x}},function(t,e,n){var i=n(20),o=n(19),r=n(12),s=n(34),a=n(11),u=n(40),c=Object.getOwnPropertyDescriptor;e.f=n(9)?c:function(t,e){if(t=r(t),e=s(e,!0),u)try{return c(t,e)}catch(t){}if(a(t,e))return o(!i.f.call(t,e),t[e])}},function(t,e,n){var i=n(45),o=n(25).concat("length","prototype");e.f=Object.getOwnPropertyNames||function(t){return i(t,o)}},function(t,e,n){var i=n(11),o=n(12),r=n(94)(!1),s=n(30)("IE_PROTO");t.exports=function(t,e){var n,a=o(t),u=0,c=[];for(n in a)n!=s&&i(a,n)&&c.push(n);for(;e.length>u;)i(a,n=e[u++])&&(~r(c,n)||c.push(n));return c}},function(t,e,n){t.exports=n(14)},function(t,e,n){var i=n(32),o=Math.min;t.exports=function(t){return t>0?o(i(t),9007199254740991):0}},function(t,e,n){"use strict";var i=n(112)(!0);n(42)(String,"String",function(t){this._t=String(t),this._i=0},function(){var t,e=this._t,n=this._i;return n>=e.length?{value:void 0,done:!0}:(t=i(e,n),this._i+=t.length,{value:t,done:!1})})},function(t,e,n){"use strict";var i=n(8);Object.defineProperty(e,"__esModule",{value:!0}),n.d(e,"getEulerXYZFromQuaternion",function(){return i.a}),n.d(e,"getQuatertionFromEuler",function(){return i.b}),n.d(e,"temp1Quat",function(){return i.c}),n.d(e,"addObjectChildren",function(){return i.d}),n.d(e,"MESSAGE_TYPES",function(){return i.e}),n.d(e,"REPORT_ITEMSIZE",function(){return i.f}),n.d(e,"COLLISIONREPORT_ITEMSIZE",function(){return i.g}),n.d(e,"VEHICLEREPORT_ITEMSIZE",function(){return i.h}),n.d(e,"CONSTRAINTREPORT_ITEMSIZE",function(){return i.i}),n.d(e,"temp1Vector3",function(){return i.j}),n.d(e,"temp2Vector3",function(){return i.k}),n.d(e,"temp1Matrix4",function(){return i.l}),n.d(e,"convertWorldPositionToObject",function(){return i.m});var o=n(37);n.d(e,"Eventable",function(){return o.a});var r=n(55);n.d(e,"ConeTwistConstraint",function(){return r.a}),n.d(e,"HingeConstraint",function(){return r.b}),n.d(e,"PointConstraint",function(){return r.c}),n.d(e,"SliderConstraint",function(){return r.d}),n.d(e,"DOFConstraint",function(){return r.e});var s=n(71);n.d(e,"WorldModule",function(){return s.a}),n.d(e,"BoxModule",function(){return s.b}),n.d(e,"CompoundModule",function(){return s.c}),n.d(e,"CapsuleModule",function(){return s.d}),n.d(e,"ConcaveModule",function(){return s.e}),n.d(e,"ConeModule",function(){return s.f}),n.d(e,"ConvexModule",function(){return s.g}),n.d(e,"CylinderModule",function(){return s.h}),n.d(e,"HeightfieldModule",function(){return s.i}),n.d(e,"PlaneModule",function(){return s.j}),n.d(e,"SphereModule",function(){return s.k}),n.d(e,"SoftbodyModule",function(){return s.l}),n.d(e,"ClothModule",function(){return s.m}),n.d(e,"RopeModule",function(){return s.n}),n.d(e,"FirstPersonModule",function(){return s.o})},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(8);n.d(e,"a",function(){return u});var u=function(){function t(e,i,r){o()(this,t);var s=e,u=e;void 0===r&&console.error("Both objects must be defined in a ConeTwistConstraint."),this.type="conetwist",this.appliedImpulse=0,this.worldModule=null,this.objecta=s._physijs.id,this.positiona=n.i(a.m)(r,s).clone(),this.objectb=u._physijs.id,this.positionb=n.i(a.m)(r,u).clone(),this.axisa={x:s.rotation.x,y:s.rotation.y,z:s.rotation.z},this.axisb={x:u.rotation.x,y:u.rotation.y,z:u.rotation.z}}return s()(t,[{key:"getDefinition",value:function(){return{type:this.type,id:this.id,objecta:this.objecta,objectb:this.objectb,positiona:this.positiona,positionb:this.positionb,axisa:this.axisa,axisb:this.axisb}}},{key:"setLimit",value:function(t,e,n){this.worldModule&&this.worldModule.execute("conetwist_setLimit",{constraint:this.id,x:t,y:e,z:n})}},{key:"enableMotor",value:function(){this.worldModule&&this.worldModule.execute("conetwist_enableMotor",{constraint:this.id})}},{key:"setMaxMotorImpulse",value:function(t){this.worldModule&&this.worldModule.execute("conetwist_setMaxMotorImpulse",{constraint:this.id,max_impulse:t})}},{key:"setMotorTarget",value:function(t){t instanceof THREE.Vector3?t=(new THREE.Quaternion).setFromEuler(new THREE.Euler(t.x,t.y,t.z)):t instanceof THREE.Euler?t=(new THREE.Quaternion).setFromEuler(t):t instanceof THREE.Matrix4&&(t=(new THREE.Quaternion).setFromRotationMatrix(t)),this.worldModule&&this.worldModule.execute("conetwist_setMotorTarget",{constraint:this.id,x:t.x,y:t.y,z:t.z,w:t.w})}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(8);n.d(e,"a",function(){return u});var u=function(){function t(e,i,r){o()(this,t);var s=e,u=i;void 0===r&&(r=u,u=void 0),this.type="dof",this.appliedImpulse=0,this.worldModule=null,this.objecta=s._physijs.id,this.positiona=n.i(a.m)(r,s).clone(),this.axisa={x:s.rotation.x,y:s.rotation.y,z:s.rotation.z},u&&(this.objectb=u._physijs.id,this.positionb=n.i(a.m)(r,u).clone(),this.axisb={x:u.rotation.x,y:u.rotation.y,z:u.rotation.z})}return s()(t,[{key:"getDefinition",value:function(){return{type:this.type,id:this.id,objecta:this.objecta,objectb:this.objectb,positiona:this.positiona,positionb:this.positionb,axisa:this.axisa,axisb:this.axisb}}},{key:"setLinearLowerLimit",value:function(t){this.worldModule&&this.worldModule.execute("dof_setLinearLowerLimit",{constraint:this.id,x:t.x,y:t.y,z:t.z})}},{key:"setLinearUpperLimit",value:function(t){this.worldModule&&this.worldModule.execute("dof_setLinearUpperLimit",{constraint:this.id,x:t.x,y:t.y,z:t.z})}},{key:"setAngularLowerLimit",value:function(t){this.worldModule&&this.worldModule.execute("dof_setAngularLowerLimit",{constraint:this.id,x:t.x,y:t.y,z:t.z})}},{key:"setAngularUpperLimit",value:function(t){this.worldModule&&this.worldModule.execute("dof_setAngularUpperLimit",{constraint:this.id,x:t.x,y:t.y,z:t.z})}},{key:"enableAngularMotor",value:function(t){this.worldModule&&this.worldModule.execute("dof_enableAngularMotor",{constraint:this.id,which:t})}},{key:"configureAngularMotor",value:function(t,e,n,i,o){this.worldModule&&this.worldModule.execute("dof_configureAngularMotor",{constraint:this.id,which:t,low_angle:e,high_angle:n,velocity:i,max_force:o})}},{key:"disableAngularMotor",value:function(t){this.worldModule&&this.worldModule.execute("dof_disableAngularMotor",{constraint:this.id,which:t})}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(8);n.d(e,"a",function(){return u});var u=function(){function t(e,i,r,s){o()(this,t);var u=e,c=i;void 0===s&&(s=r,r=c,c=void 0),this.type="hinge",this.appliedImpulse=0,this.worldModule=null,this.objecta=u._physijs.id,this.positiona=n.i(a.m)(r,u).clone(),this.position=r.clone(),this.axis=s,c&&(this.objectb=c._physijs.id,this.positionb=n.i(a.m)(r,c).clone())}return s()(t,[{key:"getDefinition",value:function(){return{type:this.type,id:this.id,objecta:this.objecta,objectb:this.objectb,positiona:this.positiona,positionb:this.positionb,axis:this.axis}}},{key:"setLimits",value:function(t,e,n,i){this.worldModule&&this.worldModule.execute("hinge_setLimits",{constraint:this.id,low:t,high:e,bias_factor:n,relaxation_factor:i})}},{key:"enableAngularMotor",value:function(t,e){this.worldModule&&this.worldModule.execute("hinge_enableAngularMotor",{constraint:this.id,velocity:t,acceleration:e})}},{key:"disableMotor",value:function(){this.worldModule&&this.worldModule.execute("hinge_disableMotor",{constraint:this.id})}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(8);n.d(e,"a",function(){return u});var u=function(){function t(e,i,r){o()(this,t);var s=e,u=i;void 0===r&&(r=u,u=void 0),this.type="point",this.appliedImpulse=0,this.objecta=s._physijs.id,this.positiona=n.i(a.m)(r,s).clone(),u&&(this.objectb=u._physijs.id,this.positionb=n.i(a.m)(r,u).clone())}return s()(t,[{key:"getDefinition",value:function(){return{type:this.type,id:this.id,objecta:this.objecta,objectb:this.objectb,positiona:this.positiona,positionb:this.positionb}}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(8);n.d(e,"a",function(){return u});var u=function(){function t(e,i,r,s){o()(this,t);var u=e,c=i;void 0===s&&(s=r,r=c,c=void 0),this.type="slider",this.appliedImpulse=0,this.worldModule=null,this.objecta=u._physijs.id,this.positiona=n.i(a.m)(r,u).clone(),this.axis=s,c&&(this.objectb=c._physijs.id,this.positionb=n.i(a.m)(r,c).clone())}return s()(t,[{key:"getDefinition",value:function(){return{type:this.type,id:this.id,objecta:this.objecta,objectb:this.objectb,positiona:this.positiona,positionb:this.positionb,axis:this.axis}}},{key:"setLimits",value:function(t,e,n,i){this.worldModule&&this.worldModule.execute("slider_setLimits",{constraint:this.id,lin_lower:t,lin_upper:e,ang_lower:n,ang_upper:i})}},{key:"setRestitution",value:function(t,e){this.worldModule&&this.worldModule.execute("slider_setRestitution",{constraint:this.id,linear:t,angular:e})}},{key:"enableLinearMotor",value:function(t,e){this.worldModule&&this.worldModule.execute("slider_enableLinearMotor",{constraint:this.id,velocity:t,acceleration:e})}},{key:"disableLinearMotor",value:function(){this.worldModule&&this.worldModule.execute("slider_disableLinearMotor",{constraint:this.id})}},{key:"enableAngularMotor",value:function(t,e){this.scene.execute("slider_enableAngularMotor",{constraint:this.id,velocity:t,acceleration:e})}},{key:"disableAngularMotor",value:function(){this.worldModule&&this.worldModule.execute("slider_disableAngularMotor",{constraint:this.id})}}]),t}()},function(t,e,n){"use strict";var i=n(50);n.d(e,"a",function(){return i.a});var o=n(52);n.d(e,"b",function(){return o.a});var r=n(53);n.d(e,"c",function(){return r.a});var s=n(54);n.d(e,"d",function(){return s.a});var a=n(51);n.d(e,"e",function(){return a.a})},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(e){o()(this,t),this.bridge={geometry:function(t){return t.boundingBox||t.computeBoundingBox(),this._physijs.width=t.boundingBox.max.x-t.boundingBox.min.x,this._physijs.height=t.boundingBox.max.y-t.boundingBox.min.y,this._physijs.depth=t.boundingBox.max.z-t.boundingBox.min.z,t},onCopy:u.a,onWrap:u.b},this.params=Object.assign({mass:10,scale:new a.Vector3(1,1,1),restitution:.3,friction:.8,damping:0,margin:0},e)}return s()(t,[{key:"integrate",value:function(t){var e=t.params;this._physijs={type:"box",mass:e.mass,touches:[],linearVelocity:new a.Vector3,angularVelocity:new a.Vector3,group:e.group,mask:e.mask,friction:e.friction,restitution:e.restitution,damping:e.damping,scale:e.scale,margin:e.margin},n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(e){o()(this,t),this.bridge={geometry:function(t){return t.boundingBox||t.computeBoundingBox(),this._physijs.width=t.boundingBox.max.x-t.boundingBox.min.x,this._physijs.height=t.boundingBox.max.y-t.boundingBox.min.y,this._physijs.depth=t.boundingBox.max.z-t.boundingBox.min.z,t},onCopy:u.a,onWrap:u.b},this.params=Object.assign({mass:10,height:3,scale:new a.Vector3(1,1,1),radius:3,restitution:.3,friction:.8,damping:0,margin:0},e)}return s()(t,[{key:"integrate",value:function(t){var e=t.params;this._physijs={type:"capsule",radius:Math.max(e.width/2,e.depth/2),height:e.height,friction:e.friction,restitution:e.restitution,damping:e.damping,margin:e.margin,scale:e.scale,mass:e.mass},n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};o()(this,t),this.bridge={geometry:function(t,e){var n=t.parameters,i=t instanceof a.BufferGeometry?t:function(){t.mergeVertices();var e=new a.BufferGeometry;e.addAttribute("position",new a.BufferAttribute(new Float32Array(3*t.vertices.length),3).copyVector3sArray(t.vertices));for(var n=t.faces,i=n.length,o=new Float32Array(3*i),r=0;r<i;r++){var s=3*r,u=n[r].normal||new a.Vector3;o[s]=u.x,o[s+1]=u.y,o[s+2]=u.z}return e.addAttribute("normal",new a.BufferAttribute(o,3)),e.setIndex(new a.BufferAttribute(new(3*i>65535?Uint32Array:Uint16Array)(3*i),1).copyIndicesArray(n)),e}(),o=i.attributes.position.array;n.widthSegments||(n.widthSegments=1),n.heightSegments||(n.heightSegments=1);var r=0,s=n.widthSegments,u=(n.heightSegments+1)*(n.widthSegments+1)-(n.widthSegments+1),c=o.length/3-1;return this._physijs.corners=[o[3*s],o[3*s+1],o[3*s+2],o[3*r],o[3*r+1],o[3*r+2],o[3*c],o[3*c+1],o[3*c+2],o[3*u],o[3*u+1],o[3*u+2]],this._physijs.segments=[n.widthSegments+1,n.heightSegments+1],i},onCopy:u.a,onWrap:u.b},this.params=Object.assign({friction:.8,damping:0,margin:0,klst:.9,kvst:.9,kast:.9,piterations:1,viterations:0,diterations:0,citerations:4,anchorHardness:.7,rigidHardness:1},e)}return s()(t,[{key:"appendAnchor",value:function(t,e,n){var i=!(arguments.length>3&&void 0!==arguments[3])||arguments[3],o=this._physijs.id,r=t._physijs.id;this.manager.has("module:world")&&this.manager.get("module:world").execute("appendAnchor",{obj:o,obj2:r,node:e,influence:n,collisionBetweenLinkedBodies:i})}},{key:"integrate",value:function(t){var e=t.params;this._physijs={type:"softClothMesh",mass:e.mass,touches:[],isSoftbody:!0,friction:e.friction,damping:e.damping,margin:e.margin,klst:e.klst,kast:e.kast,kvst:e.kvst,drag:e.drag,lift:e.lift,piterations:e.piterations,viterations:e.viterations,diterations:e.diterations,citerations:e.citerations,anchorHardness:e.anchorHardness,rigidHardness:e.rigidHardness,scale:e.scale},this.appendAnchor=t.appendAnchor.bind(this),n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(e){o()(this,t),this.bridge={onCopy:u.a,onWrap:u.b},this.params=Object.assign({mass:10,scale:new a.Vector3(1,1,1),restitution:.3,friction:.8,damping:0,margin:0},e)}return s()(t,[{key:"integrate",value:function(t){var e=t.params;this._physijs={type:"compound",mass:e.mass,touches:[],linearVelocity:new a.Vector3,angularVelocity:new a.Vector3,group:e.group,mask:e.mask,friction:e.friction,restitution:e.restitution,damping:e.damping,scale:e.scale,margin:e.margin},n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(e){var n=this;o()(this,t),this.bridge={geometry:function(t,e){var n=this;return e.params.path?(this.wait(e.geometryLoader),e.geometryLoader.then(function(t){n._physijs.data=e.geometryProcessor(t)})):this._physijs.data=e.geometryProcessor(t),t},onCopy:u.a,onWrap:u.b},this.params=Object.assign({mass:10,restitution:.3,friction:.8,damping:0,scale:new a.Vector3(1,1,1),margin:0,loader:new a.JSONLoader},e),this.params.path&&this.params.loader&&(this.geometryLoader=new Promise(function(t,e){n.params.loader.load(n.params.path,t,function(){},e)}))}return s()(t,[{key:"geometryProcessor",value:function(t){var e="BufferGeometry"===t.type;t.boundingBox||t.computeBoundingBox();var n=e?t.attributes.position.array:new Float32Array(9*t.faces.length);if(!e)for(var i=t.vertices,o=0;o<t.faces.length;o++){var r=t.faces[o],s=i[r.a],a=i[r.b],u=i[r.c],c=9*o;n[c]=s.x,n[c+1]=s.y,n[c+2]=s.z,n[c+3]=a.x,n[c+4]=a.y,n[c+5]=a.z,n[c+6]=u.x,n[c+7]=u.y,n[c+8]=u.z}return n}},{key:"integrate",value:function(t){var e=t.params;this._physijs={type:"concave",mass:e.mass,touches:[],linearVelocity:new a.Vector3,angularVelocity:new a.Vector3,group:e.group,mask:e.mask,friction:e.friction,restitution:e.restitution,damping:e.damping,margin:e.margin,scale:e.scale},n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(e){o()(this,t),this.bridge={geometry:function(t){return t.boundingBox||t.computeBoundingBox(),this._physijs.radius=(t.boundingBox.max.x-t.boundingBox.min.x)/2,this._physijs.height=t.boundingBox.max.y-t.boundingBox.min.y,t},onCopy:u.a,onWrap:u.b},this.params=Object.assign({mass:10,scale:new a.Vector3(1,1,1),restitution:.3,friction:.8,damping:0,margin:0},e)}return s()(t,[{key:"integrate",value:function(t){var e=t.params;this._physijs={type:"cone",mass:e.mass,touches:[],linearVelocity:new a.Vector3,angularVelocity:new a.Vector3,group:e.group,mask:e.mask,friction:e.friction,restitution:e.restitution,damping:e.damping,scale:e.scale,margin:e.margin},n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(e){o()(this,t),this.bridge={mesh:function(t){var e=t.geometry;e.boundingBox||e.computeBoundingBox();var n="BufferGeometry"===e.type;n||(e._bufferGeometry=(new a.BufferGeometry).fromGeometry(e));var i=n?e.attributes.position.array:e._bufferGeometry.attributes.position.array;return this._physijs.data=i,t},onCopy:u.a,onWrap:u.b},this.params=Object.assign({mass:10,restitution:.3,friction:.8,damping:0,margin:0,scale:new a.Vector3(1,1,1)},e)}return s()(t,[{key:"integrate",value:function(t){var e=t.params;this._physijs={type:"convex",mass:e.mass,touches:[],linearVelocity:new a.Vector3,angularVelocity:new a.Vector3,group:e.group,mask:e.mask,friction:e.friction,restitution:e.restitution,damping:e.damping,margin:e.margin,scale:e.scale},n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(e){o()(this,t),this.bridge={geometry:function(t){return t.boundingBox||t.computeBoundingBox(),this._physijs.width=t.boundingBox.max.x-t.boundingBox.min.x,this._physijs.height=t.boundingBox.max.y-t.boundingBox.min.y,this._physijs.depth=t.boundingBox.max.z-t.boundingBox.min.z,t},onCopy:u.a,onWrap:u.b},this.params=Object.assign({mass:10,restitution:.3,friction:.8,damping:0,margin:0,scale:new a.Vector3(1,1,1)},e)}return s()(t,[{
-key:"integrate",value:function(t){var e=t.params;this._physijs={type:"cylinder",width:e.width,height:e.height,depth:e.depth,touches:[],linearVelocity:new a.Vector3,angularVelocity:new a.Vector3,group:e.group,mask:e.mask,friction:e.friction,restitution:e.restitution,damping:e.damping,margin:e.margin,mass:e.mass,scale:e.scale},n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(e){o()(this,t),this.bridge={geometry:function(t,e){var n=t instanceof a.BufferGeometry,i=n?t.attributes.position.array:t.vertices,o=n?i.length/3:i.length;t.boundingBox||t.computeBoundingBox();var r=e.params.size.x,s=e.params.size.y,u=t.boundingBox.max.x-t.boundingBox.min.x,c=t.boundingBox.max.z-t.boundingBox.min.z;this._physijs.xpts="undefined"==typeof r?Math.sqrt(o):r+1,this._physijs.ypts="undefined"==typeof s?Math.sqrt(o):s+1,this._physijs.absMaxHeight=Math.max(t.boundingBox.max.y,Math.abs(t.boundingBox.min.y));for(var d=new Float32Array(o),l=this._physijs.xpts,f=this._physijs.ypts;o--;){var p=o%l+(f-Math.round(o/l-o%l/l)-1)*f;n?d[o]=i[3*p+1]:d[o]=i[p].y}return this._physijs.points=d,this._physijs.scale.multiply(new THREE.Vector3(u/(l-1),1,c/(f-1))),e.params.autoAlign&&t.translate(u/-2,0,c/-2),t},onCopy:u.a,onWrap:u.b},this.params=Object.assign({mass:10,scale:new a.Vector3(1,1,1),size:new a.Vector2(1,1),restitution:.3,friction:.8,damping:0,margin:0,autoAlign:!1},e)}return s()(t,[{key:"integrate",value:function(t){var e=t.params;this._physijs={type:"heightfield",friction:e.friction,touches:[],scale:e.scale,restitution:e.restitution,damping:e.damping,margin:e.margin,points:e.points,mass:e.mass,linearVelocity:new a.Vector3,angularVelocity:new a.Vector3,group:e.group,mask:e.mask},n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(e){o()(this,t),this.bridge={geometry:function(t){return t.boundingBox||t.computeBoundingBox(),this._physijs.width=t.boundingBox.max.x-t.boundingBox.min.x,this._physijs.height=t.boundingBox.max.y-t.boundingBox.min.y,this._physijs.normal=t.faces[0].normal.clone(),t},onCopy:u.a,onWrap:u.b},this.params=Object.assign({mass:10,restitution:.3,friction:.8,damping:0,margin:0,scale:new a.Vector3(1,1,1)},e)}return s()(t,[{key:"integrate",value:function(t){var e=t.params;this._physijs={type:"plane",touches:[],linearVelocity:new a.Vector3,angularVelocity:new a.Vector3,group:e.group,mask:e.mask,friction:e.friction,restitution:e.restitution,damping:e.damping,margin:e.margin,scale:e.scale,mass:e.mass},n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(e){o()(this,t),this.bridge={geometry:function(t){t instanceof a.BufferGeometry||(t=function(){var e=new a.BufferGeometry;return e.addAttribute("position",new a.BufferAttribute(new Float32Array(3*t.vertices.length),3).copyVector3sArray(t.vertices)),e}());var e=t.attributes.position.array.length/3,n=function(e){return(new a.Vector3).fromArray(t.attributes.position.array,3*e)},i=n(0),o=n(e-1);return this._physijs.data=[i.x,i.y,i.z,o.x,o.y,o.z,e],t},onCopy:u.a,onWrap:u.b},this.params=Object.assign({friction:.8,damping:0,margin:0,klst:.9,kvst:.9,kast:.9,piterations:1,viterations:0,diterations:0,citerations:4,anchorHardness:.7,rigidHardness:1},e)}return s()(t,[{key:"appendAnchor",value:function(t,e,n){var i=!(arguments.length>3&&void 0!==arguments[3])||arguments[3],o=this._physijs.id,r=t._physijs.id;this.manager.has("module:world")&&this.manager.get("module:world").execute("appendAnchor",{obj:o,obj2:r,node:e,influence:n,collisionBetweenLinkedBodies:i})}},{key:"integrate",value:function(t){var e=t.params;this._physijs={type:"softRopeMesh",mass:e.mass,touches:[],friction:e.friction,damping:e.damping,margin:e.margin,klst:e.klst,isSoftbody:!0,kast:e.kast,kvst:e.kvst,drag:e.drag,lift:e.lift,piterations:e.piterations,viterations:e.viterations,diterations:e.diterations,citerations:e.citerations,anchorHardness:e.anchorHardness,rigidHardness:e.rigidHardness},this.appendAnchor=t.appendAnchor.bind(this),n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(e){o()(this,t),this.bridge={geometry:function(t,e){var n=t instanceof a.BufferGeometry?t:function(){t.mergeVertices();var e=new a.BufferGeometry;return e.addAttribute("position",new a.BufferAttribute(new Float32Array(3*t.vertices.length),3).copyVector3sArray(t.vertices)),e.setIndex(new a.BufferAttribute(new(3*t.faces.length>65535?Uint32Array:Uint16Array)(3*t.faces.length),1).copyIndicesArray(t.faces)),e}(),i=n.attributes.position.array,o=n.index.array;this._physijs.aVertices=i,this._physijs.aIndices=o;var r=(new a.BufferGeometry).fromGeometry(t);return r},onCopy:u.a,onWrap:u.b},this.params=Object.assign({restitution:.3,friction:.8,damping:0,pressure:100,margin:0,klst:.9,kvst:.9,kast:.9,piterations:1,viterations:0,diterations:0,citerations:4,anchorHardness:.7,rigidHardness:1},e)}return s()(t,[{key:"appendAnchor",value:function(t,e,n){var i=!(arguments.length>3&&void 0!==arguments[3])||arguments[3],o=this._physijs.id,r=t._physijs.id;this.manager.has("module:world")&&this.manager.get("module:world").execute("appendAnchor",{obj:o,obj2:r,node:e,influence:n,collisionBetweenLinkedBodies:i})}},{key:"integrate",value:function(t){var e=t.params;this._physijs={type:"softTrimesh",mass:e.mass,touches:[],friction:e.friction,damping:e.damping,pressure:e.pressure,margin:e.margin,klst:e.klst,isSoftbody:!0,kast:e.kast,kvst:e.kvst,drag:e.drag,lift:e.lift,piterations:e.piterations,viterations:e.viterations,diterations:e.diterations,citerations:e.citerations,anchorHardness:e.anchorHardness,rigidHardness:e.rigidHardness},this.appendAnchor=t.appendAnchor.bind(this),n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2),u=(n.n(a),n(3));n.d(e,"a",function(){return c});var c=function(){function t(e){o()(this,t),this.bridge={geometry:function(t){return t.boundingSphere||t.computeBoundingSphere(),this._physijs.radius=t.boundingSphere.radius,t},onCopy:u.a,onWrap:u.b},this.params=Object.assign({mass:10,restitution:.3,friction:.8,damping:0,pressure:100,margin:0,klst:.9,kvst:.9,kast:.9,scale:new a.Vector3(1,1,1)},e)}return s()(t,[{key:"integrate",value:function(t){var e=t.params;this._physijs={type:"sphere",touches:[],linearVelocity:new a.Vector3,angularVelocity:new a.Vector3,group:e.group,mask:e.mask,friction:e.friction,restitution:e.restitution,damping:e.damping,margin:e.margin,scale:e.scale,mass:e.mass},n.i(u.c)(this)}}]),t}()},function(t,e,n){"use strict";var i=n(84),o=n.n(i),r=n(0),s=n.n(r),a=n(1),u=n.n(a),c=n(83),d=n.n(c),l=n(82),f=n.n(l),p=n(2),h=(n.n(p),n(128)),m=(n.n(h),n(73)),y=n(37),g=n(8);n.d(e,"a",function(){return v});var v=function(t){f()(e,t);function e(t){s()(this,e);var i=d()(this,(e.__proto__||Object.getPrototypeOf(e)).call(this));i.bridge={onAdd:function(t,e){if(t._physijs)return e.defer(e.onAddCallback.bind(e),[t])},onRemove:function(t,e){if(t._physijs)return e.defer(e.onRemoveCallback.bind(e),[t])}},i.params=Object.assign({fixedTimeStep:1/60,rateLimit:!0,ammo:"",softbody:!1,gravity:new p.Vector3(0,-100,0)},t);var o=performance.now();i._worker=new(n(127)),i._worker.transferableMessage=i._worker.webkitPostMessage||i._worker.postMessage,i.isLoaded=!1,i.loader=new Promise(function(e,n){t.wasm?fetch(t.wasm).then(function(t){return t.arrayBuffer()}).then(function(t){i.params.wasmBuffer=t,i.execute("init",i.params),e()}):(i.execute("init",i.params),e())}),i.loader.then(function(){i.isLoaded=!0}),i._materials_ref_counts={},i._objects={},i._vehicles={},i._constraints={},i._is_simulating=!1,i.getObjectId=function(){var t=1;return function(){return t++}}();var r=new ArrayBuffer(1);return i._worker.transferableMessage(r,[r]),i.SUPPORT_TRANSFERABLE=0===r.byteLength,i._worker.onmessage=function(t){var e=void 0,n=t.data;if(n instanceof ArrayBuffer&&1!==n.byteLength&&(n=new Float32Array(n)),n instanceof Float32Array)switch(n[0]){case g.e.WORLDREPORT:i._updateScene(n);break;case g.e.SOFTREPORT:i._updateSoftbodies(n);break;case g.e.COLLISIONREPORT:i._updateCollisions(n);break;case g.e.VEHICLEREPORT:i._updateVehicles(n);break;case g.e.CONSTRAINTREPORT:i._updateConstraints(n)}else if(n.cmd)switch(n.cmd){case"objectReady":e=n.params,i._objects[e]&&i._objects[e].dispatchEvent("ready");break;case"worldReady":i.dispatchEvent("ready");break;case"ammoLoaded":i.dispatchEvent("loaded"),console.log("Physics loading time: "+(performance.now()-o)+"ms");break;case"vehicle":window.test=n;break;default:console.debug("Received: "+n.cmd),console.dir(n.params)}else switch(n[0]){case g.e.WORLDREPORT:i._updateScene(n);break;case g.e.COLLISIONREPORT:i._updateCollisions(n);break;case g.e.VEHICLEREPORT:i._updateVehicles(n);break;case g.e.CONSTRAINTREPORT:i._updateConstraints(n)}},i}return u()(e,[{key:"_updateScene",value:function(t){for(var e=t[1];e--;){var n=2+e*g.f,i=this._objects[t[n]],o=i.component,r=o._physijs;null!==i&&(o.__dirtyPosition===!1&&(i.position.set(t[n+1],t[n+2],t[n+3]),o.__dirtyPosition=!1),o.__dirtyRotation===!1&&(i.quaternion.set(t[n+4],t[n+5],t[n+6],t[n+7]),o.__dirtyRotation=!1),r.linearVelocity.set(t[n+8],t[n+9],t[n+10]),r.angularVelocity.set(t[n+11],t[n+12],t[n+13]))}this.SUPPORT_TRANSFERABLE&&this._worker.transferableMessage(t.buffer,[t.buffer]),this._is_simulating=!1,this.dispatchEvent("update")}},{key:"_updateSoftbodies",value:function(t){for(var e=t[1],n=2;e--;){var i=t[n+1],o=this._objects[t[n]];if(null!==o){var r=o.component._physijs,s=o.geometry.attributes,a=s.position.array,u=n+2;if(r.isSoftBodyReset||(o.position.set(0,0,0),o.quaternion.set(0,0,0,0),r.isSoftBodyReset=!0),"softTrimesh"===r.type){for(var c=s.normal.array,d=0;d<i;d++){var l=u+18*d,f=t[l],p=t[l+1],h=t[l+2],m=t[l+3],y=t[l+4],g=t[l+5],v=t[l+6],_=t[l+7],b=t[l+8],w=t[l+9],x=t[l+10],j=t[l+11],A=t[l+12],k=t[l+13],M=t[l+14],S=t[l+15],O=t[l+16],R=t[l+17],L=9*d;a[L]=f,a[L+1]=p,a[L+2]=h,a[L+3]=v,a[L+4]=_,a[L+5]=b,a[L+6]=A,a[L+7]=k,a[L+8]=M,c[L]=m,c[L+1]=y,c[L+2]=g,c[L+3]=w,c[L+4]=x,c[L+5]=j,c[L+6]=S,c[L+7]=O,c[L+8]=R}s.normal.needsUpdate=!0,n+=2+18*i}else if("softRopeMesh"===r.type){for(var E=0;E<i;E++){var z=u+3*E,T=t[z],C=t[z+1],P=t[z+2];a[3*E]=T,a[3*E+1]=C,a[3*E+2]=P}n+=2+3*i}else{for(var I=s.normal.array,B=0;B<i;B++){var V=u+6*B,F=t[V],Y=t[V+1],X=t[V+2],Z=t[V+3],W=t[V+4],H=t[V+5];a[3*B]=F,a[3*B+1]=Y,a[3*B+2]=X,I[3*B]=Z,I[3*B+1]=W,I[3*B+2]=H}s.normal.needsUpdate=!0,n+=2+6*i}s.position.needsUpdate=!0}}this._is_simulating=!1}},{key:"_updateVehicles",value:function(t){for(var e=void 0,n=void 0,i=0;i<(t.length-1)/g.h;i++){var o=1+i*g.h;e=this._vehicles[t[o]],null!==e&&(n=e.wheels[t[o+1]],n.position.set(t[o+2],t[o+3],t[o+4]),n.quaternion.set(t[o+5],t[o+6],t[o+7],t[o+8]))}this.SUPPORT_TRANSFERABLE&&this._worker.transferableMessage(t.buffer,[t.buffer])}},{key:"_updateConstraints",value:function(t){for(var e=void 0,n=void 0,i=0;i<(t.length-1)/g.i;i++){var o=1+i*g.i;e=this._constraints[t[o]],n=this._objects[t[o+1]],void 0!==e&&void 0!==n&&(g.j.set(t[o+2],t[o+3],t[o+4]),g.l.extractRotation(n.matrix),g.j.applyMatrix4(g.l),e.positiona.addVectors(n.position,g.j),e.appliedImpulse=t[o+5])}this.SUPPORT_TRANSFERABLE&&this._worker.transferableMessage(t.buffer,[t.buffer])}},{key:"_updateCollisions",value:function(t){for(var e={},n={},i=0;i<t[1];i++){var o=2+i*g.g,r=t[o],s=t[o+1];n[r+"-"+s]=o+2,n[s+"-"+r]=-1*(o+2),e[r]||(e[r]=[]),e[r].push(s),e[s]||(e[s]=[]),e[s].push(r)}for(var a in this._objects)if(this._objects.hasOwnProperty(a)){var u=this._objects[a],c=u.component,d=c._physijs;if(null!==u)if(e[a]){for(var l=0;l<d.touches.length;l++)e[a].indexOf(d.touches[l])===-1&&d.touches.splice(l--,1);for(var f=0;f<e[a].length;f++){var p=e[a][f],h=this._objects[p],m=h.component,y=m._physijs;if(h&&d.touches.indexOf(p)===-1){d.touches.push(p),g.j.subVectors(c.getLinearVelocity(),m.getLinearVelocity());var v=g.j.clone();g.j.subVectors(c.getAngularVelocity(),m.getAngularVelocity());var _=g.j.clone(),b=n[d.id+"-"+y.id];b>0?g.j.set(-t[b],-t[b+1],-t[b+2]):(b*=-1,g.j.set(t[b],t[b+1],t[b+2])),c.emit("collision",h,v,_,g.j)}}}else d.touches.length=0}this.collisions=e,this.SUPPORT_TRANSFERABLE&&this._worker.transferableMessage(t.buffer,[t.buffer])}},{key:"addConstraint",value:function(t,e){if(t.id=this.getObjectId(),this._constraints[t.id]=t,t.worldModule=this,this.execute("addConstraint",t.getDefinition()),e){var n=void 0;switch(t.type){case"point":n=new p.Mesh(new p.SphereGeometry(1.5),new p.MeshNormalMaterial),n.position.copy(t.positiona),this._objects[t.objecta].add(n);break;case"hinge":n=new p.Mesh(new p.SphereGeometry(1.5),new p.MeshNormalMaterial),n.position.copy(t.positiona),this._objects[t.objecta].add(n);break;case"slider":n=new p.Mesh(new p.BoxGeometry(10,1,1),new p.MeshNormalMaterial),n.position.copy(t.positiona),n.rotation.set(t.axis.y,t.axis.x,t.axis.z),this._objects[t.objecta].add(n);break;case"conetwist":n=new p.Mesh(new p.SphereGeometry(1.5),new p.MeshNormalMaterial),n.position.copy(t.positiona),this._objects[t.objecta].add(n);break;case"dof":n=new p.Mesh(new p.SphereGeometry(1.5),new p.MeshNormalMaterial),n.position.copy(t.positiona),this._objects[t.objecta].add(n)}}return t}},{key:"onSimulationResume",value:function(){this.execute("onSimulationResume",{})}},{key:"removeConstraint",value:function(t){void 0!==this._constraints[t.id]&&(this.execute("removeConstraint",{id:t.id}),delete this._constraints[t.id])}},{key:"execute",value:function(t,e){this._worker.postMessage({cmd:t,params:e})}},{key:"onAddCallback",value:function(t){var e=t.native,i=e._physijs||e.component._physijs;i&&(t.manager.add("module:world",this),i.id=this.getObjectId(),e instanceof m.a?(this.onAddCallback(e.mesh),this._vehicles[i.id]=e,this.execute("addVehicle",i)):(t.__dirtyPosition=!1,t.__dirtyRotation=!1,this._objects[i.id]=e,e.children.length&&(i.children=[],n.i(g.d)(e,e)),e.material._physijs&&(this._materials_ref_counts.hasOwnProperty(e.material._physijs.id)?this._materials_ref_counts[e.material._physijs.id]++:(this.execute("registerMaterial",e.material._physijs),i.materialId=e.material._physijs.id,this._materials_ref_counts[e.material._physijs.id]=1)),i.position={x:e.position.x,y:e.position.y,z:e.position.z},i.rotation={x:e.quaternion.x,y:e.quaternion.y,z:e.quaternion.z,w:e.quaternion.w},i.width&&(i.width*=e.scale.x),i.height&&(i.height*=e.scale.y),i.depth&&(i.depth*=e.scale.z),this.execute("addObject",i)),t.emit("physics:added"))}},{key:"onRemoveCallback",value:function(t){var e=t.native;if(e instanceof m.a){for(this.execute("removeVehicle",{id:e._physijs.id});e.wheels.length;)this.remove(e.wheels.pop());this.remove(e.mesh),this._vehicles[e._physijs.id]=null}else e._physijs&&(t.manager.remove("module:world"),this._objects[e._physijs.id]=null,this.execute("removeObject",{id:e._physijs.id}));e.material&&e.material._physijs&&this._materials_ref_counts.hasOwnProperty(e.material._physijs.id)&&(this._materials_ref_counts[e.material._physijs.id]--,0===this._materials_ref_counts[e.material._physijs.id]&&(this.execute("unRegisterMaterial",e.material._physijs),this._materials_ref_counts[e.material._physijs.id]=null))}},{key:"defer",value:function(t,e){var n=this;return new Promise(function(i){n.isLoaded?(t.apply(void 0,o()(e)),i()):n.loader.then(function(){t.apply(void 0,o()(e)),i()})})}},{key:"manager",value:function(t){t.add("physicsWorker",this._worker)}},{key:"integrate",value:function(t){var e=this,n=t.params;this.setFixedTimeStep=function(e){e&&t.execute("setFixedTimeStep",e)},this.setGravity=function(e){e&&t.execute("setGravity",e)},this.addConstraint=t.addConstraint.bind(t),this.simulate=function(e,n){if(t._stats&&t._stats.begin(),t._is_simulating)return!1;t._is_simulating=!0;for(var i in t._objects)if(t._objects.hasOwnProperty(i)){var o=t._objects[i],r=o.component,s=r._physijs;if(null!==o&&(r.__dirtyPosition||r.__dirtyRotation)){var a={id:s.id};r.__dirtyPosition&&(a.pos={x:o.position.x,y:o.position.y,z:o.position.z},s.isSoftbody&&o.position.set(0,0,0),r.__dirtyPosition=!1),r.__dirtyRotation&&(a.quat={x:o.quaternion.x,y:o.quaternion.y,z:o.quaternion.z,w:o.quaternion.w},s.isSoftbody&&o.rotation.set(0,0,0),r.__dirtyRotation=!1),t.execute("updateTransform",a)}}return t.execute("simulate",{timeStep:e,maxSubSteps:n}),t._stats&&t._stats.end(),!0},t.loader.then(function(){new h.Loop(function(t){e.simulate(t.getDelta(),1)}).start(e),e.setGravity(n.gravity)})}}]),e}(y.a)},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2);n.n(a);n.d(e,"a",function(){return d});var u=Math.PI/2;function c(t,e,n){var i=this,o=1,r=.25;e.setAngularFactor({x:0,y:0,z:0}),t.position.set(0,0,0);var s=e,c=new a.Object3D;c.add(t.native);var d=new a.Object3D;d.position.y=n.ypos,d.add(c);var l=new a.Quaternion,f=!1,p=!1,h=!1,m=!1,y=!1;s.on("collision",function(t,e,n,i){i.y<.5&&(f=!0)});var g=function(t){if(i.enabled!==!1){var e="number"==typeof t.movementX?t.movementX:"number"==typeof t.mozMovementX?t.mozMovementX:"function"==typeof t.getMovementX?t.getMovementX():0,n="number"==typeof t.movementY?t.movementY:"number"==typeof t.mozMovementY?t.mozMovementY:"function"==typeof t.getMovementY?t.getMovementY():0;d.rotation.y-=.002*e,c.rotation.x-=.002*n,c.rotation.x=Math.max(-u,Math.min(u,c.rotation.x))}},v=function(t){switch(t.keyCode){case 38:case 87:p=!0;break;case 37:case 65:m=!0;break;case 40:case 83:h=!0;break;case 39:case 68:y=!0;break;case 32:f===!0&&s.applyCentralImpulse({x:0,y:300,z:0}),f=!1;break;case 16:r=.5}},_=function(t){switch(t.keyCode){case 38:case 87:p=!1;break;case 37:case 65:m=!1;break;case 40:case 83:h=!1;break;case 39:case 68:y=!1;break;case 16:r=.25}};document.body.addEventListener("mousemove",g,!1),document.body.addEventListener("keydown",v,!1),document.body.addEventListener("keyup",_,!1),this.enabled=!1,this.getObject=function(){return d},this.getDirection=function(t){t.set(0,0,-1),l.multiplyVector3(t)};var b=new a.Vector3,w=new a.Euler;this.update=function(t){if(i.enabled!==!1){t=t||.5,t=Math.min(t,.5,t),b.set(0,0,0);var e=o*t*n.speed*r;p&&(b.z=-e),h&&(b.z=e),m&&(b.x=-e),y&&(b.x=e),w.x=c.rotation.x,w.y=d.rotation.y,w.order="XYZ",l.setFromEuler(w),b.applyQuaternion(l),s.applyCentralImpulse({x:b.x,y:0,z:b.z}),s.setAngularVelocity({x:b.z,y:0,z:-b.x}),s.setAngularFactor({x:0,y:0,z:0})}},s.on("physics:added",function(){s.manager.get("module:world").addEventListener("update",function(){i.enabled!==!1&&d.position.copy(s.position)})})}var d=function(){function t(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};o()(this,t),this.object=e,this.params=n}return s()(t,[{key:"manager",value:function(t){var e=this;this.controls=new c(t.get("camera"),this.object,this.params),"pointerLockElement"in document||"mozPointerLockElement"in document||"webkitPointerLockElement"in document?!function(){var t=document.body,n=function(){document.pointerLockElement===t||document.mozPointerLockElement===t||document.webkitPointerLockElement===t?e.controls.enabled=!0:e.controls.enabled=!1};document.addEventListener("pointerlockchange",n,!1),document.addEventListener("mozpointerlockchange",n,!1),document.addEventListener("webkitpointerlockchange",n,!1);var i=function(){console.warn("Pointer lock error.")};document.addEventListener("pointerlockerror",i,!1),document.addEventListener("mozpointerlockerror",i,!1),document.addEventListener("webkitpointerlockerror",i,!1),document.querySelector("body").addEventListener("click",function(){t.requestPointerLock=t.requestPointerLock||t.mozRequestPointerLock||t.webkitRequestPointerLock,t.requestFullscreen=t.requestFullscreen||t.mozRequestFullscreen||t.mozRequestFullScreen||t.webkitRequestFullscreen,/Firefox/i.test(navigator.userAgent)?!function(){var e=function e(){document.fullscreenElement!==t&&document.mozFullscreenElement!==t&&document.mozFullScreenElement!==t||(document.removeEventListener("fullscreenchange",e),document.removeEventListener("mozfullscreenchange",e),t.requestPointerLock())};document.addEventListener("fullscreenchange",e,!1),document.addEventListener("mozfullscreenchange",e,!1),t.requestFullscreen()}():t.requestPointerLock()})}():console.warn("Your browser does not support the PointerLock WHS.API."),t.get("scene").add(this.controls.getObject())}},{key:"integrate",value:function(t){var e=function(e){t.controls.update(e.getDelta())};t.updateLoop=new WHS.Loop(e).start(this)}}]),t}();d.defaults={block:null,speed:1,ypos:1}},function(t,e,n){"use strict";var i=n(69);n.d(e,"a",function(){return i.a}),n.d(e,"b",function(){return o.a});var o=n(56);n.d(e,"c",function(){return r.a});var r=n(59);n.d(e,"d",function(){return s.a});var s=n(57),a=n(60);n.d(e,"e",function(){return a.a});var u=n(61);n.d(e,"f",function(){return u.a});var c=n(62);n.d(e,"g",function(){return c.a});var d=n(63);n.d(e,"h",function(){return d.a});var l=n(64);n.d(e,"i",function(){return l.a});var f=n(65);n.d(e,"j",function(){return f.a});var p=n(68);n.d(e,"k",function(){return p.a});var h=n(67);n.d(e,"l",function(){return h.a});var m=n(58);n.d(e,"m",function(){return m.a});var y=n(66);n.d(e,"n",function(){return y.a});var g=n(70);n.d(e,"o",function(){return g.a})},function(t,e,n){"use strict";var i=n(0);n.n(i)},function(t,e,n){"use strict";var i=n(0),o=n.n(i),r=n(1),s=n.n(r),a=n(2);n.n(a),n(72);n.d(e,"a",function(){return u});var u=function(){function t(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:new VehicleTuning;o()(this,t),this.mesh=e,this.wheels=[],this._physijs={id:getObjectId(),rigidBody:e._physijs.id,suspension_stiffness:n.suspension_stiffness,suspension_compression:n.suspension_compression,suspension_damping:n.suspension_damping,max_suspension_travel:n.max_suspension_travel,friction_slip:n.friction_slip,max_suspension_force:n.max_suspension_force}}return s()(t,[{key:"addWheel",value:function(t,e,n,i,o,r,s,u,c){var d=new a.Mesh(t,e);d.castShadow=d.receiveShadow=!0,d.position.copy(i).multiplyScalar(r/100).add(n),this.world.add(d),this.wheels.push(d),this.world.execute("addWheel",{id:this._physijs.id,connection_point:{x:n.x,y:n.y,z:n.z},wheel_direction:{x:i.x,y:i.y,z:i.z},wheel_axle:{x:o.x,y:o.y,z:o.z},suspension_rest_length:r,wheel_radius:s,is_front_wheel:u,tuning:c})}},{key:"setSteering",value:function(t,e){if(void 0!==e&&void 0!==this.wheels[e])this.world.execute("setSteering",{id:this._physijs.id,wheel:e,steering:t});else if(this.wheels.length>0)for(var n=0;n<this.wheels.length;n++)this.world.execute("setSteering",{id:this._physijs.id,wheel:n,steering:t})}},{key:"setBrake",value:function(t,e){if(void 0!==e&&void 0!==this.wheels[e])this.world.execute("setBrake",{id:this._physijs.id,wheel:e,brake:t});else if(this.wheels.length>0)for(var n=0;n<this.wheels.length;n++)this.world.execute("setBrake",{id:this._physijs.id,wheel:n,brake:t})}},{key:"applyEngineForce",value:function(t,e){if(void 0!==e&&void 0!==this.wheels[e])this.world.execute("applyEngineForce",{id:this._physijs.id,wheel:e,force:t});else if(this.wheels.length>0)for(var n=0;n<this.wheels.length;n++)this.world.execute("applyEngineForce",{id:this._physijs.id,wheel:n,force:t})}}]),t}()},function(t,e,n){t.exports={default:n(85),__esModule:!0}},function(t,e,n){t.exports={default:n(86),__esModule:!0}},function(t,e,n){t.exports={default:n(87),__esModule:!0}},function(t,e,n){t.exports={default:n(88),__esModule:!0}},function(t,e,n){t.exports={default:n(89),__esModule:!0}},function(t,e,n){t.exports={default:n(90),__esModule:!0}},function(t,e,n){t.exports={default:n(91),__esModule:!0}},function(t,e,n){"use strict";e.__esModule=!0;var i=n(75),o=r(i);function r(t){return t&&t.__esModule?t:{default:t}}e.default=o.default||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var i in n)Object.prototype.hasOwnProperty.call(n,i)&&(t[i]=n[i])}return t}},function(t,e,n){"use strict";e.__esModule=!0;var i=n(78),o=c(i),r=n(76),s=c(r),a=n(38),u=c(a);function c(t){return t&&t.__esModule?t:{default:t}}e.default=function(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+("undefined"==typeof e?"undefined":(0,u.default)(e)));t.prototype=(0,s.default)(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(o.default?(0,o.default)(t,e):t.__proto__=e)}},function(t,e,n){"use strict";e.__esModule=!0;var i=n(38),o=r(i);function r(t){return t&&t.__esModule?t:{default:t}}e.default=function(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!==("undefined"==typeof e?"undefined":(0,o.default)(e))&&"function"!=typeof e?t:e}},function(t,e,n){"use strict";e.__esModule=!0;var i=n(74),o=r(i);function r(t){return t&&t.__esModule?t:{default:t}}e.default=function(t){if(Array.isArray(t)){for(var e=0,n=Array(t.length);e<t.length;e++)n[e]=t[e];return n}return(0,o.default)(t)}},function(t,e,n){n(48),n(115),t.exports=n(5).Array.from},function(t,e,n){n(117),t.exports=n(5).Object.assign},function(t,e,n){n(118);var i=n(5).Object;t.exports=function(t,e){return i.create(t,e)}},function(t,e,n){n(119);var i=n(5).Object;t.exports=function(t,e,n){return i.defineProperty(t,e,n)}},function(t,e,n){n(120),t.exports=n(5).Object.setPrototypeOf},function(t,e,n){n(122),n(121),n(123),n(124),t.exports=n(5).Symbol},function(t,e,n){n(48),n(125),t.exports=n(36).f("iterator")},function(t,e){t.exports=function(t){if("function"!=typeof t)throw TypeError(t+" is not a function!");return t}},function(t,e){t.exports=function(){}},function(t,e,n){var i=n(12),o=n(47),r=n(113);t.exports=function(t){return function(e,n,s){var a,u=i(e),c=o(u.length),d=r(s,c);if(t&&n!=n){for(;c>d;)if(a=u[d++],a!=a)return!0}else for(;c>d;d++)if((t||d in u)&&u[d]===n)return t||d||0;return!t&&-1}}},function(t,e,n){var i=n(22),o=n(4)("toStringTag"),r="Arguments"==i(function(){return arguments}()),s=function(t,e){try{return t[e]}catch(t){}};t.exports=function(t){var e,n,a;return void 0===t?"Undefined":null===t?"Null":"string"==typeof(n=s(e=Object(t),o))?n:r?i(e):"Object"==(a=i(e))&&"function"==typeof e.callee?"Arguments":a}},function(t,e,n){"use strict";var i=n(7),o=n(19);t.exports=function(t,e,n){e in t?i.f(t,e,o(0,n)):t[e]=n}},function(t,e,n){var i=n(18),o=n(28),r=n(20);t.exports=function(t){var e=i(t),n=o.f;if(n)for(var s,a=n(t),u=r.f,c=0;a.length>c;)u.call(t,s=a[c++])&&e.push(s);return e}},function(t,e,n){t.exports=n(6).document&&document.documentElement},function(t,e,n){var i=n(17),o=n(4)("iterator"),r=Array.prototype;t.exports=function(t){return void 0!==t&&(i.Array===t||r[o]===t)}},function(t,e,n){var i=n(22);t.exports=Array.isArray||function(t){return"Array"==i(t)}},function(t,e,n){var i=n(13);t.exports=function(t,e,n,o){try{return o?e(i(n)[0],n[1]):e(n)}catch(e){var r=t.return;throw void 0!==r&&i(r.call(t)),e}}},function(t,e,n){"use strict";var i=n(27),o=n(19),r=n(29),s={};n(14)(s,n(4)("iterator"),function(){return this}),t.exports=function(t,e,n){t.prototype=i(s,{next:o(1,n)}),r(t,e+" Iterator")}},function(t,e,n){var i=n(4)("iterator"),o=!1;try{var r=[7][i]();r.return=function(){o=!0},Array.from(r,function(){throw 2})}catch(t){}t.exports=function(t,e){if(!e&&!o)return!1;var n=!1;try{var r=[7],s=r[i]();s.next=function(){return{done:n=!0}},r[i]=function(){return s},t(r)}catch(t){}return n}},function(t,e){t.exports=function(t,e){return{value:e,done:!!t}}},function(t,e,n){var i=n(18),o=n(12);t.exports=function(t,e){for(var n,r=o(t),s=i(r),a=s.length,u=0;a>u;)if(r[n=s[u++]]===e)return n}},function(t,e,n){var i=n(21)("meta"),o=n(16),r=n(11),s=n(7).f,a=0,u=Object.isExtensible||function(){return!0},c=!n(15)(function(){return u(Object.preventExtensions({}))}),d=function(t){s(t,i,{value:{i:"O"+ ++a,w:{}}})},l=function(t,e){if(!o(t))return"symbol"==typeof t?t:("string"==typeof t?"S":"P")+t;if(!r(t,i)){if(!u(t))return"F";if(!e)return"E";d(t)}return t[i].i},f=function(t,e){if(!r(t,i)){if(!u(t))return!0;if(!e)return!1;d(t)}return t[i].w},p=function(t){return c&&h.NEED&&u(t)&&!r(t,i)&&d(t),t},h=t.exports={KEY:i,NEED:!1,fastKey:l,getWeak:f,onFreeze:p}},function(t,e,n){"use strict";var i=n(18),o=n(28),r=n(20),s=n(33),a=n(41),u=Object.assign;t.exports=!u||n(15)(function(){var t={},e={},n=Symbol(),i="abcdefghijklmnopqrst";return t[n]=7,i.split("").forEach(function(t){e[t]=t}),7!=u({},t)[n]||Object.keys(u({},e)).join("")!=i})?function(t,e){for(var n=s(t),u=arguments.length,c=1,d=o.f,l=r.f;u>c;)for(var f,p=a(arguments[c++]),h=d?i(p).concat(d(p)):i(p),m=h.length,y=0;m>y;)l.call(p,f=h[y++])&&(n[f]=p[f]);return n}:u},function(t,e,n){var i=n(7),o=n(13),r=n(18);t.exports=n(9)?Object.defineProperties:function(t,e){o(t);for(var n,s=r(e),a=s.length,u=0;a>u;)i.f(t,n=s[u++],e[n]);return t}},function(t,e,n){var i=n(12),o=n(44).f,r={}.toString,s="object"==typeof window&&window&&Object.getOwnPropertyNames?Object.getOwnPropertyNames(window):[],a=function(t){try{return o(t)}catch(t){return s.slice()}};t.exports.f=function(t){return s&&"[object Window]"==r.call(t)?a(t):o(i(t))}},function(t,e,n){var i=n(11),o=n(33),r=n(30)("IE_PROTO"),s=Object.prototype;t.exports=Object.getPrototypeOf||function(t){return t=o(t),i(t,r)?t[r]:"function"==typeof t.constructor&&t instanceof t.constructor?t.constructor.prototype:t instanceof Object?s:null}},function(t,e,n){var i=n(16),o=n(13),r=function(t,e){if(o(t),!i(e)&&null!==e)throw TypeError(e+": can't set as prototype!")};t.exports={set:Object.setPrototypeOf||("__proto__"in{}?function(t,e,i){try{i=n(23)(Function.call,n(43).f(Object.prototype,"__proto__").set,2),i(t,[]),e=!(t instanceof Array)}catch(t){e=!0}return function(t,n){return r(t,n),e?t.__proto__=n:i(t,n),t}}({},!1):void 0),check:r}},function(t,e,n){var i=n(32),o=n(24);t.exports=function(t){return function(e,n){var r,s,a=String(o(e)),u=i(n),c=a.length;return u<0||u>=c?t?"":void 0:(r=a.charCodeAt(u),r<55296||r>56319||u+1===c||(s=a.charCodeAt(u+1))<56320||s>57343?t?a.charAt(u):r:t?a.slice(u,u+2):(r-55296<<10)+(s-56320)+65536)}}},function(t,e,n){var i=n(32),o=Math.max,r=Math.min;t.exports=function(t,e){return t=i(t),t<0?o(t+e,0):r(t,e)}},function(t,e,n){var i=n(95),o=n(4)("iterator"),r=n(17);t.exports=n(5).getIteratorMethod=function(t){if(void 0!=t)return t[o]||t["@@iterator"]||r[i(t)]}},function(t,e,n){"use strict";var i=n(23),o=n(10),r=n(33),s=n(101),a=n(99),u=n(47),c=n(96),d=n(114);o(o.S+o.F*!n(103)(function(t){Array.from(t)}),"Array",{from:function(t){var e,n,o,l,f=r(t),p="function"==typeof this?this:Array,h=arguments.length,m=h>1?arguments[1]:void 0,y=void 0!==m,g=0,v=d(f);if(y&&(m=i(m,h>2?arguments[2]:void 0,2)),void 0==v||p==Array&&a(v))for(e=u(f.length),n=new p(e);e>g;g++)c(n,g,y?m(f[g],g):f[g]);else for(l=v.call(f),n=new p;!(o=l.next()).done;g++)c(n,g,y?s(l,m,[o.value,g],!0):o.value);return n.length=g,n}})},function(t,e,n){"use strict";var i=n(93),o=n(104),r=n(17),s=n(12);t.exports=n(42)(Array,"Array",function(t,e){this._t=s(t),this._i=0,this._k=e},function(){var t=this._t,e=this._k,n=this._i++;return!t||n>=t.length?(this._t=void 0,o(1)):"keys"==e?o(0,n):"values"==e?o(0,t[n]):o(0,[n,t[n]])},"values"),r.Arguments=r.Array,i("keys"),i("values"),i("entries")},function(t,e,n){var i=n(10);i(i.S+i.F,"Object",{assign:n(107)})},function(t,e,n){var i=n(10);i(i.S,"Object",{create:n(27)})},function(t,e,n){var i=n(10);i(i.S+i.F*!n(9),"Object",{defineProperty:n(7).f})},function(t,e,n){var i=n(10);i(i.S,"Object",{setPrototypeOf:n(111).set})},function(t,e){},function(t,e,n){"use strict";var i=n(6),o=n(11),r=n(9),s=n(10),a=n(46),u=n(106).KEY,c=n(15),d=n(31),l=n(29),f=n(21),p=n(4),h=n(36),m=n(35),y=n(105),g=n(97),v=n(100),_=n(13),b=n(12),w=n(34),x=n(19),j=n(27),A=n(109),k=n(43),M=n(7),S=n(18),O=k.f,R=M.f,L=A.f,E=i.Symbol,z=i.JSON,T=z&&z.stringify,C="prototype",P=p("_hidden"),I=p("toPrimitive"),B={}.propertyIsEnumerable,V=d("symbol-registry"),F=d("symbols"),Y=d("op-symbols"),X=Object[C],Z="function"==typeof E,W=i.QObject,H=!W||!W[C]||!W[C].findChild,q=r&&c(function(){
-return 7!=j(R({},"a",{get:function(){return R(this,"a",{value:7}).a}})).a})?function(t,e,n){var i=O(X,e);i&&delete X[e],R(t,e,n),i&&t!==X&&R(X,e,i)}:R,N=function(t){var e=F[t]=j(E[C]);return e._k=t,e},D=Z&&"symbol"==typeof E.iterator?function(t){return"symbol"==typeof t}:function(t){return t instanceof E},G=function(t,e,n){return t===X&&G(Y,e,n),_(t),e=w(e,!0),_(n),o(F,e)?(n.enumerable?(o(t,P)&&t[P][e]&&(t[P][e]=!1),n=j(n,{enumerable:x(0,!1)})):(o(t,P)||R(t,P,x(1,{})),t[P][e]=!0),q(t,e,n)):R(t,e,n)},U=function(t,e){_(t);for(var n,i=g(e=b(e)),o=0,r=i.length;r>o;)G(t,n=i[o++],e[n]);return t},Q=function(t,e){return void 0===e?j(t):U(j(t),e)},J=function(t){var e=B.call(this,t=w(t,!0));return!(this===X&&o(F,t)&&!o(Y,t))&&(!(e||!o(this,t)||!o(F,t)||o(this,P)&&this[P][t])||e)},K=function(t,e){if(t=b(t),e=w(e,!0),t!==X||!o(F,e)||o(Y,e)){var n=O(t,e);return!n||!o(F,e)||o(t,P)&&t[P][e]||(n.enumerable=!0),n}},$=function(t){for(var e,n=L(b(t)),i=[],r=0;n.length>r;)o(F,e=n[r++])||e==P||e==u||i.push(e);return i},tt=function(t){for(var e,n=t===X,i=L(n?Y:b(t)),r=[],s=0;i.length>s;)!o(F,e=i[s++])||n&&!o(X,e)||r.push(F[e]);return r};Z||(E=function(){if(this instanceof E)throw TypeError("Symbol is not a constructor!");var t=f(arguments.length>0?arguments[0]:void 0),e=function(n){this===X&&e.call(Y,n),o(this,P)&&o(this[P],t)&&(this[P][t]=!1),q(this,t,x(1,n))};return r&&H&&q(X,t,{configurable:!0,set:e}),N(t)},a(E[C],"toString",function(){return this._k}),k.f=K,M.f=G,n(44).f=A.f=$,n(20).f=J,n(28).f=tt,r&&!n(26)&&a(X,"propertyIsEnumerable",J,!0),h.f=function(t){return N(p(t))}),s(s.G+s.W+s.F*!Z,{Symbol:E});for(var et="hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","),nt=0;et.length>nt;)p(et[nt++]);for(var et=S(p.store),nt=0;et.length>nt;)m(et[nt++]);s(s.S+s.F*!Z,"Symbol",{for:function(t){return o(V,t+="")?V[t]:V[t]=E(t)},keyFor:function(t){if(D(t))return y(V,t);throw TypeError(t+" is not a symbol!")},useSetter:function(){H=!0},useSimple:function(){H=!1}}),s(s.S+s.F*!Z,"Object",{create:Q,defineProperty:G,defineProperties:U,getOwnPropertyDescriptor:K,getOwnPropertyNames:$,getOwnPropertySymbols:tt}),z&&s(s.S+s.F*(!Z||c(function(){var t=E();return"[null]"!=T([t])||"{}"!=T({a:t})||"{}"!=T(Object(t))})),"JSON",{stringify:function(t){if(void 0!==t&&!D(t)){for(var e,n,i=[t],o=1;arguments.length>o;)i.push(arguments[o++]);return e=i[1],"function"==typeof e&&(n=e),!n&&v(e)||(e=function(t,e){if(n&&(e=n.call(this,t,e)),!D(e))return e}),i[1]=e,T.apply(z,i)}}}),E[C][I]||n(14)(E[C],I,E[C].valueOf),l(E,"Symbol"),l(Math,"Math",!0),l(i.JSON,"JSON",!0)},function(t,e,n){n(35)("asyncIterator")},function(t,e,n){n(35)("observable")},function(t,e,n){n(116);for(var i=n(6),o=n(14),r=n(17),s=n(4)("toStringTag"),a=["NodeList","DOMTokenList","MediaList","StyleSheetList","CSSRuleList"],u=0;u<5;u++){var c=a[u],d=i[c],l=d&&d.prototype;l&&!l[s]&&o(l,s,c),r[c]=r.Array}},function(t,e){var n=window.URL||window.webkitURL;t.exports=function(t,e){try{try{var i;try{var o=window.BlobBuilder||window.WebKitBlobBuilder||window.MozBlobBuilder||window.MSBlobBuilder;i=new o,i.append(t),i=i.getBlob()}catch(e){i=new Blob([t])}return new Worker(n.createObjectURL(i))}catch(e){return new Worker("data:application/javascript,"+encodeURIComponent(t))}}catch(t){return new Worker(e)}}},function(t,e,n){t.exports=function(){return n(126)('/*! Physics module "Ammonext" v0.1.0 */\n!function(t){var e={};function o(i){if(e[i])return e[i].exports;var a=e[i]={i:i,l:!1,exports:{}};return t[i].call(a.exports,a,a.exports,o),a.l=!0,a.exports}return o.m=t,o.c=e,o.i=function(t){return t},o.d=function(t,e,i){o.o(t,e)||Object.defineProperty(t,e,{configurable:!1,enumerable:!0,get:i})},o.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return o.d(e,"a",e),e},o.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},o.p="",o(o.s=0)}([function(t,e){var o=self.webkitPostMessage||self.postMessage,i={WORLDREPORT:0,COLLISIONREPORT:1,VEHICLEREPORT:2,CONSTRAINTREPORT:3,SOFTREPORT:4},a=void 0,n=void 0,s=void 0,r=void 0,m=!1,c=0,d=0,l=0,p=0,u=0,b=0,f=void 0,g=void 0,v=void 0,_=void 0,y=void 0,h=void 0,x=void 0,w={},A=[],R=[],S=[],z={},T={},L={},C={},M={},O=void 0,Y=void 0,X=void 0,Z=void 0,k=void 0,I=void 0,P=14,E=5,F=9,V=6,B=new ArrayBuffer(1);o(B,[B]);var j=0===B.byteLength,D=function(t){return void 0!==T[t]?T[t]:null},W=function(t,e){T[t]=e},H=function(t){var e=void 0;switch(s.setIdentity(),t.type){case"compound":e=new Ammo.btCompoundShape;break;case"plane":var o="plane_"+t.normal.x+"_"+t.normal.y+"_"+t.normal.z;null===(e=D(o))&&(_.setX(t.normal.x),_.setY(t.normal.y),_.setZ(t.normal.z),e=new Ammo.btStaticPlaneShape(_,0),W(o,e));break;case"box":var i="box_"+t.width+"_"+t.height+"_"+t.depth;null===(e=D(i))&&(_.setX(t.width/2),_.setY(t.height/2),_.setZ(t.depth/2),e=new Ammo.btBoxShape(_),W(i,e));break;case"sphere":var a="sphere_"+t.radius;null===(e=D(a))&&(e=new Ammo.btSphereShape(t.radius),W(a,e));break;case"cylinder":var n="cylinder_"+t.width+"_"+t.height+"_"+t.depth;null===(e=D(n))&&(_.setX(t.width/2),_.setY(t.height/2),_.setZ(t.depth/2),e=new Ammo.btCylinderShape(_),W(n,e));break;case"capsule":var r="capsule_"+t.radius+"_"+t.height;null===(e=D(r))&&(e=new Ammo.btCapsuleShape(t.radius,t.height-2*t.radius),W(r,e));break;case"cone":var m="cone_"+t.radius+"_"+t.height;null===(e=D(m))&&(e=new Ammo.btConeShape(t.radius,t.height),W(m,e));break;case"concave":var c=new Ammo.btTriangleMesh;if(!t.data.length)return!1;for(var d=t.data,l=0;l<d.length/9;l++)_.setX(d[9*l]),_.setY(d[9*l+1]),_.setZ(d[9*l+2]),y.setX(d[9*l+3]),y.setY(d[9*l+4]),y.setZ(d[9*l+5]),h.setX(d[9*l+6]),h.setY(d[9*l+7]),h.setZ(d[9*l+8]),c.addTriangle(_,y,h,!1);e=new Ammo.btBvhTriangleMeshShape(c,!0,!0),C[t.id]=e;break;case"convex":e=new Ammo.btConvexHullShape;for(var p=t.data,u=0;u<p.length/3;u++)_.setX(p[3*u]),_.setY(p[3*u+1]),_.setZ(p[3*u+2]),e.addPoint(_);C[t.id]=e;break;case"heightfield":for(var b=t.xpts,f=t.ypts,g=t.points,v=Ammo._malloc(4*b*f),x=0,w=0,A=0;x<b;x++)for(var R=0;R<f;R++)Ammo.HEAPF32[v+A>>2]=g[w],w++,A+=4;e=new Ammo.btHeightfieldTerrainShape(t.xpts,t.ypts,v,1,-t.absMaxHeight,t.absMaxHeight,1,"PHY_FLOAT",!1),C[t.id]=e;break;default:return}return e},N=function(t){var e=void 0,o=new Ammo.btSoftBodyHelpers;switch(t.type){case"softTrimesh":if(!t.aVertices.length)return!1;e=o.CreateFromTriMesh(v.getWorldInfo(),t.aVertices,t.aIndices,t.aIndices.length/3,!1);break;case"softClothMesh":var i=t.corners;e=o.CreatePatch(v.getWorldInfo(),new Ammo.btVector3(i[0],i[1],i[2]),new Ammo.btVector3(i[3],i[4],i[5]),new Ammo.btVector3(i[6],i[7],i[8]),new Ammo.btVector3(i[9],i[10],i[11]),t.segments[0],t.segments[1],0,!0);break;case"softRopeMesh":var a=t.data;e=o.CreateRope(v.getWorldInfo(),new Ammo.btVector3(a[0],a[1],a[2]),new Ammo.btVector3(a[3],a[4],a[5]),a[6]-1,0);break;default:return}return e};w.init=function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};t.wasmBuffer?(importScripts(t.ammo),self.Ammo=loadAmmoFromBinary(t.wasmBuffer),o({cmd:"ammoLoaded"}),w.makeWorld(t)):(importScripts(t.ammo),o({cmd:"ammoLoaded"}),w.makeWorld(t))},w.makeWorld=function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};s=new Ammo.btTransform,r=new Ammo.btTransform,_=new Ammo.btVector3(0,0,0),y=new Ammo.btVector3(0,0,0),h=new Ammo.btVector3(0,0,0),x=new Ammo.btQuaternion(0,0,0,0),O=t.reportsize||50,j?(Y=new Float32Array(2+O*P),Z=new Float32Array(2+O*E),k=new Float32Array(2+O*F),I=new Float32Array(2+O*V)):(Y=[],Z=[],k=[],I=[]),Y[0]=i.WORLDREPORT,Z[0]=i.COLLISIONREPORT,k[0]=i.VEHICLEREPORT,I[0]=i.CONSTRAINTREPORT;var e=t.softbody?new Ammo.btSoftBodyRigidBodyCollisionConfiguration:new Ammo.btDefaultCollisionConfiguration,a=new Ammo.btCollisionDispatcher(e),n=new Ammo.btSequentialImpulseConstraintSolver,c=void 0;switch(t.broadphase||(t.broadphase={type:"dynamic"}),t.broadphase.type){case"sweepprune":_.setX(t.broadphase.aabbmin.x),_.setY(t.broadphase.aabbmin.y),_.setZ(t.broadphase.aabbmin.z),y.setX(t.broadphase.aabbmax.x),y.setY(t.broadphase.aabbmax.y),y.setZ(t.broadphase.aabbmax.z),c=new Ammo.btAxisSweep3(_,y);break;case"dynamic":default:c=new Ammo.btDbvtBroadphase}v=t.softbody?new Ammo.btSoftRigidDynamicsWorld(a,c,n,e,new Ammo.btDefaultSoftBodySolver):new Ammo.btDiscreteDynamicsWorld(a,c,n,e),f=t.fixedTimeStep,t.softbody&&(m=!0),o({cmd:"worldReady"})},w.setFixedTimeStep=function(t){f=t},w.setGravity=function(t){_.setX(t.x),_.setY(t.y),_.setZ(t.z),v.setGravity(_)},w.appendAnchor=function(t){A[t.obj].appendAnchor(t.node,A[t.obj2],t.collisionBetweenLinkedBodies,t.influence)},w.addObject=function(t){var e=void 0,i=void 0;if(t.type.indexOf("soft")!==-1){e=N(t);var a=e.get_m_cfg();t.viterations&&a.set_viterations(t.viterations),t.piterations&&a.set_piterations(t.piterations),t.diterations&&a.set_diterations(t.diterations),t.citerations&&a.set_citerations(t.citerations),a.set_collisions(17),a.set_kDF(t.friction),a.set_kDP(t.damping),t.pressure&&a.set_kPR(t.pressure),t.drag&&a.set_kDG(t.drag),t.lift&&a.set_kLF(t.lift),t.anchorHardness&&a.set_kAHR(t.anchorHardness),t.rigidHardness&&a.set_kCHR(t.rigidHardness),t.klst&&e.get_m_materials().at(0).set_m_kLST(t.klst),t.kast&&e.get_m_materials().at(0).set_m_kAST(t.kast),t.kvst&&e.get_m_materials().at(0).set_m_kVST(t.kvst),Ammo.castObject(e,Ammo.btCollisionObject).getCollisionShape().setMargin(t.margin?t.margin:.1),e.setActivationState(t.state||4),e.type=0,"softRopeMesh"===t.type&&(e.rope=!0),"softClothMesh"===t.type&&(e.cloth=!0),s.setIdentity(),_.setX(t.position.x),_.setY(t.position.y),_.setZ(t.position.z),s.setOrigin(_),x.setX(t.rotation.x),x.setY(t.rotation.y),x.setZ(t.rotation.z),x.setW(t.rotation.w),s.setRotation(x),e.transform(s),e.setTotalMass(t.mass,!1),v.addSoftBody(e,1,-1),b+="softTrimesh"===t.type?3*e.get_m_faces().size():"softRopeMesh"===t.type?e.get_m_nodes().size():3*e.get_m_nodes().size(),l++}else{var n=H(t);if(!n)return;if(t.children){var r=new Ammo.btCompoundShape;r.addChildShape(s,n);for(var m=0;m<t.children.length;m++){var p=t.children[m],u=new Ammo.btTransform;u.setIdentity(),_.setX(p.position_offset.x),_.setY(p.position_offset.y),_.setZ(p.position_offset.z),u.setOrigin(_),x.setX(p.rotation.x),x.setY(p.rotation.y),x.setZ(p.rotation.z),x.setW(p.rotation.w),u.setRotation(x),n=H(t.children[m]),r.addChildShape(u,n),Ammo.destroy(u)}n=r,M[t.id]=n}_.setX(t.scale.x),_.setY(t.scale.y),_.setZ(t.scale.z),n.setLocalScaling(_),_.setX(0),_.setY(0),_.setZ(0),n.calculateLocalInertia(t.mass,_),s.setIdentity(),y.setX(t.position.x),y.setY(t.position.y),y.setZ(t.position.z),s.setOrigin(y),x.setX(t.rotation.x),x.setY(t.rotation.y),x.setZ(t.rotation.z),x.setW(t.rotation.w),s.setRotation(x),i=new Ammo.btDefaultMotionState(s);var f=new Ammo.btRigidBodyConstructionInfo(t.mass,i,n,_);f.set_m_friction(t.friction),f.set_m_restitution(t.restitution),f.set_m_linearDamping(t.damping),f.set_m_angularDamping(t.damping),e=new Ammo.btRigidBody(f),Ammo.castObject(e,Ammo.btCollisionObject).getCollisionShape().setMargin(t.margin?t.margin:0),e.setActivationState(t.state||4),Ammo.destroy(f),"undefined"!=typeof t.collision_flags&&e.setCollisionFlags(t.collision_flags),t.group&&t.mask?v.addRigidBody(e,t.group,t.mask):v.addRigidBody(e),e.type=1,d++}e.activate(),e.id=t.id,A[e.id]=e,L[e.id]=i,z[void 0===e.a?e.ptr:e.a]=e.id,c++,o({cmd:"objectReady",params:e.id})},w.addVehicle=function(t){var e=new Ammo.btVehicleTuning;e.set_m_suspensionStiffness(t.suspension_stiffness),e.set_m_suspensionCompression(t.suspension_compression),e.set_m_suspensionDamping(t.suspension_damping),e.set_m_maxSuspensionTravelCm(t.max_suspension_travel),e.set_m_maxSuspensionForce(t.max_suspension_force);var o=new Ammo.btRaycastVehicle(e,A[t.rigidBody],new Ammo.btDefaultVehicleRaycaster(v));o.tuning=e,A[t.rigidBody].setActivationState(4),o.setCoordinateSystem(0,1,2),v.addVehicle(o),R[t.id]=o},w.removeVehicle=function(t){R[t.id]=null},w.addWheel=function(t){if(void 0!==R[t.id]){var e=R[t.id].tuning;void 0!==t.tuning&&(e=new Ammo.btVehicleTuning,e.set_m_suspensionStiffness(t.tuning.suspension_stiffness),e.set_m_suspensionCompression(t.tuning.suspension_compression),e.set_m_suspensionDamping(t.tuning.suspension_damping),e.set_m_maxSuspensionTravelCm(t.tuning.max_suspension_travel),e.set_m_maxSuspensionForce(t.tuning.max_suspension_force)),_.setX(t.connection_point.x),_.setY(t.connection_point.y),_.setZ(t.connection_point.z),y.setX(t.wheel_direction.x),y.setY(t.wheel_direction.y),y.setZ(t.wheel_direction.z),h.setX(t.wheel_axle.x),h.setY(t.wheel_axle.y),h.setZ(t.wheel_axle.z),R[t.id].addWheel(_,y,h,t.suspension_rest_length,t.wheel_radius,e,t.is_front_wheel)}p++,j?(k=new Float32Array(1+p*F),k[0]=i.VEHICLEREPORT):k=[i.VEHICLEREPORT]},w.setSteering=function(t){void 0!==R[t.id]&&R[t.id].setSteeringValue(t.steering,t.wheel)},w.setBrake=function(t){void 0!==R[t.id]&&R[t.id].setBrake(t.brake,t.wheel)},w.applyEngineForce=function(t){void 0!==R[t.id]&&R[t.id].applyEngineForce(t.force,t.wheel)},w.removeObject=function(t){0===A[t.id].type?(l--,b-=A[t.id].get_m_nodes().size(),v.removeSoftBody(A[t.id])):1===A[t.id].type&&(d--,v.removeRigidBody(A[t.id]),Ammo.destroy(L[t.id])),Ammo.destroy(A[t.id]),M[t.id]&&Ammo.destroy(M[t.id]),C[t.id]&&Ammo.destroy(C[t.id]),z[void 0===A[t.id].a?A[t.id].a:A[t.id].ptr]=null,A[t.id]=null,L[t.id]=null,M[t.id]&&(M[t.id]=null),C[t.id]&&(C[t.id]=null),c--},w.updateTransform=function(t){a=A[t.id],1===a.type?(a.getMotionState().getWorldTransform(s),t.pos&&(_.setX(t.pos.x),_.setY(t.pos.y),_.setZ(t.pos.z),s.setOrigin(_)),t.quat&&(x.setX(t.quat.x),x.setY(t.quat.y),x.setZ(t.quat.z),x.setW(t.quat.w),s.setRotation(x)),a.setWorldTransform(s),a.activate()):0===a.type&&(t.pos&&(_.setX(t.pos.x),_.setY(t.pos.y),_.setZ(t.pos.z),s.setOrigin(_)),t.quat&&(x.setX(t.quat.x),x.setY(t.quat.y),x.setZ(t.quat.z),x.setW(t.quat.w),s.setRotation(x)),a.transform(s))},w.updateMass=function(t){a=A[t.id],v.removeRigidBody(a),_.setX(0),_.setY(0),_.setZ(0),a.setMassProps(t.mass,_),v.addRigidBody(a),a.activate()},w.applyCentralImpulse=function(t){_.setX(t.x),_.setY(t.y),_.setZ(t.z),A[t.id].applyCentralImpulse(_),A[t.id].activate()},w.applyImpulse=function(t){_.setX(t.impulse_x),_.setY(t.impulse_y),_.setZ(t.impulse_z),y.setX(t.x),y.setY(t.y),y.setZ(t.z),A[t.id].applyImpulse(_,y),A[t.id].activate()},w.applyTorque=function(t){_.setX(t.torque_x),_.setY(t.torque_y),_.setZ(t.torque_z),A[t.id].applyTorque(_),A[t.id].activate()},w.applyCentralForce=function(t){_.setX(t.x),_.setY(t.y),_.setZ(t.z),A[t.id].applyCentralForce(_),A[t.id].activate()},w.applyForce=function(t){_.setX(t.force_x),_.setY(t.force_y),_.setZ(t.force_z),y.setX(t.x),y.setY(t.y),y.setZ(t.z),A[t.id].applyForce(_,y),A[t.id].activate()},w.onSimulationResume=function(){g=Date.now()},w.setAngularVelocity=function(t){_.setX(t.x),_.setY(t.y),_.setZ(t.z),A[t.id].setAngularVelocity(_),A[t.id].activate()},w.setLinearVelocity=function(t){_.setX(t.x),_.setY(t.y),_.setZ(t.z),A[t.id].setLinearVelocity(_),A[t.id].activate()},w.setAngularFactor=function(t){_.setX(t.x),_.setY(t.y),_.setZ(t.z),A[t.id].setAngularFactor(_)},w.setLinearFactor=function(t){_.setX(t.x),_.setY(t.y),_.setZ(t.z),A[t.id].setLinearFactor(_)},w.setDamping=function(t){A[t.id].setDamping(t.linear,t.angular)},w.setCcdMotionThreshold=function(t){A[t.id].setCcdMotionThreshold(t.threshold)},w.setCcdSweptSphereRadius=function(t){A[t.id].setCcdSweptSphereRadius(t.radius)},w.addConstraint=function(t){var e=void 0;switch(t.type){case"point":void 0===t.objectb?(_.setX(t.positiona.x),_.setY(t.positiona.y),_.setZ(t.positiona.z),e=new Ammo.btPoint2PointConstraint(A[t.objecta],_)):(_.setX(t.positiona.x),_.setY(t.positiona.y),_.setZ(t.positiona.z),y.setX(t.positionb.x),y.setY(t.positionb.y),y.setZ(t.positionb.z),e=new Ammo.btPoint2PointConstraint(A[t.objecta],A[t.objectb],_,y));break;case"hinge":void 0===t.objectb?(_.setX(t.positiona.x),_.setY(t.positiona.y),_.setZ(t.positiona.z),y.setX(t.axis.x),y.setY(t.axis.y),y.setZ(t.axis.z),e=new Ammo.btHingeConstraint(A[t.objecta],_,y)):(_.setX(t.positiona.x),_.setY(t.positiona.y),_.setZ(t.positiona.z),y.setX(t.positionb.x),y.setY(t.positionb.y),y.setZ(t.positionb.z),h.setX(t.axis.x),h.setY(t.axis.y),h.setZ(t.axis.z),e=new Ammo.btHingeConstraint(A[t.objecta],A[t.objectb],_,y,h,h));break;case"slider":var o=void 0,a=new Ammo.btTransform;_.setX(t.positiona.x),_.setY(t.positiona.y),_.setZ(t.positiona.z),a.setOrigin(_);var n=a.getRotation();n.setEuler(t.axis.x,t.axis.y,t.axis.z),a.setRotation(n),t.objectb?(o=new Ammo.btTransform,y.setX(t.positionb.x),y.setY(t.positionb.y),y.setZ(t.positionb.z),o.setOrigin(y),n=o.getRotation(),n.setEuler(t.axis.x,t.axis.y,t.axis.z),o.setRotation(n),e=new Ammo.btSliderConstraint(A[t.objecta],A[t.objectb],a,o,!0)):e=new Ammo.btSliderConstraint(A[t.objecta],a,!0),e.ta=a,e.tb=o,Ammo.destroy(a),void 0!==o&&Ammo.destroy(o);break;case"conetwist":var s=new Ammo.btTransform;s.setIdentity();var r=new Ammo.btTransform;r.setIdentity(),_.setX(t.positiona.x),_.setY(t.positiona.y),_.setZ(t.positiona.z),y.setX(t.positionb.x),y.setY(t.positionb.y),y.setZ(t.positionb.z),s.setOrigin(_),r.setOrigin(y);var m=s.getRotation();m.setEulerZYX(-t.axisa.z,-t.axisa.y,-t.axisa.x),s.setRotation(m),m=r.getRotation(),m.setEulerZYX(-t.axisb.z,-t.axisb.y,-t.axisb.x),r.setRotation(m),e=new Ammo.btConeTwistConstraint(A[t.objecta],A[t.objectb],s,r),e.setLimit(Math.PI,0,Math.PI),e.ta=s,e.tb=r,Ammo.destroy(s),Ammo.destroy(r);break;case"dof":var c=void 0,d=new Ammo.btTransform;d.setIdentity(),_.setX(t.positiona.x),_.setY(t.positiona.y),_.setZ(t.positiona.z),d.setOrigin(_);var l=d.getRotation();l.setEulerZYX(-t.axisa.z,-t.axisa.y,-t.axisa.x),d.setRotation(l),t.objectb?(c=new Ammo.btTransform,c.setIdentity(),y.setX(t.positionb.x),y.setY(t.positionb.y),y.setZ(t.positionb.z),c.setOrigin(y),l=c.getRotation(),l.setEulerZYX(-t.axisb.z,-t.axisb.y,-t.axisb.x),c.setRotation(l),e=new Ammo.btGeneric6DofConstraint(A[t.objecta],A[t.objectb],d,c,!0)):e=new Ammo.btGeneric6DofConstraint(A[t.objecta],d,!0),e.ta=d,e.tb=c,Ammo.destroy(d),void 0!==c&&Ammo.destroy(c);break;default:return}v.addConstraint(e),e.a=A[t.objecta],e.b=A[t.objectb],e.enableFeedback(),S[t.id]=e,u++,j?(I=new Float32Array(1+u*V),I[0]=i.CONSTRAINTREPORT):I=[i.CONSTRAINTREPORT]},w.removeConstraint=function(t){var e=S[t.id];void 0!==e&&(v.removeConstraint(e),S[t.id]=null,u--)},w.constraint_setBreakingImpulseThreshold=function(t){var e=S[t.id];e!==undefind&&e.setBreakingImpulseThreshold(t.threshold)},w.simulate=function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};v&&(t.timeStep&&t.timeStep<f&&(t.timeStep=f),t.maxSubSteps=t.maxSubSteps||Math.ceil(t.timeStep/f),v.stepSimulation(t.timeStep,t.maxSubSteps,f),R.length>0&&Q(),G(),S.length>0&&J(),q(),m&&U())},w.hinge_setLimits=function(t){S[t.constraint].setLimit(t.low,t.high,0,t.bias_factor,t.relaxation_factor)},w.hinge_enableAngularMotor=function(t){var e=S[t.constraint];e.enableAngularMotor(!0,t.velocity,t.acceleration),e.a.activate(),e.b&&e.b.activate()},w.hinge_disableMotor=function(t){S[t.constraint].enableMotor(!1),constraint.b&&constraint.b.activate()},w.slider_setLimits=function(t){var e=S[t.constraint];e.setLowerLinLimit(t.lin_lower||0),e.setUpperLinLimit(t.lin_upper||0),e.setLowerAngLimit(t.ang_lower||0),e.setUpperAngLimit(t.ang_upper||0)},w.slider_setRestitution=function(t){var e=S[t.constraint];e.setSoftnessLimLin(t.linear||0),e.setSoftnessLimAng(t.angular||0)},w.slider_enableLinearMotor=function(t){var e=S[t.constraint];e.setTargetLinMotorVelocity(t.velocity),e.setMaxLinMotorForce(t.acceleration),e.setPoweredLinMotor(!0),e.a.activate(),e.b&&e.b.activate()},w.slider_disableLinearMotor=function(t){var e=S[t.constraint];e.setPoweredLinMotor(!1),e.b&&e.b.activate()},w.slider_enableAngularMotor=function(t){var e=S[t.constraint];e.setTargetAngMotorVelocity(t.velocity),e.setMaxAngMotorForce(t.acceleration),e.setPoweredAngMotor(!0),e.a.activate(),e.b&&e.b.activate()},w.slider_disableAngularMotor=function(t){var e=S[t.constraint];e.setPoweredAngMotor(!1),e.a.activate(),e.b&&e.b.activate()},w.conetwist_setLimit=function(t){S[t.constraint].setLimit(t.z,t.y,t.x)},w.conetwist_enableMotor=function(t){var e=S[t.constraint];e.enableMotor(!0),e.a.activate(),e.b.activate()},w.conetwist_setMaxMotorImpulse=function(t){var e=S[t.constraint];e.setMaxMotorImpulse(t.max_impulse),e.a.activate(),e.b.activate()},w.conetwist_setMotorTarget=function(t){var e=S[t.constraint];x.setX(t.x),x.setY(t.y),x.setZ(t.z),x.setW(t.w),e.setMotorTarget(x),e.a.activate(),e.b.activate()},w.conetwist_disableMotor=function(t){var e=S[t.constraint];e.enableMotor(!1),e.a.activate(),e.b.activate()},w.dof_setLinearLowerLimit=function(t){var e=S[t.constraint];_.setX(t.x),_.setY(t.y),_.setZ(t.z),e.setLinearLowerLimit(_),e.a.activate(),e.b&&e.b.activate()},w.dof_setLinearUpperLimit=function(t){var e=S[t.constraint];_.setX(t.x),_.setY(t.y),_.setZ(t.z),e.setLinearUpperLimit(_),e.a.activate(),e.b&&e.b.activate()},w.dof_setAngularLowerLimit=function(t){var e=S[t.constraint];_.setX(t.x),_.setY(t.y),_.setZ(t.z),e.setAngularLowerLimit(_),e.a.activate(),e.b&&e.b.activate()},w.dof_setAngularUpperLimit=function(t){var e=S[t.constraint];_.setX(t.x),_.setY(t.y),_.setZ(t.z),e.setAngularUpperLimit(_),e.a.activate(),e.b&&e.b.activate()},w.dof_enableAngularMotor=function(t){var e=S[t.constraint],o=e.getRotationalLimitMotor(t.which);o.set_m_enableMotor(!0),e.a.activate(),e.b&&e.b.activate()},w.dof_configureAngularMotor=function(t){var e=S[t.constraint],o=e.getRotationalLimitMotor(t.which);o.set_m_loLimit(t.low_angle),o.set_m_hiLimit(t.high_angle),o.set_m_targetVelocity(t.velocity),o.set_m_maxMotorForce(t.max_force),e.a.activate(),e.b&&e.b.activate()},w.dof_disableAngularMotor=function(t){var e=S[t.constraint],o=e.getRotationalLimitMotor(t.which);o.set_m_enableMotor(!1),e.a.activate(),e.b&&e.b.activate()};var q=function(){j&&Y.length<2+d*P&&(Y=new Float32Array(2+Math.ceil(d/O)*O*P),Y[0]=i.WORLDREPORT),Y[1]=d;for(var t=0,e=A.length;e--;){var a=A[e];if(a&&1===a.type){var s=a.getCenterOfMassTransform(),r=s.getOrigin(),m=s.getRotation(),c=2+t++*P;Y[c]=a.id,Y[c+1]=r.x(),Y[c+2]=r.y(),Y[c+3]=r.z(),Y[c+4]=m.x(),Y[c+5]=m.y(),Y[c+6]=m.z(),Y[c+7]=m.w(),n=a.getLinearVelocity(),Y[c+8]=n.x(),Y[c+9]=n.y(),Y[c+10]=n.z(),n=a.getAngularVelocity(),Y[c+11]=n.x(),Y[c+12]=n.y(),Y[c+13]=n.z()}}j?o(Y.buffer,[Y.buffer]):o(Y)},U=function(){X=new Float32Array(2+2*l+6*b),X[0]=i.SOFTREPORT,X[1]=l;for(var t=2,e=A.length;e--;){var a=A[e];if(a&&0===a.type){X[t]=a.id;var n=t+2;if(a.rope===!0){var s=a.get_m_nodes(),r=s.size();X[t+1]=r;for(var m=0;m<r;m++){var c=s.at(m),d=c.get_m_x(),p=n+3*m;X[p]=d.x(),X[p+1]=d.y(),X[p+2]=d.z()}t+=3*r+2}else if(a.cloth){var u=a.get_m_nodes(),f=u.size();X[t+1]=f;for(var g=0;g<f;g++){var v=u.at(g),_=v.get_m_x(),y=v.get_m_n(),h=n+6*g;X[h]=_.x(),X[h+1]=_.y(),X[h+2]=_.z(),X[h+3]=y.x(),X[h+4]=y.y(),X[h+5]=y.z()}t+=6*f+2}else{var x=a.get_m_faces(),w=x.size();X[t+1]=w;for(var R=0;R<w;R++){var S=x.at(R),z=S.get_m_n(0),T=S.get_m_n(1),L=S.get_m_n(2),C=z.get_m_x(),M=T.get_m_x(),O=L.get_m_x(),Y=z.get_m_n(),Z=T.get_m_n(),k=L.get_m_n(),I=n+18*R;X[I]=C.x(),X[I+1]=C.y(),X[I+2]=C.z(),X[I+3]=Y.x(),X[I+4]=Y.y(),X[I+5]=Y.z(),X[I+6]=M.x(),X[I+7]=M.y(),X[I+8]=M.z(),X[I+9]=Z.x(),X[I+10]=Z.y(),X[I+11]=Z.z(),X[I+12]=O.x(),X[I+13]=O.y(),X[I+14]=O.z(),X[I+15]=k.x(),X[I+16]=k.y(),X[I+17]=k.z()}t+=18*w+2}}}o(X)},G=function(){var t=v.getDispatcher(),e=t.getNumManifolds();j&&Z.length<2+e*E&&(Z=new Float32Array(2+Math.ceil(c/O)*O*E),Z[0]=i.COLLISIONREPORT),Z[1]=0;for(var a=0;a<e;a++){var s=t.getManifoldByIndexInternal(a),r=s.getNumContacts();if(0!==r)for(var m=0;m<r;m++){var d=s.getContactPoint(m),l=2+Z[1]++*E;Z[l]=z[s.getBody0().ptr],Z[l+1]=z[s.getBody1().ptr],n=d.get_m_normalWorldOnB(),Z[l+2]=n.x(),Z[l+3]=n.y(),Z[l+4]=n.z();break}}j?o(Z.buffer,[Z.buffer]):o(Z)},Q=function(){j&&k.length<2+p*F&&(k=new Float32Array(2+Math.ceil(p/O)*O*F),k[0]=i.VEHICLEREPORT);for(var t=0,e=0,a=R.length;a--;)if(R[a]){var n=R[a];for(e=0;e<n.getNumWheels();e++){var s=n.getWheelInfo(e).get_m_worldTransform(),r=s.getOrigin(),m=s.getRotation(),c=1+t++*F;k[c]=a,k[c+1]=e,k[c+2]=r.x(),k[c+3]=r.y(),k[c+4]=r.z(),k[c+5]=m.x(),k[c+6]=m.y(),k[c+7]=m.z(),k[c+8]=m.w()}}j&&0!==e?o(k.buffer,[k.buffer]):0!==e&&o(k)},J=function(){j&&I.length<2+u*V&&(I=new Float32Array(2+Math.ceil(u/O)*O*V),I[0]=i.CONSTRAINTREPORT);for(var t=0,e=0,a=S.lenght;a--;)if(S[a]){var n=S[a],s=n.a,r=n.ta,m=r.getOrigin();t=1+e++*V,I[t]=a,I[t+1]=s.id,I[t+2]=m.x,I[t+3]=m.y,I[t+4]=m.z,I[t+5]=n.getBreakingImpulseThreshold()}j&&0!==e?o(I.buffer,[I.buffer]):0!==e&&o(I)};self.onmessage=function(t){if(t.data instanceof Float32Array)switch(t.data[0]){case i.WORLDREPORT:Y=new Float32Array(t.data);break;case i.COLLISIONREPORT:Z=new Float32Array(t.data);break;case i.VEHICLEREPORT:k=new Float32Array(t.data);break;case i.CONSTRAINTREPORT:I=new Float32Array(t.data)}else t.data.cmd&&w[t.data.cmd]&&w[t.data.cmd](t.data.params)}}]);',n.p+"worker.js")}},function(t,n){t.exports=e},function(t,e,n){t.exports=n(49)}])});
+/* Physics module AmmoNext v0.1.2 */
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('three'), require('whs')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'three', 'whs'], factory) :
+	(factory((global.PHYSICS = {}),global.THREE,global.WHS));
+}(this, (function (exports,three,whs) { 'use strict';
+
+var MESSAGE_TYPES = {
+  WORLDREPORT: 0,
+  COLLISIONREPORT: 1,
+  VEHICLEREPORT: 2,
+  CONSTRAINTREPORT: 3,
+  SOFTREPORT: 4
+};
+
+var REPORT_ITEMSIZE = 14;
+var COLLISIONREPORT_ITEMSIZE = 5;
+var VEHICLEREPORT_ITEMSIZE = 9;
+var CONSTRAINTREPORT_ITEMSIZE = 6;
+
+var temp1Vector3 = new three.Vector3();
+var temp2Vector3 = new three.Vector3();
+var temp1Matrix4 = new three.Matrix4();
+var temp1Quat = new three.Quaternion();
+
+var getEulerXYZFromQuaternion = function getEulerXYZFromQuaternion(x, y, z, w) {
+  return new three.Vector3(Math.atan2(2 * (x * w - y * z), w * w - x * x - y * y + z * z), Math.asin(2 * (x * z + y * w)), Math.atan2(2 * (z * w - x * y), w * w + x * x - y * y - z * z));
+};
+
+var getQuatertionFromEuler = function getQuatertionFromEuler(x, y, z) {
+  var c1 = Math.cos(y);
+  var s1 = Math.sin(y);
+  var c2 = Math.cos(-z);
+  var s2 = Math.sin(-z);
+  var c3 = Math.cos(x);
+  var s3 = Math.sin(x);
+  var c1c2 = c1 * c2;
+  var s1s2 = s1 * s2;
+
+  return {
+    w: c1c2 * c3 - s1s2 * s3,
+    x: c1c2 * s3 + s1s2 * c3,
+    y: s1 * c2 * c3 + c1 * s2 * s3,
+    z: c1 * s2 * c3 - s1 * c2 * s3
+  };
+};
+
+var convertWorldPositionToObject = function convertWorldPositionToObject(position, object) {
+  temp1Matrix4.identity(); // reset temp matrix
+
+  // Set the temp matrix's rotation to the object's rotation
+  temp1Matrix4.identity().makeRotationFromQuaternion(object.quaternion);
+
+  // Invert rotation matrix in order to "unrotate" a point back to object space
+  temp1Matrix4.getInverse(temp1Matrix4);
+
+  // Yay! Temp vars!
+  temp1Vector3.copy(position);
+  temp2Vector3.copy(object.position);
+
+  // Apply the rotation
+  return temp1Vector3.sub(temp2Vector3).applyMatrix4(temp1Matrix4);
+};
+
+var addObjectChildren = function addObjectChildren(parent, object) {
+  for (var i = 0; i < object.children.length; i++) {
+    var child = object.children[i];
+    var physics = child.component ? child.component.use('physics') : false;
+
+    if (physics) {
+      var data = physics.data;
+
+      child.updateMatrix();
+      child.updateMatrixWorld();
+
+      temp1Vector3.setFromMatrixPosition(child.matrixWorld);
+      temp1Quat.setFromRotationMatrix(child.matrixWorld);
+
+      data.position_offset = {
+        x: temp1Vector3.x,
+        y: temp1Vector3.y,
+        z: temp1Vector3.z
+      };
+
+      data.rotation = {
+        x: temp1Quat.x,
+        y: temp1Quat.y,
+        z: temp1Quat.z,
+        w: temp1Quat.w
+      };
+
+      parent.component.use('physics').data.children.push(data);
+    }
+
+    addObjectChildren(parent, child);
+  }
+};
+
+var asyncGenerator = function () {
+  function AwaitValue(value) {
+    this.value = value;
+  }
+
+  function AsyncGenerator(gen) {
+    var front, back;
+
+    function send(key, arg) {
+      return new Promise(function (resolve, reject) {
+        var request = {
+          key: key,
+          arg: arg,
+          resolve: resolve,
+          reject: reject,
+          next: null
+        };
+
+        if (back) {
+          back = back.next = request;
+        } else {
+          front = back = request;
+          resume(key, arg);
+        }
+      });
+    }
+
+    function resume(key, arg) {
+      try {
+        var result = gen[key](arg);
+        var value = result.value;
+
+        if (value instanceof AwaitValue) {
+          Promise.resolve(value.value).then(function (arg) {
+            resume("next", arg);
+          }, function (arg) {
+            resume("throw", arg);
+          });
+        } else {
+          settle(result.done ? "return" : "normal", result.value);
+        }
+      } catch (err) {
+        settle("throw", err);
+      }
+    }
+
+    function settle(type, value) {
+      switch (type) {
+        case "return":
+          front.resolve({
+            value: value,
+            done: true
+          });
+          break;
+
+        case "throw":
+          front.reject(value);
+          break;
+
+        default:
+          front.resolve({
+            value: value,
+            done: false
+          });
+          break;
+      }
+
+      front = front.next;
+
+      if (front) {
+        resume(front.key, front.arg);
+      } else {
+        back = null;
+      }
+    }
+
+    this._invoke = send;
+
+    if (typeof gen.return !== "function") {
+      this.return = undefined;
+    }
+  }
+
+  if (typeof Symbol === "function" && Symbol.asyncIterator) {
+    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
+      return this;
+    };
+  }
+
+  AsyncGenerator.prototype.next = function (arg) {
+    return this._invoke("next", arg);
+  };
+
+  AsyncGenerator.prototype.throw = function (arg) {
+    return this._invoke("throw", arg);
+  };
+
+  AsyncGenerator.prototype.return = function (arg) {
+    return this._invoke("return", arg);
+  };
+
+  return {
+    wrap: function (fn) {
+      return function () {
+        return new AsyncGenerator(fn.apply(this, arguments));
+      };
+    },
+    await: function (value) {
+      return new AwaitValue(value);
+    }
+  };
+}();
+
+
+
+
+
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+
+
+
+
+
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+
+
+var inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
+
+
+
+
+
+
+
+
+
+
+
+var possibleConstructorReturn = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && (typeof call === "object" || typeof call === "function") ? call : self;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var toConsumableArray = function (arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  } else {
+    return Array.from(arr);
+  }
+};
+
+var Eventable = function () {
+  function Eventable() {
+    classCallCheck(this, Eventable);
+
+    this._eventListeners = {};
+  }
+
+  createClass(Eventable, [{
+    key: "addEventListener",
+    value: function addEventListener(event_name, callback) {
+      if (!this._eventListeners.hasOwnProperty(event_name)) this._eventListeners[event_name] = [];
+
+      this._eventListeners[event_name].push(callback);
+    }
+  }, {
+    key: "removeEventListener",
+    value: function removeEventListener(event_name, callback) {
+      var index = void 0;
+
+      if (!this._eventListeners.hasOwnProperty(event_name)) return false;
+
+      if ((index = this._eventListeners[event_name].indexOf(callback)) >= 0) {
+        this._eventListeners[event_name].splice(index, 1);
+        return true;
+      }
+
+      return false;
+    }
+  }, {
+    key: "dispatchEvent",
+    value: function dispatchEvent(event_name) {
+      var i = void 0;
+      var parameters = Array.prototype.splice.call(arguments, 1);
+
+      if (this._eventListeners.hasOwnProperty(event_name)) {
+        for (i = 0; i < this._eventListeners[event_name].length; i++) {
+          this._eventListeners[event_name][i].apply(this, parameters);
+        }
+      }
+    }
+  }], [{
+    key: "make",
+    value: function make(obj) {
+      obj.prototype.addEventListener = Eventable.prototype.addEventListener;
+      obj.prototype.removeEventListener = Eventable.prototype.removeEventListener;
+      obj.prototype.dispatchEvent = Eventable.prototype.dispatchEvent;
+    }
+  }]);
+  return Eventable;
+}();
+
+var ConeTwistConstraint = function () {
+  function ConeTwistConstraint(obja, objb, position) {
+    classCallCheck(this, ConeTwistConstraint);
+
+    var objecta = obja;
+    var objectb = obja;
+
+    if (position === undefined) console.error('Both objects must be defined in a ConeTwistConstraint.');
+
+    this.type = 'conetwist';
+    this.appliedImpulse = 0;
+    this.worldModule = null; // Will be redefined by .addConstraint
+    this.objecta = objecta.use('physics').data.id;
+    this.positiona = convertWorldPositionToObject(position, objecta).clone();
+    this.objectb = objectb.use('physics').data.id;
+    this.positionb = convertWorldPositionToObject(position, objectb).clone();
+    this.axisa = { x: objecta.rotation.x, y: objecta.rotation.y, z: objecta.rotation.z };
+    this.axisb = { x: objectb.rotation.x, y: objectb.rotation.y, z: objectb.rotation.z };
+  }
+
+  createClass(ConeTwistConstraint, [{
+    key: 'getDefinition',
+    value: function getDefinition() {
+      return {
+        type: this.type,
+        id: this.id,
+        objecta: this.objecta,
+        objectb: this.objectb,
+        positiona: this.positiona,
+        positionb: this.positionb,
+        axisa: this.axisa,
+        axisb: this.axisb
+      };
+    }
+  }, {
+    key: 'setLimit',
+    value: function setLimit(x, y, z) {
+      if (this.worldModule) this.worldModule.execute('conetwist_setLimit', { constraint: this.id, x: x, y: y, z: z });
+    }
+  }, {
+    key: 'enableMotor',
+    value: function enableMotor() {
+      if (this.worldModule) this.worldModule.execute('conetwist_enableMotor', { constraint: this.id });
+    }
+  }, {
+    key: 'setMaxMotorImpulse',
+    value: function setMaxMotorImpulse(max_impulse) {
+      if (this.worldModule) this.worldModule.execute('conetwist_setMaxMotorImpulse', { constraint: this.id, max_impulse: max_impulse });
+    }
+  }, {
+    key: 'setMotorTarget',
+    value: function setMotorTarget(target) {
+      if (target instanceof THREE.Vector3) target = new THREE.Quaternion().setFromEuler(new THREE.Euler(target.x, target.y, target.z));else if (target instanceof THREE.Euler) target = new THREE.Quaternion().setFromEuler(target);else if (target instanceof THREE.Matrix4) target = new THREE.Quaternion().setFromRotationMatrix(target);
+
+      if (this.worldModule) this.worldModule.execute('conetwist_setMotorTarget', {
+        constraint: this.id,
+        x: target.x,
+        y: target.y,
+        z: target.z,
+        w: target.w
+      });
+    }
+  }]);
+  return ConeTwistConstraint;
+}();
+
+var HingeConstraint = function () {
+  function HingeConstraint(obja, objb, position, axis) {
+    classCallCheck(this, HingeConstraint);
+
+    var objecta = obja;
+    var objectb = objb;
+
+    if (axis === undefined) {
+      axis = position;
+      position = objectb;
+      objectb = undefined;
+    }
+
+    this.type = 'hinge';
+    this.appliedImpulse = 0;
+    this.worldModule = null; // Will be redefined by .addConstraint
+    this.objecta = objecta.use('physics').data.id;
+    this.positiona = convertWorldPositionToObject(position, objecta).clone();
+    this.position = position.clone();
+    this.axis = axis;
+
+    if (objectb) {
+      this.objectb = objectb.use('physics').data.id;
+      this.positionb = convertWorldPositionToObject(position, objectb).clone();
+    }
+  }
+
+  createClass(HingeConstraint, [{
+    key: 'getDefinition',
+    value: function getDefinition() {
+      return {
+        type: this.type,
+        id: this.id,
+        objecta: this.objecta,
+        objectb: this.objectb,
+        positiona: this.positiona,
+        positionb: this.positionb,
+        axis: this.axis
+      };
+    }
+  }, {
+    key: 'setLimits',
+    value: function setLimits(low, high, bias_factor, relaxation_factor) {
+      if (this.worldModule) this.worldModule.execute('hinge_setLimits', {
+        constraint: this.id,
+        low: low,
+        high: high,
+        bias_factor: bias_factor,
+        relaxation_factor: relaxation_factor
+      });
+    }
+  }, {
+    key: 'enableAngularMotor',
+    value: function enableAngularMotor(velocity, acceleration) {
+      if (this.worldModule) this.worldModule.execute('hinge_enableAngularMotor', {
+        constraint: this.id,
+        velocity: velocity,
+        acceleration: acceleration
+      });
+    }
+  }, {
+    key: 'disableMotor',
+    value: function disableMotor() {
+      if (this.worldModule) this.worldModule.execute('hinge_disableMotor', { constraint: this.id });
+    }
+  }]);
+  return HingeConstraint;
+}();
+
+var PointConstraint = function () {
+  function PointConstraint(obja, objb, position) {
+    classCallCheck(this, PointConstraint);
+
+    var objecta = obja;
+    var objectb = objb;
+
+    if (position === undefined) {
+      position = objectb;
+      objectb = undefined;
+    }
+
+    this.type = 'point';
+    this.appliedImpulse = 0;
+    this.objecta = objecta.use('physics').data.id;
+    this.positiona = convertWorldPositionToObject(position, objecta).clone();
+
+    if (objectb) {
+      this.objectb = objectb.use('physics').data.id;
+      this.positionb = convertWorldPositionToObject(position, objectb).clone();
+    }
+  }
+
+  createClass(PointConstraint, [{
+    key: 'getDefinition',
+    value: function getDefinition() {
+      return {
+        type: this.type,
+        id: this.id,
+        objecta: this.objecta,
+        objectb: this.objectb,
+        positiona: this.positiona,
+        positionb: this.positionb
+      };
+    }
+  }]);
+  return PointConstraint;
+}();
+
+var SliderConstraint = function () {
+  function SliderConstraint(obja, objb, position, axis) {
+    classCallCheck(this, SliderConstraint);
+
+    var objecta = obja;
+    var objectb = objb;
+
+    if (axis === undefined) {
+      axis = position;
+      position = objectb;
+      objectb = undefined;
+    }
+
+    this.type = 'slider';
+    this.appliedImpulse = 0;
+    this.worldModule = null; // Will be redefined by .addConstraint
+    this.objecta = objecta.use('physics').data.id;
+    this.positiona = convertWorldPositionToObject(position, objecta).clone();
+    this.axis = axis;
+
+    if (objectb) {
+      this.objectb = objectb.use('physics').data.id;
+      this.positionb = convertWorldPositionToObject(position, objectb).clone();
+    }
+  }
+
+  createClass(SliderConstraint, [{
+    key: 'getDefinition',
+    value: function getDefinition() {
+      return {
+        type: this.type,
+        id: this.id,
+        objecta: this.objecta,
+        objectb: this.objectb,
+        positiona: this.positiona,
+        positionb: this.positionb,
+        axis: this.axis
+      };
+    }
+  }, {
+    key: 'setLimits',
+    value: function setLimits(lin_lower, lin_upper, ang_lower, ang_upper) {
+      if (this.worldModule) this.worldModule.execute('slider_setLimits', {
+        constraint: this.id,
+        lin_lower: lin_lower,
+        lin_upper: lin_upper,
+        ang_lower: ang_lower,
+        ang_upper: ang_upper
+      });
+    }
+  }, {
+    key: 'setRestitution',
+    value: function setRestitution(linear, angular) {
+      if (this.worldModule) this.worldModule.execute('slider_setRestitution', {
+        constraint: this.id,
+        linear: linear,
+        angular: angular
+      });
+    }
+  }, {
+    key: 'enableLinearMotor',
+    value: function enableLinearMotor(velocity, acceleration) {
+      if (this.worldModule) this.worldModule.execute('slider_enableLinearMotor', {
+        constraint: this.id,
+        velocity: velocity,
+        acceleration: acceleration
+      });
+    }
+  }, {
+    key: 'disableLinearMotor',
+    value: function disableLinearMotor() {
+      if (this.worldModule) this.worldModule.execute('slider_disableLinearMotor', { constraint: this.id });
+    }
+  }, {
+    key: 'enableAngularMotor',
+    value: function enableAngularMotor(velocity, acceleration) {
+      this.scene.execute('slider_enableAngularMotor', {
+        constraint: this.id,
+        velocity: velocity,
+        acceleration: acceleration
+      });
+    }
+  }, {
+    key: 'disableAngularMotor',
+    value: function disableAngularMotor() {
+      if (this.worldModule) this.worldModule.execute('slider_disableAngularMotor', { constraint: this.id });
+    }
+  }]);
+  return SliderConstraint;
+}();
+
+var DOFConstraint = function () {
+  function DOFConstraint(obja, objb, position) {
+    classCallCheck(this, DOFConstraint);
+
+    var objecta = obja;
+    var objectb = objb;
+
+    if (position === undefined) {
+      position = objectb;
+      objectb = undefined;
+    }
+
+    this.type = 'dof';
+    this.appliedImpulse = 0;
+    this.worldModule = null; // Will be redefined by .addConstraint
+    this.objecta = objecta.use('physics').data.id;
+    this.positiona = convertWorldPositionToObject(position, objecta).clone();
+    this.axisa = { x: objecta.rotation.x, y: objecta.rotation.y, z: objecta.rotation.z };
+
+    if (objectb) {
+      this.objectb = objectb.use('physics').data.id;
+      this.positionb = convertWorldPositionToObject(position, objectb).clone();
+      this.axisb = { x: objectb.rotation.x, y: objectb.rotation.y, z: objectb.rotation.z };
+    }
+  }
+
+  createClass(DOFConstraint, [{
+    key: 'getDefinition',
+    value: function getDefinition() {
+      return {
+        type: this.type,
+        id: this.id,
+        objecta: this.objecta,
+        objectb: this.objectb,
+        positiona: this.positiona,
+        positionb: this.positionb,
+        axisa: this.axisa,
+        axisb: this.axisb
+      };
+    }
+  }, {
+    key: 'setLinearLowerLimit',
+    value: function setLinearLowerLimit(limit) {
+      if (this.worldModule) this.worldModule.execute('dof_setLinearLowerLimit', { constraint: this.id, x: limit.x, y: limit.y, z: limit.z });
+    }
+  }, {
+    key: 'setLinearUpperLimit',
+    value: function setLinearUpperLimit(limit) {
+      if (this.worldModule) this.worldModule.execute('dof_setLinearUpperLimit', { constraint: this.id, x: limit.x, y: limit.y, z: limit.z });
+    }
+  }, {
+    key: 'setAngularLowerLimit',
+    value: function setAngularLowerLimit(limit) {
+      if (this.worldModule) this.worldModule.execute('dof_setAngularLowerLimit', { constraint: this.id, x: limit.x, y: limit.y, z: limit.z });
+    }
+  }, {
+    key: 'setAngularUpperLimit',
+    value: function setAngularUpperLimit(limit) {
+      if (this.worldModule) this.worldModule.execute('dof_setAngularUpperLimit', { constraint: this.id, x: limit.x, y: limit.y, z: limit.z });
+    }
+  }, {
+    key: 'enableAngularMotor',
+    value: function enableAngularMotor(which) {
+      if (this.worldModule) this.worldModule.execute('dof_enableAngularMotor', { constraint: this.id, which: which });
+    }
+  }, {
+    key: 'configureAngularMotor',
+    value: function configureAngularMotor(which, low_angle, high_angle, velocity, max_force) {
+      if (this.worldModule) this.worldModule.execute('dof_configureAngularMotor', { constraint: this.id, which: which, low_angle: low_angle, high_angle: high_angle, velocity: velocity, max_force: max_force });
+    }
+  }, {
+    key: 'disableAngularMotor',
+    value: function disableAngularMotor(which) {
+      if (this.worldModule) this.worldModule.execute('dof_disableAngularMotor', { constraint: this.id, which: which });
+    }
+  }]);
+  return DOFConstraint;
+}();
+
+var Vehicle = function () {
+  function Vehicle(mesh) {
+    var tuning = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new VehicleTuning();
+    classCallCheck(this, Vehicle);
+
+    this.mesh = mesh;
+    this.wheels = [];
+
+    this._physijs = {
+      id: getObjectId(),
+      rigidBody: mesh._physijs.id,
+      suspension_stiffness: tuning.suspension_stiffness,
+      suspension_compression: tuning.suspension_compression,
+      suspension_damping: tuning.suspension_damping,
+      max_suspension_travel: tuning.max_suspension_travel,
+      friction_slip: tuning.friction_slip,
+      max_suspension_force: tuning.max_suspension_force
+    };
+  }
+
+  createClass(Vehicle, [{
+    key: 'addWheel',
+    value: function addWheel(wheel_geometry, wheel_material, connection_point, wheel_direction, wheel_axle, suspension_rest_length, wheel_radius, is_front_wheel, tuning) {
+      var wheel = new three.Mesh(wheel_geometry, wheel_material);
+
+      wheel.castShadow = wheel.receiveShadow = true;
+      wheel.position.copy(wheel_direction).multiplyScalar(suspension_rest_length / 100).add(connection_point);
+
+      this.world.add(wheel);
+      this.wheels.push(wheel);
+
+      this.world.execute('addWheel', {
+        id: this._physijs.id,
+        connection_point: { x: connection_point.x, y: connection_point.y, z: connection_point.z },
+        wheel_direction: { x: wheel_direction.x, y: wheel_direction.y, z: wheel_direction.z },
+        wheel_axle: { x: wheel_axle.x, y: wheel_axle.y, z: wheel_axle.z },
+        suspension_rest_length: suspension_rest_length,
+        wheel_radius: wheel_radius,
+        is_front_wheel: is_front_wheel,
+        tuning: tuning
+      });
+    }
+  }, {
+    key: 'setSteering',
+    value: function setSteering(amount, wheel) {
+      if (wheel !== undefined && this.wheels[wheel] !== undefined) this.world.execute('setSteering', { id: this._physijs.id, wheel: wheel, steering: amount });else if (this.wheels.length > 0) {
+        for (var i = 0; i < this.wheels.length; i++) {
+          this.world.execute('setSteering', { id: this._physijs.id, wheel: i, steering: amount });
+        }
+      }
+    }
+  }, {
+    key: 'setBrake',
+    value: function setBrake(amount, wheel) {
+      if (wheel !== undefined && this.wheels[wheel] !== undefined) this.world.execute('setBrake', { id: this._physijs.id, wheel: wheel, brake: amount });else if (this.wheels.length > 0) {
+        for (var i = 0; i < this.wheels.length; i++) {
+          this.world.execute('setBrake', { id: this._physijs.id, wheel: i, brake: amount });
+        }
+      }
+    }
+  }, {
+    key: 'applyEngineForce',
+    value: function applyEngineForce(amount, wheel) {
+      if (wheel !== undefined && this.wheels[wheel] !== undefined) this.world.execute('applyEngineForce', { id: this._physijs.id, wheel: wheel, force: amount });else if (this.wheels.length > 0) {
+        for (var i = 0; i < this.wheels.length; i++) {
+          this.world.execute('applyEngineForce', { id: this._physijs.id, wheel: i, force: amount });
+        }
+      }
+    }
+  }]);
+  return Vehicle;
+}();
+
+var _class;
+var _temp2;
+
+var WorldModuleBase = (_temp2 = _class = function (_Eventable) {
+  inherits(WorldModuleBase, _Eventable);
+
+  function WorldModuleBase(options) {
+    classCallCheck(this, WorldModuleBase);
+
+    var _this = possibleConstructorReturn(this, (WorldModuleBase.__proto__ || Object.getPrototypeOf(WorldModuleBase)).call(this));
+
+    _this.bridge = {
+      onAdd: function onAdd(component, self) {
+        if (component.use('physics')) return self.defer(self.onAddCallback.bind(self), [component]);
+        return;
+      },
+      onRemove: function onRemove(component, self) {
+        if (component.use('physics')) return self.defer(self.onRemoveCallback.bind(self), [component]);
+        return;
+      }
+    };
+
+
+    _this.options = Object.assign(WorldModuleBase.defaults, options);
+
+    _this.objects = {};
+    _this.vehicles = {};
+    _this.constraints = {};
+    _this.isSimulating = false;
+
+    _this.getObjectId = function () {
+      var id = 1;
+      return function () {
+        return id++;
+      };
+    }();
+    return _this;
+  }
+
+  createClass(WorldModuleBase, [{
+    key: 'setup',
+    value: function setup() {
+      var _this2 = this;
+
+      this.receive(function (event) {
+        var _temp = void 0,
+            data = event.data;
+
+        if (data instanceof ArrayBuffer && data.byteLength !== 1) // byteLength === 1 is the worker making a SUPPORT_TRANSFERABLE test
+          data = new Float32Array(data);
+
+        if (data instanceof Float32Array) {
+          // transferable object
+          switch (data[0]) {
+            case MESSAGE_TYPES.WORLDREPORT:
+              _this2.updateScene(data);
+              break;
+
+            case MESSAGE_TYPES.SOFTREPORT:
+              _this2.updateSoftbodies(data);
+              break;
+
+            case MESSAGE_TYPES.COLLISIONREPORT:
+              _this2.updateCollisions(data);
+              break;
+
+            case MESSAGE_TYPES.VEHICLEREPORT:
+              _this2.updateVehicles(data);
+              break;
+
+            case MESSAGE_TYPES.CONSTRAINTREPORT:
+              _this2.updateConstraints(data);
+              break;
+            default:
+          }
+        } else if (data.cmd) {
+          // non-transferable object
+          switch (data.cmd) {
+            case 'objectReady':
+              _temp = data.params;
+              if (_this2.objects[_temp]) _this2.objects[_temp].dispatchEvent('ready');
+              break;
+
+            case 'worldReady':
+              _this2.dispatchEvent('ready');
+              break;
+
+            case 'ammoLoaded':
+              _this2.dispatchEvent('loaded');
+              // console.log("Physics loading time: " + (performance.now() - start) + "ms");
+              break;
+
+            case 'vehicle':
+              window.test = data;
+              break;
+
+            default:
+              // Do nothing, just show the message
+              console.debug('Received: ' + data.cmd);
+              console.dir(data.params);
+              break;
+          }
+        } else {
+          switch (data[0]) {
+            case MESSAGE_TYPES.WORLDREPORT:
+              _this2.updateScene(data);
+              break;
+
+            case MESSAGE_TYPES.COLLISIONREPORT:
+              _this2.updateCollisions(data);
+              break;
+
+            case MESSAGE_TYPES.VEHICLEREPORT:
+              _this2.updateVehicles(data);
+              break;
+
+            case MESSAGE_TYPES.CONSTRAINTREPORT:
+              _this2.updateConstraints(data);
+              break;
+            default:
+          }
+        }
+      });
+    }
+  }, {
+    key: 'updateScene',
+    value: function updateScene(info) {
+      var index = info[1];
+
+      while (index--) {
+        var offset = 2 + index * REPORT_ITEMSIZE;
+        var object = this.objects[info[offset]];
+        var component = object.component;
+        var data = component.use('physics').data;
+
+        if (object === null) continue;
+
+        if (component.__dirtyPosition === false) {
+          object.position.set(info[offset + 1], info[offset + 2], info[offset + 3]);
+
+          component.__dirtyPosition = false;
+        }
+
+        if (component.__dirtyRotation === false) {
+          object.quaternion.set(info[offset + 4], info[offset + 5], info[offset + 6], info[offset + 7]);
+
+          component.__dirtyRotation = false;
+        }
+
+        data.linearVelocity.set(info[offset + 8], info[offset + 9], info[offset + 10]);
+
+        data.angularVelocity.set(info[offset + 11], info[offset + 12], info[offset + 13]);
+      }
+
+      if (this.SUPPORT_TRANSFERABLE) this.send(info.buffer, [info.buffer]); // Give the typed array back to the worker
+
+      this.isSimulating = false;
+      this.dispatchEvent('update');
+    }
+  }, {
+    key: 'updateSoftbodies',
+    value: function updateSoftbodies(info) {
+      var index = info[1],
+          offset = 2;
+
+      while (index--) {
+        var size = info[offset + 1];
+        var object = this.objects[info[offset]];
+
+        if (object === null) continue;
+
+        var data = object.component.use('physics').data;
+
+        var attributes = object.geometry.attributes;
+        var volumePositions = attributes.position.array;
+
+        var offsetVert = offset + 2;
+
+        // console.log(data.id);
+        if (!data.isSoftBodyReset) {
+          object.position.set(0, 0, 0);
+          object.quaternion.set(0, 0, 0, 0);
+
+          data.isSoftBodyReset = true;
+        }
+
+        if (data.type === "softTrimesh") {
+          var volumeNormals = attributes.normal.array;
+
+          for (var i = 0; i < size; i++) {
+            var offs = offsetVert + i * 18;
+
+            var x1 = info[offs];
+            var y1 = info[offs + 1];
+            var z1 = info[offs + 2];
+
+            var nx1 = info[offs + 3];
+            var ny1 = info[offs + 4];
+            var nz1 = info[offs + 5];
+
+            var x2 = info[offs + 6];
+            var y2 = info[offs + 7];
+            var z2 = info[offs + 8];
+
+            var nx2 = info[offs + 9];
+            var ny2 = info[offs + 10];
+            var nz2 = info[offs + 11];
+
+            var x3 = info[offs + 12];
+            var y3 = info[offs + 13];
+            var z3 = info[offs + 14];
+
+            var nx3 = info[offs + 15];
+            var ny3 = info[offs + 16];
+            var nz3 = info[offs + 17];
+
+            var i9 = i * 9;
+
+            volumePositions[i9] = x1;
+            volumePositions[i9 + 1] = y1;
+            volumePositions[i9 + 2] = z1;
+
+            volumePositions[i9 + 3] = x2;
+            volumePositions[i9 + 4] = y2;
+            volumePositions[i9 + 5] = z2;
+
+            volumePositions[i9 + 6] = x3;
+            volumePositions[i9 + 7] = y3;
+            volumePositions[i9 + 8] = z3;
+
+            volumeNormals[i9] = nx1;
+            volumeNormals[i9 + 1] = ny1;
+            volumeNormals[i9 + 2] = nz1;
+
+            volumeNormals[i9 + 3] = nx2;
+            volumeNormals[i9 + 4] = ny2;
+            volumeNormals[i9 + 5] = nz2;
+
+            volumeNormals[i9 + 6] = nx3;
+            volumeNormals[i9 + 7] = ny3;
+            volumeNormals[i9 + 8] = nz3;
+          }
+
+          attributes.normal.needsUpdate = true;
+          offset += 2 + size * 18;
+        } else if (data.type === "softRopeMesh") {
+          for (var _i = 0; _i < size; _i++) {
+            var _offs = offsetVert + _i * 3;
+
+            var x = info[_offs];
+            var y = info[_offs + 1];
+            var z = info[_offs + 2];
+
+            volumePositions[_i * 3] = x;
+            volumePositions[_i * 3 + 1] = y;
+            volumePositions[_i * 3 + 2] = z;
+          }
+
+          offset += 2 + size * 3;
+        } else {
+          var _volumeNormals = attributes.normal.array;
+
+          for (var _i2 = 0; _i2 < size; _i2++) {
+            var _offs2 = offsetVert + _i2 * 6;
+
+            var _x = info[_offs2];
+            var _y = info[_offs2 + 1];
+            var _z = info[_offs2 + 2];
+
+            var nx = info[_offs2 + 3];
+            var ny = info[_offs2 + 4];
+            var nz = info[_offs2 + 5];
+
+            volumePositions[_i2 * 3] = _x;
+            volumePositions[_i2 * 3 + 1] = _y;
+            volumePositions[_i2 * 3 + 2] = _z;
+
+            // FIXME: Normals are pointed to look inside;
+            _volumeNormals[_i2 * 3] = nx;
+            _volumeNormals[_i2 * 3 + 1] = ny;
+            _volumeNormals[_i2 * 3 + 2] = nz;
+          }
+
+          attributes.normal.needsUpdate = true;
+          offset += 2 + size * 6;
+        }
+
+        attributes.position.needsUpdate = true;
+      }
+
+      // if (this.SUPPORT_TRANSFERABLE)
+      //   this.send(info.buffer, [info.buffer]); // Give the typed array back to the worker
+
+      this.isSimulating = false;
+    }
+  }, {
+    key: 'updateVehicles',
+    value: function updateVehicles(data) {
+      var vehicle = void 0,
+          wheel = void 0;
+
+      for (var i = 0; i < (data.length - 1) / VEHICLEREPORT_ITEMSIZE; i++) {
+        var offset = 1 + i * VEHICLEREPORT_ITEMSIZE;
+        vehicle = this.vehicles[data[offset]];
+
+        if (vehicle === null) continue;
+
+        wheel = vehicle.wheels[data[offset + 1]];
+
+        wheel.position.set(data[offset + 2], data[offset + 3], data[offset + 4]);
+
+        wheel.quaternion.set(data[offset + 5], data[offset + 6], data[offset + 7], data[offset + 8]);
+      }
+
+      if (this.SUPPORT_TRANSFERABLE) this.send(data.buffer, [data.buffer]); // Give the typed array back to the worker
+    }
+  }, {
+    key: 'updateConstraints',
+    value: function updateConstraints(data) {
+      var constraint = void 0,
+          object = void 0;
+
+      for (var i = 0; i < (data.length - 1) / CONSTRAINTREPORT_ITEMSIZE; i++) {
+        var offset = 1 + i * CONSTRAINTREPORT_ITEMSIZE;
+        constraint = this.constraints[data[offset]];
+        object = this.objects[data[offset + 1]];
+
+        if (constraint === undefined || object === undefined) continue;
+
+        temp1Vector3.set(data[offset + 2], data[offset + 3], data[offset + 4]);
+
+        temp1Matrix4.extractRotation(object.matrix);
+        temp1Vector3.applyMatrix4(temp1Matrix4);
+
+        constraint.positiona.addVectors(object.position, temp1Vector3);
+        constraint.appliedImpulse = data[offset + 5];
+      }
+
+      if (this.SUPPORT_TRANSFERABLE) this.send(data.buffer, [data.buffer]); // Give the typed array back to the worker
+    }
+  }, {
+    key: 'updateCollisions',
+    value: function updateCollisions(info) {
+      /**
+       * #TODO
+       * This is probably the worst way ever to handle collisions. The inherent evilness is a residual
+       * effect from the previous version's evilness which mutated when switching to transferable objects.
+       *
+       * If you feel inclined to make this better, please do so.
+       */
+
+      var collisions = {},
+          normal_offsets = {};
+
+      // Build collision manifest
+      for (var i = 0; i < info[1]; i++) {
+        var offset = 2 + i * COLLISIONREPORT_ITEMSIZE;
+        var object = info[offset];
+        var object2 = info[offset + 1];
+
+        normal_offsets[object + '-' + object2] = offset + 2;
+        normal_offsets[object2 + '-' + object] = -1 * (offset + 2);
+
+        // Register collisions for both the object colliding and the object being collided with
+        if (!collisions[object]) collisions[object] = [];
+        collisions[object].push(object2);
+
+        if (!collisions[object2]) collisions[object2] = [];
+        collisions[object2].push(object);
+      }
+
+      // Deal with collisions
+      for (var id1 in this.objects) {
+        if (!this.objects.hasOwnProperty(id1)) continue;
+        var _object = this.objects[id1];
+        var component = _object.component;
+        var data = component.use('physics').data;
+
+        if (_object === null) continue;
+
+        // If object touches anything, ...
+        if (collisions[id1]) {
+          // Clean up touches array
+          for (var j = 0; j < data.touches.length; j++) {
+            if (collisions[id1].indexOf(data.touches[j]) === -1) data.touches.splice(j--, 1);
+          }
+
+          // Handle each colliding object
+          for (var _j = 0; _j < collisions[id1].length; _j++) {
+            var id2 = collisions[id1][_j];
+            var _object2 = this.objects[id2];
+            var component2 = _object2.component;
+            var data2 = component2.use('physics').data;
+
+            if (_object2) {
+              // If object was not already touching object2, notify object
+              if (data.touches.indexOf(id2) === -1) {
+                data.touches.push(id2);
+
+                var vel = component.use('physics').getLinearVelocity();
+                var vel2 = component2.use('physics').getLinearVelocity();
+
+                temp1Vector3.subVectors(vel, vel2);
+                var temp1 = temp1Vector3.clone();
+
+                temp1Vector3.subVectors(vel, vel2);
+                var temp2 = temp1Vector3.clone();
+
+                var normal_offset = normal_offsets[data.id + '-' + data2.id];
+
+                if (normal_offset > 0) {
+                  temp1Vector3.set(-info[normal_offset], -info[normal_offset + 1], -info[normal_offset + 2]);
+                } else {
+                  normal_offset *= -1;
+
+                  temp1Vector3.set(info[normal_offset], info[normal_offset + 1], info[normal_offset + 2]);
+                }
+
+                component.emit('collision', _object2, temp1, temp2, temp1Vector3);
+              }
+            }
+          }
+        } else data.touches.length = 0; // not touching other objects
+      }
+
+      this.collisions = collisions;
+
+      if (this.SUPPORT_TRANSFERABLE) this.send(info.buffer, [info.buffer]); // Give the typed array back to the worker
+    }
+  }, {
+    key: 'addConstraint',
+    value: function addConstraint(constraint, show_marker) {
+      constraint.id = this.getObjectId();
+      this.constraints[constraint.id] = constraint;
+      constraint.worldModule = this;
+      this.execute('addConstraint', constraint.getDefinition());
+
+      if (show_marker) {
+        var marker = void 0;
+
+        switch (constraint.type) {
+          case 'point':
+            marker = new three.Mesh(new three.SphereGeometry(1.5), new three.MeshNormalMaterial());
+
+            marker.position.copy(constraint.positiona);
+            this.objects[constraint.objecta].add(marker);
+            break;
+
+          case 'hinge':
+            marker = new three.Mesh(new three.SphereGeometry(1.5), new three.MeshNormalMaterial());
+
+            marker.position.copy(constraint.positiona);
+            this.objects[constraint.objecta].add(marker);
+            break;
+
+          case 'slider':
+            marker = new three.Mesh(new three.BoxGeometry(10, 1, 1), new three.MeshNormalMaterial());
+
+            marker.position.copy(constraint.positiona);
+
+            // This rotation isn't right if all three axis are non-0 values
+            // TODO: change marker's rotation order to ZYX
+            marker.rotation.set(constraint.axis.y, // yes, y and
+            constraint.axis.x, // x axis are swapped
+            constraint.axis.z);
+            this.objects[constraint.objecta].add(marker);
+            break;
+
+          case 'conetwist':
+            marker = new three.Mesh(new three.SphereGeometry(1.5), new three.MeshNormalMaterial());
+
+            marker.position.copy(constraint.positiona);
+            this.objects[constraint.objecta].add(marker);
+            break;
+
+          case 'dof':
+            marker = new three.Mesh(new three.SphereGeometry(1.5), new three.MeshNormalMaterial());
+
+            marker.position.copy(constraint.positiona);
+            this.objects[constraint.objecta].add(marker);
+            break;
+          default:
+        }
+      }
+
+      return constraint;
+    }
+  }, {
+    key: 'onSimulationResume',
+    value: function onSimulationResume() {
+      this.execute('onSimulationResume', {});
+    }
+  }, {
+    key: 'removeConstraint',
+    value: function removeConstraint(constraint) {
+      if (this.constraints[constraint.id] !== undefined) {
+        this.execute('removeConstraint', { id: constraint.id });
+        delete this.constraints[constraint.id];
+      }
+    }
+  }, {
+    key: 'execute',
+    value: function execute(cmd, params) {
+      this.send({ cmd: cmd, params: params });
+    }
+  }, {
+    key: 'onAddCallback',
+    value: function onAddCallback(component) {
+      var object = component.native;
+      var data = object.component.use('physics').data;
+
+      if (data) {
+        component.manager.set('module:world', this);
+        data.id = this.getObjectId();
+        object.component.use('physics').data = data;
+
+        if (object instanceof Vehicle) {
+          this.onAddCallback(object.mesh);
+          this.vehicles[data.id] = object;
+          this.execute('addVehicle', data);
+        } else {
+          component.__dirtyPosition = false;
+          component.__dirtyRotation = false;
+          this.objects[data.id] = object;
+
+          if (object.children.length) {
+            data.children = [];
+            addObjectChildren(object, object);
+          }
+
+          // object.quaternion.setFromEuler(object.rotation);
+          //
+          // console.log(object.component);
+          // console.log(object.rotation);
+
+          // Object starting position + rotation
+          data.position = {
+            x: object.position.x,
+            y: object.position.y,
+            z: object.position.z
+          };
+
+          data.rotation = {
+            x: object.quaternion.x,
+            y: object.quaternion.y,
+            z: object.quaternion.z,
+            w: object.quaternion.w
+          };
+
+          if (data.width) data.width *= object.scale.x;
+          if (data.height) data.height *= object.scale.y;
+          if (data.depth) data.depth *= object.scale.z;
+
+          this.execute('addObject', data);
+        }
+
+        component.emit('physics:added');
+      }
+    }
+  }, {
+    key: 'onRemoveCallback',
+    value: function onRemoveCallback(component) {
+      var object = component.native;
+
+      if (object instanceof Vehicle) {
+        this.execute('removeVehicle', { id: object._physijs.id });
+        while (object.wheels.length) {
+          this.remove(object.wheels.pop());
+        }this.remove(object.mesh);
+        this.vehicles[object._physijs.id] = null;
+      } else {
+        // Mesh.prototype.remove.call(this, object);
+
+        if (object._physijs) {
+          component.manager.remove('module:world');
+          this.objects[object._physijs.id] = null;
+          this.execute('removeObject', { id: object._physijs.id });
+        }
+      }
+    }
+  }, {
+    key: 'defer',
+    value: function defer(func, args) {
+      var _this3 = this;
+
+      return new Promise(function (resolve) {
+        if (_this3.isLoaded) {
+          func.apply(undefined, toConsumableArray(args));
+          resolve();
+        } else _this3.loader.then(function () {
+          func.apply(undefined, toConsumableArray(args));
+          resolve();
+        });
+      });
+    }
+  }, {
+    key: 'manager',
+    value: function manager(_manager) {
+      _manager.set('physicsWorker', this.worker);
+    }
+  }, {
+    key: 'integrate',
+    value: function integrate(self) {
+      var _this4 = this;
+
+      // ...
+
+      this.setFixedTimeStep = function (fixedTimeStep) {
+        if (fixedTimeStep) self.execute('setFixedTimeStep', fixedTimeStep);
+      };
+
+      this.setGravity = function (gravity) {
+        if (gravity) self.execute('setGravity', gravity);
+      };
+
+      this.addConstraint = self.addConstraint.bind(self);
+
+      this.simulate = function (timeStep, maxSubSteps) {
+        if (self._stats) self._stats.begin();
+
+        if (self.isSimulating) return false;
+        self.isSimulating = true;
+
+        for (var object_id in self.objects) {
+          if (!self.objects.hasOwnProperty(object_id)) continue;
+
+          var object = self.objects[object_id];
+          var component = object.component;
+          var data = component.use('physics').data;
+
+          if (object !== null && (component.__dirtyPosition || component.__dirtyRotation)) {
+            var update = { id: data.id };
+
+            if (component.__dirtyPosition) {
+              update.pos = {
+                x: object.position.x,
+                y: object.position.y,
+                z: object.position.z
+              };
+
+              if (data.isSoftbody) object.position.set(0, 0, 0);
+
+              component.__dirtyPosition = false;
+            }
+
+            if (component.__dirtyRotation) {
+              update.quat = {
+                x: object.quaternion.x,
+                y: object.quaternion.y,
+                z: object.quaternion.z,
+                w: object.quaternion.w
+              };
+
+              if (data.isSoftbody) object.rotation.set(0, 0, 0);
+
+              component.__dirtyRotation = false;
+            }
+
+            self.execute('updateTransform', update);
+          }
+        }
+
+        self.execute('simulate', { timeStep: timeStep, maxSubSteps: maxSubSteps });
+
+        if (self._stats) self._stats.end();
+        return true;
+      };
+
+      // const simulateProcess = (t) => {
+      //   window.requestAnimationFrame(simulateProcess);
+
+      //   this.simulate(1/60, 1); // delta, 1
+      // }
+
+      // simulateProcess();
+
+      self.loader.then(function () {
+        self.simulateLoop = new whs.Loop(function (clock) {
+          _this4.simulate(clock.getDelta(), 1); // delta, 1
+        });
+
+        self.simulateLoop.start(_this4);
+
+        _this4.setGravity(self.options.gravity);
+      });
+    }
+  }]);
+  return WorldModuleBase;
+}(Eventable), _class.defaults = {
+  fixedTimeStep: 1 / 60,
+  rateLimit: true,
+  ammo: "",
+  softbody: false,
+  gravity: new three.Vector3(0, -100, 0)
+}, _temp2);
+
+var TARGET = typeof Symbol === 'undefined' ? '__target' : Symbol();
+var SCRIPT_TYPE = 'application/javascript';
+var BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder;
+var URL = window.URL || window.webkitURL;
+var Worker = window.Worker;
+
+/**
+ * Returns a wrapper around Web Worker code that is constructible.
+ *
+ * @function shimWorker
+ *
+ * @param { String }    filename    The name of the file
+ * @param { Function }  fn          Function wrapping the code of the worker
+ */
+function shimWorker(filename, fn) {
+    return function ShimWorker(forceFallback) {
+        var o = this;
+
+        if (!fn) {
+            return new Worker(filename);
+        } else if (Worker && !forceFallback) {
+            // Convert the function's inner code to a string to construct the worker
+            var source = fn.toString().replace(/^function.+?{/, '').slice(0, -1),
+                objURL = createSourceObject(source);
+
+            this[TARGET] = new Worker(objURL);
+            URL.revokeObjectURL(objURL);
+            return this[TARGET];
+        } else {
+            var selfShim = {
+                postMessage: function postMessage(m) {
+                    if (o.onmessage) {
+                        setTimeout(function () {
+                            o.onmessage({ data: m, target: selfShim });
+                        });
+                    }
+                }
+            };
+
+            fn.call(selfShim);
+            this.postMessage = function (m) {
+                setTimeout(function () {
+                    selfShim.onmessage({ data: m, target: o });
+                });
+            };
+            this.isThisThread = true;
+        }
+    };
+}
+
+// Test Worker capabilities
+if (Worker) {
+    var testWorker,
+        objURL = createSourceObject('self.onmessage = function () {}'),
+        testArray = new Uint8Array(1);
+
+    try {
+        // No workers via blobs in Edge 12 and IE 11 and lower :(
+        if (/(?:Trident|Edge)\/(?:[567]|12)/i.test(navigator.userAgent)) {
+            throw new Error('Not available');
+        }
+        testWorker = new Worker(objURL);
+
+        // Native browser on some Samsung devices throws for transferables, let's detect it
+        testWorker.postMessage(testArray, [testArray.buffer]);
+    } catch (e) {
+        Worker = null;
+    } finally {
+        URL.revokeObjectURL(objURL);
+        if (testWorker) {
+            testWorker.terminate();
+        }
+    }
+}
+
+function createSourceObject(str) {
+    try {
+        return URL.createObjectURL(new Blob([str], { type: SCRIPT_TYPE }));
+    } catch (e) {
+        var blob = new BlobBuilder();
+        blob.append(str);
+        return URL.createObjectURL(blob.getBlob(type));
+    }
+}
+
+var PhysicsWorker = new shimWorker("../worker.js", function (window, document) {
+  var self = this;
+  function Events(target) {
+    var events = {},
+        empty = [];
+    target = target || this;
+    /**
+     *  On: listen to events
+     */
+    target.on = function (type, func, ctx) {
+      (events[type] = events[type] || []).push([func, ctx]);
+      return target;
+    };
+    /**
+     *  Off: stop listening to event / specific callback
+     */
+    target.off = function (type, func) {
+      type || (events = {});
+      var list = events[type] || empty,
+          i = list.length = func ? list.length : 0;
+      while (i--) {
+        func == list[i][0] && list.splice(i, 1);
+      }return target;
+    };
+    /**
+     * Emit: send event, callbacks will be triggered
+     */
+    target.emit = function (type) {
+      var e = events[type] || empty,
+          list = e.length > 0 ? e.slice(0, e.length) : e,
+          i = 0,
+          j;
+      while (j = list[i++]) {
+        j[0].apply(j[1], empty.slice.call(arguments, 1));
+      }return target;
+    };
+  }
+
+  var insideWorker = !self.document;
+  if (!insideWorker) self = new Events();
+
+  var send = insideWorker ? self.webkitPostMessage || self.postMessage : function (data) {
+    self.emit('message', { data: data });
+  };
+
+  self.send = send;
+
+  var SUPPORT_TRANSFERABLE = void 0;
+
+  if (insideWorker) {
+    var ab = new ArrayBuffer(1);
+
+    send(ab, [ab]);
+    SUPPORT_TRANSFERABLE = ab.byteLength === 0;
+  }
+
+  var MESSAGE_TYPES = {
+    WORLDREPORT: 0,
+    COLLISIONREPORT: 1,
+    VEHICLEREPORT: 2,
+    CONSTRAINTREPORT: 3,
+    SOFTREPORT: 4
+  };
+
+  // temp variables
+  var _object = void 0,
+      _vector = void 0,
+      _transform = void 0,
+      _transform_pos = void 0,
+      _softbody_enabled = false,
+      last_simulation_duration = 0,
+      _num_objects = 0,
+      _num_rigidbody_objects = 0,
+      _num_softbody_objects = 0,
+      _num_wheels = 0,
+      _num_constraints = 0,
+      _softbody_report_size = 0,
+
+
+  // world variables
+  fixedTimeStep = void 0,
+      // used when calling stepSimulation
+  last_simulation_time = void 0,
+      world = void 0,
+      _vec3_1 = void 0,
+      _vec3_2 = void 0,
+      _vec3_3 = void 0,
+      _quat = void 0;
+
+  // private cache
+  var public_functions = {},
+      _objects = [],
+      _vehicles = [],
+      _constraints = [],
+      _objects_ammo = {},
+      _object_shapes = {},
+
+
+  // The following objects are to track objects that ammo.js doesn't clean
+  // up. All are cleaned up when they're corresponding body is destroyed.
+  // Unfortunately, it's very difficult to get at these objects from the
+  // body, so we have to track them ourselves.
+  _motion_states = {},
+
+  // Don't need to worry about it for cached shapes.
+  _noncached_shapes = {},
+
+  // A body with a compound shape always has a regular shape as well, so we
+  // have track them separately.
+  _compound_shapes = {};
+
+  // object reporting
+  var REPORT_CHUNKSIZE = void 0,
+      // report array is increased in increments of this chunk size
+  worldreport = void 0,
+      softreport = void 0,
+      collisionreport = void 0,
+      vehiclereport = void 0,
+      constraintreport = void 0;
+
+  var WORLDREPORT_ITEMSIZE = 14,
+      // how many float values each reported item needs
+  COLLISIONREPORT_ITEMSIZE = 5,
+      // one float for each object id, and a Vec3 contact normal
+  VEHICLEREPORT_ITEMSIZE = 9,
+      // vehicle id, wheel index, 3 for position, 4 for rotation
+  CONSTRAINTREPORT_ITEMSIZE = 6; // constraint id, offset object, offset, applied impulse
+
+  var getShapeFromCache = function getShapeFromCache(cache_key) {
+    if (_object_shapes[cache_key] !== undefined) return _object_shapes[cache_key];
+
+    return null;
+  };
+
+  var setShapeCache = function setShapeCache(cache_key, shape) {
+    _object_shapes[cache_key] = shape;
+  };
+
+  var createShape = function createShape(description) {
+    var shape = void 0;
+
+    _transform.setIdentity();
+    switch (description.type) {
+      case 'compound':
+        {
+          shape = new Ammo.btCompoundShape();
+
+          break;
+        }
+      case 'plane':
+        {
+          var cache_key = 'plane_' + description.normal.x + '_' + description.normal.y + '_' + description.normal.z;
+
+          if ((shape = getShapeFromCache(cache_key)) === null) {
+            _vec3_1.setX(description.normal.x);
+            _vec3_1.setY(description.normal.y);
+            _vec3_1.setZ(description.normal.z);
+            shape = new Ammo.btStaticPlaneShape(_vec3_1, 0);
+            setShapeCache(cache_key, shape);
+          }
+
+          break;
+        }
+      case 'box':
+        {
+          var _cache_key = 'box_' + description.width + '_' + description.height + '_' + description.depth;
+
+          if ((shape = getShapeFromCache(_cache_key)) === null) {
+            _vec3_1.setX(description.width / 2);
+            _vec3_1.setY(description.height / 2);
+            _vec3_1.setZ(description.depth / 2);
+            shape = new Ammo.btBoxShape(_vec3_1);
+            setShapeCache(_cache_key, shape);
+          }
+
+          break;
+        }
+      case 'sphere':
+        {
+          var _cache_key2 = 'sphere_' + description.radius;
+
+          if ((shape = getShapeFromCache(_cache_key2)) === null) {
+            shape = new Ammo.btSphereShape(description.radius);
+            setShapeCache(_cache_key2, shape);
+          }
+
+          break;
+        }
+      case 'cylinder':
+        {
+          var _cache_key3 = 'cylinder_' + description.width + '_' + description.height + '_' + description.depth;
+
+          if ((shape = getShapeFromCache(_cache_key3)) === null) {
+            _vec3_1.setX(description.width / 2);
+            _vec3_1.setY(description.height / 2);
+            _vec3_1.setZ(description.depth / 2);
+            shape = new Ammo.btCylinderShape(_vec3_1);
+            setShapeCache(_cache_key3, shape);
+          }
+
+          break;
+        }
+      case 'capsule':
+        {
+          var _cache_key4 = 'capsule_' + description.radius + '_' + description.height;
+
+          if ((shape = getShapeFromCache(_cache_key4)) === null) {
+            // In Bullet, capsule height excludes the end spheres
+            shape = new Ammo.btCapsuleShape(description.radius, description.height - 2 * description.radius);
+            setShapeCache(_cache_key4, shape);
+          }
+
+          break;
+        }
+      case 'cone':
+        {
+          var _cache_key5 = 'cone_' + description.radius + '_' + description.height;
+
+          if ((shape = getShapeFromCache(_cache_key5)) === null) {
+            shape = new Ammo.btConeShape(description.radius, description.height);
+            setShapeCache(_cache_key5, shape);
+          }
+
+          break;
+        }
+      case 'concave':
+        {
+          var triangle_mesh = new Ammo.btTriangleMesh();
+          if (!description.data.length) return false;
+          var data = description.data;
+
+          for (var i = 0; i < data.length / 9; i++) {
+            _vec3_1.setX(data[i * 9]);
+            _vec3_1.setY(data[i * 9 + 1]);
+            _vec3_1.setZ(data[i * 9 + 2]);
+
+            _vec3_2.setX(data[i * 9 + 3]);
+            _vec3_2.setY(data[i * 9 + 4]);
+            _vec3_2.setZ(data[i * 9 + 5]);
+
+            _vec3_3.setX(data[i * 9 + 6]);
+            _vec3_3.setY(data[i * 9 + 7]);
+            _vec3_3.setZ(data[i * 9 + 8]);
+
+            triangle_mesh.addTriangle(_vec3_1, _vec3_2, _vec3_3, false);
+          }
+
+          shape = new Ammo.btBvhTriangleMeshShape(triangle_mesh, true, true);
+
+          _noncached_shapes[description.id] = shape;
+
+          break;
+        }
+      case 'convex':
+        {
+          shape = new Ammo.btConvexHullShape();
+          var _data = description.data;
+
+          for (var _i = 0; _i < _data.length / 3; _i++) {
+            _vec3_1.setX(_data[_i * 3]);
+            _vec3_1.setY(_data[_i * 3 + 1]);
+            _vec3_1.setZ(_data[_i * 3 + 2]);
+
+            shape.addPoint(_vec3_1);
+          }
+
+          _noncached_shapes[description.id] = shape;
+
+          break;
+        }
+      case 'heightfield':
+        {
+          var xpts = description.xpts,
+              ypts = description.ypts,
+              points = description.points,
+              ptr = Ammo._malloc(4 * xpts * ypts);
+
+          for (var _i2 = 0, p = 0, p2 = 0; _i2 < xpts; _i2++) {
+            for (var j = 0; j < ypts; j++) {
+              Ammo.HEAPF32[ptr + p2 >> 2] = points[p];
+
+              p++;
+              p2 += 4;
+            }
+          }
+
+          shape = new Ammo.btHeightfieldTerrainShape(description.xpts, description.ypts, ptr, 1, -description.absMaxHeight, description.absMaxHeight, 1, 'PHY_FLOAT', false);
+
+          _noncached_shapes[description.id] = shape;
+          break;
+        }
+      default:
+        // Not recognized
+        return;
+    }
+
+    return shape;
+  };
+
+  var createSoftBody = function createSoftBody(description) {
+    var body = void 0;
+
+    var softBodyHelpers = new Ammo.btSoftBodyHelpers();
+
+    switch (description.type) {
+      case 'softTrimesh':
+        {
+          if (!description.aVertices.length) return false;
+
+          body = softBodyHelpers.CreateFromTriMesh(world.getWorldInfo(), description.aVertices, description.aIndices, description.aIndices.length / 3, false);
+
+          break;
+        }
+      case 'softClothMesh':
+        {
+          var cr = description.corners;
+
+          body = softBodyHelpers.CreatePatch(world.getWorldInfo(), new Ammo.btVector3(cr[0], cr[1], cr[2]), new Ammo.btVector3(cr[3], cr[4], cr[5]), new Ammo.btVector3(cr[6], cr[7], cr[8]), new Ammo.btVector3(cr[9], cr[10], cr[11]), description.segments[0], description.segments[1], 0, true);
+
+          break;
+        }
+      case 'softRopeMesh':
+        {
+          var data = description.data;
+
+          body = softBodyHelpers.CreateRope(world.getWorldInfo(), new Ammo.btVector3(data[0], data[1], data[2]), new Ammo.btVector3(data[3], data[4], data[5]), data[6] - 1, 0);
+
+          break;
+        }
+      default:
+        // Not recognized
+        return;
+    }
+
+    return body;
+  };
+
+  public_functions.init = function () {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    if (params.noWorker) {
+      window.Ammo = new params.ammo();
+      public_functions.makeWorld(params);
+      return;
+    }
+
+    if (params.wasmBuffer) {
+      importScripts(params.ammo);
+
+      self.Ammo = new loadAmmoFromBinary(params.wasmBuffer)();
+      send({ cmd: 'ammoLoaded' });
+      public_functions.makeWorld(params);
+    } else {
+      importScripts(params.ammo);
+      send({ cmd: 'ammoLoaded' });
+
+      self.Ammo = new Ammo();
+      public_functions.makeWorld(params);
+    }
+  };
+
+  public_functions.makeWorld = function () {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _transform = new Ammo.btTransform();
+    _transform_pos = new Ammo.btTransform();
+    _vec3_1 = new Ammo.btVector3(0, 0, 0);
+    _vec3_2 = new Ammo.btVector3(0, 0, 0);
+    _vec3_3 = new Ammo.btVector3(0, 0, 0);
+    _quat = new Ammo.btQuaternion(0, 0, 0, 0);
+
+    REPORT_CHUNKSIZE = params.reportsize || 50;
+
+    if (SUPPORT_TRANSFERABLE) {
+      // Transferable messages are supported, take advantage of them with TypedArrays
+      worldreport = new Float32Array(2 + REPORT_CHUNKSIZE * WORLDREPORT_ITEMSIZE); // message id + # of objects to report + chunk size * # of values per object
+      collisionreport = new Float32Array(2 + REPORT_CHUNKSIZE * COLLISIONREPORT_ITEMSIZE); // message id + # of collisions to report + chunk size * # of values per object
+      vehiclereport = new Float32Array(2 + REPORT_CHUNKSIZE * VEHICLEREPORT_ITEMSIZE); // message id + # of vehicles to report + chunk size * # of values per object
+      constraintreport = new Float32Array(2 + REPORT_CHUNKSIZE * CONSTRAINTREPORT_ITEMSIZE); // message id + # of constraints to report + chunk size * # of values per object
+    } else {
+      // Transferable messages are not supported, send data as normal arrays
+      worldreport = [];
+      collisionreport = [];
+      vehiclereport = [];
+      constraintreport = [];
+    }
+
+    worldreport[0] = MESSAGE_TYPES.WORLDREPORT;
+    collisionreport[0] = MESSAGE_TYPES.COLLISIONREPORT;
+    vehiclereport[0] = MESSAGE_TYPES.VEHICLEREPORT;
+    constraintreport[0] = MESSAGE_TYPES.CONSTRAINTREPORT;
+
+    var collisionConfiguration = params.softbody ? new Ammo.btSoftBodyRigidBodyCollisionConfiguration() : new Ammo.btDefaultCollisionConfiguration(),
+        dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration),
+        solver = new Ammo.btSequentialImpulseConstraintSolver();
+
+    var broadphase = void 0;
+
+    if (!params.broadphase) params.broadphase = { type: 'dynamic' };
+    // TODO!!!
+    /* if (params.broadphase.type === 'sweepprune') {
+      extend(params.broadphase, {
+        aabbmin: {
+          x: -50,
+          y: -50,
+          z: -50
+        },
+         aabbmax: {
+          x: 50,
+          y: 50,
+          z: 50
+        },
+      });
+    }*/
+
+    switch (params.broadphase.type) {
+      case 'sweepprune':
+        _vec3_1.setX(params.broadphase.aabbmin.x);
+        _vec3_1.setY(params.broadphase.aabbmin.y);
+        _vec3_1.setZ(params.broadphase.aabbmin.z);
+
+        _vec3_2.setX(params.broadphase.aabbmax.x);
+        _vec3_2.setY(params.broadphase.aabbmax.y);
+        _vec3_2.setZ(params.broadphase.aabbmax.z);
+
+        broadphase = new Ammo.btAxisSweep3(_vec3_1, _vec3_2);
+
+        break;
+      case 'dynamic':
+      default:
+        broadphase = new Ammo.btDbvtBroadphase();
+        break;
+    }
+
+    world = params.softbody ? new Ammo.btSoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, new Ammo.btDefaultSoftBodySolver()) : new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+    fixedTimeStep = params.fixedTimeStep;
+
+    if (params.softbody) _softbody_enabled = true;
+
+    send({ cmd: 'worldReady' });
+  };
+
+  public_functions.setFixedTimeStep = function (description) {
+    fixedTimeStep = description;
+  };
+
+  public_functions.setGravity = function (description) {
+    _vec3_1.setX(description.x);
+    _vec3_1.setY(description.y);
+    _vec3_1.setZ(description.z);
+    world.setGravity(_vec3_1);
+  };
+
+  public_functions.appendAnchor = function (description) {
+    _objects[description.obj].appendAnchor(description.node, _objects[description.obj2], description.collisionBetweenLinkedBodies, description.influence);
+  };
+
+  public_functions.addObject = function (description) {
+    var body = void 0,
+        motionState = void 0;
+
+    if (description.type.indexOf('soft') !== -1) {
+      body = createSoftBody(description);
+
+      var sbConfig = body.get_m_cfg();
+
+      if (description.viterations) sbConfig.set_viterations(description.viterations);
+      if (description.piterations) sbConfig.set_piterations(description.piterations);
+      if (description.diterations) sbConfig.set_diterations(description.diterations);
+      if (description.citerations) sbConfig.set_citerations(description.citerations);
+      sbConfig.set_collisions(0x11);
+      sbConfig.set_kDF(description.friction);
+      sbConfig.set_kDP(description.damping);
+      if (description.pressure) sbConfig.set_kPR(description.pressure);
+      if (description.drag) sbConfig.set_kDG(description.drag);
+      if (description.lift) sbConfig.set_kLF(description.lift);
+      if (description.anchorHardness) sbConfig.set_kAHR(description.anchorHardness);
+      if (description.rigidHardness) sbConfig.set_kCHR(description.rigidHardness);
+
+      if (description.klst) body.get_m_materials().at(0).set_m_kLST(description.klst);
+      if (description.kast) body.get_m_materials().at(0).set_m_kAST(description.kast);
+      if (description.kvst) body.get_m_materials().at(0).set_m_kVST(description.kvst);
+
+      Ammo.castObject(body, Ammo.btCollisionObject).getCollisionShape().setMargin(description.margin ? description.margin : 0.1);
+
+      // Ammo.castObject(body, Ammo.btCollisionObject).getCollisionShape().setLocalScaling(_vec3_1);
+      body.setActivationState(description.state || 4);
+      body.type = 0; // SoftBody.
+      if (description.type === 'softRopeMesh') body.rope = true;
+      if (description.type === 'softClothMesh') body.cloth = true;
+
+      _transform.setIdentity();
+
+      _vec3_1.setX(description.position.x);
+      _vec3_1.setY(description.position.y);
+      _vec3_1.setZ(description.position.z);
+      _transform.setOrigin(_vec3_1);
+
+      _quat.setX(description.rotation.x);
+      _quat.setY(description.rotation.y);
+      _quat.setZ(description.rotation.z);
+      _quat.setW(description.rotation.w);
+      _transform.setRotation(_quat);
+
+      body.transform(_transform);
+
+      _vec3_1.setX(description.scale.x);
+      _vec3_1.setY(description.scale.y);
+      _vec3_1.setZ(description.scale.z);
+
+      body.scale(_vec3_1);
+
+      body.setTotalMass(description.mass, false);
+      world.addSoftBody(body, 1, -1);
+      if (description.type === 'softTrimesh') _softbody_report_size += body.get_m_faces().size() * 3;else if (description.type === 'softRopeMesh') _softbody_report_size += body.get_m_nodes().size();else _softbody_report_size += body.get_m_nodes().size() * 3;
+
+      _num_softbody_objects++;
+    } else {
+      var shape = createShape(description);
+
+      if (!shape) return;
+
+      // If there are children then this is a compound shape
+      if (description.children) {
+        var compound_shape = new Ammo.btCompoundShape();
+        compound_shape.addChildShape(_transform, shape);
+
+        for (var i = 0; i < description.children.length; i++) {
+          var _child = description.children[i];
+
+          var trans = new Ammo.btTransform();
+          trans.setIdentity();
+
+          _vec3_1.setX(_child.position_offset.x);
+          _vec3_1.setY(_child.position_offset.y);
+          _vec3_1.setZ(_child.position_offset.z);
+          trans.setOrigin(_vec3_1);
+
+          _quat.setX(_child.rotation.x);
+          _quat.setY(_child.rotation.y);
+          _quat.setZ(_child.rotation.z);
+          _quat.setW(_child.rotation.w);
+          trans.setRotation(_quat);
+
+          shape = createShape(description.children[i]);
+          compound_shape.addChildShape(trans, shape);
+          Ammo.destroy(trans);
+        }
+
+        shape = compound_shape;
+        _compound_shapes[description.id] = shape;
+      }
+
+      _vec3_1.setX(description.scale.x);
+      _vec3_1.setY(description.scale.y);
+      _vec3_1.setZ(description.scale.z);
+
+      shape.setLocalScaling(_vec3_1);
+      shape.setMargin(description.margin ? description.margin : 0);
+
+      _vec3_1.setX(0);
+      _vec3_1.setY(0);
+      _vec3_1.setZ(0);
+      shape.calculateLocalInertia(description.mass, _vec3_1);
+
+      _transform.setIdentity();
+
+      _vec3_2.setX(description.position.x);
+      _vec3_2.setY(description.position.y);
+      _vec3_2.setZ(description.position.z);
+      _transform.setOrigin(_vec3_2);
+
+      _quat.setX(description.rotation.x);
+      _quat.setY(description.rotation.y);
+      _quat.setZ(description.rotation.z);
+      _quat.setW(description.rotation.w);
+      _transform.setRotation(_quat);
+
+      motionState = new Ammo.btDefaultMotionState(_transform); // #TODO: btDefaultMotionState supports center of mass offset as second argument - implement
+      var rbInfo = new Ammo.btRigidBodyConstructionInfo(description.mass, motionState, shape, _vec3_1);
+
+      rbInfo.set_m_friction(description.friction);
+      rbInfo.set_m_restitution(description.restitution);
+      rbInfo.set_m_linearDamping(description.damping);
+      rbInfo.set_m_angularDamping(description.damping);
+
+      body = new Ammo.btRigidBody(rbInfo);
+      body.setActivationState(description.state || 4);
+      Ammo.destroy(rbInfo);
+
+      if (typeof description.collision_flags !== 'undefined') body.setCollisionFlags(description.collision_flags);
+
+      if (description.group && description.mask) world.addRigidBody(body, description.group, description.mask);else world.addRigidBody(body);
+      body.type = 1; // RigidBody.
+      _num_rigidbody_objects++;
+    }
+
+    body.activate();
+
+    body.id = description.id;
+    _objects[body.id] = body;
+    _motion_states[body.id] = motionState;
+
+    _objects_ammo[body.a === undefined ? body.ptr : body.a] = body.id;
+    _num_objects++;
+
+    send({ cmd: 'objectReady', params: body.id });
+  };
+
+  public_functions.addVehicle = function (description) {
+    var vehicle_tuning = new Ammo.btVehicleTuning();
+
+    vehicle_tuning.set_m_suspensionStiffness(description.suspension_stiffness);
+    vehicle_tuning.set_m_suspensionCompression(description.suspension_compression);
+    vehicle_tuning.set_m_suspensionDamping(description.suspension_damping);
+    vehicle_tuning.set_m_maxSuspensionTravelCm(description.max_suspension_travel);
+    vehicle_tuning.set_m_maxSuspensionForce(description.max_suspension_force);
+
+    var vehicle = new Ammo.btRaycastVehicle(vehicle_tuning, _objects[description.rigidBody], new Ammo.btDefaultVehicleRaycaster(world));
+
+    vehicle.tuning = vehicle_tuning;
+    _objects[description.rigidBody].setActivationState(4);
+    vehicle.setCoordinateSystem(0, 1, 2);
+
+    world.addVehicle(vehicle);
+    _vehicles[description.id] = vehicle;
+  };
+  public_functions.removeVehicle = function (description) {
+    _vehicles[description.id] = null;
+  };
+
+  public_functions.addWheel = function (description) {
+    if (_vehicles[description.id] !== undefined) {
+      var tuning = _vehicles[description.id].tuning;
+      if (description.tuning !== undefined) {
+        tuning = new Ammo.btVehicleTuning();
+        tuning.set_m_suspensionStiffness(description.tuning.suspension_stiffness);
+        tuning.set_m_suspensionCompression(description.tuning.suspension_compression);
+        tuning.set_m_suspensionDamping(description.tuning.suspension_damping);
+        tuning.set_m_maxSuspensionTravelCm(description.tuning.max_suspension_travel);
+        tuning.set_m_maxSuspensionForce(description.tuning.max_suspension_force);
+      }
+
+      _vec3_1.setX(description.connection_point.x);
+      _vec3_1.setY(description.connection_point.y);
+      _vec3_1.setZ(description.connection_point.z);
+
+      _vec3_2.setX(description.wheel_direction.x);
+      _vec3_2.setY(description.wheel_direction.y);
+      _vec3_2.setZ(description.wheel_direction.z);
+
+      _vec3_3.setX(description.wheel_axle.x);
+      _vec3_3.setY(description.wheel_axle.y);
+      _vec3_3.setZ(description.wheel_axle.z);
+
+      _vehicles[description.id].addWheel(_vec3_1, _vec3_2, _vec3_3, description.suspension_rest_length, description.wheel_radius, tuning, description.is_front_wheel);
+    }
+
+    _num_wheels++;
+
+    if (SUPPORT_TRANSFERABLE) {
+      vehiclereport = new Float32Array(1 + _num_wheels * VEHICLEREPORT_ITEMSIZE); // message id & ( # of objects to report * # of values per object )
+      vehiclereport[0] = MESSAGE_TYPES.VEHICLEREPORT;
+    } else vehiclereport = [MESSAGE_TYPES.VEHICLEREPORT];
+  };
+
+  public_functions.setSteering = function (details) {
+    if (_vehicles[details.id] !== undefined) _vehicles[details.id].setSteeringValue(details.steering, details.wheel);
+  };
+
+  public_functions.setBrake = function (details) {
+    if (_vehicles[details.id] !== undefined) _vehicles[details.id].setBrake(details.brake, details.wheel);
+  };
+
+  public_functions.applyEngineForce = function (details) {
+    if (_vehicles[details.id] !== undefined) _vehicles[details.id].applyEngineForce(details.force, details.wheel);
+  };
+
+  public_functions.removeObject = function (details) {
+    if (_objects[details.id].type === 0) {
+      _num_softbody_objects--;
+      _softbody_report_size -= _objects[details.id].get_m_nodes().size();
+      world.removeSoftBody(_objects[details.id]);
+    } else if (_objects[details.id].type === 1) {
+      _num_rigidbody_objects--;
+      world.removeRigidBody(_objects[details.id]);
+      Ammo.destroy(_motion_states[details.id]);
+    }
+
+    Ammo.destroy(_objects[details.id]);
+    if (_compound_shapes[details.id]) Ammo.destroy(_compound_shapes[details.id]);
+    if (_noncached_shapes[details.id]) Ammo.destroy(_noncached_shapes[details.id]);
+
+    _objects_ammo[_objects[details.id].a === undefined ? _objects[details.id].a : _objects[details.id].ptr] = null;
+    _objects[details.id] = null;
+    _motion_states[details.id] = null;
+
+    if (_compound_shapes[details.id]) _compound_shapes[details.id] = null;
+    if (_noncached_shapes[details.id]) _noncached_shapes[details.id] = null;
+    _num_objects--;
+  };
+
+  public_functions.updateTransform = function (details) {
+    _object = _objects[details.id];
+
+    if (_object.type === 1) {
+      _object.getMotionState().getWorldTransform(_transform);
+
+      if (details.pos) {
+        _vec3_1.setX(details.pos.x);
+        _vec3_1.setY(details.pos.y);
+        _vec3_1.setZ(details.pos.z);
+        _transform.setOrigin(_vec3_1);
+      }
+
+      if (details.quat) {
+        _quat.setX(details.quat.x);
+        _quat.setY(details.quat.y);
+        _quat.setZ(details.quat.z);
+        _quat.setW(details.quat.w);
+        _transform.setRotation(_quat);
+      }
+
+      _object.setWorldTransform(_transform);
+      _object.activate();
+    } else if (_object.type === 0) {
+      // _object.getWorldTransform(_transform);
+
+      if (details.pos) {
+        _vec3_1.setX(details.pos.x);
+        _vec3_1.setY(details.pos.y);
+        _vec3_1.setZ(details.pos.z);
+        _transform.setOrigin(_vec3_1);
+      }
+
+      if (details.quat) {
+        _quat.setX(details.quat.x);
+        _quat.setY(details.quat.y);
+        _quat.setZ(details.quat.z);
+        _quat.setW(details.quat.w);
+        _transform.setRotation(_quat);
+      }
+
+      _object.transform(_transform);
+    }
+  };
+
+  public_functions.updateMass = function (details) {
+    // #TODO: changing a static object into dynamic is buggy
+    _object = _objects[details.id];
+
+    // Per http://www.bulletphysics.org/Bullet/phpBB3/viewtopic.php?p=&f=9&t=3663#p13816
+    world.removeRigidBody(_object);
+
+    _vec3_1.setX(0);
+    _vec3_1.setY(0);
+    _vec3_1.setZ(0);
+
+    _object.setMassProps(details.mass, _vec3_1);
+    world.addRigidBody(_object);
+    _object.activate();
+  };
+
+  public_functions.applyCentralImpulse = function (details) {
+    _vec3_1.setX(details.x);
+    _vec3_1.setY(details.y);
+    _vec3_1.setZ(details.z);
+
+    _objects[details.id].applyCentralImpulse(_vec3_1);
+    _objects[details.id].activate();
+  };
+
+  public_functions.applyImpulse = function (details) {
+    _vec3_1.setX(details.impulse_x);
+    _vec3_1.setY(details.impulse_y);
+    _vec3_1.setZ(details.impulse_z);
+
+    _vec3_2.setX(details.x);
+    _vec3_2.setY(details.y);
+    _vec3_2.setZ(details.z);
+
+    _objects[details.id].applyImpulse(_vec3_1, _vec3_2);
+    _objects[details.id].activate();
+  };
+
+  public_functions.applyTorque = function (details) {
+    _vec3_1.setX(details.torque_x);
+    _vec3_1.setY(details.torque_y);
+    _vec3_1.setZ(details.torque_z);
+
+    _objects[details.id].applyTorque(_vec3_1);
+    _objects[details.id].activate();
+  };
+
+  public_functions.applyCentralForce = function (details) {
+    _vec3_1.setX(details.x);
+    _vec3_1.setY(details.y);
+    _vec3_1.setZ(details.z);
+
+    _objects[details.id].applyCentralForce(_vec3_1);
+    _objects[details.id].activate();
+  };
+
+  public_functions.applyForce = function (details) {
+    _vec3_1.setX(details.force_x);
+    _vec3_1.setY(details.force_y);
+    _vec3_1.setZ(details.force_z);
+
+    _vec3_2.setX(details.x);
+    _vec3_2.setY(details.y);
+    _vec3_2.setZ(details.z);
+
+    _objects[details.id].applyForce(_vec3_1, _vec3_2);
+    _objects[details.id].activate();
+  };
+
+  public_functions.onSimulationResume = function () {
+    
+  };
+
+  public_functions.setAngularVelocity = function (details) {
+    _vec3_1.setX(details.x);
+    _vec3_1.setY(details.y);
+    _vec3_1.setZ(details.z);
+
+    _objects[details.id].setAngularVelocity(_vec3_1);
+    _objects[details.id].activate();
+  };
+
+  public_functions.setLinearVelocity = function (details) {
+    _vec3_1.setX(details.x);
+    _vec3_1.setY(details.y);
+    _vec3_1.setZ(details.z);
+
+    _objects[details.id].setLinearVelocity(_vec3_1);
+    _objects[details.id].activate();
+  };
+
+  public_functions.setAngularFactor = function (details) {
+    _vec3_1.setX(details.x);
+    _vec3_1.setY(details.y);
+    _vec3_1.setZ(details.z);
+
+    _objects[details.id].setAngularFactor(_vec3_1);
+  };
+
+  public_functions.setLinearFactor = function (details) {
+    _vec3_1.setX(details.x);
+    _vec3_1.setY(details.y);
+    _vec3_1.setZ(details.z);
+
+    _objects[details.id].setLinearFactor(_vec3_1);
+  };
+
+  public_functions.setDamping = function (details) {
+    _objects[details.id].setDamping(details.linear, details.angular);
+  };
+
+  public_functions.setCcdMotionThreshold = function (details) {
+    _objects[details.id].setCcdMotionThreshold(details.threshold);
+  };
+
+  public_functions.setCcdSweptSphereRadius = function (details) {
+    _objects[details.id].setCcdSweptSphereRadius(details.radius);
+  };
+
+  public_functions.addConstraint = function (details) {
+    var constraint = void 0;
+
+    switch (details.type) {
+
+      case 'point':
+        {
+          if (details.objectb === undefined) {
+            _vec3_1.setX(details.positiona.x);
+            _vec3_1.setY(details.positiona.y);
+            _vec3_1.setZ(details.positiona.z);
+
+            constraint = new Ammo.btPoint2PointConstraint(_objects[details.objecta], _vec3_1);
+          } else {
+            _vec3_1.setX(details.positiona.x);
+            _vec3_1.setY(details.positiona.y);
+            _vec3_1.setZ(details.positiona.z);
+
+            _vec3_2.setX(details.positionb.x);
+            _vec3_2.setY(details.positionb.y);
+            _vec3_2.setZ(details.positionb.z);
+
+            constraint = new Ammo.btPoint2PointConstraint(_objects[details.objecta], _objects[details.objectb], _vec3_1, _vec3_2);
+          }
+          break;
+        }
+      case 'hinge':
+        {
+          if (details.objectb === undefined) {
+            _vec3_1.setX(details.positiona.x);
+            _vec3_1.setY(details.positiona.y);
+            _vec3_1.setZ(details.positiona.z);
+
+            _vec3_2.setX(details.axis.x);
+            _vec3_2.setY(details.axis.y);
+            _vec3_2.setZ(details.axis.z);
+
+            constraint = new Ammo.btHingeConstraint(_objects[details.objecta], _vec3_1, _vec3_2);
+          } else {
+            _vec3_1.setX(details.positiona.x);
+            _vec3_1.setY(details.positiona.y);
+            _vec3_1.setZ(details.positiona.z);
+
+            _vec3_2.setX(details.positionb.x);
+            _vec3_2.setY(details.positionb.y);
+            _vec3_2.setZ(details.positionb.z);
+
+            _vec3_3.setX(details.axis.x);
+            _vec3_3.setY(details.axis.y);
+            _vec3_3.setZ(details.axis.z);
+
+            constraint = new Ammo.btHingeConstraint(_objects[details.objecta], _objects[details.objectb], _vec3_1, _vec3_2, _vec3_3, _vec3_3);
+          }
+          break;
+        }
+      case 'slider':
+        {
+          var transformb = void 0;
+          var transforma = new Ammo.btTransform();
+
+          _vec3_1.setX(details.positiona.x);
+          _vec3_1.setY(details.positiona.y);
+          _vec3_1.setZ(details.positiona.z);
+
+          transforma.setOrigin(_vec3_1);
+
+          var rotation = transforma.getRotation();
+          rotation.setEuler(details.axis.x, details.axis.y, details.axis.z);
+          transforma.setRotation(rotation);
+
+          if (details.objectb) {
+            transformb = new Ammo.btTransform();
+
+            _vec3_2.setX(details.positionb.x);
+            _vec3_2.setY(details.positionb.y);
+            _vec3_2.setZ(details.positionb.z);
+
+            transformb.setOrigin(_vec3_2);
+
+            rotation = transformb.getRotation();
+            rotation.setEuler(details.axis.x, details.axis.y, details.axis.z);
+            transformb.setRotation(rotation);
+
+            constraint = new Ammo.btSliderConstraint(_objects[details.objecta], _objects[details.objectb], transforma, transformb, true);
+          } else {
+            constraint = new Ammo.btSliderConstraint(_objects[details.objecta], transforma, true);
+          }
+
+          constraint.ta = transforma;
+          constraint.tb = transformb;
+
+          Ammo.destroy(transforma);
+          if (transformb !== undefined) Ammo.destroy(transformb);
+
+          break;
+        }
+      case 'conetwist':
+        {
+          var _transforma = new Ammo.btTransform();
+          _transforma.setIdentity();
+
+          var _transformb = new Ammo.btTransform();
+          _transformb.setIdentity();
+
+          _vec3_1.setX(details.positiona.x);
+          _vec3_1.setY(details.positiona.y);
+          _vec3_1.setZ(details.positiona.z);
+
+          _vec3_2.setX(details.positionb.x);
+          _vec3_2.setY(details.positionb.y);
+          _vec3_2.setZ(details.positionb.z);
+
+          _transforma.setOrigin(_vec3_1);
+          _transformb.setOrigin(_vec3_2);
+
+          var _rotation = _transforma.getRotation();
+          _rotation.setEulerZYX(-details.axisa.z, -details.axisa.y, -details.axisa.x);
+          _transforma.setRotation(_rotation);
+
+          _rotation = _transformb.getRotation();
+          _rotation.setEulerZYX(-details.axisb.z, -details.axisb.y, -details.axisb.x);
+          _transformb.setRotation(_rotation);
+
+          constraint = new Ammo.btConeTwistConstraint(_objects[details.objecta], _objects[details.objectb], _transforma, _transformb);
+
+          constraint.setLimit(Math.PI, 0, Math.PI);
+
+          constraint.ta = _transforma;
+          constraint.tb = _transformb;
+
+          Ammo.destroy(_transforma);
+          Ammo.destroy(_transformb);
+
+          break;
+        }
+      case 'dof':
+        {
+          var _transformb2 = void 0;
+
+          var _transforma2 = new Ammo.btTransform();
+          _transforma2.setIdentity();
+
+          _vec3_1.setX(details.positiona.x);
+          _vec3_1.setY(details.positiona.y);
+          _vec3_1.setZ(details.positiona.z);
+
+          _transforma2.setOrigin(_vec3_1);
+
+          var _rotation2 = _transforma2.getRotation();
+          _rotation2.setEulerZYX(-details.axisa.z, -details.axisa.y, -details.axisa.x);
+          _transforma2.setRotation(_rotation2);
+
+          if (details.objectb) {
+            _transformb2 = new Ammo.btTransform();
+            _transformb2.setIdentity();
+
+            _vec3_2.setX(details.positionb.x);
+            _vec3_2.setY(details.positionb.y);
+            _vec3_2.setZ(details.positionb.z);
+
+            _transformb2.setOrigin(_vec3_2);
+
+            _rotation2 = _transformb2.getRotation();
+            _rotation2.setEulerZYX(-details.axisb.z, -details.axisb.y, -details.axisb.x);
+            _transformb2.setRotation(_rotation2);
+
+            constraint = new Ammo.btGeneric6DofConstraint(_objects[details.objecta], _objects[details.objectb], _transforma2, _transformb2, true);
+          } else {
+            constraint = new Ammo.btGeneric6DofConstraint(_objects[details.objecta], _transforma2, true);
+          }
+
+          constraint.ta = _transforma2;
+          constraint.tb = _transformb2;
+
+          Ammo.destroy(_transforma2);
+          if (_transformb2 !== undefined) Ammo.destroy(_transformb2);
+
+          break;
+        }
+      default:
+        return;
+    }
+
+    world.addConstraint(constraint);
+
+    constraint.a = _objects[details.objecta];
+    constraint.b = _objects[details.objectb];
+
+    constraint.enableFeedback();
+    _constraints[details.id] = constraint;
+    _num_constraints++;
+
+    if (SUPPORT_TRANSFERABLE) {
+      constraintreport = new Float32Array(1 + _num_constraints * CONSTRAINTREPORT_ITEMSIZE); // message id & ( # of objects to report * # of values per object )
+      constraintreport[0] = MESSAGE_TYPES.CONSTRAINTREPORT;
+    } else constraintreport = [MESSAGE_TYPES.CONSTRAINTREPORT];
+  };
+
+  public_functions.removeConstraint = function (details) {
+    var constraint = _constraints[details.id];
+
+    if (constraint !== undefined) {
+      world.removeConstraint(constraint);
+      _constraints[details.id] = null;
+      _num_constraints--;
+    }
+  };
+
+  public_functions.constraint_setBreakingImpulseThreshold = function (details) {
+    var constraint = _constraints[details.id];
+    if (constraint !== undefind) constraint.setBreakingImpulseThreshold(details.threshold);
+  };
+
+  public_functions.simulate = function () {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    if (world) {
+      if (params.timeStep && params.timeStep < fixedTimeStep) params.timeStep = fixedTimeStep;
+
+      params.maxSubSteps = params.maxSubSteps || Math.ceil(params.timeStep / fixedTimeStep); // If maxSubSteps is not defined, keep the simulation fully up to date
+
+      world.stepSimulation(params.timeStep, params.maxSubSteps, fixedTimeStep);
+
+      if (_vehicles.length > 0) reportVehicles();
+      reportCollisions();
+      if (_constraints.length > 0) reportConstraints();
+      reportWorld();
+      if (_softbody_enabled) reportWorld_softbodies();
+    }
+  };
+
+  // Constraint functions
+  public_functions.hinge_setLimits = function (params) {
+    _constraints[params.constraint].setLimit(params.low, params.high, 0, params.bias_factor, params.relaxation_factor);
+  };
+
+  public_functions.hinge_enableAngularMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.enableAngularMotor(true, params.velocity, params.acceleration);
+    constraint.a.activate();
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.hinge_disableMotor = function (params) {
+    _constraints[params.constraint].enableMotor(false);
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.slider_setLimits = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setLowerLinLimit(params.lin_lower || 0);
+    constraint.setUpperLinLimit(params.lin_upper || 0);
+
+    constraint.setLowerAngLimit(params.ang_lower || 0);
+    constraint.setUpperAngLimit(params.ang_upper || 0);
+  };
+
+  public_functions.slider_setRestitution = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setSoftnessLimLin(params.linear || 0);
+    constraint.setSoftnessLimAng(params.angular || 0);
+  };
+
+  public_functions.slider_enableLinearMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setTargetLinMotorVelocity(params.velocity);
+    constraint.setMaxLinMotorForce(params.acceleration);
+    constraint.setPoweredLinMotor(true);
+    constraint.a.activate();
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.slider_disableLinearMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setPoweredLinMotor(false);
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.slider_enableAngularMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setTargetAngMotorVelocity(params.velocity);
+    constraint.setMaxAngMotorForce(params.acceleration);
+    constraint.setPoweredAngMotor(true);
+    constraint.a.activate();
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.slider_disableAngularMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setPoweredAngMotor(false);
+    constraint.a.activate();
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.conetwist_setLimit = function (params) {
+    _constraints[params.constraint].setLimit(params.z, params.y, params.x); // ZYX order
+  };
+
+  public_functions.conetwist_enableMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.enableMotor(true);
+    constraint.a.activate();
+    constraint.b.activate();
+  };
+
+  public_functions.conetwist_setMaxMotorImpulse = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.setMaxMotorImpulse(params.max_impulse);
+    constraint.a.activate();
+    constraint.b.activate();
+  };
+
+  public_functions.conetwist_setMotorTarget = function (params) {
+    var constraint = _constraints[params.constraint];
+
+    _quat.setX(params.x);
+    _quat.setY(params.y);
+    _quat.setZ(params.z);
+    _quat.setW(params.w);
+
+    constraint.setMotorTarget(_quat);
+
+    constraint.a.activate();
+    constraint.b.activate();
+  };
+
+  public_functions.conetwist_disableMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+    constraint.enableMotor(false);
+    constraint.a.activate();
+    constraint.b.activate();
+  };
+
+  public_functions.dof_setLinearLowerLimit = function (params) {
+    var constraint = _constraints[params.constraint];
+
+    _vec3_1.setX(params.x);
+    _vec3_1.setY(params.y);
+    _vec3_1.setZ(params.z);
+
+    constraint.setLinearLowerLimit(_vec3_1);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_setLinearUpperLimit = function (params) {
+    var constraint = _constraints[params.constraint];
+
+    _vec3_1.setX(params.x);
+    _vec3_1.setY(params.y);
+    _vec3_1.setZ(params.z);
+
+    constraint.setLinearUpperLimit(_vec3_1);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_setAngularLowerLimit = function (params) {
+    var constraint = _constraints[params.constraint];
+
+    _vec3_1.setX(params.x);
+    _vec3_1.setY(params.y);
+    _vec3_1.setZ(params.z);
+
+    constraint.setAngularLowerLimit(_vec3_1);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_setAngularUpperLimit = function (params) {
+    var constraint = _constraints[params.constraint];
+
+    _vec3_1.setX(params.x);
+    _vec3_1.setY(params.y);
+    _vec3_1.setZ(params.z);
+
+    constraint.setAngularUpperLimit(_vec3_1);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_enableAngularMotor = function (params) {
+    var constraint = _constraints[params.constraint];
+
+    var motor = constraint.getRotationalLimitMotor(params.which);
+    motor.set_m_enableMotor(true);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_configureAngularMotor = function (params) {
+    var constraint = _constraints[params.constraint],
+        motor = constraint.getRotationalLimitMotor(params.which);
+
+    motor.set_m_loLimit(params.low_angle);
+    motor.set_m_hiLimit(params.high_angle);
+    motor.set_m_targetVelocity(params.velocity);
+    motor.set_m_maxMotorForce(params.max_force);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  public_functions.dof_disableAngularMotor = function (params) {
+    var constraint = _constraints[params.constraint],
+        motor = constraint.getRotationalLimitMotor(params.which);
+
+    motor.set_m_enableMotor(false);
+    constraint.a.activate();
+
+    if (constraint.b) constraint.b.activate();
+  };
+
+  var reportWorld = function reportWorld() {
+    if (SUPPORT_TRANSFERABLE && worldreport.length < 2 + _num_rigidbody_objects * WORLDREPORT_ITEMSIZE) {
+      worldreport = new Float32Array(2 // message id & # objects in report
+      + Math.ceil(_num_rigidbody_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE * WORLDREPORT_ITEMSIZE // # of values needed * item size
+      );
+
+      worldreport[0] = MESSAGE_TYPES.WORLDREPORT;
+    }
+
+    worldreport[1] = _num_rigidbody_objects; // record how many objects we're reporting on
+
+    {
+      var i = 0,
+          index = _objects.length;
+
+      while (index--) {
+        var object = _objects[index];
+
+        if (object && object.type === 1) {
+          // RigidBodies.
+          // #TODO: we can't use center of mass transform when center of mass can change,
+          //        but getMotionState().getWorldTransform() screws up on objects that have been moved
+          // object.getMotionState().getWorldTransform( transform );
+          // object.getMotionState().getWorldTransform(_transform);
+
+          var transform = object.getCenterOfMassTransform();
+          var origin = transform.getOrigin();
+          var rotation = transform.getRotation();
+
+          // add values to report
+          var offset = 2 + i++ * WORLDREPORT_ITEMSIZE;
+
+          worldreport[offset] = object.id;
+
+          worldreport[offset + 1] = origin.x();
+          worldreport[offset + 2] = origin.y();
+          worldreport[offset + 3] = origin.z();
+
+          worldreport[offset + 4] = rotation.x();
+          worldreport[offset + 5] = rotation.y();
+          worldreport[offset + 6] = rotation.z();
+          worldreport[offset + 7] = rotation.w();
+
+          _vector = object.getLinearVelocity();
+          worldreport[offset + 8] = _vector.x();
+          worldreport[offset + 9] = _vector.y();
+          worldreport[offset + 10] = _vector.z();
+
+          _vector = object.getAngularVelocity();
+          worldreport[offset + 11] = _vector.x();
+          worldreport[offset + 12] = _vector.y();
+          worldreport[offset + 13] = _vector.z();
+        }
+      }
+    }
+
+    if (SUPPORT_TRANSFERABLE) send(worldreport.buffer, [worldreport.buffer]);else send(worldreport);
+  };
+
+  var reportWorld_softbodies = function reportWorld_softbodies() {
+    // TODO: Add SUPPORTTRANSFERABLE.
+
+    softreport = new Float32Array(2 // message id & # objects in report
+    + _num_softbody_objects * 2 + _softbody_report_size * 6);
+
+    softreport[0] = MESSAGE_TYPES.SOFTREPORT;
+    softreport[1] = _num_softbody_objects; // record how many objects we're reporting on
+
+    {
+      var offset = 2,
+          index = _objects.length;
+
+      while (index--) {
+        var object = _objects[index];
+
+        if (object && object.type === 0) {
+          // SoftBodies.
+
+          softreport[offset] = object.id;
+
+          var offsetVert = offset + 2;
+
+          if (object.rope === true) {
+            var nodes = object.get_m_nodes();
+            var size = nodes.size();
+            softreport[offset + 1] = size;
+
+            for (var i = 0; i < size; i++) {
+              var node = nodes.at(i);
+              var vert = node.get_m_x();
+              var off = offsetVert + i * 3;
+
+              softreport[off] = vert.x();
+              softreport[off + 1] = vert.y();
+              softreport[off + 2] = vert.z();
+            }
+
+            offset += size * 3 + 2;
+          } else if (object.cloth) {
+            var _nodes = object.get_m_nodes();
+            var _size = _nodes.size();
+            softreport[offset + 1] = _size;
+
+            for (var _i3 = 0; _i3 < _size; _i3++) {
+              var _node = _nodes.at(_i3);
+              var _vert = _node.get_m_x();
+              var normal = _node.get_m_n();
+              var _off = offsetVert + _i3 * 6;
+
+              softreport[_off] = _vert.x();
+              softreport[_off + 1] = _vert.y();
+              softreport[_off + 2] = _vert.z();
+
+              softreport[_off + 3] = normal.x();
+              softreport[_off + 4] = normal.y();
+              softreport[_off + 5] = normal.z();
+            }
+
+            offset += _size * 6 + 2;
+          } else {
+            var faces = object.get_m_faces();
+            var _size2 = faces.size();
+            softreport[offset + 1] = _size2;
+
+            for (var _i4 = 0; _i4 < _size2; _i4++) {
+              var face = faces.at(_i4);
+
+              var node1 = face.get_m_n(0);
+              var node2 = face.get_m_n(1);
+              var node3 = face.get_m_n(2);
+
+              var vert1 = node1.get_m_x();
+              var vert2 = node2.get_m_x();
+              var vert3 = node3.get_m_x();
+
+              var normal1 = node1.get_m_n();
+              var normal2 = node2.get_m_n();
+              var normal3 = node3.get_m_n();
+
+              var _off2 = offsetVert + _i4 * 18;
+
+              softreport[_off2] = vert1.x();
+              softreport[_off2 + 1] = vert1.y();
+              softreport[_off2 + 2] = vert1.z();
+
+              softreport[_off2 + 3] = normal1.x();
+              softreport[_off2 + 4] = normal1.y();
+              softreport[_off2 + 5] = normal1.z();
+
+              softreport[_off2 + 6] = vert2.x();
+              softreport[_off2 + 7] = vert2.y();
+              softreport[_off2 + 8] = vert2.z();
+
+              softreport[_off2 + 9] = normal2.x();
+              softreport[_off2 + 10] = normal2.y();
+              softreport[_off2 + 11] = normal2.z();
+
+              softreport[_off2 + 12] = vert3.x();
+              softreport[_off2 + 13] = vert3.y();
+              softreport[_off2 + 14] = vert3.z();
+
+              softreport[_off2 + 15] = normal3.x();
+              softreport[_off2 + 16] = normal3.y();
+              softreport[_off2 + 17] = normal3.z();
+            }
+
+            offset += _size2 * 18 + 2;
+          }
+        }
+      }
+    }
+
+    // if (SUPPORT_TRANSFERABLE) send(softreport.buffer, [softreport.buffer]);
+    // else send(softreport);
+    send(softreport);
+  };
+
+  var reportCollisions = function reportCollisions() {
+    var dp = world.getDispatcher(),
+        num = dp.getNumManifolds();
+    // _collided = false;
+
+    if (SUPPORT_TRANSFERABLE) {
+      if (collisionreport.length < 2 + num * COLLISIONREPORT_ITEMSIZE) {
+        collisionreport = new Float32Array(2 // message id & # objects in report
+        + Math.ceil(_num_objects / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE * COLLISIONREPORT_ITEMSIZE // # of values needed * item size
+        );
+        collisionreport[0] = MESSAGE_TYPES.COLLISIONREPORT;
+      }
+    }
+
+    collisionreport[1] = 0; // how many collisions we're reporting on
+
+    for (var i = 0; i < num; i++) {
+      var manifold = dp.getManifoldByIndexInternal(i),
+          num_contacts = manifold.getNumContacts();
+
+      if (num_contacts === 0) continue;
+
+      for (var j = 0; j < num_contacts; j++) {
+        var pt = manifold.getContactPoint(j);
+
+        // if ( pt.getDistance() < 0 ) {
+        var offset = 2 + collisionreport[1]++ * COLLISIONREPORT_ITEMSIZE;
+        collisionreport[offset] = _objects_ammo[manifold.getBody0().ptr];
+        collisionreport[offset + 1] = _objects_ammo[manifold.getBody1().ptr];
+
+        _vector = pt.get_m_normalWorldOnB();
+        collisionreport[offset + 2] = _vector.x();
+        collisionreport[offset + 3] = _vector.y();
+        collisionreport[offset + 4] = _vector.z();
+        break;
+        // }
+        // send(_objects_ammo);
+      }
+    }
+
+    if (SUPPORT_TRANSFERABLE) send(collisionreport.buffer, [collisionreport.buffer]);else send(collisionreport);
+  };
+
+  var reportVehicles = function reportVehicles() {
+    if (SUPPORT_TRANSFERABLE) {
+      if (vehiclereport.length < 2 + _num_wheels * VEHICLEREPORT_ITEMSIZE) {
+        vehiclereport = new Float32Array(2 // message id & # objects in report
+        + Math.ceil(_num_wheels / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE * VEHICLEREPORT_ITEMSIZE // # of values needed * item size
+        );
+        vehiclereport[0] = MESSAGE_TYPES.VEHICLEREPORT;
+      }
+    }
+
+    {
+      var i = 0,
+          j = 0,
+          index = _vehicles.length;
+
+      while (index--) {
+        if (_vehicles[index]) {
+          var vehicle = _vehicles[index];
+
+          for (j = 0; j < vehicle.getNumWheels(); j++) {
+            // vehicle.updateWheelTransform( j, true );
+            // transform = vehicle.getWheelTransformWS( j );
+            var transform = vehicle.getWheelInfo(j).get_m_worldTransform();
+
+            var origin = transform.getOrigin();
+            var rotation = transform.getRotation();
+
+            // add values to report
+            var offset = 1 + i++ * VEHICLEREPORT_ITEMSIZE;
+
+            vehiclereport[offset] = index;
+            vehiclereport[offset + 1] = j;
+
+            vehiclereport[offset + 2] = origin.x();
+            vehiclereport[offset + 3] = origin.y();
+            vehiclereport[offset + 4] = origin.z();
+
+            vehiclereport[offset + 5] = rotation.x();
+            vehiclereport[offset + 6] = rotation.y();
+            vehiclereport[offset + 7] = rotation.z();
+            vehiclereport[offset + 8] = rotation.w();
+          }
+        }
+      }
+
+      if (SUPPORT_TRANSFERABLE && j !== 0) send(vehiclereport.buffer, [vehiclereport.buffer]);else if (j !== 0) send(vehiclereport);
+    }
+  };
+
+  var reportConstraints = function reportConstraints() {
+    if (SUPPORT_TRANSFERABLE) {
+      if (constraintreport.length < 2 + _num_constraints * CONSTRAINTREPORT_ITEMSIZE) {
+        constraintreport = new Float32Array(2 // message id & # objects in report
+        + Math.ceil(_num_constraints / REPORT_CHUNKSIZE) * REPORT_CHUNKSIZE * CONSTRAINTREPORT_ITEMSIZE // # of values needed * item size
+        );
+        constraintreport[0] = MESSAGE_TYPES.CONSTRAINTREPORT;
+      }
+    }
+
+    {
+      var offset = 0,
+          i = 0,
+          index = _constraints.lenght;
+
+      while (index--) {
+        if (_constraints[index]) {
+          var _constraint = _constraints[index];
+          var offset_body = _constraint.a;
+          var transform = _constraint.ta;
+          var origin = transform.getOrigin();
+
+          // add values to report
+          offset = 1 + i++ * CONSTRAINTREPORT_ITEMSIZE;
+
+          constraintreport[offset] = index;
+          constraintreport[offset + 1] = offset_body.id;
+          constraintreport[offset + 2] = origin.x;
+          constraintreport[offset + 3] = origin.y;
+          constraintreport[offset + 4] = origin.z;
+          constraintreport[offset + 5] = _constraint.getBreakingImpulseThreshold();
+        }
+      }
+
+      if (SUPPORT_TRANSFERABLE && i !== 0) send(constraintreport.buffer, [constraintreport.buffer]);else if (i !== 0) send(constraintreport);
+    }
+  };
+
+  self.onmessage = function (event) {
+    if (event.data instanceof Float32Array) {
+      // transferable object
+      switch (event.data[0]) {
+        case MESSAGE_TYPES.WORLDREPORT:
+          {
+            worldreport = new Float32Array(event.data);
+            break;
+          }
+        case MESSAGE_TYPES.COLLISIONREPORT:
+          {
+            collisionreport = new Float32Array(event.data);
+            break;
+          }
+        case MESSAGE_TYPES.VEHICLEREPORT:
+          {
+            vehiclereport = new Float32Array(event.data);
+            break;
+          }
+        case MESSAGE_TYPES.CONSTRAINTREPORT:
+          {
+            constraintreport = new Float32Array(event.data);
+            break;
+          }
+        default:
+      }
+
+      return;
+    } else if (event.data.cmd && public_functions[event.data.cmd]) public_functions[event.data.cmd](event.data.params);
+  };
+
+  self.receive = self.onmessage;
+});
+
+var WorldModule = function (_WorldModuleBase) {
+  inherits(WorldModule, _WorldModuleBase);
+
+  function WorldModule() {
+    var _ref;
+
+    classCallCheck(this, WorldModule);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    var _this = possibleConstructorReturn(this, (_ref = WorldModule.__proto__ || Object.getPrototypeOf(WorldModule)).call.apply(_ref, [this].concat(args)));
+
+    _this.worker = new PhysicsWorker();
+    _this.worker.transferableMessage = _this.worker.webkitPostMessage || _this.worker.postMessage;
+
+    _this.isLoaded = false;
+
+    var options = _this.options;
+
+    _this.loader = new Promise(function (resolve, reject) {
+      // if (options.wasm) {
+      //   fetch(options.wasm)
+      //     .then(response => response.arrayBuffer())
+      //     .then(buffer => {
+      //       options.wasmBuffer = buffer;
+      //
+      //       this.execute('init', options);
+      //       resolve();
+      //     });
+      // } else {
+      _this.execute('init', options);
+      resolve();
+      // }
+    });
+
+    _this.loader.then(function () {
+      _this.isLoaded = true;
+    });
+
+    // Test SUPPORT_TRANSFERABLE
+
+    var ab = new ArrayBuffer(1);
+    _this.worker.transferableMessage(ab, [ab]);
+    _this.SUPPORT_TRANSFERABLE = ab.byteLength === 0;
+
+    _this.setup();
+    return _this;
+  }
+
+  createClass(WorldModule, [{
+    key: 'send',
+    value: function send() {
+      var _worker;
+
+      (_worker = this.worker).transferableMessage.apply(_worker, arguments);
+    }
+  }, {
+    key: 'receive',
+    value: function receive(callback) {
+      this.worker.addEventListener('message', callback);
+    }
+  }]);
+  return WorldModule;
+}(WorldModuleBase);
+
+var _class$1;
+var _temp;
+
+var properties = {
+  position: {
+    get: function get$$1() {
+      return this._native.position;
+    },
+    set: function set$$1(vector3) {
+      var pos = this._native.position;
+      var scope = this;
+
+      Object.defineProperties(pos, {
+        x: {
+          get: function get$$1() {
+            return this._x;
+          },
+          set: function set$$1(x) {
+            scope.__dirtyPosition = true;
+            this._x = x;
+          }
+        },
+        y: {
+          get: function get$$1() {
+            return this._y;
+          },
+          set: function set$$1(y) {
+            scope.__dirtyPosition = true;
+            this._y = y;
+          }
+        },
+        z: {
+          get: function get$$1() {
+            return this._z;
+          },
+          set: function set$$1(z) {
+            scope.__dirtyPosition = true;
+            this._z = z;
+          }
+        }
+      });
+
+      scope.__dirtyPosition = true;
+
+      pos.copy(vector3);
+    }
+  },
+
+  quaternion: {
+    get: function get$$1() {
+      this.__c_rot = true;
+      return this.native.quaternion;
+    },
+    set: function set$$1(quaternion) {
+      var _this = this;
+
+      var quat = this._native.quaternion,
+          native = this._native;
+
+      quat.copy(quaternion);
+
+      quat.onChange(function () {
+        if (_this.__c_rot) {
+          if (native.__dirtyRotation === true) {
+            _this.__c_rot = false;
+            native.__dirtyRotation = false;
+          }
+          native.__dirtyRotation = true;
+        }
+      });
+    }
+  },
+
+  rotation: {
+    get: function get$$1() {
+      this.__c_rot = true;
+      return this._native.rotation;
+    },
+    set: function set$$1(euler) {
+      var _this2 = this;
+
+      var rot = this._native.rotation,
+          native = this._native;
+
+      this.quaternion.copy(new three.Quaternion().setFromEuler(euler));
+
+      rot.onChange(function () {
+        if (_this2.__c_rot) {
+          _this2.quaternion.copy(new three.Quaternion().setFromEuler(rot));
+          native.__dirtyRotation = true;
+        }
+      });
+    }
+  }
+};
+
+function wrapPhysicsPrototype(scope) {
+  for (var key in properties) {
+    Object.defineProperty(scope, key, {
+      get: properties[key].get.bind(scope),
+      set: properties[key].set.bind(scope),
+      configurable: true,
+      enumerable: true
+    });
+  }
+}
+
+function onCopy(source) {
+  wrapPhysicsPrototype(this);
+
+  var physics = this.use('physics');
+  var sourcePhysics = source.use('physics');
+
+  this.manager.modules.physics = physics.clone(this.manager);
+
+  physics.data = _extends({}, sourcePhysics.data);
+  physics.data.isSoftBodyReset = false;
+  if (physics.data.isSoftbody) physics.data.isSoftBodyReset = false;
+
+  this.position = this.position.clone();
+  this.rotation = this.rotation.clone();
+  this.quaternion = this.quaternion.clone();
+
+  return source;
+}
+
+function onWrap() {
+  this.position = this.position.clone();
+  this.rotation = this.rotation.clone();
+  this.quaternion = this.quaternion.clone();
+}
+
+var API = function () {
+  function API() {
+    classCallCheck(this, API);
+  }
+
+  createClass(API, [{
+    key: 'applyCentralImpulse',
+    value: function applyCentralImpulse(force) {
+      this.execute('applyCentralImpulse', { id: this.data.id, x: force.x, y: force.y, z: force.z });
+    }
+  }, {
+    key: 'applyImpulse',
+    value: function applyImpulse(force, offset) {
+      this.execute('applyImpulse', {
+        id: this.data.id,
+        impulse_x: force.x,
+        impulse_y: force.y,
+        impulse_z: force.z,
+        x: offset.x,
+        y: offset.y,
+        z: offset.z
+      });
+    }
+  }, {
+    key: 'applyTorque',
+    value: function applyTorque(force) {
+      this.execute('applyTorque', {
+        id: this.data.id,
+        torque_x: force.x,
+        torque_y: force.y,
+        torque_z: force.z
+      });
+    }
+  }, {
+    key: 'applyCentralForce',
+    value: function applyCentralForce(force) {
+      this.execute('applyCentralForce', {
+        id: this.data.id,
+        x: force.x,
+        y: force.y,
+        z: force.z
+      });
+    }
+  }, {
+    key: 'applyForce',
+    value: function applyForce(force, offset) {
+      this.execute('applyForce', {
+        id: this.data.id,
+        force_x: force.x,
+        force_y: force.y,
+        force_z: force.z,
+        x: offset.x,
+        y: offset.y,
+        z: offset.z
+      });
+    }
+  }, {
+    key: 'getAngularVelocity',
+    value: function getAngularVelocity() {
+      return this.data.angularVelocity;
+    }
+  }, {
+    key: 'setAngularVelocity',
+    value: function setAngularVelocity(velocity) {
+      this.execute('setAngularVelocity', { id: this.data.id, x: velocity.x, y: velocity.y, z: velocity.z });
+    }
+  }, {
+    key: 'getLinearVelocity',
+    value: function getLinearVelocity() {
+      return this.data.linearVelocity;
+    }
+  }, {
+    key: 'setLinearVelocity',
+    value: function setLinearVelocity(velocity) {
+      this.execute('setLinearVelocity', { id: this.data.id, x: velocity.x, y: velocity.y, z: velocity.z });
+    }
+  }, {
+    key: 'setAngularFactor',
+    value: function setAngularFactor(factor) {
+      this.execute('setAngularFactor', { id: this.data.id, x: factor.x, y: factor.y, z: factor.z });
+    }
+  }, {
+    key: 'setLinearFactor',
+    value: function setLinearFactor(factor) {
+      this.execute('setLinearFactor', { id: this.data.id, x: factor.x, y: factor.y, z: factor.z });
+    }
+  }, {
+    key: 'setDamping',
+    value: function setDamping(linear, angular) {
+      this.execute('setDamping', { id: this.data.id, linear: linear, angular: angular });
+    }
+  }, {
+    key: 'setCcdMotionThreshold',
+    value: function setCcdMotionThreshold(threshold) {
+      this.execute('setCcdMotionThreshold', { id: this.data.id, threshold: threshold });
+    }
+  }, {
+    key: 'setCcdSweptSphereRadius',
+    value: function setCcdSweptSphereRadius(radius) {
+      this.execute('setCcdSweptSphereRadius', { id: this.data.id, radius: radius });
+    }
+  }]);
+  return API;
+}();
+
+var _default = (_temp = _class$1 = function (_API) {
+  inherits(_default, _API);
+
+  function _default(defaults$$1, data) {
+    classCallCheck(this, _default);
+
+    var _this3 = possibleConstructorReturn(this, (_default.__proto__ || Object.getPrototypeOf(_default)).call(this));
+
+    _this3.bridge = {
+      onCopy: onCopy,
+      onWrap: onWrap
+    };
+
+    _this3.data = Object.assign(defaults$$1, data);
+    return _this3;
+  }
+
+  createClass(_default, [{
+    key: 'integrate',
+    value: function integrate(self) {
+      wrapPhysicsPrototype(this);
+    }
+  }, {
+    key: 'manager',
+    value: function manager(_manager) {
+      _manager.define('physics');
+
+      this.execute = function () {
+        var _manager$get;
+
+        return _manager.has('module:world') ? (_manager$get = _manager.get('module:world')).execute.apply(_manager$get, arguments) : function () {};
+      };
+    }
+  }, {
+    key: 'updateData',
+    value: function updateData(callback) {
+      this.bridge.geometry = function (geometry, module) {
+        if (!callback) return geometry;
+
+        var result = callback(geometry, module);
+        return result ? result : geometry;
+      };
+    }
+  }, {
+    key: 'clone',
+    value: function clone(manager) {
+      var clone = new this.constructor();
+      clone.data = _extends({}, this.data);
+      clone.bridge.geometry = this.bridge.geometry;
+      this.manager.apply(clone, [manager]);
+
+      return clone;
+    }
+  }]);
+  return _default;
+}(API), _class$1.rigidbody = function () {
+  return {
+    touches: [],
+    linearVelocity: new three.Vector3(),
+    angularVelocity: new three.Vector3(),
+    mass: 10,
+    scale: new three.Vector3(1, 1, 1),
+    restitution: 0.3,
+    friction: 0.8,
+    damping: 0,
+    margin: 0
+  };
+}, _class$1.softbody = function () {
+  return {
+    touches: [],
+    restitution: 0.3,
+    friction: 0.8,
+    damping: 0,
+    scale: new three.Vector3(1, 1, 1),
+    pressure: 100,
+    margin: 0,
+    klst: 0.9,
+    kvst: 0.9,
+    kast: 0.9,
+    piterations: 1,
+    viterations: 0,
+    diterations: 0,
+    citerations: 4,
+    anchorHardness: 0.7,
+    rigidHardness: 1,
+    isSoftbody: true,
+    isSoftBodyReset: false
+  };
+}, _class$1.rope = function () {
+  return {
+    touches: [],
+    friction: 0.8,
+    scale: new three.Vector3(1, 1, 1),
+    damping: 0,
+    margin: 0,
+    klst: 0.9,
+    kvst: 0.9,
+    kast: 0.9,
+    piterations: 1,
+    viterations: 0,
+    diterations: 0,
+    citerations: 4,
+    anchorHardness: 0.7,
+    rigidHardness: 1,
+    isSoftbody: true
+  };
+}, _class$1.cloth = function () {
+  return {
+    touches: [],
+    friction: 0.8,
+    damping: 0,
+    margin: 0,
+    scale: new three.Vector3(1, 1, 1),
+    klst: 0.9,
+    kvst: 0.9,
+    kast: 0.9,
+    piterations: 1,
+    viterations: 0,
+    diterations: 0,
+    citerations: 4,
+    anchorHardness: 0.7,
+    rigidHardness: 1
+  };
+}, _temp);
+
+var BoxModule = function (_PhysicsModule) {
+  inherits(BoxModule, _PhysicsModule);
+
+  function BoxModule(params) {
+    classCallCheck(this, BoxModule);
+
+    var _this = possibleConstructorReturn(this, (BoxModule.__proto__ || Object.getPrototypeOf(BoxModule)).call(this, _extends({
+      type: 'box'
+    }, _default.rigidbody()), params));
+
+    _this.updateData(function (geometry, _ref) {
+      var data = _ref.data;
+
+      if (!geometry.boundingBox) geometry.computeBoundingBox();
+
+      data.width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+      data.height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+      data.depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
+    });
+    return _this;
+  }
+
+  return BoxModule;
+}(_default);
+
+var CompoundModule = function (_PhysicsModule) {
+  inherits(CompoundModule, _PhysicsModule);
+
+  function CompoundModule(params) {
+    classCallCheck(this, CompoundModule);
+    return possibleConstructorReturn(this, (CompoundModule.__proto__ || Object.getPrototypeOf(CompoundModule)).call(this, _extends({
+      type: 'compound'
+    }, _default.rigidbody()), params));
+  }
+
+  return CompoundModule;
+}(_default);
+
+var CapsuleModule = function (_PhysicsModule) {
+  inherits(CapsuleModule, _PhysicsModule);
+
+  function CapsuleModule(params) {
+    classCallCheck(this, CapsuleModule);
+
+    var _this = possibleConstructorReturn(this, (CapsuleModule.__proto__ || Object.getPrototypeOf(CapsuleModule)).call(this, _extends({
+      type: 'capsule'
+    }, _default.rigidbody()), params));
+
+    _this.updateData(function (geometry, _ref) {
+      var data = _ref.data;
+
+      if (!geometry.boundingBox) geometry.computeBoundingBox();
+
+      data.width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+      data.height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+      data.depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
+    });
+    return _this;
+  }
+
+  return CapsuleModule;
+}(_default);
+
+var ConcaveModule = function (_PhysicsModule) {
+  inherits(ConcaveModule, _PhysicsModule);
+
+  function ConcaveModule(params) {
+    classCallCheck(this, ConcaveModule);
+
+    var _this = possibleConstructorReturn(this, (ConcaveModule.__proto__ || Object.getPrototypeOf(ConcaveModule)).call(this, _extends({
+      type: 'concave'
+    }, _default.rigidbody()), params));
+
+    _this.updateData(function (geometry, _ref) {
+      var data = _ref.data;
+
+      data.data = _this.geometryProcessor(geometry);
+    });
+    return _this;
+  }
+
+  createClass(ConcaveModule, [{
+    key: 'geometryProcessor',
+    value: function geometryProcessor(geometry) {
+      if (!geometry.boundingBox) geometry.computeBoundingBox();
+
+      var data = geometry.isBufferGeometry ? geometry.attributes.position.array : new Float32Array(geometry.faces.length * 9);
+
+      if (!geometry.isBufferGeometry) {
+        var vertices = geometry.vertices;
+
+        for (var i = 0; i < geometry.faces.length; i++) {
+          var face = geometry.faces[i];
+
+          var vA = vertices[face.a];
+          var vB = vertices[face.b];
+          var vC = vertices[face.c];
+
+          var i9 = i * 9;
+
+          data[i9] = vA.x;
+          data[i9 + 1] = vA.y;
+          data[i9 + 2] = vA.z;
+
+          data[i9 + 3] = vB.x;
+          data[i9 + 4] = vB.y;
+          data[i9 + 5] = vB.z;
+
+          data[i9 + 6] = vC.x;
+          data[i9 + 7] = vC.y;
+          data[i9 + 8] = vC.z;
+        }
+      }
+
+      return data;
+    }
+  }]);
+  return ConcaveModule;
+}(_default);
+
+var ConeModule = function (_PhysicsModule) {
+  inherits(ConeModule, _PhysicsModule);
+
+  function ConeModule(params) {
+    classCallCheck(this, ConeModule);
+
+    var _this = possibleConstructorReturn(this, (ConeModule.__proto__ || Object.getPrototypeOf(ConeModule)).call(this, _extends({
+      type: 'cone'
+    }, _default.rigidbody()), params));
+
+    _this.updateData(function (geometry, _ref) {
+      var data = _ref.data;
+
+      if (!geometry.boundingBox) geometry.computeBoundingBox();
+
+      data.radius = (geometry.boundingBox.max.x - geometry.boundingBox.min.x) / 2;
+      data.height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+    });
+    return _this;
+  }
+
+  return ConeModule;
+}(_default);
+
+var ConvexModule = function (_PhysicsModule) {
+  inherits(ConvexModule, _PhysicsModule);
+
+  function ConvexModule(params) {
+    classCallCheck(this, ConvexModule);
+
+    var _this = possibleConstructorReturn(this, (ConvexModule.__proto__ || Object.getPrototypeOf(ConvexModule)).call(this, _extends({
+      type: 'convex'
+    }, _default.rigidbody()), params));
+
+    _this.updateData(function (geometry, _ref) {
+      var data = _ref.data;
+
+      if (!geometry.boundingBox) geometry.computeBoundingBox();
+      if (!geometry.isBufferGeometry) geometry._bufferGeometry = new three.BufferGeometry().fromGeometry(geometry);
+
+      data.data = geometry.isBufferGeometry ? geometry.attributes.position.array : geometry._bufferGeometry.attributes.position.array;
+    });
+    return _this;
+  }
+
+  return ConvexModule;
+}(_default);
+
+var CylinderModule = function (_PhysicsModule) {
+  inherits(CylinderModule, _PhysicsModule);
+
+  function CylinderModule(params) {
+    classCallCheck(this, CylinderModule);
+
+    var _this = possibleConstructorReturn(this, (CylinderModule.__proto__ || Object.getPrototypeOf(CylinderModule)).call(this, _extends({
+      type: 'cylinder'
+    }, _default.rigidbody()), params));
+
+    _this.updateData(function (geometry, _ref) {
+      var data = _ref.data;
+
+      if (!geometry.boundingBox) geometry.computeBoundingBox();
+
+      data.width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+      data.height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+      data.depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
+    });
+    return _this;
+  }
+
+  return CylinderModule;
+}(_default);
+
+var HeightfieldModule = function (_PhysicsModule) {
+  inherits(HeightfieldModule, _PhysicsModule);
+
+  function HeightfieldModule(params) {
+    classCallCheck(this, HeightfieldModule);
+
+    var _this = possibleConstructorReturn(this, (HeightfieldModule.__proto__ || Object.getPrototypeOf(HeightfieldModule)).call(this, _extends({
+      type: 'heightfield',
+      size: new three.Vector2(1, 1),
+      autoAlign: false
+    }, _default.rigidbody()), params));
+
+    _this.updateData(function (geometry, _ref) {
+      var data = _ref.data;
+      var _data$size = data.size,
+          xdiv = _data$size.x,
+          ydiv = _data$size.y;
+
+      var verts = geometry.isBufferGeometry ? geometry.attributes.position.array : geometry.vertices;
+      var size = geometry.isBufferGeometry ? verts.length / 3 : verts.length;
+
+      if (!geometry.boundingBox) geometry.computeBoundingBox();
+
+      var xsize = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+      var ysize = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
+
+      data.xpts = typeof xdiv === 'undefined' ? Math.sqrt(size) : xdiv + 1;
+      data.ypts = typeof ydiv === 'undefined' ? Math.sqrt(size) : ydiv + 1;
+
+      // note - this assumes our plane geometry is square, unless we pass in specific xdiv and ydiv
+      data.absMaxHeight = Math.max(geometry.boundingBox.max.y, Math.abs(geometry.boundingBox.min.y));
+
+      var points = new Float32Array(size),
+          xpts = data.xpts,
+          ypts = data.ypts;
+
+      while (size--) {
+        var vNum = size % xpts + (ypts - Math.round(size / xpts - size % xpts / xpts) - 1) * ypts;
+
+        if (geometry.isBufferGeometry) points[size] = verts[vNum * 3 + 1];else points[size] = verts[vNum].y;
+      }
+
+      data.points = points;
+
+      data.scale.multiply(new three.Vector3(xsize / (xpts - 1), 1, ysize / (ypts - 1)));
+
+      if (data.autoAlign) geometry.translate(xsize / -2, 0, ysize / -2);
+    });
+    return _this;
+  }
+
+  return HeightfieldModule;
+}(_default);
+
+var PlaneModule = function (_PhysicsModule) {
+  inherits(PlaneModule, _PhysicsModule);
+
+  function PlaneModule(params) {
+    classCallCheck(this, PlaneModule);
+
+    var _this = possibleConstructorReturn(this, (PlaneModule.__proto__ || Object.getPrototypeOf(PlaneModule)).call(this, _extends({
+      type: 'plane'
+    }, _default.rigidbody()), params));
+
+    _this.updateData(function (geometry, _ref) {
+      var data = _ref.data;
+
+      if (!geometry.boundingBox) geometry.computeBoundingBox();
+
+      data.width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
+      data.height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
+      data.normal = geometry.faces[0].normal.clone();
+    });
+    return _this;
+  }
+
+  return PlaneModule;
+}(_default);
+
+var SphereModule = function (_PhysicsModule) {
+  inherits(SphereModule, _PhysicsModule);
+
+  function SphereModule(params) {
+    classCallCheck(this, SphereModule);
+
+    var _this = possibleConstructorReturn(this, (SphereModule.__proto__ || Object.getPrototypeOf(SphereModule)).call(this, _extends({
+      type: 'sphere'
+    }, _default.rigidbody()), params));
+
+    _this.updateData(function (geometry, _ref) {
+      var data = _ref.data;
+
+      if (!geometry.boundingSphere) geometry.computeBoundingSphere();
+      data.radius = geometry.boundingSphere.radius;
+    });
+    return _this;
+  }
+
+  return SphereModule;
+}(_default);
+
+var SoftbodyModule = function (_PhysicsModule) {
+  inherits(SoftbodyModule, _PhysicsModule);
+
+  function SoftbodyModule(params) {
+    classCallCheck(this, SoftbodyModule);
+
+    var _this = possibleConstructorReturn(this, (SoftbodyModule.__proto__ || Object.getPrototypeOf(SoftbodyModule)).call(this, _extends({
+      type: 'softTrimesh'
+    }, _default.softbody()), params));
+
+    _this.updateData(function (geometry, _ref) {
+      var data = _ref.data;
+
+      var idxGeometry = geometry.isBufferGeometry ? geometry : function () {
+        geometry.mergeVertices();
+
+        var bufferGeometry = new three.BufferGeometry();
+
+        bufferGeometry.addAttribute('position', new three.BufferAttribute(new Float32Array(geometry.vertices.length * 3), 3).copyVector3sArray(geometry.vertices));
+
+        bufferGeometry.setIndex(new three.BufferAttribute(new (geometry.faces.length * 3 > 65535 ? Uint32Array : Uint16Array)(geometry.faces.length * 3), 1).copyIndicesArray(geometry.faces));
+
+        return bufferGeometry;
+      }();
+
+      data.aVertices = idxGeometry.attributes.position.array;
+      data.aIndices = idxGeometry.index.array;
+
+      return new three.BufferGeometry().fromGeometry(geometry);
+    });
+    return _this;
+  }
+
+  createClass(SoftbodyModule, [{
+    key: 'appendAnchor',
+    value: function appendAnchor(object, node, influence) {
+      var collisionBetweenLinkedBodies = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+
+      var o1 = this.data.id;
+      var o2 = object.use('physics').data.id;
+
+      this.execute('appendAnchor', {
+        obj: o1,
+        obj2: o2,
+        node: node,
+        influence: influence,
+        collisionBetweenLinkedBodies: collisionBetweenLinkedBodies
+      });
+    }
+  }]);
+  return SoftbodyModule;
+}(_default);
+
+var ClothModule = function (_PhysicsModule) {
+  inherits(ClothModule, _PhysicsModule);
+
+  function ClothModule(params) {
+    classCallCheck(this, ClothModule);
+
+    var _this = possibleConstructorReturn(this, (ClothModule.__proto__ || Object.getPrototypeOf(ClothModule)).call(this, _extends({
+      type: 'softClothMesh'
+    }, _default.cloth()), params));
+
+    _this.updateData(function (geometry, _ref) {
+      var data = _ref.data;
+
+      var geomParams = geometry.parameters;
+
+      var geom = geometry.isBufferGeometry ? geometry : function () {
+        geometry.mergeVertices();
+
+        var bufferGeometry = new three.BufferGeometry();
+
+        bufferGeometry.addAttribute('position', new three.BufferAttribute(new Float32Array(geometry.vertices.length * 3), 3).copyVector3sArray(geometry.vertices));
+
+        var faces = geometry.faces,
+            facesLength = faces.length;
+        var normalsArray = new Float32Array(facesLength * 3);
+
+        for (var i = 0; i < facesLength; i++) {
+          var i3 = i * 3;
+          var normal = faces[i].normal || new Vector3();
+
+          normalsArray[i3] = normal.x;
+          normalsArray[i3 + 1] = normal.y;
+          normalsArray[i3 + 2] = normal.z;
+        }
+
+        bufferGeometry.addAttribute('normal', new three.BufferAttribute(normalsArray, 3));
+
+        bufferGeometry.setIndex(new three.BufferAttribute(new (facesLength * 3 > 65535 ? Uint32Array : Uint16Array)(facesLength * 3), 1).copyIndicesArray(faces));
+
+        return bufferGeometry;
+      }();
+
+      var verts = geom.attributes.position.array;
+
+      if (!geomParams.widthSegments) geomParams.widthSegments = 1;
+      if (!geomParams.heightSegments) geomParams.heightSegments = 1;
+
+      var idx00 = 0;
+      var idx01 = geomParams.widthSegments;
+      var idx10 = (geomParams.heightSegments + 1) * (geomParams.widthSegments + 1) - (geomParams.widthSegments + 1);
+      var idx11 = verts.length / 3 - 1;
+
+      data.corners = [verts[idx01 * 3], verts[idx01 * 3 + 1], verts[idx01 * 3 + 2], //   ╗
+      verts[idx00 * 3], verts[idx00 * 3 + 1], verts[idx00 * 3 + 2], // ╔
+      verts[idx11 * 3], verts[idx11 * 3 + 1], verts[idx11 * 3 + 2], //       ╝
+      verts[idx10 * 3], verts[idx10 * 3 + 1], verts[idx10 * 3 + 2]];
+
+      data.segments = [geomParams.widthSegments + 1, geomParams.heightSegments + 1];
+
+      return geom;
+    });
+    return _this;
+  }
+
+  createClass(ClothModule, [{
+    key: 'appendAnchor',
+    value: function appendAnchor(object, node, influence) {
+      var collisionBetweenLinkedBodies = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+
+      var o1 = this.data.id;
+      var o2 = object.use('physics').data.id;
+
+      this.execute('appendAnchor', {
+        obj: o1,
+        obj2: o2,
+        node: node,
+        influence: influence,
+        collisionBetweenLinkedBodies: collisionBetweenLinkedBodies
+      });
+    }
+  }]);
+  return ClothModule;
+}(_default);
+
+var RopeModule = function (_PhysicsModule) {
+  inherits(RopeModule, _PhysicsModule);
+
+  function RopeModule(params) {
+    classCallCheck(this, RopeModule);
+
+    var _this = possibleConstructorReturn(this, (RopeModule.__proto__ || Object.getPrototypeOf(RopeModule)).call(this, _extends({
+      type: 'softRopeMesh'
+    }, _default.rope()), params));
+
+    _this.updateData(function (geometry, _ref) {
+      var data = _ref.data;
+
+      if (!geometry.isBufferGeometry) {
+        geometry = function () {
+          var buff = new three.BufferGeometry();
+
+          buff.addAttribute('position', new three.BufferAttribute(new Float32Array(geometry.vertices.length * 3), 3).copyVector3sArray(geometry.vertices));
+
+          return buff;
+        }();
+      }
+
+      var length = geometry.attributes.position.array.length / 3;
+      var vert = function vert(n) {
+        return new three.Vector3().fromArray(geometry.attributes.position.array, n * 3);
+      };
+
+      var v1 = vert(0);
+      var v2 = vert(length - 1);
+
+      data.data = [v1.x, v1.y, v1.z, v2.x, v2.y, v2.z, length];
+
+      return geometry;
+    });
+    return _this;
+  }
+
+  createClass(RopeModule, [{
+    key: 'appendAnchor',
+    value: function appendAnchor(object, node, influence) {
+      var collisionBetweenLinkedBodies = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+
+      var o1 = this.data.id;
+      var o2 = object.use('physics').data.id;
+
+      this.execute('appendAnchor', {
+        obj: o1,
+        obj2: o2,
+        node: node,
+        influence: influence,
+        collisionBetweenLinkedBodies: collisionBetweenLinkedBodies
+      });
+    }
+  }]);
+  return RopeModule;
+}(_default);
+
+var _class$2;
+var _temp$1;
+
+var PI_2 = Math.PI / 2;
+
+// TODO: Fix DOM
+function FirstPersonControlsSolver(camera, mesh, params) {
+  var _this = this;
+
+  var velocityFactor = 1;
+  var runVelocity = 0.25;
+
+  mesh.use('physics').setAngularFactor({ x: 0, y: 0, z: 0 });
+  camera.position.set(0, 0, 0);
+
+  /* Init */
+  var player = mesh,
+      pitchObject = new three.Object3D();
+
+  pitchObject.add(camera.native);
+
+  var yawObject = new three.Object3D();
+
+  yawObject.position.y = params.ypos; // eyes are 2 meters above the ground
+  yawObject.add(pitchObject);
+
+  var quat = new three.Quaternion();
+
+  var canJump = false,
+
+  // Moves.
+  moveForward = false,
+      moveBackward = false,
+      moveLeft = false,
+      moveRight = false;
+
+  player.on('collision', function (otherObject, v, r, contactNormal) {
+    console.log(contactNormal.y);
+    if (contactNormal.y < 0.5) // Use a "good" threshold value between 0 and 1 here!
+      canJump = true;
+  });
+
+  var onMouseMove = function onMouseMove(event) {
+    if (_this.enabled === false) return;
+
+    var movementX = typeof event.movementX === 'number' ? event.movementX : typeof event.mozMovementX === 'number' ? event.mozMovementX : typeof event.getMovementX === 'function' ? event.getMovementX() : 0;
+    var movementY = typeof event.movementY === 'number' ? event.movementY : typeof event.mozMovementY === 'number' ? event.mozMovementY : typeof event.getMovementY === 'function' ? event.getMovementY() : 0;
+
+    yawObject.rotation.y -= movementX * 0.002;
+    pitchObject.rotation.x -= movementY * 0.002;
+
+    pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
+  };
+
+  var physics = player.use('physics');
+
+  var onKeyDown = function onKeyDown(event) {
+    switch (event.keyCode) {
+      case 38: // up
+      case 87:
+        // w
+        moveForward = true;
+        break;
+
+      case 37: // left
+      case 65:
+        // a
+        moveLeft = true;
+        break;
+
+      case 40: // down
+      case 83:
+        // s
+        moveBackward = true;
+        break;
+
+      case 39: // right
+      case 68:
+        // d
+        moveRight = true;
+        break;
+
+      case 32:
+        // space
+        console.log(canJump);
+        if (canJump === true) physics.applyCentralImpulse({ x: 0, y: 300, z: 0 });
+        canJump = false;
+        break;
+
+      case 16:
+        // shift
+        runVelocity = 0.5;
+        break;
+
+      default:
+    }
+  };
+
+  var onKeyUp = function onKeyUp(event) {
+    switch (event.keyCode) {
+      case 38: // up
+      case 87:
+        // w
+        moveForward = false;
+        break;
+
+      case 37: // left
+      case 65:
+        // a
+        moveLeft = false;
+        break;
+
+      case 40: // down
+      case 83:
+        // a
+        moveBackward = false;
+        break;
+
+      case 39: // right
+      case 68:
+        // d
+        moveRight = false;
+        break;
+
+      case 16:
+        // shift
+        runVelocity = 0.25;
+        break;
+
+      default:
+    }
+  };
+
+  document.body.addEventListener('mousemove', onMouseMove, false);
+  document.body.addEventListener('keydown', onKeyDown, false);
+  document.body.addEventListener('keyup', onKeyUp, false);
+
+  this.enabled = false;
+  this.getObject = function () {
+    return yawObject;
+  };
+
+  this.getDirection = function (targetVec) {
+    targetVec.set(0, 0, -1);
+    quat.multiplyVector3(targetVec);
+  };
+
+  // Moves the camera to the Physi.js object position
+  // and adds velocity to the object if the run key is down.
+  var inputVelocity = new three.Vector3(),
+      euler = new three.Euler();
+
+  this.update = function (delta) {
+    if (_this.enabled === false) return;
+
+    delta = delta || 0.5;
+    delta = Math.min(delta, 0.5, delta);
+
+    inputVelocity.set(0, 0, 0);
+
+    var speed = velocityFactor * delta * params.speed * runVelocity;
+
+    if (moveForward) inputVelocity.z = -speed;
+    if (moveBackward) inputVelocity.z = speed;
+    if (moveLeft) inputVelocity.x = -speed;
+    if (moveRight) inputVelocity.x = speed;
+
+    // Convert velocity to world coordinates
+    euler.x = pitchObject.rotation.x;
+    euler.y = yawObject.rotation.y;
+    euler.order = 'XYZ';
+
+    quat.setFromEuler(euler);
+
+    inputVelocity.applyQuaternion(quat);
+
+    physics.applyCentralImpulse({ x: inputVelocity.x, y: 0, z: inputVelocity.z });
+    physics.setAngularVelocity({ x: inputVelocity.z, y: 0, z: -inputVelocity.x });
+    physics.setAngularFactor({ x: 0, y: 0, z: 0 });
+  };
+
+  player.on('physics:added', function () {
+    player.manager.get('module:world').addEventListener('update', function () {
+      if (_this.enabled === false) return;
+      yawObject.position.copy(player.position);
+    });
+  });
+}
+
+var FirstPersonModule = (_temp$1 = _class$2 = function () {
+  function FirstPersonModule(object) {
+    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    classCallCheck(this, FirstPersonModule);
+
+    this.object = object;
+    this.params = params;
+
+    if (!this.params.block) {
+      this.params.block = document.getElementById('blocker');
+    }
+  }
+
+  createClass(FirstPersonModule, [{
+    key: 'manager',
+    value: function manager(_manager) {
+      var _this2 = this;
+
+      this.controls = new FirstPersonControlsSolver(_manager.get('camera'), this.object, this.params);
+
+      if ('pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document) {
+        var element = document.body;
+
+        var pointerlockchange = function pointerlockchange() {
+          if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
+            _this2.controls.enabled = true;
+            _this2.params.block.style.display = 'none';
+          } else {
+            _this2.controls.enabled = false;
+            _this2.params.block.style.display = 'block';
+          }
+        };
+
+        document.addEventListener('pointerlockchange', pointerlockchange, false);
+        document.addEventListener('mozpointerlockchange', pointerlockchange, false);
+        document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
+
+        var pointerlockerror = function pointerlockerror() {
+          console.warn('Pointer lock error.');
+        };
+
+        document.addEventListener('pointerlockerror', pointerlockerror, false);
+        document.addEventListener('mozpointerlockerror', pointerlockerror, false);
+        document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
+
+        document.querySelector('body').addEventListener('click', function () {
+          element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+
+          element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+
+          if (/Firefox/i.test(navigator.userAgent)) {
+            var fullscreenchange = function fullscreenchange() {
+              if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
+                document.removeEventListener('fullscreenchange', fullscreenchange);
+                document.removeEventListener('mozfullscreenchange', fullscreenchange);
+
+                element.requestPointerLock();
+              }
+            };
+
+            document.addEventListener('fullscreenchange', fullscreenchange, false);
+            document.addEventListener('mozfullscreenchange', fullscreenchange, false);
+
+            element.requestFullscreen();
+          } else element.requestPointerLock();
+        });
+      } else console.warn('Your browser does not support the PointerLock');
+
+      _manager.get('scene').add(this.controls.getObject());
+    }
+  }, {
+    key: 'integrate',
+    value: function integrate(self) {
+      var updateProcessor = function updateProcessor(c) {
+        self.controls.update(c.getDelta());
+      };
+
+      self.updateLoop = new whs.Loop(updateProcessor).start(this);
+    }
+  }]);
+  return FirstPersonModule;
+}(), _class$2.defaults = {
+  block: null,
+  speed: 1,
+  ypos: 1
+}, _temp$1);
+
+exports.getEulerXYZFromQuaternion = getEulerXYZFromQuaternion;
+exports.getQuatertionFromEuler = getQuatertionFromEuler;
+exports.convertWorldPositionToObject = convertWorldPositionToObject;
+exports.addObjectChildren = addObjectChildren;
+exports.MESSAGE_TYPES = MESSAGE_TYPES;
+exports.REPORT_ITEMSIZE = REPORT_ITEMSIZE;
+exports.COLLISIONREPORT_ITEMSIZE = COLLISIONREPORT_ITEMSIZE;
+exports.VEHICLEREPORT_ITEMSIZE = VEHICLEREPORT_ITEMSIZE;
+exports.CONSTRAINTREPORT_ITEMSIZE = CONSTRAINTREPORT_ITEMSIZE;
+exports.temp1Vector3 = temp1Vector3;
+exports.temp2Vector3 = temp2Vector3;
+exports.temp1Matrix4 = temp1Matrix4;
+exports.temp1Quat = temp1Quat;
+exports.Eventable = Eventable;
+exports.ConeTwistConstraint = ConeTwistConstraint;
+exports.HingeConstraint = HingeConstraint;
+exports.PointConstraint = PointConstraint;
+exports.SliderConstraint = SliderConstraint;
+exports.DOFConstraint = DOFConstraint;
+exports.WorldModule = WorldModule;
+exports.BoxModule = BoxModule;
+exports.CompoundModule = CompoundModule;
+exports.CapsuleModule = CapsuleModule;
+exports.ConcaveModule = ConcaveModule;
+exports.ConeModule = ConeModule;
+exports.ConvexModule = ConvexModule;
+exports.CylinderModule = CylinderModule;
+exports.HeightfieldModule = HeightfieldModule;
+exports.PlaneModule = PlaneModule;
+exports.SphereModule = SphereModule;
+exports.SoftbodyModule = SoftbodyModule;
+exports.ClothModule = ClothModule;
+exports.RopeModule = RopeModule;
+exports.FirstPersonModule = FirstPersonModule;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));
+//# sourceMappingURL=physics-module.js.map

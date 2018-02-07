@@ -1,6 +1,7 @@
 import {
   Mesh,
-  JSONLoader
+  JSONLoader,
+  SkinnedMesh
 } from 'three';
 
 import {MeshComponent} from '../../core/MeshComponent';
@@ -61,10 +62,10 @@ class Importer extends MeshComponent {
     useCustomMaterial: false,
 
     parser(geometry, material) {
-      const {geom, mat} = this.applyBridge({geom: geometry, mat: material});
+      const {geometry: geom, material: mat} = this.applyBridge({geometry, material});
 
       return this.applyBridge({
-        mesh: new Mesh(geom, mat)
+        mesh: geom.bones ? new SkinnedMesh(geom, mat) : new Mesh(geom, mat)
       }).mesh;
     }
   };
@@ -124,7 +125,7 @@ class Importer extends MeshComponent {
         params.onLoad(...data);
 
         const object = params.parser.apply(this, data);
-        if (params.material) object.material = params.material;
+        if (params.material) object.material = this.applyBridge({material: params.material}).material;
 
         resolve(object);
       }, params.onProgress, params.onError);

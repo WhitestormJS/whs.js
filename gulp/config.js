@@ -3,11 +3,11 @@ export const getTemplateData = ({devPhysics = false, devMode = false} = {devPhys
   assets: '\'../../assets\'',
   devMode,
 
-  physicsModule: devPhysics
+  physicsModule: devPhysics > 0
     ? `http://localhost:${devPhysics}/physics-module.js`
     : '../../assets/physics-module.js',
 
-  ammojs: devPhysics
+  ammojs: devPhysics > 0
     ? `'http://localhost:${devPhysics}/vendor/ammo.js'`
     : 'window.location.href + \'../../assets/ammo.js\''
 });

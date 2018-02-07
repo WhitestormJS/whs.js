@@ -151,20 +151,22 @@ class Component extends ModuleSystem {
 
     return new Promise((resolve, reject) => {
       this.defer(() => {
-        const {native} = object;
-        if (!native) reject();
+        object.defer(() => {
+          const {native} = object;
+          if (!native) reject();
 
-        const addPromise = this.applyBridge({onAdd: object}).onAdd;
+          const addPromise = this.applyBridge({onAdd: object}).onAdd;
 
-        const resolver = () => {
-          this.native.add(native);
-          this.children.push(object);
+          const resolver = () => {
+            this.native.add(native);
+            this.children.push(object);
 
-          resolve(object);
-        };
+            resolve(object);
+          };
 
-        if (addPromise instanceof Promise) addPromise.then(resolver);
-        else resolver();
+          if (addPromise instanceof Promise) addPromise.then(resolver);
+          else resolver();
+        });
       });
     });
   }
@@ -190,6 +192,14 @@ class Component extends ModuleSystem {
    */
   addTo(object) {
     return object.add(this);
+  }
+
+  get(key) {
+    return this.manager.get(key);
+  }
+
+  use(key) {
+    return this.manager.use(key);
   }
 
   /**

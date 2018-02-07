@@ -13,19 +13,19 @@ import {
 /**
  * this is missing in @types from three.js :(
  * 
- * @interface DodecahedronBufferGeometry
+ * @export interface DodecahedronBufferGeometry
  * @extends {Geometry}
  */
-interface DodecahedronBufferGeometry extends BufferGeometry {
+export interface DodecahedronBufferGeometry extends BufferGeometry {
     constructor(radius: number, detail: number): DodecahedronBufferGeometry;
 
-    parameters: {
+    geometry?: {
         radius: number;
         detail: number;
     };
 }
 
-interface DodecahedronParams extends MeshComponentParams {
+export interface DodecahedronParams extends MeshComponentParams {
 
   /** Geometry parameters */
   geometry?: {
