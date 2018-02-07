@@ -28,7 +28,7 @@ export class NetworkModule {
     this.scene;
 
     // Server Management
-    this.server = `${scheme}://${host}:${port}`;
+    this.server = `${scheme}://${hostname}:${port}`;
     this.socket = this.connect(this.server);
 
     // Events
@@ -95,10 +95,10 @@ export class NetworkModule {
         material: data.material || new THREE.MeshNormalMaterial()
       });
 
-      mesh.name = data.name; // Id sent by server; Server will create and manage IDs.
+      mesh.id = data.id; // Id sent by server; Server will create and manage IDs.
 
-      this.objects.set(mesh.name, mesh);
-      this.scene.add(mesh);
+      this.objects.set(mesh.id, mesh);
+      this.scene.add(mesh); // Delete this and make this a seperate handler that is added on the scene?
     };
 
     // Functions for on-event
@@ -106,7 +106,7 @@ export class NetworkModule {
       // Apply Mesh Changes sent by the server
 
       // Which mesh to change?
-      const mesh = findMesh(data.name); // Return MeshComponent
+      const mesh = findMesh(data.id); // Return MeshComponent
 
       // What to change?
       if (data.position) mesh.position.set(data.position);
@@ -116,10 +116,10 @@ export class NetworkModule {
     };
 
     this.onDestroyMesh = data => {
-      const mesh = findMesh(data.name);
+      const mesh = findMesh(data.id);
 
       this.scene.remove(mesh);
-      this.objects.remove(data.name);
+      this.objects.remove(data.id);
     };
   }
 
@@ -128,7 +128,7 @@ export class NetworkModule {
    * @instance
    * @description Used to determine which mesh the sever wants the client to alter. Helper function.
    */
-  findMesh(name) {
-    return objects.get(name);
+  findMesh(id) {
+    return objects.get(id);
   }
 }
