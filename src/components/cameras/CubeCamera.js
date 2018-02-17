@@ -1,6 +1,6 @@
 import {CubeCamera as CubeCameraNative} from 'three';
 import {CameraComponent} from '../../core/CameraComponent';
-
+// edit file
 /**
  * @class CubeCamera
  * @category components/cameras
