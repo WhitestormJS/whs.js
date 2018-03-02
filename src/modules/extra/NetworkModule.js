@@ -24,7 +24,9 @@ export class NetworkModule {
     // Variables
     this.objects = new Map();
     this.commands = new Map();
-
+    
+    // We're gonna store this so we can make direct changes via THREE
+    // We don't need physics, because the simulation will be almost exactly the same.
     this.scene;
 
     // Server Management
@@ -38,6 +40,7 @@ export class NetworkModule {
     });
 
     this.socket.on('*', (data) => {
+      // Any event besides connect and disconnect goes here (How we maintain user-defined events)
      checkEvents(data);
     });
 
@@ -47,6 +50,7 @@ export class NetworkModule {
   }
 
   manager(manager) {
+    // Making the socket an accessible variable
     manager.add('socket', this.socket);
     this.scene = manager.get('scene');
   }
@@ -58,7 +62,8 @@ export class NetworkModule {
   */
   connect(server) {
     this.socket = io(server);
-
+   
+    // This is us patching a pre-checker with the socket so we can handle the '*' event (wildcard)
     patch(io.Manager);
     patch(this.socket);
   }
@@ -79,17 +84,18 @@ export class NetworkModule {
   */
   checkEvents(data) {
     if (data.event === 'update') {
-      // DO something
+      // Check special type of event...
       if (data.new) this.onNewMesh(data);
       else if (data.destroy) this.onDestroyMesh(data);
       else if (data.position || data.rotation || data.geometry || data.material) this.onMeshEvent(data);
     } else
+      // If all else fails we will attempt to run a user defined command, and search the cache to run one.
       this.commands.get(data.event)();
   }
 
   integrate() {
     this.onNewMesh = data => {
-      // Create a new mesh
+      // Create a new mesh *NOTE: We need to make sure this supports all types of geometries and hooks in to WHS better...
       const mesh = new MeshComponent({
         geometry: data.geometry || new THREE.CubeGeometry(),
         material: data.material || new THREE.MeshNormalMaterial()
@@ -117,7 +123,7 @@ export class NetworkModule {
 
     this.onDestroyMesh = data => {
       const mesh = findMesh(data.id);
-
+      
       this.scene.remove(mesh);
       this.objects.remove(data.id);
     };
