@@ -1,11 +1,11 @@
 //-------------------------------------------------------------------------------//
-// WhiteStormJS OFFICIAL SERVER.JS # FOR INTERACTING WITH THE NETWORKING MODULE.
+// WhiteStormJS OFFICIAL SERVER.JS # FOR INTERACTING WITH THE NETWORKING MODULE. //
 //-------------------------------------------------------------------------------//
 
 //-------------------------------------------------------------------------------//
-// NOTE: THIS IS A TEMPLATE INTERACTION. THIS DEFINES THE EVENTS THAT THE 
-// NETWORKING MODULE WILL PASS. IT IS NOT RECOMMENDED TO USE THIS OUT OF THE 
-// BOX WITHOUT ANY ALTERATIONS!
+// NOTE: THIS IS A TEMPLATE INTERACTION. THIS DEFINES THE EVENTS THAT THE        //
+// NETWORKING MODULE WILL PASS. IT IS NOT RECOMMENDED TO USE THIS OUT OF THE     //
+// BOX WITHOUT ANY ALTERATIONS FOR A FINAL PRODUCT.                              //
 //-------------------------------------------------------------------------------//
 
 
@@ -100,15 +100,20 @@ io.on('connection', function (socket) {
     console.log("Unable to find object " + data.id);
   }
   
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //  TODO: This function isn't supported on the client side of WHS, therefore, it can't be supported here ATM. //
+  //  WILL BE ADDING SUPPORT SOON....                                                                           //
   // function onNewGeometry(data) {                                                                             //
-  //                                                                                                           //
+  //                                                                                                            //
   // }                                                                                                          //
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   // ------------------------- //
 });
+
+///////////////////////////////////////
+// - UTILITY FUNCTIONS AND CLASSES - //
+///////////////////////////////////////
 
 
 var Object = function(data) {
