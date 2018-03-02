@@ -5,11 +5,12 @@ import json from 'rollup-plugin-json';
 import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
 
-// Temporary fix.
+// Temp fix.
 const babelFix = babelPlugin => {
   const oldTransform = babelPlugin.transform;
 
-  babelPlugin.transform = (code, id) => {
+  babelPlugin.transform = (code, id) => 
+  {
     if (!(/node_modules\/(?!postprocessing)/.test(id) || /\.json/.test(id))) {
       // Fake path to avoid throwing error.
       if (id.indexOf('node_modules') > 0) id = path.resolve(__dirname, './src/file.js');
@@ -22,7 +23,8 @@ const babelFix = babelPlugin => {
   return babelPlugin;
 };
 
-export default {
+export default 
+{
   entry: 'src/index.js',
   format: 'umd',
   // dest: `build/whs.js`, // equivalent to --output
