@@ -30,86 +30,87 @@ io.on('connection', function (socket) {
   
   socket.on('newMaterial', onNewMaterial);
   socket.on('newGeometry', onNewGeometry);
-  
-  // Add/Remove Events
-  function onAddMesh(data) {
-    if(data.transform) {
-      // Register this new mesh with our objects list
-      var object = new Object(data);
-    
-      objects.add(object); // Add the object to our list
-      console.log("Registered new NetworkIdentity Object: ");
-      
-      socket.broadcast.emit('addMesh', { "options": data, "id": object.id });
-    } else {
-      // No NetworkTransform, simply send the newMesh data and that's it. Nothing else can be done. (Not even remove it).
-      socket.broadcast.emit('addMesh', data);
-    }
-  }
-  
-  function onRemoveMesh(data) {
-    for(var i = 0; i < objects.length; i++) {
-      if(objects[i].id == data.id) {
-        objects[i] = null;
-        objects.splice(i, 1);
-        console.log("Object succesfully removed: " + data.id)
-        
-        socket.broadcast.emit('removeMesh', data.id);
-        return;
-      }
-    }
-    console.log("Unable to remove object " + data.id);
-  }
-  
-  // ------------------------- //
-  
-  // Position/Rotation Events
-  function onNewPosition(data) {
-    for(var i = 0; i < objects.length; i++) {
-      if(objects[i].id == data.id) {
-        objects[i].setPosition(data.x, data.y, data.z);
-        socket.broadcast.emit('newPos', data);
-        return;
-      }
-    }
-    console.log("Unable to find object " + data.id);
-  }
-  
-  function onNewRotation(data) {
-    for(var i = 0; i < objects.length; i++) {
-      if(objects[i].id == data.id) {
-        objects[i].setRotation(data.x, data.y, data.z);
-        socket.broadcast.emit('newRot', data); // Send this
-        return;
-      }
-    }
-    console.log("Unable to find object " + data.id);
-  }
-  
-  // ------------------------- //
-  
-  // Material/Geometry Events
-  function onNewMaterial(data) {
-    for(var i = 0; i < objects.length; i++) {
-      if(objects[i].id == data.id) {
-        objects[i].setMaterial(data.material);
-        socket.broadcast.emit('newMaterial', data);
-        return;
-      }
-    }
-    console.log("Unable to find object " + data.id);
-  }
-  
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //  TODO: This function isn't supported on the client side of WHS, therefore, it can't be supported here ATM. //
-  //  WILL BE ADDING SUPPORT SOON....                                                                           //
-  // function onNewGeometry(data) {                                                                             //
-  //                                                                                                            //
-  // }                                                                                                          //
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  // ------------------------- //
 });
+
+
+// Add/Remove Events
+function onAddMesh(data) {
+  if(data.transform) {
+    // Register this new mesh with our objects list
+    var object = new Object(data);
+
+    objects.add(object); // Add the object to our list
+    console.log("Registered new NetworkIdentity Object: ");
+
+    socket.broadcast.emit('addMesh', { "options": data, "id": object.id });
+  } else {
+    // No NetworkTransform, simply send the newMesh data and that's it. Nothing else can be done. (Not even remove it).
+    socket.broadcast.emit('addMesh', data);
+  }
+}
+
+function onRemoveMesh(data) {
+  for(var i = 0; i < objects.length; i++) {
+    if(objects[i].id == data.id) {
+      objects[i] = null;
+      objects.splice(i, 1);
+      console.log("Object succesfully removed: " + data.id)
+
+      socket.broadcast.emit('removeMesh', data.id);
+      return;
+    }
+  }
+  console.log("Unable to remove object " + data.id);
+}
+
+// ------------------------- //
+
+// Position/Rotation Events
+function onNewPosition(data) {
+  for(var i = 0; i < objects.length; i++) {
+    if(objects[i].id == data.id) {
+      objects[i].setPosition(data.x, data.y, data.z);
+      socket.broadcast.emit('newPos', data);
+      return;
+    }
+  }
+  console.log("Unable to find object " + data.id);
+}
+
+function onNewRotation(data) {
+  for(var i = 0; i < objects.length; i++) {
+    if(objects[i].id == data.id) {
+      objects[i].setRotation(data.x, data.y, data.z);
+      socket.broadcast.emit('newRot', data); // Send this
+      return;
+    }
+  }
+  console.log("Unable to find object " + data.id);
+}
+
+// ------------------------- //
+
+// Material/Geometry Events
+function onNewMaterial(data) {
+  for(var i = 0; i < objects.length; i++) {
+    if(objects[i].id == data.id) {
+      objects[i].setMaterial(data.material);
+      socket.broadcast.emit('newMaterial', data);
+      return;
+    }
+  }
+  console.log("Unable to find object " + data.id);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  TODO: This function isn't supported on the client side of WHS, therefore, it can't be supported here ATM. //
+//  WILL BE ADDING SUPPORT SOON....                                                                           //
+// function onNewGeometry(data) {                                                                             //
+//                                                                                                            //
+// }                                                                                                          //
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// ------------------------- //
 
 ///////////////////////////////////////
 // - UTILITY FUNCTIONS AND CLASSES - //
