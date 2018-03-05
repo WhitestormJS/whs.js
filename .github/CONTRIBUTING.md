@@ -17,6 +17,10 @@ If you've found a *reproduceable* bug, [submit an issue](https://github.com/Whit
 
 You're welcome to fix things for us, and submit pull requests; it frees up time for us to implement useful new features.
 
+## Triage Issues [![Open Source Helpers](https://www.codetriage.com/whitestormjs/whitestorm.js/badges/users.svg)](https://www.codetriage.com/whitestormjs/whitestorm.js)
+
+You can triage issues which may include reproducing bug reports or asking for vital information, such as version numbers or reproduction instructions. If you would like to start triaging issues, one easy way to get started is to [subscribe to whitestorm.js on CodeTriage](https://www.codetriage.com/whitestormjs/whitestorm.js).
+
 ## Adding Features
 
 If you've added a new feature to WhitestormJS and would like for it to be included, submit a pull request. We'll take a look at it.
@@ -31,10 +35,10 @@ Before starting contributing it's better to contact us in [discord](https://disc
  - [@sasha240100](https://github.com/sasha240100) (`@alex2401#9076` in discord)
  - [@hirako2000](https://github.com/hirako2000) (`@Hirako#4563` in discord)
  - [@thejmazz](https://github.com/thejmazz) (`@thejmazz#3954` in discord)
- 
+
 ## ✏️ How to make a PR (Pull Request)
 
-1. 🔭 First of all you should **check if there is an issue that you will fix with your PR**. 
+1. 🔭 First of all you should **check if there is an issue that you will fix with your PR**.
 2. 🛡 Then you should go and **make a new branch** with name `#xxx` (Issue number)
 3. 🛠 **Make changes**
 4. ✏️ **Submit a PR!**
@@ -67,9 +71,9 @@ $ npm run build
 - Starts `gulp less:watch`
   - Watches each `.less` in `./examples/assets/less`
   - Compiles to `./examples/assets/css`
-  
+
 ![](http://i.imgur.com/7bDhpHK.png)
-  
+
 ### `npm run build` - Build all
 - Runs `gulp build` - build sources
 - Runs `gulp examples:build` - build examples
@@ -138,5 +142,5 @@ Poor:
  - Follow code style guides:
     - [XO](https://github.com/sindresorhus/xo)
     - Wrap logical blocks* with newlines.
-   
+
 _logical blocks_* - lines that have something in common.
