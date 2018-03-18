@@ -44,7 +44,7 @@
     "lodash-es": "^4.17.4",
     "minivents": "^2.1.0",
     "redux": "^3.7.1",
-    "three": "^0.87.1"
+    "three": "^0.90.0"
   },
   "devDependencies": {
     "@types/three": "^0.84.16",
