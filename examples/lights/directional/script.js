@@ -29,8 +29,6 @@ const app = new WHS.App([
   cameraModule
 ]);
 
-// controlsModule.controls.autoRotate = true;
-
 new WHS.Importer({
   url: `${process.assetsPath}/models/bedroom/bedroom.json`,
   loader: new THREE.ObjectLoader(),
@@ -64,6 +62,7 @@ new WHS.Sphere({
         height: 4096
       },
 
+      bias: -0.003,
       far: 150,
       near: 5
     },
