@@ -77,9 +77,9 @@ $ npm install whs
   <img src="http://whs.io/images/showcase/daily4.png" alt="http://abdaily.surge.sh/4/" width="30%" />
 </a>
 
-<a href="http://abdaily.surge.sh/3/">
+<!-- <a href="http://abdaily.surge.sh/3/">
   <img src="http://whs.io/images/showcase/daily3.png" alt="http://abdaily.surge.sh/3/" width="30%" />
-</a>
+</a> -->
 
 <a href="http://abdaily.surge.sh/2/">
   <img src="http://whs.io/images/showcase/daily2.png" alt="http://abdaily.surge.sh/2/" width="30%" />
