@@ -77,10 +77,6 @@ $ npm install whs
   <img src="http://whs.io/images/showcase/daily4.png" alt="http://abdaily.surge.sh/4/" width="30%" />
 </a>
 
-<a href="http://abdaily.surge.sh/3/">
-  <img src="http://whs.io/images/showcase/daily3.png" alt="http://abdaily.surge.sh/3/" width="30%" />
-</a>
-
 <a href="http://abdaily.surge.sh/2/">
   <img src="http://whs.io/images/showcase/daily2.png" alt="http://abdaily.surge.sh/2/" width="30%" />
 </a>
@@ -204,3 +200,4 @@ Support us with a monthly donation and help us continue framework developmentðŸŽ
 [support-url]: https://opencollective.com/whitestormjs#support
 [sponsor-url]: https://opencollective.com/whitestormjs
 [sponsor-badge]: https://opencollective.com/whitestormjs/sponsors/badge.svg?color=blue
+
