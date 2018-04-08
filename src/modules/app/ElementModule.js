@@ -22,7 +22,7 @@ export class ElementModule {
    * @method createElement
    * @instance
    * @description Creates a canvas element.
-   * @memberof module:modules/app.ResizeModule
+   * @memberof module:modules/app.ElementModule
    */
   createElement() {
     this.element = window.document.createElement('div');
