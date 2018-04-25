@@ -1,6 +1,8 @@
 import {
-  Scene
+  Scene,
 } from 'three';
+
+const SYMBOL_CHILDREN_FOR_SCENE = Symbol('SYMBOL_CHILDREN_FOR_SCENE')
 
 /**
  * @class SceneModule
@@ -18,40 +20,51 @@ export class SceneModule {
   }
 
   integrate(self) {
-    this.children = [];
-
-    this.add = function (object) {
-      object.parent = this;
-
-      return new Promise((resolve, reject) => {
-        object.defer(() => {
-          const {native} = object;
-          if (!native) reject();
-
-          const addPromise = this.applyBridge({onAdd: object}).onAdd;
-
-          const resolver = () => {
-            self.scene.add(native);
-            this.children.push(object);
-
-            resolve(object);
-          };
-
-          if (addPromise instanceof Promise)
-            addPromise.then(resolver);
-          else resolver();
-        });
-      });
-    };
-
-    this.remove = function (object) {
-      object.parent = null;
-      self.scene.remove(object.native);
-    };
-
-    this.setScene = function (scene) {
-      self.scene = scene;
-      this.manager.set('scene', scene);
-    };
+    Object.assign(
+      this,
+      {
+        async add(object) {
+          if (object.parent) await object.parent.remove(object);
+      
+          await object.wait();
+      
+          if (!object.native) {
+            throw new CompositionError(
+              'SceneModule',
+              'there is no object.native',
+              this
+            );
+          }
+      
+          object.parent = this;
+          await this.applyBridge({onAdd: object}).onAdd;
+          self.scene.add(object.native);
+          this.children.push(object);
+      
+          return object;
+        },
+        async remove(object) {
+          if (object.parent !== this) return;
+      
+          await object.wait();
+      
+          object.parent = null;
+          self.scene.remove(object.native);
+          this.children.splice(this.children.indexOf(object), 1);
+        },
+        _setScene(scene) {
+          this.children = scene[SYMBOL_CHILDREN_FOR_SCENE] = scene[SYMBOL_CHILDREN_FOR_SCENE] || []
+          self.scene = scene;
+        },
+        setScene(scene) {
+          this._setScene(scene);
+          this.manager.set('scene', scene);
+        },
+        getScene() {
+          return self.scene;
+        },
+      },
+    );
+    if (self.scene) this._setScene(self.scene);
   }
 }
