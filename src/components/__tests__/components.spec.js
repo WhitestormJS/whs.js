@@ -52,8 +52,6 @@ app.start();
   category.forEach(component => {
     test(component, () => {
       const element = new WHS[component]();
-      expect.assertions(1);
-
       app.add(element).then(() => {
         expect(app.children).toContain(element);
       });

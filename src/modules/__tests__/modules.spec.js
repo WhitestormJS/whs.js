@@ -1,7 +1,11 @@
 import '../../polyfill';
 import * as WHS from '../../index';
+import {
+  Scene,
+} from 'three';
 import {FogModule} from '../app/FogModule';
 import gl from 'gl';
+import { Box } from '../../index';
 
 const app = new WHS.App();
 const modules = {};
@@ -15,6 +19,43 @@ test('ElementModule', () => {
 test('SceneModule', () => {
   modules.scene = new WHS.SceneModule();
 });
+
+test('SceneModule .add() & .remove()', async () => {
+  const a = new WHS.App([
+    new WHS.SceneModule(),
+  ]);
+  const b = new WHS.Box();
+  const g = new WHS.Group();
+
+  expect(a.children.length).toBe(0);
+  await a.add(g);
+  expect(a.children.length).toBe(1);
+  await a.add(g);
+  expect(a.children.length).toBe(1);
+  await a.add(b);
+  expect(a.children.length).toBe(2);
+  await g.add(b);
+  expect(a.children.length).toBe(1);
+  expect(g.children.length).toBe(1);
+  await a.remove(g);
+  expect(a.children.length).toBe(0);
+});
+
+test('SceneModule .setScene() & .getScene()', async () => {
+  const a = new WHS.App([
+    new WHS.SceneModule(),
+  ]);
+  const b = new WHS.Box();
+  expect(a.children.length).toBe(0);
+  await a.add(b);
+  expect(a.children.length).toBe(1);
+  const oldS = a.getScene();
+  const s = new Scene();
+  a.setScene(s);
+  expect(a.children.length).toBe(0);
+  a.setScene(oldS);
+  expect(a.children.length).toBe(1);
+})
 
 test('DefineModule', () => {
   modules.camera = new WHS.DefineModule('camera', new WHS.PerspectiveCamera());
