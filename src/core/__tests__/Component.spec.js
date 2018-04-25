@@ -55,3 +55,17 @@ test('.applyModule()', () => {
 test('.applyBridge()', () => {
   expect(component.applyBridge({hello: 'world'}).hello).toBe('world');
 });
+
+test('.add() & .remove()', async () => {
+  const box = new WHS.Box();
+  const group = new WHS.Group();
+  expect(group.children.length).toBe(0);
+  await group.add(box);
+  expect(group.children.length).toBe(1);
+  await group.add(box);
+  expect(group.children.length).toBe(1);
+  await group.remove(box);
+  expect(group.children.length).toBe(0);
+  await group.remove(box);
+  expect(group.children.length).toBe(0);
+});
