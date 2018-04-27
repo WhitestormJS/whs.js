@@ -1,4 +1,4 @@
-import {Component} from './Component';
+import {Component, ComponentParams} from './Component';
 import {CompositionError} from './errors';
 import {
   Material, 
@@ -6,7 +6,7 @@ import {
   Object3D
 } from 'three';
 
-export interface MeshComponentParams {
+interface MeshComponentParams extends ComponentParams {
   /**
    * Sets whether the mesh should build right away after being constructed
    * Default is true.

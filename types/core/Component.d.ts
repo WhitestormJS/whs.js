@@ -1,5 +1,11 @@
 import {ModuleSystem} from './ModuleSystem';
 import {App} from './App';
+import {Module} from './Module';
+
+interface ComponentParams {
+  modules?: [Module],
+  manager?: boolean
+}
 
 export class Component extends ModuleSystem {
   /**
