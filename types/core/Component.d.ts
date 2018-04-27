@@ -2,7 +2,7 @@ import {ModuleSystem} from './ModuleSystem';
 import {App} from './App';
 import {Module} from './Module';
 
-interface ComponentParams {
+export interface ComponentParams {
   modules?: [Module],
   manager?: boolean
 }
