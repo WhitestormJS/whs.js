@@ -73,6 +73,22 @@ $ npm install whs
 
 ### Featured projects
 
+<a href="https://rmallick6806.github.io/SolarSystemBuilder/">
+  <img src="https://i.imgur.com/z4wfhXb.png" alt="https://rmallick6806.github.io/SolarSystemBuilder/" width="30%" />
+</a>
+
+<a href="http://www.tpain.com/">
+  <img src="https://i.imgur.com/38bdu6G.jpg" alt="http://www.tpain.com/" width="30%" />
+</a>
+
+<a href="http://artifacts.zone/lorenzav/">
+  <img src="https://i.imgur.com/rKx39eY.png" alt="http://artifacts.zone/lorenzav/" width="30%" />
+</a>
+
+<a href="http://artifacts.zone/tree/">
+  <img src="https://i.imgur.com/y0ZwWVi.png" alt="http://artifacts.zone/tree/" width="30%" />
+</a>
+
 <a href="http://abdaily.surge.sh/4/">
   <img src="http://whs.io/images/showcase/daily4.png" alt="http://abdaily.surge.sh/4/" width="30%" />
 </a>
