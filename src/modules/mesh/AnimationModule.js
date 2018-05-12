@@ -54,13 +54,12 @@ export class AnimationModule {
    * @instance
    * @description Plays the given clip name
    * @param {String} clipName - the clip to play
+   * @return {THREE.AnimationAction} Playing action 
    * @memberof module:modules/mesh.AnimationModule
    */
   play(clipName) {
     const clip = AnimationClip.findByName(this.clips, clipName);
-    const action = this.mixer.clipAction(clip);
-
-    action.play();
+    return this.mixer.clipAction(clip).play();
   }
 
   /**
