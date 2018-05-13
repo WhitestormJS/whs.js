@@ -190,7 +190,7 @@ class LightComponent extends Component {
     native.shadow.radius = shadow.radius;
 
     const shadowCamera = native.shadow.camera;
-    const camera = shadow.camera;
+    const {camera} = shadow;
 
     shadowCamera.near = camera.near;
     shadowCamera.far = camera.far;

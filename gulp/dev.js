@@ -3,17 +3,17 @@ import gulp from 'gulp';
 import express from 'express';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import {argv} from 'yargs';
-import less from 'gulp-less';
+import sass from 'gulp-sass';
 import watch from 'gulp-watch';
 
 import {ExampleCompilerInstance} from './compilers';
 import {getPaths} from './utils';
 import {getTemplateData, examples} from './config';
 
-gulp.task('less:watch', () => {
-  return gulp.src('./examples/assets/less/*.less')
-    .pipe(watch('./examples/assets/less/*.less'))
-    .pipe(less())
+gulp.task('sass:watch', () => {
+  return gulp.src('./examples/assets/scss/*.scss')
+    .pipe(watch('./examples/assets/scss/*.scss'))
+    .pipe(sass())
     .pipe(gulp.dest('./examples/assets/css/'));
 });
 
@@ -34,16 +34,15 @@ gulp.task('dev', () => {
   templateData.paths = paths[0];
   templateData.categories = paths[1];
 
-  paths[0].forEach(p => {
-    app.use(new WebpackDevMiddleware(
-      exampleCompiler(p),
-      {
-        contentBase: examples,
-        publicPath: `/${p}`,
-        noInfo: true
-      }
-    ));
-  });
+  app.use(new WebpackDevMiddleware(
+    exampleCompiler(paths[0]),
+    {
+      contentBase: examples,
+      publicPath: '/',
+      logLevel: 'debug'
+      // noInfo: true
+    }
+  ));
 
   app.use('/assets', express.static(path.resolve(__dirname, `${examples}/assets`)));
   app.use('/build', express.static('build'));
@@ -72,5 +71,5 @@ gulp.task('dev', () => {
 
   app.listen(8080);
 
-  gulp.start('less:watch');
+  // gulp.start('sass:watch');
 });
