@@ -41,7 +41,7 @@ export function config(
 
   const bannerText = `WhitestormJS Framework v${version}`;
 
-  return { // PHYSICS VERSION
+  return {
     devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
     cache: true,
     entry: [

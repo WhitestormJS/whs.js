@@ -1,5 +1,5 @@
 export const getTemplateData = ({devPhysics = false, devMode = false} = {devPhysics: false, devMode: false}) => ({
-  scriptname: 'script.js',
+  scriptname: 'bundle.js',
   assets: '\'../../assets\'',
   devMode,
 

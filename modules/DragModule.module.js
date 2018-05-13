@@ -1,92 +1,98 @@
 /* Built for whs v2.1.9 */
-import { Vector3 } from 'three';
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('three')) :
+  typeof define === 'function' && define.amd ? define(['three'], factory) :
+  (global.DragModule = factory(global.THREE));
+}(this, (function (three) { 'use strict';
 
-var classCallCheck = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-
-var createClass = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
+  var classCallCheck = function (instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
     }
-  }
-
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
   };
-}();
 
-var MeshDragModule = function () {
-  function MeshDragModule(mouse) {
-    classCallCheck(this, MeshDragModule);
-
-    this.mouse = mouse;
-    this.offset = new Vector3();
-  }
-
-  createClass(MeshDragModule, [{
-    key: 'postIntegrate',
-    value: function postIntegrate(self) {
-      var _this = this;
-
-      this.defer(function () {
-        var mouse = self.mouse,
-            offset = self.offset;
-
-        mouse.track(_this);
-
-        offset.copy(_this.position);
-
-        var dragPossible = false;
-
-        _this.on('mousedown', function () {
-          dragPossible = true;
-          offset.copy(_this.position.clone().sub(mouse.project()));
-        });
-
-        mouse.on('mouseup', function () {
-          dragPossible = false;
-        });
-
-        mouse.on('move', function () {
-          if (dragPossible) _this.position.copy(mouse.project().add(offset));
-        });
-      });
+  var createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
     }
-  }]);
-  return MeshDragModule;
-}();
 
-var DragModule = function () {
-  function DragModule() {
-    classCallCheck(this, DragModule);
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
 
-    this.mouse = null;
-  }
+  var MeshDragModule = function () {
+    function MeshDragModule(mouse) {
+      classCallCheck(this, MeshDragModule);
 
-  createClass(DragModule, [{
-    key: 'manager',
-    value: function manager(_manager) {
-      _manager.define('drag');
-      this.mouse = _manager.use('mouse');
+      this.mouse = mouse;
+      this.offset = new three.Vector3();
     }
-  }, {
-    key: 'mesh',
-    value: function mesh() {
-      return new MeshDragModule(this.mouse);
+
+    createClass(MeshDragModule, [{
+      key: 'postIntegrate',
+      value: function postIntegrate(self) {
+        var _this = this;
+
+        this.defer(function () {
+          var mouse = self.mouse,
+              offset = self.offset;
+
+          mouse.track(_this);
+
+          offset.copy(_this.position);
+
+          var dragPossible = false;
+
+          _this.on('mousedown', function () {
+            dragPossible = true;
+            offset.copy(_this.position.clone().sub(mouse.project()));
+          });
+
+          mouse.on('mouseup', function () {
+            dragPossible = false;
+          });
+
+          mouse.on('move', function () {
+            if (dragPossible) _this.position.copy(mouse.project().add(offset));
+          });
+        });
+      }
+    }]);
+    return MeshDragModule;
+  }();
+
+  var DragModule = function () {
+    function DragModule() {
+      classCallCheck(this, DragModule);
+
+      this.mouse = null;
     }
-  }]);
+
+    createClass(DragModule, [{
+      key: 'manager',
+      value: function manager(_manager) {
+        _manager.define('drag');
+        this.mouse = _manager.use('mouse');
+      }
+    }, {
+      key: 'mesh',
+      value: function mesh() {
+        return new MeshDragModule(this.mouse);
+      }
+    }]);
+    return DragModule;
+  }();
+
   return DragModule;
-}();
 
-export default DragModule;
-//# sourceMappingURL=DragModule.module.js.map
+})));
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiRHJhZ01vZHVsZS5tb2R1bGUuanMiLCJzb3VyY2VzIjpbIi4uL3NyYy9tb2R1bGVzL2V4dHJhL0RyYWdNb2R1bGUuanMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtWZWN0b3IzfSBmcm9tICd0aHJlZSc7XG5cbmNsYXNzIE1lc2hEcmFnTW9kdWxlIHtcbiAgY29uc3RydWN0b3IobW91c2UpIHtcbiAgICB0aGlzLm1vdXNlID0gbW91c2U7XG4gICAgdGhpcy5vZmZzZXQgPSBuZXcgVmVjdG9yMygpO1xuICB9XG5cbiAgcG9zdEludGVncmF0ZShzZWxmKSB7XG4gICAgdGhpcy5kZWZlcigoKSA9PiB7XG4gICAgICBjb25zdCB7bW91c2UsIG9mZnNldH0gPSBzZWxmO1xuICAgICAgbW91c2UudHJhY2sodGhpcyk7XG5cbiAgICAgIG9mZnNldC5jb3B5KHRoaXMucG9zaXRpb24pO1xuXG4gICAgICBsZXQgZHJhZ1Bvc3NpYmxlID0gZmFsc2U7XG5cbiAgICAgIHRoaXMub24oJ21vdXNlZG93bicsICgpID0+IHtcbiAgICAgICAgZHJhZ1Bvc3NpYmxlID0gdHJ1ZTtcbiAgICAgICAgb2Zmc2V0LmNvcHkodGhpcy5wb3NpdGlvbi5jbG9uZSgpLnN1Yihtb3VzZS5wcm9qZWN0KCkpKTtcbiAgICAgIH0pO1xuXG4gICAgICBtb3VzZS5vbignbW91c2V1cCcsICgpID0+IHtkcmFnUG9zc2libGUgPSBmYWxzZX0pO1xuXG4gICAgICBtb3VzZS5vbignbW92ZScsICgpID0+IHtcbiAgICAgICAgaWYgKGRyYWdQb3NzaWJsZSkgdGhpcy5wb3NpdGlvbi5jb3B5KG1vdXNlLnByb2plY3QoKS5hZGQob2Zmc2V0KSk7XG4gICAgICB9KTtcbiAgICB9KTtcbiAgfVxufVxuXG5leHBvcnQgZGVmYXVsdCBjbGFzcyBEcmFnTW9kdWxlIHtcbiAgY29uc3RydWN0b3IoKSB7XG4gICAgdGhpcy5tb3VzZSA9IG51bGw7XG4gIH1cblxuICBtYW5hZ2VyKG1hbmFnZXIpIHtcbiAgICBtYW5hZ2VyLmRlZmluZSgnZHJhZycpO1xuICAgIHRoaXMubW91c2UgPSBtYW5hZ2VyLnVzZSgnbW91c2UnKTtcbiAgfVxuXG4gIG1lc2goKSB7XG4gICAgcmV0dXJuIG5ldyBNZXNoRHJhZ01vZHVsZSh0aGlzLm1vdXNlKTtcbiAgfVxufVxuIl0sIm5hbWVzIjpbIk1lc2hEcmFnTW9kdWxlIiwibW91c2UiLCJvZmZzZXQiLCJWZWN0b3IzIiwic2VsZiIsImRlZmVyIiwidHJhY2siLCJjb3B5IiwicG9zaXRpb24iLCJkcmFnUG9zc2libGUiLCJvbiIsImNsb25lIiwic3ViIiwicHJvamVjdCIsImFkZCIsIkRyYWdNb2R1bGUiLCJtYW5hZ2VyIiwiZGVmaW5lIiwidXNlIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O01BRU1BO0VBQ0osMEJBQVlDLEtBQVosRUFBbUI7RUFBQTs7RUFDakIsU0FBS0EsS0FBTCxHQUFhQSxLQUFiO0VBQ0EsU0FBS0MsTUFBTCxHQUFjLElBQUlDLGFBQUosRUFBZDtFQUNEOzs7O29DQUVhQyxNQUFNO0VBQUE7O0VBQ2xCLFdBQUtDLEtBQUwsQ0FBVyxZQUFNO0VBQUEsWUFDUkosS0FEUSxHQUNTRyxJQURULENBQ1JILEtBRFE7RUFBQSxZQUNEQyxNQURDLEdBQ1NFLElBRFQsQ0FDREYsTUFEQzs7RUFFZkQsY0FBTUssS0FBTixDQUFZLEtBQVo7O0VBRUFKLGVBQU9LLElBQVAsQ0FBWSxNQUFLQyxRQUFqQjs7RUFFQSxZQUFJQyxlQUFlLEtBQW5COztFQUVBLGNBQUtDLEVBQUwsQ0FBUSxXQUFSLEVBQXFCLFlBQU07RUFDekJELHlCQUFlLElBQWY7RUFDQVAsaUJBQU9LLElBQVAsQ0FBWSxNQUFLQyxRQUFMLENBQWNHLEtBQWQsR0FBc0JDLEdBQXRCLENBQTBCWCxNQUFNWSxPQUFOLEVBQTFCLENBQVo7RUFDRCxTQUhEOztFQUtBWixjQUFNUyxFQUFOLENBQVMsU0FBVCxFQUFvQixZQUFNO0VBQUNELHlCQUFlLEtBQWY7RUFBcUIsU0FBaEQ7O0VBRUFSLGNBQU1TLEVBQU4sQ0FBUyxNQUFULEVBQWlCLFlBQU07RUFDckIsY0FBSUQsWUFBSixFQUFrQixNQUFLRCxRQUFMLENBQWNELElBQWQsQ0FBbUJOLE1BQU1ZLE9BQU4sR0FBZ0JDLEdBQWhCLENBQW9CWixNQUFwQixDQUFuQjtFQUNuQixTQUZEO0VBR0QsT0FsQkQ7RUFtQkQ7Ozs7O01BR2tCYTtFQUNuQix3QkFBYztFQUFBOztFQUNaLFNBQUtkLEtBQUwsR0FBYSxJQUFiO0VBQ0Q7Ozs7OEJBRU9lLFVBQVM7RUFDZkEsZUFBUUMsTUFBUixDQUFlLE1BQWY7RUFDQSxXQUFLaEIsS0FBTCxHQUFhZSxTQUFRRSxHQUFSLENBQVksT0FBWixDQUFiO0VBQ0Q7Ozs2QkFFTTtFQUNMLGFBQU8sSUFBSWxCLGNBQUosQ0FBbUIsS0FBS0MsS0FBeEIsQ0FBUDtFQUNEOzs7Ozs7Ozs7OzsifQ==

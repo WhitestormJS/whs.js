@@ -2,7 +2,7 @@ import jsdoc from 'gulp-jsdoc3';
 import gulp from 'gulp';
 import watch from 'gulp-watch';
 import config from '../jsdoc';
-import less from 'gulp-less';
+// import less from 'gulp-less';
 import del from 'del';
 import {argv} from 'yargs';
 
