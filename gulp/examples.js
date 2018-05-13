@@ -3,7 +3,7 @@ import fs from 'fs';
 import gulp from 'gulp';
 import del from 'del';
 import pug from 'pug';
-import less from 'gulp-less';
+// import less from 'gulp-less';
 
 import {ExampleCompilerInstance} from './compilers';
 import {getTemplateData} from './config';

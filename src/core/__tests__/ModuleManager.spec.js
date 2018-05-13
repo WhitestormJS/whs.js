@@ -42,7 +42,7 @@ test('.update()', () => {
 });
 
 test('.has()', () => {
-  expect(manager.has('whatever'), 'manager doesn\'t have \'whatever\' dependency').toBeFalsy();
+  expect(manager.has('whatever')).toBeFalsy();
 });
 
 test('.reset()', () => {

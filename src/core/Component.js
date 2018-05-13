@@ -1,4 +1,4 @@
-import {extend, transformData} from '../utils/index';
+import {extend, transformData} from '../utils';
 import {ModuleSystem} from './ModuleSystem';
 import {ModuleManager} from './ModuleManager';
 import {ManagerError, CompositionError} from './errors';

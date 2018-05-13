@@ -23,16 +23,21 @@ const babelFix = babelPlugin => {
 };
 
 export default {
-  entry: 'src/index.js',
-  format: 'umd',
-  // dest: `build/whs.js`, // equivalent to --output
-  moduleName: 'WHS',
-  banner: `/* WhitestormJS Framework v${require('./package.json').version} */`,
-  sourceMap: true,
+  input: 'src/index.js',
 
-  external: [
-    'three'
-  ],
+  output: [{
+    format: 'umd',
+    name: 'WHS',
+    sourcemap: true,
+    file: 'build/whs.js',
+    banner: `/* WhitestormJS Framework v${require('./package.json').version} */`
+  }, {
+    format: 'es',
+    sourcemap: true,
+    file: 'build/whs.module.js',
+    external: ['three'],
+    banner: `/* WhitestormJS Framework v${require('./package.json').version} */`
+  }],
 
   globals: {
     three: 'THREE'
@@ -41,25 +46,17 @@ export default {
   plugins: [
     resolve({
       jsnext: true,
-      main: true
+      module: true
     }),
     babelFix(
-      babel()
+      babel({
+        runtimeHelpers: true
+      })
     ),
-    commonjs({include: 'node_modules/**'}),
+    commonjs({include: 'node_modules/**', ignoreGlobal: true}),
     json({
       preferConst: true
     }),
     replace({'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)})
-  ],
-
-  targets: [
-    {
-      dest: 'build/whs.js'
-    },
-    {
-      format: 'es',
-      dest: 'build/whs.module.js'
-    }
   ]
 };
