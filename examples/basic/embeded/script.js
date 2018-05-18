@@ -1,4 +1,4 @@
-import * as UTILS from '../../globals';
+import * as UTILS from '@utils';
 
 const resizer = new WHS.ResizeModule();
 const mouse = new WHS.VirtualMouseModule();
