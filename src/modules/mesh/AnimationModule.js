@@ -1,7 +1,6 @@
 import {
   AnimationMixer,
-  AnimationClip,
-  Clock
+  AnimationClip
 } from 'three';
 
 import {Loop} from '../../core/Loop';
@@ -43,7 +42,6 @@ export class AnimationModule {
     this.params = Object.assign({
       speed: 1
     }, params);
-    this.clock = new Clock();
 
     this.app = app;
     this.isDeferred = isDeferred;
@@ -68,14 +66,12 @@ export class AnimationModule {
    * @description Update the mixer (being called on frame animation loop)
    * @memberof module:modules/mesh.AnimationModule
    */
-  update() {
-    if (this.mixer) this.mixer.update(this.clock.getDelta() * this.params.speed);
+  update(clock) {
+    if (this.mixer) this.mixer.update(clock.getDelta() * this.params.speed);
   }
 
   integrate(self) {
-    self.loop = new Loop(() => {
-      self.update();
-    });
+    self.loop = new Loop((clock) => self.update(clock));
 
     if (!self.isDeferred) self.loop.start(self.app);
   }
