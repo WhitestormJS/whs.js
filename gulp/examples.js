@@ -5,7 +5,7 @@ import del from 'del';
 import pug from 'pug';
 // import less from 'gulp-less';
 
-import {ExampleCompilerInstance} from './compilers';
+import {exampleCompilerInstance} from './compilers';
 import {getTemplateData} from './config';
 import {getPaths} from './utils';
 
