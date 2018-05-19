@@ -1,4 +1,6 @@
-import * as UTILS from '../../globals';
+import * as UTILS from '@utils';
+import {connect} from '@api'; // eslint-disable-line
+const {ready} = connect();
 
 const cameraModule = new WHS.DefineModule('camera', new WHS.PerspectiveCamera({
   position: {
@@ -195,3 +197,4 @@ new WHS.AmbientLight({
 }).addTo(app);
 
 app.start();
+ready();
