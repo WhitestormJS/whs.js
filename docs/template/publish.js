@@ -898,6 +898,7 @@ exports.publish = function(taffyData, opts, tutorials) {
       children: tutorial.children
     }
 
+    // TODO: .replace(/\s/g, '_')
     var tutorialPath = path.join(outdir, filename)
     var html = view.render("tutorial.tmpl", tutorialData)
 
