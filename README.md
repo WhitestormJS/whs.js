@@ -32,6 +32,22 @@ Community chat. [Join us!][discord-url]
 > We try to publish **minor update releases every 60 days** or even more often depending on the amount of features that sometimes get added in a very small period of time. We want the community to profit from new modules, components and feature enhancements as soon as they are implemented.
 
 
+#### NPM
+
+```bash
+# Install npm version
+$ npm install whs
+```
+> For `whs@2.2.x` (Three.js r92) use @beta tag
+
+```bash
+# Install npm version
+$ npm install whs@beta
+```
+
+[![NPM Version][npm]][npm-url]
+
+
 ### Basic setup
 
 Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/whs.js/dev/build/whs.min.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
@@ -60,16 +76,6 @@ app.start(); // Run app.
 ```
 
 <a href="http://codepen.io/sasha240100/pen/JELBGX"><img src="http://blog.codepen.io/wp-content/uploads/2012/06/TryItOn-CodePen.png" height="50" /></a>
-
-
-#### NPM
-
-```bash
-# Install npm version
-$ npm install whs
-```
-
-[![NPM Version][npm]][npm-url]
 
 ### Featured projects
 
