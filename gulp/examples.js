@@ -3,56 +3,122 @@ import fs from 'fs';
 import gulp from 'gulp';
 import del from 'del';
 import pug from 'pug';
+import sass from 'gulp-sass';
+import MarkdownIt from 'markdown-it';
+import hljs from 'highlight.js';
+import LEVELS from './data/levels';
 // import less from 'gulp-less';
 
 import {exampleCompilerInstance} from './compilers';
+import {parseExamplesStructure} from './utils';
 import {getTemplateData} from './config';
 import {getPaths} from './utils';
 
-gulp.task('less', () => {
-  return gulp.src('./examples/assets/less/*.less')
-    .pipe(less())
+gulp.task('sass', () => {
+  return gulp.src('./examples/assets/scss/*.scss')
+    .pipe(sass())
     .pipe(gulp.dest('./examples/assets/css/'));
 });
 
-gulp.task('examples:build', ['examples:html', 'less']);
+gulp.task('examples:build', ['examples:html', 'sass']);
+
+const contentHeader = (title, date) =>
+`
+.uk-width-1-1
+  h4.uk-comment-title.uk-margin-remove
+    a.uk-link-reset(href='#') ${title}
+  ul.uk-comment-meta.uk-subnav.uk-subnav-divider.uk-margin-remove-top
+    li
+      a(href='#') ${date}
+    li
+      a(href='#') Reply
+`;
 
 gulp.task('examples:html', callback => {
   const wait = [];
-  const paths = getPaths();
   const templateData = getTemplateData();
 
-  templateData.scriptname = 'bundle.js';
-  templateData.paths = paths[0];
-  templateData.categories = paths[1];
+  const md = new MarkdownIt({
+    highlight(str, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(lang, str).value;
+        } catch (__) {}
+      }
 
-  const exampleCompiler = new ExampleCompilerInstance({
+      return ''; // use external default escaping
+    }
+  });
+
+  templateData.filters = {
+    explanation(text, options) {
+      if (options.file) {
+        const renderFile = options.filename.replace(/(\/[^/]*\.pug)$/, '/' + options.file);
+        const content = fs.readFileSync(renderFile, 'utf8');
+        text = content + '\n' + text;
+      }
+
+      const title = (/\[\/\/\]:\s#\s\((title:\s)(.*)\)/g.exec(text) || [])[2]; // eslint-disable-line
+      const date = (/\[\/\/\]:\s#\s\((date:\s)(.*)\)/g.exec(text) || [])[2]; // eslint-disable-line
+
+      let markdown = md.render(text);
+
+      console.log('options///');
+      console.log(options);
+      console.log('///options///');
+
+      markdown = `
+        ${pug.render(contentHeader(title, date))}
+        ${markdown}
+      `;
+
+      return markdown;
+    },
+
+    levelType(_path) {
+      for (const p in LEVELS) {
+        if (!p) continue;
+
+        const _match = _path.match(/(\/[^/]*)$/);
+
+        if (_match && _match[0].indexOf(p) >= 0)
+          return LEVELS[_path].toUpperCase();
+      }
+
+      return 'BEGINNER';
+    }
+  };
+
+  const exampleCompiler = exampleCompilerInstance({
     path: {
       ammojs: templateData.ammojs,
       assets: templateData.assets
     }
   });
 
+  const data = parseExamplesStructure();
+  Object.assign(templateData, data);
+
   const compileFile = (inPath, outPath) =>
     wait.push(new Promise(resolve => fs.writeFile(
       path.resolve('./examples/', outPath),
-      pug.compileFile(path.resolve('./examples/', inPath), {})(templateData),
+      pug.renderFile(path.resolve('./examples/', inPath), templateData),
       resolve
     )));
 
   compileFile('./index.pug', './index.html');
 
-  paths[0].forEach(p => {
+  data.paths.forEach(p => {
     compileFile(`${p}/index.pug`, `${p}/index.html`);
-
-    wait.push(
-      new Promise(resolve => {
-        exampleCompiler(p, false).run(() => {
-          resolve();
-        });
-      })
-    );
   });
+
+  wait.push(
+    new Promise(resolve => {
+      exampleCompiler(data.paths, false).run(() => {
+        resolve();
+      });
+    })
+  );
 
   Promise.all(wait).then(() => callback());
 });

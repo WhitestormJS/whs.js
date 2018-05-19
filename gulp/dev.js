@@ -9,6 +9,7 @@ import watch from 'gulp-watch';
 import MarkdownIt from 'markdown-it';
 import pug from 'pug';
 import hljs from 'highlight.js';
+import LEVELS from './data/levels';
 
 import {exampleCompilerInstance} from './compilers';
 import {parseExamplesStructure} from './utils';
@@ -73,6 +74,19 @@ gulp.task('dev', () => {
       `;
 
       return markdown;
+    },
+
+    levelType(_path) {
+      for (const p in LEVELS) {
+        if (!p) continue;
+
+        const _match = _path.match(/(\/[^/]*)$/);
+
+        if (_match && _match[0].indexOf(p) >= 0)
+          return LEVELS[_path].toUpperCase();
+      }
+
+      return 'BEGINNER';
     }
   };
 
