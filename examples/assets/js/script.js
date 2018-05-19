@@ -19,14 +19,23 @@ iframe.onload = function () {
     document.querySelector('#explanation-holder').appendChild(child);
 };
 
+const tutorialOpen = document.getElementById('tutorial-open');
+const tutorialLink = '#' + link.slice(0, -1) + '#tutorial';
+
+// tutorialOpen.href = tutorialLink;
+tutorialOpen.dataset.tutorialLink = tutorialLink;
+
 for (const link of document.querySelectorAll('[data-updatable]')) {
-  link.addEventListener('click', function() {
+  link.addEventListener('click', function(e) {
     var tutorial = window.location.hash.indexOf('tutorial') > 0;
 
-    if (link.dataset.tutorialLink)
+    if (link.dataset.tutorialLink) {
+      e.preventDefault();
+
       window.location.hash = tutorial
         ? link.dataset.tutorialLink.replace('#tutorial', '')
         : link.dataset.tutorialLink;
+    }
 
     if (link.dataset.tutorialLink && link.dataset.tutorialLink.indexOf(hash[0]) > 0) return;
     window.location.reload();
@@ -43,6 +52,10 @@ if (hash[1] && hash[1] === 'tutorial') {
 
 const filter = document.getElementById('filter');
 const items = document.querySelectorAll('[data-item]');
+
+// tutorialOpen.addEventListener('click', () => {
+//   if (tutorialOpen.href.indexOf(''))
+// })
 
 filter.addEventListener('keyup', function (e) {
   const text = e.target.value;

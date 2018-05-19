@@ -1,5 +1,6 @@
 [//]: # (title: Hello world example explanation)
 [//]: # (date: 12 DAYS AGO)
+[//]: # (level: beginner)
 
 ### How It Works ###
 
