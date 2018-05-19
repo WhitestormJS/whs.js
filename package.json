@@ -1,6 +1,6 @@
 {
   "name": "whs",
-  "version": "2.1.9",
+  "version": "2.2.0-alpha.0",
   "description": "Super-fast 3D framework for Web Applications & Games. Based on Three.js",
   "main": "build/whs.js",
   "jsnext:main": "build/whs.module.js",
@@ -41,7 +41,10 @@
   "homepage": "https://github.com/WhitestormJS/whitestorm.js#readme",
   "dependencies": {
     "@types/node": "^8.0.4",
+    "jstransformer-highlight": "^1.0.1",
+    "jstransformer-markdown-it": "^2.1.0",
     "lodash-es": "^4.17.10",
+    "markdown-to-pug": "^1.0.11",
     "minivents": "^2.2.0",
     "redux": "^4.0.0",
     "three": "^0.92.0"
@@ -84,11 +87,13 @@
     "gulp-sass": "^4.0.1",
     "gulp-watch": "^5.0.0",
     "happypack": "^5.0.0",
+    "highlight.js": "^9.12.0",
     "jest": "^22.4.3",
     "jest-babel": "^1.0.1",
     "js-yaml": "^3.11.0",
     "jsdoc-babel": "^0.4.0",
     "less": "^3.0.4",
+    "markdown-it": "^8.4.1",
     "mdurl": "^1.0.1",
     "minami": "^1.2.3",
     "mocha": "^5.1.1",

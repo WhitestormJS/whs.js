@@ -7,9 +7,28 @@ html
     link(rel='stylesheet', href='/examples/assets/css/layout.css', type='text/css' )
   body
     block body
+      
+    div#explanation
+      block explanation
+        header.uk-comment-header.uk-grid-medium.uk-flex-middle(uk-grid='')
+          .uk-width-expand
+            h4.uk-comment-title.uk-margin-remove
+              a.uk-link-reset(href='#') 404
+            ul.uk-comment-meta.uk-subnav.uk-subnav-divider.uk-margin-remove-top
+              li
+                a(href='#') Documentation not found
+              li
+                a(href='#') Edit
+        div(uk-alert='')
+          a.uk-alert-close(uk-close='')
+          h3 Sorry
+          p
+            | Documentation for this example is not yet complete. You can ask maintainers for a soon documentation development or suggest your own edits to improve this page.
+
+
 
     block dependencies
-      script(src='https://cdnjs.cloudflare.com/ajax/libs/three.js/90/three.min.js')
+      script(src='https://cdnjs.cloudflare.com/ajax/libs/three.js/92/three.min.js')
       script(src='../../../build/whs.js')
       block stats
         script(src='../../../modules/StatsModule.js')
@@ -18,3 +37,4 @@ html
 
     block scripts
       script(src=`./${scriptname}`)
+      
