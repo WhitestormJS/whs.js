@@ -1,16 +1,16 @@
 import jsdoc from 'gulp-jsdoc3';
 import gulp from 'gulp';
 import watch from 'gulp-watch';
-import config from '../jsdoc';
-// import less from 'gulp-less';
+import sass from 'gulp-sass';
 import del from 'del';
 import {argv} from 'yargs';
+import config from '../jsdoc.json';
 
 gulp.task('docs', cb => {
   del('./docs/public/*.html');
 
-  gulp.src('./docs/template/static/less/*.less')
-    .pipe(less())
+  gulp.src('./docs/template/static/scss/*.scss')
+    .pipe(sass())
     .pipe(gulp.dest('./docs/public/styles/'));
 
   gulp.src(['./docs/data/**/*', argv.all ? './src/**/*.js' : './src/core/Component.js', '!./src/modules/extra/node_modules/**/*.js'])
@@ -21,11 +21,11 @@ gulp.task('docs:watch', ['docs'], () => {
   let i = 0;
 
   watch([
-    './docs/template/**/*.less'
+    './docs/template/**/*.scss'
   ], () => {
     console.log(`update styles #${i++}`);
 
-    gulp.src('./docs/template/static/less/*.less')
+    gulp.src('./docs/template/static/scss/*.scss')
       .pipe(less())
       .pipe(gulp.dest('./docs/public/styles/'));
   });
