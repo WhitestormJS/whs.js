@@ -55,7 +55,7 @@ class App extends ModuleSystem {
     })();
 
     function process() {
-      requestAnimFrame(process);
+      this.request = requestAnimFrame(() => process());
       if (!this.enabled) return;
 
       for (let i = 0, ll = this.loops.length; i < ll; i++) {
@@ -65,7 +65,7 @@ class App extends ModuleSystem {
     }
 
     this.enabled = true;
-    process();
+    !this.request && process();
   }
 
   /**
