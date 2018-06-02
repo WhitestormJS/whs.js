@@ -1,0 +1,94 @@
+@font-face {
+  font-family: 'Proxima Nova';
+  src: url('../fonts/ProximaNova.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Thin';
+  src: url('../fonts/ProximaNovaThin.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  background: white;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  font-family: 'Proxima Nova', Georgia, sans-serif;
+}
+
+.sidebar {
+  overflow: scroll;
+  height: 100vh;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity ease-in-out 0.3s;
+
+  @at-root body[data-example-ready] & {
+    opacity: 1;
+  }
+}
+
+.content-transform {
+  @media screen and (max-width: 960px) {
+    min-height: auto !important;
+    height: calc(100vh - 80px) !important;
+  }
+}
+
+[uk-spinner] {
+  opacity: 1;
+  transition: opacity ease-in-out 0.3s;
+
+  @at-root body[data-example-ready] & {
+    opacity: 0;
+  }
+}
+
+#explanation {
+  background: white;
+  // width: 100%;
+  height: 100%;
+  z-index: 2;
+  overflow: scroll;
+}
+
+pre {
+  background: #f8f8f8;
+  border: none;
+
+  * {
+    font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier;
+    font-weight: 400 !important;
+  }
+}
+
+.filter {
+  background: #ececec;
+  height: 40px;
+
+  span {
+    font-size: 12pt !important;
+    width: 16px !important;
+    height: 16px;
+    top: 12px !important;
+  }
+
+  input {
+    font-size: 12pt !important;
+    height: 16px;
+    font-family: 'Proxima Nova Thin', Georgia, sans-serif;
+    padding-left: 35px;
+  }
+
+  margin-bottom: 20px;
+}

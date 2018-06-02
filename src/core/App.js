@@ -54,20 +54,20 @@ class App extends ModuleSystem {
         };
     })();
 
-    const {loops, enabled} = this;
+    const process = () => {
+      this.request = requestAnimFrame(() => process());
+      if (!this.enabled) return;
 
-    function process() {
-      requestAnimFrame(process);
-      if (!enabled) return;
-
-      for (let i = 0, ll = loops.length; i < ll; i++) {
-        const e = loops[i];
+      for (let i = 0, ll = this.loops.length; i < ll; i++) {
+        const e = this.loops[i];
         if (e.enabled) e.execute(e.clock);
       }
-    }
+    };
 
     this.enabled = true;
-    process();
+
+    if (!this.request)
+      process();
   }
 
   /**

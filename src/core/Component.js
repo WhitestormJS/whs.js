@@ -1,7 +1,7 @@
-import {extend, transformData} from '../utils/index';
+import {extend, transformData} from '../utils';
 import {ModuleSystem} from './ModuleSystem';
 import {ModuleManager} from './ModuleManager';
-import {ManagerError} from './errors';
+import {ManagerError, CompositionError} from './errors';
 
 /**
  * @class Component
@@ -146,29 +146,26 @@ class Component extends ModuleSystem {
    * @return {Promise} Resolved when action is done.
    * @memberof module:core.Component
    */
-  add(object) {
+  async add(object) {
+    if (object.parent) await object.parent.remove(object);
+
+    await this.wait();
+    await object.wait();
+
+    if (!object.native) {
+      throw new CompositionError(
+        'Component',
+        'there is no object.native',
+        this
+      );
+    }
+
     object.parent = this;
+    await this.applyBridge({onAdd: object}).onAdd;
+    this.native.add(object.native);
+    this.children.push(object);
 
-    return new Promise((resolve, reject) => {
-      this.defer(() => {
-        object.defer(() => {
-          const {native} = object;
-          if (!native) reject();
-
-          const addPromise = this.applyBridge({onAdd: object}).onAdd;
-
-          const resolver = () => {
-            this.native.add(native);
-            this.children.push(object);
-
-            resolve(object);
-          };
-
-          if (addPromise instanceof Promise) addPromise.then(resolver);
-          else resolver();
-        });
-      });
-    });
+    return object;
   }
 
   /**
@@ -176,11 +173,18 @@ class Component extends ModuleSystem {
    * @instance
    * @description Remove a child `Component`.
    * @param {Component} object - Component that should be a **child** of this Component.
+   * @return {Promise} Resolved when action is done.
    * @memberof module:core.Component
    */
-  remove(object) {
+  async remove(object) {
+    if (object.parent !== this) return;
+
+    await this.wait();
+    await object.wait();
+
     object.parent = null;
     this.native.remove(object.native);
+    this.children.splice(this.children.indexOf(object), 1);
   }
 
   /**

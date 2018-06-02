@@ -1,75 +1,76 @@
+mixin mapper(map, path = '')
+  - for (const [name, items] of Object.entries(map))
+      if (Object.values(items).length > 0)
+        li.uk-parent
+          a(href='#') #{name}
+          ul.uk-nav-parent-icon.uk-nav-sub(uk-nav='multiple: true' data-category)
+            +mapper(items, path + '/' + name)
+      else
+        li
+          a.uk-display-inline-block(href='#' + path + '/' + name data-updatable data-item) #{name} 
+          a.uk-display-inline-block.uk-align-right.uk-margin-remove(href='#' uk-icon="icon: code; ratio: 0.7" uk-toggle='target: #explanation; animation: uk-animation-fade' style="padding: 2.5px;" data-updatable data-tutorial-link="#" + path + '/' + name + '#tutorial')
+          span.uk-margin-remove.uk-display-inline-block.uk-label.uk-align-right(style="font-size: 10px; margin: 3px 10px 3px 0px !important; opacity: 0.5;")
+            :levelType(path)
+              
+mixin menu(classes, mobile = false)
+  div(class="uk-width-1-4@m " + classes uk-height-viewport)
+    .uk-background-muted.uk-padding.uk-height-viewport.sidebar(style=mobile?"padding-bottom: 100px;":"")
+      h1.uk-nav-header Examples &nbsp;&nbsp;<b>V 2.2.0</b> (Beta)
+      div.uk-width-1-1
+        include _search.pug
+        ul.uk-nav-default.uk-nav-parent-icon(uk-nav='multiple: true')
+          li.uk-padding-small.uk-padding-remove-bottom.uk-padding-remove-left
+            a#tutorial-open(href='#' uk-toggle='target: #explanation; animation: uk-animation-fade' data-updatable data-tutorial-link="#")
+              span.uk-margin-small-right(uk-icon='icon: code')
+              |  View tutorial
+          
+          li.uk-nav-divider.uk-padding-small 
+              
+          +mapper(map)
+      
+          li.uk-nav-header Other
+          li
+            a(href='https://github.com/WhitestormJS/whs.js/releases' target='_blank')
+              span.uk-margin-small-right(uk-icon='icon: download')
+              |  Install / Download
+          li
+            a(href='https://whs.io/' target='_blank')
+              span.uk-margin-small-right(uk-icon='icon:  file-edit')
+              |  Documentation
+          li.uk-nav-divider
+          li
+            a(href='https://github.com/WhitestormJS/whs.js/issues' target='_blank')
+              span.uk-margin-small-right(uk-icon='icon: comments')
+              |  Make an issue
+          li
+            a(href='https://github.com/WhitestormJS/whs.js' target='_blank')
+              span.uk-margin-small-right(uk-icon='icon: github')
+              |  GitHub (source code)
+
 html
   head
     include meta.pug
     style.
       @import url('https://fonts.googleapis.com/css?family=Cabin|Fjalla+One|Montserrat|Oxygen');
-    script(src='/examples/assets/js/slideout.min.js')
+    script(src='/assets/js/slideout.min.js')
     include style.pug
   body
-    div.ui.menu.sidebar.vertical.inverted.left.overlay.visible.styled#sidebar
-      h2.item.ui.header#top-nav
-        a.ui.huge.logo.image(href='/')
-          img(src='https://avatars3.githubusercontent.com/u/16437392?v=3&s=200')
-        div.content
-          span Examples
-          div.sub.header
-            a(href='https://github.com/WhitestormJS/whitestorm.js' target='_blank') GitHub
-            = " "
-            span /
-            = " "
-            a(href='https://whs.io/' target='_blank') Docs
-            = " "
-            span /
-            = " "
-            a(href='https://discordapp.com/invite/frNetGE' target='_blank') Chat
+    div.uk-offcanvas-content
+      nav.uk-navbar.uk-navbar-container.uk-margin.uk-margin-remove-bottom(class="uk-hidden@m")
+        .uk-navbar-left
+          a.uk-navbar-toggle(uk-navbar-toggle-icon='', href='#' uk-toggle="target: #sidebar-menu")
+            
+      div#sidebar-menu(uk-offcanvas="bg-close: false" style="margin-top: 80px;" class="uk-width-1-4@m")
+        +menu("uk-width-1-1@m", true)
+          
+    .uk-grid-collapse.content-transform(class='uk-child-width-expand@s' uk-grid uk-height-viewport)
+      +menu("uk-visible@m")
 
-      div(class="ui left icon fluid input")
-        input(type="text" id="filter" placeholder="Filter examples...")
-        i(class="remove circle icon")
+      div.content-transform.uk-background-primary.uk-padding.uk-height-viewport.uk-padding-remove.uk-position-relative#panel
+        div.uk-position-absolute.uk-light.uk-align-center.uk-position-center(uk-spinner="ratio: 2")
+        iframe.uk-position-absolute.uk-transition-fade.uk-position-left(src="/no")
+        div.uk-width-1-1.uk-position-absolute.uk-padding-large#explanation(aria-hidden="true" hidden)
+          
+          article.uk-comment#explanation-holder
 
-      div(class="ui large breadcrumb" id="path")
-        a(class="section" id="cat_") basic
-        i(class="right chevron icon divider")
-        div(class="active section" id="ex_") helloworld
-
-      each category in categories
-        div.item.category
-          h2.ui.header #{category}
-          div.vertical.pointing.menu
-            each path in paths
-              if !path.indexOf(category)
-                div.item.minor
-                  a.ui.medium.header(href='?' + path) #{path.replace('/', ' / ')}
-
-    a.source.desktop(href="/" target="_blank") Source code
-
-    div#panel
-      div.slide-zone
-
-    script.
-      var iframe = document.createElement('iframe');
-      var rootPath = #{devMode} ? '' : '/examples';
-      var link = window.location.search ? '/' + window.location.search.substring(1, window.location.search.length) + '/' : '/basic/helloworld/';
-
-      iframe.src = rootPath + link;
-      iframe.id = 'content'
-      document.querySelector('a.source').href = 'https://github.com/WhitestormJS/whitestorm.js/tree/dev/examples/' + link + '/script.js';
-
-      document.getElementById('panel').appendChild(iframe);
-      var links = document.querySelectorAll('a');
-
-      for (var i = 0, max = links.length; i < max; i++) {
-        links[i].addEventListener('click', function() {
-          window.location.reload();
-        });
-      }
-
-      const la = link.split('/');
-
-      document.getElementById('cat_').innerText = la[1];
-      document.getElementById('ex_').innerText = la[2];
-
-      setTimeout(function () {
-        window.state = iframe.contentWindow['state'];
-      }, 1000);
-    script(src='/examples/assets/js/script.js')
+    script(src='/assets/js/script.js')

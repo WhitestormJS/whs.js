@@ -32,6 +32,22 @@ Community chat. [Join us!][discord-url]
 > We try to publish **minor update releases every 60 days** or even more often depending on the amount of features that sometimes get added in a very small period of time. We want the community to profit from new modules, components and feature enhancements as soon as they are implemented.
 
 
+#### NPM
+
+```bash
+# Install npm version
+$ npm install whs
+```
+> For `whs@2.2.x` (Three.js r92) use @beta tag
+
+```bash
+# Install npm version
+$ npm install whs@beta
+```
+
+[![NPM Version][npm]][npm-url]
+
+
 ### Basic setup
 
 Download the [minified library](https://raw.githubusercontent.com/WhitestormJS/whs.js/dev/build/whs.min.js) or link the one from [CDN](https://cdnjs.com/libraries/whitestorm.js)
@@ -61,25 +77,31 @@ app.start(); // Run app.
 
 <a href="http://codepen.io/sasha240100/pen/JELBGX"><img src="http://blog.codepen.io/wp-content/uploads/2012/06/TryItOn-CodePen.png" height="50" /></a>
 
-
-#### NPM
-
-```bash
-# Install npm version
-$ npm install whs
-```
-
-[![NPM Version][npm]][npm-url]
-
 ### Featured projects
+
+<a href="https://rmallick6806.github.io/SolarSystemBuilder/">
+  <img src="https://i.imgur.com/z4wfhXb.png" alt="https://rmallick6806.github.io/SolarSystemBuilder/" width="30%" />
+</a>
+
+<a href="http://www.tpain.com/">
+  <img src="https://i.imgur.com/38bdu6G.jpg" alt="http://www.tpain.com/" width="30%" />
+</a>
+
+<a href="http://artifacts.zone/lorenzav/">
+  <img src="https://i.imgur.com/rKx39eY.png" alt="http://artifacts.zone/lorenzav/" width="30%" />
+</a>
+
+<a href="http://artifacts.zone/tree/">
+  <img src="https://i.imgur.com/y0ZwWVi.png" alt="http://artifacts.zone/tree/" width="30%" />
+</a>
 
 <a href="http://abdaily.surge.sh/4/">
   <img src="http://whs.io/images/showcase/daily4.png" alt="http://abdaily.surge.sh/4/" width="30%" />
 </a>
 
-<a href="http://abdaily.surge.sh/3/">
+<!-- <a href="http://abdaily.surge.sh/3/">
   <img src="http://whs.io/images/showcase/daily3.png" alt="http://abdaily.surge.sh/3/" width="30%" />
-</a>
+</a> -->
 
 <a href="http://abdaily.surge.sh/2/">
   <img src="http://whs.io/images/showcase/daily2.png" alt="http://abdaily.surge.sh/2/" width="30%" />

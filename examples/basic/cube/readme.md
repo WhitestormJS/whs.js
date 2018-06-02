@@ -377,7 +377,7 @@ Here are the final files for y'all, check and see if your files looks like these
 
 ##### Script.js #####
 ```javascript
-import * as UTILS from '../../globals';
+import * as UTILS from '@utils';
 
 const ad = UTILS.appDefaults;
 

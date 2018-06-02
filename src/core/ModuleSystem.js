@@ -4,7 +4,7 @@ import {ManagerError} from './errors';
 
 // Check for Three.js
 const warnDeps = () => {
-  throw new Error('WhitestormJS Framework requires Three.js r84. https://threejs.org/');
+  throw new Error('WhitestormJS Framework requ ires Three.js r92. https://threejs.org/');
 };
 
 try {
@@ -55,7 +55,7 @@ export class ModuleSystem extends Events {
    * @memberof module:core.ModuleSystem
    */
   applyBridge(bridgeMap = {}) {
-    const modules = this.modules;
+    const {modules} = this;
     if (!modules) return bridgeMap;
 
     for (let i = 0, max = modules.length; i < max; i++) {
@@ -81,7 +81,7 @@ export class ModuleSystem extends Events {
    * @memberof module:core.ModuleSystem
    */
   applyCommand(name, cb = (func, moduleScope) => func.apply(this, [moduleScope])) {
-    const modules = this.modules;
+    const {modules} = this;
     if (!modules) return;
 
     for (let i = 0, max = modules.length; i < max; i++) {

@@ -25,10 +25,14 @@ const consoleColors = {
 
 export const log = (color, msg) => console.log(consoleColors[color], msg, consoleColors.reset);
 
-export const getPaths = () => {
+const isExample = _path =>
+  fs.statSync(_path).isDirectory() && fs.existsSync(path.join(_path, './index.pug'));
+
+export const parseExamplesStructure = () => {
   const categories = [];
+  const map = {};
   const paths = [];
-  const excludeFolders = ['assets'];
+  const excludeFolders = ['assets', 'build', 'modules'];
 
   const handleFolders = (folder, callback) =>
     fs.readdirSync(folder).filter(file => {
@@ -41,12 +45,31 @@ export const getPaths = () => {
   handleFolders('./examples/', category => {
     categories.push(category);
 
-    handleFolders(path.join('./examples/', category), name => {
-      paths.push(`${category}/${name}`);
+    const _path = path.join('./examples/', category);
+    const _map = {};
+
+    map[category] = _map;
+
+    handleFolders(_path, fileOrSubcategory => {
+      const __path = path.join(_path, fileOrSubcategory);
+
+      if (isExample(__path)) {
+        paths.push(`${category}/${fileOrSubcategory}`);
+        // console.log(fileOrSubcategory);
+        _map[fileOrSubcategory] = {};
+      } else {
+        const __map = {};
+        _map[fileOrSubcategory] = __map;
+
+        handleFolders(__path, file => {
+          paths.push(`${category}/${fileOrSubcategory}/${file}`);
+          __map[file] = {};
+        });
+      }
     });
   });
 
-  return [paths, categories];
+  return {paths, categories, map};
 };
 
 // ERRORS
