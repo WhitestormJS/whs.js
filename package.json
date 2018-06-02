@@ -1,6 +1,6 @@
 {
   "name": "whs",
-  "version": "2.2.0-alpha.0",
+  "version": "2.2.0-beta.0",
   "description": "Super-fast 3D framework for Web Applications & Games. Based on Three.js",
   "main": "build/whs.js",
   "jsnext:main": "build/whs.module.js",
