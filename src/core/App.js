@@ -54,7 +54,7 @@ class App extends ModuleSystem {
         };
     })();
 
-    function process() {
+    const process = () => {
       this.request = requestAnimFrame(() => process());
       if (!this.enabled) return;
 
@@ -62,10 +62,12 @@ class App extends ModuleSystem {
         const e = this.loops[i];
         if (e.enabled) e.execute(e.clock);
       }
-    }
+    };
 
     this.enabled = true;
-    !this.request && process();
+
+    if (!this.request)
+      process();
   }
 
   /**
