@@ -30,6 +30,7 @@ export default {
     name: 'WHS',
     sourcemap: true,
     file: 'build/whs.js',
+    external: ['three'],
     banner: `/* WhitestormJS Framework v${require('./package.json').version} */`
   }, {
     format: 'es',
@@ -50,7 +51,8 @@ export default {
     }),
     babelFix(
       babel({
-        runtimeHelpers: true
+        runtimeHelpers: true,
+        sourceMap: true
       })
     ),
     commonjs({include: 'node_modules/**', ignoreGlobal: true}),

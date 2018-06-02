@@ -6,16 +6,22 @@ import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 
 const configure = (moduleName = 'file') => ({
-  entry: `${moduleName}.js`,
-  format: 'umd',
-  moduleName,
-  banner: `/* Built for whs v${require('../../../package.json').version} */`,
-  sourceMap: true,
+  input: `${moduleName}.js`,
 
-  external: [
-    'three',
-    'whs'
-  ],
+  output: [{
+    format: 'umd',
+    name: moduleName,
+    sourcemap: true,
+    file: path.resolve(__dirname, `../../../modules/${moduleName}.js`),
+    external: ['three', 'whs'],
+    banner: `/* Built for whs v${require('../../../package.json').version} */`
+  }, {
+    format: 'es',
+    sourcemap: true,
+    file: path.resolve(__dirname, `../../../modules/${moduleName}.module.js`),
+    external: ['three', 'whs'],
+    banner: `/* Built for whs v${require('../../../package.json').version} */`
+  }],
 
   globals: {
     three: 'THREE',
@@ -23,35 +29,31 @@ const configure = (moduleName = 'file') => ({
   },
 
   plugins: [
-    resolve({jsnext: true, main: true}),
+    resolve({
+      jsnext: true,
+      module: true
+    }),
     commonjs({include: 'node_modules/**'}),
     babel({
       exclude: [
         'node_modules/**',
         '*.json'
       ],
+      // ...require('./.babelrc.js'),
+      // runtimeHelpers: true,
       sourceMap: true
     }),
-  ],
-
-  targets: [
-    {
-      dest: `../../../modules/${moduleName}.js`
-    },
-    {
-      format: 'es',
-      dest: `../../../modules/${moduleName}.module.js`
-    }
   ]
 });
 
 function buildConfiguration() {
   const config = [];
 
-  const exclude = (file) => !(file === 'package.json' || file === 'package-lock.json' || file === 'rollup.modules.config.js');
+  const exclude = (file) =>
+    /(\.json$|\.config\.js$|\.babel\.?rc)/.test(file);
 
   fs.readdirSync('./').forEach(file => {
-    if (file.indexOf('.js') > 0 && exclude(file)) {
+    if (file.indexOf('.js') > 0 && !exclude(file)) {
       config.push(configure(file.replace('.js', '')));
     }
   });
