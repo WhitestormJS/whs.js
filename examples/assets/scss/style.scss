@@ -38,6 +38,13 @@ iframe {
   }
 }
 
+.content-transform {
+  @media screen and (max-width: 960px) {
+    min-height: auto !important;
+    height: calc(100vh - 80px) !important;
+  }
+}
+
 [uk-spinner] {
   opacity: 1;
   transition: opacity ease-in-out 0.3s;
@@ -65,14 +72,15 @@ pre {
   }
 }
 
-#filter {
+.filter {
   background: #ececec;
   height: 40px;
 
   span {
     font-size: 12pt !important;
-    width: 16px;
+    width: 16px !important;
     height: 16px;
+    top: 12px !important;
   }
 
   input {

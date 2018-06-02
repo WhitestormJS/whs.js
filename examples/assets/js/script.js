@@ -3,9 +3,8 @@
 var iframe = document.querySelector('iframe');
 var hash = window.location.hash.slice(1).split('#');
 var link = window.location.hash.length > 3 ? hash[0] + '/' : '/Basic/Hello_World/';
-console.log(link);
 
-iframe.src = rootPath + link;
+iframe.src = '' + link;
 iframe.id = 'content';
 document.getElementById('panel').appendChild(iframe);
 
@@ -50,25 +49,27 @@ if (hash[1] && hash[1] === 'tutorial') {
   document.querySelector('#explanation').removeAttribute('hidden');
 }
 
-const filter = document.getElementById('filter');
+const filters = document.querySelectorAll('.filter');
 const items = document.querySelectorAll('[data-item]');
 
 // tutorialOpen.addEventListener('click', () => {
 //   if (tutorialOpen.href.indexOf(''))
 // })
 
-filter.addEventListener('keyup', function (e) {
-  const text = e.target.value;
+for (let filter of filters) {
+  filter.addEventListener('keyup', function (e) {
+    const text = e.target.value;
 
-  items.forEach(item => {
-    // console.log([item]);
-    if (text === '' || item.innerText.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
-      item.parentNode.style.display = 'block';
-    } else {
-      item.parentNode.style.display = 'none';
-    }
-  })
-});
+    items.forEach(item => {
+      // console.log([item]);
+      if (text === '' || item.innerText.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
+        item.parentNode.style.display = 'block';
+      } else {
+        item.parentNode.style.display = 'none';
+      }
+    })
+  });
+}
 
 // SIDEBAR
 // if (isMobile) {
