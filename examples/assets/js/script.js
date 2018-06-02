@@ -26,10 +26,14 @@ tutorialOpen.dataset.tutorialLink = tutorialLink;
 
 for (const link of document.querySelectorAll('[data-updatable]')) {
   link.addEventListener('click', function(e) {
+    // console.log(123);
+    // debugger;
     var tutorial = window.location.hash.indexOf('tutorial') > 0;
 
     if (link.dataset.tutorialLink) {
       e.preventDefault();
+
+      console.log(tutorial);
 
       window.location.hash = tutorial
         ? link.dataset.tutorialLink.replace('#tutorial', '')
@@ -37,7 +41,7 @@ for (const link of document.querySelectorAll('[data-updatable]')) {
     }
 
     if (link.dataset.tutorialLink && link.dataset.tutorialLink.indexOf(hash[0]) > 0) return;
-    window.location.reload();
+    // window.location.reload();
   });
 }
 
