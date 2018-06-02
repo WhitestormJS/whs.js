@@ -11,6 +11,7 @@ examples/layout.html
 examples/**/**/index.html
 examples/**/**/bundle.js
 examples/css/
+examples/build/
 docs/public/
 
 coverage

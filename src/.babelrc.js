@@ -9,6 +9,10 @@ module.exports = {
   ],
   plugins: [
     '@babel/plugin-external-helpers',
+    ['@babel/plugin-transform-runtime', {
+      polyfill: false,
+      regenerator: true
+    }],
     '@babel/plugin-proposal-class-properties',
     ['@babel/plugin-proposal-decorators', {
       legacy: true

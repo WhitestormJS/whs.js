@@ -124,9 +124,9 @@ gulp.task('dev', () => {
     res.render(`./index.pug`, templateData);
   });
 
-  app.get('/examples*', (req, res) => {
-    console.log(req.path.replace('/examples', ''));
-    res.redirect(req.path.replace('/examples', ''));
+  app.get('/assets*', (req, res) => {
+    // console.log(req.path.replace('/examples', ''));
+    res.redirect(req.path);
   });
 
   app.get('/:name', (req, res) => {

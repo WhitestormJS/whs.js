@@ -30,6 +30,11 @@ iframe {
   body[data-example-ready] iframe {
     opacity: 1; }
 
+@media screen and (max-width: 960px) {
+  .content-transform {
+    min-height: auto !important;
+    height: calc(100vh - 80px) !important; } }
+
 [uk-spinner] {
   opacity: 1;
   transition: opacity ease-in-out 0.3s; }
@@ -49,15 +54,16 @@ pre {
     font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier;
     font-weight: 400 !important; }
 
-#filter {
+.filter {
   background: #ececec;
   height: 40px;
   margin-bottom: 20px; }
-  #filter span {
+  .filter span {
     font-size: 12pt !important;
-    width: 16px;
-    height: 16px; }
-  #filter input {
+    width: 16px !important;
+    height: 16px;
+    top: 12px !important; }
+  .filter input {
     font-size: 12pt !important;
     height: 16px;
     font-family: 'Proxima Nova Thin', Georgia, sans-serif;
