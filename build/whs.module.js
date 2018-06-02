@@ -1,1985 +1,9 @@
-/* WhitestormJS Framework v2.2.0-alpha.0 */
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-var runtime = createCommonjsModule(function (module) {
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-!(function(global) {
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  var inModule = 'object' === "object";
-  var runtime = global.regeneratorRuntime;
-  if (runtime) {
-    if (inModule) {
-      // If regeneratorRuntime is defined globally and we're in a module,
-      // make the exports object identical to regeneratorRuntime.
-      module.exports = runtime;
-    }
-    // Don't bother evaluating the rest of this file if the runtime was
-    // already defined globally.
-    return;
-  }
-
-  // Define the runtime globally (as expected by generated code) as either
-  // module.exports (if we're in a module) or a new, empty object.
-  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []);
-
-    // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-
-    return generator;
-  }
-  runtime.wrap = wrap;
-
-  // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-  function tryCatch(fn, obj, arg) {
-    try {
-      return { type: "normal", arg: fn.call(obj, arg) };
-    } catch (err) {
-      return { type: "throw", arg: err };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed";
-
-  // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-  var ContinueSentinel = {};
-
-  // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-  function Generator() {}
-  function GeneratorFunction() {}
-  function GeneratorFunctionPrototype() {}
-
-  // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-  var IteratorPrototype = {};
-  IteratorPrototype[iteratorSymbol] = function () {
-    return this;
-  };
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  if (NativeIteratorPrototype &&
-      NativeIteratorPrototype !== Op &&
-      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype =
-    Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-  GeneratorFunctionPrototype.constructor = GeneratorFunction;
-  GeneratorFunctionPrototype[toStringTagSymbol] =
-    GeneratorFunction.displayName = "GeneratorFunction";
-
-  // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
-      prototype[method] = function(arg) {
-        return this._invoke(method, arg);
-      };
-    });
-  }
-
-  runtime.isGeneratorFunction = function(genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor
-      ? ctor === GeneratorFunction ||
-        // For the native GeneratorFunction constructor, the best we can
-        // do is to check its .name property.
-        (ctor.displayName || ctor.name) === "GeneratorFunction"
-      : false;
-  };
-
-  runtime.mark = function(genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-      if (!(toStringTagSymbol in genFun)) {
-        genFun[toStringTagSymbol] = "GeneratorFunction";
-      }
-    }
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  };
-
-  // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-  runtime.awrap = function(arg) {
-    return { __await: arg };
-  };
-
-  function AsyncIterator(generator) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-        if (value &&
-            typeof value === "object" &&
-            hasOwn.call(value, "__await")) {
-          return Promise.resolve(value.__await).then(function(value) {
-            invoke("next", value, resolve, reject);
-          }, function(err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return Promise.resolve(value).then(function(unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration. If the Promise is rejected, however, the
-          // result for this iteration will be rejected with the same
-          // reason. Note that rejections of yielded Promises are not
-          // thrown back into the generator function, as is the case
-          // when an awaited Promise is rejected. This difference in
-          // behavior between yield and await is important, because it
-          // allows the consumer to decide what to do with the yielded
-          // rejection (swallow it and continue, manually .throw it back
-          // into the generator, abandon iteration, whatever). With
-          // await, by contrast, there is no opportunity to examine the
-          // rejection reason outside the generator function, so the
-          // only option is to throw it from the await expression, and
-          // let the generator function handle the exception.
-          result.value = unwrapped;
-          resolve(result);
-        }, reject);
-      }
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new Promise(function(resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise =
-        // If enqueue has been called before, then we want to wait until
-        // all previous Promises have been resolved before calling invoke,
-        // so that results are always delivered in the correct order. If
-        // enqueue has not been called before, then it is important to
-        // call invoke immediately, without waiting on a callback to fire,
-        // so that the async generator function has the opportunity to do
-        // any necessary setup in a predictable way. This predictability
-        // is why the Promise constructor synchronously invokes its
-        // executor callback, and why async functions synchronously
-        // execute code before the first await. Since we implement simple
-        // async functions in terms of async generators, it is especially
-        // important to get this right, even though it requires care.
-        previousPromise ? previousPromise.then(
-          callInvokeWithMethodAndArg,
-          // Avoid propagating failures to Promises returned by later
-          // invocations of the iterator.
-          callInvokeWithMethodAndArg
-        ) : callInvokeWithMethodAndArg();
-    }
-
-    // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
-    return this;
-  };
-  runtime.AsyncIterator = AsyncIterator;
-
-  // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-  runtime.async = function(innerFn, outerFn, self, tryLocsList) {
-    var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList)
-    );
-
-    return runtime.isGeneratorFunction(outerFn)
-      ? iter // If outerFn is a generator, return the full iterator.
-      : iter.next().then(function(result) {
-          return result.done ? result.value : iter.next();
-        });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        }
-
-        // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-
-        var record = tryCatch(innerFn, self, context);
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done
-            ? GenStateCompleted
-            : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-
-        } else if (record.type === "throw") {
-          state = GenStateCompleted;
-          // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  }
-
-  // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-    if (method === undefined) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        if (delegate.iterator.return) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError(
-          "The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (! info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value;
-
-      // Resume execution at the desired location (see delegateYield).
-      context.next = delegate.nextLoc;
-
-      // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined;
-      }
-
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    }
-
-    // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-    context.delegate = null;
-    return ContinueSentinel;
-  }
-
-  // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-  defineIteratorMethods(Gp);
-
-  Gp[toStringTagSymbol] = "Generator";
-
-  // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-  Gp[iteratorSymbol] = function() {
-    return this;
-  };
-
-  Gp.toString = function() {
-    return "[object Generator]";
-  };
-
-  function pushTryEntry(locs) {
-    var entry = { tryLoc: locs[0] };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  runtime.keys = function(object) {
-    var keys = [];
-    for (var key in object) {
-      keys.push(key);
-    }
-    keys.reverse();
-
-    // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      }
-
-      // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1, next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined;
-          next.done = true;
-
-          return next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    // Return an iterator with no values.
-    return { next: doneResult };
-  }
-  runtime.values = values;
-
-  function doneResult() {
-    return { value: undefined, done: true };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-
-    reset: function(skipTempReset) {
-      this.prev = 0;
-      this.next = 0;
-      // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-      this.sent = this._sent = undefined;
-      this.done = false;
-      this.delegate = null;
-
-      this.method = "next";
-      this.arg = undefined;
-
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" &&
-              hasOwn.call(this, name) &&
-              !isNaN(+name.slice(1))) {
-            this[name] = undefined;
-          }
-        }
-      }
-    },
-
-    stop: function() {
-      this.done = true;
-
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !! caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-
-    abrupt: function(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-
-    finish: function(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-
-    "catch": function(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-          return thrown;
-        }
-      }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-      throw new Error("illegal catch attempt");
-    },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-})(
-  // In sloppy mode, unbound `this` refers to the global object, fallback to
-  // Function constructor if we're in global strict mode. That is sadly a form
-  // of indirect eval which violates Content Security Policy.
-  (function() { return this })() || Function("return this")()
-);
-});
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-// This method of obtaining a reference to the global object needs to be
-// kept identical to the way it is obtained in runtime.js
-var g = (function() { return this })() || Function("return this")();
-
-// Use `getOwnPropertyNames` because not all browsers support calling
-// `hasOwnProperty` on the global `self` object in a worker. See #183.
-var hadRuntime = g.regeneratorRuntime &&
-  Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
-
-// Save the old regeneratorRuntime in case it needs to be restored later.
-var oldRuntime = hadRuntime && g.regeneratorRuntime;
-
-// Force reevalutation of runtime.js.
-g.regeneratorRuntime = undefined;
-
-var runtimeModule = runtime;
-
-if (hadRuntime) {
-  // Restore the original runtime.
-  g.regeneratorRuntime = oldRuntime;
-} else {
-  // Remove the global property added by runtime.js.
-  try {
-    delete g.regeneratorRuntime;
-  } catch(e) {
-    g.regeneratorRuntime = undefined;
-  }
-}
-
-var regenerator = runtimeModule;
-
-// 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-var _toInteger = function (it) {
-  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-};
-
-// 7.2.1 RequireObjectCoercible(argument)
-var _defined = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
-  return it;
-};
-
-// true  -> String#at
-// false -> String#codePointAt
-var _stringAt = function (TO_STRING) {
-  return function (that, pos) {
-    var s = String(_defined(that));
-    var i = _toInteger(pos);
-    var l = s.length;
-    var a, b;
-    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
-    a = s.charCodeAt(i);
-    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
-      ? TO_STRING ? s.charAt(i) : a
-      : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
-  };
-};
-
-var _library = true;
-
-var _global = createCommonjsModule(function (module) {
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-});
-
-var _core = createCommonjsModule(function (module) {
-var core = module.exports = { version: '2.5.6' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-});
-var _core_1 = _core.version;
-
-var _aFunction = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-  return it;
-};
-
-// optional / simple context binding
-
-var _ctx = function (fn, that, length) {
-  _aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
-      return fn.call(that, a);
-    };
-    case 2: return function (a, b) {
-      return fn.call(that, a, b);
-    };
-    case 3: return function (a, b, c) {
-      return fn.call(that, a, b, c);
-    };
-  }
-  return function (/* ...args */) {
-    return fn.apply(that, arguments);
-  };
-};
-
-var _isObject = function (it) {
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
-};
-
-var _anObject = function (it) {
-  if (!_isObject(it)) throw TypeError(it + ' is not an object!');
-  return it;
-};
-
-var _fails = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
-};
-
-// Thank's IE8 for his funny defineProperty
-var _descriptors = !_fails(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-});
-
-var document$1 = _global.document;
-// typeof document.createElement is 'object' in old IE
-var is = _isObject(document$1) && _isObject(document$1.createElement);
-var _domCreate = function (it) {
-  return is ? document$1.createElement(it) : {};
-};
-
-var _ie8DomDefine = !_descriptors && !_fails(function () {
-  return Object.defineProperty(_domCreate('div'), 'a', { get: function () { return 7; } }).a != 7;
-});
-
-// 7.1.1 ToPrimitive(input [, PreferredType])
-
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
-var _toPrimitive = function (it, S) {
-  if (!_isObject(it)) return it;
-  var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !_isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !_isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !_isObject(val = fn.call(it))) return val;
-  throw TypeError("Can't convert object to primitive value");
-};
-
-var dP = Object.defineProperty;
-
-var f = _descriptors ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  _anObject(O);
-  P = _toPrimitive(P, true);
-  _anObject(Attributes);
-  if (_ie8DomDefine) try {
-    return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
-};
-
-var _objectDp = {
-	f: f
-};
-
-var _propertyDesc = function (bitmap, value) {
-  return {
-    enumerable: !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
-  };
-};
-
-var _hide = _descriptors ? function (object, key, value) {
-  return _objectDp.f(object, key, _propertyDesc(1, value));
-} : function (object, key, value) {
-  object[key] = value;
-  return object;
-};
-
-var hasOwnProperty = {}.hasOwnProperty;
-var _has = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
-var PROTOTYPE = 'prototype';
-
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? _core : _core[name] || (_core[name] = {});
-  var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? _global : IS_STATIC ? _global[name] : (_global[name] || {})[PROTOTYPE];
-  var key, own, out;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
-    // contains in native
-    own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && _has(exports, key)) continue;
-    // export native or passed
-    out = own ? target[key] : source[key];
-    // prevent global pollution for namespaces
-    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
-    // bind timers to global for call from export context
-    : IS_BIND && own ? _ctx(out, _global)
-    // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function (C) {
-      var F = function (a, b, c) {
-        if (this instanceof C) {
-          switch (arguments.length) {
-            case 0: return new C();
-            case 1: return new C(a);
-            case 2: return new C(a, b);
-          } return new C(a, b, c);
-        } return C.apply(this, arguments);
-      };
-      F[PROTOTYPE] = C[PROTOTYPE];
-      return F;
-    // make static versions for prototype methods
-    })(out) : IS_PROTO && typeof out == 'function' ? _ctx(Function.call, out) : out;
-    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if (IS_PROTO) {
-      (exports.virtual || (exports.virtual = {}))[key] = out;
-      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) _hide(expProto, key, out);
-    }
-  }
-};
-// type bitmap
-$export.F = 1;   // forced
-$export.G = 2;   // global
-$export.S = 4;   // static
-$export.P = 8;   // proto
-$export.B = 16;  // bind
-$export.W = 32;  // wrap
-$export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
-var _export = $export;
-
-var _redefine = _hide;
-
-var _iterators = {};
-
-var toString = {}.toString;
-
-var _cof = function (it) {
-  return toString.call(it).slice(8, -1);
-};
-
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-
-// eslint-disable-next-line no-prototype-builtins
-var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
-  return _cof(it) == 'String' ? it.split('') : Object(it);
-};
-
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-
-
-var _toIobject = function (it) {
-  return _iobject(_defined(it));
-};
-
-// 7.1.15 ToLength
-
-var min = Math.min;
-var _toLength = function (it) {
-  return it > 0 ? min(_toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-};
-
-var max = Math.max;
-var min$1 = Math.min;
-var _toAbsoluteIndex = function (index, length) {
-  index = _toInteger(index);
-  return index < 0 ? max(index + length, 0) : min$1(index, length);
-};
-
-// false -> Array#indexOf
-// true  -> Array#includes
-
-
-
-var _arrayIncludes = function (IS_INCLUDES) {
-  return function ($this, el, fromIndex) {
-    var O = _toIobject($this);
-    var length = _toLength(O.length);
-    var index = _toAbsoluteIndex(fromIndex, length);
-    var value;
-    // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare
-    if (IS_INCLUDES && el != el) while (length > index) {
-      value = O[index++];
-      // eslint-disable-next-line no-self-compare
-      if (value != value) return true;
-    // Array#indexOf ignores holes, Array#includes - not
-    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-      if (O[index] === el) return IS_INCLUDES || index || 0;
-    } return !IS_INCLUDES && -1;
-  };
-};
-
-var _shared = createCommonjsModule(function (module) {
-var SHARED = '__core-js_shared__';
-var store = _global[SHARED] || (_global[SHARED] = {});
-
-(module.exports = function (key, value) {
-  return store[key] || (store[key] = value !== undefined ? value : {});
-})('versions', []).push({
-  version: _core.version,
-  mode: _library ? 'pure' : 'global',
-  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
-});
-});
-
-var id = 0;
-var px = Math.random();
-var _uid = function (key) {
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-var shared = _shared('keys');
-
-var _sharedKey = function (key) {
-  return shared[key] || (shared[key] = _uid(key));
-};
-
-var arrayIndexOf = _arrayIncludes(false);
-var IE_PROTO = _sharedKey('IE_PROTO');
-
-var _objectKeysInternal = function (object, names) {
-  var O = _toIobject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) if (key != IE_PROTO) _has(O, key) && result.push(key);
-  // Don't enum bug & hidden keys
-  while (names.length > i) if (_has(O, key = names[i++])) {
-    ~arrayIndexOf(result, key) || result.push(key);
-  }
-  return result;
-};
-
-// IE 8- don't enum bug keys
-var _enumBugKeys = (
-  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-).split(',');
-
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-
-
-
-var _objectKeys = Object.keys || function keys(O) {
-  return _objectKeysInternal(O, _enumBugKeys);
-};
-
-var _objectDps = _descriptors ? Object.defineProperties : function defineProperties(O, Properties) {
-  _anObject(O);
-  var keys = _objectKeys(Properties);
-  var length = keys.length;
-  var i = 0;
-  var P;
-  while (length > i) _objectDp.f(O, P = keys[i++], Properties[P]);
-  return O;
-};
-
-var document$2 = _global.document;
-var _html = document$2 && document$2.documentElement;
-
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-
-
-
-var IE_PROTO$1 = _sharedKey('IE_PROTO');
-var Empty = function () { /* empty */ };
-var PROTOTYPE$1 = 'prototype';
-
-// Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function () {
-  // Thrash, waste and sodomy: IE GC bug
-  var iframe = _domCreate('iframe');
-  var i = _enumBugKeys.length;
-  var lt = '<';
-  var gt = '>';
-  var iframeDocument;
-  iframe.style.display = 'none';
-  _html.appendChild(iframe);
-  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
-  // createDict = iframe.contentWindow.Object;
-  // html.removeChild(iframe);
-  iframeDocument = iframe.contentWindow.document;
-  iframeDocument.open();
-  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
-  iframeDocument.close();
-  createDict = iframeDocument.F;
-  while (i--) delete createDict[PROTOTYPE$1][_enumBugKeys[i]];
-  return createDict();
-};
-
-var _objectCreate = Object.create || function create(O, Properties) {
-  var result;
-  if (O !== null) {
-    Empty[PROTOTYPE$1] = _anObject(O);
-    result = new Empty();
-    Empty[PROTOTYPE$1] = null;
-    // add "__proto__" for Object.getPrototypeOf polyfill
-    result[IE_PROTO$1] = O;
-  } else result = createDict();
-  return Properties === undefined ? result : _objectDps(result, Properties);
-};
-
-var _wks = createCommonjsModule(function (module) {
-var store = _shared('wks');
-
-var Symbol = _global.Symbol;
-var USE_SYMBOL = typeof Symbol == 'function';
-
-var $exports = module.exports = function (name) {
-  return store[name] || (store[name] =
-    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : _uid)('Symbol.' + name));
-};
-
-$exports.store = store;
-});
-
-var def = _objectDp.f;
-
-var TAG = _wks('toStringTag');
-
-var _setToStringTag = function (it, tag, stat) {
-  if (it && !_has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
-};
-
-var IteratorPrototype = {};
-
-// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-_hide(IteratorPrototype, _wks('iterator'), function () { return this; });
-
-var _iterCreate = function (Constructor, NAME, next) {
-  Constructor.prototype = _objectCreate(IteratorPrototype, { next: _propertyDesc(1, next) });
-  _setToStringTag(Constructor, NAME + ' Iterator');
-};
-
-// 7.1.13 ToObject(argument)
-
-var _toObject = function (it) {
-  return Object(_defined(it));
-};
-
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-
-
-var IE_PROTO$2 = _sharedKey('IE_PROTO');
-var ObjectProto = Object.prototype;
-
-var _objectGpo = Object.getPrototypeOf || function (O) {
-  O = _toObject(O);
-  if (_has(O, IE_PROTO$2)) return O[IE_PROTO$2];
-  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
-    return O.constructor.prototype;
-  } return O instanceof Object ? ObjectProto : null;
-};
-
-var ITERATOR = _wks('iterator');
-var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
-var FF_ITERATOR = '@@iterator';
-var KEYS = 'keys';
-var VALUES = 'values';
-
-var returnThis = function () { return this; };
-
-var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
-  _iterCreate(Constructor, NAME, next);
-  var getMethod = function (kind) {
-    if (!BUGGY && kind in proto) return proto[kind];
-    switch (kind) {
-      case KEYS: return function keys() { return new Constructor(this, kind); };
-      case VALUES: return function values() { return new Constructor(this, kind); };
-    } return function entries() { return new Constructor(this, kind); };
-  };
-  var TAG = NAME + ' Iterator';
-  var DEF_VALUES = DEFAULT == VALUES;
-  var VALUES_BUG = false;
-  var proto = Base.prototype;
-  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = $native || getMethod(DEFAULT);
-  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
-  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
-  var methods, key, IteratorPrototype;
-  // Fix native
-  if ($anyNative) {
-    IteratorPrototype = _objectGpo($anyNative.call(new Base()));
-    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
-      // Set @@toStringTag to native iterators
-      _setToStringTag(IteratorPrototype, TAG, true);
-      // fix for some old engines
-      if (!_library && typeof IteratorPrototype[ITERATOR] != 'function') _hide(IteratorPrototype, ITERATOR, returnThis);
-    }
-  }
-  // fix Array#{values, @@iterator}.name in V8 / FF
-  if (DEF_VALUES && $native && $native.name !== VALUES) {
-    VALUES_BUG = true;
-    $default = function values() { return $native.call(this); };
-  }
-  // Define iterator
-  if ((!_library || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
-    _hide(proto, ITERATOR, $default);
-  }
-  // Plug for library
-  _iterators[NAME] = $default;
-  _iterators[TAG] = returnThis;
-  if (DEFAULT) {
-    methods = {
-      values: DEF_VALUES ? $default : getMethod(VALUES),
-      keys: IS_SET ? $default : getMethod(KEYS),
-      entries: $entries
-    };
-    if (FORCED) for (key in methods) {
-      if (!(key in proto)) _redefine(proto, key, methods[key]);
-    } else _export(_export.P + _export.F * (BUGGY || VALUES_BUG), NAME, methods);
-  }
-  return methods;
-};
-
-var $at = _stringAt(true);
-
-// 21.1.3.27 String.prototype[@@iterator]()
-_iterDefine(String, 'String', function (iterated) {
-  this._t = String(iterated); // target
-  this._i = 0;                // next index
-// 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var index = this._i;
-  var point;
-  if (index >= O.length) return { value: undefined, done: true };
-  point = $at(O, index);
-  this._i += point.length;
-  return { value: point, done: false };
-});
-
-var _iterStep = function (done, value) {
-  return { value: value, done: !!done };
-};
-
-// 22.1.3.4 Array.prototype.entries()
-// 22.1.3.13 Array.prototype.keys()
-// 22.1.3.29 Array.prototype.values()
-// 22.1.3.30 Array.prototype[@@iterator]()
-var es6_array_iterator = _iterDefine(Array, 'Array', function (iterated, kind) {
-  this._t = _toIobject(iterated); // target
-  this._i = 0;                   // next index
-  this._k = kind;                // kind
-// 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var kind = this._k;
-  var index = this._i++;
-  if (!O || index >= O.length) {
-    this._t = undefined;
-    return _iterStep(1);
-  }
-  if (kind == 'keys') return _iterStep(0, index);
-  if (kind == 'values') return _iterStep(0, O[index]);
-  return _iterStep(0, [index, O[index]]);
-}, 'values');
-
-// argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
-_iterators.Arguments = _iterators.Array;
-
-var TO_STRING_TAG = _wks('toStringTag');
-
-var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
-  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
-  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
-  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
-  'TextTrackList,TouchList').split(',');
-
-for (var i = 0; i < DOMIterables.length; i++) {
-  var NAME = DOMIterables[i];
-  var Collection = _global[NAME];
-  var proto = Collection && Collection.prototype;
-  if (proto && !proto[TO_STRING_TAG]) _hide(proto, TO_STRING_TAG, NAME);
-  _iterators[NAME] = _iterators.Array;
-}
-
-// getting tag from 19.1.3.6 Object.prototype.toString()
-
-var TAG$1 = _wks('toStringTag');
-// ES3 wrong here
-var ARG = _cof(function () { return arguments; }()) == 'Arguments';
-
-// fallback for IE11 Script Access Denied error
-var tryGet = function (it, key) {
-  try {
-    return it[key];
-  } catch (e) { /* empty */ }
-};
-
-var _classof = function (it) {
-  var O, T, B;
-  return it === undefined ? 'Undefined' : it === null ? 'Null'
-    // @@toStringTag case
-    : typeof (T = tryGet(O = Object(it), TAG$1)) == 'string' ? T
-    // builtinTag case
-    : ARG ? _cof(O)
-    // ES3 arguments fallback
-    : (B = _cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
-};
-
-var _anInstance = function (it, Constructor, name, forbiddenField) {
-  if (!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)) {
-    throw TypeError(name + ': incorrect invocation!');
-  } return it;
-};
-
-// call something on iterator step with safe closing on error
-
-var _iterCall = function (iterator, fn, value, entries) {
-  try {
-    return entries ? fn(_anObject(value)[0], value[1]) : fn(value);
-  // 7.4.6 IteratorClose(iterator, completion)
-  } catch (e) {
-    var ret = iterator['return'];
-    if (ret !== undefined) _anObject(ret.call(iterator));
-    throw e;
-  }
-};
-
-// check on default Array iterator
-
-var ITERATOR$1 = _wks('iterator');
-var ArrayProto = Array.prototype;
-
-var _isArrayIter = function (it) {
-  return it !== undefined && (_iterators.Array === it || ArrayProto[ITERATOR$1] === it);
-};
-
-var ITERATOR$2 = _wks('iterator');
-
-var core_getIteratorMethod = _core.getIteratorMethod = function (it) {
-  if (it != undefined) return it[ITERATOR$2]
-    || it['@@iterator']
-    || _iterators[_classof(it)];
-};
-
-var _forOf = createCommonjsModule(function (module) {
-var BREAK = {};
-var RETURN = {};
-var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) {
-  var iterFn = ITERATOR ? function () { return iterable; } : core_getIteratorMethod(iterable);
-  var f = _ctx(fn, that, entries ? 2 : 1);
-  var index = 0;
-  var length, step, iterator, result;
-  if (typeof iterFn != 'function') throw TypeError(iterable + ' is not iterable!');
-  // fast case for arrays with default iterator
-  if (_isArrayIter(iterFn)) for (length = _toLength(iterable.length); length > index; index++) {
-    result = entries ? f(_anObject(step = iterable[index])[0], step[1]) : f(iterable[index]);
-    if (result === BREAK || result === RETURN) return result;
-  } else for (iterator = iterFn.call(iterable); !(step = iterator.next()).done;) {
-    result = _iterCall(iterator, f, step.value, entries);
-    if (result === BREAK || result === RETURN) return result;
-  }
-};
-exports.BREAK = BREAK;
-exports.RETURN = RETURN;
-});
-
-// 7.3.20 SpeciesConstructor(O, defaultConstructor)
-
-
-var SPECIES = _wks('species');
-var _speciesConstructor = function (O, D) {
-  var C = _anObject(O).constructor;
-  var S;
-  return C === undefined || (S = _anObject(C)[SPECIES]) == undefined ? D : _aFunction(S);
-};
-
-// fast apply, http://jsperf.lnkit.com/fast-apply/5
-var _invoke = function (fn, args, that) {
-  var un = that === undefined;
-  switch (args.length) {
-    case 0: return un ? fn()
-                      : fn.call(that);
-    case 1: return un ? fn(args[0])
-                      : fn.call(that, args[0]);
-    case 2: return un ? fn(args[0], args[1])
-                      : fn.call(that, args[0], args[1]);
-    case 3: return un ? fn(args[0], args[1], args[2])
-                      : fn.call(that, args[0], args[1], args[2]);
-    case 4: return un ? fn(args[0], args[1], args[2], args[3])
-                      : fn.call(that, args[0], args[1], args[2], args[3]);
-  } return fn.apply(that, args);
-};
-
-var process = _global.process;
-var setTask = _global.setImmediate;
-var clearTask = _global.clearImmediate;
-var MessageChannel = _global.MessageChannel;
-var Dispatch = _global.Dispatch;
-var counter = 0;
-var queue = {};
-var ONREADYSTATECHANGE = 'onreadystatechange';
-var defer, channel, port;
-var run = function () {
-  var id = +this;
-  // eslint-disable-next-line no-prototype-builtins
-  if (queue.hasOwnProperty(id)) {
-    var fn = queue[id];
-    delete queue[id];
-    fn();
-  }
-};
-var listener = function (event) {
-  run.call(event.data);
-};
-// Node.js 0.9+ & IE10+ has setImmediate, otherwise:
-if (!setTask || !clearTask) {
-  setTask = function setImmediate(fn) {
-    var args = [];
-    var i = 1;
-    while (arguments.length > i) args.push(arguments[i++]);
-    queue[++counter] = function () {
-      // eslint-disable-next-line no-new-func
-      _invoke(typeof fn == 'function' ? fn : Function(fn), args);
-    };
-    defer(counter);
-    return counter;
-  };
-  clearTask = function clearImmediate(id) {
-    delete queue[id];
-  };
-  // Node.js 0.8-
-  if (_cof(process) == 'process') {
-    defer = function (id) {
-      process.nextTick(_ctx(run, id, 1));
-    };
-  // Sphere (JS game engine) Dispatch API
-  } else if (Dispatch && Dispatch.now) {
-    defer = function (id) {
-      Dispatch.now(_ctx(run, id, 1));
-    };
-  // Browsers with MessageChannel, includes WebWorkers
-  } else if (MessageChannel) {
-    channel = new MessageChannel();
-    port = channel.port2;
-    channel.port1.onmessage = listener;
-    defer = _ctx(port.postMessage, port, 1);
-  // Browsers with postMessage, skip WebWorkers
-  // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
-  } else if (_global.addEventListener && typeof postMessage == 'function' && !_global.importScripts) {
-    defer = function (id) {
-      _global.postMessage(id + '', '*');
-    };
-    _global.addEventListener('message', listener, false);
-  // IE8-
-  } else if (ONREADYSTATECHANGE in _domCreate('script')) {
-    defer = function (id) {
-      _html.appendChild(_domCreate('script'))[ONREADYSTATECHANGE] = function () {
-        _html.removeChild(this);
-        run.call(id);
-      };
-    };
-  // Rest old browsers
-  } else {
-    defer = function (id) {
-      setTimeout(_ctx(run, id, 1), 0);
-    };
-  }
-}
-var _task = {
-  set: setTask,
-  clear: clearTask
-};
-
-var macrotask = _task.set;
-var Observer = _global.MutationObserver || _global.WebKitMutationObserver;
-var process$1 = _global.process;
-var Promise$1 = _global.Promise;
-var isNode = _cof(process$1) == 'process';
-
-var _microtask = function () {
-  var head, last, notify;
-
-  var flush = function () {
-    var parent, fn;
-    if (isNode && (parent = process$1.domain)) parent.exit();
-    while (head) {
-      fn = head.fn;
-      head = head.next;
-      try {
-        fn();
-      } catch (e) {
-        if (head) notify();
-        else last = undefined;
-        throw e;
-      }
-    } last = undefined;
-    if (parent) parent.enter();
-  };
-
-  // Node.js
-  if (isNode) {
-    notify = function () {
-      process$1.nextTick(flush);
-    };
-  // browsers with MutationObserver, except iOS Safari - https://github.com/zloirock/core-js/issues/339
-  } else if (Observer && !(_global.navigator && _global.navigator.standalone)) {
-    var toggle = true;
-    var node = document.createTextNode('');
-    new Observer(flush).observe(node, { characterData: true }); // eslint-disable-line no-new
-    notify = function () {
-      node.data = toggle = !toggle;
-    };
-  // environments with maybe non-completely correct, but existent Promise
-  } else if (Promise$1 && Promise$1.resolve) {
-    // Promise.resolve without an argument throws an error in LG WebOS 2
-    var promise = Promise$1.resolve(undefined);
-    notify = function () {
-      promise.then(flush);
-    };
-  // for other environments - macrotask based on:
-  // - setImmediate
-  // - MessageChannel
-  // - window.postMessag
-  // - onreadystatechange
-  // - setTimeout
-  } else {
-    notify = function () {
-      // strange IE + webpack dev server bug - use .call(global)
-      macrotask.call(_global, flush);
-    };
-  }
-
-  return function (fn) {
-    var task = { fn: fn, next: undefined };
-    if (last) last.next = task;
-    if (!head) {
-      head = task;
-      notify();
-    } last = task;
-  };
-};
-
-// 25.4.1.5 NewPromiseCapability(C)
-
-
-function PromiseCapability(C) {
-  var resolve, reject;
-  this.promise = new C(function ($$resolve, $$reject) {
-    if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
-    resolve = $$resolve;
-    reject = $$reject;
-  });
-  this.resolve = _aFunction(resolve);
-  this.reject = _aFunction(reject);
-}
-
-var f$1 = function (C) {
-  return new PromiseCapability(C);
-};
-
-var _newPromiseCapability = {
-	f: f$1
-};
-
-var _perform = function (exec) {
-  try {
-    return { e: false, v: exec() };
-  } catch (e) {
-    return { e: true, v: e };
-  }
-};
-
-var navigator = _global.navigator;
-
-var _userAgent = navigator && navigator.userAgent || '';
-
-var _promiseResolve = function (C, x) {
-  _anObject(C);
-  if (_isObject(x) && x.constructor === C) return x;
-  var promiseCapability = _newPromiseCapability.f(C);
-  var resolve = promiseCapability.resolve;
-  resolve(x);
-  return promiseCapability.promise;
-};
-
-var _redefineAll = function (target, src, safe) {
-  for (var key in src) {
-    if (safe && target[key]) target[key] = src[key];
-    else _hide(target, key, src[key]);
-  } return target;
-};
-
-var SPECIES$1 = _wks('species');
-
-var _setSpecies = function (KEY) {
-  var C = typeof _core[KEY] == 'function' ? _core[KEY] : _global[KEY];
-  if (_descriptors && C && !C[SPECIES$1]) _objectDp.f(C, SPECIES$1, {
-    configurable: true,
-    get: function () { return this; }
-  });
-};
-
-var ITERATOR$3 = _wks('iterator');
-var SAFE_CLOSING = false;
-
-try {
-  var riter = [7][ITERATOR$3]();
-  riter['return'] = function () { SAFE_CLOSING = true; };
-} catch (e) { /* empty */ }
-
-var _iterDetect = function (exec, skipClosing) {
-  if (!skipClosing && !SAFE_CLOSING) return false;
-  var safe = false;
-  try {
-    var arr = [7];
-    var iter = arr[ITERATOR$3]();
-    iter.next = function () { return { done: safe = true }; };
-    arr[ITERATOR$3] = function () { return iter; };
-    exec(arr);
-  } catch (e) { /* empty */ }
-  return safe;
-};
-
-var task = _task.set;
-var microtask = _microtask();
-
-
-
-
-var PROMISE = 'Promise';
-var TypeError$1 = _global.TypeError;
-var process$2 = _global.process;
-var versions = process$2 && process$2.versions;
-var v8 = versions && versions.v8 || '';
-var $Promise = _global[PROMISE];
-var isNode$1 = _classof(process$2) == 'process';
-var empty = function () { /* empty */ };
-var Internal, newGenericPromiseCapability, OwnPromiseCapability, Wrapper;
-var newPromiseCapability = newGenericPromiseCapability = _newPromiseCapability.f;
-
-var USE_NATIVE = !!function () {
-  try {
-    // correct subclassing with @@species support
-    var promise = $Promise.resolve(1);
-    var FakePromise = (promise.constructor = {})[_wks('species')] = function (exec) {
-      exec(empty, empty);
-    };
-    // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-    return (isNode$1 || typeof PromiseRejectionEvent == 'function')
-      && promise.then(empty) instanceof FakePromise
-      // v8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
-      // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
-      // we can't detect it synchronously, so just check versions
-      && v8.indexOf('6.6') !== 0
-      && _userAgent.indexOf('Chrome/66') === -1;
-  } catch (e) { /* empty */ }
-}();
-
-// helpers
-var isThenable = function (it) {
-  var then;
-  return _isObject(it) && typeof (then = it.then) == 'function' ? then : false;
-};
-var notify = function (promise, isReject) {
-  if (promise._n) return;
-  promise._n = true;
-  var chain = promise._c;
-  microtask(function () {
-    var value = promise._v;
-    var ok = promise._s == 1;
-    var i = 0;
-    var run = function (reaction) {
-      var handler = ok ? reaction.ok : reaction.fail;
-      var resolve = reaction.resolve;
-      var reject = reaction.reject;
-      var domain = reaction.domain;
-      var result, then, exited;
-      try {
-        if (handler) {
-          if (!ok) {
-            if (promise._h == 2) onHandleUnhandled(promise);
-            promise._h = 1;
-          }
-          if (handler === true) result = value;
-          else {
-            if (domain) domain.enter();
-            result = handler(value); // may throw
-            if (domain) {
-              domain.exit();
-              exited = true;
-            }
-          }
-          if (result === reaction.promise) {
-            reject(TypeError$1('Promise-chain cycle'));
-          } else if (then = isThenable(result)) {
-            then.call(result, resolve, reject);
-          } else resolve(result);
-        } else reject(value);
-      } catch (e) {
-        if (domain && !exited) domain.exit();
-        reject(e);
-      }
-    };
-    while (chain.length > i) run(chain[i++]); // variable length - can't use forEach
-    promise._c = [];
-    promise._n = false;
-    if (isReject && !promise._h) onUnhandled(promise);
-  });
-};
-var onUnhandled = function (promise) {
-  task.call(_global, function () {
-    var value = promise._v;
-    var unhandled = isUnhandled(promise);
-    var result, handler, console;
-    if (unhandled) {
-      result = _perform(function () {
-        if (isNode$1) {
-          process$2.emit('unhandledRejection', value, promise);
-        } else if (handler = _global.onunhandledrejection) {
-          handler({ promise: promise, reason: value });
-        } else if ((console = _global.console) && console.error) {
-          console.error('Unhandled promise rejection', value);
-        }
-      });
-      // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
-      promise._h = isNode$1 || isUnhandled(promise) ? 2 : 1;
-    } promise._a = undefined;
-    if (unhandled && result.e) throw result.v;
-  });
-};
-var isUnhandled = function (promise) {
-  return promise._h !== 1 && (promise._a || promise._c).length === 0;
-};
-var onHandleUnhandled = function (promise) {
-  task.call(_global, function () {
-    var handler;
-    if (isNode$1) {
-      process$2.emit('rejectionHandled', promise);
-    } else if (handler = _global.onrejectionhandled) {
-      handler({ promise: promise, reason: promise._v });
-    }
-  });
-};
-var $reject = function (value) {
-  var promise = this;
-  if (promise._d) return;
-  promise._d = true;
-  promise = promise._w || promise; // unwrap
-  promise._v = value;
-  promise._s = 2;
-  if (!promise._a) promise._a = promise._c.slice();
-  notify(promise, true);
-};
-var $resolve = function (value) {
-  var promise = this;
-  var then;
-  if (promise._d) return;
-  promise._d = true;
-  promise = promise._w || promise; // unwrap
-  try {
-    if (promise === value) throw TypeError$1("Promise can't be resolved itself");
-    if (then = isThenable(value)) {
-      microtask(function () {
-        var wrapper = { _w: promise, _d: false }; // wrap
-        try {
-          then.call(value, _ctx($resolve, wrapper, 1), _ctx($reject, wrapper, 1));
-        } catch (e) {
-          $reject.call(wrapper, e);
-        }
-      });
-    } else {
-      promise._v = value;
-      promise._s = 1;
-      notify(promise, false);
-    }
-  } catch (e) {
-    $reject.call({ _w: promise, _d: false }, e); // wrap
-  }
-};
-
-// constructor polyfill
-if (!USE_NATIVE) {
-  // 25.4.3.1 Promise(executor)
-  $Promise = function Promise(executor) {
-    _anInstance(this, $Promise, PROMISE, '_h');
-    _aFunction(executor);
-    Internal.call(this);
-    try {
-      executor(_ctx($resolve, this, 1), _ctx($reject, this, 1));
-    } catch (err) {
-      $reject.call(this, err);
-    }
-  };
-  // eslint-disable-next-line no-unused-vars
-  Internal = function Promise(executor) {
-    this._c = [];             // <- awaiting reactions
-    this._a = undefined;      // <- checked in isUnhandled reactions
-    this._s = 0;              // <- state
-    this._d = false;          // <- done
-    this._v = undefined;      // <- value
-    this._h = 0;              // <- rejection state, 0 - default, 1 - handled, 2 - unhandled
-    this._n = false;          // <- notify
-  };
-  Internal.prototype = _redefineAll($Promise.prototype, {
-    // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
-    then: function then(onFulfilled, onRejected) {
-      var reaction = newPromiseCapability(_speciesConstructor(this, $Promise));
-      reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
-      reaction.fail = typeof onRejected == 'function' && onRejected;
-      reaction.domain = isNode$1 ? process$2.domain : undefined;
-      this._c.push(reaction);
-      if (this._a) this._a.push(reaction);
-      if (this._s) notify(this, false);
-      return reaction.promise;
-    },
-    // 25.4.5.1 Promise.prototype.catch(onRejected)
-    'catch': function (onRejected) {
-      return this.then(undefined, onRejected);
-    }
-  });
-  OwnPromiseCapability = function () {
-    var promise = new Internal();
-    this.promise = promise;
-    this.resolve = _ctx($resolve, promise, 1);
-    this.reject = _ctx($reject, promise, 1);
-  };
-  _newPromiseCapability.f = newPromiseCapability = function (C) {
-    return C === $Promise || C === Wrapper
-      ? new OwnPromiseCapability(C)
-      : newGenericPromiseCapability(C);
-  };
-}
-
-_export(_export.G + _export.W + _export.F * !USE_NATIVE, { Promise: $Promise });
-_setToStringTag($Promise, PROMISE);
-_setSpecies(PROMISE);
-Wrapper = _core[PROMISE];
-
-// statics
-_export(_export.S + _export.F * !USE_NATIVE, PROMISE, {
-  // 25.4.4.5 Promise.reject(r)
-  reject: function reject(r) {
-    var capability = newPromiseCapability(this);
-    var $$reject = capability.reject;
-    $$reject(r);
-    return capability.promise;
-  }
-});
-_export(_export.S + _export.F * (_library || !USE_NATIVE), PROMISE, {
-  // 25.4.4.6 Promise.resolve(x)
-  resolve: function resolve(x) {
-    return _promiseResolve(_library && this === Wrapper ? $Promise : this, x);
-  }
-});
-_export(_export.S + _export.F * !(USE_NATIVE && _iterDetect(function (iter) {
-  $Promise.all(iter)['catch'](empty);
-})), PROMISE, {
-  // 25.4.4.1 Promise.all(iterable)
-  all: function all(iterable) {
-    var C = this;
-    var capability = newPromiseCapability(C);
-    var resolve = capability.resolve;
-    var reject = capability.reject;
-    var result = _perform(function () {
-      var values = [];
-      var index = 0;
-      var remaining = 1;
-      _forOf(iterable, false, function (promise) {
-        var $index = index++;
-        var alreadyCalled = false;
-        values.push(undefined);
-        remaining++;
-        C.resolve(promise).then(function (value) {
-          if (alreadyCalled) return;
-          alreadyCalled = true;
-          values[$index] = value;
-          --remaining || resolve(values);
-        }, reject);
-      });
-      --remaining || resolve(values);
-    });
-    if (result.e) reject(result.v);
-    return capability.promise;
-  },
-  // 25.4.4.4 Promise.race(iterable)
-  race: function race(iterable) {
-    var C = this;
-    var capability = newPromiseCapability(C);
-    var reject = capability.reject;
-    var result = _perform(function () {
-      _forOf(iterable, false, function (promise) {
-        C.resolve(promise).then(capability.resolve, reject);
-      });
-    });
-    if (result.e) reject(result.v);
-    return capability.promise;
-  }
-});
-
-_export(_export.P + _export.R, 'Promise', { 'finally': function (onFinally) {
-  var C = _speciesConstructor(this, _core.Promise || _global.Promise);
-  var isFunction = typeof onFinally == 'function';
-  return this.then(
-    isFunction ? function (x) {
-      return _promiseResolve(C, onFinally()).then(function () { return x; });
-    } : onFinally,
-    isFunction ? function (e) {
-      return _promiseResolve(C, onFinally()).then(function () { throw e; });
-    } : onFinally
-  );
-} });
-
-// https://github.com/tc39/proposal-promise-try
-
-
-
-
-_export(_export.S, 'Promise', { 'try': function (callbackfn) {
-  var promiseCapability = _newPromiseCapability.f(this);
-  var result = _perform(callbackfn);
-  (result.e ? promiseCapability.reject : promiseCapability.resolve)(result.v);
-  return promiseCapability.promise;
-} });
-
-var promise = _core.Promise;
-
-var promise$1 = promise;
-
+/* WhitestormJS Framework v2.2.0-beta.0 */
 function _asyncToGenerator(fn) {
   return function () {
     var self = this,
         args = arguments;
-    return new promise$1(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
       var gen = fn.apply(self, args);
 
       function step(key, arg) {
@@ -1994,7 +18,7 @@ function _asyncToGenerator(fn) {
         if (info.done) {
           resolve(value);
         } else {
-          promise$1.resolve(value).then(_next, _throw);
+          Promise.resolve(value).then(_next, _throw);
         }
       }
 
@@ -2011,459 +35,31 @@ function _asyncToGenerator(fn) {
   };
 }
 
-var asyncToGenerator = _asyncToGenerator;
-
-var f$2 = {}.propertyIsEnumerable;
-
-var _objectPie = {
-	f: f$2
-};
-
-var gOPD = Object.getOwnPropertyDescriptor;
-
-var f$3 = _descriptors ? gOPD : function getOwnPropertyDescriptor(O, P) {
-  O = _toIobject(O);
-  P = _toPrimitive(P, true);
-  if (_ie8DomDefine) try {
-    return gOPD(O, P);
-  } catch (e) { /* empty */ }
-  if (_has(O, P)) return _propertyDesc(!_objectPie.f.call(O, P), O[P]);
-};
-
-var _objectGopd = {
-	f: f$3
-};
-
-// most Object methods by ES6 should accept primitives
-
-
-
-var _objectSap = function (KEY, exec) {
-  var fn = (_core.Object || {})[KEY] || Object[KEY];
-  var exp = {};
-  exp[KEY] = exec(fn);
-  _export(_export.S + _export.F * _fails(function () { fn(1); }), 'Object', exp);
-};
-
-// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-
-var $getOwnPropertyDescriptor = _objectGopd.f;
-
-_objectSap('getOwnPropertyDescriptor', function () {
-  return function getOwnPropertyDescriptor(it, key) {
-    return $getOwnPropertyDescriptor(_toIobject(it), key);
-  };
-});
-
-var $Object = _core.Object;
-var getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
-  return $Object.getOwnPropertyDescriptor(it, key);
-};
-
-var getOwnPropertyDescriptor$1 = getOwnPropertyDescriptor;
-
-var _meta = createCommonjsModule(function (module) {
-var META = _uid('meta');
-
-
-var setDesc = _objectDp.f;
-var id = 0;
-var isExtensible = Object.isExtensible || function () {
-  return true;
-};
-var FREEZE = !_fails(function () {
-  return isExtensible(Object.preventExtensions({}));
-});
-var setMeta = function (it) {
-  setDesc(it, META, { value: {
-    i: 'O' + ++id, // object ID
-    w: {}          // weak collections IDs
-  } });
-};
-var fastKey = function (it, create) {
-  // return primitive with prefix
-  if (!_isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-  if (!_has(it, META)) {
-    // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return 'F';
-    // not necessary to add metadata
-    if (!create) return 'E';
-    // add missing metadata
-    setMeta(it);
-  // return object ID
-  } return it[META].i;
-};
-var getWeak = function (it, create) {
-  if (!_has(it, META)) {
-    // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return true;
-    // not necessary to add metadata
-    if (!create) return false;
-    // add missing metadata
-    setMeta(it);
-  // return hash weak collections IDs
-  } return it[META].w;
-};
-// add metadata on freeze-family methods calling
-var onFreeze = function (it) {
-  if (FREEZE && meta.NEED && isExtensible(it) && !_has(it, META)) setMeta(it);
-  return it;
-};
-var meta = module.exports = {
-  KEY: META,
-  NEED: false,
-  fastKey: fastKey,
-  getWeak: getWeak,
-  onFreeze: onFreeze
-};
-});
-var _meta_1 = _meta.KEY;
-var _meta_2 = _meta.NEED;
-var _meta_3 = _meta.fastKey;
-var _meta_4 = _meta.getWeak;
-var _meta_5 = _meta.onFreeze;
-
-var f$4 = _wks;
-
-var _wksExt = {
-	f: f$4
-};
-
-var defineProperty = _objectDp.f;
-var _wksDefine = function (name) {
-  var $Symbol = _core.Symbol || (_core.Symbol = _library ? {} : _global.Symbol || {});
-  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: _wksExt.f(name) });
-};
-
-var f$5 = Object.getOwnPropertySymbols;
-
-var _objectGops = {
-	f: f$5
-};
-
-// all enumerable object keys, includes symbols
-
-
-
-var _enumKeys = function (it) {
-  var result = _objectKeys(it);
-  var getSymbols = _objectGops.f;
-  if (getSymbols) {
-    var symbols = getSymbols(it);
-    var isEnum = _objectPie.f;
-    var i = 0;
-    var key;
-    while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
-  } return result;
-};
-
-// 7.2.2 IsArray(argument)
-
-var _isArray = Array.isArray || function isArray(arg) {
-  return _cof(arg) == 'Array';
-};
-
-// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-
-var hiddenKeys = _enumBugKeys.concat('length', 'prototype');
-
-var f$6 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
-  return _objectKeysInternal(O, hiddenKeys);
-};
-
-var _objectGopn = {
-	f: f$6
-};
-
-// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-
-var gOPN = _objectGopn.f;
-var toString$1 = {}.toString;
-
-var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
-  ? Object.getOwnPropertyNames(window) : [];
-
-var getWindowNames = function (it) {
-  try {
-    return gOPN(it);
-  } catch (e) {
-    return windowNames.slice();
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
   }
-};
-
-var f$7 = function getOwnPropertyNames(it) {
-  return windowNames && toString$1.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(_toIobject(it));
-};
-
-var _objectGopnExt = {
-	f: f$7
-};
-
-// ECMAScript 6 symbols shim
-
-
-
-
-
-var META = _meta.KEY;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var gOPD$1 = _objectGopd.f;
-var dP$1 = _objectDp.f;
-var gOPN$1 = _objectGopnExt.f;
-var $Symbol = _global.Symbol;
-var $JSON = _global.JSON;
-var _stringify = $JSON && $JSON.stringify;
-var PROTOTYPE$2 = 'prototype';
-var HIDDEN = _wks('_hidden');
-var TO_PRIMITIVE = _wks('toPrimitive');
-var isEnum = {}.propertyIsEnumerable;
-var SymbolRegistry = _shared('symbol-registry');
-var AllSymbols = _shared('symbols');
-var OPSymbols = _shared('op-symbols');
-var ObjectProto$1 = Object[PROTOTYPE$2];
-var USE_NATIVE$1 = typeof $Symbol == 'function';
-var QObject = _global.QObject;
-// Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
-var setter = !QObject || !QObject[PROTOTYPE$2] || !QObject[PROTOTYPE$2].findChild;
-
-// fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-var setSymbolDesc = _descriptors && _fails(function () {
-  return _objectCreate(dP$1({}, 'a', {
-    get: function () { return dP$1(this, 'a', { value: 7 }).a; }
-  })).a != 7;
-}) ? function (it, key, D) {
-  var protoDesc = gOPD$1(ObjectProto$1, key);
-  if (protoDesc) delete ObjectProto$1[key];
-  dP$1(it, key, D);
-  if (protoDesc && it !== ObjectProto$1) dP$1(ObjectProto$1, key, protoDesc);
-} : dP$1;
-
-var wrap = function (tag) {
-  var sym = AllSymbols[tag] = _objectCreate($Symbol[PROTOTYPE$2]);
-  sym._k = tag;
-  return sym;
-};
-
-var isSymbol = USE_NATIVE$1 && typeof $Symbol.iterator == 'symbol' ? function (it) {
-  return typeof it == 'symbol';
-} : function (it) {
-  return it instanceof $Symbol;
-};
-
-var $defineProperty = function defineProperty(it, key, D) {
-  if (it === ObjectProto$1) $defineProperty(OPSymbols, key, D);
-  _anObject(it);
-  key = _toPrimitive(key, true);
-  _anObject(D);
-  if (_has(AllSymbols, key)) {
-    if (!D.enumerable) {
-      if (!_has(it, HIDDEN)) dP$1(it, HIDDEN, _propertyDesc(1, {}));
-      it[HIDDEN][key] = true;
-    } else {
-      if (_has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
-      D = _objectCreate(D, { enumerable: _propertyDesc(0, false) });
-    } return setSymbolDesc(it, key, D);
-  } return dP$1(it, key, D);
-};
-var $defineProperties = function defineProperties(it, P) {
-  _anObject(it);
-  var keys = _enumKeys(P = _toIobject(P));
-  var i = 0;
-  var l = keys.length;
-  var key;
-  while (l > i) $defineProperty(it, key = keys[i++], P[key]);
-  return it;
-};
-var $create = function create(it, P) {
-  return P === undefined ? _objectCreate(it) : $defineProperties(_objectCreate(it), P);
-};
-var $propertyIsEnumerable = function propertyIsEnumerable(key) {
-  var E = isEnum.call(this, key = _toPrimitive(key, true));
-  if (this === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key)) return false;
-  return E || !_has(this, key) || !_has(AllSymbols, key) || _has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
-};
-var $getOwnPropertyDescriptor$1 = function getOwnPropertyDescriptor(it, key) {
-  it = _toIobject(it);
-  key = _toPrimitive(key, true);
-  if (it === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key)) return;
-  var D = gOPD$1(it, key);
-  if (D && _has(AllSymbols, key) && !(_has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
-  return D;
-};
-var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-  var names = gOPN$1(_toIobject(it));
-  var result = [];
-  var i = 0;
-  var key;
-  while (names.length > i) {
-    if (!_has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
-  } return result;
-};
-var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
-  var IS_OP = it === ObjectProto$1;
-  var names = gOPN$1(IS_OP ? OPSymbols : _toIobject(it));
-  var result = [];
-  var i = 0;
-  var key;
-  while (names.length > i) {
-    if (_has(AllSymbols, key = names[i++]) && (IS_OP ? _has(ObjectProto$1, key) : true)) result.push(AllSymbols[key]);
-  } return result;
-};
-
-// 19.4.1.1 Symbol([description])
-if (!USE_NATIVE$1) {
-  $Symbol = function Symbol() {
-    if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
-    var tag = _uid(arguments.length > 0 ? arguments[0] : undefined);
-    var $set = function (value) {
-      if (this === ObjectProto$1) $set.call(OPSymbols, value);
-      if (_has(this, HIDDEN) && _has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
-      setSymbolDesc(this, tag, _propertyDesc(1, value));
-    };
-    if (_descriptors && setter) setSymbolDesc(ObjectProto$1, tag, { configurable: true, set: $set });
-    return wrap(tag);
-  };
-  _redefine($Symbol[PROTOTYPE$2], 'toString', function toString() {
-    return this._k;
-  });
-
-  _objectGopd.f = $getOwnPropertyDescriptor$1;
-  _objectDp.f = $defineProperty;
-  _objectGopn.f = _objectGopnExt.f = $getOwnPropertyNames;
-  _objectPie.f = $propertyIsEnumerable;
-  _objectGops.f = $getOwnPropertySymbols;
-
-  if (_descriptors && !_library) {
-    _redefine(ObjectProto$1, 'propertyIsEnumerable', $propertyIsEnumerable, true);
-  }
-
-  _wksExt.f = function (name) {
-    return wrap(_wks(name));
-  };
 }
 
-_export(_export.G + _export.W + _export.F * !USE_NATIVE$1, { Symbol: $Symbol });
-
-for (var es6Symbols = (
-  // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
-  'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
-).split(','), j = 0; es6Symbols.length > j;)_wks(es6Symbols[j++]);
-
-for (var wellKnownSymbols = _objectKeys(_wks.store), k = 0; wellKnownSymbols.length > k;) _wksDefine(wellKnownSymbols[k++]);
-
-_export(_export.S + _export.F * !USE_NATIVE$1, 'Symbol', {
-  // 19.4.2.1 Symbol.for(key)
-  'for': function (key) {
-    return _has(SymbolRegistry, key += '')
-      ? SymbolRegistry[key]
-      : SymbolRegistry[key] = $Symbol(key);
-  },
-  // 19.4.2.5 Symbol.keyFor(sym)
-  keyFor: function keyFor(sym) {
-    if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!');
-    for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key;
-  },
-  useSetter: function () { setter = true; },
-  useSimple: function () { setter = false; }
-});
-
-_export(_export.S + _export.F * !USE_NATIVE$1, 'Object', {
-  // 19.1.2.2 Object.create(O [, Properties])
-  create: $create,
-  // 19.1.2.4 Object.defineProperty(O, P, Attributes)
-  defineProperty: $defineProperty,
-  // 19.1.2.3 Object.defineProperties(O, Properties)
-  defineProperties: $defineProperties,
-  // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-  getOwnPropertyDescriptor: $getOwnPropertyDescriptor$1,
-  // 19.1.2.7 Object.getOwnPropertyNames(O)
-  getOwnPropertyNames: $getOwnPropertyNames,
-  // 19.1.2.8 Object.getOwnPropertySymbols(O)
-  getOwnPropertySymbols: $getOwnPropertySymbols
-});
-
-// 24.3.2 JSON.stringify(value [, replacer [, space]])
-$JSON && _export(_export.S + _export.F * (!USE_NATIVE$1 || _fails(function () {
-  var S = $Symbol();
-  // MS Edge converts symbol values to JSON as {}
-  // WebKit converts symbol values to JSON as null
-  // V8 throws on boxed symbols
-  return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
-})), 'JSON', {
-  stringify: function stringify(it) {
-    var args = [it];
-    var i = 1;
-    var replacer, $replacer;
-    while (arguments.length > i) args.push(arguments[i++]);
-    $replacer = replacer = args[1];
-    if (!_isObject(replacer) && it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
-    if (!_isArray(replacer)) replacer = function (key, value) {
-      if (typeof $replacer == 'function') value = $replacer.call(this, key, value);
-      if (!isSymbol(value)) return value;
-    };
-    args[1] = replacer;
-    return _stringify.apply($JSON, args);
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
   }
-});
+}
 
-// 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
-$Symbol[PROTOTYPE$2][TO_PRIMITIVE] || _hide($Symbol[PROTOTYPE$2], TO_PRIMITIVE, $Symbol[PROTOTYPE$2].valueOf);
-// 19.4.3.5 Symbol.prototype[@@toStringTag]
-_setToStringTag($Symbol, 'Symbol');
-// 20.2.1.9 Math[@@toStringTag]
-_setToStringTag(Math, 'Math', true);
-// 24.3.3 JSON[@@toStringTag]
-_setToStringTag(_global.JSON, 'JSON', true);
-
-var getOwnPropertySymbols = _core.Object.getOwnPropertySymbols;
-
-var getOwnPropertySymbols$1 = getOwnPropertySymbols;
-
-// 19.1.2.14 Object.keys(O)
-
-
-
-_objectSap('keys', function () {
-  return function keys(it) {
-    return _objectKeys(_toObject(it));
-  };
-});
-
-var keys = _core.Object.keys;
-
-var keys$1 = keys;
-
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-_export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
-
-var $Object$1 = _core.Object;
-var defineProperty$1 = function defineProperty(it, key, desc) {
-  return $Object$1.defineProperty(it, key, desc);
-};
-
-var defineProperty$2 = defineProperty$1;
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
-    defineProperty$2(obj, key, {
+    Object.defineProperty(obj, key, {
       value: value,
       enumerable: true,
       configurable: true,
@@ -2476,75 +72,45 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-var defineProperty$3 = _defineProperty;
-
 function _objectSpread(target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i] != null ? arguments[i] : {};
+    var ownKeys = Object.keys(source);
 
-    var ownKeys = keys$1(source);
-
-    if (typeof getOwnPropertySymbols$1 === 'function') {
-      ownKeys = ownKeys.concat(getOwnPropertySymbols$1(source).filter(function (sym) {
-        return getOwnPropertyDescriptor$1(source, sym).enumerable;
+    if (typeof Object.getOwnPropertySymbols === 'function') {
+      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
       }));
     }
 
     ownKeys.forEach(function (key) {
-      defineProperty$3(target, key, source[key]);
+      _defineProperty(target, key, source[key]);
     });
   }
 
   return target;
 }
 
-var objectSpread = _objectSpread;
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
   }
+
+  _setPrototypeOf(subClass.prototype, superClass && superClass.prototype);
+
+  if (superClass) _setPrototypeOf(subClass, superClass);
 }
 
-var classCallCheck = _classCallCheck;
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.getPrototypeOf || function _getPrototypeOf(o) {
+    return o.__proto__;
+  };
 
-// Works with __proto__ only. Old v8 can't work with null proto objects.
-/* eslint-disable no-proto */
+  return _getPrototypeOf(o);
+}
 
-
-var check = function (O, proto) {
-  _anObject(O);
-  if (!_isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
-};
-var _setProto = {
-  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
-    function (test, buggy, set) {
-      try {
-        set = _ctx(Function.call, _objectGopd.f(Object.prototype, '__proto__').set, 2);
-        set(test, []);
-        buggy = !(test instanceof Array);
-      } catch (e) { buggy = true; }
-      return function setPrototypeOf(O, proto) {
-        check(O, proto);
-        if (buggy) O.__proto__ = proto;
-        else set(O, proto);
-        return O;
-      };
-    }({}, false) : undefined),
-  check: check
-};
-
-// 19.1.3.19 Object.setPrototypeOf(O, proto)
-
-_export(_export.S, 'Object', { setPrototypeOf: _setProto.set });
-
-var setPrototypeOf = _core.Object.setPrototypeOf;
-
-var setPrototypeOf$1 = setPrototypeOf;
-
-var setPrototypeOf$2 = createCommonjsModule(function (module) {
 function _setPrototypeOf(o, p) {
-  module.exports = _setPrototypeOf = setPrototypeOf$1 || function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
     o.__proto__ = p;
     return o;
   };
@@ -2552,70 +118,54 @@ function _setPrototypeOf(o, p) {
   return _setPrototypeOf(o, p);
 }
 
-module.exports = _setPrototypeOf;
-});
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function");
-  }
-
-  setPrototypeOf$2(subClass.prototype, superClass && superClass.prototype);
-  if (superClass) setPrototypeOf$2(subClass, superClass);
-}
-
-var inherits = _inherits;
-
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-
-    defineProperty$2(target, descriptor.key, descriptor);
-  }
-}
-
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
-
-var createClass = _createClass;
-
-var iterator = _wksExt.f('iterator');
-
-var iterator$1 = iterator;
-
-_wksDefine('asyncIterator');
-
-_wksDefine('observable');
-
-var symbol = _core.Symbol;
-
-var symbol$1 = symbol;
-
-var _typeof_1 = createCommonjsModule(function (module) {
-function _typeof2(obj) { if (typeof symbol$1 === "function" && typeof iterator$1 === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof symbol$1 === "function" && obj.constructor === symbol$1 && obj !== symbol$1.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-function _typeof(obj) {
-  if (typeof symbol$1 === "function" && _typeof2(iterator$1) === "symbol") {
-    module.exports = _typeof = function _typeof(obj) {
-      return _typeof2(obj);
-    };
+function _construct(Parent, args, Class) {
+  if (typeof Reflect !== "undefined" && Reflect.construct) {
+    _construct = Reflect.construct;
   } else {
-    module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof symbol$1 === "function" && obj.constructor === symbol$1 && obj !== symbol$1.prototype ? "symbol" : _typeof2(obj);
+    _construct = function _construct(Parent, args, Class) {
+      var a = [null];
+      a.push.apply(a, args);
+      var Constructor = Parent.bind.apply(Parent, a);
+      var instance = new Constructor();
+      if (Class) _setPrototypeOf(instance, Class.prototype);
+      return instance;
     };
   }
 
-  return _typeof(obj);
+  return _construct.apply(null, arguments);
 }
 
-module.exports = _typeof;
-});
+function _wrapNativeSuper(Class) {
+  var _cache = typeof Map === "function" ? new Map() : undefined;
+
+  _wrapNativeSuper = function _wrapNativeSuper(Class) {
+    if (typeof Class !== "function") {
+      throw new TypeError("Super expression must either be null or a function");
+    }
+
+    if (typeof _cache !== "undefined") {
+      if (_cache.has(Class)) return _cache.get(Class);
+
+      _cache.set(Class, Wrapper);
+    }
+
+    function Wrapper() {}
+
+    Wrapper.prototype = Object.create(Class.prototype, {
+      constructor: {
+        value: Wrapper,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    return _setPrototypeOf(Wrapper, _setPrototypeOf(function Super() {
+      return _construct(Class, arguments, _getPrototypeOf(this).constructor);
+    }, Class));
+  };
+
+  return _wrapNativeSuper(Class);
+}
 
 function _assertThisInitialized(self) {
   if (self === void 0) {
@@ -2625,43 +175,81 @@ function _assertThisInitialized(self) {
   return self;
 }
 
-var assertThisInitialized = _assertThisInitialized;
-
 function _possibleConstructorReturn(self, call) {
-  if (call && (_typeof_1(call) === "object" || typeof call === "function")) {
+  if (call && (typeof call === "object" || typeof call === "function")) {
     return call;
   }
 
-  return assertThisInitialized(self);
+  return _assertThisInitialized(self);
 }
 
-var possibleConstructorReturn = _possibleConstructorReturn;
+function _superPropBase(object, property) {
+  while (!Object.prototype.hasOwnProperty.call(object, property)) {
+    object = _getPrototypeOf(object);
+    if (object === null) break;
+  }
 
-// 19.1.2.9 Object.getPrototypeOf(O)
-
-
-
-_objectSap('getPrototypeOf', function () {
-  return function getPrototypeOf(it) {
-    return _objectGpo(_toObject(it));
-  };
-});
-
-var getPrototypeOf = _core.Object.getPrototypeOf;
-
-var getPrototypeOf$1 = getPrototypeOf;
-
-var getPrototypeOf$2 = createCommonjsModule(function (module) {
-function _getPrototypeOf(o) {
-  module.exports = _getPrototypeOf = getPrototypeOf$1 || function _getPrototypeOf(o) {
-    return o.__proto__;
-  };
-
-  return _getPrototypeOf(o);
+  return object;
 }
 
-module.exports = _getPrototypeOf;
-});
+function _get(target, property, receiver) {
+  if (typeof Reflect !== "undefined" && Reflect.get) {
+    _get = Reflect.get;
+  } else {
+    _get = function _get(target, property, receiver) {
+      var base = _superPropBase(target, property);
+
+      if (!base) return;
+      var desc = Object.getOwnPropertyDescriptor(base, property);
+
+      if (desc.get) {
+        return desc.get.call(receiver);
+      }
+
+      return desc.value;
+    };
+  }
+
+  return _get(target, property, receiver || target);
+}
+
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+}
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+function _iterableToArrayLimit(arr, i) {
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+}
 
 var extend = function extend(object) {
   for (var _len = arguments.length, extensions = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -34723,7 +32311,7 @@ function CubicPoly() {
 //
 
 var tmp = new Vector3();
-var px$1 = new CubicPoly();
+var px = new CubicPoly();
 var py = new CubicPoly();
 var pz = new CubicPoly();
 
@@ -34809,20 +32397,20 @@ CatmullRomCurve3.prototype.getPoint = function ( t, optionalTarget ) {
 		if ( dt0 < 1e-4 ) dt0 = dt1;
 		if ( dt2 < 1e-4 ) dt2 = dt1;
 
-		px$1.initNonuniformCatmullRom( p0.x, p1.x, p2.x, p3.x, dt0, dt1, dt2 );
+		px.initNonuniformCatmullRom( p0.x, p1.x, p2.x, p3.x, dt0, dt1, dt2 );
 		py.initNonuniformCatmullRom( p0.y, p1.y, p2.y, p3.y, dt0, dt1, dt2 );
 		pz.initNonuniformCatmullRom( p0.z, p1.z, p2.z, p3.z, dt0, dt1, dt2 );
 
 	} else if ( this.curveType === 'catmullrom' ) {
 
-		px$1.initCatmullRom( p0.x, p1.x, p2.x, p3.x, this.tension );
+		px.initCatmullRom( p0.x, p1.x, p2.x, p3.x, this.tension );
 		py.initCatmullRom( p0.y, p1.y, p2.y, p3.y, this.tension );
 		pz.initCatmullRom( p0.z, p1.z, p2.z, p3.z, this.tension );
 
 	}
 
 	point.set(
-		px$1.calc( weight ),
+		px.calc( weight ),
 		py.calc( weight ),
 		pz.calc( weight )
 	);
@@ -48132,509 +45720,15 @@ var minivents_commonjs = function Events(target){
   };
 };
 
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-_export(_export.S, 'Object', { create: _objectCreate });
-
-var $Object$2 = _core.Object;
-var create = function create(P, D) {
-  return $Object$2.create(P, D);
-};
-
-var create$1 = create;
-
-var _validateCollection = function (it, TYPE) {
-  if (!_isObject(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
-  return it;
-};
-
-var dP$2 = _objectDp.f;
-
-
-
-
-
-
-
-
-
-var fastKey = _meta.fastKey;
-
-var SIZE = _descriptors ? '_s' : 'size';
-
-var getEntry = function (that, key) {
-  // fast case
-  var index = fastKey(key);
-  var entry;
-  if (index !== 'F') return that._i[index];
-  // frozen object case
-  for (entry = that._f; entry; entry = entry.n) {
-    if (entry.k == key) return entry;
-  }
-};
-
-var _collectionStrong = {
-  getConstructor: function (wrapper, NAME, IS_MAP, ADDER) {
-    var C = wrapper(function (that, iterable) {
-      _anInstance(that, C, NAME, '_i');
-      that._t = NAME;         // collection type
-      that._i = _objectCreate(null); // index
-      that._f = undefined;    // first entry
-      that._l = undefined;    // last entry
-      that[SIZE] = 0;         // size
-      if (iterable != undefined) _forOf(iterable, IS_MAP, that[ADDER], that);
-    });
-    _redefineAll(C.prototype, {
-      // 23.1.3.1 Map.prototype.clear()
-      // 23.2.3.2 Set.prototype.clear()
-      clear: function clear() {
-        for (var that = _validateCollection(this, NAME), data = that._i, entry = that._f; entry; entry = entry.n) {
-          entry.r = true;
-          if (entry.p) entry.p = entry.p.n = undefined;
-          delete data[entry.i];
-        }
-        that._f = that._l = undefined;
-        that[SIZE] = 0;
-      },
-      // 23.1.3.3 Map.prototype.delete(key)
-      // 23.2.3.4 Set.prototype.delete(value)
-      'delete': function (key) {
-        var that = _validateCollection(this, NAME);
-        var entry = getEntry(that, key);
-        if (entry) {
-          var next = entry.n;
-          var prev = entry.p;
-          delete that._i[entry.i];
-          entry.r = true;
-          if (prev) prev.n = next;
-          if (next) next.p = prev;
-          if (that._f == entry) that._f = next;
-          if (that._l == entry) that._l = prev;
-          that[SIZE]--;
-        } return !!entry;
-      },
-      // 23.2.3.6 Set.prototype.forEach(callbackfn, thisArg = undefined)
-      // 23.1.3.5 Map.prototype.forEach(callbackfn, thisArg = undefined)
-      forEach: function forEach(callbackfn /* , that = undefined */) {
-        _validateCollection(this, NAME);
-        var f = _ctx(callbackfn, arguments.length > 1 ? arguments[1] : undefined, 3);
-        var entry;
-        while (entry = entry ? entry.n : this._f) {
-          f(entry.v, entry.k, this);
-          // revert to the last existing entry
-          while (entry && entry.r) entry = entry.p;
-        }
-      },
-      // 23.1.3.7 Map.prototype.has(key)
-      // 23.2.3.7 Set.prototype.has(value)
-      has: function has(key) {
-        return !!getEntry(_validateCollection(this, NAME), key);
-      }
-    });
-    if (_descriptors) dP$2(C.prototype, 'size', {
-      get: function () {
-        return _validateCollection(this, NAME)[SIZE];
-      }
-    });
-    return C;
-  },
-  def: function (that, key, value) {
-    var entry = getEntry(that, key);
-    var prev, index;
-    // change existing entry
-    if (entry) {
-      entry.v = value;
-    // create new entry
-    } else {
-      that._l = entry = {
-        i: index = fastKey(key, true), // <- index
-        k: key,                        // <- key
-        v: value,                      // <- value
-        p: prev = that._l,             // <- previous entry
-        n: undefined,                  // <- next entry
-        r: false                       // <- removed
-      };
-      if (!that._f) that._f = entry;
-      if (prev) prev.n = entry;
-      that[SIZE]++;
-      // add to index
-      if (index !== 'F') that._i[index] = entry;
-    } return that;
-  },
-  getEntry: getEntry,
-  setStrong: function (C, NAME, IS_MAP) {
-    // add .keys, .values, .entries, [@@iterator]
-    // 23.1.3.4, 23.1.3.8, 23.1.3.11, 23.1.3.12, 23.2.3.5, 23.2.3.8, 23.2.3.10, 23.2.3.11
-    _iterDefine(C, NAME, function (iterated, kind) {
-      this._t = _validateCollection(iterated, NAME); // target
-      this._k = kind;                     // kind
-      this._l = undefined;                // previous
-    }, function () {
-      var that = this;
-      var kind = that._k;
-      var entry = that._l;
-      // revert to the last existing entry
-      while (entry && entry.r) entry = entry.p;
-      // get next entry
-      if (!that._t || !(that._l = entry = entry ? entry.n : that._t._f)) {
-        // or finish the iteration
-        that._t = undefined;
-        return _iterStep(1);
-      }
-      // return step by kind
-      if (kind == 'keys') return _iterStep(0, entry.k);
-      if (kind == 'values') return _iterStep(0, entry.v);
-      return _iterStep(0, [entry.k, entry.v]);
-    }, IS_MAP ? 'entries' : 'values', !IS_MAP, true);
-
-    // add [@@species], 23.1.2.2, 23.2.2.2
-    _setSpecies(NAME);
-  }
-};
-
-var SPECIES$2 = _wks('species');
-
-var _arraySpeciesConstructor = function (original) {
-  var C;
-  if (_isArray(original)) {
-    C = original.constructor;
-    // cross-realm fallback
-    if (typeof C == 'function' && (C === Array || _isArray(C.prototype))) C = undefined;
-    if (_isObject(C)) {
-      C = C[SPECIES$2];
-      if (C === null) C = undefined;
-    }
-  } return C === undefined ? Array : C;
-};
-
-// 9.4.2.3 ArraySpeciesCreate(originalArray, length)
-
-
-var _arraySpeciesCreate = function (original, length) {
-  return new (_arraySpeciesConstructor(original))(length);
-};
-
-// 0 -> Array#forEach
-// 1 -> Array#map
-// 2 -> Array#filter
-// 3 -> Array#some
-// 4 -> Array#every
-// 5 -> Array#find
-// 6 -> Array#findIndex
-
-
-
-
-
-var _arrayMethods = function (TYPE, $create) {
-  var IS_MAP = TYPE == 1;
-  var IS_FILTER = TYPE == 2;
-  var IS_SOME = TYPE == 3;
-  var IS_EVERY = TYPE == 4;
-  var IS_FIND_INDEX = TYPE == 6;
-  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
-  var create = $create || _arraySpeciesCreate;
-  return function ($this, callbackfn, that) {
-    var O = _toObject($this);
-    var self = _iobject(O);
-    var f = _ctx(callbackfn, that, 3);
-    var length = _toLength(self.length);
-    var index = 0;
-    var result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
-    var val, res;
-    for (;length > index; index++) if (NO_HOLES || index in self) {
-      val = self[index];
-      res = f(val, index, O);
-      if (TYPE) {
-        if (IS_MAP) result[index] = res;   // map
-        else if (res) switch (TYPE) {
-          case 3: return true;             // some
-          case 5: return val;              // find
-          case 6: return index;            // findIndex
-          case 2: result.push(val);        // filter
-        } else if (IS_EVERY) return false; // every
-      }
-    }
-    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
-  };
-};
-
-var dP$3 = _objectDp.f;
-var each = _arrayMethods(0);
-
-
-var _collection = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
-  var Base = _global[NAME];
-  var C = Base;
-  var ADDER = IS_MAP ? 'set' : 'add';
-  var proto = C && C.prototype;
-  var O = {};
-  if (!_descriptors || typeof C != 'function' || !(IS_WEAK || proto.forEach && !_fails(function () {
-    new C().entries().next();
-  }))) {
-    // create collection constructor
-    C = common.getConstructor(wrapper, NAME, IS_MAP, ADDER);
-    _redefineAll(C.prototype, methods);
-    _meta.NEED = true;
-  } else {
-    C = wrapper(function (target, iterable) {
-      _anInstance(target, C, NAME, '_c');
-      target._c = new Base();
-      if (iterable != undefined) _forOf(iterable, IS_MAP, target[ADDER], target);
-    });
-    each('add,clear,delete,forEach,get,has,set,keys,values,entries,toJSON'.split(','), function (KEY) {
-      var IS_ADDER = KEY == 'add' || KEY == 'set';
-      if (KEY in proto && !(IS_WEAK && KEY == 'clear')) _hide(C.prototype, KEY, function (a, b) {
-        _anInstance(this, C, KEY);
-        if (!IS_ADDER && IS_WEAK && !_isObject(a)) return KEY == 'get' ? undefined : false;
-        var result = this._c[KEY](a === 0 ? 0 : a, b);
-        return IS_ADDER ? this : result;
-      });
-    });
-    IS_WEAK || dP$3(C.prototype, 'size', {
-      get: function () {
-        return this._c.size;
-      }
-    });
-  }
-
-  _setToStringTag(C, NAME);
-
-  O[NAME] = C;
-  _export(_export.G + _export.W + _export.F, O);
-
-  if (!IS_WEAK) common.setStrong(C, NAME, IS_MAP);
-
-  return C;
-};
-
-var MAP = 'Map';
-
-// 23.1 Map Objects
-var es6_map = _collection(MAP, function (get) {
-  return function Map() { return get(this, arguments.length > 0 ? arguments[0] : undefined); };
-}, {
-  // 23.1.3.6 Map.prototype.get(key)
-  get: function get(key) {
-    var entry = _collectionStrong.getEntry(_validateCollection(this, MAP), key);
-    return entry && entry.v;
-  },
-  // 23.1.3.9 Map.prototype.set(key, value)
-  set: function set(key, value) {
-    return _collectionStrong.def(_validateCollection(this, MAP), key === 0 ? 0 : key, value);
-  }
-}, _collectionStrong, true);
-
-var _arrayFromIterable = function (iter, ITERATOR) {
-  var result = [];
-  _forOf(iter, false, result.push, result, ITERATOR);
-  return result;
-};
-
-// https://github.com/DavidBruant/Map-Set.prototype.toJSON
-
-
-var _collectionToJson = function (NAME) {
-  return function toJSON() {
-    if (_classof(this) != NAME) throw TypeError(NAME + "#toJSON isn't generic");
-    return _arrayFromIterable(this);
-  };
-};
-
-// https://github.com/DavidBruant/Map-Set.prototype.toJSON
-
-
-_export(_export.P + _export.R, 'Map', { toJSON: _collectionToJson('Map') });
-
-// https://tc39.github.io/proposal-setmap-offrom/
-
-
-var _setCollectionOf = function (COLLECTION) {
-  _export(_export.S, COLLECTION, { of: function of() {
-    var length = arguments.length;
-    var A = new Array(length);
-    while (length--) A[length] = arguments[length];
-    return new this(A);
-  } });
-};
-
-// https://tc39.github.io/proposal-setmap-offrom/#sec-map.of
-_setCollectionOf('Map');
-
-// https://tc39.github.io/proposal-setmap-offrom/
-
-
-
-
-
-var _setCollectionFrom = function (COLLECTION) {
-  _export(_export.S, COLLECTION, { from: function from(source /* , mapFn, thisArg */) {
-    var mapFn = arguments[1];
-    var mapping, A, n, cb;
-    _aFunction(this);
-    mapping = mapFn !== undefined;
-    if (mapping) _aFunction(mapFn);
-    if (source == undefined) return new this();
-    A = [];
-    if (mapping) {
-      n = 0;
-      cb = _ctx(mapFn, arguments[2], 2);
-      _forOf(source, false, function (nextItem) {
-        A.push(cb(nextItem, n++));
-      });
-    } else {
-      _forOf(source, false, A.push, A);
-    }
-    return new this(A);
-  } });
-};
-
-// https://tc39.github.io/proposal-setmap-offrom/#sec-map.from
-_setCollectionFrom('Map');
-
-var map = _core.Map;
-
-var map$1 = map;
-
-var arraySlice = [].slice;
-var factories = {};
-
-var construct = function (F, len, args) {
-  if (!(len in factories)) {
-    for (var n = [], i = 0; i < len; i++) n[i] = 'a[' + i + ']';
-    // eslint-disable-next-line no-new-func
-    factories[len] = Function('F,a', 'return new F(' + n.join(',') + ')');
-  } return factories[len](F, args);
-};
-
-var _bind = Function.bind || function bind(that /* , ...args */) {
-  var fn = _aFunction(this);
-  var partArgs = arraySlice.call(arguments, 1);
-  var bound = function (/* args... */) {
-    var args = partArgs.concat(arraySlice.call(arguments));
-    return this instanceof bound ? construct(fn, args.length, args) : _invoke(fn, args, that);
-  };
-  if (_isObject(fn.prototype)) bound.prototype = fn.prototype;
-  return bound;
-};
-
-// 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
-
-
-
-
-
-
-
-var rConstruct = (_global.Reflect || {}).construct;
-
-// MS Edge supports only 2 arguments and argumentsList argument is optional
-// FF Nightly sets third argument as `new.target`, but does not create `this` from it
-var NEW_TARGET_BUG = _fails(function () {
-  function F() { /* empty */ }
-  return !(rConstruct(function () { /* empty */ }, [], F) instanceof F);
-});
-var ARGS_BUG = !_fails(function () {
-  rConstruct(function () { /* empty */ });
-});
-
-_export(_export.S + _export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
-  construct: function construct(Target, args /* , newTarget */) {
-    _aFunction(Target);
-    _anObject(args);
-    var newTarget = arguments.length < 3 ? Target : _aFunction(arguments[2]);
-    if (ARGS_BUG && !NEW_TARGET_BUG) return rConstruct(Target, args, newTarget);
-    if (Target == newTarget) {
-      // w/o altered newTarget, optimization for 0-4 arguments
-      switch (args.length) {
-        case 0: return new Target();
-        case 1: return new Target(args[0]);
-        case 2: return new Target(args[0], args[1]);
-        case 3: return new Target(args[0], args[1], args[2]);
-        case 4: return new Target(args[0], args[1], args[2], args[3]);
-      }
-      // w/o altered newTarget, lot of arguments case
-      var $args = [null];
-      $args.push.apply($args, args);
-      return new (_bind.apply(Target, $args))();
-    }
-    // with altered newTarget, not support built-in constructors
-    var proto = newTarget.prototype;
-    var instance = _objectCreate(_isObject(proto) ? proto : Object.prototype);
-    var result = Function.apply.call(Target, instance, args);
-    return _isObject(result) ? result : instance;
-  }
-});
-
-var construct$1 = _core.Reflect.construct;
-
-var construct$2 = construct$1;
-
-var construct$3 = createCommonjsModule(function (module) {
-function _construct(Parent, args, Class) {
-  if (typeof Reflect !== "undefined" && construct$2) {
-    module.exports = _construct = construct$2;
-  } else {
-    module.exports = _construct = function _construct(Parent, args, Class) {
-      var a = [null];
-      a.push.apply(a, args);
-      var Constructor = Parent.bind.apply(Parent, a);
-      var instance = new Constructor();
-      if (Class) setPrototypeOf$2(instance, Class.prototype);
-      return instance;
-    };
-  }
-
-  return _construct.apply(null, arguments);
-}
-
-module.exports = _construct;
-});
-
-var wrapNativeSuper = createCommonjsModule(function (module) {
-function _wrapNativeSuper(Class) {
-  var _cache = typeof map$1 === "function" ? new map$1() : undefined;
-
-  module.exports = _wrapNativeSuper = function _wrapNativeSuper(Class) {
-    if (typeof Class !== "function") {
-      throw new TypeError("Super expression must either be null or a function");
-    }
-
-    if (typeof _cache !== "undefined") {
-      if (_cache.has(Class)) return _cache.get(Class);
-
-      _cache.set(Class, Wrapper);
-    }
-
-    function Wrapper() {}
-
-    Wrapper.prototype = create$1(Class.prototype, {
-      constructor: {
-        value: Wrapper,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-    return setPrototypeOf$2(Wrapper, setPrototypeOf$2(function Super() {
-      return construct$3(Class, arguments, getPrototypeOf$2(this).constructor);
-    }, Class));
-  };
-
-  return _wrapNativeSuper(Class);
-}
-
-module.exports = _wrapNativeSuper;
-});
-
 var CompositionError$1 =
 /*#__PURE__*/
 function (_Error) {
   function CompositionError(classInstance, message, component) {
     var _this;
 
-    classCallCheck(this, CompositionError);
+    _classCallCheck(this, CompositionError);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(CompositionError).call(this, "@".concat(classInstance, ": ").concat(message)));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(CompositionError).call(this, "@".concat(classInstance, ": ").concat(message)));
 
     var stackArray = _this.stack.split('\n');
 
@@ -48645,10 +45739,10 @@ function (_Error) {
     return _this;
   }
 
-  inherits(CompositionError, _Error);
+  _inherits(CompositionError, _Error);
 
   return CompositionError;
-}(wrapNativeSuper(Error));
+}(_wrapNativeSuper(Error));
 var DependencyError =
 /*#__PURE__*/
 function (_Error2) {
@@ -48657,9 +45751,9 @@ function (_Error2) {
 
     var dependencyModule = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
-    classCallCheck(this, DependencyError);
+    _classCallCheck(this, DependencyError);
 
-    _this2 = possibleConstructorReturn(this, getPrototypeOf$2(DependencyError).call(this, "@".concat(classInstance, ": ").concat(message)));
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(DependencyError).call(this, "@".concat(classInstance, ": ").concat(message)));
 
     var stackArray = _this2.stack.split('\n');
 
@@ -48671,10 +45765,10 @@ function (_Error2) {
     return _this2;
   }
 
-  inherits(DependencyError, _Error2);
+  _inherits(DependencyError, _Error2);
 
   return DependencyError;
-}(wrapNativeSuper(Error));
+}(_wrapNativeSuper(Error));
 var ManagerError =
 /*#__PURE__*/
 function (_Error3) {
@@ -48683,9 +45777,9 @@ function (_Error3) {
 
     var activeModule = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
-    classCallCheck(this, ManagerError);
+    _classCallCheck(this, ManagerError);
 
-    _this3 = possibleConstructorReturn(this, getPrototypeOf$2(ManagerError).call(this, "@".concat(classInstance, ": ").concat(message)));
+    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(ManagerError).call(this, "@".concat(classInstance, ": ").concat(message)));
 
     var stackArray = _this3.stack.split('\n');
 
@@ -48697,10 +45791,10 @@ function (_Error3) {
     return _this3;
   }
 
-  inherits(ManagerError, _Error3);
+  _inherits(ManagerError, _Error3);
 
   return ManagerError;
-}(wrapNativeSuper(Error));
+}(_wrapNativeSuper(Error));
 
 var warnDeps = function warnDeps() {
   throw new Error('WhitestormJS Framework requ ires Three.js r92. https://threejs.org/');
@@ -48726,12 +45820,12 @@ var ModuleSystem =
 /*#__PURE__*/
 function (_Events) {
   function ModuleSystem() {
-    classCallCheck(this, ModuleSystem);
+    _classCallCheck(this, ModuleSystem);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(ModuleSystem).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ModuleSystem).apply(this, arguments));
   }
 
-  createClass(ModuleSystem, [{
+  _createClass(ModuleSystem, [{
     key: "integrateModules",
     // INTEGRATING
 
@@ -48889,66 +45983,10 @@ function (_Events) {
     }
   }]);
 
-  inherits(ModuleSystem, _Events);
+  _inherits(ModuleSystem, _Events);
 
   return ModuleSystem;
 }(minivents_commonjs);
-
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-var arrayWithHoles = _arrayWithHoles;
-
-var core_getIterator = _core.getIterator = function (it) {
-  var iterFn = core_getIteratorMethod(it);
-  if (typeof iterFn != 'function') throw TypeError(it + ' is not iterable!');
-  return _anObject(iterFn.call(it));
-};
-
-var getIterator = core_getIterator;
-
-var getIterator$1 = getIterator;
-
-function _iterableToArrayLimit(arr, i) {
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-  var _e = undefined;
-
-  try {
-    for (var _i = getIterator$1(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-
-var iterableToArrayLimit = _iterableToArrayLimit;
-
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance");
-}
-
-var nonIterableRest = _nonIterableRest;
-
-function _slicedToArray(arr, i) {
-  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || nonIterableRest();
-}
-
-var slicedToArray = _slicedToArray;
 
 function symbolObservablePonyfill(root) {
 	var result;
@@ -48997,7 +46035,7 @@ var ActionTypes = {
   REPLACE: '@@redux/REPLACE' + Math.random().toString(36).substring(7).split('').join('.')
 };
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+var _typeof$1 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
@@ -49008,7 +46046,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * @returns {boolean} True if the argument appears to be a plain object.
  */
 function isPlainObject(obj) {
-  if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || obj === null) return false;
+  if ((typeof obj === 'undefined' ? 'undefined' : _typeof$1(obj)) !== 'object' || obj === null) return false;
 
   var proto = obj;
   while (Object.getPrototypeOf(proto) !== null) {
@@ -49235,7 +46273,7 @@ function createStore(reducer, preloadedState, enhancer) {
        * emission of values from the observable.
        */
       subscribe: function subscribe(observer) {
-        if ((typeof observer === 'undefined' ? 'undefined' : _typeof(observer)) !== 'object' || observer === null) {
+        if ((typeof observer === 'undefined' ? 'undefined' : _typeof$1(observer)) !== 'object' || observer === null) {
           throw new TypeError('Expected the observer to be an object.');
         }
 
@@ -49279,7 +46317,7 @@ var ModuleManager =
 /*#__PURE__*/
 function () {
   function ModuleManager(object) {
-    classCallCheck(this, ModuleManager);
+    _classCallCheck(this, ModuleManager);
 
     this.handler = object;
     this.currentModule = null;
@@ -49301,7 +46339,7 @@ function () {
    */
 
 
-  createClass(ModuleManager, [{
+  _createClass(ModuleManager, [{
     key: "active",
     value: function active(module) {
       this.currentModule = module;
@@ -49417,7 +46455,7 @@ function () {
       var depsMap = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       this.store.subscribe(function () {
         var _this$store$getState = _this.store.getState(),
-            _this$store$getState2 = slicedToArray(_this$store$getState, 2),
+            _this$store$getState2 = _slicedToArray(_this$store$getState, 2),
             data = _this$store$getState2[0],
             changedKey = _this$store$getState2[1];
 
@@ -49512,14 +46550,14 @@ function (_ModuleSystem) {
     var defaults = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Component.defaults;
     var instructions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Component.instructions;
 
-    classCallCheck(this, Component);
+    _classCallCheck(this, Component);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Component).call(this)); // Apply polyfilled parameters to .params;
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Component).call(this)); // Apply polyfilled parameters to .params;
 
-    defineProperty$3(defineProperty$3(defineProperty$3(assertThisInitialized(assertThisInitialized(_this)), "_wait", []), "modules", []), "children", []);
+    _defineProperty(_defineProperty(_defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "_wait", []), "modules", []), "children", []);
 
     _this.params = extend(transformData(params, instructions), defaults);
-    if (_this.params.manager) _this.manager = new ModuleManager(assertThisInitialized(assertThisInitialized(_this)));
+    if (_this.params.manager) _this.manager = new ModuleManager(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.modules = _this.params.modules;
 
     _this.integrateModules();
@@ -49536,7 +46574,7 @@ function (_ModuleSystem) {
    */
 
 
-  createClass(Component, [{
+  _createClass(Component, [{
     key: "wait",
     value: function wait(promise) {
       if (promise) this._wait.push(promise);
@@ -49602,7 +46640,7 @@ function (_ModuleSystem) {
   }, {
     key: "copy",
     value: function copy(source, customize) {
-      this.params = objectSpread({}, source.params);
+      this.params = _objectSpread({}, source.params);
       if (source.native) this.native = source.native.clone(source.params);
       if (customize) customize();
       this.integrateModules(source);
@@ -49620,10 +46658,10 @@ function (_ModuleSystem) {
   }, {
     key: "add",
     value: function () {
-      var _add = asyncToGenerator(
+      var _add = _asyncToGenerator(
       /*#__PURE__*/
-      regenerator.mark(function _callee(object) {
-        return regenerator.wrap(function _callee$(_context) {
+      regeneratorRuntime.mark(function _callee(object) {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
@@ -49687,10 +46725,10 @@ function (_ModuleSystem) {
   }, {
     key: "remove",
     value: function () {
-      var _remove = asyncToGenerator(
+      var _remove = _asyncToGenerator(
       /*#__PURE__*/
-      regenerator.mark(function _callee2(object) {
-        return regenerator.wrap(function _callee2$(_context2) {
+      regeneratorRuntime.mark(function _callee2(object) {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
@@ -49791,77 +46829,15 @@ function (_ModuleSystem) {
     }
   }]);
 
-  inherits(Component, _ModuleSystem);
+  _inherits(Component, _ModuleSystem);
 
   return Component;
 }(ModuleSystem);
 
-defineProperty$3(defineProperty$3(Component, "defaults", {
+_defineProperty(_defineProperty(Component, "defaults", {
   modules: null,
   manager: true
 }), "instructions", {});
-
-// 26.1.6 Reflect.get(target, propertyKey [, receiver])
-
-
-
-
-
-
-
-function get(target, propertyKey /* , receiver */) {
-  var receiver = arguments.length < 3 ? target : arguments[2];
-  var desc, proto;
-  if (_anObject(target) === receiver) return target[propertyKey];
-  if (desc = _objectGopd.f(target, propertyKey)) return _has(desc, 'value')
-    ? desc.value
-    : desc.get !== undefined
-      ? desc.get.call(receiver)
-      : undefined;
-  if (_isObject(proto = _objectGpo(target))) return get(proto, propertyKey, receiver);
-}
-
-_export(_export.S, 'Reflect', { get: get });
-
-var get$1 = _core.Reflect.get;
-
-var get$2 = get$1;
-
-function _superPropBase(object, property) {
-  while (!Object.prototype.hasOwnProperty.call(object, property)) {
-    object = getPrototypeOf$2(object);
-    if (object === null) break;
-  }
-
-  return object;
-}
-
-var superPropBase = _superPropBase;
-
-var get$3 = createCommonjsModule(function (module) {
-function _get(target, property, receiver) {
-  if (typeof Reflect !== "undefined" && get$2) {
-    module.exports = _get = get$2;
-  } else {
-    module.exports = _get = function _get(target, property, receiver) {
-      var base = superPropBase(target, property);
-      if (!base) return;
-
-      var desc = getOwnPropertyDescriptor$1(base, property);
-
-      if (desc.get) {
-        return desc.get.call(receiver);
-      }
-
-      return desc.value;
-    };
-  }
-
-  return _get(target, property, receiver || target);
-}
-
-module.exports = _get;
-});
 
 function attributes() {
   for (var _len = arguments.length, mappers = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -49940,7 +46916,7 @@ var
 MeshComponent = (_dec = attributes(copy('position', 'rotation', 'quaternion', 'scale'), mirror('material', 'geometry')), _dec(_class =
 /*#__PURE__*/
 function (_Component) {
-  createClass(MeshComponent, null, [{
+  _createClass(MeshComponent, null, [{
     key: "custom",
 
     /**
@@ -49982,12 +46958,12 @@ function (_Component) {
         /*#__PURE__*/
         function (_MeshComponent) {
           function _class2() {
-            classCallCheck(this, _class2);
+            _classCallCheck(this, _class2);
 
-            return possibleConstructorReturn(this, getPrototypeOf$2(_class2).apply(this, arguments));
+            return _possibleConstructorReturn(this, _getPrototypeOf(_class2).apply(this, arguments));
           }
 
-          createClass(_class2, [{
+          _createClass(_class2, [{
             key: "build",
             value: function build() {
               var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -50005,7 +46981,7 @@ function (_Component) {
             }
           }]);
 
-          inherits(_class2, _MeshComponent);
+          _inherits(_class2, _MeshComponent);
 
           return _class2;
         }(MeshComponent)
@@ -50034,15 +47010,15 @@ function (_Component) {
     var defaults = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : MeshComponent.defaults;
     var instructions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : MeshComponent.instructions;
 
-    classCallCheck(this, MeshComponent);
+    _classCallCheck(this, MeshComponent);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(MeshComponent).call(this, params, defaults, instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(MeshComponent).call(this, params, defaults, instructions));
 
     if (_this.params.build) {
       var build = _this.build(_this.params);
 
       if (!build) {
-        throw new CompositionError$1('MeshComponent', '.build() method should return a THREE.Object3D or a Promise resolved with THREE.Object3D.', assertThisInitialized(assertThisInitialized(_this)));
+        throw new CompositionError$1('MeshComponent', '.build() method should return a THREE.Object3D or a Promise resolved with THREE.Object3D.', _assertThisInitialized(_assertThisInitialized(_this)));
       }
 
       if (build instanceof Promise) {
@@ -50075,7 +47051,7 @@ function (_Component) {
    */
 
 
-  createClass(MeshComponent, [{
+  _createClass(MeshComponent, [{
     key: "build",
     value: function build() {
       throw new CompositionError$1('MeshComponent', 'Instance should have it\'s own .build().', this);
@@ -50132,7 +47108,7 @@ function (_Component) {
     value: function copy$$1(source) {
       var _this3 = this;
 
-      return get$3(getPrototypeOf$2(MeshComponent.prototype), "copy", this).call(this, source, function () {
+      return _get(_getPrototypeOf(MeshComponent.prototype), "copy", this).call(this, source, function () {
         _this3.position.copy(source.position);
 
         _this3.rotation.copy(source.rotation);
@@ -50160,12 +47136,12 @@ function (_Component) {
     }
   }]);
 
-  inherits(MeshComponent, _Component);
+  _inherits(MeshComponent, _Component);
 
   return MeshComponent;
 }(Component)) || _class);
 
-defineProperty$3(defineProperty$3(MeshComponent, "defaults", objectSpread({}, Component.defaults, {
+_defineProperty(_defineProperty(MeshComponent, "defaults", _objectSpread({}, Component.defaults, {
   build: true,
   geometry: {},
   material: false,
@@ -50207,7 +47183,7 @@ var
 LightComponent = (_dec$1 = attributes(copy('position', 'rotation', 'quaternion', 'target')), _dec$1(_class$1 =
 /*#__PURE__*/
 function (_Component) {
-  createClass(LightComponent, null, [{
+  _createClass(LightComponent, null, [{
     key: "from",
 
     /**
@@ -50274,15 +47250,15 @@ function (_Component) {
     var defaults = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : LightComponent.defaults;
     var instructions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : LightComponent.instructions;
 
-    classCallCheck(this, LightComponent);
+    _classCallCheck(this, LightComponent);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(LightComponent).call(this, params, defaults, instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(LightComponent).call(this, params, defaults, instructions));
 
     if (_this.params.build) {
       var build = _this.build(_this.params);
 
       if (!build) {
-        throw new CompositionError$1('LightComponent', '.build() method should return a THREE.Object3D or a Promise resolved with THREE.Object3D.', assertThisInitialized(assertThisInitialized(_this)));
+        throw new CompositionError$1('LightComponent', '.build() method should return a THREE.Object3D or a Promise resolved with THREE.Object3D.', _assertThisInitialized(_assertThisInitialized(_this)));
       }
 
       if (build instanceof Promise) {
@@ -50308,7 +47284,7 @@ function (_Component) {
    */
 
 
-  createClass(LightComponent, [{
+  _createClass(LightComponent, [{
     key: "build",
     value: function build() {
       throw new CompositionError$1('MeshComponent', 'Instance should have it\'s own .build().', this);
@@ -50385,7 +47361,7 @@ function (_Component) {
     value: function copy$$1(source) {
       var _this3 = this;
 
-      return get$3(getPrototypeOf$2(LightComponent.prototype), "copy", this).call(this, source, function () {
+      return _get(_getPrototypeOf(LightComponent.prototype), "copy", this).call(this, source, function () {
         if (_this3.target) _this3.target.copy(source.target());
 
         _this3.position.copy(source.position);
@@ -50412,12 +47388,12 @@ function (_Component) {
     }
   }]);
 
-  inherits(LightComponent, _Component);
+  _inherits(LightComponent, _Component);
 
   return LightComponent;
 }(Component)) || _class$1);
 
-defineProperty$3(defineProperty$3(LightComponent, "defaults", objectSpread({}, Component.defaults, {
+_defineProperty(_defineProperty(LightComponent, "defaults", _objectSpread({}, Component.defaults, {
   build: true,
   shadow: {
     cast: true,
@@ -50465,7 +47441,7 @@ var
 CameraComponent = (_dec$2 = attributes(copy('position', 'rotation', 'quaternion', 'target')), _dec$2(_class$2 =
 /*#__PURE__*/
 function (_Component) {
-  createClass(CameraComponent, null, [{
+  _createClass(CameraComponent, null, [{
     key: "from",
 
     /**
@@ -50508,15 +47484,15 @@ function (_Component) {
     var defaults = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : CameraComponent.defaults;
     var instructions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : CameraComponent.instructions;
 
-    classCallCheck(this, CameraComponent);
+    _classCallCheck(this, CameraComponent);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(CameraComponent).call(this, params, defaults, instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(CameraComponent).call(this, params, defaults, instructions));
 
     if (_this.params.build) {
       var build = _this.build(_this.params);
 
       if (!build) {
-        throw new CompositionError$1('CameraComponent', '.build() method should return a THREE.Object3D or a Promise resolved with THREE.Object3D.', assertThisInitialized(assertThisInitialized(_this)));
+        throw new CompositionError$1('CameraComponent', '.build() method should return a THREE.Object3D or a Promise resolved with THREE.Object3D.', _assertThisInitialized(_assertThisInitialized(_this)));
       }
 
       if (build instanceof Promise) {
@@ -50542,7 +47518,7 @@ function (_Component) {
    */
 
 
-  createClass(CameraComponent, [{
+  _createClass(CameraComponent, [{
     key: "build",
     value: function build() {
       throw new CompositionError$1('CameraComponent', 'Instance should have it\'s own .build().', this);
@@ -50587,7 +47563,7 @@ function (_Component) {
     value: function copy$$1(source) {
       var _this3 = this;
 
-      return get$3(getPrototypeOf$2(CameraComponent.prototype), "copy", this).call(this, source, function () {
+      return _get(_getPrototypeOf(CameraComponent.prototype), "copy", this).call(this, source, function () {
         if (_this3.target) _this3.target.copy(source.target());
 
         _this3.position.copy(source.position);
@@ -50614,12 +47590,12 @@ function (_Component) {
     }
   }]);
 
-  inherits(CameraComponent, _Component);
+  _inherits(CameraComponent, _Component);
 
   return CameraComponent;
 }(Component)) || _class$2);
 
-defineProperty$3(defineProperty$3(CameraComponent, "defaults", objectSpread({}, Component.defaults, {
+_defineProperty(_defineProperty(CameraComponent, "defaults", _objectSpread({}, Component.defaults, {
   build: true,
   position: {
     x: 0,
@@ -50637,7 +47613,7 @@ defineProperty$3(defineProperty$3(CameraComponent, "defaults", objectSpread({}, 
   scale: ['x', 'y', 'z']
 });
 
-const version = "2.2.0-alpha.0";
+const version = "2.2.0-beta.0";
 
 var system = {
   window: typeof window === 'undefined' ? global : window
@@ -50672,14 +47648,14 @@ function (_ModuleSystem) {
 
     var modules = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-    classCallCheck(this, App);
+    _classCallCheck(this, App);
 
     console.log("WHS.App ".concat(version));
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(App).call(this));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this));
 
-    defineProperty$3(defineProperty$3(assertThisInitialized(assertThisInitialized(_this)), "enabled", true), "loops", []);
+    _defineProperty(_defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "enabled", true), "loops", []);
 
-    _this.manager = new ModuleManager(assertThisInitialized(assertThisInitialized(_this)));
+    _this.manager = new ModuleManager(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.modules = modules;
 
     _this.integrateModules();
@@ -50694,7 +47670,7 @@ function (_ModuleSystem) {
    */
 
 
-  createClass(App, [{
+  _createClass(App, [{
     key: "start",
     value: function start() {
       var requestAnimFrame = function () {
@@ -50790,7 +47766,7 @@ function (_ModuleSystem) {
     }
   }]);
 
-  inherits(App, _ModuleSystem);
+  _inherits(App, _ModuleSystem);
 
   return App;
 }(ModuleSystem);
@@ -50809,7 +47785,7 @@ function () {
   function Loop(func) {
     var useClock = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
-    classCallCheck(this, Loop);
+    _classCallCheck(this, Loop);
 
     this.func = func;
     this.clock = useClock ? new Clock() : null;
@@ -50825,7 +47801,7 @@ function () {
    */
 
 
-  createClass(Loop, [{
+  _createClass(Loop, [{
     key: "start",
     value: function start(world) {
       if (this.enabled) return;
@@ -50892,12 +47868,12 @@ function (_LightComponent) {
   function AmbientLight$$1() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, AmbientLight$$1);
+    _classCallCheck(this, AmbientLight$$1);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(AmbientLight$$1).call(this, params, AmbientLight$$1.defaults));
+    return _possibleConstructorReturn(this, _getPrototypeOf(AmbientLight$$1).call(this, params, AmbientLight$$1.defaults));
   }
 
-  createClass(AmbientLight$$1, [{
+  _createClass(AmbientLight$$1, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -50907,12 +47883,12 @@ function (_LightComponent) {
     }
   }]);
 
-  inherits(AmbientLight$$1, _LightComponent);
+  _inherits(AmbientLight$$1, _LightComponent);
 
   return AmbientLight$$1;
 }(LightComponent);
 
-defineProperty$3(AmbientLight$1, "defaults", objectSpread({}, LightComponent.defaults, {
+_defineProperty(AmbientLight$1, "defaults", _objectSpread({}, LightComponent.defaults, {
   color: 0xffffff,
   intensity: 1
 }));
@@ -50944,16 +47920,16 @@ function (_LightComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, DirectionalLight$$1);
+    _classCallCheck(this, DirectionalLight$$1);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(DirectionalLight$$1).call(this, params, DirectionalLight$$1.defaults));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(DirectionalLight$$1).call(this, params, DirectionalLight$$1.defaults));
 
     _this.wrapShadow();
 
     return _this;
   }
 
-  createClass(DirectionalLight$$1, [{
+  _createClass(DirectionalLight$$1, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -50963,12 +47939,12 @@ function (_LightComponent) {
     }
   }]);
 
-  inherits(DirectionalLight$$1, _LightComponent);
+  _inherits(DirectionalLight$$1, _LightComponent);
 
   return DirectionalLight$$1;
 }(LightComponent);
 
-defineProperty$3(DirectionalLight$1, "defaults", objectSpread({}, LightComponent.defaults, {
+_defineProperty(DirectionalLight$1, "defaults", _objectSpread({}, LightComponent.defaults, {
   color: 0xffffff,
   intensity: 1
 }));
@@ -50997,12 +47973,12 @@ function (_LightComponent) {
   function HemisphereLight$$1() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, HemisphereLight$$1);
+    _classCallCheck(this, HemisphereLight$$1);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(HemisphereLight$$1).call(this, params, HemisphereLight$$1.defaults));
+    return _possibleConstructorReturn(this, _getPrototypeOf(HemisphereLight$$1).call(this, params, HemisphereLight$$1.defaults));
   }
 
-  createClass(HemisphereLight$$1, [{
+  _createClass(HemisphereLight$$1, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -51012,12 +47988,12 @@ function (_LightComponent) {
     }
   }]);
 
-  inherits(HemisphereLight$$1, _LightComponent);
+  _inherits(HemisphereLight$$1, _LightComponent);
 
   return HemisphereLight$$1;
 }(LightComponent);
 
-defineProperty$3(HemisphereLight$1, "defaults", objectSpread({}, LightComponent.defaults, {
+_defineProperty(HemisphereLight$1, "defaults", _objectSpread({}, LightComponent.defaults, {
   skyColor: 0xffffff,
   groundColor: 0xffffff,
   intensity: 1
@@ -51049,16 +48025,16 @@ function (_LightComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, PointLight$$1);
+    _classCallCheck(this, PointLight$$1);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(PointLight$$1).call(this, params, PointLight$$1.defaults));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(PointLight$$1).call(this, params, PointLight$$1.defaults));
 
     _this.wrapShadow();
 
     return _this;
   }
 
-  createClass(PointLight$$1, [{
+  _createClass(PointLight$$1, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -51068,12 +48044,12 @@ function (_LightComponent) {
     }
   }]);
 
-  inherits(PointLight$$1, _LightComponent);
+  _inherits(PointLight$$1, _LightComponent);
 
   return PointLight$$1;
 }(LightComponent);
 
-defineProperty$3(PointLight$1, "defaults", objectSpread({}, LightComponent.defaults, {
+_defineProperty(PointLight$1, "defaults", _objectSpread({}, LightComponent.defaults, {
   color: 0xffffff,
   intensity: 1,
   distance: 100,
@@ -51109,16 +48085,16 @@ function (_LightComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, SpotLight$$1);
+    _classCallCheck(this, SpotLight$$1);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(SpotLight$$1).call(this, params, SpotLight$$1.defaults));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SpotLight$$1).call(this, params, SpotLight$$1.defaults));
 
     _this.wrapShadow();
 
     return _this;
   }
 
-  createClass(SpotLight$$1, [{
+  _createClass(SpotLight$$1, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -51128,12 +48104,12 @@ function (_LightComponent) {
     }
   }]);
 
-  inherits(SpotLight$$1, _LightComponent);
+  _inherits(SpotLight$$1, _LightComponent);
 
   return SpotLight$$1;
 }(LightComponent);
 
-defineProperty$3(SpotLight$1, "defaults", objectSpread({}, LightComponent.defaults, {
+_defineProperty(SpotLight$1, "defaults", _objectSpread({}, LightComponent.defaults, {
   color: 0xffffff,
   intensity: 1,
   distance: 100,
@@ -51148,12 +48124,12 @@ function (_LightComponent) {
   function AreaLight() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, AreaLight);
+    _classCallCheck(this, AreaLight);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(AreaLight).call(this, params, AreaLight.defaults));
+    return _possibleConstructorReturn(this, _getPrototypeOf(AreaLight).call(this, params, AreaLight.defaults));
   }
 
-  createClass(AreaLight, [{
+  _createClass(AreaLight, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -51163,12 +48139,12 @@ function (_LightComponent) {
     }
   }]);
 
-  inherits(AreaLight, _LightComponent);
+  _inherits(AreaLight, _LightComponent);
 
   return AreaLight;
 }(LightComponent);
 
-defineProperty$3(AreaLight, "defaults", objectSpread({}, LightComponent.defaults, {
+_defineProperty(AreaLight, "defaults", _objectSpread({}, LightComponent.defaults, {
   color: 0xffffff,
   intensity: 1,
   width: 10,
@@ -51219,12 +48195,12 @@ function (_CameraComponent) {
   function CubeCamera$$1() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, CubeCamera$$1);
+    _classCallCheck(this, CubeCamera$$1);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(CubeCamera$$1).call(this, params, CubeCamera$$1.defaults));
+    return _possibleConstructorReturn(this, _getPrototypeOf(CubeCamera$$1).call(this, params, CubeCamera$$1.defaults));
   }
 
-  createClass(CubeCamera$$1, [{
+  _createClass(CubeCamera$$1, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -51234,12 +48210,12 @@ function (_CameraComponent) {
     }
   }]);
 
-  inherits(CubeCamera$$1, _CameraComponent);
+  _inherits(CubeCamera$$1, _CameraComponent);
 
   return CubeCamera$$1;
 }(CameraComponent);
 
-defineProperty$3(CubeCamera$1, "defaults", objectSpread({}, CameraComponent.defaults, {
+_defineProperty(CubeCamera$1, "defaults", _objectSpread({}, CameraComponent.defaults, {
   near: 1,
   far: 1000,
   cubeResolution: 128
@@ -51286,12 +48262,12 @@ function (_CameraComponent) {
   function OrthographicCamera$$1() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, OrthographicCamera$$1);
+    _classCallCheck(this, OrthographicCamera$$1);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(OrthographicCamera$$1).call(this, params, OrthographicCamera$$1.defaults));
+    return _possibleConstructorReturn(this, _getPrototypeOf(OrthographicCamera$$1).call(this, params, OrthographicCamera$$1.defaults));
   }
 
-  createClass(OrthographicCamera$$1, [{
+  _createClass(OrthographicCamera$$1, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -51301,12 +48277,12 @@ function (_CameraComponent) {
     }
   }]);
 
-  inherits(OrthographicCamera$$1, _CameraComponent);
+  _inherits(OrthographicCamera$$1, _CameraComponent);
 
   return OrthographicCamera$$1;
 }(CameraComponent);
 
-defineProperty$3(OrthographicCamera$1, "defaults", objectSpread({}, CameraComponent.defaults, {
+_defineProperty(OrthographicCamera$1, "defaults", _objectSpread({}, CameraComponent.defaults, {
   near: 1,
   far: 1000,
   left: system.window.innerWidth / -2,
@@ -51355,12 +48331,12 @@ function (_CameraComponent) {
   function PerspectiveCamera$$1() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, PerspectiveCamera$$1);
+    _classCallCheck(this, PerspectiveCamera$$1);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(PerspectiveCamera$$1).call(this, params, PerspectiveCamera$$1.defaults));
+    return _possibleConstructorReturn(this, _getPrototypeOf(PerspectiveCamera$$1).call(this, params, PerspectiveCamera$$1.defaults));
   }
 
-  createClass(PerspectiveCamera$$1, [{
+  _createClass(PerspectiveCamera$$1, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -51370,12 +48346,12 @@ function (_CameraComponent) {
     }
   }]);
 
-  inherits(PerspectiveCamera$$1, _CameraComponent);
+  _inherits(PerspectiveCamera$$1, _CameraComponent);
 
   return PerspectiveCamera$$1;
 }(CameraComponent);
 
-defineProperty$3(PerspectiveCamera$1, "defaults", objectSpread({}, CameraComponent.defaults, {
+_defineProperty(PerspectiveCamera$1, "defaults", _objectSpread({}, CameraComponent.defaults, {
   near: 1,
   far: 1000,
   fov: 75,
@@ -51439,9 +48415,9 @@ function (_MeshComponent) {
   function Box() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Box);
+    _classCallCheck(this, Box);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(Box).call(this, params, Box.defaults, Box.instructions));
+    return _possibleConstructorReturn(this, _getPrototypeOf(Box).call(this, params, Box.defaults, Box.instructions));
   }
   /**
    * @method build
@@ -51452,7 +48428,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Box, [{
+  _createClass(Box, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -51477,12 +48453,12 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Box, _MeshComponent);
+  _inherits(Box, _MeshComponent);
 
   return Box;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Box, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Box, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     width: 1,
     height: 1,
@@ -51491,7 +48467,7 @@ defineProperty$3(defineProperty$3(Box, "defaults", objectSpread({}, MeshComponen
     heightSegments: 1,
     depthSegments: 1
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['width', 'height', 'depth', 'widthSegments', 'heightSegments', 'depthSegements']
 }));
 
@@ -51547,9 +48523,9 @@ function (_MeshComponent) {
   function Circle() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Circle);
+    _classCallCheck(this, Circle);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(Circle).call(this, params, Circle.defaults, Circle.instructions));
+    return _possibleConstructorReturn(this, _getPrototypeOf(Circle).call(this, params, Circle.defaults, Circle.instructions));
   }
   /**
    * @method build
@@ -51560,7 +48536,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Circle, [{
+  _createClass(Circle, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -51585,19 +48561,19 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Circle, _MeshComponent);
+  _inherits(Circle, _MeshComponent);
 
   return Circle;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Circle, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Circle, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     radius: 50,
     segments: 8,
     thetaStart: 0,
     thetaLength: Math.PI * 2
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['radius', 'segments', 'thetaStart', 'thetaLength']
 }));
 
@@ -51670,14 +48646,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Cone);
+    _classCallCheck(this, Cone);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Cone).call(this, params, Cone.defaults, Cone.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Cone).call(this, params, Cone.defaults, Cone.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Cone.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Cone.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -51691,7 +48667,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Cone, [{
+  _createClass(Cone, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -51716,12 +48692,12 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Cone, _MeshComponent);
+  _inherits(Cone, _MeshComponent);
 
   return Cone;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Cone, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Cone, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     radius: 20,
     height: 100,
@@ -51731,7 +48707,7 @@ defineProperty$3(defineProperty$3(Cone, "defaults", objectSpread({}, MeshCompone
     thetaStart: 0,
     thetaLength: Math.PI * 2
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['radius', 'height', 'radiusSegments', 'heightSegments', 'openEnded', 'thetaStart', 'thetaLength']
 }));
 
@@ -51806,14 +48782,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Cylinder);
+    _classCallCheck(this, Cylinder);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Cylinder).call(this, params, Cylinder.defaults, Cylinder.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Cylinder).call(this, params, Cylinder.defaults, Cylinder.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Cylinder.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Cylinder.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -51827,7 +48803,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Cylinder, [{
+  _createClass(Cylinder, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -51852,12 +48828,12 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Cylinder, _MeshComponent);
+  _inherits(Cylinder, _MeshComponent);
 
   return Cylinder;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Cylinder, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Cylinder, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     radiusTop: 0,
     radiusBottom: 1,
@@ -51868,7 +48844,7 @@ defineProperty$3(defineProperty$3(Cylinder, "defaults", objectSpread({}, MeshCom
     thetaStart: 0,
     thetaLength: Math.PI * 2
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['radiusTop', 'radiusBottom', 'height', 'radiusSegments', 'heightSegments', 'openEnded', 'thetaStart', 'thetaLength']
 }));
 
@@ -51929,14 +48905,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Dodecahedron);
+    _classCallCheck(this, Dodecahedron);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Dodecahedron).call(this, params, Dodecahedron.defaults, Dodecahedron.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Dodecahedron).call(this, params, Dodecahedron.defaults, Dodecahedron.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Dodecahedron.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Dodecahedron.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -51950,7 +48926,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Dodecahedron, [{
+  _createClass(Dodecahedron, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -51974,17 +48950,17 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Dodecahedron, _MeshComponent);
+  _inherits(Dodecahedron, _MeshComponent);
 
   return Dodecahedron;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Dodecahedron, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Dodecahedron, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     radius: 1,
     detail: 0
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['radius', 'detail']
 }));
 
@@ -52070,14 +49046,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Extrude);
+    _classCallCheck(this, Extrude);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Extrude).call(this, params, Extrude.defaults, Extrude.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Extrude).call(this, params, Extrude.defaults, Extrude.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Extrude.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Extrude.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -52091,7 +49067,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Extrude, [{
+  _createClass(Extrude, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -52116,17 +49092,17 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Extrude, _MeshComponent);
+  _inherits(Extrude, _MeshComponent);
 
   return Extrude;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Extrude, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Extrude, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     shapes: [],
     options: {}
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['shapes', 'options']
 }));
 
@@ -52183,14 +49159,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Icosahedron);
+    _classCallCheck(this, Icosahedron);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Icosahedron).call(this, params, Icosahedron.defaults, Icosahedron.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Icosahedron).call(this, params, Icosahedron.defaults, Icosahedron.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Icosahedron.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Icosahedron.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -52204,7 +49180,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Icosahedron, [{
+  _createClass(Icosahedron, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -52228,17 +49204,17 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Icosahedron, _MeshComponent);
+  _inherits(Icosahedron, _MeshComponent);
 
   return Icosahedron;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Icosahedron, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Icosahedron, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     radius: 1,
     detail: 0
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['radius', 'detail']
 }));
 
@@ -52311,14 +49287,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Lathe);
+    _classCallCheck(this, Lathe);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Lathe).call(this, params, Lathe.defaults, Lathe.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Lathe).call(this, params, Lathe.defaults, Lathe.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Lathe.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Lathe.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -52332,7 +49308,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Lathe, [{
+  _createClass(Lathe, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -52356,16 +49332,16 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Lathe, _MeshComponent);
+  _inherits(Lathe, _MeshComponent);
 
   return Lathe;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Lathe, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Lathe, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     points: []
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['points']
 }));
 
@@ -52413,9 +49389,9 @@ function (_MeshComponent) {
    * </pre>
    */
   function Line$$1(params) {
-    classCallCheck(this, Line$$1);
+    _classCallCheck(this, Line$$1);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(Line$$1).call(this, params, Line$$1.defaults, Line$$1.instructions));
+    return _possibleConstructorReturn(this, _getPrototypeOf(Line$$1).call(this, params, Line$$1.defaults, Line$$1.instructions));
   }
   /**
    * @method build
@@ -52426,7 +49402,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Line$$1, [{
+  _createClass(Line$$1, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -52466,15 +49442,15 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Line$$1, _MeshComponent);
+  _inherits(Line$$1, _MeshComponent);
 
   return Line$$1;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Line$1, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Line$1, "defaults", _objectSpread({}, MeshComponent.defaults, {
   curve: null,
   points: 50
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['curve', 'points']
 }));
 
@@ -52500,7 +49476,7 @@ defineProperty$3(defineProperty$3(Line$1, "defaults", objectSpread({}, MeshCompo
 var Importer =
 /*#__PURE__*/
 function (_MeshComponent) {
-  createClass(Importer, null, [{
+  _createClass(Importer, null, [{
     key: "filter",
 
     /**
@@ -52560,9 +49536,9 @@ function (_MeshComponent) {
   function Importer() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Importer);
+    _classCallCheck(this, Importer);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(Importer).call(this, params, Importer.defaults, Importer.instructions, false));
+    return _possibleConstructorReturn(this, _getPrototypeOf(Importer).call(this, params, Importer.defaults, Importer.instructions, false));
   }
   /**
    * @method build
@@ -52573,7 +49549,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Importer, [{
+  _createClass(Importer, [{
     key: "build",
     value: function build() {
       var _this = this;
@@ -52598,12 +49574,12 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Importer, _MeshComponent);
+  _inherits(Importer, _MeshComponent);
 
   return Importer;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Importer, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Importer, "defaults", _objectSpread({}, MeshComponent.defaults, {
   url: '',
   loader: new JSONLoader(),
   onLoad: function onLoad() {},
@@ -52624,7 +49600,7 @@ defineProperty$3(defineProperty$3(Importer, "defaults", objectSpread({}, MeshCom
       mesh: geom.bones ? new SkinnedMesh(geom, mat) : new Mesh(geom, mat)
     }).mesh;
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions));
+})), "instructions", _objectSpread({}, MeshComponent.instructions));
 
 /**
  * @class Octahedron
@@ -52674,14 +49650,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Octahedron);
+    _classCallCheck(this, Octahedron);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Octahedron).call(this, params, Octahedron.defaults, Octahedron.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Octahedron).call(this, params, Octahedron.defaults, Octahedron.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Octahedron.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Octahedron.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -52695,7 +49671,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Octahedron, [{
+  _createClass(Octahedron, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -52719,12 +49695,12 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Octahedron, _MeshComponent);
+  _inherits(Octahedron, _MeshComponent);
 
   return Octahedron;
 }(MeshComponent);
 
-defineProperty$3(Octahedron, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(Octahedron, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     radius: 1,
     detail: 0
@@ -52786,9 +49762,9 @@ function (_MeshComponent) {
   function Parametric() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Parametric);
+    _classCallCheck(this, Parametric);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(Parametric).call(this, params, Parametric.defaults, Parametric.instructions));
+    return _possibleConstructorReturn(this, _getPrototypeOf(Parametric).call(this, params, Parametric.defaults, Parametric.instructions));
   }
   /**
    * @method build
@@ -52799,7 +49775,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Parametric, [{
+  _createClass(Parametric, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -52823,12 +49799,12 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Parametric, _MeshComponent);
+  _inherits(Parametric, _MeshComponent);
 
   return Parametric;
 }(MeshComponent);
 
-defineProperty$3(Parametric, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(Parametric, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     func: function func(u, v) {
       return new Vector3(u, v, 0);
@@ -52894,14 +49870,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Plane$$1);
+    _classCallCheck(this, Plane$$1);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Plane$$1).call(this, params, Plane$$1.defaults, Plane$$1.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Plane$$1).call(this, params, Plane$$1.defaults, Plane$$1.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Plane$$1.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Plane$$1.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -52915,7 +49891,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Plane$$1, [{
+  _createClass(Plane$$1, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -52940,19 +49916,19 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Plane$$1, _MeshComponent);
+  _inherits(Plane$$1, _MeshComponent);
 
   return Plane$$1;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Plane$1, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Plane$1, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     width: 10,
     height: 10,
     wSegments: 1,
     hSegments: 1
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['width', 'height', 'wSegments', 'hSegments']
 }));
 
@@ -53029,14 +50005,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Polyhedron);
+    _classCallCheck(this, Polyhedron);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Polyhedron).call(this, params, Polyhedron.defaults, Polyhedron.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Polyhedron).call(this, params, Polyhedron.defaults, Polyhedron.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Polyhedron.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Polyhedron.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -53050,7 +50026,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Polyhedron, [{
+  _createClass(Polyhedron, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -53074,19 +50050,19 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Polyhedron, _MeshComponent);
+  _inherits(Polyhedron, _MeshComponent);
 
   return Polyhedron;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(defineProperty$3(defineProperty$3(Polyhedron, "verticesOfCube", verticesOfCube), "indicesOfFaces", indicesOfFaces), "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(_defineProperty(_defineProperty(Polyhedron, "verticesOfCube", verticesOfCube), "indicesOfFaces", indicesOfFaces), "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     verticesOfCube: verticesOfCube,
     indicesOfFaces: indicesOfFaces,
     radius: 6,
     detail: 2
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['verticesOfCube', 'indicesOfFaces', 'radius', 'detail']
 }));
 
@@ -53162,14 +50138,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Ring);
+    _classCallCheck(this, Ring);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Ring).call(this, params, Ring.defaults, Ring.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Ring).call(this, params, Ring.defaults, Ring.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Ring.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Ring.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -53183,7 +50159,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Ring, [{
+  _createClass(Ring, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -53207,12 +50183,12 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Ring, _MeshComponent);
+  _inherits(Ring, _MeshComponent);
 
   return Ring;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Ring, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Ring, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     innerRadius: 0,
     outerRadius: 50,
@@ -53221,7 +50197,7 @@ defineProperty$3(defineProperty$3(Ring, "defaults", objectSpread({}, MeshCompone
     thetaStart: 0,
     thetaLength: Math.PI * 2
   }
-})), "instructions", objectSpread({}, MeshComponent.defaults, {
+})), "instructions", _objectSpread({}, MeshComponent.defaults, {
   geometry: ['innerRadius', 'outerRadius', 'thetaSegments', 'phiSegments', 'thetaStart', 'thetaLength']
 }));
 
@@ -53289,14 +50265,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Shape$$1);
+    _classCallCheck(this, Shape$$1);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Shape$$1).call(this, params, Shape$$1.defaults, Shape$$1.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Shape$$1).call(this, params, Shape$$1.defaults, Shape$$1.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Shape$$1.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Shape$$1.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -53310,7 +50286,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Shape$$1, [{
+  _createClass(Shape$$1, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -53334,16 +50310,16 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Shape$$1, _MeshComponent);
+  _inherits(Shape$$1, _MeshComponent);
 
   return Shape$$1;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Shape$1, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Shape$1, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     shapes: []
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['shapes']
 }));
 
@@ -53407,9 +50383,9 @@ function (_MeshComponent) {
   function Sphere$$1() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Sphere$$1);
+    _classCallCheck(this, Sphere$$1);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(Sphere$$1).call(this, params, Sphere$$1.defaults, Sphere$$1.instructions));
+    return _possibleConstructorReturn(this, _getPrototypeOf(Sphere$$1).call(this, params, Sphere$$1.defaults, Sphere$$1.instructions));
   }
   /**
    * @method build
@@ -53420,7 +50396,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Sphere$$1, [{
+  _createClass(Sphere$$1, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -53445,18 +50421,18 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Sphere$$1, _MeshComponent);
+  _inherits(Sphere$$1, _MeshComponent);
 
   return Sphere$$1;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Sphere$1, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Sphere$1, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     radius: 1,
     widthSegments: 8,
     heightSegments: 6
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['radius', 'widthSegments', 'heightSegments']
 }));
 
@@ -53522,14 +50498,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Tetrahedron);
+    _classCallCheck(this, Tetrahedron);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Tetrahedron).call(this, params, Tetrahedron.defaults, Tetrahedron.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Tetrahedron).call(this, params, Tetrahedron.defaults, Tetrahedron.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Tetrahedron.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Tetrahedron.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -53543,7 +50519,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Tetrahedron, [{
+  _createClass(Tetrahedron, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -53567,17 +50543,17 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Tetrahedron, _MeshComponent);
+  _inherits(Tetrahedron, _MeshComponent);
 
   return Tetrahedron;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Tetrahedron, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Tetrahedron, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     radius: 1,
     detail: 0
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['radius', 'detail']
 }));
 
@@ -53618,7 +50594,7 @@ defineProperty$3(defineProperty$3(Tetrahedron, "defaults", objectSpread({}, Mesh
 var Text =
 /*#__PURE__*/
 function (_MeshComponent) {
-  createClass(Text, null, [{
+  _createClass(Text, null, [{
     key: "load",
 
     /**
@@ -53669,9 +50645,9 @@ function (_MeshComponent) {
   function Text() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Text);
+    _classCallCheck(this, Text);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(Text).call(this, params, Text.defaults, Text.instructions));
+    return _possibleConstructorReturn(this, _getPrototypeOf(Text).call(this, params, Text.defaults, Text.instructions));
   }
   /**
    * @method build
@@ -53682,7 +50658,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Text, [{
+  _createClass(Text, [{
     key: "build",
     value: function build() {
       var _this = this;
@@ -53705,18 +50681,18 @@ function (_MeshComponent) {
         });
       });
 
-      get$3(getPrototypeOf$2(Text.prototype), "wait", this).call(this, promise);
+      _get(_getPrototypeOf(Text.prototype), "wait", this).call(this, promise);
 
       return promise;
     }
   }]);
 
-  inherits(Text, _MeshComponent);
+  _inherits(Text, _MeshComponent);
 
   return Text;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(defineProperty$3(Text, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(_defineProperty(Text, "defaults", _objectSpread({}, MeshComponent.defaults, {
   text: 'Hello World!',
   font: null,
   geometry: {
@@ -53728,7 +50704,7 @@ defineProperty$3(defineProperty$3(defineProperty$3(Text, "defaults", objectSprea
     bevelThickness: 10,
     bevelSize: 8
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions)), "loader", new FontLoader());
+})), "instructions", _objectSpread({}, MeshComponent.instructions)), "loader", new FontLoader());
 
 /**
  * @class Torus
@@ -53797,14 +50773,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Torus);
+    _classCallCheck(this, Torus);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Torus).call(this, params, Torus.defaults, Torus.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Torus).call(this, params, Torus.defaults, Torus.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Torus.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Torus.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -53818,7 +50794,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Torus, [{
+  _createClass(Torus, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -53842,12 +50818,12 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Torus, _MeshComponent);
+  _inherits(Torus, _MeshComponent);
 
   return Torus;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Torus, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Torus, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     radius: 100,
     tube: 40,
@@ -53855,7 +50831,7 @@ defineProperty$3(defineProperty$3(Torus, "defaults", objectSpread({}, MeshCompon
     tubularSegments: 6,
     arc: Math.PI * 2
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['radius', 'tube', 'radialSegments', 'tubularSegments', 'arc']
 }));
 
@@ -53928,14 +50904,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Torusknot);
+    _classCallCheck(this, Torusknot);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Torusknot).call(this, params, Torusknot.defaults, Torusknot.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Torusknot).call(this, params, Torusknot.defaults, Torusknot.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Torusknot.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Torusknot.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -53949,7 +50925,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Torusknot, [{
+  _createClass(Torusknot, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -53974,12 +50950,12 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Torusknot, _MeshComponent);
+  _inherits(Torusknot, _MeshComponent);
 
   return Torusknot;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Torusknot, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Torusknot, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     radius: 100,
     tube: 40,
@@ -53988,7 +50964,7 @@ defineProperty$3(defineProperty$3(Torusknot, "defaults", objectSpread({}, MeshCo
     p: 2,
     q: 3
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['radius', 'tube', 'radialSegments', 'tubularSegments', 'p', 'q']
 }));
 
@@ -54070,14 +51046,14 @@ function (_MeshComponent) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, Tube);
+    _classCallCheck(this, Tube);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Tube).call(this, params, Tube.defaults, Tube.instructions));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Tube).call(this, params, Tube.defaults, Tube.instructions));
 
     if (params.build) {
       _this.build(params);
 
-      get$3(getPrototypeOf$2(Tube.prototype), "wrap", assertThisInitialized(_this)).call(assertThisInitialized(_this));
+      _get(_getPrototypeOf(Tube.prototype), "wrap", _assertThisInitialized(_this)).call(_assertThisInitialized(_this));
     }
 
     return _this;
@@ -54091,7 +51067,7 @@ function (_MeshComponent) {
    */
 
 
-  createClass(Tube, [{
+  _createClass(Tube, [{
     key: "build",
     value: function build() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.params;
@@ -54116,12 +51092,12 @@ function (_MeshComponent) {
     }
   }]);
 
-  inherits(Tube, _MeshComponent);
+  _inherits(Tube, _MeshComponent);
 
   return Tube;
 }(MeshComponent);
 
-defineProperty$3(defineProperty$3(Tube, "defaults", objectSpread({}, MeshComponent.defaults, {
+_defineProperty(_defineProperty(Tube, "defaults", _objectSpread({}, MeshComponent.defaults, {
   geometry: {
     path: new LineCurve3(new Vector3(0, 0, 0), new Vector3(0, 0, 1)),
     segments: 20,
@@ -54129,7 +51105,7 @@ defineProperty$3(defineProperty$3(Tube, "defaults", objectSpread({}, MeshCompone
     radiusSegments: 8,
     closed: false
   }
-})), "instructions", objectSpread({}, MeshComponent.instructions, {
+})), "instructions", _objectSpread({}, MeshComponent.instructions, {
   geometry: ['path', 'segments', 'radius', 'radiusSegments', 'closed']
 }));
 
@@ -54161,26 +51137,26 @@ function (_MeshComponent) {
   function Group$$1() {
     var _this;
 
-    classCallCheck(this, Group$$1);
+    _classCallCheck(this, Group$$1);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(Group$$1).call(this, {}));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Group$$1).call(this, {}));
 
     for (var i = 0; i < arguments.length; i++) {
       var obj = i < 0 || arguments.length <= i ? undefined : arguments[i];
-      if (obj instanceof Component) obj.addTo(assertThisInitialized(assertThisInitialized(_this)));else if (obj instanceof Object3D) _this.native.add(obj);
+      if (obj instanceof Component) obj.addTo(_assertThisInitialized(_assertThisInitialized(_this)));else if (obj instanceof Object3D) _this.native.add(obj);
     }
 
     return _this;
   }
 
-  createClass(Group$$1, [{
+  _createClass(Group$$1, [{
     key: "build",
     value: function build() {
       return new Object3D();
     }
   }]);
 
-  inherits(Group$$1, _MeshComponent);
+  _inherits(Group$$1, _MeshComponent);
 
   return Group$$1;
 }(MeshComponent);
@@ -54203,7 +51179,7 @@ function () {
   function ElementModule() {
     var container = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document.body;
 
-    classCallCheck(this, ElementModule);
+    _classCallCheck(this, ElementModule);
 
     if (container.container) {
       console.warn('ElementModule now accepts only argument which is a DOM object, not a params object.');
@@ -54220,7 +51196,7 @@ function () {
    */
 
 
-  createClass(ElementModule, [{
+  _createClass(ElementModule, [{
     key: "createElement",
     value: function createElement() {
       this.element = window.document.createElement('div');
@@ -54290,9 +51266,9 @@ function () {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var additional = arguments.length > 1 ? arguments[1] : undefined;
 
-    classCallCheck(this, RenderingModule);
+    _classCallCheck(this, RenderingModule);
 
-    defineProperty$3(this, "enabled", true);
+    _defineProperty(this, "enabled", true);
 
     this.params = Object.assign({
       width: window.innerWidth,
@@ -54334,7 +51310,7 @@ function () {
    */
 
 
-  createClass(RenderingModule, [{
+  _createClass(RenderingModule, [{
     key: "applyAdditional",
     value: function applyAdditional(name) {
       RenderingModule.additional[name].apply(this, [this.renderer]);
@@ -54498,7 +51474,7 @@ function () {
   return RenderingModule;
 }();
 
-defineProperty$3(RenderingModule, "additional", {
+_defineProperty(RenderingModule, "additional", {
   shadow: function shadow(renderer) {
     renderer.shadowMap.enabled = true;
   }
@@ -54518,12 +51494,12 @@ function () {
   function SceneModule() {
     var willSceneBeReplaced = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-    classCallCheck(this, SceneModule);
+    _classCallCheck(this, SceneModule);
 
     this.scene = willSceneBeReplaced ? null : new Scene();
   }
 
-  createClass(SceneModule, [{
+  _createClass(SceneModule, [{
     key: "manager",
     value: function manager(_manager) {
       _manager.set('scene', this.scene);
@@ -54532,13 +51508,11 @@ function () {
     key: "integrate",
     value: function integrate(self) {
       Object.assign(this, {
-        add: function add(object) {
-          var _this = this;
-
-          return asyncToGenerator(
+        add: function () {
+          var _add = _asyncToGenerator(
           /*#__PURE__*/
-          regenerator.mark(function _callee() {
-            return regenerator.wrap(function _callee$(_context) {
+          regeneratorRuntime.mark(function _callee(object) {
+            return regeneratorRuntime.wrap(function _callee$(_context) {
               while (1) {
                 switch (_context.prev = _context.next) {
                   case 0:
@@ -54560,20 +51534,18 @@ function () {
                       break;
                     }
 
-                    throw new CompositionError('SceneModule', 'there is no object.native', _this);
+                    throw new CompositionError('SceneModule', 'there is no object.native', this);
 
                   case 7:
-                    object.parent = _this;
+                    object.parent = this;
                     _context.next = 10;
-                    return _this.applyBridge({
+                    return this.applyBridge({
                       onAdd: object
                     }).onAdd;
 
                   case 10:
                     self.scene.add(object.native);
-
-                    _this.children.push(object);
-
+                    this.children.push(object);
                     return _context.abrupt("return", object);
 
                   case 13:
@@ -54582,19 +51554,21 @@ function () {
                 }
               }
             }, _callee, this);
-          }))();
-        },
-        remove: function remove(object) {
-          var _this2 = this;
+          }));
 
-          return asyncToGenerator(
+          return function add(_x) {
+            return _add.apply(this, arguments);
+          };
+        }(),
+        remove: function () {
+          var _remove = _asyncToGenerator(
           /*#__PURE__*/
-          regenerator.mark(function _callee2() {
-            return regenerator.wrap(function _callee2$(_context2) {
+          regeneratorRuntime.mark(function _callee2(object) {
+            return regeneratorRuntime.wrap(function _callee2$(_context2) {
               while (1) {
                 switch (_context2.prev = _context2.next) {
                   case 0:
-                    if (!(object.parent !== _this2)) {
+                    if (!(object.parent !== this)) {
                       _context2.next = 2;
                       break;
                     }
@@ -54608,8 +51582,7 @@ function () {
                   case 4:
                     object.parent = null;
                     self.scene.remove(object.native);
-
-                    _this2.children.splice(_this2.children.indexOf(object), 1);
+                    this.children.splice(this.children.indexOf(object), 1);
 
                   case 7:
                   case "end":
@@ -54617,8 +51590,12 @@ function () {
                 }
               }
             }, _callee2, this);
-          }))();
-        },
+          }));
+
+          return function remove(_x2) {
+            return _remove.apply(this, arguments);
+          };
+        }(),
         _setScene: function _setScene(scene) {
           this.children = scene[SYMBOL_CHILDREN_FOR_SCENE] = scene[SYMBOL_CHILDREN_FOR_SCENE] || [];
           self.scene = scene;
@@ -54653,7 +51630,7 @@ function () {
   function ResizeModule() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, ResizeModule);
+    _classCallCheck(this, ResizeModule);
 
     this.params = Object.assign({
       auto: true
@@ -54670,7 +51647,7 @@ function () {
    */
 
 
-  createClass(ResizeModule, [{
+  _createClass(ResizeModule, [{
     key: "setSize",
     value: function setSize() {
       var width = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
@@ -54771,9 +51748,9 @@ function (_ShaderMaterial) {
    * Constructs a new adaptive luminosity material.
    */
   function AdaptiveLuminosityMaterial() {
-    classCallCheck(this, AdaptiveLuminosityMaterial);
+    _classCallCheck(this, AdaptiveLuminosityMaterial);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(AdaptiveLuminosityMaterial).call(this, {
+    return _possibleConstructorReturn(this, _getPrototypeOf(AdaptiveLuminosityMaterial).call(this, {
       type: "AdaptiveLuminosityMaterial",
       defines: {
         MIP_LEVEL_1X1: "0.0"
@@ -54792,7 +51769,7 @@ function (_ShaderMaterial) {
     }));
   }
 
-  inherits(AdaptiveLuminosityMaterial, _ShaderMaterial);
+  _inherits(AdaptiveLuminosityMaterial, _ShaderMaterial);
 
   return AdaptiveLuminosityMaterial;
 }(ShaderMaterial);
@@ -54824,7 +51801,7 @@ function (_ShaderMaterial) {
 
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    classCallCheck(this, BokehMaterial);
+    _classCallCheck(this, BokehMaterial);
 
     var settings = Object.assign({
       focus: 1.0,
@@ -54832,7 +51809,7 @@ function (_ShaderMaterial) {
       aperture: 0.025,
       maxBlur: 1.0
     }, options);
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(BokehMaterial).call(this, {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(BokehMaterial).call(this, {
       type: "BokehMaterial",
       uniforms: {
         cameraNear: new Uniform(0.1),
@@ -54862,7 +51839,7 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(BokehMaterial, [{
+  _createClass(BokehMaterial, [{
     key: "adoptCameraSettings",
     value: function adoptCameraSettings() {
       var camera = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
@@ -54875,7 +51852,7 @@ function (_ShaderMaterial) {
     }
   }]);
 
-  inherits(BokehMaterial, _ShaderMaterial);
+  _inherits(BokehMaterial, _ShaderMaterial);
 
   return BokehMaterial;
 }(ShaderMaterial);
@@ -54899,9 +51876,9 @@ function (_ShaderMaterial) {
   function ColorEdgesMaterial() {
     var texelSize = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector2();
 
-    classCallCheck(this, ColorEdgesMaterial);
+    _classCallCheck(this, ColorEdgesMaterial);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(ColorEdgesMaterial).call(this, {
+    return _possibleConstructorReturn(this, _getPrototypeOf(ColorEdgesMaterial).call(this, {
       type: "ColorEdgesMaterial",
       defines: {
         EDGE_THRESHOLD: "0.1"
@@ -54932,7 +51909,7 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(ColorEdgesMaterial, [{
+  _createClass(ColorEdgesMaterial, [{
     key: "setEdgeDetectionThreshold",
     value: function setEdgeDetectionThreshold(threshold) {
       this.defines.EDGE_THRESHOLD = threshold.toFixed("2");
@@ -54940,7 +51917,7 @@ function (_ShaderMaterial) {
     }
   }]);
 
-  inherits(ColorEdgesMaterial, _ShaderMaterial);
+  _inherits(ColorEdgesMaterial, _ShaderMaterial);
 
   return ColorEdgesMaterial;
 }(ShaderMaterial);
@@ -54970,9 +51947,9 @@ function (_ShaderMaterial) {
 
     var screenMode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-    classCallCheck(this, CombineMaterial);
+    _classCallCheck(this, CombineMaterial);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(CombineMaterial).call(this, {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(CombineMaterial).call(this, {
       type: "CombineMaterial",
       uniforms: {
         texture1: new Uniform(null),
@@ -54997,7 +51974,7 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(CombineMaterial, [{
+  _createClass(CombineMaterial, [{
     key: "setScreenModeEnabled",
     value: function setScreenModeEnabled(enabled) {
       if (enabled) {
@@ -55010,7 +51987,7 @@ function (_ShaderMaterial) {
     }
   }]);
 
-  inherits(CombineMaterial, _ShaderMaterial);
+  _inherits(CombineMaterial, _ShaderMaterial);
 
   return CombineMaterial;
 }(ShaderMaterial);
@@ -55044,9 +52021,9 @@ function (_ShaderMaterial) {
 
     var texelSize = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector2();
 
-    classCallCheck(this, ConvolutionMaterial);
+    _classCallCheck(this, ConvolutionMaterial);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(ConvolutionMaterial).call(this, {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ConvolutionMaterial).call(this, {
       type: "ConvolutionMaterial",
       uniforms: {
         tDiffuse: new Uniform(null),
@@ -55079,7 +52056,7 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(ConvolutionMaterial, [{
+  _createClass(ConvolutionMaterial, [{
     key: "getKernel",
     value: function getKernel() {
       return kernelPresets[this.kernelSize];
@@ -55099,7 +52076,7 @@ function (_ShaderMaterial) {
     }
   }]);
 
-  inherits(ConvolutionMaterial, _ShaderMaterial);
+  _inherits(ConvolutionMaterial, _ShaderMaterial);
 
   return ConvolutionMaterial;
 }(ShaderMaterial);
@@ -55145,9 +52122,9 @@ function (_ShaderMaterial) {
    * Constructs a new copy material.
    */
   function CopyMaterial() {
-    classCallCheck(this, CopyMaterial);
+    _classCallCheck(this, CopyMaterial);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(CopyMaterial).call(this, {
+    return _possibleConstructorReturn(this, _getPrototypeOf(CopyMaterial).call(this, {
       type: "CopyMaterial",
       uniforms: {
         tDiffuse: new Uniform(null),
@@ -55160,7 +52137,7 @@ function (_ShaderMaterial) {
     }));
   }
 
-  inherits(CopyMaterial, _ShaderMaterial);
+  _inherits(CopyMaterial, _ShaderMaterial);
 
   return CopyMaterial;
 }(ShaderMaterial);
@@ -55186,9 +52163,9 @@ function (_ShaderMaterial) {
     var depthTexture = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     var camera = arguments.length > 1 ? arguments[1] : undefined;
 
-    classCallCheck(this, DepthComparisonMaterial);
+    _classCallCheck(this, DepthComparisonMaterial);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(DepthComparisonMaterial).call(this, {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(DepthComparisonMaterial).call(this, {
       type: "DepthComparisonMaterial",
       uniforms: {
         tDepth: new Uniform(depthTexture),
@@ -55214,7 +52191,7 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(DepthComparisonMaterial, [{
+  _createClass(DepthComparisonMaterial, [{
     key: "adoptCameraSettings",
     value: function adoptCameraSettings() {
       var camera = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
@@ -55232,7 +52209,7 @@ function (_ShaderMaterial) {
     }
   }]);
 
-  inherits(DepthComparisonMaterial, _ShaderMaterial);
+  _inherits(DepthComparisonMaterial, _ShaderMaterial);
 
   return DepthComparisonMaterial;
 }(ShaderMaterial);
@@ -55260,7 +52237,7 @@ function (_ShaderMaterial) {
 
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, DotScreenMaterial);
+    _classCallCheck(this, DotScreenMaterial);
 
     var settings = Object.assign({
       average: false,
@@ -55268,7 +52245,7 @@ function (_ShaderMaterial) {
       scale: 1.0,
       intensity: 1.0
     }, options);
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(DotScreenMaterial).call(this, {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(DotScreenMaterial).call(this, {
       type: "DotScreenMaterial",
       uniforms: {
         tDiffuse: new Uniform(null),
@@ -55294,7 +52271,7 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(DotScreenMaterial, [{
+  _createClass(DotScreenMaterial, [{
     key: "setAverageEnabled",
     value: function setAverageEnabled(enabled) {
       if (enabled) {
@@ -55307,7 +52284,7 @@ function (_ShaderMaterial) {
     }
   }]);
 
-  inherits(DotScreenMaterial, _ShaderMaterial);
+  _inherits(DotScreenMaterial, _ShaderMaterial);
 
   return DotScreenMaterial;
 }(ShaderMaterial);
@@ -55364,7 +52341,7 @@ function (_ShaderMaterial) {
 
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, FilmMaterial);
+    _classCallCheck(this, FilmMaterial);
 
     var settings = Object.assign({
       screenMode: true,
@@ -55383,7 +52360,7 @@ function (_ShaderMaterial) {
       vignetteOffset: 1.0,
       vignetteDarkness: 1.0
     }, options);
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(FilmMaterial).call(this, {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(FilmMaterial).call(this, {
       type: "FilmMaterial",
       uniforms: {
         tDiffuse: new Uniform(null),
@@ -55430,7 +52407,7 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(FilmMaterial, [{
+  _createClass(FilmMaterial, [{
     key: "setScreenModeEnabled",
     value: function setScreenModeEnabled(enabled) {
       if (enabled) {
@@ -55564,7 +52541,7 @@ function (_ShaderMaterial) {
     }
   }]);
 
-  inherits(FilmMaterial, _ShaderMaterial);
+  _inherits(FilmMaterial, _ShaderMaterial);
 
   return FilmMaterial;
 }(ShaderMaterial);
@@ -55585,9 +52562,9 @@ function (_ShaderMaterial) {
    * Constructs a new glitch material.
    */
   function GlitchMaterial() {
-    classCallCheck(this, GlitchMaterial);
+    _classCallCheck(this, GlitchMaterial);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(GlitchMaterial).call(this, {
+    return _possibleConstructorReturn(this, _getPrototypeOf(GlitchMaterial).call(this, {
       type: "GlitchMaterial",
       uniforms: {
         tDiffuse: new Uniform(null),
@@ -55609,7 +52586,7 @@ function (_ShaderMaterial) {
     }));
   }
 
-  inherits(GlitchMaterial, _ShaderMaterial);
+  _inherits(GlitchMaterial, _ShaderMaterial);
 
   return GlitchMaterial;
 }(ShaderMaterial);
@@ -55648,7 +52625,7 @@ function (_ShaderMaterial) {
   function GodRaysMaterial() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, GodRaysMaterial);
+    _classCallCheck(this, GodRaysMaterial);
 
     var settings = Object.assign({
       exposure: 0.6,
@@ -55657,7 +52634,7 @@ function (_ShaderMaterial) {
       weight: 0.4,
       clampMax: 1.0
     }, options);
-    return possibleConstructorReturn(this, getPrototypeOf$2(GodRaysMaterial).call(this, {
+    return _possibleConstructorReturn(this, _getPrototypeOf(GodRaysMaterial).call(this, {
       type: "GodRaysMaterial",
       defines: {
         NUM_SAMPLES_FLOAT: "60.0",
@@ -55679,7 +52656,7 @@ function (_ShaderMaterial) {
     }));
   }
 
-  inherits(GodRaysMaterial, _ShaderMaterial);
+  _inherits(GodRaysMaterial, _ShaderMaterial);
 
   return GodRaysMaterial;
 }(ShaderMaterial);
@@ -55721,10 +52698,10 @@ function (_ShaderMaterial) {
     var colorOutput = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
     var luminanceRange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-    classCallCheck(this, LuminosityMaterial);
+    _classCallCheck(this, LuminosityMaterial);
 
     var maskLuminance = luminanceRange !== null;
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(LuminosityMaterial).call(this, {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(LuminosityMaterial).call(this, {
       type: "LuminosityMaterial",
       uniforms: {
         tDiffuse: new Uniform(null),
@@ -55748,7 +52725,7 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(LuminosityMaterial, [{
+  _createClass(LuminosityMaterial, [{
     key: "setColorOutputEnabled",
     value: function setColorOutputEnabled(enabled) {
       if (enabled) {
@@ -55778,7 +52755,7 @@ function (_ShaderMaterial) {
     }
   }]);
 
-  inherits(LuminosityMaterial, _ShaderMaterial);
+  _inherits(LuminosityMaterial, _ShaderMaterial);
 
   return LuminosityMaterial;
 }(ShaderMaterial);
@@ -55808,7 +52785,7 @@ function (_ShaderMaterial) {
 
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, OutlineBlendMaterial);
+    _classCallCheck(this, OutlineBlendMaterial);
 
     var settings = Object.assign({
       edgeStrength: 1.0,
@@ -55818,7 +52795,7 @@ function (_ShaderMaterial) {
       alphaBlending: false,
       xRay: true
     }, options);
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(OutlineBlendMaterial).call(this, {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(OutlineBlendMaterial).call(this, {
       type: "OutlineBlendMaterial",
       uniforms: {
         pulse: new Uniform(1.0),
@@ -55851,7 +52828,7 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(OutlineBlendMaterial, [{
+  _createClass(OutlineBlendMaterial, [{
     key: "setAlphaBlendingEnabled",
     value: function setAlphaBlendingEnabled(enabled) {
       if (enabled) {
@@ -55901,7 +52878,7 @@ function (_ShaderMaterial) {
     }
   }]);
 
-  inherits(OutlineBlendMaterial, _ShaderMaterial);
+  _inherits(OutlineBlendMaterial, _ShaderMaterial);
 
   return OutlineBlendMaterial;
 }(ShaderMaterial);
@@ -55925,9 +52902,9 @@ function (_ShaderMaterial) {
 
     var texelSize = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector2();
 
-    classCallCheck(this, OutlineEdgesMaterial);
+    _classCallCheck(this, OutlineEdgesMaterial);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(OutlineEdgesMaterial).call(this, {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(OutlineEdgesMaterial).call(this, {
       type: "OutlineEdgesMaterial",
       uniforms: {
         tMask: new Uniform(null),
@@ -55951,14 +52928,14 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(OutlineEdgesMaterial, [{
+  _createClass(OutlineEdgesMaterial, [{
     key: "setTexelSize",
     value: function setTexelSize(x, y) {
       this.uniforms.texelSize.value.set(x, y);
     }
   }]);
 
-  inherits(OutlineEdgesMaterial, _ShaderMaterial);
+  _inherits(OutlineEdgesMaterial, _ShaderMaterial);
 
   return OutlineEdgesMaterial;
 }(ShaderMaterial);
@@ -55979,9 +52956,9 @@ function (_ShaderMaterial) {
    * Constructs a new pixelation material.
    */
   function PixelationMaterial() {
-    classCallCheck(this, PixelationMaterial);
+    _classCallCheck(this, PixelationMaterial);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(PixelationMaterial).call(this, {
+    return _possibleConstructorReturn(this, _getPrototypeOf(PixelationMaterial).call(this, {
       type: "PixelationMaterial",
       uniforms: {
         tDiffuse: new Uniform(null),
@@ -56003,7 +52980,7 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(PixelationMaterial, [{
+  _createClass(PixelationMaterial, [{
     key: "setResolution",
 
     /**
@@ -56036,7 +53013,7 @@ function (_ShaderMaterial) {
     }
   }]);
 
-  inherits(PixelationMaterial, _ShaderMaterial);
+  _inherits(PixelationMaterial, _ShaderMaterial);
 
   return PixelationMaterial;
 }(ShaderMaterial);
@@ -56080,7 +53057,7 @@ function (_ShaderMaterial) {
     var camera = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    classCallCheck(this, RealisticBokehMaterial);
+    _classCallCheck(this, RealisticBokehMaterial);
 
     var settings = Object.assign({
       texelSize: null,
@@ -56099,7 +53076,7 @@ function (_ShaderMaterial) {
       fringe: 0.7,
       ditherStrength: 0.0001
     }, options);
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(RealisticBokehMaterial).call(this, {
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(RealisticBokehMaterial).call(this, {
       type: "RealisticBokehMaterial",
       defines: {
         RINGS_INT: settings.rings.toFixed(0),
@@ -56158,7 +53135,7 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(RealisticBokehMaterial, [{
+  _createClass(RealisticBokehMaterial, [{
     key: "setShowFocusEnabled",
     value: function setShowFocusEnabled(enabled) {
       if (enabled) {
@@ -56284,7 +53261,7 @@ function (_ShaderMaterial) {
     }
   }]);
 
-  inherits(RealisticBokehMaterial, _ShaderMaterial);
+  _inherits(RealisticBokehMaterial, _ShaderMaterial);
 
   return RealisticBokehMaterial;
 }(ShaderMaterial);
@@ -56311,14 +53288,14 @@ function (_ShaderMaterial) {
   function ShockWaveMaterial() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, ShockWaveMaterial);
+    _classCallCheck(this, ShockWaveMaterial);
 
     var settings = Object.assign({
       maxRadius: 1.0,
       waveSize: 0.2,
       amplitude: 0.05
     }, options);
-    return possibleConstructorReturn(this, getPrototypeOf$2(ShockWaveMaterial).call(this, {
+    return _possibleConstructorReturn(this, _getPrototypeOf(ShockWaveMaterial).call(this, {
       type: "ShockWaveMaterial",
       uniforms: {
         tDiffuse: new Uniform(null),
@@ -56338,7 +53315,7 @@ function (_ShaderMaterial) {
     }));
   }
 
-  inherits(ShockWaveMaterial, _ShaderMaterial);
+  _inherits(ShockWaveMaterial, _ShaderMaterial);
 
   return ShockWaveMaterial;
 }(ShaderMaterial);
@@ -56362,9 +53339,9 @@ function (_ShaderMaterial) {
   function SMAABlendMaterial() {
     var texelSize = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector2();
 
-    classCallCheck(this, SMAABlendMaterial);
+    _classCallCheck(this, SMAABlendMaterial);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(SMAABlendMaterial).call(this, {
+    return _possibleConstructorReturn(this, _getPrototypeOf(SMAABlendMaterial).call(this, {
       type: "SMAABlendMaterial",
       uniforms: {
         tDiffuse: new Uniform(null),
@@ -56378,7 +53355,7 @@ function (_ShaderMaterial) {
     }));
   }
 
-  inherits(SMAABlendMaterial, _ShaderMaterial);
+  _inherits(SMAABlendMaterial, _ShaderMaterial);
 
   return SMAABlendMaterial;
 }(ShaderMaterial);
@@ -56402,9 +53379,9 @@ function (_ShaderMaterial) {
   function SMAAWeightsMaterial() {
     var texelSize = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new Vector2();
 
-    classCallCheck(this, SMAAWeightsMaterial);
+    _classCallCheck(this, SMAAWeightsMaterial);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(SMAAWeightsMaterial).call(this, {
+    return _possibleConstructorReturn(this, _getPrototypeOf(SMAAWeightsMaterial).call(this, {
       type: "SMAAWeightsMaterial",
       defines: {
         // Configurable settings:
@@ -56441,7 +53418,7 @@ function (_ShaderMaterial) {
    */
 
 
-  createClass(SMAAWeightsMaterial, [{
+  _createClass(SMAAWeightsMaterial, [{
     key: "setOrthogonalSearchSteps",
     value: function setOrthogonalSearchSteps(steps) {
       this.defines.MAX_SEARCH_STEPS_INT = steps.toFixed("0");
@@ -56450,7 +53427,7 @@ function (_ShaderMaterial) {
     }
   }]);
 
-  inherits(SMAAWeightsMaterial, _ShaderMaterial);
+  _inherits(SMAAWeightsMaterial, _ShaderMaterial);
 
   return SMAAWeightsMaterial;
 }(ShaderMaterial);
@@ -56473,9 +53450,9 @@ function (_ShaderMaterial) {
    * Constructs a new tone mapping material.
    */
   function ToneMappingMaterial() {
-    classCallCheck(this, ToneMappingMaterial);
+    _classCallCheck(this, ToneMappingMaterial);
 
-    return possibleConstructorReturn(this, getPrototypeOf$2(ToneMappingMaterial).call(this, {
+    return _possibleConstructorReturn(this, _getPrototypeOf(ToneMappingMaterial).call(this, {
       type: "ToneMappingMaterial",
       uniforms: {
         tDiffuse: new Uniform(null),
@@ -56491,7 +53468,7 @@ function (_ShaderMaterial) {
     }));
   }
 
-  inherits(ToneMappingMaterial, _ShaderMaterial);
+  _inherits(ToneMappingMaterial, _ShaderMaterial);
 
   return ToneMappingMaterial;
 }(ShaderMaterial);
@@ -56529,7 +53506,7 @@ function () {
     var camera = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     var quad = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : new Mesh(new PlaneBufferGeometry(2, 2), null);
 
-    classCallCheck(this, Pass);
+    _classCallCheck(this, Pass);
 
     /**
      * The name of this pass.
@@ -56603,7 +53580,7 @@ function () {
    */
 
 
-  createClass(Pass, [{
+  _createClass(Pass, [{
     key: "render",
 
     /**
@@ -56738,9 +53715,9 @@ function (_Pass) {
 
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, BlurPass);
+    _classCallCheck(this, BlurPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(BlurPass).call(this, "BlurPass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(BlurPass).call(this, "BlurPass"));
     /**
      * A render target.
      *
@@ -56809,7 +53786,7 @@ function (_Pass) {
    */
 
 
-  createClass(BlurPass, [{
+  _createClass(BlurPass, [{
     key: "render",
 
     /**
@@ -56924,7 +53901,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(BlurPass, _Pass);
+  _inherits(BlurPass, _Pass);
 
   return BlurPass;
 }(Pass);
@@ -56954,9 +53931,9 @@ function (_Pass) {
 
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, BloomPass);
+    _classCallCheck(this, BloomPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(BloomPass).call(this, "BloomPass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(BloomPass).call(this, "BloomPass"));
     /**
      * A render target.
      *
@@ -57007,7 +53984,7 @@ function (_Pass) {
    */
 
 
-  createClass(BloomPass, [{
+  _createClass(BloomPass, [{
     key: "render",
 
     /**
@@ -57200,7 +54177,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(BloomPass, _Pass);
+  _inherits(BloomPass, _Pass);
 
   return BloomPass;
 }(Pass);
@@ -57225,9 +54202,9 @@ function (_Pass) {
 
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    classCallCheck(this, BokehPass);
+    _classCallCheck(this, BokehPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(BokehPass).call(this, "BokehPass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(BokehPass).call(this, "BokehPass"));
     _this.material = new BokehMaterial(camera, options);
     return _this;
   }
@@ -57242,7 +54219,7 @@ function (_Pass) {
    */
 
 
-  createClass(BokehPass, [{
+  _createClass(BokehPass, [{
     key: "render",
     value: function render(renderer, inputBuffer, outputBuffer, delta, stencilTest) {
       this.material.uniforms.tDiffuse.value = inputBuffer.texture;
@@ -57263,7 +54240,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(BokehPass, _Pass);
+  _inherits(BokehPass, _Pass);
 
   return BokehPass;
 }(Pass);
@@ -57281,9 +54258,9 @@ function (_Pass) {
   function ClearMaskPass() {
     var _this;
 
-    classCallCheck(this, ClearMaskPass);
+    _classCallCheck(this, ClearMaskPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(ClearMaskPass).call(this, "ClearMaskPass", null, null, null));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ClearMaskPass).call(this, "ClearMaskPass", null, null, null));
     _this.needsSwap = false;
     return _this;
   }
@@ -57298,14 +54275,14 @@ function (_Pass) {
    */
 
 
-  createClass(ClearMaskPass, [{
+  _createClass(ClearMaskPass, [{
     key: "render",
     value: function render(renderer, inputBuffer, outputBuffer, delta, stencilTest) {
       renderer.state.buffers.stencil.setTest(false);
     }
   }]);
 
-  inherits(ClearMaskPass, _Pass);
+  _inherits(ClearMaskPass, _Pass);
 
   return ClearMaskPass;
 }(Pass);
@@ -57341,9 +54318,9 @@ function (_Pass) {
 
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, ClearPass);
+    _classCallCheck(this, ClearPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(ClearPass).call(this, "ClearPass", null, null, null));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ClearPass).call(this, "ClearPass", null, null, null));
     _this.needsSwap = false;
     /**
      * The clear color.
@@ -57372,7 +54349,7 @@ function (_Pass) {
    */
 
 
-  createClass(ClearPass, [{
+  _createClass(ClearPass, [{
     key: "render",
     value: function render(renderer, inputBuffer, outputBuffer, delta, stencilTest) {
       var clearColor = this.clearColor;
@@ -57393,7 +54370,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(ClearPass, _Pass);
+  _inherits(ClearPass, _Pass);
 
   return ClearPass;
 }(Pass);
@@ -57419,9 +54396,9 @@ function (_Pass) {
 
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, DotScreenPass);
+    _classCallCheck(this, DotScreenPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(DotScreenPass).call(this, "DotScreenPass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(DotScreenPass).call(this, "DotScreenPass"));
     _this.material = new DotScreenMaterial(options);
     return _this;
   }
@@ -57436,7 +54413,7 @@ function (_Pass) {
    */
 
 
-  createClass(DotScreenPass, [{
+  _createClass(DotScreenPass, [{
     key: "render",
     value: function render(renderer, inputBuffer, outputBuffer, delta, stencilTest) {
       this.material.uniforms.tDiffuse.value = inputBuffer.texture;
@@ -57459,7 +54436,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(DotScreenPass, _Pass);
+  _inherits(DotScreenPass, _Pass);
 
   return DotScreenPass;
 }(Pass);
@@ -57486,9 +54463,9 @@ function (_Pass) {
 
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, FilmPass);
+    _classCallCheck(this, FilmPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(FilmPass).call(this, "FilmPass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(FilmPass).call(this, "FilmPass"));
     _this.material = new FilmMaterial(options);
     /**
      * The amount of scanlines, relative to the screen height.
@@ -57533,7 +54510,7 @@ function (_Pass) {
    */
 
 
-  createClass(FilmPass, [{
+  _createClass(FilmPass, [{
     key: "render",
     value: function render(renderer, inputBuffer, outputBuffer, delta, stencilTest) {
       this.material.uniforms.tDiffuse.value = inputBuffer.texture;
@@ -57558,7 +54535,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(FilmPass, _Pass);
+  _inherits(FilmPass, _Pass);
 
   return FilmPass;
 }(Pass);
@@ -57608,9 +54585,9 @@ function (_Pass) {
 
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, GlitchPass);
+    _classCallCheck(this, GlitchPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(GlitchPass).call(this, "GlitchPass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(GlitchPass).call(this, "GlitchPass"));
     _this.material = new GlitchMaterial();
     /**
      * A perturbation map.
@@ -57655,7 +54632,7 @@ function (_Pass) {
    */
 
 
-  createClass(GlitchPass, [{
+  _createClass(GlitchPass, [{
     key: "generatePerturbMap",
 
     /**
@@ -57751,7 +54728,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(GlitchPass, _Pass);
+  _inherits(GlitchPass, _Pass);
 
   return GlitchPass;
 }(Pass);
@@ -57795,9 +54772,9 @@ function (_Pass) {
 
     var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-    classCallCheck(this, RenderPass);
+    _classCallCheck(this, RenderPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(RenderPass).call(this, "RenderPass", scene, camera, null));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(RenderPass).call(this, "RenderPass", scene, camera, null));
     _this.needsSwap = false;
     /**
      * A clear pass.
@@ -57844,7 +54821,7 @@ function (_Pass) {
    */
 
 
-  createClass(RenderPass, [{
+  _createClass(RenderPass, [{
     key: "render",
     value: function render(renderer, inputBuffer, outputBuffer, delta, stencilTest) {
       var scene = this.scene;
@@ -57865,7 +54842,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(RenderPass, _Pass);
+  _inherits(RenderPass, _Pass);
 
   return RenderPass;
 }(Pass);
@@ -57914,9 +54891,9 @@ function (_Pass) {
 
     var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
-    classCallCheck(this, GodRaysPass);
+    _classCallCheck(this, GodRaysPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(GodRaysPass).call(this, "GodRaysPass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(GodRaysPass).call(this, "GodRaysPass"));
     /**
      * A scene that only contains the light source.
      *
@@ -58052,7 +55029,7 @@ function (_Pass) {
    */
 
 
-  createClass(GodRaysPass, [{
+  _createClass(GodRaysPass, [{
     key: "render",
 
     /**
@@ -58286,7 +55263,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(GodRaysPass, _Pass);
+  _inherits(GodRaysPass, _Pass);
 
   return GodRaysPass;
 }(Pass);
@@ -58307,9 +55284,9 @@ function (_Pass) {
   function MaskPass(scene, camera) {
     var _this;
 
-    classCallCheck(this, MaskPass);
+    _classCallCheck(this, MaskPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(MaskPass).call(this, "MaskPass", scene, camera, null));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(MaskPass).call(this, "MaskPass", scene, camera, null));
     _this.needsSwap = false;
     /**
      * Inverse flag.
@@ -58338,7 +55315,7 @@ function (_Pass) {
    */
 
 
-  createClass(MaskPass, [{
+  _createClass(MaskPass, [{
     key: "render",
     value: function render(renderer, inputBuffer, outputBuffer, delta, stencilTest) {
       var context = renderer.context;
@@ -58388,7 +55365,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(MaskPass, _Pass);
+  _inherits(MaskPass, _Pass);
 
   return MaskPass;
 }(Pass);
@@ -58413,9 +55390,9 @@ function (_Pass) {
 
     var textureID = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "tDiffuse";
 
-    classCallCheck(this, ShaderPass);
+    _classCallCheck(this, ShaderPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(ShaderPass).call(this, "ShaderPass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ShaderPass).call(this, "ShaderPass"));
     _this.material = material;
     /**
      * The name of the color sampler uniform of the given material.
@@ -58437,7 +55414,7 @@ function (_Pass) {
    */
 
 
-  createClass(ShaderPass, [{
+  _createClass(ShaderPass, [{
     key: "render",
     value: function render(renderer, inputBuffer, outputBuffer, delta, stencilTest) {
       if (this.material.uniforms[this.textureID] !== undefined) {
@@ -58448,7 +55425,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(ShaderPass, _Pass);
+  _inherits(ShaderPass, _Pass);
 
   return ShaderPass;
 }(Pass);
@@ -58474,9 +55451,9 @@ function (_Pass) {
 
     var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-    classCallCheck(this, OutlinePass);
+    _classCallCheck(this, OutlinePass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(OutlinePass).call(this, "OutlinePass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(OutlinePass).call(this, "OutlinePass"));
     /**
      * The main scene.
      *
@@ -58648,7 +55625,7 @@ function (_Pass) {
    */
 
 
-  createClass(OutlinePass, [{
+  _createClass(OutlinePass, [{
     key: "setPatternTexture",
 
     /**
@@ -58966,7 +55943,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(OutlinePass, _Pass);
+  _inherits(OutlinePass, _Pass);
 
   return OutlinePass;
 }(Pass);
@@ -58988,9 +55965,9 @@ function (_Pass) {
 
     var granularity = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 30.0;
 
-    classCallCheck(this, PixelationPass);
+    _classCallCheck(this, PixelationPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(PixelationPass).call(this, "PixelationPass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(PixelationPass).call(this, "PixelationPass"));
     _this.material = new PixelationMaterial();
     _this.granularity = granularity;
     return _this;
@@ -59002,7 +55979,7 @@ function (_Pass) {
    */
 
 
-  createClass(PixelationPass, [{
+  _createClass(PixelationPass, [{
     key: "render",
 
     /**
@@ -59053,7 +56030,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(PixelationPass, _Pass);
+  _inherits(PixelationPass, _Pass);
 
   return PixelationPass;
 }(Pass);
@@ -59080,9 +56057,9 @@ function (_Pass) {
 
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    classCallCheck(this, RealisticBokehPass);
+    _classCallCheck(this, RealisticBokehPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(RealisticBokehPass).call(this, "RealisticBokehPass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(RealisticBokehPass).call(this, "RealisticBokehPass"));
     _this.material = new RealisticBokehMaterial(camera, options);
     return _this;
   }
@@ -59097,7 +56074,7 @@ function (_Pass) {
    */
 
 
-  createClass(RealisticBokehPass, [{
+  _createClass(RealisticBokehPass, [{
     key: "render",
     value: function render(renderer, inputBuffer, outputBuffer, delta, stencilTest) {
       this.material.uniforms.tDiffuse.value = inputBuffer.texture;
@@ -59118,7 +56095,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(RealisticBokehPass, _Pass);
+  _inherits(RealisticBokehPass, _Pass);
 
   return RealisticBokehPass;
 }(Pass);
@@ -59141,9 +56118,9 @@ function (_Pass) {
 
     var resize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
-    classCallCheck(this, SavePass);
+    _classCallCheck(this, SavePass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(SavePass).call(this, "SavePass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SavePass).call(this, "SavePass"));
     _this.material = new CopyMaterial();
     _this.needsSwap = false;
     /**
@@ -59181,7 +56158,7 @@ function (_Pass) {
    */
 
 
-  createClass(SavePass, [{
+  _createClass(SavePass, [{
     key: "render",
     value: function render(renderer, inputBuffer, outputBuffer, delta, stencilTest) {
       this.material.uniforms.tDiffuse.value = inputBuffer.texture;
@@ -59219,7 +56196,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(SavePass, _Pass);
+  _inherits(SavePass, _Pass);
 
   return SavePass;
 }(Pass);
@@ -59272,9 +56249,9 @@ function (_Pass) {
     var epicenter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Vector3();
     var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-    classCallCheck(this, ShockWavePass);
+    _classCallCheck(this, ShockWavePass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(ShockWavePass).call(this, "ShockWavePass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ShockWavePass).call(this, "ShockWavePass"));
     /**
      * The main camera.
      *
@@ -59345,7 +56322,7 @@ function (_Pass) {
    */
 
 
-  createClass(ShockWavePass, [{
+  _createClass(ShockWavePass, [{
     key: "explode",
     value: function explode() {
       this.time = 0.0;
@@ -59417,7 +56394,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(ShockWavePass, _Pass);
+  _inherits(ShockWavePass, _Pass);
 
   return ShockWavePass;
 }(Pass);
@@ -59447,9 +56424,9 @@ function (_Pass) {
   function SMAAPass(searchImage, areaImage) {
     var _this;
 
-    classCallCheck(this, SMAAPass);
+    _classCallCheck(this, SMAAPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(SMAAPass).call(this, "SMAAPass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SMAAPass).call(this, "SMAAPass"));
     /**
      * A clear pass for the color edges buffer.
      *
@@ -59556,7 +56533,7 @@ function (_Pass) {
    */
 
 
-  createClass(SMAAPass, [{
+  _createClass(SMAAPass, [{
     key: "render",
     value: function render(renderer, inputBuffer, outputBuffer, delta, stencilTest) {
       // Detect color edges.
@@ -59624,7 +56601,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(SMAAPass, _Pass);
+  _inherits(SMAAPass, _Pass);
 
   return SMAAPass;
 }(Pass);
@@ -59649,9 +56626,9 @@ function (_Pass) {
     var opacity = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1.0;
     var screenMode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-    classCallCheck(this, TexturePass);
+    _classCallCheck(this, TexturePass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(TexturePass).call(this, "TexturePass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(TexturePass).call(this, "TexturePass"));
     _this.material = new CombineMaterial(screenMode);
     _this.texture = texture;
     _this.opacitySource = opacity;
@@ -59664,7 +56641,7 @@ function (_Pass) {
    */
 
 
-  createClass(TexturePass, [{
+  _createClass(TexturePass, [{
     key: "render",
 
     /**
@@ -59736,7 +56713,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(TexturePass, _Pass);
+  _inherits(TexturePass, _Pass);
 
   return TexturePass;
 }(Pass);
@@ -59769,9 +56746,9 @@ function (_Pass) {
 
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, ToneMappingPass);
+    _classCallCheck(this, ToneMappingPass);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(ToneMappingPass).call(this, "ToneMappingPass"));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ToneMappingPass).call(this, "ToneMappingPass"));
     /**
      * The render target for the current luminosity.
      *
@@ -59852,7 +56829,7 @@ function (_Pass) {
    */
 
 
-  createClass(ToneMappingPass, [{
+  _createClass(ToneMappingPass, [{
     key: "render",
 
     /**
@@ -59991,7 +56968,7 @@ function (_Pass) {
     }
   }]);
 
-  inherits(ToneMappingPass, _Pass);
+  _inherits(ToneMappingPass, _Pass);
 
   return ToneMappingPass;
 }(Pass);
@@ -60032,7 +57009,7 @@ function () {
     var renderer = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    classCallCheck(this, EffectComposer);
+    _classCallCheck(this, EffectComposer);
 
     /**
      * The renderer.
@@ -60093,7 +57070,7 @@ function () {
    */
 
 
-  createClass(EffectComposer, [{
+  _createClass(EffectComposer, [{
     key: "replaceRenderer",
 
     /**
@@ -60398,9 +57375,9 @@ function () {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : PostProcessorModule.defaults;
 
-    classCallCheck(this, PostProcessorModule);
+    _classCallCheck(this, PostProcessorModule);
 
-    defineProperty$3(defineProperty$3(this, "currentPass", null), "defer", new Promise(function (resolve) {
+    _defineProperty(_defineProperty(this, "currentPass", null), "defer", new Promise(function (resolve) {
       _this.resolve = resolve;
     }));
 
@@ -60408,7 +57385,7 @@ function () {
     this.params = params;
   }
 
-  createClass(PostProcessorModule, [{
+  _createClass(PostProcessorModule, [{
     key: "manager",
     value: function manager(_manager) {
       var _this2 = this;
@@ -60552,7 +57529,7 @@ function () {
   return PostProcessorModule;
 }();
 
-defineProperty$3(PostProcessorModule, "defaults", {
+_defineProperty(PostProcessorModule, "defaults", {
   debug: true
 });
 
@@ -60566,10 +57543,10 @@ var EventsPatchModule =
 /*#__PURE__*/
 function () {
   function EventsPatchModule() {
-    classCallCheck(this, EventsPatchModule);
+    _classCallCheck(this, EventsPatchModule);
   }
 
-  createClass(EventsPatchModule, [{
+  _createClass(EventsPatchModule, [{
     key: "manager",
     value: function manager(_manager) {
       _manager.define('events');
@@ -60624,17 +57601,17 @@ function (_Events) {
 
     var globalMovement = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
-    classCallCheck(this, VirtualMouseModule);
+    _classCallCheck(this, VirtualMouseModule);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(VirtualMouseModule).call(this));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(VirtualMouseModule).call(this));
 
-    defineProperty$3(defineProperty$3(defineProperty$3(defineProperty$3(defineProperty$3(assertThisInitialized(assertThisInitialized(_this)), "mouse", new Vector2()), "raycaster", new Raycaster()), "world", null), "canvas", null), "projectionPlane", new Plane(new Vector3(0, 0, 1), 0));
+    _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "mouse", new Vector2()), "raycaster", new Raycaster()), "world", null), "canvas", null), "projectionPlane", new Plane(new Vector3(0, 0, 1), 0));
 
     _this.globalMovement = globalMovement;
     return _this;
   }
 
-  createClass(VirtualMouseModule, [{
+  _createClass(VirtualMouseModule, [{
     key: "update",
     value: function update(e, customX, customY) {
       var rect = this.canvas.getBoundingClientRect();
@@ -60805,7 +57782,7 @@ function (_Events) {
     }
   }]);
 
-  inherits(VirtualMouseModule, _Events);
+  _inherits(VirtualMouseModule, _Events);
 
   return VirtualMouseModule;
 }(minivents_commonjs);
@@ -60831,7 +57808,7 @@ function (_Events) {
 var ControlsModule =
 /*#__PURE__*/
 function () {
-  createClass(ControlsModule, null, [{
+  _createClass(ControlsModule, null, [{
     key: "from",
     value: function from(controls) {
       return new ControlsModule({
@@ -60843,7 +57820,7 @@ function () {
   function ControlsModule() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, ControlsModule);
+    _classCallCheck(this, ControlsModule);
 
     this.params = Object.assign({
       controls: false,
@@ -60858,7 +57835,7 @@ function () {
     this.update = this.params.update;
   }
 
-  createClass(ControlsModule, [{
+  _createClass(ControlsModule, [{
     key: "manager",
     value: function manager(_manager) {
       _manager.define('controls');
@@ -60933,7 +57910,7 @@ function () {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var type = arguments.length > 1 ? arguments[1] : undefined;
 
-    classCallCheck(this, FogModule);
+    _classCallCheck(this, FogModule);
 
     this.params = Object.assign({
       color: 0xefd1b5,
@@ -60944,7 +57921,7 @@ function () {
     if (!type || type === 'exp2') this.fog = new FogExp2(this.params.color, this.params.density);else if (type === 'linear') this.fog = new Fog(this.params.color, this.params.near, this.params.far);
   }
 
-  createClass(FogModule, [{
+  _createClass(FogModule, [{
     key: "manager",
     value: function manager(_manager) {
       _manager.set('fog', this.fog);
@@ -60981,7 +57958,7 @@ var isEqualDefault = function isEqualDefault(a, b) {
 var StateModule =
 /*#__PURE__*/
 function () {
-  createClass(StateModule, null, [{
+  _createClass(StateModule, null, [{
     key: "actionGenerate",
     value: function actionGenerate(isEqual) {
       return function () {
@@ -61002,7 +57979,7 @@ function () {
   function StateModule() {
     var equalCheck = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : isEqualDefault;
 
-    classCallCheck(this, StateModule);
+    _classCallCheck(this, StateModule);
 
     this.store = createStore(StateModule.actionGenerate(equalCheck));
     this.configuration = {};
@@ -61022,7 +57999,7 @@ function () {
    */
 
 
-  createClass(StateModule, [{
+  _createClass(StateModule, [{
     key: "default",
     value: function _default(data) {
       this.config({
@@ -61089,7 +58066,7 @@ function () {
       var updates = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       this.store.subscribe(function () {
         var _this$store$getState = _this.store.getState(),
-            _this$store$getState2 = slicedToArray(_this$store$getState, 2),
+            _this$store$getState2 = _slicedToArray(_this$store$getState, 2),
             data = _this$store$getState2[0],
             changedKey = _this$store$getState2[1];
 
@@ -61195,9 +58172,9 @@ function (_EventDispatcher) {
   function ThreeOrbitControls(object, domElement, eventHandler) {
     var _this;
 
-    classCallCheck(this, ThreeOrbitControls);
+    _classCallCheck(this, ThreeOrbitControls);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(ThreeOrbitControls).call(this));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ThreeOrbitControls).call(this));
     _this.object = object;
     _this.domElement = domElement === undefined ? document : domElement;
     _this.eventHandler = eventHandler; // Set to false to disable this control
@@ -61815,7 +58792,7 @@ function (_EventDispatcher) {
     return _this;
   }
 
-  createClass(ThreeOrbitControls, [{
+  _createClass(ThreeOrbitControls, [{
     key: "center",
     get: function get() {
       console.warn('OrbitControls: .center has been renamed to .target');
@@ -61883,7 +58860,7 @@ function (_EventDispatcher) {
     }
   }]);
 
-  inherits(ThreeOrbitControls, _EventDispatcher);
+  _inherits(ThreeOrbitControls, _EventDispatcher);
 
   return ThreeOrbitControls;
 }(EventDispatcher);
@@ -61917,9 +58894,9 @@ function (_ControlsModule) {
 
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, OrbitControlsModule);
+    _classCallCheck(this, OrbitControlsModule);
 
-    _this = possibleConstructorReturn(this, getPrototypeOf$2(OrbitControlsModule).call(this, params));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(OrbitControlsModule).call(this, params));
     _this.params = Object.assign({
       follow: false,
       object: null,
@@ -61928,10 +58905,10 @@ function (_ControlsModule) {
     return _this;
   }
 
-  createClass(OrbitControlsModule, [{
+  _createClass(OrbitControlsModule, [{
     key: "manager",
     value: function manager(_manager) {
-      get$3(getPrototypeOf$2(OrbitControlsModule.prototype), "manager", this).call(this, _manager);
+      _get(_getPrototypeOf(OrbitControlsModule.prototype), "manager", this).call(this, _manager);
 
       var _this$params = this.params,
           obj = _this$params.object,
@@ -61962,7 +58939,7 @@ function (_ControlsModule) {
     }
   }]);
 
-  inherits(OrbitControlsModule, _ControlsModule);
+  _inherits(OrbitControlsModule, _ControlsModule);
 
   return OrbitControlsModule;
 }(ControlsModule);
@@ -61984,14 +58961,14 @@ function () {
   function DynamicGeometryModule() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, DynamicGeometryModule);
+    _classCallCheck(this, DynamicGeometryModule);
 
     this.params = Object.assign({
       attributes: false
     }, params);
   }
 
-  createClass(DynamicGeometryModule, [{
+  _createClass(DynamicGeometryModule, [{
     key: "integrate",
     value: function integrate(self) {
       var _this = this;
@@ -62017,7 +58994,7 @@ function () {
               },
               set: function set(value) {
                 this.native.geometry = this.buildGeometry(this.updateParams({
-                  geometry: defineProperty$3({}, key, value)
+                  geometry: _defineProperty({}, key, value)
                 }));
               },
               configurable: true,
@@ -62070,7 +59047,7 @@ var loader = new TextureLoader();
 var TextureModule =
 /*#__PURE__*/
 function () {
-  createClass(TextureModule, null, [{
+  _createClass(TextureModule, null, [{
     key: "load",
     value: function load(url) {
       return new TextureModule({
@@ -62082,9 +59059,9 @@ function () {
   function TextureModule() {
     var _this = this;
 
-    classCallCheck(this, TextureModule);
+    _classCallCheck(this, TextureModule);
 
-    defineProperty$3(defineProperty$3(this, "textures", []), "bridge", {
+    _defineProperty(_defineProperty(this, "textures", []), "bridge", {
       material: function material(_material, self) {
         self.textures.forEach(function (texture) {
           _material[texture[0]] = texture[1];
@@ -62173,9 +59150,9 @@ function () {
   function AnimationModule(app, isDeferred) {
     var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-    classCallCheck(this, AnimationModule);
+    _classCallCheck(this, AnimationModule);
 
-    defineProperty$3(this, "bridge", {
+    _defineProperty(this, "bridge", {
       mesh: function mesh(_mesh, self) {
         _mesh.geometry.skeleton = _mesh.skeleton;
         self.mixer = new AnimationMixer(_mesh.geometry);
@@ -62201,7 +59178,7 @@ function () {
    */
 
 
-  createClass(AnimationModule, [{
+  _createClass(AnimationModule, [{
     key: "play",
     value: function play(clipName) {
       var clip = AnimationClip.findByName(this.clips, clipName);
@@ -62255,13 +59232,13 @@ var DefineModule =
 /*#__PURE__*/
 function () {
   function DefineModule(name, data) {
-    classCallCheck(this, DefineModule);
+    _classCallCheck(this, DefineModule);
 
     this.name = name;
     this.data = data;
   }
 
-  createClass(DefineModule, [{
+  _createClass(DefineModule, [{
     key: "manager",
     value: function manager(_manager) {
       _manager.set(this.name, this.data);
@@ -62279,7 +59256,7 @@ function (_Importer) {
   function Model(params) {
     var _getPrototypeOf2;
 
-    classCallCheck(this, Model);
+    _classCallCheck(this, Model);
 
     console.warn('Model is deprecated. Use Importer instead.');
 
@@ -62292,10 +59269,10 @@ function (_Importer) {
       additional[_key - 1] = arguments[_key];
     }
 
-    return possibleConstructorReturn(this, (_getPrototypeOf2 = getPrototypeOf$2(Model)).call.apply(_getPrototypeOf2, [this, params].concat(additional)));
+    return _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Model)).call.apply(_getPrototypeOf2, [this, params].concat(additional)));
   }
 
-  inherits(Model, _Importer);
+  _inherits(Model, _Importer);
 
   return Model;
 }(Importer);
@@ -62305,13 +59282,13 @@ function () {
   function CameraModule() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    classCallCheck(this, CameraModule);
+    _classCallCheck(this, CameraModule);
 
     console.warn('CameraModule is deprecated. Use DefineModule instead.');
     this.camera = new PerspectiveCamera$1(params);
   }
 
-  createClass(CameraModule, [{
+  _createClass(CameraModule, [{
     key: "integrate",
     value: function integrate(self) {
       this.add(self.camera);
