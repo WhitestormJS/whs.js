@@ -20,7 +20,17 @@ gulp.task('sass', () => {
     .pipe(gulp.dest('./examples/assets/css/'));
 });
 
-gulp.task('examples:build', ['examples:html', 'sass']);
+gulp.task('build-copy', () => {
+  return gulp.src('./build/whs.js')
+    .pipe(gulp.dest('./examples/build/'));
+});
+
+gulp.task('modules-copy', () => {
+  return gulp.src('./modules/*.js')
+    .pipe(gulp.dest('./examples/modules/'));
+});
+
+gulp.task('examples:build', ['examples:html', 'sass', 'build-copy', 'modules-copy']);
 
 const contentHeader = (title, date) =>
 `
