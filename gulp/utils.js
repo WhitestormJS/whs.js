@@ -32,7 +32,7 @@ export const parseExamplesStructure = () => {
   const categories = [];
   const map = {};
   const paths = [];
-  const excludeFolders = ['assets', 'build'];
+  const excludeFolders = ['assets', 'build', 'modules'];
 
   const handleFolders = (folder, callback) =>
     fs.readdirSync(folder).filter(file => {

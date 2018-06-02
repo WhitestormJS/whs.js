@@ -21,7 +21,7 @@
     "modules:dev": "cd src/modules/extra/ && npm start",
     "examples": "gulp examples:build",
     "docs": "gulp docs --all",
-    "deploy": "surge --project ./ --domain examples.whs.io",
+    "deploy": "surge --project ./examples/ --domain examples.whs.io",
     "deploy:docs": "surge --project ./docs/public/ --domain whs.io"
   },
   "repository": "WhitestormJS/whitestorm.js",
