@@ -10,9 +10,8 @@ import LEVELS from './data/levels';
 // import less from 'gulp-less';
 
 import {exampleCompilerInstance} from './compilers';
-import {parseExamplesStructure} from './utils';
+import {parseExamplesStructure, getPaths} from './utils';
 import {getTemplateData} from './config';
-import {getPaths} from './utils';
 
 gulp.task('sass', () => {
   return gulp.src('./examples/assets/scss/*.scss')
@@ -27,7 +26,7 @@ gulp.task('build-copy', () => {
 
 gulp.task('modules-copy', () => {
   return gulp.src('./modules/*.js')
-    .pipe(gulp.dest('./examples/modules/'));
+    .pipe(gulp.dest('./examples/build/modules/'));
 });
 
 gulp.task('examples:build', ['examples:html', 'sass', 'build-copy', 'modules-copy']);

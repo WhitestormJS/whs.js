@@ -111,7 +111,7 @@ gulp.task('dev', () => {
 
   app.use('/assets', express.static(path.resolve(__dirname, `${examples}/assets`)));
   app.use('/build', express.static('build'));
-  app.use('/modules', express.static('modules'));
+  app.use('/build/modules', express.static('modules'));
 
   app.set('views', path.resolve(__dirname, `./${examples}`));
   app.set('view engine', 'pug');
