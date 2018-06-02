@@ -47,6 +47,7 @@ export class SceneModule {
           if (object.parent !== this) return;
       
           await object.wait();
+          this.applyBridge({onRemove: object});
       
           object.parent = null;
           self.scene.remove(object.native);
