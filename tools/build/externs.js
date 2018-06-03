@@ -9,3 +9,4 @@ var CompositionError;
 var PromiseRejectionEvent;
 var __e;
 var __g;
+var _construct;
