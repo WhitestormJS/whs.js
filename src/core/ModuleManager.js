@@ -48,7 +48,7 @@ export class ModuleManager {
    * @method define
    * @instance
    * @description Define the module in manager
-   * @param name The module name
+   * @param {String} name The module name
    * @memberof module:core.ModuleManager
    */
   define(name) {

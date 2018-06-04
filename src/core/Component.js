@@ -98,6 +98,7 @@ class Component extends ModuleSystem {
    * @method updateParams
    * @instance
    * @description Updates parameters of the Component.
+   * @param {Object} params - The params to update with
    * @return {Object} Params of this Component
    * @memberof module:core.Component
    */
@@ -191,6 +192,7 @@ class Component extends ModuleSystem {
    * @instance
    * @description Adds `this` Component to specified `App`/`Component`.
    * @param {Component} object - Component that will be a parent of `this`.
+   * @return {Promise} Resolves when object is added
    * @memberof module:core.Component
    */
   addTo(object) {
