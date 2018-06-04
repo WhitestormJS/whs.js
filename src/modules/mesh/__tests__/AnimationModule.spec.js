@@ -17,9 +17,17 @@ const modules = {};
 const animationModule = new AnimationModule(app);
 modules.animationModule = animationModule;
 
-describe('Animation module', () => {
-  test('constructs with a clock', () => {
-    expect(animationModule.clock).toBeInstanceOf(Clock);
+describe('Default Animation module', () => {
+  test('constructs with app', () => {
+    expect(animationModule.app).toEqual(app);
+  });
+
+  test('constructs with default speed 1', () => {
+    expect(animationModule.params.speed).toEqual(1);
+  });
+
+  test('constructs with undefined isDeferred flag', () => {
+    expect(animationModule.isDeferred).toEqual(undefined);
   });
 
   test('bridges mesh creating an animation mixer', () => {
@@ -42,4 +50,20 @@ describe('Animation module', () => {
   });
 
   // TODO test play/update (mock?)
+});
+
+describe('Animation module with parameters', () => {
+  const params = {
+    speed: 2
+  };
+  const isDeferred = true;
+  const customAnimationModule = new AnimationModule(app, true, params);
+
+  test('constructs with passed in params', () => {
+    expect(customAnimationModule.params).toEqual(params);
+  });
+
+  test('constructs with passed in isDeferred flag', () => {
+    expect(customAnimationModule.isDeferred).toEqual(isDeferred);
+  });
 });

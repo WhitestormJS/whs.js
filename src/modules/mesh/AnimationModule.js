@@ -64,6 +64,7 @@ export class AnimationModule {
    * @method update
    * @instance
    * @description Update the mixer (being called on frame animation loop)
+   * @param {Clock} clock - the loop's clock
    * @memberof module:modules/mesh.AnimationModule
    */
   update(clock) {
