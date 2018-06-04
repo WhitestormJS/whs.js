@@ -182,6 +182,7 @@ class MeshComponent extends Component {
    * @method copy
    * @instance
    * @description Copy source transforms & execute `Component.copy()`
+   * @param {MeshComponent} source - The source mesh component to copy from.
    * @return {this} MeshComponent
    * @memberof module:core.MeshComponent
    */
@@ -197,6 +198,8 @@ class MeshComponent extends Component {
    * @method clone
    * @instance
    * @description Make a clone of this MeshComponent using `.copy()`
+   * @param {THREE.Geometry} geometry - The geometry to clone
+   * @param {THREE.Material} material - The material to clone
    * @return {MeshComponent} clone of this object
    * @memberof module:core.MeshComponent
    */
