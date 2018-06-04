@@ -208,6 +208,7 @@ class LightComponent extends Component {
    * @method copy
    * @instance
    * @description Copy source transforms & execute `Component.copy()`
+   * @param {LightComponent} source - The source component to copy.
    * @return {this} LightComponent
    * @memberof module:core.LightComponent
    */
