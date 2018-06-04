@@ -50,7 +50,7 @@ export class ModuleSystem extends Events {
    * @method applyBridge
    * @instance
    * @description Makes component-specific API to work with modules.
-   * @param {Object} bridgeMap
+   * @param {Object} bridgeMap the bridge map
    * @return {Object} Returns object with modified values.
    * @memberof module:core.ModuleSystem
    */
@@ -96,7 +96,7 @@ export class ModuleSystem extends Events {
    * @description .applyModule is also used in .integrateModules() function.
    * It does exactly what its name says (applies module to component or app).
    * @param {Object} module the module to apply
-   * @param {Boolean} [push=true]
+   * @param {Boolean} [push=true] flag to determine whether to add it to the array
    * @return {Object} Returns module that was applied.
    * @throws {ManagerError}
    * @memberof module:core.ModuleSystem
