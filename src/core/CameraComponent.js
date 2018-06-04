@@ -131,6 +131,7 @@ class CameraComponent extends Component {
    * @method copy
    * @instance
    * @description Copy source transforms & execute `Component.copy()`
+   * @param {CameraComponent} source - The camera component to copy
    * @return {this} CameraComponent
    * @memberof module:core.CameraComponent
    */

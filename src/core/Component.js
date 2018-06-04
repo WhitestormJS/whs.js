@@ -173,7 +173,6 @@ class Component extends ModuleSystem {
    * @instance
    * @description Remove a child `Component`.
    * @param {Component} object - Component that should be a **child** of this Component.
-   * @return {Promise} Resolved when action is done.
    * @memberof module:core.Component
    */
   async remove(object) {
