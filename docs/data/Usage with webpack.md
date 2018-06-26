@@ -31,4 +31,4 @@ With just a few lines of setup - you can use our shorteners for src/ files:
  - `@whs+lights/AmbientLight`, `@whs+lights/DirectionalLight`, ...
 
 
- [> Modules](Modules.html)
+ [> Modules](Modules.md)
