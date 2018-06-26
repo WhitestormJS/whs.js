@@ -5,7 +5,7 @@
 
 > Used in: `MeshComponent`, `LightComponent`, `CameraComponent`
 
-**position** is a 3D vector ([`THREE.Vector3`](https://threejs.org/docs/index.html#Reference/Math/Vector3)) object that defines where mesh is located in space.
+**position** is a 3D vector ([`THREE.Vector3`](https://threejs.org/docs/index.html#api/math/Vector3)) object that defines where mesh is located in space.
 
 ```js
 ball.position.set(10, 20, 45);
@@ -23,13 +23,13 @@ That's several examples of how you can modify positon:
   - `ball.position.setX( x )`, (`.setX()`, `.setY()`, `.setZ()` methods).
   - `ball.position = new THREE.Vector3( x, y, z )`
 
-There are a lot of other methods that `.position` handles as a `THREE.Vector3`. You may see the [list of methods](https://threejs.org/docs/index.html#Reference/Math/Vector3.set) at Three.js documentation.
+There are a lot of other methods that `.position` handles as a `THREE.Vector3`. You may see the [list of methods](https://threejs.org/docs/index.html#api/math/Vector3.set) at Three.js documentation.
 
 ### `.rotation`
 
 > Used in: `MeshComponent`, `LightComponent`, `CameraComponent`
 
-**rotation** is a [`THREE.Euler`](https://threejs.org/docs/index.html#Reference/Math/Euler) with _x, y and z_ values and has almost same methods as a `.position`. It defines a rotation regarding object position.
+**rotation** is a [`THREE.Euler`](https://threejs.org/docs/index.html#api/math/Euler) with _x, y and z_ values and has almost same methods as a `.position`. It defines a rotation regarding object position.
 
 #### Modifying values and methods
 
@@ -39,7 +39,7 @@ Commonly used:
   - `ball.rotation.setX( x )`, (`.setX()`, `.setY()`, `.setZ()` methods).
   - `ball.rotation = new THREE.Euler( x, y, z )`
 
-See [list of THREE.Euler methods](https://threejs.org/docs/index.html#Reference/Math/Euler.set) at Three.js documentation.
+See [list of THREE.Euler methods](https://threejs.org/docs/index.html#api/math/Euler.set) at Three.js documentation.
 
 > `.rotation` will be converted to a _quaternion_ and applied to it's physics object linked to the component. (Only if you use a Physics version [Todo: add link]).
 
@@ -47,7 +47,7 @@ See [list of THREE.Euler methods](https://threejs.org/docs/index.html#Reference/
 
 > Used in: `MeshComponent`, `LightComponent`, `CameraComponent`
 
-**quaternion**, [`THREE.Quaternion`](https://threejs.org/docs/index.html#Reference/Math/Quaternion) is another way to rotate 3D object in space. It has _x, y, z and w_ values.
+**quaternion**, [`THREE.Quaternion`](https://threejs.org/docs/#api/math/Quaternion) is another way to rotate 3D object in space. It has _x, y, z and w_ values.
 
 ```js
 // Convert euler to quaternion.
@@ -70,13 +70,13 @@ Commonly used:
   - `ball.quaternion = new THREE.Quaternion( x, y, z, w )`
   - `ball.quaternion.setFromEuler(new THREE.Euler( x, y, z ))`
 
-See [list of THREE.Quaternion methods](https://threejs.org/docs/index.html#Reference/Math/Quaternion.set) at Three.js documentation.
+See [list of THREE.Quaternion methods](https://threejs.org/docs/#api/math/Quaternion.set) at Three.js documentation.
 
 ## `.scale`
 
 > Used in: `MeshComponent`
 
-**scale**, [`THREE.Vector3`](https://threejs.org/docs/index.html#Reference/Math/Vector3) is a vector that defines mesh scale.
+**scale**, [`THREE.Vector3`](https://threejs.org/docs/index.html#api/math/Vector3) is a vector that defines mesh scale.
 
 ```js
 ball.scale.set(2, 2, 2)
@@ -94,6 +94,6 @@ Commonly used:
   - `ball.scale.setX( x )`, (`.setX()`, `.setY()`, `.setZ()` methods).
   - `ball.scale= new THREE.Vector3( x, y, z )`
 
-See [list of THREE.Vector3 methods](https://threejs.org/docs/index.html#Reference/Math/Vector3.set) at Three.js documentation.
+See [list of THREE.Vector3 methods](https://threejs.org/docs/index.html#api/math/Vector3.set) at Three.js documentation.
 
-[> Usage with webpack](Usage with webpack.html)
+[> Usage with webpack](Usage%20with%20webpack.md)
