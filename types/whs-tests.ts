@@ -17,7 +17,7 @@ import {
   CameraComponent,
   LightComponent,
   MeshComponent
-} from "./core";
+} from './core';
 
 import {
   Box,
@@ -58,6 +58,8 @@ import {
   DynamicGeometryModule,
   TextureModule,
 } from './modules/mesh';
+
+import {DefineModule} from './modules';
 
 import {
   ControlsModule,
@@ -141,14 +143,14 @@ cone.buildGeometry({buffer: true});
 cone.addTo(app);
 
 const shapeNative = new ShapeNative([
-  new Vector2(-4,-4),
-  new Vector2(-2,0),
-  new Vector2(-4,4),
-  new Vector2(0,2),
-  new Vector2(4,4),
-  new Vector2(2,0),
-  new Vector2(4,-4),
-  new Vector2(0,-2)
+  new Vector2(-4, -4),
+  new Vector2(-2, 0),
+  new Vector2(-4, 4),
+  new Vector2(0, 2),
+  new Vector2(4, 4),
+  new Vector2(2, 0),
+  new Vector2(4, -4),
+  new Vector2(0, -2)
 ]);
 
 let extrude = new Extrude({
@@ -232,7 +234,7 @@ line.addTo(app);
 const octahedron = new Octahedron({
   geometry: {
     radius: 1,
-      detail: 0
+    detail: 0
   },
 
   buffer: true
@@ -436,3 +438,5 @@ const data = stateModule.get('key');
 const virtualMouseModule = new VirtualMouseModule();
 virtualMouseModule.hovers(new Box(), false);
 virtualMouseModule.track(new Sphere(), false);
+
+const defineModule = new DefineModule('camera', new PerspectiveCamera());
