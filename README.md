@@ -80,6 +80,10 @@ app.start(); // Run app.
 
 ### Featured projects
 
+<a href="https://moxy.studio/">
+  <img src="https://i.imgur.com/c9bmEDd.jpg" alt="https://moxy.studio/" width="30%" />
+</a>
+
 <a href="https://rmallick6806.github.io/SolarSystemBuilder/">
   <img src="https://i.imgur.com/z4wfhXb.png" alt="https://rmallick6806.github.io/SolarSystemBuilder/" width="30%" />
 </a>
