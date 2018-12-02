@@ -29,7 +29,7 @@ import {MeshComponent} from '../../core/MeshComponent';
  *     color: 0xffffff
  *   }),
  *
- *   pos: [0, 100, 0]
+ *   position: [0, 100, 0]
  * }).addTo(app);
  */
 class Cylinder extends MeshComponent {
