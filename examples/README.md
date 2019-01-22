@@ -5,9 +5,6 @@ Welcome to the examples directory! This is where you can find all the various bi
 
 ## Basics
 
-### App Example
-[Screenshot Needed]
-
 ### Hello World
 [Screenshot Needed]
 
