@@ -1,0 +1,187 @@
+{
+  "name": "whs",
+  "version": "2.2.0-beta.2",
+  "description": "Super-fast 3D framework for Web Applications & Games. Based on Three.js",
+  "main": "build/whs.js",
+  "jsnext:main": "build/whs.module.js",
+  "module": "build/whs.module.js",
+  "typings": "types/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "version": "npm run build && npm run modules && npm run examples && git add .",
+    "test": "xo ./src/**/*.js && jest --no-cache",
+    "start": "npm run dev & npm run modules:dev",
+    "dev": "gulp dev & rollup -c -w -m inline",
+    "build-dev": "del build/*.js && cross-env NODE_ENV=development rollup -c",
+    "build": "del build/*.js && cross-env NODE_ENV=production rollup -c && npm run minify",
+    "minify": "java -jar node_modules/google-closure-compiler/compiler.jar --warning_level=VERBOSE --jscomp_off=globalThis --jscomp_off=checkTypes --language_in=ECMASCRIPT6_STRICT --externs tools/build/externs.js --js build/whs.js --js_output_file build/whs.min.js",
+    "modules": "cd src/modules/extra/ && npm run build",
+    "modules:dev": "cd src/modules/extra/ && npm start",
+    "examples": "gulp examples:build",
+    "docs": "gulp docs --all",
+    "deploy": "surge --project ./examples/ --domain examples.whs.io",
+    "deploy:docs": "surge --project ./docs/public/ --domain whs.io"
+  },
+  "repository": "WhitestormJS/whitestorm.js",
+  "keywords": [
+    "whitestorm.js",
+    "three.js",
+    "webgl",
+    "ammo.js",
+    "api",
+    "3d",
+    "web",
+    "javascript",
+    "webpack",
+    "gulpjs"
+  ],
+  "author": "Alexander Buzin",
+  "license": "MIT",
+  "homepage": "https://github.com/WhitestormJS/whitestorm.js#readme",
+  "dependencies": {
+    "@types/node": "^8.0.4",
+    "jstransformer-highlight": "^1.0.1",
+    "jstransformer-markdown-it": "^2.1.0",
+    "lodash-es": "^4.17.10",
+    "markdown-to-pug": "^1.0.11",
+    "minivents": "^2.2.0",
+    "redux": "^4.0.0",
+    "three": "^0.92.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.46",
+    "@babel/plugin-external-helpers": "^7.0.0-beta.46",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.46",
+    "@babel/plugin-proposal-decorators": "^7.0.0-beta.46",
+    "@babel/plugin-transform-async-to-generator": "^7.0.0-beta.46",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.46",
+    "@babel/plugin-transform-runtime": "^7.0.0-beta.46",
+    "@babel/polyfill": "^7.0.0-beta.49",
+    "@babel/preset-env": "^7.0.0-beta.46",
+    "@babel/register": "^7.0.0-beta.46",
+    "@babel/runtime": "^7.0.0-beta.46",
+    "@types/three": "^0.91.13",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^8.2.3",
+    "babel-jest": "^22.4.3",
+    "babel-loader": "^8.0.0-beta.2",
+    "babili-webpack-plugin": "^0.1.2",
+    "benchmark": "^2.1.4",
+    "buffer-shims": "^1.0.0",
+    "coveralls": "^3.0.1",
+    "cross-env": "^5.1.5",
+    "del": "^3.0.0",
+    "del-cli": "^1.1.0",
+    "express": "^4.16.3",
+    "gl": "^4.0.4",
+    "google-closure-compiler": "^20180506.0.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
+    "gulp-benchmark": "^1.1.1",
+    "gulp-browser-basedir": "^1.0.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-cli": "^2.0.1",
+    "gulp-jsdoc3": "^2.0.0",
+    "gulp-less": "^3.5.0",
+    "gulp-rollup": "^2.16.2",
+    "gulp-sass": "^4.0.1",
+    "gulp-watch": "^5.0.0",
+    "happypack": "^5.0.0",
+    "highlight.js": "^9.12.0",
+    "jest": "^22.4.3",
+    "jest-babel": "^1.0.1",
+    "js-yaml": "^3.11.0",
+    "jsdoc-babel": "^0.4.0",
+    "less": "^3.0.4",
+    "markdown-it": "^8.4.1",
+    "mdurl": "^1.0.1",
+    "minami": "^1.2.3",
+    "mocha": "^5.1.1",
+    "node-sass": "^4.9.0",
+    "nyc": "^11.7.3",
+    "path": "^0.12.7",
+    "postprocessing": "^4.5.0",
+    "present": "^1.0.0",
+    "pug": "^2.0.3",
+    "rollup": "^0.58.2",
+    "rollup-plugin-babel": "^4.0.0-beta.4",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-json": "^3.0.0",
+    "rollup-plugin-multi-entry": "^2.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-uglify": "^3.0.0",
+    "semantic-ui-less": "^2.3.1",
+    "snyk": "^1.80.0",
+    "surge": "^0.20.1",
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.3",
+    "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22",
+    "uglify-loader": "^2.0.0",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3",
+    "webpack-dashboard": "^1.1.1",
+    "webpack-dev-middleware": "^3.1.3",
+    "xo": "^0.21.0",
+    "yargs": "^11.0.0"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2017,
+      "sourceType": "module"
+    }
+  },
+  "xo": {
+    "space": 2,
+    "esnext": true,
+    "parser": "babel-eslint",
+    "envs": [
+      "node",
+      "browser",
+      "es6"
+    ],
+    "syntax_map": {
+      "JavaScript (Babel)": "javascript"
+    },
+    "rules": {
+      "operator-linebreak": [
+        2,
+        "before"
+      ],
+      "curly": [
+        2,
+        "multi-or-nest"
+      ],
+      "one-var": 0,
+      "no-else-return": 1,
+      "capitalized-comments": 0,
+      "no-undef": 0,
+      "no-new": 0,
+      "camelcase": 0,
+      "linebreak-style": 0,
+      "new-cap": [
+        1,
+        {
+          "newIsCap": true,
+          "capIsNew": true,
+          "properties": false
+        }
+      ],
+      "babel/arrow-parens": 0,
+      "xo/filename-case": 0,
+      "no-warning-comments": 0,
+      "unicorn/filename-case": 0,
+      "import/no-unassigned-import": 0,
+      "import/prefer-default-export": 0,
+      "import/extensions": [
+        2,
+        "never",
+        {
+          "json": "always"
+        }
+      ]
+    }
+  }
+}

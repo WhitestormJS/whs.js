@@ -1,0 +1,20 @@
+{
+  "name": "@whs/core",
+  "version": "3.0.0-alpha.1",
+  "description": "WhitestormJS core",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexander Buzin",
+  "license": "MIT",
+  "devDependencies": {
+    "rollup": "^1.1.2",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-replace": "^2.1.0"
+  }
+}
