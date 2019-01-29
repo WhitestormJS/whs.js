@@ -1,3 +1,1 @@
-import * as WHS from '@whs/w-core';
-
-console.log('hello world!', WHS);
+console.log('hello world!');

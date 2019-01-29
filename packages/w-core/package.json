@@ -1,6 +1,6 @@
 {
   "name": "@whs/core",
-  "version": "3.0.0-dev.1",
+  "version": "3.0.0-dev.5",
   "description": "WhitestormJS core",
   "main": "src/index.js",
   "scripts": {
@@ -28,5 +28,10 @@
   },
   "dependencies": {
     "minivents": "^2.2.0"
-  }
+  },
+  "gitHead": "4e5b3171dd0ff8970c71079720f01131984b3058",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/WhitestormJS/whs.js/tree/v3.x.x/w-core/packages/w-core"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@whs/w-examples",
-  "version": "3.0.0-dev.1",
+  "version": "3.0.0-dev.5",
   "description": "WhitestormJS examples",
   "main": "index.js",
   "scripts": {
@@ -25,5 +25,9 @@
     "webpack": "^4.29.0",
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14"
+  },
+  "gitHead": "4e5b3171dd0ff8970c71079720f01131984b3058",
+  "publishConfig": {
+    "access": "public"
   }
 }

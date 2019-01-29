@@ -21,5 +21,8 @@
   "homepage": "https://github.com/WhitestormJS/whs.js#readme",
   "devDependencies": {
     "lerna": "^3.10.7"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
