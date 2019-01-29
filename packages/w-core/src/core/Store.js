@@ -24,8 +24,6 @@ export class Store {
     const loader = this.loaders[assetType];
     const processors = this.processors[assetType] || [];
 
-    console.log(processors);
-
     this.refs[assetName] = new Promise((resolve, reject) => {
       loader.load(
         url,
