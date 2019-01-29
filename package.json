@@ -20,12 +20,6 @@
   },
   "homepage": "https://github.com/WhitestormJS/whs.js#readme",
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-external-helpers": "^7.2.0",
-    "@babel/plugin-proposal-class-properties": "^7.3.0",
-    "@babel/plugin-proposal-decorators": "^7.3.0",
-    "@babel/plugin-transform-runtime": "^7.2.0",
-    "@babel/polyfill": "^7.2.5",
-    "@babel/preset-env": "^7.3.1"
+    "lerna": "^3.10.7"
   }
 }

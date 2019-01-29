@@ -1,18 +1,29 @@
 {
   "name": "@whs/w-examples",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.0-dev.1",
   "description": "WhitestormJS examples",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "@whs/w-core": "^3.0.0-alpha.1"
+  },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.3.1",
     "@babel/register": "^7.0.0",
     "glob": "^7.1.3",
+    "html-webpack-plugin": "^3.2.0",
+    "pug": "^2.0.3",
+    "pug-loader": "^2.4.0",
     "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14"
   }
 }

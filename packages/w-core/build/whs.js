@@ -1226,7 +1226,7 @@
 	module.exports = _construct;
 	});
 
-	const version = "3.0.0-alpha.1";
+	const version = "3.0.0-dev.1";
 
 	var system = {
 	  window: typeof window === 'undefined' ? global : window

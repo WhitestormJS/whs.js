@@ -7,7 +7,7 @@ html
     link(rel='stylesheet', href='/assets/css/layout.css', type='text/css' )
   body
     block body
-      
+
     div#explanation
       block explanation
         header.uk-comment-header.uk-grid-medium.uk-flex-middle(uk-grid='')
@@ -26,15 +26,7 @@ html
             | Documentation for this example is not yet complete. You can ask maintainers for a soon documentation development or suggest your own edits to improve this page.
 
     block dependencies
-      script(src='https://cdnjs.cloudflare.com/ajax/libs/three.js/92/three.min.js')
-      script(src='/build/whs.js')
-      block stats
-        script(src='/build/modules/StatsModule.js')
-      block audio
-        script(src='/build/modules/AudioModule.js')
-      block additional
-      script(src=physicsModule)
+      script(src='https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js')
 
     block scripts
       script(src=`./${scriptname}`)
-      
