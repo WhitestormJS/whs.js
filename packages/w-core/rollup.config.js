@@ -22,27 +22,33 @@ const babelFix = babelPlugin => {
   return babelPlugin;
 };
 
+const outputConfig = {
+  sourcemap: true,
+  globals: {
+    three: 'THREE'
+  },
+  banner: `/* WhitestormJS Framework v${require('./package.json').version} */`
+}
+
 export default {
   input: 'src/index.js',
 
-  output: [{
-    format: 'umd',
-    name: 'WHS',
-    sourcemap: true,
-    file: 'build/whs.js',
-    external: ['three'],
-    banner: `/* WhitestormJS Framework v${require('./package.json').version} */`
-  }, {
-    format: 'es',
-    sourcemap: true,
-    file: 'build/whs.module.js',
-    external: ['three'],
-    banner: `/* WhitestormJS Framework v${require('./package.json').version} */`
-  }],
+  external: ['three'],
 
   globals: {
     three: 'THREE'
   },
+
+  output: [{
+    ...outputConfig,
+    format: 'umd',
+    name: 'WHS',
+    file: 'build/whs.js',
+  }, {
+    ...outputConfig,
+    format: 'es',
+    file: 'build/whs.module.js',
+  }],
 
   plugins: [
     resolve({

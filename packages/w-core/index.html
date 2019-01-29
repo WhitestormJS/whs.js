@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      body {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://unpkg.com/three@0.100.0/build/three.js" charset="utf-8"></script>
+    <script src="https://unpkg.com/three@0.100.0/examples/js/controls/OrbitControls.js" charset="utf-8"></script>
+    <script src="./build/whs.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      const {
+        App,
+        Component,
+        TreeModule,
+        RenderingModule,
+        ResizeModule,
+        ControlsModule
+      } = WHS;
+
+      const app = new App([
+        App.define(
+          { // General app configuration
+            size: [window.innerWidth, window.innerHeight]
+          }, // Configuration-dependent dependencies
+          ({size}, {onUpdate}) => ({
+            camera: new Component.Camera({
+              camera: new THREE.PerspectiveCamera(45, size[0] / size[1], 1, 1000),
+              position: [0, 0, 10],
+            }).autoSizeUpdate(onUpdate),
+            container: document.body,
+          })
+        ),
+        new TreeModule(), // Add manager.scene & app.add()
+        new RenderingModule({quality: 'high'}), // Renderer + renderLoop
+        new ControlsModule(({camera, renderer}) => new THREE.OrbitControls(camera.native, renderer.domElement)),
+        new ResizeModule()
+      ]);
+
+      const store = new App.Store({
+        textures: new THREE.TextureLoader(),
+        materials: App.Store.asyncLoader,
+        geometries: App.Store.asyncLoader
+      });
+
+      store.process('textures', (texture, {quality = 'medium'}) => {
+        switch (quality) {
+          case 'high':
+            texture.anisotropy = app.manager.renderer.getMaxAnisotropy();
+            texture.magFilter = THREE.LinearFilter;
+            texture.minFilter = THREE.NearestMipMapLinearFilter;
+            break;
+          case 'low':
+            texture.anisotropy = 0;
+            texture.magFilter = THREE.NearestFilter;
+            texture.minFilter = THREE.NearestFilter;
+            break;
+          default:
+
+        }
+
+        return texture;
+      });
+
+      store.load('textures.basic_box', 'crate.gif', {quality: 'high'});
+      store.load('materials.basic', async () => new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        map: await store.ref('textures.basic_box')
+      }));
+
+      store.load('geometries.box', async () => new THREE.BoxGeometry(1, 1, 1));
+
+      const box = new Component.Mesh(async () => ({
+        geometry: await store.ref('geometries.box'),
+        material: await store.ref('materials.basic')
+      }));
+
+      const box2 = new Component.Mesh(async () => ({
+        geometry: await store.ref('geometries.box'),
+        material: await store.ref('materials.basic'),
+        position: {x: 2, y: 0, z: 0}
+      }));
+
+      const skybox = new Component.Mesh(async () => ({
+        geometry: new THREE.SphereGeometry(100, 32, 32),
+        material: new THREE.MeshBasicMaterial({
+          side: THREE.BackSide,
+          map: await store.load('textures.skybox', 'https://plumetutorials.files.wordpress.com/2013/10/sky1.jpg', {quality: 'high'})
+        }),
+        position: {x: 0, y: 0, z: 0}
+      }));
+
+      const light = new Component.Light({
+        light: new THREE.PointLight(0xffffff, 1, 100),
+        position: {x: 2, y: 2, z: 0}
+      });
+
+      app.add(box);
+      box.add(box2);
+      app.add(light);
+      app.add(skybox);
+      app.start();
+    </script>
+  </body>
+</html>

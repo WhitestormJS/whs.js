@@ -1,7 +1,11 @@
+import {Clock} from 'three';
+
 import {version} from '../../package.json';
 import {system} from '../polyfill';
+import {DefineModule} from '../modules/DefineModule';
 import {ModuleSystem} from './ModuleSystem';
-import {ModuleManager} from './ModuleManager';
+import {Loop} from './Loop';
+import {Store} from './Store';
 
 /**
  * @class App
@@ -12,12 +16,14 @@ import {ModuleManager} from './ModuleManager';
  * @memberof module:core
  */
 class App extends ModuleSystem {
+  static Store = Store;
   /**
    * @description Defines whether the scene should render or not
    * @member {Boolean} module:core.App#enabled
    * @public
    */
   enabled = true;
+  clock = new Clock();
 
   /**
    * Loops in this app
@@ -27,14 +33,15 @@ class App extends ModuleSystem {
    */
   loops = [];
 
+  static define = (...args) => {
+    return new DefineModule(...args);
+  };
+
   constructor(modules = []) {
     console.log(`WHS.App ${version}`);
+    super({modules});
 
-    super();
-    this.manager = new ModuleManager(this);
-    this.modules = modules;
-
-    this.integrateModules();
+    this.setupModules();
   }
 
   // CONTROLS & UPDATING
@@ -60,7 +67,7 @@ class App extends ModuleSystem {
 
       for (let i = 0, ll = this.loops.length; i < ll; i++) {
         const e = this.loops[i];
-        if (e.enabled) e.execute(e.clock);
+        if (e.enabled) e.func(e.clock);
       }
     };
 
@@ -70,60 +77,11 @@ class App extends ModuleSystem {
       process();
   }
 
-  /**
-   * @method stop
-   * @description Stops rendering loops
-   * @memberof module:core.App
-   */
-  stop() {
-    this.enabled = false;
-  }
+  loop(loopCallback) {
+    const loop = new Loop(loopCallback);
+    this.loops.push(loop);
 
-  /**
-   * @method addLoop
-   * @description Adds loop to this app.
-   * @param {Object} loop - the loop to add
-   * @return {Promise} Promise that is resolved when promises completed.
-   * @memberof module:core.App
-   * @example <caption>Adding a loop to an app</caption>
-   * const loop = new Loop(() => {
-   *  // ...
-   * });
-   *
-   * const app = new App();
-   *
-   * app.addLoop(loop);
-   * loop.start();
-   */
-  addLoop(loop) {
-    return new Promise(resolve => {
-      this.loops.push(loop);
-      resolve(loop);
-    });
-  }
-
-  /**
-   * @method removeLoop
-   * @description Removes loop from this app.
-   * @param {Object} loop - the loop to remove
-   * @return {Promise} Promise that is resolved when promises completed.
-   * @memberof module:core.App
-   */
-  removeLoop(loop) {
-    return new Promise(resolve => {
-      const index = this.loops.indexOf(loop);
-      if (index !== -1) this.loops.splice(index, 1);
-
-      resolve(loop);
-    });
-  }
-
-  get(key) {
-    return this.manager.get(key);
-  }
-
-  use(key) {
-    return this.manager.use(key);
+    return loop;
   }
 }
 
