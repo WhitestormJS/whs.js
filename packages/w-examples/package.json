@@ -1,6 +1,6 @@
 {
   "name": "@whs/w-examples",
-  "version": "3.0.0-dev.5",
+  "version": "3.0.0-dev.6",
   "description": "WhitestormJS examples",
   "main": "index.js",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "@whs/core",
-  "version": "3.0.0-dev.5",
+  "version": "3.0.0-dev.6",
   "description": "WhitestormJS core",
   "main": "src/index.js",
   "scripts": {
