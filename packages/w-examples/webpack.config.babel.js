@@ -28,10 +28,14 @@ export default {
 
   output: {
     filename: '[name]',
-    path: path.resolve(__dirname, './build/')
+    path: path.resolve(__dirname, './public/')
   },
 
   plugins: [
     ...htmlPlugins
-  ]
+  ],
+
+  devServer: {
+    contentBase: '/public'
+  }
 };
