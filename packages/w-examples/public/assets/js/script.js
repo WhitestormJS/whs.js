@@ -2,52 +2,53 @@
 
 var iframe = document.querySelector('iframe');
 var hash = window.location.hash.slice(1).split('#');
-var link = window.location.hash.length > 3 ? hash[0] + '/' : '/Basic/Hello_World/';
+var link = window.location.hash.length > 3 ? hash[0] + '/' : '/basic/simple_app/';
 
 iframe.src = '' + link;
 iframe.id = 'content';
 document.getElementById('panel').appendChild(iframe);
 
 iframe.onload = function () {
-  var moveChildren = [];
-
-  for (var child of iframe.contentWindow.document.querySelector('#explanation').childNodes)
-    moveChildren.push(child);
-
-  for (var child of moveChildren)
-    document.querySelector('#explanation-holder').appendChild(child);
+  document.querySelector('#explanation-holder').innerHTML =
+    iframe.contentWindow.document.querySelector('#explanation').innerHTML;
 };
 
-const tutorialOpen = document.getElementById('tutorial-open');
-const tutorialLink = '#' + link.slice(0, -1) + '#tutorial';
+const tutorialOpenAll = document.querySelectorAll('.tutorial-open');
+const explanationToggle = UIkit.toggle(document.querySelector('#explanation'), {
+  animation: 'uk-animation-fade'
+});
 
-// tutorialOpen.href = tutorialLink;
-tutorialOpen.dataset.tutorialLink = tutorialLink;
+for (let tutorialOpen of tutorialOpenAll) {
+  tutorialOpen.addEventListener('click', function (e) {
+    e.preventDefault();
 
-for (const link of document.querySelectorAll('[data-updatable]')) {
-  link.addEventListener('click', function(e) {
-    // console.log(123);
-    // debugger;
-    var tutorial = window.location.hash.indexOf('tutorial') > 0;
+    const isTutorial = explanationToggle.isToggled();
 
-    if (link.dataset.tutorialLink) {
-      e.preventDefault();
-
-      console.log(tutorial);
-
-      window.location.hash = tutorial
-        ? link.dataset.tutorialLink.replace('#tutorial', '')
-        : link.dataset.tutorialLink;
+    for (let tutorialOpen of tutorialOpenAll) {
+      tutorialOpen.innerHTML = tutorialOpen.innerHTML.replace(
+        !isTutorial ? 'Show' : 'Hide',
+        isTutorial ? 'Show' : 'Hide'
+      );
     }
 
-    if (link.dataset.tutorialLink && link.dataset.tutorialLink.indexOf(hash[0]) > 0) return;
-    // window.location.reload();
+    explanationToggle.toggle();
+
+    return;
   });
 }
 
-// setTimeout(function () {
-//   document.body.dataset.exampleReady = true;
-// }, 2000);
+for (const link of document.querySelectorAll('[data-updatable]')) {
+  link.addEventListener('click', function (e) {
+    const tutorialUrl = /.*\#(.*)/.exec(link.href)[1].replace(/#(.*)/, '');
+    const iframeUrl = iframe.src.replace(window.origin, '');
+
+    if (tutorialUrl !== iframeUrl) {
+      delete document.body.dataset.exampleReady;
+      iframe.src = tutorialUrl + '/';
+      iframe.onload();
+    }
+  });
+}
 
 if (hash[1] && hash[1] === 'tutorial') {
   document.querySelector('#explanation').removeAttribute('hidden');
@@ -56,59 +57,23 @@ if (hash[1] && hash[1] === 'tutorial') {
 const filters = document.querySelectorAll('.filter');
 const items = document.querySelectorAll('[data-item]');
 
-// tutorialOpen.addEventListener('click', () => {
-//   if (tutorialOpen.href.indexOf(''))
-// })
-
 for (let filter of filters) {
   filter.addEventListener('keyup', function (e) {
     const text = e.target.value;
 
+    document.body.dataset.filtered = text !== '';
+
     items.forEach(item => {
-      // console.log([item]);
-      if (text === '' || item.innerText.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
-        item.parentNode.style.display = 'block';
+      if (text !== '' && item.dataset.item.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
+        item.style.display = 'block';
       } else {
-        item.parentNode.style.display = 'none';
+        item.style.display = 'none';
       }
     })
   });
 }
 
-// SIDEBAR
-// if (isMobile) {
-//   new Slideout({
-//     panel: document.getElementById('panel'),
-//     menu: document.getElementById('sidebar'),
-//     padding: 320,
-//     tolerance: 70
-//   });
-// }
-
-// Filter
-
-// const filter = document.getElementById('filter');
-// const items = document.querySelectorAll('#sidebar .item .minor');
-// const categories = document.querySelectorAll('#sidebar .item.category');
-
-// filter.addEventListener('keyup', function (e) {
-//   items.forEach(item => {
-//     if (
-//       item.innerText.indexOf(e.target.value) > -1
-//       || e.target.value === ''
-//     ) item.style.display = 'block';
-//     else item.style.display = 'none';
-//   });
-//
-//   categories.forEach(function (cat) {
-//     const isHidden = [].slice.call(cat.querySelectorAll('.minor')).every(item => item.style.display === 'none');
-//
-//     if (isHidden) cat.style.display = 'none';
-//     else cat.style.display = 'block';
-//   });
-// });
-
-window.__ExamplesAPI = new class {
+window.__EXAMPLES_API__ = new class {
   constructor() {
     this.PREFIX = 'Examples API';
     console.log(`${this.PREFIX}: initialized.`);

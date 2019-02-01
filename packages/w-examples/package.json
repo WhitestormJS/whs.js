@@ -1,5 +1,5 @@
 {
-  "name": "@whs/w-examples",
+  "name": "@whs/examples",
   "version": "3.0.0-dev.6",
   "description": "WhitestormJS examples",
   "main": "index.js",
@@ -11,15 +11,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@whs/w-core": "^3.0.0-alpha.1"
+    "@whs/core": "^3.0.0-dev.6"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.3.1",
     "@babel/register": "^7.0.0",
+    "express": "^4.16.4",
     "glob": "^7.1.3",
+    "highlight.js": "^9.14.1",
     "html-webpack-plugin": "^3.2.0",
+    "markdown-it": "^8.4.2",
     "pug": "^2.0.3",
     "pug-loader": "^2.4.0",
     "webpack": "^4.29.0",

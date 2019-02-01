@@ -1,0 +1,33 @@
+html
+  head
+    title Example
+    include meta.pug
+    block head
+    link(rel='stylesheet', href='/assets/css/layout.css', type='text/css' )
+  body
+    block body
+
+    div#explanation
+      block explanation
+        header.uk-comment-header.uk-grid-medium.uk-flex-middle(uk-grid='')
+          .uk-width-expand
+            h4.uk-comment-title.uk-margin-remove
+              a.uk-link-reset(href='#') 404
+            ul.uk-comment-meta.uk-subnav.uk-subnav-divider.uk-margin-remove-top
+              li
+                a(href='#') Documentation not found
+              li
+                a(href='#') Edit
+        div(uk-alert='')
+          a.uk-alert-close(uk-close='')
+          h3 Sorry
+          p
+            | Documentation for this example is not yet complete. You can ask maintainers for a soon documentation development or suggest your own edits to improve this page.
+
+    block dependencies
+      script(src='https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js')
+      script(src='/vendor/whs.core.js')
+    block additional
+
+    block scripts
+      script(src='./script.js')

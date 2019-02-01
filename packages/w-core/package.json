@@ -2,7 +2,7 @@
   "name": "@whs/core",
   "version": "3.0.0-dev.6",
   "description": "WhitestormJS core",
-  "main": "src/index.js",
+  "main": "build/whs.core.js",
   "scripts": {
     "build": "rollup -c",
     "start": "rollup -c -w -m inline",

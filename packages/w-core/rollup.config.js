@@ -42,12 +42,12 @@ export default {
   output: [{
     ...outputConfig,
     format: 'umd',
-    name: 'WHS',
-    file: 'build/whs.js',
+    name: 'WHS.core',
+    file: 'build/whs.core.js',
   }, {
     ...outputConfig,
     format: 'es',
-    file: 'build/whs.module.js',
+    file: 'build/whs.core.module.js',
   }],
 
   plugins: [
