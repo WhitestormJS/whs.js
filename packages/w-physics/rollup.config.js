@@ -4,6 +4,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import json from 'rollup-plugin-json';
 import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
+import bundleWorker from './tools/worker-plugin/index';
 
 const outputConfig = {
   sourcemap: true,
@@ -14,7 +15,7 @@ const outputConfig = {
 }
 
 export default {
-  input: 'src/index.js',
+  input: 'src/index.ammo.js',
 
   external: ['three'],
 
@@ -25,15 +26,16 @@ export default {
   output: [{
     ...outputConfig,
     format: 'umd',
-    name: 'WHS.core',
-    file: 'build/whs.core.js',
+    name: 'WHS.physics.ammo',
+    file: 'build/whs.physics.ammo.js',
   }, {
     ...outputConfig,
     format: 'es',
-    file: 'build/whs.core.module.js',
+    file: 'build/whs.physics.ammo.module.js',
   }],
 
   plugins: [
+    bundleWorker(),
     resolve({
       jsnext: true,
       module: true

@@ -103,7 +103,8 @@ export default {
 
   externals: {
     'three': 'THREE',
-    '@whs/core': 'WHS.core'
+    '@whs/core': 'WHS.core',
+    '@whs/physics': 'WHS.physics.ammo'
   },
 
   devServer: {
@@ -111,6 +112,7 @@ export default {
     before(app, server) {
       app.use('/assets', express.static(path.resolve(__dirname, './public/assets/')));
       app.use('/vendor', express.static(path.resolve(__dirname, './node_modules/@whs/core/build/')));
+      app.use('/vendor', express.static(path.resolve(__dirname, '../w-physics/build/')));
     }
   }
 };
