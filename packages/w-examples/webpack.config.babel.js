@@ -114,5 +114,9 @@ export default {
       app.use('/vendor', express.static(path.resolve(__dirname, './node_modules/@whs/core/build/')));
       app.use('/vendor', express.static(path.resolve(__dirname, '../w-physics/build/')));
     }
+  },
+
+  watchOptions: {
+    ignored: /^node_modules\/((?!@whs).)*$/
   }
 };

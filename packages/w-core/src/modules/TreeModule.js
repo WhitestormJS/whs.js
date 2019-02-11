@@ -5,13 +5,8 @@ export class TreeModule {
     manager.scene = new Scene();
 
     app.add = async (component) => {
-      const scene = manager.scene;
-
-      if (component.isAsync) {
-        scene.add(await component.native);
-      } else {
-        scene.add(component.native);
-      }
+      component = app.bridge('child', component);
+      manager.scene.add(component.isAsync ? await component.native : component.native);
     };
   }
 }

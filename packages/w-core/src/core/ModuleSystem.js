@@ -85,7 +85,7 @@ export class ModuleSystem {
 
     for (const module of this.modules) {
       if (module.bridges && bridgeName in module.bridges) {
-        outputData = module.bridges[bridgeName];
+        outputData = module.bridges[bridgeName](outputData);
       }
     }
 

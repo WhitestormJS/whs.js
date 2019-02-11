@@ -41,6 +41,10 @@ export default {
       module: true
     }),
     babel({
+      exclude: [
+        'node_modules/**',
+        'src/engines/worker.js'
+      ],
       runtimeHelpers: true,
       sourceMap: true
     }),

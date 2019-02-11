@@ -1,5 +1,5 @@
 import AmmoWorker from 'worker!./worker.js';
-import CMD from './commands';
+import CMD from '../commands';
 
 export class AmmoEngine {
   static CMD = CMD;
@@ -12,16 +12,8 @@ export class AmmoEngine {
     this.send(CMD.INITIALIZE, options);
   }
 
-  send(command, data) {
-    if (Array.isArray(data)) {
-      this.sendBuffer(command, data);
-      return;
-    }
-
-    this.worker.transferableMessage({
-      cmd: CMD.INITIALIZE,
-      data
-    });
+  send(cmd, data) {
+    this.worker.transferableMessage({cmd, data});
   }
 
   sendBuffer(command, data = []) {
@@ -31,5 +23,13 @@ export class AmmoEngine {
 
     array.set(data, 1);
     this.worker.transferableMessage(array, buffer);
+  }
+
+  requestUpdate() {
+    this.worker.transferableMessage({cmd: CMD.REQUEST_UPDATE});
+  }
+
+  listen(callback) {
+    this.worker.addEventListener('message', callback);
   }
 }

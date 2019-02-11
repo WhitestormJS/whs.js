@@ -1,6 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import rollup from 'rollup';
+import babel from 'rollup-plugin-babel';
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 import {transformSync} from '@babel/core';
 
 const paths = new Map();
@@ -24,27 +27,36 @@ export default function () {
      * rollup configuration
      */
     load: function (id) {
+      console.log(id);
       if (!paths.has(id)) return;
 
       return rollup.rollup({
-        input: id
+        input: id,
+        plugins: [
+          resolve({
+            jsnext: true,
+            module: true
+          }),
+          babel({
+            runtimeHelpers: true,
+            sourceMap: true
+          }),
+          commonjs({include: 'node_modules/**', ignoreGlobal: true})
+        ]
       }).then(result => {
-        return result.generate({ format: 'es' }).then(({output: [{code}]}) => {
-          return [
-            `import shimWorker from '__tools/worker-plugin__';`,
-            `export default new shimWorker(${JSON.stringify(paths.get(id))}, function (window, document) {`,
-              `var self = this;`,
-              transformSync(code, {
-                presets: [['@babel/preset-env', {
-                  targets: {
-                    browsers: ['last 2 versions', 'safari >= 7']
-                  }
-                }]]
-              }).code,
-              `\n});`
-            ].join('\n');
-          });
+        return result.generate({ format: 'es' }).then(({output: [{code, map}]}) => {
+          return {
+            code: [
+              `import shimWorker from '__tools/worker-plugin__';`,
+              `export default new shimWorker(${JSON.stringify(paths.get(id))}, function (window, document) {`,
+                `var self = this;`,
+                code,
+                `\n});`
+              ].join('\n'),
+            map
+          };
         });
+      });
     }
   };
 }
