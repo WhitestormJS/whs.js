@@ -28,5 +28,6 @@
   },
   "dependencies": {
     "rollup-plugin-bundle-worker": "git+https://github.com/hughsk/rollup-plugin-bundle-worker.git"
-  }
+  },
+  "gitHead": "59fd5d34177d54cb8b729acc6ef5980373c49c58"
 }
