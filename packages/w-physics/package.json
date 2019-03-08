@@ -1,6 +1,6 @@
 {
   "name": "@whs/physics",
-  "version": "3.0.0-dev.8",
+  "version": "3.0.0-dev.7",
   "description": "Physics module",
   "main": "build/physics.js",
   "scripts": {

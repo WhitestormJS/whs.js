@@ -1,6 +1,6 @@
 {
   "name": "@whs/examples",
-  "version": "3.0.0-dev.8",
+  "version": "3.0.0-dev.7",
   "description": "WhitestormJS examples",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@whs/core": "^3.0.0-dev.8",
-    "@whs/devkit": "^3.0.0-dev.8",
-    "@whs/physics": "^3.0.0-dev.8"
+    "@whs/core": "^3.0.0-dev.7",
+    "@whs/devkit": "^3.0.0-dev.7",
+    "@whs/physics": "^3.0.0-dev.7"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

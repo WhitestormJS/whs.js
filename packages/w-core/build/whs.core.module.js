@@ -1,4 +1,4 @@
-/* WhitestormJS Framework v3.0.0-dev.8 */
+/* WhitestormJS Framework v3.0.0-dev.7 */
 import { Clock, Mesh, Scene, WebGLRenderer, REVISION } from 'three';
 
 function createCommonjsModule(fn, module) {
@@ -1212,7 +1212,7 @@ function _construct(Parent, args, Class) {
 module.exports = _construct;
 });
 
-const version = "3.0.0-dev.8";
+const version = "3.0.0-dev.7";
 
 var system = {
   window: typeof window === 'undefined' ? global : window
