@@ -1,4 +1,4 @@
-/* WhitestormJS Framework v3.0.0-dev.8 */
+/* WhitestormJS Framework v3.0.0-dev.9 */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('three')) :
 	typeof define === 'function' && define.amd ? define(['exports', 'three'], factory) :
@@ -1216,7 +1216,7 @@
 	module.exports = _construct;
 	});
 
-	const version = "3.0.0-dev.8";
+	const version = "3.0.0-dev.9";
 
 	var system = {
 	  window: typeof window === 'undefined' ? global : window
