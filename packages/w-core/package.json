@@ -1,9 +1,11 @@
 {
   "name": "@whs/core",
-  "version": "3.0.0-dev.6",
+  "version": "3.0.0-dev.8",
   "description": "WhitestormJS core",
   "main": "build/whs.core.js",
   "scripts": {
+    "version": "npm run build",
+    "postversion": "./scripts/update-commit.sh",
     "build": "rollup -c",
     "start": "rollup -c -w -m inline",
     "test": "echo \"Error: no test specified\" && exit 1"

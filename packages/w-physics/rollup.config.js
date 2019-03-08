@@ -11,7 +11,7 @@ const outputConfig = {
   globals: {
     three: 'THREE'
   },
-  banner: `/* WhitestormJS Framework v${require('./package.json').version} */`
+  banner: `/* WhitestormJS Physics v${require('./package.json').version} */`
 }
 
 export default {

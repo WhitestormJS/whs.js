@@ -67,7 +67,7 @@ class App extends ModuleSystem {
 
       for (let i = 0, ll = this.loops.length; i < ll; i++) {
         const e = this.loops[i];
-        if (e.enabled) e.func(e.clock);
+        if (e.enabled) e.func(this.clock);
       }
     };
 

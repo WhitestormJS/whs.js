@@ -30,13 +30,12 @@ export class RenderingModule {
 
     container.appendChild(renderer.domElement);
 
-    manager.renderLoop = app.loop(() => {
-      const {
-        scene,
-        camera
-      } = manager;
+    manager.renderFunc = () => {
+      manager.renderer.render(manager.scene, manager.camera.native);
+    };
 
-      manager.renderer.render(scene, camera.native);
+    manager.renderLoop = app.loop(clock => {
+      manager.renderFunc(clock)
     });
   }
 
