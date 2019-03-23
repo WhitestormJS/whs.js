@@ -11,19 +11,17 @@ import {
 
 const {ready} = connect();
 
+const APP_SIZE = [window.innerWidth, window.innerHeight];
+
 const app = new App([
-  App.define(
-    { // General app configuration
-      size: [window.innerWidth, window.innerHeight]
-    }, // Configuration-dependent dependencies
-    ({size}, {onUpdate}) => ({
-      camera: new Component.Camera({
-        camera: new THREE.PerspectiveCamera(45, size[0] / size[1], 1, 1000),
-        position: [0, 0, 10],
-      }).autoSizeUpdate(onUpdate),
-      container: document.body,
-    })
-  ),
+  App.define(({onUpdate}) => ({
+    size: APP_SIZE,
+    camera: new Component.Camera({
+      camera: new THREE.PerspectiveCamera(45, APP_SIZE[0] / APP_SIZE[1], 1, 1000),
+      position: [0, 0, 10],
+    }).autoSizeUpdate(onUpdate),
+    container: document.body
+  })),
   new TreeModule(), // Add manager.scene & app.add()
   new RenderingModule(), // Renderer + renderLoop
   new ResizeModule()

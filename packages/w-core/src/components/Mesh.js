@@ -8,8 +8,8 @@ export class MeshComponent extends Component {
     const material = options.material;
 
     const mesh = this.bridge('mesh', new Mesh(
-      this.bridge('geometry', geometry),
-      this.bridge('material', material)
+      geometry ? this.bridge('geometry', geometry) : undefined,
+      material ? this.bridge('material', material) : undefined
     ));
 
     applyTransform(mesh, options);

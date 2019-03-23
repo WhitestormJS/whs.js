@@ -12,7 +12,10 @@ export class Component extends ModuleSystem {
 
     this.native = this.isAsync ? new Promise(resolve => {
       asyncOptions.then(options => {
-        resolve(this.build(options));
+        const native = this.build(options);
+        this.modules = options.modules || [];
+        this.setupModules();
+        resolve(native);
       });
     }) : this.build(typeof options === 'function' ? options() : options);
 

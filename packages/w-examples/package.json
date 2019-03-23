@@ -13,7 +13,10 @@
   "dependencies": {
     "@whs/core": "^3.0.0-dev.10",
     "@whs/devkit": "^3.0.0-dev.10",
-    "@whs/physics": "^3.0.0-dev.10"
+    "@whs/physics": "^3.0.0-dev.10",
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
+    "reselect": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

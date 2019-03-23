@@ -3,9 +3,9 @@ export class DefineModule {
     this.data = data;
   }
 
-  setup(app, {manager, ...other}) {
+  setup(app, utils) {
     this.data.forEach(data => {
-      Object.assign(manager, typeof data === 'function' ? data(manager, other) : data);
+      Object.assign(utils.manager, typeof data === 'function' ? data(utils) : data);
     });
   }
 }

@@ -63,6 +63,8 @@ export class ModuleSystem {
     }
 
     this.setupModules = () => {
+      if (this.modules.length === 0) return;
+
       for (const module of this.modules) {
         if ('setup' in module) {
           activeModule = module;

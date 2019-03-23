@@ -1,0 +1,25 @@
+extends ../../../layout/example.pug
+
+block body
+  button(
+    onclick="i = window.i || 1; window.actions.changeRadius(i++ % 3 + 1)"
+    style="position: absolute; left: 20px"
+  ) changeRadius(1...3)
+  button(
+    onclick="window.actions.changeSize([400, 200])"
+    style="position: absolute; left: 150px"
+  ) changeSize([400, 200])
+  button(
+    onclick="window.actions.changeSize([window.innerWidth, window.innerHeight])"
+    style="position: absolute; left: 300px"
+  ) changeSize(fullscreen)
+    button(
+      onclick="k = window.k || 0; window.actions.changeTeapotValue(k++ % 3 + 1)"
+      style="position: absolute; left: 480px"
+    ) changeTeapotValue(1...3)
+
+block additional
+  script(src='https://unpkg.com/three@0.102.0/examples/js/controls/OrbitControls.js')
+
+block explanation
+  :explanation(file="./readme.md")
