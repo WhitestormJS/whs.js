@@ -24,6 +24,10 @@ export class RenderingModule {
     const renderer = manager.renderer = new WebGLRenderer(this.prepareRendererOptions(rendererOptions));
     renderer.setSize(size[0], size[1]);
 
+    if (this.moduleOptions.clearColor) {
+      renderer.setClearColor(this.moduleOptions.clearColor);
+    }
+
     onUpdate('size', (value) => {
       renderer.setSize(value[0], value[1]);
     });

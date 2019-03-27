@@ -7,6 +7,9 @@ let AMMO = null;
 let dt = 0;
 new class AmmoBackend {
   bodies = [];
+  cache = {
+    geometries: {}
+  };
 
   constructor() {
     self.onmessage = ({data}) => {
@@ -37,6 +40,9 @@ new class AmmoBackend {
   }
 
   prepareSetup() {
+    // temp variables
+    this.tmpVec3 = new AMMO.btVector3();
+
     this.collisionConfiguration = new AMMO.btDefaultCollisionConfiguration();
     this.dispatcher = new AMMO.btCollisionDispatcher(this.collisionConfiguration);
     this.broadphase = new AMMO.btDbvtBroadphase();
@@ -54,23 +60,44 @@ new class AmmoBackend {
     // TODO: Remove
   }
 
-  createShape({type = 'box', ...data}) {
-    let shape;
+  // key example: `plane.normal{24.543,23.53,53.4}`
+  *shapeGenerator({type = 'box', ...data}) {
+    const vec3 = this.tmpVec3;
 
     switch (type) {
+      case 'plane':
+        yield Symbol.for(`plane.normal{${data.normal.join(',')}}`);
+
+        vec3.setX(data.normal[0]);
+        vec3.setY(data.normal[1]);
+        vec3.setY(data.normal[2]);
+
+        yield new AMMO.btStaticPlaneShape(vec3);
       case 'sphere':
-        shape = new AMMO.btSphereShape(data.radius);
-        break;
+        yield Symbol.for(`sphere.radius{${data.radius}}`);
+        yield new AMMO.btSphereShape(data.radius);
       case 'box':
-        shape = new AMMO.btBoxShape(
-          new AMMO.btVector3(data.size[0] / 2, data.size[1] / 2, data.size[2] / 2)
-        );
-        break;
+        yield Symbol.for(`box.size{${data.size.join(',')}}`);
+
+        vec3.setX(data.size[0] / 2);
+        vec3.setY(data.size[1] / 2);
+        vec3.setY(data.size[2] / 2);
+
+        yield new AMMO.btBoxShape(vec3);
       default:
 
     }
+  }
 
-    return shape;
+  createShape(bodyData) {
+    const shapeGenerator = this.shapeGenerator(bodyData);
+    const shapeKey = shapeGenerator.next().value;
+
+    if (shapeKey in this.cache.geometries) {
+      return this.cache.geometries[shapeKey];
+    }
+
+    return shapeGenerator.next().value;
   }
 
   createBody(shape, {

@@ -1,4 +1,4 @@
-import {EffectComposer, RenderPass, EffectPass} from "postprocessing";
+import {EffectComposer, RenderPass, EffectPass, ShaderPass} from "postprocessing";
 
 export class EffectsModule {
   setup(app, {manager}) {
@@ -20,6 +20,14 @@ export class EffectsModule {
       },
       effect(effect, renderToScreen = false) {
         const pass = new EffectPass(manager.camera.native, effect);
+        pass.renderToScreen = renderToScreen;
+
+        manager.composer.addPass(pass);
+
+        return manager.effects;
+      },
+      shader(shaderMaterial, renderToScreen = false, inputName = 'inputBuffer') {
+        const pass = new ShaderPass(shaderMaterial, inputName);
         pass.renderToScreen = renderToScreen;
 
         manager.composer.addPass(pass);

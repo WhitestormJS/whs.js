@@ -2,7 +2,7 @@ import {Scene} from 'three';
 
 export class TreeModule {
   setup(app, {manager}) {
-    manager.scene = new Scene();
+    app.scene = manager.scene = new Scene();
 
     app.add = async (component) => {
       component = app.bridge('child', component);

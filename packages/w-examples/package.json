@@ -11,9 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tweenjs/tween.js": "^17.3.0",
     "@whs/core": "^3.0.0-dev.10",
     "@whs/devkit": "^3.0.0-dev.10",
     "@whs/physics": "^3.0.0-dev.10",
+    "minivents": "^2.2.0",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "reselect": "^4.0.0"

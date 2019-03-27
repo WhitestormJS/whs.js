@@ -12,8 +12,8 @@ export class Component extends ModuleSystem {
 
     this.native = this.isAsync ? new Promise(resolve => {
       asyncOptions.then(options => {
-        const native = this.build(options);
         this.modules = options.modules || [];
+        const native = this.build(options);
         this.setupModules();
         resolve(native);
       });
