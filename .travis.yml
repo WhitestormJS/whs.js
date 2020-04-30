@@ -8,6 +8,7 @@ group: deprecated-2017Q2
 addons:
   apt:
     packages:
+    - g++-4.9
     - mesa-utils
     - xvfb
     - libgl1-mesa-dri
@@ -15,6 +16,8 @@ addons:
     - libosmesa6
 node_js:
   - "6"
+env:
+  - CXX=g++-4.8
 before_script:
   - export DISPLAY=:99.0; sh -e /etc/init.d/xvfb start
   - if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
