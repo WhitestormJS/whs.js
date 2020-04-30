@@ -26,12 +26,9 @@ Community chat. [Join us!][discord-url]
 
 ##### New releases
 
-> `whs` is currently at v2 major version. We don't have clear plans for v3 yet. So v2 will probably remain the main stable version until at least 2018.
+> `whs` is currently at v2 major version. We had plans for v3 yet but development isn't active. So v2 will probably remain the main stable version until further notice.
 
-> We try to publish **patch releases every 20 days** or even more often.
-
-> We try to publish **minor update releases every 60 days** or even more often depending on the amount of features that sometimes get added in a very small period of time. We want the community to profit from new modules, components and feature enhancements as soon as they are implemented.
-
+> We try to publish **minor update releases** for bug fixes, we will review PRs.
 
 #### NPM
 
