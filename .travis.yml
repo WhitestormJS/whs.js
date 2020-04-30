@@ -8,7 +8,7 @@ group: deprecated-2017Q2
 addons:
   apt:
     packages:
-    - g++-4.9
+    - g++-4.8
     - mesa-utils
     - xvfb
     - libgl1-mesa-dri
