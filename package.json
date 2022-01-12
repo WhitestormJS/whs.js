@@ -95,7 +95,7 @@
     "js-yaml": "^3.11.0",
     "jsdoc-babel": "^0.4.0",
     "less": "^3.0.4",
-    "markdown-it": "^8.4.1",
+    "markdown-it": "^12.3.2",
     "mdurl": "^1.0.1",
     "minami": "^1.2.3",
     "mocha": "^5.1.1",
