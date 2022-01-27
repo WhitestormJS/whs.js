@@ -48,7 +48,7 @@
     "markdown-to-pug": "^1.0.11",
     "minivents": "^2.2.0",
     "redux": "^4.0.0",
-    "three": "^0.92.0"
+    "three": "^0.137.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.46",
