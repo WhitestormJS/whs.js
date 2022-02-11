@@ -99,7 +99,7 @@
     "mdurl": "^1.0.1",
     "minami": "^1.2.3",
     "mocha": "^5.1.1",
-    "node-sass": "^4.9.0",
+    "node-sass": "^7.0.0",
     "nyc": "^11.7.3",
     "path": "^0.12.7",
     "postprocessing": "^4.5.0",
